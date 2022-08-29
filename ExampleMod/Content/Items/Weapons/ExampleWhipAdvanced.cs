@@ -43,5 +43,10 @@ namespace ExampleMod.Content.Items.Weapons
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
+		
+		// Makes the whip receive melee prefixes
+		public override bool MeleePrefix() {
+			return true;
+		}
 	}
 }

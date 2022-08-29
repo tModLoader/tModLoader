@@ -347,6 +347,47 @@
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;
+@@ -5026,12 +_,26 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Emits a single living tree leaf or other gore instance directly below the target tile.<br/>
++		/// With a 50% chance, also emits a second leaf or other gore instance directly to the side of the target tile, dependent on wind direction.<br/>
++		/// Used by vanilla's two types of Living Trees, from which this method and its two submethods get their collective name.<br/>
++		/// </summary>
++		/// <param name="i">The X coordinate of the target tile.</param>
++		/// <param name="j">The Y coordinate of the target tile.</param>
++		/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
+-		private void EmitLivingTreeLeaf(int i, int j, int leafGoreType) {
++		public void EmitLivingTreeLeaf(int i, int j, int leafGoreType) {
+ 			EmitLivingTreeLeaf_Below(i, j, leafGoreType);
+ 			if (_rand.Next(2) == 0)
+ 				EmitLivingTreeLeaf_Sideways(i, j, leafGoreType);
+ 		}
+ 
++		/// <summary>
++		/// Emits a single living tree leaf or other gore instance directly below the target tile.<br/>
++		/// </summary>
++		/// <param name="x">The X coordinate of the target tile.</param>
++		/// <param name="y">The Y coordinate of the target tile.</param>
++		/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
+ 		private void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType) {
+ 			Tile tile = Main.tile[x, y + 1];
+ 			if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
+@@ -5041,6 +_,12 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Emits a single living tree leaf or other gore instance directly to the side of the target tile, dependent on wind direction.<br/>
++		/// </summary>
++		/// <param name="x">The X coordinate of the target tile.</param>
++		/// <param name="y">The Y coordinate of the target tile.</param>
++		/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
+ 		private void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType) {
+ 			int num = 0;
+ 			if (Main.WindForVisuals > 0.2f)
 @@ -5096,6 +_,8 @@
  			int type = 706;
  			if (Main.waterStyle == 12)
@@ -355,6 +396,49 @@
 +				type = LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetDropletGore();
  			else if (Main.waterStyle > 1)
  				type = 706 + Main.waterStyle - 1;
+ 
+@@ -5121,7 +_,17 @@
+ 			_gore[num2].velocity *= 0f;
+ 		}
+ 
++		/// <summary>
++		/// Fetches the degree to which wind would/should affect a tile at the given location.
++		/// </summary>
++		/// <param name="x">The X coordinate of the theoretical target tile.</param>
++		/// <param name="y">The Y coordinate of the theoretical target tile.</param>
++		/// <param name="windCounter"></param>
++		/// <returns>
++		/// If <see cref="Main.SettingsEnabled_TilesSwayInWind"/> is false or the tile is below surface level, 0.<br/>
++		/// Otherwise, returns a value from 0.08f to 0.18f.
++		/// </returns>
+-		private float GetWindCycle(int x, int y, double windCounter) {
++		public float GetWindCycle(int x, int y, double windCounter) {
+ 			if (!Main.SettingsEnabled_TilesSwayInWind)
+ 				return 0f;
+ 
+@@ -5136,7 +_,22 @@
+ 			return 0f;
+ 		}
+ 
++		/// <summary>
++		/// Determines whether or not the tile at the given location should be able to sway in the wind.
++		/// </summary>
++		/// <param name="x">The X coordinate of the given tile.</param>
++		/// <param name="y">The Y coordinate of the given tile.</param>
++		/// <param name="tileCache">The tile to determine the sway-in-wind-ability of.</param>
++		/// <returns>
++		/// False if something dictates that the tile should NOT be able to sway in the wind; returns true by default.<br/>
++		/// Vanilla conditions that prevent wind sway are, in this order:<br/>
++		/// - if <see cref="Main.SettingsEnabled_TilesSwayInWind"/> is false<br/>
++		/// - if <see cref="TileID.Sets.SwaysInWindBasic"/> is false for the tile type of <paramref name="tileCache"/><br/>
++		/// - if the tile is an Orange Bloodroot
++		/// - if the tile is a Pink Prickly Pear on any vanilla cactus variant
++		/// </returns>
++		// TO-DO: add TileLoader hookset
+-		private bool ShouldSwayInWind(int x, int y, Tile tileCache) {
++		public bool ShouldSwayInWind(int x, int y, Tile tileCache) {
+ 			if (!Main.SettingsEnabled_TilesSwayInWind)
+ 				return false;
  
 @@ -5423,6 +_,8 @@
  
@@ -443,3 +527,42 @@
  				if (tileLight.R < 200)
  					tileLight.R = 200;
  
+@@ -5755,7 +_,17 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Determines how much wind should affect a theoretical tile at the target location on the current update tick.
++		/// </summary>
++		/// <param name="i">The X coordinate of the theoretical target tile.</param>
++		/// <param name="j">The Y coordinate of the theoretical target tile.</param>
++		/// <param name="pushAnimationTimeTotal">The total amount of time, in ticks, that a wind push cycle for the theoretical target tile should last for.</param>
++		/// <param name="pushForcePerFrame">The amount which wind should affect the theoretical target tile per frame.</param>
++		/// <returns>
++		/// The degree to which wind should affect the theoretical target tile, represented as a float.
++		/// </returns>
+-		private float GetWindGridPush(int i, int j, int pushAnimationTimeTotal, float pushForcePerFrame) {
++		public float GetWindGridPush(int i, int j, int pushAnimationTimeTotal, float pushForcePerFrame) {
+ 			_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out int windTimeLeft, out int direction);
+ 			if (windTimeLeft >= pushAnimationTimeTotal / 2)
+ 				return (float)(pushAnimationTimeTotal - windTimeLeft) * pushForcePerFrame * (float)direction;
+@@ -5763,7 +_,18 @@
+ 			return (float)windTimeLeft * pushForcePerFrame * (float)direction;
+ 		}
+ 
++		/// <summary>
++		/// Determines how much wind should affect a theoretical tile at the target location on the current update tick.<br/>
++		/// More complex version of <see cref="GetWindGridPush"/>.
++		/// </summary>
++		/// <param name="i">The X coordinate of the theoretical target tile.</param>
++		/// <param name="j">The Y coordinate of the theoretical target tile.</param>
++		/// <param name="pushAnimationTimeTotal">The total amount of time, in ticks, that a wind push cycle for the theoretical target tile should last for.</param>
++		/// <param name="totalPushForce"></param>
++		/// <param name="loops"></param>
++		/// <param name="flipDirectionPerLoop"></param>
++		/// <returns></returns>
+-		private float GetWindGridPushComplex(int i, int j, int pushAnimationTimeTotal, float totalPushForce, int loops, bool flipDirectionPerLoop) {
++		public float GetWindGridPushComplex(int i, int j, int pushAnimationTimeTotal, float totalPushForce, int loops, bool flipDirectionPerLoop) {
+ 			_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out int windTimeLeft, out int direction);
+ 			float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
+ 			int num2 = (int)(num * (float)loops);

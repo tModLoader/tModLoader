@@ -1,80 +1,88 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
+using System.Runtime.InteropServices;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
+using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.ModPlayer>;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
 	/// <summary>
 	/// This is where all ModPlayer hooks are gathered and called.
 	/// </summary>
 	public static class PlayerLoader
 	{
-		private static readonly IList<ModPlayer> players = new List<ModPlayer>();
-
-		private class HookList
-		{
-			public int[] arr = new int[0];
-			public readonly MethodInfo method;
-
-			public HookList(MethodInfo method) {
-				this.method = method;
-			}
-		}
-
-		private static List<HookList> hooks = new List<HookList>();
+		private static readonly List<ModPlayer> players = new();
+		private static readonly List<HookList> hooks = new();
+		private static readonly List<HookList> modHooks = new();
 
 		private static HookList AddHook<F>(Expression<Func<ModPlayer, F>> func) where F : Delegate {
-			var hook = new HookList(func.ToMethodInfo());
+			var hook = HookList.Create(func);
+
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static T AddModHook<T>(T hook) where T : HookList {
+			hook.Update(players);
+
+			modHooks.Add(hook);
+
 			return hook;
 		}
 
 		internal static void Add(ModPlayer player) {
-			player.index = (ushort)players.Count;
+			player.Index = (ushort)players.Count;
 			players.Add(player);
 		}
 
 		internal static void RebuildHooks() {
-			foreach (var hook in hooks) {
-				hook.arr = players.WhereMethodIsOverridden(hook.method).Select(p => (int)p.index).ToArray();
+			foreach (var hook in hooks.Union(modHooks)) {
+				hook.Update(players);
 			}
 		}
 
 		internal static void Unload() {
 			players.Clear();
+			modHooks.Clear();
 		}
 
 		private static HookList HookInitialize = AddHook<Action>(p => p.Initialize);
-		internal static void SetupPlayer(Player player) {
-			player.modPlayers = players.Select(modPlayer => modPlayer.NewInstance(player)).ToArray();
 
-			foreach (int index in HookInitialize.arr) {
-				player.modPlayers[index].Initialize();
+		internal static void SetupPlayer(Player player) {
+			player.modPlayers = NewInstances(player, CollectionsMarshal.AsSpan(players));
+
+			foreach (var modPlayer in HookInitialize.Enumerate(player.modPlayers)) {
+				modPlayer.Initialize();
 			}
+		}
+
+		private static ModPlayer[] NewInstances(Player player, Span<ModPlayer> modPlayers) {
+			var arr = new ModPlayer[modPlayers.Length];
+			for (int i = 0; i < modPlayers.Length; i++)
+				arr[i] = modPlayers[i].NewInstance(player);
+
+			return arr;
 		}
 
 		private static HookList HookResetEffects = AddHook<Action>(p => p.ResetEffects);
 
 		public static void ResetEffects(Player player) {
-			foreach (int index in HookResetEffects.arr) {
-				player.modPlayers[index].ResetEffects();
+			foreach (var modPlayer in HookResetEffects.Enumerate(player.modPlayers)) {
+				modPlayer.ResetEffects();
 			}
 		}
 
 		private static HookList HookUpdateDead = AddHook<Action>(p => p.UpdateDead);
 
 		public static void UpdateDead(Player player) {
-			foreach (int index in HookUpdateDead.arr) {
-				player.modPlayers[index].UpdateDead();
+			foreach (var modPlayer in HookUpdateDead.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateDead();
 			}
 		}
 
@@ -102,56 +110,56 @@ namespace Terraria.ModLoader
 		private static HookList HookPreSavePlayer = AddHook<Action>(p => p.PreSavePlayer);
 
 		public static void PreSavePlayer(Player player) {
-			foreach (int index in HookPreSavePlayer.arr) {
-				player.modPlayers[index].PreSavePlayer();
+			foreach (var modPlayer in HookPreSavePlayer.Enumerate(player.modPlayers)) {
+				modPlayer.PreSavePlayer();
 			}
 		}
 
 		private static HookList HookPostSavePlayer = AddHook<Action>(p => p.PostSavePlayer);
 
 		public static void PostSavePlayer(Player player) {
-			foreach (int index in HookPostSavePlayer.arr) {
-				player.modPlayers[index].PostSavePlayer();
+			foreach (var modPlayer in HookPostSavePlayer.Enumerate(player.modPlayers)) {
+				modPlayer.PostSavePlayer();
 			}
 		}
 
 		private static HookList HookClientClone = AddHook<Action<ModPlayer>>(p => p.clientClone);
 
 		public static void clientClone(Player player, Player clientClone) {
-			foreach (int index in HookClientClone.arr) {
-				player.modPlayers[index].clientClone(clientClone.modPlayers[index]);
+			foreach (var modPlayer in HookClientClone.Enumerate(player.modPlayers)) {
+				modPlayer.clientClone(clientClone.modPlayers[modPlayer.Index]);
 			}
 		}
 
 		private static HookList HookSyncPlayer = AddHook<Action<int, int, bool>>(p => p.SyncPlayer);
 
 		public static void SyncPlayer(Player player, int toWho, int fromWho, bool newPlayer) {
-			foreach (int index in HookSyncPlayer.arr) {
-				player.modPlayers[index].SyncPlayer(toWho, fromWho, newPlayer);
+			foreach (var modPlayer in HookSyncPlayer.Enumerate(player.modPlayers)) {
+				modPlayer.SyncPlayer(toWho, fromWho, newPlayer);
 			}
 		}
 
 		private static HookList HookSendClientChanges = AddHook<Action<ModPlayer>>(p => p.SendClientChanges);
 
 		public static void SendClientChanges(Player player, Player clientPlayer) {
-			foreach (int index in HookSendClientChanges.arr) {
-				player.modPlayers[index].SendClientChanges(clientPlayer.modPlayers[index]);
+			foreach (var modPlayer in HookSendClientChanges.Enumerate(player.modPlayers)) {
+				modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index]);
 			}
 		}
 
 		private static HookList HookUpdateBadLifeRegen = AddHook<Action>(p => p.UpdateBadLifeRegen);
 
 		public static void UpdateBadLifeRegen(Player player) {
-			foreach (int index in HookUpdateBadLifeRegen.arr) {
-				player.modPlayers[index].UpdateBadLifeRegen();
+			foreach (var modPlayer in HookUpdateBadLifeRegen.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateBadLifeRegen();
 			}
 		}
 
 		private static HookList HookUpdateLifeRegen = AddHook<Action>(p => p.UpdateLifeRegen);
 
 		public static void UpdateLifeRegen(Player player) {
-			foreach (int index in HookUpdateLifeRegen.arr) {
-				player.modPlayers[index].UpdateLifeRegen();
+			foreach (var modPlayer in HookUpdateLifeRegen.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateLifeRegen();
 			}
 		}
 
@@ -159,48 +167,48 @@ namespace Terraria.ModLoader
 		private static HookList HookNaturalLifeRegen = AddHook<DelegateNaturalLifeRegen>(p => p.NaturalLifeRegen);
 
 		public static void NaturalLifeRegen(Player player, ref float regen) {
-			foreach (int index in HookNaturalLifeRegen.arr) {
-				player.modPlayers[index].NaturalLifeRegen(ref regen);
+			foreach (var modPlayer in HookNaturalLifeRegen.Enumerate(player.modPlayers)) {
+				modPlayer.NaturalLifeRegen(ref regen);
 			}
 		}
 
 		private static HookList HookUpdateAutopause = AddHook<Action>(p => p.UpdateAutopause);
 
 		public static void UpdateAutopause(Player player) {
-			foreach (int index in HookUpdateAutopause.arr) {
-				player.modPlayers[index].UpdateAutopause();
+			foreach (var modPlayer in HookUpdateAutopause.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateAutopause();
 			}
 		}
 
 		private static HookList HookPreUpdate = AddHook<Action>(p => p.PreUpdate);
 
 		public static void PreUpdate(Player player) {
-			foreach (int index in HookPreUpdate.arr) {
-				player.modPlayers[index].PreUpdate();
+			foreach (var modPlayer in HookPreUpdate.Enumerate(player.modPlayers)) {
+				modPlayer.PreUpdate();
 			}
 		}
 
 		private static HookList HookSetControls = AddHook<Action>(p => p.SetControls);
 
 		public static void SetControls(Player player) {
-			foreach (int index in HookSetControls.arr) {
-				player.modPlayers[index].SetControls();
+			foreach (var modPlayer in HookSetControls.Enumerate(player.modPlayers)) {
+				modPlayer.SetControls();
 			}
 		}
 
 		private static HookList HookPreUpdateBuffs = AddHook<Action>(p => p.PreUpdateBuffs);
 
 		public static void PreUpdateBuffs(Player player) {
-			foreach (int index in HookPreUpdateBuffs.arr) {
-				player.modPlayers[index].PreUpdateBuffs();
+			foreach (var modPlayer in HookPreUpdateBuffs.Enumerate(player.modPlayers)) {
+				modPlayer.PreUpdateBuffs();
 			}
 		}
 
 		private static HookList HookPostUpdateBuffs = AddHook<Action>(p => p.PostUpdateBuffs);
 
 		public static void PostUpdateBuffs(Player player) {
-			foreach (int index in HookPostUpdateBuffs.arr) {
-				player.modPlayers[index].PostUpdateBuffs();
+			foreach (var modPlayer in HookPostUpdateBuffs.Enumerate(player.modPlayers)) {
+				modPlayer.PostUpdateBuffs();
 			}
 		}
 
@@ -208,92 +216,130 @@ namespace Terraria.ModLoader
 		private static HookList HookUpdateEquips = AddHook<DelegateUpdateEquips>(p => p.UpdateEquips);
 
 		public static void UpdateEquips(Player player) {
-			foreach (int index in HookUpdateEquips.arr) {
-				player.modPlayers[index].UpdateEquips();
+			foreach (var modPlayer in HookUpdateEquips.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateEquips();
 			}
 		}
 
 		private static HookList HookPostUpdateEquips = AddHook<Action>(p => p.PostUpdateEquips);
 
 		public static void PostUpdateEquips(Player player) {
-			foreach (int index in HookPostUpdateEquips.arr) {
-				player.modPlayers[index].PostUpdateEquips();
+			foreach (var modPlayer in HookPostUpdateEquips.Enumerate(player.modPlayers)) {
+				modPlayer.PostUpdateEquips();
 			}
 		}
 
 		private static HookList HookUpdateVisibleAccessories = AddHook<Action>(p => p.UpdateVisibleAccessories);
 
 		public static void UpdateVisibleAccessories(Player player) {
-			foreach (int index in HookUpdateVisibleAccessories.arr) {
-				player.modPlayers[index].UpdateVisibleAccessories();
+			foreach (var modPlayer in HookUpdateVisibleAccessories.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateVisibleAccessories();
 			}
 		}
 
 		private static HookList HookUpdateVisibleVanityAccessories = AddHook<Action>(p => p.UpdateVisibleVanityAccessories);
 
 		public static void UpdateVisibleVanityAccessories(Player player) {
-			foreach (int index in HookUpdateVisibleVanityAccessories.arr) {
-				player.modPlayers[index].UpdateVisibleVanityAccessories();
+			foreach (var modPlayer in HookUpdateVisibleVanityAccessories.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateVisibleVanityAccessories();
 			}
 		}
 
 		private static HookList HookUpdateDyes = AddHook<Action>(p => p.UpdateDyes);
 
 		public static void UpdateDyes(Player player) {
-			foreach (int index in HookUpdateDyes.arr) {
-				player.modPlayers[index].UpdateDyes();
+			foreach (var modPlayer in HookUpdateDyes.Enumerate(player.modPlayers)) {
+				modPlayer.UpdateDyes();
 			}
 		}
 
 		private static HookList HookPostUpdateMiscEffects = AddHook<Action>(p => p.PostUpdateMiscEffects);
 
 		public static void PostUpdateMiscEffects(Player player) {
-			foreach (int index in HookPostUpdateMiscEffects.arr) {
-				player.modPlayers[index].PostUpdateMiscEffects();
+			foreach (var modPlayer in HookPostUpdateMiscEffects.Enumerate(player.modPlayers)) {
+				modPlayer.PostUpdateMiscEffects();
 			}
 		}
 
 		private static HookList HookPostUpdateRunSpeeds = AddHook<Action>(p => p.PostUpdateRunSpeeds);
 
 		public static void PostUpdateRunSpeeds(Player player) {
-			foreach (int index in HookPostUpdateRunSpeeds.arr) {
-				player.modPlayers[index].PostUpdateRunSpeeds();
+			foreach (var modPlayer in HookPostUpdateRunSpeeds.Enumerate(player.modPlayers)) {
+				modPlayer.PostUpdateRunSpeeds();
 			}
 		}
 
 		private static HookList HookPreUpdateMovement = AddHook<Action>(p => p.PreUpdateMovement);
 
 		public static void PreUpdateMovement(Player player) {
-			foreach (int index in HookPreUpdateMovement.arr) {
-				player.modPlayers[index].PreUpdateMovement();
+			foreach (var modPlayer in HookPreUpdateMovement.Enumerate(player.modPlayers)) {
+				modPlayer.PreUpdateMovement();
 			}
 		}
 
 		private static HookList HookPostUpdate = AddHook<Action>(p => p.PostUpdate);
 
 		public static void PostUpdate(Player player) {
-			foreach (int index in HookPostUpdate.arr) {
-				player.modPlayers[index].PostUpdate();
+			foreach (var modPlayer in HookPostUpdate.Enumerate(player.modPlayers)) {
+				modPlayer.PostUpdate();
 			}
 		}
 
 		private static HookList HookFrameEffects = AddHook<Action>(p => p.FrameEffects);
 
 		public static void FrameEffects(Player player) {
-			foreach (int index in HookFrameEffects.arr) {
-				player.modPlayers[index].FrameEffects();
+			foreach (var modPlayer in HookFrameEffects.Enumerate(player.modPlayers)) {
+				modPlayer.FrameEffects();
 			}
 		}
 
 		private delegate bool DelegatePreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection,
-			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter);
 		private static HookList HookPreHurt = AddHook<DelegatePreHurt>(p => p.PreHurt);
 
 		public static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
+			PreHurt_Obsolete(player, pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
+			bool flag = true;
+			foreach (var modPlayer in HookPreHurt.Enumerate(player.modPlayers)) {
+				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
+						ref playSound, ref genGore, ref damageSource, ref cooldownCounter)) {
+					flag = false;
+				}
+			}
+			return flag;
+		}
+
+		private static HookList HookHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.Hurt);
+
+		public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+			Hurt_Obsolete(player, pvp, quiet, damage, hitDirection, crit);
+			foreach (var modPlayer in HookHurt.Enumerate(player.modPlayers)) {
+				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
+			}
+		}
+
+		private static HookList HookPostHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.PostHurt);
+
+		public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+			PostHurt_Obsolete(player, pvp, quiet, damage, hitDirection, crit);
+			foreach (var modPlayer in HookPostHurt.Enumerate(player.modPlayers)) {
+				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
+			}
+		}
+
+#region Legacy
+		private delegate bool DelegatePreHurt_Obsolete(bool pvp, bool quiet, ref int damage, ref int hitDirection,
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+		[Obsolete]
+		private static HookList HookPreHurt_Obsolete = AddHook<DelegatePreHurt_Obsolete>(p => p.PreHurt);
+
+		[Obsolete]
+		private static bool PreHurt_Obsolete(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
 			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
 			bool flag = true;
-			foreach (int index in HookPreHurt.arr) {
-				if (!player.modPlayers[index].PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
+			foreach (var modPlayer in HookPreHurt_Obsolete.Enumerate(player.modPlayers)) {
+				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
 						ref playSound, ref genGore, ref damageSource)) {
 					flag = false;
 				}
@@ -301,21 +347,26 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		private static HookList HookHurt = AddHook<Action<bool, bool, double, int, bool>>(p => p.Hurt);
+		[Obsolete]
+		private static HookList HookHurt_Obsolete = AddHook<Action<bool, bool, double, int, bool>>(p => p.Hurt);
 
-		public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-			foreach (int index in HookHurt.arr) {
-				player.modPlayers[index].Hurt(pvp, quiet, damage, hitDirection, crit);
+		[Obsolete]
+		private static void Hurt_Obsolete(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+			foreach (var modPlayer in HookHurt_Obsolete.Enumerate(player.modPlayers)) {
+				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit);
 			}
 		}
 
-		private static HookList HookPostHurt = AddHook<Action<bool, bool, double, int, bool>>(p => p.PostHurt);
+		[Obsolete]
+		private static HookList HookPostHurt_Obsolete = AddHook<Action<bool, bool, double, int, bool>>(p => p.PostHurt);
 
-		public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-			foreach (int index in HookPostHurt.arr) {
-				player.modPlayers[index].PostHurt(pvp, quiet, damage, hitDirection, crit);
+		[Obsolete]
+		private static void PostHurt_Obsolete(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+			foreach (var modPlayer in HookPostHurt_Obsolete.Enumerate(player.modPlayers)) {
+				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit);
 			}
 		}
+#endregion
 
 		private delegate bool DelegatePreKill(double damage, int hitDirection, bool pvp, ref bool playSound,
 			ref bool genGore, ref PlayerDeathReason damageSource);
@@ -324,8 +375,8 @@ namespace Terraria.ModLoader
 		public static bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound,
 			ref bool genGore, ref PlayerDeathReason damageSource) {
 			bool flag = true;
-			foreach (int index in HookPreKill.arr) {
-				if (!player.modPlayers[index].PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource)) {
+			foreach (var modPlayer in HookPreKill.Enumerate(player.modPlayers)) {
+				if (!modPlayer.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource)) {
 					flag = false;
 				}
 			}
@@ -335,8 +386,8 @@ namespace Terraria.ModLoader
 		private static HookList HookKill = AddHook<Action<double, int, bool, PlayerDeathReason>>(p => p.Kill);
 
 		public static void Kill(Player player, double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-			foreach (int index in HookKill.arr) {
-				player.modPlayers[index].Kill(damage, hitDirection, pvp, damageSource);
+			foreach (var modPlayer in HookKill.Enumerate(player.modPlayers)) {
+				modPlayer.Kill(damage, hitDirection, pvp, damageSource);
 			}
 		}
 
@@ -345,8 +396,8 @@ namespace Terraria.ModLoader
 
 		public static bool PreModifyLuck(Player player, ref float luck) {
 			bool flag = true;
-			foreach (int index in HookPreModifyLuck.arr) {
-				if (!player.modPlayers[index].PreModifyLuck(ref luck)) {
+			foreach (var modPlayer in HookPreModifyLuck.Enumerate(player.modPlayers)) {
+				if (!modPlayer.PreModifyLuck(ref luck)) {
 					flag = false;
 				}
 			}
@@ -357,8 +408,8 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyLuck = AddHook<DelegateModifyLuck>(p => p.ModifyLuck);
 
 		public static void ModifyLuck(Player player, ref float luck) {
-			foreach (int index in HookModifyLuck.arr) {
-				player.modPlayers[index].ModifyLuck(ref luck);
+			foreach (var modPlayer in HookModifyLuck.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyLuck(ref luck);
 			}
 		}
 
@@ -366,8 +417,8 @@ namespace Terraria.ModLoader
 
 		public static bool PreItemCheck(Player player) {
 			bool result = true;
-			foreach (int index in HookPreItemCheck.arr) {
-				result &= player.modPlayers[index].PreItemCheck();
+			foreach (var modPlayer in HookPreItemCheck.Enumerate(player.modPlayers)) {
+				result &= modPlayer.PreItemCheck();
 			}
 			return result;
 		}
@@ -375,8 +426,8 @@ namespace Terraria.ModLoader
 		private static HookList HookPostItemCheck = AddHook<Action>(p => p.PostItemCheck);
 
 		public static void PostItemCheck(Player player) {
-			foreach (int index in HookPostItemCheck.arr) {
-				player.modPlayers[index].PostItemCheck();
+			foreach (var modPlayer in HookPostItemCheck.Enumerate(player.modPlayers)) {
+				modPlayer.PostItemCheck();
 			}
 		}
 
@@ -388,8 +439,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return multiplier;
 
-			foreach (int index in HookUseTimeMultiplier.arr) {
-				multiplier *= player.modPlayers[index].UseTimeMultiplier(item);
+			foreach (var modPlayer in HookUseTimeMultiplier.Enumerate(player.modPlayers)) {
+				multiplier *= modPlayer.UseTimeMultiplier(item);
 			}
 
 			return multiplier;
@@ -403,8 +454,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return multiplier;
 
-			foreach (int index in HookUseAnimationMultiplier.arr) {
-				multiplier *= player.modPlayers[index].UseAnimationMultiplier(item);
+			foreach (var modPlayer in HookUseAnimationMultiplier.Enumerate(player.modPlayers)) {
+				multiplier *= modPlayer.UseAnimationMultiplier(item);
 			}
 
 			return multiplier;
@@ -418,8 +469,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return multiplier;
 
-			foreach (int index in HookUseSpeedMultiplier.arr) {
-				multiplier *= player.modPlayers[index].UseSpeedMultiplier(item);
+			foreach (var modPlayer in HookUseSpeedMultiplier.Enumerate(player.modPlayers)) {
+				multiplier *= modPlayer.UseSpeedMultiplier(item);
 			}
 
 			return multiplier;
@@ -432,8 +483,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookGetHealLife.arr) {
-				player.modPlayers[index].GetHealLife(item, quickHeal, ref healValue);
+			foreach (var modPlayer in HookGetHealLife.Enumerate(player.modPlayers)) {
+				modPlayer.GetHealLife(item, quickHeal, ref healValue);
 			}
 		}
 
@@ -444,8 +495,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookGetHealMana.arr) {
-				player.modPlayers[index].GetHealMana(item, quickHeal, ref healValue);
+			foreach (var modPlayer in HookGetHealMana.Enumerate(player.modPlayers)) {
+				modPlayer.GetHealMana(item, quickHeal, ref healValue);
 			}
 		}
 
@@ -456,8 +507,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookModifyManaCost.arr) {
-				player.modPlayers[index].ModifyManaCost(item, ref reduce, ref mult);
+			foreach (var modPlayer in HookModifyManaCost.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyManaCost(item, ref reduce, ref mult);
 			}
 		}
 
@@ -467,8 +518,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookOnMissingMana.arr) {
-				player.modPlayers[index].OnMissingMana(item, manaNeeded);
+			foreach (var modPlayer in HookOnMissingMana.Enumerate(player.modPlayers)) {
+				modPlayer.OnMissingMana(item, manaNeeded);
 			}
 		}
 
@@ -478,8 +529,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookOnConsumeMana.arr) {
-				player.modPlayers[index].OnConsumeMana(item, manaConsumed);
+			foreach (var modPlayer in HookOnConsumeMana.Enumerate(player.modPlayers)) {
+				modPlayer.OnConsumeMana(item, manaConsumed);
 			}
 		}
 
@@ -492,16 +543,16 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookModifyWeaponDamage.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref damage);
+			foreach (var modPlayer in HookModifyWeaponDamage.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyWeaponDamage(item, ref damage);
 			}
 		}
 
 		private static HookList HookProcessTriggers = AddHook<Action<TriggersSet>>(p => p.ProcessTriggers);
 
 		public static void ProcessTriggers(Player player, TriggersSet triggersSet) {
-			foreach (int index in HookProcessTriggers.arr) {
-				player.modPlayers[index].ProcessTriggers(triggersSet);
+			foreach (var modPlayer in HookProcessTriggers.Enumerate(player.modPlayers)) {
+				modPlayer.ProcessTriggers(triggersSet);
 			}
 		}
 
@@ -512,8 +563,8 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			foreach (int index in HookModifyWeaponKnockback.arr) {
-				player.modPlayers[index].ModifyWeaponKnockback(item, ref knockback);
+			foreach (var modPlayer in HookModifyWeaponKnockback.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyWeaponKnockback(item, ref knockback);
 			}
 		}
 
@@ -522,16 +573,16 @@ namespace Terraria.ModLoader
 
 		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			if (item.IsAir) return;
-			foreach (int index in HookModifyWeaponCrit.arr) {
-				player.modPlayers[index].ModifyWeaponCrit(item, ref crit);
+			foreach (var modPlayer in HookModifyWeaponCrit.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyWeaponCrit(item, ref crit);
 			}
 		}
 
 		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.CanConsumeAmmo);
 
 		public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
-			foreach (int index in HookCanConsumeAmmo.arr) {
-				if (!player.modPlayers[index].CanConsumeAmmo(weapon, ammo)) {
+			foreach (var modPlayer in HookCanConsumeAmmo.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanConsumeAmmo(weapon, ammo)) {
 					return false;
 				}
 			}
@@ -541,15 +592,15 @@ namespace Terraria.ModLoader
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item>>(p => p.OnConsumeAmmo);
 
 		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
-			foreach (int index in HookOnConsumeAmmo.arr)
-				player.modPlayers[index].OnConsumeAmmo(weapon, ammo);
+			foreach (var modPlayer in HookOnConsumeAmmo.Enumerate(player.modPlayers))
+				modPlayer.OnConsumeAmmo(weapon, ammo);
 		}
 
 		private static HookList HookCanShoot = AddHook<Func<Item, bool>>(p => p.CanShoot);
 
 		public static bool CanShoot(Player player, Item item) {
-			foreach (int index in HookCanShoot.arr) {
-				if (!player.modPlayers[index].CanShoot(item))
+			foreach (var modPlayer in HookCanShoot.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanShoot(item))
 					return false;
 			}
 
@@ -560,8 +611,8 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyShootStats = AddHook<DelegateModifyShootStats>(p => p.ModifyShootStats);
 
 		public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			foreach (int index in HookModifyShootStats.arr) {
-				player.modPlayers[index].ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
+			foreach (var modPlayer in HookModifyShootStats.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
 			}
 		}
 
@@ -570,8 +621,8 @@ namespace Terraria.ModLoader
 		public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = true;
 
-			foreach (int index in HookShoot.arr) {
-				defaultResult &= player.modPlayers[index].Shoot(item, source, position, velocity, type, damage, knockback);
+			foreach (var modPlayer in HookShoot.Enumerate(player.modPlayers)) {
+				defaultResult &= modPlayer.Shoot(item, source, position, velocity, type, damage, knockback);
 			}
 
 			return defaultResult;
@@ -580,8 +631,8 @@ namespace Terraria.ModLoader
 		private static HookList HookMeleeEffects = AddHook<Action<Item, Rectangle>>(p => p.MeleeEffects);
 
 		public static void MeleeEffects(Player player, Item item, Rectangle hitbox) {
-			foreach (int index in HookMeleeEffects.arr) {
-				player.modPlayers[index].MeleeEffects(item, hitbox);
+			foreach (var modPlayer in HookMeleeEffects.Enumerate(player.modPlayers)) {
+				modPlayer.MeleeEffects(item, hitbox);
 			}
 		}
 
@@ -589,8 +640,8 @@ namespace Terraria.ModLoader
 
 		public static bool? CanCatchNPC(Player player, NPC target, Item item) {
 			bool? returnValue = null;
-			foreach (int index in HookCanCatchNPC.arr) {
-				bool? canCatch = player.modPlayers[index].CanCatchNPC(target, item);
+			foreach (var modPlayer in HookCanCatchNPC.Enumerate(player.modPlayers)) {
+				bool? canCatch = modPlayer.CanCatchNPC(target, item);
 				if (canCatch.HasValue) {
 					if (!canCatch.Value)
 						return false;
@@ -604,8 +655,8 @@ namespace Terraria.ModLoader
 		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Item, bool>>(p => p.OnCatchNPC);
 
 		public static void OnCatchNPC(Player player, NPC target, Item item, bool failed) {
-			foreach (int index in HookOnCatchNPC.arr) {
-				player.modPlayers[index].OnCatchNPC(target, item, failed);
+			foreach (var modPlayer in HookOnCatchNPC.Enumerate(player.modPlayers)) {
+				modPlayer.OnCatchNPC(target, item, failed);
 			}
 		}
 
@@ -613,16 +664,16 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(p => p.ModifyItemScale);
 
 		public static void ModifyItemScale(Player player, Item item, ref float scale) {
-			foreach (int index in HookModifyItemScale.arr) {
-				player.modPlayers[index].ModifyItemScale(item, ref scale);
+			foreach (var modPlayer in HookModifyItemScale.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyItemScale(item, ref scale);
 			}
 		}
 
 		private static HookList HookOnHitAnything = AddHook<Action<float, float, Entity>>(p => p.OnHitAnything);
 
 		public static void OnHitAnything(Player player, float x, float y, Entity victim) {
-			foreach (int index in HookOnHitAnything.arr) {
-				player.modPlayers[index].OnHitAnything(x, y, victim);
+			foreach (var modPlayer in HookOnHitAnything.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitAnything(x, y, victim);
 			}
 		}
 
@@ -631,8 +682,8 @@ namespace Terraria.ModLoader
 		public static bool? CanHitNPC(Player player, Item item, NPC target) {
 			bool? flag = null;
 
-			foreach (int index in HookCanHitNPC.arr) {
-				bool? canHit = player.modPlayers[index].CanHitNPC(item, target);
+			foreach (var modPlayer in HookCanHitNPC.Enumerate(player.modPlayers)) {
+				bool? canHit = modPlayer.CanHitNPC(item, target);
 
 				if (canHit.HasValue) {
 					if (!canHit.Value) {
@@ -650,16 +701,16 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
 
 		public static void ModifyHitNPC(Player player, Item item, NPC target, ref int damage, ref float knockback, ref bool crit) {
-			foreach (int index in HookModifyHitNPC.arr) {
-				player.modPlayers[index].ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+			foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
 			}
 		}
 
 		private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, int, float, bool>>(p => p.OnHitNPC);
 
 		public static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockback, bool crit) {
-			foreach (int index in HookOnHitNPC.arr) {
-				player.modPlayers[index].OnHitNPC(item, target, damage, knockback, crit);
+			foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitNPC(item, target, damage, knockback, crit);
 			}
 		}
 
@@ -671,8 +722,8 @@ namespace Terraria.ModLoader
 			}
 			Player player = Main.player[proj.owner];
 			bool? flag = null;
-			foreach (int index in HookCanHitNPCWithProj.arr) {
-				bool? canHit = player.modPlayers[index].CanHitNPCWithProj(proj, target);
+			foreach (var modPlayer in HookCanHitNPCWithProj.Enumerate(player.modPlayers)) {
+				bool? canHit = modPlayer.CanHitNPCWithProj(proj, target);
 				if (canHit.HasValue && !canHit.Value) {
 					return false;
 				}
@@ -691,8 +742,8 @@ namespace Terraria.ModLoader
 				return;
 			}
 			Player player = Main.player[proj.owner];
-			foreach (int index in HookModifyHitNPCWithProj.arr) {
-				player.modPlayers[index].ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+			foreach (var modPlayer in HookModifyHitNPCWithProj.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 			}
 		}
 
@@ -703,16 +754,16 @@ namespace Terraria.ModLoader
 				return;
 			}
 			Player player = Main.player[proj.owner];
-			foreach (int index in HookOnHitNPCWithProj.arr) {
-				player.modPlayers[index].OnHitNPCWithProj(proj, target, damage, knockback, crit);
+			foreach (var modPlayer in HookOnHitNPCWithProj.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitNPCWithProj(proj, target, damage, knockback, crit);
 			}
 		}
 
 		private static HookList HookCanHitPvp = AddHook<Func<Item, Player, bool>>(p => p.CanHitPvp);
 
 		public static bool CanHitPvp(Player player, Item item, Player target) {
-			foreach (int index in HookCanHitPvp.arr) {
-				if (!player.modPlayers[index].CanHitPvp(item, target)) {
+			foreach (var modPlayer in HookCanHitPvp.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanHitPvp(item, target)) {
 					return false;
 				}
 			}
@@ -723,16 +774,16 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(p => p.ModifyHitPvp);
 
 		public static void ModifyHitPvp(Player player, Item item, Player target, ref int damage, ref bool crit) {
-			foreach (int index in HookModifyHitPvp.arr) {
-				player.modPlayers[index].ModifyHitPvp(item, target, ref damage, ref crit);
+			foreach (var modPlayer in HookModifyHitPvp.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyHitPvp(item, target, ref damage, ref crit);
 			}
 		}
 
 		private static HookList HookOnHitPvp = AddHook<Action<Item, Player, int, bool>>(p => p.OnHitPvp);
 
 		public static void OnHitPvp(Player player, Item item, Player target, int damage, bool crit) {
-			foreach (int index in HookOnHitPvp.arr) {
-				player.modPlayers[index].OnHitPvp(item, target, damage, crit);
+			foreach (var modPlayer in HookOnHitPvp.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitPvp(item, target, damage, crit);
 			}
 		}
 
@@ -740,8 +791,8 @@ namespace Terraria.ModLoader
 
 		public static bool CanHitPvpWithProj(Projectile proj, Player target) {
 			Player player = Main.player[proj.owner];
-			foreach (int index in HookCanHitPvpWithProj.arr) {
-				if (!player.modPlayers[index].CanHitPvpWithProj(proj, target)) {
+			foreach (var modPlayer in HookCanHitPvpWithProj.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanHitPvpWithProj(proj, target)) {
 					return false;
 				}
 			}
@@ -753,8 +804,8 @@ namespace Terraria.ModLoader
 
 		public static void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit) {
 			Player player = Main.player[proj.owner];
-			foreach (int index in HookModifyHitPvpWithProj.arr) {
-				player.modPlayers[index].ModifyHitPvpWithProj(proj, target, ref damage, ref crit);
+			foreach (var modPlayer in HookModifyHitPvpWithProj.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyHitPvpWithProj(proj, target, ref damage, ref crit);
 			}
 		}
 
@@ -762,8 +813,8 @@ namespace Terraria.ModLoader
 
 		public static void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit) {
 			Player player = Main.player[proj.owner];
-			foreach (int index in HookOnHitPvpWithProj.arr) {
-				player.modPlayers[index].OnHitPvpWithProj(proj, target, damage, crit);
+			foreach (var modPlayer in HookOnHitPvpWithProj.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitPvpWithProj(proj, target, damage, crit);
 			}
 		}
 
@@ -771,8 +822,8 @@ namespace Terraria.ModLoader
 		private static HookList HookCanBeHitByNPC = AddHook<DelegateCanBeHitByNPC>(p => p.CanBeHitByNPC);
 
 		public static bool CanBeHitByNPC(Player player, NPC npc, ref int cooldownSlot) {
-			foreach (int index in HookCanBeHitByNPC.arr) {
-				if (!player.modPlayers[index].CanBeHitByNPC(npc, ref cooldownSlot)) {
+			foreach (var modPlayer in HookCanBeHitByNPC.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanBeHitByNPC(npc, ref cooldownSlot)) {
 					return false;
 				}
 			}
@@ -783,24 +834,24 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitByNPC = AddHook<DelegateModifyHitByNPC>(p => p.ModifyHitByNPC);
 
 		public static void ModifyHitByNPC(Player player, NPC npc, ref int damage, ref bool crit) {
-			foreach (int index in HookModifyHitByNPC.arr) {
-				player.modPlayers[index].ModifyHitByNPC(npc, ref damage, ref crit);
+			foreach (var modPlayer in HookModifyHitByNPC.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyHitByNPC(npc, ref damage, ref crit);
 			}
 		}
 
 		private static HookList HookOnHitByNPC = AddHook<Action<NPC, int, bool>>(p => p.OnHitByNPC);
 
 		public static void OnHitByNPC(Player player, NPC npc, int damage, bool crit) {
-			foreach (int index in HookOnHitByNPC.arr) {
-				player.modPlayers[index].OnHitByNPC(npc, damage, crit);
+			foreach (var modPlayer in HookOnHitByNPC.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitByNPC(npc, damage, crit);
 			}
 		}
 
 		private static HookList HookCanBeHitByProjectile = AddHook<Func<Projectile, bool>>(p => p.CanBeHitByProjectile);
 
 		public static bool CanBeHitByProjectile(Player player, Projectile proj) {
-			foreach (int index in HookCanBeHitByProjectile.arr) {
-				if (!player.modPlayers[index].CanBeHitByProjectile(proj)) {
+			foreach (var modPlayer in HookCanBeHitByProjectile.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanBeHitByProjectile(proj)) {
 					return false;
 				}
 			}
@@ -811,25 +862,36 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyHitByProjectile = AddHook<DelegateModifyHitByProjectile>(p => p.ModifyHitByProjectile);
 
 		public static void ModifyHitByProjectile(Player player, Projectile proj, ref int damage, ref bool crit) {
-			foreach (int index in HookModifyHitByProjectile.arr) {
-				player.modPlayers[index].ModifyHitByProjectile(proj, ref damage, ref crit);
+			foreach (var modPlayer in HookModifyHitByProjectile.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyHitByProjectile(proj, ref damage, ref crit);
 			}
 		}
 
 		private static HookList HookOnHitByProjectile = AddHook<Action<Projectile, int, bool>>(p => p.OnHitByProjectile);
 
 		public static void OnHitByProjectile(Player player, Projectile proj, int damage, bool crit) {
-			foreach (int index in HookOnHitByProjectile.arr) {
-				player.modPlayers[index].OnHitByProjectile(proj, damage, crit);
+			foreach (var modPlayer in HookOnHitByProjectile.Enumerate(player.modPlayers)) {
+				modPlayer.OnHitByProjectile(proj, damage, crit);
 			}
+		}
+
+		private delegate void DelegateModifyFishingAttempt(ref FishingAttempt attempt);
+		private static HookList HookModifyFishingAttempt = AddHook<DelegateModifyFishingAttempt>(p => p.ModifyFishingAttempt);
+
+		public static void ModifyFishingAttempt(Player player, ref FishingAttempt attempt) {
+			foreach (var modPlayer in HookModifyFishingAttempt.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyFishingAttempt(ref attempt);
+			}
+
+			attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this 
 		}
 
 		private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 		private static HookList HookCatchFish = AddHook<DelegateCatchFish>(p => p.CatchFish);
 
 		public static void CatchFish(Player player, FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
-			foreach (int index in HookCatchFish.arr) {
-				player.modPlayers[index].CatchFish(attempt, ref itemDrop, ref enemySpawn, ref sonar, ref sonarPosition);
+			foreach (var modPlayer in HookCatchFish.Enumerate(player.modPlayers)) {
+				modPlayer.CatchFish(attempt, ref itemDrop, ref enemySpawn, ref sonar, ref sonarPosition);
 			}
 		}
 
@@ -837,8 +899,8 @@ namespace Terraria.ModLoader
 		private static HookList HookCaughtFish = AddHook<DelegateModifyCaughtFish>(p => p.ModifyCaughtFish);
 
 		public static void ModifyCaughtFish(Player player, Item fish) {
-			foreach (int index in HookCaughtFish.arr) {
-				player.modPlayers[index].ModifyCaughtFish(fish);
+			foreach (var modPlayer in HookCaughtFish.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyCaughtFish(fish);
 			}
 		}
 
@@ -847,8 +909,8 @@ namespace Terraria.ModLoader
 
 		public static bool? CanConsumeBait(Player player, Item bait) {
 			bool? ret = null;
-			foreach (int index in HookCaughtFish.arr) {
-				if (player.modPlayers[index].CanConsumeBait(bait) is bool b)
+			foreach (var modPlayer in HookCaughtFish.Enumerate(player.modPlayers)) {
+				if (modPlayer.CanConsumeBait(bait) is bool b)
 					ret = (ret ?? true) && b;
 			}
 			return ret;
@@ -858,24 +920,24 @@ namespace Terraria.ModLoader
 		private static HookList HookGetFishingLevel = AddHook<DelegateGetFishingLevel>(p => p.GetFishingLevel);
 
 		public static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref float fishingLevel) {
-			foreach (int index in HookGetFishingLevel.arr) {
-				player.modPlayers[index].GetFishingLevel(fishingRod, bait, ref fishingLevel);
+			foreach (var modPlayer in HookGetFishingLevel.Enumerate(player.modPlayers)) {
+				modPlayer.GetFishingLevel(fishingRod, bait, ref fishingLevel);
 			}
 		}
 
 		private static HookList HookAnglerQuestReward = AddHook<Action<float, List<Item>>>(p => p.AnglerQuestReward);
 
 		public static void AnglerQuestReward(Player player, float rareMultiplier, List<Item> rewardItems) {
-			foreach (int index in HookAnglerQuestReward.arr) {
-				player.modPlayers[index].AnglerQuestReward(rareMultiplier, rewardItems);
+			foreach (var modPlayer in HookAnglerQuestReward.Enumerate(player.modPlayers)) {
+				modPlayer.AnglerQuestReward(rareMultiplier, rewardItems);
 			}
 		}
 
 		private static HookList HookGetDyeTraderReward = AddHook<Action<List<int>>>(p => p.GetDyeTraderReward);
 
 		public static void GetDyeTraderReward(Player player, List<int> rewardPool) {
-			foreach (int index in HookGetDyeTraderReward.arr) {
-				player.modPlayers[index].GetDyeTraderReward(rewardPool);
+			foreach (var modPlayer in HookGetDyeTraderReward.Enumerate(player.modPlayers)) {
+				modPlayer.GetDyeTraderReward(rewardPool);
 			}
 		}
 
@@ -883,9 +945,10 @@ namespace Terraria.ModLoader
 		private static HookList HookDrawEffects = AddHook<DelegateDrawEffects>(p => p.DrawEffects);
 
 		public static void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
-			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
-			foreach (int index in HookDrawEffects.arr) {
-				modPlayers[index].DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
+			var player = drawInfo.drawPlayer;
+
+			foreach (var modPlayer in HookDrawEffects.Enumerate(player.modPlayers)) {
+				modPlayer.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
 			}
 		}
 
@@ -893,33 +956,36 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyDrawInfo = AddHook<DelegateModifyDrawInfo>(p => p.ModifyDrawInfo);
 
 		public static void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
-			ModPlayer[] modPlayers = drawInfo.drawPlayer.modPlayers;
-			foreach (int index in HookModifyDrawInfo.arr) {
-				modPlayers[index].ModifyDrawInfo(ref drawInfo);
+			var player = drawInfo.drawPlayer;
+
+			foreach (var modPlayer in HookModifyDrawInfo.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyDrawInfo(ref drawInfo);
 			}
 		}
 
 		private static HookList HookModifyDrawLayerOrdering = AddHook<Action<IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position>>>(p => p.ModifyDrawLayerOrdering);
 
 		public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
-			foreach (int index in HookModifyDrawLayerOrdering.arr) {
-				players[index].ModifyDrawLayerOrdering(positions);
+			foreach (var modPlayer in HookModifyDrawLayerOrdering.Enumerate(players)) {
+				modPlayer.ModifyDrawLayerOrdering(positions);
 			}
 		}
 
 		private static HookList HookModifyDrawLayers = AddHook<Action<PlayerDrawSet>>(p => p.HideDrawLayers);
 
 		public static void HideDrawLayers(PlayerDrawSet drawInfo) {
-			foreach (int index in HookModifyDrawLayers.arr) {
-				drawInfo.drawPlayer.modPlayers[index].HideDrawLayers(drawInfo);
+			var player = drawInfo.drawPlayer;
+
+			foreach (var modPlayer in HookModifyDrawLayers.Enumerate(player.modPlayers)) {
+				modPlayer.HideDrawLayers(drawInfo);
 			}
 		}
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(p => p.ModifyScreenPosition);
 
 		public static void ModifyScreenPosition(Player player) {
-			foreach (int index in HookModifyScreenPosition.arr) {
-				player.modPlayers[index].ModifyScreenPosition();
+			foreach (var modPlayer in HookModifyScreenPosition.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyScreenPosition();
 			}
 		}
 
@@ -927,8 +993,8 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyZoom = AddHook<DelegateModifyZoom>(p => p.ModifyZoom);
 
 		public static void ModifyZoom(Player player, ref float zoom) {
-			foreach (int index in HookModifyZoom.arr) {
-				player.modPlayers[index].ModifyZoom(ref zoom);
+			foreach (var modPlayer in HookModifyZoom.Enumerate(player.modPlayers.ToList())) {
+				modPlayer.ModifyZoom(ref zoom);
 			}
 		}
 
@@ -936,8 +1002,8 @@ namespace Terraria.ModLoader
 
 		public static void PlayerConnect(int playerIndex) {
 			var player = Main.player[playerIndex];
-			foreach (int index in HookPlayerConnect.arr) {
-				player.modPlayers[index].PlayerConnect(player);
+			foreach (var modPlayer in HookPlayerConnect.Enumerate(player.modPlayers)) {
+				modPlayer.PlayerConnect(player);
 			}
 		}
 
@@ -945,8 +1011,8 @@ namespace Terraria.ModLoader
 
 		public static void PlayerDisconnect(int playerIndex) {
 			var player = Main.player[playerIndex];
-			foreach (int index in HookPlayerDisconnect.arr) {
-				player.modPlayers[index].PlayerDisconnect(player);
+			foreach (var modPlayer in HookPlayerDisconnect.Enumerate(player.modPlayers)) {
+				modPlayer.PlayerDisconnect(player);
 			}
 		}
 
@@ -955,24 +1021,35 @@ namespace Terraria.ModLoader
 		// Do NOT hook into the Player.Hooks.OnEnterWorld event
 		public static void OnEnterWorld(int playerIndex) {
 			var player = Main.player[playerIndex];
-			foreach (int index in HookOnEnterWorld.arr) {
-				player.modPlayers[index].OnEnterWorld(player);
+			foreach (var modPlayer in HookOnEnterWorld.Enumerate(player.modPlayers)) {
+				modPlayer.OnEnterWorld(player);
 			}
 		}
 
 		private static HookList HookOnRespawn = AddHook<Action<Player>>(p => p.OnRespawn);
 
 		public static void OnRespawn(Player player) {
-			foreach (int index in HookOnRespawn.arr) {
-				player.modPlayers[index].OnRespawn(player);
+			foreach (var modPlayer in HookOnRespawn.Enumerate(player.modPlayers)) {
+				modPlayer.OnRespawn(player);
 			}
 		}
 
 		private static HookList HookShiftClickSlot = AddHook<Func<Item[], int, int, bool>>(p => p.ShiftClickSlot);
 
 		public static bool ShiftClickSlot(Player player, Item[] inventory, int context, int slot) {
-			foreach (int index in HookShiftClickSlot.arr) {
-				if (player.modPlayers[index].ShiftClickSlot(inventory, context, slot)) {
+			foreach (var modPlayer in HookShiftClickSlot.Enumerate(player.modPlayers)) {
+				if (modPlayer.ShiftClickSlot(inventory, context, slot)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private static HookList HookHoverSlot = AddHook<Func<Item[], int, int, bool>>(p => p.HoverSlot);
+
+		public static bool HoverSlot(Player player, Item[] inventory, int context, int slot) {
+			foreach (var modPlayer in HookHoverSlot.Enumerate(player.ModPlayers)) {
+				if (modPlayer.HoverSlot(inventory, context, slot)) {
 					return true;
 				}
 			}
@@ -982,8 +1059,8 @@ namespace Terraria.ModLoader
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
 
 		public static void PostSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
-			foreach (int index in HookPostSellItem.arr) {
-				player.modPlayers[index].PostSellItem(npc, shopInventory, item);
+			foreach (var modPlayer in HookPostSellItem.Enumerate(player.modPlayers)) {
+				modPlayer.PostSellItem(npc, shopInventory, item);
 			}
 		}
 
@@ -991,8 +1068,8 @@ namespace Terraria.ModLoader
 
 		// TODO: GlobalNPC and ModNPC hooks for Buy/Sell hooks as well.
 		public static bool CanSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {
-			foreach (int index in HookCanSellItem.arr) {
-				if (!player.modPlayers[index].CanSellItem(npc, shopInventory, item))
+			foreach (var modPlayer in HookCanSellItem.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanSellItem(npc, shopInventory, item))
 					return false;
 			}
 			return true;
@@ -1001,16 +1078,16 @@ namespace Terraria.ModLoader
 		private static HookList HookPostBuyItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostBuyItem);
 
 		public static void PostBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
-			foreach (int index in HookPostBuyItem.arr) {
-				player.modPlayers[index].PostBuyItem(npc, shopInventory, item);
+			foreach (var modPlayer in HookPostBuyItem.Enumerate(player.modPlayers)) {
+				modPlayer.PostBuyItem(npc, shopInventory, item);
 			}
 		}
 
 		private static HookList HookCanBuyItem = AddHook<Func<NPC, Item[], Item, bool>>(p => p.CanBuyItem);
 
 		public static bool CanBuyItem(Player player, NPC npc, Item[] shopInventory, Item item) {
-			foreach (int index in HookCanBuyItem.arr) {
-				if (!player.modPlayers[index].CanBuyItem(npc, shopInventory, item))
+			foreach (var modPlayer in HookCanBuyItem.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanBuyItem(npc, shopInventory, item))
 					return false;
 			}
 			return true;
@@ -1019,8 +1096,8 @@ namespace Terraria.ModLoader
 		private static HookList HookCanUseItem = AddHook<Func<Item, bool>>(p => p.CanUseItem);
 
 		public static bool CanUseItem(Player player, Item item) {
-			foreach (int index in HookCanUseItem.arr) {
-				if (!player.modPlayers[index].CanUseItem(item))
+			foreach (var modPlayer in HookCanUseItem.Enumerate(player.modPlayers)) {
+				if (!modPlayer.CanUseItem(item))
 					return false;
 			}
 
@@ -1032,8 +1109,8 @@ namespace Terraria.ModLoader
 		public static bool? CanAutoReuseItem(Player player, Item item) {
 			bool? flag = null;
 
-			foreach (int index in HookCanAutoReuseItem.arr) {
-				bool? allow = player.modPlayers[index].CanAutoReuseItem(item);
+			foreach (var modPlayer in HookCanAutoReuseItem.Enumerate(player.modPlayers)) {
+				bool? allow = modPlayer.CanAutoReuseItem(item);
 
 				if (allow.HasValue) {
 					if (!allow.Value) {
@@ -1048,30 +1125,32 @@ namespace Terraria.ModLoader
 		}
 
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
-		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
+		
+		private static readonly HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 
-		public static bool ModifyNurseHeal(Player p, NPC npc, ref int health, ref bool removeDebuffs, ref string chat) {
-			foreach (int index in HookModifyNurseHeal.arr) {
-				if (!p.modPlayers[index].ModifyNurseHeal(npc, ref health, ref removeDebuffs, ref chat))
+		public static bool ModifyNurseHeal(Player player, NPC npc, ref int health, ref bool removeDebuffs, ref string chat) {
+			foreach (var modPlayer in HookModifyNurseHeal.Enumerate(player.modPlayers)) {
+				if (!modPlayer.ModifyNurseHeal(npc, ref health, ref removeDebuffs, ref chat))
 					return false;
 			}
+
 			return true;
 		}
 
 		private delegate void DelegateModifyNursePrice(NPC npc, int health, bool removeDebuffs, ref int price);
 		private static HookList HookModifyNursePrice = AddHook<DelegateModifyNursePrice>(p => p.ModifyNursePrice);
 
-		public static void ModifyNursePrice(Player p, NPC npc, int health, bool removeDebuffs, ref int price) {
-			foreach (int index in HookModifyNursePrice.arr) {
-				p.modPlayers[index].ModifyNursePrice(npc, health, removeDebuffs, ref price);
+		public static void ModifyNursePrice(Player player, NPC npc, int health, bool removeDebuffs, ref int price) {
+			foreach (var modPlayer in HookModifyNursePrice.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyNursePrice(npc, health, removeDebuffs, ref price);
 			}
 		}
 
 		private static HookList HookPostNurseHeal = AddHook<Action<NPC, int, bool, int>>(p => p.PostNurseHeal);
 
 		public static void PostNurseHeal(Player player, NPC npc, int health, bool removeDebuffs, int price) {
-			foreach (int index in HookPostNurseHeal.arr) {
-				player.modPlayers[index].PostNurseHeal(npc, health, removeDebuffs, price);
+			foreach (var modPlayer in HookPostNurseHeal.Enumerate(player.modPlayers)) {
+				modPlayer.PostNurseHeal(npc, health, removeDebuffs, price);
 			}
 		}
 
@@ -1079,17 +1158,16 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyStartingInventory = AddHook<Action<IReadOnlyDictionary<string, List<Item>>, bool>>(p => p.ModifyStartingInventory);
 
 		public static List<Item> GetStartingItems(Player player, IEnumerable<Item> vanillaItems, bool mediumCoreDeath = false) {
-			var itemsByMod = new Dictionary<string, List<Item>>();
+			var itemsByMod = new Dictionary<string, List<Item>> {
+				["Terraria"] = vanillaItems.ToList()
+			};
 
-			itemsByMod["Terraria"] = vanillaItems.ToList();
-
-			foreach (int index in HookAddStartingItems.arr) {
-				ModPlayer modPlayer = player.modPlayers[index];
+			foreach (var modPlayer in HookAddStartingItems.Enumerate(player.modPlayers)) {
 				itemsByMod[modPlayer.Mod.Name] = modPlayer.AddStartingItems(mediumCoreDeath).ToList();
 			}
 
-			foreach (int index in HookModifyStartingInventory.arr) {
-				player.modPlayers[index].ModifyStartingInventory(itemsByMod, mediumCoreDeath);
+			foreach (var modPlayer in HookModifyStartingInventory.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyStartingInventory(itemsByMod, mediumCoreDeath);
 			}
 
 			return itemsByMod

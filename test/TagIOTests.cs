@@ -24,13 +24,24 @@ namespace Terraria.ModLoader
 
 		[ClassInitialize]
 		public static void ClassInit(TestContext context) {
-			//initialize a server context for Item IO
+			//initialize a server context for ItemIO
+			typeof(Program).GetProperty(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public).SetValue(null, ".");
 			Main.dedServ = true;
-			var main = new Main();
-			typeof(Main).GetMethod("Initialize", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(main, new object[0]);
 
-			//add a mock mod for TagSerializable type resolving
-			typeof(ModLoader).GetField("loadedMods", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, new Mod[] {new MockMod() });
+			// autoload the TagSerializers
+			var loadableTypes = typeof(Main).Assembly.GetTypes()
+				.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+				.Where(t => t.IsAssignableTo(typeof(TagSerializer)))
+				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) != null) // has default constructor
+				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
+
+			foreach (var t in loadableTypes) {
+				((ILoadable)Activator.CreateInstance(t, true)).Load(null);
+			}
+
+			// Add a mod for resolving TagSerializable types
+			typeof(ModLoader).GetProperty(nameof(ModLoader.Mods), BindingFlags.Public | BindingFlags.Static).SetValue(null, new Mod[] {new MockMod()});
 		}
 
 		private void AssertEqual(object o1, object o2) {
@@ -57,8 +68,11 @@ namespace Terraria.ModLoader
 				var list1 = (IList) o1;
 				var list2 = (IList) o2;
 
-				var eType1 = list1.GetType().GetGenericArguments()[0];
-				var eType2 = list2.GetType().GetGenericArguments()[0];
+				var list1Type = list1.GetType();
+				var list2Type = list2.GetType();
+
+				var eType1 = list1Type.GetElementType() ?? list1Type.GetGenericArguments()[0];
+				var eType2 = list2Type.GetElementType() ?? list2Type.GetGenericArguments()[0];
 				Assert.AreEqual(eType1, eType2);
 
 				Assert.AreEqual(list1.Count, list2.Count);
@@ -170,7 +184,7 @@ namespace Terraria.ModLoader
 			var tag = GetGeneralTestTag();
 			AssertEqual(tag, AfterIO(tag));
 		}
-		
+
 		[TestMethod]
 		[ExpectedException(typeof(System.ArgumentException))]
 		public void TestDuplicate() {
@@ -213,7 +227,7 @@ namespace Terraria.ModLoader
 			tag.Add("key1", null);
 			AssertEqual(tag, new TagCompound {{"key2", 5}});
 		}
-		
+
 		[TestMethod]
 		public void TestInvalidType() {
 			try {
@@ -273,15 +287,8 @@ namespace Terraria.ModLoader
 			}
 
 			//get a missing tag as an invalid NBT type
-			try {
-				var tag = new TagCompound();
-				tag.Get<char>("key1");
-				Assert.Fail("Test method did not throw expected exception System.IO.IOException.");
-			}
-			catch (IOException e) {
-				Assert.AreEqual(e.Message, "NBT Deserialization (type=System.Char,entry=\"key1\" = null)");
-				Assert.AreEqual(e.InnerException.Message, "Invalid NBT payload type 'System.Char'");
-			}
+			// now permitted, returns default
+			Assert.AreEqual(default, new TagCompound().Get<char>("key1"));
 
 			//get a list tag as an invalid generic type
 			try {
@@ -354,6 +361,39 @@ namespace Terraria.ModLoader
 
 			AssertEqual(tag.Get<IList<float>>("key"),  new List<float>());
 			AssertEqual(tag.Get<IList<IList<float>>>("key"), new List<IList<float>>());
+
+			AssertEqual(tag.Get<string[,]>("key"), new string[0, 0]);
+			AssertEqual(tag.Get<string[][]>("key"), new string[0][]);
+			AssertEqual(tag.Get<string[][,]>("key"), new string[0][,]);
+			AssertEqual(tag.Get<string[,][]>("key"), new string[0, 0][]);
+			AssertEqual(tag.Get<string[,][,]>("key"), new string[0, 0][,]);
+
+			AssertEqual(tag.Get<Vector2[,]>("key"), new Vector2[0, 0]);
+			AssertEqual(tag.Get<Vector2[][]>("key"), new Vector2[0][]);
+			AssertEqual(tag.Get<Vector2[][,]>("key"), new Vector2[0][,]);
+			AssertEqual(tag.Get<Vector2[,][]>("key"), new Vector2[0, 0][]);
+			AssertEqual(tag.Get<Vector2[,][,]>("key"), new Vector2[0, 0][,]);
+
+			AssertEqual(tag.Get<C[,]>("key"), new C[0, 0]);
+			AssertEqual(tag.Get<C[][]>("key"), new C[0][]);
+			AssertEqual(tag.Get<C[][,]>("key"), new C[0][,]);
+			AssertEqual(tag.Get<C[,][]>("key"), new C[0, 0][]);
+			AssertEqual(tag.Get<C[,][,]>("key"), new C[0, 0][,]);
+
+			AssertEqual(tag.Get<List<string>[]>("key"), new List<string>[0]);
+			AssertEqual(tag.Get<List<string[]>>("key"), new List<string[]>());
+			AssertEqual(tag.Get<List<string[,]>>("key"), new List<string[,]>());
+			AssertEqual(tag.Get<List<string>[,]>("key"), new List<string>[0, 0]);
+
+			AssertEqual(tag.Get<List<Vector2>[]>("key"), new List<Vector2>[0]);
+			AssertEqual(tag.Get<List<Vector2[]>>("key"), new List<Vector2[]>());
+			AssertEqual(tag.Get<List<Vector2[,]>>("key"), new List<Vector2[,]>());
+			AssertEqual(tag.Get<List<Vector2>[,]>("key"), new List<Vector2>[0, 0]);
+
+			AssertEqual(tag.Get<List<C>[]>("key"), new List<C>[0]);
+			AssertEqual(tag.Get<List<C[]>>("key"), new List<C[]>());
+			AssertEqual(tag.Get<List<C[,]>>("key"), new List<C[,]>());
+			AssertEqual(tag.Get<List<C>[,]>("key"), new List<C>[0, 0]);
 		}
 
 		[TestMethod]
@@ -366,7 +406,7 @@ namespace Terraria.ModLoader
 			Assert.AreEqual(tag.Get<int?>(""), null);
 			Assert.AreEqual(tag.Get<float?>("f"), 3f);
 			Assert.AreEqual(tag.Get<float?>(""), null);
-			
+
 			try {
 				tag.Get<byte?>("i");
 				Assert.Fail("Test method did not throw expected exception System.IO.IOException.");
@@ -423,12 +463,12 @@ namespace Terraria.ModLoader
   int ""intMax"" = 2147483647,
   long ""longMin"" = -9223372036854775808,
   long ""longMax"" = 9223372036854775807,
-  float ""floatMin"" = -3.402823E+38,
-  float ""floatMax"" = 3.402823E+38,
+  float ""floatMin"" = -3.4028235E+38,
+  float ""floatMax"" = 3.4028235E+38,
   float ""floatNaN"" = NaN,
   float ""float"" = 1.525,
-  double ""doubleMin"" = -1.79769313486232E+308,
-  double ""doubleMax"" = 1.79769313486232E+308,
+  double ""doubleMin"" = -1.7976931348623157E+308,
+  double ""doubleMax"" = 1.7976931348623157E+308,
   double ""doubleNaN"" = NaN,
   double ""double"" = 1.525,
   string ""string1"" = """",
@@ -623,16 +663,10 @@ namespace Terraria.ModLoader
 		[TestMethod]
 		public void TestItemSerializable() {
 			//unfortunately can't test modded items or global data
-			
-			var item1 = new Item();
-			item1.SetDefaults(ItemID.LastPrism, true);
-			item1.favorited = true;
-			var item2 = new Item();
-			item2.SetDefaults(ItemID.IronBar, true);
-			item2.stack = 25;
-			var item3 = new Item();
-			item3.SetDefaults(ItemID.Meowmere, true);
-			item3.prefix = 4;
+
+			var item1 = new Item(ItemID.LastPrism) { favorited = true };
+			var item2 = new Item(ItemID.IronBar) { stack = 25 };
+			var item3 = new Item(ItemID.Meowmere) { prefix = 4 };
 
 			var list = new List<Item> {item1, item2, item3};
 			var tag = new TagCompound {
@@ -842,12 +876,216 @@ namespace Terraria.ModLoader
 		public void TestSerializableRefactoring() {
 			var tag = new TagCompound {
 				["c"] = new C(15),
-				["list"] = new List<C> { new C(17) }
+				["list"] = new List<C> { new(17) },
+				["2darr"] = new C[1,1] { { new(19) } },
 			};
 			//can get C as C2 because their deserializers are compatible
 			Assert.AreEqual(tag.Get<C2>("c").value, 15);
 			Assert.AreEqual(tag.GetList<C2>("list")[0].value, 17);
+			Assert.AreEqual(tag.Get<C2[]>("list")[0].value, 17);
+			Assert.AreEqual(tag.Get<C2[,]>("2darr")[0, 0].value, 19);
 			//note that inheritance won't work unless the C2 deserializer deliberately looks at the <type> field
+		}
+
+		[TestMethod]
+		public void TestArrayListInterchangeability() {
+			var stringArray = new string[]      { "one", "two", "three" };
+			var stringList  = new List<string>  { "one", "two", "three" };
+			var vectorArray = new Vector2[]     { new(1, 2), new(3, 4), new(5, 6) };
+			var vectorList  = new List<Vector2> { new(1, 2), new(3, 4), new(5, 6) };
+			var cArray      = new C[]           { new(1), new(2), new(3) };
+			var cList       = new List<C>       { new(1), new(2), new(3) };
+			var c2Array     = new C2[]          { new(1), new(2), new(3) };
+			var c2List      = new List<C2>      { new(1), new(2), new(3) };
+
+			TagCompound tag = new() {
+				["stringArray"] = stringArray,
+				["stringList"] = stringList,
+				["vectorArray"] = vectorArray,
+				["vectorList"] = vectorList,
+				["cArray"] = cArray,
+				["cList"] = cList,
+				["c2Array"] = c2Array,
+				["c2List"] = c2List,
+			};
+
+			Assert.IsTrue(stringList .Zip(tag.Get<List<string>> ("stringArray")).All(t => t.First == t.Second));
+			Assert.IsTrue(stringArray.Zip(tag.Get<string[]>     ("stringList")) .All(t => t.First == t.Second));
+			Assert.IsTrue(vectorList .Zip(tag.Get<List<Vector2>>("vectorArray")).All(t => t.First == t.Second));
+			Assert.IsTrue(vectorArray.Zip(tag.Get<Vector2[]>    ("vectorList")) .All(t => t.First == t.Second));
+			Assert.IsTrue(cList      .Zip(tag.Get<List<C>>      ("cArray"))     .All(t => t.First.value == t.Second.value));
+			Assert.IsTrue(cArray     .Zip(tag.Get<C[]>          ("cList"))      .All(t => t.First.value == t.Second.value));
+			Assert.IsTrue(c2List     .Zip(tag.Get<List<C2>>     ("c2Array"))    .All(t => t.First.value == t.Second.value));
+			Assert.IsTrue(c2Array    .Zip(tag.Get<C2[]>         ("c2List"))     .All(t => t.First.value == t.Second.value));
+		}
+
+		[TestMethod]
+		public void TestMultiDimensionalArrays() {
+			string[,]     s1 = new string[1,1]    {                   { "one" } };
+			string[][]    s2 = new string[1][]    {   new string[]    { "one" } };
+			string[][,]   s3 = new string[1][,]   {   new string[,] { { "one" } } };
+			string[,][]   s4 = new string[1,1][]  { { new string[]    { "one" } } };
+			string[,][,]  s5 = new string[1,1][,] { { new string[,] { { "one" } } } };
+
+			Vector2[,]    v1 = new Vector2[1,1]    {                    { Vector2.One } };
+			Vector2[][]   v2 = new Vector2[1][]    {   new Vector2[]    { Vector2.One } };
+			Vector2[][,]  v3 = new Vector2[1][,]   {   new Vector2[,] { { Vector2.One } } };
+			Vector2[,][]  v4 = new Vector2[1,1][]  { { new Vector2[]    { Vector2.One } } };
+			Vector2[,][,] v5 = new Vector2[1,1][,] { { new Vector2[,] { { Vector2.One } } } };
+
+			C[,]          c1 = new C[1,1]    {            {   new C(1) } };
+			C[][]         c2 = new C[1][]    {   new C[]  {   new C(1) } };
+			C[][,]        c3 = new C[1][,]   {   new C[,] { { new C(1) } } };
+			C[,][]        c4 = new C[1,1][]  { { new C[]    { new C(1) } } };
+			C[,][,]       c5 = new C[1,1][,] { { new C[,] { { new C(1) } } } };
+
+			TagCompound tag = new() {
+				 ["s1"] = s1, ["v1"] = v1, ["c1"] = c1,
+				 ["s2"] = s2, ["v2"] = v2, ["c2"] = c2,
+				 ["s3"] = s3, ["v3"] = v3, ["c3"] = c3,
+				 ["s4"] = s4, ["v4"] = v4, ["c4"] = c4,
+				 ["s5"] = s5, ["v5"] = v5, ["c5"] = c5,
+			};
+
+			Assert.IsTrue(s1[0, 0]       == tag.Get<string[,]>    ("s1")[0, 0]);
+			Assert.IsTrue(s2[0][0]       == tag.Get<string[][]>   ("s2")[0][0]);
+			Assert.IsTrue(s3[0][0, 0]    == tag.Get<string[][,]>  ("s3")[0][0, 0]);
+			Assert.IsTrue(s4[0, 0][0]    == tag.Get<string[,][]>  ("s4")[0, 0][0]);
+			Assert.IsTrue(s5[0, 0][0, 0] == tag.Get<string[,][,]> ("s5")[0, 0][0, 0]);
+
+			Assert.IsTrue(v1[0, 0]       == tag.Get<Vector2[,]>   ("v1")[0, 0]);
+			Assert.IsTrue(v2[0][0]       == tag.Get<Vector2[][]>  ("v2")[0][0]);
+			Assert.IsTrue(v3[0][0, 0]    == tag.Get<Vector2[][,]> ("v3")[0][0, 0]);
+			Assert.IsTrue(v4[0, 0][0]    == tag.Get<Vector2[,][]> ("v4")[0, 0][0]);
+			Assert.IsTrue(v5[0, 0][0, 0] == tag.Get<Vector2[,][,]>("v5")[0, 0][0, 0]);
+
+			Assert.IsTrue(c1[0, 0].value       == tag.Get<C[,]>   ("c1")[0, 0].value);
+			Assert.IsTrue(c2[0][0].value       == tag.Get<C[][]>  ("c2")[0][0].value);
+			Assert.IsTrue(c3[0][0, 0].value    == tag.Get<C[][,]> ("c3")[0][0, 0].value);
+			Assert.IsTrue(c4[0, 0][0].value    == tag.Get<C[,][]> ("c4")[0, 0][0].value);
+			Assert.IsTrue(c5[0, 0][0, 0].value == tag.Get<C[,][,]>("c5")[0, 0][0, 0].value);
+		}
+
+		[TestMethod]
+		public void TestMultiDimensionalArrays2() {
+			List<string>[]   s1 = new List<string>[]    {   new List<string> { "one" } };
+			List<string[]>   s2 = new List<string[]>    {   new string[]     { "one" } };
+			List<string[,]>  s3 = new List<string[,]>   {   new string[,]  { { "one" } } };
+			List<string>[,]  s4 = new List<string>[1,1] { { new List<string> { "one" } } };
+
+			List<Vector2>[]  v1 = new List<Vector2>[]    {   new List<Vector2> { Vector2.One } };
+			List<Vector2[]>  v2 = new List<Vector2[]>    {   new Vector2[]     { Vector2.One } };
+			List<Vector2[,]> v3 = new List<Vector2[,]>   {   new Vector2[,]  { { Vector2.One } } };
+			List<Vector2>[,] v4 = new List<Vector2>[1,1] { { new List<Vector2> { Vector2.One } } };
+
+			List<C>[]        c1 = new List<C>[]    {   new List<C> { new C(1) } };
+			List<C[]>        c2 = new List<C[]>    {   new C[]     { new C(1) } };
+			List<C[,]>       c3 = new List<C[,]>   {   new C[,]  { { new C(1) } } };
+			List<C>[,]       c4 = new List<C>[1,1] { { new List<C> { new C(1) } } };
+
+			TagCompound tag = new() {
+				 ["s1"] = s1, ["v1"] = v1, ["c1"] = c1,
+				 ["s2"] = s2, ["v2"] = v2, ["c2"] = c2,
+				 ["s3"] = s3, ["v3"] = v3, ["c3"] = c3,
+				 ["s4"] = s4, ["v4"] = v4, ["c4"] = c4,
+			};
+
+			Assert.IsTrue(s1[0][0]    == tag.Get<List<string>[]>  ("s1")[0][0]);
+			Assert.IsTrue(s2[0][0]    == tag.Get<List<string[]>>  ("s2")[0][0]);
+			Assert.IsTrue(s3[0][0, 0] == tag.Get<List<string[,]>> ("s3")[0][0, 0]);
+			Assert.IsTrue(s4[0, 0][0] == tag.Get<List<string>[,]> ("s4")[0, 0][0]);
+
+			Assert.IsTrue(v1[0][0]    == tag.Get<List<Vector2>[]> ("v1")[0][0]);
+			Assert.IsTrue(v2[0][0]    == tag.Get<List<Vector2[]>> ("v2")[0][0]);
+			Assert.IsTrue(v3[0][0, 0] == tag.Get<List<Vector2[,]>>("v3")[0][0, 0]);
+			Assert.IsTrue(v4[0, 0][0] == tag.Get<List<Vector2>[,]>("v4")[0, 0][0]);
+
+			Assert.IsTrue(c1[0][0].value    == tag.Get<List<C>[]> ("c1")[0][0].value);
+			Assert.IsTrue(c2[0][0].value    == tag.Get<List<C[]>> ("c2")[0][0].value);
+			Assert.IsTrue(c3[0][0, 0].value == tag.Get<List<C[,]>>("c3")[0][0, 0].value);
+			Assert.IsTrue(c4[0, 0][0].value == tag.Get<List<C>[,]>("c4")[0, 0][0].value);
+		}
+
+		[TestMethod]
+		public void TestMultiDimensionalArrayDuckTyping() {
+
+			C[,]       c1 = new C[1,1]       {             {   new C(1) } };
+			C[][]      c2 = new C[1][]       {   new C[]   {   new C(1) } };
+			C[][,]     c3 = new C[1][,]      {   new C[,]  { { new C(1) } } };
+			C[,][]     c4 = new C[1,1][]     { { new C[]     { new C(1) } } };
+			C[,][,]    c5 = new C[1,1][,]    { { new C[,]  { { new C(1) } } } };
+
+			List<C>[]  c6 = new List<C>[]    {   new List<C> { new C(1) } };
+			List<C[]>  c7 = new List<C[]>    {   new C[]     { new C(1) } };
+			List<C[,]> c8 = new List<C[,]>   {   new C[,]  { { new C(1) } } };
+			List<C>[,] c9 = new List<C>[1,1] { { new List<C> { new C(1) } } };
+
+			Vector2[,]    v1 = new Vector2[1,1]    {                    { Vector2.One } };
+			Vector2[][]   v2 = new Vector2[1][]    {   new Vector2[]    { Vector2.One } };
+			Vector2[][,]  v3 = new Vector2[1][,]   {   new Vector2[,] { { Vector2.One } } };
+			Vector2[,][]  v4 = new Vector2[1,1][]  { { new Vector2[]    { Vector2.One } } };
+			Vector2[,][,] v5 = new Vector2[1,1][,] { { new Vector2[,] { { Vector2.One } } } };
+
+			List<Vector2>[]  v6 = new List<Vector2>[]    {   new List<Vector2> { Vector2.One } };
+			List<Vector2[]>  v7 = new List<Vector2[]>    {   new Vector2[]     { Vector2.One } };
+			List<Vector2[,]> v8 = new List<Vector2[,]>   {   new Vector2[,]  { { Vector2.One } } };
+			List<Vector2>[,] v9 = new List<Vector2>[1,1] { { new List<Vector2> { Vector2.One } } };
+
+			bool[,]    b1 = new bool[,]          {                  { true } };
+			bool[][]   b2 = new bool[][]         {   new bool[]     { true } };
+			bool[][,]  b3 = new bool[][,]        {   new bool[,]  { { true } } };
+			bool[,][]  b4 = new bool[,][]        { { new bool[]     { true } } };
+			bool[,][,] b5 = new bool[,][,]       { { new bool[,]  { { true } } } };
+
+			List<bool>[]  b6 = new List<bool>[]  {   new List<bool> { true } };
+			List<bool[]>  b7 = new List<bool[]>  {   new bool[]     { true } };
+			List<bool[,]> b8 = new List<bool[,]> {   new bool[,]  { { true } } };
+			List<bool>[,] b9 = new List<bool>[,] { { new List<bool> { true } } };
+
+			TagCompound tag = new() {
+				["c1"] = c1, ["v1"] = v1, ["b1"] = b1,
+				["c2"] = c2, ["v2"] = v2, ["b2"] = b2,
+				["c3"] = c3, ["v3"] = v3, ["b3"] = b3,
+				["c4"] = c4, ["v4"] = v4, ["b4"] = b4,
+				["c5"] = c5, ["v5"] = v5, ["b5"] = b5,
+				["c6"] = c6, ["v6"] = v6, ["b6"] = b6,
+				["c7"] = c7, ["v7"] = v7, ["b7"] = b7,
+				["c8"] = c8, ["v8"] = v8, ["b8"] = b8,
+				["c9"] = c9, ["v9"] = v9, ["b9"] = b9,
+			};
+
+			Assert.IsTrue(c1[0, 0].value       == tag.Get<C2[,]>       ("c1")[0, 0].value);
+			Assert.IsTrue(c2[0][0].value       == tag.Get<C2[][]>      ("c2")[0][0].value);
+			Assert.IsTrue(c3[0][0, 0].value    == tag.Get<C2[][,]>     ("c3")[0][0, 0].value);
+			Assert.IsTrue(c4[0, 0][0].value    == tag.Get<C2[,][]>     ("c4")[0, 0][0].value);
+			Assert.IsTrue(c5[0, 0][0, 0].value == tag.Get<C2[,][,]>    ("c5")[0, 0][0, 0].value);
+
+			Assert.IsTrue(c6[0][0].value       == tag.Get<List<C2>[]>  ("c6")[0][0].value);
+			Assert.IsTrue(c7[0][0].value       == tag.Get<List<C2[]>>  ("c7")[0][0].value);
+			Assert.IsTrue(c8[0][0, 0].value    == tag.Get<List<C2[,]>> ("c8")[0][0, 0].value);
+			Assert.IsTrue(c9[0, 0][0].value    == tag.Get<List<C2>[,]> ("c9")[0, 0][0].value);
+
+			Assert.IsTrue(new Vector3(v1[0, 0], 0)       == tag.Get<Vector3[,]>      ("v1")[0, 0]);
+			Assert.IsTrue(new Vector3(v2[0][0], 0)       == tag.Get<Vector3[][]>     ("v2")[0][0]);
+			Assert.IsTrue(new Vector3(v3[0][0, 0], 0)    == tag.Get<Vector3[][,]>    ("v3")[0][0, 0]);
+			Assert.IsTrue(new Vector3(v4[0, 0][0], 0)    == tag.Get<Vector3[,][]>    ("v4")[0, 0][0]);
+			Assert.IsTrue(new Vector3(v5[0, 0][0, 0], 0) == tag.Get<Vector3[,][,]>   ("v5")[0, 0][0, 0]);
+
+			Assert.IsTrue(new Vector3(v6[0][0], 0)       == tag.Get<List<Vector3>[]> ("v6")[0][0]);
+			Assert.IsTrue(new Vector3(v7[0][0], 0)       == tag.Get<List<Vector3[]>> ("v7")[0][0]);
+			Assert.IsTrue(new Vector3(v8[0][0, 0], 0)    == tag.Get<List<Vector3[,]>>("v8")[0][0, 0]);
+			Assert.IsTrue(new Vector3(v9[0, 0][0], 0)    == tag.Get<List<Vector3>[,]>("v9")[0, 0][0]);
+
+			Assert.IsTrue((byte)(b1[0, 0]       ? 1 : 0) == tag.Get<byte[,]>      ("b1")[0, 0]);
+			Assert.IsTrue((byte)(b2[0][0]       ? 1 : 0) == tag.Get<byte[][]>     ("b2")[0][0]);
+			Assert.IsTrue((byte)(b3[0][0, 0]    ? 1 : 0) == tag.Get<byte[][,]>    ("b3")[0][0, 0]);
+			Assert.IsTrue((byte)(b4[0, 0][0]    ? 1 : 0) == tag.Get<byte[,][]>    ("b4")[0, 0][0]);
+			Assert.IsTrue((byte)(b5[0, 0][0, 0] ? 1 : 0) == tag.Get<byte[,][,]>   ("b5")[0, 0][0, 0]);
+
+			Assert.IsTrue((byte)(b6[0][0]       ? 1 : 0) == tag.Get<List<byte>[]> ("b6")[0][0]);
+			Assert.IsTrue((byte)(b7[0][0]       ? 1 : 0) == tag.Get<List<byte[]>> ("b7")[0][0]);
+			Assert.IsTrue((byte)(b8[0][0, 0]    ? 1 : 0) == tag.Get<List<byte[,]>>("b8")[0][0, 0]);
+			Assert.IsTrue((byte)(b9[0, 0][0]    ? 1 : 0) == tag.Get<List<byte>[,]>("b9")[0, 0][0]);
 		}
 	}
 }

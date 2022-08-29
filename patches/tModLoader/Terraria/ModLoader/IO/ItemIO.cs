@@ -167,11 +167,11 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false) {
-			writer.WriteVarInt(item.netID);
-			writer.WriteVarInt(item.prefix);
+			writer.Write7BitEncodedInt(item.netID);
+			writer.Write7BitEncodedInt(item.prefix);
 
 			if (writeStack)
-				writer.WriteVarInt(item.stack);
+				writer.Write7BitEncodedInt(item.stack);
 
 			if (writeFavorite)
 				writer.Write(item.favorited);
@@ -180,11 +180,11 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
-			item.netDefaults(reader.ReadVarInt());
-			item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt());
+			item.netDefaults(reader.Read7BitEncodedInt());
+			item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt());
 
 			if (readStack)
-				item.stack = reader.ReadVarInt();
+				item.stack = reader.Read7BitEncodedInt();
 
 			if (readFavorite)
 				item.favorited = reader.ReadBoolean();

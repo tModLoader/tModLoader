@@ -19,6 +19,8 @@ namespace Terraria.ModLoader.Engine
 
 		private static string MsgInitFailed = "init_failed";
 		private static string MsgInitSuccess = "init_success";
+		private static string MsgFamilyShared = "family_shared";
+		private static string MsgNotInstalled = "not_installed";
 		private static string MsgGrant = "grant:";
 		private static string MsgAck = "acknowledged";
 		private static string MsgShutdown = "shutdown";
@@ -27,6 +29,7 @@ namespace Terraria.ModLoader.Engine
 		{
 			ErrClientProcDied,
 			ErrSteamInitFailed,
+			ErrNotInstalled,
 			Ok
 		}
 
@@ -67,14 +70,19 @@ namespace Terraria.ModLoader.Engine
 
 				Logger.Debug("Recv: " + line);
 
-				if (line == MsgInitFailed) {
+				if (line == MsgInitFailed)
 					return LaunchResult.ErrSteamInitFailed;
-				}
 
-				if (line == MsgInitSuccess) {
+				if (line == MsgNotInstalled)
+					return LaunchResult.ErrNotInstalled;
+
+				if (line == MsgInitSuccess)
 					break;
-				}
 
+				// Workaround for #881 family shared
+				if (line == MsgFamilyShared) {
+					Social.Steam.SteamedWraps.FamilyShared = true;
+				}
 			}
 
 			SendCmd(MsgAck);
@@ -125,7 +133,22 @@ namespace Terraria.ModLoader.Engine
 					return;
 				}
 
+				if (!SteamApps.BIsAppInstalled(Steam.TerrariaAppId_t)) {
+					Logger.Fatal($"SteamApps.BIsAppInstalled({Steam.TerrariaAppId_t}): false");
+					Send(MsgNotInstalled);
+					SteamShutdown();
+					return;
+				}
+
+				// Unfortunately, Valve doesn't support tModLoader for Family-shared Terraria, which has lead to this workaround.
+				// Does not support Steam Overlay or Steam multiplayer as such.
+				if (SteamApps.BIsSubscribedFromFamilySharing()) {
+					Logger.Info("Terraria is installed via Family Share. Re-pathing tModLoader required");
+					Send(MsgFamilyShared);
+				}
+
 				Send(MsgInitSuccess);
+
 				while (Recv() != MsgAck) { }
 
 				// message loop
@@ -152,17 +175,24 @@ namespace Terraria.ModLoader.Engine
 				Logger.Fatal("Unhandled error", ex);
 			}
 
+			if (steamInit)
+				SteamShutdown();
+		}
+
+		private static void SteamShutdown() {
 			try {
-				if (steamInit) {
-					Logger.Info("SteamAPI.Shutdown()");
-					SteamAPI.Shutdown();
-				}
+				Logger.Info("SteamAPI.Shutdown()");
+				SteamAPI.Shutdown();
 			}
 			catch (Exception ex) {
 				Logger.Error("Error shutting down SteamAPI", ex);
 			}
 		}
 
-		internal static void Shutdown() => SendCmd(MsgShutdown);
+		internal static void Shutdown() {
+			try {
+				SendCmd(MsgShutdown);
+			} catch { }
+		}
 	}
 }

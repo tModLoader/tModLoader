@@ -11,10 +11,13 @@
  
  namespace Terraria
  {
-@@ -83,10 +_,14 @@
+@@ -83,10 +_,17 @@
  			int num = 0;
  			num = start + 1;
  			b = (byte)(messageType = readBuffer[start]);
++			if (ModNet.DetailedLogging)
++				ModNet.Debug(whoAmI, $"GetData {MessageID.GetName(b)}({b}), {length+2}");
++
 +			/*
  			if (b >= 143)
  				return;
@@ -46,14 +49,13 @@
  			switch (b) {
  				case 15:
  				case 25:
-@@ -135,9 +_,15 @@
+@@ -135,9 +_,14 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
 -						if (reader.ReadString() == "Terraria" + 248) {
 +						string clientVersion = reader.ReadString();
-+						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
-+						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + Main.curRelease && ModNet.AllowVanillaClients) {
++						if (ModNet.IsClientCompatible(clientVersion, out ModNet.isModdedClient[whoAmI], out var kickMsg)) {
  							if (string.IsNullOrEmpty(Netplay.ServerPassword)) {
  								Netplay.Clients[whoAmI].State = 1;
 +								if (ModNet.isModdedClient[whoAmI]) {
@@ -63,15 +65,12 @@
  								NetMessage.TrySendData(3, whoAmI);
  							}
  							else {
-@@ -146,7 +_,10 @@
+@@ -146,7 +_,7 @@
  							}
  						}
  						else {
 -							NetMessage.TrySendData(2, whoAmI, -1, Lang.mp[4].ToNetworkText());
-+							if (clientVersion.StartsWith("tModLoader"))
-+								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n(You are on {clientVersion}, server is on {BuildInfo.versionedName})"));
-+							else
-+								NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + "\n(You cannot connect to a tModLoader Server with an unmodded client.)"));
++							NetMessage.SendData(2, whoAmI, -1, NetworkText.FromLiteral(Lang.mp[4].Value + $"\n({kickMsg})"));
  						}
  					}
  					break;
@@ -96,7 +95,7 @@
  
  						player8.name = reader.ReadString().Trim().Trim();
 -						player8.hairDye = reader.ReadByte();
-+						player8.hairDye = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt();
++						player8.hairDye = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt();
  						BitsByte bitsByte6 = reader.ReadByte();
  						for (int num91 = 0; num91 < 8; num91++) {
  							player8.hideVisibleAccessory[num91] = bitsByte6[num91];
@@ -213,8 +212,8 @@
  						Vector2 velocity6 = reader.ReadVector2();
 -						int stack7 = reader.ReadInt16();
 -						int pre3 = reader.ReadByte();
-+						int stack7 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadVarInt();
-+						int pre3 = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt();
++						int stack7 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.Read7BitEncodedInt();
++						int pre3 = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt();
  						int num182 = reader.ReadByte();
  						int num183 = reader.ReadInt16();
  						if (Main.netMode == 1) {
@@ -359,11 +358,11 @@
  											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30);
  											Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, Chest.chestItemSpawn[num28], 1, noBroadcast: true);
 +											*/
-+											
++
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30, modType);
-+											
++
 +											int itemSpawn = b4 < 100 ? Chest.chestItemSpawn[num28] : TileLoader.GetTile(modType).ChestDrop;
-+											
++
 +											if (itemSpawn > 0)
 +												Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
@@ -399,9 +398,9 @@
 +											*/
 +
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31, modType);
-+											
++
 +											int itemSpawn = b4 < 100 ? Chest.dresserItemSpawn[num28] : TileLoader.GetTile(modType).DresserDrop;
-+											
++
 +											if (itemSpawn > 0)
 +												Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
@@ -555,7 +554,7 @@
 +						}
 +						else {
 +							item = ItemIO.Receive(reader);
-+							item.stack = reader.ReadVarInt();
++							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
 +						TEItemFrame.TryPlacing(x12, y12, item, item.stack);
@@ -600,7 +599,7 @@
  						int stack6 = reader.ReadInt16();
  						TEWeaponsRack.TryPlacing(x9, y9, netid2, prefix2, stack6);
 +						*/
-+						
++
 +						Item item;
 +
 +						if (ModNet.AllowVanillaClients) {
@@ -612,7 +611,7 @@
 +						}
 +						else {
 +							item = ItemIO.Receive(reader);
-+							item.stack = reader.ReadVarInt();
++							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
 +						TEWeaponsRack.TryPlacing(x9, y9, item, item.stack);
@@ -662,7 +661,7 @@
 +						}
 +						else {
 +							item = ItemIO.Receive(reader);
-+							item.stack = reader.ReadVarInt();
++							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
 +						TEWeaponsRack.TryPlacing(x5, y5, item, item.stack);

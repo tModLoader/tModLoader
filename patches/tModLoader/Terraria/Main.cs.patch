@@ -4,11 +4,18 @@
  using Microsoft.Xna.Framework.Content;
  using Microsoft.Xna.Framework.Graphics;
  using Microsoft.Xna.Framework.Input;
-+using Newtonsoft.Json;
++using Newtonsoft.Json.Linq;
  using ReLogic.Content;
  using ReLogic.Content.Sources;
  #if MAC
-@@ -19,7 +_,7 @@
+@@ -13,13 +_,14 @@
+ using ReLogic.OS;
+ using ReLogic.Peripherals.RGB;
+ using ReLogic.Utilities;
++using SDL2;
+ using System;
+ using System.Collections;
+ using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
  #if WINDOWS
@@ -17,14 +24,6 @@
  #endif
  using System.IO;
  using System.Linq;
-@@ -35,6 +_,7 @@
- #if WINDOWS
- using System.Windows.Forms;
- #endif
-+using Steamworks;
- using Terraria.Achievements;
- using Terraria.Audio;
- using Terraria.Chat;
 @@ -72,9 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -54,6 +53,41 @@
  #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
+@@ -144,8 +_,9 @@
+ 			private string _originalText;
+ 			private int _lastScreenWidth;
+ 			private int _lastScreenHeight;
++			private Color originalColor;
+ 
+-			public string[] TextLines {
++			public List<List<TextSnippet>> TextLines {
+ 				get;
+ 				private set;
+ 			}
+@@ -155,13 +_,23 @@
+ 				private set;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			/*
+ 			public void PrepareCache(string text) {
+ 				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0)) != 0) {
++			*/
++			public void PrepareCache(string text, Color baseColor) {
++				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0) | ((originalColor != baseColor) ? 1 : 0)) != 0) {
+ 					_lastScreenWidth = screenWidth;
+ 					_lastScreenHeight = screenHeight;
+ 					_originalText = text;
++					/*
+ 					TextLines = Utils.WordwrapString(npcChatText, FontAssets.MouseText.Value, 460, 10, out int lineAmount);
+ 					AmountOfLines = lineAmount;
++					*/
++					originalColor = baseColor;
++					TextLines = Utils.WordwrapStringSmart(npcChatText, baseColor, FontAssets.MouseText.Value, 460, 10);
++					AmountOfLines = TextLines.Count;
+ 				}
+ 			}
+ 		}
 @@ -241,7 +_,7 @@
  		public static List<TitleLinkButton> TitleLinks = new List<TitleLinkButton>();
  		public static string versionNumber = "v1.4.3.6";
@@ -98,6 +132,47 @@
  		public static float iS = 1f;
  		public static bool render;
  		public static int qaStyle;
+@@ -528,12 +_,40 @@
+ 		public static bool[] projHostile = new bool[972];
+ 		public static bool[] projHook = new bool[972];
+ 		public static bool[] pvpBuff = new bool[338];
++		/// <summary>
++		/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
++		/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] persistentBuff = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
++		/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] vanityPet = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
++		/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] lightPet = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
++		/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] meleeBuff = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being debuffs instead of buffs.<br/>
++		/// This has multiple effects on gameplay:<br/>
++		/// - the Nurse can remove the status effect when healing the afflicted player (to prevent this, refer to <see cref="BuffID.Sets.NurseCannotRemoveDebuff"/>)<br/>
++		/// - the status effect cannot be cleared from overflowing the status effect cap (buffs will be cleared instead)<br/>
++		/// - the status effect cannot be cleared by right-clicking it (which can be done for all other status effect types)<br/>
++		/// Defaults to false; all vanilla debuffs have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] debuff = new bool[338];
+ 		public static bool[] buffNoSave = new bool[338];
++		/// <summary>
++		/// Prevents status effects which have their entries set to true from displaying the amount of time they have left.<br/>
++		/// Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.<br/>
++		/// </summary>
+ 		public static bool[] buffNoTimeDisplay = new bool[338];
+ 		public static bool[] buffDoubleApply = new bool[338];
+ 		public static int maxMP = 10;
 @@ -545,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -203,6 +278,18 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
+@@ -961,6 +_,11 @@
+ 		public static int[] grasshopperCageFrameCounter = new int[cageFrames];
+ 		public static bool[] tileSand = new bool[625];
+ 		public static bool[] tileFlame = new bool[625];
++		/// <summary>
++		/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
++		/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
++		/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++		/// </summary>
+ 		public static bool[] npcCatchable = new bool[670];
+ 		public static int[] tileFrame = new int[625];
+ 		public static int[] tileFrameCounter = new int[625];
 @@ -971,7 +_,7 @@
  		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  		public static bool tilesLoaded = false;
@@ -321,6 +408,23 @@
  		private static bool _canShowMeteorFall;
  		private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2250,8 +_,16 @@
+ 		[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
+ 		public static Matrix Transform => GameViewMatrix.TransformationMatrix;
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor on the screen.<br/>
++		/// Useful for making things visually happen near the cursor.<br/>
++		/// </summary>
+ 		public static Vector2 MouseScreen => new Vector2(mouseX, mouseY);
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor in the world.<br/>
++		/// Useful for making things functionally happen near the cursor, such as projectile or NPC spawns.<br/>
++		/// </summary>
+ 		public static Vector2 MouseWorld {
+ 			get {
+ 				Vector2 result = MouseScreen + screenPosition;
 @@ -2283,7 +_,7 @@
  
  		public static int npcShop {
@@ -362,51 +466,22 @@
  		public static void RegisterItemAnimation(int index, DrawAnimation animation) {
  			if (!itemAnimationsRegistered.Contains(index))
  				itemAnimationsRegistered.Add(index);
-@@ -2837,11 +_,13 @@
+@@ -2837,6 +_,7 @@
  			}
  		}
  
--		public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
-+		private static bool SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
++		/* Disabled, tML only supports HiDef		
+ 		public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
  			if (_currentGraphicsProfile != profile || forceSet) {
  				_selectedGraphicsProfile = profile;
- 				SetGraphicsProfileInternal();
-+				return graphics.GraphicsDevice.GraphicsProfile == profile;
+@@ -2887,6 +_,7 @@
+ 					field.SetValue(field2.GetValue(null), 8192);
  			}
-+			return false;
  		}
++		*/
  
- 		private static void SetGraphicsProfileInternal() {
-@@ -2849,10 +_,14 @@
- 			graphics.GraphicsProfile = _selectedGraphicsProfile;
- 			switch (_selectedGraphicsProfile) {
- 				case GraphicsProfile.HiDef:
-+					// update resolution related variables alongside TrySupporting8K
-+					Configuration.Get("Support8K", ref Support8K);
-+					int hiRes = Support8K ? 8192 : 4096;
--					maxScreenW = 4096;
-+					maxScreenW = hiRes;
--					maxScreenH = 4096;
-+					maxScreenH = hiRes;
--					_renderTargetMaxSize = 4096;
-+					_renderTargetMaxSize = hiRes;
-+					if (Support8K)
--					TrySupporting8K();
-+						TrySupporting8K();
- 					break;
- 				case GraphicsProfile.Reach:
- 					maxScreenW = 1920;
-@@ -2870,8 +_,8 @@
- 					SetGraphicsProfileInternal();
- 				}
- 			}
--
--			instance.EnsureRenderTargetContent();
-+			// Seems unnecessary as graphics profile is only changed very early on, before the first frame is rendered
-+			// Main.instance.EnsureRenderTargetContent();
- 		}
- 
- 		private static void TrySupporting8K() {
+ 		public static void AnglerQuestSwap() {
+ 			if (netMode == 1)
 @@ -2900,6 +_,7 @@
  				flag2 = false;
  				anglerQuest = rand.Next(anglerQuestItemNetIDs.Length);
@@ -434,6 +509,15 @@
  			}
  			catch {
  			}
+@@ -3101,6 +_,8 @@
+ 		}
+ 
+ 		public static bool SaveSettings() {
++			var resourcePacksArrayBackup = Configuration.Get<JArray>("ResourcePacks", null);
++
+ 			Configuration.Clear();
+ 			Configuration.Put("ResetDefaultUIScale", false);
+ 			Configuration.Put("SmartCursorToggle", cSmartCursorModeIsToggleAndNotHold);
 @@ -3164,6 +_,7 @@
  			Configuration.Put("UseHeatDistortion", UseHeatDistortion);
  			Configuration.Put("WaveQuality", WaveQuality);
@@ -442,6 +526,24 @@
  			Configuration.Put("MouseColor", new Dictionary<string, byte> {
  				{ "R", mouseColor.R },
  				{ "G", mouseColor.G },
+@@ -3179,8 +_,17 @@
+ 			Configuration.Put("Zoom", GameZoomTarget);
+ 			Configuration.Put("UIScale", _uiScaleWanted);
+ 			Configuration.Put("MapScale", MapScale);
++
++			//TML: A fix for resource packs randomly getting reset from AssetSourceController not yet being ready.
++			var resourcePacksArray = AssetSourceController?.ActiveResourcePackList.ToJson() ?? resourcePacksArrayBackup;
++
++			if (resourcePacksArray != null)
++				Configuration.Put("ResourcePacks", resourcePacksArray);
++
++			/*
+ 			if (AssetSourceController != null)
+ 				Configuration.Put("ResourcePacks", AssetSourceController.ActiveResourcePackList.ToJson());
++			*/
+ 
+ 			Configuration.Put("FlashIconForEvents", Enum.GetName(typeof(GameNotificationType), _flashNotificationType));
+ 			Configuration.Put("Display", _windowMover.ScreenDeviceName);
 @@ -3190,6 +_,7 @@
  			Configuration.Put("HoverControlMode", Player.Settings.HoverControl);
  			Configuration.Put("WaterfallDrawLimit", instance.waterfallManager.maxWaterfallCount);
@@ -460,23 +562,19 @@
  			int currentValue = 0;
  			Configuration.Get("LastLaunchedVersion", ref currentValue);
  			bool flag = false;
-@@ -3272,7 +_,15 @@
+@@ -3272,8 +_,11 @@
  					screenBorderlessPendingResizes = 1;
  
  				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
--				TryPickingDefaultUIScale(currentValue3);
 +			}
 +			else {
+-				TryPickingDefaultUIScale(currentValue3);
 +				FullscreenStartup();
-+			}
-+			TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
-+
-+			if (Main.dedServ) {
-+				ModLoader.ModLoader.LoadConfiguration();
-+				return;
  			}
++			TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
  
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
+ 			Configuration.Get("MapEnabled", ref mapEnabled);
 @@ -3562,6 +_,7 @@
  				};
  			}
@@ -492,7 +590,7 @@
 -			if (currentValue != 248)
 +
 +			DateTime now = DateTime.UtcNow;
-+			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this version, then show the notification.
++			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this major.minor, then show the notification.
 +			if (BuildInfo.IsStable && ModCompile.DeveloperMode && now.Day >= 21 && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != new System.Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
 +				ModLoader.ModLoader.PreviewFreezeNotification = true;
 +			}
@@ -542,6 +640,15 @@
  				LoadWorlds();
  			}
  			catch {
+@@ -3835,7 +_,7 @@
+ 					try {
+ 						if (text.Length > 6 && text.Substring(0, 6).ToLower() == "world=") {
+ 							string path = autoGenFileLocation = text.Substring(6);
+-							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false);
++							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false) ?? new();
+ 						}
+ 
+ 						if (text.Length > 5 && text.Substring(0, 5).ToLower() == "port=") {
 @@ -3923,6 +_,12 @@
  						if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  							worldName = text.Substring(10);
@@ -555,6 +662,15 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
+@@ -3985,7 +_,7 @@
+ 		}
+ 
+ 		public void SetWorld(string world, bool cloud) {
+-			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud);
++			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud) ?? new();
+ 		}
+ 
+ 		public void SetWorldName(string world) {
 @@ -4032,6 +_,8 @@
  		}
  
@@ -812,12 +928,17 @@
  			}
  
  			YouCanSleepNow();
-@@ -4538,8 +_,14 @@
+@@ -4538,8 +_,19 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
 -				Console.Write(": ");
  				string text = Console.ReadLine();
++				if (text == null) { // Fix for #2644 where Docker would steal lines from the active console.
++					Logging.tML.Warn("Console input not connected, ignoring...");
++					break;
++				}
++
 +				ExecuteCommand(text, new ConsoleCommandCaller());
 +			}
 +		}
@@ -910,12 +1031,18 @@
  		}
  
  		public Main() : base(dedServ) {
-@@ -4846,7 +_,7 @@
+@@ -4844,9 +_,13 @@
+ 			if (dedServ)
+ 				return;
  
++			if (OperatingSystem.IsWindows()) // FNA sets this to "1" on Windows. Terraria does not want this. See #2020
++				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
++
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			GraphicsChangeTracker.Init();
++			graphics.GraphicsProfile = GraphicsProfile.HiDef; // use HiDef by default for tML.
++			FNALogging.GraphicsInit(graphics);
  		}
  
  		private static void SetDisplayMonitor() {
@@ -946,7 +1073,24 @@
  
  			musicFade[50] = 1f;
  			for (int i = 0; i < 10; i++) {
-@@ -8372,11 +_,17 @@
+@@ -4955,11 +_,15 @@
+ 
+ 			if (dedServ) {
+ 				Initialize_AlmostEverything();
++				// Allow keeping tml configs on/for server
++				Configuration.Load();
++				ModLoader.ModLoader.LoadConfiguration();
+ 				return;
+ 			}
+ 
+ 			TimeLogger.Initialize();
+-			LoadContent_TryEnteringHiDef();
++			// LoadContent_TryEnteringHiDef();
++			// HiDef graphics profile set in Main ctor
+ 			ClientInitialize();
+ 			base.Initialize();
+ 		}
+@@ -8372,11 +_,18 @@
  		public static void LoadTestLog(string logname) {
  		}
  
@@ -961,6 +1105,7 @@
 +			Asset<Texture2D>.DefaultValue = new Texture2D(base.GraphicsDevice, 1, 1) {
 +				Name = "Asynchronously-loaded Asset Dummy Texture (do not dispose or modify!)"
 +			};
++			Asset<Texture2D>.DefaultValue.SetData(new Color[] { Color.Transparent }); // AMD graphics cards on Linux/Mac don't initialize textures to transparent by default (#1918)
 +
  			SoundEngine.Initialize();
  			if (base.Services.Get<IAssetRepository>() == null)
@@ -974,7 +1119,7 @@
  			});
  
  			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
-@@ -8411,6 +_,8 @@
+@@ -8411,8 +_,11 @@
  			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  			ChromaInitializer.Load();
  			_gameContentLoadProcess = LoadContent_Deferred();
@@ -982,7 +1127,18 @@
 +			ModLoader.ModLoader.PrepareAssets();
  		}
  
++		/*
  		private void LoadContent_TryEnteringHiDef() {
+ 			Configuration.Load();
+ 			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
+@@ -8428,6 +_,7 @@
+ 				SetGraphicsProfile(GraphicsProfile.HiDef, forceSet: false);
+ #endif
+ 		}
++		*/
+ 
+ 		protected IEnumerator LoadContent_Deferred() {
+ 			yield return null;
 @@ -8892,6 +_,8 @@
  
  					if (SceneMetrics.ActiveMusicBox == 86)
@@ -1369,6 +1525,15 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
+@@ -12823,7 +_,7 @@
+ 			bool flag = false;
+ 			if (netMode == 0) {
+ 				flag |= ingameOptionsWindow;
+-				flag |= (InGameUI.IsVisible && (InGameUI.CurrentState == ManageControlsMenu || InGameUI.CurrentState == AchievementsMenu));
++				flag |= (InGameUI.IsVisible && (InGameUI.CurrentState == ManageControlsMenu || InGameUI.CurrentState == AchievementsMenu || InGameUI.CurrentState == Interface.modConfigList || InGameUI.CurrentState == Interface.modConfig));
+ 				if (autoPause) {
+ 					flag |= playerInventory;
+ 					flag |= (LocalPlayer.sign >= 0);
 @@ -12862,6 +_,10 @@
  
  			if (playerInventory) {
@@ -2391,6 +2556,19 @@
  		}
  
  		protected void DrawFPS() {
+@@ -15890,10 +_,10 @@
+ 				float num2 = 1f;
+ 				Vector2 baseScale = new Vector2(num2);
+ 				if (gameMenu)
+-					num = 55f;
++					num = 90f;
+ 
+ 				if (menuMode == 0)
+-					num += 32f;
++					num += 55f;
+ 
+ 				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
+ 				float t = num2;
 @@ -16070,9 +_,14 @@
  			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
  		}
@@ -2766,6 +2944,62 @@
  					spriteBatch.Draw(TextureAssets.Dust.Value, dust.position - screenPosition, dust.frame, newColor, dust.GetVisualRotation(), new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  					if (dust.color.PackedValue != 0) {
  						Microsoft.Xna.Framework.Color color6 = dust.GetColor(newColor);
+@@ -29206,8 +_,8 @@
+ 			int num = (mouseTextColor * 2 + 255) / 3;
+ 			Microsoft.Xna.Framework.Color textColor = new Microsoft.Xna.Framework.Color(num, num, num, num);
+ 			bool flag = InGameUI.CurrentState is UIVirtualKeyboard && PlayerInput.UsingGamepad;
+-			_textDisplayCache.PrepareCache(npcChatText);
+-			string[] textLines = _textDisplayCache.TextLines;
++			_textDisplayCache.PrepareCache(npcChatText, textColor);
++			List<List<TextSnippet>> textLines = _textDisplayCache.TextLines;
+ 			int amountOfLines = _textDisplayCache.AmountOfLines;
+ 			bool flag2 = false;
+ 			if (editSign) {
+@@ -29221,23 +_,41 @@
+ 					textBlinkerCount = 0;
+ 				}
+ 
+-				if (textBlinkerState == 1)
++				if (textBlinkerState == 1) {
+ 					flag2 = true;
++
++					textLines[amountOfLines - 1].Add(new TextSnippet("|", Microsoft.Xna.Framework.Color.White, 1f));
++				}
+ 
+ 				instance.DrawWindowsIMEPanel(new Vector2(screenWidth / 2, 90f), 0.5f);
+ 			}
+ 
+-			amountOfLines++;
++			//amountOfLines++;
+ 			spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.ChatBack.Width(), (amountOfLines + 1) * 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100 + (amountOfLines + 1) * 30), new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			TextSnippet hoveredSnippet = null;
+ 			for (int i = 0; i < amountOfLines; i++) {
+-				string text = textLines[i];
++				List<TextSnippet> text = textLines[i];
++				/*
+ 				if (text != null) {
+ 					if (i == amountOfLines - 1 && flag2)
+ 						text += "|";
+ 
+ 					Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, 170 + (screenWidth - 800) / 2, 120 + i * 30, textColor, Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
+ 				}
++				*/
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text.ToArray(), new Vector2(170 + (screenWidth - 800) / 2, 120 + i * 30), 0f, textColor, Color.Black, Vector2.Zero, Vector2.One, out int hoveredSnippetNum);
++
++				if (hoveredSnippetNum > -1)
++					hoveredSnippet = text[hoveredSnippetNum];
++			}
++
++			if (hoveredSnippet is not null) {
++				hoveredSnippet.OnHover();
++
++				if (Main.mouseLeft && Main.mouseLeftRelease)
++					hoveredSnippet.OnClick();
+ 			}
+ 
+ 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
 @@ -29272,12 +_,16 @@
  			string focusText = "";
  			string focusText2 = "";
@@ -2882,6 +3116,58 @@
  				if (npc[player[myPlayer].talkNPC].type == 20) {
  					SoundEngine.PlaySound(12);
  					npcChatText = Lang.GetDryadWorldStatusDialog();
+@@ -29867,8 +_,12 @@
+ 				npcChatFocus2 = false;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus2) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++			/*
+ 			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus2) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 			ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++			*/
+ 			if (text.Length > 0) {
+ 				UILinkPointNavigator.SetPosition(2500, vector2 + stringSize * 0.5f);
+ 				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsLeft = true;
+@@ -29898,8 +_,12 @@
+ 				npcChatFocus1 = false;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus1) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++			/*
+ 			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus1) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 			ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++			*/
+ 			if (text.Length > 0) {
+ 				UILinkPointNavigator.SetPosition(2501, vector2 + stringSize * 0.5f);
+ 				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsMiddle = true;
+@@ -29935,8 +_,12 @@
+ 					npcChatFocus3 = false;
+ 				}
+ 
++				// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus3) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++				/*
+ 				ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus3) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 				ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++				*/
+ 				UILinkPointNavigator.SetPosition(2502, vector2 + stringSize * 0.5f);
+ 				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight = true;
+ 			}
+@@ -29972,8 +_,12 @@
+ 				npcChatFocus4 = false;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus4) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++			/*
+ 			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus4) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 			ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++			*/
+ 			UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
+ 			UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
+ 		}
 @@ -30076,7 +_,7 @@
  
  				spriteBatch.Draw(value, new Vector2(homeTileX * 16 - (int)screenPosition.X + num8, num11 - (float)(int)screenPosition.Y + (float)num9 + (float)num10), value2, Lighting.GetColor(homeTileX, num3), 0f, new Vector2(value2.Width / 2, value2.Height / 2), 1f, effects, 0f);
@@ -3145,7 +3431,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,15 +_,19 @@
+@@ -31830,13 +_,15 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
@@ -3158,15 +3444,10 @@
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
--			if (mouseItem.type > 0 || r.createItem.type > 0)
-+			if (mouseItem.type > 0 || r.createItem.type > 0) {
-+				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
-+				RecipeLoader.OnCraft(mouseItem, r);
++			RecipeLoader.OnCraft(mouseItem, r);
+ 			if (mouseItem.type > 0 || r.createItem.type > 0)
  				SoundEngine.PlaySound(7);
-+			}
  		}
- 
- 		private static void DrawPVPIcons() {
 @@ -32016,6 +_,8 @@
  						rare = item[i].rare;
  						if (item[i].expert)
@@ -3233,7 +3514,7 @@
  			}
  		}
  
-@@ -32294,6 +_,13 @@
+@@ -32294,6 +_,14 @@
  			return text;
  		}
  
@@ -3244,6 +3525,7 @@
 +		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
 +		/// <param name="buffTimeValue">The "remaining time" in ticks</param>
 +		/// <returns><see langword="true"/> if <paramref name="buffTimeValue"/> is set, otherwise <see langword="false"/></returns>
++		// TO-DO: add a hook for drawing time left probably?
  		public static bool TryGetBuffTime(int buffSlotOnPlayer, out int buffTimeValue) {
  			int num = player[myPlayer].buffType[buffSlotOnPlayer];
  			buffTimeValue = 0;
@@ -3578,7 +3860,7 @@
  							flag14 = true;
  							player[myPlayer].mouseInterface = true;
  							if (mouseLeft && mouseLeftRelease) {
-@@ -35424,14 +_,17 @@
+@@ -35424,14 +_,18 @@
  						if (player[myPlayer].hideInfo[num27])
  							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  					}
@@ -3594,8 +3876,9 @@
  					}
  
 -					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + TextureAssets.InfoIcon[num].Value.Size() * 0.75f);
-+					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
 -					spriteBatch.Draw(TextureAssets.InfoIcon[num].Value, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.InfoIcon[num].Width(), TextureAssets.InfoIcon[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					if(num3 < 14) // This is a quick fix until someone works on controller support
++						UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
 +					spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  					if (flag14)
  						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -3640,7 +3923,7 @@
  		private static void TryDisposingEverything() {
  			ChromaInitializer.DisableAllDeviceGroups();
 +
-+			WorkshopHelper.OnGameExitCleanup(); // Added by TML.
++			SteamedWraps.OnGameExitCleanup(); // Added by TML.
 +			TerrariaSteamClient.Shutdown();
 +
  			CaptureManager.Instance.Dispose();
@@ -4001,7 +4284,7 @@
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  			origin.X *= 0.5f;
  			origin.Y *= 0.5f;
-@@ -39702,7 +_,49 @@
+@@ -39702,7 +_,59 @@
  					num2 = 2;
  
  				spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
@@ -4044,6 +4327,16 @@
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
 +						Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +					}
++				}
++
++				// ModPack
++				if (ModOrganizer.ModPackActive != null) {
++					var font = FontAssets.MouseText.Value;
++					string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive));
++					var packOrigin = font.MeasureString(modpackText);
++
++					spriteBatch.DrawString(font, modpackText, new Vector2(packOrigin.X + num + 10f, screenHeight - packOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++
 +				}
  			}
 +
@@ -4253,17 +4546,6 @@
  							NewLightning();
  					}
  					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
-@@ -45527,7 +_,9 @@
- 		}
- 
- 		public void LoadBackground(int i) {
--			if (i >= 0 && TextureAssets.Background[i].State == AssetState.NotLoaded) {
-+			// sometimes when updating GraphicsProfile from Reach to HiDef, the device is re-created rather than reset
-+			// This happens early, and the background loading texture may be disposed
-+			if (i >= 0 && (TextureAssets.Background[i].State == AssetState.NotLoaded || TextureAssets.Background[i].IsDisposed)) {
- 				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
- 				backgroundWidth[i] = TextureAssets.Background[i].Width();
- 				backgroundHeight[i] = TextureAssets.Background[i].Height();
 @@ -45745,12 +_,12 @@
  			if (!WorldGen.drunkWorldGen && !mapFullscreen && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  				if (BackgroundEnabled) {
@@ -4587,14 +4869,6 @@
  					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  				else if (pumpkinMoon)
  					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
-@@ -48593,7 +_,6 @@
- 				else
- 					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
- 			}
--
- 			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
- 			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
- 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
 @@ -48678,7 +_,7 @@
  				Vector2 origin = value.Size() / 2f;
  				if (star.falling) {
@@ -4609,7 +4883,7 @@
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
 +			// TODO: Add in white and white2 as sunColor and moonColor
-+			SystemLoader.ModifySunLightColor(ref tileColor, ref colorOfTheSkies);
++			SystemLoader.ModifySunLightColor(ref tileColor, ref ColorOfTheSkies);
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
@@ -4719,6 +4993,15 @@
  
  			if (invasionX > (double)spawnTileX) {
  				invasionX -= num;
+@@ -49871,7 +_,7 @@
+ 						Netplay.Clients[k].TimeOutTimer += 3;
+ 
+ 					if (!stopTimeOuts && Netplay.Clients[k].TimeOutTimer > 7200) {
+-						Netplay.Clients[k].PendingTermination = true;
++						Netplay.Clients[k].SetPendingTermination("Timeout");
+ 						Netplay.Clients[k].PendingTerminationApproved = true;
+ 					}
+ 				}
 @@ -49881,6 +_,11 @@
  			}
  		}

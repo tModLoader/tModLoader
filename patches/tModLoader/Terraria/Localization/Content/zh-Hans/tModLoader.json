@@ -22,7 +22,8 @@
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
-		"ModUpdatedSinceLastLaunchMessage": "自上一次启动以来此模组已更新",
+		"ModUpdatedSinceLastLaunchMessage": "自上一次启动以来此模组已更新 {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "在 GitHub 上查看",
 		"tModLoaderSettings": "tModLoader设置",
 		"ModMenuSwap": "切换背景主题",
@@ -37,7 +38,7 @@
 		"ModsDisableAll": "禁用全部",
 		"ModsReloadMods": "重新加载模组",
 		"ModsForceReload": "强制重新加载模组",
-		"ModsOpenModsFolder": "打开模组文件夹",
+		"ModsOpenModsFolders": "打开模组文件夹",
 		"OpenModPackFolder": "打开模组整合包文件夹",
 		"DeactivateModPack": "禁用模组整合包",
 		"ActivateModPack": "加载模组整合包",
@@ -81,6 +82,17 @@
 		"ModsNotFoundServer": "在\"{0}\"里没有找到任何模组。\n如果你在开启一个模组服务器，你可以使用'modpath'命令行参数或配置项来设置加载的模组的路径。\n",
 		"AskForModIndex": "输入模组序号以启用/禁用模组",
 		"AskForCommand": "请输入命令: ",
+
+		//Mod Config
+		"ModConfigFilterOptions": "筛选选项",
+		"ModConfigNotification": "通知：",
+		"ModConfigModConfig": "模组设置",
+		"ModConfigSaveConfig": "保存设置",
+		"ModConfigBack": "返回",
+		"ModConfigRevertChanges": "撤销改动",
+		"ModConfigRestoreDefaults": "重设为默认",
+		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "由于需要重载模组而无法保存改动（请从主菜单进入模组列表以调整配置）",
 
 		// Interface
 		"BossBarStyle": "Boss血条样式: {0}",
@@ -378,13 +390,13 @@
 		"MSFinding": "查找模组...",
 		"MSInstantiating": "初始化...",
 		"MSSandboxing": "增容中: {0}",
-		"MSIntializing": "初始化：{0}",
 		"MSLoading": "加载中：{0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "卸载中: {0}",
 		"MSFinishingResourceLoading": "资源加载完成",
-		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
-		"AddingModContent": "添加模组内容...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "部分起始物品无法正常放入背包",
@@ -396,7 +408,7 @@
 		"DefaultTownNPCName": "无名氏",
 		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
 		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
-		
+
 		// Tooltip lines
 		"NoAttackSpeedScaling": "攻击频率不受攻击速度加成影响",
 		"SpecialAttackSpeedScaling": "受到全局攻速加成的效果为原有的{0}%",
@@ -433,7 +445,6 @@
 
 		// MessageBox
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
-		"MissingServerExecutable": "安装文件不完整（文件tModLoaderServer.exe缺失），无法启动服务器。请阅读教程并重新安装。",
 		"GraphicsEngineFailure": "图形引擎崩溃",
 		"GraphicsEngineReportUnknown": "未知",
 		"GraphicsEngineReportFailure": "失败",
@@ -444,12 +455,13 @@
 		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。此版本的tModLoader需要安装Terraria {1}, 请使用GOG Galaxy升级或降级你的Terraria, 或等待tModLoader更新。",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
-		"ClientLogHint": "{0}\n\n你可以在{1}中找到一个名为client.log的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
-		"OutOfMemoryHint": "\n\n提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。\n\n你也可以尝试安装64位版tModLoader\n请注意：64位版tModLoader并不是官方的版本，也不由tModLoader或Terraria团队管理。",
-		"ModExceptionHint": "\n\n提示：很有可能是哪个模组崩溃了。你可以试着逐个禁用模组看看问题是否仍会重复出现。",
-		"OneDriveHint": "\n\n提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
-		"AntivirusHint": "\n\n提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
-		"TypeInitializationHint": "\n\n提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
+		"LogPathHint": "你可以在{1}中找到一个名为{0}的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
+		"OutOfMemoryHint": "提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。\n\n你也可以尝试安装64位版tModLoader\n请注意：64位版tModLoader并不是官方的版本，也不由tModLoader或Terraria团队管理。",
+		"ModExceptionHint": "提示：很有可能是哪个模组崩溃了。你可以试着逐个禁用模组看看问题是否仍会重复出现。",
+		"OneDriveHint": "提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
+		"AntivirusHint": "提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
+		"TypeInitializationHint": "提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容, 例如物品、武器、NPC等",
 		"TagsUtility": "实用辅助",
@@ -509,5 +521,8 @@
 		"InGemCave": "需要位于宝石洞内",
 		"InLihzardTemple": "需要位于丛林神庙内",
 		"InGraveyardBiome": "需要位于墓地环境"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

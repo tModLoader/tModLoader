@@ -236,7 +236,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
@@ -334,9 +334,9 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
-    # Documentation generated on successful builds of pushes to 1.4 branch
+    # Documentation generated on successful builds of pushes to 1.4-stable and 1.4-preview
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -344,6 +344,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Download temporary encrypted src artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -361,8 +362,25 @@ jobs:
           cd ..
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+      - name: Update version in Doxyfile
+        shell: bash
+        run: |
+          echo "Attempting get current version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Current Version is: $version"
+          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          if [[ $version =~ $regex ]] ; then
+            year="${BASH_REMATCH[1]}"
+            month="${BASH_REMATCH[2]}"
+          fi
+          version="v$year.$month"
+          echo "Major.Minor Version is: $version"
+          sed -i -e "s/TMODLOADERVERSIONHERE/$version/g" Doxyfile
+        working-directory: solutions/documentation
+        env:
+          branch: ${{github.ref}}
       - name: Generate Documentation
-        uses: mattnotmitt/doxygen-action@v1.3.1
+        uses: mattnotmitt/doxygen-action@v1.9.4
         with:
           working-directory: 'solutions/documentation/'
           doxyfile-path: 'Doxyfile'
@@ -379,7 +397,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: html_alpha
+          destination_dir: ${{ fromJSON('{"refs/heads/1.4-stable":"docs/1.4-stable", "refs/heads/1.4-preview":"docs/1.4-preview"}')[github.ref] }}
+          commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
     needs: build

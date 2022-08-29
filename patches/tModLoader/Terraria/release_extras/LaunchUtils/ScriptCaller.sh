@@ -8,15 +8,6 @@ cd "$(dirname "$0")"
 
 echo "You are on platform: \"$_uname\""
 
-# Try to prevent "misleading" execution inside WSL
-# Check from: https://stackoverflow.com/questions/38086185/how-to-check-if-a-program-is-run-in-bash-on-ubuntu-on-windows-and-not-just-plain
-if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
-	read -p "You seem to be running this script in WSL write y to continue anyway: " _answer
-	if [[ $_answer != "y" ]]; then
-		exit 1
-	fi
-fi
-
 LaunchLogs="$root_dir/tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
@@ -35,6 +26,13 @@ if [ -f "$NativeLog" ]; then
 fi
 touch "$NativeLog"
 
+if [[ "$_uname" == *"_NT"* ]]; then
+	echo "Windows Version $WINDOWS_MAJOR.$WINDOWS_MINOR" 2>&1 | tee -a "$LogFile"
+	if [[ $WINDOWS_MAJOR -ge 10 ]]; then 
+		./QuickEditDisable.exe 2>&1 | tee -a "$LogFile"
+	fi
+fi
+
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
 echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
@@ -44,7 +42,6 @@ if [[ "$_uname" == *"_NT"* ]]; then
 fi
 
 . ./UnixLinkerFix.sh
-run_script ./PlatformLibsDeploy.sh  2>&1 | tee -a "$LogFile"
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
@@ -54,10 +51,18 @@ export dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return 
 # use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
 # echo $(hexdump -C <<< "$version")
 export dotnet_dir="$root_dir/dotnet"
+if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+	echo "wsl detected. Setting dotnet_dir=dotnet_wsl"
+	export dotnet_dir="$root_dir/dotnet_wsl"
+fi
 export install_dir="$dotnet_dir/$dotnet_version"
 echo "Success!"  2>&1 | tee -a "$LogFile"
 
 run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
+
+# Gather CommandLine arguments from config
+customargs=$(cat "$root_dir/cli-argsConfig.txt")
+echo "Loaded Custom Arguments: $customargs"  2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
 
@@ -84,8 +89,8 @@ fi
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
 	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
+	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
 else
 	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
-	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"
+	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
 fi

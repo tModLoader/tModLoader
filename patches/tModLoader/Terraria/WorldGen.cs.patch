@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
-@@ -24,6 +_,8 @@
+@@ -24,10 +_,12 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -9,7 +9,19 @@
  
  namespace Terraria
  {
-@@ -695,7 +_,13 @@
+-	public class WorldGen
++	public partial class WorldGen
+ 	{
+ 		public static class SavedOreTiers
+ 		{
+@@ -690,12 +_,18 @@
+ 		public delegate bool GetTreeFoliageDataMethod(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight);
+ 
+ 		public static TownRoomManager TownManager = new TownRoomManager();
+-		private static int lAltarX;
++		public static int lAltarX;
+-		private static int lAltarY;
++		public static int lAltarY;
  		private static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
  		public static int tileReframeCount;
  		public static bool noMapUpdate;
@@ -23,10 +35,229 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
-@@ -932,6 +_,7 @@
+@@ -721,7 +_,7 @@
+ 		public static int oceanBG;
+ 		public static int mushroomBG;
+ 		public static int underworldBG;
+-		private static ushort crackedType = 481;
++		public static ushort crackedType = 481;
+ 		public static int oceanDistance = 250;
+ 		public static int beachDistance = 380;
+ 		public static bool skipDesertTileCheck = false;
+@@ -746,8 +_,8 @@
+ 		public static int totalX;
+ 		public static int totalD;
+ 		public static bool IsGeneratingHardMode;
+-		private static Vector2[] heartPos = new Vector2[100];
++		public static Vector2[] heartPos = new Vector2[100];
+-		private static int heartCount;
++		public static int heartCount;
+ 		public static int maxTreeShakes = 500;
+ 		public static int numTreeShakes = 0;
+ 		public static int[] treeShakeX = new int[maxTreeShakes];
+@@ -770,15 +_,15 @@
+ 		public static bool worldCleared;
+ 		public static bool worldBackup;
+ 		public static bool loadBackup = false;
+-		private static int lastMaxTilesX;
++		public static int lastMaxTilesX;
+-		private static int lastMaxTilesY;
++		public static int lastMaxTilesY;
+-		private static bool mergeUp;
++		public static bool mergeUp;
+-		private static bool mergeDown;
++		public static bool mergeDown;
+-		private static bool mergeLeft;
++		public static bool mergeLeft;
+-		private static bool mergeRight;
++		public static bool mergeRight;
+-		private static bool stopDrops;
++		public static bool stopDrops;
+ 		public static bool mudWall;
+-		private static int grassSpread;
++		public static int grassSpread;
+ 		public static bool noLiquidCheck;
+ 		public static bool AllowedToSpreadInfections = true;
+ 		[ThreadStatic]
+@@ -822,75 +_,75 @@
+ 		public static int[] dRoomX = new int[maxDRooms];
+ 		public static int[] dRoomY = new int[maxDRooms];
+ 		public static int[] dRoomSize = new int[maxDRooms];
+-		private static bool[] dRoomTreasure = new bool[maxDRooms];
++		public static bool[] dRoomTreasure = new bool[maxDRooms];
+-		private static int[] dRoomL = new int[maxDRooms];
++		public static int[] dRoomL = new int[maxDRooms];
+-		private static int[] dRoomR = new int[maxDRooms];
++		public static int[] dRoomR = new int[maxDRooms];
+-		private static int[] dRoomT = new int[maxDRooms];
++		public static int[] dRoomT = new int[maxDRooms];
+-		private static int[] dRoomB = new int[maxDRooms];
++		public static int[] dRoomB = new int[maxDRooms];
+-		private static int numDDoors;
++		public static int numDDoors;
+-		private static int[] DDoorX = new int[500];
++		public static int[] DDoorX = new int[500];
+-		private static int[] DDoorY = new int[500];
++		public static int[] DDoorY = new int[500];
+-		private static int[] DDoorPos = new int[500];
++		public static int[] DDoorPos = new int[500];
+-		private static int numDungeonPlatforms;
++		public static int numDungeonPlatforms;
+-		private static int[] dungeonPlatformX = new int[500];
++		public static int[] dungeonPlatformX = new int[500];
+-		private static int[] dungeonPlatformY = new int[500];
++		public static int[] dungeonPlatformY = new int[500];
+-		private static bool generatedShadowKey;
++		public static bool generatedShadowKey;
+-		private static int JungleItemCount;
++		public static int JungleItemCount;
+-		private static int[] JChestX = new int[100];
++		public static int[] JChestX = new int[100];
+-		private static int[] JChestY = new int[100];
++		public static int[] JChestY = new int[100];
+-		private static int numJChests;
++		public static int numJChests;
+ 		public static int dEnteranceX;
+ 		public static bool dSurface;
+-		private static double dxStrength1;
++		public static double dxStrength1;
+-		private static double dyStrength1;
++		public static double dyStrength1;
+-		private static double dxStrength2;
++		public static double dxStrength2;
+-		private static double dyStrength2;
++		public static double dyStrength2;
+-		private static int dMinX;
++		public static int dMinX;
+-		private static int dMaxX;
++		public static int dMaxX;
+-		private static int dMinY;
++		public static int dMinY;
+-		private static int dMaxY;
++		public static int dMaxY;
+-		private static int numIslandHouses;
++		public static int numIslandHouses;
+-		private static int houseCount;
++		public static int houseCount;
+-		private static bool[] skyLake = new bool[30];
++		public static bool[] skyLake = new bool[30];
+-		private static int[] floatingIslandHouseX = new int[30];
++		public static int[] floatingIslandHouseX = new int[30];
+-		private static int[] floatingIslandHouseY = new int[30];
++		public static int[] floatingIslandHouseY = new int[30];
+-		private static int[] floatingIslandStyle = new int[30];
++		public static int[] floatingIslandStyle = new int[30];
+-		private static int numMCaves;
++		public static int numMCaves;
+-		private static int[] mCaveX = new int[30];
++		public static int[] mCaveX = new int[30];
+-		private static int[] mCaveY = new int[30];
++		public static int[] mCaveY = new int[30];
+ 		public static int WorldGenParam_Evil = -1;
+-		private static int maxTunnels = 50;
++		public static int maxTunnels = 50;
+-		private static int numTunnels;
++		public static int numTunnels;
+-		private static int[] tunnelX = new int[maxTunnels];
++		public static int[] tunnelX = new int[maxTunnels];
+-		private static int maxOrePatch = 50;
++		public static int maxOrePatch = 50;
+-		private static int numOrePatch;
++		public static int numOrePatch;
+-		private static int[] orePatchX = new int[maxOrePatch];
++		public static int[] orePatchX = new int[maxOrePatch];
+-		private static int maxOasis = 20;
++		public static int maxOasis = 20;
+-		private static int numOasis = 0;
++		public static int numOasis = 0;
+-		private static Vector2[] oasisPosition = new Vector2[maxOasis];
++		public static Vector2[] oasisPosition = new Vector2[maxOasis];
+-		private static int[] oasisWidth = new int[maxOasis];
++		public static int[] oasisWidth = new int[maxOasis];
+-		private static int oasisHeight = 20;
++		public static int oasisHeight = 20;
+-		private static int maxMushroomBiomes = 50;
++		public static int maxMushroomBiomes = 50;
+-		private static int numMushroomBiomes = 0;
++		public static int numMushroomBiomes = 0;
+-		private static Vector2[] mushroomBiomesPosition = new Vector2[maxMushroomBiomes];
++		public static Vector2[] mushroomBiomesPosition = new Vector2[maxMushroomBiomes];
+-		private static int maxLakes = 50;
++		public static int maxLakes = 50;
+-		private static int numLakes = 0;
++		public static int numLakes = 0;
+-		private static int[] LakeX = new int[maxLakes];
++		public static int[] LakeX = new int[maxLakes];
+-		private static int maxOceanCaveTreasure = 2;
++		public static int maxOceanCaveTreasure = 2;
+-		private static int numOceanCaveTreasure = 0;
++		public static int numOceanCaveTreasure = 0;
+-		private static Point[] oceanCaveTreasure = new Point[maxOceanCaveTreasure];
++		public static Point[] oceanCaveTreasure = new Point[maxOceanCaveTreasure];
+-		private static int cactusWaterWidth = 50;
++		public static int cactusWaterWidth = 50;
+-		private static int cactusWaterHeight = 25;
++		public static int cactusWaterHeight = 25;
+-		private static int cactusWaterLimit = 25;
++		public static int cactusWaterLimit = 25;
+-		private static int JungleX;
++		public static int JungleX;
+-		private static int hellChest;
++		public static int hellChest;
+-		private static int[] hellChestItem = new int[7];
++		public static int[] hellChestItem = new int[7];
+-		private static bool roomTorch;
++		public static bool roomTorch;
+-		private static bool roomDoor;
++		public static bool roomDoor;
+-		private static bool roomChair;
++		public static bool roomChair;
+-		private static bool roomTable;
++		public static bool roomTable;
+-		private static bool roomOccupied;
++		public static bool roomOccupied;
+-		private static bool roomEvil;
++		public static bool roomEvil;
+ 		public static Point16[] statueList;
+ 		public static List<int> StatuesWithTraps = new List<int>(new int[4] {
+ 			4,
+@@ -901,15 +_,15 @@
+ 		public static Rectangle UndergroundDesertLocation = Rectangle.Empty;
+ 		public static Rectangle UndergroundDesertHiveLocation = Rectangle.Empty;
+ 		public static MysticLogFairiesEvent mysticLogsEvent = new MysticLogFairiesEvent();
+-		private static bool currentlyTryingToUseAlternateHousingSpot;
++		public static bool currentlyTryingToUseAlternateHousingSpot;
+-		private static int sharedRoomX;
++		public static int sharedRoomX;
+ 		public static TownNPCRoomCheckFailureReason roomCheckFailureReason = TownNPCRoomCheckFailureReason.None;
+ 		public static bool generatingWorld = false;
+-		private static int[,] trapDiag = new int[4, 2];
++		public static int[,] trapDiag = new int[4, 2];
+-		private static int tileCounterNum;
++		public static int tileCounterNum;
+-		private static int tileCounterMax = 20;
++		public static int tileCounterMax = 20;
+-		private static int[] tileCounterX = new int[tileCounterMax];
++		public static int[] tileCounterX = new int[tileCounterMax];
+-		private static int[] tileCounterY = new int[tileCounterMax];
++		public static int[] tileCounterY = new int[tileCounterMax];
+ 		private static WorldGenerator _generator;
+ 		public static int SmallConsecutivesFound = 0;
+ 		public static int SmallConsecutivesEliminated = 0;
+@@ -925,13 +_,14 @@
+ 		public static int desertHiveRight = 0;
+ 		public const bool USE_FRAMING_SKIP_FOR_UNIMPORTANT_TILES_IN_WORLDGEN = false;
+ 		public static bool notTheBees = false;
+-		private static int catTailDistance = 8;
++		public static int catTailDistance = 8;
+ 		public static TreeTopsInfo TreeTops = new TreeTopsInfo();
+ 		public static BackgroundChangeFlashInfo BackgroundsCache = new BackgroundChangeFlashInfo();
+-		private static bool fossilBreak = false;
++		public static bool fossilBreak = false;
  		public static Queue<Point> ExploitDestroyQueue = new Queue<Point>();
  		public const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
- 		private static bool skipFramingDuringGen = false;
+-		private static bool skipFramingDuringGen = false;
++		public static bool skipFramingDuringGen = false;
 +		private static double _timePass = 0.0; // Added by TML; used to account for more precise time rates.
  
  		public static UnifiedRandom genRand {
@@ -208,6 +439,15 @@
  			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  
+@@ -2454,6 +_,8 @@
+ 		}
+ 
+ 		public static void playWorldCallBack(object threadContext) {
++			Logging.Terraria.Info($"Loading World: {Main.ActiveWorldFileData.Name}, IsCloud={Main.ActiveWorldFileData.IsCloudSave}");
++
+ 			if (Main.rand == null)
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
 @@ -2484,13 +_,20 @@
  					}
  
@@ -315,9 +555,12 @@
  			drunkWorldGen = false;
  			drunkWorldGenText = false;
  			switch (seed) {
-@@ -5665,21 +_,35 @@
+@@ -5663,74 +_,91 @@
+ 
+ 			Console.WriteLine("Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
  			Main.lockMenuBGChange = true;
- 			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
+-			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
++			configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  			Hooks.ProcessWorldGenConfig(ref configuration);
 +
 +			Logging.Terraria.InfoFormat("Generating World: {0}", Main.ActiveWorldFileData.Name);
@@ -349,13 +592,101 @@
 +			rockLayer = 0.0;
 +			rockLayerHigh = 0.0;
 +
- 			int copper = 7;
- 			int iron = 6;
- 			int silver = 9;
-@@ -5731,6 +_,9 @@
- 			int logX = -1;
- 			int logY = -1;
- 			int dungeonLocation = 0;
+-			int copper = 7;
++			copper = 7;
+-			int iron = 6;
++			iron = 6;
+-			int silver = 9;
++			silver = 9;
+-			int gold = 8;
++			gold = 8;
+-			int dungeonSide = 0;
++			dungeonSide = 0;
+-			ushort jungleHut = (ushort)genRand.Next(5);
++			jungleHut = (ushort)genRand.Next(5);
+-			int shellStartXLeft = 0;
++			shellStartXLeft = 0;
+-			int shellStartYLeft = 0;
++			shellStartYLeft = 0;
+-			int shellStartXRight = 0;
++			shellStartXRight = 0;
+-			int shellStartYRight = 0;
++			shellStartYRight = 0;
+-			int howFar = 0;
++			howFar = 0;
+-			int[] PyrX = null;
++			PyrX = null;
+-			int[] PyrY = null;
++			PyrY = null;
+-			int numPyr = 0;
++			numPyr = 0;
+-			int jungleMinX = -1;
++			jungleMinX = -1;
+-			int jungleMaxX = -1;
++			jungleMaxX = -1;
+-			int[] snowMinX = new int[Main.maxTilesY];
++			snowMinX = new int[Main.maxTilesY];
+-			int[] snowMaxX = new int[Main.maxTilesY];
++			snowMaxX = new int[Main.maxTilesY];
+-			int snowTop = 0;
++			snowTop = 0;
+-			int snowBottom = 0;
++			snowBottom = 0;
+-			float dub2 = 0f;
++			dub2 = 0f;
+-			int skyLakes = 1;
++			skyLakes = 1;
+ 			if (Main.maxTilesX > 8000)
+ 				skyLakes++;
+ 
+ 			if (Main.maxTilesX > 6000)
+ 				skyLakes++;
+ 
+-			int beachBordersWidth = 275;
++			beachBordersWidth = 275;
+-			int beachSandRandomCenter = beachBordersWidth + 5 + 40;
++			beachSandRandomCenter = beachBordersWidth + 5 + 40;
+-			int beachSandRandomWidthRange = 20;
++			beachSandRandomWidthRange = 20;
+-			int beachSandDungeonExtraWidth = 40;
++			beachSandDungeonExtraWidth = 40;
+-			int beachSandJungleExtraWidth = 20;
++			beachSandJungleExtraWidth = 20;
+-			int oceanWaterStartRandomMin = 220;
++			oceanWaterStartRandomMin = 220;
+-			int oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
++			oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
+-			int oceanWaterForcedJungleLength = 275;
++			oceanWaterForcedJungleLength = 275;
+-			int leftBeachEnd = 0;
++			leftBeachEnd = 0;
+-			int rightBeachStart = 0;
++			rightBeachStart = 0;
+-			int minSsandBeforeWater = 50;
++			minSsandBeforeWater = 50;
+-			int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
++			evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
+-			int evilBiomeAvoidanceMidFixer = 50;
++			evilBiomeAvoidanceMidFixer = 50;
+-			int lakesBeachAvoidance = beachSandRandomCenter + 20;
++			lakesBeachAvoidance = beachSandRandomCenter + 20;
+-			int smallHolesBeachAvoidance = beachSandRandomCenter + 20;
++			smallHolesBeachAvoidance = beachSandRandomCenter + 20;
+ 			_ = beachSandRandomCenter;
+-			int surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
++			surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
+-			int jungleOriginX = 0;
++			jungleOriginX = 0;
+-			int snowOriginLeft = 0;
++			snowOriginLeft = 0;
+-			int snowOriginRight = 0;
++			snowOriginRight = 0;
+-			int logX = -1;
++			logX = -1;
+-			int logY = -1;
++			logY = -1;
+-			int dungeonLocation = 0;
++			dungeonLocation = 0;
 +
 +			SystemLoader.PreWorldGen();
 +
@@ -375,15 +706,15 @@
  									flag36 = true;
  							}
  
-@@ -11551,7 +_,7 @@
- 							}
- 						}
+@@ -11559,6 +_,8 @@
+ 							int num89 = num58 - Main.tile[num57, num58].frameY / 18;
+ 							if (Main.tile[num57, num58].type == 467)
+ 								type2 = 467;
++							if (TileID.Sets.BasicChest[Main.tile[num57, num58].type]) // Added to allow automatic fixing of modded chests
++								type2 = Main.tile[num57, num58].type;
  
--						if (TileID.Sets.BasicChest[Main.tile[num57, num58].type]) {
-+						if (TileID.Sets.BasicChest[Main.tile[num57, num58].type] && Main.tile[num57, num58].type < TileID.Count) {
- 							int num86 = Main.tile[num57, num58].frameX / 18;
- 							int num87 = 0;
- 							ushort type2 = 21;
+ 							while (num86 >= 2) {
+ 								num87++;
 @@ -11744,7 +_,7 @@
  			});
  
@@ -1410,6 +1741,64 @@
  			if (num4 != 2 && num4 != type && ((Main.tile[i, j].frameX == 0 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 22 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 44 && Main.tile[i, j].frameY <= 130)))
  				KillTile(i, j);
  
+@@ -35125,6 +_,57 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Allows easy conversion of eligible tiles to and from their variants for vanilla spreading biomes.<br/>
++		/// Please view the <paramref name="conversionType"/> parameter's description for more details on what biomes are supported.<br/>
++		/// This method, by default, converts a 9x9 square. Please view the <paramref name="size"/> parameter's description for info on how to adjust this behavior.
++		/// </summary>
++		/// <remarks>
++		/// For an easily-viewable example of the method's usage, you may refer to the code for projectile AI style 31 (the AI style used for the Clentaminator's solutions).<br/>
++		/// <br/>
++		/// The following tile and wall types can be converted by this method.<br/>
++		/// <br/>
++		/// For Corruption, Crimson, and Hallow conversions:<br/>
++		/// - Grass (+ wall)<br/>
++		/// - Stone (+ wall, also clears moss on stone tiles)<br/>
++		/// - Ice<br/>
++		/// - Sand<br/>
++		/// - Hardened Sand (+ wall)<br/>
++		/// - Sandstone (+ wall)<br/>
++		/// - Various cave wall types, which will not be listed off individually on account of there simply being too goddamn many of them<br/>
++		/// <br/>
++		/// For Corruption and Crimson conversions specifically, thorns, should they exist, will be converted to their evil counterparts<br/>
++		/// For Hallow conversions specifically:<br/>
++		/// - Thorns are removed entirely<br/>
++		/// - Conversion of grass tiles can also safely convert mowed grass<br/>
++		/// <br/>
++		/// For Mushroom biome conversions:<br/>
++		/// - Jungle Grass (+ wall)<br/>
++		/// - Mud Wall<br/>
++		/// - Thorns are removed entirely<br/>
++		/// <br/>
++		/// "Cleansing" conversions (conversion type 0) affect all listed tile and wall types.
++		/// </remarks>
++		/// <param name="i">The X coordinate of the target tile.</param>
++		/// <param name="j">The Y coordinate of the target tile.</param>
++		/// <param name="conversionType">
++		/// Denotes the biome that you wish to convert to. The following biomes are supported:<br/>
++		/// 1 => The Corruption.<br/>
++		/// 2 => The Hallow.<br/>
++		/// 3 => Mushroom biome.<br/>
++		/// 4 => The Crimson.<br/>
++		/// Setting this to 0 returns affected tiles to their default states (e.g. Ebonstone, Crimstone, and Pearlstone will be converted back into normal Stone Blocks).<br/>
++		/// </param>
++		/// <param name="size">
++		/// When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br/>
++		/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
++		/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
++		/// </param>
++		/*
++		TO-DO:
++		- ConvertTIle utility method which consolidates the three lines used for most conversions into a single call
++		- modder-friendliness extension; see #2738
++		*/
+ 		public static void Convert(int i, int j, int conversionType, int size = 4) {
+ 			for (int k = i - size; k <= i + size; k++) {
+ 				for (int l = j - size; l <= j + size; l++) {
 @@ -35135,7 +_,7 @@
  					int wall = Main.tile[k, l].wall;
  					switch (conversionType) {
@@ -2204,7 +2593,7 @@
  		public static bool AllowsSandfall(Tile tileTopCache) {
  			bool result = true;
 -			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || tileTopCache.type == 88 || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
-+			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileID.Sets.BasicDresser[tileTopCache.type] || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
++			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || TileID.Sets.BasicDresser[tileTopCache.type] || TileID.Sets.PreventsSandfall[tileTopCache.type]))
  				result = false;
  
  			return result;

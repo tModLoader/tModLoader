@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
@@ -12,20 +13,22 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType<Player, ModPlayer>
+	public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
+		public ushort Index { get; internal set; }
+
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
 		public Player Player => Entity;
 
-		internal ushort index;
-
 		protected override Player CreateTemplateEntity() => null;
 
 		public override ModPlayer NewInstance(Player entity) {
 			var inst = base.NewInstance(entity);
-			inst.index = index;
+			
+			inst.Index = Index;
+
 			return inst;
 		}
 
@@ -251,11 +254,15 @@ namespace Terraria.ModLoader
 		/// <param name="playSound"></param>
 		/// <param name="genGore"></param>
 		/// <param name="damageSource"></param>
+		/// <param name="cooldownCounter"></param>
 		/// <returns></returns>
 		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
 			return true;
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
 
 		/// <summary>
 		/// Allows you to make anything happen right before damage is subtracted from the player's health.
@@ -265,8 +272,12 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
-		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		/// <param name="cooldownCounter"></param>
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 		/// <summary>
 		/// Allows you to make anything happen when the player takes damage.
@@ -276,8 +287,12 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
-		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		/// <param name="cooldownCounter"></param>
+		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 		/// <summary>
 		/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
@@ -714,7 +729,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+		/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
+		/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
+		/// </summary>
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		public virtual void ModifyFishingAttempt(ref FishingAttempt attempt) {
+		}
+
+		/// <summary>
+		/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
 		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
@@ -766,7 +790,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br/>
+		/// This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>
@@ -849,6 +874,18 @@ namespace Terraria.ModLoader
 		/// <param name="slot">The index in the inventory of the clicked slot.</param>
 		/// <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
+			return false;
+		}
+
+		/// <summary>
+		/// Called whenever the player hovers over an item slot. This can be used to override <see cref="Main.cursorOverride"/>
+		/// <br>See <see cref="ID.CursorOverrideID"/> for cursor override style IDs</br>
+		/// </summary>
+		/// <param name="inventory">The array of items the slot is part of.</param>
+		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
+		/// <param name="slot">The index in the inventory of the hover slot.</param>
+		/// <returns>Whether or not to block the default code that modifies <see cref="Main.cursorOverride"/> from running. Returns false by default.</returns>
+		public virtual bool HoverSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}
 

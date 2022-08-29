@@ -59,9 +59,7 @@ namespace Terraria.ModLoader.Engine
 				steamHash = ToByteArray("b08ed3b4fe5417e7cd56e06ad99f2ab7");
 			}
 			else {
-				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
-				Logging.tML.Fatal(message);
-				Exit(message);
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
 			}
 		}
 
@@ -82,12 +80,6 @@ namespace Terraria.ModLoader.Engine
 				retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
 
 			return retval;
-		}
-
-		private static void Exit(string errorMessage) {
-			Logging.tML.Fatal(errorMessage);
-			UI.Interface.MessageBoxShow(errorMessage);
-			Environment.Exit(1);
 		}
 
 		internal static void Startup() {
@@ -175,23 +167,27 @@ namespace Terraria.ModLoader.Engine
 		private static void CheckSteam() {
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Utils.OpenToURL("https://terraria.org");
-				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
 				return;
 			}
 
 			if (Main.dedServ)
 				return;
 
+			// TODO: This will fake install terraria, leading to errors. We need to check if Terraria is actually installed.
+			// We can't check Steamworks.SteamApps.BIsAppInstalled here because steam isn't initailized, we'll need to do that in TerrariaSteamClient.Run later.
 			var result = TerrariaSteamClient.Launch();
 			switch (result) {
 				case TerrariaSteamClient.LaunchResult.Ok:
 					break;
 				case TerrariaSteamClient.LaunchResult.ErrClientProcDied:
-					Exit("The terraria steam client process exited unexpectedly");
+					ErrorReporting.FatalExit("The terraria steam client process exited unexpectedly");
 					break;
 				case TerrariaSteamClient.LaunchResult.ErrSteamInitFailed:
-					Utils.OpenToURL("https://terraria.org");
-					Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamInitFailed"));
+					break;
+				case TerrariaSteamClient.LaunchResult.ErrNotInstalled:
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
 					break;
 				default:
 					throw new Exception("Unsupported result type: " + result);
@@ -204,13 +200,11 @@ namespace Terraria.ModLoader.Engine
 				if (Main.dedServ)
 					return;
 
-				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe));
-				return;
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe));
 			}
 
 			if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
-				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
-				return;
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
 			}
 
 			if (Path.GetFileName(vanillaExePath) != CheckExe) {

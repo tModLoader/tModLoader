@@ -1,11 +1,13 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
-@@ -1,4 +_,5 @@
- using Ionic.Zlib;
-+using log4net.Core;
- using Microsoft.Xna.Framework;
+@@ -3,6 +_,7 @@
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using System;
+ using System.IO;
++using System.Threading;
+ using Terraria.Chat;
+ using Terraria.DataStructures;
+ using Terraria.GameContent;
 @@ -11,6 +_,8 @@
  using Terraria.ID;
  using Terraria.IO;
@@ -39,7 +41,7 @@
  				switch (msgType) {
  					case 1:
 -						writer.Write("Terraria" + 248);
-+						writer.Write(BuildInfo.versionedName);
++						writer.Write(ModNet.NetVersionString);
  						break;
  					case 2:
  						text.Serialize(writer);
@@ -58,7 +60,7 @@
 +								PlayerIO.WriteByteVanillaHairDye(player5.hairDye, writer);
 +							else
 -							writer.Write(player5.hairDye);
-+								writer.WriteVarInt(player5.hairDye);
++								writer.Write7BitEncodedInt(player5.hairDye);
 +
  							BitsByte bb6 = (byte)0;
  							for (int num14 = 0; num14 < 8; num14++) {
@@ -114,8 +116,8 @@
 +								ItemIO.WriteByteVanillaPrefix(item7, writer);
 +							}
 +							else {
-+								writer.WriteVarInt(item7.stack);
-+								writer.WriteVarInt(item7.prefix);
++								writer.Write7BitEncodedInt(item7.stack);
++								writer.Write7BitEncodedInt(item7.prefix);
 +							}
 +
  							writer.Write((byte)number2);
@@ -259,7 +261,7 @@
 +							}
 +							else {
 +								ItemIO.Send(item3, writer);
-+								writer.WriteVarInt(number5);
++								writer.Write7BitEncodedInt(number5);
 +							}
 +
  							break;
@@ -292,7 +294,7 @@
 +							}
 +							else {
 +								ItemIO.Send(item2, writer);
-+								writer.WriteVarInt(number5);
++								writer.Write7BitEncodedInt(number5);
 +							}
 +
  							break;
@@ -313,24 +315,51 @@
 +							}
 +							else {
 +								ItemIO.Send(item, writer);
-+								writer.WriteVarInt(number5);
++								writer.Write7BitEncodedInt(number5);
 +							}
 +
  							break;
  						}
  					case 134: {
-@@ -1352,7 +_,10 @@
+@@ -1352,7 +_,16 @@
  
  				int num26 = (int)writer.BaseStream.Position;
  				writer.BaseStream.Position = position;
 +				// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile
 +				// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
 +				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
++				if (num26 > ushort.MaxValue) // an exception is better than silent packet drops.
++					throw new IndexOutOfRangeException($"Maximum packet length exceeded {num26} > {ushort.MaxValue}");
++
++				if (ModNet.DetailedLogging)
++					ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num26);
++
 -				writer.Write((short)num26);
 +				writer.Write((ushort)num26);
  				writer.BaseStream.Position = num26;
  				if (Main.netMode == 1) {
  					if (Netplay.Connection.Socket.IsConnected()) {
+@@ -1564,7 +_,7 @@
+ 
+ 				buffer[num].writeLocked = false;
+ 				if (msgType == 2 && Main.netMode == 2) {
+-					Netplay.Clients[num].PendingTermination = true;
++					Netplay.Clients[num].SetPendingTermination("Kicked");
+ 					Netplay.Clients[num].PendingTerminationApproved = true;
+ 				}
+ 			}
+@@ -1578,9 +_,11 @@
+ 					binaryWriter.Write(width);
+ 					binaryWriter.Write(height);
+ 					CompressTileBlock_Inner(binaryWriter, xStart, yStart, width, height);
++					/* Bad vanilla return condition, removed in 1.4.4
+ 					int num = buffer.Length;
+ 					if (bufferStart + memoryStream.Length > num)
+ 						return (int)(num - bufferStart + memoryStream.Length);
++					*/
+ 
+ 					memoryStream.Position = 0L;
+ 					MemoryStream memoryStream2 = new MemoryStream();
 @@ -1620,16 +_,16 @@
  			int num6 = 0;
  			byte b = 0;
@@ -413,7 +442,7 @@
  
  						continue;
  					}
-@@ -2053,7 +_,7 @@
+@@ -2053,27 +_,51 @@
  
  			num3 = reader.ReadInt16();
  			for (int m = 0; m < num3; m++) {
@@ -422,7 +451,35 @@
  				TileEntity.ByID[tileEntity.ID] = tileEntity;
  				TileEntity.ByPosition[tileEntity.Position] = tileEntity;
  			}
-@@ -2066,10 +_,11 @@
++
++			Main.sectionManager.SetTilesLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
+ 		}
+ 
+ 		public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256) {
++			if (ModNet.DetailedLogging)
++				ModNet.Debug(i, $"recv {streamLength}");
++
++			var lockStart = DateTime.Now;
+ 			lock (buffer[i]) {
++				// actually do some flow-control to handle the case where we get more than 128kb between main thread CheckBytes calls (once per frame).
++				// Without this, BlockCopy gets an out of bounds exception and the connection terminates with a read buffer overflow error.
++				bool firstWait = true;
++				while (buffer[i].totalData + streamLength > buffer[i].readBuffer.Length) {
++					if (firstWait) {
++						if (ModNet.DetailedLogging)
++							ModNet.Debug(i, $"waiting for space in readBuffer");
++						firstWait = false;
++					}
++					Monitor.Exit(buffer[i]);
++					Thread.Yield();
++					Monitor.Enter(buffer[i]);
++				}
++				var timeToAcquireLock = (DateTime.Now - lockStart).TotalMilliseconds;
++				if (timeToAcquireLock > 1 && ModNet.DetailedLogging)
++					ModNet.Debug(i, $"buffer lock contended for {timeToAcquireLock:0.0}ms");
++
+ 				try {
+ 					Buffer.BlockCopy(bytes, 0, buffer[i].readBuffer, buffer[i].totalData, streamLength);
  					buffer[i].totalData += streamLength;
  					buffer[i].checkBytes = true;
  				}
@@ -431,19 +488,58 @@
  					if (Main.netMode == 1) {
  						Main.menuMode = 15;
  						Main.statusText = Language.GetTextValue("Error.BadHeaderBufferOverflow");
-+						Logging.Terraria.Error(Main.statusText, e);
++						ModNet.Error($"BlockCopy bounds error: srclen={bytes.Length}, dstlen={buffer[i].readBuffer.Length}, dstoffset={buffer[i].totalData}, num={streamLength}", e);
  						Netplay.Disconnect = true;
  					}
  					else {
-@@ -2113,7 +_,7 @@
+-						Netplay.Clients[i].PendingTermination = true;
++						Netplay.Clients[i].SetPendingTermination($"Exception in ReceiveBytes {e.Message}");
+ 					}
  				}
- 				catch (Exception) {
+ 			}
+@@ -2089,12 +_,16 @@
+ 
+ 				int num = 0;
+ 				int num2 = buffer[bufferIndex].totalData;
++				int msgId = -1;
+ 				try {
++					if (num2 > 0 && ModNet.DetailedLogging) {
++						ModNet.Debug(bufferIndex, $"check {num2}");
++					}
+ 					while (num2 >= 2) {
+ 						int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
+ 						if (num2 >= num3) {
+ 							long position = buffer[bufferIndex].reader.BaseStream.Position;
+-							buffer[bufferIndex].GetData(num + 2, num3 - 2, out int _);
++							buffer[bufferIndex].GetData(num + 2, num3 - 2, out msgId);
+ 
+ 							if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
+ 								Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
+@@ -2111,10 +_,13 @@
+ 						break;
+ 					}
+ 				}
+-				catch (Exception) {
++				catch (Exception e) {
++					/*
  					if (Main.dedServ && num < NetMessage.buffer.Length - 100)
 -						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
 +						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
++					*/
  
++					ModNet.Error(bufferIndex, $"{MessageID.GetName(msgId)}({msgId})", e);
  					num2 = 0;
  					num = 0;
+ 				}
+@@ -2125,6 +_,8 @@
+ 					}
+ 
+ 					buffer[bufferIndex].totalData = num2;
++					if (num2 > 0 && ModNet.DetailedLogging)
++						ModNet.Debug(bufferIndex, $"partial {num2}");
+ 				}
+ 
+ 				buffer[bufferIndex].checkBytes = false;
 @@ -2324,8 +_,10 @@
  			}
  

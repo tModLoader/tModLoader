@@ -7,6 +7,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -23,6 +24,8 @@ namespace Terraria.ModLoader
 			"Terraria.ModLoader.Core.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
+			"System.Int32.Parse..Terraria.Main.DedServ_PostModLoad", // bad user input in ded-serv console
+			"Convert.ToInt32..Terraria.Main.DedServ_PostModLoad", // bad user input in ded-serv console
 			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 			"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
 			"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
@@ -40,7 +43,8 @@ namespace Terraria.ModLoader
 			"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'", // Roslyn
 		};
 		private static readonly List<string> ignoreThrowingMethods = new() {
-			"at Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
+			"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
+			"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 			"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 		};
 		
@@ -87,15 +91,14 @@ namespace Terraria.ModLoader
 				}
 
 				var stackTrace = new StackTrace(true);
+				var traceString = stackTrace.ToString();
 
-				PrettifyStackTraceSources(stackTrace.GetFrames());
-
-				string traceString = stackTrace.ToString();
-
-				if (!oom && ignoreContents.Any(traceString.Contains))
+				if (!oom && ignoreContents.Any(s => MatchContents(traceString, s)))
 					return;
 
-				traceString = traceString.Substring(traceString.IndexOf('\n'));
+				PrettifyStackTraceSources(stackTrace.GetFrames());
+				traceString = stackTrace.ToString();
+				traceString = traceString[traceString.IndexOf('\n')..];
 
 				string exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 
@@ -104,25 +107,22 @@ namespace Terraria.ModLoader
 						return;
 				}
 
-				previousException = args.Exception;
-				string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
-				if (!Main.dedServ && ModCompile.activelyModding && !Main.gameMenu) {
-					AddChatMessage(msg);
-				}
-				else {
+				previousException = args.Exception;
+
+				string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+				if (Main.dedServ) { // TODO, sometimes console write fails on unix clients. Hopefully it doesn't happen on servers? System.IO.IOException: Input/output error at System.ConsolePal.Write
 					Console.ForegroundColor = ConsoleColor.DarkMagenta;
 					Console.WriteLine(msg);
 					Console.ResetColor();
 				}
-
-				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+				else if (ModCompile.activelyModding && !Main.gameMenu) {
+					AddChatMessage(msg);
+				}
 
 				if (oom) {
-					string error = Language.GetTextValue("tModLoader.OutOfMemory");
-					Logging.tML.Fatal(error);
-					Interface.MessageBoxShow(error);
-					Environment.Exit(1);
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.OutOfMemory"));
 				}
 			}
 			catch (Exception e) {
@@ -130,6 +130,22 @@ namespace Terraria.ModLoader
 			}
 			finally {
 				handlerActive.Value = false;
+			}
+		}
+
+		private static bool MatchContents(ReadOnlySpan<char> traceString, ReadOnlySpan<char> contentPattern) {
+			while (true) {
+				int sep = contentPattern.IndexOf("..");
+				var m = sep >= 0 ? contentPattern[..sep] : contentPattern;
+				int f = traceString.IndexOf(m);
+				if (f < 0)
+					return false;
+
+				if (sep < 0)
+					return true;
+
+				traceString = traceString[(f+m.Length)..];
+				contentPattern = contentPattern[(sep+2)..];
 			}
 		}
 	}

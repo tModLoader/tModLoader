@@ -22,34 +22,220 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
-@@ -51,18 +_,24 @@
+@@ -33,43 +_,210 @@
+ 		private readonly int eclipsePrice = sellPrice(0, 7, 50);
+ 		private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
+ 		private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
++		/// <summary>
++		/// The number of cached item spawns by type.<br/>
++		/// A value of -1 means that an item type is not being cached.<br/>
++		/// See <see cref="StartCachingType"/> and <see cref= "DropCache" /> for more info.<br/>
++		/// Indexed by <see cref="type"/>.Defaults to -1.<br/>
++		/// </summary>
+ 		public static int[] cachedItemSpawnsByType = ItemID.Sets.Factory.CreateIntSet(-1);
++		/// <summary>
++		/// The default cooldown, in ticks, of most healing items.<br/>
++		/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.potionDelayTime"/>.<br/>
++		/// </summary>
+ 		public static int potionDelay = 3600;
++		/// <summary>
++		/// The default cooldown, in ticks, of Restoration Potions.<br/>
++		/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.restorationDelayTime"/>.<br/>
++		/// </summary>
+ 		public static int restorationDelay = 2700;
++		/// <summary>
++		/// The default cooldown, in ticks, of Mushrooms.<br/>
++		/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.mushroomDelayTime"/>.<br/>
++		/// </summary>
+ 		public static int mushroomDelay = 1800;
++		/// <summary>
++		/// If true, categorizes the given item as a quest fish.<br/>
++		/// Quest fish get a special tooltip, their own category in the Research Menu, and cannot be auto-moved to the Void Vault when picked up.<br/>
++		/// If you'd like to make a quest fish, see <see cref="DefaultToQuestFish"/>.<br/>
++		/// If you'd just like to emulate the one-per-inventory behavior of quest fish, see <see cref="uniqueStack"/>.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// </summary>
+ 		public bool questItem;
++		/// <summary>
++		/// An array for converting an <see cref="headSlot"/> value into a <see cref="type"/> value.<br/>
++		/// Indexed by <see cref="headSlot"/>. Defaults to 0.<br/>
++		/// </summary>
+ 		public static int[] headType = new int[277];
++		/// <summary>
++		/// An array for converting an <see cref="bodySlot"/> value into a <see cref="type"/> value.<br/>
++		/// Indexed by <see cref="bodySlot"/>. Defaults to 0.<br/>
++		/// </summary>
+ 		public static int[] bodyType = new int[246];
++		/// <summary>
++		/// An array for converting an <see cref="legSlot"/> value into a <see cref="type"/> value.<br/>
++		/// Indexed by <see cref="legSlot"/>. Defaults to 0.<br/>
++		/// </summary>
+ 		public static int[] legType = new int[234];
++		/// <summary>
++		/// If true, categorizes the given item type as a staff.<br/>
++		/// Staffs are held differently when their <see cref="useStyle"/> is <see cref="ItemUseStyleID.Shoot"/>, but are otherwise no different than any other item.<br/>
++		/// Indexed by <see cref="type"/>. Defaults to <see langword="false"/>.<br/>
++		/// </summary>
+ 		public static bool[] staff = new bool[5125];
++		/// <summary>
++		/// If true, categorizes the given item type as a claw.<br/>
++		/// Claws are held differently when their <see cref="useStyle"/> is <see cref="ItemUseStyleID.Swing"/>, but are otherwise no different than any other item.<br/>
++		/// Used exclusively by the Bladed Glove in vanilla.<br/>
++		/// Indexed by <see cref="type"/>. Defaults to <see langword="false"/>.<br/>
++		/// </summary>
+ 		public static bool[] claw = new bool[5125];
+ 		public bool flame;
++		/// <summary>
++		/// If true, then the given item will show all placed wires and actuators when held.<br/>
++		/// This item will also be grouped with other items with <c>mech</c> set to <see langword="true"/> when the inventory is sorted.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// </summary>
+ 		public bool mech;
++		/// <summary>
++		/// The delay, in ticks, before players can pick up this item.<br/>
++		/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
++		/// Set to 0 whenever an item drops from a projectile.<br/>
++		/// </summary>
+ 		public int noGrabDelay;
++		/// <summary>
++		/// If true, then this item is currently being grabbed by a player.<br/>
++		/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
++		/// </summary>
+ 		public bool beingGrabbed;
++		/// <summary>
++		/// A value that increases every tick an item is in the world.<br/>
++		/// Defaults to the value in <see cref="ItemID.Sets.NewItemSpawnPriority"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
++		/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
++		/// </summary>
+ 		public int timeSinceItemSpawned;
++		/// <summary>
++		/// The numerical ID of the item this item consumes when used.<br/>
++		/// If greater than 0, this item cannot be used unless the player has the item type <c>tileWand</c> is set to. The item also gains a counter for said item type.<br/>
++		/// Defaults to -1.<br/>
++		/// </summary>
  		public int tileWand = -1;
++		/// <summary>
++		/// If true, then this item is in the local player's armor slots.<br/>
++		/// This causes the item to gain the set bonus tooltip if <see cref="Player.setBonus"/> isn't an empty string.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// </summary>
  		public bool wornArmor;
++		/// <summary>
++		/// The context in which this item's tooltip is being drawn.<br/>
++		/// See <see cref="ItemSlot.Context"/> for more details.<br/>
++		/// Defaults to -1.<br/>
++		/// </summary>
  		public int tooltipContext = -1;
 -		public byte dye;
++		/// <summary>
++		/// The numerical ID of the armor shader in <see cref="GameShaders.Armor"/> this item activates when worn in a dye slot.<br/>
++		/// If greater than 0, then this item can be equipped into dye slots.<br/>
++		/// Defaults to -1.<br/>
++		/// </summary>
 +		public int dye; //TML: Changed from byte to int.
++		/// <summary>
++		/// The numerical value this item adds to a player's fishing skill when held.<br/>
++		/// If greater than 0, categorizes this item as a fishing pole.<br/>
++		/// Fishing poles can be placed into weapon racks, have a counter for the bait the player is carrying, and are held out when a bobber is active.<br/>
++		/// Defaults to 0.<br/>
++		/// </summary>
  		public int fishingPole = 1;
++		/// <summary>
++		/// The numerical value this item adds to a player's fishing skill when used as bait.<br/>
++		/// If greater than 0, categorizes this item as bait.<br/>
++		/// Bait can be put into ammo slots and is consumed when fishing.<br/>
++		/// The higher the value of <c>bait</c>, the lower the chance the bait is consumed.<br/>
++		/// Defaults to 0.<br/>
++		/// </summary>
  		public int bait;
++		/// <summary>
++		/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
++		/// Applies to <see cref="ItemID.CopperCoin"/>, <see cref="ItemID.SilverCoin"/>, <see cref="ItemID.GoldCoin"/>, and <see cref="ItemID.PlatinumCoin"/>.<br/>
++		/// </summary>
  		public static int coinGrabRange = 350;
++		/// <summary>
++		/// The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (<see cref="Player.manaMagnet"/>).<br/>
++		/// Applies to <see cref="ItemID.Star"/>, <see cref="ItemID.SoulCake"/>, and <see cref="ItemID.SugarPlum"/>.<br/>
++		/// </summary>
  		public static int manaGrabRange = 300;
++		/// <summary>
++		/// The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (<see cref="Player.lifeMagnet"/>).<br/>
++		/// Applies to <see cref="ItemID.Heart"/>, <see cref="ItemID.CandyApple"/>, and <see cref="ItemID.CandyCane"/>.<br/>
++		/// </summary>
  		public static int lifeGrabRange = 250;
++		/// <summary>
++		/// The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (<see cref="Player.treasureMagnet"/>).<br/>
++		/// </summary>
  		public static int treasureGrabRange = 150;
 -		public short makeNPC;
 +		/// <summary>
-+		/// The numerical ID of the NPC that this item creates when used.<br></br>
++		/// The numerical ID of the NPC that this item creates when used.<br/>
 +		/// Mainly used for caught critters as items so that they can be released into the world.
 +		/// </summary>
 +		public int makeNPC; // tML: changed to int for convenience and consistency purposes
++		/// <summary>
++		/// If true, then the given item's effects only function in Expert Mode or higher (<see cref="Main.expertMode"/>).<br/>
++		/// Specifically, any equipped, Expert-only accessory will not update, any Expert-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br/>
++		/// Unused in vanilla.<br/>
++		/// </summary>
  		public bool expertOnly;
++		/// <summary>
++		/// If true, then the given item is automatically given the Expert rarity, causing its name to be drawn in rainbow text.<br/>
++		/// It also adds the "Expert" tooltip. To use the Expert rarity without adding this tooltip, see <see cref="ItemRarityID.Expert"/>.<br/>
++		/// </summary>
  		public bool expert;
++		/// <summary>
++		/// If true, then the given item's effects only function in Master Mode or higher (<see cref="Main.masterMode"/>).<br/>
++		/// Specifically, any equipped, Master-only accessory will not update, any Master-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br/>
++		/// Unused in vanilla.<br/>
++		/// </summary>
 +		public bool masterOnly;
++		/// <summary>
++		/// If true, then the given item is automatically given the Master rarity, causing its name to be drawn in red-orange text.<br/>
++		/// It also adds the "Master" tooltip. To use the Master rarity without adding this tooltip, see <see cref="ItemRarityID.Master"/>.<br/>
++		/// </summary>
 +		public bool master;
++		/// <summary>
++		/// If true, then the given item is being sold in a shop.<br/>
++		/// Shop items display their price. See <see cref="value"/>.<br/>
++		/// </summary>
  		public bool isAShopItem;
 -		public short hairDye = -1;
 +		public int hairDye = -1; //TML: Changed from short to int.
++		/// <summary>
++		/// The numerical ID of the paint applied by this item when used with a paint brush or paint roller.<br/>
++		/// For conversion into a shader index, see <see cref="Main.ConvertPaintIdToTileShaderIndex"/>.<br/>
++		/// For more details regarding paint, see <see cref="Tile.TileColor"/> and <see cref="Tile.WallColor"/>.<br/>
++		/// Defaults to 0.<br/>
++		/// </summary>
  		public byte paint;
++		/// <summary>
++		/// If true, then the given item is instanced per-client.<br/>
++		/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
++		/// Instanced items do not exist on servers.<br/>
++		/// Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br/>
++		/// If you would like to make an instanced item, see any one of the following for examples:<br/>
++		/// - <see cref="NPC.DropItemInstanced"/><br/>
++		/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
++		/// - <see cref="MessageID.InstancedItem"/><br/>
++		/// Defaults to false.<br/>
++		/// </summary>
  		public bool instanced;
  		public int ownIgnore = -1;
+ 		public int ownTime;
+ 		public int keepTime;
+ 		public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
+ 		public int type;
++		/// <summary>
++		/// If true, then the given item is favorited.<br/>
++		/// Favorited items cannot be dropped, automatically moved into chests, placed in any kind of item rack, sold, trashed, or sorted.<br/>
++		/// Favorited items can still be dropped if the player has no inventory space and will still drop on death on Mediumcore or higher difficulties.<br/>
++		/// An item becomes unfavorited if removed from the player's inventory, including if the item is move to any equipment slot.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// </summary>
+ 		public bool favorited;
+ 		public int holdStyle;
+ 		public int useStyle;
 @@ -98,7 +_,7 @@
  		public int alpha;
  		public short glowMask;
@@ -59,7 +245,37 @@
  		public int defense;
  		public int headSlot = -1;
  		public int bodySlot = -1;
-@@ -148,11 +_,44 @@
+@@ -142,17 +_,74 @@
+ 		public int buffTime;
+ 		public int mountType = -1;
+ 		public bool cartTrack;
++		/// <summary>
++		/// Players cannot pick up a <c>uniqueStack</c> item if they have an item with the same <see cref="type"/> in their inventory.<br/>
++		/// This does not apply to equipped items, nor does it apply to items held with the mouse (<see cref="Main.mouseItem"/>).<br/>
++		/// This field only prevents picking items up: Multiple <c>uniqueStack</c> items may still be transferred into the player's inventory from chests.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// </summary>
+ 		public bool uniqueStack;
++		/// <summary>
++		/// The numerical ID of the special currency this item is bought using.<br/>
++		/// To make an item bought using Defender Medals, set this to <see cref="CustomCurrencyID.DefenderMedals"/>.<br/>
++		/// Defaults to -1, which means an item is bought using coins.<br/>
++		/// </summary>
+ 		public int shopSpecialCurrency = -1;
++		/// <summary>
++		/// If not <see langword="null"/>, the custom value of the given item when being bought from a shop.<br/>
++		/// Used for assigning a non-default price to an item in shops.<br/>
++		/// To get the raw price of an item, use <see cref="GetStoreValue"/>.<br/>
++		/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.<br/>
++		/// Defaults to <see langword="null"/>.<br/>
++		/// </summary>
+ 		public int? shopCustomPrice;
++		/// <summary>
++		/// If true, the given item is categorized as a Dungeon Defenders 2 summon item.<br/>
++		/// DD2 summon items get a counter for how much Etherian Mana is in the player's inventory.<br/>
++		/// <b>This field being set does not make the item consume Etherian Mana.</b> Etherian Mana consumption is handled manually per-type.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// </summary>
  		public bool DD2Summon;
  		public int netID;
  		public int crit;

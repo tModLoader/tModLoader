@@ -176,7 +176,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Environment.Exit(1);
 			}
 
-			Social.Steam.WorkshopSocialModule.CiPublish(modFolder);
+			Social.Steam.WorkshopSocialModule.SteamCMDPublishPreparer(modFolder);
 
 			// Mod was built with success, exit code 0 indicates success.
 			Environment.Exit(0);

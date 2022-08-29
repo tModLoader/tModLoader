@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/TerrariaNetCore/ReLogic/ReLogic.csproj
-@@ -6,23 +_,20 @@
+@@ -6,23 +_,17 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © Re-Logic 2017</Copyright>
      <RootNamespace>ReLogic</RootNamespace>
@@ -28,8 +28,5 @@
 +    <Compile Remove="Localization/IME/WindowsIme.cs" />
 +    <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
      <EmbeddedResource Include="Microsoft/**" />
-+  </ItemGroup>
-+  <ItemGroup>
-+      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
    </ItemGroup>
  </Project>

@@ -27,6 +27,17 @@
  		public short releaseOwner = 255;
  		public int rarity;
  		public static bool taxCollector = false;
+@@ -90,6 +_,10 @@
+ 		public static int crimsonBoss = -1;
+ 		public int netSkip;
+ 		public bool netAlways;
++		/// <summary>
++		/// Stores the index of a single NPC. This NPC will then share a health pool with that NPC.<br/>
++		/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
++		/// </summary>
+ 		public int realLife = -1;
+ 		private string _givenName = "";
+ 		public static int sWidth = 1920;
 @@ -104,14 +_,14 @@
  		private static int townRangeY = sHeight;
  		public float npcSlots = 1f;
@@ -44,8 +55,164 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
-@@ -218,8 +_,8 @@
+@@ -153,33 +_,119 @@
+ 		public static bool boughtCat = false;
+ 		public static bool boughtDog = false;
+ 		public static bool boughtBunny = false;
++		/// <summary>
++		/// Denotes whether or not Advanced Combat Techniques has been used in the current world.
++		/// </summary>
+ 		public static bool combatBookWasUsed = false;
++		/// <summary>
++		/// Denotes whether or not the Eye of Cthulhu has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedBoss1 = false;
++		/// <summary>
++		/// Denotes whether or not the Eater of Worlds OR the Brain of Cthulhu have been defeated at least once in the current world.<br/>
++		/// This does NOT track the two of them separately; you will need to establish your own fields in a <see cref="ModSystem"/> for that.<br/>
++		/// </summary>
+ 		public static bool downedBoss2 = false;
++		/// <summary>
++		/// Denotes whether or not Skeletron has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedBoss3 = false;
++		/// <summary>
++		/// Denotes whether or not at least one Queen Bee has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedQueenBee = false;
++		/// <summary>
++		/// Denotes whether or not King Slime has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedSlimeKing = false;
++		/// <summary>
++		/// Denotes whether or not at least one Goblin Army has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedGoblins = false;
++		/// <summary>
++		/// Denotes whether or not the Frost Legion has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedFrost = false;
++		/// <summary>
++		/// Denotes whether or not at least one Pirate Invasion has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedPirates = false;
++		/// <summary>
++		/// Denotes whether or not at least one Clown has been killed in the current world.<br/>
++		/// Only used to make the Clothier sell the Clown set once at least one has been killed.
++		/// </summary>
+ 		public static bool downedClown = false;
++		/// <summary>
++		/// Denotes whether or not Plantera has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedPlantBoss = false;
++		/// <summary>
++		/// Denotes whether or not Golem has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedGolemBoss = false;
++		/// <summary>
++		/// Denotes whether or not at least one Martian Madness event has been cleared in the current world.
++		/// </summary>
+ 		public static bool downedMartians = false;
++		/// <summary>
++		/// Denotes whether or not Duke Fishron has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedFishron = false;
++		/// <summary>
++		/// Denotes whether or not at least one Mourning Wood has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedHalloweenTree = false;
++		/// <summary>
++		/// Denotes whether or not at least one Pumpking has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedHalloweenKing = false;
++		/// <summary>
++		/// Denotes whether or not at least one Ice Queen has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedChristmasIceQueen = false;
++		/// <summary>
++		/// Denotes whether or not at least one Everscream has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedChristmasTree = false;
++		/// <summary>
++		/// Denotes whether or not at least one Santa-NK1 has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedChristmasSantank = false;
++		/// <summary>
++		/// Denotes whether or not the Lunatic Cultist has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedAncientCultist = false;
++		/// <summary>
++		/// Denotes whether or not the Moon Lord has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMoonlord = false;
++		/// <summary>
++		/// Denotes whether or not the Solar Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerSolar = false;
++		/// <summary>
++		/// Denotes whether or not the Vortex Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerVortex = false;
++		/// <summary>
++		/// Denotes whether or not the Nebula Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerNebula = false;
++		/// <summary>
++		/// Denotes whether or not the Stardust Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerStardust = false;
++		/// <summary>
++		/// Denotes whether or not the Empress of Light has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedEmpressOfLight = false;
++		/// <summary>
++		/// Denotes whether or not Queen Slime has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedQueenSlime = false;
++		/// <summary>
++		/// Denotes whether or not the Deerclops has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedDeerclops = false;
+ 		public static int ShieldStrengthTowerSolar = 0;
+ 		public static int ShieldStrengthTowerVortex = 0;
+@@ -192,9 +_,21 @@
+ 		public static bool TowerActiveNebula = false;
+ 		public static bool TowerActiveStardust = false;
+ 		public static bool LunarApocalypseIsUp = false;
++		/// <summary>
++		/// Denotes whether or not ANY Mechanical Boss has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBossAny = false;
++		/// <summary>
++		/// Denotes whether or not the Destroyer has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBoss1 = false;
++		/// <summary>
++		/// Denotes whether or not the Twins have been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBoss2 = false;
++		/// <summary>
++		/// Denotes whether or not Skeletron Prime has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBoss3 = false;
+ 		public static bool[] npcsFoundForCheckActive = new bool[670];
+ 		public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
+@@ -212,14 +_,22 @@
+ 		public bool justHit;
+ 		public int timeLeft;
+ 		public int target = -1;
++		/// <summary>
++		/// The amount of contact damage this NPC deals.<br/>
++		/// Changing this WILL NOT change the amount of damage done by projectiles.<br/>
++		/// </summary>
+ 		public int damage;
+ 		public int defense;
+ 		public int defDamage;
  		public int defDefense;
++		/// <summary>
++		/// Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion.<br/>
++		/// Defaults to false.
++		/// </summary>
  		public bool coldDamage;
  		public bool trapImmune;
 -		public LegacySoundStyle HitSound;
@@ -55,11 +222,16 @@
  		public int life;
  		public int lifeMax;
  		public Rectangle targetRect;
-@@ -389,7 +_,13 @@
+@@ -389,8 +_,26 @@
  
  		public int WhoAmIToTargettingIndex => whoAmI + 300;
  
 -		public string TypeName => Lang.GetNPCNameValue(netID);
++		/// <summary>
++		/// The TYPE name of this NPC.<br/>
++		/// Type names are the base titles given to any NPC, and are typically shared amongst all instances of an NPC. For example, the Stylist's type name will always be "Stylist".<br/>
++		/// To modify the type name of a specific NPC, make use of the ModifyTypeName hooks in <see cref="GlobalNPC"/> and <see cref="ModLoader.ModNPC"/>, according to your needs.<br/>
++		/// </summary>
 +		public string TypeName {
 +			get {
 +				string typeName = Lang.GetNPCNameValue(netID);
@@ -68,8 +240,43 @@
 +			}
 +		}
  
++		/// <summary>
++		/// The FULL name of this NPC.<br/>
++		/// If the NPC doesn't have a given name, this will just return the type name. A Stylist without a given name will always return "Stylist" here.<br/>
++		/// If the NPC does have a given name, this will return the NPC's full name; given name first, then type name.<br/>
++		/// Full name with a given name is given in the format of "X the Y", where X is their given name and Y is their type name.<br/>
++		/// For example, a Stylist might return "Scarlett the Stylist" here; with Scarlett being her given name, and Stylist being her type name.<br/>
++		/// </summary>
  		public string FullName {
  			get {
+ 				if (!HasGivenName)
+@@ -400,8 +_,14 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Whether or not this NPC has a given name.<br/>
++		/// </summary>
+ 		public bool HasGivenName => _givenName.Length != 0;
+ 
++		/// <summary>
++		/// If this NPC has a given name, returns their given name; otherwise, returns their type name.<br/>
++		/// </summary>
+ 		public string GivenOrTypeName {
+ 			get {
+ 				if (!HasGivenName)
+@@ -411,6 +_,11 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// The GIVEN name of this NPC. Can be set directly.<br/>
++		/// Given names are unique to each NPC, though two NPCs can have the same given name.<br/>
++		/// Some vanilla examples of given names are Andrew (for the Guide), Yorai (for the Princess), Whitney (for the Steampunker), or Scarlett (for the Stylist).<br/>
++		/// </summary>
+ 		public string GivenName {
+ 			get {
+ 				return _givenName;
 @@ -458,7 +_,7 @@
  
  		public bool isLikeATownNPC {
@@ -485,6 +692,15 @@
  				TargetClosest();
  				if (position.X < Main.player[target].position.X) {
  					base.direction = 1;
+@@ -37495,7 +_,7 @@
+ 					base.direction = -1;
+ 			}
+ 
+-			if (!WorldGen.InWorld(num4, num5) || Main.tile[num4, num5] == null)
++			if (!WorldGen.InWorld(num4, num5) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num4, num5))
+ 				return;
+ 
+ 			if (!homeless && Main.netMode != 1 && townNPC && (flag || Main.tileDungeon[Main.tile[num4, num5].type]) && !AI_007_TownEntities_IsInAGoodRestingSpot(num4, num5, floorX, floorY)) {
 @@ -37539,7 +_,14 @@
  			int num11 = -1;
  			if (!flag6 && Main.netMode != 1 && !flag3) {
@@ -1248,7 +1464,23 @@
  					netOffset *= 0f;
  				}
  				else {
-@@ -68860,6 +_,7 @@
+@@ -68837,6 +_,7 @@
+ 				bool flag = false;
+ 				int num4 = (int)(position.X + (float)(width / 2)) / 16;
+ 				int num5 = (int)(position.Y + (float)(height / 2)) / 16;
++				/*
+ 				try {
+ 					if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
+ 						if (Main.tile[num4, num5] == null)
+@@ -68854,12 +_,14 @@
+ 				catch {
+ 					flag = true;
+ 				}
++				*/
+ 
+-				if (flag)
++				if (!Main.sectionManager.TilesLoaded(num4 - 3, num5 - 3, num4 + 3, num5 + 3))
+ 					return;
  			}
  
  			UpdateNPC_BuffFlagsReset();

@@ -2,8 +2,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Terraria.DataStructures;
+
+#nullable enable
 
 namespace Terraria.ModLoader.IO
 {
@@ -29,13 +32,18 @@ namespace Terraria.ModLoader.IO
 			typeNameCache.Clear();
 		}
 
-		public static bool TryGetSerializer(Type type, out TagSerializer serializer) {
+		public static bool TryGetSerializer(Type type, [NotNullWhen(true)] out TagSerializer? serializer) {
 			if (serializers.TryGetValue(type, out serializer))
 				return true;
 
+			if (type.IsArray && type.GetArrayRank() > 1) {
+				serializers[type] = serializer = new MultiDimArraySerializer(type);
+				return true;
+			}
+
 			if (typeof(TagSerializable).IsAssignableFrom(type)) {
 				var sType = typeof(TagSerializableSerializer<>).MakeGenericType(type);
-				serializers[type] = serializer = (TagSerializer)sType.GetConstructor(new Type[0]).Invoke(new object[0]);
+				serializers[type] = serializer = (TagSerializer)Activator.CreateInstance(sType)!;
 				return true;
 			}
 
@@ -46,8 +54,8 @@ namespace Terraria.ModLoader.IO
 			serializers.Add(serializer.Type, serializer);
 		}
 
-		public static Type GetType(string name) {
-			if (typeNameCache.TryGetValue(name, out Type type))
+		public static Type? GetType(string name) {
+			if (typeNameCache.TryGetValue(name, out Type? type))
 				return type;
 
 			type = Type.GetType(name);
@@ -71,6 +79,8 @@ namespace Terraria.ModLoader.IO
 	}
 
 	public abstract class TagSerializer<T, S> : TagSerializer
+		where T : notnull
+		where S : notnull
 	{
 		public override Type Type => typeof(T);
 		public override Type TagType => typeof(S);
