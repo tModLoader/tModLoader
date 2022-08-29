@@ -31,6 +31,11 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.SetShopValues(ItemRarityColor.LightRed4, Item.buyPrice(0, 6)); // A special method that sets the rarity and value.
 
 			Item.channel = true; // Channel is important for our projectile.
+
+			// This will make sure our projectile completely disappears on hurt.
+			// It's not enough just to stop the channel, as the lance can still deal damage while being stowed
+			// If two players charge at each other, the first one to hit should cancel the other's lance
+			Item.StopAnimationOnHurt = true;
 		}
 
 		// This will allow our Jousting Lance to receive the same modifiers as melee weapons.
@@ -44,24 +49,6 @@ namespace ExampleMod.Content.Items.Weapons
 				.AddIngredient<ExampleItem>(5)
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
-		}
-	}
-
-	// This will cause the Jousting Lance to become inactive if the player is hit with it out. Make sure to change the itemType to your item.
-	public class ExampleJoustingLancePlayer : ModPlayer
-	{
-		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
-
-			int itemType = ModContent.ItemType<ExampleJoustingLance>(); // Change this to your item
-
-			if (Player.inventory[Player.selectedItem].type == itemType) {
-				for (int j = 0; j < Main.maxProjectiles; j++) {
-					Projectile currentProj = Main.projectile[j];
-					if (currentProj.active && currentProj.owner == Player.whoAmI && currentProj.type == ItemLoader.GetItem(itemType).Item.shoot) {
-						currentProj.active = false;
-					}
-				}
-			}
 		}
 	}
 }

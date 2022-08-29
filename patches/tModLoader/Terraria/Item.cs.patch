@@ -835,7 +835,7 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45207,14 +_,25 @@
+@@ -45207,14 +_,27 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -847,6 +847,8 @@
 +			useLimitPerAnimation = null;
 +			consumeAmmoOnFirstShotOnly = false;
 +			consumeAmmoOnLastShotOnly = false;
++			InterruptChannelOnHurt = false;
++			StopAnimationOnHurt = false;
 +			DamageType = DamageClass.Default;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
