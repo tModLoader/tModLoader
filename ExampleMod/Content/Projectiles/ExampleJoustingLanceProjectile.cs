@@ -16,6 +16,10 @@ namespace ExampleMod.Content.Projectiles
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
 			ProjectileID.Sets.DismountsPlayersOnHit[Type] = true;
+
+			// This will make sure the velocity of the projectile will always be the shoot speed set in the item.
+			// Since the velocity of the projectile affects how far out the jousting lance will spawn, we want the
+			// velocity to always be the same even if the player has increased attack speed.
 			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
 		}
 
@@ -30,7 +34,7 @@ namespace ExampleMod.Content.Projectiles
 			// Since we are using custom AI below, we set the aiStyle to -1.
 			Projectile.aiStyle = -1;
 
-			Projectile.alpha = 255; // The transparency of the projectile, 255 for completely transparent. Our projectile will fades in (see the AI() below).
+			Projectile.alpha = 255; // The transparency of the projectile, 255 for completely transparent. Our projectile will fade in (see the AI() below).
 			Projectile.friendly = true; // Player shot projectile. Does damage to enemies but not to friendly Town NPCs.
 			Projectile.penetrate = -1; // Infinite penetration. The projectile can hit an infinite number of enemies.
 			Projectile.tileCollide = false; // Don't kill the projectile if it hits a tile.
