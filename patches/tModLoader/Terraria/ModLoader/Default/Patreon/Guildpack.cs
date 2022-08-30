@@ -65,16 +65,14 @@ namespace Terraria.ModLoader.Default.Patreon
 				return;
 			}
 
-			var headOrigin = /* drawInfo.headOrigin */ Vector2.Zero;
-
+			var headOrigin = drawInfo.headVect;
 			var player = drawInfo.drawPlayer;
-			var position = drawInfo.Position - Main.screenPosition + player.headPosition + headOrigin;
 
-			position += new Vector2(
-				-((player.bodyFrame.Width / 2) + (player.width / 2)),
-				player.height - player.bodyFrame.Height + 4f
-			);
-
+			var position = drawInfo.Position - Main.screenPosition;
+			position.X -= player.bodyFrame.Width / 2;
+			position.X += player.width / 2;
+			position.Y += player.height - player.bodyFrame.Height + 4f;
+			position += player.headPosition + headOrigin;
 			position = position.ToPoint().ToVector2();
 
 			drawInfo.DrawDataCache.Add(new DrawData(texture, position, player.bodyFrame, Color.White, player.headRotation, headOrigin, 1f, drawInfo.playerEffect, 0));
