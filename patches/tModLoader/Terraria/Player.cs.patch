@@ -3790,9 +3790,20 @@
  				if (Crit)
  					num *= 2;
  
-@@ -27234,7 +_,7 @@
+@@ -27233,8 +_,18 @@
+ 						}
  					}
  
++					if (channel && inventory[selectedItem].InterruptChannelOnHurt) {
++						channel = false;
++					}
++
++					if (itemAnimation > 0 && inventory[selectedItem].StopAnimationOnHurt) {
++						channel = false;
++						itemAnimation = 0;
++						itemAnimationMax = 0;
++					}
++
  					if (invis) {
 -						for (int k = 0; k < 22; k++) {
 +						for (int k = 0; k < MaxBuffs; k++) {
@@ -4816,8 +4827,9 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
- 			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
+-			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
 -				speed /= meleeSpeed;
++			if (sItem.melee && !ProjectileID.Sets.NoMeleeSpeedVelocityScaling[projToShoot])
 +				speed /= inverseMeleeSpeed;
 +
 +			// Copied as-is from 1.3
