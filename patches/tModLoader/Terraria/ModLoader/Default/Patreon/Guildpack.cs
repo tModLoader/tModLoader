@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		private static Asset<Texture2D>? textureAsset;
 
 		public override Position GetDefaultPosition()
-			=> new BeforeParent(PlayerDrawLayers.JimsCloak); // Preferably before everything
+			=> new AfterParent(PlayerDrawLayers.Head);
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
 			=> drawInfo.drawPlayer.TryGetModPlayer(out GuildpackSetEffectPlayer modPlayer) && modPlayer.IsActive;
