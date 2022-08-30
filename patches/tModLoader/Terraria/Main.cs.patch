@@ -1188,16 +1188,18 @@
  						switch (num2) {
  							case 1:
  								flag = true;
-@@ -9397,6 +_,9 @@
+@@ -9397,7 +_,10 @@
  			if (lastMusicPlayed == 50)
  				musicNoCrossFade[51] = true;
  
+-			if (!showSplash) {
 +			int modMusic = -1;
 +			ModLoader.SceneEffectPriority modPriority = ModLoader.SceneEffectPriority.None;
 +
- 			if (!showSplash) {
++			if (!gameMenu) { // showSplash -> gameMenu. Fix crash iterating active NPCs while unloading mods
  				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  				int num2 = 5000;
+ 				for (int j = 0; j < 200; j++) {
 @@ -9508,6 +_,11 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
