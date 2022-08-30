@@ -11,7 +11,7 @@
 		}
 	}
 
-	/*
+	// An extra hat requested for a friend
 	[AutoloadEquip(EquipType.Head)]
 	internal class WitchDaggah_Head : PatreonItem
 	{
@@ -22,7 +22,6 @@
 			Item.height = 22;
 		}
 	}
-	*/
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class AetherBreaker_Body : PatreonItem
