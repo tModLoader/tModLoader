@@ -21,15 +21,9 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {//Apply to all weapons
-			//Exclude items like Eye of Cthulhu shield
-			if (entity.accessory)
-				return false;
-
-			if (entity.type is ItemID.CoinGun or ItemID.Snowball)
-				return true;
-			
-			return entity.damage > 0 && entity.ammo == 0;
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+			//Apply to weapons
+			return entity.damage > 0;
 		}
 		public override void SetDefaults(Item item) {
 			if (item.type == ItemID.Snowball) {
