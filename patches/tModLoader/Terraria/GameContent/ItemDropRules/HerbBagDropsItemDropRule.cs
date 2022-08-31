@@ -33,7 +33,7 @@ namespace Terraria.GameContent.ItemDropRules
 			for (int i = 0; i < amount; i++) {
 				int stack = Main.rand.Next(2, 5);
 				if (Main.rand.Next(3) == 0)
-					stack += Main.rand.Next(1, 5);//Planning to skip
+					stack += Main.rand.Next(1, 5);
 
 				CommonCode.DropItem(info, dropIds[info.rng.Next(dropIds.Length)], stack);
 			}

@@ -788,11 +788,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to decide if this item is allowed to stack with another of its type.
 		/// <br/>This is only called when attempting to stack with an item of the same type.
-		/// <br/>This is usually not called for coins and ammo in the inventory/UI.
+		/// <br/>This is not called for coins in inventory/UI.
 		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
-		public virtual bool CanStack(Item item2) {
+		public virtual bool CanStack(Item decrease) {
 			return true;
 		}
 
@@ -801,11 +801,17 @@ namespace Terraria.ModLoader
 		/// <br/>This is only called when attempting to stack with an item of the same type.
 		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
-		public virtual bool CanStackInWorld(Item item2) {
+		public virtual bool CanStackInWorld(Item decrease) {
 			return true;
 		}
 
-		public virtual void OnStack(Item item2, int numTransfered) {
+		/// <summary>
+		/// Allows you to make things happen when items stack together.<br/>
+		/// This item will have its stack increased that will have its stack increased.
+		/// </summary>
+		/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
+		public virtual void OnStack(Item decrease, int numberToBeTransfered) {
 
 		}
 

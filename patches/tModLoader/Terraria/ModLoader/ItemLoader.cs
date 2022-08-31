@@ -1403,16 +1403,16 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 		/// </summary>
-		public static bool CanStack(Item item1, Item item2) {
-			if (item1.prefix != item2.prefix) // TML: #StackablePrefixWeapons
+		public static bool CanStack(Item increase, Item decrease) {
+			if (increase.prefix != decrease.prefix) // TML: #StackablePrefixWeapons
 				return false;
 
 			foreach (var g in HookCanStack.Enumerate(globalItems)) {
-				if (!g.CanStack(item1, item2))
+				if (!g.CanStack(increase, decrease))
 					return false;
 			}
 
-			return item1.ModItem?.CanStack(item2) ?? true;
+			return increase.ModItem?.CanStack(decrease) ?? true;
 		}
 
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
@@ -1420,13 +1420,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
-		public static bool CanStackInWorld(Item item1, Item item2) {
+		public static bool CanStackInWorld(Item increase, Item decrease) {
 			foreach (var g in HookCanStackInWorld.Enumerate(globalItems)) {
-				if (!g.CanStackInWorld(item1, item2))
+				if (!g.CanStackInWorld(increase, decrease))
 					return false;
 			}
 
-			return item1.ModItem?.CanStackInWorld(item2) ?? true;
+			return increase.ModItem?.CanStackInWorld(decrease) ?? true;
 		}
 		
 		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
