@@ -23,13 +23,13 @@ function verlte {
 
 function update_script {
 	local latest_script_version
-	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/ManageServer.sh" | grep "script_version=" | cut -d '"' -f2)
+	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | cut -d '"' -f2)
 
 	if ! verlte $script_version "$latest_script_version"
 	then
 		echo "Updating from version v$script_version to v$latest_script_version"
-		curl --silent -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/ManageServer.sh
-		mv ManageServer.sh.1 ManageServer.sh
+		curl --silent -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh
+		mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
 	else
 		echo "No new script updates"
 	fi
@@ -148,7 +148,7 @@ function github_update_tml {
 			mkdir "$oldver"
 			for file in ./*;
 			do
-				if ! [[ "$file" == v.* ]] && ! [[ "$file" == ManageServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]
+				if ! [[ "$file" == v.* ]] && ! [[ "$file" == manage-tModLoaderServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]
 				then
 					mv "$file" "$oldver"
 				fi

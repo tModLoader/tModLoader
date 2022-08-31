@@ -1,18 +1,18 @@
 # Dedicated Server Utils
 
-This directory contains utilities for managing a dedicated ***Linux*** server. There is the `ManageServer.sh` script for directly managing an installation or a Docker container for automatic management.
+This directory contains utilities for managing a dedicated ***Linux*** server. There is the `manage-tModLoaderServer.sh` script for directly managing an installation or a Docker container for automatic management.
 
 ## Using the script
 
-The `ManageServer.sh` script can be used to install tML either directly from the Github release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
+The `manage-tModLoaderServer.sh` script can be used to install tML either directly from the Github release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
 
-Github installations can be done using `./ManageServer.sh --install --github`. SteamCMD is the default so just leave out `--github` to use it instead. By default Github installations will be in `~/tModLoader`, and SteamCMD installations will be in `~/Steam/steamapps/common/tModLoader`.
+Github installations can be done using `./manage-tModLoaderServer.sh --install --github`. SteamCMD is the default so just leave out `--github` to use it instead. By default Github installations will be in `~/tModLoader`, and SteamCMD installations will be in `~/Steam/steamapps/common/tModLoader`.
 
 During installation, [enabled.json](#install.txt-and-enabled.json), [install.txt](#install.txt-and-enabled.json), and any `.tmod` files will be checked for in the directory of the script or in the directory specified by `--checkdir`.
 
 Note that for Github installations `unzip` must be on your `PATH`, and for SteamCMD installations `SteamCMD` must be on your `PATH`. Install it from your package manager or from [steam](https://developer.valvesoftware.com/wiki/SteamCMD).
 
-For additional information, run `./ManageServer.sh --help` to view the available arguments.
+For additional information, run `./manage-tModLoaderServer.sh --help` to view the available arguments.
 
 ## Using the Docker container
 
@@ -46,9 +46,9 @@ worldname=YourWorld
 ```
 
 ## Updating
-To update the script, run `./ManageServer.sh --updatescript`
+To update the script, run `./manage-tModLoaderServer.sh --updatescript`
 
-When using `ManageServer.sh`, updating can be done by running `./ManageServer.sh --update`. When using a Github install, use `--github` and `--folder` if your install is in a non-standard location.
+When using `manage-tModLoaderServer.sh`, updating can be done by running `./manage-tModLoaderServer.sh --update`. When using a Github install, use `--github` and `--folder` if your install is in a non-standard location.
 
 When using the Docker container, simply rebuild the container to update tModLoader. Use `docker build .` or `docker-compose build` depending on your setup.
 
