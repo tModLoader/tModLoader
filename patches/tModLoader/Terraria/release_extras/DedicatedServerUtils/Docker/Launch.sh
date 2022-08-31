@@ -34,8 +34,7 @@ cd ~/tModLoader
 # Maybe eventually steamcmd will allow for an actual steamserver. For now -nosteam is required.
 tmux new-session -s "tml" -n "tmlwin" -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/serverconfig.txt -nosteam -steamworkshopfolder $HOME/.local/share/Terraria/wsmods"
 # Loop will just cause the script to hang forever, keeping SIGTERM and SIGINT trapped and allowing exits to happen cleanly.
-until false
-do
+until false; do
 	sleep 1
 	true
 done

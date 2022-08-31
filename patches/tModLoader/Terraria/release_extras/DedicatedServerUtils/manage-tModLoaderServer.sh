@@ -25,8 +25,7 @@ function update_script {
 	local latest_script_version
 	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | cut -d '"' -f2)
 
-	if ! verlte $script_version "$latest_script_version"
-	then
+	if ! verlte $script_version "$latest_script_version"; then
 		echo "Updating from version v$script_version to v$latest_script_version"
 		curl --silent -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh
 		mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
@@ -45,8 +44,7 @@ function get_latest_release {
 
 # Takes version number as first parameter
 function down_release {
-	if [[ -v version ]]
-	then
+	if [[ -v version ]]; then
 		set -- "$version"
 	fi
 	echo "Downloading version $1"
@@ -55,8 +53,7 @@ function down_release {
 
 # Check $username is defined, exit if not
 function check_username {
-	if ! [[ -v username ]]
-	then
+	if ! [[ -v username ]]; then
 		echo "Please enter a Steam username to login with using --username"
 		exit 1
 	else
@@ -67,17 +64,14 @@ function check_username {
 # Installs or updates tML via steamcmd
 function steamcmd_install_tml {
 		check_username
-		if [[ -v folder ]]
-		then
+		if [[ -v folder ]]; then
 			steamcmd +force_install_dir "$folder" +login "$username" +app_update 1281930 +quit # tMod goes into the dir they want, everything else should be forced into ~/Steam
 		else
 			steamcmd +login "$username" +app_update 1281930 +quit # tMod goes into ~/Steam/steamapps/common/tModLoader
 		fi
 
-		if [[ $? == "5" ]] # Only recurse when not being used in the docker container.
-		then
-			 if ! [[ -f /.dockerenv ]]
-			 then
+		if [[ $? == "5" ]]; then # Only recurse when not being used in the docker container.
+			 if ! [[ -f /.dockerenv ]]; then
 				echo "Try entering password/2fa code again"
 				steamcmd_install_tml
 			else
@@ -88,8 +82,7 @@ function steamcmd_install_tml {
 
 # Install from github, defaults to ~/tModLoader
 function github_install_tml {
-	if [[ -v folder ]]
-	then
+	if [[ -v folder ]]; then
 		mkdir -p "$folder"
 		pushd "$folder"
 	else
@@ -98,8 +91,7 @@ function github_install_tml {
 	fi
 
 	install_dir=$(shopt -s nullglob dotglob; echo ./*)
-	if (( ${#install_dir} ))
-	then
+	if (( ${#install_dir} )); then
 		echo "Install directory not empty, please choose an empty directory to install tML to using --folder or update an existing installation using --update"
 		exit 1
 	fi
@@ -117,8 +109,7 @@ function github_install_tml {
 }
 
 function install_tml {
-	if $steamcmd
-	then
+	if $steamcmd; then
 		steamcmd_install_tml
 	else
 		github_install_tml
@@ -126,20 +117,17 @@ function install_tml {
 }
 
 function github_update_tml {
-	if [[ -v folder ]]
-	then
+	if [[ -v folder ]]; then
 		pushd "$folder"
 	else
 		pushd ~/tModLoader
 	fi
 
-	if [[ -r ".ver" ]]
-	then
+	if [[ -r ".ver" ]]; then
 		local ver
 		ver=$(get_latest_release)
 		oldver=$(cat .ver)
-		if [[ $ver == "$oldver" ]]
-		then
+		if [[ $ver == "$oldver" ]]; then
 			echo "No new version of tModLoader available"
 		else
 			echo "New version of tModLoader $ver is available, current ver is $oldver"
@@ -148,8 +136,7 @@ function github_update_tml {
 			mkdir "$oldver"
 			for file in ./*;
 			do
-				if ! [[ "$file" == v.* ]] && ! [[ "$file" == manage-tModLoaderServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]
-				then
+				if ! [[ "$file" == v.* ]] && ! [[ "$file" == manage-tModLoaderServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]; then
 					mv "$file" "$oldver"
 				fi
 			done
@@ -168,8 +155,7 @@ function github_update_tml {
 			echo "Removing old backups"
 			for file in ./v*.tar.gz;
 			do
-				if ! [[ "$file" == ./$oldver.tar.gz ]]
-				then
+				if ! [[ "$file" == ./$oldver.tar.gz ]]; then
 					rm "$file"
 					echo "Removed $file"
 				fi
@@ -184,8 +170,7 @@ function github_update_tml {
 }
 
 function update_tml {
-	if $steamcmd
-	then
+	if $steamcmd; then
 		steamcmd_install_tml
 	else
 		github_update_tml
@@ -193,12 +178,10 @@ function update_tml {
 }
 
 function update_workshop_mods {
-	if [[ -r ./install.txt ]]
-	then
+	if [[ -r ./install.txt ]]; then
 		echo Installing workshop mods
 
-		if [[ -v folder ]]
-		then
+		if [[ -v folder ]]; then
 			steamcmdCommand="+force_install_dir $folder +login anonymous"
 		else
 			steamcmdCommand="+login anonymous"
@@ -217,25 +200,21 @@ function update_workshop_mods {
 
 function install_mods {
 	script_path=$(realpath "$0") # Get path to the script, in case someone launched it from another directory
-	if [[ -v checkdir ]]
-	then
+	if [[ -v checkdir ]]; then
 		pushd "$checkdir"
 	else
 		pushd "$(dirname "$script_path")"
 	fi
 
-	if ! command -v steamcmd &> /dev/null
-	then
+	if ! command -v steamcmd &> /dev/null; then
 		echo "steamcmd not found on path, no workshop mods will be installed or updated"
 	else
 		update_workshop_mods
 	fi
 
-	if [[ -v mods_path ]]
-	then
+	if [[ -v mods_path ]]; then
 		echo "Moving mods to $mods_path"
-	elif [[ -v XDG_DATA_HOME ]]
-	then
+	elif [[ -v XDG_DATA_HOME ]]; then
 		mods_path=$XDG_DATA_HOME/Terraria/tModLoader/Mods
 		echo "Moving mods to $mods_path"
 	else
@@ -246,15 +225,13 @@ function install_mods {
 	mkdir -p $mods_path
 
 	# If someone has .tmod files this will install them
-	if [[ -f "*.tmod" ]]
-	then
+	if [[ -f "*.tmod" ]]; then
 		echo "Copying .tmod files to the Mods directory"
 		cp ./*.tmod $mods_path
 	fi
 
 	# Move enabled.json to the right place
-	if [[ -f "enabled.json" ]]
-	then
+	if [[ -f "enabled.json" ]]; then
 		echo "Copying enabled.json to the Mods directory"
 		cp enabled.json $mods_path
 	fi
@@ -265,11 +242,9 @@ function install_mods {
 function print_version {
 	echo "tML Maintenance Tool: v$script_version"
 
-	if [[ -v folder ]]
-	then
+	if [[ -v folder ]]; then
 		echo tML Install: "$(cat "$folder/.ver")"
-	elif [[ -r ~/tModLoader/.ver ]]
-	then
+	elif [[ -r ~/tModLoader/.ver ]]; then
 		echo tML Install: "$(cat ~/tModLoader/.ver)"
 	fi
 
@@ -317,14 +292,12 @@ steamcmd=true # Use steamcmd by default. If someone doesn't want to use steamcmd
 no_mods=false
 mods_only=false
 
-if [ $# -eq 0 ] # Check for no arguments
-then
+if [ $# -eq 0 ]; then # Check for no arguments
 	echo "No arguments supplied"
 	print_help
 fi
 
-while [[ $# -gt 0 ]];
-do
+while [[ $# -gt 0 ]]; do
 	case $1 in
 		-h|--help)
 			print_help
@@ -383,8 +356,7 @@ do
 done
 
 # Check that steamcmd exists on PATH
-if $steamcmd
-then
+if $steamcmd; then
 	if ! command -v steamcmd &> /dev/null
 	then
 		echo "steamcmd could not be found on the PATH, please install steamcmd"
@@ -393,8 +365,7 @@ then
 		echo "steamcmd found..."
 	fi
 else
-	if ! command -v unzip &> /dev/null
-	then
+	if ! command -v unzip &> /dev/null; then
 		echo "unzip could not be found on the PATH, please instal unzip"
 		exit 1
 	else
@@ -402,14 +373,12 @@ else
 	fi
 fi
 
-if $install
-then
+if $install; then
 	if ! $mods_only; then install_tml; fi
 	if ! $no_mods; then install_mods; fi
 fi
 
-if $update
-then
+if $update; then
 	if ! $mods_only; then update_tml; fi
 	if ! $no_mods; then install_mods; fi
 fi

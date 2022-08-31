@@ -4,8 +4,7 @@ cd "$(dirname "$0")" || exit
 launch_args="-server"
 
 # Parse parameters, passing through everything else to ScriptCaller.sh
-while [[ $# -gt 0 ]]
-do
+while [[ $# -gt 0 ]]; do
 	case $1 in
 		-steam)
 			steam_server=true
@@ -29,8 +28,7 @@ then
 fi
 
 # Prompt user for lobby type and steam server if not specified in args
-if ! [[ -v steam_server ]]
-then
+if ! [[ -v steam_server ]]; then
 	read -p "Use steam server (y/n): " steam_server_response
 	if [[ $steam_server_response == y* ]]
 	then
@@ -40,15 +38,12 @@ then
 	fi
 fi
 
-if $steam_server
-then
+if $steam_server; then
 	launch_args="$launch_args -steam"
 
-	if ! [[ "$launch_args" == *"-lobby"* ]]
-	then
+	if ! [[ "$launch_args" == *"-lobby"* ]]; then
 		read -p "Select lobby type ([f]riends/[p]rivate): " lobby_type_response
-		if [[ $lobby_type_response == f* ]]
-		then
+		if [[ $lobby_type_response == f* ]]; then
 			launch_args="$launch_args -lobby friends"
 		else
 			launch_args="$launch_args -lobby private"
