@@ -3424,14 +3424,10 @@
  		}
  
  		public static void CraftItem(Recipe r) {
--			int stack = mouseItem.stack;
--			mouseItem = r.createItem.Clone();
--			mouseItem.stack += stack;
--			if (stack <= 0)
 +			/* TML: #OnStackHook: Gameplay impact: The mouseItem.stack will be increased instead of being replaced by a clone of the recipe item if maxStack > 1
-+			int stack = mouseItem.stack;
-+			mouseItem = r.createItem.Clone();//This is different than the normal way of item stacking and deletes the original item.
-+			mouseItem.stack += stack;//Is it possible to craft an item that is a different type than the mouseItem?  I wouldn't think so.
+ 			int stack = mouseItem.stack;
+ 			mouseItem = r.createItem.Clone();
+ 			mouseItem.stack += stack;
 +			*/
 +
 +			int stack = mouseItem.stack;
@@ -3443,6 +3439,7 @@
 +				mouseItem = r.createItem.Clone();
 +			}
 +			
+-			if (stack <= 0)
 +			//if (stack <= 0)
 +			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
  				mouseItem.Prefix(-1);

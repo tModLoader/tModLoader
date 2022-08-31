@@ -28,15 +28,6 @@
  					cp14.LinkMap[600 + num57].Up = ((num57 % num56 == 0) ? (-1) : (600 + num57 - 1));
  					if (cp14.LinkMap[600 + num57].Up == -1) {
  						if (num57 >= num56 * 2)
-@@ -851,7 +_,7 @@
- 				Player player2 = Main.player[Main.myPlayer];
- 				bool flag3 = false;
- 				Item createItem = Main.recipe[Main.availableRecipe[Main.focusRecipe]].createItem;
--				if (Main.mouseItem.type == 0 && createItem.maxStack > 1 && player2.ItemSpace(createItem).CanTakeItemToPersonalInventory && !player2.HasLockedInventory()) {
-+				if (Main.mouseItem.type == 0 && createItem.maxStack > 1 && player2.ItemSpace(createItem).CanTakeItemToPersonalInventory && !player2.HasLockedInventory()) {//Need to have a CanStack() here before CraftItem()?
- 					flag3 = true;
- 					if (CanExecuteInputCommand() && PlayerInput.Triggers.Current.Grapple && Main.stackSplit <= 1) {
- 						if (CanExecuteInputCommand() && PlayerInput.Triggers.JustPressed.Grapple)
 @@ -878,10 +_,12 @@
  				}
  
@@ -52,15 +43,6 @@
  					str2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
  
  				if (flag3)
-@@ -945,7 +_,7 @@
- 					Player player = Main.player[Main.myPlayer];
- 					if (IHateLambda + Main.recStart < Main.numAvailableRecipes) {
- 						int num51 = Main.recStart + IHateLambda - 700;
--						if (Main.mouseItem.type == 0 && Main.recipe[Main.availableRecipe[num51]].createItem.maxStack > 1 && player.ItemSpace(Main.recipe[Main.availableRecipe[num51]].createItem).CanTakeItemToPersonalInventory && !player.HasLockedInventory()) {
-+						if (Main.mouseItem.type == 0 && Main.recipe[Main.availableRecipe[num51]].createItem.maxStack > 1 && player.ItemSpace(Main.recipe[Main.availableRecipe[num51]].createItem).CanTakeItemToPersonalInventory && !player.HasLockedInventory()) {//Need to have a CanStack() here before CraftItem()?
- 							flag2 = true;
- 							if (CanExecuteInputCommand() && PlayerInput.Triggers.JustPressed.Grapple)
- 								SomeVarsForUILinkers.SequencedCraftingCurrent = Main.recipe[Main.availableRecipe[num51]];
 @@ -1594,6 +_,13 @@
  					break;
  				case 7:

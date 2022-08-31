@@ -55,12 +55,23 @@
  						if (item3.stack == 0) {
  							inv[list[k]] = new Item();
  							list.Remove(list[k]);
-@@ -1192,7 +_,7 @@
+@@ -1187,6 +_,11 @@
+ 			for (int i = loopStartIndex; i < loopEndIndex; i++) {
+ 				Item item = inv[i];
+ 				if (item.stack >= 1 && item.type == itemToRefill.type) {
++					if (!ItemLoader.TryStackItems(itemToRefill, inv[i], out int numTransfered))
++						continue;
++
++					num -= numTransfered;
++					/*
+ 					int num2 = item.stack;
+ 					if (num2 > num)
  						num2 = num;
- 
+@@ -1194,6 +_,7 @@
  					num -= num2;
--					itemToRefill.stack += num2;
-+					itemToRefill.stack += num2;//Need to figure out when this is called.  May need a CanStack() and OnStack()
+ 					itemToRefill.stack += num2;
  					item.stack -= num2;
++					*/
  					if (item.stack <= 0)
  						item.TurnToAir();
+ 

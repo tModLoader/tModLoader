@@ -114,14 +114,13 @@
  						inv[slot].SetDefaults();
 +					if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(inv[slot], slot, context < 0))
 +						break;
--					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
-+					if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
+ 					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
  						break;
--					Utils.Swap(ref inv[slot], ref Main.mouseItem);
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
 +						break;
 +
 +					if (Main.mouseItem.maxStack <= 1 || inv[slot].type != Main.mouseItem.type || inv[slot].stack == inv[slot].maxStack || Main.mouseItem.stack == Main.mouseItem.maxStack)//TML: OnStackHook: Prevent swapping items if they will be stacked together.
+-					Utils.Swap(ref inv[slot], ref Main.mouseItem);
 +						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  					if (inv[slot].stack > 0)
  						AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, inv[slot].stack));
@@ -593,8 +592,7 @@
 +							}
 +							/* TML: #OnStackHook
  							if (Main.mouseItem.IsAir)
--								Main.mouseItem.SetDefaults(inv[slot].type);
-+								Main.mouseItem = inv[slot].Clone();
+ 								Main.mouseItem.SetDefaults(inv[slot].type);
  							else
  								Main.mouseItem.stack++;
 +							*/
@@ -639,7 +637,7 @@
  					Main.shopSellbackHelper.Add(inv[slot]);
  
 -				Main.mouseItem.stack++;
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot].Clone(), out int numTransfered, true, 1);
++				ItemLoader.StackItems(Main.mouseItem, inv[slot], out int numTransfered, true, 1);
 +
 +				//Main.mouseItem.stack++;//TML: #OnStackHook
  				RefreshStackSplitCooldown();

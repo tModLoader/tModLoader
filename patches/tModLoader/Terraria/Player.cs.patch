@@ -3531,42 +3531,6 @@
  			return num;
  		}
  
-@@ -24972,7 +_,7 @@
- 						num3 = num4;
- 
- 					while (inventory[num4].type == 74 && inventory[num4].stack < inventory[num4].maxStack && num >= 1000000) {
--						inventory[num4].stack++;
-+						inventory[num4].stack++;//coins, ignoring
- 						num -= 1000000;
- 						DoCoins(num4);
- 						if (inventory[num4].stack == 0 && num3 == -1)
-@@ -24998,7 +_,7 @@
- 						num5 = num6;
- 
- 					while (inventory[num6].type == 73 && inventory[num6].stack < inventory[num6].maxStack && num >= 10000) {
--						inventory[num6].stack++;
-+						inventory[num6].stack++;//coins, ignroing
- 						num -= 10000;
- 						DoCoins(num6);
- 						if (inventory[num6].stack == 0 && num5 == -1)
-@@ -25024,7 +_,7 @@
- 						num7 = num8;
- 
- 					while (inventory[num8].type == 72 && inventory[num8].stack < inventory[num8].maxStack && num >= 100) {
--						inventory[num8].stack++;
-+						inventory[num8].stack++;//coins, ignoring
- 						num -= 100;
- 						DoCoins(num8);
- 						if (inventory[num8].stack == 0 && num7 == -1)
-@@ -25050,7 +_,7 @@
- 						num9 = num10;
- 
- 					while (inventory[num10].type == 71 && inventory[num10].stack < inventory[num10].maxStack && num >= 1) {
--						inventory[num10].stack++;
-+						inventory[num10].stack++;//vanilla coins, ignoring
- 						num--;
- 						DoCoins(num10);
- 						if (inventory[num10].stack == 0 && num9 == -1)
 @@ -25347,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
@@ -3978,16 +3942,7 @@
  				return true;
  
  			return false;
-@@ -27815,7 +_,7 @@
- 			inventory[i].SetDefaults(inventory[i].type + 1);
- 			for (int j = 0; j < 54; j++) {
- 				if (inventory[j].IsTheSameAs(inventory[i]) && j != i && inventory[j].type == inventory[i].type && inventory[j].stack < inventory[j].maxStack) {
--					inventory[j].stack++;
-+					inventory[j].stack++;//Intentionally ignoring DoCoins unless told otherwhise
- 					inventory[i].SetDefaults();
- 					inventory[i].active = false;
- 					inventory[i].TurnToAir();
-@@ -27829,9 +_,25 @@
+@@ -27829,6 +_,22 @@
  				if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !newItem.IsTheSameAs(inventory[i]))
  					continue;
  
@@ -4009,11 +3964,7 @@
 +				/* TML: #OnStackHook
  				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
  				if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
--					inventory[i].stack += newItem.stack;
-+					//inventory[i].stack += newItem.stack;
- 					if (!settings.NoText)
- 						PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, newItem.stack);
- 
+ 					inventory[i].stack += newItem.stack;
 @@ -27848,6 +_,7 @@
  					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, inventory[i].maxStack - inventory[i].stack);
  
@@ -4226,15 +4177,6 @@
  			if (num5 > 0) {
  				Vector2 vector = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
  				if (Main.SmartCursorIsUsed || PlayerInput.UsingGamepad)
-@@ -29860,7 +_,7 @@
- 			for (int i = 0; i < 58; i++) {
- 				Item item = inventory[i];
- 				if (item.stack > 0 && item.type == type && item.stack < item.maxStack) {
--					item.stack++;
-+					item.stack++;//Not sure when this is called yet
- 					return;
- 				}
- 			}
 @@ -29898,8 +_,8 @@
  
  		public PlayerFishingConditions GetFishingConditions() {
@@ -5102,16 +5044,6 @@
  			if (isPettingAnimal) {
  				int num = miscCounter % 14 / 7;
  				CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
-@@ -35134,6 +_,9 @@
- 								for (int k = 0; k < 58; k++) {
- 									if (inventory[k].type == sItem.type && k != selectedItem && inventory[k].stack < inventory[k].maxStack) {
- 										SoundEngine.PlaySound(7);
-+
-+										//ItemLoader.OnStack(inventory[k], sItem, 1);//Not sure when this would be called.  May not be needed.
-+
- 										inventory[k].stack++;
- 										sItem.SetDefaults();
- 										if (selectedItem == 58)
 @@ -35291,10 +_,13 @@
  				SetCompositeArmBack(enabled: true, stretch6, (float)Math.PI * -3f / 5f * (float)direction);
  				FlipItemLocationAndRotationForGravity();
@@ -6195,15 +6127,6 @@
  			if (Main.rand.Next((int)(100f * rarityReduction)) > 50)
  				return;
  
-@@ -39417,7 +_,7 @@
- 				item.SetDefaults(2674);
- 
- 			if (Main.rand.Next(25) <= questsDone)
--				item.stack++;
-+				item.stack++;//Planning to skip these
- 
- 			if (Main.rand.Next(50) <= questsDone)
- 				item.stack++;
 @@ -39434,6 +_,8 @@
  			if (Main.rand.Next(250) <= questsDone)
  				item.stack++;

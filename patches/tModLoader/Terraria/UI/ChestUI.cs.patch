@@ -36,7 +36,7 @@
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -423,14 +_,20 @@
+@@ -423,13 +_,19 @@
  									NetMessage.SendData(32, -1, -1, null, player.chest, i);
  							}
  							else if (player.chest == -3) {
@@ -53,11 +53,9 @@
  									player.inventory[num].stack -= num3;
  									player.bank2.item[i].stack += num3;
 +									*/
--									SoundEngine.PlaySound(7);
-+								SoundEngine.PlaySound(7);
+ 									SoundEngine.PlaySound(7);
  									if (player.inventory[num].stack <= 0) {
  										player.inventory[num].SetDefaults();
- 										break;
 @@ -443,13 +_,19 @@
  								}
  							}
