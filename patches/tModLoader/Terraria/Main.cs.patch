@@ -3436,11 +3436,11 @@
 +
 +			int stack = mouseItem.stack;
 +			if (stack > 0 && mouseItem.type == r.createItem.type) {
-+				if (!ItemLoader.TryStackItems(mouseItem, r.createItem.Clone(), out int numTransfered, false))//Craft item.  Need to check potential issues with adding to stack instead of cloning.
++				if (!ItemLoader.TryStackItems(mouseItem, r.createItem.Clone(), out int numTransfered, true))
 +					return;
 +			}
 +			else {
-+				mouseItem = r.createItem.Clone();//No reason to add the stack if the stack is 0 or item types aren't the same right?
++				mouseItem = r.createItem.Clone();
 +			}
 +			
 +			//if (stack <= 0)

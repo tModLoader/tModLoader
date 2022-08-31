@@ -1429,22 +1429,22 @@ namespace Terraria.ModLoader
 			return item1.ModItem?.CanStackInWorld(item2) ?? true;
 		}
 		
-		private static HookList HookOnStack = AddHook<Action<Item, Item, int, bool>>(g => g.OnStack);
+		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
 
 		/// <summary>
 		/// Calls CanStack.  Returns false if CanStack is false.  Calls StackItems if CanStack is true<br/>
 		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.<br/>
 		/// </summary>
-		/// <param name="item1">Item where the stack is being increased.</param>
-		/// <param name="item2">Item where the stack is being reduced.  If remaining stack is <=0, it is set to defaults.</param>
+		/// <param name="increase">Item where the stack is being increased.</param>
+		/// <param name="decrease">Item where the stack is being reduced.</param>
 		/// <param name="numTransfered">Amount to be transfered </param>
-		/// <param name="stack2">The final stack of item2</param>
-		public static bool TryStackItems(Item item1, Item item2, out int numTransfered, bool reduceItem2Stack = true) {
+		/// <param name="infiniteSource">The final stack of item2</param>
+		public static bool TryStackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false) {
 			numTransfered = 0;
-			if (!CanStack(item1, item2))
+			if (!CanStack(increase, decrease))
 				return false;
 
-			StackItems(item1, item2, out numTransfered, reduceItem2Stack);
+			StackItems(increase, decrease, out numTransfered, infiniteSource);
 
 			return true;
 		}
@@ -1452,37 +1452,38 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.
 		/// </summary>
-		/// <param name="acceptingItem">Item where the stack is being increased.</param>
-		/// <param name="transferingItem">Item where the stack is being reduced.  If remaining stack is <=0, it is set to defaults.</param>
+		/// <param name="increase">Item where the stack is being increased.</param>
+		/// <param name="decrease">Item where the stack is being reduced.</param>
 		/// <param name="numTransfered">Amount to be transfered </param>
-		/// <param name="stack2">The final stack of item2</param>
-		public static void StackItems(Item acceptingItem, Item transferingItem, out int numTransfered, bool reduceItem2Stack = true, int numToTransfer = int.MinValue, bool firstStackSplit = false) {
+		/// <param name="infiniteSource"></param>
+		/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
+		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int numToTransfer = int.MinValue) {
 			if (numToTransfer == int.MinValue) {
 				numTransfered = 0;
-				int numToMaxStack = acceptingItem.maxStack - acceptingItem.stack;
+				int numToMaxStack = increase.maxStack - increase.stack;
 				if (numToMaxStack <= 0)
 					return;
 
-				numTransfered = Math.Min(transferingItem.stack, numToMaxStack);
+				numTransfered = Math.Min(decrease.stack, numToMaxStack);
 			}
 			else {
 				numTransfered = numToTransfer;
 			}
 
 			foreach (var g in HookOnStack.Enumerate(globalItems)) {
-				g.OnStack(acceptingItem, transferingItem, numTransfered, firstStackSplit);
+				g.OnStack(increase, decrease, numTransfered);
 			}
 
-			if (transferingItem.favorited) {
-				acceptingItem.favorited = true;
-				transferingItem.favorited = false;
+			if (decrease.favorited) {
+				increase.favorited = true;
+				decrease.favorited = false;
 			}
 
-			acceptingItem.ModItem?.OnStack(transferingItem, numTransfered, firstStackSplit);
+			increase.ModItem?.OnStack(decrease, numTransfered);
 
-			acceptingItem.stack += numTransfered;
-			if (reduceItem2Stack)
-				transferingItem.stack -= numTransfered;
+			increase.stack += numTransfered;
+			if (!infiniteSource)
+				decrease.stack -= numTransfered;
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);

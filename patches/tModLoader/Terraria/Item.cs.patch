@@ -941,7 +941,7 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
 +
-+					ItemLoader.StackItems(this, item, out int numTransfered);//Stack in world
++					ItemLoader.StackItems(this, item, out int numTransfered);
 +
 +					/* TML: #OnStackHook
  					int num3 = item.stack;

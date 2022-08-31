@@ -102,7 +102,7 @@
  					return false;
  
  				item.favorited = !item.favorited;
-@@ -467,13 +_,19 @@
+@@ -467,14 +_,21 @@
  			int num = PickItemMovementAction(inv, context, slot, Main.mouseItem);
  			if (num != 3 && !flag)
  				return;
@@ -117,12 +117,15 @@
 -					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
 +					if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
  						break;
+-					Utils.Swap(ref inv[slot], ref Main.mouseItem);
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
 +						break;
 +
- 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
++					if (Main.mouseItem.maxStack <= 1 || inv[slot].type != Main.mouseItem.type || inv[slot].stack == inv[slot].maxStack || Main.mouseItem.stack == Main.mouseItem.maxStack)//TML: OnStackHook: Prevent swapping items if they will be stacked together.
++						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  					if (inv[slot].stack > 0)
  						AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, inv[slot].stack));
+ 					else
 @@ -486,6 +_,9 @@
  								break;
  							case 8:
@@ -133,10 +136,11 @@
  							case 10:
  							case 11:
  							case 12:
-@@ -499,9 +_,14 @@
+@@ -499,9 +_,15 @@
  					}
  					if (inv[slot].type == 0 || inv[slot].stack < 1)
  						inv[slot] = new Item();
++
 +					//if (Main.mouseItem.IsTheSameAs(inv[slot])) {
  					if (Main.mouseItem.IsTheSameAs(inv[slot])) {
 -						Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);
@@ -352,7 +356,7 @@
  				AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
  			}
  
-+			ItemLoader.StackItems(Main.mouseItem, inv[slot], out int numTransfered, context != 29, 1, Main.mouseItem.stack == 0);//Right clickint to pick up an item
++			ItemLoader.StackItems(Main.mouseItem, inv[slot], out int numTransfered, context == 29, 1);
 +
 +			/* TML: #OnStackHook
  			Main.mouseItem.stack++;
@@ -585,7 +589,7 @@
 +							}
 +							else {
 +								Main.mouseItem.stack++;
-+								ItemLoader.StackItems(Main.mouseItem, inv[slot].Clone(), out int numTransfered, false);//Not sure when this happens yet, but looks needed
++								ItemLoader.StackItems(Main.mouseItem, inv[slot].Clone(), out int numTransfered, true);
 +							}
 +							/* TML: #OnStackHook
  							if (Main.mouseItem.IsAir)
@@ -635,7 +639,7 @@
  					Main.shopSellbackHelper.Add(inv[slot]);
  
 -				Main.mouseItem.stack++;
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot].Clone(), out int stack2, false);//Buy from shop
++				ItemLoader.StackItems(Main.mouseItem, inv[slot].Clone(), out int numTransfered, true, 1);
 +
 +				//Main.mouseItem.stack++;//TML: #OnStackHook
  				RefreshStackSplitCooldown();

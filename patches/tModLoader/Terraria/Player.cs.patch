@@ -4028,7 +4028,7 @@
  		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
 +			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
  			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
-+				if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))//Void bag pick up and stack item
++				if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
 +					return false;
 +
  				if (newItem.IsACoin)
@@ -4048,7 +4048,7 @@
  				if (returnItem.stack + inv[i].stack <= inv[i].maxStack) {
  					inv[i].stack += returnItem.stack;
  					if (!settings.NoText)
-@@ -27984,19 +_,39 @@
+@@ -27984,19 +_,38 @@
  
  				inv[i].stack = inv[i].maxStack;
  				settings.HandlePostAction(inv[i]);
@@ -4060,9 +4060,8 @@
  
  		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
 +			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+			//Should This be ItemLoader.CanStack(inventory[i], returnItem) ?
  			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+				if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))//Shift click item from chest to inventory
++				if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
 +					return false;
 +
  				if (newItem.IsACoin)
@@ -4070,7 +4069,7 @@
  				else
  					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
  
-+				DoCoins(i);//Need to make sure the order for this doesn't matter
++				DoCoins(i);
 +				if (plr == Main.myPlayer)
 +					Recipe.FindRecipes();
 +
