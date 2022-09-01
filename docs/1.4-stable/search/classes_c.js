@@ -134,13 +134,14 @@ var searchData=
   ['movewithrotor_131',['MoveWithRotor',['../class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_move_with_rotor.html',1,'Terraria::GameContent::Skies::CreditsRoll::Actions::NPCs']]],
   ['mp3audiotrack_132',['MP3AudioTrack',['../class_terraria_1_1_audio_1_1_m_p3_audio_track.html',1,'Terraria::Audio']]],
   ['mp3reader_133',['MP3Reader',['../class_terraria_1_1_mod_loader_1_1_assets_1_1_m_p3_reader.html',1,'Terraria::ModLoader::Assets']]],
-  ['multiple_134',['Multiple',['../class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_multiple.html',1,'Terraria::ModLoader::PlayerDrawLayer']]],
-  ['multipleexception_135',['MultipleException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_multiple_exception.html',1,'Terraria::ModLoader::Exceptions']]],
-  ['mushroombiome_136',['MushroomBiome',['../class_terraria_1_1_game_content_1_1_personalities_1_1_mushroom_biome.html',1,'Terraria::GameContent::Personalities']]],
-  ['mushroomhousebuilder_137',['MushroomHouseBuilder',['../class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_mushroom_house_builder.html',1,'Terraria::GameContent::Biomes::CaveHouse']]],
-  ['musiccueholder_138',['MusicCueHolder',['../class_terraria_1_1_audio_1_1_music_cue_holder.html',1,'Terraria::Audio']]],
-  ['musicid_139',['MusicID',['../class_terraria_1_1_i_d_1_1_music_i_d.html',1,'Terraria::ID']]],
-  ['musicloader_140',['MusicLoader',['../class_terraria_1_1_mod_loader_1_1_music_loader.html',1,'Terraria::ModLoader']]],
-  ['mysticlogfairiesevent_141',['MysticLogFairiesEvent',['../class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html',1,'Terraria::GameContent::Events']]],
-  ['mysticsnake_142',['MysticSnake',['../class_terraria_1_1_world_building_1_1_conditions_1_1_mystic_snake.html',1,'Terraria::WorldBuilding::Conditions']]]
+  ['multidimarrayserializer_134',['MultiDimArraySerializer',['../class_multi_dim_array_serializer.html',1,'']]],
+  ['multiple_135',['Multiple',['../class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_multiple.html',1,'Terraria::ModLoader::PlayerDrawLayer']]],
+  ['multipleexception_136',['MultipleException',['../class_terraria_1_1_mod_loader_1_1_exceptions_1_1_multiple_exception.html',1,'Terraria::ModLoader::Exceptions']]],
+  ['mushroombiome_137',['MushroomBiome',['../class_terraria_1_1_game_content_1_1_personalities_1_1_mushroom_biome.html',1,'Terraria::GameContent::Personalities']]],
+  ['mushroomhousebuilder_138',['MushroomHouseBuilder',['../class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_mushroom_house_builder.html',1,'Terraria::GameContent::Biomes::CaveHouse']]],
+  ['musiccueholder_139',['MusicCueHolder',['../class_terraria_1_1_audio_1_1_music_cue_holder.html',1,'Terraria::Audio']]],
+  ['musicid_140',['MusicID',['../class_terraria_1_1_i_d_1_1_music_i_d.html',1,'Terraria::ID']]],
+  ['musicloader_141',['MusicLoader',['../class_terraria_1_1_mod_loader_1_1_music_loader.html',1,'Terraria::ModLoader']]],
+  ['mysticlogfairiesevent_142',['MysticLogFairiesEvent',['../class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html',1,'Terraria::GameContent::Events']]],
+  ['mysticsnake_143',['MysticSnake',['../class_terraria_1_1_world_building_1_1_conditions_1_1_mystic_snake.html',1,'Terraria::WorldBuilding::Conditions']]]
 ];

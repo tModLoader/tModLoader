@@ -26,10 +26,12 @@ var searchData=
   ['torsogroup_23',['TorsoGroup',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#acd2e73dff755e1f63d43e1e0264af5ee',1,'Terraria::DataStructures::PlayerDrawLayers']]],
   ['toxicbubble_24',['ToxicBubble',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a76abbc27d3f08ebdea988d64dfe65042',1,'Terraria::ID::ProjAIStyleID']]],
   ['toxiccloud_25',['ToxicCloud',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a008b156f0a5691524bd84a6d6189fd8d',1,'Terraria::ID::ProjAIStyleID']]],
-  ['trashcan_26',['TrashCan',['../class_terraria_1_1_i_d_1_1_cursor_override_i_d.html#a0ffa5453cc50944de5a6e0cb93f3f3a6',1,'Terraria::ID::CursorOverrideID']]],
-  ['treasuregrabrange_27',['treasureGrabRange',['../class_terraria_1_1_item.html#afbab21b7d945d8c60fb2771ecb728506',1,'Terraria::Item']]],
-  ['treesapling_28',['TreeSapling',['../class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a0bcb455dc6561673f04ffa5d5e4b31ee',1,'Terraria::ID::TileID::Sets']]],
-  ['trueeyeofcthulhu_29',['TrueEyeOfCthulhu',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a7ce0a32a41636524b157304ace8a81fe',1,'Terraria::ID::NPCAIStyleID']]],
-  ['twilightlance_30',['TwilightLance',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a1789cb18e3742d97c7bfe774fad66da1',1,'Terraria::ID::ProjAIStyleID']]],
-  ['typhoon_31',['Typhoon',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a83155778f57aee7bfa5bcfa90a859dea',1,'Terraria::ID::ProjAIStyleID']]]
+  ['trailcachelength_26',['TrailCacheLength',['../class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a34e8e465f41e291af87ca77c38a0f69b',1,'Terraria::ID::ProjectileID::Sets']]],
+  ['trailingmode_27',['TrailingMode',['../class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a13812f2eed5c2a980c95f97c5b4be05c',1,'Terraria::ID::ProjectileID::Sets']]],
+  ['trashcan_28',['TrashCan',['../class_terraria_1_1_i_d_1_1_cursor_override_i_d.html#a0ffa5453cc50944de5a6e0cb93f3f3a6',1,'Terraria::ID::CursorOverrideID']]],
+  ['treasuregrabrange_29',['treasureGrabRange',['../class_terraria_1_1_item.html#afbab21b7d945d8c60fb2771ecb728506',1,'Terraria::Item']]],
+  ['treesapling_30',['TreeSapling',['../class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a0bcb455dc6561673f04ffa5d5e4b31ee',1,'Terraria::ID::TileID::Sets']]],
+  ['trueeyeofcthulhu_31',['TrueEyeOfCthulhu',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a7ce0a32a41636524b157304ace8a81fe',1,'Terraria::ID::NPCAIStyleID']]],
+  ['twilightlance_32',['TwilightLance',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a1789cb18e3742d97c7bfe774fad66da1',1,'Terraria::ID::ProjAIStyleID']]],
+  ['typhoon_33',['Typhoon',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a83155778f57aee7bfa5bcfa90a859dea',1,'Terraria::ID::ProjAIStyleID']]]
 ];

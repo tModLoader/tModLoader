@@ -11,6 +11,6 @@ var namespace_terraria_1_1_utilities =
     [ "NPCUtils", "class_terraria_1_1_utilities_1_1_n_p_c_utils.html", "class_terraria_1_1_utilities_1_1_n_p_c_utils" ],
     [ "OldAttribute", "class_terraria_1_1_utilities_1_1_old_attribute.html", null ],
     [ "PlatformUtilities", "class_terraria_1_1_utilities_1_1_platform_utilities.html", null ],
-    [ "UnifiedRandom", "class_terraria_1_1_utilities_1_1_unified_random.html", null ],
+    [ "UnifiedRandom", "class_terraria_1_1_utilities_1_1_unified_random.html", "class_terraria_1_1_utilities_1_1_unified_random" ],
     [ "WeightedRandom", "class_terraria_1_1_utilities_1_1_weighted_random.html", null ]
 ];

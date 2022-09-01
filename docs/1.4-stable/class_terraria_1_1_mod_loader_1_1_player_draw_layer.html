@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.7</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_play
 
 <p>Inherits <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType&lt; TEntity, TModType &gt;</a>.</p>
 
-<p>Inherited by Terraria.DataStructures.VanillaPlayerDrawLayer, Terraria.ModLoader.Default.Developer.Jofairden.JofairdenArmorDrawLayer, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html">Terraria.ModLoader.PlayerDrawLayerSlot</a>.</p>
+<p>Inherited by Terraria.DataStructures.VanillaPlayerDrawLayer, Terraria.ModLoader.Default.Developer.Jofairden.JofairdenArmorDrawLayer, Terraria.ModLoader.Default.Patreon.GuildpackEyeGlowDrawLayer, Terraria.ModLoader.Default.Patreon.GuildpackMiscEffectsDrawLayer, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html">Terraria.ModLoader.PlayerDrawLayerSlot</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -191,7 +191,7 @@ override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ad923b861201f275850f0ea8563e7a45d"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#ad923b861201f275850f0ea8563e7a45d">Draw</a> (ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
-<tr class="memdesc:ad923b861201f275850f0ea8563e7a45d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws this layer.  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#ad923b861201f275850f0ea8563e7a45d">More...</a><br /></td></tr>
+<tr class="memdesc:ad923b861201f275850f0ea8563e7a45d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#ad923b861201f275850f0ea8563e7a45d">More...</a><br /></td></tr>
 <tr class="separator:ad923b861201f275850f0ea8563e7a45d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fdc161ad0da15b57a1c00dae4c8ca43"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a7fdc161ad0da15b57a1c00dae4c8ca43">Register</a> ()</td></tr>
 <tr class="memdesc:a7fdc161ad0da15b57a1c00dae4c8ca43"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a7fdc161ad0da15b57a1c00dae4c8ca43">More...</a><br /></td></tr>
@@ -329,7 +329,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Draws this layer. </p>
+<p>Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check </p>
+<p ><code>if(drawinfo.shadow == 0f)</code> to only draw for the original player image.</p>
 
 <p>Implemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#a43b38d5256524b136154c6f15c7c39e7">Terraria.ModLoader.PlayerDrawLayerSlot</a>.</p>
 
