@@ -15,6 +15,14 @@
  #endif
  using NATUPNPLib;
  
+@@ -43,6 +_,7 @@
+ 		public static int ListenPort = 7777;
+ 		public static bool IsListening = true;
+ 		public static bool UseUPNP = true;
++		public static bool SaveOnServerExit = true;
+ 		public static bool Disconnect;
+ 		public static bool SpamCheck = false;
+ 		public static bool HasClients;
 @@ -160,6 +_,8 @@
  		}
  
@@ -24,15 +32,24 @@
  			int num = FindNextOpenClientSlot();
  			if (num != -1) {
  				Clients[num].Reset();
-@@ -283,6 +_,8 @@
+@@ -279,6 +_,7 @@
+ 				Clients[i].Reset();
+ 			}
+ 
++			/*
+ 			if (Main.menuMode != 15) {
  				Main.netMode = 0;
  				Main.menuMode = 10;
- 				WorldFile.SaveWorld();
-+				SystemLoader.OnWorldUnload();
-+				TileIO.PostExitWorldCleanup();
- 				Main.menuMode = 0;
- 			}
+@@ -288,7 +_,9 @@
  			else {
+ 				Main.netMode = 0;
+ 			}
++			*/
+ 
++			Main.netMode = 0;
+ 			Main.myPlayer = 0;
+ 		}
+ 
 @@ -327,7 +_,7 @@
  				}
  
