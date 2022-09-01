@@ -67,16 +67,17 @@
  								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
  #endif
  							}
-@@ -4027,16 +_,16 @@
+@@ -4027,16 +_,17 @@
  		}
  
  		public void NeverSleep() {
 -#if WINDOWS
 -			previousExecutionState = NativeMethods.SetThreadExecutionState(2147483649u);
 -#endif
-+			if (OperatingSystem.IsWindows()) {
++//#if WINDOWS
++			if (OperatingSystem.IsWindows())
 +				previousExecutionState = NativeMethods.SetThreadExecutionState(2147483649u);
-+			}
++//#endif
  		}
  
  		public void YouCanSleepNow() {

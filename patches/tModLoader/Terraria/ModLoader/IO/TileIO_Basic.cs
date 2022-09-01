@@ -151,7 +151,7 @@ namespace Terraria.ModLoader.IO
 				return ms.ToArray();
 			}
 
-			public void PostExitWorldCleanup() {
+			public void Clear() {
 				// make sure data from the last loaded world doesn't carry over into the next one
 				entries = null;
 				unloadedEntryLookup = null;
@@ -250,9 +250,9 @@ namespace Terraria.ModLoader.IO
 			Walls.unloadedTypes.Clear();
 		}
 
-		internal static void PostExitWorldCleanup() {
-			Tiles.PostExitWorldCleanup();
-			Walls.PostExitWorldCleanup();
+		internal static void ClearWorld() {
+			Tiles.Clear();
+			Walls.Clear();
 		}
 	}
 }

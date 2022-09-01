@@ -78,7 +78,7 @@
  					if (Main.netMode == 1) {
  						Netplay.Disconnect = true;
  						Main.statusText = NetworkText.Deserialize(reader).ToString();
-+						Main.menuMode = 14; // Added by TML.
++						Main.menuMode = MenuID.MultiplayerJoining; // Added by TML.
  					}
  					break;
  				case 3:
