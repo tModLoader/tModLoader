@@ -7,6 +7,7 @@ var searchData=
   ['soundlimitbehavior_4',['SoundLimitBehavior',['../struct_terraria_1_1_audio_1_1_sound_style.html#a6977793241d3036827edb019d3ff1a82',1,'Terraria::Audio::SoundStyle']]],
   ['soundpath_5',['SoundPath',['../struct_terraria_1_1_audio_1_1_sound_style.html#a148513c6edd21c1b748da1b3aed56d8b',1,'Terraria::Audio::SoundStyle']]],
   ['spawnmodbiomes_6',['SpawnModBiomes',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae8f56182cf5a6356cc184c6e69ea54a4',1,'Terraria::ModLoader::ModNPC']]],
-  ['summonmeleespeed_7',['SummonMeleeSpeed',['../class_terraria_1_1_mod_loader_1_1_damage_class.html#a955a2bf4fc555288677aa3a8f94728ee',1,'Terraria::ModLoader::DamageClass']]],
-  ['suntexture_8',['SunTexture',['../class_terraria_1_1_mod_loader_1_1_mod_menu.html#a4f4cca522b446af32e2678a162b503c0',1,'Terraria::ModLoader::ModMenu']]]
+  ['stopanimationonhurt_7',['StopAnimationOnHurt',['../class_terraria_1_1_item.html#a3bb8b2970b40173fc3929b97c00a749f',1,'Terraria::Item']]],
+  ['summonmeleespeed_8',['SummonMeleeSpeed',['../class_terraria_1_1_mod_loader_1_1_damage_class.html#a955a2bf4fc555288677aa3a8f94728ee',1,'Terraria::ModLoader::DamageClass']]],
+  ['suntexture_9',['SunTexture',['../class_terraria_1_1_mod_loader_1_1_mod_menu.html#a4f4cca522b446af32e2678a162b503c0',1,'Terraria::ModLoader::ModMenu']]]
 ];

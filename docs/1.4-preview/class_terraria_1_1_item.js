@@ -57,6 +57,8 @@ var class_terraria_1_1_item =
     [ "consumeAmmoOnFirstShotOnly", "class_terraria_1_1_item.html#a0a3474ad3afb436696fe30457dcf1afa", null ],
     [ "consumeAmmoOnLastShotOnly", "class_terraria_1_1_item.html#af3b3f3fa5755d7f859f109680a3d7a97", null ],
     [ "DamageType", "class_terraria_1_1_item.html#ae45bda70c1a5f91854104eeb9d70722a", null ],
+    [ "InterruptChannelOnHurt", "class_terraria_1_1_item.html#a362369470ebe9a9c61f59f5219028027", null ],
     [ "IsCandidateForReforge", "class_terraria_1_1_item.html#a121a8acd82baa2bdf0c3cbc700a04aa3", null ],
+    [ "StopAnimationOnHurt", "class_terraria_1_1_item.html#a3bb8b2970b40173fc3929b97c00a749f", null ],
     [ "useLimitPerAnimation", "class_terraria_1_1_item.html#a865a880dc9077ce08b2882264e0913eb", null ]
 ];
