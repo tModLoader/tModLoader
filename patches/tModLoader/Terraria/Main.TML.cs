@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -227,6 +228,17 @@ namespace Terraria
 			var tcs = new TaskCompletionSource<T>();
 			QueueMainThreadAction(() => tcs.SetResult(func()));
 			return tcs.Task;
+		}
+
+		public static void AddSignalTraps() {
+			static void Handle(PosixSignalContext ctx) {
+				ctx.Cancel = true;
+				Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");
+				Netplay.Disconnect = true;
+			}
+
+			PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
+			PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
 		}
 	}
 }
