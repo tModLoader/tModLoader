@@ -24,7 +24,7 @@
  			int num = FindNextOpenClientSlot();
  			if (num != -1) {
  				Clients[num].Reset();
-@@ -283,6 +_,8 @@
+@@ -282,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
  				WorldFile.SaveWorld();
@@ -33,7 +33,7 @@
  				Main.menuMode = 0;
  			}
  			else {
-@@ -327,7 +_,7 @@
+@@ -324,7 +_,7 @@
  				}
  
  				if (Clients[i].IsActive) {
@@ -42,7 +42,7 @@
  					Clients[i].PendingTerminationApproved = true;
  					continue;
  				}
-@@ -421,6 +_,12 @@
+@@ -418,6 +_,12 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -55,7 +55,7 @@
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -437,11 +_,11 @@
+@@ -434,11 +_,11 @@
  			Main.netMode = 1;
  			Main.menuMode = 14;
  			if (!Main.autoPass)
@@ -69,7 +69,7 @@
  		}
  
  		private static void InnerClientLoop() {
-@@ -479,6 +_,7 @@
+@@ -476,6 +_,7 @@
  							Main.cloudAlpha = Main.maxRaining;
  							Main.ToggleGameplayUpdates(state: false);
  							WorldGen.clearWorld();
@@ -77,7 +77,7 @@
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -530,6 +_,11 @@
+@@ -527,6 +_,11 @@
  				}
  
  				if (!Main.gameMenu) {
