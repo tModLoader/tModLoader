@@ -32,21 +32,21 @@
  			int num = FindNextOpenClientSlot();
  			if (num != -1) {
  				Clients[num].Reset();
-@@ -278,16 +_,7 @@
+@@ -278,6 +_,7 @@
  				Clients[i].Reset();
  			}
  
--			if (Main.menuMode != 15) {
--				Main.netMode = 0;
++			/*
+ 			if (Main.menuMode != 15) {
+ 				Main.netMode = 0;
+ 				Main.menuMode = 10;
+@@ -287,7 +_,9 @@
+ 			else {
+ 				Main.netMode = 0;
+ 			}
++			*/
+ 
 +			Main.netMode = 0;
--				Main.menuMode = 10;
--				WorldFile.SaveWorld();
--				Main.menuMode = 0;
--			}
--			else {
--				Main.netMode = 0;
--			}
--
  			Main.myPlayer = 0;
  		}
  
