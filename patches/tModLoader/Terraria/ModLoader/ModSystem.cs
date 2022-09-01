@@ -69,9 +69,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
 	/// </summary>
-	public virtual void PostSetupRecipes()
-	{
-	}
+	public virtual void PostSetupRecipes() { }
 
 	/// <summary>
 	/// Override this method to add recipe groups to the game.
@@ -90,6 +88,11 @@ public abstract partial class ModSystem : ModType
 	/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
 	/// </summary>
 	public virtual void OnWorldUnload() { }
+
+	/// <summary>
+	/// Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading
+	/// </summary>
+	public virtual void ClearWorld() { }
 
 	/// <summary>
 	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
