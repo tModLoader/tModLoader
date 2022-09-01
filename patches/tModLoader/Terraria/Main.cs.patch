@@ -671,14 +671,14 @@
  		}
  
  		public void SetWorldName(string world) {
-@@ -4032,6 +_,8 @@
+@@ -4033,6 +_,8 @@
  		}
  
  		public void YouCanSleepNow() {
 +			if (!dedServ && audioSystem == null) //supress extra exceptions from audio engine failing to load
 +				return;
- #if WINDOWS
- 			if (previousExecutionState != 0)
+ //#if WINDOWS
+ 			if (OperatingSystem.IsWindows() && previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
 @@ -4042,7 +_,7 @@
  		public void DedServ() {
