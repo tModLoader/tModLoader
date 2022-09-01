@@ -416,14 +416,13 @@
  			CaptureInterface.ResetFocus();
  			Main.ActivePlayerFileData.StopPlayTimer();
  			Player.SavePlayer(Main.ActivePlayerFileData);
-@@ -2402,6 +_,11 @@
+@@ -2402,6 +_,10 @@
  				Main.netMode = 0;
  			}
  
 +			//This is only called in case of a manual quit or disconnect.
 +			//There is a less common (client) call to this in Netplay.InnerClientLoop.
 +			SystemLoader.OnWorldUnload();
-+			TileIO.PostExitWorldCleanup();
 +
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
@@ -589,6 +588,14 @@
  			}
  
  			for (int num8 = 0; num8 < 8000; num8++) {
+@@ -2826,6 +_,7 @@
+ 
+ 			setWorldSize();
+ 			Star.SpawnStars();
++			TileIO.ClearWorld();
+ 			worldCleared = true;
+ 		}
+ 
 @@ -5616,6 +_,8 @@
  		}
  

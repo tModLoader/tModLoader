@@ -540,15 +540,13 @@
  				}
  
  				buffer[bufferIndex].checkBytes = false;
-@@ -2324,8 +_,10 @@
+@@ -2324,8 +_,7 @@
  			}
  
  			if (!flag) {
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
- 				WorldFile.SaveWorld();
-+				SystemLoader.OnWorldUnload();
-+				TileIO.PostExitWorldCleanup();
+-				WorldFile.SaveWorld();
  				Netplay.Disconnect = true;
  			}
  		}

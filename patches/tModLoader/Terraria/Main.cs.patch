@@ -671,15 +671,6 @@
  		}
  
  		public void SetWorldName(string world) {
-@@ -4033,6 +_,8 @@
- 		}
- 
- 		public void YouCanSleepNow() {
-+			if (!dedServ && audioSystem == null) //supress extra exceptions from audio engine failing to load
-+				return;
- //#if WINDOWS
- 			if (OperatingSystem.IsWindows() && previousExecutionState != 0)
- 				NativeMethods.SetThreadExecutionState(previousExecutionState);
 @@ -4042,7 +_,7 @@
  		public void DedServ() {
  			NeverSleep();
@@ -849,7 +840,7 @@
  			Task task2 = WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
  			Console.WriteLine("");
-@@ -4459,39 +_,38 @@
+@@ -4459,6 +_,10 @@
  			catch {
  			}
  
@@ -860,12 +851,7 @@
  			if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
  				WriteFancyWorldLoadErrorToConsole();
  				if (!autoShutdown)
- 					Console.ReadKey();
- 
-+				Logging.ResetPastExceptions(); // "Running one update..." above.
- 				YouCanSleepNow();
- 				return;
- 			}
+@@ -4470,28 +_,22 @@
  
  			Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
  			Console.WriteLine("");
@@ -900,34 +886,38 @@
  					if (oldStatusText != statusText) {
  						oldStatusText = statusText;
  						Console.WriteLine(statusText);
-@@ -4505,20 +_,14 @@
+@@ -4505,6 +_,7 @@
  					if (Main.OnTickForThirdPartySoftwareOnly != null)
  						Main.OnTickForThirdPartySoftwareOnly();
  
--					double num9 = stopwatch.Elapsed.TotalMilliseconds + num7;
--					if (num9 < num6) {
--						int num10 = (int)(num6 - num9) - 1;
--						if (num10 > 1) {
--							Thread.Sleep(num10 - 1);
--							if (!Netplay.HasClients) {
--								num7 = 0.0;
--								Thread.Sleep(10);
--							}
--						}
--					}
--				}
++					/*
+ 					double num9 = stopwatch.Elapsed.TotalMilliseconds + num7;
+ 					if (num9 < num6) {
+ 						int num10 = (int)(num6 - num9) - 1;
+@@ -4519,8 +_,23 @@
+ 				}
+ 
+ 				Thread.Sleep(0);
++				*/
++
 +					double now = stopwatch.ElapsedMilliseconds;
 +					double remaining = target - now;
 +					target += delta; //new target
 +					if (target < now) //can't catch up, reset target
 +						target = now + delta;
- 
--				Thread.Sleep(0);
++
 +					Thread.Sleep(Math.Max((int)remaining, 0));
 +				}
  			}
  
++			if (menuMode != 15 && Netplay.SaveOnServerExit) {
++				WorldFile.SaveWorld();
++			}
++
++			SystemLoader.OnWorldUnload();
  			YouCanSleepNow();
+ 		}
+ 
 @@ -4538,8 +_,19 @@
  
  		public static void startDedInputCallBack() {
@@ -971,12 +961,15 @@
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
-@@ -4616,6 +_,8 @@
+@@ -4612,10 +_,10 @@
+ 						NetMessage.SendData(7);
+ 					}
+ 					else if (text == Language.GetTextValue("CLI.ExitNoSave_Command")) {
++						Netplay.SaveOnServerExit = false;
+ 						Netplay.Disconnect = true;
  					}
  					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
- 						WorldFile.SaveWorld();
-+						SystemLoader.OnWorldUnload();
-+						TileIO.PostExitWorldCleanup();
+-						WorldFile.SaveWorld();
  						Netplay.Disconnect = true;
  						SocialAPI.Shutdown();
  					}
