@@ -851,7 +851,7 @@
  			if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
  				WriteFancyWorldLoadErrorToConsole();
  				if (!autoShutdown)
-@@ -4470,28 +_,22 @@
+@@ -4470,28 +_,23 @@
  
  			Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
  			Console.WriteLine("");
@@ -871,6 +871,7 @@
 -			int num8 = 0;
 -			new Stopwatch().Start();
  			Netplay.StartServer();
++			AddSignalTraps();
  			gameMenu = false;
 +			double delta = 1000 / 60D;
 +			double target = delta;
@@ -894,7 +895,7 @@
  					double num9 = stopwatch.Elapsed.TotalMilliseconds + num7;
  					if (num9 < num6) {
  						int num10 = (int)(num6 - num9) - 1;
-@@ -4519,8 +_,23 @@
+@@ -4519,8 +_,24 @@
  				}
  
  				Thread.Sleep(0);
@@ -911,6 +912,7 @@
  			}
  
 +			if (menuMode != 15 && Netplay.SaveOnServerExit) {
++				Console.WriteLine("Saving before exit...");
 +				WorldFile.SaveWorld();
 +			}
 +
