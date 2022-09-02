@@ -411,6 +411,12 @@ namespace Terraria.Social.Steam
 						nextPercentageToLog = 100;
 					}
 				}
+
+				// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
+				float progressRaw = dlBytes / totalBytes;
+				if (progressRaw == 1) {
+					break;
+				}
 			}
 		}
 	}
