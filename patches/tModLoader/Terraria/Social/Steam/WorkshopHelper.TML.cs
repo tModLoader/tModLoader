@@ -148,7 +148,7 @@ namespace Terraria.Social.Steam
 		private static void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone) {
 			foreach (var item in items) {
 				var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
-				bool forceUpdate = SteamedWraps.DoesWorkshopItemNeedUpdate(publishId) || !SteamedWraps.IsWorkshopItemInstalled(publishId);
+				bool forceUpdate = item.HasUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
 
 				uiProgress?.PrepUIForDownload(item.DisplayName);
 				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
