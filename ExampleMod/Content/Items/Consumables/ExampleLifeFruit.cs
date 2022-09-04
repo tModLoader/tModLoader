@@ -64,10 +64,10 @@ namespace ExampleMod.Content.Items.Consumables
 	{
 		public int exampleLifeFruits;
 
-		public override void ResetEffects() {
-			// Increasing health in the ResetEffects hook in particular is important so it shows up properly in the player select menu
-			// and so that life regeneration properly scales with the bonus health
-			Player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
+		public override void ModifyMaxStats(ref int lifeMax, ref int manaMax) {
+			// "lifeMax" is added as a shortcut for "player.statLifeMax"
+			// Modifying "lifeMax" here allows the changes to appear in the player select menu as well
+			lifeMax += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {

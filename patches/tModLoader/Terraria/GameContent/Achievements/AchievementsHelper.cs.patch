@@ -6,12 +6,16 @@
  namespace Terraria.GameContent.Achievements
  {
  	public class AchievementsHelper
-@@ -99,7 +_,7 @@
- 			if (player.statManaMax > 20)
+@@ -96,10 +_,10 @@
+ 				}
+ 			}
+ 
+-			if (player.statManaMax > 20)
++			if (player.ConsumedManaCrystals > 0)
  				Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();
  
 -			if (player.statLifeMax == 500 && player.statManaMax == 200)
-+			if (player.statLifeMax >= 500 && player.statManaMax >= 200)
++			if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
  				Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
  
  			if (player.miscEquips[4].type > 0)
@@ -29,13 +33,13 @@
  				case 1:
  					Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();
 -					if (player.statLifeMax == 500 && player.statManaMax == 200)
-+					if (player.statLifeMax >= 500 && player.statManaMax >= 200)
++					if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
  						Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
  					break;
  				case 2:
  					Main.Achievements.GetCondition("GET_A_LIFE", "Use").Complete();
 -					if (player.statLifeMax == 500 && player.statManaMax == 200)
-+					if (player.statLifeMax >= 500 && player.statManaMax >= 200)
++					if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
  						Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
  					break;
  				case 3:

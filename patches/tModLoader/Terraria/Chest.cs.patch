@@ -146,6 +146,21 @@
  		}
  
  		public void SetupShop(int type) {
+@@ -2015,12 +_,12 @@
+ 						num++;
+ 						array[num].SetDefaults(1979);
+ 						num++;
+-						if (Main.player[Main.myPlayer].statLifeMax >= 400) {
++						if (Main.player[Main.myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 							array[num].SetDefaults(1977);
+ 							num++;
+ 						}
+ 
+-						if (Main.player[Main.myPlayer].statManaMax >= 200) {
++						if (Main.player[Main.myPlayer].ConsumedManaCrystals == Player.ManaCrystalMax) {
+ 							array[num].SetDefaults(1978);
+ 							num++;
+ 						}
 @@ -2611,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}

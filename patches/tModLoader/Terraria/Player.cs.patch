@@ -2464,7 +2464,16 @@
  			hasFootball = false;
  			drawingFootball = false;
  			minionKB = 0f;
-@@ -13116,11 +_,19 @@
+@@ -13110,17 +_,28 @@
+ 			gravControl = false;
+ 			honeyCombItem = null;
+ 			gravControl2 = false;
++			PlayerLoader.UpdateMaxStats(this);
++			/*
+ 			statLifeMax2 = statLifeMax;
+ 			statManaMax2 = statManaMax;
++			*/
+ 			chloroAmmoCost80 = false;
  			huntressAmmoCost90 = false;
  			ammoCost80 = false;
  			ammoCost75 = false;
@@ -5919,7 +5928,7 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -38410,16 +_,22 @@
+@@ -38410,16 +_,24 @@
  
  							player.statLife = binaryReader.ReadInt32();
  							player.statLifeMax = binaryReader.ReadInt32();
@@ -5939,6 +5948,8 @@
  							if (player.statMana > 400)
  								player.statMana = 400;
 +							*/
++
++							PlayerLoader.UpdateMaxStats(player);
  
  							if (num >= 125)
  								player.extraAccessory = binaryReader.ReadBoolean();
@@ -6044,9 +6055,11 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38926,7 +_,7 @@
+@@ -38925,8 +_,9 @@
+ 			lastVisualizedSelectedItem = new Item();
  			grappling[0] = -1;
  			statManaMax = 20;
++			PlayerLoader.ModifyBaseMaxStats(this);
  			extraAccessory = false;
 -			for (int n = 0; n < 625; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {
