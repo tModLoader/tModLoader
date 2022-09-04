@@ -3021,6 +3021,18 @@
  			if (tileSpeed > 3f)
  				tileSpeed = 3f;
  
+@@ -18472,8 +_,11 @@
+ 				wallSpeed = 3f;
+ 
+ 			wallSpeed = 1f / wallSpeed;
++			// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++			/*
+ 			if (statManaMax2 > 400)
+ 				statManaMax2 = 400;
++			*/
+ 
+ 			if (statDefense < 0)
+ 				statDefense = 0;
 @@ -18507,7 +_,9 @@
  				}
  			}
@@ -4703,6 +4715,86 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -31879,41 +_,61 @@
+ 				NetMessage.SendData(51, -1, -1, null, whoAmI, 5f);
+ 			}
+ 		}
++		public void UseManaMaxIncreasingItem(Item sItem, int increase) {
++			ItemLoader.ModifyManaIncrease(sItem, ref increase);
++
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statManaMax += increase;
++			statManaMax2 += increase;
++			statMana += increase;
++
++			if (Main.myPlayer == whoAmI)
++				ManaEffect(increase);
++		}
+ 
+ 		private void ItemCheck_UseManaCrystal(Item sItem) {
+-			if (sItem.type == 109 && itemAnimation > 0 && statManaMax < 200 && ItemTimeIsZero) {
++			if (sItem.type == 109 && itemAnimation > 0 && ConsumedManaCrystals < ManaCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
+-				statManaMax += 20;
+-				statManaMax2 += 20;
+-				statMana += 20;
+-				if (Main.myPlayer == whoAmI)
+-					ManaEffect(20);
++				UseManaMaxIncreasingItem(sItem, 20);
++				ConsumedManaCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 1);
+ 			}
+ 		}
+ 
++		public void UseHealthMaxIncreasingItem(Item sItem, int increase) {
++			ItemLoader.ModifyHealthIncrease(sItem, ref increase);
++
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statLifeMax += increase;
++			statLifeMax2 += increase;
++			statLife += increase;
++
++			if (Main.myPlayer == whoAmI)
++				HealEffect(increase);
++		}
++
+ 		private void ItemCheck_UseLifeFruit(Item sItem) {
+-			if (sItem.type == 1291 && itemAnimation > 0 && statLifeMax >= 400 && statLifeMax < 500 && ItemTimeIsZero) {
++			if (sItem.type == 1291 && itemAnimation > 0 && ConsumedLifeCrystals == LifeCrystalMax && ConsumedLifeFruit < LifeFruitMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
+-				statLifeMax += 5;
+-				statLifeMax2 += 5;
+-				statLife += 5;
+-				if (Main.myPlayer == whoAmI)
+-					HealEffect(5);
++				UseHealthMaxIncreasingItem(sItem, 5);
++				ConsumedLifeFruit++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 2);
+ 			}
+ 		}
+ 
+ 		private void ItemCheck_UseLifeCrystal(Item sItem) {
+-			if (sItem.type == 29 && itemAnimation > 0 && statLifeMax < 400 && ItemTimeIsZero) {
++			if (sItem.type == 29 && itemAnimation > 0 && ConsumedLifeCrystals < LifeCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
+-				statLifeMax += 20;
+-				statLifeMax2 += 20;
+-				statLife += 20;
+-				if (Main.myPlayer == whoAmI)
+-					HealEffect(20);
++				UseHealthMaxIncreasingItem(sItem, 20);
++				ConsumedLifeCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 0);
+ 			}
 @@ -32078,7 +_,7 @@
  
  			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -5827,6 +5919,29 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
+@@ -38410,16 +_,22 @@
+ 
+ 							player.statLife = binaryReader.ReadInt32();
+ 							player.statLifeMax = binaryReader.ReadInt32();
++							// Allow health stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
+ 							if (player.statLifeMax > 500)
+ 								player.statLifeMax = 500;
++							*/
+ 
+ 							player.statMana = binaryReader.ReadInt32();
+ 							player.statManaMax = binaryReader.ReadInt32();
++							// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
+ 							if (player.statManaMax > 200)
+ 								player.statManaMax = 200;
+ 
+ 							if (player.statMana > 400)
+ 								player.statMana = 400;
++							*/
+ 
+ 							if (num >= 125)
+ 								player.extraAccessory = binaryReader.ReadBoolean();
 @@ -38673,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;

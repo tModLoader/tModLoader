@@ -30,26 +30,24 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override bool CanUseItem(Player player) {
-			// Any mod that changes statLifeMax to be greater than 500 is broken and needs to fix their code.
-			// This check also prevents this item from being used before vanilla health upgrades are maxed out.
-			return player.statLifeMax == 500 && player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits;
+			// This check prevents this item from being used before vanilla health upgrades are maxed out.
+			return player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax;
 		}
 
 		public override bool? UseItem(Player player) {
-			// Do not do this: player.statLifeMax += 2;
-			player.statLifeMax2 += LifePerFruit;
-			player.statLife += LifePerFruit;
-			if (Main.myPlayer == player.whoAmI) {
-				// This spawns the green numbers showing the heal value and informs other clients as well.
-				player.HealEffect(LifePerFruit);
-			}
+			// Moving the exampleLifeFruits check from CanUseItem to here allows this example fruit to still "be used" like Life Crystals can be
+			// when at the max allowed, but it will just play the animation and not affect the player's max life
+			if (player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits) {
+				// This method handles permanently increasing the player's max health and displaying the green heal text
+				player.UseHealthMaxIncreasingItem(Item, LifePerFruit);
 
-			// This is very important. This is what makes it permanent.
-			player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits++;
-			// This handles the 2 achievements related to using any life increasing item or getting to exactly 500 hp and 200 mp.
-			// Ignored since our item is only useable after this achievement is reached
-			// AchievementsHelper.HandleSpecialEvent(player, 2);
-			//TODO re-add this when ModAchievement is merged?
+				// This field tracks how many of the example fruit have been consumed
+				player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits++;
+				// This handles the 2 achievements related to using any life increasing item or getting at or above 500 hp and 200 mp.
+				// Ignored since our item is only useable after this achievement is reached
+				// AchievementsHelper.HandleSpecialEvent(player, 2);
+				//TODO re-add this when ModAchievement is merged?
+			}
 			return true;
 		}
 

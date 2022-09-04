@@ -19,6 +19,15 @@ namespace Terraria
 
 		public Item equippedWings = null;
 
+		public int ConsumedLifeCrystals { get; private set; }
+		public const int LifeCrystalMax = 15;
+
+		public int ConsumedLifeFruit { get; private set; }
+		public const int LifeFruitMax = 20;
+
+		public int ConsumedManaCrystals { get; private set; }
+		public const int ManaCrystalMax = 9;
+
 		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);

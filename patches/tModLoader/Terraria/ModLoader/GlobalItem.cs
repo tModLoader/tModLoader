@@ -970,6 +970,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify by how much the player's maximum health is increased when they use a Life Crystal or Life Fruit
+		/// </summary>
+		public virtual void ModifyHealthIncrease(Item item, ref int increase) {
+		}
+
+		/// <summary>
+		/// Allows you to modify by how much the player's maximum mana is increased when they use a Mana Crystal
+		/// </summary>
+		public virtual void ModifyManaIncrease(Item item, ref int increase) {
+		}
+
+		/// <summary>
 		/// Allows you to save custom data for this item.
 		/// <br/>
 		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.

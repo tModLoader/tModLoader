@@ -2032,6 +2032,30 @@ namespace Terraria.ModLoader
 			return tooltips;
 		}
 
+		private delegate void DelegateModifyHealthIncrease(Item item, ref int increase);
+		private static HookList HookModifyHealthIncrease = AddHook<DelegateModifyHealthIncrease>(g => g.ModifyHealthIncrease);
+
+		/// <summary>
+		/// Calls all GlobalItem.ModifyHealthIncrease hooks
+		/// </summary>
+		public static void ModifyHealthIncrease(Item item, ref int increase) {
+			foreach (var g in HookModifyHealthIncrease.Enumerate(item.globalItems)) {
+				g.ModifyHealthIncrease(item, ref increase);
+			}
+		}
+
+		private delegate void DelegateModifyManaIncrease(Item item, ref int increase);
+		private static HookList HookModifyManaIncrease = AddHook<DelegateModifyManaIncrease>(g => g.ModifyManaIncrease);
+
+		/// <summary>
+		/// Calls all GlobalItem.ModifyManaIncrease hooks
+		/// </summary>
+		public static void ModifyManaIncrease(Item item, ref int increase) {
+			foreach (var g in HookModifyManaIncrease.Enumerate(item.globalItems)) {
+				g.ModifyManaIncrease(item, ref increase);
+			}
+		}
+
 		internal static bool NeedsModSaving(Item item) {
 			if (item.type <= ItemID.None)
 				return false;
