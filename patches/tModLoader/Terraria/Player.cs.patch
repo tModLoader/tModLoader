@@ -4724,11 +4724,11 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -31879,41 +_,57 @@
- 				NetMessage.SendData(51, -1, -1, null, whoAmI, 5f);
+@@ -31880,40 +_,57 @@
  			}
  		}
-+		public void UseManaMaxIncreasingItem(Item sItem, int increase) {
+ 
++		public void UseManaMaxIncreasingItem(int increase) {
 +			// Failsafe.  Might not be needed?
 +			if (increase < 0)
 +				increase = 0;
@@ -4740,7 +4740,7 @@
 +			if (Main.myPlayer == whoAmI)
 +				ManaEffect(increase);
 +		}
- 
++
  		private void ItemCheck_UseManaCrystal(Item sItem) {
 -			if (sItem.type == 109 && itemAnimation > 0 && statManaMax < 200 && ItemTimeIsZero) {
 +			if (sItem.type == 109 && itemAnimation > 0 && ConsumedManaCrystals < ManaCrystalMax && ItemTimeIsZero) {
@@ -4750,14 +4750,14 @@
 -				statMana += 20;
 -				if (Main.myPlayer == whoAmI)
 -					ManaEffect(20);
-+				UseManaMaxIncreasingItem(sItem, 20);
++				UseManaMaxIncreasingItem(20);
 +				ConsumedManaCrystals++;
  
  				AchievementsHelper.HandleSpecialEvent(this, 1);
  			}
  		}
  
-+		public void UseHealthMaxIncreasingItem(Item sItem, int increase) {
++		public void UseHealthMaxIncreasingItem(int increase) {
 +			// Failsafe.  Might not be needed?
 +			if (increase < 0)
 +				increase = 0;
@@ -4779,7 +4779,7 @@
 -				statLife += 5;
 -				if (Main.myPlayer == whoAmI)
 -					HealEffect(5);
-+				UseHealthMaxIncreasingItem(sItem, 5);
++				UseHealthMaxIncreasingItem(5);
 +				ConsumedLifeFruit++;
  
  				AchievementsHelper.HandleSpecialEvent(this, 2);
@@ -4795,7 +4795,7 @@
 -				statLife += 20;
 -				if (Main.myPlayer == whoAmI)
 -					HealEffect(20);
-+				UseHealthMaxIncreasingItem(sItem, 20);
++				UseHealthMaxIncreasingItem(20);
 +				ConsumedLifeCrystals++;
  
  				AchievementsHelper.HandleSpecialEvent(this, 0);

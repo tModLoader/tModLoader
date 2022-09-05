@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Items.Consumables
 			// when at the max allowed, but it will just play the animation and not affect the player's max life
 			if (player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits) {
 				// This method handles permanently increasing the player's max health and displaying the green heal text
-				player.UseHealthMaxIncreasingItem(Item, LifePerFruit);
+				player.UseHealthMaxIncreasingItem(LifePerFruit);
 
 				// This field tracks how many of the example fruit have been consumed
 				player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits++;
