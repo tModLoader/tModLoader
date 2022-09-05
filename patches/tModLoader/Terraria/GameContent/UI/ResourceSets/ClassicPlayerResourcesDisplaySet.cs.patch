@@ -22,7 +22,7 @@
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
 +
 +			//Added additional condition for zero/negative max life, since DrawMana does it as well
-+			if (localPlayer.ghost || snapshot.LifeMax <= 0)
++			if (localPlayer.ghost || snapshot.LifeMax <= 0 || snapshot.AmountOfHearts <= 0)
  				return;
  
 +			UIDisplay_LifePerHeart = snapshot.LifePerSegment;
@@ -73,11 +73,11 @@
  			Player localPlayer = Main.LocalPlayer;
  			SpriteBatch spriteBatch = Main.spriteBatch;
  			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
-+			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
 -			UIDisplay_ManaPerStar = 20;
-+			float UIDisplay_ManaPerStar = snapshot.ManaPerSegment;
 -			if (localPlayer.ghost || localPlayer.statManaMax2 <= 0)
-+			if (localPlayer.ghost || snapshot.ManaMax <= 0)
++			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
++			float UIDisplay_ManaPerStar = snapshot.ManaPerSegment;
++			if (localPlayer.ghost || snapshot.ManaMax <= 0 || snapshot.AmountOfManaStars <= 0)
  				return;
  
  			_ = localPlayer.statManaMax2 / 20;
