@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.GameContent.UI.ResourceSets;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -332,6 +333,19 @@ namespace Terraria.ModLoader
 			foreach (var system in HookModifyInterfaceLayers.arr) {
 				system.ModifyInterfaceLayers(layers);
 			}
+		}
+
+		public static void ModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot) {
+			foreach (var system in HookModifyStatSnapshot.arr) {
+				system.ModifyStatSnapshot(player, ref snapshot);
+			}
+
+			//Ensure that the total amounts don't exceed 20
+			if (snapshot.AmountOfHearts > 20)
+				snapshot.AmountOfHearts = 20;
+
+			if (snapshot.AmountOfManaStars > 20)
+				snapshot.AmountOfManaStars = 20;
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {

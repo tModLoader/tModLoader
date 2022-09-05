@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.GameContent.UI.ResourceSets;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.IO;
@@ -210,6 +211,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="layers">The layers.</param>
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
+
+		/// <summary>
+		/// Allows you to modify the information used to draw the player's health and mana
+		/// </summary>
+		/// <param name="player">The player</param>
+		/// <param name="snapshot">A snapshot of the player's health and mana stats</param>
+		public virtual void ModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot) { }
 
 		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.

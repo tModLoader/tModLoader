@@ -1,0 +1,77 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/PlayerStatsSnapshot.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/PlayerStatsSnapshot.cs
+@@ -1,3 +_,5 @@
++using Terraria.ModLoader;
++
+ namespace Terraria.GameContent.UI.ResourceSets
+ {
+ 	public struct PlayerStatsSnapshot
+@@ -10,6 +_,50 @@
+ 		public int ManaMax;
+ 		public float ManaPerSegment;
+ 
++		/// <summary>
++		/// How many hearts would be drawn with this snapshot's values
++		/// </summary>
++		public int AmountOfHearts {
++			get {
++				int amount = (int)(LifeMax / LifePerSegment);
++
++				if (amount > 20) {
++					AmountOfHearts = 20;
++					amount = 20;
++				}
++
++				return amount;
++			}
++			set {
++				if (value > 20)
++					value = 20;
++
++				LifePerSegment = LifeMax / (float)value;
++			}
++		}
++		
++		/// <summary>
++		/// How many mana stars would be drawn with this snapshot's values
++		/// </summary>
++		public int AmountOfManaStars {
++			get {
++				int amount = (int)(ManaMax / ManaPerSegment);
++
++				if (amount > 20) {
++					AmountOfManaStars = 20;
++					amount = 20;
++				}
++
++				return amount;
++			}
++			set {
++				if (value > 20)
++					value = 20;
++
++				ManaPerSegment = ManaMax / (float)value;
++			}
++		}
++
+ 		public PlayerStatsSnapshot(Player player) {
+ 			Life = player.statLife;
+ 			Mana = player.statMana;
+@@ -17,7 +_,7 @@
+ 			ManaMax = player.statManaMax2;
+ 			float num = 20f;
+ 			int num2 = player.statLifeMax / 20;
+-			int num3 = (player.statLifeMax - 400) / 5;
++			int num3 = player.ConsumedLifeFruit;
+ 			if (num3 < 0)
+ 				num3 = 0;
+ 
+@@ -31,6 +_,8 @@
+ 			LifeFruitCount = num3;
+ 			LifePerSegment = num;
+ 			ManaPerSegment = 20f;
++
++			SystemLoader.ModifyStatSnapshot(player, ref this);
+ 		}
+ 	}
+ }

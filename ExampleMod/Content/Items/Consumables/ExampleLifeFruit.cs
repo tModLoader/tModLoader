@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.GameContent.UI.ResourceSets;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -86,6 +87,15 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void LoadData(TagCompound tag) {
 			exampleLifeFruits = (int) tag["exampleLifeFruits"];
+		}
+	}
+
+	public class ExampleLifeFruitSystem : ModSystem
+	{
+		public override void ModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot) {
+			// Use this hook to modify the snapshot of the player's maximum health and mana before drawing the UIs
+			// tModLoader will automatically cap the amount of hearts/stars at 20 after this hook is called, so you don't have to modify the snapshot
+			//   with your increased life/mana max from ModPlayer.ModifyMaxStats()
 		}
 	}
 }
