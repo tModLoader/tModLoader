@@ -4724,13 +4724,11 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -31879,41 +_,61 @@
+@@ -31879,41 +_,57 @@
  				NetMessage.SendData(51, -1, -1, null, whoAmI, 5f);
  			}
  		}
 +		public void UseManaMaxIncreasingItem(Item sItem, int increase) {
-+			ItemLoader.ModifyManaIncrease(sItem, ref increase);
-+
 +			// Failsafe.  Might not be needed?
 +			if (increase < 0)
 +				increase = 0;
@@ -4760,8 +4758,6 @@
  		}
  
 +		public void UseHealthMaxIncreasingItem(Item sItem, int increase) {
-+			ItemLoader.ModifyHealthIncrease(sItem, ref increase);
-+
 +			// Failsafe.  Might not be needed?
 +			if (increase < 0)
 +				increase = 0;

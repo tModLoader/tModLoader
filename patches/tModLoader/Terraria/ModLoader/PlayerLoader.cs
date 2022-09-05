@@ -78,7 +78,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyBaseMaxStats(Player player, ref int healthMax, ref int manaMax);
+		private delegate void DelegateModifyBaseMaxStats(ref int healthMax, ref int manaMax);
 		private static HookList HookModifyBaseMaxStats = AddHook<DelegateModifyBaseMaxStats>(p => p.ModifyBaseMaxStats);
 
 		public static void ModifyBaseMaxStats(Player player) {
