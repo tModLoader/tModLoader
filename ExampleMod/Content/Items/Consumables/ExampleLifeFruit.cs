@@ -66,8 +66,10 @@ namespace ExampleMod.Content.Items.Consumables
 		public int exampleLifeFruits;
 
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
-			base.ModifyMaxStats(out health, out mana);
-			health.Base += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
+			health = StatModifier.Default;
+			health.Base = exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
+			// Alternatively:  health = StatModifier.Default with { Base = exampleLifeFruits * ExampleLifeFruit.LifePerFruit };
+			mana = StatModifier.Default;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {

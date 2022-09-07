@@ -100,15 +100,8 @@ namespace Terraria.ModLoader.IO
 				// Attempt to determine how many consumed items were used based on statLifeMax and statManaMax
 				int life = player.statLifeMax, mana = player.statManaMax;
 
-				if (life < 100)
-					life = 100;
-				else if (life > 500)
-					life = 500;
-
-				if (mana < 20)
-					mana = 20;
-				else if (mana > 200)
-					mana = 200;
+				life = Utils.Clamp(life, 100, 500);
+				mana = Utils.Clamp(mana, 20, 200);
 
 				if (life <= 400) {
 					player.ConsumedLifeCrystals = (life - 100) / 20;
