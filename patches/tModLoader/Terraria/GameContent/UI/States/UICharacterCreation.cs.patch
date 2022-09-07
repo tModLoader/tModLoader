@@ -14,7 +14,7 @@
  			if (_player.difficulty == 3) {
 +				_player.statLifeMax = 100;
 +				_player.statManaMax = 20;
-+				PlayerLoader.ModifyBaseMaxStats(_player);
++				PlayerLoader.ModifyMaxStats(_player);
 +				_player.statLife = _player.statLifeMax;
 +				_player.statMana = _player.statManaMax;
 +				/*

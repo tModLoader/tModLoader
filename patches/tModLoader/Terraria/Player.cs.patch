@@ -2468,7 +2468,7 @@
  			gravControl = false;
  			honeyCombItem = null;
  			gravControl2 = false;
-+			PlayerLoader.UpdateMaxStats(this);
++			PlayerLoader.ModifyMaxStats(this);
 +			/*
  			statLifeMax2 = statLifeMax;
  			statManaMax2 = statManaMax;
@@ -5787,10 +5787,15 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -38074,13 +_,20 @@
+@@ -38074,13 +_,25 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
++						// Keep the player state valid with vanilla (#HealthManaAPI)
++						// Any modifications to statLifeMax/statManaMax by mods can just be done during runtime
++						player.statLifeMax = 100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5;
++						player.statManaMax = 20 + player.ConsumedManaCrystals * 20;
++
 +						PlayerLoader.PreSavePlayer(player);
 +
  						binaryWriter.Write(248);
@@ -5945,7 +5950,7 @@
  								player.statMana = 400;
 +							*/
 +
-+							PlayerLoader.UpdateMaxStats(player);
++							PlayerLoader.ModifyMaxStats(player);
  
  							if (num >= 125)
  								player.extraAccessory = binaryReader.ReadBoolean();
@@ -6055,7 +6060,7 @@
  			lastVisualizedSelectedItem = new Item();
  			grappling[0] = -1;
  			statManaMax = 20;
-+			PlayerLoader.ModifyBaseMaxStats(this);
++			PlayerLoader.ModifyMaxStats(this);
  			extraAccessory = false;
 -			for (int n = 0; n < 625; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {

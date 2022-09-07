@@ -63,32 +63,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the player's base max stats before increases from the Life Crystal, Life Fruit and Mana Crystal are applied
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="lifeMax">The base maximum health.  Defaults to 100</param>
-		/// <param name="manaMax">The base maximum mana.  Defaults to 20</param>
-		public virtual void ModifyBaseMaxStats(ref int lifeMax, ref int manaMax) {
-		}
-
-		/// <summary>
-		/// This is called before <see cref="ModifyMaxStats(ref int, ref int)"/>, but after the intial increases from the Life Crystal, Life Fruit, Mana Crystal and <see cref="ModifyBaseMaxStats(ref int, ref int)"/> are applied
-		/// </summary>
-		public virtual void PreModifyMaxStats(int lifeMax, int manaMax) {
-		}
-
-		/// <summary>
 		/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied
 		/// </summary>
-		/// <param name="lifeMax">The base maximum health.  Defaults to 100</param>
-		/// <param name="manaMax">The base maximum mana.  Defaults to 20</param>
-		public virtual void ModifyMaxStats(ref int lifeMax, ref int manaMax) {
-		}
-
-		/// <summary>
-		/// This is called after <see cref="ModifyMaxStats(ref int, ref int)"/>
-		/// </summary>
-		public virtual void PostModifyMaxStats(int lifeMax, int manaMax) {
+		/// <param name="health">The modifier to the player's maximum health</param>
+		/// <param name="mana">The modifier to the player's maximum mana</param>
+		public virtual void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
+			health = StatModifier.Default;
+			mana = StatModifier.Default;
 		}
 
 		/// <summary>

@@ -78,54 +78,25 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyBaseMaxStats(ref int healthMax, ref int manaMax);
-		private static HookList HookModifyBaseMaxStats = AddHook<DelegateModifyBaseMaxStats>(p => p.ModifyBaseMaxStats);
-
-		public static void ModifyBaseMaxStats(Player player) {
-			foreach (var modPlayer in HookModifyBaseMaxStats.Enumerate(player.modPlayers)) {
-				modPlayer.ModifyBaseMaxStats(ref player.statLifeMax, ref player.statManaMax);
-			}
-		}
-
-		private delegate void DelegatePreModifyMaxStats(int healthMax, int manaMax);
-		private static HookList HookPreModifyMaxStats = AddHook<DelegatePreModifyMaxStats>(p => p.PreModifyMaxStats);
-
-		public static void PreModifyMaxStats(Player player) {
-			foreach (var modPlayer in HookPreModifyMaxStats.Enumerate(player.modPlayers)) {
-				modPlayer.PreModifyMaxStats(player.statLifeMax, player.statManaMax);
-			}
-		}
-
-		private delegate void DelegateModifyMaxStats(ref int healthMax, ref int manaMax);
+		private delegate void DelegateModifyMaxStats(out StatModifier health, out StatModifier mana);
 		private static HookList HookModifyMaxStats = AddHook<DelegateModifyMaxStats>(p => p.ModifyMaxStats);
 
 		public static void ModifyMaxStats(Player player) {
+			player.statLifeMax = 100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5;
+			player.statManaMax = 20 + player.ConsumedManaCrystals * 20;
+
+			StatModifier cumulativeHealth = StatModifier.Default;
+			StatModifier cumulativeMana = StatModifier.Default;
+
 			foreach (var modPlayer in HookModifyMaxStats.Enumerate(player.modPlayers)) {
-				modPlayer.ModifyMaxStats(ref player.statLifeMax, ref player.statManaMax);
+				modPlayer.ModifyMaxStats(out StatModifier health, out StatModifier mana);
+
+				cumulativeHealth = cumulativeHealth.CombineWith(health);
+				cumulativeMana = cumulativeMana.CombineWith(mana);
 			}
-		}
 
-		private delegate void DelegatePostModifyMaxStats(int healthMax, int manaMax);
-		private static HookList HookPostModifyMaxStats = AddHook<DelegatePostModifyMaxStats>(p => p.PostModifyMaxStats);
-
-		public static void PostModifyMaxStats(Player player) {
-			foreach (var modPlayer in HookPostModifyMaxStats.Enumerate(player.modPlayers)) {
-				modPlayer.PostModifyMaxStats(player.statLifeMax, player.statManaMax);
-			}
-		}
-
-		public static void UpdateMaxStats(Player player) {
-			player.statLifeMax = 100;
-			player.statManaMax = 20;
-
-			ModifyBaseMaxStats(player);
-
-			player.statLifeMax += player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5;
-			player.statManaMax += player.ConsumedManaCrystals * 20;
-
-			PreModifyMaxStats(player);
-			ModifyMaxStats(player);
-			PostModifyMaxStats(player);
+			player.statLifeMax = (int)cumulativeHealth.ApplyTo(player.statLifeMax);
+			player.statManaMax = (int)cumulativeHealth.ApplyTo(player.statManaMax);
 
 			player.statLifeMax2 = player.statLifeMax;
 			player.statManaMax2 = player.statManaMax;

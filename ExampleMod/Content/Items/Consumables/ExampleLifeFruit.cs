@@ -65,10 +65,9 @@ namespace ExampleMod.Content.Items.Consumables
 	{
 		public int exampleLifeFruits;
 
-		public override void ModifyMaxStats(ref int lifeMax, ref int manaMax) {
-			// "lifeMax" is added as a shortcut for "player.statLifeMax"
-			// Modifying "lifeMax" here allows the changes to appear in the player select menu as well
-			lifeMax += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
+		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
+			base.ModifyMaxStats(out health, out mana);
+			health.Base += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
