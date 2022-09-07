@@ -1,8 +1,6 @@
 ﻿using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -31,7 +29,7 @@ namespace Terraria.ModLoader
 			{ typeof(string), "string" }
 		};
 
-		private static DetourModManager manager = new DetourModManager();
+		//private static DetourModManager manager = new DetourModManager();
 		private static HashSet<Assembly> NativeDetouringGranted = new HashSet<Assembly> { Assembly.GetExecutingAssembly() };
 
 		private static bool isInitialized;
@@ -43,23 +41,11 @@ namespace Terraria.ModLoader
 			if (isInitialized)
 				return;
 
-			HookEndpointManager.OnAdd += (m, d) => {
-				Logging.tML.Debug($"Hook On.{StringRep(m)} added by {GetOwnerName(d)}");
-				return true;
-			};
-			HookEndpointManager.OnRemove += (m, d) => {
-				Logging.tML.Debug($"Hook On.{StringRep(m)} removed by {GetOwnerName(d)}");
-				return true;
-			};
-			HookEndpointManager.OnModify += (m, d) => {
-				Logging.tML.Debug($"Hook IL.{StringRep(m)} modified by {GetOwnerName(d)}");
-				return true;
-			};
-			HookEndpointManager.OnUnmodify += (m, d) => {
-				Logging.tML.Debug($"Hook IL.{StringRep(m)} unmodified by {GetOwnerName(d)}");
-				return true;
-			};
-
+			DetourManager.DetourApplied += (info) => Logging.tML.Debug($"Hook On.{StringRep(info.Method.Method)} added by {GetOwnerName(info.Entry)}");
+			DetourManager.DetourUndone += (info) => Logging.tML.Debug($"Hook On.{StringRep(info.Method.Method)} removed by {GetOwnerName(info.Entry)}");
+			DetourManager.ILHookApplied += (info) => Logging.tML.Debug($"Hook IL.{StringRep(info.Method.Method)} added by {GetOwnerName(info.ManipulatorMethod)}");
+			DetourManager.ILHookUndone += (info) => Logging.tML.Debug($"Hook IL.{StringRep(info.Method.Method)} removed by {GetOwnerName(info.ManipulatorMethod)}");
+			/*
 			manager.OnHook += (asm, from, to, target) => {
 				NativeAccessCheck(asm);
 				Logging.tML.Debug($"Hook {StringRep(from)} -> {StringRep(to)} by {asm.GetName().Name}");
@@ -93,30 +79,13 @@ namespace Terraria.ModLoader
 			NativeDetour.OnUndo += (obj) => {
 				ndetours++;
 				return true;
-			};
+			};*/
 
 			isInitialized = true;
 		}
 
-		private static void NativeAccessCheck(Assembly asm) {
-			if (NativeDetouringGranted.Contains(asm))
-				return;
-
-			throw new UnauthorizedAccessException(
-				$"Native detouring permissions not granted to {asm.GetName().Name}. \n" +
-				$"Mods should use HookEndpointManager for compatibility. \n" +
-				$"If Detour or NativeDetour are required, call MonoModHooks.RequestNativeAccess()");
-		}
-
-		public static void RequestNativeAccess() {
-			var stack = new StackTrace();
-			var asm = stack.GetFrame(1).GetMethod().DeclaringType.Assembly;
-			NativeDetouringGranted.Add(asm);
-			Logging.tML.Warn($"Granted native detouring access to {asm.GetName().Name}");
-		}
-
-		private static string GetOwnerName(Delegate d) {
-			return d.Method.DeclaringType.Assembly.GetName().Name;
+		private static string GetOwnerName(MethodBase m) {
+			return m.DeclaringType.Assembly.GetName().Name;
 		}
 
 		private static string StringRep(MethodBase m) {
@@ -143,7 +112,7 @@ namespace Terraria.ModLoader
 
 			foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
 				hooks = detours = ndetours = 0;
-				manager.Unload(asm);
+				//manager.Unload(asm);
 				if (hooks > 0 || detours > 0 || ndetours > 0)
 					Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {asm.GetName().Name} in {mod.DisplayName}");
 			}

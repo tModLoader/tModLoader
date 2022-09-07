@@ -1,6 +1,6 @@
 ﻿using Ionic.Zip;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour.HookGen;
+using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using System;
 using System.IO;
@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Engine
 			if (Path.DirectorySeparatorChar == '\\')
 				return;
 
-			HookEndpointManager.Modify(typeof(ZipEntry).FindMethod("ValidateOutput"), new Action<ILContext>(il => {
+			new ILHook(typeof(ZipEntry).FindMethod("ValidateOutput"), new Action<ILContext>(il => {
 				var c = new ILCursor(il);
 				c.Next = null; // move to end
 
