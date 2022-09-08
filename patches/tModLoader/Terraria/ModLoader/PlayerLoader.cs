@@ -110,7 +110,7 @@ namespace Terraria.ModLoader
 			}
 
 			player.statLifeMax = (int)cumulativeHealth.ApplyTo(player.statLifeMax);
-			player.statManaMax = (int)cumulativeHealth.ApplyTo(player.statManaMax);
+			player.statManaMax = (int)cumulativeMana.ApplyTo(player.statManaMax);
 
 			player.statLifeMax2 = player.statLifeMax;
 			player.statManaMax2 = player.statManaMax;

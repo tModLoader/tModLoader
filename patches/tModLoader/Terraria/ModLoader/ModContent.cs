@@ -476,6 +476,7 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
+			ResourceOverlayLoader.Unload();
 
 			LoaderManager.Unload();
 

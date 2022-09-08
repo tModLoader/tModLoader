@@ -1,6 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
-@@ -7,8 +_,10 @@
+@@ -2,13 +_,16 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
+ using Terraria.DataStructures;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.ResourceSets
  {
  	public class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
  	{
@@ -12,7 +18,7 @@
  		private int UI_ScreenAnchorX;
  
  		public string NameKey {
-@@ -36,10 +_,17 @@
+@@ -36,10 +_,22 @@
  			Player localPlayer = Main.LocalPlayer;
  			SpriteBatch spriteBatch = Main.spriteBatch;
  			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
@@ -28,11 +34,16 @@
 +			UIDisplay_LifePerHeart = snapshot.LifePerSegment;
 +			int num2 = snapshot.LifeFruitCount;
 +
++			bool drawHearts = ResourceOverlayLoader.PreDrawClassicLifeDisplay(snapshot, ref color, out bool drawText);
++
++			if (!drawText)
++				goto SkipLifeText;
++
 +			/*
  			int num = localPlayer.statLifeMax / 20;
  			int num2 = (localPlayer.statLifeMax - 400) / 5;
  			if (num2 < 0)
-@@ -52,28 +_,29 @@
+@@ -52,28 +_,33 @@
  
  			int num3 = localPlayer.statLifeMax2 - localPlayer.statLifeMax;
  			UIDisplay_LifePerHeart += num3 / num;
@@ -52,6 +63,10 @@
  			}
  
 -			for (int i = 1; i < (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart) + 1; i++) {
++			SkipLifeText:
++			if (!drawHearts)
++				goto SkipHearts;
++
 +			for (int i = 1; i < snapshot.AmountOfHearts + 1; i++) {
  				int num5 = 255;
  				float num6 = 1f;
@@ -69,7 +84,34 @@
  					num5 = (int)(30f + 225f * num7);
  					if (num5 < 30)
  						num5 = 30;
-@@ -113,8 +_,9 @@
+@@ -98,6 +_,14 @@
+ 
+ 				int a = (int)((double)num5 * 0.9);
+ 				if (!localPlayer.ghost) {
++					var heartTexture = num2 > 0 ? TextureAssets.Heart2 : TextureAssets.Heart;
++					if (num2 > 0)
++						num2--;
++
++					Vector2 position = new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + heartTexture.Width() / 2, 32f + heartTexture.Height() * (1 - num6) / 2f + num9 + heartTexture.Height() / 2);
++
++					ResourceOverlayLoader.DrawClassicLifeHeart(snapshot, heartTexture, i, position, num5, num6);
++					/*
+ 					if (num2 > 0) {
+ 						num2--;
+ 						spriteBatch.Draw(TextureAssets.Heart2.Value, new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + TextureAssets.Heart.Width() / 2, 32f + ((float)TextureAssets.Heart.Height() - (float)TextureAssets.Heart.Height() * num6) / 2f + (float)num9 + (float)(TextureAssets.Heart.Height() / 2)), new Rectangle(0, 0, TextureAssets.Heart.Width(), TextureAssets.Heart.Height()), new Color(num5, num5, num5, a), 0f, new Vector2(TextureAssets.Heart.Width() / 2, TextureAssets.Heart.Height() / 2), num6, SpriteEffects.None, 0f);
+@@ -105,17 +_,27 @@
+ 					else {
+ 						spriteBatch.Draw(TextureAssets.Heart.Value, new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + TextureAssets.Heart.Width() / 2, 32f + ((float)TextureAssets.Heart.Height() - (float)TextureAssets.Heart.Height() * num6) / 2f + (float)num9 + (float)(TextureAssets.Heart.Height() / 2)), new Rectangle(0, 0, TextureAssets.Heart.Width(), TextureAssets.Heart.Height()), new Color(num5, num5, num5, a), 0f, new Vector2(TextureAssets.Heart.Width() / 2, TextureAssets.Heart.Height() / 2), num6, SpriteEffects.None, 0f);
+ 					}
++					*/
+ 				}
+ 			}
++
++			SkipHearts:
++			ResourceOverlayLoader.PostDrawClassicLifeDisplay(snapshot, color, drawText);
+ 		}
+ 
+ 		private void DrawMana() {
  			Player localPlayer = Main.LocalPlayer;
  			SpriteBatch spriteBatch = Main.spriteBatch;
  			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
@@ -79,12 +121,23 @@
 +			float UIDisplay_ManaPerStar = snapshot.ManaPerSegment;
 +			if (localPlayer.ghost || snapshot.ManaMax <= 0 || snapshot.AmountOfManaStars <= 0)
  				return;
++
++			bool drawStars = ResourceOverlayLoader.PreDrawClassicManaDisplay(snapshot, ref color, out bool drawText);
++
++			if (!drawText)
++				goto SkipManaText;
  
  			_ = localPlayer.statManaMax2 / 20;
-@@ -124,17 +_,17 @@
+ 			Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
+@@ -124,17 +_,22 @@
  				num = (int)vector.X + 5;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[2].Value, new Vector2(800 - num + UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++			SkipManaText:
++			if (!drawStars)
++				goto SkipStars;
++
 -			for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
 +			for (int i = 1; i < snapshot.AmountOfManaStars + 1; i++) {
  				int num2 = 255;
@@ -103,7 +156,23 @@
  					num2 = (int)(30f + 225f * num4);
  					if (num2 < 30)
  						num2 = 30;
-@@ -158,9 +_,12 @@
+@@ -150,17 +_,28 @@
+ 				if (flag)
+ 					num3 += Main.cursorScale - 1f;
+ 
++				Vector2 position = new Vector2(775 + UI_ScreenAnchorX, 30 + TextureAssets.Mana.Height() / 2 + TextureAssets.Mana.Height() * (1 - num3) / 2f + 28 * (i - 1));
++
++				ResourceOverlayLoader.DrawClassicManaStar(snapshot, TextureAssets.Mana, i, position, num2, num3);
++				/*
+ 				int a = (int)((double)num2 * 0.9);
+ 				spriteBatch.Draw(TextureAssets.Mana.Value, new Vector2(775 + UI_ScreenAnchorX, (float)(30 + TextureAssets.Mana.Height() / 2) + ((float)TextureAssets.Mana.Height() - (float)TextureAssets.Mana.Height() * num3) / 2f + (float)(28 * (i - 1))), new Rectangle(0, 0, TextureAssets.Mana.Width(), TextureAssets.Mana.Height()), new Color(num2, num2, num2, a), 0f, new Vector2(TextureAssets.Mana.Width() / 2, TextureAssets.Mana.Height() / 2), num3, SpriteEffects.None, 0f);
++				*/
+ 			}
++
++			SkipStars:
++			ResourceOverlayLoader.PostDrawClassicManaDisplay(snapshot, color, drawText);
+ 		}
+ 
  		public void TryToHover() {
  			Vector2 mouseScreen = Main.MouseScreen;
  			Player localPlayer = Main.LocalPlayer;

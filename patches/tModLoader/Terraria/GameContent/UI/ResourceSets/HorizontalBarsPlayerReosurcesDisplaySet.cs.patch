@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
+@@ -130,8 +_,13 @@
+ 
+ 		private void PrepareFields(Player player) {
+ 			PlayerStatsSnapshot playerStatsSnapshot = new PlayerStatsSnapshot(player);
++			// Make drawing use the automatically-clamped AmountOf properties (#HealthManaAPI)
++			_hpSegmentsCount = playerStatsSnapshot.AmountOfHearts;
++			_mpSegmentsCount = playerStatsSnapshot.AmountOfManaStars;
++			/*
+ 			_hpSegmentsCount = (int)((float)playerStatsSnapshot.LifeMax / playerStatsSnapshot.LifePerSegment);
+ 			_mpSegmentsCount = (int)((float)playerStatsSnapshot.ManaMax / playerStatsSnapshot.ManaPerSegment);
++			*/
+ 			_maxSegmentCount = 20;
+ 			_hpFruitCount = playerStatsSnapshot.LifeFruitCount;
+ 			_hpPercent = (float)playerStatsSnapshot.Life / (float)playerStatsSnapshot.LifeMax;

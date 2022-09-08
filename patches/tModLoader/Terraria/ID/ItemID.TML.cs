@@ -69,21 +69,6 @@
 				ChlorophytePartisan,
 				NorthPole
 			);
-
-			/// <summary>
-			/// Set for items that permanently increase the player's maximum HP
-			/// </summary>
-			public static bool[] GrantsPermanentHealthIncrease = Factory.CreateBoolSet(
-				LifeCrystal,
-				LifeFruit
-			);
-
-			/// <summary>
-			/// Set for items that permanently increase the player's maximum mana
-			/// </summary>
-			public static bool[] GrantsPermanentManaIncrease = Factory.CreateBoolSet(
-				ManaCrystal
-			);
 		}
 	}
 }
