@@ -451,6 +451,7 @@
 		"OutOfMemory": "Игре не хватило памяти. Попробуйте выяснить какой мод потребляет много памяти, и сообщить об этом его разработчикам, либо удалите мод. (OutOfMemory)",
 		"VanillaSteamInstallationNotFound": "Steam-версия Terraria или папка Content не найдены.\r\n\r\nПроверьте, установлена ли Terraria 1.4 в Steam.",
 		"SteamAPIHashMismatch": "Неверный хэш библиотеки Steam, возможно, это пиратская версия.\n\ntModLoader-у необходима лицензионная Terraria для работы. (SteamAPIHashMismatch)",
+		"SteamInitFailed": "Ошибка SteamAPI.Init. Попробуйте перелогиниться в Steam и перезагрузить его.\n\nПодробности в terrariasteamclient.log и Natives.Log",
 		"VanillaGOGNotFound": "Невозможно найти {0}.\r\n\r\nGOG-версиям необходима немодифицированная Terraria для работы. Ожидалась {1} версия Terraria, возможно придётся обновить/откатить Terraria через GOG Galaxy, либо подождите пока tModLoader обновится до этой версии. (VanillaGOGNotFound)",
 		"GOGHashMismatch": "{0} не является немодифицированной Terraria.\r\n\r\nУстановка GOG требует немодифицированную Terraria для работы.\r\n\r\nЕсли вы патчили .exe, скопируйте оригинальный exe и назовите его \"Terraria_v<VERSION>.exe\"",
 		"DefaultExtraMessage": "восстановите установку Terraria, затем установите tModLoader в Steam или следейте инструкциям из README.txt для ручной установки.",
