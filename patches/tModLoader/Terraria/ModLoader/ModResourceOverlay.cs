@@ -64,7 +64,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw before the hearts in the Classic display set are drawn
+		/// Allows you to draw after the hearts in the Classic display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
 		/// <param name="lifeTextColor">The color the text above the hearts was drawn with</param>
@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw before the mana stars in the Classic display set are drawn
+		/// Allows you to draw after the mana stars in the Classic display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
 		/// <param name="lifeTextColor">The color the text above the mana stars was drawn with</param>
