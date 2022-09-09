@@ -86,7 +86,7 @@
  					num5 = (int)(30f + 225f * num7);
  					if (num5 < 30)
  						num5 = 30;
-@@ -98,6 +_,14 @@
+@@ -98,6 +_,21 @@
  
  				int a = (int)((double)num5 * 0.9);
  				if (!localPlayer.ghost) {
@@ -96,7 +96,14 @@
 +
 +					Vector2 position = new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + heartTexture.Width() / 2, 32f + heartTexture.Height() * (1 - num6) / 2f + num9 + heartTexture.Height() / 2);
 +
-+					ResourceOverlayLoader.DrawResource(snapshot, heartTexture, i, position, num5, new Vector2(num6), drawSource);
++					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, i, heartTexture, drawSource) {
++						position = position,
++						color = new Color(num5, num5, num5, a),
++						origin = heartTexture.Size() / 2f,
++						scale = new Vector2(num6)
++					};
++
++					ResourceOverlayLoader.DrawResource(ref drawContext);
 +					/*
  					if (num2 > 0) {
  						num2--;
@@ -160,15 +167,23 @@
  					num2 = (int)(30f + 225f * num4);
  					if (num2 < 30)
  						num2 = 30;
-@@ -150,17 +_,28 @@
+@@ -150,27 +_,46 @@
  				if (flag)
  					num3 += Main.cursorScale - 1f;
  
 +				Vector2 position = new Vector2(775 + UI_ScreenAnchorX, 30 + TextureAssets.Mana.Height() / 2 + TextureAssets.Mana.Height() * (1 - num3) / 2f + 28 * (i - 1));
-+
-+				ResourceOverlayLoader.DrawResource(snapshot, TextureAssets.Mana, i, position, num2, new Vector2(num3), drawSource);
-+				/*
++				
  				int a = (int)((double)num2 * 0.9);
++
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, i, TextureAssets.Mana, drawSource) {
++					position = position,
++					color = new Color(num2, num2, num2, a),
++					origin = TextureAssets.Mana.Size() / 2f,
++					scale = new Vector2(num3)
++				};
++
++				ResourceOverlayLoader.DrawResource(ref drawContext);
++				/*
  				spriteBatch.Draw(TextureAssets.Mana.Value, new Vector2(775 + UI_ScreenAnchorX, (float)(30 + TextureAssets.Mana.Height() / 2) + ((float)TextureAssets.Mana.Height() - (float)TextureAssets.Mana.Height() * num3) / 2f + (float)(28 * (i - 1))), new Rectangle(0, 0, TextureAssets.Mana.Width(), TextureAssets.Mana.Height()), new Color(num2, num2, num2, a), 0f, new Vector2(TextureAssets.Mana.Width() / 2, TextureAssets.Mana.Height() / 2), num3, SpriteEffects.None, 0f);
 +				*/
  			}
@@ -192,12 +207,16 @@
  				num = 260;
  				num2 += 26;
  			}
-@@ -169,7 +_,7 @@
+ 
+-			if (mouseScreen.X > (float)(500 + UI_ScreenAnchorX) && mouseScreen.X < (float)(500 + num + UI_ScreenAnchorX) && mouseScreen.Y > 32f && mouseScreen.Y < (float)(32 + TextureAssets.Heart.Height() + num2))
++			if (mouseScreen.X > (float)(500 + UI_ScreenAnchorX) && mouseScreen.X < (float)(500 + num + UI_ScreenAnchorX) && mouseScreen.Y > 32f && mouseScreen.Y < (float)(32 + TextureAssets.Heart.Height() + num2) && ResourceOverlayLoader.DisplayHoverText(snapshot, this, true))
  				CommonResourceBarMethods.DrawLifeMouseOver();
  
  			num = 24;
 -			num2 = 28 * localPlayer.statManaMax2 / UIDisplay_ManaPerStar;
+-			if (mouseScreen.X > (float)(762 + UI_ScreenAnchorX) && mouseScreen.X < (float)(762 + num + UI_ScreenAnchorX) && mouseScreen.Y > 30f && mouseScreen.Y < (float)(30 + num2))
 +			num2 = 28 * snapshot.AmountOfManaStars;
- 			if (mouseScreen.X > (float)(762 + UI_ScreenAnchorX) && mouseScreen.X < (float)(762 + num + UI_ScreenAnchorX) && mouseScreen.Y > 30f && mouseScreen.Y < (float)(30 + num2))
++			if (mouseScreen.X > (float)(762 + UI_ScreenAnchorX) && mouseScreen.X < (float)(762 + num + UI_ScreenAnchorX) && mouseScreen.Y > 30f && mouseScreen.Y < (float)(30 + num2) && ResourceOverlayLoader.DisplayHoverText(snapshot, this, false))
  				CommonResourceBarMethods.DrawManaMouseOver();
  		}
+ 	}

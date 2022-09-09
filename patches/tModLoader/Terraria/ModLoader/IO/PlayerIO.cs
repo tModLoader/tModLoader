@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
 			var tag = new TagCompound {
-				["stats"] = SaveVanillaStatModifications(player)
+				["stats"] = SaveVanillaStatModifications(player),
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
 				["inventory"] = SaveInventory(player.inventory),
@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void LoadVanillaStatModifications(Player player, TagCompound tag) {
-			if (tag is null) {
+			if (tag is null || !tag.ContainsKey("lifecrystals") || !tag.ContainsKey("lifefruit") || !tag.ContainsKey("manacrystals")) {
 				// Player file was from before the Health & Mana API change, or is just missing the tag
 				// Attempt to determine how many consumed items were used based on statLifeMax and statManaMax
 				int life = player.statLifeMax, mana = player.statManaMax;

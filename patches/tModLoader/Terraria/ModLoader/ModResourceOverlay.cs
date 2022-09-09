@@ -20,7 +20,7 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
-		/// Allows you to modify how a heart in the Classic display set is drawn
+		/// Allows you to modify how any resource (hearts, stars, bars or panels) in the vanilla display sets are drawn
 		/// </summary>
 		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
 		/// <returns><see langword="true"/> if the intended heart sprite should draw, <see langword="false"/> otherwise.</returns>
@@ -29,14 +29,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw on top of a heart in the Classic display set
+		/// Allows you to draw on top of any resource (hearts, stars, bars or panels) in the vanilla display sets
 		/// </summary>
 		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
 		public virtual void PostDrawResource(ResourceOverlayDrawContext context) {
 		}
 
 		/// <summary>
-		/// Allows you to draw before the resources (hearts, stars or bars) in the display set are drawn
+		/// Allows you to draw before the resources (hearts, stars, bars and/or panels) in a vanilla display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
 		/// <param name="displaySet">The display set being drawn</param>
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw after the resources (hearts, stars or bars) in the display set are drawn
+		/// Allows you to draw after the resources (hearts, stars, bars and/or panels) in a vanilla display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
 		/// <param name="displaySet">The display set that was drawn</param>
@@ -64,6 +64,20 @@ namespace Terraria.ModLoader
 		/// <param name="textColor">The color the text above the resources was drawn with.  Only applies to the Class display set.</param>
 		/// <param name="drawText">Whether the text above the resources was drawn.  Only applies to the Classic display set.</param>
 		public virtual void PostDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, Color textColor, bool drawText) {
+		}
+
+		/// <summary>
+		/// Allows you to specify if the hover text for a resource (life or mana) should be displayed
+		/// </summary>
+		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
+		/// <param name="displaySet">The display set that was drawn</param>
+		/// <param name="drawingLife">
+		/// Whether the life or mana display was drawn.
+		/// <see langword="true"/> if the life display was drawn, <see langword="false"/> if the mana display was drawn.
+		/// </param>
+		/// <returns>Whether the hover text should be displayed</returns>
+		public virtual bool DisplayHoverText(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife) {
+			return true;
 		}
 	}
 }

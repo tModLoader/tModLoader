@@ -39,6 +39,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public IResourceDrawSource DrawSource { get; init; }
 
+		public SpriteBatch SpriteBatch { get; init; }
+
 		public ResourceOverlayDrawContext(PlayerStatsSnapshot snapshot, int resourceNumber, Asset<Texture2D> texture, IResourceDrawSource drawSource) {
 			this.snapshot = snapshot;
 			this.resourceNumber = resourceNumber;
@@ -51,10 +53,11 @@ namespace Terraria.ModLoader
 			scale = Vector2.One;
 			effects = SpriteEffects.None;
 			DrawSource = drawSource;
+			SpriteBatch = Main.spriteBatch;
 		}
 
 		public void Draw() {
-			Main.spriteBatch.Draw(texture.Value, position, source, color, rotation, origin, scale, effects, 0);
+			SpriteBatch.Draw(texture.Value, position, source, color, rotation, origin, scale, effects, 0);
 		}
 	}
 }

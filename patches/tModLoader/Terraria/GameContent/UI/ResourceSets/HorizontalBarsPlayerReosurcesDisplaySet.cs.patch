@@ -1,7 +1,71 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
-@@ -130,8 +_,13 @@
+@@ -3,6 +_,7 @@
+ using ReLogic.Content;
+ using ReLogic.Graphics;
+ using Terraria.DataStructures;
++using Terraria.ModLoader;
  
+ namespace Terraria.GameContent.UI.ResourceSets
+ {
+@@ -25,6 +_,8 @@
+ 		private Asset<Texture2D> _panelMiddleMP;
+ 		private Asset<Texture2D> _panelRightMP;
+ 
++		private IResourceDrawSource _heartDrawSource, _heartPanelDrawSource, _manaDrawSource, _manaPanelDrawSource;
++
+ 		public string NameKey {
+ 			get;
+ 			private set;
+@@ -47,6 +_,10 @@
+ 			_panelRightHP = Main.Assets.Request<Texture2D>(str + "\\HP_Panel_Right", mode);
+ 			_panelMiddleMP = Main.Assets.Request<Texture2D>(str + "\\MP_Panel_Middle", mode);
+ 			_panelRightMP = Main.Assets.Request<Texture2D>(str + "\\MP_Panel_Right", mode);
++			_heartPanelDrawSource = new ResourceDrawSource_BarsLifePanel();
++			_heartDrawSource = new ResourceDrawSource_BarsLife();
++			_manaPanelDrawSource = new ResourceDrawSource_BarsManaPanel();
++			_manaDrawSource = new ResourceDrawSource_BarsMana();
+ 		}
+ 
+ 		public void Draw() {
+@@ -63,6 +_,7 @@
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector;
+ 			resourceDrawSettings.GetTextureMethod = LifePanelDrawer;
++			resourceDrawSettings.GetResourceDrawContext = LifePanelContext;
+ 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+ 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+@@ -73,6 +_,7 @@
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(6f, 6f);
+ 			resourceDrawSettings.GetTextureMethod = LifeFillingDrawer;
++			resourceDrawSettings.GetResourceDrawContext = LifeContext;
+ 			resourceDrawSettings.OffsetPerDraw = new Vector2(_hpFill.Width(), 0f);
+ 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+@@ -87,6 +_,7 @@
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector2;
+ 			resourceDrawSettings.GetTextureMethod = ManaPanelDrawer;
++			resourceDrawSettings.GetResourceDrawContext = ManaPanelContext;
+ 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+ 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+@@ -97,6 +_,7 @@
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
+ 			resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
++			resourceDrawSettings.GetResourceDrawContext = ManaContext;
+ 			resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
+ 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+@@ -128,14 +_,22 @@
+ 			spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, value + new Vector2(vector.X * 0.5f, 0f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
+ 		}
+ 
++		private PlayerStatsSnapshot preparedSnapshot;
++
  		private void PrepareFields(Player player) {
  			PlayerStatsSnapshot playerStatsSnapshot = new PlayerStatsSnapshot(player);
 +			// Make drawing use the automatically-clamped AmountOf properties (#HealthManaAPI)
@@ -14,3 +78,44 @@
  			_maxSegmentCount = 20;
  			_hpFruitCount = playerStatsSnapshot.LifeFruitCount;
  			_hpPercent = (float)playerStatsSnapshot.Life / (float)playerStatsSnapshot.LifeMax;
+ 			_mpPercent = (float)playerStatsSnapshot.Mana / (float)playerStatsSnapshot.ManaMax;
++			preparedSnapshot = playerStatsSnapshot;
+ 		}
+ 
+ 		private void LifePanelDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
+@@ -174,7 +_,7 @@
+ 			FillBarByValues(elementIndex, sprite, _hpSegmentsCount, _hpPercent, out offset, out drawScale, out sourceRect);
+ 		}
+ 
+-		private static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
++		public static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
+ 			sourceRect = null;
+ 			offset = Vector2.Zero;
+ 			float num = 1f;
+@@ -194,6 +_,26 @@
+ 		private void ManaFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
+ 			sprite = _mpFill;
+ 			FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
++		}
++
++		private void LifePanelContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++			snapshot = preparedSnapshot;
++			drawSource = _heartPanelDrawSource;
++		}
++
++		private void LifeContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++			snapshot = preparedSnapshot;
++			drawSource = _heartDrawSource;
++		}
++
++		private void ManaPanelContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++			snapshot = preparedSnapshot;
++			drawSource = _manaPanelDrawSource;
++		}
++
++		private void ManaContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++			snapshot = preparedSnapshot;
++			drawSource = _manaDrawSource;
+ 		}
+ 
+ 		public void TryToHover() {

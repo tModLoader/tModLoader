@@ -1,0 +1,66 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ResourceDrawSettings.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ResourceDrawSettings.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.ResourceSets
+ {
+@@ -8,10 +_,13 @@
+ 	{
+ 		public delegate void TextureGetter(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
+ 
++		public delegate void ResourceOverlayDelegate(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
++
+ 		public Vector2 TopLeftAnchor;
+ 		public int ElementCount;
+ 		public int ElementIndexOffset;
+ 		public TextureGetter GetTextureMethod;
++		public ResourceOverlayDelegate GetResourceDrawContext;
+ 		public Vector2 OffsetPerDraw;
+ 		public Vector2 OffsetPerDrawByTexturePercentile;
+ 		public Vector2 OffsetSpriteAnchor;
+@@ -24,19 +_,40 @@
+ 			for (int i = 0; i < elementCount; i++) {
+ 				int elementIndex = i + ElementIndexOffset;
+ 				GetTextureMethod(elementIndex, ElementIndexOffset, ElementIndexOffset + elementCount - 1, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
+-				Rectangle rectangle = texture.Frame();
++				GetResourceDrawContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
++
++				Rectangle frame = sourceRect ?? texture.Frame();
++				Vector2 position = topLeftAnchor + drawOffset;
++
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, elementIndex + 1, texture, drawSource) {
++					position = position,
++					source = sourceRect,
++					origin = OffsetSpriteAnchor + frame.Size() * OffsetSpriteAnchorByTexturePercentile,
++					scale = new Vector2(drawScale),
++					SpriteBatch = spriteBatch
++				};
++
++				ResourceOverlayLoader.DrawResource(ref drawContext);
++
++				position = drawContext.position;
++				Vector2 origin = drawContext.origin;
++				Rectangle rectangle = drawContext.source ?? texture.Frame();
+ 				if (sourceRect.HasValue)
+ 					rectangle = sourceRect.Value;
+ 
++				/*
+ 				Vector2 position = topLeftAnchor + drawOffset;
+ 				Vector2 origin = OffsetSpriteAnchor + rectangle.Size() * OffsetSpriteAnchorByTexturePercentile;
++				*/
+ 				Rectangle rectangle2 = rectangle;
+ 				rectangle2.X += (int)(position.X - origin.X);
+ 				rectangle2.Y += (int)(position.Y - origin.Y);
+ 				if (rectangle2.Contains(value))
+ 					isHovered = true;
+ 
++				/*
+ 				spriteBatch.Draw(texture.Value, position, rectangle, Color.White, 0f, origin, drawScale, SpriteEffects.None, 0f);
++				*/
+ 				topLeftAnchor += OffsetPerDraw + rectangle.Size() * OffsetPerDrawByTexturePercentile;
+ 			}
+ 		}
