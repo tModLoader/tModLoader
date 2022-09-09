@@ -51,17 +51,21 @@ namespace Terraria.ModLoader.Engine
 			try {
 				// .NET 6
 				var sendAsyncCoreMethodInfo = typeof(HttpClient).Assembly
-					.GetType("System.Net.Http.HttpConnectionPoolManager")!
-					.GetMethod("SendAsyncCore", BindingFlags.Public | BindingFlags.Instance);
+					.GetType("System.Net.Http.HttpConnectionPoolManager")
+					?.GetMethod("SendAsyncCore", BindingFlags.Public | BindingFlags.Instance);
 
-				_ = new Hook(sendAsyncCoreMethodInfo, new hook_SendAsyncCore((orig, self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken) => {
-					Logging.tML.Debug($"Web Request: {request.RequestUri}");
-					return orig(self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken);
-				}));
+				if (sendAsyncCoreMethodInfo != null) {
+					_ = new Hook(sendAsyncCoreMethodInfo, new hook_SendAsyncCore((orig, self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken) => {
+						Logging.tML.Debug($"Web Request: {request.RequestUri}");
+						return orig(self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken);
+					}));
+					return;
+				}
 			}
 			catch {
-				Logging.tML.Warn("HttpWebRequest send/submit method not found");
 			}
+
+			Logging.tML.Warn("HttpWebRequest send/submit method not found");
 		}
 	}
 }
