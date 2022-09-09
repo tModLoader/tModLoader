@@ -30,6 +30,12 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.color = Color.Purple;
 		}
 
+		public override bool ConsumeItem(Player player) {
+			// Prevent consuming the item when the player has used the max amount
+			// This hook works in tandem with UseItem to make the item still "usable" once the player has reached the max amount
+			return player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits;
+		}
+
 		public override bool CanUseItem(Player player) {
 			// This check prevents this item from being used before vanilla health upgrades are maxed out.
 			return player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax;
