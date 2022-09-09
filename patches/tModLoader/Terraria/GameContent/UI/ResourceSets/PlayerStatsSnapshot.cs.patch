@@ -15,10 +15,10 @@
 +		/// </summary>
 +		public int AmountOfHearts {
 +			get {
-+				int amount = LifePerSegment == 0 ? 0 : (int)(LifeMax / LifePerSegment);
++				int amount = LifePerSegment <= 0 ? 0 : (int)(LifeMax / LifePerSegment);
 +
 +				if (amount > 20) {
-+					AmountOfHearts = 20;
++					LifePerSegment = LifeMax / 20f;
 +					amount = 20;
 +				}
 +
@@ -28,7 +28,7 @@
 +				if (value > 20)
 +					value = 20;
 +
-+				LifePerSegment = value == 0 ? 0 : LifeMax / (float)value;
++				LifePerSegment = value <= 0 ? 0 : LifeMax / (float)value;
 +			}
 +		}
 +		
@@ -37,10 +37,10 @@
 +		/// </summary>
 +		public int AmountOfManaStars {
 +			get {
-+				int amount = ManaPerSegment == 0 ? 0 : (int)(ManaMax / ManaPerSegment);
++				int amount = ManaPerSegment <= 0 ? 0 : (int)(ManaMax / ManaPerSegment);
 +
 +				if (amount > 20) {
-+					AmountOfManaStars = 20;
++					ManaPerSegment = ManaMax / 20f;
 +					amount = 20;
 +				}
 +
@@ -50,7 +50,7 @@
 +				if (value > 20)
 +					value = 20;
 +
-+				ManaPerSegment = value == 0 ? 0 : ManaMax / (float)value;
++				ManaPerSegment = value <= 0 ? 0 : ManaMax / (float)value;
 +			}
 +		}
 +

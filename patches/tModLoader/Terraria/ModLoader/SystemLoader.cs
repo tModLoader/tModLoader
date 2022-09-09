@@ -339,13 +339,6 @@ namespace Terraria.ModLoader
 			foreach (var system in HookModifyStatSnapshot.arr) {
 				system.ModifyStatSnapshot(player, ref snapshot);
 			}
-
-			//Ensure that the total amounts don't exceed 20
-			if (snapshot.AmountOfHearts > 20)
-				snapshot.AmountOfHearts = 20;
-
-			if (snapshot.AmountOfManaStars > 20)
-				snapshot.AmountOfManaStars = 20;
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {
