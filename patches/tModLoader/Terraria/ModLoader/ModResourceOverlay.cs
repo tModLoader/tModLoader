@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
 		/// <returns><see langword="true"/> if the intended heart sprite should draw, <see langword="false"/> otherwise.</returns>
-		public virtual bool PreDrawClassicLifeHeart(ref ResourceOverlayDrawContext context) {
+		public virtual bool PreDrawResource(ref ResourceOverlayDrawContext context) {
 			return true;
 		}
 
@@ -32,65 +32,38 @@ namespace Terraria.ModLoader
 		/// Allows you to draw on top of a heart in the Classic display set
 		/// </summary>
 		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
-		public virtual void PostDrawClassicLifeHeart(ResourceOverlayDrawContext context) {
+		public virtual void PostDrawResource(ResourceOverlayDrawContext context) {
 		}
 
 		/// <summary>
-		/// Allows you to modify how a mana star in the Classic display set is drawn
-		/// </summary>
-		/// <param name="context">Contains the drawing data for the mana star being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
-		/// <returns><see langword="true"/> if the intended mana star sprite should draw, <see langword="false"/> otherwise.</returns>
-		public virtual bool PreDrawClassicManaStar(ref ResourceOverlayDrawContext context) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to draw on top of a mana star in the Classic display set
-		/// </summary>
-		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
-		public virtual void PostDrawClassicManaStar(ResourceOverlayDrawContext context) {
-		}
-
-		/// <summary>
-		/// Allows you to draw before the hearts in the Classic display set are drawn
+		/// Allows you to draw before the resources (hearts, stars or bars) in the display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
-		/// <param name="lifeTextColor">The color to draw the text above the hearts with</param>
-		/// <param name="drawText">Whether the text above the hearts should draw</param>
-		/// <returns>Whether the hearts in the Classic display set are drawn</returns>
-		public virtual bool PreDrawClassicLifeDisplay(PlayerStatsSnapshot snapshot, ref Color lifeTextColor, out bool drawText) {
+		/// <param name="displaySet">The display set being drawn</param>
+		/// <param name="drawingLife">
+		/// Whether the life or mana display is going to be drawn.
+		/// <see langword="true"/> if the life display is going to be drawn, <see langword="false"/> if the mana display is going to be drawn.
+		/// </param>
+		/// <param name="textColor">The color to draw the text above the resources with.  Only applies to the Classic display set.</param>
+		/// <param name="drawText">Whether the text above the resources should draw.  Only applies to the Classic display set.</param>
+		/// <returns>Whether the resources in the display set are drawn</returns>
+		public virtual bool PreDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, ref Color textColor, out bool drawText) {
 			drawText = true;
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw after the hearts in the Classic display set are drawn
+		/// Allows you to draw after the resources (hearts, stars or bars) in the display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
-		/// <param name="lifeTextColor">The color the text above the hearts was drawn with</param>
-		/// <param name="drawText">Whether the text above the hearts was drawn</param>
-		public virtual void PostDrawClassicLifeDisplay(PlayerStatsSnapshot snapshot, Color lifeTextColor, bool drawText) {
-		}
-
-		/// <summary>
-		/// Allows you to draw before the mana stars in the Classic display set are drawn
-		/// </summary>
-		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
-		/// <param name="lifeTextColor">The color to draw the text above the mana stars with</param>
-		/// <param name="drawText">Whether the text above the mana stars should draw</param>
-		/// <returns>Whether the mana stars in the Classic display set are drawn</returns>
-		public virtual bool PreDrawClassicManaDisplay(PlayerStatsSnapshot snapshot, ref Color lifeTextColor, out bool drawText) {
-			drawText = true;
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to draw after the mana stars in the Classic display set are drawn
-		/// </summary>
-		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
-		/// <param name="lifeTextColor">The color the text above the mana stars was drawn with</param>
-		/// <param name="drawText">Whether the text above the mana stars was drawn</param>
-		public virtual void PostDrawClassicManaDisplay(PlayerStatsSnapshot snapshot, Color lifeTextColor, bool drawText) {
+		/// <param name="displaySet">The display set that was drawn</param>
+		/// <param name="drawingLife">
+		/// Whether the life or mana display was drawn.
+		/// <see langword="true"/> if the life display was drawn, <see langword="false"/> if the mana display was drawn.
+		/// </param>
+		/// <param name="textColor">The color the text above the resources was drawn with.  Only applies to the Class display set.</param>
+		/// <param name="drawText">Whether the text above the resources was drawn.  Only applies to the Classic display set.</param>
+		public virtual void PostDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, Color textColor, bool drawText) {
 		}
 	}
 }

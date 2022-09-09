@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/PlayerResourceSetsManager.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/PlayerResourceSetsManager.cs
+@@ -82,5 +_,7 @@
+ 
+ 			SetActiveFrame(lastFrame);
+ 		}
++
++		public IPlayerResourcesDisplaySet GetDisplaySet(string nameKey) => _sets.TryGetValue(nameKey, out var set) ? set : null;
+ 	}
+ }

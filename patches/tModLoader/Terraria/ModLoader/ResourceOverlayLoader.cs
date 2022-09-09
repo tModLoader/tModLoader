@@ -28,99 +28,60 @@ namespace Terraria.ModLoader
 			overlays.Clear();
 		}
 
-		public static bool PreDrawClassicLifeHeart(ref ResourceOverlayDrawContext context) {
+		public static bool PreDrawResource(ref ResourceOverlayDrawContext context) {
 			bool result = true;
 
 			foreach (ModResourceOverlay overlay in overlays) {
-				result &= overlay.PreDrawClassicLifeHeart(ref context);
+				result &= overlay.PreDrawResource(ref context);
 			}
 
 			return result;
 		}
 
-		public static void PostDrawClassicLifeHeart(ResourceOverlayDrawContext context) {
+		public static void PostDrawResource(ResourceOverlayDrawContext context) {
 			foreach (ModResourceOverlay overlay in overlays) {
-				overlay.PostDrawClassicLifeHeart(context);
+				overlay.PostDrawResource(context);
 			}
 		}
 
-		public static void DrawClassicLifeHeart(PlayerStatsSnapshot snapshot, Asset<Texture2D> texture, int heartNumber, Vector2 position, int alpha, float scale) {
-			ResourceOverlayDrawContext context = new ResourceOverlayDrawContext(snapshot, heartNumber) {
-				texture = texture,
+		/// <summary>
+		/// Draws a life or mana resource
+		/// </summary>
+		/// <param name="snapshot">The snapshot of a player's health and mana stats</param>
+		/// <param name="texture">The default texture to use</param>
+		/// <param name="resourceNumber">Which resource number is being drawn.  For hearts/stars/bars, this ranges from 1 to 20.  For bar panels, this ranges from 1 to 22.</param>
+		/// <param name="position">The default position of the resource</param>
+		/// <param name="alpha">The transparency for the resource</param>
+		/// <param name="scale">The scale to draw the resource at</param>
+		/// <param name="drawSource">The drawing source</param>
+		public static void DrawResource(PlayerStatsSnapshot snapshot, Asset<Texture2D> texture, int resourceNumber, Vector2 position, int alpha, Vector2 scale, IResourceDrawSource drawSource) {
+			ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, resourceNumber, texture, drawSource) {
 				position = position,
 				color = new Color(alpha, alpha, alpha, (int)(alpha * 0.9f)),
 				origin = texture.Value.Size() / 2f,
-				scale = new Vector2(scale)
+				scale = scale
 			};
 
-			if (PreDrawClassicLifeHeart(ref context))
-				context.Draw();
-			PostDrawClassicLifeHeart(context);
+			if (PreDrawResource(ref drawContext))
+				drawContext.Draw();
+			PostDrawResource(drawContext);
 		}
 
-		public static bool PreDrawClassicManaStar(ref ResourceOverlayDrawContext context) {
-			bool result = true;
-
-			foreach (ModResourceOverlay overlay in overlays) {
-				result &= overlay.PreDrawClassicManaStar(ref context);
-			}
-
-			return result;
-		}
-
-		public static void PostDrawClassicManaStar(ResourceOverlayDrawContext context) {
-			foreach (ModResourceOverlay overlay in overlays) {
-				overlay.PostDrawClassicManaStar(context);
-			}
-		}
-
-		public static void DrawClassicManaStar(PlayerStatsSnapshot snapshot, Asset<Texture2D> texture, int starNumber, Vector2 position, int alpha, float scale) {
-			ResourceOverlayDrawContext context = new ResourceOverlayDrawContext(snapshot, starNumber) {
-				texture = texture,
-				position = position,
-				color = new Color(alpha, alpha, alpha, (int)(alpha * 0.9f)),
-				origin = texture.Value.Size() / 2f,
-				scale = new Vector2(scale)
-			};
-
-			if (PreDrawClassicManaStar(ref context))
-				context.Draw();
-			PostDrawClassicManaStar(context);
-		}
-
-		public static bool PreDrawClassicLifeDisplay(PlayerStatsSnapshot snapshot, ref Color lifeTextColor, out bool drawText) {
+		public static bool PreDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, ref Color textColor, out bool drawText) {
 			bool result = true;
 			drawText = true;
 
 			foreach (ModResourceOverlay overlay in overlays) {
-				result &= overlay.PreDrawClassicLifeDisplay(snapshot, ref lifeTextColor, out bool draw);
+				result &= overlay.PreDrawResourceDisplay(snapshot, displaySet, drawingLife, ref textColor, out bool draw);
 				drawText &= draw;
 			}
 
 			return result;
 		}
 
-		public static void PostDrawClassicLifeDisplay(PlayerStatsSnapshot snapshot, Color lifeTextColor, bool drawText) {
+		public static void PostDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, Color textColor, bool drawText) {
 			foreach (ModResourceOverlay overlay in overlays) {
-				overlay.PostDrawClassicLifeDisplay(snapshot, lifeTextColor, drawText);
-			}
-		}
-
-		public static bool PreDrawClassicManaDisplay(PlayerStatsSnapshot snapshot, ref Color manaTextColor, out bool drawText) {
-			bool result = true;
-			drawText = true;
-
-			foreach (ModResourceOverlay overlay in overlays) {
-				result &= overlay.PreDrawClassicManaDisplay(snapshot, ref manaTextColor, out bool draw);
-				drawText &= draw;
-			}
-
-			return result;
-		}
-
-		public static void PostDrawClassicManaDisplay(PlayerStatsSnapshot snapshot, Color manaTextColor, bool drawText) {
-			foreach (ModResourceOverlay overlay in overlays) {
-				overlay.PostDrawClassicManaDisplay(snapshot, manaTextColor, drawText);
+				overlay.PostDrawResourceDisplay(snapshot, displaySet, drawingLife, textColor, drawText);
 			}
 		}
 	}

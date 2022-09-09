@@ -34,7 +34,7 @@
 +			UIDisplay_LifePerHeart = snapshot.LifePerSegment;
 +			int num2 = snapshot.LifeFruitCount;
 +
-+			bool drawHearts = ResourceOverlayLoader.PreDrawClassicLifeDisplay(snapshot, ref color, out bool drawText);
++			bool drawHearts = ResourceOverlayLoader.PreDrawResourceDisplay(snapshot, this, true, ref color, out bool drawText);
 +
 +			if (!drawText)
 +				goto SkipLifeText;
@@ -43,7 +43,7 @@
  			int num = localPlayer.statLifeMax / 20;
  			int num2 = (localPlayer.statLifeMax - 400) / 5;
  			if (num2 < 0)
-@@ -52,28 +_,33 @@
+@@ -52,28 +_,35 @@
  
  			int num3 = localPlayer.statLifeMax2 - localPlayer.statLifeMax;
  			UIDisplay_LifePerHeart += num3 / num;
@@ -66,6 +66,8 @@
 +			SkipLifeText:
 +			if (!drawHearts)
 +				goto SkipHearts;
++
++			IResourceDrawSource drawSource = new ResourceDrawSource_ClassicLife();
 +
 +			for (int i = 1; i < snapshot.AmountOfHearts + 1; i++) {
  				int num5 = 255;
@@ -94,7 +96,7 @@
 +
 +					Vector2 position = new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + heartTexture.Width() / 2, 32f + heartTexture.Height() * (1 - num6) / 2f + num9 + heartTexture.Height() / 2);
 +
-+					ResourceOverlayLoader.DrawClassicLifeHeart(snapshot, heartTexture, i, position, num5, num6);
++					ResourceOverlayLoader.DrawResource(snapshot, heartTexture, i, position, num5, new Vector2(num6), drawSource);
 +					/*
  					if (num2 > 0) {
  						num2--;
@@ -108,7 +110,7 @@
  			}
 +
 +			SkipHearts:
-+			ResourceOverlayLoader.PostDrawClassicLifeDisplay(snapshot, color, drawText);
++			ResourceOverlayLoader.PostDrawResourceDisplay(snapshot, this, true, color, drawText);
  		}
  
  		private void DrawMana() {
@@ -122,14 +124,14 @@
 +			if (localPlayer.ghost || snapshot.ManaMax <= 0 || snapshot.AmountOfManaStars <= 0)
  				return;
 +
-+			bool drawStars = ResourceOverlayLoader.PreDrawClassicManaDisplay(snapshot, ref color, out bool drawText);
++			bool drawStars = ResourceOverlayLoader.PreDrawResourceDisplay(snapshot, this, false, ref color, out bool drawText);
 +
 +			if (!drawText)
 +				goto SkipManaText;
  
  			_ = localPlayer.statManaMax2 / 20;
  			Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
-@@ -124,17 +_,22 @@
+@@ -124,17 +_,24 @@
  				num = (int)vector.X + 5;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[2].Value, new Vector2(800 - num + UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -137,6 +139,8 @@
 +			SkipManaText:
 +			if (!drawStars)
 +				goto SkipStars;
++
++			IResourceDrawSource drawSource = new ResourceDrawSource_ClassicMana();
 +
 -			for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
 +			for (int i = 1; i < snapshot.AmountOfManaStars + 1; i++) {
@@ -162,7 +166,7 @@
  
 +				Vector2 position = new Vector2(775 + UI_ScreenAnchorX, 30 + TextureAssets.Mana.Height() / 2 + TextureAssets.Mana.Height() * (1 - num3) / 2f + 28 * (i - 1));
 +
-+				ResourceOverlayLoader.DrawClassicManaStar(snapshot, TextureAssets.Mana, i, position, num2, num3);
++				ResourceOverlayLoader.DrawResource(snapshot, TextureAssets.Mana, i, position, num2, new Vector2(num3), drawSource);
 +				/*
  				int a = (int)((double)num2 * 0.9);
  				spriteBatch.Draw(TextureAssets.Mana.Value, new Vector2(775 + UI_ScreenAnchorX, (float)(30 + TextureAssets.Mana.Height() / 2) + ((float)TextureAssets.Mana.Height() - (float)TextureAssets.Mana.Height() * num3) / 2f + (float)(28 * (i - 1))), new Rectangle(0, 0, TextureAssets.Mana.Width(), TextureAssets.Mana.Height()), new Color(num2, num2, num2, a), 0f, new Vector2(TextureAssets.Mana.Width() / 2, TextureAssets.Mana.Height() / 2), num3, SpriteEffects.None, 0f);
@@ -170,7 +174,7 @@
  			}
 +
 +			SkipStars:
-+			ResourceOverlayLoader.PostDrawClassicManaDisplay(snapshot, color, drawText);
++			ResourceOverlayLoader.PostDrawResourceDisplay(snapshot, this, false, color, drawText);
  		}
  
  		public void TryToHover() {
