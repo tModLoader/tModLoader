@@ -15,8 +15,9 @@ namespace Terraria.ModLoader.Engine
 			HookProcessStart();
 		}
 
+		private static Hook processStartHook;
 		private static void HookProcessStart() {
-			new Hook(typeof(Process).GetMethod("Start", BindingFlags.Public | BindingFlags.Instance), new Func<Func<Process, bool>, Process, bool>((orig, self) => {
+			processStartHook = new Hook(typeof(Process).GetMethod("Start", BindingFlags.Public | BindingFlags.Instance), new Func<Func<Process, bool>, Process, bool>((orig, self) => {
 				Logging.tML.Debug($"Process.Start (UseShellExecute = {self.StartInfo.UseShellExecute}): \"{self.StartInfo.FileName}\" {self.StartInfo.Arguments}");
 				return orig(self);
 			}));
@@ -31,11 +32,12 @@ namespace Terraria.ModLoader.Engine
 				Logging.PrettifyStackTraceSources(self.GetFrames());
 		}
 
+		private static Hook stackTraceCtorHook;
 		private static void PrettifyStackTraceSources() {
 			if (Logging.f_fileName == null)
 				return;
 
-			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
+			stackTraceCtorHook = new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 		}
 
 		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
