@@ -8,10 +8,9 @@ using Terraria.GameContent.UI.ResourceSets;
 
 namespace ExampleMod.Content.Items.Consumables
 {
-	// Making an item like Life Fruit (That goes above 500) involves a lot of code, as there are many things to consider.
-	// (An alternate that approaches 500 can simply follow vanilla code, however.):
-	// You can't make player.statLifeMax more than 500 (it won't save), so you'll have to maintain your extra life within your mod.
+	// This file showcases how to create an item that increases the player's maximum health on use.
 	// Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players.
+	// The overlay used to display the custom life fruit can be found in Common/UI/ResourceDisplay/VanillaHealthOverlay.cs
 	internal class ExampleLifeFruit : ModItem
 	{
 		public const int MaxExampleLifeFruits = 10;
