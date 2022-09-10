@@ -69,7 +69,7 @@
  		private void PrepareFields(Player player) {
  			PlayerStatsSnapshot playerStatsSnapshot = new PlayerStatsSnapshot(player);
 +			// Make drawing use the automatically-clamped AmountOf properties (#HealthManaAPI)
-+			_hpSegmentsCount = playerStatsSnapshot.AmountOfHearts;
++			_hpSegmentsCount = playerStatsSnapshot.AmountOfLifeHearts;
 +			_mpSegmentsCount = playerStatsSnapshot.AmountOfManaStars;
 +			/*
  			_hpSegmentsCount = (int)((float)playerStatsSnapshot.LifeMax / playerStatsSnapshot.LifePerSegment);

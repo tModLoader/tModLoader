@@ -11,9 +11,9 @@
  		public float ManaPerSegment;
  
 +		/// <summary>
-+		/// How many hearts would be drawn with this snapshot's values
++		/// How many life hearts would be drawn with this snapshot's values
 +		/// </summary>
-+		public int AmountOfHearts {
++		public int AmountOfLifeHearts {
 +			get {
 +				int amount = LifePerSegment <= 0 ? 0 : (int)(LifeMax / LifePerSegment);
 +

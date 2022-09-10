@@ -27,7 +27,7 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 			} else if (context.DrawSource is ResourceDrawSource_FancyLifePanel) {
 				string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyHeartOverlay_";
 
-				if (context.resourceNumber == context.snapshot.AmountOfHearts) {
+				if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
 					// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
 					if (context.resourceNumber % 10 == 1) {
 						// First and only panel in this panel's row

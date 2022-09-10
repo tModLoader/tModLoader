@@ -28,7 +28,7 @@
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
 +
 +			//Added additional condition for zero/negative max life, since DrawMana does it as well
-+			if (localPlayer.ghost || snapshot.LifeMax <= 0 || snapshot.AmountOfHearts <= 0)
++			if (localPlayer.ghost || snapshot.LifeMax <= 0 || snapshot.AmountOfLifeHearts <= 0)
  				return;
  
 +			UIDisplay_LifePerHeart = snapshot.LifePerSegment;
@@ -69,7 +69,7 @@
 +
 +			IResourceDrawSource drawSource = new ResourceDrawSource_ClassicLife();
 +
-+			for (int i = 1; i < snapshot.AmountOfHearts + 1; i++) {
++			for (int i = 1; i < snapshot.AmountOfLifeHearts + 1; i++) {
  				int num5 = 255;
  				float num6 = 1f;
  				bool flag = false;
@@ -201,9 +201,9 @@
 +
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
 +
-+			int num = 26 * snapshot.AmountOfHearts;
++			int num = 26 * snapshot.AmountOfLifeHearts;
 +			float num2 = 0;
-+			if (snapshot.AmountOfHearts > 10) {
++			if (snapshot.AmountOfLifeHearts > 10) {
  				num = 260;
  				num2 += 26;
  			}
