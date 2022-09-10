@@ -589,6 +589,15 @@
  							Main.player[num203].emoteTime = 360;
  
  						lock (EmoteBubble.byID) {
+@@ -3079,7 +_,7 @@
+ 							num212 = whoAmI;
+ 
+ 						int num213 = reader.ReadByte();
+-						if (num213 >= 0 && num213 < 151 && Main.netMode == 2) {
++						if (num213 >= 0 && num213 < EmoteBubbleLoader.EmoteBubbleCount && Main.netMode == 2) {
+ 							EmoteBubble.NewBubble(num213, new WorldUIAnchor(Main.player[num212]), 360);
+ 							EmoteBubble.CheckForNPCsToReactToEmoteBubble(num213, Main.player[num212]);
+ 						}
 @@ -3155,10 +_,28 @@
  					if (Main.netMode == 2) {
  						short x9 = reader.ReadInt16();

@@ -303,6 +303,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
+		/// <summary>
+		/// Get the id (type) of a ModEmoteBubble by class. Assumes one instance per class.
+		/// </summary>
+		public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
+
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
@@ -474,6 +479,7 @@ namespace Terraria.ModLoader
 			RarityLoader.Unload();
 			DamageClassLoader.Unload();
 			InfoDisplayLoader.Unload();
+			EmoteBubbleLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
 

@@ -1,5 +1,6 @@
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Armor;
@@ -23,6 +24,7 @@ using Terraria.GameContent.Personalities;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using ReLogic.Content;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.NPCs
@@ -45,6 +47,10 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+
+			// Connects this NPC with a custom emote.
+			// This makes it when the NPC is in the world, other NPCs will "talk about him".
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -355,6 +361,16 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SaveData(TagCompound tag) {
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
+		}
+
+		// Let the NPC "talk about" minion boss
+		public override int PickEmote(List<int> emoteList, WorldUIAnchor otherAnchor) {
+			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
+			// Make the selection more likely by adding it to the list multiple times.
+			for (int i = 0; i < 6; i++) {
+				emoteList.Add(type);
+			}
+			return base.PickEmote(emoteList, otherAnchor);
 		}
 	}
 

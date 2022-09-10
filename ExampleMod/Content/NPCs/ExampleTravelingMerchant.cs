@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Armor;
 using ExampleMod.Content.Items.Placeable.Furniture;
@@ -169,6 +170,7 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[NPC.type] = 90;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExampleTravellingMerchantEmote>();
 		}
 
 		public override void SetDefaults() {
