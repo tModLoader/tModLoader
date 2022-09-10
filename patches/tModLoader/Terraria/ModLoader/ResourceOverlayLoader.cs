@@ -87,9 +87,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Draws a resource, typically life or mana, as if it were in the Bars display set
 		/// </summary>
-		/// <inheritdoc cref="PrepareBarResource(PlayerStatsSnapshot, int, Asset{Texture2D}, IResourceDrawSource, Vector2, Func{PlayerStatsSnapshot, int}, Func{PlayerStatsSnapshot, float}, SpriteBatch, Color?, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawBarResource(PlayerStatsSnapshot snapshot, int resourceNumber, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, Func<PlayerStatsSnapshot, int> getSegmentCount, Func<PlayerStatsSnapshot, float> getFillPercent, SpriteBatch spriteBatch = null, Color? color = null, Vector2? origin = null, Vector2? scale = null) {
-			ResourceOverlayDrawContext drawContext = PrepareBarResource(snapshot, resourceNumber, texture, drawSource, position, getSegmentCount, getFillPercent, spriteBatch, color, origin, scale);
+		/// <inheritdoc cref="PrepareBarResource(PlayerStatsSnapshot, int, float, Asset{Texture2D}, IResourceDrawSource, Vector2, SpriteBatch, Color?, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext DrawBarResource(PlayerStatsSnapshot snapshot, int resourceNumber, float fillPercent, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, SpriteBatch spriteBatch = null, Color? color = null, Vector2? origin = null, Vector2? scale = null) {
+			ResourceOverlayDrawContext drawContext = PrepareBarResource(snapshot, resourceNumber, fillPercent, texture, drawSource, position, spriteBatch, color, origin, scale);
 
 			DrawResource(ref drawContext);
 
@@ -104,27 +104,22 @@ namespace Terraria.ModLoader
 		/// Which resource is being drawn<br/>
 		/// <b>NOTE:</b> This value is expected to start at 1, not 0
 		/// </param>
+		/// <param name="fillPercent">How much of the bar should be filled.  Automatically clamped to be between 0 and 1.</param>
 		/// <param name="texture">The texture</param>
 		/// <param name="drawSource">The drawing context's source</param>
 		/// <param name="position">
 		/// The position to draw the resource at.<br/>
 		/// <b>NOTE:</b> The final result in the returned object may not be the same as this value.
 		/// </param>
-		/// <param name="getSegmentCount">
-		/// A function which returns the total segment count.<br/>
-		/// You'll typically want to use <c>snapshot.AmountLifeOfHearts</c> or <c>snapshot.AmountOfManaStars</c>
-		/// </param>
-		/// <param name="getFillPercent">
-		/// A function which returns the fill percentage.<br/>
-		/// You'll typically want to use "<c>snapshot.Life/(float)snapshot.LifeMax</c>" or "<c>snapshot.Mana/(float)snapshot.ManaMax</c>"
-		/// </param>
 		/// <param name="spriteBatch">The SpriteBatch used to draw this resource.  Defaults to Main.spriteBatch</param>
 		/// <param name="color">The color to draw the resource with.  Defaults to Color.White</param>
 		/// <param name="origin">The relative location within the source frame for rotation and scaling</param>
 		/// <param name="scale">The scale to draw the resource at</param>
 		/// <returns>A drawing context object for use with <see cref="DrawResource(ref ResourceOverlayDrawContext)"/></returns>
-		public static ResourceOverlayDrawContext PrepareBarResource(PlayerStatsSnapshot snapshot, int resourceNumber, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, Func<PlayerStatsSnapshot, int> getSegmentCount, Func<PlayerStatsSnapshot, float> getFillPercent, SpriteBatch spriteBatch = null, Color? color = null, Vector2? origin = null, Vector2? scale = null) {
-			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(resourceNumber, texture, getSegmentCount(snapshot), getFillPercent(snapshot), out Vector2 offset, out float drawScale, out Rectangle? sourceRect);
+		public static ResourceOverlayDrawContext PrepareBarResource(PlayerStatsSnapshot snapshot, int resourceNumber, float fillPercent, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, SpriteBatch spriteBatch = null, Color? color = null, Vector2? origin = null, Vector2? scale = null) {
+			fillPercent = Utils.Clamp(fillPercent, 0, 1);
+
+			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(0, texture, 1, fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect);
 
 			position += offset;
 
