@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Items.Consumables
 				// AchievementsHelper.HandleSpecialEvent(player, 2);
 				//TODO re-add this when ModAchievement is merged?
 			}
-			//Returning null will make the item not be consumed
+			// Returning null will make the item not be consumed
 			return canConsume ? true : null;
 		}
 
@@ -97,7 +97,7 @@ namespace ExampleMod.Content.Items.Consumables
 	{
 		public override void ModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot) {
 			// Use this hook to modify the snapshot of the player's maximum health and mana before drawing the UIs
-			// tModLoader will automatically cap the amount of hearts/stars at 20 after this hook is called, so you don't have to modify the snapshot
+			// tModLoader will automatically cap the amount of hearts/stars/bars at 20 after this hook is called, so you don't have to modify the snapshot
 			//   with your increased life/mana max from ModPlayer.ModifyMaxStats()
 		}
 	}
