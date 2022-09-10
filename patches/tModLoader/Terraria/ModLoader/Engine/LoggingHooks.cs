@@ -1,9 +1,10 @@
 ﻿using MonoMod.RuntimeDetour;
 using System;
 using System.Diagnostics;
-using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -16,7 +17,7 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		private static void HookProcessStart() {
-			new Hook(typeof(Process).GetMethod("Start", BindingFlags.Public | BindingFlags.Instance), new Func<Func<Process, bool>, Process, bool>((orig, self) => {
+			_ = new Hook(typeof(Process).GetMethod("Start", BindingFlags.Public | BindingFlags.Instance), new Func<Func<Process, bool>, Process, bool>((orig, self) => {
 				Logging.tML.Debug($"Process.Start (UseShellExecute = {self.StartInfo.UseShellExecute}): \"{self.StartInfo.FileName}\" {self.StartInfo.Arguments}");
 				return orig(self);
 			}));
@@ -35,17 +36,12 @@ namespace Terraria.ModLoader.Engine
 			if (Logging.f_fileName == null)
 				return;
 
-			new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
+			_ = new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 		}
 
-		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
-		private delegate EventHandler SendRequestHook(SendRequest orig, object self, HttpWebRequest request);
+		private delegate ValueTask<HttpResponseMessage> orig_SendAsyncCore(object self, HttpRequestMessage request, Uri? proxyUri, bool async, bool doRequestAuth, bool isProxyConnect, CancellationToken cancellationToken);
 
-		private delegate void WebOperation_ctor(object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
-		private delegate void WebOperation_ctorHook(WebOperation_ctor orig, object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
-
-		private delegate bool SubmitRequest(object self, HttpWebRequest request, bool forcedsubmit);
-		private delegate bool SubmitRequestHook(SubmitRequest orig, object self, HttpWebRequest request, bool forcedsubmit);
+		private delegate ValueTask<HttpResponseMessage> hook_SendAsyncCore(orig_SendAsyncCore orig, object self, HttpRequestMessage request, Uri? proxyUri, bool async, bool doRequestAuth, bool isProxyConnect, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Attempt to hook the .NET internal methods to log when requests are sent to web addresses.
@@ -53,11 +49,23 @@ namespace Terraria.ModLoader.Engine
 		/// </summary>
 		private static void HookWebRequests() {
 			try {
-				// TODO re-implement for Core?
+				// .NET 6
+				var sendAsyncCoreMethodInfo = typeof(HttpClient).Assembly
+					.GetType("System.Net.Http.HttpConnectionPoolManager")
+					?.GetMethod("SendAsyncCore", BindingFlags.Public | BindingFlags.Instance);
+
+				if (sendAsyncCoreMethodInfo != null) {
+					_ = new Hook(sendAsyncCoreMethodInfo, new hook_SendAsyncCore((orig, self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken) => {
+						Logging.tML.Debug($"Web Request: {request.RequestUri}");
+						return orig(self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken);
+					}));
+					return;
+				}
 			}
 			catch {
-				Logging.tML.Warn("HttpWebRequest send/submit method not found");
 			}
+
+			Logging.tML.Warn("HttpWebRequest send/submit method not found");
 		}
 	}
 }
