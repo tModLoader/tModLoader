@@ -28,12 +28,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.CloneDefaults(ItemID.LifeFruit);
 		}
 
-		public override bool ConsumeItem(Player player) {
-			// Prevent consuming the item when the player has used the max amount
-			// This hook works in tandem with UseItem to make the item still "usable" once the player has reached the max amount
-			return player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits;
-		}
-
 		public override bool CanUseItem(Player player) {
 			// This check prevents this item from being used before vanilla health upgrades are maxed out.
 			return player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax;
@@ -42,7 +36,10 @@ namespace ExampleMod.Content.Items.Consumables
 		public override bool? UseItem(Player player) {
 			// Moving the exampleLifeFruits check from CanUseItem to here allows this example fruit to still "be used" like Life Crystals can be
 			// when at the max allowed, but it will just play the animation and not affect the player's max life
+			bool canConsume = false;
 			if (player.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits < MaxExampleLifeFruits) {
+				canConsume = true;
+
 				// This method handles permanently increasing the player's max health and displaying the green heal text
 				player.UseHealthMaxIncreasingItem(LifePerFruit);
 
@@ -53,7 +50,8 @@ namespace ExampleMod.Content.Items.Consumables
 				// AchievementsHelper.HandleSpecialEvent(player, 2);
 				//TODO re-add this when ModAchievement is merged?
 			}
-			return true;
+			//Returning null will make the item not be consumed
+			return canConsume ? true : null;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
