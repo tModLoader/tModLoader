@@ -26,7 +26,6 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.LifeFruit);
-			Item.color = Color.Purple;
 		}
 
 		public override bool ConsumeItem(Player player) {
