@@ -6,70 +6,68 @@
  namespace Terraria.GameContent.UI.ResourceSets
  {
  	public struct PlayerStatsSnapshot
-@@ -10,6 +_,50 @@
+@@ -5,32 +_,60 @@
+ 		public int Life;
+ 		public int LifeMax;
+ 		public int LifeFruitCount;
+-		public float LifePerSegment;
++		// Made double to prevent bugs caused by precision limits (#HealthManaAPI)
++		public double LifePerSegment => LifeMax / (double)AmountOfLifeHearts;
+ 		public int Mana;
  		public int ManaMax;
- 		public float ManaPerSegment;
- 
+-		public float ManaPerSegment;
++		// Made double to prevent bugs caused by precision limits (#HealthManaAPI)
++		public double ManaPerSegment => ManaMax / (double)AmountOfManaStars;
++
++		private int numLifeHearts;
++
 +		/// <summary>
-+		/// How many life hearts would be drawn with this snapshot's values
++		/// How many life hearts should be drawn
 +		/// </summary>
 +		public int AmountOfLifeHearts {
-+			get {
-+				int amount = LifePerSegment <= 0 ? 0 : (int)(LifeMax / LifePerSegment);
-+
-+				if (amount > 20) {
-+					LifePerSegment = LifeMax / 20f;
-+					amount = 20;
-+				}
-+
-+				return amount;
-+			}
-+			set {
-+				if (value > 20)
-+					value = 20;
-+
-+				LifePerSegment = value <= 0 ? 0 : LifeMax / (float)value;
-+			}
++			get => numLifeHearts;
++			set => numLifeHearts = Utils.Clamp(value, int.MinValue, 20);
 +		}
-+		
++
++		private int numManaStars;
++
 +		/// <summary>
-+		/// How many mana stars would be drawn with this snapshot's values
++		/// How many mana stars should be drawn
 +		/// </summary>
 +		public int AmountOfManaStars {
-+			get {
-+				int amount = ManaPerSegment <= 0 ? 0 : (int)(ManaMax / ManaPerSegment);
-+
-+				if (amount > 20) {
-+					ManaPerSegment = ManaMax / 20f;
-+					amount = 20;
-+				}
-+
-+				return amount;
-+			}
-+			set {
-+				if (value > 20)
-+					value = 20;
-+
-+				ManaPerSegment = value <= 0 ? 0 : ManaMax / (float)value;
-+			}
++			get => numManaStars;
++			set => numManaStars = Utils.Clamp(value, int.MinValue, 20);
 +		}
-+
+ 
  		public PlayerStatsSnapshot(Player player) {
  			Life = player.statLife;
  			Mana = player.statMana;
-@@ -17,7 +_,7 @@
+ 			LifeMax = player.statLifeMax2;
  			ManaMax = player.statManaMax2;
- 			float num = 20f;
+-			float num = 20f;
++			double num = 20d;
  			int num2 = player.statLifeMax / 20;
 -			int num3 = (player.statLifeMax - 400) / 5;
 +			int num3 = player.ConsumedLifeFruit;
  			if (num3 < 0)
  				num3 = 0;
  
-@@ -31,6 +_,8 @@
+ 			if (num3 > 0) {
+ 				num2 = player.statLifeMax / (20 + num3 / 4);
+-				num = (float)player.statLifeMax / 20f;
++				num = player.statLifeMax / 20d;
+ 			}
+ 
+ 			int num4 = player.statLifeMax2 - player.statLifeMax;
+-			num += (float)(num4 / num2);
++			num += num4 / num2;
  			LifeFruitCount = num3;
++			/*
  			LifePerSegment = num;
  			ManaPerSegment = 20f;
++			*/
++			numLifeHearts = (int)(LifeMax / num);
++			numManaStars = (int)(ManaMax / 20d);
 +
 +			SystemLoader.ModifyStatSnapshot(player, ref this);
  		}

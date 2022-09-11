@@ -1,4 +1,4 @@
-using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Common.Players;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
@@ -20,11 +20,12 @@ namespace ExampleMod
 			MessageType msgType = (MessageType)reader.ReadByte();
 
 			switch (msgType) {
-				// This message syncs ExamplePlayer.exampleLifeFruits
+				// This message syncs ExampleLifeIncreasePlayer.exampleLifeFruits and ExampleLifeIncreasePlayer.exampleManaCrystals
 				case MessageType.ExamplePlayerSyncPlayer:
 					byte playernumber = reader.ReadByte();
-					ExampleLifeFruitPlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleLifeFruitPlayer>();
-					examplePlayer.exampleLifeFruits = reader.ReadInt32();
+					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
+					examplePlayer.exampleLifeFruits = reader.ReadByte();
+					examplePlayer.exampleManaCrystals = reader.ReadByte();
 					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
 					break;
 				case MessageType.ExampleTeleportToStatue:

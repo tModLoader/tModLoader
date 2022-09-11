@@ -1,4 +1,4 @@
-﻿using ExampleMod.Content.Items.Consumables;
+﻿using ExampleMod.Common.Players;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -6,26 +6,45 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.UI.ResourceDisplay
 {
-	public class VanillaHealthOverlay : ModResourceOverlay
+	public class VanillaLifeOverlay : ModResourceOverlay
 	{
 		public override void PostDrawResource(ResourceOverlayDrawContext context) {
-			// Only hearts are replaced
+			// Only life resources are replaced
 			if (context.DrawSource is not ResourceDrawSource_Life)
 				return;
 
-			// Hearts are replaced in groups of two
+			// Life resources are drawn over in groups of two
 			// Bars panel drawing has two additional elements, so the "resource index" needs to be offset
 			int fillResourceNumber = context.DrawSource is ResourceDrawSource_BarsLifePanel ? context.resourceNumber - 1 : context.resourceNumber;
-			if (fillResourceNumber > 2 * Main.LocalPlayer.GetModPlayer<ExampleLifeFruitPlayer>().exampleLifeFruits)
+			int exampleFruits = Main.LocalPlayer.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits;
+
+			bool canReplaceResource;
+
+			if (context.DrawSource is ResourceDrawSource_BarsLife) {
+				// Vanilla "replaces" the bars from right to left, so it would be a good idea to mimic that behaviour
+				canReplaceResource = fillResourceNumber > context.snapshot.AmountOfLifeHearts - 2 * exampleFruits;
+			} else {
+				canReplaceResource = fillResourceNumber <= 2 * exampleFruits;
+			}
+
+			if (!canReplaceResource)
 				return;
 
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla hearts, just replace the texture and have the context draw the new texture
+
+			// NOTE: If you copy this code into PreDrawResource and only want to draw behind the resource and NOT modify it, copy the context into a variable and THEN draw using it:
+			/*
+			ResourceOverlayDrawContext contextCopy = context;
+			contextCopy.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicManaOverlay", AssetRequestMode.ImmediateLoad);
+			contextCopy.Draw();
+			*/
+
 			if (context.DrawSource is ResourceDrawSource_ClassicLife || context.DrawSource is ResourceDrawSource_FancyLife) {
-				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicHeartOverlay", AssetRequestMode.ImmediateLoad);
+				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicLifeOverlay", AssetRequestMode.ImmediateLoad);
 				context.Draw();
 			} else if (context.DrawSource is ResourceDrawSource_FancyLifePanel) {
-				string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyHeartOverlay_";
+				string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyLifeOverlay_";
 
 				if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
 					// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
@@ -49,7 +68,7 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 
 				context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
 				context.Draw();
-			} else if (context.DrawSource is ResourceDrawSource_BarsLifePanel && fillResourceNumber >= 1 && fillResourceNumber <= 20) {
+			} else if (context.DrawSource is ResourceDrawSource_BarsLifePanel && fillResourceNumber >= 1 && fillResourceNumber <= context.snapshot.AmountOfLifeHearts) {
 				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsLifeOverlay_Panel_Middle", AssetRequestMode.ImmediateLoad);
 				context.Draw();
 			} else if (context.DrawSource is ResourceDrawSource_BarsLife) {
