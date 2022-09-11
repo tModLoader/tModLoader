@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria.GameContent.UI.ResourceSets;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// A class that is used to customize how the vanilla resource displays (Classic, Fancy and Bars) are drawn
+	/// This class serves as a place for you to customize how the vanilla resource displays (Classic, Fancy and Bars) are drawn.<br/>
+	/// For implementing your own resource displays, use <see cref="ModResourceDisplaySet"/>.
 	/// </summary>
 	public abstract class ModResourceOverlay : ModType
 	{
@@ -36,7 +35,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw before the resources (hearts, stars, bars and/or panels) in a vanilla display set are drawn
+		/// Allows you to draw before the resources (hearts, stars, bars and/or panels) in a vanilla display set are drawn.<br/>
+		/// If you want to implement your own display set, it is recommended to use <see cref="ModResourceDisplaySet"/> instead of this hook.
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
 		/// <param name="displaySet">The display set being drawn</param>

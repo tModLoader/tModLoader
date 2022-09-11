@@ -362,6 +362,7 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
 			ModOrganizer.SaveLastLaunchedMods();
 		}
@@ -477,6 +478,7 @@ namespace Terraria.ModLoader
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
 			ResourceOverlayLoader.Unload();
+			ResourceDisplaySetLoader.Unload();
 
 			LoaderManager.Unload();
 

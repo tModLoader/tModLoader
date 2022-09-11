@@ -1,10 +1,28 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/PlayerResourceSetsManager.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/PlayerResourceSetsManager.cs
-@@ -82,5 +_,7 @@
+@@ -5,7 +_,7 @@
  
- 			SetActiveFrame(lastFrame);
+ namespace Terraria.GameContent.UI.ResourceSets
+ {
+-	public class PlayerResourceSetsManager
++	public partial class PlayerResourceSetsManager
+ 	{
+ 		private Dictionary<string, IPlayerResourcesDisplaySet> _sets = new Dictionary<string, IPlayerResourcesDisplaySet>();
+ 		private IPlayerResourcesDisplaySet _activeSet;
+@@ -23,7 +_,7 @@
  		}
-+
-+		public IPlayerResourcesDisplaySet GetDisplaySet(string nameKey) => _sets.TryGetValue(nameKey, out var set) ? set : null;
- 	}
- }
+ 
+ 		private void Configuration_OnLoad(Preferences obj) {
+-			_activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
++			_activeSetConfigKeyOriginal = _activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
+ 			if (_loadedContent)
+ 				SetActiveFromLoadedConfigKey();
+ 		}
+@@ -31,6 +_,7 @@
+ 		private void Configuration_OnSave(Preferences obj) {
+ 			_ = _sets.FirstOrDefault((KeyValuePair<string, IPlayerResourcesDisplaySet> pair) => pair.Value == _activeSet).Key;
+ 			obj.Put("PlayerResourcesSet", _activeSetConfigKey);
++			_activeSetConfigKeyOriginal = _activeSetConfigKey;
+ 		}
+ 
+ 		public void LoadContent(AssetRequestMode mode) {

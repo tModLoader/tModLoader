@@ -28,6 +28,16 @@
  		}
  
  		public void Draw() {
+@@ -55,6 +_,9 @@
+ 			int num = 16;
+ 			int num2 = 18;
+ 			int num3 = Main.screenWidth - 300 - 22 + num;
++			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
++			if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, true, ref color, out bool drawText))
++				goto SkipLifeDrawing;
+ 			Vector2 vector = new Vector2(num3, num2);
+ 			vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
+ 			bool isHovered = false;
 @@ -63,6 +_,7 @@
  			resourceDrawSettings.ElementIndexOffset = 0;
  			resourceDrawSettings.TopLeftAnchor = vector;
@@ -36,7 +46,7 @@
  			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -73,6 +_,7 @@
+@@ -73,12 +_,18 @@
  			resourceDrawSettings.ElementIndexOffset = 0;
  			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(6f, 6f);
  			resourceDrawSettings.GetTextureMethod = LifeFillingDrawer;
@@ -44,6 +54,17 @@
  			resourceDrawSettings.OffsetPerDraw = new Vector2(_hpFill.Width(), 0f);
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			_hpHovered = isHovered;
++			SkipLifeDrawing:
++			ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, true, color, drawText);
++			color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
++			if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, false, ref color, out drawText))
++				goto SkipManaDrawing;
+ 			isHovered = false;
+ 			Vector2 vector2 = new Vector2(num3 - 10, num2 + 24);
+ 			vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
 @@ -87,6 +_,7 @@
  			resourceDrawSettings.ElementIndexOffset = 0;
  			resourceDrawSettings.TopLeftAnchor = vector2;
@@ -52,7 +73,7 @@
  			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -97,6 +_,7 @@
+@@ -97,12 +_,15 @@
  			resourceDrawSettings.ElementIndexOffset = 0;
  			resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
  			resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
@@ -60,6 +81,14 @@
  			resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			_mpHovered = isHovered;
++			SkipManaDrawing:
++			ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, false, color, drawText);
+ 		}
+ 
+ 		private static void DrawManaText(SpriteBatch spriteBatch) {
 @@ -128,14 +_,22 @@
  			spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, value + new Vector2(vector.X * 0.5f, 0f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
  		}
