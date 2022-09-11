@@ -18,7 +18,16 @@ namespace Terraria.ModLoader.IO
 				var tileEntity = pair.Value;
 				var modTileEntity = tileEntity as ModTileEntity;
 
-				tileEntity.SaveData(saveData);
+				try {
+					tileEntity.SaveData(saveData);
+				}
+				catch (Exception e) {
+					Logging.tML.WarnFormat("TileEntity {0} from {1} threw an exception during saving. {2}",
+						modTileEntity?.Name ?? tileEntity.GetType().Name,
+						modTileEntity?.Mod.Name ?? "Terraria",
+						modTileEntity != null ? "Please report this to the mod author." : "");
+					Logging.tML.Warn(e);
+				}
 
 				var tag = new TagCompound {
 					["mod"] = modTileEntity?.Mod.Name ?? "Terraria",

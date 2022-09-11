@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
@@ -50,7 +51,14 @@ namespace Terraria.ModLoader.IO
 
 				var saveData = new TagCompound();
 
-				item.ModItem.SaveData(saveData);
+				try {
+					item.ModItem.SaveData(saveData);
+				}
+				catch (Exception e) {
+					Logging.tML.WarnFormat("ModItem {0} from {1} threw an exception during saving. Please report this to the mod author.",
+						item.ModItem.Name, item.ModItem.Mod.Name);
+					Logging.tML.Warn(e);
+				}
 
 				if (saveData.Count > 0) {
 					tag.Set("data", saveData);
@@ -133,7 +141,15 @@ namespace Terraria.ModLoader.IO
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
 
-				globalItemInstance?.SaveData(item, saveData);
+				try {
+					globalItemInstance?.SaveData(item, saveData);
+				}
+				catch (Exception e) {
+					Debug.Assert(globalItemInstance != null);
+					Logging.tML.WarnFormat("GlobalItem {0} from {1} threw an exception during saving. Please report this to the mod author.",
+						globalItemInstance.Name, globalItemInstance.Mod.Name);
+					Logging.tML.Warn(e);
+				}
 
 				if (saveData.Count == 0)
 					continue;
@@ -156,7 +172,7 @@ namespace Terraria.ModLoader.IO
 						globalItem.LoadData(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
-						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
+						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom global item data for {globalItem.FullName}", e);
 					}
 				}
 				else {

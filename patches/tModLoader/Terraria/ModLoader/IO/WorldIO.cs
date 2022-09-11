@@ -143,7 +143,14 @@ namespace Terraria.ModLoader.IO
 						continue;
 					}
 
-					globalNPC.SaveData(npc, data);
+					try {
+						globalNPC.SaveData(npc, data);
+					}
+					catch (Exception e) {
+						Logging.tML.WarnFormat("GlobalNPC {0} from {1} threw an exception during saving. Please report this to the mod author.",
+							globalNPC.Name, globalNPC.Mod.Name);
+						Logging.tML.Warn(e);
+					}
 
 					if (data.Count != 0) {
 						globalData.Add(new TagCompound {
@@ -159,7 +166,14 @@ namespace Terraria.ModLoader.IO
 				TagCompound tag;
 
 				if (NPCLoader.IsModNPC(npc)) {
-					npc.ModNPC.SaveData(data);
+					try {
+						npc.ModNPC.SaveData(data);
+					}
+					catch (Exception e) {
+						Logging.tML.WarnFormat("ModNPC {0} from {1} threw an exception during saving. Please report this to the mod author.",
+							npc.ModNPC.Name, npc.ModNPC.Mod.Name);
+						Logging.tML.Warn(e);
+					}
 
 					tag = new TagCompound {
 						["mod"] = npc.ModNPC.Mod.Name,
@@ -279,7 +293,7 @@ namespace Terraria.ModLoader.IO
 							globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
 						}
 						catch (Exception inner) {
-							throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom player data for {modName}", inner);
+							throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom global npc data for {modName}", inner);
 						}
 					}
 					else {
@@ -467,7 +481,14 @@ namespace Terraria.ModLoader.IO
 			var saveData = new TagCompound();
 
 			foreach (var system in SystemLoader.Systems) {
-				system.SaveWorldData(saveData);
+				try {
+					system.SaveWorldData(saveData);
+				}
+				catch (Exception e) {
+					Logging.tML.WarnFormat("ModSystem {0} from {1} threw an exception during saving. Please report this to the mod author.",
+						system.Name, system.Mod.Name);
+					Logging.tML.Warn(e);
+				}
 
 				if (saveData.Count == 0)
 					continue;
