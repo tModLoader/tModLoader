@@ -1,18 +1,21 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
-@@ -3,6 +_,7 @@
+@@ -3,6 +_,8 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
-@@ -25,6 +_,8 @@
+@@ -25,6 +_,10 @@
  		private Asset<Texture2D> _panelMiddleMP;
  		private Asset<Texture2D> _panelRightMP;
  
 +		private IResourceDrawSource _heartDrawSource, _heartPanelDrawSource, _manaDrawSource, _manaPanelDrawSource;
++
++		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
 +
  		public string NameKey {
  			get;
@@ -127,22 +130,22 @@
  			FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
 +		}
 +
-+		private void LifePanelContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void LifePanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _heartPanelDrawSource;
 +		}
 +
-+		private void LifeContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void LifeContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _heartDrawSource;
 +		}
 +
-+		private void ManaPanelContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void ManaPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _manaPanelDrawSource;
 +		}
 +
-+		private void ManaContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void ManaContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _manaDrawSource;
  		}

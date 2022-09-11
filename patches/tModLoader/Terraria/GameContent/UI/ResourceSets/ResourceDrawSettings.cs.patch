@@ -13,7 +13,7 @@
  	{
  		public delegate void TextureGetter(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
  
-+		public delegate void ResourceOverlayDelegate(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
++		public delegate void ResourceOverlayDelegate(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
 +
  		public Vector2 TopLeftAnchor;
  		public int ElementCount;
@@ -28,7 +28,7 @@
  				int elementIndex = i + ElementIndexOffset;
  				GetTextureMethod(elementIndex, ElementIndexOffset, ElementIndexOffset + elementCount - 1, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
 -				Rectangle rectangle = texture.Frame();
-+				GetResourceDrawContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
++				GetResourceDrawContext(elementIndex, ElementIndexOffset, ElementIndexOffset + elementCount - 1, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
 +
 +				Rectangle frame = sourceRect ?? texture.Frame();
 +				Vector2 position = topLeftAnchor + drawOffset;

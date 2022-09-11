@@ -362,6 +362,7 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+			Main.ResourceSetsManager.AddModdedDisplaySets();
 			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
 			ModOrganizer.SaveLastLaunchedMods();

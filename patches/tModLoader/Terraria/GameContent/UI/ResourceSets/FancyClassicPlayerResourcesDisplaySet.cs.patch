@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
-@@ -3,13 +_,15 @@
+@@ -3,13 +_,16 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
@@ -27,11 +28,13 @@
  		private float _currentPlayerMana;
  		private Asset<Texture2D> _heartLeft;
  		private Asset<Texture2D> _heartMiddle;
-@@ -34,6 +_,8 @@
+@@ -34,6 +_,10 @@
  		private bool _hoverLife;
  		private bool _hoverMana;
  
 +		private IResourceDrawSource _heartDrawSource, _heartPanelDrawSource, _manaDrawSource, _manaPanelDrawSource;
++
++		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
 +
  		public string NameKey {
  			get;
@@ -143,12 +146,12 @@
  				drawScale += Main.cursorScale - 1f;
  		}
  
-+		private void HeartPanelContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void HeartPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _heartPanelDrawSource;
 +		}
 +
-+		private void HeartContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void HeartContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _heartDrawSource;
 +		}
@@ -166,12 +169,12 @@
  				drawScale += Main.cursorScale - 1f;
  		}
  
-+		private void StarPanelContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void StarPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _manaPanelDrawSource;
 +		}
 +
-+		private void StarContext(out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
++		private void StarContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
 +			snapshot = preparedSnapshot;
 +			drawSource = _manaDrawSource;
 +		}

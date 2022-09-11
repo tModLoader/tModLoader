@@ -19,10 +19,12 @@ namespace Terraria.ModLoader
 
 		public bool Selected => Main.ResourceSetsManager.ActiveSet == this;
 
+		public string DisplayedName => DisplayName.GetTranslation(Language.ActiveCulture);
+
 		/// <summary>
 		/// Gets the name for this resource display set based on its DisplayName and the current culture
 		/// </summary>
-		public string NameKey => DisplayName.GetTranslation(Language.ActiveCulture);
+		public string NameKey => DisplayName.Key;
 
 		/// <summary>
 		/// The name used to get this resource display set.  Returns <see cref="ModType.FullName"/>
@@ -42,7 +44,7 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModResourceDisplaySet>.Register(this);
 
-			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{DisplayedName}");
 
 			Type = ResourceDisplaySetLoader.Add(this);
 		}
@@ -57,11 +59,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
 			if (DisplayName.IsDefault())
-				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+				DisplayName.SetDefault(Regex.Replace(DisplayedName, "([A-Z])", " $1").Trim());
 		}
 
 		public void Draw() {
 			var stats = PlayerStats;
+			PreDrawResources(stats);
 
 			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
 			if (ResourceOverlayLoader.PreDrawResourceDisplay(stats, this, true, ref color, out bool drawText))
@@ -73,6 +76,12 @@ namespace Terraria.ModLoader
 				DrawMana(Main.spriteBatch);
 			ResourceOverlayLoader.PostDrawResourceDisplay(stats, this, false, color, drawText);
 		}
+
+		/// <summary>
+		/// Allows you to initialize fields, textures, etc. before drawing occurs
+		/// </summary>
+		/// <param name="snapshot">A copy of <see cref="PlayerStats"/></param>
+		public virtual void PreDrawResources(PlayerStatsSnapshot snapshot) { }
 
 		/// <summary>
 		/// Draw the life resources for your display set here

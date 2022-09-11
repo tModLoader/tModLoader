@@ -4273,7 +4273,17 @@
  					array4[num5 - 1] = 18;
  					for (int num23 = 0; num23 < num5; num23++) {
  						array7[num23] = 0.75f;
-@@ -37880,6 +_,11 @@
+@@ -37873,13 +_,21 @@
+ 						MinimapFrameManagerInstance.CycleSelection();
+ 
+ 					num24++;
++					/*
+ 					string activeSetKeyName = ResourceSetsManager.ActiveSetKeyName;
+ 					string textValue2 = Language.GetTextValue("UI.HealthManaStyle_" + activeSetKeyName);
++					*/
++					string textValue2 = ResourceSetsManager.ActiveSet.DisplayedName;
+ 					array9[num24] = Language.GetTextValue("UI.SelectHealthStyle", textValue2);
+ 					if (selectedMenu == num24)
  						ResourceSetsManager.CycleResourceSet();
  
  					num24++;

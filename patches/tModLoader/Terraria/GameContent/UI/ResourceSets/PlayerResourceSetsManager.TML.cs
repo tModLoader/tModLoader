@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria.ModLoader;
 
 namespace Terraria.GameContent.UI.ResourceSets
 {
@@ -6,6 +7,11 @@ namespace Terraria.GameContent.UI.ResourceSets
 	{
 		private static readonly string[] vanillaSets = new string[] { "New", "Default", "HorizontalBars" };
 		private string _activeSetConfigKeyOriginal;  // Used to store the original key value, since PlayerResourceSetsManager is loaded way before mods
+
+		internal void AddModdedDisplaySets() {
+			foreach (ModResourceDisplaySet display in ResourceDisplaySetLoader.moddedDisplaySets)
+				_sets[display.ConfigKey] = display;
+		}
 
 		// Called by tML after mods have loaded to set the actual display set
 		internal void SetActiveFromOriginalConfigKey() {
@@ -31,5 +37,7 @@ namespace Terraria.GameContent.UI.ResourceSets
 		public IPlayerResourcesDisplaySet ActiveSet => _activeSet;
 
 		public IPlayerResourcesDisplaySet GetDisplaySet(string nameKey) => _sets.TryGetValue(nameKey, out var set) ? set : null;
+
+		public ModResourceDisplaySet GetDisplaySet<T>() where T : ModResourceDisplaySet => GetDisplaySet(ModContent.GetInstance<T>().ConfigKey) as T;
 	}
 }

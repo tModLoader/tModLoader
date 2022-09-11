@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
-@@ -2,13 +_,16 @@
+@@ -2,15 +_,21 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
@@ -17,7 +18,11 @@
 +		*/
  		private int UI_ScreenAnchorX;
  
++		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
++
  		public string NameKey {
+ 			get;
+ 			private set;
 @@ -36,10 +_,22 @@
  			Player localPlayer = Main.LocalPlayer;
  			SpriteBatch spriteBatch = Main.spriteBatch;
