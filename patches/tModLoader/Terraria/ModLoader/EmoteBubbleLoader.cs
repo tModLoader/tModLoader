@@ -2,8 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Terraria.Chat.Commands;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
+using Terraria.ModLoader.Core;
+using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader
 {
@@ -23,6 +29,14 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			emoteBubbles.Clear();
+		}
+		
+		internal static void ResizeArrays() {
+			Array.Resize(ref Lang._emojiNameCache, EmoteBubbleCount);
+
+			for (int k = EmoteID.Count; k < EmoteBubbleCount; k++) {
+				Lang._emojiNameCache[k] = LocalizedText.Empty;
+			}
 		}
 
 		internal static Dictionary<Mod, List<int>> GetAllUnlockedModEmotes() {
@@ -71,23 +85,53 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
-		public static bool PreDraw(EmoteBubble emoteBubble, SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, SpriteEffects spriteEffects) {
+		public static bool UpdateFrameInEmoteMenu(int emoteType, ref int frameCounter) {
 			bool result = true;
 			foreach (var globalEmoteBubble in globalEmoteBubbles) {
-				result &= globalEmoteBubble.PreDraw(emoteBubble, spriteBatch, texture, position, frame, spriteEffects);
+				result &= globalEmoteBubble.UpdateFrameInEmoteMenu(emoteType, ref frameCounter);
 			}
-			if (result && emoteBubble.ModEmoteBubble != null) {
-				result = emoteBubble.ModEmoteBubble.PreDraw(spriteBatch, texture, position, frame, spriteEffects);
+			if (result && GetEmoteBubble(emoteType)?.UpdateFrameInEmoteMenu(ref frameCounter) is false) {
+				result = false;
 			}
 			return result;
 		}
 
-		public static void PostDraw(EmoteBubble emoteBubble, SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, SpriteEffects spriteEffects) {
+		public static bool PreDraw(EmoteBubble emoteBubble, SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, Vector2 origin, SpriteEffects spriteEffects) {
+			bool result = true;
 			foreach (var globalEmoteBubble in globalEmoteBubbles) {
-				globalEmoteBubble.PostDraw(emoteBubble, spriteBatch, texture, position, frame, spriteEffects);
+				result &= globalEmoteBubble.PreDraw(emoteBubble, spriteBatch, texture, position, frame, origin, spriteEffects);
 			}
-			emoteBubble.ModEmoteBubble?.PostDraw(spriteBatch, texture, position, frame, spriteEffects);
+			if (result && emoteBubble.ModEmoteBubble != null) {
+				result = emoteBubble.ModEmoteBubble.PreDraw(spriteBatch, texture, position, frame, origin, spriteEffects);
+			}
+			return result;
 		}
+
+		public static void PostDraw(EmoteBubble emoteBubble, SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, Vector2 origin, SpriteEffects spriteEffects) {
+			foreach (var globalEmoteBubble in globalEmoteBubbles) {
+				globalEmoteBubble.PostDraw(emoteBubble, spriteBatch, texture, position, frame, origin, spriteEffects);
+			}
+			emoteBubble.ModEmoteBubble?.PostDraw(spriteBatch, texture, position, frame, origin, spriteEffects);
+		}
+		
+		public static bool PreDrawInEmoteMenu(int emoteType, SpriteBatch spriteBatch, EmoteButton uiEmoteButton, Vector2 position, Rectangle frame, Vector2 origin) {
+			bool result = true;
+			foreach (var globalEmoteBubble in globalEmoteBubbles) {
+				result &= globalEmoteBubble.PreDrawInEmoteMenu(emoteType, spriteBatch, uiEmoteButton, position, frame, origin);
+			}
+			if (result && GetEmoteBubble(emoteType)?.PreDrawInEmoteMenu(spriteBatch, uiEmoteButton, position, frame, origin) is false) {
+				result = false;
+			}
+			return result;
+		}
+
+		public static void PostDrawInEmoteMenu(int emoteType, SpriteBatch spriteBatch, EmoteButton uiEmoteButton, Vector2 position, Rectangle frame, Vector2 origin) {
+			foreach (var globalEmoteBubble in globalEmoteBubbles) {
+				globalEmoteBubble.PostDrawInEmoteMenu(emoteType, spriteBatch, uiEmoteButton, position, frame, origin);
+			}
+			GetEmoteBubble(emoteType)?.PostDrawInEmoteMenu(spriteBatch, uiEmoteButton, position, frame, origin);
+		}
+
 
 		public static Rectangle? GetFrame(EmoteBubble emoteBubble) {
 			Rectangle? result = null;
@@ -100,6 +144,21 @@ namespace Terraria.ModLoader
 				var frame = emoteBubble.ModEmoteBubble.GetFrame();
 				if (frame != null)
 					result = frame;
+			}
+			return result;
+		}
+		
+		public static Rectangle? GetFrameInEmoteMenu(int emoteType, int frame, int frameCounter) {
+			Rectangle? result = null;
+			foreach (var globalEmoteBubble in globalEmoteBubbles) {
+				var frameRect = globalEmoteBubble.GetFrameInEmoteMenu(emoteType, frame, frameCounter);
+				if (frameRect != null)
+					result = frameRect;
+			}
+			if (emoteType >= EmoteID.Count) {
+				var frameRect = GetEmoteBubble(emoteType)?.GetFrameInEmoteMenu(frame, frameCounter);
+				if (frameRect != null)
+					result = frameRect;
 			}
 			return result;
 		}

@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.Utilities;
  
-@@ -34,14 +_,14 @@
+@@ -34,15 +_,15 @@
  		[Old("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[14];
  		public static LocalizedText[] prefix = new LocalizedText[85];
@@ -27,9 +27,11 @@
 +		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
 -		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5125];
 +		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
- 		private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
+-		private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
++		internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
  
  		public static string GetMapObjectName(int id) {
+ 			if (_mapLegendCache != null)
 @@ -116,7 +_,7 @@
  		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  
@@ -39,7 +41,7 @@
  				return _npcNameCache[netID];
  
  			if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -128,8 +_,10 @@
+@@ -128,15 +_,17 @@
  		public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
  		public static LocalizedText GetItemName(int id) {
@@ -50,6 +52,14 @@
 -			if (id > 0 && id < 5125 && _itemNameCache[id] != null)
 +			if (id > 0 && id < _itemNameCache.Length && _itemNameCache[id] != null)
  				return _itemNameCache[id];
+ 
+ 			return LocalizedText.Empty;
+ 		}
+ 
+ 		public static LocalizedText GetEmojiName(int id) {
+-			if (id >= 0 && id < 151 && _emojiNameCache[id] != null)
++			if (id >= 0 && id < _emojiNameCache.Length && _emojiNameCache[id] != null)
+ 				return _emojiNameCache[id];
  
  			return LocalizedText.Empty;
 @@ -282,6 +_,10 @@

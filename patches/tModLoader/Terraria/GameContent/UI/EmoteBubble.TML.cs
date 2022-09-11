@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,25 +9,47 @@ namespace Terraria.GameContent.UI
 	{
 		public ModEmoteBubble ModEmoteBubble { get; internal set; }
 
+		/// <summary>
+		/// A dictionary contains all the existing emote bubbles in the world
+		/// </summary>
+		public static ref Dictionary<int, EmoteBubble> EmoteBubbles => ref byID;
+
+		/// <summary>
+		/// The key that indicates this <see cref="EmoteBubble"/> in <see cref="EmoteBubbles"/>
+		/// </summary>
 		public int WhoAmI => ID;
 
+		/// <summary>
+		/// Whether or not this emote is displaying
+		/// <br>The first and the last 6 frames are for bubble-popping animation. The emote content is only displayed after the animation</br>
+		/// </summary>
 		public bool IsDisplayingEmote => lifeTime < 6 || lifeTimeStart - lifeTime < 6;
 
 		/// <summary>
-		/// Gets the emote bubble that exists in the world by <see cref="WhoAmI"/>. Returns null if there is no corresponding emote.
+		/// Gets the emote bubble that exists in the world by <see cref="WhoAmI"/>. Returns null if there is no corresponding emote
 		/// </summary>
 		/// <param name="whoAmI"></param>
 		/// <returns></returns>
-		public static EmoteBubble GetExistingEmoteBubble(int whoAmI) =>
-			byID.GetValueOrDefault(whoAmI, null);
+		public static EmoteBubble GetExistingEmoteBubble(int whoAmI) => EmoteBubbles.GetValueOrDefault(whoAmI, null);
+
+		/// <summary>
+		/// Try to get <see cref="WhoAmI"/> by a specific emote type
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns>Returns the <see cref="WhoAmI"/> of the <see cref="EmoteBubble"/>. Returns -1 if there is none</returns>
+		public static int TryGetFirst(int type) {
+			var emote = EmoteBubbles.First(i => i.Value.emote == type);
+			return emote.Value is not null ? emote.Key : -1;
+		}
 		
 		/// <summary>
-		/// Send a emote from the player.
+		/// Send a emote from the player
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="emoteId"></param>
-		public static void MakePlayerEmote(Player player, int emoteId) {
-			if (Main.netMode is NetmodeID.Server or NetmodeID.SinglePlayer) {
+		/// <param name="syncBetweenClients">If true, this emote will be automatically synchronized between clients</param>
+		public static void MakePlayerEmote(Player player, int emoteId, bool syncBetweenClients = true) {
+			if (Main.netMode is NetmodeID.Server or NetmodeID.SinglePlayer || !syncBetweenClients) {
 				NewBubble(emoteId, new WorldUIAnchor(player), 360);
 				CheckForNPCsToReactToEmoteBubble(emoteId, player);
 			}

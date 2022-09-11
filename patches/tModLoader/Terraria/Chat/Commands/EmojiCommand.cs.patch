@@ -1,0 +1,38 @@
+--- src/TerrariaNetCore/Terraria/Chat/Commands/EmojiCommand.cs
++++ src/tModLoader/Terraria/Chat/Commands/EmojiCommand.cs
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using Terraria.GameContent.UI;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Chat.Commands
+ {
+@@ -9,7 +_,8 @@
+ 	public class EmojiCommand : IChatCommand
+ 	{
+ 		public const int PlayerEmojiDuration = 360;
++		// TML: Changed from private readonly to internal static so we can change it from LocalizationLoader
+-		private readonly Dictionary<LocalizedText, int> _byName = new Dictionary<LocalizedText, int>();
++		internal static Dictionary<LocalizedText, int> _byName = new Dictionary<LocalizedText, int>();
+ 
+ 		public EmojiCommand() {
+ 			Initialize();
+@@ -17,7 +_,7 @@
+ 
+ 		public void Initialize() {
+ 			_byName.Clear();
+-			for (int i = 0; i < 151; i++) {
++			for (int i = 0; i < EmoteID.Count; i++) {
+ 				LocalizedText emojiName = Lang.GetEmojiName(i);
+ 				if (emojiName != LocalizedText.Empty)
+ 					_byName[emojiName] = i;
+@@ -30,7 +_,7 @@
+ 		public void ProcessOutgoingMessage(ChatMessage message) {
+ 			int result = -1;
+ 			if (int.TryParse(message.Text, out result)) {
+-				if (result < 0 || result >= 151)
++				if (result < 0 || result >= EmoteBubbleLoader.EmoteBubbleCount)
+ 					return;
+ 			}
+ 			else {

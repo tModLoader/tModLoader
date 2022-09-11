@@ -1,6 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Initializers/ChatInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/ChatInitializer.cs
-@@ -6,6 +_,7 @@
+@@ -1,11 +_,15 @@
++using Microsoft.Xna.Framework.Input;
++using System.Text.RegularExpressions;
+ using Terraria.Chat.Commands;
+ using Terraria.GameContent.UI;
+ using Terraria.GameContent.UI.Chat;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI.Chat;
  
  namespace Terraria.Initializers
  {
@@ -21,3 +29,21 @@
  
  			ChatManager.Register<GlyphTagHandler>(new string[2] {
  				"g",
+@@ -46,10 +_,16 @@
+ 
+ 		public static void PrepareAliases() {
+ 			ChatManager.Commands.ClearAliases();
+-			for (int i = 0; i < 151; i++) {
++			for (int i = 0; i < EmoteID.Count; i++) {
+ 				string name = EmoteID.Search.GetName(i);
+ 				string key = "EmojiCommand." + name;
+ 				ChatManager.Commands.AddAlias(Language.GetText(key), NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Language.GetText("EmojiName." + name)));
++			}
++
++			foreach (var modEmoteBubble in EmoteBubbleLoader.emoteBubbles)
++			{
++				var command = new LocalizedText(modEmoteBubble.EmoteName.Key, $"/{modEmoteBubble.DisplayName}");
++				ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Lang.GetEmojiName(modEmoteBubble.Type)));
+ 			}
+ 		}
+ 	}

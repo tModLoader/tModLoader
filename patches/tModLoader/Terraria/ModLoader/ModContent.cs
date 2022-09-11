@@ -538,6 +538,7 @@ namespace Terraria.ModLoader
 			BuffLoader.ResizeArrays();
 			PlayerLoader.RebuildHooks();
 			PlayerDrawLayerLoader.ResizeArrays();
+			EmoteBubbleLoader.ResizeArrays();
 			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {

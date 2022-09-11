@@ -18,7 +18,7 @@
 -		private static int[] CountNPCs = new int[670];
 -		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
 +		internal static int[] CountNPCs = new int[NPCID.Count];
-+		internal static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>(); // TML: Changed from public to internal
++		internal static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>(); // TML: Changed from public to internal. Use EmoteBubbles instead for code readability
  		private static List<int> toClean = new List<int>();
 -		public static int NextID;
 -		public int ID;
@@ -184,7 +184,7 @@
  			Vector2 origin = new Vector2(value2.Width / 2, value2.Height);
  			if (Main.player[Main.myPlayer].gravDir == -1f) {
  				origin.Y = 0f;
-@@ -151,29 +_,48 @@
+@@ -151,7 +_,28 @@
  				vector = Main.ReverseGravitySupport(vector);
  			}
  
@@ -192,63 +192,46 @@
 +			// value2: bubble background frame
 +			// flag: whether the emote bubble is actually showing
 +			Rectangle emoteFrame = emote is >= 0 and < EmoteID.Count ? value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4) : new Rectangle(0, 0, 34, 28);
-+			if (ModEmoteBubble != null) {
-+				value = ModContent.Request<Texture2D>(ModEmoteBubble.Texture).Value;
-+				var moddedFrame = EmoteBubbleLoader.GetFrame(this);
-+				emoteFrame = moddedFrame ?? value.Frame(2, 1, frame, 0);
-+			}
++			
 +			if (emote == -1) {
 +				vector += new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -emoteFrame.Height + 3);
 +			}
-+
-+			if (EmoteBubbleLoader.PreDraw(this, sb, value, vector, emoteFrame, effect)) {
--			sb.Draw(value, vector, value2, Color.White, 0f, origin, 1f, effect, 0f);
-+				sb.Draw(bubbleTexture, vector, value2, Color.White, 0f, origin, 1f, effect, 0f);
--			if (flag)
-+				if (flag)
--				return;
-+					return;
- 
--			if (emote >= 0) {
-+				if (emote >= 0) {
--				if ((emote == 87 || emote == 89) && effect.HasFlag(SpriteEffects.FlipHorizontally)) {
-+					if ((emote == 87 || emote == 89) && effect.HasFlag(SpriteEffects.FlipHorizontally)) {
--					effect &= ~SpriteEffects.FlipHorizontally;
-+						effect &= ~SpriteEffects.FlipHorizontally;
--					vector.X += 4f;
-+						vector.X += 4f;
--				}
-+					}
- 
--				sb.Draw(value, vector, value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4), Color.White, 0f, origin, 1f, effect, 0f);
-+					sb.Draw(value, vector, emoteFrame, Color.White, 0f, origin, 1f, effect, 0f);
--			}
++			else {
++				if (ModEmoteBubble != null) {
++					value = ModContent.Request<Texture2D>(ModEmoteBubble.Texture).Value;
++					var moddedFrame = EmoteBubbleLoader.GetFrame(this);
++					emoteFrame = moddedFrame ?? value.Frame(2, 1, frame, 0);
 +				}
--			else if (emote == -1) {
-+				else if (emote == -1) {
--				value = TextureAssets.NpcHead[metadata].Value;
-+					value = TextureAssets.NpcHead[metadata].Value;
--				float num = 1f;
-+					float num = 1f;
--				if ((float)value.Width / 22f > 1f)
-+					if ((float)value.Width / 22f > 1f)
--					num = 22f / (float)value.Width;
-+						num = 22f / (float)value.Width;
- 
--				if ((float)value.Height / 16f > 1f / num)
-+					if ((float)value.Height / 16f > 1f / num)
--					num = 16f / (float)value.Height;
-+						num = 16f / (float)value.Height;
- 
--				sb.Draw(value, vector + new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -value2.Height + 3), null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
--			}
-+					sb.Draw(value,
-+						vector, emoteFrame, Color.White, 0f, new Vector2(value.Width / 2, 0f), num,
-+						effect, 0f);
++
++				if (!EmoteBubbleLoader.PreDraw(this, sb, value, vector, emoteFrame, origin, effect)) {
++					EmoteBubbleLoader.PostDraw(this, sb, value, vector, emoteFrame, origin, effect);
++					return;
 +				}
 +			}
 +
-+			EmoteBubbleLoader.PostDraw(this, sb, value, vector, emoteFrame, effect);
+-			sb.Draw(value, vector, value2, Color.White, 0f, origin, 1f, effect, 0f);
++			sb.Draw(bubbleTexture, vector, value2, Color.White, 0f, origin, 1f, effect, 0f);
+ 			if (flag)
+ 				return;
+ 
+@@ -161,7 +_,7 @@
+ 					vector.X += 4f;
+ 				}
+ 
+-				sb.Draw(value, vector, value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4), Color.White, 0f, origin, 1f, effect, 0f);
++				sb.Draw(value, vector, emoteFrame, Color.White, 0f, origin, 1f, effect, 0f);
+ 			}
+ 			else if (emote == -1) {
+ 				value = TextureAssets.NpcHead[metadata].Value;
+@@ -172,8 +_,10 @@
+ 				if ((float)value.Height / 16f > 1f / num)
+ 					num = 16f / (float)value.Height;
+ 
+-				sb.Draw(value, vector + new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -value2.Height + 3), null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
++				sb.Draw(value, vector, null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
+ 			}
++
++			EmoteBubbleLoader.PostDraw(this, sb, value, vector, emoteFrame, origin, effect);
  		}
  
  		private Vector2 GetPosition(out SpriteEffects effect) {
@@ -275,11 +258,12 @@
  			Player plr = Main.player[Player.FindClosest(((NPC)anchor.entity).Center, 0, 0)];
  			List<int> list = new List<int>();
  			bool flag = false;
-@@ -261,8 +_,16 @@
+@@ -261,8 +_,17 @@
  				ProbeCombat(list);
  			}
  
-+			int modPickedEmote = NPCLoader.PickEmote((NPC)anchor.entity, list, other);
++			other ??= new WorldUIAnchor();
++			int modPickedEmote = NPCLoader.PickEmote((NPC)anchor.entity, plr, list, other);
 +			if (modPickedEmote != -1) {
 +				emote = modPickedEmote;
 +			}

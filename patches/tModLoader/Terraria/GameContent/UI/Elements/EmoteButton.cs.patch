@@ -12,7 +12,8 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
- 	public class EmoteButton : UIElement
+-	public class EmoteButton : UIElement
++	public partial class EmoteButton : UIElement
  	{
 +		private Asset<Texture2D> _bubbleTexture;
  		private Asset<Texture2D> _texture;
@@ -33,20 +34,28 @@
  			_textureBorder = Main.Assets.Request<Texture2D>("Images/UI/EmoteBubbleBorder");
  			_emoteIndex = emoteIndex;
  			Rectangle frame = GetFrame();
-@@ -26,6 +_,12 @@
+@@ -26,10 +_,20 @@
  
  		private Rectangle GetFrame() {
  			int num = (_frameCounter >= 10) ? 1 : 0;
 +
 +			if (_emoteIndex >= EmoteID.Count) {
-+				var moddedFrame = EmoteBubbleLoader.GetEmoteBubble(_emoteIndex).GetFrameInEmoteMenu(num, _frameCounter);
++				var moddedFrame = EmoteBubbleLoader.GetFrameInEmoteMenu(_emoteIndex, num, _frameCounter);
 +				return moddedFrame ?? _texture.Frame(2, 1, num, 0);
 +			}
 +
  			return _texture.Frame(8, 39, _emoteIndex % 4 * 2 + num, _emoteIndex / 4 + 1);
  		}
  
-@@ -43,19 +_,22 @@
+ 		private void UpdateFrame() {
++			if (_emoteIndex >= EmoteID.Count && !EmoteBubbleLoader.UpdateFrameInEmoteMenu(_emoteIndex, ref _frameCounter)) {
++				return;
++			}
++
+ 			if (++_frameCounter >= 20)
+ 				_frameCounter = 0;
+ 		}
+@@ -43,19 +_,29 @@
  			CalculatedStyle dimensions = GetDimensions();
  			Vector2 vector = dimensions.Position() + new Vector2(dimensions.Width, dimensions.Height) / 2f;
  			Rectangle frame = GetFrame();
@@ -60,14 +69,21 @@
  			if (_hovered)
  				color = Main.OurFavoriteColor;
  
++			if (!EmoteBubbleLoader.PreDrawInEmoteMenu(_emoteIndex, spriteBatch, this, vector, frame, origin)) {
++				goto EndDraw;
++			}
++
 -			spriteBatch.Draw(_texture.Value, vector, value, white, 0f, origin, 1f, SpriteEffects.None, 0f);
 +			spriteBatch.Draw(_bubbleTexture.Value, vector, value, white, 0f, origin, 1f, SpriteEffects.None, 0f);
  			spriteBatch.Draw(_texture.Value, vector, frame, white, 0f, origin, 1f, SpriteEffects.None, 0f);
  			spriteBatch.Draw(_textureBorder.Value, vector - Vector2.One * 2f, null, color, 0f, origin, 1f, SpriteEffects.None, 0f);
++
++			EndDraw:
++			EmoteBubbleLoader.PostDrawInEmoteMenu(_emoteIndex, spriteBatch, this, vector, frame, origin);
++
  			if (_hovered) {
 +				if (_emoteIndex >= EmoteID.Count) {
-+					string text = "/" + EmoteBubbleLoader.GetEmoteBubble(_emoteIndex).DisplayName;
-+					Main.instance.MouseText(text);
++					Main.instance.MouseText("/" + EmoteBubbleLoader.GetEmoteBubble(_emoteIndex).DisplayName);
 +					return;
 +				}
  				string name = EmoteID.Search.GetName(_emoteIndex);

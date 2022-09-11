@@ -50,6 +50,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Connects this NPC with a custom emote.
 			// This makes it when the NPC is in the world, other NPCs will "talk about him".
+			// By setting this you don't have to override the PickEmote method for the emote to appear.
 			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
 
 			// Influences how the NPC looks in the Bestiary
@@ -364,13 +365,21 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Let the NPC "talk about" minion boss
-		public override int PickEmote(List<int> emoteList, WorldUIAnchor otherAnchor) {
+		public override int PickEmote(Player closetPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+			// By default this NPC will always use the Minion Boss Emote even if Minion Boss is not downed yet
 			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
-			// Make the selection more likely by adding it to the list multiple times.
-			for (int i = 0; i < 6; i++) {
+			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
+			if (otherAnchor.entity is NPC {type: NPCID.Demolitionist}) {
+				type = EmoteID.EmotionAnger;
+			}
+
+			// Make the selection more likely by adding it to the list multiple times
+			for (int i = 0; i < 4; i++) {
 				emoteList.Add(type);
 			}
-			return base.PickEmote(emoteList, otherAnchor);
+
+			// Use this or return -1 if you don't want to override the emote selection totally
+			return base.PickEmote(closetPlayer, emoteList, otherAnchor);
 		}
 	}
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -23,21 +24,21 @@ namespace Terraria.ModLoader
 		public EmoteBubble EmoteBubble { get; internal set; }
 
 		/// <summary>
-		/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when hovering over this emote in the emotes menu. This is the name of the emote command as well.
+		/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up as the emote command.
 		/// </summary>
 		public ModTranslation EmoteName { get; internal set; }
 
 		/// <summary>
-		/// This is the name that will show up when hovering over this emote. This is the name of the emote command as well.
+		/// This is the name that will show up as the emote command.
 		/// </summary>
-		public string DisplayName => DisplayNameInternal;
-
-		internal protected virtual string DisplayNameInternal => EmoteName.GetTranslation(Language.ActiveCulture);
-
+		public string DisplayName => EmoteName.GetTranslation(Language.ActiveCulture);
 
 		public sealed override void SetupContent() {
 			ModContent.Request<Texture2D>(Texture);
 			SetStaticDefaults();
+
+			if (EmoteName.IsDefault())
+				EmoteName.SetDefault(Name.ToLower()); // It will be the lowercase name of the class by default.
 		}
 
 		protected sealed override void Register() {
@@ -50,18 +51,90 @@ namespace Terraria.ModLoader
 
 		protected override EmoteBubble CreateTemplateEntity() => new(Type, new WorldUIAnchor()) { ModEmoteBubble = this };
 
+		/// <summary>
+		/// Allows you to determine whether or not this emote can be seen in emotes menu. Returns true by default.
+		/// <br/>Do note that this doesn't effect emote command and NPC using.
+		/// </summary>
+		/// <returns>If true, this emote will be shown in emotes menu.</returns>
 		public virtual bool IsUnlocked() => true;
-
+		
+		/// <summary>
+		/// Gets called when your emote bubble spawns in world.
+		/// </summary>
 		public virtual void OnSpawn() { }
 
+		/// <summary>
+		/// Allows you to modify the frame of this emote bubble. Return false to stop vanilla frame update code from running. Returns true by default.
+		/// </summary>
+		/// <returns>If false, the vanilla frame update code will not run.</returns>
 		public virtual bool UpdateFrame() => true;
-
-		public virtual bool PreDraw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, SpriteEffects spriteEffects) => true;
-
-		public virtual void PostDraw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, SpriteEffects spriteEffects) { }
 		
-		public virtual Rectangle? GetFrame() => null;
+		/// <summary>
+		/// Allows you to modify the frame of this emote bubble which displays in emotes menu. Return false to stop vanilla frame update code from running. Returns true by default.
+		/// <br/>Do note that you should <b>NEVER</b> use the <see cref="EmoteBubble"/> field in this method because it's null.
+		/// </summary>
+		/// <param name="frameCounter"></param>
+		/// <returns>If false, the vanilla frame update code will not run.</returns>
+		public virtual bool UpdateFrameInEmoteMenu(ref int frameCounter) => true;
 
+		/// <summary>
+		/// Allows you to draw things behind this emote bubble, or to modify the way this emote bubble is drawn. Return false to stop the game from drawing the emote bubble (useful if you're manually drawing the emote bubble). Returns true by default.
+		/// </summary>
+		/// <param name="spriteBatch"></param>
+		/// <param name="texture"></param>
+		/// <param name="position"></param>
+		/// <param name="frame"></param>
+		/// <param name="origin"></param>
+		/// <param name="spriteEffects"></param>
+		/// <returns>If false, the vanilla drawing code will not run.</returns>
+		public virtual bool PreDraw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, Vector2 origin, SpriteEffects spriteEffects) => true;
+
+		/// <summary>
+		/// Allows you to draw things in front of this emote bubble. This method is called even if PreDraw returns false.
+		/// </summary>
+		/// <param name="spriteBatch"></param>
+		/// <param name="texture"></param>
+		/// <param name="position"></param>
+		/// <param name="frame"></param>
+		/// <param name="origin"></param>
+		/// <param name="spriteEffects"></param>
+		public virtual void PostDraw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, Vector2 origin, SpriteEffects spriteEffects) { }
+
+		/// <summary>
+		/// Allows you to draw things behind this emote bubble that displays in emotes menu, or to modify the way this emote bubble is drawn. Return false to stop the game from drawing the emote bubble (useful if you're manually drawing the emote bubble). Returns true by default.
+		/// <br/>Do note that you should <b>NEVER</b> use the <see cref="EmoteBubble"/> field in this method because it's null.
+		/// </summary>
+		/// <param name="spriteBatch"></param>
+		/// <param name="uiEmoteButton">The <see cref="EmoteButton"/> instance. You can get useful textures and frameCounter from it.</param>
+		/// <param name="position"></param>
+		/// <param name="frame"></param>
+		/// <param name="origin"></param>
+		/// <returns>If false, the vanilla drawing code will not run.</returns>
+		public virtual bool PreDrawInEmoteMenu(SpriteBatch spriteBatch, EmoteButton uiEmoteButton, Vector2 position, Rectangle frame, Vector2 origin) => true;
+
+		/// <summary>
+		/// Allows you to draw things in front of this emote bubble. This method is called even if PreDraw returns false.
+		/// <br/>Do note that you should <b>NEVER</b> use the <see cref="EmoteBubble"/> field in this method because it's null.
+		/// </summary>
+		/// <param name="spriteBatch"></param>
+		/// <param name="uiEmoteButton">The <see cref="EmoteButton"/> instance. You can get useful textures and frameCounter from it.</param>
+		/// <param name="position"></param>
+		/// <param name="frame"></param>
+		/// <param name="origin"></param>
+		public virtual void PostDrawInEmoteMenu(SpriteBatch spriteBatch, EmoteButton uiEmoteButton, Vector2 position, Rectangle frame, Vector2 origin) { }
+		
+		/// <summary>
+		/// Allows you to modify the frame rectangle for drawing this emote. Useful for emote bubbles that share the same texture.
+		/// </summary>
+		/// <returns></returns>
+		public virtual Rectangle? GetFrame() => null;
+		
+		/// <summary>
+		/// Allows you to modify the frame rectangle for drawing this emote in emotes menu. Useful for emote bubbles that share the same texture.
+		/// </summary>
+		/// <param name="frame"></param>
+		/// <param name="frameCounter"></param>
+		/// <returns></returns>
 		public virtual Rectangle? GetFrameInEmoteMenu(int frame, int frameCounter) => null;
 	}
 }

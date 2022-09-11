@@ -715,7 +715,7 @@ namespace Terraria.ModLoader
 		/// <param name="emoteList">A list of emote IDs from which the NPC will randomly select one</param>
 		/// <param name="otherAnchor">A <see cref="WorldUIAnchor"/> instance that indicates the target of this emote conversation. Use this to get the instance of the <see cref="NPC"/> or <see cref="Player"/> this NPC is talking to.</param>
 		/// <returns>Return -1 to use vanilla mechanic (pick one from the list), otherwise pick the emote by the returned ID. If the ID does not correspond to an emote then it will prevent the emote from being used. Returns -1 by default</returns>
-		public virtual int PickEmote(NPC npc, List<int> emoteList, WorldUIAnchor otherAnchor) {
+		public virtual int PickEmote(NPC npc, Player closetPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
 			return -1;
 		}
 	}

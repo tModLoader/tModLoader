@@ -106,6 +106,13 @@ Mods: {
 		RecipeConditions: {
 			Night: At Low Health
 		}
+
+		# This is the command name for mod emotes
+		EmoteName: {
+			ExamplePersonEmote: experson
+			ExampleTravellingMerchantEmote: extravelingmerchant
+			ExampleBoneMerchantEmote: exbonemerchant
+		}
 		
 		Bestiary: {
 			ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.

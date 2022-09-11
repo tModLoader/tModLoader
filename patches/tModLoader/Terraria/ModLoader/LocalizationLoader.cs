@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Terraria.Chat.Commands;
+using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
@@ -129,6 +131,15 @@ namespace Terraria.ModLoader
 				Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
 			}
 
+			foreach (ModEmoteBubble emoteBubble in EmoteBubbleLoader.emoteBubbles) {
+				var text = new LocalizedText(emoteBubble.EmoteName.Key, emoteBubble.DisplayName);
+
+				Lang._emojiNameCache[emoteBubble.Type] = SetLocalizedText(dict, text);
+				
+				if (text != LocalizedText.Empty)
+					EmojiCommand._byName[text] = emoteBubble.Type;
+			}
+
 			foreach (ModTranslation translation in translations.Values) {
 				LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
 
@@ -136,6 +147,9 @@ namespace Terraria.ModLoader
 			}
 
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
+
+			// Call PrepareAliases here for mod emote command setup
+			ChatInitializer.PrepareAliases();
 		}
 
 		internal static void UpgradeLangFile(string langFile, string modName) {

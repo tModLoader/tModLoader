@@ -1,8 +1,10 @@
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
@@ -36,6 +38,16 @@ namespace ExampleMod.Content.Items.Tools
 			if (Main.rand.NextBool(10)) {
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
 			}
+		}
+
+		public override void UseAnimation(Player player) {
+			// Randomly causes the player to use Example Pickaxe Emote when using the item
+			if (Main.rand.NextBool(12)) {
+				// Note that we don't have to sync the emote because UseAnimation runs on all clients and server
+				EmoteBubble.MakePlayerEmote(player, ModContent.EmoteBubbleType<ExamplePickaxeEmote>(), false);
+			}
+
+			base.UseAnimation(player);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
