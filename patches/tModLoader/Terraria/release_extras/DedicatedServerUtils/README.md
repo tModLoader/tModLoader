@@ -46,7 +46,7 @@ worldname=YourWorld
 ```
 
 ## Updating
-To update the script, run `./manage-tModLoaderServer.sh --updatescript`
+If an update for the script is availble, a message will be printed letting you know one is available. It can be updated using `./manage-tModLoaderServer.sh --update-script`. An outdated script may contain bugs or lack features, so it is usually a good idea to update.
 
 When using `manage-tModLoaderServer.sh`, updating can be done by running `./manage-tModLoaderServer.sh --update`. When using a Github install, use `--github` and `--folder` if your install is in a non-standard location.
 

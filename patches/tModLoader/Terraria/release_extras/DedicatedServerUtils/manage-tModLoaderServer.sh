@@ -16,16 +16,20 @@ function popd {
 	command popd > /dev/null || return
 }
 
-# Version string comparison
-function verlte {
-	[  "$1" = "$(echo -e "$1\n$2" | sort -V | head -n1)" ]
-}
-
-function update_script {
+# Returns true if an update is needed
+function check_update {
 	local latest_script_version
 	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | cut -d '"' -f2)
 
-	if ! verlte $script_version "$latest_script_version"; then
+	if [ "$latest_script_version" = "$script_version" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+function update_script {
+	if check_update; then
 		echo "Updating from version v$script_version to v$latest_script_version"
 		curl --silent -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh
 		mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
@@ -130,7 +134,7 @@ function github_update_tml {
 		if [[ $ver == "$oldver" ]]; then
 			echo "No new version of tModLoader available"
 		else
-			echo "New version of tModLoader $ver is available, current ver is $oldver"
+			echo "New version of tModLoader $ver is available, current version is $oldver"
 
 			# Backup old tML versions in case something implodes
 			mkdir "$oldver"
@@ -381,4 +385,8 @@ fi
 if $update; then
 	if ! $mods_only; then update_tml; fi
 	if ! $no_mods; then install_mods; fi
+fi
+
+if check_update; then
+	echo "Script update available! Run ./manage-tModLoaderServer.sh --update-script to get the latest version."
 fi
