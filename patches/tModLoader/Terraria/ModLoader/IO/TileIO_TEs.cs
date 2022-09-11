@@ -21,12 +21,11 @@ namespace Terraria.ModLoader.IO
 				try {
 					tileEntity.SaveData(saveData);
 				}
-				catch (Exception e) {
+				catch {
 					Logging.tML.WarnFormat("TileEntity {0} from {1} threw an exception during saving. {2}",
 						modTileEntity?.Name ?? tileEntity.GetType().Name,
 						modTileEntity?.Mod.Name ?? "Terraria",
 						modTileEntity != null ? "Please report this to the mod author." : "");
-					Logging.tML.Warn(e);
 				}
 
 				var tag = new TagCompound {

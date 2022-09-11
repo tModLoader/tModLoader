@@ -146,10 +146,9 @@ namespace Terraria.ModLoader.IO
 					try {
 						globalNPC.SaveData(npc, data);
 					}
-					catch (Exception e) {
+					catch {
 						Logging.tML.WarnFormat("GlobalNPC {0} from {1} threw an exception during saving. Please report this to the mod author.",
 							globalNPC.Name, globalNPC.Mod.Name);
-						Logging.tML.Warn(e);
 					}
 
 					if (data.Count != 0) {
@@ -169,10 +168,9 @@ namespace Terraria.ModLoader.IO
 					try {
 						npc.ModNPC.SaveData(data);
 					}
-					catch (Exception e) {
+					catch {
 						Logging.tML.WarnFormat("ModNPC {0} from {1} threw an exception during saving. Please report this to the mod author.",
 							npc.ModNPC.Name, npc.ModNPC.Mod.Name);
-						Logging.tML.Warn(e);
 					}
 
 					tag = new TagCompound {
@@ -484,10 +482,9 @@ namespace Terraria.ModLoader.IO
 				try {
 					system.SaveWorldData(saveData);
 				}
-				catch (Exception e) {
+				catch {
 					Logging.tML.WarnFormat("ModSystem {0} from {1} threw an exception during saving. Please report this to the mod author.",
 						system.Name, system.Mod.Name);
-					Logging.tML.Warn(e);
 				}
 
 				if (saveData.Count == 0)

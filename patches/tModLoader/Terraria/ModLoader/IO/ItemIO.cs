@@ -54,10 +54,9 @@ namespace Terraria.ModLoader.IO
 				try {
 					item.ModItem.SaveData(saveData);
 				}
-				catch (Exception e) {
+				catch {
 					Logging.tML.WarnFormat("ModItem {0} from {1} threw an exception during saving. Please report this to the mod author.",
 						item.ModItem.Name, item.ModItem.Mod.Name);
-					Logging.tML.Warn(e);
 				}
 
 				if (saveData.Count > 0) {
@@ -144,11 +143,10 @@ namespace Terraria.ModLoader.IO
 				try {
 					globalItemInstance?.SaveData(item, saveData);
 				}
-				catch (Exception e) {
+				catch {
 					Debug.Assert(globalItemInstance != null);
 					Logging.tML.WarnFormat("GlobalItem {0} from {1} threw an exception during saving. Please report this to the mod author.",
 						globalItemInstance.Name, globalItemInstance.Mod.Name);
-					Logging.tML.Warn(e);
 				}
 
 				if (saveData.Count == 0)

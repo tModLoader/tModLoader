@@ -172,10 +172,9 @@ namespace Terraria.ModLoader.IO
 				try {
 					modPlayer.SaveData(saveData);
 				}
-				catch (Exception e) {
+				catch {
 					Logging.tML.WarnFormat("ModPlayer {0} from {1} threw an exception during saving. Please report this to the mod author.",
 						modPlayer.Name, modPlayer.Mod.Name);
-					Logging.tML.Warn(e);
 				}
 
 				if (saveData.Count == 0)
