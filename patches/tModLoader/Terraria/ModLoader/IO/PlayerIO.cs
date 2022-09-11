@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
@@ -38,7 +37,7 @@ namespace Terraria.ModLoader.IO
 				["bank4"] = SaveInventory(player.bank4.item),
 				["hairDye"] = SaveHairDye(player.hairDye),
 				["research"] = SaveResearch(player),
-				["modData"] = SaveModData(player),
+				["modData"] = SaveModData(player), // Most likely to throw an exception
 				["modBuffs"] = SaveModBuffs(player),
 				["infoDisplays"] = SaveInfoDisplays(player),
 				["usedMods"] = SaveUsedMods(player),
@@ -166,22 +165,29 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
 
-			var saveData = new TagCompound();
-
 			foreach (var modPlayer in player.modPlayers) {
-				modPlayer.SaveData(saveData);
-
-				if (saveData.Count == 0)
-					continue;
-
-				list.Add(new TagCompound {
-					["mod"] = modPlayer.Mod.Name,
-					["name"] = modPlayer.Name,
-					["data"] = saveData
-				});
-				saveData = new TagCompound();
+				var saveData = new TagCompound();
+				try {
+					modPlayer.SaveData(saveData);
+				}
+				catch (Exception e) {
+					var mod = modPlayer.Mod;
+					
+					// Continue to save other mod data without throwing exceptions
+					Utils.LogAndConsoleErrorMessage(new CustomModDataException(mod,
+						"Error in writing custom player data for " + mod.Name, e).ToString());
+				}
+				finally {
+					// saveData may have successfully saved data before an error is reported
+					if (saveData.Count != 0) {
+						list.Add(new TagCompound {
+							["mod"] = modPlayer.Mod.Name,
+							["name"] = modPlayer.Name,
+							["data"] = saveData
+						});
+					}
+				}
 			}
-
 			return list;
 		}
 
@@ -198,9 +204,9 @@ namespace Terraria.ModLoader.IO
 					}
 					catch (Exception e) {
 						var mod = modPlayer.Mod;
-
-						throw new CustomModDataException(mod,
-							"Error in reading custom player data for " + mod.Name, e);
+						// Continue to load other mod data without throwing exceptions
+						Utils.LogAndConsoleErrorMessage(new CustomModDataException(mod,
+							"Error in reading custom player data for " + mod.Name, e).ToString());
 					}
 				}
 				else {
