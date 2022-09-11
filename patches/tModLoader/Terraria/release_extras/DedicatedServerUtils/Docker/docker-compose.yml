@@ -9,4 +9,4 @@ services:
     ports:
       - 7777:7777
     volumes:
-      - "./Terraria"
+      - "./Terraria:/home/tml/.local/share/Terraria"

@@ -6,6 +6,9 @@ RUN apk update \
  && rm -rf /var/cache/apk/*
 
 # Fix 32 and 64 bit library conflicts
+RUN mkdir /steamlib \
+ && mv /lib/libstdc++.so.6 /steamlib \
+ && mv /lib/libgcc_s.so.1 /steamlib
 ENV LD_LIBRARY_PATH /steamlib
 
 # Create tModLoader user and drop root permissions
