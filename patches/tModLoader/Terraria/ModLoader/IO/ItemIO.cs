@@ -50,7 +50,15 @@ namespace Terraria.ModLoader.IO
 
 				var saveData = new TagCompound();
 
-				item.ModItem.SaveData(saveData);
+				try {
+					item.ModItem.SaveData(saveData);
+				}
+				catch (Exception e) {
+					var mod = item.ModItem.Mod;
+					// Continue to save other item data without throwing exceptions
+					Utils.LogAndConsoleErrorMessage(new CustomModDataException(mod,
+						$"Error in writing custom item({item.Name}) data for " + mod.Name, e).ToString());
+				}
 
 				if (saveData.Count > 0) {
 					tag.Set("data", saveData);
@@ -94,7 +102,15 @@ namespace Terraria.ModLoader.IO
 			else {
 				if (ModContent.TryFind(modName, tag.GetString("name"), out ModItem modItem)) {
 					item.SetDefaults(modItem.Type);
-					item.ModItem.LoadData(tag.GetCompound("data"));
+					try {
+						item.ModItem.LoadData(tag.GetCompound("data"));
+					}
+					catch (Exception e) {
+						var mod = item.ModItem.Mod;
+						// Continue to save other item data without throwing exceptions
+						Utils.LogAndConsoleErrorMessage(new CustomModDataException(mod,
+							$"Error in reading custom item({item.Name}) data for " + mod.Name, e).ToString());
+					}
 				}
 				else {
 					item.SetDefaults(ModContent.ItemType<UnloadedItem>());
@@ -133,7 +149,17 @@ namespace Terraria.ModLoader.IO
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
 
-				globalItemInstance?.SaveData(item, saveData);
+				if(globalItemInstance==null)
+					continue;
+
+				try {
+					globalItemInstance.SaveData(item, saveData);
+				}
+				catch (Exception e) {
+					// Continue to save other global item data without throwing exceptions
+					Utils.LogAndConsoleErrorMessage(new CustomModDataException(globalItem.Mod,
+						$"Error in writing custom player data for {globalItem.FullName}", e).ToString());
+				}
 
 				if (saveData.Count == 0)
 					continue;
@@ -156,7 +182,9 @@ namespace Terraria.ModLoader.IO
 						globalItem.LoadData(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
-						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
+						// Continue to load other global item data without throwing exceptions
+						Utils.LogAndConsoleErrorMessage(new CustomModDataException(globalItem.Mod,
+							$"Error in reading custom player data for {globalItem.FullName}", e).ToString());
 					}
 				}
 				else {

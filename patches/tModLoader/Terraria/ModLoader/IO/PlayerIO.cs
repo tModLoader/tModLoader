@@ -172,7 +172,6 @@ namespace Terraria.ModLoader.IO
 				}
 				catch (Exception e) {
 					var mod = modPlayer.Mod;
-					
 					// Continue to save other mod data without throwing exceptions
 					Utils.LogAndConsoleErrorMessage(new CustomModDataException(mod,
 						"Error in writing custom player data for " + mod.Name, e).ToString());
