@@ -322,6 +322,8 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
+			Main.ResourceSetsManager.AddModdedDisplaySets();
+			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
@@ -362,8 +364,6 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
-			Main.ResourceSetsManager.AddModdedDisplaySets();
-			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
 			ModOrganizer.SaveLastLaunchedMods();
 		}
