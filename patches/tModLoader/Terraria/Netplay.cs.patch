@@ -32,6 +32,14 @@
  			int num = FindNextOpenClientSlot();
  			if (num != -1) {
  				Clients[num].Reset();
+@@ -266,7 +_,6 @@
+ 			}
+ 		}
+ 
+-		private static bool serverNeedsCleanUp = false;
+ 		private static void CleanupServer() {
+ 			StopListening();
+ 			try {
 @@ -279,6 +_,7 @@
  				Clients[i].Reset();
  			}
@@ -40,7 +48,7 @@
  			if (Main.menuMode != 15) {
  				Main.netMode = 0;
  				Main.menuMode = 10;
-@@ -288,7 +_,9 @@
+@@ -288,13 +_,14 @@
  			else {
  				Main.netMode = 0;
  			}
@@ -50,6 +58,20 @@
  			Main.myPlayer = 0;
  		}
  
+ 		private static void ServerLoop() {
+ 			int num = 0;
+-			serverNeedsCleanUp = true;
+ 			StartBroadCasting();
+ 			while (!Disconnect) {
+ 				StartListeningIfNeeded();
+@@ -305,7 +_,6 @@
+ 
+ 			StopBroadCasting();
+ 			CleanupServer();
+-			serverNeedsCleanUp = false;
+ 		}
+ 
+ 		private static void UpdateConnectedClients() {
 @@ -327,7 +_,7 @@
  				}
  
@@ -106,3 +128,16 @@
  					Main.gameMenu = true;
  					Main.SwitchNetMode(0);
  					MapHelper.noStatusText = true;
+@@ -761,12 +_,6 @@
+ 			if (BroadcastClient != null) {
+ 				BroadcastClient.Close();
+ 				BroadcastClient = null;
+-			}
+-		}
+-
+-		public static void WaitForClosePortClose() {
+-			while(!serverNeedsCleanUp) {
+-				Thread.Sleep(10);
+ 			}
+ 		}
+ 	}

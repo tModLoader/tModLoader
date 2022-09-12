@@ -693,7 +693,7 @@
  		}
  
  		public void SetWorldName(string world) {
-@@ -4032,6 +_,8 @@
+@@ -4032,17 +_,18 @@
  		}
  
  		public void YouCanSleepNow() {
@@ -702,7 +702,10 @@
  #if WINDOWS
  			if (previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
-@@ -4042,7 +_,7 @@
+ #endif
+-			Netplay.WaitForClosePortClose();
+ 		}
+ 
  		public void DedServ() {
  			NeverSleep();
  			rand = new UnifiedRandom();
