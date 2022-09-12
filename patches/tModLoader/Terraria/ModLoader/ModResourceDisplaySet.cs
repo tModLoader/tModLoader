@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<ModResourceDisplaySet>.Register(this);
 
-			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{DisplayedName}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{Name}");
 
 			Type = ResourceDisplaySetLoader.Add(this);
 		}
