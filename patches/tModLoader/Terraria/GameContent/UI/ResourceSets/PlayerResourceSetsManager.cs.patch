@@ -18,11 +18,3 @@
  			if (_loadedContent)
  				SetActiveFromLoadedConfigKey();
  		}
-@@ -31,6 +_,7 @@
- 		private void Configuration_OnSave(Preferences obj) {
- 			_ = _sets.FirstOrDefault((KeyValuePair<string, IPlayerResourcesDisplaySet> pair) => pair.Value == _activeSet).Key;
- 			obj.Put("PlayerResourcesSet", _activeSetConfigKey);
-+			_activeSetConfigKeyOriginal = _activeSetConfigKey;
- 		}
- 
- 		public void LoadContent(AssetRequestMode mode) {

@@ -16,11 +16,12 @@ namespace Terraria.GameContent.UI.ResourceSets
 		// Called by tML after mods have loaded to set the actual display set
 		internal void SetActiveFromOriginalConfigKey() {
 			SetActive(_activeSetConfigKeyOriginal);
+			// In case the display set didn't exist, force the original key back to Fancy
 			_activeSetConfigKeyOriginal = _activeSetConfigKey;
 		}
 
 		internal void ResetToVanilla() {
-			_activeSetConfigKeyOriginal = _activeSetConfigKey;
+			_activeSetConfigKey = _activeSetConfigKeyOriginal;
 
 			string[] keys = new string[_sets.Keys.Count];
 			_sets.Keys.CopyTo(keys, 0);
