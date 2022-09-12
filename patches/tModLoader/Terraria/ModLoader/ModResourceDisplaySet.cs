@@ -19,10 +19,13 @@ namespace Terraria.ModLoader
 
 		public bool Selected => Main.ResourceSetsManager.ActiveSet == this;
 
+		/// <summary>
+		/// Gets the name for this resource display set based on its DisplayName and the current culture
+		/// </summary>
 		public string DisplayedName => DisplayName.GetTranslation(Language.ActiveCulture);
 
 		/// <summary>
-		/// Gets the name for this resource display set based on its DisplayName and the current culture
+		/// Included only for completion's sake.  Returns DisplayName.Key
 		/// </summary>
 		public string NameKey => DisplayName.Key;
 
