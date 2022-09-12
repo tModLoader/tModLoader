@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ResourceDrawSettings.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ResourceDrawSettings.cs
-@@ -1,17 +_,21 @@
+@@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
@@ -8,8 +8,7 @@
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
--	public struct ResourceDrawSettings
-+	public partial struct ResourceDrawSettings
+@@ -8,10 +_,13 @@
  	{
  		public delegate void TextureGetter(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
  
