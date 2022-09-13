@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
-@@ -3,6 +_,8 @@
+@@ -3,10 +_,12 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
@@ -9,28 +9,11 @@
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
-@@ -25,6 +_,10 @@
- 		private Asset<Texture2D> _panelMiddleMP;
- 		private Asset<Texture2D> _panelRightMP;
- 
-+		private IResourceDrawSource _heartDrawSource, _heartPanelDrawSource, _manaDrawSource, _manaPanelDrawSource;
-+
-+		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
-+
- 		public string NameKey {
- 			get;
- 			private set;
-@@ -47,6 +_,10 @@
- 			_panelRightHP = Main.Assets.Request<Texture2D>(str + "\\HP_Panel_Right", mode);
- 			_panelMiddleMP = Main.Assets.Request<Texture2D>(str + "\\MP_Panel_Middle", mode);
- 			_panelRightMP = Main.Assets.Request<Texture2D>(str + "\\MP_Panel_Right", mode);
-+			_heartPanelDrawSource = new ResourceDrawSource_BarsLifePanel();
-+			_heartDrawSource = new ResourceDrawSource_BarsLife();
-+			_manaPanelDrawSource = new ResourceDrawSource_BarsManaPanel();
-+			_manaDrawSource = new ResourceDrawSource_BarsMana();
- 		}
- 
- 		public void Draw() {
+-	public class HorizontalBarsPlayerReosurcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
++	public partial class HorizontalBarsPlayerReosurcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
+ 	{
+ 		private int _maxSegmentCount;
+ 		private int _hpSegmentsCount;
 @@ -55,6 +_,9 @@
  			int num = 16;
  			int num2 = 18;
@@ -41,23 +24,23 @@
  			Vector2 vector = new Vector2(num3, num2);
  			vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
  			bool isHovered = false;
-@@ -63,6 +_,7 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector;
- 			resourceDrawSettings.GetTextureMethod = LifePanelDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = LifePanelContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+@@ -67,6 +_,9 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -73,12 +_,18 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(6f, 6f);
- 			resourceDrawSettings.GetTextureMethod = LifeFillingDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = LifeContext;
- 			resourceDrawSettings.OffsetPerDraw = new Vector2(_hpFill.Width(), 0f);
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = LifePanels;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			resourceDrawSettings = default(ResourceDrawSettings);
+ 			resourceDrawSettings.ElementCount = _hpSegmentsCount;
+@@ -77,8 +_,16 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = LifeBars;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			_hpHovered = isHovered;
 +			SkipLifeDrawing:
@@ -68,23 +51,23 @@
  			isHovered = false;
  			Vector2 vector2 = new Vector2(num3 - 10, num2 + 24);
  			vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
-@@ -87,6 +_,7 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector2;
- 			resourceDrawSettings.GetTextureMethod = ManaPanelDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = ManaPanelContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+@@ -91,6 +_,9 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -97,12 +_,15 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
- 			resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = ManaContext;
- 			resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = ManaPanels;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			resourceDrawSettings = default(ResourceDrawSettings);
+ 			resourceDrawSettings.ElementCount = _mpSegmentsCount;
+@@ -101,8 +_,13 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = ManaBars;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			_mpHovered = isHovered;
 +			SkipManaDrawing:
@@ -124,30 +107,3 @@
  			sourceRect = null;
  			offset = Vector2.Zero;
  			float num = 1f;
-@@ -194,6 +_,26 @@
- 		private void ManaFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
- 			sprite = _mpFill;
- 			FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
-+		}
-+
-+		private void LifePanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _heartPanelDrawSource;
-+		}
-+
-+		private void LifeContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _heartDrawSource;
-+		}
-+
-+		private void ManaPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _manaPanelDrawSource;
-+		}
-+
-+		private void ManaContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _manaDrawSource;
- 		}
- 
- 		public void TryToHover() {

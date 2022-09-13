@@ -10,7 +10,7 @@ namespace ExampleMod
 	{
 		internal enum MessageType : byte
 		{
-			ExamplePlayerSyncPlayer,
+			ExampleStatIncreasePlayerSync,
 			ExampleTeleportToStatue
 		}
 
@@ -21,7 +21,7 @@ namespace ExampleMod
 
 			switch (msgType) {
 				// This message syncs ExampleLifeIncreasePlayer.exampleLifeFruits and ExampleLifeIncreasePlayer.exampleManaCrystals
-				case MessageType.ExamplePlayerSyncPlayer:
+				case MessageType.ExampleStatIncreasePlayerSync:
 					byte playernumber = reader.ReadByte();
 					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
 					examplePlayer.exampleLifeFruits = reader.ReadByte();

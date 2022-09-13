@@ -8,31 +8,26 @@
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
-@@ -8,10 +_,13 @@
- 	{
- 		public delegate void TextureGetter(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
- 
-+		public delegate void ResourceOverlayDelegate(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
-+
- 		public Vector2 TopLeftAnchor;
- 		public int ElementCount;
- 		public int ElementIndexOffset;
- 		public TextureGetter GetTextureMethod;
-+		public ResourceOverlayDelegate GetResourceDrawContext;
- 		public Vector2 OffsetPerDraw;
+@@ -16,6 +_,9 @@
  		public Vector2 OffsetPerDrawByTexturePercentile;
  		public Vector2 OffsetSpriteAnchor;
-@@ -24,19 +_,40 @@
+ 		public Vector2 OffsetSpriteAnchorByTexturePercentile;
++		public PlayerStatsSnapshot StatsSnapshot;
++		public IPlayerResourcesDisplaySet DisplaySet;
++		public int ResourceSetSlot;
+ 
+ 		public void Draw(SpriteBatch spriteBatch, ref bool isHovered) {
+ 			int elementCount = ElementCount;
+@@ -24,19 +_,39 @@
  			for (int i = 0; i < elementCount; i++) {
  				int elementIndex = i + ElementIndexOffset;
  				GetTextureMethod(elementIndex, ElementIndexOffset, ElementIndexOffset + elementCount - 1, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
 -				Rectangle rectangle = texture.Frame();
-+				GetResourceDrawContext(elementIndex, ElementIndexOffset, ElementIndexOffset + elementCount - 1, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource);
 +
 +				Rectangle frame = sourceRect ?? texture.Frame();
 +				Vector2 position = topLeftAnchor + drawOffset;
 +
-+				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, elementIndex + 1, texture, drawSource) {
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(StatsSnapshot, DisplaySet, ResourceSetSlot, elementIndex + 1, texture) {
 +					position = position,
 +					source = sourceRect,
 +					origin = OffsetSpriteAnchor + frame.Size() * OffsetSpriteAnchorByTexturePercentile,
@@ -40,7 +35,7 @@
 +					SpriteBatch = spriteBatch
 +				};
 +
-+				ResourceOverlayLoader.DrawResource(ref drawContext);
++				ResourceOverlayLoader.DrawResource(drawContext);
 +
 +				position = drawContext.position;
 +				Vector2 origin = drawContext.origin;

@@ -1,15 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
-@@ -3,13 +_,16 @@
+@@ -3,13 +_,15 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
-+using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
- 	public class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
+-	public class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
++	public partial class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
  	{
  		private float _currentPlayerLife;
 +		// Made double to prevent bugs caused by precision limits (#HealthManaAPI)
@@ -28,28 +28,6 @@
  		private float _currentPlayerMana;
  		private Asset<Texture2D> _heartLeft;
  		private Asset<Texture2D> _heartMiddle;
-@@ -34,6 +_,10 @@
- 		private bool _hoverLife;
- 		private bool _hoverMana;
- 
-+		private IResourceDrawSource _heartDrawSource, _heartPanelDrawSource, _manaDrawSource, _manaPanelDrawSource;
-+
-+		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
-+
- 		public string NameKey {
- 			get;
- 			private set;
-@@ -60,6 +_,10 @@
- 			_starBottom = Main.Assets.Request<Texture2D>(str + "\\Star_C", mode);
- 			_starSingle = Main.Assets.Request<Texture2D>(str + "\\Star_Single", mode);
- 			_starFill = Main.Assets.Request<Texture2D>(str + "\\Star_Fill", mode);
-+			_heartPanelDrawSource = new ResourceDrawSource_FancyLifePanel();
-+			_heartDrawSource = new ResourceDrawSource_FancyLife();
-+			_manaPanelDrawSource = new ResourceDrawSource_FancyManaPanel();
-+			_manaDrawSource = new ResourceDrawSource_FancyMana();
- 		}
- 
- 		public void Draw() {
 @@ -71,6 +_,9 @@
  		}
  
@@ -60,39 +38,43 @@
  			Vector2 vector = new Vector2(Main.screenWidth - 300 + 4, 15f);
  			bool isHovered = false;
  			ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
-@@ -78,6 +_,7 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector;
- 			resourceDrawSettings.GetTextureMethod = HeartPanelDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = HeartPanelContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+@@ -82,6 +_,9 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -88,6 +_,7 @@
- 			resourceDrawSettings.ElementIndexOffset = 10;
- 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(0f, 28f);
- 			resourceDrawSettings.GetTextureMethod = HeartPanelDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = HeartPanelContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = HeartPanelsFirstRow;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			resourceDrawSettings = default(ResourceDrawSettings);
+ 			resourceDrawSettings.ElementCount = _heartCountRow2;
+@@ -92,6 +_,9 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -98,6 +_,7 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 15f);
- 			resourceDrawSettings.GetTextureMethod = HeartFillingDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = HeartContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.UnitX * 2f;
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
- 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -108,12 +_,15 @@
- 			resourceDrawSettings.ElementIndexOffset = 10;
- 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 15f) + new Vector2(0f, 28f);
- 			resourceDrawSettings.GetTextureMethod = HeartFillingDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = HeartContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.UnitX * 2f;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = HeartPanelsSecondRow;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			resourceDrawSettings = default(ResourceDrawSettings);
+ 			resourceDrawSettings.ElementCount = _heartCountRow1;
+@@ -102,6 +_,9 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = HeartsFirstRow;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			resourceDrawSettings = default(ResourceDrawSettings);
+ 			resourceDrawSettings.ElementCount = _heartCountRow2;
+@@ -112,8 +_,13 @@
+ 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = HeartsSecondRow;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverLife = isHovered;
 +			_hoverLife = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, true);
@@ -111,23 +93,23 @@
  			Vector2 vector = new Vector2(Main.screenWidth - 40, 22f);
  			_ = _starCount;
  			bool isHovered = false;
-@@ -135,6 +_,7 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector;
- 			resourceDrawSettings.GetTextureMethod = StarPanelDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = StarPanelContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+@@ -139,6 +_,9 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-@@ -145,12 +_,15 @@
- 			resourceDrawSettings.ElementIndexOffset = 0;
- 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 16f);
- 			resourceDrawSettings.GetTextureMethod = StarFillingDrawer;
-+			resourceDrawSettings.GetResourceDrawContext = StarContext;
- 			resourceDrawSettings.OffsetPerDraw = Vector2.UnitY * -2f;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = StarPanels;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 			resourceDrawSettings = default(ResourceDrawSettings);
+ 			resourceDrawSettings.ElementCount = _starCount;
+@@ -149,8 +_,13 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
++			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceSetSlot = Stars;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverMana = isHovered;
 +			_hoverMana = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, false);
@@ -136,7 +118,7 @@
  		}
  
  		private static void DrawManaText(SpriteBatch spriteBatch) {
-@@ -193,11 +_,21 @@
+@@ -193,7 +_,7 @@
  			else
  				sprite = _heartFill;
  
@@ -145,21 +127,7 @@
  			if (elementIndex == _lastHeartFillingIndex && num > 0f)
  				drawScale += Main.cursorScale - 1f;
  		}
- 
-+		private void HeartPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _heartPanelDrawSource;
-+		}
-+
-+		private void HeartContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _heartDrawSource;
-+		}
-+
- 		private void StarPanelDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
- 			sourceRect = null;
- 			offset = Vector2.Zero;
-@@ -219,24 +_,37 @@
+@@ -219,7 +_,7 @@
  			sourceRect = null;
  			offset = Vector2.Zero;
  			sprite = _starFill;
@@ -168,22 +136,7 @@
  			if (elementIndex == _lastStarFillingIndex && num > 0f)
  				drawScale += Main.cursorScale - 1f;
  		}
- 
-+		private void StarPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _manaPanelDrawSource;
-+		}
-+
-+		private void StarContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-+			snapshot = preparedSnapshot;
-+			drawSource = _manaDrawSource;
-+		}
-+
-+		private PlayerStatsSnapshot preparedSnapshot;
-+
- 		private void PrepareFields(Player player) {
- 			PlayerStatsSnapshot playerStatsSnapshot = new PlayerStatsSnapshot(player);
- 			_playerLifeFruitCount = playerStatsSnapshot.LifeFruitCount;
+@@ -230,13 +_,14 @@
  			_lifePerHeart = playerStatsSnapshot.LifePerSegment;
  			_currentPlayerLife = playerStatsSnapshot.Life;
  			_manaPerStar = playerStatsSnapshot.ManaPerSegment;

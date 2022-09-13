@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.ResourceSets;
 
-#nullable enable
-
 namespace Terraria.ModLoader
 {
 	public struct ResourceOverlayDrawContext
@@ -35,14 +33,29 @@ namespace Terraria.ModLoader
 		public SpriteEffects effects;
 
 		/// <summary>
-		/// The source for the resource drawing.
+		/// Which resource set within <see cref="DisplaySet"/> (hearts, stars, bar fillings, or panels) is being drawn
 		/// </summary>
-		public IResourceDrawSource DrawSource { get; init; }
+		public int Slot { get; init; }
+
+		/// <summary>
+		/// The resource display set that this context is drawing from
+		/// </summary>
+		public IPlayerResourcesDisplaySet DisplaySet { get; init; }
 
 		public SpriteBatch SpriteBatch { get; init; }
 
-		public ResourceOverlayDrawContext(PlayerStatsSnapshot snapshot, int resourceNumber, Asset<Texture2D> texture, IResourceDrawSource drawSource) {
+		/// <summary>
+		/// Creates a context for drawing resources from a display set
+		/// </summary>
+		/// <param name="snapshot">A snapshot of a player's life and mana stats</param>
+		/// <param name="displaySet">The display set that this context is for</param>
+		/// <param name="setSlot">Which resource set (hearts, stars, panels, etc.) within the display set is being drawn</param>
+		/// <param name="resourceNumber">The resource number within the resource set</param>
+		/// <param name="texture">The texture being drawn</param>
+		public ResourceOverlayDrawContext(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, int setSlot, int resourceNumber, Asset<Texture2D> texture) {
 			this.snapshot = snapshot;
+			DisplaySet = displaySet;
+			Slot = setSlot;
 			this.resourceNumber = resourceNumber;
 			this.texture = texture;
 			position = Vector2.Zero;
@@ -52,12 +65,15 @@ namespace Terraria.ModLoader
 			origin = Vector2.Zero;
 			scale = Vector2.One;
 			effects = SpriteEffects.None;
-			DrawSource = drawSource;
 			SpriteBatch = Main.spriteBatch;
 		}
 
 		public void Draw() {
 			SpriteBatch.Draw(texture.Value, position, source, color, rotation, origin, scale, effects, 0);
+		}
+
+		public bool IsSlot<T>(ResourceSetSlotId<T> slot) where T : IPlayerResourcesDisplaySet {
+			return Slot == slot.Slot && DisplaySet is T;
 		}
 	}
 }

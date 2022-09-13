@@ -11,6 +11,11 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 	// In this example, it draws a clone of the Bars display set, but with the mana and stars "swapped" to the other location
 	public class ExampleReversedBarsDisplay : ModResourceDisplaySet
 	{
+		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> ManaPanels = 0;
+		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> ManaBars = 1;
+		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> LifePanels = 2;
+		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> LifeBars = 3;
+
 		// Variable names were copied from HorizontalBarsPlayerResourcesDisplaySet
 		private int _maxSegmentCount;
 		private int _hpSegmentsCount;
@@ -29,8 +34,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 		private Asset<Texture2D> _panelMiddleMP;
 		private Asset<Texture2D> _panelRightMP;
 
-		private IResourceDrawSource _heartDrawSource, _heartPanelDrawSource, _manaDrawSource, _manaPanelDrawSource, _heartPanelRightDrawSource, _manaPanelRightDrawSource;
-
 		private PlayerStatsSnapshot preparedSnapshot;
 
 		public override void Load() {
@@ -45,16 +48,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			_panelRightHP = ModContent.Request<Texture2D>(modFolder + "HP_Panel_Right", AssetRequestMode.ImmediateLoad);
 			_panelMiddleMP = Main.Assets.Request<Texture2D>(vanillaFolder + "MP_Panel_Middle", AssetRequestMode.ImmediateLoad);
 			_panelRightMP = ModContent.Request<Texture2D>(modFolder + "MP_Panel_Right", AssetRequestMode.ImmediateLoad);
-
-			_heartPanelDrawSource = new ResourceDrawSource_BarsLifePanel();
-			_heartDrawSource = new ResourceDrawSource_BarsLife();
-			_manaPanelDrawSource = new ResourceDrawSource_BarsManaPanel();
-			_manaDrawSource = new ResourceDrawSource_BarsMana();
-			// While the left and middle panels are drawn using the vanilla sprites, the right panels use modified sprites.
-			// Some mods might assume that the panel being drawn is one of the vanilla sprites when given one of the above sources,
-			// so custom sources should be used to indicate that these sprites have changed.
-			_heartPanelRightDrawSource = new ExampleReversedPanelRight_Life();
-			_manaPanelRightDrawSource = new ExampleReversedPanelRight_Mana();
 		}
 
 		// DrawLife runs before DrawMana, so keep that in mind
@@ -76,11 +69,13 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.ElementIndexOffset = 0;
 			resourceDrawSettings.TopLeftAnchor = vector2;
 			resourceDrawSettings.GetTextureMethod = ManaPanelDrawer;
-			resourceDrawSettings.GetResourceDrawContext = ManaPanelContext;
 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
+			resourceDrawSettings.DisplaySet = this;
+			resourceDrawSettings.ResourceSetSlot = ManaPanels;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			// Draw the mana bar filling
@@ -89,11 +84,13 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.ElementIndexOffset = 0;
 			resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
 			resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
-			resourceDrawSettings.GetResourceDrawContext = ManaContext;
 			resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
+			resourceDrawSettings.DisplaySet = this;
+			resourceDrawSettings.ResourceSetSlot = ManaBars;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_mpHovered = isHovered;
@@ -115,11 +112,13 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.ElementIndexOffset = 0;
 			resourceDrawSettings.TopLeftAnchor = vector;
 			resourceDrawSettings.GetTextureMethod = LifePanelDrawer;
-			resourceDrawSettings.GetResourceDrawContext = LifePanelContext;
 			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
+			resourceDrawSettings.DisplaySet = this;
+			resourceDrawSettings.ResourceSetSlot = LifePanels;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			// Draw the life bar filling
@@ -128,11 +127,13 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.ElementIndexOffset = 0;
 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(6f, 6f);
 			resourceDrawSettings.GetTextureMethod = LifeFillingDrawer;
-			resourceDrawSettings.GetResourceDrawContext = LifeContext;
 			resourceDrawSettings.OffsetPerDraw = new Vector2(_hpFill.Width(), 0f);
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
+			resourceDrawSettings.DisplaySet = this;
+			resourceDrawSettings.ResourceSetSlot = LifeBars;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_hpHovered = isHovered;
@@ -197,26 +198,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 		private void ManaFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
 			sprite = _mpFill;
 			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
-		}
-
-		private void LifePanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-			snapshot = preparedSnapshot;
-			drawSource = elementIndex == lastElementIndex ? _heartPanelRightDrawSource : _heartPanelDrawSource;
-		}
-
-		private void LifeContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-			snapshot = preparedSnapshot;
-			drawSource = _heartDrawSource;
-		}
-
-		private void ManaPanelContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-			snapshot = preparedSnapshot;
-			drawSource = elementIndex == lastElementIndex ? _manaPanelRightDrawSource : _manaPanelDrawSource;
-		}
-
-		private void ManaContext(int elementIndex, int firstElementIndex, int lastElementIndex, out PlayerStatsSnapshot snapshot, out IResourceDrawSource drawSource) {
-			snapshot = preparedSnapshot;
-			drawSource = _manaDrawSource;
 		}
 	}
 }

@@ -20,11 +20,30 @@ namespace ExampleMod.Common.Players
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)ExampleMod.MessageType.ExamplePlayerSyncPlayer);
+			packet.Write((byte)ExampleMod.MessageType.ExampleStatIncreasePlayerSync);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write((byte)exampleLifeFruits);
 			packet.Write((byte)exampleManaCrystals);
 			packet.Send(toWho, fromWho);
+		}
+
+		public override void clientClone(ModPlayer clientClone) {
+			ExampleStatIncreasePlayer clone = clientClone as ExampleStatIncreasePlayer;
+			clone.exampleLifeFruits = exampleLifeFruits;
+			clone.exampleManaCrystals = exampleManaCrystals;
+		}
+
+		public override void SendClientChanges(ModPlayer clientPlayer) {
+			ExampleStatIncreasePlayer clone = clientPlayer as ExampleStatIncreasePlayer;
+
+			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals) {
+				ModPacket packet = Mod.GetPacket();
+				packet.Write((byte)ExampleMod.MessageType.ExampleStatIncreasePlayerSync);
+				packet.Write((byte)Player.whoAmI);
+				packet.Write((byte)exampleLifeFruits);
+				packet.Write((byte)exampleManaCrystals);
+				packet.Send(ignoreClient: Player.whoAmI);
+			}
 		}
 
 		// NOTE: The tag instance provided here is always empty by default.

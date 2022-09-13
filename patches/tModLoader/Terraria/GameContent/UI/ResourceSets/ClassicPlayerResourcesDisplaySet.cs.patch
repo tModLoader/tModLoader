@@ -1,15 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
-@@ -2,15 +_,21 @@
+@@ -2,13 +_,16 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
-+using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
- 	public class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
+-	public class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
++	public partial class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
  	{
 +		/*
 -		private int UIDisplay_ManaPerStar = 20;
@@ -18,11 +18,7 @@
 +		*/
  		private int UI_ScreenAnchorX;
  
-+		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
-+
  		public string NameKey {
- 			get;
- 			private set;
 @@ -36,10 +_,22 @@
  			Player localPlayer = Main.LocalPlayer;
  			SpriteBatch spriteBatch = Main.spriteBatch;
@@ -48,7 +44,7 @@
  			int num = localPlayer.statLifeMax / 20;
  			int num2 = (localPlayer.statLifeMax - 400) / 5;
  			if (num2 < 0)
-@@ -52,33 +_,40 @@
+@@ -52,33 +_,38 @@
  
  			int num3 = localPlayer.statLifeMax2 - localPlayer.statLifeMax;
  			UIDisplay_LifePerHeart += num3 / num;
@@ -71,8 +67,6 @@
 +			SkipLifeText:
 +			if (!drawHearts)
 +				goto SkipHearts;
-+
-+			IResourceDrawSource drawSource = new ResourceDrawSource_ClassicLife();
 +
 +			for (int i = 1; i < snapshot.AmountOfLifeHearts + 1; i++) {
  				int num5 = 255;
@@ -107,14 +101,14 @@
 +
 +					Vector2 position = new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + heartTexture.Width() / 2, 32f + heartTexture.Height() * (1 - num6) / 2f + num9 + heartTexture.Height() / 2);
 +
-+					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, i, heartTexture, drawSource) {
++					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, Hearts, i, heartTexture) {
 +						position = position,
 +						color = new Color(num5, num5, num5, a),
 +						origin = heartTexture.Size() / 2f,
 +						scale = new Vector2(num6)
 +					};
 +
-+					ResourceOverlayLoader.DrawResource(ref drawContext);
++					ResourceOverlayLoader.DrawResource(drawContext);
 +					/*
  					if (num2 > 0) {
  						num2--;
@@ -149,7 +143,7 @@
  
  			_ = localPlayer.statManaMax2 / 20;
  			Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
-@@ -124,22 +_,29 @@
+@@ -124,22 +_,27 @@
  				num = (int)vector.X + 5;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[2].Value, new Vector2(800 - num + UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -157,8 +151,6 @@
 +			SkipManaText:
 +			if (!drawStars)
 +				goto SkipStars;
-+
-+			IResourceDrawSource drawSource = new ResourceDrawSource_ClassicMana();
 +
 -			for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
 +			for (int i = 1; i < snapshot.AmountOfManaStars + 1; i++) {
@@ -192,14 +184,14 @@
 +				
  				int a = (int)((double)num2 * 0.9);
 +
-+				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, i, TextureAssets.Mana, drawSource) {
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, Stars, i, TextureAssets.Mana) {
 +					position = position,
 +					color = new Color(num2, num2, num2, a),
 +					origin = TextureAssets.Mana.Size() / 2f,
 +					scale = new Vector2(num3)
 +				};
 +
-+				ResourceOverlayLoader.DrawResource(ref drawContext);
++				ResourceOverlayLoader.DrawResource(drawContext);
 +				/*
  				spriteBatch.Draw(TextureAssets.Mana.Value, new Vector2(775 + UI_ScreenAnchorX, (float)(30 + TextureAssets.Mana.Height() / 2) + ((float)TextureAssets.Mana.Height() - (float)TextureAssets.Mana.Height() * num3) / 2f + (float)(28 * (i - 1))), new Rectangle(0, 0, TextureAssets.Mana.Width(), TextureAssets.Mana.Height()), new Color(num2, num2, num2, a), 0f, new Vector2(TextureAssets.Mana.Width() / 2, TextureAssets.Mana.Height() / 2), num3, SpriteEffects.None, 0f);
 +				*/

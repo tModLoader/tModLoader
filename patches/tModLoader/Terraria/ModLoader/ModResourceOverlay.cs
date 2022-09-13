@@ -19,23 +19,23 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
-		/// Allows you to modify how any resource (hearts, stars, bars or panels) in the vanilla display sets are drawn
+		/// Allows you to draw below any resource (hearts, stars, bars or panels) in a display set
 		/// </summary>
 		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
 		/// <returns><see langword="true"/> if the intended heart sprite should draw, <see langword="false"/> otherwise.</returns>
-		public virtual bool PreDrawResource(ref ResourceOverlayDrawContext context) {
+		public virtual bool PreDrawResource(ResourceOverlayDrawContext context) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw on top of any resource (hearts, stars, bars or panels) in the vanilla display sets
+		/// Allows you to draw on top of any resource (hearts, stars, bars or panels) in a display set
 		/// </summary>
 		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
 		public virtual void PostDrawResource(ResourceOverlayDrawContext context) {
 		}
 
 		/// <summary>
-		/// Allows you to draw before the resources (hearts, stars, bars and/or panels) in a vanilla display set are drawn.<br/>
+		/// Allows you to draw before the resources (hearts, stars, bars and/or panels) in a display set are drawn.<br/>
 		/// If you want to implement your own display set, it is recommended to use <see cref="ModResourceDisplaySet"/> instead of this hook.
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw after the resources (hearts, stars, bars and/or panels) in a vanilla display set are drawn
+		/// Allows you to draw after the resources (hearts, stars, bars and/or panels) in a display set are drawn
 		/// </summary>
 		/// <param name="snapshot">A snapshot of the stats from Main.LocalPlayer</param>
 		/// <param name="displaySet">The display set that was drawn</param>

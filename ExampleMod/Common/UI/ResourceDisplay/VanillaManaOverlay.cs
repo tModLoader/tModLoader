@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.ResourceSets;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.UI.ResourceDisplay
@@ -11,29 +13,16 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 	{
 		// Unlike VanillaLifeOverlay, every star is drawn over by this hook.
 		public override void PostDrawResource(ResourceOverlayDrawContext context) {
-			// Only mana resources are replaced
-			if (context.DrawSource is not ResourceDrawSource_Mana)
-				return;
-			
 			// Bars panel drawing has two additional elements, so the "resource index" needs to be offset
-			int fillResourceNumber = context.DrawSource is ResourceDrawSource_BarsManaPanel ? context.resourceNumber - 1 : context.resourceNumber;
+			int fillResourceNumber = context.IsSlot(HorizontalBarsPlayerReosurcesDisplaySet.ManaPanels) ? context.resourceNumber - 1 : context.resourceNumber;
 			if (Main.LocalPlayer.GetModPlayer<ExampleStatIncreasePlayer>().exampleManaCrystals <= 0)
 				return;
 
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla hearts, just replace the texture and have the context draw the new texture
-
-			// NOTE: If you copy this code into PreDrawResource and only want to draw behind the resource and NOT modify it, copy the context into a variable and THEN draw using it:
-			/*
-			ResourceOverlayDrawContext contextCopy = context;
-			contextCopy.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicManaOverlay", AssetRequestMode.ImmediateLoad);
-			contextCopy.Draw();
-			*/
-
-			if (context.DrawSource is ResourceDrawSource_ClassicMana || context.DrawSource is ResourceDrawSource_FancyMana) {
-				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicStarOverlay", AssetRequestMode.ImmediateLoad);
-				context.Draw();
-			} else if (context.DrawSource is ResourceDrawSource_FancyManaPanel) {
+			if (context.IsSlot(ClassicPlayerResourcesDisplaySet.Stars) || context.IsSlot(FancyClassicPlayerResourcesDisplaySet.Stars)) {
+				DrawClassicFancyOverlay(context);
+			} else if (context.IsSlot(FancyClassicPlayerResourcesDisplaySet.StarPanels)) {
 				string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyManaOverlay_";
 
 				if (context.resourceNumber == context.snapshot.AmountOfManaStars) {
@@ -55,13 +44,38 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 
 				context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
 				context.Draw();
-			} else if (context.DrawSource is ResourceDrawSource_BarsManaPanel && fillResourceNumber >= 1 && fillResourceNumber <= context.snapshot.AmountOfManaStars) {
+			} else if (context.IsSlot(HorizontalBarsPlayerReosurcesDisplaySet.ManaPanels) && fillResourceNumber >= 1 && fillResourceNumber <= context.snapshot.AmountOfManaStars) {
 				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsManaOverlay_Panel_Middle", AssetRequestMode.ImmediateLoad);
 				context.Draw();
-			} else if (context.DrawSource is ResourceDrawSource_BarsMana) {
-				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsManaOverlay_Fill", AssetRequestMode.ImmediateLoad);
-				context.Draw();
-			} 
+			} else if (context.IsSlot(HorizontalBarsPlayerReosurcesDisplaySet.ManaBars)) {
+				DrawBarsOverlay(context);
+			} else {
+				// None of the above cases applied, but this could be a modded resource that uses vanilla textures.
+				// So, it would be a good idea to check if certain vanilla resources are being drawn and then draw over them like usual
+				string name = context.texture.Name;
+
+				string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
+				string barsFolder = "Images/UI/PlayerResourceSets/HorizontalBars/";
+
+				if (name == TextureAssets.Mana.Name) {
+					DrawClassicFancyOverlay(context);
+				} else if (name == Main.Assets.Request<Texture2D>(fancyFolder + "Star_Fill").Name) {
+					DrawClassicFancyOverlay(context);
+				} else if (name == Main.Assets.Request<Texture2D>(barsFolder + "MP_Fill").Name) {
+					DrawBarsOverlay(context);
+				}
+			}
+		}
+
+		private static void DrawClassicFancyOverlay(ResourceOverlayDrawContext context) {
+			//Draw over the Classic hearts
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicManaOverlay", AssetRequestMode.ImmediateLoad);
+			context.Draw();
+		}
+
+		private static void DrawBarsOverlay(ResourceOverlayDrawContext context) {
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsManaOverlay_Fill", AssetRequestMode.ImmediateLoad);
+			context.Draw();
 		}
 	}
 }
