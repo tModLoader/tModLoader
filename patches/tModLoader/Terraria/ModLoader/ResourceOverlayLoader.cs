@@ -107,13 +107,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Draws a resource, typically life or mana, without running any <see cref="ModResourceOverlay"/> hooks
+		/// Creates a drawing context for drawing a resource, typically life or mana
 		/// </summary>
+		/// <returns></returns>
 		/// <inheritdoc cref="DrawResource(PlayerStatsSnapshot, int, Asset{Texture2D}, IResourceDrawSource, Vector2, SpriteBatch, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawResourceDirect(PlayerStatsSnapshot snapshot, int resourceNumber, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, SpriteBatch spriteBatch = null, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		public static ResourceOverlayDrawContext PrepareResource(PlayerStatsSnapshot snapshot, int resourceNumber, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, SpriteBatch spriteBatch = null, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			Rectangle frame = sourceFrame ?? texture.Frame();
 
-			ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, resourceNumber, texture, drawSource) {
+			return new ResourceOverlayDrawContext(snapshot, resourceNumber, texture, drawSource) {
 				position = position,
 				source = sourceFrame,
 				color = color ?? Color.White,
@@ -122,10 +123,6 @@ namespace Terraria.ModLoader
 				scale = scale ?? Vector2.One,
 				SpriteBatch = spriteBatch ?? Main.spriteBatch
 			};
-
-			drawContext.Draw();
-
-			return drawContext;
 		}
 		
 		/// <summary>
@@ -136,18 +133,6 @@ namespace Terraria.ModLoader
 			ResourceOverlayDrawContext drawContext = PrepareBarResource(snapshot, resourceNumber, fillPercent, texture, drawSource, position, mode, spriteBatch, color, rotation, origin, scale);
 
 			DrawResource(ref drawContext);
-
-			return drawContext;
-		}
-
-		/// <summary>
-		/// Draws a resource, typically life or mana, as if it were in the Bars display set without running any <see cref="ModResourceOverlay"/> hooks
-		/// </summary>
-		/// <inheritdoc cref="PrepareBarResource(PlayerStatsSnapshot, int, float, Asset{Texture2D}, IResourceDrawSource, Vector2, BarResourceFillMode, SpriteBatch, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawBarResourceDirect(PlayerStatsSnapshot snapshot, int resourceNumber, float fillPercent, Asset<Texture2D> texture, IResourceDrawSource drawSource, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, SpriteBatch spriteBatch = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
-			ResourceOverlayDrawContext drawContext = PrepareBarResource(snapshot, resourceNumber, fillPercent, texture, drawSource, position, mode, spriteBatch, color, rotation, origin, scale);
-
-			drawContext.Draw();
 
 			return drawContext;
 		}
