@@ -31,36 +31,16 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla hearts, just replace the texture and have the context draw the new texture
 			if (context.IsSlot(ClassicPlayerResourcesDisplaySet.Hearts) || context.IsSlot(FancyClassicPlayerResourcesDisplaySet.HeartsFirstRow) || context.IsSlot(FancyClassicPlayerResourcesDisplaySet.HeartsSecondRow)) {
+				// Draw over the Classic / Fancy hearts
 				DrawClassicFancyOverlay(context);
 			} else if (context.IsSlot(FancyClassicPlayerResourcesDisplaySet.HeartPanelsFirstRow) || context.IsSlot(FancyClassicPlayerResourcesDisplaySet.HeartPanelsSecondRow)) {
-				string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyLifeOverlay_";
-
-				if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
-					// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
-					if (context.resourceNumber % 10 == 1) {
-						// First and only panel in this panel's row
-						texture += "Single_Fancy";
-					} else {
-						// Other panels existed in this panel's row
-						texture += "Right_Fancy";
-					}
-				} else if (context.resourceNumber % 10 == 1) {
-					// First panel in this row
-					texture += "Left";
-				} else if (context.resourceNumber % 10 <= 9) {
-					// Any panel that has a panel to its left AND right
-					texture += "Middle";
-				} else {
-					// Final panel in the first row
-					texture += "Right";
-				}
-
-				context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
-				context.Draw();
+				// Draw over the Fancy heart panels
+				DrawFancyPanelOverlay(context);
 			} else if (context.IsSlot(HorizontalBarsPlayerReosurcesDisplaySet.LifePanels) && fillResourceNumber >= 1 && fillResourceNumber <= context.snapshot.AmountOfLifeHearts) {
-				context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsLifeOverlay_Panel_Middle", AssetRequestMode.ImmediateLoad);
-				context.Draw();
+				// Draw over the Bars middle life panels
+				DrawBarsPanelOverlay(context);
 			} else if (context.IsSlot(HorizontalBarsPlayerReosurcesDisplaySet.LifeBars)) {
+				// Draw over the Bars life bars
 				DrawBarsOverlay(context);
 			} else {
 				// None of the above cases applied, but this could be a modded resource that uses vanilla textures.
@@ -70,24 +50,74 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 				string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
 				string barsFolder = "Images/UI/PlayerResourceSets/HorizontalBars/";
 
+				// NOTE: CompareAssetNames is defined below this method's body
 				if (name == TextureAssets.Heart.Name || name == TextureAssets.Heart2.Name) {
+					// Draw over the Classic hearts
 					DrawClassicFancyOverlay(context);
-				} else if (name == Main.Assets.Request<Texture2D>(fancyFolder + "Heart_Fill").Name || name == Main.Assets.Request<Texture2D>(fancyFolder + "Heart_Fill_B").Name) {
+				} else if (CompareAssetNames(name, fancyFolder + "Heart_Fill") || CompareAssetNames(name, fancyFolder + "Heart_Fill_B")) {
+					// Draw over the Fancy hearts
 					DrawClassicFancyOverlay(context);
-				} else if (name == Main.Assets.Request<Texture2D>(barsFolder + "HP_Fill").Name || name == Main.Assets.Request<Texture2D>(barsFolder + "HP_Fill_Honey").Name) {
+				} else if (CompareAssetNames(name, barsFolder + "HP_Fill") || CompareAssetNames(name, barsFolder + "HP_Fill_Honey")) {
+					// Draw over the Bars life bars
 					DrawBarsOverlay(context);
+				} else if (CompareAssetNames(name, fancyFolder + "Heart_Left") || CompareAssetNames(name, fancyFolder + "Heart_Middle") || CompareAssetNames(name, fancyFolder + "Heart_Right") || CompareAssetNames(name, fancyFolder + "Heart_Right_Fancy") || CompareAssetNames(name, fancyFolder + "Heart_Single_Fancy")) {
+					// Draw over the Fancy heart panels
+					DrawFancyPanelOverlay(context);
+				} else if (CompareAssetNames(name, barsFolder + "HP_Panel_Middle")) {
+					// Draw over the Bars middle life panels
+					DrawBarsPanelOverlay(context);
 				}
 			}
 		}
 
+		private static bool CompareAssetNames(string existingName, string compareAssetPath) {
+			// This is a helper method for checking if a certain vanilla asset was drawn
+			return existingName == Main.Assets.Request<Texture2D>(compareAssetPath).Name;
+		}
+
 		private static void DrawClassicFancyOverlay(ResourceOverlayDrawContext context) {
-			//Draw over the Classic hearts
+			// Draw over the Classic / Fancy hearts
 			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/ClassicLifeOverlay", AssetRequestMode.ImmediateLoad);
 			context.Draw();
 		}
 
+		private static void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
+			// Draw over the Fancy heart panels
+			string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyLifeOverlay_";
+
+			if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
+				// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
+				if (context.resourceNumber % 10 == 1) {
+					// First and only panel in this panel's row
+					texture += "Single_Fancy";
+				} else {
+					// Other panels existed in this panel's row
+					texture += "Right_Fancy";
+				}
+			} else if (context.resourceNumber % 10 == 1) {
+				// First panel in this row
+				texture += "Left";
+			} else if (context.resourceNumber % 10 <= 9) {
+				// Any panel that has a panel to its left AND right
+				texture += "Middle";
+			} else {
+				// Final panel in the first row
+				texture += "Right";
+			}
+
+			context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
+			context.Draw();
+		}
+
 		private static void DrawBarsOverlay(ResourceOverlayDrawContext context) {
+			// Draw over the Bars life bars
 			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsLifeOverlay_Fill", AssetRequestMode.ImmediateLoad);
+			context.Draw();
+		}
+
+		private static void DrawBarsPanelOverlay(ResourceOverlayDrawContext context) {
+			// Draw over the Bars middle life panels
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsLifeOverlay_Panel_Middle", AssetRequestMode.ImmediateLoad);
 			context.Draw();
 		}
 	}
