@@ -6,6 +6,10 @@ namespace Terraria.ModLoader.Default
 	//Only purpose is for syncing ConsumedLifeCrystals, ConsumedLifeFruit and ConsumedManaCrystals
 	internal class ConsumedStatIncreasesPlayer : ModPlayer
 	{
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+			NetHandler.SendConsumedState(toWho, Player);
+		}
+
 		public override void clientClone(ModPlayer clientClone) {
 			Player source = Player, target = clientClone.Player;
 
