@@ -277,7 +277,7 @@ namespace Terraria.ModLoader
 		/// <param name="rotation">The rotation to draw the heart with.  Defaults to 0 radians</param>
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the heart at.  Defaults to <see cref="Vector2.One"/></param>
-		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
+		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the created context</returns>
 		public static ResourceOverlayDrawContext GetFancyHeartPanelMiddle(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Heart_Middle", AssetRequestMode.ImmediateLoad);
 
@@ -390,7 +390,7 @@ namespace Terraria.ModLoader
 		/// <param name="rotation">The rotation to draw the star with.  Defaults to 0 radians</param>
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the star at.  Defaults to <see cref="Vector2.One"/></param>
-		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
+		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the created context</returns>
 		public static ResourceOverlayDrawContext GetFancyStarPanelMiddle(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Star_B", AssetRequestMode.ImmediateLoad);
 
@@ -425,7 +425,7 @@ namespace Terraria.ModLoader
 		/// <param name="rotation">The rotation to draw the bar with.  Defaults to 0 radians</param>
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the bar at.  Defaults to <see cref="Vector2.One"/></param>
-		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
+		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the created context</returns>
 		public static ResourceOverlayDrawContext? GetLifeBarFill(SpriteBatch spriteBatch, int lifeBarNumber, float fillPercent, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var stats = PlayerStats;
 
@@ -457,7 +457,7 @@ namespace Terraria.ModLoader
 		/// <param name="rotation">The rotation to draw the bar with.  Defaults to 0 radians</param>
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the bar at.  Defaults to <see cref="Vector2.One"/></param>
-		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
+		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the created context</returns>
 		public static ResourceOverlayDrawContext? GetManaBarFill(SpriteBatch spriteBatch, int starBarNumber, float fillPercent, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var stats = PlayerStats;
 
