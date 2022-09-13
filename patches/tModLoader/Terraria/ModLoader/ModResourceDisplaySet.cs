@@ -141,8 +141,8 @@ namespace Terraria.ModLoader
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the heart at.  Defaults to <see cref="Vector2.One"/></param>
 		/// <param name="pulse">Whether the heart's scale should be modified by the "pulse" effect.  Defaults to <see langword="false"/></param>
-		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
-		public static ResourceOverlayDrawContext? DrawClassicHeart(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
+		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the created context</returns>
+		public static ResourceOverlayDrawContext? GetClassicHeart(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfLifeHearts < heartNumber)
@@ -173,8 +173,8 @@ namespace Terraria.ModLoader
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the star at.  Defaults to <see cref="Vector2.One"/></param>
 		/// <param name="pulse">Whether the star's scale should be modified by the "pulse" effect.  Defaults to <see langword="false"/></param>
-		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
-		public static ResourceOverlayDrawContext? DrawClassicStar(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
+		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the created context</returns>
+		public static ResourceOverlayDrawContext? GetClassicStar(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfManaStars < starNumber)
@@ -194,8 +194,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Creates a drawing context for drawing a heart resource from the Fancy display set
 		/// </summary>
-		/// <inheritdoc cref="DrawClassicHeart(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
-		public static ResourceOverlayDrawContext? DrawFancyHeart(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
+		/// <inheritdoc cref="GetClassicHeart(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
+		public static ResourceOverlayDrawContext? GetFancyHeart(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfLifeHearts < heartNumber)
@@ -222,8 +222,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Creates a drawing context for drawing a heart panel resource from the Fancy display set
 		/// </summary>
-		/// <inheritdoc cref="DrawClassicHeart(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
-		public static ResourceOverlayDrawContext? DrawFancyHeartPanel(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetClassicHeart(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
+		public static ResourceOverlayDrawContext? GetFancyHeartPanel(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfLifeHearts < heartNumber)
@@ -259,8 +259,8 @@ namespace Terraria.ModLoader
 			return ResourceOverlayLoader.PrepareResource(stats, heartNumber, asset, new ResourceDrawSource_FancyLifePanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyHeartPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyHeartPanelLeft(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyHeartPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyHeartPanelLeft(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Heart_Left", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, 1, asset, new ResourceDrawSource_FancyLifePanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
@@ -277,9 +277,8 @@ namespace Terraria.ModLoader
 		/// <param name="rotation">The rotation to draw the heart with.  Defaults to 0 radians</param>
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the heart at.  Defaults to <see cref="Vector2.One"/></param>
-		/// <param name="pulse">Whether the heart's scale should be modified by the "pulse" effect.  Defaults to <see langword="false"/></param>
 		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
-		public static ResourceOverlayDrawContext DrawFancyHeartPanelMiddle(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		public static ResourceOverlayDrawContext GetFancyHeartPanelMiddle(SpriteBatch spriteBatch, int heartNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Heart_Middle", AssetRequestMode.ImmediateLoad);
 
 			// Ensure that the context actually gets a middle heart panel
@@ -292,22 +291,22 @@ namespace Terraria.ModLoader
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, heartNumber, asset, new ResourceDrawSource_FancyLifePanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyHeartPanelLeft(SpriteBatch, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyHeartPanelRight(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyHeartPanelLeft(SpriteBatch, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyHeartPanelRight(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Heart_Right", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, 10, asset, new ResourceDrawSource_FancyLifePanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyHeartPanelLeft(SpriteBatch, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyHeartPanelSingle(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyHeartPanelLeft(SpriteBatch, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyHeartPanelSingle(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Heart_Single_Fancy", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot with { AmountOfLifeHearts = 1 }, 1, asset, new ResourceDrawSource_FancyLifePanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyHeartPanelLeft(SpriteBatch, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyHeartPanelRightFancy(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyHeartPanelLeft(SpriteBatch, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyHeartPanelRightFancy(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Heart_Right_Fancy", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, 20, asset, new ResourceDrawSource_FancyLifePanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
@@ -316,8 +315,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Creates a drawing context for drawing a mana resource from the Fancy display set
 		/// </summary>
-		/// <inheritdoc cref="DrawClassicStar(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
-		public static ResourceOverlayDrawContext? DrawFancyStar(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
+		/// <inheritdoc cref="GetClassicStar(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
+		public static ResourceOverlayDrawContext? GetFancyStar(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null, bool pulse = false) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfManaStars < starNumber)
@@ -339,8 +338,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Creates a drawing context for drawing a mana panel resource from the Fancy display set
 		/// </summary>
-		/// <inheritdoc cref="DrawClassicStar(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
-		public static ResourceOverlayDrawContext? DrawFancyStarPanel(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetClassicStar(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, bool)"/>
+		public static ResourceOverlayDrawContext? GetFancyStarPanel(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfManaStars < starNumber)
@@ -373,8 +372,8 @@ namespace Terraria.ModLoader
 			return ResourceOverlayLoader.PrepareResource(stats, starNumber, asset, new ResourceDrawSource_FancyManaPanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyStarPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyStarPanelTop(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyStarPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyStarPanelTop(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Star_A", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, 1, asset, new ResourceDrawSource_FancyManaPanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
@@ -391,9 +390,8 @@ namespace Terraria.ModLoader
 		/// <param name="rotation">The rotation to draw the star with.  Defaults to 0 radians</param>
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the star at.  Defaults to <see cref="Vector2.One"/></param>
-		/// <param name="pulse">Whether the star's scale should be modified by the "pulse" effect.  Defaults to <see langword="false"/></param>
 		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
-		public static ResourceOverlayDrawContext DrawFancyStarPanelMiddle(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		public static ResourceOverlayDrawContext GetFancyStarPanelMiddle(SpriteBatch spriteBatch, int starNumber, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Star_B", AssetRequestMode.ImmediateLoad);
 
 			starNumber = Utils.Clamp(starNumber, 2, 19);
@@ -401,15 +399,15 @@ namespace Terraria.ModLoader
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, starNumber, asset, new ResourceDrawSource_FancyManaPanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyStarPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyStarPanelBottom(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyStarPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyStarPanelBottom(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Star_C", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot, 20, asset, new ResourceDrawSource_FancyManaPanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
 		}
 
-		/// <inheritdoc cref="DrawFancyStarPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
-		public static ResourceOverlayDrawContext DrawFancyStarPanelSingle(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		/// <inheritdoc cref="GetFancyStarPanel(SpriteBatch, int, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?)"/>
+		public static ResourceOverlayDrawContext GetFancyStarPanelSingle(SpriteBatch spriteBatch, Vector2 position, Rectangle? sourceFrame = null, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var asset = Main.Assets.Request<Texture2D>("Images/UI/PlayerResourceSets/FancyClassic/Star_Single", AssetRequestMode.ImmediateLoad);
 
 			return ResourceOverlayLoader.PrepareResource(MaxedSnapshot with { AmountOfManaStars = 1 }, 1, asset, new ResourceDrawSource_FancyManaPanel(), position, spriteBatch, sourceFrame, color, rotation, origin, scale);
@@ -428,7 +426,7 @@ namespace Terraria.ModLoader
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the bar at.  Defaults to <see cref="Vector2.One"/></param>
 		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
-		public static ResourceOverlayDrawContext? DrawLifeBarFill(SpriteBatch spriteBatch, int lifeBarNumber, float fillPercent, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		public static ResourceOverlayDrawContext? GetLifeBarFill(SpriteBatch spriteBatch, int lifeBarNumber, float fillPercent, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfLifeHearts < lifeBarNumber)
@@ -460,7 +458,7 @@ namespace Terraria.ModLoader
 		/// <param name="origin">The relative center within the frame for rotation and scaling.  Defaults to the center of the frame</param>
 		/// <param name="scale">The scale to draw the bar at.  Defaults to <see cref="Vector2.One"/></param>
 		/// <returns><see langword="null"/> if the parameters are invalid, otherwise the result of the drawing</returns>
-		public static ResourceOverlayDrawContext? DrawManaBarFill(SpriteBatch spriteBatch, int starBarNumber, float fillPercent, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
+		public static ResourceOverlayDrawContext? GetManaBarFill(SpriteBatch spriteBatch, int starBarNumber, float fillPercent, Vector2 position, BarResourceFillMode mode = BarResourceFillMode.RightToLeft, Color? color = null, float rotation = 0, Vector2? origin = null, Vector2? scale = null) {
 			var stats = PlayerStats;
 
 			if (stats.AmountOfLifeHearts < starBarNumber)
