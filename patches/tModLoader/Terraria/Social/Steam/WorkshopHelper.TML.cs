@@ -416,7 +416,7 @@ namespace Terraria.Social.Steam
 						SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
 
 						// Backwards compat code for the metadata version change
-						if (metadata["versionsumamry"] == null)
+						if (metadata["versionsummary"] == null)
 							metadata["versionsummary"] = metadata["version"]; 
 
 						string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();

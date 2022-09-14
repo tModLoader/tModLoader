@@ -1,9 +1,10 @@
 ﻿using MonoMod.RuntimeDetour;
 using System;
 using System.Diagnostics;
-using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -40,26 +41,34 @@ namespace Terraria.ModLoader.Engine
 			stackTraceCtorHook = new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 		}
 
-		private delegate EventHandler SendRequest(object self, HttpWebRequest request);
-		private delegate EventHandler SendRequestHook(SendRequest orig, object self, HttpWebRequest request);
+		private delegate ValueTask<HttpResponseMessage> orig_SendAsyncCore(object self, HttpRequestMessage request, Uri? proxyUri, bool async, bool doRequestAuth, bool isProxyConnect, CancellationToken cancellationToken);
 
-		private delegate void WebOperation_ctor(object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
-		private delegate void WebOperation_ctorHook(WebOperation_ctor orig, object self, HttpWebRequest request, object writeBuffer, bool isNtlmChallenge, CancellationToken cancellationToken);
+		private delegate ValueTask<HttpResponseMessage> hook_SendAsyncCore(orig_SendAsyncCore orig, object self, HttpRequestMessage request, Uri? proxyUri, bool async, bool doRequestAuth, bool isProxyConnect, CancellationToken cancellationToken);
 
-		private delegate bool SubmitRequest(object self, HttpWebRequest request, bool forcedsubmit);
-		private delegate bool SubmitRequestHook(SubmitRequest orig, object self, HttpWebRequest request, bool forcedsubmit);
-
+		private static Hook httpSendAsyncHook;
 		/// <summary>
 		/// Attempt to hook the .NET internal methods to log when requests are sent to web addresses.
 		/// Use the right internal methods to capture redirects
 		/// </summary>
 		private static void HookWebRequests() {
 			try {
-				// TODO re-implement for Core?
+				// .NET 6
+				var sendAsyncCoreMethodInfo = typeof(HttpClient).Assembly
+					.GetType("System.Net.Http.HttpConnectionPoolManager")
+					?.GetMethod("SendAsyncCore", BindingFlags.Public | BindingFlags.Instance);
+
+				if (sendAsyncCoreMethodInfo != null) {
+					httpSendAsyncHook = new Hook(sendAsyncCoreMethodInfo, new hook_SendAsyncCore((orig, self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken) => {
+						Logging.tML.Debug($"Web Request: {request.RequestUri}");
+						return orig(self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken);
+					}));
+					return;
+				}
 			}
 			catch {
-				Logging.tML.Warn("HttpWebRequest send/submit method not found");
 			}
+
+			Logging.tML.Warn("HttpWebRequest send/submit method not found");
 		}
 	}
 }
