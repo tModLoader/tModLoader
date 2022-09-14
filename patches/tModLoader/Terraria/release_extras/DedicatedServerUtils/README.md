@@ -1,6 +1,9 @@
 # Dedicated Server Utils
 This directory contains utilities for managing a dedicated ***Linux*** server. There is the `manage-tModLoaderServer.sh` script for direct management of an installation or a Docker container for automatic management.
 
+## Using Docker or the Script
+Docker is a service used to containerize, or isolate, a specific application from a host system. This is beneficial for both security and ease of use with more complicated services. This will allow you to use tModLoader without affecting the host system. If you would prefer more control over your server or would prefer not to use Docker, then make use of `manage-tModLoaderServer.sh`.
+
 ## Using The Script
 The `manage-tModLoaderServer.sh` script can be used to install tML either directly from the Github release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
 
@@ -43,8 +46,6 @@ When using `manage-tModLoaderServer.sh`, tModLoader updates can be performed wit
 When using the Docker container, simply rebuild the container using `docker-compose build` to update tModLoader. Mods will be updated as well.
 
 ## Using The Docker Container
-Docker is a service used to containerize, or isolate, a specific application from a host system. This is beneficial for both security and ease of use for more complicated services.
-
 Before building and running the container, you first need to prepare a directory to pass to the container. This directory will link to `~/.local/share/Terraria` inside of the container. Within the directory, place your `enabled.json`, [install.txt](#via-modpack), [serverconfig.txt](#automatically-selecting-a-world), and any `.tmod` files. To manually add worlds, place them in `tModLoader/Worlds` inside of your directory (you may have to create the directory yourself).
 
 To install and run the container:
