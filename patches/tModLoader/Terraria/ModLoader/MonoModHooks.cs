@@ -39,6 +39,9 @@ namespace Terraria.ModLoader
 		private static Dictionary<Assembly, DetourList> assemblyDetours = new();
 		private static DetourList GetDetourList(Assembly asm) => assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
 
+		[Obsolete("No longer required. NativeDetour is gone. Detour should not be used. Hook is safe to use", true)]
+		public static void RequestNativeAccess() { }
+
 		private static bool isInitialized;
 		internal static void Initialize() {
 			if (isInitialized)
@@ -47,8 +50,17 @@ namespace Terraria.ModLoader
 			DetourManager.DetourApplied += (info) => {
 				var owner = info.Entry.DeclaringType.Assembly;
 				GetDetourList(owner).detours.Add(info);
-				Logging.tML.Debug($"Detour {StringRep(info.Method.Method)} added by {owner.GetName().Name}");
+				var msg = $"Hook {StringRep(info.Method.Method)} added by {owner.GetName().Name}";
+
+				var targetSig = MethodSignature.ForMethod(info.Method.Method);
+				var detourSig = MethodSignature.ForMethod(info.Entry, ignoreThis: true);
+				if (detourSig.ParameterCount != targetSig.ParameterCount + 1 || detourSig.FirstParameter.GetMethod("Invoke") is null) {
+					msg += " WARNING! No orig delegate, incompatible with other hooks to this method";
+				}
+
+				Logging.tML.Debug(msg);
 			};
+
 			DetourManager.ILHookApplied += (info) => {
 				var owner = info.ManipulatorMethod.DeclaringType.Assembly;
 				GetDetourList(owner).ilHooks.Add(info);
