@@ -40,27 +40,12 @@
      <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
      <Reference Include="MP3Sharp" />
      <Reference Include="Newtonsoft.Json" />
-@@ -34,8 +_,27 @@
+@@ -34,8 +_,12 @@
      <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="log4net" />
 +    <Reference Include="TerrariaHooks" />
-+		<Reference Include="MonoMod.Backports">
-+			<HintPath>C:\Games\Terraria\MonoMod\artifacts\bin\MonoMod.RuntimeDetour.New\Debug\net6.0\MonoMod.Backports.dll</HintPath>
-+		</Reference>
-+		<Reference Include="MonoMod.Core">
-+			<HintPath>C:\Games\Terraria\MonoMod\artifacts\bin\MonoMod.RuntimeDetour.New\Debug\net6.0\MonoMod.Core.dll</HintPath>
-+		</Reference>
-+		<Reference Include="MonoMod.RuntimeDetour">
-+			<HintPath>C:\Games\Terraria\MonoMod\artifacts\bin\MonoMod.RuntimeDetour.New\Debug\net6.0\MonoMod.RuntimeDetour.dll</HintPath>
-+		</Reference>
-+		<Reference Include="MonoMod.Utils">
-+			<HintPath>C:\Games\Terraria\MonoMod\artifacts\bin\MonoMod.RuntimeDetour.New\Debug\net6.0\MonoMod.Utils.dll</HintPath>
-+		</Reference>
-+		<Reference Include="MonoMod.ILHelpers">
-+			<HintPath>C:\Games\Terraria\MonoMod\artifacts\bin\MonoMod.RuntimeDetour.New\Debug\net6.0\MonoMod.ILHelpers.dll</HintPath>
-+		</Reference>
 +    <ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
    </ItemGroup>
    <ItemGroup>
@@ -68,7 +53,7 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -46,18 +_,31 @@
+@@ -46,18 +_,30 @@
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -81,8 +66,7 @@
    </ItemGroup>
    <ItemGroup>
 +    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+    <!--<PackageReference Include="MonoModReorg.RuntimeDetour" Version="22.8.29-prerelease" />-->
-+    <PackageReference Include="Mono.Cecil" Version="0.11.4.0" />
++    <PackageReference Include="MonoModReorg.RuntimeDetour" Version="22.9.14-prerelease" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
