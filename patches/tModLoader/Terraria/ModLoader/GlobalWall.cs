@@ -24,5 +24,17 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void KillWall(int i, int j, int type, ref bool fail) {
 		}
+
+		/// <summary>
+		/// Called for every wall that updates due to being placed or being next to a wall that is changed. Return false to stop the game from carrying out its default WallFrame operations. Returns true by default.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type"></param>
+		/// <param name="resetFrame"></param>
+		/// <returns></returns>
+		public virtual bool WallFrame(int i, int j, int type, ref bool resetFrame) {
+			return true;
+		}
 	}
 }

@@ -17,3 +17,13 @@
  				Main.tile[i, j].wall = 0;
  
  			WorldGen.UpdateMapTile(i, j);
+@@ -321,6 +_,9 @@
+ 				tile.wallColor(0);
+ 				return;
+ 			}
++
++			if (!WallLoader.WallFrame(i, j, tile.wall, ref resetFrame))
++				return;
+ 
+ 			int num = 0;
+ 			if (j - 1 >= 0) {
