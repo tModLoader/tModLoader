@@ -144,11 +144,10 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			currentMenu = MenutML; // Prevent asset disposed exceptions by disallowing modded menus during the unload process.
-
 			loading = true;
+			// Prevent asset disposed exceptions by disallowing modded menus during the unload process.
 			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
-				switchToMenu = MenutML;
+				currentMenu = MenutML;
 			}
 
 			lock (menus) {
