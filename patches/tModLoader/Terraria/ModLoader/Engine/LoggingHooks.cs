@@ -78,7 +78,9 @@ namespace Terraria.ModLoader.Engine
 
 				if (sendAsyncCoreMethodInfo != null) {
 					_ = new Hook(sendAsyncCoreMethodInfo, new hook_SendAsyncCore((orig, self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken) => {
+						if (IncludeURIInRequestLogging(request.RequestUri))
 							Logging.tML.Debug($"Web Request: {request.RequestUri}");
+
 						return orig(self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken);
 					}));
 					return;
@@ -88,6 +90,13 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			Logging.tML.Warn("HttpWebRequest send/submit method not found");
+		}
+
+		private static bool IncludeURIInRequestLogging(Uri uri) {
+			if (uri.IsLoopback && uri.LocalPath.Contains("game_")) // SteelSeries SDK
+				return false;
+
+			return true;
 		}
 	}
 }
