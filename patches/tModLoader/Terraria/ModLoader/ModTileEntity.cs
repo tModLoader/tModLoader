@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 		/// Returns a new ModTileEntity with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this.
 		/// </summary>
 		public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity) {
-			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());
+			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType(), true)!;
 			newEntity.Mod = tileEntity.Mod;
 			newEntity.Type = tileEntity.Type;
 			return newEntity;
