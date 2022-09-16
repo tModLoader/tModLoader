@@ -572,6 +572,8 @@ namespace Terraria.ModLoader
 			if (ItemSlot.singleSlotArray[0] != null) {
 				ItemSlot.singleSlotArray[0] = new Item();
 			}
+
+			WorldGen.ClearGenerationPasses(); // Clean up modded generation passes
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {
