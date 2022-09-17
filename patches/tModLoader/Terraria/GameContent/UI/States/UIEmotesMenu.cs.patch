@@ -8,16 +8,27 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -86,6 +_,12 @@
+@@ -22,6 +_,8 @@
+ 		private UIScrollbar _scrollBar;
+ 		private bool _isScrollbarAttached;
+ 
++		private int _totalGroups = 7; // Added by TML to support gamepad
++
+ 		public override void OnActivate() {
+ 			InitializePage();
+ 			if (Main.gameMenu) {
+@@ -86,6 +_,14 @@
  			TryAddingList(Language.GetText("UI.EmoteCategoryTownNPCs"), ref currentGroupIndex, 9, GetEmotesTownNPCs());
  			TryAddingList(Language.GetText("UI.EmoteCategoryCritters"), ref currentGroupIndex, 7, GetEmotesCritters());
  			TryAddingList(Language.GetText("UI.EmoteCategoryBosses"), ref currentGroupIndex, 8, GetEmotesBosses());
 +
 +			var modEmotes = EmoteBubbleLoader.GetAllUnlockedModEmotes();
 +			foreach ((Mod mod, List<int> emotes) in modEmotes) {
-+				int maxEmotesPerRow = emotes.Count > 11 ? 11 : emotes.Count;
-+				TryAddingList(new LocalizedText(mod.Name, mod.DisplayName), ref currentGroupIndex, maxEmotesPerRow, emotes);
++				// The maxEmotesPerRow parameter is actually useless
++				TryAddingList(new LocalizedText(mod.Name, mod.DisplayName), ref currentGroupIndex, -1, emotes);
 +			}
++
++			_totalGroups = currentGroupIndex;
  		}
  
  		private void TryAddingList(LocalizedText title, ref int currentGroupIndex, int maxEmotesPerRow, List<int> emoteIds) {
@@ -156,3 +167,12 @@
  			return list;
  		}
  
+@@ -383,7 +_,7 @@
+ 		}
+ 
+ 		private void SetupGamepadPoints2(SpriteBatch spriteBatch) {
+-			int num = 7;
++			int num = _totalGroups;
+ 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+ 			int num2;
+ 			int iD = num2 = 3001;
