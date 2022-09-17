@@ -8,6 +8,10 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	{
 		private static Asset<Texture2D> _shaderTexture;
 
+		public override void Unload() {
+			_shaderTexture = null;
+		}
+
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
 			_shaderTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.Jofairden_Legs_Legs_Shader");
 

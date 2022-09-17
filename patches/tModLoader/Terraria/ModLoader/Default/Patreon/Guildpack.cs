@@ -21,6 +21,10 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		private static Asset<Texture2D>? textureAsset;
 
+		public override void Unload() {
+			textureAsset = null;
+		}
+
 		public override Position GetDefaultPosition()
 			=> new BeforeParent(PlayerDrawLayers.JimsCloak); // Preferably before everything
 
@@ -51,6 +55,10 @@ namespace Terraria.ModLoader.Default.Patreon
 	internal class GuildpackEyeGlowDrawLayer : PlayerDrawLayer
 	{
 		private static Asset<Texture2D>? textureAsset;
+
+		public override void Unload() {
+			textureAsset = null;
+		}
 
 		public override Position GetDefaultPosition()
 			=> new AfterParent(PlayerDrawLayers.Head);

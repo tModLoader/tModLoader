@@ -8,6 +8,10 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	{
 		private static Asset<Texture2D> _glowTexture;
 
+		public override void Unload() {
+			_glowTexture = null;
+		}
+
 		public override DrawDataInfo GetData(PlayerDrawSet info) {
 			_glowTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.Jofairden_Body_Body_Glow");
 

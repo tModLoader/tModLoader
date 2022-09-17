@@ -8,6 +8,10 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	{
 		private static Asset<Texture2D> _glowTexture;
 
+		public override void Unload() {
+			_glowTexture = null;
+		}
+
 		public override bool IsHeadLayer => true;
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)

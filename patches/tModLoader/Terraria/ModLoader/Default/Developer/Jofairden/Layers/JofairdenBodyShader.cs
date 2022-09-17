@@ -8,6 +8,10 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 	{
 		private static Asset<Texture2D> _shaderTexture;
 
+		public override void Unload() {
+			_shaderTexture = null;
+		}
+
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
 			=> drawInfo.drawPlayer.body == ModContent.GetInstance<Jofairden_Body>().Item.bodySlot && base.GetDefaultVisibility(drawInfo);
 
