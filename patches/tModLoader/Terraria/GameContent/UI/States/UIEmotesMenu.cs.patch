@@ -21,11 +21,13 @@
  		}
  
  		private void TryAddingList(LocalizedText title, ref int currentGroupIndex, int maxEmotesPerRow, List<int> emoteIds) {
-@@ -94,7 +_,7 @@
+@@ -93,8 +_,8 @@
+ 				_list.Add(new EmotesGroupListItem(title, currentGroupIndex++, maxEmotesPerRow, emoteIds.ToArray()));
  		}
  
- 		private List<int> GetEmotesGeneral() {
+-		private List<int> GetEmotesGeneral() {
 -			return new List<int> {
++		public static List<int> GetEmotesGeneral() {
 +			var list = new List<int> {
  				0,
  				1,
@@ -42,8 +44,9 @@
 +			return list;
  		}
  
- 		private List<int> GetEmotesRPS() {
+-		private List<int> GetEmotesRPS() {
 -			return new List<int> {
++		public static List<int> GetEmotesRPS() {
 +			var list = new List<int> {
  				36,
  				37,
@@ -60,8 +63,9 @@
 +			return list;
  		}
  
- 		private List<int> GetEmotesItems() {
+-		private List<int> GetEmotesItems() {
 -			return new List<int> {
++		public static List<int> GetEmotesItems() {
 +			var list = new List<int> {
  				7,
  				73,
@@ -78,8 +82,9 @@
 +			return list;
  		}
  
- 		private List<int> GetEmotesBiomesAndEvents() {
+-		private List<int> GetEmotesBiomesAndEvents() {
 -			return new List<int> {
++		public static List<int> GetEmotesBiomesAndEvents() {
 +			var list = new List<int> {
  				22,
  				23,
@@ -96,13 +101,14 @@
 +			return list;
  		}
  
- 		private List<int> GetEmotesTownNPCs() {
+-		private List<int> GetEmotesTownNPCs() {
 -			return new List<int> {
++		public static List<int> GetEmotesTownNPCs() {
 +			var list = new List<int> {
  				101,
  				102,
  				103,
-@@ -227,6 +_,12 @@
+@@ -227,9 +_,15 @@
  				142,
  				145
  			};
@@ -114,8 +120,12 @@
 +			return list;
  		}
  
- 		private List<int> GetEmotesCritters() {
-@@ -258,7 +_,11 @@
+-		private List<int> GetEmotesCritters() {
++		public static List<int> GetEmotesCritters() {
+ 			List<int> list = new List<int>();
+ 			list.AddRange(new int[5] {
+ 				12,
+@@ -258,11 +_,15 @@
  
  			if (NPC.downedMartians)
  				list.Add(71);
@@ -128,6 +138,11 @@
  			return list;
  		}
  
+-		private List<int> GetEmotesBosses() {
++		public static List<int> GetEmotesBosses() {
+ 			List<int> list = new List<int>();
+ 			if (NPC.downedBoss1)
+ 				list.Add(39);
 @@ -340,7 +_,12 @@
  
  			if (DD2Event.DownedInvasionAnyDifficulty)
