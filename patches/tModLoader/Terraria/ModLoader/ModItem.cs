@@ -37,7 +37,7 @@ namespace Terraria.ModLoader
 		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
-		/// The translations for the display name of this tooltip.
+		/// The translations for the tooltip of this item.
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
