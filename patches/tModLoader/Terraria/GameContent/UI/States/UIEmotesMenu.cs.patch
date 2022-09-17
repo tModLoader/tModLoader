@@ -32,103 +32,73 @@
  		}
  
  		private void TryAddingList(LocalizedText title, ref int currentGroupIndex, int maxEmotesPerRow, List<int> emoteIds) {
-@@ -93,8 +_,8 @@
+@@ -93,7 +_,7 @@
  				_list.Add(new EmotesGroupListItem(title, currentGroupIndex++, maxEmotesPerRow, emoteIds.ToArray()));
  		}
  
 -		private List<int> GetEmotesGeneral() {
--			return new List<int> {
 +		public static List<int> GetEmotesGeneral() {
-+			var list = new List<int> {
+ 			return new List<int> {
  				0,
  				1,
- 				2,
-@@ -125,10 +_,16 @@
+@@ -124,10 +_,10 @@
+ 				146,
  				147,
  				148
- 			};
-+
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.General, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
-+
-+			return list;
+-			};
++			}.AddEmotesToCategory(EmoteID.Category.General);
  		}
  
 -		private List<int> GetEmotesRPS() {
--			return new List<int> {
 +		public static List<int> GetEmotesRPS() {
-+			var list = new List<int> {
+ 			return new List<int> {
  				36,
  				37,
- 				38,
-@@ -136,10 +_,16 @@
+@@ -135,10 +_,10 @@
+ 				33,
  				34,
  				35
- 			};
-+
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.Rps, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
-+
-+			return list;
+-			};
++			}.AddEmotesToCategory(EmoteID.Category.Rps);
  		}
  
 -		private List<int> GetEmotesItems() {
--			return new List<int> {
 +		public static List<int> GetEmotesItems() {
-+			var list = new List<int> {
+ 			return new List<int> {
  				7,
  				73,
- 				74,
-@@ -164,10 +_,16 @@
+@@ -163,10 +_,10 @@
+ 				128,
  				129,
  				149
- 			};
-+
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.Items, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
-+
-+			return list;
+-			};
++			}.AddEmotesToCategory(EmoteID.Category.Items);
  		}
  
 -		private List<int> GetEmotesBiomesAndEvents() {
--			return new List<int> {
 +		public static List<int> GetEmotesBiomesAndEvents() {
-+			var list = new List<int> {
+ 			return new List<int> {
  				22,
  				23,
- 				24,
-@@ -192,10 +_,16 @@
+@@ -191,10 +_,10 @@
+ 				96,
  				97,
  				98
- 			};
-+
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.NatureAndWeather, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
-+
-+			return list;
+-			};
++			}.AddEmotesToCategory(EmoteID.Category.NatureAndWeather);
  		}
  
 -		private List<int> GetEmotesTownNPCs() {
--			return new List<int> {
 +		public static List<int> GetEmotesTownNPCs() {
-+			var list = new List<int> {
+ 			return new List<int> {
  				101,
  				102,
- 				103,
-@@ -227,9 +_,15 @@
+@@ -226,10 +_,10 @@
+ 				141,
  				142,
  				145
- 			};
-+
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.Town, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
-+
-+			return list;
+-			};
++			}.AddEmotesToCategory(EmoteID.Category.Town);
  		}
  
 -		private List<int> GetEmotesCritters() {
@@ -136,15 +106,13 @@
  			List<int> list = new List<int>();
  			list.AddRange(new int[5] {
  				12,
-@@ -258,11 +_,15 @@
+@@ -258,11 +_,13 @@
  
  			if (NPC.downedMartians)
  				list.Add(71);
 -
 +				
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.CrittersAndMonsters, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
++			list.AddEmotesToCategory(EmoteID.Category.CrittersAndMonsters);
 +			
  			return list;
  		}
@@ -154,15 +122,13 @@
  			List<int> list = new List<int>();
  			if (NPC.downedBoss1)
  				list.Add(39);
-@@ -340,7 +_,12 @@
+@@ -340,7 +_,9 @@
  
  			if (DD2Event.DownedInvasionAnyDifficulty)
  				list.Add(133);
+-
 +				
- 
-+			if (EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(EmoteID.Category.Dangers, out var modEmotes)) {
-+				list.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
-+			}
++			list.AddEmotesToCategory(EmoteID.Category.Dangers);
 +			
  			return list;
  		}

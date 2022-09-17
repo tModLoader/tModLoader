@@ -52,6 +52,14 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		internal static List<int> AddEmotesToCategory(this List<int> emotesList, int categoryId) {
+			if (categoryEmoteLookup.TryGetValue(categoryId, out var modEmotes)) {
+				emotesList.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
+			}
+
+			return emotesList;
+		}
+
 		/// <summary>
 		/// Gets the <see cref="ModEmoteBubble"/> instance corresponding to the specified ID.
 		/// </summary>
