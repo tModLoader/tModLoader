@@ -147,7 +147,9 @@ namespace Terraria.ModLoader
 			loading = true;
 			// Prevent asset disposed exceptions by disallowing modded menus during the unload process.
 			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
+				currentMenu.OnDeselected();
 				currentMenu = MenutML;
+				currentMenu.OnSelected();
 			}
 
 			lock (menus) {
