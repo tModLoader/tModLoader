@@ -30,7 +30,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		/// <param name="type"></param>
+		/// <param name="type">Type of the wall being framed</param>
 		/// <param name="resetFrame"></param>
 		/// <returns></returns>
 		public virtual bool WallFrame(int i, int j, int type, ref bool resetFrame) {
