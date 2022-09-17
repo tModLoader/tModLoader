@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.EmoteBubbles
@@ -21,7 +22,7 @@ namespace ExampleMod.Content.EmoteBubbles
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, Vector2 origin, SpriteEffects spriteEffects) {
 			// Extra_48 is the texture of all vanilla emotes.
-			Texture2D bubbleTexture = TextureAssets.Extra[48].Value;
+			Texture2D bubbleTexture = TextureAssets.Extra[ExtrasID.EmoteBubble].Value;
 			// This is the frame rectangle for the bubble in emotes texture.
 			Rectangle bubbleFrame = bubbleTexture.Frame(8, 39, (!EmoteBubble.IsDisplayingEmote) ? 1 : 0);
 

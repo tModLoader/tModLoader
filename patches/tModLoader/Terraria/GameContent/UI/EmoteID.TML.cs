@@ -2,6 +2,9 @@
 {
 	public partial class EmoteID
 	{
+		/// <summary>
+		/// This class is added by TML for easily adding mod emotes to a specific category.
+		/// </summary>
 		public class Category
 		{
 			/// <summary>
@@ -35,7 +38,7 @@
 			public const int CrittersAndMonsters = 5;
 
 			/// <summary>
-			/// <b>Dangers</b> Emotes
+			/// <b>Dangers</b> Emotes (For bosses)
 			/// </summary>
 			public const int Dangers = 6;
 		}

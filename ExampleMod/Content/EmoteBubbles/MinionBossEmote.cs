@@ -17,6 +17,7 @@ namespace ExampleMod.Content.EmoteBubbles
 		}
 
 		public override bool IsUnlocked() {
+			// This emote only shows when minion boss is downed, just as vanilla do.
 			return DownedBossSystem.downedMinionBoss;
 		}
 	}
