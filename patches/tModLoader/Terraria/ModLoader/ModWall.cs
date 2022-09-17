@@ -105,7 +105,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		/// <param name="resetFrame"></param>
+		/// <param name="resetFrame">Whether this wall should try to change it's display frame</param>
 		public virtual bool WallFrame(int i, int j, ref bool resetFrame) {
 			return true;
 		}
