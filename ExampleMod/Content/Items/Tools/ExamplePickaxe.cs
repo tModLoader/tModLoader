@@ -42,12 +42,10 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void UseAnimation(Player player) {
 			// Randomly causes the player to use Example Pickaxe Emote when using the item
-			if (Main.rand.NextBool(12)) {
+			if (Main.rand.NextBool(20)) {
 				// Note that we don't have to sync the emote because UseAnimation runs on all clients and server
 				EmoteBubble.MakePlayerEmote(player, ModContent.EmoteBubbleType<ExamplePickaxeEmote>(), false);
 			}
-
-			base.UseAnimation(player);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

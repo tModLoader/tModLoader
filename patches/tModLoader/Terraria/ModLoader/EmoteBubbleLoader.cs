@@ -2,22 +2,19 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Terraria.Chat.Commands;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.ModLoader.Core;
-using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader
 {
 	public static class EmoteBubbleLoader
 	{
 		public static int EmoteBubbleCount => emoteBubbles.Count + EmoteID.Count;
-		internal static readonly List<ModEmoteBubble> emoteBubbles = new List<ModEmoteBubble>();
+		internal static readonly List<ModEmoteBubble> emoteBubbles = new();
 		internal static readonly List<GlobalEmoteBubble> globalEmoteBubbles = new();
+		internal static readonly Dictionary<int, List<ModEmoteBubble>> categoryEmoteLookup = new();
 
 		internal static int Add(ModEmoteBubble emoteBubble) {
 			if (ModNet.AllowVanillaClients)
@@ -29,6 +26,8 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			emoteBubbles.Clear();
+			globalEmoteBubbles.Clear();
+			categoryEmoteLookup.Clear();
 		}
 		
 		internal static void ResizeArrays() {

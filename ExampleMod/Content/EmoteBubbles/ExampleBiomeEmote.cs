@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 
@@ -12,7 +13,11 @@ namespace ExampleMod.Content.EmoteBubbles
 	// Check Common/GlobalNPC/EmotePickerGlobalNPC.cs for adding this emote for all NPCs.
 	public class ExampleBiomeEmote : ModEmoteBubble
 	{
-		public override void SetStaticDefaults() => EmoteName.SetDefault("exbiome");
+		public override void SetStaticDefaults() {
+			EmoteName.SetDefault("exbiome");
+			// Add the emote to "biomes" category
+			AddToCategory(EmoteID.Category.NatureAndWeather);
+		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle frame, Vector2 origin, SpriteEffects spriteEffects) {
 			// Extra_48 is the texture of all vanilla emotes.
@@ -23,9 +28,11 @@ namespace ExampleMod.Content.EmoteBubbles
 			// Draw the bubble background.
 			spriteBatch.Draw(bubbleTexture, position, bubbleFrame, Color.White, 0f, origin, 1f, spriteEffects, 0f);
 
-			// If the emote bubble is coming out, don't draw the emote content.
-			if (EmoteBubble.IsDisplayingEmote)
+			// If the emote bubble is coming out (bubble pop-up animation is being displayed),
+			// don't draw the emote content.
+			if (EmoteBubble.IsDisplayingEmote) {
 				return false;
+			}
 
 			// Draw the emote.
 			spriteBatch.Draw(texture, position, frame, Color.White, 0f, origin, 1f, spriteEffects, 0f);
@@ -37,8 +44,9 @@ namespace ExampleMod.Content.EmoteBubbles
 		public override bool PreDrawInEmoteMenu(SpriteBatch spriteBatch, EmoteButton uiEmoteButton, Vector2 position, Rectangle frame, Vector2 origin) {
 			// This color is used for border that becomes yellow (or blue) when you hover your cursor over it.
 			Color borderColor = Color.Black;
-			if (uiEmoteButton.Hovered)
+			if (uiEmoteButton.Hovered) {
 				borderColor = Main.OurFavoriteColor;
+			}
 			// This is the frame rectangle for the bubble in emotes texture.
 			Rectangle bubbleFrame = uiEmoteButton.BubbleTexture.Frame(8, 39, 1, 0);
 

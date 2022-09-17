@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria.GameContent.UI;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.EmoteBubbles
 {
@@ -6,6 +7,9 @@ namespace ExampleMod.Content.EmoteBubbles
 	// See Content/Items/Tools/ExamplePickaxe.cs for letting the player use this emote
 	public class ExamplePickaxeEmote : ModEmoteBubble
 	{
-		public override void SetStaticDefaults() => EmoteName.SetDefault("expickaxe");
+		public override void SetStaticDefaults() {
+			EmoteName.SetDefault("expickaxe");
+			AddToCategory(EmoteID.Category.Items);
+		}
 	}
 }

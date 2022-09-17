@@ -52,6 +52,19 @@ namespace Terraria.ModLoader
 		protected override EmoteBubble CreateTemplateEntity() => new(Type, new WorldUIAnchor()) { ModEmoteBubble = this };
 
 		/// <summary>
+		/// Allows you to add this emote to a specific vanilla category.
+		/// <br><b>This should only be called in <see cref="ModType.SetStaticDefaults"/></b></br>
+		/// </summary>
+		/// <param name="categoryId">The category to which this emote will be added. Use <see cref="EmoteID.Category"/> to select the category you want.</param>
+		public void AddToCategory(int categoryId) {
+			if (!EmoteBubbleLoader.categoryEmoteLookup.TryGetValue(categoryId, out var list)) {
+				EmoteBubbleLoader.categoryEmoteLookup.Add(categoryId, new() { this });
+				return;
+			}
+			list.Add(this);
+		}
+
+		/// <summary>
 		/// Allows you to determine whether or not this emote can be seen in emotes menu. Returns true by default.
 		/// <br/>Do note that this doesn't effect emote command and NPC using.
 		/// </summary>

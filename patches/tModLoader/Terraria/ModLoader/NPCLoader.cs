@@ -1261,15 +1261,15 @@ namespace Terraria.ModLoader
 		
 		private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int>>(g => g.PickEmote);
 
-		public static int PickEmote(NPC npc, Player closetPlayer, List<int> emoteList, WorldUIAnchor anchor) {
+		public static int PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
 			int result = -1;
 
 			if (npc.ModNPC != null) {
-				result = npc.ModNPC.PickEmote(closetPlayer, emoteList, anchor);
+				result = npc.ModNPC.PickEmote(closestPlayer, emoteList, anchor);
 			}
 
 			foreach (GlobalNPC globalNPC in HookPickEmote.Enumerate(npc.globalNPCs)) {
-				int emote = globalNPC.PickEmote(npc, closetPlayer, emoteList, anchor);
+				int emote = globalNPC.PickEmote(npc, closestPlayer, emoteList, anchor);
 				if (emote != -1)
 					result = emote;
 			}
