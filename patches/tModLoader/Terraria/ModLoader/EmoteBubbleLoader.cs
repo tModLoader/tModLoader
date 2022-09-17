@@ -52,6 +52,7 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		// Uses extension method so that patches are minimal.
 		internal static List<int> AddEmotesToCategory(this List<int> emotesList, int categoryId) {
 			if (categoryEmoteLookup.TryGetValue(categoryId, out var modEmotes)) {
 				emotesList.AddRange(from e in modEmotes where e.IsUnlocked() select e.Type);
