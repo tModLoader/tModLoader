@@ -100,7 +100,7 @@
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -138,24 +_,68 @@
+@@ -138,24 +_,79 @@
  			}
  		}
  
@@ -125,7 +125,7 @@
 +				TerrariaSteamClient.Run();
 +				Environment.Exit(1);
 +			}
-+			
++
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +
 +			try {
@@ -144,6 +144,17 @@
 +			}
 +			catch (Exception e) {
 +				ErrorReporting.FatalExit("Failed to handle save data", e);
++			}
++
++			if (!CoremodCommunications.Initialized)
++				Logging.Terraria.Info("Game not launched with coremodding enabled. No coremods will be loaded.");
++			else {
++				bool coremodsAllowed = CoremodCommunications.CoremodsEnabled();
++
++				if (coremodsAllowed)
++					Logging.Terraria.Info("Game launched with coremodding enabled. Coremods will be loaded as normal.");
++				else
++					Logging.Terraria.Warn("It was detected that a fatal error occurred due to coremodding last launch. Coremods will not be loaded.");
 +			}
 +
 +			AttemptSupportHighDPI(isServer);

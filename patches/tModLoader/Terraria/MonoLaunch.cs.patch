@@ -1,17 +1,18 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,10 @@
+@@ -6,7 +_,11 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
 +using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
  
  internal static class MonoLaunch
  {
-@@ -14,6 +_,12 @@
+@@ -14,6 +_,38 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
@@ -20,6 +21,32 @@
 +			return;
 +		}
 +
++		// If -build or -install or passed, coremods should not be loaded, as tModLoader is performing unrelated tasks.
++		if (args.Contains("-build") || args.Contains("-install")) {
++			InnerMain(args, AssemblyLoadContext.Default);
++			return;
++		}
++
++		// This parameter (-skip-coremods) should be used by users that want to explicitly disable the loading of coremods.
++		// Mods that use coremods will likely consider a lack of coremods undefined behavior, so this is something that should only be used for diagnostics.
++		if (args.Contains(CoremodLauncher.SkipCoremods)) {
++			CoremodCommunications.InitializeDisabled();
++			InnerMain(args, CoremodCommunications.GetLoadContext());
++			return;
++		}
++
++		// This is parameter (-coremods-applied) is passed by the CoremodLauncher when launching the game from the child ALC.
++		// This indicates that coremod loading is being handled and communications should be handled.
++		if (args.Contains(CoremodLauncher.AppliedCoremods))
++			InnerMain(args, CoremodCommunications.GetLoadContext());
++		else {
++			// If coremods haven't been applied, apply them.
++			CoremodCommunications.InitializeEnabled();
++			CoremodLauncher.LaunchWithCoremods(args);
++		}
++	}
++
++	private static void InnerMain(string[] args, AssemblyLoadContext alc) {
 +		Thread.CurrentThread.Name = "Entry Thread";
  		/*
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
@@ -28,12 +55,13 @@
  		*/
  
  #if NETCORE
+-		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
 +		NativeLibraries.SetNativeLibraryPath(NativesDir);
- 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
++		alc.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
-+		
++
 +		// Spawn a thread to use configured default stack size instead of the one reported in the binary
 +		// https://social.msdn.microsoft.com/Forums/office/en-US/7132b30d-9792-4bf3-87ec-7198052e4ed3/main-thread-stack-size?forum=csharpgeneral
 +		// post processing the binary with `editbin /stack:400000 tModLoader.dll` should do it for the main thread but it's annoying
@@ -82,7 +110,7 @@
 -				Console.WriteLine("\tsuccess");
 -				return assemblies[name] = handle;
 +			*/
-+			
++
 +			if (assemblies.TryGetValue(name, out var handle)) {
 +				return handle;
 +			}
@@ -93,7 +121,7 @@
 +			string match = files.FirstOrDefault();
 +
 +			if (match == null) {
-+				// Must be DllNotFoundException to match what is expected from NativeLibrary.Load (see NativeLibraries.CheckNativeFAudioDependencies for eg) 
++				// Must be DllNotFoundException to match what is expected from NativeLibrary.Load (see NativeLibraries.CheckNativeFAudioDependencies for eg)
 +
 +				return IntPtr.Zero; //throw new DllNotFoundException($"Failed to find Native Library: '{Path.Combine(NativesDir, name)}'.");
 +			}
@@ -110,7 +138,7 @@
 +			}
 +
 +			return handle;
-+			
++
 +			/*
  			}
  			catch (DirectoryNotFoundException e) {
