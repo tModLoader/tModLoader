@@ -394,7 +394,7 @@ if $steamcmd; then
 	fi
 else
 	if ! command -v unzip &> /dev/null; then
-		echo "unzip could not be found on the PATH, please instal unzip"
+		echo "unzip could not be found on the PATH, please install unzip"
 		exit 1
 	else
 		echo "unzip found..."

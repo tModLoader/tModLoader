@@ -1,15 +1,15 @@
 # Dedicated Server Utils
-This directory contains utilities for managing a dedicated ***Linux*** server. There is the `manage-tModLoaderServer.sh` script for direct management of an installation or a Docker container for automatic management.
+This directory contains utilities for managing a dedicated ***Linux*** server.
 
-## Using Docker or the Script
-Docker is a service used to containerize, or isolate, a specific application from a host system. This is beneficial for both security and ease of use with more complicated services. This will allow you to use tModLoader without affecting the host system. If you would prefer more control over your server or would prefer not to use Docker, then make use of `manage-tModLoaderServer.sh`.
+## Docker vs Management Script
+Both the Docker container and the management script can install and update tModLoader and any mods. Docker is a service used to containerize, or isolate, a specific application from a host system. This is beneficial for both security and ease of use with more complicated services. If you would prefer more control over your server, then make use of `manage-tModLoaderServer.sh`.
 
 ## Using The Script
 The `manage-tModLoaderServer.sh` script can be used to install tModLoader either directly from the GitHub release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
 
 ### Installing tModLoader
 #### Via SteamCMD (recommended)
-* Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [here](https://developer.valvesoftware.com/wiki/SteamCMD).
+* Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [Valve's Wiki](https://developer.valvesoftware.com/wiki/SteamCMD).
 * Installation via SteamCMD can be performed using `./manage-tModLoaderServer.sh --install --username your_steam_username`.
 * You will be prompted for your password (and your 2fa code if applicable).
 * By default, tModLoader will be installed to `~/Steam/steamapps/common/tModLoader`. To specify an installation directory, use `--folder /full/path/from/root`
@@ -42,48 +42,24 @@ If you want to run tModLoader without needing any input on startup (such as from
 ## Updating
 If an update for `manage-tModLoaderServer.sh` is available, a message will be printed letting you know one is available. It can be updated using `./manage-tModLoaderServer.sh --update-script`. An outdated script may contain bugs or lack features, so it is usually a good idea to update.
 
-When using `manage-tModLoaderServer.sh`, tModLoader updates can be performed with `./manage-tModLoaderServer.sh --update`. When using a GitHub install, use `--github` and `--folder` if your install is in a non-standard location. Mods will be updated as well.
+When using `manage-tModLoaderServer.sh`, tModLoader updates can be performed with `./manage-tModLoaderServer.sh --update`. When using a GitHub install, use `--github`. Use`--folder` if your install is in a non-standard location. Mods will be updated as well.
 
 When using the Docker container, simply rebuild the container using `docker-compose build` to update tModLoader. Mods will be updated as well.
 
 ## Using The Docker Container
-Before building and running the container, you first need to prepare a directory to pass to the container. This directory will link to `~/.local/share/Terraria` inside of the container. Within the directory, place your `enabled.json`, [install.txt](#obtaining-install.txt), [serverconfig.txt](#automatically-selecting-a-world), and any `.tmod` files. To manually add worlds, place them in `tModLoader/Worlds` inside of your directory (you may have to create the directory yourself).
-
 To install and run the container:
-* Ensure `docker` and `docker-compose` are installed
-* Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Dockerfile) next to the folder you created earlier
+* Ensure `docker` and `docker-compose` are installed. They can be installed from your package manager or [Docker's Documentation](https://docs.docker.com/engine/install/)
+* Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Dockerfile).
+* Next to those docker files, create a folder named `Terraria`, and place `enabled.json`, [install.txt](#obtaining-install.txt), [serverconfig.txt](#automatically-selecting-a-world), your worlds, and any `.tmod` files inside.
 * Edit `docker-compose.yml` with your GID and UID. These can be found by running `id`.
 * Run `docker-compose build`
 * Run `docker-compose up`
 
-The server will be available on port 7777. You can change this by editing `docker-compose.yml`
+The server will be available on port 7777.
 
-To run without any interactivity, use `docker-compose up -d`, and include [serverconfig.txt](#automatically-selecting-a-world) in the base of the directory you created earlier.
+To run without any interactivity, use `docker-compose up -d`, and include [serverconfig.txt](#automatically-selecting-a-world) in the `Terraria` directory.
 
-## Autostarting
-Docker: Add `restart: always` within `services.tml` inside of `docker-compose.yml`, then rebuild with `docker-comopose build`.
+## Autostarting On Boot
+When using `manage-tModLoaderServer.sh`, refer to your distro's documentation. You can likely use a startup script with your init system.
 
-`manage-tModLoaderServer.sh`: This is platform dependent. You can use your system's init system to automatically start the server on launch, although you'll want to provide a [serverconfig.txt](#serverconfig.txt) due to the headless nature of this approach. An example for a common init system, `systemd`, is below. Lines with placeholder that need to be changed are marked with a `💀`.
-
-```
-[Unit]
-Description=tML Server
-After=network-online.target
-Wants=network-online.target systemd-networkd-wait-online.service
-
-StartLimitIntervalSec=500
-StartLimitBurst=5
-
-[Service]
-User=youruser 💀
-Group=yourgroup 💀
-Restart=on-failure
-RestartSec=5s
-
-WorkingDirectory=/home/youruser/tModLoader 💀
-ExecStart=bash -c ./start-tModLoaderServer.sh -nosteam
-
-[Install]
-WantedBy=multi-user.target
-```
-The server can then be started using `systemctl start YourServiceFile`. Autostart can be enabled by running `systemctl enable YourServiceFile`. To find out where to place the service file, refer to your distro's documentation.
+When using the Docker container, add `restart: always` within `services.tml` inside of `docker-compose.yml`, then rebuild with `docker-compose build`.
