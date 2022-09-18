@@ -9,5 +9,5 @@ jobs:
     steps:
       - uses: 'oznu/gh-wiki-edit-discord-notification@main'
         with:
-          discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+          discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_GITHUB }}
           discord-username: GitHub-wiki
