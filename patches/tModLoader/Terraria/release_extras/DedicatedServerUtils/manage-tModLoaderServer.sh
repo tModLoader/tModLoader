@@ -22,9 +22,9 @@ function check_update {
 	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | cut -d '"' -f2)
 
 	if [ "$latest_script_version" = "$script_version" ]; then
-		return 0
-	else
 		return 1
+	else
+		return 0
 	fi
 }
 
@@ -58,11 +58,17 @@ function down_release {
 # Check $username is defined, exit if not
 function check_username {
 	if ! [[ -v username ]]; then
-		echo "Please enter a Steam username to login with using --username"
-		exit 1
-	else
-		return 0
+		read -p "Please enter a Steam username to login with: " username
 	fi
+}
+
+function copy_worlds {
+	for file in *.wld; do
+		[ -f "$file" ] || break
+		twld="$(basename "$file" .wld).twld"
+		echo "Copying $file and $twld"
+		cp $file $twld ~/.local/share/Terraria/tModLoader/Worlds/
+	done
 }
 
 # Installs or updates tML via steamcmd
@@ -118,6 +124,8 @@ function install_tml {
 	else
 		github_install_tml
 	fi
+
+	copy_worlds
 }
 
 function github_update_tml {
@@ -186,17 +194,17 @@ function update_workshop_mods {
 		echo Installing workshop mods
 
 		if [[ -v folder ]]; then
-			steamcmdCommand="+force_install_dir $folder +login anonymous"
+			steamcmd_command="+force_install_dir $folder +login anonymous"
 		else
-			steamcmdCommand="+login anonymous"
+			steamcmd_command="+login anonymous"
 		fi
 
 		lines=$(cat ./install.txt)
 		for line in $lines
 		do
-			steamcmdCommand="$steamcmdCommand +workshop_download_item 1281930 $line"
+			steamcmd_command="$steamcmd_command +workshop_download_item 1281930 $line"
 		done
-		steamcmd "$steamcmdCommand +quit"
+		steamcmd "$steamcmd_command +quit"
 	else
 		echo "No workshop mods to install"
 	fi
@@ -230,14 +238,25 @@ function install_mods {
 
 	# If someone has .tmod files this will install them
 	if [[ -f "*.tmod" ]]; then
-		echo "Copying .tmod files to the Mods directory"
+		echo "Copying .tmod files to the mods directory"
 		cp ./*.tmod $mods_path
 	fi
 
 	# Move enabled.json to the right place
 	if [[ -f "enabled.json" ]]; then
-		echo "Copying enabled.json to the Mods directory"
+		echo "Copying enabled.json to the mods directory"
 		cp enabled.json $mods_path
+	fi
+
+	if [[ -f "serverconfig.txt" ]]; then
+		echo "Copying serverconfig.txt to the install directory"
+		if [[ -v folder ]]; then
+			cp serverconfig.txt $folder
+		elif $steamcmd; then
+			cp serverconfig.txt ~/Steam/steamapps/common/tModLoader
+		else
+			cp serverconfig.txt ~/tModLoader
+		fi
 	fi
 
 	popd
@@ -262,7 +281,7 @@ function print_help {
 Options:
  -h|--help           Show command line help.
  -v|--version        Display the current version of the tool and a tModLoader Github install.
- -i|--install        Install tModLoader and mods.
+ -i|--install        Install tModLoader and mods. Will copy any world files, will not overwrite any existing ones.
  -u|--update         Update an existing tModLoader installation and mods.
  -g|--github         Use the binary off of Github instead of using steamcmd.
  -f|--folder         Choose the folder to update/install to. When using steamcmd, make sure to use an absolute path. Default path is ~/tModLoader when using Github, and ~/Steam/steamapps/common/tModLoader when using steamcmd.
@@ -270,6 +289,7 @@ Options:
  --username          The steam username to login with. Only applies when using steamcmd.
  --tml-version       The version of tML to download. Only applies when using Github. This should be the exact tag off of Github (ex. v2022.06.96.4).
  --update-script     Update the script to the latest version on Github.
+ --worlds            Copy any world files, will not overwrite any existing ones.
  --mods-only         Only install/update mods.
  --no-mods           Don't install/update mods.
  --check-dir         Directory to check for enabled.json, install.txt, and any .tmod files.
@@ -340,6 +360,10 @@ while [[ $# -gt 0 ]]; do
 		--update-script)
 			update_script
 			;;
+		--worlds)
+			copy_worlds
+			shift
+			;;
 		--mods-only)
 			mods_only=true
 			shift
@@ -387,6 +411,17 @@ if $update; then
 	if ! $no_mods; then install_mods; fi
 fi
 
-if check_update; then
-	echo "Script update available! Run ./manage-tModLoaderServer.sh --update-script to get the latest version."
+should_check=$(check_update)
+if $should_check; then
+	read -t 5 -p "Script update available! Update now? (y/n): " update_now
+
+	case $update_now in
+		[Yy]*)
+			echo "Updating now"
+			update_script
+			;;
+		*)
+			echo "Not updating"
+			;;
+	esac
 fi
