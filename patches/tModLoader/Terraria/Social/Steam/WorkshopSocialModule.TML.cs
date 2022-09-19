@@ -54,7 +54,7 @@ namespace Terraria.Social.Steam
 			var existing = CheckIfUploaded(modFile);
 			ulong currPublishID = 0;
 			string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
-			buildData["versionsummary"] = $"{buildData["modloaderversion"]}:{buildData["version"]}";
+			buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"]).MajorMinor()}:{buildData["version"]}";
 			// Needed for backwards compat from previous version metadata
 			buildData["trueversion"] = buildData["version"];
 

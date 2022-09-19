@@ -206,7 +206,7 @@
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -224,25 +_,24 @@
+@@ -224,27 +_,27 @@
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
  					}
@@ -237,11 +237,15 @@
 +					if (!string.IsNullOrEmpty(_entryData.Description))
  						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
  
++					Logging.tML.Info("Adding tags and visibility");
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
-@@ -253,21 +_,68 @@
+ 					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+ 					if (_entryData.PreviewImagePath != null)
+@@ -253,21 +_,73 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
++					Logging.tML.Info("Setting the language for default description");
 +					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
 +
 +					string patchNotes = "";
@@ -250,6 +254,7 @@
 +					_entryData.BuildData["version"] = "0.0.0";
 +
 +					if (_entryData.BuildData != null) {
++						Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 +						foreach (var key in MetadataKeys) {
 +							SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 +							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
@@ -260,6 +265,7 @@
 +						string refs = _entryData.BuildData["workshopdeps"];
 +
 +						if (!string.IsNullOrWhiteSpace(refs)) {
++							Logging.tML.Info("Adding dependencies to Workshop Upload");
 +							string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
 +
 +							foreach (string dependency in dependencies) {
@@ -277,12 +283,14 @@
 +
 +					_updateCallback = EResult.k_EResultNone;
 +
++					Logging.tML.Info("Submitting workshop update handle to Steam");
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
 -					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
 +					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
  					_updateHandle = uGCUpdateHandle_t;
  					_updateItemHook.Set(hAPICall, UpdateItemResult);
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
++					Logging.tML.Info("Handle submitted. Waiting on Steam");
 +
 +
 +					if (!Main.dedServ || creatingItem)

@@ -1026,13 +1026,8 @@
  		}
  
  		public Main() : base(dedServ) {
-@@ -4844,9 +_,13 @@
- 			if (dedServ)
- 				return;
+@@ -4846,7 +_,8 @@
  
-+			if (OperatingSystem.IsWindows()) // FNA sets this to "1" on Windows. Terraria does not want this. See #2020
-+				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
-+
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
@@ -4997,19 +4992,15 @@
  			int num2 = sceneArea.bgTopY;
  			int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
  			int num4 = 0;
-@@ -48584,7 +_,11 @@
- 
- 				moonColor *= num13;
- 				Vector2 position2 = new Vector2(num6, num7 + moonModY) + sceneArea.SceneLocalScreenPositionOffset;
-+				if (Main.gameMenu && menu != null) {
-+					bool needsVanillaFraming = value2 == TextureAssets.Moon[num].Value;
-+					spriteBatch.Draw(value2, position2, new Rectangle(0, needsVanillaFraming ? TextureAssets.Moon[num].Width() * moonPhase : 0, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width), moonColor, num9, new Vector2(needsVanillaFraming ? TextureAssets.Moon[num].Width() / 2 : value2.Width / 2), num8, SpriteEffects.None, 0f);
-+				}
--				if (WorldGen.drunkWorldGen)
-+				else if (WorldGen.drunkWorldGen)
- 					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
- 				else if (pumpkinMoon)
+@@ -48590,6 +_,8 @@
  					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
+ 				else if (snowMoon)
+ 					spriteBatch.Draw(TextureAssets.SnowMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.SnowMoon.Width() * moonPhase, TextureAssets.SnowMoon.Width(), TextureAssets.SnowMoon.Width()), moonColor, num9, new Vector2(TextureAssets.SnowMoon.Width() / 2, TextureAssets.SnowMoon.Width() / 2), num8, SpriteEffects.None, 0f);
++				else if (value2 != TextureAssets.Moon[num].Value) // custom menu.MoonTexture drawn here.
++					spriteBatch.Draw(value2, position2, new Rectangle(0, 0, value2.Width, value2.Width), moonColor, num9, new Vector2(value2.Width / 2), num8, SpriteEffects.None, 0f);
+ 				else
+ 					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
+ 			}
 @@ -48678,7 +_,7 @@
  				Vector2 origin = value.Size() / 2f;
  				if (star.falling) {
