@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.Players;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -83,29 +84,39 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 
 		private static void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Fancy heart panels
-			string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyLifeOverlay_";
+			string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyLifeOverlay_Panel";
+			// The original position refers to the entire panel slice.
+			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the heart),
+			// the position should be modified to compensate for the sprite size difference
+			Vector2 positionOffset;
 
 			if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
 				// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
 				if (context.resourceNumber % 10 == 1) {
 					// First and only panel in this panel's row
-					texture += "Single_Fancy";
+					// Vanilla texture is "Heart_Single_Fancy"
+					positionOffset = new Vector2(8, 8);
 				} else {
 					// Other panels existed in this panel's row
-					texture += "Right_Fancy";
+					// Vanilla texture is "Heart_Right_Fancy"
+					positionOffset = new Vector2(8, 8);
 				}
 			} else if (context.resourceNumber % 10 == 1) {
 				// First panel in this row
-				texture += "Left";
+				// Vanilla texture is "Heart_Left"
+				positionOffset = new Vector2(4, 4);
 			} else if (context.resourceNumber % 10 <= 9) {
 				// Any panel that has a panel to its left AND right
-				texture += "Middle";
+				// Vanilla texture is "Heart_Middle"
+				positionOffset = new Vector2(0, 4);
 			} else {
 				// Final panel in the first row
-				texture += "Right";
+				// Vanilla texture is "Heart_Right"
+				positionOffset = new Vector2(0, 4);
 			}
 
 			context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
+			context.position += positionOffset;
 			context.Draw();
 		}
 
@@ -117,7 +128,11 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 
 		private static void DrawBarsPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Bars middle life panels
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsLifeOverlay_Panel_Middle", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsLifeOverlay_Panel", AssetRequestMode.ImmediateLoad);
+			// The original position refers to the entire panel slice.
+			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the bar filling),
+			// the position should be modified to compensate for the sprite size difference
+			context.position.Y += 6;
 			context.Draw();
 		}
 	}

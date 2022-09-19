@@ -335,12 +335,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void ModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot) {
-			foreach (var system in HookModifyStatSnapshot.arr) {
-				system.ModifyStatSnapshot(player, ref snapshot);
-			}
-		}
-
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {
 			foreach (var system in HookPostDrawInterface.arr) {
 				system.PostDrawInterface(spriteBatch);

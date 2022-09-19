@@ -213,13 +213,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
 
 		/// <summary>
-		/// Allows you to modify the information used to draw the player's health and mana
-		/// </summary>
-		/// <param name="player">The player</param>
-		/// <param name="snapshot">A snapshot of the player's health and mana stats</param>
-		public virtual void ModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot) { }
-
-		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
 		///
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.

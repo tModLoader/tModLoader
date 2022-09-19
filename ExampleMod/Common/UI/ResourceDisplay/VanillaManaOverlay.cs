@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.Players;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -73,26 +74,35 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 
 		private static void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Fancy star panels
-			string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyManaOverlay_";
+			string texture = "ExampleMod/Common/UI/ResourceDisplay/FancyManaOverlay_Panel";
+			// The original position refers to the entire panel slice.
+			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the heart),
+			// the position should be modified to compensate for the sprite size difference
+			Vector2 positionOffset;
 
 			if (context.resourceNumber == context.snapshot.AmountOfManaStars) {
 				//Final panel in the column.  Determine whether it has panels above it
 				if (context.resourceNumber == 1) {
 					// First and only panel
-					texture += "Single";
+					// Vanilla texture is "Star_Single"
+					positionOffset = new Vector2(4, 4);
 				} else {
 					// Other panels existed above this panel
-					texture += "Bottom";
+					// Vanilla texture is "Star_C"
+					positionOffset = new Vector2(4, 0);
 				}
 			} else if (context.resourceNumber == 1) {
 				// First panel in the column
-				texture += "Top";
+				// Vanilla texture is "Star_A"
+				positionOffset = new Vector2(4, 4);
 			} else {
 				// Any panel that has a panel above AND below it
-				texture += "Middle";
+				// Vanilla texture is "Star_B"
+				positionOffset = new Vector2(4, 0);
 			}
 
 			context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
+			context.position += positionOffset;
 			context.Draw();
 		}
 
@@ -104,7 +114,11 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 
 		private static void DrawBarsPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Bars middle life panels
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsManaOverlay_Panel_Middle", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceDisplay/BarsManaOverlay_Panel", AssetRequestMode.ImmediateLoad);
+			// The original position refers to the entire panel slice.
+			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the bar filling),
+			// the position should be modified to compensate for the sprite size difference
+			context.position.Y += 6;
 			context.Draw();
 		}
 	}
