@@ -195,7 +195,7 @@ namespace Terraria
 
 			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
 		}
-		
+
 		private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump) {
 			List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
 			Vector2 anchorPosition = new Vector2(18f, (float)(screenHeight - 26 - 22) - upBump);

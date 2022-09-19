@@ -470,7 +470,7 @@
  			}
  		}
  
-+		/* Disabled, tML only supports HiDef		
++		/* Disabled, tML only supports HiDef
  		public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
  			if (_currentGraphicsProfile != profile || forceSet) {
  				_selectedGraphicsProfile = profile;
