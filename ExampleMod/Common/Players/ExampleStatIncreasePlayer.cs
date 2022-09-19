@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Items.Consumables;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -36,14 +37,8 @@ namespace ExampleMod.Common.Players
 		public override void SendClientChanges(ModPlayer clientPlayer) {
 			ExampleStatIncreasePlayer clone = clientPlayer as ExampleStatIncreasePlayer;
 
-			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals) {
-				ModPacket packet = Mod.GetPacket();
-				packet.Write((byte)ExampleMod.MessageType.ExampleStatIncreasePlayerSync);
-				packet.Write((byte)Player.whoAmI);
-				packet.Write((byte)exampleLifeFruits);
-				packet.Write((byte)exampleManaCrystals);
-				packet.Send(ignoreClient: Player.whoAmI);
-			}
+			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals)
+				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 
 		// NOTE: The tag instance provided here is always empty by default.

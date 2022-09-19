@@ -46,34 +46,34 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 			} else {
 				// None of the above cases applied, but this could be a modded resource that uses vanilla textures.
 				// So, it would be a good idea to check if certain vanilla resources are being drawn and then draw over them like usual
-				string name = context.texture.Name;
+				Asset<Texture2D> asset = context.texture;
 
 				string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
 				string barsFolder = "Images/UI/PlayerResourceSets/HorizontalBars/";
 
-				// NOTE: CompareAssetNames is defined below this method's body
-				if (name == TextureAssets.Heart.Name || name == TextureAssets.Heart2.Name) {
+				// NOTE: CompareAssets is defined below this method's body
+				if (asset == TextureAssets.Heart || asset == TextureAssets.Heart2) {
 					// Draw over the Classic hearts
 					DrawClassicFancyOverlay(context);
-				} else if (CompareAssetNames(name, fancyFolder + "Heart_Fill") || CompareAssetNames(name, fancyFolder + "Heart_Fill_B")) {
+				} else if (CompareAssets(asset, fancyFolder + "Heart_Fill") || CompareAssets(asset, fancyFolder + "Heart_Fill_B")) {
 					// Draw over the Fancy hearts
 					DrawClassicFancyOverlay(context);
-				} else if (CompareAssetNames(name, barsFolder + "HP_Fill") || CompareAssetNames(name, barsFolder + "HP_Fill_Honey")) {
+				} else if (CompareAssets(asset, barsFolder + "HP_Fill") || CompareAssets(asset, barsFolder + "HP_Fill_Honey")) {
 					// Draw over the Bars life bars
 					DrawBarsOverlay(context);
-				} else if (CompareAssetNames(name, fancyFolder + "Heart_Left") || CompareAssetNames(name, fancyFolder + "Heart_Middle") || CompareAssetNames(name, fancyFolder + "Heart_Right") || CompareAssetNames(name, fancyFolder + "Heart_Right_Fancy") || CompareAssetNames(name, fancyFolder + "Heart_Single_Fancy")) {
+				} else if (CompareAssets(asset, fancyFolder + "Heart_Left") || CompareAssets(asset, fancyFolder + "Heart_Middle") || CompareAssets(asset, fancyFolder + "Heart_Right") || CompareAssets(asset, fancyFolder + "Heart_Right_Fancy") || CompareAssets(asset, fancyFolder + "Heart_Single_Fancy")) {
 					// Draw over the Fancy heart panels
 					DrawFancyPanelOverlay(context);
-				} else if (CompareAssetNames(name, barsFolder + "HP_Panel_Middle")) {
+				} else if (CompareAssets(asset, barsFolder + "HP_Panel_Middle")) {
 					// Draw over the Bars middle life panels
 					DrawBarsPanelOverlay(context);
 				}
 			}
 		}
 
-		private static bool CompareAssetNames(string existingName, string compareAssetPath) {
+		private static bool CompareAssets(Asset<Texture2D> existingAsset, string compareAssetPath) {
 			// This is a helper method for checking if a certain vanilla asset was drawn
-			return existingName == Main.Assets.Request<Texture2D>(compareAssetPath).Name;
+			return existingAsset == Main.Assets.Request<Texture2D>(compareAssetPath);
 		}
 
 		private static void DrawClassicFancyOverlay(ResourceOverlayDrawContext context) {

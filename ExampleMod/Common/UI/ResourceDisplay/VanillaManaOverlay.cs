@@ -36,34 +36,34 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 			} else {
 				// None of the above cases applied, but this could be a modded resource that uses vanilla textures.
 				// So, it would be a good idea to check if certain vanilla resources are being drawn and then draw over them like usual
-				string name = context.texture.Name;
+				Asset<Texture2D> asset = context.texture;
 
 				string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
 				string barsFolder = "Images/UI/PlayerResourceSets/HorizontalBars/";
 
-				// NOTE: CompareAssetNames is defined below this method's body
-				if (name == TextureAssets.Mana.Name) {
+				// NOTE: CompareAssets is defined below this method's body
+				if (asset == TextureAssets.Mana) {
 					// Draw over the Classic stars
 					DrawClassicFancyOverlay(context);
-				} else if (CompareAssetNames(name, fancyFolder + "Star_Fill")) {
+				} else if (CompareAssets(asset, fancyFolder + "Star_Fill")) {
 					// Draw over the Fancy stars
 					DrawClassicFancyOverlay(context);
-				} else if (CompareAssetNames(name, barsFolder + "MP_Fill")) {
+				} else if (CompareAssets(asset, barsFolder + "MP_Fill")) {
 					// Draw over the Bars mana bars
 					DrawBarsOverlay(context);
-				} else if (CompareAssetNames(name, fancyFolder + "Star_A") || CompareAssetNames(name, fancyFolder + "Star_B") || CompareAssetNames(name, fancyFolder + "Star_C") || CompareAssetNames(name, fancyFolder + "Star_Single")) {
+				} else if (CompareAssets(asset, fancyFolder + "Star_A") || CompareAssets(asset, fancyFolder + "Star_B") || CompareAssets(asset, fancyFolder + "Star_C") || CompareAssets(asset, fancyFolder + "Star_Single")) {
 					// Draw over the Fancy star panels
 					DrawFancyPanelOverlay(context);
-				} else if (CompareAssetNames(name, barsFolder + "MP_Panel_Middle")) {
+				} else if (CompareAssets(asset, barsFolder + "MP_Panel_Middle")) {
 					// Draw over the Bars middle mana panels
 					DrawBarsPanelOverlay(context);
 				}
 			}
 		}
 
-		private static bool CompareAssetNames(string existingName, string compareAssetPath) {
+		private static bool CompareAssets(Asset<Texture2D> existingAsset, string compareAssetPath) {
 			// This is a helper method for checking if a certain vanilla asset was drawn
-			return existingName == Main.Assets.Request<Texture2D>(compareAssetPath).Name;
+			return existingAsset == Main.Assets.Request<Texture2D>(compareAssetPath);
 		}
 
 		private static void DrawClassicFancyOverlay(ResourceOverlayDrawContext context) {
