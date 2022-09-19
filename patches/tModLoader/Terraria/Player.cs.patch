@@ -2464,15 +2464,13 @@
  			hasFootball = false;
  			drawingFootball = false;
  			minionKB = 0f;
-@@ -13110,17 +_,28 @@
+@@ -13110,17 +_,26 @@
  			gravControl = false;
  			honeyCombItem = null;
  			gravControl2 = false;
 +			PlayerLoader.ModifyMaxStats(this);
-+			/*
  			statLifeMax2 = statLifeMax;
  			statManaMax2 = statManaMax;
-+			*/
  			chloroAmmoCost80 = false;
  			huntressAmmoCost90 = false;
  			ammoCost80 = false;
@@ -5787,14 +5785,10 @@
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
  
-@@ -38074,13 +_,24 @@
+@@ -38074,13 +_,20 @@
  			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
-+						// Keep the player state valid with vanilla (#HealthManaAPI)
-+						// Any modifications to statLifeMax/statManaMax by mods can just be done during runtime
-+						PlayerLoader.ResetMaxStatsToVanilla(player);
-+
 +						PlayerLoader.PreSavePlayer(player);
 +
  						binaryWriter.Write(248);
@@ -5812,6 +5806,20 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
+@@ -38096,9 +_,11 @@
+ 						binaryWriter.Write(player.hideMisc);
+ 						binaryWriter.Write((byte)player.skinVariant);
+ 						binaryWriter.Write(player.statLife);
+-						binaryWriter.Write(player.statLifeMax);
++						// Keep the player state valid with vanilla (#HealthManaAPI)
++						// Any modifications to statLifeMax/statManaMax by mods can just be done during runtime
++						binaryWriter.Write(100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5);
+ 						binaryWriter.Write(player.statMana);
+-						binaryWriter.Write(player.statManaMax);
++						binaryWriter.Write(20 + player.ConsumedManaCrystals * 20);
+ 						binaryWriter.Write(player.extraAccessory);
+ 						binaryWriter.Write(player.unlockedBiomeTorches);
+ 						binaryWriter.Write(player.UsingBiomeTorches);
 @@ -38126,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
@@ -5928,7 +5936,7 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -38410,16 +_,24 @@
+@@ -38410,16 +_,27 @@
  
  							player.statLife = binaryReader.ReadInt32();
  							player.statLifeMax = binaryReader.ReadInt32();
@@ -5949,7 +5957,10 @@
  								player.statMana = 400;
 +							*/
 +
-+							PlayerLoader.ModifyMaxStats(player);
++							// Clamping of the values happens automatically
++							player.ConsumedLifeCrystals = (player.statLifeMax - 100) / 20;
++							player.ConsumedLifeFruit = (player.statLifeMax - 400) / 5;
++							player.ConsumedManaCrystals = (player.statManaMax - 20) / 20;
  
  							if (num >= 125)
  								player.extraAccessory = binaryReader.ReadBoolean();

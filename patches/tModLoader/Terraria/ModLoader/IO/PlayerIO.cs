@@ -27,7 +27,6 @@ namespace Terraria.ModLoader.IO
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
 			var tag = new TagCompound {
-				["stats"] = SaveVanillaStatModifications(player),
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
 				["inventory"] = SaveInventory(player.inventory),
@@ -67,7 +66,6 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
-			LoadVanillaStatModifications(player, tag.GetCompound("stats"));
 			LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 			LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
 			LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
@@ -84,39 +82,6 @@ namespace Terraria.ModLoader.IO
 			LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
 			LoadUsedModPack(player, tag.GetString("usedModPack"));
-		}
-
-		public static TagCompound SaveVanillaStatModifications(Player player) {
-			return new TagCompound() {
-				["lifecrystals"] = player.ConsumedLifeCrystals,
-				["lifefruit"] = player.ConsumedLifeFruit,
-				["manacrystals"] = player.ConsumedManaCrystals
-			};
-		}
-
-		public static void LoadVanillaStatModifications(Player player, TagCompound tag) {
-			if (tag is null || !tag.ContainsKey("lifecrystals") || !tag.ContainsKey("lifefruit") || !tag.ContainsKey("manacrystals")) {
-				// Player file was from before the Health & Mana API change, or is just missing the tag
-				// Attempt to determine how many consumed items were used based on statLifeMax and statManaMax
-				int life = player.statLifeMax, mana = player.statManaMax;
-
-				life = Utils.Clamp(life, 100, 500);
-				mana = Utils.Clamp(mana, 20, 200);
-
-				if (life <= 400) {
-					player.ConsumedLifeCrystals = (life - 100) / 20;
-					player.ConsumedLifeFruit = 0;
-				} else {
-					player.ConsumedLifeCrystals = 15;
-					player.ConsumedLifeFruit = (life - 400) / 5;
-				}
-
-				player.ConsumedManaCrystals = (mana - 20) / 20;
-			} else {
-				player.ConsumedLifeCrystals = tag.GetInt("lifecrystals");
-				player.ConsumedLifeFruit = tag.GetInt("lifefruit");
-				player.ConsumedManaCrystals = tag.GetInt("manacrystals");
-			}
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv) {
