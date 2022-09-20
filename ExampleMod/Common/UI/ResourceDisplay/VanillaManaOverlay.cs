@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.ResourceSets;
@@ -12,6 +13,17 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 	// The code reponsible for tracking and modifying how many extra mana stars/bars are displayed can be found in Common/Systems/ExampleStatIncreaseSystem.cs
 	public class VanillaManaOverlay : ModResourceOverlay
 	{
+		// This field is used to cache vanilla assets used in the CompareAssets helper method further down in this file
+		private Dictionary<string, Asset<Texture2D>> vanillaAssetCache;
+
+		public override void Load() {
+			vanillaAssetCache = new();
+		}
+
+		public override void Unload() {
+			vanillaAssetCache = null;
+		}
+
 		// Unlike VanillaLifeOverlay, every star is drawn over by this hook.
 		public override void PostDrawResource(ResourceOverlayDrawContext context) {
 			// Bars panel drawing has two additional elements, so the "resource index" needs to be offset
@@ -61,9 +73,12 @@ namespace ExampleMod.Common.UI.ResourceDisplay
 			}
 		}
 
-		private static bool CompareAssets(Asset<Texture2D> existingAsset, string compareAssetPath) {
+		private bool CompareAssets(Asset<Texture2D> existingAsset, string compareAssetPath) {
 			// This is a helper method for checking if a certain vanilla asset was drawn
-			return existingAsset == Main.Assets.Request<Texture2D>(compareAssetPath);
+			if (!vanillaAssetCache.TryGetValue(compareAssetPath, out var asset))
+				asset = vanillaAssetCache[compareAssetPath] = Main.Assets.Request<Texture2D>(compareAssetPath);
+
+			return existingAsset == asset;
 		}
 
 		private static void DrawClassicFancyOverlay(ResourceOverlayDrawContext context) {
