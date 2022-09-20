@@ -6,11 +6,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
 	internal class JofairdenHeadGlow : JofairdenArmorGlowLayer
 	{
-		private static Asset<Texture2D> _glowTexture;
-
-		public override void Unload() {
-			_glowTexture = null;
-		}
+		private Asset<Texture2D> _glowTexture;
 
 		public override bool IsHeadLayer => true;
 
