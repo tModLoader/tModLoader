@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
 	internal class JofairdenLegsGlow : JofairdenArmorGlowLayer
 	{
-		private static Asset<Texture2D> _glowTexture;
+		private Asset<Texture2D> _glowTexture;
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
 			=> drawInfo.drawPlayer.legs == ModContent.GetInstance<Jofairden_Legs>().Item.legSlot && base.GetDefaultVisibility(drawInfo);
