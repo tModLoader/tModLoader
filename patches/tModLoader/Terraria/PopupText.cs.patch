@@ -33,13 +33,28 @@
  				popupText2.name = newItem.AffixName();
  				popupText2.stack = stack;
  				popupText2.velocity.Y = -7f;
-@@ -441,6 +_,9 @@
- 				color = new Color((byte)Main.DiscoR, (byte)Main.DiscoG, (byte)Main.DiscoB, Main.mouseTextColor);
+@@ -442,6 +_,9 @@
  			else if (master)
  				color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
-+
+ 
 +			if (rarity > ItemRarityID.Purple)
 +				color = RarityLoader.GetRarity(rarity).RarityColor;
- 
++
  			bool flag = false;
  			Vector2 textHitbox = GetTextHitbox();
+ 			Rectangle rectangle = new Rectangle((int)(position.X - textHitbox.X / 2f), (int)(position.Y - textHitbox.Y / 2f), (int)textHitbox.X, (int)textHitbox.Y);
+@@ -518,6 +_,14 @@
+ 			}
+ 
+ 			numActive = num;
++		}
++
++		public static void ClearAll() {
++			for (int i = 0; i < Main.maxItemText; i++) {
++				Main.popupText[i] = new PopupText();
++			}
++
++			numActive = 0;
+ 		}
+ 	}
+ }

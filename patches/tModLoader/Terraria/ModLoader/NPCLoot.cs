@@ -7,19 +7,28 @@ namespace Terraria.ModLoader
 	/// <summary> This readonly struct is a simple shortcut to <see cref="ItemDropDatabase"/>'s methods. </summary>
 	public readonly struct NPCLoot : ILoot
 	{
-		private readonly int npcType;
+		private readonly int npcNetId;
 		private readonly ItemDropDatabase itemDropDatabase;
 
-		public NPCLoot(int npcType, ItemDropDatabase itemDropDatabase) {
-			this.npcType = npcType;
+		public NPCLoot(int npcNetId, ItemDropDatabase itemDropDatabase) {
+			this.npcNetId = npcNetId;
 			this.itemDropDatabase = itemDropDatabase;
 		}
 
-		public List<IItemDropRule> Get(bool includeGlobalDrops = true) => itemDropDatabase.GetRulesForNPCID(npcType, includeGlobalDrops);
+		public List<IItemDropRule> Get(bool includeGlobalDrops = true)
+			=> itemDropDatabase.GetRulesForNPCID(npcNetId, includeGlobalDrops);
 
-		public IItemDropRule Add(IItemDropRule entry) => itemDropDatabase.RegisterToNPC(npcType, entry);
+		public IItemDropRule Add(IItemDropRule entry) {
+			itemDropDatabase.RegisterToNPCNetId(npcNetId, entry);
 
-		public IItemDropRule Remove(IItemDropRule entry) => itemDropDatabase.RemoveFromNPC(npcType, entry);
+			return entry;
+		}
+
+		public IItemDropRule Remove(IItemDropRule entry) {
+			itemDropDatabase.RemoveFromNPCNetId(npcNetId, entry);
+
+			return entry;
+		}
 
 		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
 			foreach (var entry in Get(includeGlobalDrops)) {

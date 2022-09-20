@@ -71,6 +71,7 @@ namespace Terraria.ModLoader.UI
 				Width = { Pixels = 120 },
 				Height = { Pixels = 20 }
 			};
+			filterTextBox.OnRightClick += (a, b) => filterTextBox.Text = "";
 			filterTextBox.OnTextChange += (a, b) => _updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 			_uIPanel.Append(upperMenuContainer);

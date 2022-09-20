@@ -60,6 +60,11 @@ namespace Terraria.ModLoader
 
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
+
+				//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
+				if (value.Key.StartsWith($"Mods.{mod.Name}.GameTips.")) {
+					Main.gameTips.allTips.Add(new GameTipData(new LocalizedText(value.Key, value.GetDefault()), mod));
+				}
 			}
 		}
 

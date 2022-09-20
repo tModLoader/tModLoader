@@ -67,6 +67,8 @@ namespace Terraria.ModLoader
 				tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 			}
 
+			DumpEnvVars();
+
 			string stackLimit = Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize");
 
 			if (!string.IsNullOrEmpty(stackLimit))
@@ -203,6 +205,19 @@ namespace Terraria.ModLoader
 			Console.ResetColor();
 
 			(log ?? Terraria).Logger.Log(null, level, msg, ex);
+		}
+
+		private static void DumpEnvVars() {
+			try {
+				using var f = File.OpenWrite(Path.Combine(LogDir, "environment.log"));
+				using var w = new StreamWriter(f);
+				foreach (var key in Environment.GetEnvironmentVariables().Keys) {
+					w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");
+				}
+			}
+			catch (Exception e) {
+				tML.Error("Failed to dump env vars", e);
+			}
 		}
 	}
 }
