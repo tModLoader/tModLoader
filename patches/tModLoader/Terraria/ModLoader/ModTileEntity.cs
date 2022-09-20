@@ -172,16 +172,15 @@ namespace Terraria.ModLoader
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
 			Load();
-
-			var legacyLoadMethod = GetType().GetMethod(nameof(Load), BindingFlags.Instance | BindingFlags.Public, new[] { typeof(Mod) });
-
-			if (legacyLoadMethod != null && legacyLoadMethod.DeclaringType != typeof(ModTileEntity)) {
-				legacyLoadMethod.Invoke(this, new[] { Mod });
-			}
+			Load_Obsolete(mod);
 
 			manager.Register(this);
 			ModTypeLookup<ModTileEntity>.Register(this);
 		}
+
+		[Obsolete]
+		private void Load_Obsolete(Mod mod)
+			=> Load(mod);
 
 		[Obsolete("Override the parameterless Load() overload instead.", true)]
 		public virtual void Load(Mod mod) { }
