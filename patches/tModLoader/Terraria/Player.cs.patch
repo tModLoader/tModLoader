@@ -5682,15 +5682,11 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -38053,6 +_,28 @@
+@@ -38053,6 +_,24 @@
  			}
  			catch (Exception exception) {
  				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path);
 +				// If there is a problem in saving, (kick out the player and) show message
-+				var errorBuilder = new StringBuilder();
-+				errorBuilder.AppendLine(Language.GetTextValue("An error occurred when saving the player.")); // TODO use key
-+				errorBuilder.AppendLine(Language.GetTextValue("The original Error below:")); // TODO use key
-+				errorBuilder.Append(exception);
 +
 +				var flag = false;
 +				if (!flag && !Main.gameMenu) {
@@ -5707,7 +5703,7 @@
 +					}
 +				}
 +
-+				Utils.ShowFancyErrorMessage(errorBuilder.ToString(), Main.menuMode); // Return to the previous menu.
++				Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.SaveErrorPlayer")}\n\n{exception}", Main.menuMode);
  				throw;
  			}
  		}
@@ -5860,7 +5856,7 @@
 +
 +			var tag = PlayerIO.GenerateData(player); // can throw an exception
 +			// When the code comes here, it means that all data can be saved normally
-+			// (Unless writing exception, will be captured in the previous function)
++			// (Unless IO exception, will be captured in the previous function)
 +
 +			BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +			if (FileUtilities.Exists(path, isCloudSave))
