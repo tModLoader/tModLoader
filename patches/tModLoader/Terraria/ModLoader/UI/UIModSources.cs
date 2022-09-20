@@ -182,15 +182,21 @@ namespace Terraria.ModLoader.UI
 		//TODO: simplify this method
 		private void DrawMigrationGuideLink() {
 			string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
+			float scale = 1f;
 
 			var font = FontAssets.MouseText.Value;
 			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
+			Vector2 origin = sizes;
 			Color color = Color.IndianRed;
+			if(sizes.X > 430) {
+				scale = 430 / sizes.X;
+				sizes.X *= scale;
+			}
 
 			int xLoc = (int)(Main.screenWidth / 2 + 134);
 			int yLoc = (int)(sizes.Y + 244f);
 
-			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, sizes, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, origin, new Vector2(scale, 1f), SpriteEffects.None, 0f);
 
 			var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
 			if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
