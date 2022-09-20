@@ -3423,7 +3423,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31827,16 +_,30 @@
+@@ -31827,16 +_,34 @@
  		}
  
  		public static void CraftItem(Recipe r) {
@@ -3431,27 +3431,32 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
+-			if (stack <= 0)
+-				mouseItem.Prefix(-1);
 +			*/
 +
 +			int stack = mouseItem.stack;
-+			if (stack > 0 && mouseItem.type == r.createItem.type) {
-+				if (!ItemLoader.TryStackItems(mouseItem, r.createItem.Clone(), out int numTransfered, true))
-+					return;
-+			}
-+			else {
-+				mouseItem = r.createItem.Clone();
-+			}
-+			
--			if (stack <= 0)
++			bool tryingToCombineStack = stack > 0 && mouseItem.type == r.createItem.type;
++			Item createItem = r.createItem.Clone();
++			if (tryingToCombineStack && !ItemLoader.CanStack(mouseItem, createItem))
++				return;
++
 +			//if (stack <= 0)
-+			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
- 				mouseItem.Prefix(-1);
++			//if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
++				createItem.Prefix(-1);// Stackable items can recieve a prefix on craft and should be managed with the OnStack hook
  
  			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
-+			RecipeLoader.OnCraft(mouseItem, r);
++			RecipeLoader.OnCraft(createItem, r, mouseItem);
++			if (tryingToCombineStack) {
++				ItemLoader.StackItems(mouseItem, createItem, out _, true);
++			}
++			else {
++				mouseItem = createItem;
++			}
++
  			if (mouseItem.type > 0 || r.createItem.type > 0)
  				SoundEngine.PlaySound(7);
  		}

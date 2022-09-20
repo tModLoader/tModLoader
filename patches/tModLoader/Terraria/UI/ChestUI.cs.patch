@@ -22,7 +22,7 @@
  								if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  									continue;
  
-+								if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[num], out int numTransfered))
++								if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[num], out _))
 +									continue;
 +
 +								/* TML: #OnStackHook
@@ -42,7 +42,7 @@
  							else if (player.chest == -3) {
 +								//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
  								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
-+									if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out int numTransfered))
++									if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out _))
 +										continue;
 +
 +									/* TML: #OnStackHook
@@ -62,7 +62,7 @@
  							else if (player.chest == -4) {
 +								//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
  								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
-+									if (!ItemLoader.TryStackItems(player.bank3.item[i], player.inventory[num], out int numTransfered))
++									if (!ItemLoader.TryStackItems(player.bank3.item[i], player.inventory[num], out _))
 +										continue;
 +
 +									/* TML: #OnStackHook
@@ -82,7 +82,7 @@
  							else if (player.chest == -5) {
 +								//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
  								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
-+									if (!ItemLoader.TryStackItems(player.bank4.item[i], player.inventory[num], out int numTransfered))
++									if (!ItemLoader.TryStackItems(player.bank4.item[i], player.inventory[num], out _))
 +										continue;
 +
 +									/* TML: #OnStackHook
@@ -102,7 +102,7 @@
  							}
 +							//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
  							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
-+								if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out int numTransfered))
++								if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out _))
 +									continue;
 +
 +								/* TML: #OnStackHook

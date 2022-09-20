@@ -13,32 +13,29 @@ namespace ExampleMod.Common.GlobalProjectiles
 {
 	public class ProjectileWithGrowingDamage : GlobalProjectile
 	{
-		private Item sourceItem;
-		private int sourceItemType;
+		private WeaponWithGrowingDamage sourceGlobalItem;
 
 		public override bool InstancePerEntity => true;
 		public override void OnSpawn(Projectile projectile, IEntitySource source) {
+			//Don't try to store the itemSource.Item.  Terraria can re-use an item instance with SetDefaults(),
+			//meaning the instance you save could become air or another item.  It is much safer to store the GlobalItem instance.
 			if (source is EntitySource_ItemUse itemSource) {
-				sourceItem = itemSource.Item;
+				itemSource.Item.TryGetGlobalItem(out sourceGlobalItem);
 			}
-			else if (source is EntitySource_ItemUse_WithAmmo itemWithUseAmmoSource) {
-				sourceItem = itemWithUseAmmoSource.Item;
-			}
-
-			if (sourceItem != null)
-				sourceItemType = sourceItem.type;
 		}
 
 		public override void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit) {
-			if (sourceItem == null || sourceItem.type != sourceItemType || !sourceItem.TryGetGlobalItem(out WeaponWithGrowingDamage weapon))
+			if (sourceGlobalItem == null) {
 				return;
+			}
 
 			int owner = projectile.owner;
-			if (owner < 0 || owner >= Main.player.Length)
+			if (owner < 0 || owner >= Main.player.Length) {
 				return;
+			}
 
 			Player player = Main.player[owner];
-			weapon.OnHitNPCGeneral(sourceItem, player, target, damage, knockback, crit);
+			sourceGlobalItem.OnHitNPCGeneral(player, target, damage, knockback, crit, projectile: projectile);
 		}
 	}
 }

@@ -30,8 +30,8 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 		public override void LoadData(Item item, TagCompound tag) {
-			int xp = tag.Get<int>("experience");//Load experience tag
-			GainExperience(item, xp, true);
+			experience = 0;
+			GainExperience(item, tag.Get<int>("experience"));//Load experience tag
 		}
 
 		public override void SaveData(Item item, TagCompound tag) {
@@ -43,15 +43,15 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void NetReceive(Item item, BinaryReader reader) {
-			int xp = reader.ReadInt32();
-			GainExperience(item, xp, true);
+			experience = 0;
+			GainExperience(item, reader.ReadInt32());
 		}
 		
 		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
-			OnHitNPCGeneral(item, player, target, damage, knockBack, crit);
+			OnHitNPCGeneral(player, target, damage, knockBack, crit, item);
 		}
 
-		public void OnHitNPCGeneral(Item item, Player player, NPC target, int damage, float knockBack, bool crit, Projectile projectile = null) {
+		public void OnHitNPCGeneral(Player player, NPC target, int damage, float knockBack, bool crit, Item item = null, Projectile projectile = null) {
 			//The weapon gains experience when hitting an npc.
 			int xp = damage;
 			if (projectile != null)
@@ -60,18 +60,16 @@ namespace ExampleMod.Common.GlobalItems
 			GainExperience(item, xp);
 		}
 
-		public void GainExperience(Item item, int xp, bool setXp = false) {
-			if (setXp) {
-				experience = xp;
-			}
-			else {
-				experience += xp;
-			}
+		public void GainExperience(Item item, int xp) {
+			experience += xp;
 
 			UpdateValue(item);
 		}
 
 		public void UpdateValue(Item item, int stackChange = 0) {
+			if (item == null)
+				return;
+
 			item.value -= bonusValuePerItem;
 			int stack = item.stack + stackChange;
 			if (stack == 0) {
@@ -101,7 +99,7 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		public override void OnCreate(Item item, ItemCreationContext context) {
+		public override void OnCreate(Item item, Item original, ItemCreationContext context) {
 			if (context is RecipeCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {
@@ -136,13 +134,11 @@ namespace ExampleMod.Common.GlobalItems
 			if (type != ModContent.NPCType<ExamplePerson>())
 				return;
 
-			shop.item[nextSlot].SetDefaults(ItemID.Snowball);
-			if (shop.item[nextSlot].TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
-				weapon.experience *= 2;
-				weapon.UpdateValue(shop.item[nextSlot]);
+			Item item = shop.item[nextSlot++];
+			item.SetDefaults(ItemID.Snowball);
+			if (item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
+				weapon.GainExperience(item, 1);
 			}
-
-			nextSlot++;
 		}
 	}
 }
