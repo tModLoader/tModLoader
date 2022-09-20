@@ -125,9 +125,14 @@ namespace Terraria.ModLoader
 			ContentInstance.Register(mc);
 		}
 
-		public void AddContent<T>() where T:ILoadable, new() => AddContent(new T());
+		/// <summary> Call this to manually add a content instance of the specified type (with a parameterless constructor) to the game. </summary>
+		/// <returns> true if the instance was successfully added </returns>
+		public bool AddContent<T>() where T : ILoadable, new() => AddContent(new T());
 
-		public void AddContent(ILoadable instance){
+		/// <summary> Call this to manually add the given content instance to the game. </summary>
+		/// <param name="instance"> The content instance to add </param>
+		/// <returns> true if the instance was successfully added </returns>
+		public bool AddContent(ILoadable instance) {
 			if (!loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
@@ -135,11 +140,16 @@ namespace Terraria.ModLoader
 				instance.Load(this);
 				content.Add(instance);
 				ContentInstance.Register(instance);
+				return true;
 			}
+
+			return false;
 		}
 
+		/// <summary> Returns all base content instances of this mod. </summary>
 		public IEnumerable<ILoadable> GetContent() => content;
 
+		/// <summary> Returns all base content instances that derive from the provided content type of this mod. </summary>
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
 		/// <summary> Attempts to find the content instance from this mod with the specified name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
