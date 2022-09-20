@@ -10,6 +10,8 @@ namespace ExampleMod.Content.Items
 	public class ExampleStackableDurabilityItem : ModItem
 	{
 		// 0 to 1
+		// All items in the stack have the same durability
+		// Durability is combined and averaged when stacking
 		public float durability;
 
 		public override void SetDefaults() {
@@ -39,16 +41,25 @@ namespace ExampleMod.Content.Items
 			tooltips.Add(new TooltipLine(Mod, "ExampleStackableDurabilityItem", $"Durability: {(int)(durability*100)}%") { OverrideColor = Color.LightGreen });
 		}
 
-		public override void OnStack(Item decrease, int numberToBeTransfered) {
-			var incomingDurability = ((ExampleStackableDurabilityItem)decrease.ModItem).durability;
-
-			// average the durability of the incoming and existing items
-			durability = (durability * Item.stack + incomingDurability * numberToBeTransfered) / (Item.stack + numberToBeTransfered);
+		private static float WeightedAverage(float durability1, int stack1, float durability2, int stack2) {
+			return (durability1 * stack1 + durability2 * stack2) / (stack1 + stack2);
 		}
 
-		public override void OnCreate(Item original, ItemCreationContext context) {
-			if (context is RecipeCreationContext) {
-				durability = Main.rand.NextFloat();
+		public override void OnStack(Item decrease, int numberToBeTransfered) {
+			var incomingDurability = ((ExampleStackableDurabilityItem)decrease.ModItem).durability;
+			durability = WeightedAverage(durability, Item.stack, incomingDurability, numberToBeTransfered);
+		}
+
+		public override void OnCreate(ItemCreationContext context) {
+			if (context is RecipeCreationContext recipe) {
+				// OnCraft is called on the entire stack, after OnStack, so we need to add only 1 item's worth of durability
+				int numCrafted = recipe.recipe.createItem.stack;
+				int numPreCraft = Item.stack - numCrafted;
+				float newItemsDurability = Main.rand.NextFloat();
+
+				// need to compensate for the fact that a 0 durability item was stacked with it
+				float oldDurability = numPreCraft == 0 ? 0 : durability * Item.stack / numPreCraft;
+				durability = WeightedAverage(oldDurability, numPreCraft, newItemsDurability, numCrafted);
 			}
 		}
 
