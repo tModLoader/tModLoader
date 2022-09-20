@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The internal name of this ModTileEntity.
 		/// </summary>
-		public string Name => GetType().Name;
+		public virtual string Name => GetType().Name;
 
 		public string FullName => $"{Mod.Name}/{Name}";
 
