@@ -111,9 +111,6 @@ namespace Terraria.ModLoader
 
 			player.statLifeMax = (int)cumulativeHealth.ApplyTo(player.statLifeMax);
 			player.statManaMax = (int)cumulativeMana.ApplyTo(player.statManaMax);
-
-			player.statLifeMax2 = player.statLifeMax;
-			player.statManaMax2 = player.statManaMax;
 		}
 
 		private static HookList HookUpdateDead = AddHook<Action>(p => p.UpdateDead);
