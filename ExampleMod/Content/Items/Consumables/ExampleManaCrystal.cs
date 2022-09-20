@@ -8,7 +8,6 @@ namespace ExampleMod.Content.Items.Consumables
 	// This file showcases how to create an item that increases the player's maximum mana on use.
 	// Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players.
 	// The overlay used to display the custom mana crystals can be found in Common/UI/ResourceDisplay/VanillaManaOverlay.cs
-	// The code reponsible for tracking and modifying how many extra mana stars/bars are displayed can be found in Common/Systems/ExampleStatIncreaseSystem.cs
 	internal class ExampleManaCrystal : ModItem
 	{
 		public const int MaxExampleManaCrystals = 10;
