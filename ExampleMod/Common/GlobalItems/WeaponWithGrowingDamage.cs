@@ -99,7 +99,7 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		public override void OnCreate(Item item, Item original, ItemCreationContext context) {
+		public override void OnCreate(Item item, ItemCreationContext context) {
 			if (context is RecipeCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {

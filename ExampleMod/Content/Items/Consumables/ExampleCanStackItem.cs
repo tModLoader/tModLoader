@@ -91,7 +91,7 @@ namespace ExampleMod.Content.Items.Consumables
 			}
 		}
 
-		public override void OnCreate(Item original, ItemCreationContext context) {
+		public override void OnCreate(ItemCreationContext context) {
 			if (context is RecipeCreationContext) {
 				// If the item was crafted, store the crafting players name
 				craftedPlayerName = Main.LocalPlayer.name;

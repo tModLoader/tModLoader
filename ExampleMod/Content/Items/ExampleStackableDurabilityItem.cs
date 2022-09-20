@@ -51,15 +51,8 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void OnCreate(ItemCreationContext context) {
-			if (context is RecipeCreationContext recipe) {
-				// OnCraft is called on the entire stack, after OnStack, so we need to add only 1 item's worth of durability
-				int numCrafted = recipe.recipe.createItem.stack;
-				int numPreCraft = Item.stack - numCrafted;
-				float newItemsDurability = Main.rand.NextFloat();
-
-				// need to compensate for the fact that a 0 durability item was stacked with it
-				float oldDurability = numPreCraft == 0 ? 0 : durability * Item.stack / numPreCraft;
-				durability = WeightedAverage(oldDurability, numPreCraft, newItemsDurability, numCrafted);
+			if (context is RecipeCreationContext) {
+				durability = Main.rand.NextFloat();
 			}
 		}
 

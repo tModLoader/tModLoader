@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Items
 			return clone;
 		}
 
-		public override void OnCreate(Item original, ItemCreationContext context) {
+		public override void OnCreate(ItemCreationContext context) {
 			GenerateNewColors();
 		}
 
