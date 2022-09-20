@@ -5942,23 +5942,16 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
-@@ -38410,16 +_,27 @@
- 
- 							player.statLife = binaryReader.ReadInt32();
- 							player.statLifeMax = binaryReader.ReadInt32();
-+							// Allow health stat to exceed vanilla bounds (#HealthManaAPI)
-+							/*
- 							if (player.statLifeMax > 500)
- 								player.statLifeMax = 500;
-+							*/
+@@ -38415,11 +_,20 @@
  
  							player.statMana = binaryReader.ReadInt32();
  							player.statManaMax = binaryReader.ReadInt32();
-+							// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
-+							/*
++							
  							if (player.statManaMax > 200)
  								player.statManaMax = 200;
  
++							// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
  							if (player.statMana > 400)
  								player.statMana = 400;
 +							*/
