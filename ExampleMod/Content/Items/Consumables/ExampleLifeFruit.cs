@@ -73,11 +73,9 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)ExampleMod.MessageType.ExamplePlayerSyncPlayer);
-			packet.Write((byte)Player.whoAmI);
-			packet.Write(exampleLifeFruits);
-			packet.Send(toWho, fromWho);
+			new ExampleSyncPlayerPacket {
+				ExampleLifeFruitPlayer = this, ExampleLifeFruits = exampleLifeFruits
+			}.Send(toWho, fromWho);
 		}
 
 		// NOTE: The tag instance provided here is always empty by default.
@@ -87,7 +85,22 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void LoadData(TagCompound tag) {
-			exampleLifeFruits = (int) tag["exampleLifeFruits"];
+			exampleLifeFruits = (int)tag["exampleLifeFruits"];
+		}
+	}
+
+	public class ExampleSyncPlayerPacket : ModCustomPacket
+	{
+		/// <summary>
+		/// This type is automatically correctly serialized! <see cref="ModPlayerPropertySerializer"/>
+		/// </summary>
+		public ExampleLifeFruitPlayer ExampleLifeFruitPlayer { get; init; }
+
+		// "init" just means that your code can only set this when creating the object and not afterward
+		public int ExampleLifeFruits { get; init; }
+
+		public override void HandlePacket() {
+			ExampleLifeFruitPlayer.exampleLifeFruits = ExampleLifeFruits;
 		}
 	}
 }
