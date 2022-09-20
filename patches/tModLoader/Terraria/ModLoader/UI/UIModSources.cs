@@ -174,9 +174,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 			base.Draw(spriteBatch);
 			DrawMigrationGuideLink();
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
 		//TODO: simplify this method
