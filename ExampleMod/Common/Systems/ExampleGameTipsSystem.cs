@@ -13,7 +13,7 @@ namespace ExampleMod.Common.Systems
 
 		public override void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips) {
 			// If you wish to add your OWN tips, then you have to put them in a Localization file. Check out
-			// the GameTips key in the en-US for functionality.
+			// the GameTips key in the Localization/en-US.hjson file for functionality.
 
 			// What if we want to modify Vanilla tips? There is a GameTipID built into tModLoader that should make
 			// disabling certain tips easier.
@@ -24,7 +24,7 @@ namespace ExampleMod.Common.Systems
 			// Now, say you want to modify OTHER mod's tips? You can do that too! Make sure you use the right mod and key name.
 			GameTipData disabledTip = gameTips.FirstOrDefault(tip => tip.FullName == "ExampleMod/DisabledExampleTip");
 			// Optionally, if you want to be a bit more specific with the tip name and mod name, you can also do that with the Mod and Name properties, like so:
-			// GameTipData disabledTip = gameTips.FirstOrDefault(tip => tip.Mod.Name == "ExampleMod" && tip.Name == "DisabledExampleTip");
+			// GameTipData disabledTip = gameTips.FirstOrDefault(tip => tip.Mod is Mod { Name: "ExampleMod" } && tip.Name == "DisabledExampleTip");
 
 			// If you haven't seen null propagation before, in short, the question mark checks if the value is null, and if it is,
 			// nothing happens and no error is thrown; but if it isn't null, call the method as usual!
