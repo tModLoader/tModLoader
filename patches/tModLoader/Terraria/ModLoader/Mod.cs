@@ -136,14 +136,13 @@ namespace Terraria.ModLoader
 			if (!loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-			if (instance.IsLoadingEnabled(this)) {
-				instance.Load(this);
-				content.Add(instance);
-				ContentInstance.Register(instance);
-				return true;
-			}
+			if (!instance.IsLoadingEnabled(this))
+				return false;
 
-			return false;
+			instance.Load(this);
+			content.Add(instance);
+			ContentInstance.Register(instance);
+			return true;
 		}
 
 		/// <summary> Returns all base content instances of this mod. </summary>
