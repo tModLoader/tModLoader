@@ -40,10 +40,6 @@ namespace ExampleMod.Content.Items.Consumables
 
 				// This field tracks how many of the example fruit have been consumed
 				player.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits++;
-				// This handles the 2 achievements related to using any life increasing item or reaching the max amount of consumed Life Crystals, Life Fruit and Mana Crystals.
-				// Ignored since our item is only useable after this achievement is reached
-				// AchievementsHelper.HandleSpecialEvent(player, 2);
-				//TODO re-add this when ModAchievement is merged?
 			}
 			// Returning null will make the item not be consumed
 			return canConsume ? true : null;
