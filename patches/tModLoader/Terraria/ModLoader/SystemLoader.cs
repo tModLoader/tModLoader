@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -331,6 +332,12 @@ namespace Terraria.ModLoader
 
 			foreach (var system in HookModifyInterfaceLayers.arr) {
 				system.ModifyInterfaceLayers(layers);
+			}
+		}
+
+		public static void ModifyGameTipVisibility(IReadOnlyList<GameTipData> tips) {
+			foreach (var system in HookModifyGameTipVisibility.arr) {
+				system.ModifyGameTipVisibility(tips);
 			}
 		}
 
