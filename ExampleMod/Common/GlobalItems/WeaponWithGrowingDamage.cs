@@ -7,16 +7,14 @@ using Terraria.ModLoader.IO;
 using System.IO;
 using ExampleMod.Content.NPCs;
 
+//Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
 {
 	public class WeaponWithGrowingDamage : GlobalItem
 	{
-		//Related to GlobalProjectile: ProjectileWithGrowingDamage
-
 		public int experience;
 		public static int experiencePerLevel = 100;
-		private int lastBonusValue;
-		private int stack = int.MinValue;
+		private int bonusValuePerItem;
 		public int level => experience / experiencePerLevel;
 
 		public override bool InstancePerEntity => true;
@@ -73,48 +71,21 @@ namespace ExampleMod.Common.GlobalItems
 			UpdateValue(item);
 		}
 
-		private void UpdateValue(Item item, int stackChange = 0) {
-			//The goal of UpdateValue is to give the item bonus value based on it's experience.
-			//With stackable items such as Throwing Knives, the item.value is multiplied by the item.stack.  This is not something that is desired for this example.
-
-			//Example: UpdateValue() is called when a stack is combined.
-			//		The original item.stack was 10, the new item.stack is 100.
-			//		The original experience was 40, the current experience is 40.
-			//		The original extra coins from selling would be 
-			//
-			//	Previous Values:
-			//			
-			//			lastBonusValue: 200
-			//			stack: 10
-			//	New Values:
-			//			
-
-			if (stack == int.MinValue)
-				stack = item.stack + stackChange;
-
-			if (CheckStackZero(item))
-				return;
-
-			int lastBonusValuePerItem = lastBonusValue / stack;//lastBonusValue : 200, stack: 10, lastBonusValuePerItem = 20
-			stack = item.stack + stackChange;//item.stack = 10, stackChange = 90, so the new stack will be 100.  stack = 100
-
-			if (CheckStackZero(item))
-				return;
-
-			int newBonusValue = experience * 5;//experience: 40, newBonusValue = 200
-			int newBonusValuePerItem = newBonusValue / stack;//newBonusValue: 200, stack: 100, newBonusValuePerItem = 2
-			item.value += newBonusValuePerItem - lastBonusValuePerItem;//newBonusValuePerItem: 2, lastBonusValuePerItem, 20, item.value += -18
-			lastBonusValue = newBonusValue;//newBonusValue: 200, lastBonusValue = 200
-		}
-
-		private bool CheckStackZero(Item item) {
-			if (stack <= 0) {
-				item.value = ContentSamples.ItemsByType[item.type].value;
-				lastBonusValue = 0;
-				return true;
+		public void UpdateValue(Item item, int stackChange = 0) {
+			item.value -= bonusValuePerItem;
+			int stack = item.stack + stackChange;
+			if (stack == 0) {
+				bonusValuePerItem = 0;
+			}
+			else {
+				bonusValuePerItem = experience * 5 / stack;
 			}
 
-			return false;
+			item.value += bonusValuePerItem;
+		}
+
+		public override void UpdateInventory(Item item, Player player) {
+			UpdateValue(item);
 		}
 
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
@@ -141,34 +112,35 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		public override void OnStack(Item item1, Item item2, int numberToBeTransfered) {
-			if (!item1.TryGetGlobalItem(out WeaponWithGrowingDamage weapon1) || !item2.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
+		public override void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
+			if (!increase.TryGetGlobalItem(out WeaponWithGrowingDamage weapon1) || !decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
 				return;
 
-			if (item1.stack == 0)
+			if (increase.stack == 0)
 				weapon1.experience = 0;
 			
 			//Transfer experience and value to item1.
-			weapon1.experience += weapon2.experience;//Works
-			//experience += weapon2.experience;//Doesn't work
-			weapon1.UpdateValue(item1, numberToBeTransfered);
+			weapon1.experience += weapon2.experience;
+			weapon1.UpdateValue(increase, numberToBeTransfered);
 
-			if (item2.stack > numberToBeTransfered) {
+			if (decrease.stack > numberToBeTransfered) {
 				//Prevent duplicating the experience by clearing it on item2 if item2 will still exist.
 				weapon2.experience = 0;
-				weapon2.UpdateValue(item2, -numberToBeTransfered);
+				weapon2.UpdateValue(decrease, -numberToBeTransfered);
 			}
 		}
 	}
-	public class SlowBallShop : GlobalNPC
+	public class SnowBallShop : GlobalNPC
 	{
 		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
 			if (type != ModContent.NPCType<ExamplePerson>())
 				return;
 
 			shop.item[nextSlot].SetDefaults(ItemID.Snowball);
-			if (shop.item[nextSlot].TryGetGlobalItem(out WeaponWithGrowingDamage weapon))
+			if (shop.item[nextSlot].TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
 				weapon.experience *= 2;
+				weapon.UpdateValue(shop.item[nextSlot]);
+			}
 
 			nextSlot++;
 		}
