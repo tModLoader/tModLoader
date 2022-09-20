@@ -22,7 +22,9 @@ namespace ExampleMod.Common.Systems
 			gameTips[GameTipID.SolarEclipseCreepyMonsters].Hide();
 
 			// Now, say you want to modify OTHER mod's tips? You can do that too! Make sure you use the right mod and key name.
-			GameTipData disabledTip = gameTips.FirstOrDefault(tip => tip.Mod == "ExampleMod" && tip.ShortKey == "DisabledExampleTip");
+			GameTipData disabledTip = gameTips.FirstOrDefault(tip => tip.FullName == "ExampleMod/DisabledExampleTip");
+			// Optionally, if you want to be a bit more specific with the tip name and mod name, you can also do that with the Mod and Name properties, like so:
+			// GameTipData disabledTip = gameTips.FirstOrDefault(tip => tip.Mod.Name == "ExampleMod" && tip.Name == "DisabledExampleTip");
 
 			// If you haven't seen null propagation before, in short, the question mark checks if the value is null, and if it is,
 			// nothing happens and no error is thrown; but if it isn't null, call the method as usual!

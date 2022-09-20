@@ -38,9 +38,9 @@
 +			List<GameTipData> list = new List<GameTipData>();
 +			list.AddRange(allTips);
 +			if (PlayerInput.UsingGamepad)
-+				list.RemoveAll(tip => tip.Mod == "Terraria" && tip.TipText.Key.StartsWith("LoadingTips_Keyboard"));
++				list.RemoveAll(tip => tip.Mod is null && tip.TipText.Key.StartsWith("LoadingTips_Keyboard"));
 +			else
-+				list.RemoveAll(tip => tip.Mod == "Terraria" && tip.TipText.Key.StartsWith("LoadingTips_GamePad"));
++				list.RemoveAll(tip => tip.Mod is null && tip.TipText.Key.StartsWith("LoadingTips_GamePad"));
 +
 +			if (_lastTip != null)
 +				list.RemoveAll(tip => tip.TipText == _lastTip);

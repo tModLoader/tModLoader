@@ -14,38 +14,47 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The name of the mod this GameTip belongs to.
-		/// For vanilla tips, this value is "Terraria"
+		/// The mod instance this tip belongs to. This value is null
+		/// for vanilla tips.
 		/// </summary>
-		public string Mod {
+		public Mod Mod {
 			get;
 			internal set;
 		}
 
 		/// <summary>
-		/// Retrieves the "short" key of this GameTip, excluding the beginning Mods.ModName.GameTips portion.
-		/// For example, if the key was "Mods.ExampleMod.GameTips.ExampleTip", this would return
-		/// "ExampleTip".
+		/// Retrieves the "name" of this GameTip, which is the Key excluding the beginning Mods.ModName.GameTips portion.
+		/// For example, if the key was "Mods.ExampleMod.GameTips.ExampleTip", this would return "ExampleTip".
 		/// </summary>
-		public string ShortKey {
+		public string Name {
+			get;
+			internal set;
+		}
+
+		/// <summary>
+		/// Retrieves the FULL "name" of this GameTip, which includes the Mod and this tip's Name.
+		/// For example, if this tip was from ExampleMod and was named "ExampleTip", this would
+		/// return "ExampleMod/ExampleTip"
+		/// </summary>
+		public string FullName {
 			get;
 			internal set;
 		}
 
 		internal bool isVisible = true;
 
-		public GameTipData(LocalizedText text, Mod mod) : this(text, mod.Name) { }
-
-		internal GameTipData(LocalizedText text, string mod) {
+		public GameTipData(LocalizedText text, Mod mod) {
 			TipText = text;
 			Mod = mod;
-			ShortKey = text.Key.Replace($"Mods.{mod}.GameTips.", "");
+			Name = text.Key.Replace($"Mods.{mod.Name}.GameTips.", "");
+			FullName = $"{Mod.Name}/{Name}";
 		}
 
 		internal GameTipData(LocalizedText text) {
 			TipText = text;
-			Mod = "Terraria";
-			ShortKey = text.Key;
+			Mod = null;
+			Name = text.Key;
+			FullName = $"Terraria/{Name}";
 		}
 
 		/// <summary>
@@ -53,13 +62,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void Hide() {
 			isVisible = false;
-		}
-
-		/// <summary>
-		/// Returns a new object which is a clone of this object.
-		/// </summary>
-		public GameTipData Clone() {
-			return new GameTipData(new LocalizedText(TipText.Key, TipText.Value), Mod);
 		}
 	}
 }

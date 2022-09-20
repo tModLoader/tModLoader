@@ -6,20 +6,16 @@ namespace Terraria.GameContent.UI
 {
 	public partial class GameTipsDisplay
 	{
-		internal List<GameTipData> vanillaTips {
-			get;
-			private set;
-		}
 		internal List<GameTipData> allTips;
 
 		internal void Initialize() {
-			vanillaTips = _tipsDefault.Concat(_tipsKeyboard).Concat(_tipsGamepad).Select(localizedText => new GameTipData(localizedText)).ToList();
-			allTips = vanillaTips.Select(tip => tip.Clone()).ToList();
+			allTips = _tipsDefault.Concat(_tipsKeyboard).Concat(_tipsGamepad).Select(localizedText => new GameTipData(localizedText)).ToList();
 		}
 
 		internal void Reset() {
 			ClearTips();
-			allTips = vanillaTips.Select(tip => tip.Clone()).ToList();
+			allTips = allTips.Where(tip => tip.Mod is null).ToList();
+			allTips.ForEach(tip => tip.isVisible = true);
 			_lastTip = null;
 		}
 	}
