@@ -18,41 +18,20 @@
  
  		public void Draw(SpriteBatch spriteBatch, ref bool isHovered) {
  			int elementCount = ElementCount;
-@@ -24,19 +_,39 @@
- 			for (int i = 0; i < elementCount; i++) {
- 				int elementIndex = i + ElementIndexOffset;
- 				GetTextureMethod(elementIndex, ElementIndexOffset, ElementIndexOffset + elementCount - 1, out Asset<Texture2D> texture, out Vector2 drawOffset, out float drawScale, out Rectangle? sourceRect);
--				Rectangle rectangle = texture.Frame();
-+
-+				Rectangle frame = sourceRect ?? texture.Frame();
-+				Vector2 position = topLeftAnchor + drawOffset;
-+
+@@ -36,7 +_,19 @@
+ 				if (rectangle2.Contains(value))
+ 					isHovered = true;
+ 
 +				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(StatsSnapshot, DisplaySet, ResourceSetSlot, elementIndex + 1, texture) {
 +					position = position,
-+					source = sourceRect,
-+					origin = OffsetSpriteAnchor + frame.Size() * OffsetSpriteAnchorByTexturePercentile,
++					source = rectangle,
++					origin = origin,
 +					scale = new Vector2(drawScale),
 +					SpriteBatch = spriteBatch
 +				};
 +
 +				ResourceOverlayLoader.DrawResource(drawContext);
 +
-+				position = drawContext.position;
-+				Vector2 origin = drawContext.origin;
-+				Rectangle rectangle = drawContext.source ?? texture.Frame();
- 				if (sourceRect.HasValue)
- 					rectangle = sourceRect.Value;
- 
-+				/*
- 				Vector2 position = topLeftAnchor + drawOffset;
- 				Vector2 origin = OffsetSpriteAnchor + rectangle.Size() * OffsetSpriteAnchorByTexturePercentile;
-+				*/
- 				Rectangle rectangle2 = rectangle;
- 				rectangle2.X += (int)(position.X - origin.X);
- 				rectangle2.Y += (int)(position.Y - origin.Y);
- 				if (rectangle2.Contains(value))
- 					isHovered = true;
- 
 +				/*
  				spriteBatch.Draw(texture.Value, position, rectangle, Color.White, 0f, origin, drawScale, SpriteEffects.None, 0f);
 +				*/
