@@ -44,7 +44,7 @@
  			int num = localPlayer.statLifeMax / 20;
  			int num2 = (localPlayer.statLifeMax - 400) / 5;
  			if (num2 < 0)
-@@ -52,33 +_,38 @@
+@@ -52,28 +_,33 @@
  
  			int num3 = localPlayer.statLifeMax2 - localPlayer.statLifeMax;
  			UIDisplay_LifePerHeart += num3 / num;
@@ -81,16 +81,10 @@
  				}
  				else {
 -					float num7 = ((float)localPlayer.statLife - (float)(i - 1) * UIDisplay_LifePerHeart) / UIDisplay_LifePerHeart;
-+					double num7 = ((float)snapshot.Life - (float)(i - 1) * UIDisplay_LifePerHeart) / UIDisplay_LifePerHeart;
++					float num7 = (float)(snapshot.Life - (i - 1) * UIDisplay_LifePerHeart) / (float)UIDisplay_LifePerHeart;
  					num5 = (int)(30f + 225f * num7);
  					if (num5 < 30)
  						num5 = 30;
- 
--					num6 = num7 / 4f + 0.75f;
-+					num6 = (float)(num7 / 4f + 0.75f);
- 					if ((double)num6 < 0.75)
- 						num6 = 0.75f;
- 
 @@ -98,6 +_,21 @@
  
  				int a = (int)((double)num5 * 0.9);
@@ -143,7 +137,7 @@
  
  			_ = localPlayer.statManaMax2 / 20;
  			Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
-@@ -124,22 +_,27 @@
+@@ -124,17 +_,22 @@
  				num = (int)vector.X + 5;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[2].Value, new Vector2(800 - num + UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -166,16 +160,10 @@
  				}
  				else {
 -					float num4 = (float)(localPlayer.statMana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
-+					double num4 = (float)(snapshot.Mana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
++					float num4 = (float)(snapshot.Mana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
  					num2 = (int)(30f + 225f * num4);
  					if (num2 < 30)
  						num2 = 30;
- 
--					num3 = num4 / 4f + 0.75f;
-+					num3 = (float)(num4 / 4f + 0.75f);
- 					if ((double)num3 < 0.75)
- 						num3 = 0.75f;
- 
 @@ -150,27 +_,46 @@
  				if (flag)
  					num3 += Main.cursorScale - 1f;
