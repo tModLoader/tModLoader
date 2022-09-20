@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria.GameContent.UI.ResourceSets;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.IO;
