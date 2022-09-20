@@ -216,7 +216,7 @@ namespace Terraria.ModLoader
 		/// your localization file, with the key prefix of "Mods.ModName.GameTips".
 		/// </summary>
 		/// <param name="gameTips"> The current list of all added game tips. </param>
-		public virtual void ModifyGameTips(IReadOnlyList<GameTipData> gameTips) { }
+		public virtual void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips) { }
 
 		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.

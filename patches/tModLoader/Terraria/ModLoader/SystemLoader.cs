@@ -335,10 +335,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static List<GameTipData> ModifyGameTips(List<GameTipData> gameTips) {
-			IReadOnlyList<GameTipData> tips = gameTips.Select(gameTipData => gameTipData.Clone()).ToList().AsReadOnly();
-			foreach (var system in HookModifyGameTips.arr) {
-				system.ModifyGameTips(tips);
+		public static List<GameTipData> ModifyGameTipVisibility(List<GameTipData> gameTips) {
+			IReadOnlyList<GameTipData> tips = gameTips.AsReadOnly();
+			foreach (var system in HookModifyGameTipVisibility.arr) {
+				system.ModifyGameTipVisibility(tips);
 			}
 
 			return tips.ToList();

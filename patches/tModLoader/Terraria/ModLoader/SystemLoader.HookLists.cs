@@ -137,7 +137,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>> (s => s.ModifyInterfaceLayers);
 
-		private static HookList HookModifyGameTips = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTips);
+		private static HookList HookModifyGameTipVisibility = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTipVisibility);
 
 		private static HookList HookPostDrawInterface = AddHook<Action<SpriteBatch>>(s => s.PostDrawInterface);
 

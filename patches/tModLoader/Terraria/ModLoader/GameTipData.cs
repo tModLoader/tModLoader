@@ -34,12 +34,12 @@ namespace Terraria.ModLoader
 
 		internal bool isVisible = true;
 
-		public GameTipData(LocalizedText text, Mod mod) {
-			SetTipData(text, mod.Name);
-		}
+		public GameTipData(LocalizedText text, Mod mod) : this(text, mod.Name) { }
 
 		internal GameTipData(LocalizedText text, string mod) {
-			SetTipData(text, mod);
+			TipText = text;
+			Mod = mod;
+			ShortKey = text.Key.Replace($"Mods.{mod}.GameTips.", "");
 		}
 
 		internal GameTipData(LocalizedText text) {
@@ -51,7 +51,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Until reload, prevents this tip from ever appearing during loading screens.
 		/// </summary>
-		public void DisableVisibility() {
+		public void Hide() {
 			isVisible = false;
 		}
 
@@ -60,12 +60,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public GameTipData Clone() {
 			return new GameTipData(new LocalizedText(TipText.Key, TipText.Value), Mod);
-		}
-
-		internal void SetTipData(LocalizedText text, string mod) {
-			TipText = text;
-			Mod = mod;
-			ShortKey = text.Key.Replace($"Mods.{mod}.GameTips.", "");
 		}
 	}
 }
