@@ -24,8 +24,7 @@ namespace ExampleMod
 				case MessageType.ExampleStatIncreasePlayerSync:
 					byte playernumber = reader.ReadByte();
 					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
-					examplePlayer.exampleLifeFruits = reader.ReadByte();
-					examplePlayer.exampleManaCrystals = reader.ReadByte();
+					examplePlayer.ReceivePlayerSync(reader);
 					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
 					break;
 				case MessageType.ExampleTeleportToStatue:

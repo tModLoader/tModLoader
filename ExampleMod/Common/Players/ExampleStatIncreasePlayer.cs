@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Items.Consumables;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -26,6 +27,12 @@ namespace ExampleMod.Common.Players
 			packet.Write((byte)exampleLifeFruits);
 			packet.Write((byte)exampleManaCrystals);
 			packet.Send(toWho, fromWho);
+		}
+
+		// Called in ExampleMod.Networking.cs
+		public void ReceivePlayerSync(BinaryReader reader) {
+			exampleLifeFruits = reader.ReadByte();
+			exampleManaCrystals = reader.ReadByte();
 		}
 
 		public override void clientClone(ModPlayer clientClone) {
