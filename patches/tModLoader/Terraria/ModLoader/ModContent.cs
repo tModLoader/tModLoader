@@ -335,7 +335,7 @@ namespace Terraria.ModLoader
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
-			Main.gameTips.allTips = SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
+			SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();

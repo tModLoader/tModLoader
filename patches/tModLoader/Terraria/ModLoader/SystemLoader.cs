@@ -335,13 +335,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static List<GameTipData> ModifyGameTipVisibility(List<GameTipData> gameTips) {
-			IReadOnlyList<GameTipData> tips = gameTips.AsReadOnly();
+		public static void ModifyGameTipVisibility(IReadOnlyList<GameTipData> tips) {
 			foreach (var system in HookModifyGameTipVisibility.arr) {
 				system.ModifyGameTipVisibility(tips);
 			}
-
-			return tips.ToList();
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {
