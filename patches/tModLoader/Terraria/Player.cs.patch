@@ -6011,7 +6011,7 @@
 +
 +				if (getItem.stack > 0) {
 +					int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, getItem.type, getItem.stack, noBroadcast: false, 0, noGrabDelay: true);
-+
++					
 +					if (Main.netMode == 1)
 +						NetMessage.SendData(21, -1, -1, null, number, 1f);
 +				}
