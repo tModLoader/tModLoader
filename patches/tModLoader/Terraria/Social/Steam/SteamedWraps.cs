@@ -386,14 +386,27 @@ namespace Terraria.Social.Steam
 			ulong dlBytes, totalBytes;
 
 			const int LogEveryXPercent = 10;
+			const int MaxFailures = 10;
 
 			int nextPercentageToLog = LogEveryXPercent;
+			int numFailures = 0;
 
 			while (!IsWorkshopItemInstalled(publishId)) {
 				if (SteamClient)
 					SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
 				else
 					SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+
+				if (totalBytes == 0) {
+					// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
+					if (numFailures++ >= MaxFailures) {
+						break;
+					}
+					else {
+						Thread.Sleep(100);
+						continue;
+					}
+				}
 
 				if (uiProgress != null)
 					uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
@@ -410,6 +423,12 @@ namespace Terraria.Social.Steam
 					if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
 						nextPercentageToLog = 100;
 					}
+				}
+
+				// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
+				float progressRaw = dlBytes / totalBytes;
+				if (progressRaw == 1) {
+					break;
 				}
 			}
 		}

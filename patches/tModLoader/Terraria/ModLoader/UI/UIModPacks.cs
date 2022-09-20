@@ -195,6 +195,11 @@ namespace Terraria.ModLoader.UI
 			string enabledJson = Path.Combine(folderPath, "Mods", "enabled.json");
 
 			string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
+			if (modPackMods == null) {
+				Utils.LogAndConsoleInfoMessage($"No contents in enabled.json at: {folderPath}. Is this correct?");
+				modPackMods = new string[0];
+			}
+
 			var localMods = ModOrganizer.FindMods();
 
 			_modPacks.Add(new UIModPackItem(folderPath, modPackMods, false, localMods));
@@ -216,6 +221,12 @@ namespace Terraria.ModLoader.UI
 
 			var configsAll = Directory.EnumerateFiles(Config.ConfigManager.ModConfigPath);
 
+			// Export enabled.json to the modpack
+			File.Copy(Path.Combine(ModOrganizer.modPath, "enabled.json"), Path.Combine(modsPath, "enabled.json"), true);
+
+			File.WriteAllText(Path.Combine(modsPath, "tmlversion.txt"), BuildInfo.tMLVersion.ToString());
+
+			// Export Mods Utilized
 			var workshopIds = new List<string>();
 			foreach (var mod in ModLoader.Mods) {
 				if (mod.File == null)
@@ -241,11 +252,6 @@ namespace Terraria.ModLoader.UI
 
 			// Write the required workshop mods to install.txt
 			File.WriteAllLines(Path.Combine(modsPath, "install.txt"), workshopIds);
-
-			// Export enabled.json to the modpack
-			File.Copy(Path.Combine(ModOrganizer.modPath, "enabled.json"), Path.Combine(modsPath, "enabled.json"), true);
-
-			File.WriteAllText(Path.Combine(modsPath, "tmlversion.txt"), BuildInfo.tMLVersion.ToString());
 		}
 
 		public static void ExportSnapshot(string modPackName) {

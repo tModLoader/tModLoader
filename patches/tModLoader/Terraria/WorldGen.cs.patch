@@ -416,14 +416,13 @@
  			CaptureInterface.ResetFocus();
  			Main.ActivePlayerFileData.StopPlayTimer();
  			Player.SavePlayer(Main.ActivePlayerFileData);
-@@ -2402,6 +_,11 @@
+@@ -2402,6 +_,10 @@
  				Main.netMode = 0;
  			}
  
 +			//This is only called in case of a manual quit or disconnect.
 +			//There is a less common (client) call to this in Netplay.InnerClientLoop.
 +			SystemLoader.OnWorldUnload();
-+			TileIO.PostExitWorldCleanup();
 +
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
@@ -507,6 +506,23 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2603,6 +_,7 @@
+ 		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
+ 
+ 		public static void clearWorld() {
++			Main.waterStyle = 0;
+ 			Main.ladyBugRainBoost = 0;
+ 			Main.getGoodWorld = false;
+ 			Main.drunkWorld = false;
+@@ -2619,6 +_,8 @@
+ 			Main.checkXMas();
+ 			Main.checkHalloween();
+ 			DontStarveDarknessDamageDealer.Reset();
++			Main.ParticleSystem_World_BehindPlayers.Particles.Clear();
++			Main.ParticleSystem_World_OverPlayers.Particles.Clear();
+ 			if (Main.mapReady) {
+ 				for (int i = 0; i < lastMaxTilesX; i++) {
+ 					_ = (float)i / (float)lastMaxTilesX;
 @@ -2753,21 +_,26 @@
  			noLiquidCheck = false;
  			Liquid.numLiquid = 0;
@@ -537,7 +553,7 @@
  			if (Main.netMode != 1) {
  				for (int l = 0; l < Main.maxTilesX; l++) {
  					float num2 = (float)l / (float)Main.maxTilesX;
-@@ -2780,6 +_,8 @@
+@@ -2780,12 +_,15 @@
  					}
  				}
  			}
@@ -546,6 +562,40 @@
  
  			for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
  				Main.countsAsHostForGameplay[n] = false;
+ 			}
+ 
+ 			CombatText.clearAll();
++			PopupText.ClearAll();
+ 			for (int num3 = 0; num3 < 6000; num3++) {
+ 				Main.dust[num3] = new Dust();
+ 				Main.dust[num3].dustIndex = num3;
+@@ -2797,15 +_,18 @@
+ 
+ 			for (int num5 = 0; num5 < 400; num5++) {
+ 				Main.item[num5] = new Item();
++				Main.item[num5].whoAmI = num5;
+ 				Main.timeItemSlotCannotBeReusedFor[num5] = 0;
+ 			}
+ 
+ 			for (int num6 = 0; num6 < 200; num6++) {
+ 				Main.npc[num6] = new NPC();
++				Main.npc[num6].whoAmI = num6;
+ 			}
+ 
+ 			for (int num7 = 0; num7 < 1000; num7++) {
+ 				Main.projectile[num7] = new Projectile();
++				Main.projectile[num7].whoAmI = num7;
+ 			}
+ 
+ 			for (int num8 = 0; num8 < 8000; num8++) {
+@@ -2826,6 +_,7 @@
+ 
+ 			setWorldSize();
+ 			Star.SpawnStars();
++			TileIO.ClearWorld();
+ 			worldCleared = true;
+ 		}
+ 
 @@ -5616,6 +_,8 @@
  		}
  

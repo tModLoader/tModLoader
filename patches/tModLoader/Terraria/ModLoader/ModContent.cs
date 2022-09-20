@@ -348,6 +348,7 @@ namespace Terraria.ModLoader
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+			SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 			PylonLoader.Setup();
 			MapLoader.SetupModMap();
@@ -500,6 +501,7 @@ namespace Terraria.ModLoader
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+			Main.gameTips.Reset();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();
@@ -556,6 +558,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static void CleanupModReferences()
 		{
+			WorldGen.clearWorld();
+
 			// Clear references to ModPlayer instances
 			for (int i = 0; i < Main.player.Length; i++) {
 				Main.player[i] = new Player();
@@ -567,34 +571,9 @@ namespace Terraria.ModLoader
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
-			for (int i = 0; i < Main.npc.Length; i++) {
-				Main.npc[i] = new NPC();
-				Main.npc[i].whoAmI = i;
-			}
-
-			for (int i = 0; i < Main.item.Length; i++) {
-				Main.item[i] = new Item();
-				// item.whoAmI is never used
-			}
-
 			if (ItemSlot.singleSlotArray[0] != null) {
 				ItemSlot.singleSlotArray[0] = new Item();
 			}
-
-			for (int i = 0; i < Main.chest.Length; i++) {
-				Main.chest[i] = new Chest();
-			}
-
-			for (int i = 0; i < Main.projectile.Length; i++) {
-				Main.projectile[i] = new Projectile();
-				// projectile.whoAmI is only set for active projectiles
-			}
-
-			TileEntity.Clear(); // drop all possible references to mod TEs
-
-			// clear particles
-			Main.ParticleSystem_World_BehindPlayers.Particles.Clear();
-			Main.ParticleSystem_World_OverPlayers.Particles.Clear();
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {

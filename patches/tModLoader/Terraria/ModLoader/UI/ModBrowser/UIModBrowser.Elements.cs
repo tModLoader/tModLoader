@@ -51,6 +51,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_downloadAllButton.OnClick += DownloadAllFilteredMods;
 			_updateAllButton.OnClick += UpdateAllMods;
 			_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
+			FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
 			FilterTextBox.OnTextChange += (sender, e) => {
 				UpdateNeeded = true;
 			};
@@ -148,7 +149,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Top = { Pixels = 5 },
 				Left = { Pixels = -160, Percent = 1f },
 				Width = { Pixels = 100 },
-				Height = { Pixels = 10 }
+				Height = { Pixels = 20 }
 			};
 
 			_upperMenuContainer = new UIElement {

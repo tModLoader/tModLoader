@@ -25,6 +25,16 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
+@@ -70,7 +_,8 @@
+ 			return entry;
+ 		}
+ 
++		//TML: Made public
+-		private void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry) {
++		public void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry) {
+ 			if (_entriesByNpcNetId.ContainsKey(npcNetId))
+ 				_entriesByNpcNetId[npcNetId].Remove(entry);
+ 		}
 @@ -114,6 +_,27 @@
  			RegisterMimic();
  			RegisterEclipse();

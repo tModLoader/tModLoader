@@ -76,8 +76,7 @@ namespace ExampleMod.Content.Tiles
 				// Alternately, we could check the tile already present in the coordinate we are interested.
 				// Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
 				// Tile tile = Framing.GetTileSafely(x, y);
-				// if (tile.active() && tile.type == TileID.SnowBlock)
-				// {
+				// if (tile.HasTile && tile.TileType == TileID.SnowBlock) {
 				// 	WorldGen.TileRunner(.....);
 				// }
 			}

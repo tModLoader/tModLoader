@@ -1,5 +1,23 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/TerrariaNetCore/Terraria/Main.cs
+@@ -114,7 +_,7 @@
+ 			Ready
+ 		}
+ 
+-#if WINDOWS
++//#if WINDOWS
+ 		internal static class NativeMethods
+ 		{
+ 			public const uint ES_CONTINUOUS = 2147483648u;
+@@ -123,7 +_,7 @@
+ 			[DllImport("kernel32.dll")]
+ 			public static extern uint SetThreadExecutionState(uint esFlags);
+ 		}
+-#endif
++//#endif
+ 
+ 		private struct MouseTextCache
+ 		{
 @@ -501,11 +_,7 @@
  		public static float gFader;
  		public static byte gFadeDir = 1;
@@ -13,6 +31,18 @@
  		public static IMultiplayerClosePlayersOverlay ActiveClosePlayersTeamOverlay = new NewMultiplayerClosePlayersOverlay();
  		public static double UpdateTimeAccumulator;
  		public static bool drawSkip;
+@@ -1964,9 +_,9 @@
+ 		public static string oldStatusText = "";
+ 		public static string autoGenFileLocation = null;
+ 		public static bool autoShutdown;
+-#if WINDOWS
++//#if WINDOWS
+ 		private uint previousExecutionState;
+-#endif
++//#endif
+ 		public static int sundialCooldown;
+ 		public static bool fastForwardTime;
+ 		private static Stopwatch splashTimer = new Stopwatch();
 @@ -3250,6 +_,7 @@
  			PendingBorderlessState = screenBorderless;
  			screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
@@ -37,11 +67,27 @@
  								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
  #endif
  							}
-@@ -4037,6 +_,7 @@
- 			if (previousExecutionState != 0)
+@@ -4027,16 +_,17 @@
+ 		}
+ 
+ 		public void NeverSleep() {
+-#if WINDOWS
+-			previousExecutionState = NativeMethods.SetThreadExecutionState(2147483649u);
+-#endif
++//#if WINDOWS
++			if (OperatingSystem.IsWindows())
++				previousExecutionState = NativeMethods.SetThreadExecutionState(2147483649u);
++//#endif
+ 		}
+ 
+ 		public void YouCanSleepNow() {
+-#if WINDOWS
+-			if (previousExecutionState != 0)
++//#if WINDOWS
++			if (OperatingSystem.IsWindows() && previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
- #endif
-+			Netplay.WaitForClosePortClose();
+-#endif
++//#endif
  		}
  
  		public void DedServ() {

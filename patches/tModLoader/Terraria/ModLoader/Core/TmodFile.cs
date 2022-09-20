@@ -362,7 +362,7 @@ namespace Terraria.ModLoader.Core
 
 			reader.ReadString(); //tModLoader version
 			if (!reader.ReadBytes(20).SequenceEqual(Hash))
-				throw new Exception($"File has been modifed, hash. {path}");
+				throw new Exception($"File has been modified, hash. {path}");
 
 			// could also check name and version but hash should suffice
 		}

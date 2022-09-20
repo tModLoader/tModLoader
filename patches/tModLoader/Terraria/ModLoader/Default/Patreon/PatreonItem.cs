@@ -2,17 +2,32 @@
 using System.Collections.Generic;
 using Terraria.Localization;
 
+#pragma warning disable IDE0057 // Use range operator
+
 namespace Terraria.ModLoader.Default.Patreon
 {
 	internal abstract class PatreonItem : ModLoaderModItem
 	{
-		public virtual string SetSuffix => "'s";
+		public string InternalSetName { get; set; }
+		public string SetSuffix { get; set; }
 
-		public string InternalSetName => GetType().Name.Split('_')[0];
+		public PatreonItem() {
+			InternalSetName = GetType().Name;
+
+			int lastUnderscoreIndex = InternalSetName.LastIndexOf('_');
+
+			if (lastUnderscoreIndex != -1) {
+				InternalSetName = InternalSetName.Substring(0, lastUnderscoreIndex);
+			}
+
+			SetSuffix = InternalSetName.EndsWith('s') ? "'" : "'s";
+		}
 
 		public override void SetStaticDefaults() {
-			var displayName = Name.Replace('_', ' ');
-			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
+			string displayName = Name.Replace('_', ' ');
+
+			displayName = displayName.Insert(Name.IndexOf('_'), SetSuffix);
+
 			DisplayName.SetDefault(displayName);
 		}
 
