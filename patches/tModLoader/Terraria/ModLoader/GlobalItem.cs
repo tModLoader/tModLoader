@@ -44,11 +44,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaults(Item item) {
 		}
-		/// <summary>
-		/// Called when an item is crafted.
-		/// </summary>
-		/// <param name="original">The original item before being stacked with the created item.  Only used when crafting a stackable item.  Can Stack is called before.  OnStack is called after.</param>
-		public virtual void OnCreate(Item item, Item original, ItemCreationContext context) {
+
+		public virtual void OnCreate(Item item, ItemCreationContext context) {
 		}
 
 		/// <summary>

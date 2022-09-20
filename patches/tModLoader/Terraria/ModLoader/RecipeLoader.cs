@@ -160,7 +160,7 @@ namespace Terraria.ModLoader
 		/// <param name="consumedItems">Materials used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe, Item original, List<Item> consumedItems) {
 			recipe.OnCraftHooks?.Invoke(recipe, item, original, consumedItems);
-			ItemLoader.OnCreate(item, original, new RecipeCreationContext { recipe = recipe, ConsumedItems = consumedItems });
+			ItemLoader.OnCreate(item, new RecipeCreationContext { recipe = recipe, original = original, ConsumedItems = consumedItems });
 		}
 
 		/// <summary>

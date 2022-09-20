@@ -127,7 +127,7 @@
  						if (num4 == 0)
  							break;
  
-+						ItemLoader.TryStackItems(item[num2], inventory[item2.Key], out int numTransfered);
++						ItemLoader.TryStackItems(item[num2], inventory[item2.Key], out _);
 +						SoundEngine.PlaySound(7);
 +
 +						/* TML: #OnStackHook
@@ -146,7 +146,7 @@
  							break;
  
 +						// Outmost for iterates over empty slots, flag not true means item was not put in yet (meaning CanStack does not have to be checked)
-+						ItemLoader.TryStackItems(item[num5], inventory[item5.Key], out int numTransfered);
++						ItemLoader.TryStackItems(item[num5], inventory[item5.Key], out _);
 +
 +						/* TML: #OnStackHook
  						if (num7 > num8)
@@ -182,7 +182,7 @@
  					if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  						continue;
  
-+					if (!ItemLoader.TryStackItems(inventory[num2], item[i], out int numTransfered)) // TML: #StackablePrefixWeapons, check moved here
++					if (!ItemLoader.TryStackItems(inventory[num2], item[i], out _)) // TML: #StackablePrefixWeapons, check moved here
 +						continue;
 +
 +					/* TML: #OnStackHook
@@ -210,7 +210,7 @@
  						break;
  					}
  
-+					ItemLoader.StackItems(chestinv[i], I, out int numTrasfered);
++					ItemLoader.StackItems(chestinv[i], I, out _);
 +
 +					/* TML: #OnStackHook
  					I.stack -= num;

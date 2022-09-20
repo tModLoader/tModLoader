@@ -81,7 +81,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			OnCreate(null, new InitializationContext());
+			OnCreate(new InitializationContext());
 		}
 
 		public sealed override void SetupContent() {
@@ -104,11 +104,7 @@ namespace Terraria.ModLoader
 		public virtual void OnSpawn(IEntitySource source) {
 		}
 
-		/// <summary>
-		/// Called when an item is crafted.
-		/// </summary>
-		/// <param name="original">The original item before being stacked with the created item.  Only used when crafting a stackable item.  Can Stack is called before.  OnStack is called after.</param>
-		public virtual void OnCreate(Item original, ItemCreationContext context) {
+		public virtual void OnCreate(ItemCreationContext context) {
 		}
 
 		/// <summary>

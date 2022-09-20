@@ -40,7 +40,7 @@
  					Item item3 = inv[list[k]];
 +					//if (item2.type == item3.type && item3.stack != item3.maxStack) {
  					if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+						if (!ItemLoader.TryStackItems(item2, item3, out int numTransfered))
++						if (!ItemLoader.TryStackItems(item2, item3, out _))
 +							continue;
 +
 +						/* TML: #OnStackHook
