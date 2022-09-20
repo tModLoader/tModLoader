@@ -30,21 +30,20 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override bool? UseItem(Player player) {
-			// Moving the exampleLifeFruits check from CanUseItem to here allows this example fruit to still "be used" like Mana Crystals can be
-			// when at the max allowed, but it will just play the animation and not affect the player's max life
-			bool canConsume = false;
-			if (player.GetModPlayer<ExampleStatIncreasePlayer>().exampleManaCrystals < MaxExampleManaCrystals) {
-				canConsume = true;
-
-				// This method handles permanently increasing the player's max health and displaying the green heal text
-				player.UseManaMaxIncreasingItem(ManaPerCrystal);
-
-				// This field tracks how many of the example crystals have been consumed
-				player.GetModPlayer<ExampleStatIncreasePlayer>().exampleManaCrystals++;
+			// Moving the exampleManaCrystals check from CanUseItem to here allows this example crystal to still "be used" like Mana Crystals can be
+			// when at the max allowed, but it will just play the animation and not affect the player's max mana
+			if (player.GetModPlayer<ExampleStatIncreasePlayer>().exampleManaCrystals >= MaxExampleManaCrystals) {
+				// Returning null will make the item not be consumed
+				return null;
 			}
 
-			// Returning null will make the item not be consumed
-			return canConsume ? true : null;
+			// This method handles permanently increasing the player's max mana and displaying the blue mana text
+			player.UseManaMaxIncreasingItem(ManaPerCrystal);
+
+			// This field tracks how many of the example crystals have been consumed
+			player.GetModPlayer<ExampleStatIncreasePlayer>().exampleManaCrystals++;
+
+			return true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

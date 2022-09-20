@@ -31,18 +31,18 @@ namespace ExampleMod.Content.Items.Consumables
 		public override bool? UseItem(Player player) {
 			// Moving the exampleLifeFruits check from CanUseItem to here allows this example fruit to still "be used" like Life Fruit can be
 			// when at the max allowed, but it will just play the animation and not affect the player's max life
-			bool canConsume = false;
-			if (player.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits < MaxExampleLifeFruits) {
-				canConsume = true;
-
-				// This method handles permanently increasing the player's max health and displaying the green heal text
-				player.UseHealthMaxIncreasingItem(LifePerFruit);
-
-				// This field tracks how many of the example fruit have been consumed
-				player.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits++;
+			if (player.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits >= MaxExampleLifeFruits) {
+				// Returning null will make the item not be consumed
+				return null;
 			}
-			// Returning null will make the item not be consumed
-			return canConsume ? true : null;
+
+			// This method handles permanently increasing the player's max health and displaying the green heal text
+			player.UseHealthMaxIncreasingItem(LifePerFruit);
+
+			// This field tracks how many of the example fruit have been consumed
+			player.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits++;
+			
+			return true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
