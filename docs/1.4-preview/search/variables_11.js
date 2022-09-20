@@ -15,6 +15,8 @@ var searchData=
   ['retinazer_12',['Retinazer',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a71a2d1ed1a3fe0d266c05e998f4e3040',1,'Terraria::ID::NPCAIStyleID']]],
   ['rider_13',['Rider',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0984732af78d4d44a04a0ef0174fce3c',1,'Terraria::ID::NPCAIStyleID']]],
   ['robe_14',['Robe',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#ad9e67f924d34eab835ef9032e1d69175',1,'Terraria::DataStructures::PlayerDrawLayers']]],
-  ['ropecoil_15',['RopeCoil',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5a0a9147209a240e1ce0fe524894935d',1,'Terraria::ID::ProjAIStyleID']]],
-  ['rotation_16',['Rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a034f5a93c21df2f2c36ed36c79d2736b',1,'Terraria::ModLoader::DrawableTooltipLine']]]
+  ['rocketscienceandboots_15',['RocketScienceAndBoots',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a2a00683a148e6de047b9517ce9f88813',1,'Terraria::ModLoader::GameTipID']]],
+  ['ropeandropecoils_16',['RopeAndRopeCoils',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a327a3f73d00de3505125c1dfe0ab245b',1,'Terraria::ModLoader::GameTipID']]],
+  ['ropecoil_17',['RopeCoil',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5a0a9147209a240e1ce0fe524894935d',1,'Terraria::ID::ProjAIStyleID']]],
+  ['rotation_18',['Rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a034f5a93c21df2f2c36ed36c79d2736b',1,'Terraria::ModLoader::DrawableTooltipLine']]]
 ];

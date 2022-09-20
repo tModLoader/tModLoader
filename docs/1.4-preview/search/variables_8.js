@@ -14,13 +14,14 @@ var searchData=
   ['index_11',['Index',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a923e58f2252753ccfd35b0a608cf8a92',1,'Terraria::ModLoader::DrawableTooltipLine']]],
   ['inferno_12',['Inferno',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aad3549c3928f73ce6dab1720ab0a1c20',1,'Terraria::ID::ProjAIStyleID']]],
   ['influxwaver_13',['InfluxWaver',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac30b109fc50ce3d055979b2c8a8da6e5',1,'Terraria::ID::ProjAIStyleID']]],
-  ['instanced_14',['instanced',['../class_terraria_1_1_item.html#a6e8ff63f241304e30c8d374f314108be',1,'Terraria::Item']]],
-  ['invasion_15',['Invasion',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a82bb7b68e499f6c1b7f9d81fda49a0b1',1,'Terraria::ModLoader::NPCSpawnInfo']]],
-  ['inventorytochest_16',['InventoryToChest',['../class_terraria_1_1_i_d_1_1_cursor_override_i_d.html#a5ffc428514471275d5eb739f604baf0a',1,'Terraria::ID::CursorOverrideID']]],
-  ['isashopitem_17',['isAShopItem',['../class_terraria_1_1_item.html#a0aa14c05e13989949ad892e6b35b71e7',1,'Terraria::Item']]],
-  ['isfishingcrate_18',['IsFishingCrate',['../class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a91e68810fcac8b4e10db76602d8e6e2e',1,'Terraria::ID::ItemID::Sets']]],
-  ['isfishingcratehardmode_19',['IsFishingCrateHardmode',['../class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a490a89256f83f6f3dee113965dbefef1',1,'Terraria::ID::ItemID::Sets']]],
-  ['ismodifier_20',['IsModifier',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a5b10605b6674a8790b831ac56db7880e',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifier()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#abb64fb134ca8bf5bb3087e822945b75e',1,'Terraria.ModLoader.TooltipLine.IsModifier()']]],
-  ['ismodifierbad_21',['IsModifierBad',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aa9b5a57cb07e6cef8f5b8e8ff3d9e2c6',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifierBad()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a129c9510a448891e3a7e38f443581ab4',1,'Terraria.ModLoader.TooltipLine.IsModifierBad()']]],
-  ['isvalidspawnpoint_22',['IsValidSpawnPoint',['../class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a1b6e7b954b362f64745217bd85282e7a',1,'Terraria::ID::TileID::Sets']]]
+  ['infoaccessoriesininventory_14',['InfoAccessoriesInInventory',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a9cb106535e1145c6f9fec29dcb3aaca1',1,'Terraria::ModLoader::GameTipID']]],
+  ['instanced_15',['instanced',['../class_terraria_1_1_item.html#a6e8ff63f241304e30c8d374f314108be',1,'Terraria::Item']]],
+  ['invasion_16',['Invasion',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a82bb7b68e499f6c1b7f9d81fda49a0b1',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['inventorytochest_17',['InventoryToChest',['../class_terraria_1_1_i_d_1_1_cursor_override_i_d.html#a5ffc428514471275d5eb739f604baf0a',1,'Terraria::ID::CursorOverrideID']]],
+  ['isashopitem_18',['isAShopItem',['../class_terraria_1_1_item.html#a0aa14c05e13989949ad892e6b35b71e7',1,'Terraria::Item']]],
+  ['isfishingcrate_19',['IsFishingCrate',['../class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a91e68810fcac8b4e10db76602d8e6e2e',1,'Terraria::ID::ItemID::Sets']]],
+  ['isfishingcratehardmode_20',['IsFishingCrateHardmode',['../class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a490a89256f83f6f3dee113965dbefef1',1,'Terraria::ID::ItemID::Sets']]],
+  ['ismodifier_21',['IsModifier',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a5b10605b6674a8790b831ac56db7880e',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifier()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#abb64fb134ca8bf5bb3087e822945b75e',1,'Terraria.ModLoader.TooltipLine.IsModifier()']]],
+  ['ismodifierbad_22',['IsModifierBad',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aa9b5a57cb07e6cef8f5b8e8ff3d9e2c6',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifierBad()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a129c9510a448891e3a7e38f443581ab4',1,'Terraria.ModLoader.TooltipLine.IsModifierBad()']]],
+  ['isvalidspawnpoint_23',['IsValidSpawnPoint',['../class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a1b6e7b954b362f64745217bd85282e7a',1,'Terraria::ID::TileID::Sets']]]
 ];

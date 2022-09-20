@@ -12,11 +12,15 @@ var searchData=
   ['entity_9',['Entity',['../class_terraria_1_1_data_structures_1_1_entity_source___catch_entity.html#a1d8b3b2876752b92076287221174482d',1,'Terraria::DataStructures::EntitySource_CatchEntity']]],
   ['ethereallance_10',['EtherealLance',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a32571b22acc82f21df05a62c592476b3',1,'Terraria::ID::ProjAIStyleID']]],
   ['everlastingrainbow_11',['EverlastingRainbow',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ac7df7a2f1ee3e7fef701add8efd7b4da',1,'Terraria::ID::ProjAIStyleID']]],
-  ['expert_12',['expert',['../class_terraria_1_1_item.html#a05dfaeec8f9a10fc7ac6218dcfc3f6fe',1,'Terraria::Item']]],
-  ['expert_13',['Expert',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#ae0e103ffd6627c07836c22de20f65ad2',1,'Terraria::ID::ItemRarityID']]],
-  ['expertonly_14',['expertOnly',['../class_terraria_1_1_item.html#acdaa3df8ddaef1011268dacd195f4d1b',1,'Terraria::Item']]],
-  ['explosive_15',['Explosive',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a33c3f24964708449e8acf4ee14823d1f',1,'Terraria::ID::ProjAIStyleID']]],
-  ['explosivebunny_16',['ExplosiveBunny',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#abdbdb5a06480114e4157a645e4feeeae',1,'Terraria::ID::ProjAIStyleID']]],
-  ['eyebrellacloud_17',['EyebrellaCloud',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#aedbcf7b740d61f8506a69899f4f7919c',1,'Terraria::DataStructures::PlayerDrawLayers']]],
-  ['eyeofcthulhu_18',['EyeOfCthulhu',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0e2b454799d9ea12884a0c231c7aa8bc',1,'Terraria::ID::NPCAIStyleID']]]
+  ['expert_12',['Expert',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#ae0e103ffd6627c07836c22de20f65ad2',1,'Terraria::ID::ItemRarityID']]],
+  ['expert_13',['expert',['../class_terraria_1_1_item.html#a05dfaeec8f9a10fc7ac6218dcfc3f6fe',1,'Terraria::Item']]],
+  ['expertmodechallenge_14',['ExpertModeChallenge',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a54b2fa23459b6bdb616451fbf20b7454',1,'Terraria::ModLoader::GameTipID']]],
+  ['expertonly_15',['expertOnly',['../class_terraria_1_1_item.html#acdaa3df8ddaef1011268dacd195f4d1b',1,'Terraria::Item']]],
+  ['exploretheoceans_16',['ExploreTheOceans',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a4e37e28fa6d49054c8f486001d630103',1,'Terraria::ModLoader::GameTipID']]],
+  ['explosive_17',['Explosive',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a33c3f24964708449e8acf4ee14823d1f',1,'Terraria::ID::ProjAIStyleID']]],
+  ['explosivebunny_18',['ExplosiveBunny',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#abdbdb5a06480114e4157a645e4feeeae',1,'Terraria::ID::ProjAIStyleID']]],
+  ['explosivesaredangerous_19',['ExplosivesAreDangerous',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a3acc68c4d20055df8f7c0c86af9d6824',1,'Terraria::ModLoader::GameTipID']]],
+  ['extraplatformorwallconversion_20',['ExtraPlatformOrWallConversion',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a42b509d866fd971baa7e8d2ae27ed1de',1,'Terraria::ModLoader::GameTipID']]],
+  ['eyebrellacloud_21',['EyebrellaCloud',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#aedbcf7b740d61f8506a69899f4f7919c',1,'Terraria::DataStructures::PlayerDrawLayers']]],
+  ['eyeofcthulhu_22',['EyeOfCthulhu',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0e2b454799d9ea12884a0c231c7aa8bc',1,'Terraria::ID::NPCAIStyleID']]]
 ];

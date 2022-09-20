@@ -482,6 +482,8 @@ var hierarchy =
     [ "Terraria.UI.Gamepad.GamepadPageID", "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html", null ],
     [ "Terraria.UI.Gamepad.GamepadPointID", "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html", null ],
     [ "Terraria.Graphics.Shaders.GameShaders", "class_terraria_1_1_graphics_1_1_shaders_1_1_game_shaders.html", null ],
+    [ "Terraria.ModLoader.GameTipData", "class_terraria_1_1_mod_loader_1_1_game_tip_data.html", null ],
+    [ "Terraria.ModLoader.GameTipID", "class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html", null ],
     [ "Terraria.GameContent.UI.GameTipsDisplay", "class_terraria_1_1_game_content_1_1_u_i_1_1_game_tips_display.html", null ],
     [ "Terraria.WorldBuilding.GenBase", "class_terraria_1_1_world_building_1_1_gen_base.html", [
       [ "Terraria.WorldBuilding.GenAction", "class_terraria_1_1_world_building_1_1_gen_action.html", [

@@ -127,6 +127,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>HijackSendDat
 <tr class="memdesc:a64b444dc1fc406965b2d18683715888e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data you have saved for this system in the currently loading world. <br  />
 <b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e">More...</a><br /></td></tr>
 <tr class="separator:a64b444dc1fc406965b2d18683715888e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf5a80b37de6a3655beffaf7cf10e8e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#acf5a80b37de6a3655beffaf7cf10e8e7">ModifyGameTipVisibility</a> (IReadOnlyList&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_data.html">GameTipData</a> &gt; gameTips)</td></tr>
+<tr class="memdesc:acf5a80b37de6a3655beffaf7cf10e8e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the visibility of any added vanilla or modded GameTips. In order to add your OWN tips, add them in your localization file, with the key prefix of "Mods.ModName.GameTips".  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#acf5a80b37de6a3655beffaf7cf10e8e7">More...</a><br /></td></tr>
+<tr class="separator:acf5a80b37de6a3655beffaf7cf10e8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dcfb3bf657cd9697c0c7fd3b8316541"><td class="memItemLeft" align="right" valign="top"><a id="a8dcfb3bf657cd9697c0c7fd3b8316541" name="a8dcfb3bf657cd9697c0c7fd3b8316541"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHardmodeTasks</b> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_world_building_1_1_gen_pass.html">GenPass</a> &gt; list)</td></tr>
 <tr class="memdesc:a8dcfb3bf657cd9697c0c7fd3b8316541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment" <br /></td></tr>
@@ -565,6 +568,40 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </dl>
 
 <p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html#a02f75b795b9b5c338340dcab9057fa63">Terraria.ModLoader.Default.UnloadedSystem</a>.</p>
+
+</div>
+</div>
+<a id="acf5a80b37de6a3655beffaf7cf10e8e7" name="acf5a80b37de6a3655beffaf7cf10e8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf5a80b37de6a3655beffaf7cf10e8e7">&#9670;&nbsp;</a></span>ModifyGameTipVisibility()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModSystem.ModifyGameTipVisibility </td>
+          <td>(</td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_data.html">GameTipData</a> &gt;&#160;</td>
+          <td class="paramname"><em>gameTips</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to set the visibility of any added vanilla or modded GameTips. In order to add your OWN tips, add them in your localization file, with the key prefix of "Mods.ModName.GameTips". </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gameTips</td><td>The current list of all added game tips. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
