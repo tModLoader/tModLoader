@@ -4722,7 +4722,7 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
-@@ -31880,40 +_,57 @@
+@@ -31880,40 +_,78 @@
  			}
  		}
  
@@ -4743,11 +4743,13 @@
 -			if (sItem.type == 109 && itemAnimation > 0 && statManaMax < 200 && ItemTimeIsZero) {
 +			if (sItem.type == 109 && itemAnimation > 0 && ConsumedManaCrystals < ManaCrystalMax && ItemTimeIsZero) {
  				ApplyItemTime(sItem);
--				statManaMax += 20;
--				statManaMax2 += 20;
--				statMana += 20;
--				if (Main.myPlayer == whoAmI)
--					ManaEffect(20);
++				/*
+ 				statManaMax += 20;
+ 				statManaMax2 += 20;
+ 				statMana += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					ManaEffect(20);
++				*/
 +				UseManaMaxIncreasingItem(20);
 +				ConsumedManaCrystals++;
  
@@ -4772,11 +4774,13 @@
 -			if (sItem.type == 1291 && itemAnimation > 0 && statLifeMax >= 400 && statLifeMax < 500 && ItemTimeIsZero) {
 +			if (sItem.type == 1291 && itemAnimation > 0 && ConsumedLifeCrystals == LifeCrystalMax && ConsumedLifeFruit < LifeFruitMax && ItemTimeIsZero) {
  				ApplyItemTime(sItem);
--				statLifeMax += 5;
--				statLifeMax2 += 5;
--				statLife += 5;
--				if (Main.myPlayer == whoAmI)
--					HealEffect(5);
++				/*
+ 				statLifeMax += 5;
+ 				statLifeMax2 += 5;
+ 				statLife += 5;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(5);
++				*/
 +				UseHealthMaxIncreasingItem(5);
 +				ConsumedLifeFruit++;
  
@@ -4788,11 +4792,13 @@
 -			if (sItem.type == 29 && itemAnimation > 0 && statLifeMax < 400 && ItemTimeIsZero) {
 +			if (sItem.type == 29 && itemAnimation > 0 && ConsumedLifeCrystals < LifeCrystalMax && ItemTimeIsZero) {
  				ApplyItemTime(sItem);
--				statLifeMax += 20;
--				statLifeMax2 += 20;
--				statLife += 20;
--				if (Main.myPlayer == whoAmI)
--					HealEffect(20);
++				/*
+ 				statLifeMax += 20;
+ 				statLifeMax2 += 20;
+ 				statLife += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(20);
++				*/
 +				UseHealthMaxIncreasingItem(20);
 +				ConsumedLifeCrystals++;
  
