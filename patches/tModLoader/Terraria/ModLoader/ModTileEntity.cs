@@ -165,15 +165,28 @@ namespace Terraria.ModLoader
 		public sealed override TileEntity GenerateInstance() => ConstructFromBase(this);
 		public sealed override void RegisterTileEntityID(int assignedID) => Type = assignedID;
 
-		public virtual void Load(Mod mod) {
+		void ILoadable.Load(Mod mod) {
 			Mod = mod;
 
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
+			Load();
+
+			var legacyLoadMethod = GetType().GetMethod(nameof(Load), BindingFlags.Instance | BindingFlags.Public, new[] { typeof(Mod) });
+
+			if (legacyLoadMethod != null && legacyLoadMethod.DeclaringType != typeof(ModTileEntity)) {
+				legacyLoadMethod.Invoke(this, new[] { Mod });
+			}
+
 			manager.Register(this);
 			ModTypeLookup<ModTileEntity>.Register(this);
 		}
+
+		[Obsolete("Override the parameterless Load() overload instead.", true)]
+		public virtual void Load(Mod mod) { }
+
+		public virtual void Load() { }
 
 		public virtual bool IsLoadingEnabled(Mod mod) => true;
 
