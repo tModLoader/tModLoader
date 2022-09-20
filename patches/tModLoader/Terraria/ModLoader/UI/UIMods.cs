@@ -386,6 +386,8 @@ namespace Terraria.ModLoader.UI
 					return;
 				}
 			}
+			if(buttonOMF.IsMouseHovering)
+				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
