@@ -169,28 +169,34 @@ namespace Terraria.ModLoader.UI
 				Directory.CreateDirectory(ModPacksDirectory);
 				var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
 				var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
+				var ModPacksToAdd = new List<UIElement>();
 				foreach (string modPackPath in files.Concat(dirs)) {
 					try {
 						if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath)))
 							throw new Exception();
 						else if (Directory.Exists(modPackPath))
-							LoadModernModPack(modPackPath);
+							ModPacksToAdd.Add(LoadModernModPack(modPackPath));
 						else
-							LoadLegacyModPack(modPackPath);
+							ModPacksToAdd.Add(LoadLegacyModPack(modPackPath));
 					}
 					catch {
 						var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {
 							Width = { Percent = 1 },
 							Height = { Pixels = 50, Percent = 0 }
 						};
-						_modPacks.Add(badModPackMessage);
+						ModPacksToAdd.Add(badModPackMessage);
 					}
 				}
-				_scrollPanel.RemoveChild(_uiLoader);
+
+				// Rather than use complicated lock and Monitor.TryEnter code in many places to gate interations over Children, we can do all UI updates at once at a time guaranteed to not be running any UI code which would otherwise cause Collection was modified exceptions
+				Main.QueueMainThreadAction(() => {
+					_modPacks.AddRange(ModPacksToAdd);
+					_scrollPanel.RemoveChild(_uiLoader);
+				});
 			});
 		}
 
-		public void LoadModernModPack(string folderPath) {
+		public UIModPackItem LoadModernModPack(string folderPath) {
 			string enabledJson = Path.Combine(folderPath, "Mods", "enabled.json");
 
 			string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
@@ -201,14 +207,14 @@ namespace Terraria.ModLoader.UI
 
 			var localMods = ModOrganizer.FindMods();
 
-			_modPacks.Add(new UIModPackItem(folderPath, modPackMods, false, localMods));
+			return new UIModPackItem(folderPath, modPackMods, false, localMods);
 		}
 
-		public void LoadLegacyModPack(string jsonPath) {
+		public UIModPackItem LoadLegacyModPack(string jsonPath) {
 			string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(jsonPath));
 
 			var localMods = ModOrganizer.FindMods();
-			_modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(jsonPath), modPackMods, true, localMods));
+			return new UIModPackItem(Path.GetFileNameWithoutExtension(jsonPath), modPackMods, true, localMods);
 		}
 
 		public static void SaveSnapshot(string configsPath, string modsPath) {
