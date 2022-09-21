@@ -2,26 +2,25 @@
 This directory contains utilities for managing a dedicated ***Linux*** server.
 
 ## Docker vs Management Script
-Both the Docker container and the management script can install and update tModLoader and any mods. Docker is a service used to containerize, or isolate, a specific application from a host system. This is beneficial for both security and ease of use with more complicated services. If you would prefer more control over your server, then make use of `manage-tModLoaderServer.sh`.
+While both the Docker container and the management script can install and update tModLoader and any mods, there are a few key differences. Docker isolates tModLoader from your host system and increases security. The management script allows for direct access to your server and increased control as a result. If you are a public server operator or just prefer Docker, then go with the [Docker Container](#using-the-docker-container), otherwise make use of the [management script](#using-the-management-script).
 
-## Using The Script
+## Using The Management Script
 The `manage-tModLoaderServer.sh` script can be used to install tModLoader either directly from the GitHub release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
 
 ### Installing tModLoader
 #### Via SteamCMD (recommended)
 * Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [Valve's Wiki](https://developer.valvesoftware.com/wiki/SteamCMD).
-* Installation via SteamCMD can be performed using `./manage-tModLoaderServer.sh --install --username your_steam_username`.
+* Run `./manage-tModLoaderServer.sh --install --username your_steam_username`.
 * You will be prompted for your password (and your 2fa code if applicable).
 * By default, tModLoader will be installed to `~/Steam/steamapps/common/tModLoader`. To specify an installation directory, use `--folder /full/path/from/root`
 
 #### From GitHub
-* Installation from the latest GitHub release can be performed using `./manage-tModLoaderServer.sh --install --github`.
+* Run `./manage-tModLoaderServer.sh --install --github`.
 * By default, tModLoader will be installed to `~/tModLoader`. To specify an installation directory, use `--folder /path/to/install`.
-
-Additionally, you can avoid updating or installing mods with the `--no-mods` argument.
+* This will install the latest GitHub release, which is the same version as released on Steam.
 
 ### Installing Mods
-Mods will be automatically installed during the tModLoader installation step, but can also be installed separately using the `--mods-only` argument. Simply place any `.tmod` files, `install.txt` for workshop mods, and `enabled.json` into the same directory as the script.
+Mods will be automatically installed during the tModLoader installation step, but can also be installed separately using the `--mods-only` argument. Simply place any `.tmod` files, `install.txt` for workshop mods, and `enabled.json` into the same directory as the script. Additionally, you can avoid updating or installing mods with the `--no-mods` argument.
 
 #### Obtaining install.txt
 Because the steam workshop does not use mod names to identify mods, you must create a modpack to install mods from the workshop. To get an `install.txt` file and its accompanying `enabled.json`:
@@ -31,10 +30,10 @@ Because the steam workshop does not use mod names to identify mods, you must cre
 * Click `Open Mod Pack Folder`.
 * Enter the folder with the name of your modpack
 
-You can copy `enabled.json` and `install.txt` to your script directory and they will be used next time the script is run.
+You can copy `enabled.json` and `install.txt` to your script directory and they will be used next time the script is run (run `./manage-tModLoaderServer.sh --mods-only` to install mods immediately).
 
 ### Launching
-To run tModLoader, you just need to navigate to your install directory (`~/tModLoader` for GitHub, `~/Steam/steamapps/common/tModLoader` for SteamCMD, by default), and run `./start-tModLoaderServer.sh`.
+To run tModLoader, you just need to navigate to your install directory (`~/tModLoader` for GitHub, `~/Steam/steamapps/common/tModLoader` for SteamCMD, by default), and run `./start-tModLoaderServer.sh`. There is also a `--start` argument that will launch the game.
 
 #### Automatically Selecting A World
 If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/serverconfig.txt) and change the settings how you like. Additional options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)

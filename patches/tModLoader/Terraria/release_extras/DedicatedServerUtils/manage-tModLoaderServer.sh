@@ -16,15 +16,24 @@ function popd {
 	command popd > /dev/null || return
 }
 
+# version less than or equal
+verlte() {
+    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+}
+
+# version less than
+verlt() {
+    [ "$1" = "$2" ] && return 1 || verlte $1 $2
+}
+
 # Returns true if an update is needed
 function check_update {
-	local latest_script_version
-	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | cut -d '"' -f2)
+	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | head -n1 | cut -d '"' -f2)
 
-	if [ "$latest_script_version" = "$script_version" ]; then
-		return 1
-	else
+	if verlt "$script_version" "$latest_script_version"; then
 		return 0
+	else
+		return 1
 	fi
 }
 
@@ -293,6 +302,7 @@ Options:
  --mods-only         Only install/update mods.
  --no-mods           Don't install/update mods.
  --check-dir         Directory to check for enabled.json, install.txt, and any .tmod files.
+ --start             Launch the game after running any other operations.
 
 When running --install and --update, enabled.json, install.txt, and any .tmod files will be checked for in the location of the script or in the directory specified by --check-dir."
 	exit
@@ -315,6 +325,7 @@ update=false
 steamcmd=true # Use steamcmd by default. If someone doesn't want to use steamcmd, they probably don't have it installed and since it'll exit, they can specify --github next time
 no_mods=false
 mods_only=false
+start=false
 
 if [ $# -eq 0 ]; then # Check for no arguments
 	echo "No arguments supplied"
@@ -376,6 +387,10 @@ while [[ $# -gt 0 ]]; do
 			checkdir="$2"
 			shift; shift
 			;;
+		--start)
+			start=true
+			shift
+			;;
 		*)
 			echo "Argument not recognized: $1"
 			print_help
@@ -411,8 +426,7 @@ if $update; then
 	if ! $no_mods; then install_mods; fi
 fi
 
-should_check=$(check_update)
-if $should_check; then
+if check_update; then
 	read -t 5 -p "Script update available! Update now? (y/n): " update_now
 
 	case $update_now in
@@ -424,4 +438,17 @@ if $should_check; then
 			echo "Not updating"
 			;;
 	esac
+fi
+
+if $start; then
+	if [[ -v folder ]]; then
+		cd $folder || exit
+	elif $steamcmd; then
+		cd ~/Steam/steamapps/common/tModLoader || exit
+	else
+		cd ~/tModLoader || exit
+	fi
+
+	chmod u+x start-tModLoaderServer.sh
+	./start-tModLoaderServer.sh
 fi
