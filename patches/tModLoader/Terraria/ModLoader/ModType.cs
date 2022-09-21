@@ -125,7 +125,7 @@ namespace Terraria.ModLoader
 			if (CloneNewInstances)
 				return Clone(entity);
 
-			var inst = (TModType)Activator.CreateInstance(GetType());
+			var inst = (TModType)Activator.CreateInstance(GetType(), true)!;
 			inst.Mod = Mod;
 			inst.Entity = entity;
 			return inst;
