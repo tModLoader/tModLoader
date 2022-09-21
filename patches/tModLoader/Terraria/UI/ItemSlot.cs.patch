@@ -355,7 +355,7 @@
  				AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
  			}
  
-+			ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, context == 29, 1);
++			ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: context == 29, numToTransfer: 1);
 +
 +			/* TML: #OnStackHook
  			Main.mouseItem.stack++;
@@ -574,7 +574,7 @@
  				case 12:
  				case 25:
  				case 27: {
-@@ -1274,12 +_,22 @@
+@@ -1274,12 +_,14 @@
  							break;
  
  						bool flag = false;
@@ -583,18 +583,11 @@
 +						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
  							flag = true;
 +
-+							if (Main.mouseItem.IsAir) {
-+								Main.mouseItem = inv[slot].Clone();
-+							}
-+							else {
-+								ItemLoader.StackItems(Main.mouseItem, inv[slot], out _);
-+							}
-+							/* TML: #OnStackHook
  							if (Main.mouseItem.IsAir)
  								Main.mouseItem.SetDefaults(inv[slot].type);
  							else
- 								Main.mouseItem.stack++;
-+							*/
+-								Main.mouseItem.stack++;
++								ItemLoader.StackItems(Main.mouseItem, inv[slot], out _);
  
  							inv[slot].SetDefaults();
  							SoundEngine.PlaySound(7);
@@ -636,7 +629,7 @@
  					Main.shopSellbackHelper.Add(inv[slot]);
  
 -				Main.mouseItem.stack++;
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, true, 1);
++				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: true, numToTransfer: 1);
 +
 +				//Main.mouseItem.stack++;//TML: #OnStackHook
  				RefreshStackSplitCooldown();

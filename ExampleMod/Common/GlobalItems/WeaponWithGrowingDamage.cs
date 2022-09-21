@@ -24,10 +24,6 @@ namespace ExampleMod.Common.GlobalItems
 			return entity.damage > 0;
 		}
 		public override void SetDefaults(Item item) {
-			if (item.type == ItemID.Snowball) {
-				experience = 1;
-				UpdateValue(item);
-			}
 		}
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
@@ -100,6 +96,10 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void OnCreate(Item item, ItemCreationContext context) {
+			if (item.type == ItemID.Snowball) {
+				GainExperience(item, item.stack); // snowballs come with 1xp, for testing :)
+			}
+
 			if (context is RecipeCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {
@@ -137,7 +137,7 @@ namespace ExampleMod.Common.GlobalItems
 			Item item = shop.item[nextSlot++];
 			item.SetDefaults(ItemID.Snowball);
 			if (item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
-				weapon.GainExperience(item, 1);
+				weapon.GainExperience(item, 2); // can buy snowballs with 2xp!
 			}
 		}
 	}

@@ -3423,38 +3423,35 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31827,16 +_,34 @@
+@@ -31827,16 +_,33 @@
  		}
  
  		public static void CraftItem(Recipe r) {
-+			/* TML: #OnStackHook: Gameplay impact: The mouseItem.stack will be increased instead of being replaced by a clone of the recipe item if maxStack > 1
++			/* TML: #OnStackHook
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
--			if (stack <= 0)
--				mouseItem.Prefix(-1);
+ 			if (stack <= 0)
+ 				mouseItem.Prefix(-1);
 +			*/
 +
-+			int stack = mouseItem.stack;
-+			bool tryingToCombineStack = stack > 0 && mouseItem.type == r.createItem.type;
-+			Item createItem = r.createItem.Clone();
-+			if (tryingToCombineStack && !ItemLoader.CanStack(mouseItem, createItem))
++			if (mouseItem.stack > 0 && !ItemLoader.CanStack(mouseItem, r.createItem))
 +				return;
 +
-+			//if (stack <= 0)
-+			//if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
-+				createItem.Prefix(-1);// Stackable items can recieve a prefix on craft and should be managed with the OnStack hook
++			Item crafted = r.createItem.Clone();
++			if (crafted.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
++				crafted.Prefix(-1);
  
  			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
-+			RecipeLoader.OnCraft(createItem, r, mouseItem);
-+			if (tryingToCombineStack) {
-+				ItemLoader.StackItems(mouseItem, createItem, out _, true);
++			RecipeLoader.OnCraft(crafted, r, mouseItem);
++			if (mouseItem.stack > 0) {
++				ItemLoader.StackItems(mouseItem, crafted, out _);
 +			}
 +			else {
-+				mouseItem = createItem;
++				mouseItem = crafted;
 +			}
 +
  			if (mouseItem.type > 0 || r.createItem.type > 0)

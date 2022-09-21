@@ -1457,18 +1457,10 @@ namespace Terraria.ModLoader
 		/// <param name="numTransfered">Amount to be transfered </param>
 		/// <param name="infiniteSource"></param>
 		/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
-		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int numToTransfer = int.MinValue) {
-			if (numToTransfer == int.MinValue) {
-				numTransfered = 0;
-				int numToMaxStack = increase.maxStack - increase.stack;
-				if (numToMaxStack <= 0)
-					return;
-
-				numTransfered = Math.Min(decrease.stack, numToMaxStack);
-			}
-			else {
-				numTransfered = numToTransfer;
-			}
+		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int? numToTransfer = null) {
+			numTransfered = numToTransfer ?? Math.Min(decrease.stack, increase.maxStack - increase.stack);
+			if (numTransfered <= 0)
+				return;
 
 			foreach (var g in HookOnStack.Enumerate(globalItems)) {
 				g.OnStack(increase, decrease, numTransfered);
