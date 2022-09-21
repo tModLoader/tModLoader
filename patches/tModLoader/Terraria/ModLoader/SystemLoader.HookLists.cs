@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Terraria.GameContent.UI.ResourceSets;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -55,8 +54,6 @@ namespace Terraria.ModLoader
 		private delegate void DelegateModifySunLightColor(ref Color tileColor, ref Color backgroundColor);
 
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
-
-		private delegate void DelegateModifyStatSnapshot(Player player, ref PlayerStatsSnapshot snapshot);
 
 		private delegate void DelegatePreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
 
