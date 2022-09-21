@@ -19,6 +19,11 @@ namespace Terraria
 
 		public Item equippedWings = null;
 
+		/// <summary>
+		/// The color for the tooltip of this player's current armor set bonus to be drawn in, if applicable.
+		/// </summary>
+		public Color? setBonusColor = null;
+
 		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);

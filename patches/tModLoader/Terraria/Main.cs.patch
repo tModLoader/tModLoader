@@ -1902,7 +1902,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15173,46 +_,79 @@
+@@ -15173,46 +_,82 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1917,6 +1917,9 @@
 +					else if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "Price") {
  						black = color;
  					}
++					else if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "SetBonus" && player[myPlayer].setBonusColor.HasValue) {
++						black = player[myPlayer].setBonusColor.Value;
++					}
  
 -					if (k == researchLine)
 +					if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")

@@ -2139,7 +2139,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -11126,6 +_,9 @@
+@@ -11126,11 +_,18 @@
  			if (currentItem.type == 5112)
  				Main.musicBox2 = 86;
  
@@ -2149,6 +2149,15 @@
  			Main.musicBoxNotModifiedByVolume = Main.musicBox2;
  		}
  
+ 		public void UpdateArmorSets(int i) {
+ 			setBonus = "";
++			setBonusColor = null;
++			if (ArmorSetLoader.CheckDefinedArmorSets(player))
++				goto UpdateArmorSetsEnd;
++
+ 			if (body == 67 && legs == 56 && head >= 103 && head <= 105) {
+ 				setBonus = Language.GetTextValue("ArmorSetBonus.Shroomite");
+ 				shroomiteStealth = true;
 @@ -11158,10 +_,13 @@
  
  			if (head == 112 && body == 75 && legs == 64) {
@@ -2217,7 +2226,7 @@
  							if (buffType[num10] >= 170 && buffType[num10] <= 171)
  								DelBuff(num10);
  						}
-@@ -11668,10 +_,12 @@
+@@ -11668,10 +_,13 @@
  				whipRangeMultiplier += 0.5f;
  				float num17 = 1.35f;
  				float num18 = 1f / num17;
@@ -2225,6 +2234,7 @@
 +				whipUseTimeMultiplier *= num17;
  			}
  
++			UpdateArmorSetsEnd:
  			ApplyArmorSoundAndDustChanges();
 +
 +			ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
