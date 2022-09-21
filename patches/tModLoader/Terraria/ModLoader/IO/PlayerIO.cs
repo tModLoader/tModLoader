@@ -21,11 +21,19 @@ namespace Terraria.ModLoader.IO
 
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
-		internal static void Save(Player player, string path, bool isCloudSave) {
+		internal static void Save(TagCompound tag, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
+			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
+				TagIO.ToStream(tag, stream);
+				if (isCloudSave && SocialAPI.Cloud != null)
+					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
+			}
+		}
+
+		internal static TagCompound GenerateData(Player player) {
 			var tag = new TagCompound {
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
@@ -44,13 +52,9 @@ namespace Terraria.ModLoader.IO
 				["usedMods"] = SaveUsedMods(player),
 				["usedModPack"] = SaveUsedModPack(player)
 			};
-
-			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-				TagIO.ToStream(tag, stream);
-				if (isCloudSave && SocialAPI.Cloud != null)
-					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-			}
+			return tag;
 		}
+
 		//add near end of Terraria.Player.LoadPlayer before accessory check
 		internal static void Load(Player player, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");

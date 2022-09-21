@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/UI/FancyErrorPrinter.cs
++++ src/tModLoader/Terraria/UI/FancyErrorPrinter.cs
+@@ -122,7 +_,7 @@
+ 		private static void ShowTheBox(string preparedMessage) {
+ 			if (Main.dedServ) // if #SERVER
+ 				return;
+-			
++
+ 			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+ 		}
+ 	}
