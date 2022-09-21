@@ -5682,16 +5682,37 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -38067,6 +_,7 @@
+@@ -38052,7 +_,18 @@
+ 				}
+ 			}
+ 			catch (Exception exception) {
+-				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path);
++				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path); // IO Exception
++
++				if(true && !Main.gameMenu) {
++					if(Main.netMode==NetmodeID.SinglePlayer)
++						WorldFile.SaveWorld();
++					if(Main.netMode!=NetmodeID.Server) {
++						WorldGen.JustQuit(); // Main.menuMode = 10
++						Main.menuMode = MenuID.Title;
++					}
++				}
++
++				Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.PlayerSaveFail")}\n\n{exception}", Main.menuMode);
+ 				throw;
+ 			}
+ 		}
+@@ -38067,20 +_,25 @@
  			if (string.IsNullOrEmpty(path))
  				return;
  
-+			BackupIO.Player.ArchivePlayer(path, isCloudSave);
- 			if (FileUtilities.Exists(path, isCloudSave))
- 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
- 
-@@ -38074,13 +_,20 @@
- 			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
+-			if (FileUtilities.Exists(path, isCloudSave))
+-				FileUtilities.Copy(path, path + ".bak", isCloudSave);
+-
++			byte[] binary; // Priority data generation
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			using (Stream stream = (Stream)new MemoryStream(2000)) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
 +						PlayerLoader.PreSavePlayer(player);
@@ -5804,17 +5825,27 @@
  							binaryWriter.Write(player.hideInfo[num7]);
  						}
  
-@@ -38227,9 +_,13 @@
+@@ -38225,11 +_,21 @@
+ 						binaryWriter.Flush();
+ 						cryptoStream.FlushFinalBlock();
  						stream.Flush();
- 						if (isCloudSave && SocialAPI.Cloud != null)
- 							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
+-						if (isCloudSave && SocialAPI.Cloud != null)
+-							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
++						binary = ((MemoryStream)stream).ToArray();
 +
-+						PlayerLoader.PostSavePlayer(player);
++						PlayerLoader.PostSavePlayer(player); // For native data only
  					}
  				}
  			}
 +
-+			PlayerIO.Save(player, path, isCloudSave);
++			var tag = PlayerIO.SaveData(player); // Priority data generation
++
++			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			if (FileUtilities.Exists(path, isCloudSave))
++				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++
++			FileUtilities.WriteAllBytes(path, binary, isCloudSave);
++			PlayerIO.Save(tag, path, isCloudSave);
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
@@ -5855,14 +5886,15 @@
  			catch {
  			}
  
-@@ -38803,9 +_,12 @@
+@@ -38803,9 +_,13 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
 +		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
-+			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
++			if(PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tag))
++				PlayerIO.Load(newPlayer, tag);
  			for (int i = 3; i < 10; i++) {
 +				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
 +				/*

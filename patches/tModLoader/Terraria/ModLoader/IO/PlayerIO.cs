@@ -21,12 +21,20 @@ namespace Terraria.ModLoader.IO
 
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
-		internal static void Save(Player player, string path, bool isCloudSave) {
+		public static void Save(TagCompound tag, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-			var tag = new TagCompound {
+			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
+				TagIO.ToStream(tag, stream);
+				if (isCloudSave && SocialAPI.Cloud != null)
+					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
+			}
+		}
+
+		public static TagCompound SaveData(Player player) {
+			return new TagCompound {
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
 				["inventory"] = SaveInventory(player.inventory),
@@ -44,28 +52,10 @@ namespace Terraria.ModLoader.IO
 				["usedMods"] = SaveUsedMods(player),
 				["usedModPack"] = SaveUsedModPack(player)
 			};
-
-			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-				TagIO.ToStream(tag, stream);
-				if (isCloudSave && SocialAPI.Cloud != null)
-					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-			}
 		}
+
 		//add near end of Terraria.Player.LoadPlayer before accessory check
-		internal static void Load(Player player, string path, bool isCloudSave) {
-			path = Path.ChangeExtension(path, ".tplr");
-
-			if (!FileUtilities.Exists(path, isCloudSave))
-				return;
-
-			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				//LoadLegacy(player, buf);
-				return;
-			}
-
-			var tag = TagIO.FromStream(new MemoryStream(buf));
+		public static void Load(Player player,TagCompound tag) {
 			LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 			LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
 			LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
@@ -82,6 +72,24 @@ namespace Terraria.ModLoader.IO
 			LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
 			LoadUsedModPack(player, tag.GetString("usedModPack"));
+		}
+
+		public static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag) {
+			path = Path.ChangeExtension(path, ".tplr");
+			tag = new TagCompound();
+
+			if (!FileUtilities.Exists(path, isCloudSave))
+				return false;
+
+			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+
+			if (buf[0] != 0x1F || buf[1] != 0x8B) {
+				//LoadLegacy(player, buf);
+				return false;
+			}
+
+			tag = TagIO.FromStream(new MemoryStream(buf));
+			return true;
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv) {
