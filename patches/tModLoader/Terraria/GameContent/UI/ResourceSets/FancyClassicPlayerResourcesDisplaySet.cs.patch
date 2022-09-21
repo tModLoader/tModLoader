@@ -1,16 +1,20 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
-@@ -3,13 +_,15 @@
+@@ -3,13 +_,20 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
--	public class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
-+	public partial class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
+ 	public class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
  	{
++		private PlayerStatsSnapshot preparedSnapshot;
++
++		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
++
  		private float _currentPlayerLife;
 +		// Made double to prevent bugs caused by precision limits (#HealthManaAPI)
 -		private float _lifePerHeart;
@@ -38,43 +42,47 @@
  			Vector2 vector = new Vector2(Main.screenWidth - 300 + 4, 15f);
  			bool isHovered = false;
  			ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
-@@ -82,6 +_,9 @@
+@@ -82,6 +_,10 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.ResourceSetSlot = HeartPanelsFirstRow;
++			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
++			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _heartCountRow2;
-@@ -92,6 +_,9 @@
+@@ -92,6 +_,10 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.ResourceSetSlot = HeartPanelsSecondRow;
++			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
++			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _heartCountRow1;
-@@ -102,6 +_,9 @@
+@@ -102,6 +_,10 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.ResourceSetSlot = HeartsFirstRow;
++			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
++			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _heartCountRow2;
-@@ -112,8 +_,13 @@
+@@ -112,8 +_,14 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.ResourceSetSlot = HeartsSecondRow;
++			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
++			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverLife = isHovered;
 +			_hoverLife = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, true);
@@ -93,23 +101,25 @@
  			Vector2 vector = new Vector2(Main.screenWidth - 40, 22f);
  			_ = _starCount;
  			bool isHovered = false;
-@@ -139,6 +_,9 @@
+@@ -139,6 +_,10 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.ResourceSetSlot = StarPanels;
++			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
++			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _starCount;
-@@ -149,8 +_,13 @@
+@@ -149,8 +_,14 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.ResourceSetSlot = Stars;
++			resourceDrawSettings.CurrentResource = preparedSnapshot.ManaMax;
++			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverMana = isHovered;
 +			_hoverMana = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, false);

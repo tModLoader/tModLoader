@@ -8,21 +8,25 @@
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
-@@ -16,6 +_,9 @@
+@@ -16,6 +_,10 @@
  		public Vector2 OffsetPerDrawByTexturePercentile;
  		public Vector2 OffsetSpriteAnchor;
  		public Vector2 OffsetSpriteAnchorByTexturePercentile;
 +		public PlayerStatsSnapshot StatsSnapshot;
 +		public IPlayerResourcesDisplaySet DisplaySet;
-+		public int ResourceSetSlot;
++		public int CurrentResource;
++		public double ResourcePerSegment;
  
  		public void Draw(SpriteBatch spriteBatch, ref bool isHovered) {
  			int elementCount = ElementCount;
-@@ -36,7 +_,19 @@
+@@ -36,7 +_,22 @@
  				if (rectangle2.Contains(value))
  					isHovered = true;
  
-+				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(StatsSnapshot, DisplaySet, ResourceSetSlot, elementIndex + 1, texture) {
++				double segmentResourceMax = (i + 1) * ResourcePerSegment;
++				double segmentResourceMaxFromCurrent = ((CurrentResource / ResourcePerSegment) + 1) * ResourcePerSegment;
++				double resource = segmentResourceMax > segmentResourceMaxFromCurrent ? -1 : Utils.Clamp(segmentResourceMax, 0, CurrentResource);
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(StatsSnapshot, DisplaySet, resource, elementIndex + 1, texture) {
 +					position = position,
 +					source = rectangle,
 +					origin = origin,

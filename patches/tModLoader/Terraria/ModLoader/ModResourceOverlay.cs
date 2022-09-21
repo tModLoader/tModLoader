@@ -21,8 +21,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to draw below any resource (hearts, stars, bars or panels) in a display set
 		/// </summary>
-		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
-		/// <returns><see langword="true"/> if the intended heart sprite should draw, <see langword="false"/> otherwise.</returns>
+		/// <param name="context">Contains the drawing data for the resource being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
+		/// <returns><see langword="true"/> if the intended resource sprite should draw, <see langword="false"/> otherwise.</returns>
 		public virtual bool PreDrawResource(ResourceOverlayDrawContext context) {
 			return true;
 		}
@@ -30,7 +30,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to draw on top of any resource (hearts, stars, bars or panels) in a display set
 		/// </summary>
-		/// <param name="context">Contains the drawing data for the heart being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
+		/// <param name="context">Contains the drawing data for the resource being drawn.  You should use the ResourceOverlayDrawContext.Draw method for all drawing</param>
 		public virtual void PostDrawResource(ResourceOverlayDrawContext context) {
 		}
 

@@ -33,7 +33,7 @@
  		public void CycleResourceSet() {
  			IPlayerResourcesDisplaySet lastFrame = null;
 -			_sets.Values.FirstOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
-+			_sets.Values.LastOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
++			_sets.Values.Reverse().FirstOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
  				if (frame == _activeSet)
  					return true;
  

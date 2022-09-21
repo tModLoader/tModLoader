@@ -11,11 +11,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 	// In this example, it draws a clone of the Bars display set, but with the mana and stars "swapped" to the other location
 	public class ExampleReversedBarsDisplay : ModResourceDisplaySet
 	{
-		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> ManaPanels = 0;
-		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> ManaBars = 1;
-		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> LifePanels = 2;
-		public static readonly ResourceSetSlotId<ExampleReversedBarsDisplay> LifeBars = 3;
-
 		// Variable names were copied from HorizontalBarsPlayerResourcesDisplaySet
 		private int _maxSegmentCount;
 		private int _hpSegmentsCount;
@@ -73,9 +68,9 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.ResourceSetSlot = ManaPanels;
+			resourceDrawSettings.CurrentResource = -1;
+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			// Draw the mana bar filling
@@ -88,9 +83,9 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.ResourceSetSlot = ManaBars;
+			resourceDrawSettings.CurrentResource = preparedSnapshot.Mana;
+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_mpHovered = isHovered;
@@ -116,9 +111,9 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.ResourceSetSlot = LifePanels;
+			resourceDrawSettings.CurrentResource = -1;
+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			// Draw the life bar filling
@@ -131,9 +126,9 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.ResourceSetSlot = LifeBars;
+			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_hpHovered = isHovered;
@@ -168,6 +163,10 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			}
 			else if (elementIndex != firstElementIndex) {
 				sprite = _panelMiddleHP;
+				// Make the panels draw from right to left
+				int opposite = lastElementIndex - (elementIndex - firstElementIndex);
+				int drawIndexOffset = opposite - elementIndex;
+				offset.X = drawIndexOffset * _panelMiddleHP.Width();
 			}
 		}
 
@@ -184,20 +183,32 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			}
 			else if (elementIndex != firstElementIndex) {
 				sprite = _panelMiddleMP;
+				// Make the panels draw from right to left
+				int opposite = lastElementIndex - (elementIndex - firstElementIndex);
+				int drawIndexOffset = opposite - elementIndex;
+				offset.X = drawIndexOffset * _panelMiddleMP.Width();
 			}
 		}
 
 		private void LifeFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
 			sprite = _hpFill;
-			if (elementIndex >= _hpSegmentsCount - _hpFruitCount)
+			if (elementIndex < _hpFruitCount)
 				sprite = _hpFillHoney;
 
 			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(elementIndex, sprite, _hpSegmentsCount, _hpPercent, out offset, out drawScale, out sourceRect);
+			// Make the bar fillings draw from right to left
+			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
+			int drawIndexOffset = opposite - elementIndex;
+			offset.X += drawIndexOffset * sprite.Width();
 		}
 
 		private void ManaFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
 			sprite = _mpFill;
 			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
+			// Make the bar fillings draw from right to left
+			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
+			int drawIndexOffset = opposite - elementIndex;
+			offset.X += drawIndexOffset * sprite.Width();
 		}
 	}
 }

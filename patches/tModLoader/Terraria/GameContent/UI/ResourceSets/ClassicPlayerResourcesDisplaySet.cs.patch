@@ -1,21 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
-@@ -2,13 +_,16 @@
+@@ -2,13 +_,19 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.ResourceSets
  {
--	public class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
-+	public partial class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
+ 	public class ClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
  	{
 +		/*
--		private int UIDisplay_ManaPerStar = 20;
-+		private float UIDisplay_ManaPerStar = 20;
+ 		private int UIDisplay_ManaPerStar = 20;
  		private float UIDisplay_LifePerHeart = 20f;
 +		*/
++		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
++
  		private int UI_ScreenAnchorX;
  
  		public string NameKey {
@@ -85,7 +86,7 @@
  					num5 = (int)(30f + 225f * num7);
  					if (num5 < 30)
  						num5 = 30;
-@@ -98,6 +_,21 @@
+@@ -98,6 +_,24 @@
  
  				int a = (int)((double)num5 * 0.9);
  				if (!localPlayer.ghost) {
@@ -95,7 +96,10 @@
 +
 +					Vector2 position = new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + heartTexture.Width() / 2, 32f + heartTexture.Height() * (1 - num6) / 2f + num9 + heartTexture.Height() / 2);
 +
-+					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, Hearts, i, heartTexture) {
++					double segmentResourceMax = (i + 1) * UIDisplay_LifePerHeart;
++					double segmentResourceMaxFromCurrent = ((snapshot.Life / UIDisplay_LifePerHeart) + 1) * UIDisplay_LifePerHeart;
++					double resource = segmentResourceMax > segmentResourceMaxFromCurrent ? -1 : Utils.Clamp(segmentResourceMax, 0, snapshot.Life);
++					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, resource, i, heartTexture) {
 +						position = position,
 +						color = new Color(num5, num5, num5, a),
 +						origin = heartTexture.Size() / 2f,
@@ -164,7 +168,7 @@
  					num2 = (int)(30f + 225f * num4);
  					if (num2 < 30)
  						num2 = 30;
-@@ -150,27 +_,46 @@
+@@ -150,27 +_,49 @@
  				if (flag)
  					num3 += Main.cursorScale - 1f;
  
@@ -172,7 +176,10 @@
 +				
  				int a = (int)((double)num2 * 0.9);
 +
-+				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, Stars, i, TextureAssets.Mana) {
++				double segmentResourceMax = (i + 1) * UIDisplay_ManaPerStar;
++				double segmentResourceMaxFromCurrent = ((snapshot.Mana / UIDisplay_ManaPerStar) + 1) * UIDisplay_ManaPerStar;
++				double resource = segmentResourceMax > segmentResourceMaxFromCurrent ? -1 : Utils.Clamp(segmentResourceMax, 0, snapshot.Mana);
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, resource, i, TextureAssets.Mana) {
 +					position = position,
 +					color = new Color(num2, num2, num2, a),
 +					origin = TextureAssets.Mana.Size() / 2f,
