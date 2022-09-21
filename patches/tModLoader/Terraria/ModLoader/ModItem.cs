@@ -1144,6 +1144,7 @@ namespace Terraria.ModLoader
 		/// Allows you to make anything happen when the player crafts this item using the given recipe.
 		/// </summary>
 		/// <param name="recipe">The recipe that was used to craft this item.</param>
+		[Obsolete("Use OnCreate and check if context is RecipeCreationContext", true)]
 		public virtual void OnCraft(Recipe recipe) {
 		}
 
