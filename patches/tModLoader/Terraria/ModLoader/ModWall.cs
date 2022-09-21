@@ -95,7 +95,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame.
+		/// Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. Walls are drawn every 4 frames.
 		/// </summary>
 		public virtual void AnimateWall(ref byte frame, ref byte frameCounter) {
 		}
@@ -105,8 +105,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		/// <param name="resetFrame">Whether this wall should try to change it's display frame</param>
-		public virtual bool WallFrame(int i, int j, ref bool resetFrame) {
+		/// <param name="resetFrame">True if the calling code intends that the frameNumber be randomly changed, such as when placing the wall initially or loading the world, but not when updating due to nearby tile or wall placements</param>
+		/// <param name="style">The style or orientation that will be applied</param>
+		/// <param name="frameNumber">The random style that will be applied</param>
+		public virtual bool WallFrame(int i, int j, bool resetFrame, ref int style, ref int frameNumber) {
 			return true;
 		}
 	}

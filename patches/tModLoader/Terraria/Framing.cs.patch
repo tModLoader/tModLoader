@@ -8,6 +8,24 @@
  
  namespace Terraria
  {
+@@ -26,13 +_,13 @@
+ 		}
+ 
+ 		private static Point16[][] selfFrame8WayLookup;
+-		private static Point16[][] wallFrameLookup;
++		public static Point16[][] wallFrameLookup;
+ 		private static Point16 frameSize8Way;
+ 		private static Point16 wallFrameSize;
+ 		private static BlockStyle[] blockStyleLookup;
+-		private static int[][] phlebasTileFrameNumberLookup;
++		public static int[][] phlebasTileFrameNumberLookup;
+-		private static int[][] lazureTileFrameNumberLookup;
++		public static int[][] lazureTileFrameNumberLookup;
+-		private static int[][] centerWallFrameLookup;
++		public static int[][] centerWallFrameLookup;
+ 
+ 		public static void Initialize() {
+ 			selfFrame8WayLookup = new Point16[256][];
 @@ -312,7 +_,7 @@
  			if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
  				return;
@@ -17,13 +35,33 @@
  				Main.tile[i, j].wall = 0;
  
  			WorldGen.UpdateMapTile(i, j);
-@@ -321,6 +_,9 @@
- 				tile.wallColor(0);
- 				return;
+@@ -350,18 +_,14 @@
+ 			int num2 = 0;
+ 			if (Main.wallLargeFrames[tile.wall] == 1) {
+ 				num2 = phlebasTileFrameNumberLookup[j % 4][i % 3] - 1;
+-				tile.wallFrameNumber((byte)num2);
  			}
-+
-+			if (!WallLoader.WallFrame(i, j, tile.wall, ref resetFrame))
-+				return;
+ 			else if (Main.wallLargeFrames[tile.wall] == 2) {
+ 				num2 = lazureTileFrameNumberLookup[i % 2][j % 2] - 1;
+-				tile.wallFrameNumber((byte)num2);
+ 			}
+ 			else if (resetFrame) {
+ 				num2 = WorldGen.genRand.Next(0, 3);
+ 				if (tile.wall == 21 && WorldGen.genRand.Next(2) == 0)
+ 					num2 = 2;
+-
+-				tile.wallFrameNumber((byte)num2);
+ 			}
+ 			else {
+ 				num2 = tile.wallFrameNumber();
+@@ -370,6 +_,10 @@
+ 			if (num == 15)
+ 				num += centerWallFrameLookup[i % 3][j % 3];
  
- 			int num = 0;
- 			if (j - 1 >= 0) {
++			if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
++				return;
++
++			tile.wallFrameNumber((byte)num2);
+ 			Point16 point = wallFrameLookup[num][num2];
+ 			tile.wallFrameX(point.X);
+ 			tile.wallFrameY(point.Y);

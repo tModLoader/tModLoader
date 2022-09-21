@@ -31,9 +31,11 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type">Type of the wall being framed</param>
-		/// <param name="resetFrame">Whether this wall should try to change it's display frame</param>
+		/// <param name="resetFrame">True if the calling code intends that the frameNumber be randomly changed, such as when placing the wall initially or loading the world, but not when updating due to nearby tile or wall placements</param>
+		/// <param name="style">The style or orientation that will be applied</param>
+		/// <param name="frameNumber">The random style that will be applied</param>
 		/// <returns></returns>
-		public virtual bool WallFrame(int i, int j, int type, ref bool resetFrame) {
+		public virtual bool WallFrame(int i, int j, int type, bool resetFrame, ref int style, ref int frameNumber) {
 			return true;
 		}
 	}
