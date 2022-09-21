@@ -128,12 +128,12 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		private void TransferExperience(Item increase, Item decrease, WeaponWithGrowingDamage weapon2, int numberToBeTransfered) {
-			//Transfer experience and value to item1.
+			//Transfer experience and value to increase.
 			experience += weapon2.experience;
 			UpdateValue(increase, numberToBeTransfered);
 
 			if (decrease.stack > numberToBeTransfered) {
-				//Prevent duplicating the experience by clearing it on item2 if item2 will still exist.
+				//Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
 				weapon2.experience = 0;
 				weapon2.UpdateValue(decrease, -numberToBeTransfered);
 			}
