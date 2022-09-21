@@ -212,6 +212,13 @@ namespace Terraria.ModLoader
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
 
 		/// <summary>
+		/// Allows you to set the visibility of any added vanilla or modded GameTips. In order to add your OWN tips, add them in
+		/// your localization file, with the key prefix of "Mods.ModName.GameTips".
+		/// </summary>
+		/// <param name="gameTips"> The current list of all added game tips. </param>
+		public virtual void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips) { }
+
+		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
 		///
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.

@@ -145,8 +145,7 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		}
 
 		internal static string SanitizeModpackName(string name)

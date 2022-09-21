@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -8,10 +9,11 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	public class UICreateMod : UIState
+	public class UICreateMod : UIState, IHaveBackButtonCommand
 	{
 		private UIElement _baseElement;
 		private UITextPanel<string> _messagePanel;
@@ -19,6 +21,7 @@ namespace Terraria.ModLoader.UI
 		private UIFocusInputTextField _modDiplayName;
 		private UIFocusInputTextField _modAuthor;
 		private UIFocusInputTextField _basicSword;
+		public UIState PreviousUIState { get; set; }
 
 		public override void OnInitialize()
 		{
@@ -149,8 +152,17 @@ namespace Terraria.ModLoader.UI
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
+			HandleBackButtonUsage();
+		}
+
+		public void HandleBackButtonUsage() {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modSourcesID;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			base.DrawSelf(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)

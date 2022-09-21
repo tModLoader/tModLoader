@@ -42,6 +42,7 @@
 		"ModsReloadMods": "Reload Mods",
 		"ModsForceReload": "Force Reload",
 		"ModsOpenModsFolders": "Open Mods Folders",
+		"ModsOpenModsFoldersTooltip": "The mods folder in My Games is for manually installed mods.\nThe workshop folder is managed by Steam.",
 		"OpenModPackFolder": "Open Mod Pack Folder",
 		"DeactivateModPack": "Unload Mod Pack",
 		"ActivateModPack": "Load Mod Pack",

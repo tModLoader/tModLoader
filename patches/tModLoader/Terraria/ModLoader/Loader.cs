@@ -84,14 +84,15 @@ namespace Terraria.ModLoader
 				var autoload = AutoloadAttribute.GetValue(type);
 
 				if(autoload.NeedsAutoloading) {
-					loadersByType.Add(type, (ILoader)Activator.CreateInstance(type));
+					loadersByType.Add(type, (ILoader)Activator.CreateInstance(type, true)!);
 				}
 			}
 		}
 
+		// TODO: Constrain to ILoader?
 		public static T Get<T>() {
 			if (!loadersByType.TryGetValue(typeof(T), out var result))
-				return Activator.CreateInstance<T>(); // Return empty instance in case of static Player constructor or similar
+				return (T)Activator.CreateInstance(typeof(T), true)!; // Return empty instance in case of static Player constructor or similar
 
 			return (T)result;
 		}
