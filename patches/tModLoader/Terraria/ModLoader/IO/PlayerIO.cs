@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.IO
 
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
-		public static void Save(TagCompound tag, string path, bool isCloudSave) {
+		internal static void Save(TagCompound tag, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
-		public static TagCompound SaveData(Player player) {
+		internal static TagCompound SaveData(Player player) {
 			return new TagCompound {
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
@@ -55,7 +55,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		//add near end of Terraria.Player.LoadPlayer before accessory check
-		public static void Load(Player player,TagCompound tag) {
+		internal static void Load(Player player, TagCompound tag) {
 			LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 			LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
 			LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
@@ -74,7 +74,7 @@ namespace Terraria.ModLoader.IO
 			LoadUsedModPack(player, tag.GetString("usedModPack"));
 		}
 
-		public static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag) {
+		internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag) {
 			path = Path.ChangeExtension(path, ".tplr");
 			tag = new TagCompound();
 

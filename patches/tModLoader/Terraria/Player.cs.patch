@@ -5891,7 +5891,7 @@
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
 +			if(PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tag))
 +				PlayerIO.Load(newPlayer, tag);
