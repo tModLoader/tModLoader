@@ -54,7 +54,7 @@
  				return;
  			}
  
-@@ -113,10 +_,16 @@
+@@ -113,10 +_,15 @@
  			if (tEItemFrame.item.stack > 0)
  				tEItemFrame.DropItem();
  
@@ -64,14 +64,13 @@
  			tEItemFrame.item.Prefix(prefix);
 +			*/
 +			tEItemFrame.item = item.Clone();
-+			tEItemFrame.item.stack = 0;
 +			ItemLoader.SplitStack(tEItemFrame.item, item, stack);
  			tEItemFrame.item.stack = stack;
 +
  			NetMessage.SendData(86, -1, -1, null, tEItemFrame.ID, x, y);
  		}
  
-@@ -167,10 +_,14 @@
+@@ -167,10 +_,13 @@
  					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  			}
  
@@ -79,7 +78,6 @@
 +			if (Main.netMode == 1) {
  				NetMessage.SendData(89, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
 +				Item clone = player.inventory[player.selectedItem].Clone();
-+				clone.stack = 0;
 +				ItemLoader.SplitStack(clone, player.inventory[player.selectedItem]);
 +			}
  			else

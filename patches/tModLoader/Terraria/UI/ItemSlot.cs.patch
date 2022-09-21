@@ -218,13 +218,12 @@
  								case 10:
  								case 11:
  								case 12:
-@@ -656,8 +_,16 @@
+@@ -656,8 +_,15 @@
  							}
  						}
  						else {
 +							inv[slot].SetDefaults(Main.mouseItem.type);
 +							int stack = inv[slot].stack;
-+							inv[slot].stack = 0;
 +							ItemLoader.SplitStack(inv[slot], Main.mouseItem);
 +							inv[slot].stack = stack;
 +							Main.mouseItem.stack--;

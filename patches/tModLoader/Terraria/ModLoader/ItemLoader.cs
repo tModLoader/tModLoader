@@ -1485,6 +1485,8 @@ namespace Terraria.ModLoader
 		private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
 
 		public static void SplitStack(Item increase, Item decrease, int numToTransfer = 1, bool transfer = false) {
+			increase.stack = 0;
+
 			foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
 				g.SplitStack(increase, decrease, numToTransfer);
 			}
@@ -1494,8 +1496,8 @@ namespace Terraria.ModLoader
 			TransferFavorites(increase, decrease);
 
 			if (transfer) {
-				increase.stack++;
-				decrease.stack--;
+				increase.stack += numToTransfer;
+				decrease.stack -= numToTransfer;
 			}
 		}
 
