@@ -1399,7 +1399,6 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
-		// For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
 		/// <summary>
 		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 		/// </summary>
@@ -1407,7 +1406,7 @@ namespace Terraria.ModLoader
 			if (increase.prefix != decrease.prefix) // TML: #StackablePrefixWeapons
 				return false;
 
-			foreach (var g in HookCanStack.Enumerate(globalItems)) {
+			foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {
 				if (!g.CanStack(increase, decrease))
 					return false;
 			}
@@ -1421,7 +1420,7 @@ namespace Terraria.ModLoader
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
 		public static bool CanStackInWorld(Item increase, Item decrease) {
-			foreach (var g in HookCanStackInWorld.Enumerate(globalItems)) {
+			foreach (var g in HookCanStackInWorld.Enumerate(increase.globalItems)) {
 				if (!g.CanStackInWorld(increase, decrease))
 					return false;
 			}
@@ -1457,25 +1456,55 @@ namespace Terraria.ModLoader
 		/// <param name="numTransfered">Amount to be transfered </param>
 		/// <param name="infiniteSource"></param>
 		/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
-		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int? numToTransfer = null) {
-			numTransfered = numToTransfer ?? Math.Min(decrease.stack, increase.maxStack - increase.stack);
-			if (numTransfered <= 0)
-				return;
+		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int numToTransfer = int.MinValue) {
+			if (numToTransfer == int.MinValue) {
+				numTransfered = 0;
+				int numToMaxStack = increase.maxStack - increase.stack;
+				if (numToMaxStack <= 0)
+					return;
 
-			foreach (var g in HookOnStack.Enumerate(globalItems)) {
-				g.OnStack(increase, decrease, numTransfered);
+				numTransfered = Math.Min(decrease.stack, numToMaxStack);
+			}
+			else {
+				numTransfered = numToTransfer;
 			}
 
-			if (decrease.favorited) {
-				increase.favorited = true;
-				decrease.favorited = false;
+			foreach (var g in HookOnStack.Enumerate(increase.globalItems)) {
+				g.OnStack(increase, decrease, numTransfered);
 			}
 
 			increase.ModItem?.OnStack(decrease, numTransfered);
 
+			TransferFavorites(increase, decrease);
+
 			increase.stack += numTransfered;
 			if (!infiniteSource)
 				decrease.stack -= numTransfered;
+		}
+
+		private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
+
+		public static void SplitStack(Item increase, Item decrease, int numToTransfer = 1, bool transfer = false) {
+			foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
+				g.SplitStack(increase, decrease, numToTransfer);
+			}
+
+			increase.ModItem?.SplitStack(decrease, numToTransfer);
+
+			TransferFavorites(increase, decrease);
+
+			if (transfer) {
+				increase.stack++;
+				decrease.stack--;
+			}
+		}
+
+		private static void TransferFavorites(Item to, Item from) {
+			bool toFavorited = to.favorited;
+			if (from.favorited) {
+				to.favorited = true;
+				from.favorited = false;
+			}
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);

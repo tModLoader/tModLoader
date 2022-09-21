@@ -74,11 +74,17 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void OnStack(Item decrease, int numberToBeTransfered) {
-			if (Item.stack == 0) {
-				// work-around, the stack has just been split via cloning, so we need to clear the useCount
-				useCount = 0;
-			}
+			MergeUseCount(decrease, numberToBeTransfered);
+		}
 
+		public override void SplitStack(Item decrease, int numberToBeTransfered) {
+			//Item is a clone of decrease, but useCount should not be cloned, so set it to 0 for the new item.
+			useCount = 0;
+
+			MergeUseCount(decrease, numberToBeTransfered);
+		}
+
+		private void MergeUseCount(Item decrease, int numberToBeTransfered) {
 			var incoming = (ExampleMultiUseItem)decrease.ModItem;
 			useCount += incoming.useCount;
 			if (useCount >= MaxUses) {

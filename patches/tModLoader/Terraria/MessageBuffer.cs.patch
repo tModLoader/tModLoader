@@ -532,7 +532,7 @@
  							tileEntity.ID = num54;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -2676,10 +_,40 @@
+@@ -2676,10 +_,28 @@
  					if (Main.netMode == 2) {
  						short x12 = reader.ReadInt16();
  						int y12 = reader.ReadInt16();
@@ -557,19 +557,7 @@
 +							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
-+						Item frameItem = item.Clone();
-+						if (item.stack > 1) {
-+							frameItem.stack = 0;
-+							ItemLoader.StackItems(frameItem, item, out _, numToTransfer: 1);
-+						}
-+						else {
-+							item.stack--;
-+						}
-+
-+						TEItemFrame.TryPlacing(x12, y12, frameItem, item.stack);
-+						/*
 +						TEItemFrame.TryPlacing(x12, y12, item, item.stack);
-+						*/
  					}
  					break;
  				case 91: {

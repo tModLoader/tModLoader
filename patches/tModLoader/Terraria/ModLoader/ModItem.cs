@@ -816,6 +816,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.<br/>
+		/// Item is always the new stack which is a clone of decrease.  Item.stack will always be 0.  It is increased after SplitStack.
+		/// </summary>
+		/// <param name="decrease">The original item that will have it's stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
+		public virtual void SplitStack(Item decrease, int numberToBeTransfered) {
+
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.

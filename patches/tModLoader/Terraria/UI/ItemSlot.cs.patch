@@ -218,6 +218,23 @@
  								case 10:
  								case 11:
  								case 12:
+@@ -656,8 +_,16 @@
+ 							}
+ 						}
+ 						else {
++							inv[slot].SetDefaults(Main.mouseItem.type);
++							int stack = inv[slot].stack;
++							inv[slot].stack = 0;
++							ItemLoader.SplitStack(inv[slot], Main.mouseItem);
++							inv[slot].stack = stack;
++							Main.mouseItem.stack--;
++							/* TML: #SplitStack Reversed order of SetDefaults and stack-- to allow for SplitStack
+ 							Main.mouseItem.stack--;
+ 							inv[slot].SetDefaults(Main.mouseItem.type);
++							*/
+ 							Recipe.FindRecipes();
+ 							SoundEngine.PlaySound(7);
+ 						}
 @@ -669,6 +_,9 @@
  									break;
  								case 8:
@@ -351,12 +368,17 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
-@@ -1016,9 +_,13 @@
+@@ -1014,11 +_,18 @@
+ 					Main.mouseItem.favorited = false;
+ 
  				AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
++
++				ItemLoader.SplitStack(Main.mouseItem, inv[slot], transfer: true);
++			}
++			else {
++				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, context == 29, 1);
  			}
  
-+			ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: context == 29, numToTransfer: 1);
-+
 +			/* TML: #OnStackHook
  			Main.mouseItem.stack++;
  			if (context != 29)
@@ -574,7 +596,7 @@
  				case 12:
  				case 25:
  				case 27: {
-@@ -1274,12 +_,14 @@
+@@ -1274,12 +_,22 @@
  							break;
  
  						bool flag = false;
@@ -583,11 +605,18 @@
 +						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
  							flag = true;
 +
++							if (Main.mouseItem.IsAir) {
++								Main.mouseItem = inv[slot].Clone();
++							}
++							else {
++								ItemLoader.StackItems(Main.mouseItem, inv[slot], out _);
++							}
++							/* TML: #OnStackHook
  							if (Main.mouseItem.IsAir)
  								Main.mouseItem.SetDefaults(inv[slot].type);
  							else
--								Main.mouseItem.stack++;
-+								ItemLoader.StackItems(Main.mouseItem, inv[slot], out _);
+ 								Main.mouseItem.stack++;
++							*/
  
  							inv[slot].SetDefaults();
  							SoundEngine.PlaySound(7);
@@ -629,7 +658,7 @@
  					Main.shopSellbackHelper.Add(inv[slot]);
  
 -				Main.mouseItem.stack++;
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: true, numToTransfer: 1);
++				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, true, 1);
 +
 +				//Main.mouseItem.stack++;//TML: #OnStackHook
  				RefreshStackSplitCooldown();

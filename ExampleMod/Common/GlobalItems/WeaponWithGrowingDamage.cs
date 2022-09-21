@@ -111,15 +111,26 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!increase.TryGetGlobalItem(out WeaponWithGrowingDamage weapon1) || !decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
+			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
 				return;
 
-			if (increase.stack == 0)
-				weapon1.experience = 0;
-			
+			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
+		}
+
+		public override void SplitStack(Item increase, Item decrease, int numberToBeTransfered) {
+			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
+				return;
+
+			//Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
+			experience = 0;
+
+			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
+		}
+
+		private void TransferExperience(Item increase, Item decrease, WeaponWithGrowingDamage weapon2, int numberToBeTransfered) {
 			//Transfer experience and value to item1.
-			weapon1.experience += weapon2.experience;
-			weapon1.UpdateValue(increase, numberToBeTransfered);
+			experience += weapon2.experience;
+			UpdateValue(increase, numberToBeTransfered);
 
 			if (decrease.stack > numberToBeTransfered) {
 				//Prevent duplicating the experience by clearing it on item2 if item2 will still exist.
