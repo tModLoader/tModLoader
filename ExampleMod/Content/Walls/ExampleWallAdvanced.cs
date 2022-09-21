@@ -7,7 +7,7 @@ using Terraria.Utilities;
 
 namespace ExampleMod.Content.Walls
 {
-	// This is a more advanced ModWall showing off animation, light emmiting, and custom framing
+	// This is a more advanced ModWall showing off animation, dynamic dust, light emitting, and simple custom framing logic
 	public class ExampleWallAdvanced : ModWall
 	{
 		public override void SetStaticDefaults() {
