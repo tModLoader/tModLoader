@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.Items
 {
@@ -18,6 +20,22 @@ namespace ExampleMod.Content.Items
 			Item.maxStack = 99; // This item is stackable, otherwise the example wouldn't work
 			Item.width = 8;
 			Item.height = 8;
+		}
+
+		public override void SaveData(TagCompound tag) {
+			tag["durability"] = durability;
+		}
+
+		public override void LoadData(TagCompound tag) {
+			durability = tag.Get<float>("durability");
+		}
+
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write(durability);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			durability = reader.ReadSingle();
 		}
 
 		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {

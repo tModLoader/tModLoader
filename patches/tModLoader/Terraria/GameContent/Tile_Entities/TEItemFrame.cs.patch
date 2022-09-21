@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
-@@ -1,9 +_,12 @@
+@@ -1,9 +_,13 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
 +using Terraria.ID;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.GameContent.Tile_Entities
@@ -68,7 +69,23 @@
  			NetMessage.SendData(86, -1, -1, null, tEItemFrame.ID, x, y);
  		}
  
-@@ -170,7 +_,7 @@
+@@ -167,12 +_,26 @@
+ 					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
+ 			}
+ 
++			Item frameItem = player.inventory[player.selectedItem].Clone();
++			if (player.inventory[player.selectedItem].stack > 1) {
++				frameItem.stack = 0;
++				ItemLoader.StackItems(frameItem, player.inventory[player.selectedItem], out _, numToTransfer: 1);
++			}
++			else {
++				player.inventory[player.selectedItem].stack--;
++			}
++			if (Main.netMode == 1)
++				NetMessage.SendData(89, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
++			else
++				TryPlacing(x, y, frameItem, 1);
++			/*
  			if (Main.netMode == 1)
  				NetMessage.SendData(89, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
  			else
@@ -76,4 +93,7 @@
 +				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
  
  			player.inventory[player.selectedItem].stack--;
++			*/
  			if (player.inventory[player.selectedItem].stack <= 0) {
+ 				player.inventory[player.selectedItem].SetDefaults();
+ 				Main.mouseItem.SetDefaults();

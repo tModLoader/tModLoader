@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -26,6 +28,22 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.value = Item.buyPrice(gold: 1);
 			Item.buffType = BuffID.Regeneration;
 			Item.buffTime = 120;
+		}
+
+		public override void SaveData(TagCompound tag) {
+			tag["useCount"] = useCount;
+		}
+
+		public override void LoadData(TagCompound tag) {
+			useCount = tag.Get<int>("useCount");
+		}
+
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write(useCount);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			useCount = reader.ReadInt32();
 		}
 
 		public override bool ConsumeItem(Player player) {
