@@ -9,12 +9,11 @@
  	{
  		private Dictionary<string, IPlayerResourcesDisplaySet> _sets = new Dictionary<string, IPlayerResourcesDisplaySet>();
  		private IPlayerResourcesDisplaySet _activeSet;
-@@ -23,7 +_,7 @@
- 		}
+@@ -24,6 +_,7 @@
  
  		private void Configuration_OnLoad(Preferences obj) {
--			_activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
-+			_activeSetConfigKeyOriginal = _activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
+ 			_activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
++			_activeSetConfigKeyOriginal = _activeSetConfigKey;
  			if (_loadedContent)
  				SetActiveFromLoadedConfigKey();
  		}

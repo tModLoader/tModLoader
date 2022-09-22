@@ -46,52 +46,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 		}
 
 		// DrawLife runs before DrawMana, so keep that in mind
-		// In this case, the bars are swapped, so the order of drawing (top bar, then bottom bar) should be preserved
-		// This is why Mana resources are being drawn in DrawLife and Life resources are being drawn in DrawMana
 		public override void DrawLife(SpriteBatch spriteBatch) {
-			int num = 16;
-			int num2 = 18;
-			int num3 = Main.screenWidth - 300 - 22 + num;
-
-			Vector2 vector2 = new Vector2(num3, num2);
-			vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
-
-			bool isHovered = false;
-
-			// Draw the mana panels
-			ResourceDrawSettings resourceDrawSettings = default;
-			resourceDrawSettings.ElementCount = _mpSegmentsCount + 2;
-			resourceDrawSettings.ElementIndexOffset = 0;
-			resourceDrawSettings.TopLeftAnchor = vector2;
-			resourceDrawSettings.GetTextureMethod = ManaPanelDrawer;
-			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
-			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
-			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.CurrentResource = -1;
-			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
-			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
-
-			// Draw the mana bar filling
-			resourceDrawSettings = default;
-			resourceDrawSettings.ElementCount = _mpSegmentsCount;
-			resourceDrawSettings.ElementIndexOffset = 0;
-			resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
-			resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
-			resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
-			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
-			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.CurrentResource = preparedSnapshot.Mana;
-			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
-			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
-
-			_mpHovered = isHovered;
-		}
-
-		public override void DrawMana(SpriteBatch spriteBatch) {
 			int num = 16;
 			int num2 = 18;
 			int num3 = Main.screenWidth - 300 - 22 + num;
@@ -132,6 +87,49 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_hpHovered = isHovered;
+		}
+
+		public override void DrawMana(SpriteBatch spriteBatch) {
+			int num = 16;
+			int num2 = 18;
+			int num3 = Main.screenWidth - 300 - 22 + num;
+
+			Vector2 vector2 = new Vector2(num3, num2);
+			vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
+
+			bool isHovered = false;
+
+			// Draw the mana panels
+			ResourceDrawSettings resourceDrawSettings = default;
+			resourceDrawSettings.ElementCount = _mpSegmentsCount + 2;
+			resourceDrawSettings.ElementIndexOffset = 0;
+			resourceDrawSettings.TopLeftAnchor = vector2;
+			resourceDrawSettings.GetTextureMethod = ManaPanelDrawer;
+			resourceDrawSettings.OffsetPerDraw = Vector2.Zero;
+			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.DisplaySet = this;
+			resourceDrawSettings.CurrentResource = -1;
+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
+			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+
+			// Draw the mana bar filling
+			resourceDrawSettings = default;
+			resourceDrawSettings.ElementCount = _mpSegmentsCount;
+			resourceDrawSettings.ElementIndexOffset = 0;
+			resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
+			resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
+			resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
+			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.DisplaySet = this;
+			resourceDrawSettings.CurrentResource = preparedSnapshot.Mana;
+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
+			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+
+			_mpHovered = isHovered;
 		}
 
 		public override bool PreHover(out bool hoveringLife) {

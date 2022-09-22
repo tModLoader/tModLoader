@@ -2,6 +2,7 @@ using ExampleMod.Common.Players;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 
 namespace ExampleMod
 {
@@ -25,7 +26,11 @@ namespace ExampleMod
 					byte playernumber = reader.ReadByte();
 					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
 					examplePlayer.ReceivePlayerSync(reader);
-					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
+
+					if (Main.netMode == NetmodeID.Server) {
+						// Forward the changes to the other clients
+						examplePlayer.SyncPlayer(-1, whoAmI, false);
+					}
 					break;
 				case MessageType.ExampleTeleportToStatue:
 					if (Main.npc[reader.ReadByte()].ModNPC is ExamplePerson person && person.NPC.active) {

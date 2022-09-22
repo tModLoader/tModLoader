@@ -125,7 +125,7 @@
  			}
  		}
  
-@@ -163,25 +_,34 @@
+@@ -163,25 +_,46 @@
  			}
  			else if (elementIndex != firstElementIndex) {
  				sprite = _panelMiddleMP;
@@ -138,7 +138,9 @@
  
  		private void LifeFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
  			sprite = _hpFill;
--			if (elementIndex >= _hpSegmentsCount - _hpFruitCount)
++			/*
+ 			if (elementIndex >= _hpSegmentsCount - _hpFruitCount)
++			*/
 +			// Make the filling draw from right to left (#HealthManaAPI)
 +			if (elementIndex < _hpFruitCount)
  				sprite = _hpFillHoney;
@@ -150,16 +152,22 @@
 +			offset.X += drawIndexOffset * sprite.Width();
  		}
  
--		private static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
++		/*
+ 		private static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
++		*/
 +		public static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
  			sourceRect = null;
  			offset = Vector2.Zero;
  			float num = 1f;
  			float num2 = 1f / (float)segmentsCount;
--			float t = 1f - fillPercent;
++			/*
+ 			float t = 1f - fillPercent;
++			*/
 +			float t = fillPercent;
  			float lerpValue = Utils.GetLerpValue(num2 * (float)elementIndex, num2 * (float)(elementIndex + 1), t, clamped: true);
--			num = 1f - lerpValue;
++			/*
+ 			num = 1f - lerpValue;
++			*/
 +			num = lerpValue;
  			drawScale = 1f;
  			Rectangle value = sprite.Frame();

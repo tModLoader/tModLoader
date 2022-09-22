@@ -12,15 +12,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 	public class VanillaLifeOverlay : ModResourceOverlay
 	{
 		// This field is used to cache vanilla assets used in the CompareAssets helper method further down in this file
-		private Dictionary<string, Asset<Texture2D>> vanillaAssetCache;
-
-		public override void Load() {
-			vanillaAssetCache = new();
-		}
-
-		public override void Unload() {
-			vanillaAssetCache = null;
-		}
+		private Dictionary<string, Asset<Texture2D>> vanillaAssetCache = new();
 
 		public override void PostDrawResource(ResourceOverlayDrawContext context) {
 			Asset<Texture2D> asset = context.texture;
@@ -69,13 +61,14 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// Draw over the Classic / Fancy hearts
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla hearts, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/ClassicLifeOverlay", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/ClassicLifeOverlay");
 			context.Draw();
 		}
 
-		private static void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
+		private void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Fancy heart panels
-			string texture = "ExampleMod/Common/UI/ResourceOverlay/FancyLifeOverlay_Panel";
+			string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
+
 			// The original position refers to the entire panel slice.
 			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the heart),
 			// the position should be modified to compensate for the sprite size difference
@@ -83,22 +76,20 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 
 			if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
 				// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
-				if (context.resourceNumber % 10 == 1) {
+				if (CompareAssets(context.texture, fancyFolder + "Heart_Single_Fancy")) {
 					// First and only panel in this panel's row
-					// Vanilla texture is "Heart_Single_Fancy"
 					positionOffset = new Vector2(8, 8);
 				} else {
 					// Other panels existed in this panel's row
 					// Vanilla texture is "Heart_Right_Fancy"
 					positionOffset = new Vector2(8, 8);
 				}
-			} else if (context.resourceNumber % 10 == 1) {
+			} else if (CompareAssets(context.texture, fancyFolder + "Heart_Left")) {
 				// First panel in this row
 				// Vanilla texture is "Heart_Left"
 				positionOffset = new Vector2(4, 4);
-			} else if (context.resourceNumber % 10 <= 9) {
+			} else if (CompareAssets(context.texture, fancyFolder + "Heart_Middle")) {
 				// Any panel that has a panel to its left AND right
-				// Vanilla texture is "Heart_Middle"
 				positionOffset = new Vector2(0, 4);
 			} else {
 				// Final panel in the first row
@@ -108,7 +99,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla hearts, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/FancyLifeOverlay_Panel");
 			// Due to the replacement texture and the vanilla texture having different dimensions, the source needs to also be modified
 			context.source = context.texture.Frame();
 			context.position += positionOffset;
@@ -119,7 +110,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// Draw over the Bars life bars
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla bars, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsLifeOverlay_Fill", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsLifeOverlay_Fill");
 			context.Draw();
 		}
 
@@ -127,9 +118,9 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// Draw over the Bars middle life panels
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla bar panels, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsLifeOverlay_Panel", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsLifeOverlay_Panel");
 			// Due to the replacement texture and the vanilla texture having different heights, the source needs to also be modified
-			context.source = (Rectangle)context.source with { Height = context.texture.Height() };
+			context.source = context.texture.Frame();
 			// The original position refers to the entire panel slice.
 			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the bar filling),
 			// the position should be modified to compensate for the sprite size difference

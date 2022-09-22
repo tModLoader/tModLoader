@@ -13,15 +13,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 	public class VanillaManaOverlay : ModResourceOverlay
 	{
 		// This field is used to cache vanilla assets used in the CompareAssets helper method further down in this file
-		private Dictionary<string, Asset<Texture2D>> vanillaAssetCache;
-
-		public override void Load() {
-			vanillaAssetCache = new();
-		}
-
-		public override void Unload() {
-			vanillaAssetCache = null;
-		}
+		private Dictionary<string, Asset<Texture2D>> vanillaAssetCache = new();
 
 		// Unlike VanillaLifeOverlay, every star is drawn over by this hook.
 		public override void PostDrawResource(ResourceOverlayDrawContext context) {
@@ -64,13 +56,14 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// Draw over the Classic / Mana stars
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla stars, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/ClassicManaOverlay", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/ClassicManaOverlay");
 			context.Draw();
 		}
 
-		private static void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
+		private void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Fancy star panels
-			string texture = "ExampleMod/Common/UI/ResourceOverlay/FancyManaOverlay_Panel";
+			string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
+
 			// The original position refers to the entire panel slice.
 			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the star),
 			// the position should be modified to compensate for the sprite size difference
@@ -78,7 +71,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 
 			if (context.resourceNumber == context.snapshot.AmountOfManaStars) {
 				// Final panel in the column.  Determine whether it has panels above it
-				if (context.resourceNumber == 1) {
+				if (CompareAssets(context.texture, fancyFolder + "Star_Single")) {
 					// First and only panel
 					// Vanilla texture is "Star_Single"
 					positionOffset = new Vector2(4, 4);
@@ -87,9 +80,8 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 					// Vanilla texture is "Star_C"
 					positionOffset = new Vector2(4, 0);
 				}
-			} else if (context.resourceNumber == 1) {
+			} else if (CompareAssets(context.texture, fancyFolder + "Star_A")) {
 				// First panel in the column
-				// Vanilla texture is "Star_A"
 				positionOffset = new Vector2(4, 4);
 			} else {
 				// Any panel that has a panel above AND below it
@@ -99,7 +91,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla stars, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>(texture, AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/FancyManaOverlay_Panel");
 			// Due to the replacement texture and the vanilla texture having different dimensions, the source needs to also be modified
 			context.source = context.texture.Frame();
 			context.position += positionOffset;
@@ -110,7 +102,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// Draw over the Bars mana bars
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla bars, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsManaOverlay_Fill", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsManaOverlay_Fill");
 			context.Draw();
 		}
 
@@ -118,9 +110,9 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// Draw over the Bars middle life panels
 			// "context" contains information used to draw the resource
 			// If you want to draw directly on top of the vanilla bar panels, just replace the texture and have the context draw the new texture
-			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsManaOverlay_Panel", AssetRequestMode.ImmediateLoad);
+			context.texture = ModContent.Request<Texture2D>("ExampleMod/Common/UI/ResourceOverlay/BarsManaOverlay_Panel");
 			// Due to the replacement texture and the vanilla texture having different heights, the source needs to also be modified
-			context.source = (Rectangle)context.source with { Height = context.texture.Height() };
+			context.source = context.texture.Frame();
 			// The original position refers to the entire panel slice.
 			// However, since this overlay only modifies the "inner" portion of the slice (aka the part behind the bar filling),
 			// the position should be modified to compensate for the sprite size difference

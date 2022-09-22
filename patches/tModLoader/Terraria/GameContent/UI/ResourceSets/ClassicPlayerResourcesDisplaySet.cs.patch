@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
-@@ -2,13 +_,19 @@
+@@ -2,13 +_,22 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
@@ -15,22 +15,24 @@
  		private int UIDisplay_ManaPerStar = 20;
  		private float UIDisplay_LifePerHeart = 20f;
 +		*/
++		private double UIDisplay_ManaPerStar = 20d;
++		private double UIDisplay_LifePerHeart = 20d;
++
 +		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
 +
  		private int UI_ScreenAnchorX;
  
  		public string NameKey {
-@@ -36,10 +_,22 @@
- 			Player localPlayer = Main.LocalPlayer;
+@@ -37,9 +_,23 @@
  			SpriteBatch spriteBatch = Main.spriteBatch;
  			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
--			UIDisplay_LifePerHeart = 20f;
--			if (localPlayer.ghost)
-+			double UIDisplay_LifePerHeart = 20f;
+ 			UIDisplay_LifePerHeart = 20f;
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
-+
++			/*
+ 			if (localPlayer.ghost)
++			*/
 +			//Added additional condition for zero/negative max life, since DrawMana does it as well
-+			if (localPlayer.ghost || snapshot.LifeMax <= 0 || snapshot.AmountOfLifeHearts <= 0)
++			if (localPlayer.ghost || localPlayer.statLifeMax2 <= 0)
  				return;
  
 +			UIDisplay_LifePerHeart = snapshot.LifePerSegment;
@@ -45,44 +47,33 @@
  			int num = localPlayer.statLifeMax / 20;
  			int num2 = (localPlayer.statLifeMax - 400) / 5;
  			if (num2 < 0)
-@@ -52,28 +_,33 @@
+@@ -52,6 +_,7 @@
  
  			int num3 = localPlayer.statLifeMax2 - localPlayer.statLifeMax;
  			UIDisplay_LifePerHeart += num3 / num;
 +			*/
--			int num4 = (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart);
-+			int num4 = (int)((float)snapshot.LifeMax / UIDisplay_LifePerHeart);
+ 			int num4 = (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart);
  			if (num4 >= 10)
  				num4 = 10;
- 
--			string text = Lang.inter[0].Value + " " + localPlayer.statLifeMax2 + "/" + localPlayer.statLifeMax2;
-+			string text = Lang.inter[0].Value + " " + snapshot.LifeMax + "/" + snapshot.LifeMax;
- 			Vector2 vector = FontAssets.MouseText.Value.MeasureString(text);
- 			if (!localPlayer.ghost) {
- 				spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[0].Value, new Vector2((float)(500 + 13 * num4) - vector.X * 0.5f + (float)UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--				spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, new Vector2((float)(500 + 13 * num4) + vector.X * 0.5f + (float)UI_ScreenAnchorX, 6f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
-+				spriteBatch.DrawString(FontAssets.MouseText.Value, snapshot.Life + "/" + snapshot.LifeMax, new Vector2((float)(500 + 13 * num4) + vector.X * 0.5f + (float)UI_ScreenAnchorX, 6f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(snapshot.Life + "/" + snapshot.LifeMax).X, 0f), 1f, SpriteEffects.None, 0f);
+@@ -63,6 +_,10 @@
+ 				spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, new Vector2((float)(500 + 13 * num4) + vector.X * 0.5f + (float)UI_ScreenAnchorX, 6f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
  			}
  
--			for (int i = 1; i < (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart) + 1; i++) {
 +			SkipLifeText:
 +			if (!drawHearts)
 +				goto SkipHearts;
 +
-+			for (int i = 1; i < snapshot.AmountOfLifeHearts + 1; i++) {
+ 			for (int i = 1; i < (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart) + 1; i++) {
  				int num5 = 255;
  				float num6 = 1f;
- 				bool flag = false;
--				if ((float)localPlayer.statLife >= (float)i * UIDisplay_LifePerHeart) {
-+				if ((float)snapshot.Life >= (float)i * UIDisplay_LifePerHeart) {
- 					num5 = 255;
--					if ((float)localPlayer.statLife == (float)i * UIDisplay_LifePerHeart)
-+					if ((float)snapshot.Life == (float)i * UIDisplay_LifePerHeart)
+@@ -73,7 +_,10 @@
  						flag = true;
  				}
  				else {
--					float num7 = ((float)localPlayer.statLife - (float)(i - 1) * UIDisplay_LifePerHeart) / UIDisplay_LifePerHeart;
-+					float num7 = (float)(snapshot.Life - (i - 1) * UIDisplay_LifePerHeart) / (float)UIDisplay_LifePerHeart;
++					/*
+ 					float num7 = ((float)localPlayer.statLife - (float)(i - 1) * UIDisplay_LifePerHeart) / UIDisplay_LifePerHeart;
++					*/
++					float num7 = (float)(localPlayer.statLife - (i - 1) * UIDisplay_LifePerHeart) / (float)UIDisplay_LifePerHeart;
  					num5 = (int)(30f + 225f * num7);
  					if (num5 < 30)
  						num5 = 30;
@@ -111,7 +102,7 @@
  					if (num2 > 0) {
  						num2--;
  						spriteBatch.Draw(TextureAssets.Heart2.Value, new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + TextureAssets.Heart.Width() / 2, 32f + ((float)TextureAssets.Heart.Height() - (float)TextureAssets.Heart.Height() * num6) / 2f + (float)num9 + (float)(TextureAssets.Heart.Height() / 2)), new Rectangle(0, 0, TextureAssets.Heart.Width(), TextureAssets.Heart.Height()), new Color(num5, num5, num5, a), 0f, new Vector2(TextureAssets.Heart.Width() / 2, TextureAssets.Heart.Height() / 2), num6, SpriteEffects.None, 0f);
-@@ -105,17 +_,27 @@
+@@ -105,8 +_,12 @@
  					else {
  						spriteBatch.Draw(TextureAssets.Heart.Value, new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + TextureAssets.Heart.Width() / 2, 32f + ((float)TextureAssets.Heart.Height() - (float)TextureAssets.Heart.Height() * num6) / 2f + (float)num9 + (float)(TextureAssets.Heart.Height() / 2)), new Rectangle(0, 0, TextureAssets.Heart.Width(), TextureAssets.Heart.Height()), new Color(num5, num5, num5, a), 0f, new Vector2(TextureAssets.Heart.Width() / 2, TextureAssets.Heart.Height() / 2), num6, SpriteEffects.None, 0f);
  					}
@@ -124,24 +115,23 @@
  		}
  
  		private void DrawMana() {
- 			Player localPlayer = Main.LocalPlayer;
+@@ -114,9 +_,15 @@
  			SpriteBatch spriteBatch = Main.spriteBatch;
  			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
--			UIDisplay_ManaPerStar = 20;
--			if (localPlayer.ghost || localPlayer.statManaMax2 <= 0)
+ 			UIDisplay_ManaPerStar = 20;
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
-+			double UIDisplay_ManaPerStar = snapshot.ManaPerSegment;
-+			if (localPlayer.ghost || snapshot.ManaMax <= 0 || snapshot.AmountOfManaStars <= 0)
+ 			if (localPlayer.ghost || localPlayer.statManaMax2 <= 0)
  				return;
-+
+ 
 +			bool drawStars = ResourceOverlayLoader.PreDrawResourceDisplay(snapshot, this, false, ref color, out bool drawText);
 +
 +			if (!drawText)
 +				goto SkipManaText;
- 
++
  			_ = localPlayer.statManaMax2 / 20;
  			Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
-@@ -124,17 +_,22 @@
+ 			int num = 50;
+@@ -124,6 +_,11 @@
  				num = (int)vector.X + 5;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[2].Value, new Vector2(800 - num + UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -150,25 +140,20 @@
 +			if (!drawStars)
 +				goto SkipStars;
 +
--			for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
-+			for (int i = 1; i < snapshot.AmountOfManaStars + 1; i++) {
+ 			for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
  				int num2 = 255;
  				bool flag = false;
- 				float num3 = 1f;
--				if (localPlayer.statMana >= i * UIDisplay_ManaPerStar) {
-+				if (snapshot.Mana >= i * UIDisplay_ManaPerStar) {
- 					num2 = 255;
--					if (localPlayer.statMana == i * UIDisplay_ManaPerStar)
-+					if (snapshot.Mana == i * UIDisplay_ManaPerStar)
+@@ -134,6 +_,9 @@
  						flag = true;
  				}
  				else {
--					float num4 = (float)(localPlayer.statMana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
-+					float num4 = (float)(snapshot.Mana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
++					/*
++					float num4 = (float)(localPlayer.statMana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
++					*/
+ 					float num4 = (float)(localPlayer.statMana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
  					num2 = (int)(30f + 225f * num4);
  					if (num2 < 30)
- 						num2 = 30;
-@@ -150,27 +_,49 @@
+@@ -150,27 +_,61 @@
  				if (flag)
  					num3 += Main.cursorScale - 1f;
  
@@ -199,12 +184,14 @@
  		public void TryToHover() {
  			Vector2 mouseScreen = Main.MouseScreen;
  			Player localPlayer = Main.LocalPlayer;
--			int num = 26 * localPlayer.statLifeMax2 / (int)UIDisplay_LifePerHeart;
--			int num2 = 0;
--			if (localPlayer.statLifeMax2 > 200) {
 +
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
 +
++			/*
+ 			int num = 26 * localPlayer.statLifeMax2 / (int)UIDisplay_LifePerHeart;
+ 			int num2 = 0;
+ 			if (localPlayer.statLifeMax2 > 200) {
++			*/
 +			int num = 26 * snapshot.AmountOfLifeHearts;
 +			float num2 = 0;
 +			if (snapshot.AmountOfLifeHearts > 10) {
@@ -212,13 +199,17 @@
  				num2 += 26;
  			}
  
--			if (mouseScreen.X > (float)(500 + UI_ScreenAnchorX) && mouseScreen.X < (float)(500 + num + UI_ScreenAnchorX) && mouseScreen.Y > 32f && mouseScreen.Y < (float)(32 + TextureAssets.Heart.Height() + num2))
++			/*
+ 			if (mouseScreen.X > (float)(500 + UI_ScreenAnchorX) && mouseScreen.X < (float)(500 + num + UI_ScreenAnchorX) && mouseScreen.Y > 32f && mouseScreen.Y < (float)(32 + TextureAssets.Heart.Height() + num2))
++			*/
 +			if (mouseScreen.X > (float)(500 + UI_ScreenAnchorX) && mouseScreen.X < (float)(500 + num + UI_ScreenAnchorX) && mouseScreen.Y > 32f && mouseScreen.Y < (float)(32 + TextureAssets.Heart.Height() + num2) && ResourceOverlayLoader.DisplayHoverText(snapshot, this, true))
  				CommonResourceBarMethods.DrawLifeMouseOver();
  
  			num = 24;
--			num2 = 28 * localPlayer.statManaMax2 / UIDisplay_ManaPerStar;
--			if (mouseScreen.X > (float)(762 + UI_ScreenAnchorX) && mouseScreen.X < (float)(762 + num + UI_ScreenAnchorX) && mouseScreen.Y > 30f && mouseScreen.Y < (float)(30 + num2))
++			/*
+ 			num2 = 28 * localPlayer.statManaMax2 / UIDisplay_ManaPerStar;
+ 			if (mouseScreen.X > (float)(762 + UI_ScreenAnchorX) && mouseScreen.X < (float)(762 + num + UI_ScreenAnchorX) && mouseScreen.Y > 30f && mouseScreen.Y < (float)(30 + num2))
++			*/
 +			num2 = 28 * snapshot.AmountOfManaStars;
 +			if (mouseScreen.X > (float)(762 + UI_ScreenAnchorX) && mouseScreen.X < (float)(762 + num + UI_ScreenAnchorX) && mouseScreen.Y > 30f && mouseScreen.Y < (float)(30 + num2) && ResourceOverlayLoader.DisplayHoverText(snapshot, this, false))
  				CommonResourceBarMethods.DrawManaMouseOver();
