@@ -150,13 +150,12 @@
  				case "sp14": {
  						UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
  						uIKeybindingToggleListItem.OnClick += delegate {
-@@ -602,11 +_,40 @@
+@@ -602,11 +_,39 @@
  						}
  					}, 1008, color);
  				default:
 +					if (_ModBindings.Contains(bind)) {
-+						var keybind = KeybindLoader.modKeybinds[bind];
-+						string defaultKey = keybind.defaultBinding;
++						string defaultKey = KeybindLoader.modKeybinds[bind].defaultBinding;
 +						UIElement container = new UIElement();
 +						var left = new UIKeybindingListItem(bind, currentInputMode, color);
 +						left.Width.Precent = 0.68f;
