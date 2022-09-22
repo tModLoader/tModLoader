@@ -28,6 +28,9 @@ namespace Terraria.ModLoader
 		public void Send(int toClient = -1, int ignoreClient = -1) {
 			Finish();
 
+			if (ModNet.DetailedLogging)
+				ModNet.LogSend(toClient, ignoreClient, $"ModPacket.Send {ModNet.GetMod(netID)?.Name ?? "ModLoader"}({netID})", len);
+
 			if (Main.netMode == 1) {
 				Netplay.Connection.Socket.AsyncSend(buf, 0, len, SendCallback);
 

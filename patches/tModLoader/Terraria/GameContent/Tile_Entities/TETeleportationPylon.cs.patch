@@ -16,7 +16,7 @@
  			}
  
 -			if (Main.PylonSystem.HasPylonOfType(pylonType)) {
-+			bool canPlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? Main.PylonSystem.HasPylonOfType(pylonType);
++			bool canPlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? !Main.PylonSystem.HasPylonOfType(pylonType);
 +			if (!canPlace) {
  				RejectPlacementFromNet(x, y);
  				return;

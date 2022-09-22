@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.UI
 			}
 			_url = url;
 			_loadFromWeb = loadFromWeb;
-			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && Social.Steam.WorkshopHelper.ModManager.GetPublishIdLocal(localMod.modFile, out ulong publishId))
+			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && WorkshopHelper.GetPublishIdLocal(localMod.modFile, out ulong publishId))
 				_publishedFileId = publishId.ToString();
 			else
 				_publishedFileId = publishedFileId;
@@ -203,7 +203,7 @@ namespace Terraria.ModLoader.UI
 		private void VisitModSteamPageInner() {
 			string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
 
-			if (WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled())
+			if (SteamedWraps.SteamClient && Steamworks.SteamUtils.IsOverlayEnabled())
 				Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
 			else
 				Utils.OpenToURL(url);

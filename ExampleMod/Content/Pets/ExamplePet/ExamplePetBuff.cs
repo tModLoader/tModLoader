@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Pets.ExamplePet
@@ -8,9 +7,6 @@ namespace ExampleMod.Content.Pets.ExamplePet
 	public class ExamplePetBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Paper Airplane");
-			Description.SetDefault(@"""Let this pet be an example to you!""");
-
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.vanityPet[Type] = true;
 		}

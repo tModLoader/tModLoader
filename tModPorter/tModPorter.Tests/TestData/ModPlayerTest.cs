@@ -40,11 +40,11 @@ public class ModPlayerTest : ModPlayer
 	public override void SetupStartInventory(IList<Item> items) {
 		items.Add(9);
 	}
-#endif
 
 	public override Texture2D SetMapBackgroundImage() {
 		return null
 	}
+#endif
 
 	public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 

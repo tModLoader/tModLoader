@@ -86,20 +86,21 @@
  		}
  
  		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -124,8 +_,11 @@
+@@ -124,9 +_,12 @@
  		}
  
  		private static void InitializeConsoleOutput() {
 -			if (!Main.dedServ && Debugger.IsAttached)
 +			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
  				return;
-+
+ 
 +			if (!Main.dedServ)
 +				Platform.Get<IWindowService>().HideConsole();
- 
++
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,24 +_,72 @@
+ 				if (Platform.IsWindows)
+@@ -138,24 +_,68 @@
  			}
  		}
  
@@ -134,9 +135,7 @@
 +					throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 +			}
 +			catch (Exception e) {
-+				Logging.Terraria.Fatal("Main engine crash", e);
-+				DisplayException(e);
-+				return;
++				ErrorReporting.FatalExit("Failed to init logging", e);
 +			}
 +
 +			try {
@@ -144,9 +143,7 @@
 +				Logging.LogStartup(isServer);
 +			}
 +			catch (Exception e) {
-+				Logging.Terraria.Fatal("Failed to Handle Save Data", e);
-+				DisplayException(e);
-+				return;
++				ErrorReporting.FatalExit("Failed to handle save data", e);
 +			}
 +
 +			AttemptSupportHighDPI(isServer);
@@ -197,7 +194,7 @@
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
-@@ -176,9 +_,11 @@
+@@ -176,12 +_,13 @@
  					else
  						main.DedServ();
  				}
@@ -206,43 +203,18 @@
 -				}
 +			}
 +			catch (Exception e) {
-+				Logging.Terraria.Fatal("Main engine crash", e);
-+				DisplayException(e);
-+				Environment.Exit(1);
++				ErrorReporting.FatalExit("Main engine crash", e);
  			}
  		}
  
-@@ -206,6 +_,8 @@
- 					}
- 				}
- 
-+				TerrariaSteamClient.Shutdown();
-+
- 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
- 					streamWriter.WriteLine(DateTime.Now);
- 					streamWriter.WriteLine(text);
-@@ -213,9 +_,22 @@
- 				}
- 
- 				if (Main.dedServ)
--					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
-+					Console.WriteLine(Language.GetTextValue("tModLoader.ServerCrash"), DateTime.Now, e);
- 
--				MessageBox.Show(text, "Terraria: Error");
-+				ModLoader.UI.Interface.MessageBoxShow(e, generateTip: true);
-+
-+				if (e is FolderCreationFailedException)
-+					Utils.OpenToURL(e.HelpLink);
-+
-+				if (e.Message.Contains("CSteamworks"))
-+					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemdllnotfoundexception-unable-to-load-dllcsteamworks");
-+
-+				if (e.StackTrace.Contains("LaunchLocalServer")) {
-+					ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("tModLoader.MissingServerExecutable"));
-+
-+					Utils.OpenToURL(@"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#host-and-play-the-system-cannot-find-the-file-specified");
-+				}
-+
- 			}
++		/*
+ 		private static void TrySettingFNAToOpenGL(string[] args) {
+ 			bool flag = false;
+ 			for (int i = 0; i < args.Length; i++) {
+@@ -220,5 +_,6 @@
  			catch {
  			}
+ 		}
++		*/
+ 	}
+ }

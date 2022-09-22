@@ -101,5 +101,8 @@ namespace Terraria.ModLoader.Core
 	{
 		public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType
 			=> hookList.Enumerate(entity.Globals.array);
+		
+		public static FilteredSpanEnumerator<T> Enumerate<T>(this HookList<T> hookList, IEntityWithInstances<T> entity) where T : class, IIndexed
+			=> hookList.Enumerate(entity.Instances);
 	}
 }

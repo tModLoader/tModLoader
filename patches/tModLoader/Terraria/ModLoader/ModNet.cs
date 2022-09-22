@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
+using Terraria.Net;
 using Terraria.UI;
 
 namespace Terraria.ModLoader
@@ -49,8 +51,6 @@ namespace Terraria.ModLoader
 			public override string ToString() => $"{modname}:{configname} {json}";
 		}
 
-		public static bool DetailedLogging = Program.LaunchParameters.ContainsKey("-detailednetlog");
-
 		public static bool AllowVanillaClients { get; internal set; }
 		internal static bool downloadModsFromServers = true;
 		internal static bool onlyDownloadSignedMods = false;
@@ -75,6 +75,42 @@ namespace Terraria.ModLoader
 		private static FileStream downloadingFile;
 		private static long downloadingLength;
 
+		/// <summary>
+		/// Update every time a change is pushed to stable which is incompatible between server and clients. Ignored if not updated each month.
+		/// </summary>
+		private static Version IncompatiblePatchVersion = new(2022, 1, 1, 1);
+		private static Version? StableNetVersion { get; } = !BuildInfo.IsStable ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
+		internal static string NetVersionString { get; } = BuildInfo.versionedName + (StableNetVersion != null ? "!" + StableNetVersion : "");
+		static ModNet() {
+			if (Main.dedServ && StableNetVersion != null)
+				Logging.tML.Debug($"Network compatibility version is {StableNetVersion}");
+		}
+
+		internal static bool IsClientCompatible(string clientVersion, out bool isModded, out string kickMsg) {
+			kickMsg = null;
+			isModded = clientVersion.StartsWith("tModLoader");
+			if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
+				return true;
+
+			if (clientVersion == NetVersionString)
+				return true;
+
+			var split = clientVersion.Split('!');
+			if (StableNetVersion != null
+					&& split.Length == 2
+					&& Version.TryParse(split[1], out var netVer)
+					&& netVer == StableNetVersion) {
+
+				Logging.tML.Debug($"Client has {split[0]}, assuming net compatibility");
+				return true;
+			}
+
+			kickMsg = isModded
+				? $"You are on {split[0]}, server is on {BuildInfo.versionedName}"
+				: "You cannot connect to a tModLoader Server with an unmodded client";
+			return false;
+		}
+
 		internal static void AssignNetIDs() {
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 			for (short i = 0; i < netMods.Length; i++)
@@ -85,6 +121,7 @@ namespace Terraria.ModLoader
 			netMods = null;
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
 				AllowVanillaClients = false;
+			ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 		}
 
 		internal static void SyncMods(int clientIndex) {
@@ -472,5 +509,62 @@ namespace Terraria.ModLoader
 
 		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 			=> SystemLoader.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+
+
+		public static bool DetailedLogging = Program.LaunchParameters.ContainsKey("-detailednetlog");
+		private static ILog NetLog { get; } = LogManager.GetLogger("Network");
+
+		private static string Identifier(int whoAmI) {
+			if (!Main.dedServ) return "";
+
+			if (whoAmI >= 0 && whoAmI < 256) {
+				var client = Netplay.Clients[whoAmI];
+				return $"[{whoAmI}][{client.Socket?.GetRemoteAddress()?.GetFriendlyName()} ({client.Name})] ";
+			}
+
+			if (whoAmI == -1)
+				return "[*] ";
+
+			return $"[{whoAmI}] ";
+		}
+
+		private static string Identifier(RemoteAddress addr) {
+			if (!Main.dedServ || addr == null) return "";
+
+			if (Netplay.Clients.SingleOrDefault(c => c.Socket?.GetRemoteAddress() == addr) is RemoteClient client)
+				return Identifier(client.Id);
+
+			return $"[{addr.GetFriendlyName()}] ";
+		}
+
+		public static void Log(int whoAmI, string s) => Log(Identifier(whoAmI) + s);
+		public static void Log(RemoteAddress addr, string s) => Log(Identifier(addr) + s);
+		public static void Log(string s) => NetLog.Info(s);
+
+		public static void Warn(int whoAmI, string s) => Warn(Identifier(whoAmI) + s);
+		public static void Warn(RemoteAddress addr, string s) => Warn(Identifier(addr) + s);
+		public static void Warn(string s) => NetLog.Warn(s);
+
+		public static void Debug(int whoAmI, string s) => Debug(Identifier(whoAmI) + s);
+		public static void Debug(RemoteAddress addr, string s) => Debug(Identifier(addr) + s);
+		public static void Debug(string s) {
+			if (DetailedLogging)
+				NetLog.Info(s);
+		}
+
+		public static void Error(int whoAmI, string s, Exception e = null) => Error(Identifier(whoAmI) + s, e);
+		public static void Error(RemoteAddress addr, string s, Exception e = null) => Error(Identifier(addr) + s, e);
+		public static void Error(string s, Exception e = null) => NetLog.Error(s, e);
+
+		public static void LogSend(int toClient, int ignoreClient, string s, int len) {
+			if (!DetailedLogging)
+				return;
+
+			s += $", {len}";
+			if (ignoreClient != -1)
+				s += $", ignore: {ignoreClient}";
+
+			Debug(toClient, s);
+		}
 	}
 }

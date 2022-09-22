@@ -25,9 +25,21 @@
  		public bool usesLocalNPCImmunity;
  		public bool usesIDStaticNPCImmunity;
  		public int maxPenetrate = 1;
-@@ -100,7 +_,6 @@
+@@ -97,10 +_,18 @@
+ 		public bool netUpdate;
+ 		public bool netUpdate2;
+ 		public int netSpam;
++		/// <summary>
++		/// Holds the value of <see cref="Entity.position"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++		/// </summary>
  		public Vector2[] oldPos = new Vector2[10];
++		/// <summary>
++		/// Holds the value of <see cref="Projectile.rotation"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++		/// </summary>
  		public float[] oldRot = new float[10];
++		/// <summary>
++		/// Holds the value of <see cref="Projectile.spriteDirection"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++		/// </summary>
  		public int[] oldSpriteDirection = new int[10];
 -		public bool minion;
  		public float minionSlots;
@@ -960,6 +972,21 @@
  								int num = damage;
  								position = base.Center;
  								int num2 = 0;
+@@ -28874,6 +_,14 @@
+ 			return result;
+ 		}
+ 
++		/// <summary>
++		/// Finds the closest NPC to this projectile which can be targeted and which it has line of sight to.
++		/// </summary>
++		/// <param name="maxRange">
++		/// The maximum range at which this projectile should search out a target, measured in pixels.<br/>
++		/// Defaults to 800 (50 tiles). Each tile, for reference, measures out to be 16x16 pixels.
++		/// </param>
++		/// <returns>The index, in <see cref="Main.npc"/>, of the closest targetable NPC.</returns>
+ 		public int FindTargetWithLineOfSight(float maxRange = 800f) {
+ 			float num = maxRange;
+ 			int result = -1;
 @@ -29210,7 +_,7 @@
  			if (flag2 && player.channel && player.itemAnimation < num)
  				player.SetDummyItemTime(num);

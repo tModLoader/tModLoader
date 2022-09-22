@@ -43,7 +43,7 @@
  					str2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
  
  				if (flag3)
-@@ -1594,6 +_,13 @@
+@@ -1594,6 +_,16 @@
  					break;
  				case 7:
  					(Main.MenuUI.CurrentState as IHaveBackButtonCommand)?.HandleBackButtonUsage();
@@ -54,6 +54,9 @@
 +					break;
 +				case 101:
 +					Interface.modBrowser.BackClick(null, null);
++					break;
++				case 102:
++					Interface.modsMenu.BackClick(null, null);
  					break;
  			}
  		}

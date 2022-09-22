@@ -35,3 +35,12 @@
  			ChainedRules = new List<IItemDropRuleChainAttempt>();
  			this.parameters = parameters;
  			this.itemId = itemId;
+@@ -40,7 +_,7 @@
+ 				int minValue = parameters.MinimumStackPerChunkBase + activePlayersCount * parameters.BonusMinDropsPerChunkPerPlayer;
+ 				int num2 = parameters.MaximumStackPerChunkBase + activePlayersCount * parameters.BonusMaxDropsPerChunkPerPlayer;
+ 				for (int i = 0; i < num; i++) {
+-					CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
++					CommonCode.DropItem(info, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
+ 				}
+ 
+ 				result = default(ItemDropAttemptResult);

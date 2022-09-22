@@ -14,35 +14,37 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 
 		public override void PostUpdate() {
-			if (IsActive) {
-				var player = Player;
-				var playerCenter = player.Center;
-				bool closeToAnEnemy = Main.npc.Any(x => x != Main.npc[Main.maxNPCs] && x.active && !x.friendly && !NPCID.Sets.TownCritter[x.type] && x.type != NPCID.TargetDummy && x.WithinRange(player.position, 300));
-				float maxIntensity = 0f;
+			if (!IsActive) {
+				return;
+			}
 
-				const float MaxDistance = 512f;
-				const float MaxDistanceSqr = MaxDistance * MaxDistance;
+			var player = Player;
+			var playerCenter = player.Center;
+			bool closeToAnEnemy = Main.npc.Any(x => x != Main.npc[Main.maxNPCs] && x.active && !x.friendly && !NPCID.Sets.TownCritter[x.type] && x.type != NPCID.TargetDummy && x.WithinRange(player.position, 300));
+			float maxIntensity = 0f;
 
-				for (int i = 0; i < Main.maxNPCs; i++) {
-					var npc = Main.npc[i];
+			const float MaxDistance = 512f;
+			const float MaxDistanceSqr = MaxDistance * MaxDistance;
 
-					if (!npc.active || npc.damage <= 0 || npc.friendly || NPCID.Sets.TownCritter[npc.type] || npc.type == NPCID.TargetDummy) {
-						continue;
-					}
+			for (int i = 0; i < Main.maxNPCs; i++) {
+				var npc = Main.npc[i];
 
-					float distanceSquared = npc.DistanceSQ(playerCenter);
-					float intensity = 1f - MathF.Min(1f, distanceSquared / MaxDistanceSqr);
-
-					intensity *= intensity;
-
-					maxIntensity = MathF.Max(maxIntensity, intensity);
+				if (!npc.active || npc.damage <= 0 || npc.friendly || NPCID.Sets.TownCritter[npc.type] || npc.type == NPCID.TargetDummy) {
+					continue;
 				}
 
-				if (maxIntensity > 0f) {
-					float pulse = (MathF.Sin((float)Main.GameUpdateCount / 17f) * 0.25f) + 0.75f;
+				float distanceSquared = npc.DistanceSQ(playerCenter);
+				float intensity = 1f - MathF.Min(1f, distanceSquared / MaxDistanceSqr);
 
-					Lighting.AddLight(playerCenter, Color.DeepSkyBlue.ToVector3() * maxIntensity * pulse * 1.5f);
-				}
+				intensity *= intensity;
+
+				maxIntensity = MathF.Max(maxIntensity, intensity);
+			}
+
+			if (maxIntensity > 0f) {
+				float pulse = (MathF.Sin((float)Main.GameUpdateCount / 17f) * 0.25f) + 0.75f;
+
+				Lighting.AddLight(playerCenter, Color.DeepSkyBlue.ToVector3() * maxIntensity * pulse * 1.5f);
 			}
 		}
 	}

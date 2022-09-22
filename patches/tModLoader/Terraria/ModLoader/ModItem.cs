@@ -37,7 +37,7 @@ namespace Terraria.ModLoader
 		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
-		/// The translations for the display name of this tooltip.
+		/// The translations for the tooltip of this item.
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
@@ -133,6 +133,34 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
 		public virtual int ChoosePrefix(UnifiedRandom rand) => -1;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not.
+		/// Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix
+		/// </summary>
+		public virtual bool MeleePrefix()
+			=> Item.melee && !Item.noUseGraphic;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not.
+		/// Takes priority over RangedPrefix and MagicPrefix
+		/// Ignored if MeleePrefix returns true
+		/// </summary>
+		public virtual bool WeaponPrefix()
+			=> Item.melee && Item.noUseGraphic;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.
+		/// Takes priority over MagicPrefix
+		/// </summary>
+		public virtual bool RangedPrefix()
+			=> Item.ranged || Item.CountsAsClass(DamageClass.Throwing);
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should receive magic prefixes and false if it should not.
+		/// </summary>
+		public virtual bool MagicPrefix()
+			=> Item.magic || Item.summon;
 
 		/// <summary>
 		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
@@ -739,17 +767,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this item is right-clicked in the inventory. Useful for goodie bags.
+		/// Allows you to make things happen when this item is right-clicked in the inventory.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		public virtual void RightClick(Player player) {
 		}
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
+		public virtual void OpenBossBag(Player player) {
+		}
 
 		/// <summary>
-		/// Allows you to give items to the given player when this item is right-clicked in the inventory if the bossBagNPC field has been set to a positive number. This ignores the CanRightClick and RightClick hooks.
+		/// Allows you to add and modify the loot items that spawn from bag items when opened.
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
 		/// </summary>
-		/// <param name="player">The player.</param>
-		public virtual void OpenBossBag(Player player) {
+		/// <param name="itemLoot"></param>
+		public virtual void ModifyItemLoot(ItemLoot itemLoot) {
 		}
 
 		/// <summary>
@@ -1062,6 +1095,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
+		[Obsolete("Use ModifyItemLoot to set drops. Set ItemID.Sets.BossBag[Type] in SetStaticDefaults", true)]
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>

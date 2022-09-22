@@ -41,6 +41,14 @@ namespace Terraria.ModLoader.UI
 			StreamWriter log = null;
 			IDisposable modHandle = null;
 			try {
+				string modReferencesPath = Path.Combine(ModCompile.ModSourcePath, "ModAssemblies");
+				string oldModReferencesPath = Path.Combine(ModCompile.ModSourcePath, "Mod Libraries");
+				if (Directory.Exists(oldModReferencesPath) && !Directory.Exists(modReferencesPath)) {
+					Logging.tML.Info($"Migrating from \"{oldModReferencesPath}\" to \"{modReferencesPath}\"");
+					Directory.Move(oldModReferencesPath, modReferencesPath);
+					Logging.tML.Info($"Moving old ModAssemblies folder to new location migration success");
+				}
+
 				var dir = Path.Combine(Main.SavePath, "ModReader", mod.Name);
 				if (Directory.Exists(dir))
 					Directory.Delete(dir, true);
@@ -95,16 +103,14 @@ namespace Terraria.ModLoader.UI
 
 					// Copy the dll/xml to ModLoader/Mod Sources/Mod Libraries for easy collaboration.
 					if (name == $"{mod.Name}.dll") {
-						string modReferencesPath = Path.Combine(ModCompile.ModSourcePath, "Mod Libraries");
 						Directory.CreateDirectory(modReferencesPath);
 						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.dll"), true);
-						log?.WriteLine("You can find this mod's .dll files under ModLoader/Mod Sources/Mod Libraries for easy mod collaboration!");
+						log?.WriteLine($"You can find this mod's .dll files under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");
 					}
 					if (name == $"{mod.Name}.xml" && !mod.properties.hideCode) {
-						string modReferencesPath = Path.Combine(ModCompile.ModSourcePath, "Mod Libraries");
 						Directory.CreateDirectory(modReferencesPath);
 						File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.xml"), true);
-						log?.WriteLine("You can find this mod's documentation .xml file under ModLoader/Mod Sources/Mod Libraries for easy mod collaboration!");
+						log?.WriteLine($"You can find this mod's documentation .xml file under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");
 					}
 				};
 				Utils.OpenFolder(dir);

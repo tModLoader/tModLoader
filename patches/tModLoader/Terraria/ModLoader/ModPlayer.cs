@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
@@ -260,6 +261,9 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
+
 		/// <summary>
 		/// Allows you to make anything happen right before damage is subtracted from the player's health.
 		/// </summary>
@@ -272,6 +276,9 @@ namespace Terraria.ModLoader
 		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
 
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
+
 		/// <summary>
 		/// Allows you to make anything happen when the player takes damage.
 		/// </summary>
@@ -283,6 +290,9 @@ namespace Terraria.ModLoader
 		/// <param name="cooldownCounter"></param>
 		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 		/// <summary>
 		/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
@@ -780,7 +790,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br/>
+		/// This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>

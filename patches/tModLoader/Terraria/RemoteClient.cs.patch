@@ -24,7 +24,7 @@
 +		// log a reason for terminating clients
 +		internal void SetPendingTermination(string reason) {
 +			PendingTermination = true;
-+			Logging.Terraria.Debug($"Terminating {Socket?.GetRemoteAddress()?.GetFriendlyName()} ({Name}): " + reason);
++			ModNet.Log(Id, "Terminating: " + reason);
 +		}
 +
  		public bool IsConnected() {

@@ -75,7 +75,7 @@
  			if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
-+					Social.Steam.WorkshopHelper.ModManager.StopPlaytimeTracking();
++					Social.Steam.SteamedWraps.StopPlaytimeTracking();
 +					SystemLoader.PreSaveAndQuit();
 +					// Calls before anything else is
  					Close();

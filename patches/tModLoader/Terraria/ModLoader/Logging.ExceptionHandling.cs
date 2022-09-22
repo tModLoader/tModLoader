@@ -7,6 +7,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -121,10 +122,7 @@ namespace Terraria.ModLoader
 				}
 
 				if (oom) {
-					string error = Language.GetTextValue("tModLoader.OutOfMemory");
-					tML.Fatal(error);
-					Interface.MessageBoxShow(error);
-					Environment.Exit(1);
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.OutOfMemory"));
 				}
 			}
 			catch (Exception e) {

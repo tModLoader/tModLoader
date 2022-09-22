@@ -43,15 +43,25 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsOSX) {
 				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app", "Contents", "Resources");
 			}
+			Logging.tML.Info("Terraria Steam Install Location assumed to be: " + terrariaInstallLocation);
 
 			return terrariaInstallLocation;
 		}
 
 		internal static void SetAppId(AppId_t appId) {
+			var steam_appid_path = "steam_appid.txt";
+
 			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
-				File.WriteAllText("steam_appid.txt", appId.ToString());
+				File.WriteAllText(steam_appid_path, appId.ToString());
+				return;
 			}
-			else if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
+
+			try {
+				File.Delete(steam_appid_path);
+			}
+			catch (IOException) { }
+
+			if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
 				throw new Exception("Cannot overwrite steam env. SteamAppId=" + Environment.GetEnvironmentVariable("SteamAppId"));
 			}
 		}

@@ -1,5 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/Conditions.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/Conditions.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class Conditions
++	public partial class Conditions
+ 	{
+ 		public class NeverTrue : IItemDropRuleCondition, IProvideItemConditionDescription
+ 		{
 @@ -659,12 +_,15 @@
  				return false;
  

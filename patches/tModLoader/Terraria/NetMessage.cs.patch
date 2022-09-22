@@ -1,9 +1,6 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
-@@ -1,8 +_,10 @@
- using Ionic.Zlib;
-+using log4net.Core;
- using Microsoft.Xna.Framework;
+@@ -3,6 +_,7 @@
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using System;
  using System.IO;
@@ -44,7 +41,7 @@
  				switch (msgType) {
  					case 1:
 -						writer.Write("Terraria" + 248);
-+						writer.Write(BuildInfo.versionedName);
++						writer.Write(ModNet.NetVersionString);
  						break;
  					case 2:
  						text.Serialize(writer);
@@ -324,7 +321,7 @@
  							break;
  						}
  					case 134: {
-@@ -1352,7 +_,13 @@
+@@ -1352,7 +_,16 @@
  
  				int num26 = (int)writer.BaseStream.Position;
  				writer.BaseStream.Position = position;
@@ -333,6 +330,9 @@
 +				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
 +				if (num26 > ushort.MaxValue) // an exception is better than silent packet drops.
 +					throw new IndexOutOfRangeException($"Maximum packet length exceeded {num26} > {ushort.MaxValue}");
++
++				if (ModNet.DetailedLogging)
++					ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num26);
 +
 -				writer.Write((short)num26);
 +				writer.Write((ushort)num26);
@@ -457,7 +457,7 @@
  
  		public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256) {
 +			if (ModNet.DetailedLogging)
-+				Logging.tML.Debug($"recv {streamLength}bytes");
++				ModNet.Debug(i, $"recv {streamLength}");
 +
 +			var lockStart = DateTime.Now;
  			lock (buffer[i]) {
@@ -467,7 +467,7 @@
 +				while (buffer[i].totalData + streamLength > buffer[i].readBuffer.Length) {
 +					if (firstWait) {
 +						if (ModNet.DetailedLogging)
-+							Logging.tML.Debug($"waiting for space in readBuffer");
++							ModNet.Debug(i, $"waiting for space in readBuffer");
 +						firstWait = false;
 +					}
 +					Monitor.Exit(buffer[i]);
@@ -476,7 +476,7 @@
 +				}
 +				var timeToAcquireLock = (DateTime.Now - lockStart).TotalMilliseconds;
 +				if (timeToAcquireLock > 1 && ModNet.DetailedLogging)
-+					Logging.tML.Debug($"buffer lock contended for {timeToAcquireLock:0.0}ms");
++					ModNet.Debug(i, $"buffer lock contended for {timeToAcquireLock:0.0}ms");
 +
  				try {
  					Buffer.BlockCopy(bytes, 0, buffer[i].readBuffer, buffer[i].totalData, streamLength);
@@ -488,7 +488,7 @@
  					if (Main.netMode == 1) {
  						Main.menuMode = 15;
  						Main.statusText = Language.GetTextValue("Error.BadHeaderBufferOverflow");
-+						Logging.Terraria.Error($"BlockCopy bounds error: srclen={bytes.Length}, dstlen={buffer[i].readBuffer.Length}, dstoffset={buffer[i].totalData}, num={streamLength}", e);
++						ModNet.Error($"BlockCopy bounds error: srclen={bytes.Length}, dstlen={buffer[i].readBuffer.Length}, dstoffset={buffer[i].totalData}, num={streamLength}", e);
  						Netplay.Disconnect = true;
  					}
  					else {
@@ -504,7 +504,7 @@
 +				int msgId = -1;
  				try {
 +					if (num2 > 0 && ModNet.DetailedLogging) {
-+						Logging.tML.Debug($"check {num2}bytes");
++						ModNet.Debug(bufferIndex, $"check {num2}");
 +					}
  					while (num2 >= 2) {
  						int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
@@ -515,7 +515,7 @@
  
  							if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
  								Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
-@@ -2111,9 +_,15 @@
+@@ -2111,10 +_,13 @@
  						break;
  					}
  				}
@@ -526,22 +526,27 @@
 -						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
 +						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
 +					*/
-+
-+					if (Main.dedServ) {
-+						Logging.Terraria.Error($"Error on message id:{msgId}, client:{Netplay.Clients[bufferIndex].Socket.GetRemoteAddress().GetFriendlyName()} ({Netplay.Clients[bufferIndex].Name}).", e);
-+					}
  
++					ModNet.Error(bufferIndex, $"{MessageID.GetName(msgId)}({msgId})", e);
  					num2 = 0;
  					num = 0;
-@@ -2324,8 +_,10 @@
+ 				}
+@@ -2125,6 +_,8 @@
+ 					}
+ 
+ 					buffer[bufferIndex].totalData = num2;
++					if (num2 > 0 && ModNet.DetailedLogging)
++						ModNet.Debug(bufferIndex, $"partial {num2}");
+ 				}
+ 
+ 				buffer[bufferIndex].checkBytes = false;
+@@ -2324,8 +_,7 @@
  			}
  
  			if (!flag) {
 -				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
 +				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
- 				WorldFile.SaveWorld();
-+				SystemLoader.OnWorldUnload();
-+				TileIO.PostExitWorldCleanup();
+-				WorldFile.SaveWorld();
  				Netplay.Disconnect = true;
  			}
  		}

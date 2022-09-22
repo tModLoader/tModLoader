@@ -195,21 +195,33 @@ namespace Terraria.ModLoader.UI
 
 			var filterTextBoxBackground = new UIPanel {
 				Top = { Percent = 0f },
-				Left = { Pixels = -170, Percent = 1f },
-				Width = { Pixels = 135 },
+				Left = { Pixels = -185, Percent = 1f },
+				Width = { Pixels = 150 },
 				Height = { Pixels = 40 }
 			};
-			filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
+			filterTextBoxBackground.SetPadding(0);
+			filterTextBoxBackground.OnRightClick += ClearSearchField;
 			upperMenuContainer.Append(filterTextBoxBackground);
 
 			filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
 				Top = { Pixels = 5 },
-				Left = { Pixels = -160, Percent = 1f },
-				Width = { Pixels = 120 },
-				Height = { Pixels = 20 }
+				Height = { Percent = 1f },
+				Width = { Percent = 1f },
+				Left = { Pixels = 5 },
+				VAlign = 0.5f,
 			};
 			filterTextBox.OnTextChange += (a, b) => updateNeeded = true;
-			upperMenuContainer.Append(filterTextBox);
+			filterTextBoxBackground.Append(filterTextBox);
+
+			UIImageButton clearSearchButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
+				HAlign = 1f,
+				VAlign = 0.5f,
+				Left = new StyleDimension(-2f, 0f)
+			};
+
+			//clearSearchButton.OnMouseOver += searchCancelButton_OnMouseOver;
+			clearSearchButton.OnClick += ClearSearchField;
+			filterTextBoxBackground.Append(clearSearchButton);
 
 			SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
 				Left = { Pixels = 545 }
@@ -237,6 +249,8 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
+		private void ClearSearchField(UIMouseEvent evt, UIElement listeningElement) => filterTextBox.Text = "";
+
 		// Adjusts sizing and placement of top row buttons according to whether or not
 		// the Force Reload button is being shown.
 		private void UpdateTopRowButtons() {
@@ -250,7 +264,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+		internal void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
@@ -347,6 +361,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
 			base.Draw(spriteBatch);
 			for (int i = 0; i < _categoryButtons.Count; i++) {
 				if (_categoryButtons[i].IsMouseHovering) {
@@ -372,7 +387,8 @@ namespace Terraria.ModLoader.UI
 					return;
 				}
 			}
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+			if(buttonOMF.IsMouseHovering)
+				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 		}
 
 		public override void OnActivate() {

@@ -33,6 +33,8 @@ namespace Terraria.ModLoader.Core
 
 		private enum SearchFolders { }
 
+		internal static string ModPackActive = null;
+
 		/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
 		internal static IReadOnlyList<LocalMod> FindWorkshopMods() => _FindMods(ignoreModsFolder: true);
 
@@ -51,9 +53,20 @@ namespace Terraria.ModLoader.Core
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
+			// load all mods from an active ModPack
+			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
+				if (Directory.Exists(ModPackActive)) {
+					Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
+					foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
+						AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
+				}
+				else
+					ModPackActive = null;
+			}
+
 			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
 			if (!ignoreModsFolder) {
-				foreach (string mod in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
+				foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
 					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
 			}
 
@@ -111,6 +124,40 @@ namespace Terraria.ModLoader.Core
 				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 			}
 			return true;
+		}
+
+		internal static IEnumerable<ulong> IdentifyWorkshopDependencies() {
+			HashSet<ulong> dependencies = new HashSet<ulong>();
+
+			foreach (LocalMod mod in FindWorkshopMods()) {
+				// Skip if the mod has no dependencies according to the build information.
+				if (mod.properties.modReferences.Length == 0)
+					continue;
+
+				// This shouldn't really ever fail, but better safe than sorry.
+				if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
+					continue;
+
+				WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
+			}
+
+			// Cull out any dependencies that are already installed.
+			return dependencies.Where(x => !SteamedWraps.IsWorkshopItemInstalled(new Steamworks.PublishedFileId_t(x))).ToList();
+		}
+
+		internal static string ListDependenciesToDownload(List<ulong> deps) {
+			if (deps.Count == 0) return null;
+
+			var message = new StringBuilder();
+
+			message.Append(Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods"));
+			foreach (ulong dep in deps) {
+				// TODO: No way to really show the internal name, just display name. How to fix? Does it *need* fixing?
+				var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
+				message.Append($"\n  {details.m_rgchTitle}");
+			}
+
+			return message.ToString();
 		}
 
 		/// <summary>
@@ -219,8 +266,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static IEnumerable<string> GetTemporaryFiles() {
-			return Directory.GetFiles(ModLoader.ModPath, $"*{DownloadFile.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)
-				.Union(Directory.GetFiles(ModLoader.ModPath, "temporaryDownload.tmod", SearchOption.TopDirectoryOnly)); // Old tML remnant
+			return Directory.GetFiles(modPath, $"*{DownloadFile.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)
+				.Union(Directory.GetFiles(modPath, "temporaryDownload.tmod", SearchOption.TopDirectoryOnly)); // Old tML remnant
 		}
 
 		internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
@@ -245,7 +292,7 @@ namespace Terraria.ModLoader.Core
 			CommandLineModPackOverride(mods);
 
 			// Alternate fix for updating enabled mods
-			//foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod.update", SearchOption.TopDirectoryOnly)) {
+			//foreach (string fileName in Directory.GetFiles(modPath, "*.tmod.update", SearchOption.TopDirectoryOnly)) {
 			//	File.Copy(fileName, Path.GetFileNameWithoutExtension(fileName), true);
 			//	File.Delete(fileName);
 			//}
@@ -429,13 +476,13 @@ namespace Terraria.ModLoader.Core
 		internal static void SaveEnabledMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
 			string json = JsonConvert.SerializeObject(ModLoader.EnabledMods, Formatting.Indented);
-			var path = Path.Combine(ModLoader.ModPath, "enabled.json");
+			var path = Path.Combine(modPath, "enabled.json");
 			File.WriteAllText(path, json);
 		}
 
 		internal static HashSet<string> LoadEnabledMods() {
 			try {
-				var path = Path.Combine(ModLoader.ModPath, "enabled.json");
+				var path = Path.Combine(modPath, "enabled.json");
 				if (!File.Exists(path)) {
 					Logging.tML.Warn("Did not find enabled.json file");
 					return new HashSet<string>();
@@ -530,8 +577,7 @@ namespace Terraria.ModLoader.Core
 
 			if (TryReadManifest(parentDir, out var info)) {
 				// Is a mod on Steam Workshop
-				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-				modManager.Uninstall(parentDir);
+				SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId));
 			}
 			else {
 				// Is a Mod in Mods Folder

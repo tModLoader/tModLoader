@@ -55,7 +55,7 @@
  				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  			}
-@@ -120,9 +_,12 @@
+@@ -120,14 +_,18 @@
  				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseNotMeetingBiomeRequirements";
  			}
@@ -70,14 +70,13 @@
  				int num = 0;
  				for (int i = 0; i < _pylons.Count; i++) {
  					TeleportPylonInfo info2 = _pylons[i];
-@@ -147,13 +_,14 @@
- 						sceneMetrics2.ScanAndExportToMain(settings);
- 						if (DoesPylonAcceptTeleportation(info2, player)) {
- 							flag2 = true;
-+							nearbyInfo = info2;
- 							break;
- 						}
- 					}
+ 					if (!player.InInteractionRange(info2.PositionInTiles.X, info2.PositionInTiles.Y))
+ 						continue;
++					nearbyInfo = info2;
+ 
+ 					if (num < 1)
+ 						num = 1;
+@@ -153,7 +_,7 @@
  				}
  
  				if (!flag2) {
@@ -86,20 +85,23 @@
  					switch (num) {
  						default:
  							key = "Net.CannotTeleportToPylonBecausePlayerIsNotNearAPylon";
-@@ -167,8 +_,11 @@
+@@ -167,9 +_,14 @@
  					}
  				}
  			}
-+			if (info.ModPylon is ModPylon nearbyPylon)
++			if (nearbyInfo.ModPylon is ModPylon nearbyPylon)
 +				nearbyPylon.ValidTeleportCheck_NearbyPostCheck(nearbyInfo, ref flag, ref flag2, ref key);
 +			PylonLoader.PostValidTeleportCheck(info, nearbyInfo, ref flag, ref flag2, ref key);
  
 -			if (flag) {
 +			if (flag && flag2) {
  				Vector2 newPos = info.PositionInTiles.ToWorldCoordinates() - new Vector2(0f, player.HeightOffsetBoost);
++				if (info.ModPylon is ModPylon finalDestinationPylon)
++					finalDestinationPylon.ModifyTeleportationPosition(info, ref newPos);
  				int num2 = 9;
  				int typeOfPylon = (int)info.TypeOfPylon;
-@@ -185,9 +_,13 @@
+ 				int number = 0;
+@@ -185,17 +_,25 @@
  			}
  		}
  
@@ -111,9 +113,21 @@
 +				return value;
 +			if (info.ModPylon is ModPylon pylon)
 +				return pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
++			/* Moved to DoesPositionHaveEnoughNPCs method
  			if (necessaryNPCCount <= 0)
  				return true;
++			*/
  
+ 			Point16 positionInTiles = info.PositionInTiles;
+ 			return DoesPositionHaveEnoughNPCs(necessaryNPCCount, positionInTiles);
+ 		}
+ 
+ 		public static bool DoesPositionHaveEnoughNPCs(int necessaryNPCCount, Point16 centerPoint) {
++			if (necessaryNPCCount <= 0) 
++				return true;
+ 			Rectangle rectangle = new Rectangle(centerPoint.X - Main.buffScanAreaWidth / 2, centerPoint.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+ 			int num = necessaryNPCCount;
+ 			for (int i = 0; i < 200; i++) {
 @@ -220,6 +_,10 @@
  		}
  

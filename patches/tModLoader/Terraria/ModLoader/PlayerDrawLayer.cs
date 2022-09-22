@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 				child.ResetVisibility(drawInfo);
 		}
 
-		/// <summary> Draws this layer. </summary>
+		/// <summary> Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check <code>if(drawinfo.shadow == 0f)</code> to only draw for the original player image.</summary>
 		protected abstract void Draw(ref PlayerDrawSet drawInfo);
 
 		public void DrawWithTransformationAndChildren(ref PlayerDrawSet drawInfo) {
