@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria.GameInput;
+using Terraria.Localization;
 
 // Thanks to Yoraiz0r for the useful Properties approach.
 
@@ -11,13 +12,16 @@ namespace Terraria.ModLoader
 	public class ModKeybind
 	{
 		internal readonly Mod mod;
-		internal readonly string name; // name from modder: "Random Buff"
-		internal readonly string uniqueName; // eg: "Example Mod: Random Buff" (currently also display name)
+		internal readonly string name; // name from modder: "RandomBuff"
+		internal readonly string uniqueName; // name saved to disk: "ExampleMod: RandomBuff"
 		internal readonly string defaultBinding; // from mod.Load
+		internal readonly string displayNameKey; // Mods.ExampleMod.Keybind.RandomBuff
+		internal string DisplayName => Language.Exists(displayNameKey) ? Language.GetTextValue(displayNameKey) : name; // "Random Buff"
 
 		internal ModKeybind(Mod mod, string name, string defaultBinding) {
 			this.mod = mod;
 			this.name = name;
+			displayNameKey = $"Mods.{mod.Name}.Keybind.{name}";
 			this.defaultBinding = defaultBinding;
 
 			uniqueName = mod.Name + ": " + name;

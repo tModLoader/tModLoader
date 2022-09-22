@@ -12,7 +12,7 @@ namespace ExampleMod.Common.Systems
 			// Registers a new keybind
 			// The "$" character before a name means it should interpret the name as a translation key and use the loaded translation with the same key
 			// The actual text displayed is in en-US.hjson
-			RandomBuffKeybind = KeybindLoader.RegisterKeybind(Mod, "$Mods.ExampleMod.Keybind.RandomBuff", "P");
+			RandomBuffKeybind = KeybindLoader.RegisterKeybind(Mod, "RandomBuff", "P");
 		}
 
 		// Please see ExampleMod.cs' Unload() method for a detailed explanation of the unloading process.

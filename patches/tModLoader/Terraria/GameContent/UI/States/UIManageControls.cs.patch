@@ -158,7 +158,7 @@
 +						var keybind = KeybindLoader.modKeybinds[bind];
 +						string defaultKey = keybind.defaultBinding;
 +						UIElement container = new UIElement();
-+						var left = new UIKeybindingListItem(keybind.mod.Name, keybind.name, currentInputMode, color);
++						var left = new UIKeybindingListItem(bind, currentInputMode, color);
 +						left.Width.Precent = 0.68f;
 +						left.Height.Precent = 1f;
 +						container.Append(left);
