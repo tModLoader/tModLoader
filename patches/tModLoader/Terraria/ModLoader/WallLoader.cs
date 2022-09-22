@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
 		private static Action<int, int, int>[] HookRandomUpdate;
-		private delegate bool DelegateWallFrame(int i, int j, int type, bool resetFrame, ref int style, ref int frameNumber);
+		private delegate bool DelegateWallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber);
 		private static DelegateWallFrame[] HookWallFrame;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
@@ -239,16 +239,16 @@ namespace Terraria.ModLoader
 		//in Terraria.Framing.WallFrame after the 'if (tile.wall == 0)' block
 		//	if (!WallLoader.WallFrame(i, j, tile.wall, ref resetFrame))
 		//		return;
-		public static bool WallFrame(int i, int j, int type, bool resetFrame, ref int style, ref int frameNumber) {
+		public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
 			ModWall modWall = GetWall(type);
 			bool flag = true;
 
 			if (modWall != null) {
-				flag = modWall.WallFrame(i, j, resetFrame, ref style, ref frameNumber);
+				flag = modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber);
 			}
 
 			foreach (var hook in HookWallFrame) {
-				flag &= hook(i, j, type, resetFrame, ref style, ref frameNumber);
+				flag &= hook(i, j, type, randomizeFrame, ref style, ref frameNumber);
 			}
 
 			return flag;

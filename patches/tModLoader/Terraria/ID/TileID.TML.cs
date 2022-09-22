@@ -64,6 +64,11 @@
 			public static int[] CountsAsPylon = new int[] {
 				597
 			};
+
+			/// <summary>
+			/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
+			/// </summary>
+			public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
 		}
 	}
 }
