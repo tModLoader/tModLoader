@@ -26,7 +26,8 @@ RUN steamcmd +quit
 
 RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
  && chmod u+x manage-tModLoaderServer.sh \
- && ./manage-tModLoaderServer.sh -i -g --no-mods
+ && ./manage-tModLoaderServer.sh -i -g --no-mods \
+ && chmod u+x $HOME/tModLoader/start-tModLoaderServer.sh
 
 # Download entrypoint script
 RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Launch.sh \
