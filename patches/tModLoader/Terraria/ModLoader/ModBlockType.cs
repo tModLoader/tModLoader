@@ -88,7 +88,7 @@ namespace Terraria.ModLoader
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type">The dust type that will be spawned by the calling code</param>
 		public virtual bool CreateDust(int i, int j, ref int type) {
-			type = DustType;
+			type = DustType; // TODO: this is strange
 			return true;
 		}
 
