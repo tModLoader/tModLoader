@@ -14,7 +14,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
-using Terraria.UI;
 
 namespace Terraria
 {
@@ -188,7 +187,7 @@ namespace Terraria
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
-				FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 			}
 
 			if (Directory.Exists(Path.Combine("Content", "Images")))

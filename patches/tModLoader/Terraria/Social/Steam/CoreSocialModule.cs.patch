@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/CoreSocialModule.cs
-@@ -1,16 +_,19 @@
+@@ -1,16 +_,18 @@
  using ReLogic.OS;
  using Steamworks;
  using System;
@@ -9,7 +9,6 @@
  using System.Windows.Forms;
  using Terraria.Localization;
 +using Terraria.ModLoader.Engine;
-+using Terraria.UI;
  
  namespace Terraria.Social.Steam
  {
@@ -36,7 +35,7 @@
  			if (!SteamAPI.Init()) {
 -				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
 -				Environment.Exit(1);
-+				FancyErrorPrinter.FatalExit(Language.GetTextValue("Error.LaunchFromSteam"));
++				ErrorReporting.FatalExit(Language.GetTextValue("Error.LaunchFromSteam"));
  			}
  
  			IsSteamValid = true;

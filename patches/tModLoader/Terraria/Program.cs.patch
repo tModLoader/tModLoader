@@ -8,7 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -11,12 +_,17 @@
+@@ -11,12 +_,16 @@
  using System.Windows.Forms;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -17,7 +17,6 @@
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
-+using Terraria.UI;
  using Terraria.Utilities;
  
  namespace Terraria
@@ -136,7 +135,7 @@
 +					throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 +			}
 +			catch (Exception e) {
-+				FancyErrorPrinter.FatalExit("Failed to init logging", e);
++				ErrorReporting.FatalExit("Failed to init logging", e);
 +			}
 +
 +			try {
@@ -144,7 +143,7 @@
 +				Logging.LogStartup(isServer);
 +			}
 +			catch (Exception e) {
-+				FancyErrorPrinter.FatalExit("Failed to handle save data", e);
++				ErrorReporting.FatalExit("Failed to handle save data", e);
 +			}
 +
 +			AttemptSupportHighDPI(isServer);
@@ -204,7 +203,7 @@
 -				}
 +			}
 +			catch (Exception e) {
-+				FancyErrorPrinter.FatalExit("Main engine crash", e);
++				ErrorReporting.FatalExit("Main engine crash", e);
  			}
  		}
  

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using Terraria.Localization;
 using Terraria.Social;
-using Terraria.UI;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -60,7 +59,7 @@ namespace Terraria.ModLoader.Engine
 				steamHash = ToByteArray("b08ed3b4fe5417e7cd56e06ad99f2ab7");
 			}
 			else {
-				FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
 			}
 		}
 
@@ -168,7 +167,7 @@ namespace Terraria.ModLoader.Engine
 		private static void CheckSteam() {
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Utils.OpenToURL("https://terraria.org");
-				FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
 				return;
 			}
 
@@ -182,13 +181,13 @@ namespace Terraria.ModLoader.Engine
 				case TerrariaSteamClient.LaunchResult.Ok:
 					break;
 				case TerrariaSteamClient.LaunchResult.ErrClientProcDied:
-					FancyErrorPrinter.FatalExit("The terraria steam client process exited unexpectedly");
+					ErrorReporting.FatalExit("The terraria steam client process exited unexpectedly");
 					break;
 				case TerrariaSteamClient.LaunchResult.ErrSteamInitFailed:
-					FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.SteamInitFailed"));
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamInitFailed"));
 					break;
 				case TerrariaSteamClient.LaunchResult.ErrNotInstalled:
-					FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
 					break;
 				default:
 					throw new Exception("Unsupported result type: " + result);
@@ -201,11 +200,11 @@ namespace Terraria.ModLoader.Engine
 				if (Main.dedServ)
 					return;
 
-				FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe));
 			}
 
 			if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
-				FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
 			}
 
 			if (Path.GetFileName(vanillaExePath) != CheckExe) {
