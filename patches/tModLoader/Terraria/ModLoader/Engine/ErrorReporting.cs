@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Engine
 				Logging.tML.Fatal(message);
 
 			TerrariaSteamClient.Shutdown();
-			MessageBoxShow(message, true);
+			MessageBoxShow(message, fatal: true);
 			Environment.Exit(1);
 		}
 
