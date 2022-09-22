@@ -218,22 +218,25 @@
  								case 10:
  								case 11:
  								case 12:
-@@ -656,8 +_,15 @@
- 							}
+@@ -642,6 +_,7 @@
  						}
- 						else {
-+							inv[slot].SetDefaults(Main.mouseItem.type);
-+							int stack = inv[slot].stack;
-+							ItemLoader.SplitStack(inv[slot], Main.mouseItem);
-+							inv[slot].stack = stack;
-+							Main.mouseItem.stack--;
-+							/* TML: #SplitStack Reversed order of SetDefaults and stack-- to allow for SplitStack
- 							Main.mouseItem.stack--;
- 							inv[slot].SetDefaults(Main.mouseItem.type);
-+							*/
+ 					}
+ 					else if (Main.mouseItem.dye > 0 && inv[slot].type == 0) {
++						/*
+ 						if (Main.mouseItem.stack == 1) {
+ 							Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 							if (inv[slot].type == 0 || inv[slot].stack < 1)
+@@ -661,6 +_,10 @@
  							Recipe.FindRecipes();
  							SoundEngine.PlaySound(7);
  						}
++						*/
++						inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
++						Recipe.FindRecipes();
++						SoundEngine.PlaySound(7);
+ 
+ 						if (inv[slot].stack > 0) {
+ 							switch (context) {
 @@ -669,6 +_,9 @@
  									break;
  								case 8:
@@ -367,16 +370,30 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
-@@ -1014,11 +_,18 @@
- 					Main.mouseItem.favorited = false;
+@@ -1003,6 +_,7 @@
  
+ 		public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player) {
+ 			if (Main.mouseItem.type == 0) {
++				/*
+ 				Main.mouseItem = inv[slot].Clone();
+ 				if (context == 29)
+ 					Main.mouseItem.SetDefaults(Main.mouseItem.type);
+@@ -1012,13 +_,24 @@
+ 					Main.mouseItem.favorited = true;
+ 				else
+ 					Main.mouseItem.favorited = false;
++				*/
+ 
++				if (context == 29)
++					Main.mouseItem.SetDefaults(Main.mouseItem.type);
++				else
++					Main.mouseItem = ItemLoader.TransferWithLimit(inv[slot], 1);
++				
  				AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
-+
-+				ItemLoader.SplitStack(Main.mouseItem, inv[slot], transfer: true);
-+			}
-+			else {
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, context == 29, 1);
  			}
++			else {
++				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: context == 29, 1);
++			}
  
 +			/* TML: #OnStackHook
  			Main.mouseItem.stack++;
@@ -636,7 +653,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1328,25 +_,28 @@
+@@ -1328,25 +_,36 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -644,21 +661,25 @@
  				}
  
  				if (Main.mouseItem.type == 0) {
--					Main.mouseItem.netDefaults(inv[slot].netID);
--					if (inv[slot].prefix != 0)
--						Main.mouseItem.Prefix(inv[slot].prefix);
--
++					/*
+ 					Main.mouseItem.netDefaults(inv[slot].netID);
+ 					if (inv[slot].prefix != 0)
+ 						Main.mouseItem.Prefix(inv[slot].prefix);
+ 
+ 					Main.mouseItem.stack = 0;
++					*/
 +					Main.mouseItem = inv[slot].Clone();
 +					Main.mouseItem.buyOnce = false;
- 					Main.mouseItem.stack = 0;
++					Main.mouseItem.stack = 1;
++				}
++				else {
++					ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: true, 1);
  				}
  
  				if (!inv[slot].buyOnce)
  					Main.shopSellbackHelper.Add(inv[slot]);
  
 -				Main.mouseItem.stack++;
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, true, 1);
-+
 +				//Main.mouseItem.stack++;//TML: #OnStackHook
  				RefreshStackSplitCooldown();
  				if (inv[slot].buyOnce && --inv[slot].stack <= 0)

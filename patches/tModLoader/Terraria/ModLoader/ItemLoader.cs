@@ -1465,7 +1465,10 @@ namespace Terraria.ModLoader
 
 			increase.ModItem?.OnStack(decrease, numTransfered);
 
-			TransferFavorites(increase, decrease);
+			if (decrease.favorited) {
+				increase.favorited = true;
+				decrease.favorited = false;
+			}
 
 			increase.stack += numTransfered;
 			if (!infiniteSource)
@@ -1474,8 +1477,20 @@ namespace Terraria.ModLoader
 
 		private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
 
-		public static void SplitStack(Item increase, Item decrease, int numToTransfer = 1, bool transfer = false) {
+		public static Item TransferWithLimit(Item decrease, int limit) {
+			Item increase = decrease.Clone();
+			if (decrease.stack <= limit) {
+				decrease.TurnToAir();
+			}
+			else {
+				SplitStack(increase, decrease, limit);
+			}
+			return increase;
+		}
+
+		public static void SplitStack(Item increase, Item decrease, int numToTransfer) {
 			increase.stack = 0;
+			increase.favorited = false;
 
 			foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
 				g.SplitStack(increase, decrease, numToTransfer);
@@ -1483,20 +1498,8 @@ namespace Terraria.ModLoader
 
 			increase.ModItem?.SplitStack(decrease, numToTransfer);
 
-			TransferFavorites(increase, decrease);
-
-			if (transfer) {
-				increase.stack += numToTransfer;
-				decrease.stack -= numToTransfer;
-			}
-		}
-
-		private static void TransferFavorites(Item to, Item from) {
-			bool toFavorited = to.favorited;
-			if (from.favorited) {
-				to.favorited = true;
-				from.favorited = false;
-			}
+			increase.stack += numToTransfer;
+			decrease.stack -= numToTransfer;
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
