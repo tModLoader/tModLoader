@@ -1,14 +1,10 @@
 --- src/TerrariaNetCore/Terraria/UI/FancyErrorPrinter.cs
 +++ src/tModLoader/Terraria/UI/FancyErrorPrinter.cs
-@@ -3,7 +_,11 @@
- using System.Collections.Generic;
+@@ -4,6 +_,7 @@
  using System.IO;
  using System.Text;
-+using System.Threading;
  using System.Windows.Forms;
 +using Terraria.ModLoader.Engine;
-+using Terraria.ModLoader;
-+using Terraria.Localization;
  
  namespace Terraria.UI
  {
@@ -42,17 +38,17 @@
  			}
  		}
  
-@@ -117,13 +_,6 @@
- 				string str = suggestions[i];
- 				text.AppendLine(i + 1 + ". " + str);
+@@ -119,11 +_,13 @@
  			}
--		}
--
--		private static void ShowTheBox(string preparedMessage) {
--			if (Main.dedServ) // if #SERVER
--				return;
--			
--			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
  		}
+ 
++		/* Use ErrorReporting.MessageBoxShow instead
+ 		private static void ShowTheBox(string preparedMessage) {
+ 			if (Main.dedServ) // if #SERVER
+ 				return;
+ 			
+ 			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+ 		}
++		*/
  	}
  }
