@@ -9,6 +9,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -122,7 +123,7 @@ namespace Terraria.ModLoader
 				}
 
 				if (oom) {
-					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.OutOfMemory"));
+					FancyErrorPrinter.FatalExit(Language.GetTextValue("tModLoader.OutOfMemory"));
 				}
 			}
 			catch (Exception e) {

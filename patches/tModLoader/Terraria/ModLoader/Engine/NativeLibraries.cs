@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -15,7 +16,7 @@ namespace Terraria.ModLoader.Engine
 			}
 			catch (DllNotFoundException e) {
 				e.HelpLink = "https://www.microsoft.com/en-us/download/details.aspx?id=53587";
-				ErrorReporting.FatalExit("Microsoft Visual C++ 2015 Redistributable Update 3 is missing. You will need to download and install it from the Microsoft website.", e);
+				FancyErrorPrinter.FatalExit("Microsoft Visual C++ 2015 Redistributable Update 3 is missing. You will need to download and install it from the Microsoft website.", e);
 			}
 
 			try {
@@ -23,7 +24,7 @@ namespace Terraria.ModLoader.Engine
 			}
 			catch (DllNotFoundException e) {
 				e.HelpLink = "https://support.microsoft.com/en-us/topic/media-feature-pack-list-for-windows-n-editions-c1c6fffa-d052-8338-7a79-a4bb980a700a";
-				ErrorReporting.FatalExit("Windows Versions N and KN are missing some media features.\n\nFollow the instructions in the Microsoft website\n\nSearch \"Media Feature Pack list for Windows N editions\" if the page doesn't open automatically.", e);
+				FancyErrorPrinter.FatalExit("Windows Versions N and KN are missing some media features.\n\nFollow the instructions in the Microsoft website\n\nSearch \"Media Feature Pack list for Windows N editions\" if the page doesn't open automatically.", e);
 			}
 		}
 

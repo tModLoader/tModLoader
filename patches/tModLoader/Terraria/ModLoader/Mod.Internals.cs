@@ -9,6 +9,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
@@ -105,7 +106,7 @@ namespace Terraria.ModLoader
 			if (initialTransferComplete) {
 				// TODO: Add a user friendly indicator/inbox for viewing these errors that happen in-game
 				Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
-				Terraria.UI.FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+				FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
 			}
 			else {
 				if (e is AssetLoadException AssetLoadException) {
