@@ -46,14 +46,14 @@ namespace ExampleMod.Content.Walls
 			}
 		}
 
-		public override bool WallFrame(int i, int j, bool resetFrame, ref int style, ref int frameNumber) {
-			if (resetFrame) {
+		public override bool WallFrame(int i, int j, bool randomizeFrame, ref int style, ref int frameNumber) {
+			if (randomizeFrame) {
 				// Here we make the chance of WallFrameNumber 0 very rare, just for visual variety: https://i.imgur.com/9Irak3p.png
 				if (frameNumber == 0 && WorldGen.genRand.NextBool(3, 4)) {
 					frameNumber = WorldGen.genRand.Next(1, 3);
 				}
 			}
-			return base.WallFrame(i, j, resetFrame, ref style, ref frameNumber);
+			return base.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber);
 		}
 	}
 }
