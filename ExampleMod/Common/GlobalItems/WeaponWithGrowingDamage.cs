@@ -23,8 +23,6 @@ namespace ExampleMod.Common.GlobalItems
 			//Apply to weapons
 			return entity.damage > 0;
 		}
-		public override void SetDefaults(Item item) {
-		}
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
 			GainExperience(item, tag.Get<int>("experience"));//Load experience tag
@@ -50,8 +48,9 @@ namespace ExampleMod.Common.GlobalItems
 		public void OnHitNPCGeneral(Player player, NPC target, int damage, float knockBack, bool crit, Item item = null, Projectile projectile = null) {
 			//The weapon gains experience when hitting an npc.
 			int xp = damage;
-			if (projectile != null)
+			if (projectile != null) {
 				xp /= 2;
+			}
 
 			GainExperience(item, xp);
 		}
@@ -63,8 +62,9 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public void UpdateValue(Item item, int stackChange = 0) {
-			if (item == null)
+			if (item == null) {
 				return;
+			}
 
 			item.value -= bonusValuePerItem;
 			int stack = item.stack + stackChange;
@@ -111,15 +111,17 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
+			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
 				return;
+			}
 
 			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
 		}
 
 		public override void SplitStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2))
+			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
 				return;
+			}
 
 			//Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
 			experience = 0;
@@ -142,8 +144,9 @@ namespace ExampleMod.Common.GlobalItems
 	public class SnowBallShop : GlobalNPC
 	{
 		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type != ModContent.NPCType<ExamplePerson>())
+			if (type != ModContent.NPCType<ExamplePerson>()) {
 				return;
+			}
 
 			Item item = shop.item[nextSlot++];
 			item.SetDefaults(ItemID.Snowball);

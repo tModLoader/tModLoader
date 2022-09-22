@@ -82,7 +82,7 @@ Mods: {
 			Has no NPC requirements!
 			'''
 			ExamplePylonItemAdvanced: "Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!"
-			ExampleMultiUseItem: "Can be used 4 times"
+			ExampleMultiUseItem: Can be used 4 times
 		}
 		
 		ItemName: {

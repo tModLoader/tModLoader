@@ -1432,7 +1432,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Calls CanStack.  Returns false if CanStack is false.  Calls StackItems if CanStack is true<br/>
-		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.<br/>
+		/// Stacks increase and decrease.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if increase.stack < increase.maxStack.<br/>
 		/// </summary>
 		/// <param name="increase">Item where the stack is being increased.</param>
 		/// <param name="decrease">Item where the stack is being reduced.</param>
@@ -1449,7 +1449,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.
+		/// Stacks increase and decrease.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if increase.stack < increase.maxStack.
 		/// </summary>
 		/// <param name="increase">Item where the stack is being increased.</param>
 		/// <param name="decrease">Item where the stack is being reduced.</param>
@@ -1489,6 +1489,14 @@ namespace Terraria.ModLoader
 		}
 
 		public static void SplitStack(Item increase, Item decrease, int numToTransfer) {
+		/// <summary>
+		/// Called when splitting a stack of items.
+		/// </summary>
+		/// <param name="increase">A clone of decrease.  Stack is set to zero then incremented in SplitStack or after SplitStack is called.</param>
+		/// <param name="decrease">The original item with stack being reduced.</param>
+		/// <param name="numToTransfer">Usually 1, but possible to be higher.</param>
+		/// <param name="transfer">Setting to true will cause SplitStack to modify the stacks.</param>
+		public static void SplitStack(Item increase, Item decrease, int numToTransfer = 1, bool transfer = false) {
 			increase.stack = 0;
 			increase.favorited = false;
 
@@ -1500,6 +1508,19 @@ namespace Terraria.ModLoader
 
 			increase.stack += numToTransfer;
 			decrease.stack -= numToTransfer;
+		}
+			TransferFavorites(increase, decrease);
+
+			if (transfer) {
+				increase.stack += numToTransfer;
+				decrease.stack -= numToTransfer;
+			}
+		}
+		private static void TransferFavorites(Item to, Item from) {
+			if (from.favorited) {
+				to.favorited = true;
+				from.favorited = false;
+			}
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);

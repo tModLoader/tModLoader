@@ -57,8 +57,9 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-			if (useCount == 0)
+			if (useCount == 0) {
 				return;
+			}
 
 			Vector2 spriteSize = frame.Size() * scale;
 
