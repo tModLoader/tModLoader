@@ -155,4 +155,80 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 	}
+
+
+	public class StackableTestItem : GlobalItem
+	{
+		public int exampleField;
+
+		public override bool InstancePerEntity => true;
+
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+			//Apply to all non-weapon stackable items
+			return entity.damage <= 0 && entity.maxStack > 1;
+		}
+		public override void SetDefaults(Item item) {
+			exampleField = 1;
+		}
+		public override void LoadData(Item item, TagCompound tag) {
+			exampleField = 0;
+			IncreaseExampleFiendValue(tag.Get<int>("exampleField"));//Load exampleField tag
+		}
+
+		public override void SaveData(Item item, TagCompound tag) {
+			tag["exampleField"] = exampleField;//Save exampleField tag
+		}
+
+		public override void NetSend(Item item, BinaryWriter writer) {
+			writer.Write(exampleField);
+		}
+
+		public override void NetReceive(Item item, BinaryReader reader) {
+			exampleField = 0;
+			IncreaseExampleFiendValue(reader.ReadInt32());
+		}
+
+		public void IncreaseExampleFiendValue(int value) {
+			exampleField += value;
+		}
+
+		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			if (exampleField > 0) {
+				tooltips.Add(new TooltipLine(Mod, "exampleField", $"ExampleField: {exampleField}") { OverrideColor = Color.White });
+			}
+		}
+
+		public override void OnCreate(Item item, ItemCreationContext context) {
+			IncreaseExampleFiendValue(item.stack); // All stackable items come with 1, for testing :)
+		}
+
+		public override void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
+			if (!decrease.TryGetGlobalItem(out StackableTestItem decreaseGlobalItem)) {
+				return;
+			}
+
+			TransferExampleFieldValues(increase, decrease, decreaseGlobalItem, numberToBeTransfered);
+		}
+
+		public override void SplitStack(Item increase, Item decrease, int numberToBeTransfered) {
+			if (!decrease.TryGetGlobalItem(out StackableTestItem decreaseGlobalItem)) {
+				return;
+			}
+
+			//Prevent duplicating the exampleField on the new item, increase, which is a clone of decrease.  exampleField should not be cloned, so set it to 0.
+			exampleField = 0;
+
+			TransferExampleFieldValues(increase, decrease, decreaseGlobalItem, numberToBeTransfered);
+		}
+
+		private void TransferExampleFieldValues(Item increase, Item decrease, StackableTestItem decreaseGlobalItem, int numberToBeTransfered) {
+			//Transfer exampleField to increase.
+			exampleField += decreaseGlobalItem.exampleField;
+
+			if (decrease.stack > numberToBeTransfered) {
+				//Prevent duplicating the exampleField by clearing it on decrease if decrease will still exist.
+				decreaseGlobalItem.exampleField = 0;
+			}
+		}
+	}
 }

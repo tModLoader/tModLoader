@@ -143,7 +143,7 @@
 +					//if (Main.mouseItem.IsTheSameAs(inv[slot])) {
  					if (Main.mouseItem.IsTheSameAs(inv[slot])) {
 -						Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);
-+						//Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);// TML: OnStackHook: Gameplay impact: The favorited item will now always be the item that has it's stack being increased instead of swapping favorites for consistency with the OnStack() hook.
++						//Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);/* TML: OnStackHook: Gameplay impact: The favorited item will now always be the item that has it's stack being increased instead of swapping favorites for consistency with the OnStack() hook.
  						if (inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
 +							if (ItemLoader.TryStackItems(inv[slot], Main.mouseItem, out int numTransfered))
 +								AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, numTransfered));
@@ -194,26 +194,21 @@
 +							break;
 +						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +							break;
-+
++						/*
  						if (Main.mouseItem.stack == 1) {
  							Utils.Swap(ref inv[slot], ref Main.mouseItem);
  							if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -575,8 +_,15 @@
- 							}
- 						}
- 						else {
-+							inv[slot].SetDefaults(Main.mouseItem.type);
-+							int stack = inv[slot].stack;
-+							ItemLoader.SplitStack(inv[slot], Main.mouseItem);
-+							inv[slot].stack = stack;
-+							Main.mouseItem.stack--;
-+							/* TML: #SplitStack Reversed order of SetDefaults and stack-- to allow for SplitStack
- 							Main.mouseItem.stack--;
- 							inv[slot].SetDefaults(Main.mouseItem.type);
-+							*/
+@@ -580,6 +_,10 @@
  							Recipe.FindRecipes();
  							SoundEngine.PlaySound(7);
  						}
++						*/
++						inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
++						Recipe.FindRecipes();
++						SoundEngine.PlaySound(7);
+ 
+ 						if (inv[slot].stack > 0) {
+ 							switch (context) {
 @@ -588,6 +_,9 @@
  									break;
  								case 8:

@@ -54,7 +54,7 @@
  				return;
  			}
  
-@@ -158,10 +_,15 @@
+@@ -158,10 +_,13 @@
  			if (tEWeaponsRack.item.stack > 0)
  				tEWeaponsRack.DropItem();
  
@@ -62,27 +62,33 @@
  			tEWeaponsRack.item = new Item();
  			tEWeaponsRack.item.netDefaults(netid);
  			tEWeaponsRack.item.Prefix(prefix);
+-			tEWeaponsRack.item.stack = stack;
 +			*/
-+			tEWeaponsRack.item = item.Clone();
-+			ItemLoader.SplitStack(tEWeaponsRack.item, item, stack);
- 			tEWeaponsRack.item.stack = stack;
++			tEWeaponsRack.item = ItemLoader.TransferWithLimit(item, stack);
 +
  			NetMessage.SendData(86, -1, -1, null, tEWeaponsRack.ID, x, y);
  		}
  
-@@ -212,10 +_,13 @@
+@@ -212,16 +_,20 @@
  					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  			}
  
 -			if (Main.netMode == 1)
 +			if (Main.netMode == 1) {
  				NetMessage.SendData(123, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
-+				Item clone = player.inventory[player.selectedItem].Clone();
-+				ItemLoader.SplitStack(clone, player.inventory[player.selectedItem]);
++				ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
 +			}
  			else
 -				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
 +				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
  
++			/*
  			player.inventory[player.selectedItem].stack--;
  			if (player.inventory[player.selectedItem].stack <= 0) {
+ 				player.inventory[player.selectedItem].SetDefaults();
+ 				Main.mouseItem.SetDefaults();
+ 			}
++			*/
+ 
+ 			if (player.selectedItem == 58)
+ 				Main.mouseItem = player.inventory[player.selectedItem].Clone();
