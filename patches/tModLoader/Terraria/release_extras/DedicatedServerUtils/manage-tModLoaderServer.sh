@@ -2,8 +2,7 @@
 
 #shellcheck disable=2164
 
-# 0.0.0.1 for testing purposes. Will be bumped to 1.0.0.0 before the pr
-script_version="0.0.0.1"
+script_version="1.0.0.0"
 
 # Define functions used in script
 
@@ -28,7 +27,7 @@ verlt() {
 
 # Returns true if an update is needed
 function check_update {
-	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | head -n1 | cut -d '"' -f2)
+	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | head -n1 | cut -d '"' -f2)
 
 	if verlt "$script_version" "$latest_script_version"; then
 		return 0
@@ -40,7 +39,7 @@ function check_update {
 function update_script {
 	if check_update; then
 		echo "Updating from version v$script_version to v$latest_script_version"
-		curl --silent -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh
+		curl --silent -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh
 		mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
 	else
 		echo "No new script updates"
@@ -76,6 +75,7 @@ function copy_worlds {
 		[ -f "$file" ] || break
 		twld="$(basename "$file" .wld).twld"
 		echo "Copying $file and $twld"
+		mkdir -p ~/.local/share/Terraria/tModLoader/Worlds/
 		cp $file $twld ~/.local/share/Terraria/tModLoader/Worlds/
 	done
 }

@@ -24,20 +24,13 @@ WORKDIR $HOME
 # Update SteamCMD and verify latest version
 RUN steamcmd +quit
 
-#NOTE: Update url before merging
-RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
+RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
  && chmod u+x manage-tModLoaderServer.sh \
  && ./manage-tModLoaderServer.sh -i -g --no-mods
 
 # Download entrypoint script
-#NOTE: Update url before merging
-RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Launch.sh \
+RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Launch.sh \
  && chmod u+x Launch.sh
-
-#NOTE: Temp step to download modified launch script. Remove before merging.
-RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/start-tModLoaderServer.sh \
- && chmod u+x start-tModLoaderServer.sh \
- && mv start-tModLoaderServer.sh $HOME/tModLoader/start-tModLoaderServer.sh
 
 EXPOSE 7777
 
