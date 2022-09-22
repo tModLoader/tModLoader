@@ -162,6 +162,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
+		"PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Open Logs",
 		"OpenWebHelp": "Open Web Help",
 		"SkipToMainMenu": "Skip Loading Mods",
