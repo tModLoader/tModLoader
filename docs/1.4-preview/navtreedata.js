@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "tModLoader", "index.html", [
+    [ "Dedicated Server Utils", "md__github_workspace_src_t_mod_loader__terraria_release_extras__dedicated_server_utils__r_e_a_d_m_e.html", null ],
     [ "tModPorter", "md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html", null ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ],
@@ -82,8 +83,8 @@ var NAVTREEINDEX =
 "class_terraria_1_1_utils.html#a77957b27eb38a437df68fbc4467ffc54",
 "functions_func_r.html",
 "interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html",
-"struct_terraria_1_1_data_structures_1_1_buff_draw_params.html#a94491dcfc4f1f44ca30eab630b0bedc2",
-"struct_terraria_1_1_mod_loader_1_1_pos_data.html#af02157a80b47d6431e2bd19edab4109e"
+"struct_terraria_1_1_data_structures_1_1_buff_draw_params.html#a4c8b93020c216ce7b343cb5bff3a4757",
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#ab49b92eecccfebf28928f64608d40358"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
