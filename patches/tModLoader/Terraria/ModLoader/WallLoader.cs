@@ -236,8 +236,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.Framing.WallFrame after the 'if (tile.wall == 0)' block
-		//	if (!WallLoader.WallFrame(i, j, tile.wall, ref resetFrame))
+		//in Terraria.Framing.WallFrame after the 'if (num == 15)' block
+		//	if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
 		//		return;
 		public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
 			ModWall modWall = GetWall(type);
