@@ -241,17 +241,18 @@ namespace Terraria.ModLoader
 		//		return;
 		public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
 			ModWall modWall = GetWall(type);
-			bool flag = true;
 
 			if (modWall != null) {
-				flag = modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber);
+				if(!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
+					return false;
 			}
 
 			foreach (var hook in HookWallFrame) {
-				flag &= hook(i, j, type, randomizeFrame, ref style, ref frameNumber);
+				if (!hook(i, j, type, randomizeFrame, ref style, ref frameNumber))
+					return false;
 			}
 
-			return flag;
+			return true;
 		}
 
 		//in Terraria.Main.Update after vanilla wall animations call WallLoader.AnimateWalls();
