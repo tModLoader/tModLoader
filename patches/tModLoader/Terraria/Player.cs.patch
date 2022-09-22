@@ -5682,34 +5682,30 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -38052,7 +_,18 @@
+@@ -38052,7 +_,12 @@
  				}
  			}
  			catch (Exception exception) {
 -				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path);
 +				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path); // IO Exception
 +
-+				if(true && !Main.gameMenu) {
-+					if(Main.netMode==NetmodeID.SinglePlayer)
-+						WorldFile.SaveWorld();
-+					if(Main.netMode!=NetmodeID.Server) {
-+						WorldGen.JustQuit(); // Main.menuMode = 10
-+						Main.menuMode = MenuID.Title;
-+					}
-+				}
++				if (!Main.gameMenu)
++					WorldGen.SaveAndQuit();
 +
 +				Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.PlayerSaveFail")}\n\n{exception}", Main.menuMode);
  				throw;
  			}
  		}
-@@ -38067,20 +_,25 @@
+@@ -38067,20 +_,30 @@
  			if (string.IsNullOrEmpty(path))
  				return;
  
--			if (FileUtilities.Exists(path, isCloudSave))
--				FileUtilities.Copy(path, path + ".bak", isCloudSave);
--
-+			byte[] binary; // Priority data generation
++			/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
+ 			if (FileUtilities.Exists(path, isCloudSave))
+ 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++			*/
+ 
++			byte[] bytes;
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
 -			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
 +			using (Stream stream = (Stream)new MemoryStream(2000)) {
@@ -5825,26 +5821,31 @@
  							binaryWriter.Write(player.hideInfo[num7]);
  						}
  
-@@ -38225,11 +_,21 @@
+@@ -38225,11 +_,28 @@
  						binaryWriter.Flush();
  						cryptoStream.FlushFinalBlock();
  						stream.Flush();
--						if (isCloudSave && SocialAPI.Cloud != null)
--							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
-+						binary = ((MemoryStream)stream).ToArray();
++
++						/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
+ 						if (isCloudSave && SocialAPI.Cloud != null)
+ 							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
++						*/
++						bytes = ((MemoryStream)stream).ToArray();
 +
 +						PlayerLoader.PostSavePlayer(player); // For native data only
  					}
  				}
  			}
 +
-+			var tag = PlayerIO.SaveData(player); // Priority data generation
++			// tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
++			var tag = PlayerIO.SaveData(player);
 +
 +			BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +			if (FileUtilities.Exists(path, isCloudSave))
 +				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+			FileUtilities.WriteAllBytes(path, binary, isCloudSave);
++			FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
++
 +			PlayerIO.Save(tag, path, isCloudSave);
  		}
  

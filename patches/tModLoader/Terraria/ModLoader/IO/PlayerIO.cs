@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
