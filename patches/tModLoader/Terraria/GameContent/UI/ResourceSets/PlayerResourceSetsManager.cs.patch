@@ -17,11 +17,13 @@
  			if (_loadedContent)
  				SetActiveFromLoadedConfigKey();
  		}
-@@ -35,8 +_,8 @@
+@@ -35,8 +_,11 @@
  
  		public void LoadContent(AssetRequestMode mode) {
  			_sets["New"] = new FancyClassicPlayerResourcesDisplaySet("New", "New", "FancyClassic", mode);
--			_sets["Default"] = new ClassicPlayerResourcesDisplaySet("Default", "Default");
++			/*
+ 			_sets["Default"] = new ClassicPlayerResourcesDisplaySet("Default", "Default");
++			*/
  			_sets["HorizontalBars"] = new HorizontalBarsPlayerReosurcesDisplaySet("HorizontalBars", "HorizontalBars", "HorizontalBars", mode);
 +			_sets["Default"] = new ClassicPlayerResourcesDisplaySet("Default", "Default");
  			_loadedContent = true;
@@ -36,11 +38,13 @@
  				if (frame == _activeSet)
  					return true;
  
-@@ -78,7 +_,7 @@
+@@ -78,7 +_,10 @@
  			});
  
  			if (lastFrame == null)
--				lastFrame = _sets.Values.Last();
++			/*
+ 				lastFrame = _sets.Values.Last();
++			*/
 +				lastFrame = _sets.Values.First();
  
  			SetActiveFrame(lastFrame);
