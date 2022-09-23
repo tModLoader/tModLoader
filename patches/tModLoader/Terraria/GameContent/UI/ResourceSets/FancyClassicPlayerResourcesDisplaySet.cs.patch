@@ -42,47 +42,39 @@
  			Vector2 vector = new Vector2(Main.screenWidth - 300 + 4, 15f);
  			bool isHovered = false;
  			ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
-@@ -82,6 +_,10 @@
+@@ -82,6 +_,8 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _heartCountRow2;
-@@ -92,6 +_,10 @@
+@@ -92,6 +_,8 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _heartCountRow1;
-@@ -102,6 +_,10 @@
+@@ -102,6 +_,8 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _heartCountRow2;
-@@ -112,8 +_,14 @@
+@@ -112,8 +_,12 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverLife = isHovered;
 +			_hoverLife = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, true);
@@ -101,25 +93,21 @@
  			Vector2 vector = new Vector2(Main.screenWidth - 40, 22f);
  			_ = _starCount;
  			bool isHovered = false;
-@@ -139,6 +_,10 @@
+@@ -139,6 +_,8 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _starCount;
-@@ -149,8 +_,14 @@
+@@ -149,8 +_,12 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = preparedSnapshot.ManaMax;
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverMana = isHovered;
 +			_hoverMana = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, false);

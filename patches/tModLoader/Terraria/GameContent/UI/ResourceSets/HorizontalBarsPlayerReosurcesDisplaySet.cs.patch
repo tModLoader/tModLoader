@@ -28,14 +28,12 @@
  			Vector2 vector = new Vector2(num3, num2);
  			vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
  			bool isHovered = false;
-@@ -67,18 +_,32 @@
+@@ -67,18 +_,28 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _hpSegmentsCount;
@@ -49,8 +47,6 @@
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			_hpHovered = isHovered;
 +			SkipLifeDrawing:
@@ -61,14 +57,12 @@
  			isHovered = false;
  			Vector2 vector2 = new Vector2(num3 - 10, num2 + 24);
  			vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
-@@ -91,18 +_,29 @@
+@@ -91,18 +_,25 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = -1;  // All panels will have the "ResourceStat" property set to -1
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _mpSegmentsCount;
@@ -82,8 +76,6 @@
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
-+			resourceDrawSettings.CurrentResource = preparedSnapshot.Mana;
-+			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			_mpHovered = isHovered;
 +			SkipManaDrawing:

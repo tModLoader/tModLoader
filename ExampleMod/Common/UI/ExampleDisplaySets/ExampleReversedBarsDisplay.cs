@@ -67,8 +67,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.CurrentResource = -1;
-			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			// Draw the life bar filling
@@ -82,8 +80,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.CurrentResource = preparedSnapshot.Life;
-			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.LifePerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_hpHovered = isHovered;
@@ -110,8 +106,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.CurrentResource = -1;
-			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			// Draw the mana bar filling
@@ -125,8 +119,6 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.DisplaySet = this;
-			resourceDrawSettings.CurrentResource = preparedSnapshot.Mana;
-			resourceDrawSettings.ResourcePerSegment = preparedSnapshot.ManaPerSegment;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
 			_mpHovered = isHovered;
