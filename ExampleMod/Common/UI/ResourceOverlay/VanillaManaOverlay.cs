@@ -60,6 +60,8 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			context.Draw();
 		}
 
+		// Drawing over the panel backgrounds is not required.
+		// This example just showcases changing the "inner" part of the star panels to more closely resemble the example life fruit.
 		private void DrawFancyPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Fancy star panels
 			string fancyFolder = "Images/UI/PlayerResourceSets/FancyClassic/";
@@ -106,6 +108,8 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			context.Draw();
 		}
 
+		// Drawing over the panel backgrounds is not required.
+		// This example just showcases changing the "inner" part of the bar panels to more closely resemble the example life fruit.
 		private static void DrawBarsPanelOverlay(ResourceOverlayDrawContext context) {
 			// Draw over the Bars middle life panels
 			// "context" contains information used to draw the resource
