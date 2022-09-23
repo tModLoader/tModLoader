@@ -32,6 +32,9 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 		private PlayerStatsSnapshot preparedSnapshot;
 
 		public override void Load() {
+			if (Main.dedServ)
+				return;
+
 			string vanillaFolder = "Images/UI/PlayerResourceSets/HorizontalBars/";
 			string modFolder = "ExampleMod/Common/UI/ExampleDisplaySets/";
 			_hpFill = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Fill", AssetRequestMode.ImmediateLoad);
@@ -66,6 +69,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
 			resourceDrawSettings.ResourceIndexOffset = -1;  // Make the range [-1, 20] instead of [0, 21]
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
@@ -80,6 +84,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 
@@ -106,6 +111,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
 			resourceDrawSettings.ResourceIndexOffset = -1;  // Make the range [-1, 20] instead of [0, 21]
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
@@ -120,6 +126,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 			resourceDrawSettings.DisplaySet = this;
 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 

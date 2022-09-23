@@ -322,8 +322,11 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
-			Main.ResourceSetsManager.AddModdedDisplaySets();
-			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+
+			if (!Main.dedServ) {
+				Main.ResourceSetsManager.AddModdedDisplaySets();
+				Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+			}
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
@@ -479,8 +482,11 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
-			ResourceOverlayLoader.Unload();
-			ResourceDisplaySetLoader.Unload();
+
+			if (!Main.dedServ) {
+				ResourceOverlayLoader.Unload();
+				ResourceDisplaySetLoader.Unload();
+			}
 
 			LoaderManager.Unload();
 

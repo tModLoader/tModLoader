@@ -78,7 +78,6 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 				// Final panel in the column.  Determine whether it has panels above it
 				if (CompareAssets(context.texture, fancyFolder + "Star_Single")) {
 					// First and only panel
-					// Vanilla texture is "Star_Single"
 					positionOffset = new Vector2(4, 4);
 				} else {
 					// Other panels existed above this panel

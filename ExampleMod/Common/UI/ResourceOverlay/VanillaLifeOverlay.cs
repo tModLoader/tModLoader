@@ -89,7 +89,6 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 				}
 			} else if (CompareAssets(context.texture, fancyFolder + "Heart_Left")) {
 				// First panel in this row
-				// Vanilla texture is "Heart_Left"
 				positionOffset = new Vector2(4, 4);
 			} else if (CompareAssets(context.texture, fancyFolder + "Heart_Middle")) {
 				// Any panel that has a panel to its left AND right
