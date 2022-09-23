@@ -1,6 +1,6 @@
 ﻿using Ionic.Zip;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour.HookGen;
+using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using System;
 using System.IO;
@@ -9,6 +9,8 @@ namespace Terraria.ModLoader.Engine
 {
 	internal static class ZipExtractFix
 	{
+		private static ILHook hook;
+
 		/// <summary>
 		/// When Ionic.Zip extracts an entry it uses \\ for all separators when it should use Path.DirectorySeparatorChar for platform compatibility
 		/// </summary>
@@ -16,7 +18,7 @@ namespace Terraria.ModLoader.Engine
 			if (Path.DirectorySeparatorChar == '\\')
 				return;
 
-			HookEndpointManager.Modify(typeof(ZipEntry).FindMethod("ValidateOutput"), new Action<ILContext>(il => {
+			hook = new ILHook(typeof(ZipEntry).FindMethod("ValidateOutput"), il => {
 				var c = new ILCursor(il);
 				c.Next = null; // move to end
 
@@ -27,7 +29,7 @@ namespace Terraria.ModLoader.Engine
 
 				// replace the constant "\\" with Path.DirectorySeparatorChar
 				c.Next.Operand = Path.DirectorySeparatorChar.ToString();
-			}));
+			});
 		}
 	}
 }
