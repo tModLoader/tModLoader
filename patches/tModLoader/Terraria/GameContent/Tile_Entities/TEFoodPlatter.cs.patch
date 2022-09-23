@@ -54,14 +54,18 @@
  				return;
  			}
  
-@@ -114,10 +_,8 @@
+@@ -114,10 +_,15 @@
  			if (tEFoodPlatter.item.stack > 0)
  				tEFoodPlatter.DropItem();
  
--			tEFoodPlatter.item = new Item();
--			tEFoodPlatter.item.netDefaults(netid);
++			/*
+ 			tEFoodPlatter.item = new Item();
+ 			tEFoodPlatter.item.netDefaults(netid);
 -			tEFoodPlatter.item.Prefix(prefix);
--			tEFoodPlatter.item.stack = stack;
++-			tEFoodPlatter.item.Prefix(prefix);
+ 			tEFoodPlatter.item.stack = stack;
++			*/
++
 +			tEFoodPlatter.item = ItemLoader.TransferWithLimit(item, stack);
 +
  			NetMessage.SendData(86, -1, -1, null, tEFoodPlatter.ID, x, y);

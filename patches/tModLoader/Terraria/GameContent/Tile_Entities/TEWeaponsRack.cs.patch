@@ -54,7 +54,7 @@
  				return;
  			}
  
-@@ -158,10 +_,13 @@
+@@ -158,10 +_,14 @@
  			if (tEWeaponsRack.item.stack > 0)
  				tEWeaponsRack.DropItem();
  
@@ -62,7 +62,7 @@
  			tEWeaponsRack.item = new Item();
  			tEWeaponsRack.item.netDefaults(netid);
  			tEWeaponsRack.item.Prefix(prefix);
--			tEWeaponsRack.item.stack = stack;
+ 			tEWeaponsRack.item.stack = stack;
 +			*/
 +			tEWeaponsRack.item = ItemLoader.TransferWithLimit(item, stack);
 +
