@@ -61,8 +61,7 @@
 +			/*
  			tEFoodPlatter.item = new Item();
  			tEFoodPlatter.item.netDefaults(netid);
--			tEFoodPlatter.item.Prefix(prefix);
-+-			tEFoodPlatter.item.Prefix(prefix);
+ 			tEFoodPlatter.item.Prefix(prefix);
  			tEFoodPlatter.item.stack = stack;
 +			*/
 +
