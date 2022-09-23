@@ -107,6 +107,10 @@ Mods: {
 		RecipeConditions: {
 			Night: At Low Health
 		}
+
+		ResourceDisplaySet: {
+			ExampleReversedBarsDisplay: Swapped Bars
+		}
 		
 		Bestiary: {
 			ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.

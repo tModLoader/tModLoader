@@ -199,7 +199,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		internal class NetHandler
+		internal static class NetHandler
 		{
 			public const byte InventorySlot = 1;
 			public const byte VisualState = 2;
@@ -209,7 +209,7 @@ namespace Terraria.ModLoader.Default
 			public const byte SP = 0;
 
 			public static void SendSlot(int toWho, int plr, int slot, Item item) {
-				var p = ModContent.GetInstance<ModLoaderMod>().GetPacket();
+				var p = ModLoaderMod.GetPacket(ModLoaderMod.AccessorySlotPacket);
 
 				p.Write(InventorySlot);
 
@@ -238,7 +238,7 @@ namespace Terraria.ModLoader.Default
 			}
 
 			public static void SendVisualState(int toWho, int plr, int slot, bool hideVisual) {
-				var p = ModContent.GetInstance<ModLoaderMod>().GetPacket();
+				var p = ModLoaderMod.GetPacket(ModLoaderMod.AccessorySlotPacket);
 
 				p.Write(VisualState);
 

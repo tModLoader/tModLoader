@@ -19,6 +19,51 @@ namespace Terraria
 
 		public Item equippedWings = null;
 
+		private int consumedLifeCrystals;
+
+		/// <summary>
+		/// How many Life Crystals this player has consumed
+		/// </summary>
+		public int ConsumedLifeCrystals {
+			get => consumedLifeCrystals;
+			set => consumedLifeCrystals = Utils.Clamp(value, 0, LifeCrystalMax);
+		}
+
+		/// <summary>
+		/// The maximum amount of Life Crystals this player is allowed to consume total
+		/// </summary>
+		public const int LifeCrystalMax = 15;
+
+		private int consumedLifeFruit;
+
+		/// <summary>
+		/// How many Life Fruit this player has consumed
+		/// </summary>
+		public int ConsumedLifeFruit {
+			get => consumedLifeFruit;
+			set => consumedLifeFruit = Utils.Clamp(value, 0, LifeFruitMax);
+		}
+
+		/// <summary>
+		/// The maximum amount of Life Fruit this player is allowed to consume total
+		/// </summary>
+		public const int LifeFruitMax = 20;
+
+		private int consumedManaCrystals;
+
+		/// <summary>
+		/// How many Mana Crystals this player has consumed
+		/// </summary>
+		public int ConsumedManaCrystals {
+			get => consumedManaCrystals;
+			set => consumedManaCrystals = Utils.Clamp(value, 0, ManaCrystalMax);
+		}
+
+		/// <summary>
+		/// The maximum amount of Mana Crystals this player is allowed to consume total
+		/// </summary>
+		public const int ManaCrystalMax = 9;
+
 		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);
