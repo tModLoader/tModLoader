@@ -3953,26 +3953,110 @@
  				return true;
  
  			return false;
-@@ -27961,7 +_,8 @@
+@@ -27829,6 +_,22 @@
+ 				if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !newItem.IsTheSameAs(inventory[i]))
+ 					continue;
+ 
++				if (!ItemLoader.TryStackItems(inventory[i], newItem, out int numTransfered))
++					continue;
++
++				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, inventory[i], numTransfered);
++
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				settings.HandlePostAction(inventory[i]);
++				if (newItem.stack <= 0)
++					return newItem;
++
++				/* TML: #OnStackHook
+ 				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 				if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
+ 					inventory[i].stack += newItem.stack;
+@@ -27848,6 +_,7 @@
+ 					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, inventory[i].maxStack - inventory[i].stack);
+ 
+ 				inventory[i].stack = inventory[i].maxStack;
++				*/
+ 				DoCoins(i);
+ 				if (plr == Main.myPlayer)
+ 					Recipe.FindRecipes();
+@@ -27961,12 +_,25 @@
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
 +			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
-+			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && ItemLoader.CanStack(inv[i], returnItem)) {
+ 			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++				if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
-@@ -27990,7 +_,8 @@
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inv[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inv[i].stack <= inv[i].maxStack) {
+ 					inv[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+@@ -27984,19 +_,38 @@
+ 
+ 				inv[i].stack = inv[i].maxStack;
+ 				settings.HandlePostAction(inv[i]);
++				*/
+ 			}
+ 
+ 			return false;
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
 +			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && ItemLoader.CanStack(inventory[i], newItem)) {
+ 			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++				if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inventory[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inventory[i].stack <= inventory[i].maxStack) {
++
+ 					inventory[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+ 						PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, returnItem.stack, noStack: false, settings.LongText);
+@@ -28021,6 +_,7 @@
+ 					Recipe.FindRecipes();
+ 
+ 				settings.HandlePostAction(inventory[i]);
++				*/
+ 			}
+ 
+ 			return false;
 @@ -28098,6 +_,8 @@
  				return;
  

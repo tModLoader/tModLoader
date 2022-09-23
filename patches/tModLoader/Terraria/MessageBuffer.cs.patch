@@ -557,7 +557,7 @@
 +							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
-+						TEItemFrame.TryPlacing(x12, y12, item, item.stack);
++						TEItemFrame.TryPlacing(x12, y12, item, 1);
  					}
  					break;
  				case 91: {

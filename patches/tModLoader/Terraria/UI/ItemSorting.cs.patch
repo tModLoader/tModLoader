@@ -34,13 +34,44 @@
  			for (int i = 0; i < 5; i++) {
  				if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  					list.RemoveAt(0);
-@@ -919,7 +_,8 @@
+@@ -919,7 +_,12 @@
  						continue;
  
  					Item item3 = inv[list[k]];
--					if (item2.type == item3.type && item3.stack != item3.maxStack) {
 +					//if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+					if (item2.type == item3.type && item3.stack != item3.maxStack && ItemLoader.CanStack(item2, item3)) {
+ 					if (item2.type == item3.type && item3.stack != item3.maxStack) {
++						if (!ItemLoader.TryStackItems(item2, item3, out _))
++							continue;
++
++						/* TML: #OnStackHook
  						int num2 = item3.stack;
  						if (num < num2)
  							num2 = num;
+@@ -927,6 +_,7 @@
+ 						item2.stack += num2;
+ 						item3.stack -= num2;
+ 						num -= num2;
++						*/
+ 						if (item3.stack == 0) {
+ 							inv[list[k]] = new Item();
+ 							list.Remove(list[k]);
+@@ -1187,6 +_,11 @@
+ 			for (int i = loopStartIndex; i < loopEndIndex; i++) {
+ 				Item item = inv[i];
+ 				if (item.stack >= 1 && item.type == itemToRefill.type) {
++					if (!ItemLoader.TryStackItems(itemToRefill, inv[i], out int numTransfered))
++						continue;
++
++					num -= numTransfered;
++					/*
+ 					int num2 = item.stack;
+ 					if (num2 > num)
+ 						num2 = num;
+@@ -1194,6 +_,7 @@
+ 					num -= num2;
+ 					itemToRefill.stack += num2;
+ 					item.stack -= num2;
++					*/
+ 					if (item.stack <= 0)
+ 						item.TurnToAir();
+ 

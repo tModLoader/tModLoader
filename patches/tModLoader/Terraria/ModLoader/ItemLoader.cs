@@ -1399,20 +1399,19 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
-		// For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
 		/// <summary>
 		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 		/// </summary>
-		public static bool CanStack(Item item1, Item item2) {
-			if (item1.prefix != item2.prefix) // TML: #StackablePrefixWeapons
+		public static bool CanStack(Item increase, Item decrease) {
+			if (increase.prefix != decrease.prefix) // TML: #StackablePrefixWeapons
 				return false;
 
-			foreach (var g in HookCanStack.Enumerate(globalItems)) {
-				if (!g.CanStack(item1, item2))
+			foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {
+				if (!g.CanStack(increase, decrease))
 					return false;
 			}
 
-			return item1.ModItem?.CanStack(item2) ?? true;
+			return increase.ModItem?.CanStack(decrease) ?? true;
 		}
 
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
@@ -1420,13 +1419,93 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
-		public static bool CanStackInWorld(Item item1, Item item2) {
-			foreach (var g in HookCanStackInWorld.Enumerate(globalItems)) {
-				if (!g.CanStackInWorld(item1, item2))
+		public static bool CanStackInWorld(Item increase, Item decrease) {
+			foreach (var g in HookCanStackInWorld.Enumerate(increase.globalItems)) {
+				if (!g.CanStackInWorld(increase, decrease))
 					return false;
 			}
 
-			return item1.ModItem?.CanStackInWorld(item2) ?? true;
+			return increase.ModItem?.CanStackInWorld(decrease) ?? true;
+		}
+		
+		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
+
+		/// <summary>
+		/// Calls CanStack.  Returns false if CanStack is false.  Calls StackItems if CanStack is true<br/>
+		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.<br/>
+		/// </summary>
+		/// <param name="increase">Item where the stack is being increased.</param>
+		/// <param name="decrease">Item where the stack is being reduced.</param>
+		/// <param name="numTransfered">Amount to be transfered </param>
+		/// <param name="infiniteSource">The final stack of item2</param>
+		public static bool TryStackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false) {
+			numTransfered = 0;
+			if (!CanStack(increase, decrease))
+				return false;
+
+			StackItems(increase, decrease, out numTransfered, infiniteSource);
+
+			return true;
+		}
+
+		/// <summary>
+		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.
+		/// </summary>
+		/// <param name="increase">Item where the stack is being increased.</param>
+		/// <param name="decrease">Item where the stack is being reduced.</param>
+		/// <param name="numTransfered">Amount to be transfered </param>
+		/// <param name="infiniteSource"></param>
+		/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
+		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int? numToTransfer = null) {
+			numTransfered = numToTransfer ?? Math.Min(decrease.stack, increase.maxStack - increase.stack);
+
+			foreach (var g in HookOnStack.Enumerate(increase.globalItems)) {
+				g.OnStack(increase, decrease, numTransfered);
+			}
+
+			increase.ModItem?.OnStack(decrease, numTransfered);
+
+			if (decrease.favorited) {
+				increase.favorited = true;
+				decrease.favorited = false;
+			}
+
+			increase.stack += numTransfered;
+			if (!infiniteSource)
+				decrease.stack -= numTransfered;
+		}
+
+		private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
+
+		public static Item TransferWithLimit(Item decrease, int limit) {
+			Item increase = decrease.Clone();
+			if (decrease.stack <= limit) {
+				decrease.TurnToAir();
+			}
+			else {
+				SplitStack(increase, decrease, limit);
+			}
+			return increase;
+		}
+
+		/// <summary>
+		/// Called when splitting a stack of items.
+		/// </summary>
+		/// <param name="increase">A clone of decrease.  Stack is set to zero then incremented in SplitStack or after SplitStack is called.</param>
+		/// <param name="decrease">The original item with stack being reduced.</param>
+		/// <param name="numToTransfer">Usually 1, but possible to be higher.</param>
+		public static void SplitStack(Item increase, Item decrease, int numToTransfer) {
+			increase.stack = 0;
+			increase.favorited = false;
+
+			foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
+				g.SplitStack(increase, decrease, numToTransfer);
+			}
+
+			increase.ModItem?.SplitStack(decrease, numToTransfer);
+
+			increase.stack += numToTransfer;
+			decrease.stack -= numToTransfer;
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);

@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
-@@ -1,10 +_,12 @@
+@@ -1,10 +_,13 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.ID;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.GameContent.Tile_Entities
@@ -53,25 +54,42 @@
  				return;
  			}
  
-@@ -114,10 +_,9 @@
+@@ -114,10 +_,15 @@
  			if (tEFoodPlatter.item.stack > 0)
  				tEFoodPlatter.DropItem();
  
--			tEFoodPlatter.item = new Item();
-+			tEFoodPlatter.item = item.Clone();
--			tEFoodPlatter.item.netDefaults(netid);
--			tEFoodPlatter.item.Prefix(prefix);
++			/*
+ 			tEFoodPlatter.item = new Item();
+ 			tEFoodPlatter.item.netDefaults(netid);
+ 			tEFoodPlatter.item.Prefix(prefix);
  			tEFoodPlatter.item.stack = stack;
++			*/
++
++			tEFoodPlatter.item = ItemLoader.TransferWithLimit(item, stack);
 +
  			NetMessage.SendData(86, -1, -1, null, tEFoodPlatter.ID, x, y);
  		}
  
-@@ -162,7 +_,7 @@
- 			if (Main.netMode == 1)
+@@ -159,16 +_,20 @@
+ 					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
+ 			}
+ 
+-			if (Main.netMode == 1)
++			if (Main.netMode == 1) {
  				NetMessage.SendData(133, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
++				ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
++			}
  			else
 -				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
 +				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
  
++			/*
  			player.inventory[player.selectedItem].stack--;
  			if (player.inventory[player.selectedItem].stack <= 0) {
+ 				player.inventory[player.selectedItem].SetDefaults();
+ 				Main.mouseItem.SetDefaults();
+ 			}
++			*/
+ 
+ 			if (player.selectedItem == 58)
+ 				Main.mouseItem = player.inventory[player.selectedItem].Clone();

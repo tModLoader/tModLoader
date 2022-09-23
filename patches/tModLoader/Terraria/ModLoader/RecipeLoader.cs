@@ -158,16 +158,18 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item crafted.</param>
 		/// <param name="recipe">The recipe used to craft the item.</param>
 		/// <param name="consumedItems">Materials used to craft the item.</param>
-		public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems) {
-			recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems);
-			ItemLoader.OnCreate(item, new RecipeCreationContext { recipe = recipe, ConsumedItems = consumedItems });
+		/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
+		public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems, Item destinationStack) {
+			recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems, destinationStack);
+			ItemLoader.OnCreate(item, new RecipeCreationContext { recipe = recipe, ConsumedItems = consumedItems, DestinationStack = destinationStack });
 		}
 
 		/// <summary>
 		/// Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list
+		/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
 		/// </summary>
-		public static void OnCraft(Item item, Recipe recipe) {
-			OnCraft(item, recipe, ConsumedItems);
+		public static void OnCraft(Item item, Recipe recipe, Item destinationStack) {
+			OnCraft(item, recipe, ConsumedItems, destinationStack);
 			ConsumedItems.Clear();
 		}
 

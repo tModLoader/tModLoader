@@ -930,7 +930,7 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45934,6 +_,12 @@
+@@ -45934,14 +_,25 @@
  					num2 *= 2;
  
  				if (num < (float)num2) {
@@ -942,7 +942,20 @@
 +
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
++
++					ItemLoader.StackItems(this, item, out _);
++
++					/* TML: #OnStackHook
  					int num3 = item.stack;
+ 					if (num3 > maxStack - stack)
+ 						num3 = maxStack - stack;
+ 
+ 					item.stack -= num3;
+ 					stack += num3;
++					*/
+ 					if (item.stack <= 0) {
+ 						item.SetDefaults();
+ 						item.active = false;
 @@ -46280,13 +_,46 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
