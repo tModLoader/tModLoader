@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ClassicPlayerResourcesDisplaySet.cs
-@@ -2,13 +_,22 @@
+@@ -2,13 +_,21 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
@@ -13,10 +13,9 @@
  	{
 +		/*
  		private int UIDisplay_ManaPerStar = 20;
- 		private float UIDisplay_LifePerHeart = 20f;
 +		*/
-+		private double UIDisplay_ManaPerStar = 20d;
-+		private double UIDisplay_LifePerHeart = 20d;
++		private float UIDisplay_ManaPerStar = 20f;
+ 		private float UIDisplay_LifePerHeart = 20f;
 +
 +		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
 +
@@ -32,7 +31,7 @@
  			if (localPlayer.ghost)
 +			*/
 +			//Added additional condition for zero/negative max life, since DrawMana does it as well
-+			if (localPlayer.ghost || localPlayer.statLifeMax2 <= 0)
++			if (localPlayer.ghost || localPlayer.statLifeMax2 <= 0 || snapshot.AmountOfLifeHearts <= 0)
  				return;
  
 +			UIDisplay_LifePerHeart = snapshot.LifePerSegment;
@@ -66,17 +65,6 @@
  			for (int i = 1; i < (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart) + 1; i++) {
  				int num5 = 255;
  				float num6 = 1f;
-@@ -73,7 +_,10 @@
- 						flag = true;
- 				}
- 				else {
-+					/*
- 					float num7 = ((float)localPlayer.statLife - (float)(i - 1) * UIDisplay_LifePerHeart) / UIDisplay_LifePerHeart;
-+					*/
-+					float num7 = (float)(localPlayer.statLife - (i - 1) * UIDisplay_LifePerHeart) / (float)UIDisplay_LifePerHeart;
- 					num5 = (int)(30f + 225f * num7);
- 					if (num5 < 30)
- 						num5 = 30;
 @@ -98,6 +_,21 @@
  
  				int a = (int)((double)num5 * 0.9);
@@ -112,22 +100,26 @@
  		}
  
  		private void DrawMana() {
-@@ -114,9 +_,15 @@
+@@ -114,8 +_,19 @@
  			SpriteBatch spriteBatch = Main.spriteBatch;
  			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
  			UIDisplay_ManaPerStar = 20;
 +			PlayerStatsSnapshot snapshot = new PlayerStatsSnapshot(localPlayer);
++			/*
  			if (localPlayer.ghost || localPlayer.statManaMax2 <= 0)
++			*/
++			if (localPlayer.ghost || localPlayer.statManaMax2 <= 0 || snapshot.AmountOfManaStars <= 0)
  				return;
- 
++
++			UIDisplay_ManaPerStar = snapshot.ManaPerSegment;
++
 +			bool drawStars = ResourceOverlayLoader.PreDrawResourceDisplay(snapshot, this, false, ref color, out bool drawText);
 +
 +			if (!drawText)
 +				goto SkipManaText;
-+
+ 
  			_ = localPlayer.statManaMax2 / 20;
  			Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
- 			int num = 50;
 @@ -124,6 +_,11 @@
  				num = (int)vector.X + 5;
  
@@ -140,16 +132,6 @@
  			for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
  				int num2 = 255;
  				bool flag = false;
-@@ -134,6 +_,9 @@
- 						flag = true;
- 				}
- 				else {
-+					/*
-+					float num4 = (float)(localPlayer.statMana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
-+					*/
- 					float num4 = (float)(localPlayer.statMana - (i - 1) * UIDisplay_ManaPerStar) / (float)UIDisplay_ManaPerStar;
- 					num2 = (int)(30f + 225f * num4);
- 					if (num2 < 30)
 @@ -150,27 +_,58 @@
  				if (flag)
  					num3 += Main.cursorScale - 1f;
