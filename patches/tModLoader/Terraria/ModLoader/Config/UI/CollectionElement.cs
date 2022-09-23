@@ -36,6 +36,12 @@ namespace Terraria.ModLoader.Config.UI
 			DefaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(MemberInfo, null, null);
 
 			MaxHeight.Set(300, 0f);
+
+			var defaultExpansionAttribute = ConfigManager.GetCustomAttribute<DefaultExpansionAttribute>(MemberInfo, Item, List);
+			if (defaultExpansionAttribute != null) {
+				expanded = defaultExpansionAttribute.OverrideExpanded;
+			}
+
 			DataListElement = new UIElement();
 			DataListElement.Width.Set(-10f, 1f);
 			DataListElement.Left.Set(10f, 0f);
@@ -46,7 +52,7 @@ namespace Terraria.ModLoader.Config.UI
 			//panel.BackgroundColor = Microsoft.Xna.Framework.Color.Transparent;
 			//panel.BorderColor =  Microsoft.Xna.Framework.Color.Transparent;
 
-			if (Data != null)
+			if (Data != null && expanded)
 				Append(DataListElement);
 
 			DataListElement.OverflowHidden = true;

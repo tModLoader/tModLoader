@@ -381,6 +381,19 @@ namespace Terraria.ModLoader.Config
 
 	}
 
+	/// <summary>
+	/// Add this attribute to a Collection item and will modify the default expanded value.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class DefaultExpansionAttribute : Attribute
+	{
+		public readonly bool OverrideExpanded;
+
+		public DefaultExpansionAttribute(bool overrideExpanded) {
+			OverrideExpanded = overrideExpanded;
+		}
+	}
+
 	// Unimplemented ideas below:
 	/*
 
