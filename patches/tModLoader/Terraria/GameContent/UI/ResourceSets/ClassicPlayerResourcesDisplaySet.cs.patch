@@ -75,7 +75,7 @@
 +
 +					Vector2 position = new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + heartTexture.Width() / 2, 32f + heartTexture.Height() * (1 - num6) / 2f + num9 + heartTexture.Height() / 2);
 +
-+					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, i, heartTexture) {
++					ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, i - 1, heartTexture) {
 +						position = position,
 +						color = new Color(num5, num5, num5, a),
 +						origin = heartTexture.Size() / 2f,
@@ -140,7 +140,7 @@
 +				
  				int a = (int)((double)num2 * 0.9);
 +
-+				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, i, TextureAssets.Mana) {
++				ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, i - 1, TextureAssets.Mana) {
 +					position = position,
 +					color = new Color(num2, num2, num2, a),
 +					origin = TextureAssets.Mana.Size() / 2f,

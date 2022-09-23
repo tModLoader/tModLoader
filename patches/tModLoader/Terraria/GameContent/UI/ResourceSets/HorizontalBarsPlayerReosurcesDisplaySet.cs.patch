@@ -28,12 +28,13 @@
  			Vector2 vector = new Vector2(num3, num2);
  			vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
  			bool isHovered = false;
-@@ -67,18 +_,28 @@
+@@ -67,18 +_,29 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceIndexOffset = -1;  // Make the range [-1, 20] instead of [0, 21]
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _hpSegmentsCount;
@@ -57,12 +58,13 @@
  			isHovered = false;
  			Vector2 vector2 = new Vector2(num3 - 10, num2 + 24);
  			vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
-@@ -91,18 +_,25 @@
+@@ -91,18 +_,26 @@
  			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
 +			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +			resourceDrawSettings.DisplaySet = this;
++			resourceDrawSettings.ResourceIndexOffset = -1;  // Make the range [-1, 20] instead of [0, 21]
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
  			resourceDrawSettings = default(ResourceDrawSettings);
  			resourceDrawSettings.ElementCount = _mpSegmentsCount;

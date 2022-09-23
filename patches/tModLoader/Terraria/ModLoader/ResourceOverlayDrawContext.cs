@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		public readonly PlayerStatsSnapshot snapshot;
 		/// <summary>
 		/// Which heart/star/bar/panel is being drawn<br/>
-		/// <b>NOTE:</b> This value starts at 1, not 0
+		/// <b>NOTE:</b> This value usually starts at 0, but it can start at other values
 		/// </summary>
 		public readonly int resourceNumber;
 		public Asset<Texture2D> texture;

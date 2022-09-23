@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Terraria.ModLoader;
 
 namespace Terraria.GameContent.UI.ResourceSets
 {
 	partial class PlayerResourceSetsManager
 	{
-		private readonly List<string> accessKeys = new();
+		private static readonly string[] vanillaSets = new string[] { "New", "HorizontalBars", "Default" };
+
+		private readonly List<string> accessKeys = new(vanillaSets);
 		private int selectedSet = 0;
 
-		private static readonly string[] vanillaSets = new string[] { "New", "HorizontalBars", "Default" };
 		private string _activeSetConfigKeyOriginal;  // Used to store the original key value, since PlayerResourceSetsManager is loaded way before mods
 
 		internal void AddModdedDisplaySets() {
@@ -34,7 +36,7 @@ namespace Terraria.GameContent.UI.ResourceSets
 		internal void ResetToVanilla() {
 			_activeSetConfigKey = _activeSetConfigKeyOriginal;
 
-			foreach (string key in accessKeys)
+			foreach (string key in accessKeys.Skip(vanillaSets.Length))
 				_sets.Remove(key);
 
 			accessKeys.Clear();

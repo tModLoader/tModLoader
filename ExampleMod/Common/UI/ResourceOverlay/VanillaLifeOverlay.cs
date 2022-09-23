@@ -25,12 +25,10 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 
 			bool drawingBarsPanels = CompareAssets(asset, barsFolder + "HP_Panel_Middle");
 
-			// Bars panel drawing has two additional elements, so the "resource index" needs to be offset
-			int fillResourceNumber = drawingBarsPanels ? context.resourceNumber - 1 : context.resourceNumber;
 			int exampleFruits = Main.LocalPlayer.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits;
 
 			// Life resources are drawn over in groups of two
-			if (fillResourceNumber > 2 * exampleFruits)
+			if (context.resourceNumber >= 2 * exampleFruits)
 				return;
 
 			// NOTE: CompareAssets is defined below this method's body
