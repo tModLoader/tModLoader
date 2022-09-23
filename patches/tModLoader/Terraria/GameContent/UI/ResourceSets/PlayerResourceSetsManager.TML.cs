@@ -1,16 +1,22 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Terraria.ModLoader;
 
 namespace Terraria.GameContent.UI.ResourceSets
 {
 	partial class PlayerResourceSetsManager
 	{
-		private static readonly string[] vanillaSets = new string[] { "New", "Default", "HorizontalBars" };
+		private readonly List<string> accessKeys = new();
+		private int selectedSet = 0;
+
+		private static readonly string[] vanillaSets = new string[] { "New", "HorizontalBars", "Default" };
 		private string _activeSetConfigKeyOriginal;  // Used to store the original key value, since PlayerResourceSetsManager is loaded way before mods
 
 		internal void AddModdedDisplaySets() {
-			foreach (ModResourceDisplaySet display in ResourceDisplaySetLoader.moddedDisplaySets)
-				_sets[display.ConfigKey] = display;
+			foreach (ModResourceDisplaySet display in ResourceDisplaySetLoader.moddedDisplaySets) {
+				string key = display.ConfigKey;
+				_sets[key] = display;
+				accessKeys.Add(key);
+			}
 		}
 
 		// Called by tML after mods have loaded to set the actual display set
@@ -20,16 +26,19 @@ namespace Terraria.GameContent.UI.ResourceSets
 			_activeSetConfigKeyOriginal = _activeSetConfigKey;
 		}
 
+		private void SetActiveFrameFromIndex(int index) {
+			selectedSet = index;
+			SetActiveFrame(_sets[accessKeys[selectedSet]]);
+		}
+
 		internal void ResetToVanilla() {
 			_activeSetConfigKey = _activeSetConfigKeyOriginal;
 
-			string[] keys = new string[_sets.Keys.Count];
-			_sets.Keys.CopyTo(keys, 0);
+			foreach (string key in accessKeys)
+				_sets.Remove(key);
 
-			foreach (string key in keys) {
-				if (Array.IndexOf(vanillaSets, key) == -1)
-					_sets.Remove(key);
-			}
+			accessKeys.Clear();
+			accessKeys.AddRange(vanillaSets);
 
 			// Handles resetting the display set to Fancy if the config key isn't present
 			SetActive(_activeSetConfigKey);
