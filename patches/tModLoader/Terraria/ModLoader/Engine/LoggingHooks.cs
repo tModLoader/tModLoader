@@ -11,9 +11,31 @@ namespace Terraria.ModLoader.Engine
 	internal static class LoggingHooks
 	{
 		internal static void Init() {
+			FixBrokenConsolePipeError();
 			PrettifyStackTraceSources();
 			HookWebRequests();
 			HookProcessStart();
+		}
+
+		private static Hook writeFileNativeHook;
+		private delegate int orig_WriteFileNative(IntPtr hFile, ReadOnlySpan<byte> bytes, bool useFileAPIs);
+		private delegate int hook_WriteFileNative(orig_WriteFileNative orig, IntPtr hFile, ReadOnlySpan<byte> bytes, bool useFileAPIs);
+		private static void FixBrokenConsolePipeError() { // #2925
+			if (!OperatingSystem.IsWindows())
+				return;
+
+			// add 0xE9 (ERROR_PIPE_NOT_CONNECTED) to the 'ignored' errors in
+			// https://github.com/dotnet/runtime/blob/main/src/libraries/System.Console/src/System/ConsolePal.Windows.cs#L1213
+
+			var consoleStreamType = typeof(Console).Assembly.GetType("System.ConsolePal").GetNestedType("WindowsConsoleStream", BindingFlags.NonPublic);
+			var m = consoleStreamType.GetMethod("WriteFileNative", BindingFlags.Static | BindingFlags.NonPublic);
+			writeFileNativeHook = new Hook(m, new hook_WriteFileNative((orig, hFile, bytes, useFileAPIs) => {
+				int ret = orig(hFile, bytes, useFileAPIs);
+				if (ret == 0xE9) // ERROR_PIPE_NOT_CONNECTED
+					return 0; // success
+
+				return ret;
+			}));
 		}
 
 		private static Hook processStartHook;
@@ -59,7 +81,9 @@ namespace Terraria.ModLoader.Engine
 
 				if (sendAsyncCoreMethodInfo != null) {
 					httpSendAsyncHook = new Hook(sendAsyncCoreMethodInfo, new hook_SendAsyncCore((orig, self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken) => {
-						Logging.tML.Debug($"Web Request: {request.RequestUri}");
+						if (IncludeURIInRequestLogging(request.RequestUri))
+							Logging.tML.Debug($"Web Request: {request.RequestUri}");
+
 						return orig(self, request, proxyUri, async, doRequestAuth, isProxyConnect, cancellationToken);
 					}));
 					return;
@@ -69,6 +93,13 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			Logging.tML.Warn("HttpWebRequest send/submit method not found");
+		}
+
+		private static bool IncludeURIInRequestLogging(Uri uri) {
+			if (uri.IsLoopback && uri.LocalPath.Contains("game_")) // SteelSeries SDK
+				return false;
+
+			return true;
 		}
 	}
 }

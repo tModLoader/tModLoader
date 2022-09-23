@@ -123,7 +123,7 @@ namespace Terraria.ModLoader
 			if (CloneNewInstances)
 				return Clone(default, target);
 
-			var inst = (TGlobal)Activator.CreateInstance(GetType());
+			var inst = (TGlobal)Activator.CreateInstance(GetType(), true)!;
 			inst.Mod = Mod;
 			inst.Index = Index;
 			return inst;

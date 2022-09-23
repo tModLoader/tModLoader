@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Config.UI
 			// Null values without AllowNullAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
 			if (Value == null && List != null) {
 				// This should never actually happen, but I guess a bad Json file could.
-				object data = Activator.CreateInstance(MemberInfo.Type);
+				object data = Activator.CreateInstance(MemberInfo.Type, true);
 				string json = JsonDefaultValueAttribute?.Json ?? "{}";
 
 				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.Config.UI
 			initializeButton.OnClick += (a, b) => {
 				SoundEngine.PlaySound(21);
 
-				object data = Activator.CreateInstance(MemberInfo.Type);
+				object data = Activator.CreateInstance(MemberInfo.Type, true);
 				string json = JsonDefaultValueAttribute?.Json ?? "{}";
 
 				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);

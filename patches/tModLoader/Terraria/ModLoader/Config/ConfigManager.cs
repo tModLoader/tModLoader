@@ -273,7 +273,7 @@ namespace Terraria.ModLoader.Config
 		public static object AlternateCreateInstance(Type type) {
 			if (type == typeof(string))
 				return "";
-			return Activator.CreateInstance(type);
+			return Activator.CreateInstance(type, true);
 		}
 
 		// Gets an Attribute from a property or field. Attribute defined on Member has highest priority,

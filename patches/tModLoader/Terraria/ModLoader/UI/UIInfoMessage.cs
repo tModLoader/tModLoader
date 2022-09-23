@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIInfoMessage : UIState
+	internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	{
 		private UIElement _area;
 		private UIMessageBox _messageBox;
@@ -18,6 +20,7 @@ namespace Terraria.ModLoader.UI
 		private Action _altAction;
 		private string _altText;
 		private string _okText;
+		public UIState PreviousUIState { get; set; }
 
 		public override void OnInitialize() {
 			_area = new UIElement {
@@ -94,6 +97,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
+			HandleBackButtonUsage();
+		}
+
+		public void HandleBackButtonUsage() {
 			SoundEngine.PlaySound(10);
 			Main.menuMode = _gotoMenu;
 			if (_gotoState != null)
@@ -104,6 +111,11 @@ namespace Terraria.ModLoader.UI
 			SoundEngine.PlaySound(10);
 			_altAction?.Invoke();
 			Main.menuMode = _gotoMenu;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			base.DrawSelf(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		}
 	}
 }

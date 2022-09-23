@@ -121,6 +121,7 @@ namespace Terraria.ModLoader
 			netMods = null;
 			if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
 				AllowVanillaClients = false;
+			ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 		}
 
 		internal static void SyncMods(int clientIndex) {
