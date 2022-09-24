@@ -2,7 +2,6 @@
 using MonoMod.RuntimeDetour.HookGen;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -31,92 +30,44 @@ namespace Terraria.ModLoader
 			{ typeof(string), "string" }
 		};
 
-		private static DetourModManager manager = new DetourModManager();
-		private static HashSet<Assembly> NativeDetouringGranted = new HashSet<Assembly> { Assembly.GetExecutingAssembly() };
+		private class DetourList
+		{
+			public readonly List<DetourInfo> detours = new();
+			public readonly List<ILHookInfo> ilHooks = new();
+		}
+
+		private static Dictionary<Assembly, DetourList> assemblyDetours = new();
+		private static DetourList GetDetourList(Assembly asm) => assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+
+		[Obsolete("No longer required. NativeDetour is gone. Detour should not be used. Hook is safe to use", true)]
+		public static void RequestNativeAccess() { }
 
 		private static bool isInitialized;
-		static int hooks = 0;
-		static int detours = 0;
-		static int ndetours = 0;
-
 		internal static void Initialize() {
 			if (isInitialized)
 				return;
 
-			HookEndpointManager.OnAdd += (m, d) => {
-				Logging.tML.Debug($"Hook On.{StringRep(m)} added by {GetOwnerName(d)}");
-				return true;
-			};
-			HookEndpointManager.OnRemove += (m, d) => {
-				Logging.tML.Debug($"Hook On.{StringRep(m)} removed by {GetOwnerName(d)}");
-				return true;
-			};
-			HookEndpointManager.OnModify += (m, d) => {
-				Logging.tML.Debug($"Hook IL.{StringRep(m)} modified by {GetOwnerName(d)}");
-				return true;
-			};
-			HookEndpointManager.OnUnmodify += (m, d) => {
-				Logging.tML.Debug($"Hook IL.{StringRep(m)} unmodified by {GetOwnerName(d)}");
-				return true;
+			DetourManager.DetourApplied += (info) => {
+				var owner = info.Entry.DeclaringType.Assembly;
+				GetDetourList(owner).detours.Add(info);
+				var msg = $"Hook {StringRep(info.Method.Method)} added by {owner.GetName().Name}";
+
+				var targetSig = MethodSignature.ForMethod(info.Method.Method);
+				var detourSig = MethodSignature.ForMethod(info.Entry, ignoreThis: true);
+				if (detourSig.ParameterCount != targetSig.ParameterCount + 1 || detourSig.FirstParameter.GetMethod("Invoke") is null) {
+					msg += " WARNING! No orig delegate, incompatible with other hooks to this method";
+				}
+
+				Logging.tML.Debug(msg);
 			};
 
-			manager.OnHook += (asm, from, to, target) => {
-				NativeAccessCheck(asm);
-				Logging.tML.Debug($"Hook {StringRep(from)} -> {StringRep(to)} by {asm.GetName().Name}");
-			};
-
-			manager.OnILHook += (asm, from, manipulator) => {
-				NativeAccessCheck(asm);
-				Logging.tML.Debug($"ILHook {StringRep(from)} by {asm.GetName().Name}");
-			};
-
-			manager.OnDetour += (asm, from, to) => {
-				NativeAccessCheck(asm);
-				Logging.tML.Debug($"Detour {StringRep(from)} -> {StringRep(to)} by {asm.GetName().Name}");
-			};
-
-			manager.OnNativeDetour += (asm, method, from, to) => {
-				NativeAccessCheck(asm);
-				Logging.tML.Debug($"NativeDetour {StringRep(method)} [{from} -> {to}] by {asm.GetName().Name}");
-			};
-
-			Hook.OnUndo += (obj) => {
-				hooks++;
-				return true;
-			};
-
-			Detour.OnUndo += (obj) => {
-				detours++;
-				return true;
-			};
-
-			NativeDetour.OnUndo += (obj) => {
-				ndetours++;
-				return true;
+			DetourManager.ILHookApplied += (info) => {
+				var owner = info.ManipulatorMethod.DeclaringType.Assembly;
+				GetDetourList(owner).ilHooks.Add(info);
+				Logging.tML.Debug($"ILHook {StringRep(info.Method.Method)} added by {owner.GetName().Name}");
 			};
 
 			isInitialized = true;
-		}
-
-		private static void NativeAccessCheck(Assembly asm) {
-			if (NativeDetouringGranted.Contains(asm))
-				return;
-
-			throw new UnauthorizedAccessException(
-				$"Native detouring permissions not granted to {asm.GetName().Name}. \n" +
-				$"Mods should use HookEndpointManager for compatibility. \n" +
-				$"If Detour or NativeDetour are required, call MonoModHooks.RequestNativeAccess()");
-		}
-
-		public static void RequestNativeAccess() {
-			var stack = new StackTrace();
-			var asm = stack.GetFrame(1).GetMethod().DeclaringType.Assembly;
-			NativeDetouringGranted.Add(asm);
-			Logging.tML.Warn($"Granted native detouring access to {asm.GetName().Name}");
-		}
-
-		private static string GetOwnerName(Delegate d) {
-			return d.Method.DeclaringType.Assembly.GetName().Name;
 		}
 
 		private static string StringRep(MethodBase m) {
@@ -142,11 +93,21 @@ namespace Terraria.ModLoader
 				return;
 
 			foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
-				hooks = detours = ndetours = 0;
-				manager.Unload(asm);
-				if (hooks > 0 || detours > 0 || ndetours > 0)
-					Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {asm.GetName().Name} in {mod.DisplayName}");
+				if (assemblyDetours.TryGetValue(asm, out var list)) {
+					Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.DisplayName}");
+
+					foreach (var detour in list.detours)
+						if (detour.IsApplied)
+							detour.Undo();
+
+					foreach (var ilHook in list.ilHooks)
+						if (ilHook.IsApplied)
+							ilHook.Undo();
+				}
 			}
+
+			HookEndpointManager.Clear();
+			assemblyDetours.Clear();
 		}
 	}
 }

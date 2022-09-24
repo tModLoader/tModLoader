@@ -155,15 +155,16 @@
  			SoundEngine.PlaySound(11);
  		}
  
-@@ -308,6 +_,8 @@
+@@ -308,7 +_,9 @@
  		}
  
  		private void SetupGamepadPoints(SpriteBatch spriteBatch) {
 +			//TODO: Add workshop mod gamepad link point
-+			/*
  			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
++			/*
  			int num = 3000;
  			int idRangeEndExclusive = num;
+ 			UILinkPoint linkPoint = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonUseResourcePacks);
 @@ -325,6 +_,7 @@
  			_helper.PairUpDown(linkPoint4, linkPoint5);
  			_helper.PairUpDown(linkPoint2, linkPoint6);

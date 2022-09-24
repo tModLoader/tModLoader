@@ -24,5 +24,19 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void KillWall(int i, int j, int type, ref bool fail) {
 		}
+
+		/// <summary>
+		/// Called for every wall that updates due to being placed or being next to a wall that is changed. Return false to stop the game from carrying out its default WallFrame operations. If you return false, make sure to set <see cref="Tile.WallFrameNumber"/>, <see cref="Tile.WallFrameX"/>, and <see cref="Tile.WallFrameY"/> according to the your desired custom framing design. Returns true by default.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">Type of the wall being framed</param>
+		/// <param name="randomizeFrame">True if the calling code intends that the frameNumber be randomly changed, such as when placing the wall initially or loading the world, but not when updating due to nearby tile or wall placements</param>
+		/// <param name="style">The style or orientation that will be applied</param>
+		/// <param name="frameNumber">The random style that will be applied</param>
+		/// <returns></returns>
+		public virtual bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
+			return true;
+		}
 	}
 }

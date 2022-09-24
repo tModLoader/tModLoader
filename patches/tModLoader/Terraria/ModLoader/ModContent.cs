@@ -328,6 +328,11 @@ namespace Terraria.ModLoader
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
+			if (!Main.dedServ) {
+				Main.ResourceSetsManager.AddModdedDisplaySets();
+				Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+			}
+
 			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.SetupContent();
@@ -353,6 +358,7 @@ namespace Terraria.ModLoader
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+			SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 			PylonLoader.Setup();
 			MapLoader.SetupModMap();
@@ -483,6 +489,11 @@ namespace Terraria.ModLoader
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
 
+			if (!Main.dedServ) {
+				ResourceOverlayLoader.Unload();
+				ResourceDisplaySetLoader.Unload();
+			}
+
 			LoaderManager.Unload();
 
 			GlobalBackgroundStyleLoader.Unload();
@@ -506,6 +517,7 @@ namespace Terraria.ModLoader
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+			Main.gameTips.Reset();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();
@@ -579,6 +591,8 @@ namespace Terraria.ModLoader
 			if (ItemSlot.singleSlotArray[0] != null) {
 				ItemSlot.singleSlotArray[0] = new Item();
 			}
+
+			WorldGen.ClearGenerationPasses(); // Clean up modded generation passes
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {

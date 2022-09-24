@@ -78,6 +78,41 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/// <summary>
+		/// Resets <see cref="Player.statLifeMax"/> and <see cref="Player.statManaMax"/> to their expected values by vanilla
+		/// </summary>
+		/// <param name="player"></param>
+		public static void ResetMaxStatsToVanilla(Player player) {
+			player.statLifeMax = 100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5;
+			player.statManaMax = 20 + player.ConsumedManaCrystals * 20;
+		}
+
+		private delegate void DelegateModifyMaxStats(out StatModifier health, out StatModifier mana);
+		private static HookList HookModifyMaxStats = AddHook<DelegateModifyMaxStats>(p => p.ModifyMaxStats);
+
+		/// <summary>
+		/// Reset this player's <see cref="Player.statLifeMax"/> and <see cref="Player.statManaMax"/> to their vanilla defaults,
+		/// applies <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/> to them,
+		/// then modifies <see cref="Player.statLifeMax2"/> and <see cref="Player.statManaMax2"/>
+		/// </summary>
+		/// <param name="player"></param>
+		public static void ModifyMaxStats(Player player) {
+			ResetMaxStatsToVanilla(player);
+
+			StatModifier cumulativeHealth = StatModifier.Default;
+			StatModifier cumulativeMana = StatModifier.Default;
+
+			foreach (var modPlayer in HookModifyMaxStats.Enumerate(player.modPlayers)) {
+				modPlayer.ModifyMaxStats(out StatModifier health, out StatModifier mana);
+
+				cumulativeHealth = cumulativeHealth.CombineWith(health);
+				cumulativeMana = cumulativeMana.CombineWith(mana);
+			}
+
+			player.statLifeMax = (int)cumulativeHealth.ApplyTo(player.statLifeMax);
+			player.statManaMax = (int)cumulativeMana.ApplyTo(player.statManaMax);
+		}
+
 		private static HookList HookUpdateDead = AddHook<Action>(p => p.UpdateDead);
 
 		public static void UpdateDead(Player player) {

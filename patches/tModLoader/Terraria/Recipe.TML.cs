@@ -98,7 +98,7 @@ namespace Terraria
 		public readonly Mod Mod;
 		public readonly List<Condition> Conditions = new List<Condition>();
 
-		public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems);
+		public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
 
 		internal OnCraftCallback OnCraftHooks { get; private set; }

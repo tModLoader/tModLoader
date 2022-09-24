@@ -82,6 +82,7 @@ Mods: {
 			Has no NPC requirements!
 			'''
 			ExamplePylonItemAdvanced: "Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!"
+			ExampleMultiUseItem: Can be used 4 times
 		}
 		
 		ItemName: {
@@ -180,6 +181,13 @@ Mods: {
 				StandardDialogue3 : "I'm a traveling merchant, and I sell things."
 				HiveBackpackDialogue : "Hey, if you find a [i:HiveBackpack], my cousin can upgrade it for you."
 			}
+		}
+
+		GameTips: {
+			ExampleTip0: "Woah! Example Tip!"
+			ExampleTip1: "This tip was added by Example Mod!"
+			ExampleTip2: "This is yet another tip added by Example Mod!"
+			DisabledExampleTip: "This tip will be added but then disabled by Example Mod."
 		}
 	}
 }

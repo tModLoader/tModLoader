@@ -1026,13 +1026,8 @@
  		}
  
  		public Main() : base(dedServ) {
-@@ -4844,9 +_,13 @@
- 			if (dedServ)
- 				return;
+@@ -4846,7 +_,8 @@
  
-+			if (OperatingSystem.IsWindows()) // FNA sets this to "1" on Windows. Terraria does not want this. See #2020
-+				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
-+
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
@@ -2941,6 +2936,140 @@
  					spriteBatch.Draw(TextureAssets.Dust.Value, dust.position - screenPosition, dust.frame, newColor, dust.GetVisualRotation(), new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  					if (dust.color.PackedValue != 0) {
  						Microsoft.Xna.Framework.Color color6 = dust.GetColor(newColor);
+@@ -28506,11 +_,11 @@
+ 
+ 		private static void HelpText() {
+ 			bool flag = false;
+-			if (player[myPlayer].statLifeMax > 100)
++			if (player[myPlayer].ConsumedLifeCrystals > 0)
+ 				flag = true;
+ 
+ 			bool flag2 = false;
+-			if (player[myPlayer].statManaMax > 20)
++			if (player[myPlayer].ConsumedManaCrystals > 0)
+ 				flag2 = true;
+ 
+ 			bool flag3 = true;
+@@ -28932,7 +_,7 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 202 && !hardMode && player[myPlayer].statLifeMax >= 140) {
++				if (helpText == 202 && !hardMode && player[myPlayer].ConsumedLifeCrystals >= 2) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1120");
+ 					return;
+ 				}
+@@ -28942,12 +_,12 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 204 && !NPC.downedGoblins && player[myPlayer].statLifeMax >= 200 && WorldGen.shadowOrbSmashed) {
++				if (helpText == 204 && !NPC.downedGoblins && player[myPlayer].ConsumedLifeCrystals >= 5 && WorldGen.shadowOrbSmashed) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1122");
+ 					return;
+ 				}
+ 
+-				if (helpText == 205 && hardMode && !NPC.downedPirates && player[myPlayer].statLifeMax >= 200) {
++				if (helpText == 205 && hardMode && !NPC.downedPirates && player[myPlayer].ConsumedLifeCrystals >= 5) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1123");
+ 					return;
+ 				}
+@@ -29026,7 +_,7 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 1050 && !NPC.downedBoss1 && player[myPlayer].statLifeMax < 200) {
++				if (helpText == 1050 && !NPC.downedBoss1 && player[myPlayer].ConsumedLifeCrystals < 5) {
+ 					npcChatText = Lang.dialog(211);
+ 					return;
+ 				}
+@@ -29036,22 +_,22 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 1052 && !NPC.downedBoss1 && player[myPlayer].statLifeMax >= 200 && player[myPlayer].statDefense > 10) {
++				if (helpText == 1052 && !NPC.downedBoss1 && player[myPlayer].ConsumedLifeCrystals >= 5 && player[myPlayer].statDefense > 10) {
+ 					npcChatText = Lang.dialog(WorldGen.crimson ? 404 : 213);
+ 					return;
+ 				}
+ 
+-				if (helpText == 1053 && NPC.downedBoss1 && !NPC.downedBoss2 && player[myPlayer].statLifeMax < 300) {
++				if (helpText == 1053 && NPC.downedBoss1 && !NPC.downedBoss2 && player[myPlayer].ConsumedLifeCrystals < 10) {
+ 					npcChatText = Lang.dialog(214);
+ 					return;
+ 				}
+ 
+-				if (helpText == 1054 && NPC.downedBoss1 && !NPC.downedBoss2 && !WorldGen.crimson && player[myPlayer].statLifeMax >= 300) {
++				if (helpText == 1054 && NPC.downedBoss1 && !NPC.downedBoss2 && !WorldGen.crimson && player[myPlayer].ConsumedLifeCrystals >= 10) {
+ 					npcChatText = Lang.dialog(215);
+ 					return;
+ 				}
+ 
+-				if (helpText == 1055 && NPC.downedBoss1 && !NPC.downedBoss2 && !WorldGen.crimson && player[myPlayer].statLifeMax >= 300) {
++				if (helpText == 1055 && NPC.downedBoss1 && !NPC.downedBoss2 && !WorldGen.crimson && player[myPlayer].ConsumedLifeCrystals >= 10) {
+ 					npcChatText = Lang.dialog(216);
+ 					return;
+ 				}
+@@ -29061,22 +_,22 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 1057 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].statLifeMax < 400) {
++				if (helpText == 1057 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].ConsumedLifeCrystals < Player.LifeCrystalMax) {
+ 					npcChatText = Lang.dialog(218);
+ 					return;
+ 				}
+ 
+-				if (helpText == 1058 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].statLifeMax >= 400) {
++				if (helpText == 1058 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 					npcChatText = Lang.dialog(219);
+ 					return;
+ 				}
+ 
+-				if (helpText == 1059 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].statLifeMax >= 400) {
++				if (helpText == 1059 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 					npcChatText = Lang.dialog(220);
+ 					return;
+ 				}
+ 
+-				if (helpText == 1060 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].statLifeMax >= 400) {
++				if (helpText == 1060 && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !hardMode && player[myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 					npcChatText = Lang.dialog(221);
+ 					return;
+ 				}
+@@ -29091,12 +_,12 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 1140 && NPC.downedBoss1 && !NPC.downedBoss2 && WorldGen.crimson && player[myPlayer].statLifeMax >= 300) {
++				if (helpText == 1140 && NPC.downedBoss1 && !NPC.downedBoss2 && WorldGen.crimson && player[myPlayer].ConsumedLifeCrystals >= 10) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1140");
+ 					return;
+ 				}
+ 
+-				if (helpText == 1141 && NPC.downedBoss1 && !NPC.downedBoss2 && WorldGen.crimson && player[myPlayer].statLifeMax >= 300) {
++				if (helpText == 1141 && NPC.downedBoss1 && !NPC.downedBoss2 && WorldGen.crimson && player[myPlayer].ConsumedLifeCrystals >= 10) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1141");
+ 					return;
+ 				}
+@@ -29106,7 +_,7 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 1143 && NPC.downedBoss2 && !NPC.downedQueenBee && player[myPlayer].statLifeMax >= 300) {
++				if (helpText == 1143 && NPC.downedBoss2 && !NPC.downedQueenBee && player[myPlayer].ConsumedLifeCrystals >= 10) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1143");
+ 					return;
+ 				}
+@@ -29136,7 +_,7 @@
+ 					return;
+ 				}
+ 
+-				if (helpText == 1149 && hardMode && NPC.downedMechBossAny && player[myPlayer].statLifeMax < 500) {
++				if (helpText == 1149 && hardMode && NPC.downedMechBossAny && player[myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax && player[myPlayer].ConsumedLifeFruit < Player.LifeFruitMax) {
+ 					npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1149");
+ 					return;
+ 				}
 @@ -29206,8 +_,8 @@
  			int num = (mouseTextColor * 2 + 255) / 3;
  			Microsoft.Xna.Framework.Color textColor = new Microsoft.Xna.Framework.Color(num, num, num, num);
@@ -3428,20 +3557,37 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,13 +_,15 @@
+@@ -31827,16 +_,33 @@
+ 		}
+ 
+ 		public static void CraftItem(Recipe r) {
++			/* TML: #OnStackHook
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
--			if (stack <= 0)
-+			//if (stack <= 0)
-+			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
+ 			if (stack <= 0)
  				mouseItem.Prefix(-1);
++			*/
++
++			if (mouseItem.stack > 0 && !ItemLoader.CanStack(mouseItem, r.createItem))
++				return;
++
++			Item crafted = r.createItem.Clone();
++			if (crafted.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
++				crafted.Prefix(-1);
  
  			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
-+			RecipeLoader.OnCraft(mouseItem, r);
++			RecipeLoader.OnCraft(crafted, r, mouseItem);
++			if (mouseItem.stack > 0) {
++				ItemLoader.StackItems(mouseItem, crafted, out _);
++			}
++			else {
++				mouseItem = crafted;
++			}
++
  			if (mouseItem.type > 0 || r.createItem.type > 0)
  				SoundEngine.PlaySound(7);
  		}
@@ -4139,7 +4285,17 @@
  					array4[num5 - 1] = 18;
  					for (int num23 = 0; num23 < num5; num23++) {
  						array7[num23] = 0.75f;
-@@ -37880,6 +_,11 @@
+@@ -37873,13 +_,21 @@
+ 						MinimapFrameManagerInstance.CycleSelection();
+ 
+ 					num24++;
++					/*
+ 					string activeSetKeyName = ResourceSetsManager.ActiveSetKeyName;
+ 					string textValue2 = Language.GetTextValue("UI.HealthManaStyle_" + activeSetKeyName);
++					*/
++					string textValue2 = ResourceSetsManager.ActiveSet.DisplayedName;
+ 					array9[num24] = Language.GetTextValue("UI.SelectHealthStyle", textValue2);
+ 					if (selectedMenu == num24)
  						ResourceSetsManager.CycleResourceSet();
  
  					num24++;
@@ -4853,19 +5009,15 @@
  			int num2 = sceneArea.bgTopY;
  			int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
  			int num4 = 0;
-@@ -48584,7 +_,11 @@
- 
- 				moonColor *= num13;
- 				Vector2 position2 = new Vector2(num6, num7 + moonModY) + sceneArea.SceneLocalScreenPositionOffset;
-+				if (Main.gameMenu && menu != null) {
-+					bool needsVanillaFraming = value2 == TextureAssets.Moon[num].Value;
-+					spriteBatch.Draw(value2, position2, new Rectangle(0, needsVanillaFraming ? TextureAssets.Moon[num].Width() * moonPhase : 0, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width), moonColor, num9, new Vector2(needsVanillaFraming ? TextureAssets.Moon[num].Width() / 2 : value2.Width / 2), num8, SpriteEffects.None, 0f);
-+				}
--				if (WorldGen.drunkWorldGen)
-+				else if (WorldGen.drunkWorldGen)
- 					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
- 				else if (pumpkinMoon)
+@@ -48590,6 +_,8 @@
  					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
+ 				else if (snowMoon)
+ 					spriteBatch.Draw(TextureAssets.SnowMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.SnowMoon.Width() * moonPhase, TextureAssets.SnowMoon.Width(), TextureAssets.SnowMoon.Width()), moonColor, num9, new Vector2(TextureAssets.SnowMoon.Width() / 2, TextureAssets.SnowMoon.Width() / 2), num8, SpriteEffects.None, 0f);
++				else if (value2 != TextureAssets.Moon[num].Value) // custom menu.MoonTexture drawn here.
++					spriteBatch.Draw(value2, position2, new Rectangle(0, 0, value2.Width, value2.Width), moonColor, num9, new Vector2(value2.Width / 2), num8, SpriteEffects.None, 0f);
+ 				else
+ 					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
+ 			}
 @@ -48678,7 +_,7 @@
  				Vector2 origin = value.Size() / 2f;
  				if (star.falling) {
@@ -4990,6 +5142,24 @@
  
  			if (invasionX > (double)spawnTileX) {
  				invasionX -= num;
+@@ -49722,7 +_,7 @@
+ 
+ 			int num = 0;
+ 			for (int i = 0; i < 255; i++) {
+-				if (player[i].active && player[i].statLifeMax >= 200)
++				if (player[i].active && player[i].ConsumedLifeCrystals >= 5)
+ 					num++;
+ 			}
+ 
+@@ -49738,7 +_,7 @@
+ 
+ 			int num = 0;
+ 			for (int i = 0; i < 255; i++) {
+-				if (player[i].active && player[i].statLifeMax >= 200)
++				if (player[i].active && player[i].ConsumedLifeCrystals >= 5)
+ 					num++;
+ 			}
+ 
 @@ -49871,7 +_,7 @@
  						Netplay.Clients[k].TimeOutTimer += 3;
  
@@ -5097,6 +5267,15 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
+@@ -50069,7 +_,7 @@
+ 
+ 						bool flag = false;
+ 						for (int i = 0; i < 255; i++) {
+-							if (Main.player[i].active && Main.player[i].statLifeMax > 140 && Main.player[i].statDefense > 8)
++							if (Main.player[i].active && Main.player[i].ConsumedLifeCrystals > 2 && Main.player[i].statDefense > 8)
+ 								flag = true;
+ 						}
+ 
 @@ -50141,6 +_,7 @@
  						WorldGen.UnspawnTravelNPC();
  				}
@@ -5115,6 +5294,24 @@
  						int num8 = 0;
  						for (int j = 0; j < 200; j++) {
  							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
+@@ -50288,7 +_,7 @@
+ 				if (!NPC.downedBoss1 && netMode != 1) {
+ 					bool flag = false;
+ 					for (int i = 0; i < 255; i++) {
+-						if (player[i].active && player[i].statLifeMax >= 200 && player[i].statDefense > 10) {
++						if (player[i].active && player[i].ConsumedLifeCrystals >= 5 && player[i].statDefense > 10) {
+ 							flag = true;
+ 							break;
+ 						}
+@@ -50360,7 +_,7 @@
+ 
+ 				if (!WorldGen.spawnEye && moonPhase != 4 && rand.Next(maxValue) == 0 && netMode != 1) {
+ 					for (int m = 0; m < 255; m++) {
+-						if (player[m].active && player[m].statLifeMax > 120) {
++						if (player[m].active && player[m].ConsumedLifeCrystals > 1) {
+ 							bloodMoon = true;
+ 							break;
+ 						}
 @@ -50505,6 +_,11 @@
  		}
  

@@ -102,7 +102,7 @@
  					return false;
  
  				item.favorited = !item.favorited;
-@@ -467,13 +_,19 @@
+@@ -467,14 +_,21 @@
  			int num = PickItemMovementAction(inv, context, slot, Main.mouseItem);
  			if (num != 3 && !flag)
  				return;
@@ -114,15 +114,17 @@
  						inv[slot].SetDefaults();
 +					if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(inv[slot], slot, context < 0))
 +						break;
--					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
-+					if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
+ 					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
  						break;
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
 +						break;
 +
- 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
++					if (Main.mouseItem.maxStack <= 1 || inv[slot].type != Main.mouseItem.type || inv[slot].stack == inv[slot].maxStack || Main.mouseItem.stack == Main.mouseItem.maxStack)//TML: OnStackHook: Prevent swapping items if they will be stacked together.
+-					Utils.Swap(ref inv[slot], ref Main.mouseItem);
++						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  					if (inv[slot].stack > 0)
  						AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, inv[slot].stack));
+ 					else
 @@ -486,6 +_,9 @@
  								break;
  							case 8:
@@ -133,16 +135,31 @@
  							case 10:
  							case 11:
  							case 12:
-@@ -499,7 +_,8 @@
+@@ -499,9 +_,15 @@
  					}
  					if (inv[slot].type == 0 || inv[slot].stack < 1)
  						inv[slot] = new Item();
--					if (Main.mouseItem.IsTheSameAs(inv[slot])) {
++
 +					//if (Main.mouseItem.IsTheSameAs(inv[slot])) {
-+					if (Main.mouseItem.IsTheSameAs(inv[slot]) && ItemLoader.CanStack(inv[slot], Main.mouseItem)) {
- 						Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);
+ 					if (Main.mouseItem.IsTheSameAs(inv[slot])) {
+-						Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);
++						//Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);/* TML: OnStackHook: Gameplay impact: The favorited item will now always be the item that has it's stack being increased instead of swapping favorites for consistency with the OnStack() hook.
  						if (inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
++							if (ItemLoader.TryStackItems(inv[slot], Main.mouseItem, out int numTransfered))
++								AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, numTransfered));
++
++							/* TML: OnStackHook
  							if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
+ 								inv[slot].stack += Main.mouseItem.stack;
+ 								Main.mouseItem.stack = 0;
+@@ -513,6 +_,7 @@
+ 								Main.mouseItem.stack -= num2;
+ 								AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, num2));
+ 							}
++							*/
+ 						}
+ 					}
+ 					if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
 @@ -526,6 +_,13 @@
  					break;
  				case 1:
@@ -177,10 +194,21 @@
 +							break;
 +						if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +							break;
-+
++						/*
  						if (Main.mouseItem.stack == 1) {
  							Utils.Swap(ref inv[slot], ref Main.mouseItem);
  							if (inv[slot].type == 0 || inv[slot].stack < 1)
+@@ -580,6 +_,10 @@
+ 							Recipe.FindRecipes();
+ 							SoundEngine.PlaySound(7);
+ 						}
++						*/
++						inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
++						Recipe.FindRecipes();
++						SoundEngine.PlaySound(7);
+ 
+ 						if (inv[slot].stack > 0) {
+ 							switch (context) {
 @@ -588,6 +_,9 @@
  									break;
  								case 8:
@@ -201,6 +229,25 @@
  								case 10:
  								case 11:
  								case 12:
+@@ -642,6 +_,7 @@
+ 						}
+ 					}
+ 					else if (Main.mouseItem.dye > 0 && inv[slot].type == 0) {
++						/*
+ 						if (Main.mouseItem.stack == 1) {
+ 							Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 							if (inv[slot].type == 0 || inv[slot].stack < 1)
+@@ -661,6 +_,10 @@
+ 							Recipe.FindRecipes();
+ 							SoundEngine.PlaySound(7);
+ 						}
++						*/
++						inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
++						Recipe.FindRecipes();
++						SoundEngine.PlaySound(7);
+ 
+ 						if (inv[slot].stack > 0) {
+ 							switch (context) {
 @@ -669,6 +_,9 @@
  									break;
  								case 8:
@@ -334,6 +381,39 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
+@@ -1003,6 +_,7 @@
+ 
+ 		public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player) {
+ 			if (Main.mouseItem.type == 0) {
++				/*
+ 				Main.mouseItem = inv[slot].Clone();
+ 				if (context == 29)
+ 					Main.mouseItem.SetDefaults(Main.mouseItem.type);
+@@ -1012,13 +_,24 @@
+ 					Main.mouseItem.favorited = true;
+ 				else
+ 					Main.mouseItem.favorited = false;
++				*/
+ 
++				if (context == 29)
++					Main.mouseItem.SetDefaults(Main.mouseItem.type);
++				else
++					Main.mouseItem = ItemLoader.TransferWithLimit(inv[slot], 1);
++				
+ 				AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
+ 			}
++			else {
++				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: context == 29, 1);
++			}
+ 
++			/* TML: #OnStackHook
+ 			Main.mouseItem.stack++;
+ 			if (context != 29)
+ 				inv[slot].stack--;
++			*/
+ 
+ 			if (inv[slot].stack <= 0)
+ 				inv[slot] = new Item();
 @@ -1052,10 +_,14 @@
  			switch (context) {
  				case 0:
@@ -543,7 +623,7 @@
  				case 12:
  				case 25:
  				case 27: {
-@@ -1274,10 +_,11 @@
+@@ -1274,12 +_,22 @@
  							break;
  
  						bool flag = false;
@@ -551,12 +631,22 @@
 +						//if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
 +						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
  							flag = true;
- 							if (Main.mouseItem.IsAir)
--								Main.mouseItem.SetDefaults(inv[slot].type);
++
++							if (Main.mouseItem.IsAir) {
 +								Main.mouseItem = inv[slot].Clone();
++							}
++							else {
++								ItemLoader.StackItems(Main.mouseItem, inv[slot], out _);
++							}
++							/* TML: #OnStackHook
+ 							if (Main.mouseItem.IsAir)
+ 								Main.mouseItem.SetDefaults(inv[slot].type);
  							else
  								Main.mouseItem.stack++;
++							*/
  
+ 							inv[slot].SetDefaults();
+ 							SoundEngine.PlaySound(7);
 @@ -1310,12 +_,15 @@
  
  			_ = Main.instance.shop[Main.npcShop];
@@ -574,7 +664,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1328,13 +_,12 @@
+@@ -1328,25 +_,36 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -582,16 +672,28 @@
  				}
  
  				if (Main.mouseItem.type == 0) {
--					Main.mouseItem.netDefaults(inv[slot].netID);
--					if (inv[slot].prefix != 0)
--						Main.mouseItem.Prefix(inv[slot].prefix);
--
++					/*
+ 					Main.mouseItem.netDefaults(inv[slot].netID);
+ 					if (inv[slot].prefix != 0)
+ 						Main.mouseItem.Prefix(inv[slot].prefix);
+ 
+ 					Main.mouseItem.stack = 0;
++					*/
 +					Main.mouseItem = inv[slot].Clone();
 +					Main.mouseItem.buyOnce = false;
- 					Main.mouseItem.stack = 0;
++					Main.mouseItem.stack = 1;
++				}
++				else {
++					ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: true, 1);
  				}
  
-@@ -1347,6 +_,8 @@
+ 				if (!inv[slot].buyOnce)
+ 					Main.shopSellbackHelper.Add(inv[slot]);
+ 
+-				Main.mouseItem.stack++;
++				//Main.mouseItem.stack++;//TML: #OnStackHook
+ 				RefreshStackSplitCooldown();
+ 				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
  					inv[slot].SetDefaults();
  
  				AnnounceTransfer(new ItemTransferInfo(Main.mouseItem, 15, 21));

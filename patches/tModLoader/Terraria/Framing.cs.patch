@@ -17,3 +17,62 @@
  				Main.tile[i, j].wall = 0;
  
  			WorldGen.UpdateMapTile(i, j);
+@@ -325,43 +_,39 @@
+ 			int num = 0;
+ 			if (j - 1 >= 0) {
+ 				Tile tile2 = Main.tile[i, j - 1];
+-				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
++				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
+ 					num = 1;
+ 			}
+ 
+ 			if (i - 1 >= 0) {
+ 				Tile tile2 = Main.tile[i - 1, j];
+-				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
++				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
+ 					num |= 2;
+ 			}
+ 
+ 			if (i + 1 <= Main.maxTilesX - 1) {
+ 				Tile tile2 = Main.tile[i + 1, j];
+-				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
++				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
+ 					num |= 4;
+ 			}
+ 
+ 			if (j + 1 <= Main.maxTilesY - 1) {
+ 				Tile tile2 = Main.tile[i, j + 1];
+-				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
++				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
+ 					num |= 8;
+ 			}
+ 
+ 			int num2 = 0;
+ 			if (Main.wallLargeFrames[tile.wall] == 1) {
+ 				num2 = phlebasTileFrameNumberLookup[j % 4][i % 3] - 1;
+-				tile.wallFrameNumber((byte)num2);
+ 			}
+ 			else if (Main.wallLargeFrames[tile.wall] == 2) {
+ 				num2 = lazureTileFrameNumberLookup[i % 2][j % 2] - 1;
+-				tile.wallFrameNumber((byte)num2);
+ 			}
+ 			else if (resetFrame) {
+ 				num2 = WorldGen.genRand.Next(0, 3);
+ 				if (tile.wall == 21 && WorldGen.genRand.Next(2) == 0)
+ 					num2 = 2;
+-
+-				tile.wallFrameNumber((byte)num2);
+ 			}
+ 			else {
+ 				num2 = tile.wallFrameNumber();
+@@ -370,6 +_,10 @@
+ 			if (num == 15)
+ 				num += centerWallFrameLookup[i % 3][j % 3];
+ 
++			if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
++				return;
++
++			tile.wallFrameNumber((byte)num2);
+ 			Point16 point = wallFrameLookup[num][num2];
+ 			tile.wallFrameX(point.X);
+ 			tile.wallFrameY(point.Y);
