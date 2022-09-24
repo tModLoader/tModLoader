@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
