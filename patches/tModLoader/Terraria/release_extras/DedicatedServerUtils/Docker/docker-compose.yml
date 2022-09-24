@@ -1,0 +1,12 @@
+version: "1.0"
+services:
+  tml:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+    ports:
+      - 7777:7777
+    volumes:
+      - "./Terraria:/home/tml/.local/share/Terraria"

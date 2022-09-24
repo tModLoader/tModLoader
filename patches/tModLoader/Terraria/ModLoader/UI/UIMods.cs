@@ -264,7 +264,7 @@ namespace Terraria.ModLoader.UI
 			uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 		}
 
-		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+		internal void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
@@ -361,6 +361,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
 			base.Draw(spriteBatch);
 			for (int i = 0; i < _categoryButtons.Count; i++) {
 				if (_categoryButtons[i].IsMouseHovering) {
@@ -386,7 +387,8 @@ namespace Terraria.ModLoader.UI
 					return;
 				}
 			}
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+			if(buttonOMF.IsMouseHovering)
+				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 		}
 
 		public override void OnActivate() {

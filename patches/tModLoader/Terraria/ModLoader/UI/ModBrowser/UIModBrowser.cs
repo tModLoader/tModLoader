@@ -107,6 +107,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
 			base.Draw(spriteBatch);
 			for (int i = 0; i < CategoryButtons.Count; i++)
 				if (CategoryButtons[i].IsMouseHovering) {
@@ -142,7 +143,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				Main.menuMode = Interface.updateMessageID;
 			}
 
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
 		}
 
 		public void BackClick(UIMouseEvent evt, UIElement listeningElement) {

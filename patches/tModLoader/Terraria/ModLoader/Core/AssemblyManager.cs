@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Core
 					var runtime = mod.LoadFromAssemblyName(assemblyName);
 					if (string.IsNullOrEmpty(runtime.Location))
 						return context.LoadFromByteArray(((ModLoadContext)GetLoadContext(runtime)).assemblyBytes[assemblyName.Name]);
-					
+
 
 					return context.LoadFromAssemblyPath(runtime.Location);
 				}
@@ -185,7 +185,7 @@ namespace Terraria.ModLoader.Core
 		private static Mod Instantiate(ModLoadContext mod) {
 			try {
 				VerifyMod(mod.Name, mod.assembly, out var modType);
-				var m = (Mod)Activator.CreateInstance(modType);
+				var m = (Mod)Activator.CreateInstance(modType, true)!;
 				m.File = mod.modFile;
 				m.Code = mod.assembly;
 				m.Logger = LogManager.GetLogger(m.Name);
@@ -378,7 +378,7 @@ namespace Terraria.ModLoader.Core
 				throw new Exceptions.JITException(message);
 			}
 		}
-		
+
 		private static void ForceJITOnMethod(MethodBase method) {
 			RuntimeHelpers.PrepareMethod(method.MethodHandle);
 
