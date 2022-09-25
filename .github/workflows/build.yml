@@ -190,8 +190,12 @@ jobs:
             exit $err
           )
           
+          mkdir -p artifacts/dotnet
+          mv steam_build/LaunchUtils/dotnet-runtime-6.0.0-win-x64.zip artifacts/dotnet/dotnet-runtime-6.0.0-win-x64.zip
+          
           mkdir -p artifacts/Release
           cp -r steam_build/. artifacts/Release
+          
           echo ::endgroup::
           
           echo Cleaning up output directory in-between builds...
@@ -234,6 +238,13 @@ jobs:
           name: Release Build
           path: |
             ./artifacts/Release/
+            
+      - name: Upload Dotnet Win64 Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Dotnet Win64 include
+          path: |
+            ./artifacts/dotnet/
            
       - name: Upload temporary encrypted src artifact
         if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
@@ -447,6 +458,12 @@ jobs:
           name: Release Build
           path: artifacts/Build
           
+      - name: Download dotnet artifact from build job
+        uses: actions/download-artifact@v2
+        with: 
+          name: Dotnet Win64 include
+          path: artifacts/dotnet
+          
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
@@ -480,6 +497,7 @@ jobs:
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
+          cp artifacts/dotnet/dotnet-runtime-6.0.0-win-x64.zip  artifacts/Build/LaunchUtils/dotnet-runtime-6.0.0-win-x64.zip   
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
