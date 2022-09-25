@@ -535,40 +535,34 @@ namespace Terraria.ModLoader.Core
 			if (tmods.Length <= 3)
 				return;
 
-			string location = FindOldest(repo);
-			if (location.EndsWith(".tmod"))
-				File.Delete(location);
-			else
-				Directory.Delete(location, true);
-		}
+			var compareVersion = DecreaseDateVersion(BuildInfo.ltsVersion);
 
-		internal static string FindOldest(string repo) {
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length == 1)
-				return tmods[0];
+			for (int i = 0; i < tmods.Length; i++) {
+				var filename = tmods[i];
 
-			string val = null;
-			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-
-				if (match.Success) {
-					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers > currVersion) {
-						continue;
-					}
-					else {
-						val = Directory.GetParent(fileName).ToString();
-						currVersion = testVers;
-					}
+				// Legacy, non-folder .tmods
+				if (filename.EndsWith(".tmod")) {
+					File.Delete(filename);
+					continue;
 				}
-				else {
-					val = fileName;
-					break;
+
+				// Remove .tmods from prior to previous LTS version
+				var match = PublishFolderMetadata.Match(filename);
+				if (match.Success && new Version(match.Groups[1].Value) < compareVersion) {
+					Directory.Delete(filename, true);
 				}
 			}
+		}
 
-			return val;
+		private static Version DecreaseDateVersion(Version ltsVersion) {
+			int month = ltsVersion.Minor;
+			int year = ltsVersion.Major;
+			if (month == 1)
+				year--;
+			else
+				month--;
+
+			return new Version(year, month);
 		}
 
 		internal static void DeleteMod(LocalMod tmod) {
