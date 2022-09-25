@@ -53,22 +53,24 @@ namespace Terraria.ModLoader.Config
 
 		internal static void Add(ModConfig config) {
 			Load(config);
+			FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
+			if (instance != null) {
+				instance.SetValue(null, config);
+			}
 
 			if (!Configs.TryGetValue(config.Mod, out List<ModConfig> configList))
 				Configs.Add(config.Mod, configList = new List<ModConfig>());
 			configList.Add(config);
 
-			FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
-			if (instance != null) {
-				instance.SetValue(null, config);
-			}
-			config.OnLoaded();
-			config.OnChanged();
-
 			// Maintain a backup of LoadTime Configs.
 			if (!loadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig> configList2))
 				loadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
 			configList2.Add(GeneratePopulatedClone(config));
+
+			// Modifying config will still trigger the comparison.
+			// And it allows calling AddConfig according to the loaded value without disorder.
+			config.OnLoaded();
+			config.OnChanged();
 		}
 
 		// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.

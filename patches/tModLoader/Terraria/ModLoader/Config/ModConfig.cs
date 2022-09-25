@@ -22,11 +22,11 @@ namespace Terraria.ModLoader.Config
 		[JsonIgnore]
 		public abstract ConfigScope Mode { get; }
 
-		// TODO: Does non-autoloaded ModConfigs have a use-case?
+		// TODO: Does non-autoloaded ModConfigs have a use-case? Example/Common/Configs/DynamicModConfig.cs
 		public virtual bool Autoload(ref string name) => Mod.ContentAutoloadingEnabled;
 
 		/// <summary>
-		/// This method is called when the ModConfig has been loaded for the first time. This happens before regular Autoloading and Mod.Load. You can use this hook to assign a static reference to this instance for easy access.
+		/// This method is called when the ModConfig has been loaded for the first time. This happens before regular Autoloading and Mod.Load. You can use this hook to assign a static reference to this instance for easy access or load the ModConfig you want through AddConfig
 		/// tModLoader will automatically assign (and later unload) this instance to a static field named Instance in the class prior to calling this method, if it exists.
 		/// </summary>
 		public virtual void OnLoaded() { }
