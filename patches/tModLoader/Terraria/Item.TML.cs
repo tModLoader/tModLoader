@@ -205,6 +205,8 @@ namespace Terraria
 
 			droppedItem.ModItem = item.ModItem;
 			droppedItem.globalItems = item.globalItems;
+			if (droppedItem.ModItem != null)
+				droppedItem.ModItem.Entity = droppedItem;
 
 			if (Main.netMode == NetmodeID.Server)
 				NetMessage.SendData(21, -1, -1, null, droppedItemId);
