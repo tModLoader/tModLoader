@@ -13,7 +13,7 @@
  			switch (_keybind) {
  				default:
 +					if (KeybindLoader.modKeybinds.TryGetValue(_keybind, out ModKeybind modKeybind))
-+						return $"{modKeybind.Mod.DisplayName}: {modKeybind.DisplayName.GetTranslation(Language.ActiveCulture)}"; 
++						return modKeybind.DisplayName.GetTranslation(Language.ActiveCulture);
  					return _keybind;
  				case "MouseLeft":
  					return Lang.menu[162].Value;
