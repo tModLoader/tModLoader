@@ -43,9 +43,15 @@ namespace Terraria.ModLoader
 		}
 
 		private static ModKeybind RegisterKeybind(ModKeybind keybind) {
-			modKeybinds[keybind.uniqueName] = keybind;
+			modKeybinds[keybind.FullName] = keybind;
 
 			return keybind;
+		}
+
+		internal static void SetupContent() {
+			foreach (var modKebind in modKeybinds.Values) {
+				modKebind.SetupContent();
+			}
 		}
 	}
 }

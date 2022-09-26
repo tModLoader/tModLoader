@@ -345,6 +345,7 @@ namespace Terraria.ModLoader
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
+			KeybindLoader.SetupContent();
 
 			PlayerInput.reinitialize = true;
 			SetupBestiary();

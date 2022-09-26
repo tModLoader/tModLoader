@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Localization;
 
@@ -9,22 +10,24 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a loaded input binding. It is suggested to access the keybind status only in ModPlayer.ProcessTriggers.
 	/// </summary>
-	public class ModKeybind
+	public class ModKeybind // We could make this a ModType later
 	{
-		internal readonly Mod mod;
-		internal readonly string name; // name from modder: "RandomBuff"
-		internal readonly string uniqueName; // name saved to disk: "ExampleMod: RandomBuff"
-		internal readonly string defaultBinding; // from mod.Load
-		internal readonly string displayNameKey; // Mods.ExampleMod.Keybind.RandomBuff
-		internal string DisplayName => Language.Exists(displayNameKey) ? Language.GetTextValue(displayNameKey) : name; // "Random Buff"
+		internal Mod Mod { get; set; }
+		internal string Name { get; set; } // name from modder: "RandomBuff"
+		internal string FullName => $"{Mod.Name}/{Name}"; // name saved to disk: "ExampleMod/RandomBuff"
+		internal string DefaultBinding { get; set; } // from mod.Load
+		internal ModTranslation DisplayName { get; set; }
 
 		internal ModKeybind(Mod mod, string name, string defaultBinding) {
-			this.mod = mod;
-			this.name = name;
-			displayNameKey = $"Mods.{mod.Name}.Keybind.{name}";
-			this.defaultBinding = defaultBinding;
+			Mod = mod;
+			Name = name;
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Keybind.{Name}");
+			DefaultBinding = defaultBinding;
+		}
 
-			uniqueName = mod.Name + ": " + name;
+		internal void SetupContent() {
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Name);
 		}
 
 		/// <summary>
@@ -32,7 +35,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="mode"> The InputMode. Choose between InputMode.Keyboard and InputMode.XBoxGamepad </param>
 		public List<string> GetAssignedKeys(InputMode mode = InputMode.Keyboard) {
-			return PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[uniqueName];
+			return PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[FullName];
 		}
 
 		public bool RetroCurrent {
@@ -47,21 +50,21 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns true if this keybind is pressed currently. Useful for creating a behavior that relies on the keybind being held down.
 		/// </summary>
-		public bool Current => PlayerInput.Triggers.Current.KeyStatus[uniqueName];
+		public bool Current => PlayerInput.Triggers.Current.KeyStatus[FullName];
 
 		/// <summary>
 		/// Returns true if this keybind has just been pressed this update. This is a fire-once-per-press behavior.
 		/// </summary>
-		public bool JustPressed => PlayerInput.Triggers.JustPressed.KeyStatus[uniqueName];
+		public bool JustPressed => PlayerInput.Triggers.JustPressed.KeyStatus[FullName];
 
 		/// <summary>
 		/// Returns true if this keybind has just been released this update.
 		/// </summary>
-		public bool JustReleased => PlayerInput.Triggers.JustReleased.KeyStatus[uniqueName];
+		public bool JustReleased => PlayerInput.Triggers.JustReleased.KeyStatus[FullName];
 
 		/// <summary>
 		/// Returns true if this keybind has been pressed during the previous update.
 		/// </summary>
-		public bool Old => PlayerInput.Triggers.Old.KeyStatus[uniqueName];
+		public bool Old => PlayerInput.Triggers.Old.KeyStatus[FullName];
 	}
 }
