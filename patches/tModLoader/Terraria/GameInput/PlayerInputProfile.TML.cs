@@ -12,10 +12,10 @@ namespace Terraria.GameInput
 	{
 		public void CopyModKeybindSettingsFrom(PlayerInputProfile profile, InputMode mode) {
 			foreach (var modKeybind in KeybindLoader.Keybinds) {
-				InputModes[mode].KeyStatus[modKeybind.uniqueName].Clear();
+				InputModes[mode].KeyStatus[modKeybind.FullName].Clear();
 
-				if (!string.IsNullOrEmpty(modKeybind.defaultBinding))
-					InputModes[mode].KeyStatus[modKeybind.uniqueName].Add(modKeybind.defaultBinding);
+				if (!string.IsNullOrEmpty(modKeybind.DefaultBinding))
+					InputModes[mode].KeyStatus[modKeybind.FullName].Add(modKeybind.DefaultBinding);
 			}
 		}
 
@@ -24,8 +24,8 @@ namespace Terraria.GameInput
 
 			InputModes[mode].KeyStatus[uniqueName].Clear();
 
-			if (!string.IsNullOrEmpty(modKeybind.defaultBinding))
-				InputModes[mode].KeyStatus[uniqueName].Add(modKeybind.defaultBinding);
+			if (!string.IsNullOrEmpty(modKeybind.DefaultBinding))
+				InputModes[mode].KeyStatus[uniqueName].Add(modKeybind.DefaultBinding);
 		}
 	}
 }

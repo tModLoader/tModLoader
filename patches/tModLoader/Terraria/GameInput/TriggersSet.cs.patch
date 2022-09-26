@@ -48,7 +48,7 @@
  			}
 +
 +			foreach (var keybind in KeybindLoader.Keybinds) {
-+				KeyStatus.Add(keybind.uniqueName, false);
++				KeyStatus.Add(keybind.FullName, false);
 +			}
  		}
  
