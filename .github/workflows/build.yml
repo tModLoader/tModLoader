@@ -202,8 +202,6 @@ jobs:
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
           dotnet build src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
           
-          rm steam_build/LaunchUtils/dotnet-runtime-6.0.0-win-x64.zip 
-          
           mkdir -p artifacts/Debug
           cp -r steam_build/. artifacts/Debug
           echo ::endgroup::
