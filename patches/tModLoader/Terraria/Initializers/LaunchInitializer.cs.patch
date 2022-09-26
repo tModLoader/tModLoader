@@ -11,7 +11,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -26,12 +_,64 @@
+@@ -26,12 +_,16 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -22,60 +22,10 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
--			string iP;
--			if ((iP = TryParameter("-j", "-join")) != null)
+ 			string iP;
+ 			if ((iP = TryParameter("-j", "-join")) != null)
 -				game.AutoJoin(iP);
-+			// string iP;
-+			// if ((iP = TryParameter("-j", "-join")) != null)
-+			// 	game.AutoJoin(iP);
-+			
-+			string ip;
-+			if ((ip = TryParameter("-j", "-join")) != null) {
-+
-+				int port = -1;
-+				if (ip.Contains(':')) {
-+					int colonInd = ip.LastIndexOf(':');
-+					if (int.TryParse(ip.Substring(colonInd + 1), out int portNum)) {
-+						port = portNum;
-+						ip = ip.Substring(0, colonInd);
-+					}
-+				}
-+
-+				if (!Netplay.SetRemoteIP(ip)) {
-+					ModLoader.Logging.tML.Error("Could not set remote IP: " + ip);
-+				}
-+				else {
-+					if (port >= 0)
-+						Netplay.ListenPort = port;
-+
-+					ModLoader.ModLoader.OnSuccessfulLoad += () => {
-+						string player = TryParameter("-plr", "-player");
-+						IO.PlayerFileData fileData = null;
-+						if (player is not null) {
-+							if (System.IO.File.Exists(player)) {
-+								fileData = Player.GetFileData(player, false);
-+							}
-+							else {
-+								Main.LoadPlayers();
-+								fileData = Main.PlayerList.FirstOrDefault(p => p.Name == player);
-+							}
-+						}
-+
-+						if (fileData is not null) {
-+							fileData.SetAsActive();
-+							Main.menuMode = 10;
-+							Netplay.StartTcpClient();
-+							return;
-+						}
-+
-+						Main.OpenPlayerSelect(fileData => {
-+							fileData.SetAsActive();
-+							Main.menuMode = 10;
-+							Netplay.StartTcpClient();
-+						});
-+					};
-+				}
-+			}
++				game.AutoJoin(iP, TryParameter("-plr", "-player"));
  
  			string arg;
  			if ((arg = TryParameter("-pass", "-password")) != null) {

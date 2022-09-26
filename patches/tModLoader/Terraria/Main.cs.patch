@@ -671,6 +671,45 @@
  		}
  
  		public void SetWorldName(string world) {
+@@ -4006,11 +_,36 @@
+ 			autoPass = true;
+ 		}
+ 
+-		public void AutoJoin(string IP) {
++		public void AutoJoin(string IP, string player = null) {
+ 			defaultIP = IP;
+ 			getIP = IP;
+ 			Netplay.SetRemoteIP(defaultIP);
+-			autoJoin = true;
++
++			ModLoader.ModLoader.OnSuccessfulLoad += () => {
++				IO.PlayerFileData fileData = null;
++				if (player is not null) {
++					if (System.IO.File.Exists(player)) {
++						fileData = Player.GetFileData(player, false);
++					}
++					else {
++						Main.LoadPlayers();
++						fileData = Main.PlayerList.FirstOrDefault(p => p.Name == player);
++					}
++				}
++
++				if (fileData is not null) {
++					fileData.SetAsActive();
++					Main.menuMode = 10;
++					Netplay.StartTcpClient();
++					return;
++				}
++
++				Main.OpenPlayerSelect(fileData => {
++					fileData.SetAsActive();
++					Main.menuMode = 10;
++					Netplay.StartTcpClient();
++				});
++			};
+ 		}
+ 
+ 		public void AutoHost() {
 @@ -4042,7 +_,7 @@
  		public void DedServ() {
  			NeverSleep();
