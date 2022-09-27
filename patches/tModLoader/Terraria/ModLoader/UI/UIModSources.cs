@@ -218,7 +218,7 @@ namespace Terraria.ModLoader.UI
 			_uIPanel.Append(_uiLoader);
 			_modList.Clear();
 			_items.Clear();
-			if (ShouldSkipPopulate())
+			if (ShowInfoMessages())
 				return;
 			Populate();
 		}
@@ -230,7 +230,7 @@ namespace Terraria.ModLoader.UI
 			modListViewPosition = _modList.ViewPosition;
 		}
 
-		private bool ShouldSkipPopulate() {
+		private bool ShowInfoMessages() {
 			if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
 				ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 				ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
@@ -255,27 +255,28 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private bool CheckDotnet() {
-			if (!dotnetSDKFound) {
-				try {
-					string output = Process.Start(new ProcessStartInfo {
-						FileName = "dotnet",
-						Arguments = "--list-sdks",
-						UseShellExecute = false,
-						RedirectStandardOutput = true
-					}).StandardOutput.ReadToEnd();
-					Logging.tML.Info(output);
+			if (dotnetSDKFound) {
+				return !dotnetSDKFound;
+			}
+			try {
+				string output = Process.Start(new ProcessStartInfo {
+					FileName = "dotnet",
+					Arguments = "--list-sdks",
+					UseShellExecute = false,
+					RedirectStandardOutput = true
+				}).StandardOutput.ReadToEnd();
+				Logging.tML.Info("\n" + output);
 
-					foreach (var line in output.Split('\n')) {
-						var dotnetVersion = new Version(new Regex("(.+?) ").Match(line).Groups[1].Value);
-						if (dotnetVersion >= new Version(6, 0)) {
-							dotnetSDKFound = true;
-							break;
-						}
+				foreach (var line in output.Split('\n')) {
+					var dotnetVersion = new Version(new Regex("(.+?) ").Match(line).Groups[1].Value);
+					if (dotnetVersion >= new Version(6, 0)) {
+						dotnetSDKFound = true;
+						break;
 					}
 				}
-				catch (Exception e) {
-					Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
-				}
+			}
+			catch (Exception e) {
+				Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
 			}
 
 			return !dotnetSDKFound;
