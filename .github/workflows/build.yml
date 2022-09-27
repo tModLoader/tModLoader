@@ -505,7 +505,7 @@ jobs:
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
           
-          rm ./artifacts/Build/dotnet-runtime-$dotnet_version-win-x64.zip
+          rm ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
         env:
           version: ${{ steps.version2.outputs.new_version }}
           
