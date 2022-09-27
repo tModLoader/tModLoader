@@ -20,5 +20,41 @@
 			public bool CanShowItemDropInUI() => true;
 			public string GetConditionDescription() => null;
 		}
+		public class DrunkWorldIsUp : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => Main.drunkWorld;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
+		}
+		public class ForTheWorthyIsUp : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => Main.getGoodWorld;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
+		}
+		public class NotTheBeesIsUp : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => Main.notTheBeesWorld;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
+		}
+		public class DrunkWorldIsNotUp : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => !Main.drunkWorld;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
+		}
+		public class ForTheWorthyIsNotUp : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => !Main.getGoodWorld;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
+		}
+		public class NotTheBeesIsNotUp : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => !Main.notTheBeesWorld;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
+		}
 	}
 }
