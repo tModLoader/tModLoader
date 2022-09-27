@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -31,6 +33,7 @@ namespace Terraria.ModLoader.UI
 		private UIInputTextField filterTextBox;
 		private UILoaderAnimatedImage _uiLoader;
 		private CancellationTokenSource _cts;
+		private bool dotnetSDKChecked;
 
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
@@ -226,6 +229,49 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void Populate() {
+			bool dotnetNeeded = false;
+			if (!dotnetSDKChecked) {
+				dotnetSDKChecked = true;
+				try {
+					string output = Process.Start(new ProcessStartInfo {
+						FileName = "dotnet",
+						Arguments = "--list-sdks",
+						UseShellExecute = false,
+						RedirectStandardOutput = true
+					}).StandardOutput.ReadToEnd();
+
+					bool dotnet6Found = false;
+					foreach (var line in output.Split('\n')) {
+						var dotnetVersion = new Version(new Regex("(.+?) ").Match(line).Groups[1].Value);
+						if (dotnetVersion >= new Version(6, 0)) {
+							dotnet6Found = true;
+							break;
+						}
+					}
+					if (!dotnet6Found)
+						dotnetNeeded = true;
+				}
+				catch (Exception e) {
+					Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
+				}
+			}
+
+			if (!ModLoader.SeenFirstLaunchModderWelcomeMessage || dotnetNeeded) {
+				bool showFirstLaunchModderWelcomeMessage = !ModLoader.SeenFirstLaunchModderWelcomeMessage; // needs separate variable to capture
+				string altButtonText = showFirstLaunchModderWelcomeMessage ? Language.GetTextValue("tModLoader.ViewOnGitHub") : Language.GetTextValue("tModLoader.DownloadNetSDK");
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), Interface.modSourcesID, null, altButtonText,
+					() => {
+						SoundEngine.PlaySound(SoundID.MenuOpen);
+						if (showFirstLaunchModderWelcomeMessage)
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+						else
+							Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader");
+					});
+				ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
+				Main.SaveSettings();
+				return;
+			}
+
 			Task.Run(() => {
 				var modSources = ModCompile.FindModSources();
 				var modFiles = ModOrganizer.FindDevFolderMods();
