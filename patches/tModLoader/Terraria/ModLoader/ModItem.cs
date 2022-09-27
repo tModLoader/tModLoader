@@ -534,6 +534,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine whether a melee weapon can collide with the given NPC when swung.
+		/// </summary>
+		/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+		/// <param name="player">The player wielding this item.</param>
+		/// <param name="target">The target npc.</param>
+		/// <returns>
+		/// Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default.
+		/// </returns>
+		public virtual bool? CanMeleeAttackCollideWithNPC(Rectangle meleeAttackHitbox, Player player, NPC target) {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC.
 		/// </summary>
 		/// <param name="player">The player.</param>

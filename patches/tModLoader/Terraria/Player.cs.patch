@@ -4715,7 +4715,7 @@
  				if (Main.netMode != 0)
  					NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
  
-@@ -31142,11 +_,18 @@
+@@ -31142,11 +_,23 @@
  				if (!Main.npc[i].active || Main.npc[i].immune[whoAmI] != 0 || attackCD != 0)
  					continue;
  
@@ -4728,12 +4728,18 @@
  				Main.npc[i].position += Main.npc[i].netOffset;
 -				if (!Main.npc[i].dontTakeDamage && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[i])) {
 -					if (!Main.npc[i].friendly || (Main.npc[i].type == 22 && killGuide) || (Main.npc[i].type == 54 && killClothier)) {
+-						Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
+-						if (itemRectangle.Intersects(value) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i]))) {
 +				if (modCanHit == true || ((!Main.npc[i].dontTakeDamage && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[i])))) {
 +					if (modCanHit == true || ((!Main.npc[i].friendly || (Main.npc[i].type == 22 && killGuide) || (Main.npc[i].type == 54 && killClothier)))) {
- 						Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
 +
--						if (itemRectangle.Intersects(value) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i]))) {
-+						if (modCanHit == true || (itemRectangle.Intersects(value) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i])))) {
++						bool? modCanCollide = CombinedHooks.CanPlayerMeleeAttackCollideWithNPC(this, sItem, itemRectangle, Main.npc[i]);
++
++						if (modCanCollide == false) {
++							continue;
++						}
++
++						if (modCanCollide == true || (itemRectangle.Intersects(Main.npc[i].getRect()) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i])))) {
  							int num = originalDamage;
  							bool flag = false;
  							int weaponCrit = GetWeaponCrit(sItem);
@@ -4765,6 +4771,22 @@
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num6, dmgDone);
  							int num7 = Item.NPCtoBanner(Main.npc[i].BannerID());
  							if (num7 >= 0)
+@@ -31227,7 +_,14 @@
+ 				}
+ 				else if (Main.npc[i].type == 63 || Main.npc[i].type == 64 || Main.npc[i].type == 103 || Main.npc[i].type == 242) {
+ 					Rectangle value2 = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
+-					if (itemRectangle.Intersects(value2) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i]))) {
++
++					bool? modCanCollide = CombinedHooks.CanPlayerMeleeAttackCollideWithNPC(this, sItem, itemRectangle, Main.npc[i]);
++
++					if (modCanCollide == false) {
++						continue;
++					}
++
++					if (modCanCollide == true || (itemRectangle.Intersects(Main.npc[i].getRect()) && (Main.npc[i].noTileCollide || CanHit(Main.npc[i])))) {
+ 						Hurt(PlayerDeathReason.LegacyDefault(), (int)((double)Main.npc[i].damage * 1.3), -direction);
+ 						Main.npc[i].immune[whoAmI] = itemAnimation;
+ 						attackCD = (int)((double)itemAnimationMax * 0.33);
 @@ -31438,11 +_,13 @@
  		}
  

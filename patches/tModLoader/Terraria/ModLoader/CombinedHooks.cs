@@ -113,6 +113,32 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		//TODO: Clean up code duplications in methods with same way of combining hooks result
+		public static bool? CanPlayerMeleeAttackCollideWithNPC(Player player, Item item, Rectangle meleeAttackHitbox, NPC target) {
+			bool? result = null;
+
+			bool ModifyResult(bool? nbool) {
+				if (nbool.HasValue) {
+					result = nbool.Value;
+				}
+				return result != false;
+			}
+
+			if (!ModifyResult(PlayerLoader.CanMeleeAttackCollideWithNPC(player, item, meleeAttackHitbox, target))) {
+				return false;
+			}
+
+			if (!ModifyResult(ItemLoader.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target))) {
+				return false;
+			}
+
+			if (!ModifyResult(NPCLoader.CanBeCollidedWithPlayerMeleeAttack(target, player, item, meleeAttackHitbox))) {
+				return false;
+			}
+
+			return result;
+		}
+
 		public static void ModifyItemScale(Player player, Item item, ref float scale) {
 			ItemLoader.ModifyItemScale(item, player, ref scale);
 			PlayerLoader.ModifyItemScale(player, item, ref scale);

@@ -859,6 +859,38 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
+		private static HookList HookCanCollideNPC = AddHook<Func<Item, Rectangle, Player, NPC, bool?>>(g => g.CanMeleeAttackCollideWithNPC);
+
+		public static bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
+			bool? flag = null;
+
+			foreach (var g in HookCanCollideNPC.Enumerate(item.globalItems)) {
+				bool? canCollide = g.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
+
+				if (canCollide.HasValue) {
+					if (!canCollide.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			if (item.ModItem != null) {
+				bool? canHit = item.ModItem.CanMeleeAttackCollideWithNPC(meleeAttackHitbox, player, target);
+
+				if (canHit.HasValue) {
+					if (!canHit.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			return flag;
+		}
+
 		private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
 		private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
