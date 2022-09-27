@@ -238,7 +238,7 @@ namespace Terraria.ModLoader.UI
 				return true;
 			}
 
-			if (CheckDotnet()) {
+			if (!CheckDotnet()) {
 				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
 				return true;
 			}
@@ -255,9 +255,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private bool CheckDotnet() {
-			if (dotnetSDKFound) {
-				return !dotnetSDKFound;
-			}
+			if (dotnetSDKFound)
+				return true;
+
 			try {
 				string output = Process.Start(new ProcessStartInfo {
 					FileName = "dotnet",
@@ -279,7 +279,7 @@ namespace Terraria.ModLoader.UI
 				Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
 			}
 
-			return !dotnetSDKFound;
+			return dotnetSDKFound;
 		}
 
 		internal void Populate() {
