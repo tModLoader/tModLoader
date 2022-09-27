@@ -400,7 +400,6 @@
 		"LoadingPrecompiled": "从 {1} 加载预编译的 {0} ",
 		"EnabledEAC": "编辑并继续路径: {0}",
 		"Packaging": "合包中: {0}",
-		// There should be ModName after ':'
 		"MSFinding": "查找模组...",
 		"MSInstantiating": "初始化...",
 		"MSSandboxing": "加载程序集: {0}",
