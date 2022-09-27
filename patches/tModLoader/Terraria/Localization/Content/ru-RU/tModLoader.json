@@ -162,6 +162,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Ожидаемый ресурс не был найден:\n    {0}\nБлижайшее предположение: (Есть ли там опечатка или ошибка в расположении папок?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Бесшумно пойманное исключение: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(загляните в {0} для дополнительной информации)",
+		// "PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Открыть логи",
 		"OpenWebHelp": "Открыть веб помощь",
 		"SkipToMainMenu": "Пропустить загрузку модов",
@@ -361,6 +362,7 @@
 		"VersionUpgrade": "Ссылка: Узнайте больше о переносе модов на новую версию",
 		"MSPortToLatest": "Запустить tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Разработка модов для tModLoader в Visual Studio теперь требует установки the .NET 6 SDK. Легче всего это сделать, установив Visual Studio 2022.\n\nГайд по переносу модов на новую версию на Github описывает необходимые изменения в коде для переноса на 1.4. Гайд так же описывает как пользоваться tModPorter для автоматического переноса большей части мода.",
+		// "DownloadNetSDK": "Download .NET SDK",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Дополнительные библиотеки требуются для сборки модов. (Папка ModCompile отсутствует)",
