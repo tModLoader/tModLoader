@@ -678,14 +678,15 @@ namespace Terraria.ModLoader
 
 
 		/// <summary>
-		/// Allows you to modify the npc's damage multiplier and hitbox. Returns false to prevent vanilla code from running. Returns true by default.
+		/// Allows you to modify the npc's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Returns false to prevent vanilla code from running. Returns true by default.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="victimHitbox"></param>
+		/// <param name="immunityCooldownSlot"></param>
 		/// <param name="damageMultiplier"></param>
 		/// <param name="npcHitbox"></param>
 		/// <returns></returns>
-		public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref float damageMultiplier, ref Rectangle npcHitbox) {
+		public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
 			return true;
 		}
 
