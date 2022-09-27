@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.UI
 		private UIInputTextField filterTextBox;
 		private UILoaderAnimatedImage _uiLoader;
 		private CancellationTokenSource _cts;
-		private bool dotnetSDKChecked;
+		private bool dotnetSDKFound;
 
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
@@ -218,6 +218,8 @@ namespace Terraria.ModLoader.UI
 			_uIPanel.Append(_uiLoader);
 			_modList.Clear();
 			_items.Clear();
+			if (ShouldSkipPopulate())
+				return;
 			Populate();
 		}
 
@@ -228,10 +230,32 @@ namespace Terraria.ModLoader.UI
 			modListViewPosition = _modList.ViewPosition;
 		}
 
-		internal void Populate() {
-			bool dotnetNeeded = false;
-			if (!dotnetSDKChecked) {
-				dotnetSDKChecked = true;
+		private bool ShouldSkipPopulate() {
+			if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
+				ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+				ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
+				Main.SaveSettings();
+				return true;
+			}
+
+			if (CheckDotnet()) {
+				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+				return true;
+			}
+
+			return false;
+		}
+
+		private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null) {
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey),
+			() => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Utils.OpenToURL(url);
+			});
+		}
+
+		private bool CheckDotnet() {
+			if (!dotnetSDKFound) {
 				try {
 					string output = Process.Start(new ProcessStartInfo {
 						FileName = "dotnet",
@@ -239,39 +263,25 @@ namespace Terraria.ModLoader.UI
 						UseShellExecute = false,
 						RedirectStandardOutput = true
 					}).StandardOutput.ReadToEnd();
+					Logging.tML.Info(output);
 
-					bool dotnet6Found = false;
 					foreach (var line in output.Split('\n')) {
 						var dotnetVersion = new Version(new Regex("(.+?) ").Match(line).Groups[1].Value);
 						if (dotnetVersion >= new Version(6, 0)) {
-							dotnet6Found = true;
+							dotnetSDKFound = true;
 							break;
 						}
 					}
-					if (!dotnet6Found)
-						dotnetNeeded = true;
 				}
 				catch (Exception e) {
 					Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
 				}
 			}
 
-			if (!ModLoader.SeenFirstLaunchModderWelcomeMessage || dotnetNeeded) {
-				bool showFirstLaunchModderWelcomeMessage = !ModLoader.SeenFirstLaunchModderWelcomeMessage; // needs separate variable to capture
-				string altButtonText = showFirstLaunchModderWelcomeMessage ? Language.GetTextValue("tModLoader.ViewOnGitHub") : Language.GetTextValue("tModLoader.DownloadNetSDK");
-				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), Interface.modSourcesID, null, altButtonText,
-					() => {
-						SoundEngine.PlaySound(SoundID.MenuOpen);
-						if (showFirstLaunchModderWelcomeMessage)
-							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
-						else
-							Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader");
-					});
-				ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
-				Main.SaveSettings();
-				return;
-			}
+			return !dotnetSDKFound;
+		}
 
+		internal void Populate() {
 			Task.Run(() => {
 				var modSources = ModCompile.FindModSources();
 				var modFiles = ModOrganizer.FindDevFolderMods();

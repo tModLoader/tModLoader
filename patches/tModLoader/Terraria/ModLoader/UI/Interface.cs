@@ -188,8 +188,8 @@ namespace Terraria.ModLoader.UI
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modSourcesID) {
-				Main.MenuUI.SetState(modSources);
 				Main.menuMode = 888;
+				Main.MenuUI.SetState(modSources);
 			}
 			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
