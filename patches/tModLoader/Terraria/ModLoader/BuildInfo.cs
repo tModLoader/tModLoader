@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 		public static readonly string BuildIdentifier = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
 		public static readonly Version tMLVersion;
-		public static readonly Version ltsVersion;
+		public static readonly Version stableVersion;
 		public static readonly BuildPurpose Purpose;
 		public static readonly string BranchName;
 		public static readonly string CommitSHA;
@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 			int i = 0;
 
 			tMLVersion = new Version(parts[i++]);
-			ltsVersion = new Version(parts[i++]);
+			stableVersion = new Version(parts[i++]);
 			BranchName = parts[i++];
 			Enum.TryParse(parts[i++], true, out Purpose);
 			CommitSHA = parts[i++];

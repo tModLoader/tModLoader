@@ -77,19 +77,19 @@ jobs:
            custom_tag: ${{ steps.version.outputs.new_version }}
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Check out LTS branch
+      - name: Check out stable branch
         uses: actions/checkout@v2
         with:
           ref: "1.4-stable"
           persist-credentials: false
           fetch-depth: 0
       
-      - name: LTS Version Fetch
-        id: lts
+      - name: stable Version Fetch
+        id: stable
         if: github.event_name == 'push'
         shell: bash
         run: |
-          echo "Fetching the LTS version of tmodloader"
+          echo "Fetching the stable version of tmodloader"
           version=$(git describe --tags --abbrev=0)
           
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
@@ -98,14 +98,14 @@ jobs:
             month="${BASH_REMATCH[2]}"
             feature="${BASH_REMATCH[3]}"
             patch="${BASH_REMATCH[4]}"
-            lts="$year.$month"
+            stable="$year.$month"
           else
             echo "Previous version '$version' is not a valid version"
             exit 1
           fi
           
-          echo "LTS is '$lts'"
-          echo "::set-output name=lts_version::$lts"
+          echo "stable is '$stable'"
+          echo "::set-output name=stable_version::$stable"
       
       - name: Re:Check out base branch
         uses: actions/checkout@v2
@@ -263,7 +263,7 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TERRARIA_VERSION: 1436
           TMLVERSION: ${{ steps.version.outputs.new_version }}
-          LTSVERSION: ${{ steps.lts.outputs.lts_version }}
+          STABLEVERSION: ${{ steps.stable.outputs.stable_version }}
                     
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2

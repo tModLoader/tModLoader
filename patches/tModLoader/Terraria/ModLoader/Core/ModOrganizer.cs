@@ -531,38 +531,60 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static void CleanupOldPublish(string repo) {
+			RemoveSkippablePreview(repo);
+
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 			if (tmods.Length <= 3)
 				return;
 
-			var compareVersion = DecreaseDateVersion(BuildInfo.ltsVersion);
+			// Solxan: We want to keep 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+			// we need to rollback to the last stable due to a signficant bug.
+			// We thus check for what the previous Stable was and compare for anything less than that.
+			
+			string deleteFolder = null;
+			var lowestVersion = BuildInfo.stableVersion.MajorMinor();
 
 			for (int i = 0; i < tmods.Length; i++) {
 				var filename = tmods[i];
 
 				// Legacy, non-folder .tmods
-				if (filename.EndsWith(".tmod")) {
+				if (filename.EndsWith(".tmod") && tmods.Length > 3) {
 					File.Delete(filename);
-					continue;
+					return;
 				}
 
-				// Remove .tmods from prior to previous LTS version
 				var match = PublishFolderMetadata.Match(filename);
-				if (match.Success && new Version(match.Groups[1].Value) < compareVersion) {
-					Directory.Delete(filename, true);
+				if (match.Success) {
+					var checkVersion = new Version(match.Groups[1].Value);
+
+					// If the mod copy is from a legacy version
+					if (checkVersion < lowestVersion) {
+						lowestVersion = checkVersion;
+						deleteFolder = filename;
+					}
 				}
 			}
+
+			if (deleteFolder != null)
+				Directory.Delete(deleteFolder, true);
 		}
 
-		private static Version DecreaseDateVersion(Version ltsVersion) {
-			int month = ltsVersion.Minor;
-			int year = ltsVersion.Major;
-			if (month == 1)
-				year--;
-			else
-				month--;
+		// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
+		private static void RemoveSkippablePreview(string repo) {
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 
-			return new Version(year, month);
+			for (int i = 0; i < tmods.Length; i++) {
+				var filename = tmods[i];
+
+				var match = PublishFolderMetadata.Match(filename);
+				if (!match.Success)
+					continue;
+
+				var checkVersion = new Version(match.Groups[1].Value);
+
+				if (checkVersion > BuildInfo.stableVersion && checkVersion < BuildInfo.tMLVersion.MajorMinor())
+					Directory.Delete(filename, true);
+			}
 		}
 
 		internal static void DeleteMod(LocalMod tmod) {
