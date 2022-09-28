@@ -108,13 +108,18 @@ namespace Terraria.ModLoader.Config.UI
 			//data = _GetValue();// memberInfo.GetValue(this.item);
 			//drawLabel = false;
 
+			var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+			if (expandAttribute != null)
+				expanded = expandAttribute.Expand;
+
 			dataList = new NestedUIList();
 			dataList.Width.Set(-14, 1f);
 			dataList.Left.Set(14, 0f);
 			dataList.Height.Set(-30, 1f);
 			dataList.Top.Set(30, 0);
 			dataList.ListPadding = 5f;
-			Append(dataList);
+			if(expanded)
+				Append(dataList);
 
 			//string name = memberInfo.Name;
 			//if (labelAttribute != null) {
@@ -150,7 +155,7 @@ namespace Terraria.ModLoader.Config.UI
 				Interface.modConfig.SetPendingChanges();
 			};
 
-			expandButton = new UIModConfigHoverImage(ExpandedTexture, "Expand");
+			expandButton = new UIModConfigHoverImage(expanded ? CollapsedTexture : ExpandedTexture, expanded ? "Collapse" : "Expand");
 			expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 			expandButton.Left.Set(-52, 1f);
 			expandButton.OnClick += (a, b) => {

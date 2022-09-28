@@ -381,6 +381,23 @@ namespace Terraria.ModLoader.Config
 
 	}
 
+	/// <summary>
+	/// Affects whether this data will be expanded by default. The default value is true.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class ExpandAttribute : Attribute
+	{
+		public bool Expand { get; }
+		// TODO: Need? CollectionElement cannot nest itself. Can only be nested with ObjectElement.
+		// public bool? ExpandListElements  { get; }
+
+		// public ExpandAttribute(bool? expand = null, bool? expandListElements = null ) {
+		public ExpandAttribute(bool expand = true) {
+			Expand = expand;
+			// ExpandListElements = expandListElements;
+		}
+	}
+
 	// Unimplemented ideas below:
 	/*
 
@@ -396,7 +413,7 @@ namespace Terraria.ModLoader.Config
 	public class StringRepresentationAttribute : Attribute
 	{
 		public Func<string> StringRepresentation { get; set; }
-	
+
 		public StringRepresentationAttribute(Type delegateType, string delegateName) {
 			StringRepresentation = (Func<string>)Delegate.CreateDelegate(delegateType, delegateType.GetMethod(delegateName));
 		}
