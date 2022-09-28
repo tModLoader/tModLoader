@@ -14,7 +14,7 @@
  	public class TileBatch
  	{
  		private struct SpriteData
-@@ -317,4 +_,348 @@
+@@ -317,4 +_,356 @@
  			}
  		}
  	}
@@ -86,6 +86,14 @@
 +		private List<BatchDrawGroup> _batchDrawGroups = new List<BatchDrawGroup>();
 +		private readonly GraphicsDevice _graphicsDevice;
 +		private SpriteBatch _spriteBatch;
++
++		public void Begin(RasterizerState rasterizer, Matrix transformation) {
++			Begin(SpriteSortMode.Deferred, null, null, null, rasterizer, null, transformation);
++		}
++
++		public void Begin(Matrix transformation) {
++			Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, transformation);
++		}
 +
 +		public void Begin() {
 +			Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);

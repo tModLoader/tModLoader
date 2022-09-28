@@ -9,7 +9,7 @@
  
  namespace ReLogic.OS.Windows
  {
-@@ -85,8 +_,10 @@
+@@ -119,8 +_,10 @@
  		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  		public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
@@ -20,12 +20,10 @@
  
  		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  		public static extern IntPtr GetForegroundWindow();
-@@ -106,5 +_,8 @@
+@@ -140,3 +_,6 @@
  
  		[DllImport("gdi32.dll")]
  		public static extern int GetDeviceCaps(IntPtr hdc, DeviceCap nIndex);
 +
 +		[DllImport("user32.dll")]
 +		public static extern IntPtr GetDC(IntPtr hWnd);
- 	}
- }

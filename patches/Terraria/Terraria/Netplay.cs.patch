@@ -1,21 +1,28 @@
 --- src/decompiled/Terraria/Netplay.cs
 +++ src/Terraria/Terraria/Netplay.cs
-@@ -40,6 +_,10 @@
+@@ -1,3 +_,6 @@
++#if SERVER && WINDOWS
++using NATUPNPLib;
++#endif
+ using ReLogic.OS;
+ using System;
+ using System.IO;
+@@ -41,6 +_,10 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
-+#if SERVER
++#if SERVER && WINDOWS
 +		private static UPnPNAT _upnpnat;
 +		private static IStaticPortMappingCollection _mappings;
 +#endif
  		public static MessageBuffer fullBuffer = new MessageBuffer();
  		private static int _currentRequestId;
  		private static UdpClient BroadcastClient = null;
-@@ -109,9 +_,42 @@
+@@ -110,9 +_,42 @@
  		}
  
  		private static void OpenPort(int port) {
-+#if SERVER
++#if SERVER && WINDOWS
 +			string localIPAddress = GetLocalIPAddress();
 +			if (_upnpnat == null) {
 +				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
@@ -37,7 +44,7 @@
  		}
  
  		private static void ClosePort(int port) {
-+#if SERVER
++#if SERVER && WINDOWS
 +			string localIPAddress = GetLocalIPAddress();
 +			bool flag = false;
 +			if (_mappings == null)
@@ -54,30 +61,3 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
-@@ -618,12 +_,26 @@
- 		}
- 
- 		public static void Initialize() {
-+#if SERVER
-+			for (int i = 0; i < 257; i++) {
-+				if (i < 256)
-+					Clients[i] = new RemoteClient();
-+
-+				NetMessage.buffer[i] = new MessageBuffer();
-+				NetMessage.buffer[i].whoAmI = i;
-+			}
-+#endif
-+
- 			NetMessage.buffer[256] = new MessageBuffer();
- 			NetMessage.buffer[256].whoAmI = 256;
- 		}
- 
- 		public static void UpdateInMainThread() {
-+#if SERVER
-+			UpdateServerInMainThread();
-+#else
- 			UpdateClientInMainThread();
-+#endif
- 		}
- 
- 		public static int GetSectionX(int x) => x / 200;
