@@ -1,4 +1,7 @@
-﻿namespace Terraria.ModLoader.Default.Patreon
+﻿using Terraria.DataStructures;
+using Terraria.ID;
+
+namespace Terraria.ModLoader.Default.Patreon
 {
 	[AutoloadEquip(EquipType.Head)]
 	internal class Coolmike5000_Head : PatreonItem

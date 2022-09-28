@@ -1,4 +1,8 @@
-﻿namespace Terraria.ModLoader.Default.Patreon
+﻿using Terraria.DataStructures;
+using Terraria.ID;
+
+
+namespace Terraria.ModLoader.Default.Patreon
 {
 	[AutoloadEquip(EquipType.Head)]
 	internal class AetherBreaker_Head : PatreonItem
