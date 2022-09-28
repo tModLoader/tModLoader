@@ -1139,10 +1139,13 @@
  			SoundEngine.Initialize();
  			if (base.Services.Get<IAssetRepository>() == null)
  				AssetInitializer.CreateAssetServices(base.Services);
-@@ -8400,7 +_,7 @@
+@@ -8399,8 +_,9 @@
+ 			else
  				audioSystem = new DisabledAudioSystem();
  
- 			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
+-			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
++			AssetSourceController = new AssetSourceController(Assets, new IContentSource[2] {
++				new XnaDirectContentSource((Content as TMLContentManager).alternateContentManager.RootDirectory),
 -				new XnaContentSource(base.Content.RootDirectory)
 +				new XnaDirectContentSource(base.Content.RootDirectory)
  			});
