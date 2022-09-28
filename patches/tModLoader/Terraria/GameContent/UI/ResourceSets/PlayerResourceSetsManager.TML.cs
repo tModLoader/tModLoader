@@ -14,6 +14,9 @@ namespace Terraria.GameContent.UI.ResourceSets
 		private string _activeSetConfigKeyOriginal;  // Used to store the original key value, since PlayerResourceSetsManager is loaded way before mods
 
 		internal void AddModdedDisplaySets() {
+			if (Main.dedServ)
+				return;
+
 			foreach (ModResourceDisplaySet display in ResourceDisplaySetLoader.moddedDisplaySets) {
 				string key = display.ConfigKey;
 				_sets[key] = display;
@@ -23,6 +26,9 @@ namespace Terraria.GameContent.UI.ResourceSets
 
 		// Called by tML after mods have loaded to set the actual display set
 		internal void SetActiveFromOriginalConfigKey() {
+			if (Main.dedServ)
+				return;
+
 			SetActive(_activeSetConfigKeyOriginal);
 			// In case the display set didn't exist, force the original key back to Fancy
 			_activeSetConfigKeyOriginal = _activeSetConfigKey;
@@ -34,6 +40,9 @@ namespace Terraria.GameContent.UI.ResourceSets
 		}
 
 		internal void ResetToVanilla() {
+			if (Main.dedServ)
+				return;
+
 			_activeSetConfigKey = _activeSetConfigKeyOriginal;
 
 			foreach (string key in accessKeys.Skip(vanillaSets.Length))
