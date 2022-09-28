@@ -21,7 +21,7 @@
 -    <AssemblyName>$(AssemblyName)Release</AssemblyName>
 +  <PropertyGroup>
 +    <tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
-+	<LTSVersion Condition="'$(LTSVersion)' == ''">0.12</LTSVersion>
++	<LTSVersion Condition="'$(LTSVersion)' == ''">0.0</LTSVersion>
 +    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
 +    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
 +    <BranchName>$(BranchName.Replace("|","-"))</BranchName>
