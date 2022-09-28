@@ -531,7 +531,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static void CleanupOldPublish(string repo) {
-			RemoveSkippablePreview(repo);
+			if (BuildInfo.IsPreview)
+				RemoveSkippablePreview(repo);
 
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 			if (tmods.Length <= 3)
