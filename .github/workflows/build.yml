@@ -216,13 +216,6 @@ jobs:
           git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
           git log -10 --format=oneline > artifacts/Release/RecentGitHubCommits.txt
           echo ::endgroup::
-          
-          echo ::group::Populating Contents folder with changed 1.4.3.6 textures 
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./artifacts/Debug/Content.zip ./setup/SecretAssets/Content.zip.gpg
-          unzip -o ./artifacts/Debug/Content.zip -d ./artifacts/Debug/
-          unzip -o ./artifacts/Debug/Content.zip -d ./artifacts/Release/
-          rm ./artifacts/Debug/Content.zip
-          echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
