@@ -38,6 +38,15 @@
  
  							if (num >= 4) {
  								int width = binaryReader.ReadInt32();
+@@ -4945,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public Main() {
++		public Main() : base(headlessMode: dedServ) {
+ 			instance = this;
+ 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+ 			base.Exiting += Main_Exiting;
 @@ -9003,6 +_,7 @@
  			if (SocialAPI.Workshop != null)
  				SocialAPI.Workshop.LoadEarlyContent();
