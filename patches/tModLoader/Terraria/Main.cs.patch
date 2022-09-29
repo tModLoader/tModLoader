@@ -1144,7 +1144,7 @@
  
  			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
 -				new XnaContentSource(base.Content.RootDirectory)
-+				new XnaDirectContentSource(base.Content.RootDirectory)
++				new XnaDirectContentSource(base.Content.RootDirectory, (Content as TMLContentManager).alternateContentManager.RootDirectory),
  			});
  
  			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
