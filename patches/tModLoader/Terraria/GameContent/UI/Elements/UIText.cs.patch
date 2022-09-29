@@ -1,14 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIText.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIText.cs
-@@ -4,6 +_,7 @@
- using System;
- using Terraria.Localization;
- using Terraria.UI;
-+using Terraria.UI.Chat;
- 
- namespace Terraria.GameContent.UI.Elements
- {
-@@ -132,7 +_,7 @@
+@@ -148,7 +_,7 @@
  			else
  				_visibleText = _lastTextReference;
  

@@ -10,8 +10,8 @@
  
  namespace Terraria.GameContent.Tile_Entities
  {
--	public class TEWeaponsRack : TileEntity
-+	public sealed partial class TEWeaponsRack : TileEntity
+-	public class TEWeaponsRack : TileEntity, IFixLoadedData
++	public sealed partial class TEWeaponsRack : TileEntity, IFixLoadedData
  	{
  		private static byte _myEntityID;
  		public Item item;

@@ -66,22 +66,22 @@
 +		// we do not alter vanilla ways of doing things
 +		// this can lead to trouble in future patches
  		public static string GenerateTag(Item I) {
- 			string str = "[i";
+ 			string text = "[i";
 +			// assuming we have modded data, simply write the item as base64
 +			// do not write other option, base64 holds all the info.
 +			if (I.ModItem != null || I.globalItems.Any()) {
-+				str = str + "/d" + ItemIO.ToBase64(I);
++				str = text + "/d" + ItemIO.ToBase64(I);
 +
 +				goto End;
 +			}
 +
  			if (I.prefix != 0)
- 				str = str + "/p" + I.prefix;
+ 				text = text + "/p" + I.prefix;
  
  			if (I.stack != 1)
- 				str = str + "/s" + I.stack;
+ 				text = text + "/s" + I.stack;
 +
 +			End:
  
- 			return str + ":" + I.netID + "]";
+ 			return text + ":" + I.netID + "]";
  		}

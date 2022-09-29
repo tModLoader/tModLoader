@@ -8,10 +8,11 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1019,8 +_,13 @@
+@@ -1077,9 +_,14 @@
  		private void SetupPlayerStatsAndInventoryBasedOnDifficulty() {
  			int num = 0;
- 			if (_player.difficulty == 3) {
+ 			byte difficulty = _player.difficulty;
+ 			if (difficulty == 3) {
 +				PlayerLoader.ModifyMaxStats(_player);
 +				_player.statLife = _player.statLifeMax;
 +				_player.statMana = _player.statManaMax;
@@ -22,7 +23,7 @@
  				_player.inventory[num].SetDefaults(6);
  				_player.inventory[num++].Prefix(-1);
  				_player.inventory[num].SetDefaults(1);
-@@ -1055,6 +_,8 @@
+@@ -1117,6 +_,8 @@
  
  			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
  			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);

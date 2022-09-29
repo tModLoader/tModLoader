@@ -9,4 +9,4 @@
 +
  			_progressBar.SetProgress(overallProgress, currentProgress);
  			_progressMessage.Text = text;
- 			if (WorldGen.drunkWorldGenText && !WorldGen.placingTraps) {
+ 			if (WorldGen.drunkWorldGenText && !WorldGen.placingTraps && !WorldGen.getGoodWorldGen) {

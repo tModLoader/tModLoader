@@ -11,8 +11,8 @@
  			private set;
  		}
  
--		public OneFromRulesRule(int chanceNumerator, params IItemDropRule[] options) {
--			chanceDenominator = chanceNumerator;
+-		public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options) {
+-			this.chanceDenominator = chanceDenominator;
 +		public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options) : this(chanceDenominator, 1, options) { }
 +
 +		public OneFromRulesRule(int chanceDenominator, int chanceNumerator, params IItemDropRule[] options) {

@@ -10,8 +10,8 @@
  
  namespace Terraria.GameContent.Tile_Entities
  {
--	public class TEDisplayDoll : TileEntity
-+	public sealed partial class TEDisplayDoll : TileEntity
+-	public class TEDisplayDoll : TileEntity, IFixLoadedData
++	public sealed partial class TEDisplayDoll : TileEntity, IFixLoadedData
  	{
  		private static byte _myEntityID;
  		private const int MyTileID = 470;
@@ -37,7 +37,7 @@
  					writer.Write((short)item2.stack);
  				}
  			}
-@@ -434,18 +_,27 @@
+@@ -435,18 +_,27 @@
  			if (dye)
  				item = _dyes[itemIndex];
  
@@ -61,7 +61,7 @@
 +
  			int defaults = reader.ReadUInt16();
  			int stack = reader.ReadUInt16();
- 			int pre = reader.ReadByte();
+ 			int prefixWeWant = reader.ReadByte();
 -			Item item = _items[itemIndex];
 -			if (dye)
 -				item = _dyes[itemIndex];
