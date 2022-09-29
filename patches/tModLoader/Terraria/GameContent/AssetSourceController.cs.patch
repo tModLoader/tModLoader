@@ -4,7 +4,7 @@
  {
  	public class AssetSourceController
  	{
-+		internal IContentSource StaticSource => _staticSources.Last(); // what should we do here?
++		internal IContentSource StaticSource => _staticSources.Single();
 +
  		private readonly List<IContentSource> _staticSources;
  		private readonly IAssetRepository _assetRepository;

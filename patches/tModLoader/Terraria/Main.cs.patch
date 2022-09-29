@@ -1139,15 +1139,12 @@
  			SoundEngine.Initialize();
  			if (base.Services.Get<IAssetRepository>() == null)
  				AssetInitializer.CreateAssetServices(base.Services);
-@@ -8399,8 +_,9 @@
- 			else
+@@ -8400,7 +_,7 @@
  				audioSystem = new DisabledAudioSystem();
  
--			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
-+			AssetSourceController = new AssetSourceController(Assets, new IContentSource[2] {
-+				new XnaDirectContentSource((Content as TMLContentManager).alternateContentManager.RootDirectory),
+ 			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
 -				new XnaContentSource(base.Content.RootDirectory)
-+				new XnaDirectContentSource(base.Content.RootDirectory)
++				new XnaDirectContentSource(base.Content.RootDirectory, (Content as TMLContentManager).alternateContentManager.RootDirectory),
  			});
  
  			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
