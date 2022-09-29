@@ -1,5 +1,5 @@
---- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
-+++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerReosurcesDisplaySet.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerResourcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerResourcesDisplaySet.cs
 @@ -3,6 +_,8 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
