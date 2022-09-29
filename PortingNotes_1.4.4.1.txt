@@ -1,0 +1,16 @@
+//unknown justification for preventing odd window sizes. Causes excessive device resets. - ChickenBones
+//width &= 0x7FFFFFFE;
+//height &= 0x7FFFFFFE;
+			
+SoundEngine.cs
+	PlayTrackedLoopedSound
+	
+ItemID.cs
+	ExtractinatorMode (extractinator has changed in 1.4.4, chloro extractinator now exists)	
+	
+tModPorter:
+	MessageID.SendNPCBuffs -> NPCBuffs
+	MessageID.Unlock -> LockAndUnlock
+	MessageID.StartPlaying -> InitialSpawn
+	MessageID.SpawnBoss -> SpawnBossUseLicenseStartEvent
+	MessageID.Teleport -> TeleportEntity

@@ -1,19 +1,18 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundEngine.cs
 +++ src/tModLoader/Terraria/Audio/SoundEngine.cs
-@@ -6,10 +_,10 @@
+@@ -6,9 +_,9 @@
  
  namespace Terraria.Audio
  {
 -	public static class SoundEngine
 +	public static partial class SoundEngine
  	{
- 		public static readonly object AudioLock = new object();
 -		public static LegacySoundPlayer LegacySoundPlayer;
 +		internal static LegacySoundPlayer LegacySoundPlayer;
  		public static SoundPlayer SoundPlayer;
  		public static bool AreSoundsPaused;
  
-@@ -20,6 +_,8 @@
+@@ -19,6 +_,8 @@
  
  		public static void Initialize() {
  			IsAudioSupported = TestAudioSupport();
@@ -22,7 +21,7 @@
  		}
  
  		public static void Load(IServiceProvider services) {
-@@ -30,6 +_,15 @@
+@@ -29,6 +_,15 @@
  		}
  
  		public static void Update() {
@@ -38,7 +37,7 @@
  			if (IsAudioSupported) {
  				if (Main.audioSystem != null)
  					Main.audioSystem.UpdateAudioEngine();
-@@ -56,6 +_,8 @@
+@@ -55,6 +_,8 @@
  			}
  		}
  
@@ -47,16 +46,13 @@
  		public static void PlaySound(int type, Vector2 position, int style = 1) {
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
-@@ -93,16 +_,19 @@
+@@ -82,12 +_,13 @@
  			return SoundPlayer.GetActiveSound(id);
  		}
  
 -		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
 +		public static SlotId PlayTrackedSound(SoundStyle style, Vector2? position = null) {
- 			if (Main.dedServ) // #if SERVER
- 				return SlotId.Invalid;
- 
- 			if (!IsAudioSupported)
+ 			if (Main.dedServ || !IsAudioSupported)
  				return SlotId.Invalid;
  
 -			return SoundPlayer.Play(style, position);
@@ -64,44 +60,48 @@
  		}
 +		*/
  
+ 		public static SlotId PlayTrackedLoopedSound(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition = null) {
+ 			if (Main.dedServ || !IsAudioSupported)
+@@ -96,31 +_,37 @@
+ 			return SoundPlayer.PlayLooped(style, position, loopingCondition);
+ 		}
+ 
 +		//TML: Merged into the above method.
 +		/*
  		public static SlotId PlayTrackedSound(SoundStyle style) {
- 			if (Main.dedServ) // #if SERVER
+ 			if (Main.dedServ || !IsAudioSupported)
  				return SlotId.Invalid;
-@@ -112,12 +_,15 @@
  
  			return SoundPlayer.Play(style);
  		}
 +		*/
  
  		public static void StopTrackedSounds() {
- 			if (IsAudioSupported)
+ 			if (!Main.dedServ && IsAudioSupported)
  				SoundPlayer.StopAll();
  		}
  
 +		//TML: Removed; Sound styles no longer use IDs anywhere.
 +		/*
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
- 			if (Main.dedServ) // #if SERVER
+ 			if (Main.dedServ || !IsAudioSupported)
  				return null;
-@@ -127,13 +_,14 @@
  
  			return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
  		}
 +		*/
  
  		public static void StopAmbientSounds() {
- 			if (IsAudioSupported && LegacySoundPlayer != null)
+ 			if (!Main.dedServ && IsAudioSupported && LegacySoundPlayer != null)
  				LegacySoundPlayer.StopAmbientSounds();
  		}
  
 -		public static ActiveSound FindActiveSound(SoundStyle style) {
 +		public static ActiveSound FindActiveSound(in SoundStyle style) {
- 			if (Main.dedServ) // #if SERVER
+ 			if (Main.dedServ || !IsAudioSupported)
  				return null;
  
-@@ -319,7 +_,7 @@
+@@ -303,7 +_,7 @@
  				}
  			}
  			catch (NoAudioHardwareException) {

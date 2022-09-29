@@ -27,15 +27,15 @@
  			SoundMech[0] = Load("Sounds/Mech_0");
  			SoundGrab = Load("Sounds/Grab");
  			SoundPixie = Load("Sounds/Pixie");
-@@ -177,6 +_,7 @@
- 			for (int num3 = 0; num3 < TrackableSounds.Length; num3++) {
- 				TrackableSounds[num3] = Load("Sounds/Custom" + Path.DirectorySeparatorChar + SoundID.GetTrackableLegacySoundPath(num3));
+@@ -179,6 +_,7 @@
+ 			for (int num4 = 0; num4 < TrackableSounds.Length; num4++) {
+ 				TrackableSounds[num4] = Load("Sounds/Custom" + Path.DirectorySeparatorChar + SoundID.GetTrackableLegacySoundPath(num4));
  			}
 +			*/
  		}
  
  		public void CreateAllSoundInstances() {
-@@ -185,6 +_,8 @@
+@@ -187,6 +_,8 @@
  			}
  
  			_trackedInstances.Clear();
@@ -44,7 +44,7 @@
  			SoundInstanceMech[0] = CreateInstance(SoundMech[0]);
  			SoundInstanceGrab = CreateInstance(SoundGrab);
  			SoundInstancePixie = CreateInstance(SoundGrab);
-@@ -262,6 +_,7 @@
+@@ -264,6 +_,7 @@
  			for (int num5 = 0; num5 < TrackableSounds.Length; num5++) {
  				TrackableSoundInstances[num5] = CreateInstance(TrackableSounds[num5]);
  			}
@@ -52,7 +52,7 @@
  		}
  
  		private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset) {
-@@ -825,6 +_,7 @@
+@@ -849,6 +_,7 @@
  							break;
  						default:
  							switch (type) {

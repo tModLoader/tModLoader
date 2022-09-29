@@ -8,9 +8,10 @@
  
  namespace Terraria.Audio
  {
-@@ -68,17 +_,19 @@
+@@ -63,18 +_,20 @@
  					continue;
  
+ #if !SERVER
  				string extension = contentSource.GetExtension(assetPath);
 +				string assetPathWithExtension = assetPath + extension;
 +
@@ -31,7 +32,7 @@
  							break;
  					}
  
-@@ -98,10 +_,12 @@
+@@ -95,10 +_,12 @@
  		}
  
  		public LegacyAudioSystem() {
@@ -45,9 +46,9 @@
 -			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
 +			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb")); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
  			Engine.Update();
- 			AudioTracks = new IAudioTrack[91];
+ 			AudioTracks = new IAudioTrack[92];
  			TrackNamesByIndex = new Dictionary<int, string>();
-@@ -115,6 +_,8 @@
+@@ -112,6 +_,8 @@
  			}
  		}
  
@@ -56,7 +57,7 @@
  		public void LoadCue(int cueIndex, string cueName) {
  			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
  			TrackNamesByIndex[cueIndex] = cueName;
-@@ -244,7 +_,7 @@
+@@ -241,7 +_,7 @@
  		}
  
  		public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible) {
