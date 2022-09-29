@@ -1,31 +1,17 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/TerrariaNetCore/Terraria/Netplay.cs
-@@ -3,6 +_,9 @@
- using System.Linq;
- using System.Net;
- using System.Net.Sockets;
-+#if !XNA
-+using System.Runtime.CompilerServices;
-+#endif
- using System.Threading;
- using Terraria.Audio;
- using Terraria.IO;
-@@ -12,6 +_,10 @@
- using Terraria.Net.Sockets;
- using Terraria.Social;
- using Terraria.Utilities;
-+#if !XNA
-+using Terraria.Social.Base;
-+#endif
-+using NATUPNPLib;
- 
- namespace Terraria
- {
-@@ -40,10 +_,8 @@
+@@ -1,6 +_,4 @@
+-#if SERVER && WINDOWS
+ using NATUPNPLib;
+-#endif
+ using ReLogic.OS;
+ using System;
+ using System.IO;
+@@ -44,10 +_,8 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
--#if SERVER
+-#if SERVER && WINDOWS
 -		private static UPnPNAT _upnpnat;
 +		public static UPnPNAT _upnpnat;
 -		private static IStaticPortMappingCollection _mappings;
@@ -34,13 +20,14 @@
  		public static MessageBuffer fullBuffer = new MessageBuffer();
  		private static int _currentRequestId;
  		private static UdpClient BroadcastClient = null;
-@@ -113,10 +_,11 @@
+@@ -117,10 +_,12 @@
  		}
  
  		private static void OpenPort(int port) {
--#if SERVER
+-#if SERVER && WINDOWS
 +			if (!Main.dedServ)
 +				return;
++
  			string localIPAddress = GetLocalIPAddress();
  			if (_upnpnat == null) {
 -				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
@@ -48,7 +35,7 @@
  				_mappings = _upnpnat.StaticPortMappingCollection;
  			}
  
-@@ -131,11 +_,11 @@
+@@ -135,11 +_,12 @@
  
  			if (!flag)
  				_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
@@ -56,13 +43,14 @@
  		}
  
  		private static void ClosePort(int port) {
--#if SERVER
+-#if SERVER && WINDOWS
 +			if (!Main.dedServ)
 +				return;
++
  			string localIPAddress = GetLocalIPAddress();
  			bool flag = false;
  			if (_mappings == null)
-@@ -148,7 +_,6 @@
+@@ -152,7 +_,6 @@
  
  			if (!flag)
  				_mappings.Remove(port, "TCP");
@@ -70,53 +58,7 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
-@@ -399,6 +_,11 @@
- 					flag = false;
- 				}
- 				catch {
-+#if MAC
-+					Thread.Sleep(200);
-+					Netplay.Connection.Socket.Close();
-+					Netplay.Connection.Socket = new TcpSocket();
-+#endif
- 					if (!Disconnect && Main.gameMenu)
- 						flag = true;
- 				}
-@@ -655,31 +_,31 @@
- 		}
- 
- 		public static void Initialize() {
--#if SERVER
-+			if (!Main.dedServ) {
-+			NetMessage.buffer[256] = new MessageBuffer();
-+			NetMessage.buffer[256].whoAmI = 256;
-+			return;
-+			}
- 			for (int i = 0; i < 257; i++) {
- 				if (i < 256)
--					Clients[i] = new RemoteClient();
-+					Netplay.Clients[i] = new RemoteClient();
- 
- 				NetMessage.buffer[i] = new MessageBuffer();
- 				NetMessage.buffer[i].whoAmI = i;
- 			}
--#endif
--
--			NetMessage.buffer[256] = new MessageBuffer();
--			NetMessage.buffer[256].whoAmI = 256;
- 		}
- 
- 		public static void UpdateInMainThread() {
--#if SERVER
--			UpdateServerInMainThread();
--#else
-+			if(!Main.dedServ)
- 			UpdateClientInMainThread();
--#endif
-+			else
-+			UpdateServerInMainThread();
- 		}
- 
+@@ -663,6 +_,7 @@
  		public static int GetSectionX(int x) => x / 200;
  		public static int GetSectionY(int y) => y / 150;
  
@@ -124,16 +66,19 @@
  		private static void BroadcastThread() {
  			BroadcastClient = new UdpClient();
  			new IPEndPoint(IPAddress.Any, 0);
-@@ -708,7 +_,7 @@
+@@ -693,7 +_,11 @@
  				}
  			}
  
--			while (true) {
++#if NETCORE
 +			while (!abortBroadcastThread) {
- 				int num = 0;
++#else
+ 			while (true) {
++#endif
+ 				int num2 = 0;
  				for (int i = 0; i < 255; i++) {
  					if (Main.player[i].active)
-@@ -730,13 +_,18 @@
+@@ -715,13 +_,22 @@
  			if (broadcastThread != null)
  				StopBroadCasting();
  
@@ -144,12 +89,15 @@
  
  		public static void StopBroadCasting() {
  			if (broadcastThread != null) {
--				broadcastThread.Abort();
-+				//thread.Abort() is not supported as of .NET 5
++#if NETCORE
++				// Thread.Abort() is not supported as of .NET 5
 +				abortBroadcastThread = true;
 +				while(broadcastThread.IsAlive) {
 +					Thread.Sleep(1);
 +				}
++#else
+ 				broadcastThread.Abort();
++#endif
  				broadcastThread = null;
  			}
  

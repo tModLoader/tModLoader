@@ -1,11 +1,7 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/TerrariaNetCore/ReLogic/ReLogic.csproj
-@@ -6,23 +_,17 @@
-     <Company>Re-Logic</Company>
-     <Copyright>Copyright © Re-Logic 2017</Copyright>
+@@ -8,19 +_,12 @@
      <RootNamespace>ReLogic</RootNamespace>
--	<!-- because project name is "ReLogic_LegacyNetFramework" -->
--    <AssemblyName>ReLogic</AssemblyName>
    </PropertyGroup>
    <ItemGroup>
 -    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
@@ -24,9 +20,6 @@
 -    <Reference Include="System.Windows.Forms" />
    </ItemGroup>
    <ItemGroup>
-+    <Compile Remove="Localization/IME/Windows/*" />
-+    <Compile Remove="Localization/IME/WindowsIme.cs" />
-+    <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
  </Project>

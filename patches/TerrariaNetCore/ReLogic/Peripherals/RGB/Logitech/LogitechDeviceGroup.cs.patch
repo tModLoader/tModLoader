@@ -1,5 +1,5 @@
---- src/decompiled/ReLogic/Peripherals/RGB/Logitech/LogitechDeviceGroup.cs
-+++ src/Terraria/ReLogic/Peripherals/RGB/Logitech/LogitechDeviceGroup.cs
+--- src/Terraria/ReLogic/Peripherals/RGB/Logitech/LogitechDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Logitech/LogitechDeviceGroup.cs
 @@ -1,5 +_,6 @@
  using System;
  using System.Collections.Generic;

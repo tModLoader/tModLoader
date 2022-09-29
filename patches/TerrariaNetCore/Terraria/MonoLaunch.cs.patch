@@ -11,22 +11,20 @@
  using Terraria;
  
  internal static class MonoLaunch
-@@ -11,6 +_,7 @@
+@@ -11,6 +_,9 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
-+		/*
++#if NETCORE
++		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
++#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -23,9 +_,55 @@
+@@ -23,9 +_,51 @@
  				return Assembly.Load(array);
  			}
  		};
-+		*/
-+
-+#if NETCORE
-+		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
 +#endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");

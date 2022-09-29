@@ -1,11 +1,15 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/TerrariaNetCore/Terraria/Program.cs
-@@ -155,6 +_,11 @@
- #else
- 			Main.dedServ = LaunchParameters.ContainsKey("-server");
+@@ -158,7 +_,15 @@
+ 			LaunchParameters = Utils.ParseArguements(args);
+ #if SERVER
+ 			Main.dedServ = true;
++#else
++			// Unify server and client dll via launch param
++			Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
 +
-+			if (Main.dedServ) {
++			if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
 +				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
 +			}
 +

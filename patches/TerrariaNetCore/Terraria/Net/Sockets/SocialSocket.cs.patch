@@ -1,5 +1,5 @@
---- src/decompiled/Terraria/Net/Sockets/SocialSocket.cs
-+++ src/Terraria/Terraria/Net/Sockets/SocialSocket.cs
+--- src/Terraria/Terraria/Net/Sockets/SocialSocket.cs
++++ src/TerrariaNetCore/Terraria/Net/Sockets/SocialSocket.cs
 @@ -1,4 +_,5 @@
  using System.Threading;
 +using System.Threading.Tasks;

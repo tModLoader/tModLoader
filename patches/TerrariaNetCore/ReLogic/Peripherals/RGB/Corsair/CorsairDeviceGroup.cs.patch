@@ -1,5 +1,5 @@
---- src/decompiled/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
-+++ src/Terraria/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
+--- src/Terraria/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
 @@ -17,6 +_,9 @@
  		private readonly List<RgbDevice> _devices = new List<RgbDevice>();
  		private State _state;

@@ -1,12 +1,12 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -2,89 +_,132 @@
+@@ -2,89 +_,130 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
 -    <OutputType>WinExe</OutputType>
 +    <OutputType>Exe</OutputType>
-     <Version>1.4.3.6</Version>
+     <Version>1.4.4.1</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2022 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -82,8 +82,6 @@
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
 +  <ItemGroup>
-+    <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
-+    <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
 +    <None Remove="Libraries/Mono/**" />
 +    <None Remove="Libraries/Windows/**" />
 +    <None Remove="Libraries/XNA/**" />

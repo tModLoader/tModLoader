@@ -38,4 +38,3 @@
  
  			try {
  				RzResult rzResult = NativeMethods.Init();
-
