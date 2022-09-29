@@ -65,7 +65,7 @@
 +				Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
 +				.Select(path => path.Substring(_rootDirectory.Length+1))
 +				.Concat(Directory.GetFiles(_alternateRootDirectory, "*.xnb", SearchOption.AllDirectories)
-+				.Select(path => path.Substring(_alternateRootDirectory.Length + 1))));
++				.Select(path => path.Substring(_alternateRootDirectory.Length + 1))).ToHashSet());
 +		}
 +
 +		public override Stream OpenStream(string assetName) {

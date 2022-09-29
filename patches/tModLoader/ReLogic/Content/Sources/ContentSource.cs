@@ -24,7 +24,7 @@ namespace ReLogic.Content.Sources
 				// ReLogic sets all assets to use Path.DirectorySepChar in their paths in AssetPathHelper.
 				var name = AssetPathHelper.CleanPath(path[..^ext.Length]);
 					
-				if (assetExtensions.TryGetValue(name, out var ext2) && ext != ext2)
+				if (assetExtensions.TryGetValue(name, out var ext2))
 					throw new Exception($"Multiple extensions for asset {name}, ({ext}, {ext2})");
 
 				assetExtensions[name] = ext;
