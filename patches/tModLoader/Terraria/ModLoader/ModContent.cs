@@ -328,10 +328,8 @@ namespace Terraria.ModLoader
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
-			if (!Main.dedServ) {
-				Main.ResourceSetsManager.AddModdedDisplaySets();
-				Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
-			}
+			Main.ResourceSetsManager.AddModdedDisplaySets();
+			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
@@ -364,6 +362,7 @@ namespace Terraria.ModLoader
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
+			KeybindLoader.SetupContent();
 
 			PlayerInput.reinitialize = true;
 			SetupBestiary();
@@ -488,11 +487,8 @@ namespace Terraria.ModLoader
 			EmoteBubbleLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
-
-			if (!Main.dedServ) {
-				ResourceOverlayLoader.Unload();
-				ResourceDisplaySetLoader.Unload();
-			}
+			ResourceOverlayLoader.Unload();
+			ResourceDisplaySetLoader.Unload();
 
 			LoaderManager.Unload();
 

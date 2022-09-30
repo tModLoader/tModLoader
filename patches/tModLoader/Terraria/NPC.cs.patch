@@ -1619,3 +1619,13 @@
  			return result;
  		}
  
+@@ -72452,6 +_,9 @@
+ 
+ 		public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect) {
+ 			NPC nPC = Main.npc[enemyIndex];
++			if (!NPCLoader.ModifyCollisionData(nPC, victimHitbox, ref specialHitSetter, ref damageMultiplier, ref npcRect)) {
++				return;
++			}
+ 			if (((nPC.type >= 430 && nPC.type <= 436) || nPC.type == 591) && nPC.ai[2] > 5f) {
+ 				int num = 34;
+ 				if (nPC.spriteDirection < 0) {

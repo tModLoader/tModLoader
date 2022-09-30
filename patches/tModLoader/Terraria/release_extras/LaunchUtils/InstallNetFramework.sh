@@ -40,9 +40,9 @@ if [[ ! -f "$install_dir/dotnet.exe" && "$_uname" == *"_NT"* && "$(uname -m)" ==
 	echo "Update Required. Checking for Windows pre-deployed x64 dotnet files"
 	# Allow for zip to be already delivered by steam win on system and placed in the root directory with this name convention:
 	dotnet_portable_archive_name="dotnet-runtime-$dotnet_version-win-x64.zip"
-	dotnet_portable_archive="$root_dir/$dotnet_portable_archive_name"
+	dotnet_portable_archive="$dotnet_portable_archive_name"
 	
-	# @TODO: This does nothing currently. Needs more thought. Seems wasteful of disk space
+	# @TODO: Needs more thought. Seems wasteful of disk space. Seems required as installers on windows are just not 100% in all setups
 	if [ -f "$dotnet_portable_archive" ]; then
 		echo "Found \"$dotnet_portable_archive_name\""
 		echo "Extracting..."

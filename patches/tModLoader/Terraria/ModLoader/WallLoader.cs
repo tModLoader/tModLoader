@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateCreateDust>(ref HookCreateDust, globalWalls, g => g.CreateDust);
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateDrop>(ref HookDrop, globalWalls, g => g.Drop);
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateKillWall>(ref HookKillWall, globalWalls, g => g.KillWall);
-			ModLoader.BuildGlobalHook(ref HookWallFrame, globalWalls, g => g.WallFrame);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateWallFrame>(ref HookWallFrame, globalWalls, g => g.WallFrame);
 			ModLoader.BuildGlobalHook(ref HookCanPlace, globalWalls, g => g.CanPlace);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateModifyLight>(ref HookModifyLight, globalWalls, g => g.ModifyLight);

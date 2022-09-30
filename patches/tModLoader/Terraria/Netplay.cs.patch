@@ -105,3 +105,27 @@
  					Main.gameMenu = true;
  					Main.SwitchNetMode(0);
  					MapHelper.noStatusText = true;
+@@ -591,7 +_,22 @@
+ 			thread.Start();
+ 		}
+ 
+-		public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
++		public static bool SetRemoteIP(string remoteAddress) {
++			if (remoteAddress.Contains(':')) {
++				int colonInd = remoteAddress.LastIndexOf(':');
++				if (int.TryParse(remoteAddress.AsSpan(colonInd + 1), out int port)) {
++					remoteAddress = remoteAddress.Substring(0, colonInd);
++
++					bool set = SetRemoteIPOld(remoteAddress);
++					if (set) {
++						ListenPort = port;
++					}
++					return set;
++				}
++			}
++
++			return SetRemoteIPOld(remoteAddress);
++		}
+ 
+ 		public static bool SetRemoteIPOld(string remoteAddress) {
+ 			try {

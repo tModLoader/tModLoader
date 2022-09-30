@@ -4055,7 +4055,7 @@
 +					Recipe.FindRecipes();
 +
 +				if (!settings.NoText)
-+					PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered, noStack: false, settings.LongText);
 +
 +				AchievementsHelper.NotifyItemPickup(this, returnItem);
 +				settings.HandlePostAction(inventory[i]);

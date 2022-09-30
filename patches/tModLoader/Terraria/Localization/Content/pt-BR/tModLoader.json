@@ -12,7 +12,7 @@
 		"MenuDevelopMods": "Desenvolver Mods",
 		"MenuDevelopModsDescription": "Desenvolva e publique Mods para outros usarem, usando seu código em Fontes de Mods",
 		"ModsModPacks": "Pacotes de Mods",
-		"MenuModPackDescription": "Gerencie Pacotes de Mods, para recursos como salvar sua lista atual de mods & configurações, e Importar e Exportar Pacotes de Mods. Experimental."
+		"MenuModPackDescription": "Gerencie Pacotes de Mods, para recursos como salvar sua lista atual de mods & configurações, e Importar e Exportar Pacotes de Mods. Experimental.",
 		"MenuEnableDeveloperMode": "Habilitar Modo Desenvolvedor",
 		"WelcomeMessageBeta": "Bem-vindo à Alpha do tModLoader 1.4.\n\nVocê instalou com sucesso um tModLoader instável que pode conter bugs que quebram o jogo. \n\nUse o menu Oficina para acessar as funções do tModLoader relacionadas aos Mods.\n\nJunte-se ao Discord do tModLoader para saber mais sobre quais mods e/ou ferramentas de teste estão disponíveis para o tModLoader 1.4 como parte de sua revisão da 1.4.",
 		"MonthlyFreezeNotification": "O congelamento mensal da alpha começou. Relembrando que, no 21° dia de cada mês, há um período de tempo em que se espera que os desenvolvedores de mods publiquem seus mods no branch 1.4-preview em anticipação a todas as alterações de código e API no tModLoader que foram feitas no último mês. O atual 1.4-preview se tornará o novo 1.4-stable no 1° dia do próximo mês.\n\nJunte-se ao Discord do tModLoader para saber mais sobre as mudanças deste mês e ver as notas de migração. Clique em \"Mais Informações\" para saber mais sobre o ciclo de lançamento da alpha.",
@@ -162,6 +162,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nEstimativa mais próxima: (Há um erro de ortografia ou de posicionamento da pasta?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Exceção Detectada Silenciosamente: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(veja {0} para o rastreamento completo)",
+		// "PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Abrir Registros",
 		"OpenWebHelp": "Abrir Ajuda na Web",
 		"SkipToMainMenu": "Pular o Carregamento de Mods",
@@ -361,6 +362,7 @@
 		"VersionUpgrade": "LINK: Aprenda sobre a Migração de Mods para a atualização mais recente",
 		"MSPortToLatest": "Executar tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET 6. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
+		// "DownloadNetSDK": "Download .NET SDK",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Bibliotecas extras são necessárias para construir mods. (Pasta ModCompile não encontrada)",

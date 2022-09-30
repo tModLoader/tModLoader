@@ -42,7 +42,7 @@
 		"ModsReloadMods": "Recargar mods",
 		"ModsForceReload": "Forzar recarga",
 		"ModsOpenModsFolders": "Carpeta de mods",
-		// "ModsOpenModsFoldersTooltip": "The mods folder in My Games is for manually installed mods.\nThe workshop folder is managed by Steam.",
+		"ModsOpenModsFoldersTooltip": "La carpeta de mods en My Games es para los mods instalados manualmente. La carpeta del Taller está gestionada por Steam.",
 		"OpenModPackFolder": "Carpeta de paquetes de mods",
 		"DeactivateModPack": "Desactivar paquete de mods",
 		"ActivateModPack": "Cargar paquete de mods",
@@ -162,6 +162,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado no encontrado: \n\t{0}\nSuposición más probable: ¿Hay un error de ortografía o de colocación de la carpeta?\n\t{1}",
 		"RuntimeErrorSilentlyCaughtException": "Excepción silenciosa: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(abre {0} para ver el registro completo)",
+		// "PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Abrir registros",
 		"OpenWebHelp": "Abrir página de ayuda en el navegador",
 		"SkipToMainMenu": "Omitir carga de mods",
@@ -361,6 +362,7 @@
 		"VersionUpgrade": "Haz clic para más info. sobre la migración de mods",
 		"MSPortToLatest": "Ejecutar tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Hacer mods para tModLoader en Visual Studio ahora requiere la instalación del SDK .NET 6, lo que puede hacerse instalando Visual Studio 2022.\nLa guía de migración que se encuentra en Github enseñará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también enseña a utilizar tModPorter para que migre una gran parte del mod por ti.",
+		// "DownloadNetSDK": "Download .NET SDK",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",

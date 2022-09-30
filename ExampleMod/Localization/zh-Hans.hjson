@@ -1,0 +1,7 @@
+﻿Mods: {
+	ExampleMod: {
+		Keybind: {
+			RandomBuff: 随机增益
+		}
+	}
+}
