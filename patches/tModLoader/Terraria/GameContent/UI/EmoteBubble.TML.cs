@@ -10,27 +10,22 @@ namespace Terraria.GameContent.UI
 		public ModEmoteBubble ModEmoteBubble { get; internal set; }
 
 		/// <summary>
-		/// A dictionary contains all the existing emote bubbles in the world
-		/// </summary>
-		public static ref Dictionary<int, EmoteBubble> EmoteBubbles => ref byID;
-
-		/// <summary>
-		/// The key that indicates this <see cref="EmoteBubble"/> in <see cref="EmoteBubbles"/>
+		/// The whoAmI indicator that indicates this <see cref="EmoteBubble"/>, can be used in <see cref="GetExistingEmoteBubble"/>
 		/// </summary>
 		public int WhoAmI => ID;
 
 		/// <summary>
-		/// Whether or not this emote is displaying
-		/// <br>The first and the last 6 frames are for bubble-popping animation. The emote content is only displayed after the animation</br>
+		/// Whether or not this emote is fully displayed
+		/// <br>The first and the last 6 frames are for bubble-popping animation. The emote content is displayed after the animation</br>
 		/// </summary>
-		public bool IsDisplayingEmote => lifeTime < 6 || lifeTimeStart - lifeTime < 6;
+		public bool IsFullyDisplayed => lifeTime >= 6 && lifeTimeStart - lifeTime >= 6;
 
 		/// <summary>
 		/// Gets the emote bubble that exists in the world by <see cref="WhoAmI"/>. Returns null if there is no corresponding emote
 		/// </summary>
 		/// <param name="whoAmI"></param>
 		/// <returns></returns>
-		public static EmoteBubble GetExistingEmoteBubble(int whoAmI) => EmoteBubbles.GetValueOrDefault(whoAmI, null);
+		public static EmoteBubble GetExistingEmoteBubble(int whoAmI) => byID.GetValueOrDefault(whoAmI);
 
 		/// <summary>
 		/// Try to get <see cref="WhoAmI"/> by a specific emote type
@@ -38,7 +33,7 @@ namespace Terraria.GameContent.UI
 		/// <param name="type"></param>
 		/// <returns>Returns the <see cref="WhoAmI"/> of the <see cref="EmoteBubble"/>. Returns -1 if there is none</returns>
 		public static int TryGetFirst(int type) {
-			var emote = EmoteBubbles.First(i => i.Value.emote == type);
+			var emote = byID.FirstOrDefault(i => i.Value.emote == type);
 			return emote.Value is not null ? emote.Key : -1;
 		}
 		

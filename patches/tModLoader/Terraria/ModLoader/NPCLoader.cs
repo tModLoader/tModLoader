@@ -1313,18 +1313,18 @@ namespace Terraria.ModLoader
 			return false;
 		}
 		
-		private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int>>(g => g.PickEmote);
-
-		public static int PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
-			int result = -1;
+		private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int?>>(g => g.PickEmote);
+		
+		public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
+			int? result = null;
 
 			if (npc.ModNPC != null) {
 				result = npc.ModNPC.PickEmote(closestPlayer, emoteList, anchor);
 			}
 
 			foreach (GlobalNPC globalNPC in HookPickEmote.Enumerate(npc.globalNPCs)) {
-				int emote = globalNPC.PickEmote(npc, closestPlayer, emoteList, anchor);
-				if (emote != -1)
+				int? emote = globalNPC.PickEmote(npc, closestPlayer, emoteList, anchor);
+				if (emote != null)
 					result = emote;
 			}
 

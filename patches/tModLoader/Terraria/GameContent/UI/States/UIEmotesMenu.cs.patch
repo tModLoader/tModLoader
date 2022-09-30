@@ -106,14 +106,11 @@
  			List<int> list = new List<int>();
  			list.AddRange(new int[5] {
  				12,
-@@ -258,11 +_,13 @@
- 
+@@ -259,10 +_,11 @@
  			if (NPC.downedMartians)
  				list.Add(71);
--
-+				
+ 
 +			list.AddEmotesToCategory(EmoteID.Category.CrittersAndMonsters);
-+			
  			return list;
  		}
  
@@ -122,14 +119,11 @@
  			List<int> list = new List<int>();
  			if (NPC.downedBoss1)
  				list.Add(39);
-@@ -340,7 +_,9 @@
- 
+@@ -341,6 +_,7 @@
  			if (DD2Event.DownedInvasionAnyDifficulty)
  				list.Add(133);
--
-+				
+ 
 +			list.AddEmotesToCategory(EmoteID.Category.Dangers);
-+			
  			return list;
  		}
  

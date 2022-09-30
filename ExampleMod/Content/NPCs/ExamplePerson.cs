@@ -365,8 +365,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Let the NPC "talk about" minion boss
-		public override int PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
-			// By default this NPC will always use the Minion Boss Emote even if Minion Boss is not downed yet
+		public override int? PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+			// By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
 			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
 			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
 			if (otherAnchor.entity is NPC {type: NPCID.Demolitionist}) {
@@ -378,7 +378,7 @@ namespace ExampleMod.Content.NPCs
 				emoteList.Add(type);
 			}
 
-			// Use this or return -1 if you don't want to override the emote selection totally
+			// Use this or return null if you don't want to override the emote selection totally
 			return base.PickEmote(closestPlayer, emoteList, otherAnchor);
 		}
 	}

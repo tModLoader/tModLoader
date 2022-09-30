@@ -11,7 +11,7 @@ namespace ExampleMod.Common.GlobalNPCs
 	// This is where we add our regular emotes for all NPCs
 	public class EmotePickerGlobalNPC : GlobalNPC
 	{
-		public override int PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+		public override int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
 			// Add the biome emote to the list if the player is in Example Biome
 			// And with random chance, this emote will be less likely to appear
 			if (Main.rand.NextBool(2) && ModContent.GetInstance<ExampleSurfaceBiome>().IsBiomeActive(closestPlayer)) {

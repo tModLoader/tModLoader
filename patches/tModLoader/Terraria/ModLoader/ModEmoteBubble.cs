@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This is the <see cref="EmoteBubble"/> instance.
 		/// </summary>
-		public EmoteBubble EmoteBubble { get; internal set; }
+		public EmoteBubble EmoteBubble => Entity;
 
 		/// <summary>
 		/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up as the emote command.

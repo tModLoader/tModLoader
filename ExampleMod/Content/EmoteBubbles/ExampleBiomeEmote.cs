@@ -24,14 +24,14 @@ namespace ExampleMod.Content.EmoteBubbles
 			// Extra_48 is the texture of all vanilla emotes.
 			Texture2D bubbleTexture = TextureAssets.Extra[ExtrasID.EmoteBubble].Value;
 			// This is the frame rectangle for the bubble in emotes texture.
-			Rectangle bubbleFrame = bubbleTexture.Frame(8, 39, (!EmoteBubble.IsDisplayingEmote) ? 1 : 0);
+			Rectangle bubbleFrame = bubbleTexture.Frame(8, 39, EmoteBubble.IsFullyDisplayed ? 1 : 0);
 
 			// Draw the bubble background.
 			spriteBatch.Draw(bubbleTexture, position, bubbleFrame, Color.White, 0f, origin, 1f, spriteEffects, 0f);
 
-			// If the emote bubble is coming out (bubble pop-up animation is being displayed),
+			// If the emote bubble isn't fully displayed (bubble pop-up animation is being displayed),
 			// don't draw the emote content.
-			if (EmoteBubble.IsDisplayingEmote) {
+			if (!EmoteBubble.IsFullyDisplayed) {
 				return false;
 			}
 
