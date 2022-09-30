@@ -26,16 +26,6 @@ namespace Terraria.GameContent.UI
 		/// <param name="whoAmI"></param>
 		/// <returns></returns>
 		public static EmoteBubble GetExistingEmoteBubble(int whoAmI) => byID.GetValueOrDefault(whoAmI);
-
-		/// <summary>
-		/// Try to get <see cref="WhoAmI"/> by a specific emote type
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns>Returns the <see cref="WhoAmI"/> of the <see cref="EmoteBubble"/>. Returns -1 if there is none</returns>
-		public static int TryGetFirst(int type) {
-			var emote = byID.FirstOrDefault(i => i.Value.emote == type);
-			return emote.Value is not null ? emote.Key : -1;
-		}
 		
 		/// <summary>
 		/// Send a emote from the player
