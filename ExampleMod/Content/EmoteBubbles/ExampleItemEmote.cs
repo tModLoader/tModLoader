@@ -7,7 +7,6 @@ namespace ExampleMod.Content.EmoteBubbles
 	public class ExampleItemEmote : ModEmoteBubble
 	{
 		public override void SetStaticDefaults() {
-			EmoteName.SetDefault("exitem");
 			AddToCategory(EmoteID.Category.Items);
 		}
 	}

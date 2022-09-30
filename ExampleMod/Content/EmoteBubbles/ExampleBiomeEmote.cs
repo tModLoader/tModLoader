@@ -15,7 +15,6 @@ namespace ExampleMod.Content.EmoteBubbles
 	public class ExampleBiomeEmote : ModEmoteBubble
 	{
 		public override void SetStaticDefaults() {
-			EmoteName.SetDefault("exbiome");
 			// Add the emote to "biomes" category
 			AddToCategory(EmoteID.Category.NatureAndWeather);
 		}

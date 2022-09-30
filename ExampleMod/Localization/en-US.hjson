@@ -112,11 +112,17 @@ Mods: {
 			Night: At Low Health
 		}
 
-		# This is the command name for mod emotes
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
 		EmoteName: {
 			ExamplePersonEmote: experson
 			ExampleTravellingMerchantEmote: extravelingmerchant
 			ExampleBoneMerchantEmote: exbonemerchant
+			ExampleBiomeEmote: exbiome
+			ExampleItemEmote: exitem
+			ExamplePickaxeEmote: expickaxe
+			MinionBossEmote: exminionboss
 		}
 		
 		ResourceDisplaySet: {

@@ -8,7 +8,6 @@ namespace ExampleMod.Content.EmoteBubbles
 	public class ExamplePickaxeEmote : ModEmoteBubble
 	{
 		public override void SetStaticDefaults() {
-			EmoteName.SetDefault("expickaxe");
 			AddToCategory(EmoteID.Category.Items);
 		}
 	}

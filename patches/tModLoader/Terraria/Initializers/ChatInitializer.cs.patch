@@ -37,7 +37,7 @@
 +
 +			foreach (var modEmoteBubble in EmoteBubbleLoader.emoteBubbles)
 +			{
-+				var command = new LocalizedText(modEmoteBubble.EmoteName.Key, $"/{modEmoteBubble.DisplayName}");
++				var command = new LocalizedText(modEmoteBubble.EmoteName.Key, $"/{Lang.GetEmojiName(modEmoteBubble.Type)}");
 +				ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Lang.GetEmojiName(modEmoteBubble.Type)));
  			}
  		}

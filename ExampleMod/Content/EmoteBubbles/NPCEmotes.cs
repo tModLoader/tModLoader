@@ -35,7 +35,7 @@ namespace ExampleMod.Content.EmoteBubbles
 	}
 
 	// This is a showcase of using the same texture for different emotes.
-	// Names of these classes are defined using .hjson files in the Localization folder.
+	// Names of these classes are defined using .hjson files in the Localization/ folder.
 	public class ExamplePersonEmote : ModTownEmote
 	{
 		public override void OnSpawn() {

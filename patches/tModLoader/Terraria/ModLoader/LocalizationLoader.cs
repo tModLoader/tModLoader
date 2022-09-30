@@ -137,7 +137,7 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (ModEmoteBubble emoteBubble in EmoteBubbleLoader.emoteBubbles) {
-				var text = new LocalizedText(emoteBubble.EmoteName.Key, emoteBubble.DisplayName);
+				var text = new LocalizedText(emoteBubble.EmoteName.Key, emoteBubble.EmoteName.GetTranslation(culture));
 
 				Lang._emojiNameCache[emoteBubble.Type] = SetLocalizedText(dict, text);
 				
