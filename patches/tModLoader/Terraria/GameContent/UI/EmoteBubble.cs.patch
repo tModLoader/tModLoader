@@ -250,7 +250,7 @@
  			else if (plr.ZoneDesert)
  				list.Add(28);
 -			else
-+			else if (!plr.modBiomeFlags.Cast<bool>().Contains(true))
++			else if (plr.ZoneForest)
  				list.Add(23);
  		}
  
