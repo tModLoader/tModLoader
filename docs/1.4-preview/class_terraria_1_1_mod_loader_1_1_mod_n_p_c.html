@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -196,6 +196,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <tr class="memitem:aef1d173cc2af87234d7c00b96ff82ddb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aef1d173cc2af87234d7c00b96ff82ddb">LoadData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:aef1d173cc2af87234d7c00b96ff82ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this npc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aef1d173cc2af87234d7c00b96ff82ddb">More...</a><br /></td></tr>
 <tr class="separator:aef1d173cc2af87234d7c00b96ff82ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec8c04b6ec0308f51cc8b90dcc54a0d0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aec8c04b6ec0308f51cc8b90dcc54a0d0">ModifyCollisionData</a> (Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)</td></tr>
+<tr class="memdesc:aec8c04b6ec0308f51cc8b90dcc54a0d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the npc's </p><dl class="section see"><dt>See also</dt><dd>ImmunityCooldownID</dd></dl>
+<p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aec8c04b6ec0308f51cc8b90dcc54a0d0">More...</a><br /></td></tr>
+<tr class="separator:aec8c04b6ec0308f51cc8b90dcc54a0d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadf9eeffd3975257af64313a257b5295"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aadf9eeffd3975257af64313a257b5295">ModifyHitByItem</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref int damage, ref float knockback, ref bool crit)</td></tr>
 <tr class="memdesc:aadf9eeffd3975257af64313a257b5295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> takes from a melee weapon.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aadf9eeffd3975257af64313a257b5295">More...</a><br /></td></tr>
 <tr class="separator:aadf9eeffd3975257af64313a257b5295"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1487,6 +1491,67 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aec8c04b6ec0308f51cc8b90dcc54a0d0" name="aec8c04b6ec0308f51cc8b90dcc54a0d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec8c04b6ec0308f51cc8b90dcc54a0d0">&#9670;&nbsp;</a></span>ModifyCollisionData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModNPC.ModifyCollisionData </td>
+          <td>(</td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>victimHitbox</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>immunityCooldownSlot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>damageMultiplier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>npcHitbox</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify the npc's </p><dl class="section see"><dt>See also</dt><dd>ImmunityCooldownID</dd></dl>
+<p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">victimHitbox</td><td></td></tr>
+    <tr><td class="paramname">immunityCooldownSlot</td><td></td></tr>
+    <tr><td class="paramname">damageMultiplier</td><td></td></tr>
+    <tr><td class="paramname">npcHitbox</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

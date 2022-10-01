@@ -44,6 +44,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "ModifyItemScale", "class_terraria_1_1_mod_loader_1_1_mod_player.html#af74d5d06ca5d3a7d17a57b4d7a263205", null ],
     [ "ModifyLuck", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a57bca10159053653027ffd3ddc17bcb9", null ],
     [ "ModifyManaCost", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab9967560b8364a9e37a7f20b3c930a5c", null ],
+    [ "ModifyMaxStats", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab61e19ecc0e6287be47ffb90cdba4d1a", null ],
     [ "ModifyNurseHeal", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a74e6f26bb243335170ad46bb619e9edd", null ],
     [ "ModifyNursePrice", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a8b1c79709291e66c69796bb6a3e75db3", null ],
     [ "ModifyScreenPosition", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab90eb3f01a1df40684e1afdc6e5b9cbc", null ],

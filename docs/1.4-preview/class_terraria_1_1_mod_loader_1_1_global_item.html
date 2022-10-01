@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -192,16 +192,16 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRightClick
 <tr class="memitem:a2d0e39065e8c254b3bb303f178a15679"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2d0e39065e8c254b3bb303f178a15679">CanShoot</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a2d0e39065e8c254b3bb303f178a15679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent an item from shooting a projectile on use. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2d0e39065e8c254b3bb303f178a15679">More...</a><br /></td></tr>
 <tr class="separator:a2d0e39065e8c254b3bb303f178a15679"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc0c73d7f601d2da892e7a11782905c2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#acc0c73d7f601d2da892e7a11782905c2">CanStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item1, <a class="el" href="class_terraria_1_1_item.html">Item</a> item2)</td></tr>
-<tr class="memdesc:acc0c73d7f601d2da892e7a11782905c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent items from stacking. <br  />
+<tr class="memitem:a6d8ba49b3e057388e4436e2766cbdec7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a6d8ba49b3e057388e4436e2766cbdec7">CanStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> increase, <a class="el" href="class_terraria_1_1_item.html">Item</a> decrease)</td></tr>
+<tr class="memdesc:a6d8ba49b3e057388e4436e2766cbdec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent items from stacking. <br  />
 This is only called when two items of the same type attempt to stack. <br  />
 This is usually not called for coins and ammo in the inventory/UI. <br  />
-This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">CanStackInWorld</a>.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#acc0c73d7f601d2da892e7a11782905c2">More...</a><br /></td></tr>
-<tr class="separator:acc0c73d7f601d2da892e7a11782905c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921">CanStackInWorld</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item1, <a class="el" href="class_terraria_1_1_item.html">Item</a> item2)</td></tr>
-<tr class="memdesc:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent items from stacking in the world. <br  />
-This is only called when two items of the same type attempt to stack.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921">More...</a><br /></td></tr>
-<tr class="separator:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="memSeparator" colspan="2">&#160;</td></tr>
+This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab5999f1175f201c73bc2c2fd51c8d13c" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">CanStackInWorld</a>.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a6d8ba49b3e057388e4436e2766cbdec7">More...</a><br /></td></tr>
+<tr class="separator:a6d8ba49b3e057388e4436e2766cbdec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5999f1175f201c73bc2c2fd51c8d13c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab5999f1175f201c73bc2c2fd51c8d13c">CanStackInWorld</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> increase, <a class="el" href="class_terraria_1_1_item.html">Item</a> decrease)</td></tr>
+<tr class="memdesc:ab5999f1175f201c73bc2c2fd51c8d13c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent items from stacking in the world. <br  />
+This is only called when two items of the same type attempt to stack.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab5999f1175f201c73bc2c2fd51c8d13c">More...</a><br /></td></tr>
+<tr class="separator:ab5999f1175f201c73bc2c2fd51c8d13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42e845e6a67b6c2ae993157ad7bbce20"><td class="memItemLeft" align="right" valign="top"><a id="a42e845e6a67b6c2ae993157ad7bbce20" name="a42e845e6a67b6c2ae993157ad7bbce20"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a42e845e6a67b6c2ae993157ad7bbce20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used. <br /></td></tr>
@@ -376,6 +376,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>OnPickup</b> 
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any item spawns in world <br /></td></tr>
 <tr class="separator:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a816a6c12dcdb5a80b86b803965c25492"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492">OnStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> increase, <a class="el" href="class_terraria_1_1_item.html">Item</a> decrease, int numberToBeTransfered)</td></tr>
+<tr class="memdesc:a816a6c12dcdb5a80b86b803965c25492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when items stack together.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492">More...</a><br /></td></tr>
+<tr class="separator:a816a6c12dcdb5a80b86b803965c25492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memItemLeft" align="right" valign="top"><a id="a0eb343631d8090fa5bb7a85fcc9a784f" name="a0eb343631d8090fa5bb7a85fcc9a784f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenVanillaBag</b> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
 <tr class="separator:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -459,6 +462,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</
 <tr class="memdesc:a2f758dab87ef829827f17a16eaf074e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br  />
  This method is called after the <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a25c545c92c6d855a75681863fc3d1b5f" title="Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot...">ModifyShootStats</a> hook has had a chance to adjust the spawn parameters.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2f758dab87ef829827f17a16eaf074e3">More...</a><br /></td></tr>
 <tr class="separator:a2f758dab87ef829827f17a16eaf074e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b1760de4dbb8976cf9e828e48dbfb3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac0b1760de4dbb8976cf9e828e48dbfb3">SplitStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> increase, <a class="el" href="class_terraria_1_1_item.html">Item</a> decrease, int numberToBeTransfered)</td></tr>
+<tr class="memdesc:ac0b1760de4dbb8976cf9e828e48dbfb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when an item stack is split. Usually transfers 1 and only occurs with the first transfer. Split stack is called before the stack values are modified.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac0b1760de4dbb8976cf9e828e48dbfb3">More...</a><br /></td></tr>
+<tr class="separator:ac0b1760de4dbb8976cf9e828e48dbfb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62135de2cab9cf3aaf9bfb43c26c5253"><td class="memItemLeft" align="right" valign="top"><a id="a62135de2cab9cf3aaf9bfb43c26c5253" name="a62135de2cab9cf3aaf9bfb43c26c5253"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref float gravity, ref float maxFallSpeed)</td></tr>
 <tr class="memdesc:a62135de2cab9cf3aaf9bfb43c26c5253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize an item's movement when lying in the world. Note that this will not be called if the item is currently being grabbed by a player. <br /></td></tr>
@@ -1381,8 +1387,8 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 
 </div>
 </div>
-<a id="acc0c73d7f601d2da892e7a11782905c2" name="acc0c73d7f601d2da892e7a11782905c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc0c73d7f601d2da892e7a11782905c2">&#9670;&nbsp;</a></span>CanStack()</h2>
+<a id="a6d8ba49b3e057388e4436e2766cbdec7" name="a6d8ba49b3e057388e4436e2766cbdec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d8ba49b3e057388e4436e2766cbdec7">&#9670;&nbsp;</a></span>CanStack()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1394,13 +1400,13 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
           <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.CanStack </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item1</em>, </td>
+          <td class="paramname"><em>increase</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item2</em>&#160;</td>
+          <td class="paramname"><em>decrease</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1418,13 +1424,13 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <p>Allows you to prevent items from stacking. <br  />
 This is only called when two items of the same type attempt to stack. <br  />
 This is usually not called for coins and ammo in the inventory/UI. <br  />
-This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">CanStackInWorld</a>. </p>
+This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab5999f1175f201c73bc2c2fd51c8d13c" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">CanStackInWorld</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not the items are allowed to stack</dd></dl>
 
 </div>
 </div>
-<a id="ab63fbe3ee6a8ecbd4662a08aa4435921" name="ab63fbe3ee6a8ecbd4662a08aa4435921"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab63fbe3ee6a8ecbd4662a08aa4435921">&#9670;&nbsp;</a></span>CanStackInWorld()</h2>
+<a id="ab5999f1175f201c73bc2c2fd51c8d13c" name="ab5999f1175f201c73bc2c2fd51c8d13c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5999f1175f201c73bc2c2fd51c8d13c">&#9670;&nbsp;</a></span>CanStackInWorld()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1436,13 +1442,13 @@ This covers all scenarios, if you just need to change in-world stacking behavior
           <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.CanStackInWorld </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item1</em>, </td>
+          <td class="paramname"><em>increase</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item2</em>&#160;</td>
+          <td class="paramname"><em>decrease</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2720,6 +2726,58 @@ This is only called when two items of the same type attempt to stack. </p>
 
 </div>
 </div>
+<a id="a816a6c12dcdb5a80b86b803965c25492" name="a816a6c12dcdb5a80b86b803965c25492"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a816a6c12dcdb5a80b86b803965c25492">&#9670;&nbsp;</a></span>OnStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalItem.OnStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>increase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>decrease</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numberToBeTransfered</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when items stack together. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">increase</td><td>The item that will have its stack increased.</td></tr>
+    <tr><td class="paramname">decrease</td><td>The item that will be removed or have its stack reduced.</td></tr>
+    <tr><td class="paramname">numberToBeTransfered</td><td>The number that will be transfered from decrease to increase.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a87f0e41457d59545921387622017ece1" name="a87f0e41457d59545921387622017ece1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87f0e41457d59545921387622017ece1">&#9670;&nbsp;</a></span>PickAmmo()</h2>
 
@@ -3357,6 +3415,58 @@ This is only called when two items of the same type attempt to stack. </p>
     <tr><td class="paramname">type</td><td>The <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the projectile. </td></tr>
     <tr><td class="paramname">damage</td><td>The damage of the projectile. </td></tr>
     <tr><td class="paramname">knockback</td><td>The knockback of the projectile. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac0b1760de4dbb8976cf9e828e48dbfb3" name="ac0b1760de4dbb8976cf9e828e48dbfb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b1760de4dbb8976cf9e828e48dbfb3">&#9670;&nbsp;</a></span>SplitStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalItem.SplitStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>increase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>decrease</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numberToBeTransfered</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when an item stack is split. Usually transfers 1 and only occurs with the first transfer. Split stack is called before the stack values are modified. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">increase</td><td>The new item which is a clone of decrease. increase.stack will always be 0. It is increased after SplitStack.</td></tr>
+    <tr><td class="paramname">decrease</td><td>The original item that will have it's stack reduced.</td></tr>
+    <tr><td class="paramname">numberToBeTransfered</td><td>The number that will be transfered from decrease to increase.</td></tr>
   </table>
   </dd>
 </dl>

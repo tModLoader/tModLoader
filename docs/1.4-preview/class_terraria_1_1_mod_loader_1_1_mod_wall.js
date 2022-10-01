@@ -8,5 +8,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_wall =
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#af4060d05de1bdfb5549d20b2204f04dc", null ],
     [ "KillWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8e154201c19225ab3992d2d75f87bfe4", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a42769bab16038542fd4369a016b00724", null ],
-    [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a248364d7c9c768b8245c022c3dee952c", null ]
+    [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a248364d7c9c768b8245c022c3dee952c", null ],
+    [ "WallFrame", "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a63427e507d3861103dd14cf8b479ecfd", null ]
 ];

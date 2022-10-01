@@ -651,7 +651,7 @@ var annotated_dup =
             [ "IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_i_player_resources_display_set.html", null ],
             [ "PlayerResourceSetsManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html", null ],
             [ "PlayerResourceSetsManager2", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager2.html", null ],
-            [ "PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html", null ],
+            [ "PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot" ],
             [ "ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html", null ]
           ] ],
           [ "States", "namespace_terraria_1_1_game_content_1_1_u_i_1_1_states.html", [
@@ -1187,6 +1187,8 @@ var annotated_dup =
         [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", "class_terraria_1_1_mod_loader_1_1_mod_projectile" ],
         [ "ModPylon", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html", "class_terraria_1_1_mod_loader_1_1_mod_pylon" ],
         [ "ModRarity", "class_terraria_1_1_mod_loader_1_1_mod_rarity.html", "class_terraria_1_1_mod_loader_1_1_mod_rarity" ],
+        [ "ModResourceDisplaySet", "class_terraria_1_1_mod_loader_1_1_mod_resource_display_set.html", "class_terraria_1_1_mod_loader_1_1_mod_resource_display_set" ],
+        [ "ModResourceOverlay", "class_terraria_1_1_mod_loader_1_1_mod_resource_overlay.html", "class_terraria_1_1_mod_loader_1_1_mod_resource_overlay" ],
         [ "ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect" ],
         [ "ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", null ],
         [ "ModSurfaceBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_background_style.html", "class_terraria_1_1_mod_loader_1_1_mod_surface_background_style" ],
@@ -1227,6 +1229,9 @@ var annotated_dup =
         [ "RecipeCreationContext", "class_terraria_1_1_mod_loader_1_1_recipe_creation_context.html", "class_terraria_1_1_mod_loader_1_1_recipe_creation_context" ],
         [ "RecipeLoader", "class_terraria_1_1_mod_loader_1_1_recipe_loader.html", "class_terraria_1_1_mod_loader_1_1_recipe_loader" ],
         [ "RefReadOnlyArray", "struct_terraria_1_1_mod_loader_1_1_ref_read_only_array.html", null ],
+        [ "ResourceDisplaySetLoader", "class_terraria_1_1_mod_loader_1_1_resource_display_set_loader.html", null ],
+        [ "ResourceOverlayDrawContext", "struct_terraria_1_1_mod_loader_1_1_resource_overlay_draw_context.html", "struct_terraria_1_1_mod_loader_1_1_resource_overlay_draw_context" ],
+        [ "ResourceOverlayLoader", "class_terraria_1_1_mod_loader_1_1_resource_overlay_loader.html", "class_terraria_1_1_mod_loader_1_1_resource_overlay_loader" ],
         [ "SceneEffectLoader", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader.html", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader" ],
         [ "SextantInfoDisplay", "class_terraria_1_1_mod_loader_1_1_sextant_info_display.html", "class_terraria_1_1_mod_loader_1_1_sextant_info_display" ],
         [ "SimpleModGore", "class_terraria_1_1_mod_loader_1_1_simple_mod_gore.html", null ],

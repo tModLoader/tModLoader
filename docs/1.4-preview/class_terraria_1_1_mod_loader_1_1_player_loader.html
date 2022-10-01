@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -224,6 +224,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyLuck</b>
 <tr class="memitem:ae0dc359162d7826b4c2c89ec4bed0819"><td class="memItemLeft" align="right" valign="top"><a id="ae0dc359162d7826b4c2c89ec4bed0819" name="ae0dc359162d7826b4c2c89ec4bed0819"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyManaCost</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref float reduce, ref float mult)</td></tr>
 <tr class="separator:ae0dc359162d7826b4c2c89ec4bed0819"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af41c1d78eb3fdaed222e0d9d94f9ec2e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_loader.html#af41c1d78eb3fdaed222e0d9d94f9ec2e">ModifyMaxStats</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:af41c1d78eb3fdaed222e0d9d94f9ec2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset this player's Player.statLifeMax and Player.statManaMax to their vanilla defaults, applies <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ab61e19ecc0e6287be47ffb90cdba4d1a" title="Allows you to modify the player&#39;s max stats. This hook runs after vanilla increases from the Life Cry...">ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)</a> to them, then modifies Player.statLifeMax2 and Player.statManaMax2  <a href="class_terraria_1_1_mod_loader_1_1_player_loader.html#af41c1d78eb3fdaed222e0d9d94f9ec2e">More...</a><br /></td></tr>
+<tr class="separator:af41c1d78eb3fdaed222e0d9d94f9ec2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d37e6ec52ac3b6409197bdbf2deaf43"><td class="memItemLeft" align="right" valign="top"><a id="a6d37e6ec52ac3b6409197bdbf2deaf43" name="a6d37e6ec52ac3b6409197bdbf2deaf43"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyNurseHeal</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref int health, ref bool removeDebuffs, ref string chat)</td></tr>
 <tr class="separator:a6d37e6ec52ac3b6409197bdbf2deaf43"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,6 +363,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessTrigger
 <tr class="memitem:a165dcc7948b162e045ea80eea7f6d8da"><td class="memItemLeft" align="right" valign="top"><a id="a165dcc7948b162e045ea80eea7f6d8da" name="a165dcc7948b162e045ea80eea7f6d8da"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetEffects</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="separator:a165dcc7948b162e045ea80eea7f6d8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ec9afedcf2520e4279b7ac89e01fb4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_loader.html#a19ec9afedcf2520e4279b7ac89e01fb4">ResetMaxStatsToVanilla</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a19ec9afedcf2520e4279b7ac89e01fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets Player.statLifeMax and Player.statManaMax to their expected values by vanilla  <a href="class_terraria_1_1_mod_loader_1_1_player_loader.html#a19ec9afedcf2520e4279b7ac89e01fb4">More...</a><br /></td></tr>
+<tr class="separator:a19ec9afedcf2520e4279b7ac89e01fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8f5cc8f1f87b49ca42fc2e1683298aa"><td class="memItemLeft" align="right" valign="top"><a id="aa8f5cc8f1f87b49ca42fc2e1683298aa" name="aa8f5cc8f1f87b49ca42fc2e1683298aa"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendClientChanges</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_player.html">Player</a> clientPlayer)</td></tr>
 <tr class="separator:aa8f5cc8f1f87b49ca42fc2e1683298aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -446,6 +452,74 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>UseTimeMultip
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="af41c1d78eb3fdaed222e0d9d94f9ec2e" name="af41c1d78eb3fdaed222e0d9d94f9ec2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af41c1d78eb3fdaed222e0d9d94f9ec2e">&#9670;&nbsp;</a></span>ModifyMaxStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.PlayerLoader.ModifyMaxStats </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reset this player's Player.statLifeMax and Player.statManaMax to their vanilla defaults, applies <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ab61e19ecc0e6287be47ffb90cdba4d1a" title="Allows you to modify the player&#39;s max stats. This hook runs after vanilla increases from the Life Cry...">ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)</a> to them, then modifies Player.statLifeMax2 and Player.statManaMax2 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a19ec9afedcf2520e4279b7ac89e01fb4" name="a19ec9afedcf2520e4279b7ac89e01fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19ec9afedcf2520e4279b7ac89e01fb4">&#9670;&nbsp;</a></span>ResetMaxStatsToVanilla()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.PlayerLoader.ResetMaxStatsToVanilla </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets Player.statLifeMax and Player.statManaMax to their expected values by vanilla </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

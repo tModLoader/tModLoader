@@ -16,5 +16,6 @@ var class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets =
     [ "IsValidSpawnPoint", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a1b6e7b954b362f64745217bd85282e7a", null ],
     [ "PreventsSandfall", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#acde3b283dd8151f151bee1bd6d416dbd", null ],
     [ "Torch", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#afaf1c188f34cea5076f90c682770fba4", null ],
-    [ "TreeSapling", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a0bcb455dc6561673f04ffa5d5e4b31ee", null ]
+    [ "TreeSapling", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a0bcb455dc6561673f04ffa5d5e4b31ee", null ],
+    [ "WallsMergeWith", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#aba84caa3b8b0c707aadda08badf8b071", null ]
 ];

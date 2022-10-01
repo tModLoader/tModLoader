@@ -26,5 +26,6 @@ var searchData=
   ['trygetmodplayer_3c_20t_20_3e_23',['TryGetModPlayer&lt; T &gt;',['../class_terraria_1_1_player.html#aca88704e73774f4fd62591ae800dd963',1,'Terraria.Player.TryGetModPlayer&lt; T &gt;(out T result)'],['../class_terraria_1_1_player.html#af223e8edf2b8493d6198b1fb2482b731',1,'Terraria.Player.TryGetModPlayer&lt; T &gt;(T baseInstance, out T result)']]],
   ['trygetspecialvanillabossbar_24',['TryGetSpecialVanillaBossBar',['../class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_system.html#af4b4b3dd850d441b092e59c4b0ac6821',1,'Terraria::GameContent::UI::BigProgressBar::BigProgressBarSystem']]],
   ['trygettileentity_3c_20t_20_3e_25',['TryGetTileEntity&lt; T &gt;',['../class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#aaf7ee9e3852b293ad6487cbdb3922eb6',1,'Terraria::DataStructures::TileEntitiesManager']]],
-  ['tryremovingbuff_26',['TryRemovingBuff',['../class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059',1,'Terraria::Main']]]
+  ['tryremovingbuff_26',['TryRemovingBuff',['../class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059',1,'Terraria::Main']]],
+  ['trystackitems_27',['TryStackItems',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#aa4a49edfad76b72d1080af9bbe9fab38',1,'Terraria::ModLoader::ItemLoader']]]
 ];

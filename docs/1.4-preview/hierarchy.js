@@ -914,8 +914,10 @@ var hierarchy =
       [ "Terraria.GameContent.UI.ResourceSets.IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_i_player_resources_display_set.html", [
         [ "Terraria.GameContent.UI.ResourceSets.ClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html", null ],
         [ "Terraria.GameContent.UI.ResourceSets.FancyClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_fancy_classic_player_resources_display_set.html", null ],
-        [ "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html", null ]
-      ] ]
+        [ "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html", null ],
+        [ "Terraria.ModLoader.ModResourceDisplaySet", "class_terraria_1_1_mod_loader_1_1_mod_resource_display_set.html", null ]
+      ] ],
+      [ "Terraria.ModLoader.ModResourceDisplaySet", "class_terraria_1_1_mod_loader_1_1_mod_resource_display_set.html", null ]
     ] ],
     [ "IContentValidator", "class_i_content_validator.html", [
       [ "Terraria.GameContent.VanillaContentValidator", "class_terraria_1_1_game_content_1_1_vanilla_content_validator.html", null ]
@@ -1323,6 +1325,8 @@ var hierarchy =
             [ "Terraria.ModLoader.ModMenu", "class_terraria_1_1_mod_loader_1_1_mod_menu.html", null ],
             [ "Terraria.ModLoader.ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", null ],
             [ "Terraria.ModLoader.ModRarity", "class_terraria_1_1_mod_loader_1_1_mod_rarity.html", null ],
+            [ "Terraria.ModLoader.ModResourceDisplaySet", "class_terraria_1_1_mod_loader_1_1_mod_resource_display_set.html", null ],
+            [ "Terraria.ModLoader.ModResourceOverlay", "class_terraria_1_1_mod_loader_1_1_mod_resource_overlay.html", null ],
             [ "Terraria.ModLoader.ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", [
               [ "Terraria.ModLoader.ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", null ]
             ] ],
@@ -2065,7 +2069,10 @@ var hierarchy =
     [ "Terraria.RemoteServer", "class_terraria_1_1_remote_server.html", null ],
     [ "Terraria.GameContent.TextureAssets.RenderTargets", "class_terraria_1_1_game_content_1_1_texture_assets_1_1_render_targets.html", null ],
     [ "Terraria.Social.WeGame.ReportServerID", "class_terraria_1_1_social_1_1_we_game_1_1_report_server_i_d.html", null ],
+    [ "Terraria.ModLoader.ResourceDisplaySetLoader", "class_terraria_1_1_mod_loader_1_1_resource_display_set_loader.html", null ],
     [ "Terraria.GameContent.UI.ResourceSets.ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html", null ],
+    [ "Terraria.ModLoader.ResourceOverlayDrawContext", "struct_terraria_1_1_mod_loader_1_1_resource_overlay_draw_context.html", null ],
+    [ "Terraria.ModLoader.ResourceOverlayLoader", "class_terraria_1_1_mod_loader_1_1_resource_overlay_loader.html", null ],
     [ "Terraria.IO.ResourcePack", "class_terraria_1_1_i_o_1_1_resource_pack.html", null ],
     [ "Terraria.IO.ResourcePackContentValidator", "class_terraria_1_1_i_o_1_1_resource_pack_content_validator.html", null ],
     [ "Terraria.IO.ResourcePackList", "class_terraria_1_1_i_o_1_1_resource_pack_list.html", null ],

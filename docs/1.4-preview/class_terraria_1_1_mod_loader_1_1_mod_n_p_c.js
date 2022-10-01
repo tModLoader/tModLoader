@@ -28,6 +28,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "GetChat", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa63ef2a98431cd3ffe9f74e198141a28", null ],
     [ "HitEffect", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a22d1c3de35a14161c20c5544a35b5420", null ],
     [ "LoadData", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aef1d173cc2af87234d7c00b96ff82ddb", null ],
+    [ "ModifyCollisionData", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aec8c04b6ec0308f51cc8b90dcc54a0d0", null ],
     [ "ModifyHitByItem", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aadf9eeffd3975257af64313a257b5295", null ],
     [ "ModifyHitByProjectile", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a95122e1a8db39a14617a8d93c187efc8", null ],
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a10bb42e54445d397e5a28277ed9c0d12", null ],

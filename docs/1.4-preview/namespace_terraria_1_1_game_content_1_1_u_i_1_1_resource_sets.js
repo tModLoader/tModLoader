@@ -7,6 +7,6 @@ var namespace_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets =
     [ "IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_i_player_resources_display_set.html", null ],
     [ "PlayerResourceSetsManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html", null ],
     [ "PlayerResourceSetsManager2", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager2.html", null ],
-    [ "PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html", null ],
+    [ "PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot" ],
     [ "ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html", null ]
 ];
