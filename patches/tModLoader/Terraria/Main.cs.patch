@@ -124,10 +124,9 @@
 +		public static double dayRate = 1;
 -		public static int desiredWorldTilesUpdateRate = 1;
 +		public static double desiredWorldTilesUpdateRate = 1;
--		public static int maxScreenW = 1920;
-+		public static int maxScreenW = 7680;
+ 		public static int maxScreenW = 1920;
 -		public static int maxScreenH = 1200;
-+		public static int maxScreenH = 4320;
++		public static int maxScreenH = 1080;
  		public static int minScreenW = 800;
 -		public static int minScreenH = 600;
 +		public static int minScreenH = 720; // Used to be '600'
@@ -573,7 +572,22 @@
  			int currentValue = 0;
  			Configuration.Get("LastLaunchedVersion", ref currentValue);
  			bool flag = false;
-@@ -3272,8 +_,11 @@
+@@ -3266,14 +_,26 @@
+ 			int currentValue3 = graphics.PreferredBackBufferHeight;
+ 			Configuration.Get("DisplayWidth", ref currentValue2);
+ 			Configuration.Get("DisplayHeight", ref currentValue3);
++
++			//Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
++			// Iterates to find the largest display and assumes that is allowed.
++			int displayIndex = 0;
++			while (SDL2.SDL.SDL_GetDesktopDisplayMode(displayIndex++, out var sdlMode) == 0) {
++				maxScreenW = Math.Max(sdlMode.w, maxScreenW);
++				maxScreenH = Math.Max(sdlMode.h, maxScreenH);
++			}
++
+ 			LastLoadedResolution = new Microsoft.Xna.Framework.Point(currentValue2, currentValue3);
+ 			if (!startFullscreen) {
+ 				if (PendingBorderlessState)
  					screenBorderlessPendingResizes = 1;
  
  				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
