@@ -66,6 +66,10 @@ namespace Terraria.ModLoader
 		private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
 		private delegate void DelegateTileCountsAvailable(ReadOnlySpan<int> tileCounts);
+		
+		private delegate void DelegateOnStartDay(ref bool stopEvents);
+		
+		private delegate void DelegateOnStartNight(ref bool stopEvents);
 
 		//HookLists
 
@@ -164,5 +168,9 @@ namespace Terraria.ModLoader
 		private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);
 
 		private static HookList HookHijackSendData = AddHook<Func<int, int, int, int, NetworkText, int, float, float, float, int, int, int, bool>>(s => s.HijackSendData);
+
+		private static HookList HookOnStartDay = AddHook<DelegateOnStartDay>(s => s.OnStartDay);
+
+		private static HookList HookOnStartNight = AddHook<DelegateOnStartNight>(s => s.OnStartNight);
 	}
 }

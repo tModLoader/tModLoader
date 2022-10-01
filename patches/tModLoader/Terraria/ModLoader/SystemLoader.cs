@@ -449,5 +449,17 @@ namespace Terraria.ModLoader
 
 			return result;
 		}
+
+		internal static void OnStartDay(ref bool stopEvents) {
+			foreach (var system in HookOnStartDay.arr) {
+				system.OnStartDay(ref stopEvents);
+			}
+		}
+
+		internal static void OnStartNight(ref bool stopEvents) {
+			foreach (var system in HookOnStartNight.arr) {
+				system.OnStartNight(ref stopEvents);
+			}
+		}
 	}
 }

@@ -5333,7 +5333,16 @@
  						int num8 = 0;
  						for (int j = 0; j < 200; j++) {
  							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
-@@ -50288,7 +_,7 @@
+@@ -50283,12 +_,15 @@
+ 			eclipse = false;
+ 			if (netMode != 1)
+ 				AchievementsHelper.NotifyProgressionEvent(0);
+-
++				
++			time = 0.0;
++			dayTime = false;
++			SystemLoader.OnStartNight(ref stopEvents);
+ 			if (!fastForwardTime && !stopEvents) {
  				if (!NPC.downedBoss1 && netMode != 1) {
  					bool flag = false;
  					for (int i = 0; i < 255; i++) {
@@ -5351,6 +5360,27 @@
  							bloodMoon = true;
  							break;
  						}
+@@ -50376,8 +_,9 @@
+ 				}
+ 			}
+ 
++			// TML: Moved the time set code before events setup for SystemLoader.OnStartNight hook
+-			time = 0.0;
++			//time = 0.0;
+-			dayTime = false;
++			//dayTime = false;
+ 			if (netMode == 2)
+ 				NetMessage.SendData(7);
+ 		}
+@@ -50416,7 +_,7 @@
+ 
+ 			if (drunkWorld && netMode != 1)
+ 				WorldGen.crimson = !WorldGen.crimson;
+-
++			SystemLoader.OnStartDay(ref stopEvents);
+ 			if (netMode == 2)
+ 				NetMessage.SendData(7);
+ 
 @@ -50505,6 +_,11 @@
  		}
  

@@ -369,5 +369,17 @@ namespace Terraria.ModLoader
 		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 		/// </summary>
 		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
+
+		/// <summary>
+		/// Use this method to do something when day starts. See <see cref="OnStartNight(ref bool)"/> for the night method.
+		/// </summary>
+		/// <param name="stopEvents">Whether special events (invasions, eclipse, etc.) will occur or not. Vanilla prevents events from occuring when the Moon Lord is present or it's a Lantern Night</param>
+		public virtual void OnStartDay(ref bool stopEvents) { }
+
+		/// <summary>
+		/// Use this method to do something when night starts. See <see cref="OnStartDay(ref bool)"/> for the day method.
+		/// </summary>
+		/// <param name="stopEvents">Whether special events (boss spawning, blood moon, etc.) will occur or not. Vanilla prevents events from occuring when the Moon Lord is present or it's a Lantern Night</param>
+		public virtual void OnStartNight(ref bool stopEvents) { }
 	}
 }
