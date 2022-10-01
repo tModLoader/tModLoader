@@ -90,18 +90,18 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 * cosine * -1;
 
 			// Update the frame used to draw the projectile
-			const float sqrtTwo = 0.707106781f;
+			const float cosineOf45Degrees = 0.707106781f;
 			float cosineAbsolute = Math.Abs(cosine);
 			if (sine > 0) {
 				// Offset is counter-clockwise to the direction
-				if (cosineAbsolute > sqrtTwo) {
+				if (cosineAbsolute > cosineOf45Degrees) {
 					Projectile.frame = Projectile.direction == 1 ? 0 : 2;
 				} else {
 					Projectile.frame = 1;
 				}
 			} else if (sine < 0) {
 				// Offset is clockwise to the direction
-				if (cosineAbsolute > sqrtTwo) {
+				if (cosineAbsolute > cosineOf45Degrees) {
 					Projectile.frame = Projectile.direction == 1 ? 2 : 0;
 				} else {
 					Projectile.frame = 1;
