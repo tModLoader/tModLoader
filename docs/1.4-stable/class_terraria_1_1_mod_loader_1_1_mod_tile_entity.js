@@ -22,6 +22,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_tile_entity =
     [ "WriteExtraData", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a46d214ed56f5b7d9437d08bd1e1087f9", null ],
     [ "FullName", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ad3707d5d0e944706f7a9606355d54984", null ],
     [ "Mod", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a4961be6e89728be2a68bdf5f9f10e16b", null ],
-    [ "Name", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a8a04a242638d18e36202d8e43be463c0", null ],
+    [ "Name", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ab72f55004055ca37cb60db975117d2e7", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a0375ceaa1a457d0b34df406c43267436", null ]
 ];

@@ -14,5 +14,7 @@ var searchData=
   ['hook_11',['Hook',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a91cf43dddc53019beda914f25cdad7b9',1,'Terraria::ID::ProjAIStyleID']]],
   ['horizontalray_12',['HorizontalRay',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a74991cdeab51de1721e5eaf6b3d2eff7',1,'Terraria::ID::ProjAIStyleID']]],
   ['hornet_13',['Hornet',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a24b78d814dc9d3b8a8f4ebe0eb75f44f',1,'Terraria::ID::ProjAIStyleID']]],
-  ['hoveringfighter_14',['HoveringFighter',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#ac1cce77ca7f8e1489c00c18aa22243d9',1,'Terraria::ID::NPCAIStyleID']]]
+  ['housescanhaveplatformfloors_14',['HousesCanHavePlatformFloors',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ab9cd5a58290d1f48f163ab9dd80a9358',1,'Terraria::ModLoader::GameTipID']]],
+  ['housinguiinequipmentmenu_15',['HousingUIInEquipmentMenu',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a029dd28bb1a5ae15025bfd05c4d2bc77',1,'Terraria::ModLoader::GameTipID']]],
+  ['hoveringfighter_16',['HoveringFighter',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#ac1cce77ca7f8e1489c00c18aa22243d9',1,'Terraria::ID::NPCAIStyleID']]]
 ];

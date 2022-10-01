@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2022.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>Call()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8">Terraria.ModLoader.Mod</a></li>
 <li>CameraDark&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_cursor_override_i_d.html#a8683e4aae4853205499ce363dac116a0">Terraria.ID.CursorOverrideID</a></li>
 <li>CameraLight&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_cursor_override_i_d.html#a7f025aaaec646cc6b56474b99a7a08bf">Terraria.ID.CursorOverrideID</a></li>
+<li>CameraZoomFunctionality&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#af32a8305bdd66a4f9cc69bde58e96334">Terraria.ModLoader.GameTipID</a></li>
 <li>CanAcceptItem()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a481cad51c128042f747deb419ffc2c2c">Terraria.ModLoader.ModAccessorySlot</a></li>
 <li>CanAccessoryBeEquippedWith()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aff53200ad96a6112286e50ae936bf9c5">Terraria.ModLoader.GlobalItem</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4703a2d4c113bfe53fd22920fadc5650">Terraria.ModLoader.ModItem</a></li>
 <li>CanAutoReuseItem()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa9aaff3947287d54f4ab2586bc9c524a">Terraria.ModLoader.GlobalItem</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ab2fa13a1dbb600ae766a40a468947b5f">Terraria.ModLoader.ModItem</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aff69da6064e1e86158c5996834998a97">Terraria.ModLoader.ModPlayer</a></li>
@@ -136,6 +137,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CanTownNPCSpawn()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a78b4fdd2fb59c1812e03568478be3757">Terraria.ModLoader.ModNPC</a></li>
 <li>CanUseGrapple()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0070501f25f491b4b9e792c44bd6f7ba">Terraria.ModLoader.GlobalProjectile</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a27ba41537ee551c46d60cd85c5a67da2">Terraria.ModLoader.ModProjectile</a></li>
 <li>CanUseItem()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a42e845e6a67b6c2ae993157ad7bbce20">Terraria.ModLoader.GlobalItem</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af19bcb03073673df4d45192e7fcbf7da">Terraria.ModLoader.ModItem</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#acc076dcae6e7254a706130119bad26d1">Terraria.ModLoader.ModPlayer</a></li>
+<li>CanWearBucketsOnHead&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#aaaac1283e67a819676b1da0e0de3ae58">Terraria.ModLoader.GameTipID</a></li>
 <li>CanWorldBePlayed()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ad33a847ce90c342dae26ff5f4d8da2d4">Terraria.ModLoader.ModSystem</a></li>
 <li>CaptureTheGem&#160;:&#160;<a class="el" href="class_terraria_1_1_data_structures_1_1_player_draw_layers.html#a55c74055868fa3cac3395baeebf5d232">Terraria.DataStructures.PlayerDrawLayers</a></li>
 <li>Carpet&#160;:&#160;<a class="el" href="class_terraria_1_1_data_structures_1_1_player_draw_layers.html#a5be5a52a75bcf7f814fa8ea4bbe479cb">Terraria.DataStructures.PlayerDrawLayers</a></li>
@@ -173,6 +175,9 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CloneNewInstances&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html#a150adacbef1c6b86315ad29dc553928d">Terraria.ModLoader.GlobalType&lt; TEntity, TGlobal &gt;</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a0b64b26188f42ffa7c2a7e111771ec08">Terraria.ModLoader.ModType&lt; TEntity, TModType &gt;</a></li>
 <li>Close()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac1a3af8f2577a21c6efbc60103bf3089">Terraria.ModLoader.Mod</a></li>
 <li>CloseDoorID&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a56e4193443ade992aa33656fdac0cc73">Terraria.ModLoader.ModTile</a></li>
+<li>CloudInABalloonCrafting&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a1fe7e8aae690bc1fa3c8e0a2d38c880c">Terraria.ModLoader.GameTipID</a></li>
+<li>CloudsPreventFallDamage&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a2e3dcd8a636b684375d9ed98f06b49d1">Terraria.ModLoader.GameTipID</a></li>
+<li>CobaltShieldKnockback&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a631eb33ece30ad19a2487c68e16ad118">Terraria.ModLoader.GameTipID</a></li>
 <li>Code&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78">Terraria.ModLoader.Mod</a></li>
 <li>coinGrabRange&#160;:&#160;<a class="el" href="class_terraria_1_1_item.html#a295f309c5f320394e2748f55908f8930">Terraria.Item</a></li>
 <li>CoinPortal&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a1445634af8d9ff8aa9e2c0bde9b90a9a">Terraria.ID.ProjAIStyleID</a></li>
@@ -198,6 +203,8 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CoolFlake&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5b98043eb0ddf428a538a93137f2e8ca">Terraria.ID.ProjAIStyleID</a></li>
 <li>CoordsToPos()&#160;:&#160;<a class="el" href="struct_terraria_1_1_mod_loader_1_1_pos_data.html#aafe3c1770ff6beee7ee4c7be3825588c">Terraria.ModLoader.PosData&lt; T &gt;</a></li>
 <li>Corite&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a1d763d84915d9b860f03c1ddd13fd9c0">Terraria.ID.NPCAIStyleID</a></li>
+<li>CorruptionCantSpreadInHallow&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ac3717e4f91b39ba40087fa27b0f428c4">Terraria.ModLoader.GameTipID</a></li>
+<li>CorruptionHasChasms&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#af881d611c75ed5b7dd86a449ffbc4563">Terraria.ModLoader.GameTipID</a></li>
 <li>CosmicCarKeys&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_dust_i_d.html#a09fc6dc9e57f0a6406cde65f024049b1">Terraria.ID.DustID</a></li>
 <li>CountInWorld()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#abf1ec2387497edcc90fbac40c3bd8491">Terraria.ModLoader.ModTileEntity</a></li>
 <li>CountsAsHoneySource&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a6d7adf0e9f60098f45853f28883f433b">Terraria.ID.TileID.Sets</a></li>
@@ -205,8 +212,10 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CountsAsPylon&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a96d5baf3dd418545320ae2983bcb2d35">Terraria.ID.TileID.Sets</a></li>
 <li>CountsAsTreeType&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ade9a5314d0a2c90acf0708c942720d2b">Terraria.ModLoader.ModPalmTree</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aeb64320d181e91830d40ff4d089b4a0d">Terraria.ModLoader.ModTree</a></li>
 <li>CountsAsWaterSource&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a399124aba65d6b176da722cc20b70ffc">Terraria.ID.TileID.Sets</a></li>
+<li>CraftHammerToDestroyWalls&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ab584fb5abbeb190c5b63cd6990aee93c">Terraria.ModLoader.GameTipID</a></li>
 <li>CreateDust()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_block_type.html#abcd4b2230501a74c30070f60fa83c11b">Terraria.ModLoader.GlobalBlockType</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a704eb64f751ac58c90aa83c0184ff082">Terraria.ModLoader.ModBlockType</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#acffaa71eb58c8ceef669e50a15c8dc5c">Terraria.ModLoader.ModPalmTree</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a193103af2e365f63b101c6ab0cc91994">Terraria.ModLoader.ModTree</a></li>
 <li>CreateMapEntryName()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a4b6fa5ed042290573fa32f4723de9320">Terraria.ModLoader.ModBlockType</a></li>
+<li>CreateMetalBarWithFurnace&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ad8648ae69273945c8b385c45debfcedf">Terraria.ModLoader.GameTipID</a></li>
 <li>CreateTranslation()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_localization_loader.html#a472170a8ac1abad21589f0c381fd4c8e">Terraria.ModLoader.LocalizationLoader</a></li>
 <li>Creeper&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a34122e0ef10676f70ad93977430543ea">Terraria.ID.NPCAIStyleID</a></li>
 <li>CritChance&#160;:&#160;<a class="el" href="class_terraria_1_1_projectile.html#ab5c3e395c80059ae076ea62911494c38">Terraria.Projectile</a></li>
@@ -223,6 +232,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CustomBuffTipSize()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a7ae245fa722b2e526f70e82b46ef0020">Terraria.ModLoader.GlobalBuff</a></li>
 <li>CutTiles()&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a71b11f64254f701d32aee669c732d3ae">Terraria.ModLoader.GlobalProjectile</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8">Terraria.ModLoader.ModProjectile</a></li>
 <li>Cyan&#160;:&#160;<a class="el" href="class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#acf76172c938b3c8ededab584d31fdb7f">Terraria.ID.ItemRarityID</a></li>
+<li>CyborgSellsRockets&#160;:&#160;<a class="el" href="class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ac779daa26340b9f91bd0f0824b0deb21">Terraria.ModLoader.GameTipID</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

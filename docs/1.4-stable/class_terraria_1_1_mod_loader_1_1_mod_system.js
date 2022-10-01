@@ -6,6 +6,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "HijackGetData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a", null ],
     [ "HijackSendData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a2acba5d368c6a5c9c1396249daec7183", null ],
     [ "LoadWorldData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e", null ],
+    [ "ModifyGameTipVisibility", "class_terraria_1_1_mod_loader_1_1_mod_system.html#acf5a80b37de6a3655beffaf7cf10e8e7", null ],
     [ "ModifyHardmodeTasks", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a8dcfb3bf657cd9697c0c7fd3b8316541", null ],
     [ "ModifyInterfaceLayers", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a433abf5a12a3e84cd780c007a697ce44", null ],
     [ "ModifyLightingBrightness", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a4e3ccfd5f0f70cd042b3a088495b772f", null ],

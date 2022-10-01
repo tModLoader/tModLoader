@@ -39,6 +39,8 @@ var namespace_terraria_1_1_mod_loader =
     [ "ExtendsFromModAttribute", "class_terraria_1_1_mod_loader_1_1_extends_from_mod_attribute.html", null ],
     [ "FishFinderInfoDisplay", "class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html", "class_terraria_1_1_mod_loader_1_1_fish_finder_info_display" ],
     [ "FrameworkVersion", "class_terraria_1_1_mod_loader_1_1_framework_version.html", null ],
+    [ "GameTipData", "class_terraria_1_1_mod_loader_1_1_game_tip_data.html", "class_terraria_1_1_mod_loader_1_1_game_tip_data" ],
+    [ "GameTipID", "class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html", "class_terraria_1_1_mod_loader_1_1_game_tip_i_d" ],
     [ "GenericDamageClass", "class_terraria_1_1_mod_loader_1_1_generic_damage_class.html", "class_terraria_1_1_mod_loader_1_1_generic_damage_class" ],
     [ "GlobalBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_global_background_style.html", "class_terraria_1_1_mod_loader_1_1_global_background_style" ],
     [ "GlobalBlockType", "class_terraria_1_1_mod_loader_1_1_global_block_type.html", "class_terraria_1_1_mod_loader_1_1_global_block_type" ],
