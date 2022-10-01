@@ -125,9 +125,9 @@
 -		public static int desiredWorldTilesUpdateRate = 1;
 +		public static double desiredWorldTilesUpdateRate = 1;
 -		public static int maxScreenW = 1920;
-+		public static int maxScreenW = 3840;
++		public static int maxScreenW = 7680;
 -		public static int maxScreenH = 1200;
-+		public static int maxScreenH = 2160;
++		public static int maxScreenH = 4320;
  		public static int minScreenW = 800;
 -		public static int minScreenH = 600;
 +		public static int minScreenH = 720; // Used to be '600'
@@ -301,6 +301,15 @@
  		public static Dust[] dust = new Dust[6001];
  		public static Star[] star = new Star[400];
  		public static Item[] item = new Item[401];
+@@ -1126,7 +_,7 @@
+ 		public static bool Support4K = true;
+ 		public static float MinimumZoomComparerX = 1920f;
+ 		public static float MinimumZoomComparerY = 1200f;
+-		private static int _renderTargetMaxSize = 2048;
++		private static int _renderTargetMaxSize = 8192;
+ #if XNA
+ 		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
+ 		private static GraphicsProfile _currentGraphicsProfile = GraphicsProfile.Reach;
 @@ -1161,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
