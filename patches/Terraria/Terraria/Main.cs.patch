@@ -30,7 +30,7 @@
  				base.Content.RootDirectory = "Content";
  			}
  		}
-@@ -38615,6 +_,9 @@
+@@ -38618,6 +_,9 @@
  
  			Assets.TransferCompletedAssets();
  			Exit();

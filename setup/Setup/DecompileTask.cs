@@ -64,8 +64,8 @@ namespace Terraria.ModLoader.Setup
 			public new bool IncludeTypeWhenDecompilingProject(PEFile module, TypeDefinitionHandle type) => base.IncludeTypeWhenDecompilingProject(module, type);
 		}
 
-		public static readonly Version clientVersion = new("1.4.4.1");
-		public static readonly Version serverVersion = new("1.4.4.1");
+		public static readonly Version clientVersion = new("1.4.4.2");
+		public static readonly Version serverVersion = new("1.4.4.2");
 
 		private readonly string srcDir;
 		private readonly bool serverOnly;
