@@ -2464,7 +2464,14 @@
  			hasFootball = false;
  			drawingFootball = false;
  			minionKB = 0f;
-@@ -13116,11 +_,19 @@
+@@ -13110,17 +_,26 @@
+ 			gravControl = false;
+ 			honeyCombItem = null;
+ 			gravControl2 = false;
++			PlayerLoader.ModifyMaxStats(this);
+ 			statLifeMax2 = statLifeMax;
+ 			statManaMax2 = statManaMax;
+ 			chloroAmmoCost80 = false;
  			huntressAmmoCost90 = false;
  			ammoCost80 = false;
  			ammoCost75 = false;
@@ -3021,6 +3028,18 @@
  			if (tileSpeed > 3f)
  				tileSpeed = 3f;
  
+@@ -18472,8 +_,11 @@
+ 				wallSpeed = 3f;
+ 
+ 			wallSpeed = 1f / wallSpeed;
++			// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++			/*
+ 			if (statManaMax2 > 400)
+ 				statManaMax2 = 400;
++			*/
+ 
+ 			if (statDefense < 0)
+ 				statDefense = 0;
 @@ -18507,7 +_,9 @@
  				}
  			}
@@ -3953,26 +3972,110 @@
  				return true;
  
  			return false;
-@@ -27961,7 +_,8 @@
+@@ -27829,6 +_,22 @@
+ 				if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !newItem.IsTheSameAs(inventory[i]))
+ 					continue;
+ 
++				if (!ItemLoader.TryStackItems(inventory[i], newItem, out int numTransfered))
++					continue;
++
++				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, inventory[i], numTransfered);
++
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				settings.HandlePostAction(inventory[i]);
++				if (newItem.stack <= 0)
++					return newItem;
++
++				/* TML: #OnStackHook
+ 				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 				if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
+ 					inventory[i].stack += newItem.stack;
+@@ -27848,6 +_,7 @@
+ 					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, inventory[i].maxStack - inventory[i].stack);
+ 
+ 				inventory[i].stack = inventory[i].maxStack;
++				*/
+ 				DoCoins(i);
+ 				if (plr == Main.myPlayer)
+ 					Recipe.FindRecipes();
+@@ -27961,12 +_,25 @@
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
 +			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
-+			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && ItemLoader.CanStack(inv[i], returnItem)) {
+ 			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++				if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
-@@ -27990,7 +_,8 @@
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inv[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inv[i].stack <= inv[i].maxStack) {
+ 					inv[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+@@ -27984,19 +_,38 @@
+ 
+ 				inv[i].stack = inv[i].maxStack;
+ 				settings.HandlePostAction(inv[i]);
++				*/
+ 			}
+ 
+ 			return false;
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
 +			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && ItemLoader.CanStack(inventory[i], newItem)) {
+ 			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++				if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inventory[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inventory[i].stack <= inventory[i].maxStack) {
++
+ 					inventory[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+ 						PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, returnItem.stack, noStack: false, settings.LongText);
+@@ -28021,6 +_,7 @@
+ 					Recipe.FindRecipes();
+ 
+ 				settings.HandlePostAction(inventory[i]);
++				*/
+ 			}
+ 
+ 			return false;
 @@ -28098,6 +_,8 @@
  				return;
  
@@ -4703,6 +4806,88 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -31880,40 +_,78 @@
+ 			}
+ 		}
+ 
++		public void UseManaMaxIncreasingItem(int increase) {
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statManaMax += increase;
++			statManaMax2 += increase;
++			statMana += increase;
++
++			if (Main.myPlayer == whoAmI)
++				ManaEffect(increase);
++		}
++
+ 		private void ItemCheck_UseManaCrystal(Item sItem) {
+-			if (sItem.type == 109 && itemAnimation > 0 && statManaMax < 200 && ItemTimeIsZero) {
++			if (sItem.type == 109 && itemAnimation > 0 && ConsumedManaCrystals < ManaCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statManaMax += 20;
+ 				statManaMax2 += 20;
+ 				statMana += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					ManaEffect(20);
++				*/
++				UseManaMaxIncreasingItem(20);
++				ConsumedManaCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 1);
+ 			}
+ 		}
+ 
++		public void UseHealthMaxIncreasingItem(int increase) {
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statLifeMax += increase;
++			statLifeMax2 += increase;
++			statLife += increase;
++
++			if (Main.myPlayer == whoAmI)
++				HealEffect(increase);
++		}
++
+ 		private void ItemCheck_UseLifeFruit(Item sItem) {
+-			if (sItem.type == 1291 && itemAnimation > 0 && statLifeMax >= 400 && statLifeMax < 500 && ItemTimeIsZero) {
++			if (sItem.type == 1291 && itemAnimation > 0 && ConsumedLifeCrystals == LifeCrystalMax && ConsumedLifeFruit < LifeFruitMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statLifeMax += 5;
+ 				statLifeMax2 += 5;
+ 				statLife += 5;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(5);
++				*/
++				UseHealthMaxIncreasingItem(5);
++				ConsumedLifeFruit++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 2);
+ 			}
+ 		}
+ 
+ 		private void ItemCheck_UseLifeCrystal(Item sItem) {
+-			if (sItem.type == 29 && itemAnimation > 0 && statLifeMax < 400 && ItemTimeIsZero) {
++			if (sItem.type == 29 && itemAnimation > 0 && ConsumedLifeCrystals < LifeCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statLifeMax += 20;
+ 				statLifeMax2 += 20;
+ 				statLife += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(20);
++				*/
++				UseHealthMaxIncreasingItem(20);
++				ConsumedLifeCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 0);
+ 			}
 @@ -32078,7 +_,7 @@
  
  			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -5682,16 +5867,33 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -38067,6 +_,7 @@
+@@ -38052,7 +_,12 @@
+ 				}
+ 			}
+ 			catch (Exception exception) {
+-				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path);
++				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path); // IO Exception
++
++				if (!Main.gameMenu)
++					WorldGen.SaveAndQuit();
++
++				Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.PlayerSaveFail")}\n\n{exception}", Main.menuMode);
+ 				throw;
+ 			}
+ 		}
+@@ -38067,20 +_,30 @@
  			if (string.IsNullOrEmpty(path))
  				return;
  
-+			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++			*/
  
-@@ -38074,13 +_,20 @@
- 			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			byte[] bytes;
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			using (Stream stream = (Stream)new MemoryStream(2000)) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
 +						PlayerLoader.PreSavePlayer(player);
@@ -5711,6 +5913,20 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
+@@ -38096,9 +_,11 @@
+ 						binaryWriter.Write(player.hideMisc);
+ 						binaryWriter.Write((byte)player.skinVariant);
+ 						binaryWriter.Write(player.statLife);
+-						binaryWriter.Write(player.statLifeMax);
++						// Keep the player state valid with vanilla (#HealthManaAPI)
++						// Any modifications to statLifeMax/statManaMax by mods can just be done during runtime
++						binaryWriter.Write(100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5);
+ 						binaryWriter.Write(player.statMana);
+-						binaryWriter.Write(player.statManaMax);
++						binaryWriter.Write(20 + player.ConsumedManaCrystals * 20);
+ 						binaryWriter.Write(player.extraAccessory);
+ 						binaryWriter.Write(player.unlockedBiomeTorches);
+ 						binaryWriter.Write(player.UsingBiomeTorches);
 @@ -38126,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
@@ -5804,17 +6020,32 @@
  							binaryWriter.Write(player.hideInfo[num7]);
  						}
  
-@@ -38227,9 +_,13 @@
+@@ -38225,11 +_,28 @@
+ 						binaryWriter.Flush();
+ 						cryptoStream.FlushFinalBlock();
  						stream.Flush();
++
++						/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
++						*/
++						bytes = ((MemoryStream)stream).ToArray();
 +
-+						PlayerLoader.PostSavePlayer(player);
++						PlayerLoader.PostSavePlayer(player); // For native data only
  					}
  				}
  			}
 +
-+			PlayerIO.Save(player, path, isCloudSave);
++			// tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
++			var tag = PlayerIO.SaveData(player);
++
++			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			if (FileUtilities.Exists(path, isCloudSave))
++				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++
++			FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
++
++			PlayerIO.Save(tag, path, isCloudSave);
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
@@ -5827,6 +6058,27 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
+@@ -38415,11 +_,20 @@
+ 
+ 							player.statMana = binaryReader.ReadInt32();
+ 							player.statManaMax = binaryReader.ReadInt32();
++							
+ 							if (player.statManaMax > 200)
+ 								player.statManaMax = 200;
+ 
++							// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
+ 							if (player.statMana > 400)
+ 								player.statMana = 400;
++							*/
++
++							// Clamping of the values happens automatically
++							player.ConsumedLifeCrystals = (player.statLifeMax - 100) / 20;
++							player.ConsumedLifeFruit = (player.statLifeMax - 400) / 5;
++							player.ConsumedManaCrystals = (player.statManaMax - 20) / 20;
+ 
+ 							if (num >= 125)
+ 								player.extraAccessory = binaryReader.ReadBoolean();
 @@ -38673,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -5855,14 +6107,15 @@
  			catch {
  			}
  
-@@ -38803,9 +_,12 @@
+@@ -38803,9 +_,13 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
-+			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
++			if(PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tag))
++				PlayerIO.Load(newPlayer, tag);
  			for (int i = 3; i < 10; i++) {
 +				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
 +				/*
@@ -5929,9 +6182,11 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38926,7 +_,7 @@
+@@ -38925,8 +_,9 @@
+ 			lastVisualizedSelectedItem = new Item();
  			grappling[0] = -1;
  			statManaMax = 20;
++			PlayerLoader.ModifyMaxStats(this);
  			extraAccessory = false;
 -			for (int n = 0; n < 625; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {

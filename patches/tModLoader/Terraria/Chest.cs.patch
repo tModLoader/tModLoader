@@ -26,17 +26,31 @@
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
  
-@@ -229,6 +_,10 @@
+@@ -229,6 +_,16 @@
  							continue;
  
  						flag = true;
-+						// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before CanStack
-+						if (!ItemLoader.CanStack(item, Main.chest[i].item[j]))
++						// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
++						if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out _))
 +							continue;
 +
++						if (item.stack <= 0) {
++							item.SetDefaults();
++							return item;
++						}
++
++						/* TML: #OnStackHook
  						int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  						if (num > 0) {
  							if (num > item.stack)
+@@ -241,6 +_,7 @@
+ 								return item;
+ 							}
+ 						}
++						*/
+ 					}
+ 					else {
+ 						flag2 = true;
 @@ -273,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
@@ -146,6 +160,21 @@
  		}
  
  		public void SetupShop(int type) {
+@@ -2015,12 +_,12 @@
+ 						num++;
+ 						array[num].SetDefaults(1979);
+ 						num++;
+-						if (Main.player[Main.myPlayer].statLifeMax >= 400) {
++						if (Main.player[Main.myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 							array[num].SetDefaults(1977);
+ 							num++;
+ 						}
+ 
+-						if (Main.player[Main.myPlayer].statManaMax >= 200) {
++						if (Main.player[Main.myPlayer].ConsumedManaCrystals == Player.ManaCrystalMax) {
+ 							array[num].SetDefaults(1978);
+ 							num++;
+ 						}
 @@ -2611,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}

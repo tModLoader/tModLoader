@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 
 		internal void UnloadContent() {
 			SystemLoader.OnModUnload(this);
-			
+
 			Unload();
 
 			foreach (var loadable in content.Reverse()) {
@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 				var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
 					.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
 					.Where(t => t.IsAssignableTo(typeof(ILoadable)))
-					.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) != null) // has default constructor
+					.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
 					.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
 					.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 

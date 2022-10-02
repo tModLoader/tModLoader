@@ -35,6 +35,8 @@ namespace Terraria.ModLoader
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
 		private static Action<int, int, int>[] HookRandomUpdate;
+		private delegate bool DelegateWallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber);
+		private static DelegateWallFrame[] HookWallFrame;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, Item>[] HookPlaceInWorld;
@@ -91,6 +93,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateCreateDust>(ref HookCreateDust, globalWalls, g => g.CreateDust);
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateDrop>(ref HookDrop, globalWalls, g => g.Drop);
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateKillWall>(ref HookKillWall, globalWalls, g => g.KillWall);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateWallFrame>(ref HookWallFrame, globalWalls, g => g.WallFrame);
 			ModLoader.BuildGlobalHook(ref HookCanPlace, globalWalls, g => g.CanPlace);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
 			ModLoader.BuildGlobalHook<GlobalWall, DelegateModifyLight>(ref HookModifyLight, globalWalls, g => g.ModifyLight);
@@ -141,18 +144,18 @@ namespace Terraria.ModLoader
 				if (!hook(i, j, type, fail))
 					return false;
 			}
-			
+
 			var modWall = GetWall(type);
 
 			if (modWall != null) {
 				if (!modWall.KillSound(i, j, fail))
 					return false;
-				
+
 				SoundEngine.PlaySound(modWall.HitSound, new Vector2(i * 16, j * 16));
-				
+
 				return false;
 			}
-			
+
 			return true;
 		}
 		//in Terraria.WorldGen.KillWall after if statement setting num to 3 add
@@ -232,6 +235,26 @@ namespace Terraria.ModLoader
 				hook(i, j, type);
 			}
 		}
+
+		//in Terraria.Framing.WallFrame after the 'if (num == 15)' block
+		//	if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
+		//		return;
+		public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
+			ModWall modWall = GetWall(type);
+
+			if (modWall != null) {
+				if(!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
+					return false;
+			}
+
+			foreach (var hook in HookWallFrame) {
+				if (!hook(i, j, type, randomizeFrame, ref style, ref frameNumber))
+					return false;
+			}
+
+			return true;
+		}
+
 		//in Terraria.Main.Update after vanilla wall animations call WallLoader.AnimateWalls();
 		public static void AnimateWalls() {
 			if (loaded) {

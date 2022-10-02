@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Engine
 {
 	internal class TMLContentManager : ContentManager
 	{
-		private readonly TMLContentManager alternateContentManager;
+		internal readonly TMLContentManager alternateContentManager;
 		private readonly HashSet<string> ExistingImages = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
 		private int loadedAssets = 0;

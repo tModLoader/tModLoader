@@ -197,6 +197,18 @@
  						Main.BestiaryTracker.OnPlayerJoining(whoAmI);
  						CreativePowerManager.Instance.SyncThingsToJoiningPlayer(whoAmI);
  						Main.PylonSystem.OnPlayerJoining(whoAmI);
+@@ -876,8 +_,11 @@
+ 							Player player16 = Main.player[num268];
+ 							player16.statLife = reader.ReadInt16();
+ 							player16.statLifeMax = reader.ReadInt16();
++							// Allow health stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
+ 							if (player16.statLifeMax < 100)
+ 								player16.statLifeMax = 100;
++							*/
+ 
+ 							player16.dead = (player16.statLife <= 0);
+ 							if (Main.netMode == 2)
 @@ -1069,7 +_,7 @@
  
  						BitsByte bitsByte4 = (byte)0;
@@ -557,7 +569,7 @@
 +							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
-+						TEItemFrame.TryPlacing(x12, y12, item, item.stack);
++						TEItemFrame.TryPlacing(x12, y12, item, 1);
  					}
  					break;
  				case 91: {

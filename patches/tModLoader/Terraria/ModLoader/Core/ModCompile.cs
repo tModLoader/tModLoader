@@ -56,7 +56,10 @@ namespace Terraria.ModLoader.Core
 		internal static string[] FindModSources()
 		{
 			Directory.CreateDirectory(ModSourcePath);
-			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => new DirectoryInfo(dir).Name[0] != '.').ToArray();
+			return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
+				var directory = new DirectoryInfo(dir);
+				return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
+			}).ToArray();
 		}
 
 		// Silence exception reporting in the chat unless actively modding.

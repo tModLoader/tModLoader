@@ -192,6 +192,7 @@ jobs:
           
           mkdir -p artifacts/Release
           cp -r steam_build/. artifacts/Release
+          
           echo ::endgroup::
           
           echo Cleaning up output directory in-between builds...
@@ -480,6 +481,11 @@ jobs:
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
+          echo "Downloading windows dotnet install zip"
+          dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <./artifacts/Build/tModLoader.runtimeconfig.json)
+          export dotnet_version=${dotnet_version%$'\r'}
+          wget https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip -O ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
+          
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
@@ -498,6 +504,8 @@ jobs:
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+          
+          rm ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
         env:
           version: ${{ steps.version2.outputs.new_version }}
           

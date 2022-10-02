@@ -788,11 +788,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to decide if this item is allowed to stack with another of its type.
 		/// <br/>This is only called when attempting to stack with an item of the same type.
-		/// <br/>This is usually not called for coins and ammo in the inventory/UI.
+		/// <br/>This is not called for coins in inventory/UI.
 		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
-		public virtual bool CanStack(Item item2) {
+		public virtual bool CanStack(Item decrease) {
 			return true;
 		}
 
@@ -801,8 +801,28 @@ namespace Terraria.ModLoader
 		/// <br/>This is only called when attempting to stack with an item of the same type.
 		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
-		public virtual bool CanStackInWorld(Item item2) {
+		public virtual bool CanStackInWorld(Item decrease) {
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when items stack together.<br/>
+		/// This item will have its stack increased that will have its stack increased.
+		/// </summary>
+		/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
+		public virtual void OnStack(Item decrease, int numberToBeTransfered) {
+
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.<br/>
+		/// Item is always the new stack which is a clone of decrease.  Item.stack will always be 0.  It is increased after SplitStack.
+		/// </summary>
+		/// <param name="decrease">The original item that will have it's stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
+		public virtual void SplitStack(Item decrease, int numberToBeTransfered) {
+
 		}
 
 		/// <summary>
@@ -1144,6 +1164,7 @@ namespace Terraria.ModLoader
 		/// Allows you to make anything happen when the player crafts this item using the given recipe.
 		/// </summary>
 		/// <param name="recipe">The recipe that was used to craft this item.</param>
+		[Obsolete("Use OnCreate and check if context is RecipeCreationContext", true)]
 		public virtual void OnCraft(Recipe recipe) {
 		}
 

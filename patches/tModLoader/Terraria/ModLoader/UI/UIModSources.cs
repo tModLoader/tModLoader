@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -31,6 +33,7 @@ namespace Terraria.ModLoader.UI
 		private UIInputTextField filterTextBox;
 		private UILoaderAnimatedImage _uiLoader;
 		private CancellationTokenSource _cts;
+		private bool dotnetSDKFound;
 
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
@@ -174,23 +177,29 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 			base.Draw(spriteBatch);
 			DrawMigrationGuideLink();
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
 		}
 
 		//TODO: simplify this method
 		private void DrawMigrationGuideLink() {
 			string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
+			float scale = 1f;
 
 			var font = FontAssets.MouseText.Value;
 			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
+			Vector2 origin = sizes;
 			Color color = Color.IndianRed;
+			if(sizes.X > 430) {
+				scale = 430 / sizes.X;
+				sizes.X *= scale;
+			}
 
 			int xLoc = (int)(Main.screenWidth / 2 + 134);
 			int yLoc = (int)(sizes.Y + 244f);
 
-			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, sizes, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, origin, new Vector2(scale, 1f), SpriteEffects.None, 0f);
 
 			var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
 			if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
@@ -209,6 +218,8 @@ namespace Terraria.ModLoader.UI
 			_uIPanel.Append(_uiLoader);
 			_modList.Clear();
 			_items.Clear();
+			if (ShowInfoMessages())
+				return;
 			Populate();
 		}
 
@@ -217,6 +228,58 @@ namespace Terraria.ModLoader.UI
 			_cts?.Dispose();
 			_cts = null;
 			modListViewPosition = _modList.ViewPosition;
+		}
+
+		private bool ShowInfoMessages() {
+			if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
+				ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+				ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
+				Main.SaveSettings();
+				return true;
+			}
+
+			if (!CheckDotnet()) {
+				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+				return true;
+			}
+
+			return false;
+		}
+
+		private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null) {
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey),
+			() => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Utils.OpenToURL(url);
+			});
+		}
+
+		private bool CheckDotnet() {
+			if (dotnetSDKFound)
+				return true;
+
+			try {
+				string output = Process.Start(new ProcessStartInfo {
+					FileName = "dotnet",
+					Arguments = "--list-sdks",
+					UseShellExecute = false,
+					RedirectStandardOutput = true
+				}).StandardOutput.ReadToEnd();
+				Logging.tML.Info("\n" + output);
+
+				foreach (var line in output.Split('\n')) {
+					var dotnetVersion = new Version(new Regex("(.+?) ").Match(line).Groups[1].Value);
+					if (dotnetVersion >= new Version(6, 0)) {
+						dotnetSDKFound = true;
+						break;
+					}
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
+			}
+
+			return dotnetSDKFound;
 		}
 
 		internal void Populate() {

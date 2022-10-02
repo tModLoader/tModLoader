@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -116,6 +117,29 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="npc"></param>
 		public virtual void PostAI(NPC npc) {
+		}
+
+		/// <summary>
+		/// Use this judiciously to avoid straining the network.
+		/// <br/>Checks and methods such as <see cref="AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="npc">The NPC.</param>
+		/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
+		/// <param name="binaryWriter">The writer.</param>
+		public virtual void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter) {
+		}
+
+		/// <summary>
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="npc">The NPC.</param>
+		/// <param name="bitReader">The compressible bit reader.</param>
+		/// <param name="binaryReader">The reader.</param>
+		public virtual void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader) {
 		}
 
 		/// <summary>
@@ -674,6 +698,20 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+
+		/// <summary>
+		/// Allows you to modify the npc's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="victimHitbox"></param>
+		/// <param name="immunityCooldownSlot"></param>
+		/// <param name="damageMultiplier"></param>
+		/// <param name="npcHitbox"></param>
+		/// <returns></returns>
+		public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+			return true;
 		}
 
 		/// <summary>

@@ -1,5 +1,16 @@
 --- src/TerrariaNetCore/Terraria/UI/Chat/ChatManager.cs
 +++ src/tModLoader/Terraria/UI/Chat/ChatManager.cs
+@@ -147,7 +_,9 @@
+ 						result.Y = Math.Max(result.Y, vector.Y + value.Y);
+ 					}
+ 
+-					if (array.Length > 1) {
++					// Fix spacing with \n and chat tags, #2981
++					// Skips last line from counting, so "text\ntext", wouldn'be measured as "text\ntext\n"
++					if (array.Length > 1 && j < array2.Length - 1) {
+ 						vector.X = zero.X;
+ 						vector.Y += (float)font.LineSpacing * num2 * baseScale.Y;
+ 						result.Y = Math.Max(result.Y, vector.Y);
 @@ -253,7 +_,13 @@
  
  		public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, float rotation, Color color, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f) {

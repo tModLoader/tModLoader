@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -144,11 +145,13 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			currentMenu = MenutML; // Prevent asset disposed exceptions by disallowing modded menus during the unload process.
-
 			loading = true;
-			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
+			// Prevent asset disposed exceptions by disallowing modded menus during the unload process.
+			if (menus.IndexOf(currentMenu, 0, DefaultMenuCount) == -1) {
 				switchToMenu = MenutML;
+				while (currentMenu != MenutML) {
+					Thread.Yield();
+				}
 			}
 
 			lock (menus) {
