@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -18,10 +_,19 @@
+@@ -18,10 +_,15 @@
  {
  	public static class Program
  	{
@@ -11,23 +11,19 @@
 +		public static bool IsXna = false;
 +		public static bool IsFna = true;
 +#endif
-+#if MONO
-+		public static bool IsMono = true;
-+#else
- 		public static bool IsMono = false;
-+#endif
+ 		public static bool IsMono = Type.GetType("Mono.Runtime") != null;
 -		public const bool IsDebug = false;
 +		// public const bool IsDebug = false;
  		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
- 		private static int ThingsToLoad;
- 		private static int ThingsLoaded;
-@@ -147,6 +_,9 @@
- 			}
+ 		public static string SavePath;
+ 		public const string TerrariaSaveFolderPath = "Terraria";
+@@ -144,6 +_,9 @@
  
  			LaunchParameters = Utils.ParseArguements(args);
+ 			SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
 +#if SERVER
 +			Main.dedServ = true;
 +#endif
  			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
+ 			SetupLogging();

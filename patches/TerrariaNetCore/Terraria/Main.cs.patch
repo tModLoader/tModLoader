@@ -71,7 +71,7 @@
  
  				if (!hasFocus && netMode == 0) {
  					if (!Platform.IsOSX)
-@@ -42391,6 +_,7 @@
+@@ -42394,6 +_,7 @@
  			return result;
  		}
  
@@ -79,7 +79,7 @@
  		private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form) {
  			if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  				screenBorderlessPendingResizes--;
-@@ -42416,6 +_,7 @@
+@@ -42419,6 +_,7 @@
  			form.Location = new System.Drawing.Point(0, 0);
  			form.FormBorderStyle = FormBorderStyle.None;
  		}
@@ -87,7 +87,7 @@
  
  		public static void OpenCharacterSelectUI() {
  			menuMode = 888;
-@@ -53925,6 +_,9 @@
+@@ -53928,6 +_,9 @@
  
  		public static void SetDisplayMode(int width, int height, bool fullscreen) {
  			bool flag = false;
@@ -97,7 +97,7 @@
  			Form form = null;
  			if (Platform.IsWindows) {
  				form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -53939,6 +_,8 @@
+@@ -53942,6 +_,8 @@
  			else {
  				screenMaximized = false;
  			}
@@ -106,7 +106,7 @@
  
  			bool flag2 = false;
  			int num3;
-@@ -53954,11 +_,13 @@
+@@ -53957,11 +_,13 @@
  					}
  				}
  
@@ -120,7 +120,7 @@
  
  				if (width > maxScreenW) {
  					float num = (float)height / (float)width;
-@@ -53986,6 +_,7 @@
+@@ -53989,6 +_,7 @@
  			}
  			else {
  				PlayerInput.RawMouseScale = Vector2.One;
@@ -128,7 +128,7 @@
  				if (Platform.IsWindows) {
  					form.MinimumSize = new Size(minScreenW, minScreenH);
  					if (flag) {
-@@ -53993,6 +_,7 @@
+@@ -53996,6 +_,7 @@
  						height = displayHeight[0];
  					}
  				}
@@ -136,7 +136,7 @@
  
  				width = Math.Min(width, maxScreenW);
  				height = Math.Min(height, maxScreenH);
-@@ -54001,6 +_,7 @@
+@@ -54004,6 +_,7 @@
  				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  			}
  
@@ -144,7 +144,7 @@
  			if (Platform.IsWindows && !fullscreen && !flag2) {
  				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  					width = form.ClientSize.Width;
-@@ -54012,6 +_,7 @@
+@@ -54015,6 +_,7 @@
  					flag2 = true;
  				}
  			}
@@ -152,7 +152,7 @@
  
  			width &= 0x7FFFFFFE;
  			height &= 0x7FFFFFFE;
-@@ -54042,6 +_,7 @@
+@@ -54045,6 +_,7 @@
  				PendingResolutionWidth = screenWidth;
  				PendingResolutionHeight = screenHeight;
  				PlayerInput.CacheOriginalScreenDimensions();
@@ -160,7 +160,7 @@
  				if (Platform.IsWindows && !fullscreen) {
  					if (screenBorderless) {
  						ApplyBorderlessResolution(form);
-@@ -54054,6 +_,7 @@
+@@ -54057,6 +_,7 @@
  					form.SendToBack();
  					form.BringToFront();
  				}
