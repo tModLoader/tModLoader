@@ -45,8 +45,8 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			// Spawn two of the projectiles
-			// The two projectiles will have a different wave parity and draw color
+			// Spawn four of the projectiles
+			// The four projectiles will have different wave offsets and draw colors
 			Color[] colors = new Color[] { Color.Red, Color.Blue, Color.Yellow, Color.Green };
 			int projectileCount = 4;
 
