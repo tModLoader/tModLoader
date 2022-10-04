@@ -135,7 +135,8 @@ namespace ExampleMod.Content.Projectiles
 				rotationOrigin = new Vector2(5, 5);
 				rotation = Projectile.rotation + MathHelper.Pi;
 				effects = SpriteEffects.FlipHorizontally;
-			} else {
+			}
+			else {
 				rotationOrigin = new Vector2(13, 5);
 				rotation = Projectile.rotation;
 				effects = SpriteEffects.None;
