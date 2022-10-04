@@ -96,17 +96,21 @@ namespace ExampleMod.Content.Projectiles
 				// Offset is counter-clockwise to the direction
 				if (cosineAbsolute > cosineOf45Degrees) {
 					Projectile.frame = Projectile.direction == 1 ? 0 : 2;
-				} else {
+				}
+				else {
 					Projectile.frame = 1;
 				}
-			} else if (sine < 0) {
+			}
+			else if (sine < 0) {
 				// Offset is clockwise to the direction
 				if (cosineAbsolute > cosineOf45Degrees) {
 					Projectile.frame = Projectile.direction == 1 ? 2 : 0;
-				} else {
+				}
+				else {
 					Projectile.frame = 1;
 				}
-			} else {
+			}
+			else {
 				// Offset is zero
 				Projectile.frame = 1;
 			}
