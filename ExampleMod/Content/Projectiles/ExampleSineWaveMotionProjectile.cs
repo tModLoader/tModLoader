@@ -63,7 +63,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// How many oscillations happen per second
 			// Higher value = more oscillations
-			float wavesPerSecond = 1;
+			float wavesPerSecond = 2f;
 
 			float waveProgress = sineTimer / 60f * wavesPerSecond + waveOffset;  // 1 for each full sine wave
 			float radians = waveProgress * MathHelper.TwoPi;  // MathF.Sin expects a radians angle instead of degrees
@@ -74,8 +74,8 @@ namespace ExampleMod.Content.Projectiles
 			Vector2 offset = Projectile.velocity.SafeNormalize(Vector2.UnitX).RotatedBy(MathHelper.PiOver2 * -1);
 
 			// How wide the wave should be, times two
-			// An amplitude of 24 pixels is 1.5 tiles, meaning the total wave width is 48 pixels, or 3 tiles
-			float waveAmplitude = 48;
+			// An amplitude of 32 pixels is 2 tiles, meaning the total wave width is 64 pixels, or 4 tiles
+			float waveAmplitude = 32;
 
 			// Having the projectiles spawn offset from the player might not be ideal.  To fix that, let's reduce the amplitude when the projectile is freshly spawned
 			if (sineTimer < 20) {
@@ -93,19 +93,17 @@ namespace ExampleMod.Content.Projectiles
 
 			// Update the rotation used to draw the projectile
 			// This projectile should act as if it were moving along the sine wave.
-			// To get the expected rotation, just take the derivative of the change in offsets for the projectile, which is sin(x).
-			// This can be performed by using the cosine value, since the derivative of sin(x) is -cos(x).
-			// An alternative method would be to store the previous center in a variable, then make the rotation point from the previous center to the current center.
-			// Getting the cosine value here is faster and easier, so it will be used instead.
+			// The rotation can be calculated using the cosine value, which is the slope of the sine wave, and then stretching/squishing the slope based on the amplitude and wave frequency.
+			// Dividing the amplitude by 16 makes Atan() think that the slope is per-tile instead of per-pixel, which looks better.
 			float cosine = MathF.Cos(radians) * Projectile.direction;
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 * cosine * -1;
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathF.Atan(-1 * cosine * waveAmplitude / 16 * wavesPerSecond);
 
 			// Update the frame used to draw the projectile
-			const float sineOf45Degrees = 0.707106781f;
-			if (sine > sineOf45Degrees) {
+			const float sineOf60Degrees = 0.866025404f;
+			if (sine > sineOf60Degrees) {
 				Projectile.frame = Projectile.direction == 1 ? 0 : 2;
 			}
-			else if (sine < -sineOf45Degrees) {
+			else if (sine < -sineOf60Degrees) {
 				Projectile.frame = Projectile.direction == 1 ? 2 : 0;
 			}
 			else {
