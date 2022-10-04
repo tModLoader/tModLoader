@@ -18,7 +18,8 @@ namespace ExampleMod.Content.Projectiles
 		// This field is used as a counter for the wave motion
 		public int sineTimer;
 
-		public int waveDirection = 1;
+		// This field "offsets" the progress along the wave
+		public float waveOffset;
 
 		public Color drawColor = Color.Red;
 
@@ -58,16 +59,15 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void AI() {
-			// Ensure that the "waveDirection = 1" projectile starts above the "waveDirection = -1" projectile not matter which direction they were fired from
-			int trueDirection = Projectile.direction * waveDirection;
+			Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 
 			// How many oscillations happen per second
 			// Higher value = more oscillations
-			float wavesPerSecond = 2;
+			float wavesPerSecond = 1;
 
-			// Math.Sin expects a radians angle instead of degrees
-			float radians = MathHelper.ToRadians(sineTimer * 6f * wavesPerSecond);
-			float sine = (float)Math.Sin(radians) * trueDirection;
+			float waveProgress = sineTimer / 60f * wavesPerSecond + waveOffset;  // 1 for each full sine wave
+			float radians = waveProgress * MathHelper.TwoPi;  // MathF.Sin expects a radians angle instead of degrees
+			float sine = MathF.Sin(radians) * Projectile.direction;
 
 			// Using the calculated sine value, generate an offset used to position the projectile on the wave
 			// The offset should be perpendicular to the velocity direction, hence the RotatedBy call
@@ -75,7 +75,14 @@ namespace ExampleMod.Content.Projectiles
 
 			// How wide the wave should be, times two
 			// An amplitude of 24 pixels is 1.5 tiles, meaning the total wave width is 48 pixels, or 3 tiles
-			float waveAmplitude = 24;
+			float waveAmplitude = 48;
+
+			// Having the projectiles spawn offset from the player might not be ideal.  To fix that, let's reduce the amplitude when the projectile is freshly spawned
+			if (sineTimer < 20) {
+				// Up to 1/3rd of a second (20/60 = 1/3), make the amplitude grow to the intended size
+				float factor = 1f - sineTimer / 20f;
+				waveAmplitude *= 1f - factor * factor;
+			}
 
 			// Get the offset used to adjust the projectile's position
 			offset *= sine * waveAmplitude;
@@ -85,40 +92,28 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.Center = initialCenter + offset;
 
 			// Update the rotation used to draw the projectile
-			// This projectile should act as if it were moving along the sine wave
-			float cosine = (float)Math.Cos(radians) * trueDirection;
+			// This projectile should act as if it were moving along the sine wave.
+			// To get the expected rotation, just take the derivative of the change in rotation for the projectile, which is sin(x).
+			// This can be performed by using the cosine value, since the derivative of sin(x) is -cos(x).
+			// An alternative method would be to store the previous center in a variable, then make the rotation point from the previous center to the current center.
+			// Getting the cosine value here is faster and easier, so it will be used instead.
+			float cosine = MathF.Cos(radians) * Projectile.direction;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 * cosine * -1;
 
 			// Update the frame used to draw the projectile
-			const float cosineOf45Degrees = 0.707106781f;
-			float cosineAbsolute = Math.Abs(cosine);
-			if (sine > 0) {
-				// Offset is counter-clockwise to the direction
-				if (cosineAbsolute > cosineOf45Degrees) {
-					Projectile.frame = Projectile.direction == 1 ? 0 : 2;
-				}
-				else {
-					Projectile.frame = 1;
-				}
+			const float sineOf45Degrees = 0.707106781f;
+			if (sine > sineOf45Degrees) {
+				Projectile.frame = Projectile.direction == 1 ? 0 : 2;
 			}
-			else if (sine < 0) {
-				// Offset is clockwise to the direction
-				if (cosineAbsolute > cosineOf45Degrees) {
-					Projectile.frame = Projectile.direction == 1 ? 2 : 0;
-				}
-				else {
-					Projectile.frame = 1;
-				}
+			else if (sine < -sineOf45Degrees) {
+				Projectile.frame = Projectile.direction == 1 ? 2 : 0;
 			}
 			else {
-				// Offset is zero
 				Projectile.frame = 1;
 			}
 
 			// Spawn dusts
 			Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<Dusts.ExampleSolution>(), Velocity: Vector2.Zero, newColor: drawColor, Scale: 0.5f);
-
-			Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 
 			sineTimer++;
 		}

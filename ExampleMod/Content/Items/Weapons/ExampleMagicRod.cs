@@ -47,23 +47,18 @@ namespace ExampleMod.Content.Items.Weapons
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Spawn two of the projectiles
 			// The two projectiles will have a different wave parity and draw color
-			for (int i = 0; i < 2; i++) {
-				int waveDirection;
-				Color drawColor;
+			Color[] colors = new Color[] { Color.Red, Color.Blue, Color.Yellow, Color.Green };
+			int projectileCount = 4;
 
-				if (i == 0) {
-					waveDirection = 1;
-					drawColor = Color.Red;
-				} else {
-					waveDirection = -1;
-					drawColor = Color.Blue;
-				}
+			for (int i = 0; i < projectileCount; i++) {
+				// Be wary of dividing by zero when projectileCount is 1
+				float waveOffset = i / (float)(projectileCount - 1);
 
 				Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 
 				ExampleSineWaveMotionProjectile modProjectile = projectile.ModProjectile as ExampleSineWaveMotionProjectile;
-				modProjectile.waveDirection = waveDirection;
-				modProjectile.drawColor = drawColor;
+				modProjectile.waveOffset = waveOffset * (1f - 1f / projectileCount);  // Reduce the range so that there isn't an overlap of the first and last projectile
+				modProjectile.drawColor = colors[i];
 			}
 
 			return false;
