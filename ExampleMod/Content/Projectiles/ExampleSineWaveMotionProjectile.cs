@@ -93,7 +93,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Update the rotation used to draw the projectile
 			// This projectile should act as if it were moving along the sine wave.
-			// To get the expected rotation, just take the derivative of the change in rotation for the projectile, which is sin(x).
+			// To get the expected rotation, just take the derivative of the change in offsets for the projectile, which is sin(x).
 			// This can be performed by using the cosine value, since the derivative of sin(x) is -cos(x).
 			// An alternative method would be to store the previous center in a variable, then make the rotation point from the previous center to the current center.
 			// Getting the cosine value here is faster and easier, so it will be used instead.
