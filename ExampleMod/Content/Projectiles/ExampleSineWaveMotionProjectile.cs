@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Projectiles
 			float wavesPerSecond = 2f;
 
 			float waveProgress = sineTimer / 60f * wavesPerSecond + waveOffset;  // 1 for each full sine wave
-			float radians = waveProgress * MathHelper.TwoPi;  // MathF.Sin expects a radians angle instead of degrees
+			float radians = waveProgress * MathHelper.TwoPi;  // Convert the wave progress into an angle for MathF.Sin()
 			float sine = MathF.Sin(radians) * Projectile.direction;
 
 			// Using the calculated sine value, generate an offset used to position the projectile on the wave
