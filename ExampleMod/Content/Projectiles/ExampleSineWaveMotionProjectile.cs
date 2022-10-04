@@ -94,6 +94,7 @@ namespace ExampleMod.Content.Projectiles
 			// Update the rotation used to draw the projectile
 			// This projectile should act as if it were moving along the sine wave.
 			// The rotation can be calculated using the cosine value, which is the slope of the sine wave, and then stretching/squishing the slope based on the amplitude and wave frequency.
+			// The slope needs to be inverted due to negative slopes being "upwards" in Terraria's world space.
 			// Dividing the amplitude by 16 makes Atan() think that the slope is per-tile instead of per-pixel, which looks better.
 			float cosine = MathF.Cos(radians) * Projectile.direction;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathF.Atan(-1 * cosine * waveAmplitude / 16 * wavesPerSecond);
