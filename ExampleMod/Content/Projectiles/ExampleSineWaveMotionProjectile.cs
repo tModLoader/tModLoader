@@ -61,11 +61,13 @@ namespace ExampleMod.Content.Projectiles
 		public override void AI() {
 			Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 
-			// How many oscillations happen per second
-			// Higher value = more oscillations
-			float wavesPerSecond = 2f;
+			float velocityLength = Projectile.velocity.Length();
 
-			float waveProgress = sineTimer / 60f * wavesPerSecond + waveOffset;  // 1 for each full sine wave
+			// How long one wave should be, measured in pixels
+			// A stride of 300 pixels is 18.75 tiles
+			float waveStride = 300f;
+
+			float waveProgress = sineTimer * velocityLength / waveStride + waveOffset;  // 1 for each full sine wave
 			float radians = waveProgress * MathHelper.TwoPi;  // Convert the wave progress into an angle for MathF.Sin()
 			float sine = MathF.Sin(radians) * Projectile.direction;
 
@@ -92,12 +94,13 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.Center = initialCenter + offset;
 
 			// Update the rotation used to draw the projectile
-			// This projectile should act as if it were moving along the sine wave.
-			// The rotation can be calculated using the cosine value, which is the slope of the sine wave, and then stretching/squishing the slope based on the amplitude and wave frequency.
-			// The slope needs to be inverted due to negative slopes being "upwards" in Terraria's world space.
-			// Dividing the amplitude by 16 makes Atan() think that the slope is per-tile instead of per-pixel, which looks better.
-			float cosine = MathF.Cos(radians) * Projectile.direction;
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathF.Atan(-1 * cosine * waveAmplitude / 16 * wavesPerSecond);
+			if (velocityLength > 0) {
+				// This projectile should act as if it were moving along the sine wave.
+				// The rotation can be calculated using the cosine value, which is the slope of the sine wave, and then stretching/squishing the slope based on the amplitude and wave frequency.
+				// The slope needs to be inverted due to negative slopes being "upwards" in Terraria's world space.
+				float cosine = MathF.Cos(radians) * Projectile.direction;
+				Projectile.rotation = Projectile.velocity.ToRotation() + MathF.Atan(-1 * cosine * waveAmplitude * velocityLength / waveStride);
+			}
 
 			// Update the frame used to draw the projectile
 			const float sineOf60Degrees = 0.866025404f;

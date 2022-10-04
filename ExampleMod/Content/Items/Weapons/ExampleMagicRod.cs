@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.UseSound = SoundID.Item43;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<ExampleSineWaveMotionProjectile>();
-			Item.shootSpeed = 4; // How fast the item shoots the projectile.
+			Item.shootSpeed = 6.5f; // How fast the item shoots the projectile.
 			Item.mana = 18; // This is how much mana the item uses.
 		}
 
