@@ -1,5 +1,7 @@
 var NAVTREEINDEX31 =
 {
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[2,0,2,24,13,20],
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_walls.html":[3,0,2,23,13,21],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_walls.html":[2,0,2,24,13,21],
 "class_terraria_1_1_world_building_1_1_passes.html":[3,0,2,23,15],
 "class_terraria_1_1_world_building_1_1_passes.html":[2,0,2,24,15],
@@ -247,7 +249,5 @@ var NAVTREEINDEX31 =
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[3,0,2,5,41],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[2,0,2,6,41],
 "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[2,0,2,6,43],
-"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[3,0,2,5,43],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html":[2,0,2,6,10,21],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html":[3,0,2,5,10,21]
+"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[3,0,2,5,43]
 };

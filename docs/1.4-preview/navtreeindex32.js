@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html":[2,0,2,6,10,21],
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html":[3,0,2,5,10,21],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_chain_attempt.html":[3,0,2,5,10,22],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_chain_attempt.html":[2,0,2,6,10,22],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_condition.html":[3,0,2,5,10,23],
@@ -239,15 +241,13 @@ var NAVTREEINDEX32 =
 "namespace_terraria_1_1_mod_loader.html#affc5ce60a82065004f36d2c31383f84bac7cd7bb6472a947d26895c3d92ef9581":[2,0,2,14,192,3],
 "namespace_terraria_1_1_mod_loader_1_1_assets.html":[2,0,2,14,0],
 "namespace_terraria_1_1_mod_loader_1_1_config.html":[2,0,2,14,1],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073":[2,0,2,14,1,30],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262":[2,0,2,14,1,30,1],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984":[2,0,2,14,1,30,0],
+"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073":[2,0,2,14,1,31],
+"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262":[2,0,2,14,1,31,1],
+"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984":[2,0,2,14,1,31,0],
 "namespace_terraria_1_1_mod_loader_1_1_config_1_1_u_i.html":[2,0,2,14,1,0],
 "namespace_terraria_1_1_mod_loader_1_1_core.html":[2,0,2,14,2],
 "namespace_terraria_1_1_mod_loader_1_1_default.html":[2,0,2,14,3],
 "namespace_terraria_1_1_mod_loader_1_1_default_1_1_developer.html":[2,0,2,14,3,0],
 "namespace_terraria_1_1_mod_loader_1_1_default_1_1_developer_1_1_jofairden.html":[2,0,2,14,3,0,0],
-"namespace_terraria_1_1_mod_loader_1_1_default_1_1_patreon.html":[2,0,2,14,3,1],
-"namespace_terraria_1_1_mod_loader_1_1_engine.html":[2,0,2,14,4],
-"namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[2,0,2,14,5]
+"namespace_terraria_1_1_mod_loader_1_1_default_1_1_patreon.html":[2,0,2,14,3,1]
 };

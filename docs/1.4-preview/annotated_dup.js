@@ -963,6 +963,7 @@ var annotated_dup =
           [ "DefaultListValueAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html", null ],
           [ "DrawTicksAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_draw_ticks_attribute.html", null ],
           [ "EntityDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_entity_definition.html", null ],
+          [ "ExpandAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_expand_attribute.html", null ],
           [ "HeaderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_header_attribute.html", null ],
           [ "IncrementAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_increment_attribute.html", null ],
           [ "ItemDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_item_definition.html", null ],

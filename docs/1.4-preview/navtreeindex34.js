@@ -1,5 +1,7 @@
 var NAVTREEINDEX34 =
 {
+"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[2,0,2,8,4,12],
+"struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html":[2,0,2,8,12],
 "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html":[3,0,2,7,12],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html":[3,0,2,7,15],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html":[2,0,2,8,15],

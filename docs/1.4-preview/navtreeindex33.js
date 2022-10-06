@@ -1,5 +1,7 @@
 var NAVTREEINDEX33 =
 {
+"namespace_terraria_1_1_mod_loader_1_1_engine.html":[2,0,2,14,4],
+"namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[2,0,2,14,5],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[2,0,2,14,6],
 "namespace_terraria_1_1_mod_loader_1_1_u_i.html":[2,0,2,14,7],
 "namespace_terraria_1_1_mod_loader_1_1_u_i_1_1_download_manager.html":[2,0,2,14,7,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX33 =
 "struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[3,0,2,7,10],
 "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[2,0,2,8,11],
 "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[3,0,2,7,11],
-"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[3,0,2,7,4,12],
-"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[2,0,2,8,4,12],
-"struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html":[2,0,2,8,12]
+"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[3,0,2,7,4,12]
 };

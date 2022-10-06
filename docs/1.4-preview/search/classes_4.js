@@ -63,10 +63,11 @@ var searchData=
   ['events_60',['Events',['../class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t85ff211eed9faad9b712777a727959d5.html',1,'Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events'],['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_events.html',1,'Terraria.GameContent.RGB.CommonConditions.Events'],['../class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_events.html',1,'Terraria.ID.AchievementHelperID.Events']]],
   ['exception_61',['Exception',['../class_exception.html',1,'']]],
   ['expand_62',['Expand',['../class_terraria_1_1_world_building_1_1_modifiers_1_1_expand.html',1,'Terraria::WorldBuilding::Modifiers']]],
-  ['extendsfrommodattribute_63',['ExtendsFromModAttribute',['../class_terraria_1_1_mod_loader_1_1_extends_from_mod_attribute.html',1,'Terraria::ModLoader']]],
-  ['extensionfilter_64',['ExtensionFilter',['../struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html',1,'Terraria::Utilities::FileBrowser']]],
-  ['extrabestiaryinfopageinformation_65',['ExtraBestiaryInfoPageInformation',['../struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html',1,'Terraria::GameContent::UI::Elements']]],
-  ['extrasid_66',['ExtrasID',['../class_terraria_1_1_i_d_1_1_extras_i_d.html',1,'Terraria::ID']]],
-  ['eyeballshader_67',['EyeballShader',['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_eyeball_shader.html',1,'Terraria::GameContent::RGB']]],
-  ['eyeofcthulhushader_68',['EyeOfCthulhuShader',['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_eye_of_cthulhu_shader.html',1,'Terraria::GameContent::RGB']]]
+  ['expandattribute_63',['ExpandAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_expand_attribute.html',1,'Terraria::ModLoader::Config']]],
+  ['extendsfrommodattribute_64',['ExtendsFromModAttribute',['../class_terraria_1_1_mod_loader_1_1_extends_from_mod_attribute.html',1,'Terraria::ModLoader']]],
+  ['extensionfilter_65',['ExtensionFilter',['../struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html',1,'Terraria::Utilities::FileBrowser']]],
+  ['extrabestiaryinfopageinformation_66',['ExtraBestiaryInfoPageInformation',['../struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html',1,'Terraria::GameContent::UI::Elements']]],
+  ['extrasid_67',['ExtrasID',['../class_terraria_1_1_i_d_1_1_extras_i_d.html',1,'Terraria::ID']]],
+  ['eyeballshader_68',['EyeballShader',['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_eyeball_shader.html',1,'Terraria::GameContent::RGB']]],
+  ['eyeofcthulhushader_69',['EyeOfCthulhuShader',['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_eye_of_cthulhu_shader.html',1,'Terraria::GameContent::RGB']]]
 ];

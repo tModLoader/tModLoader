@@ -1,5 +1,7 @@
 var NAVTREEINDEX30 =
 {
+"class_terraria_1_1_u_i_1_1_empty_diagnostics_u_i.html":[3,0,2,21,7],
+"class_terraria_1_1_u_i_1_1_fancy_error_printer.html":[3,0,2,21,8],
 "class_terraria_1_1_u_i_1_1_fancy_error_printer.html":[2,0,2,22,8],
 "class_terraria_1_1_u_i_1_1_game_interface_layer.html":[3,0,2,21,9],
 "class_terraria_1_1_u_i_1_1_game_interface_layer.html":[2,0,2,22,9],
@@ -247,7 +249,5 @@ var NAVTREEINDEX30 =
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_rectangle_mask.html":[3,0,2,23,13,18],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_shape_scale.html":[2,0,2,24,13,19],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_shape_scale.html":[3,0,2,23,13,19],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[3,0,2,23,13,20],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[2,0,2,24,13,20],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_walls.html":[3,0,2,23,13,21]
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[3,0,2,23,13,20]
 };
