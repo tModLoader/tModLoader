@@ -119,7 +119,7 @@ namespace Terraria.ModLoader.Config.UI
 				};
 			}
 
-			expandButton = new UIModConfigHoverImage(expanded ? CollapsedTexture : ExpandedTexture, expanded ? "Collapse" : "Expand");
+			expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
 			expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 			expandButton.Left.Set(-79, 1f);
 			expandButton.OnClick += (a, b) => {
