@@ -9,6 +9,17 @@
  		private readonly List<IContentSource> _staticSources;
  		private readonly IAssetRepository _assetRepository;
  
+@@ -39,6 +_,10 @@
+ 			if (this.OnResourcePackChange != null)
+ 				this.OnResourcePackChange(resourcePacks);
+ 
++			if (resourcePacks.EnabledPacks.Any()) {
++				ModLoader.Logging.tML.Info("Loading the following resource packs: " + string.Join(", ", resourcePacks.EnabledPacks.Select(x => x.Name)));
++			}
++
+ 			ActiveResourcePackList = resourcePacks;
+ 			List<IContentSource> list = new List<IContentSource>(from pack in resourcePacks.EnabledPacks
+ 																 orderby pack.SortingOrder
 @@ -46,7 +_,7 @@
  
  			list.AddRange(_staticSources);
