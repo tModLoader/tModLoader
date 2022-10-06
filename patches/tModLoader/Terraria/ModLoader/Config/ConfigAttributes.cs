@@ -382,19 +382,23 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Affects whether this data will be expanded by default. The default value is true.
+	/// Affects whether this data will be expanded by default. The default value currently is true. Use the constructor with 2 parameters to control if list elements should be collapsed or expanded.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class ExpandAttribute : Attribute
 	{
 		public bool Expand { get; }
-		// TODO: Need? CollectionElement cannot nest itself. Can only be nested with ObjectElement.
-		// public bool? ExpandListElements  { get; }
+		public bool? ExpandListElements  { get; }
 
-		// public ExpandAttribute(bool? expand = null, bool? expandListElements = null ) {
+		// bool? not allowed in attribute ctor, so 2 ctors
 		public ExpandAttribute(bool expand = true) {
 			Expand = expand;
-			// ExpandListElements = expandListElements;
+			ExpandListElements = null;
+		}
+
+		public ExpandAttribute(bool expand = true, bool expandListElements = true) {
+			Expand = expand;
+			ExpandListElements = expandListElements;
 		}
 	}
 

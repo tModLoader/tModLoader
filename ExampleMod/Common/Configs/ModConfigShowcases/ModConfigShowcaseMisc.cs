@@ -64,7 +64,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		// In this example, the list defaults to collapse.
 		[Expand(false)]
-		public List<string> expand = new List<string>() { "1", "2", "3", "4", "5" };
+		public List<string> collapsedList = new List<string>() { "1", "2", "3", "4", "5" };
+
+		// This example collapses the list elements as well as the list itself.
+		[Expand(false, false)]
+		public List<Pair> collapsedListOfCollapsedObjects = new List<Pair>() { new Pair() { enabled = true, boost = 3 }, new Pair { enabled = true, boost = 6 } };
 
 		[Expand(false)]
 		public SimpleData simpleDataExample; // you can also initialize in the constructor, see initialization in public ModConfigShowcaseMisc() below.

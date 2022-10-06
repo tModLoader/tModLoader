@@ -108,9 +108,22 @@ namespace Terraria.ModLoader.Config.UI
 			//data = _GetValue();// memberInfo.GetValue(this.item);
 			//drawLabel = false;
 
-			var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
-			if (expandAttribute != null)
-				expanded = expandAttribute.Expand;
+			if (List == null) {
+				// Member > Class
+				var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+				if (expandAttribute != null)
+					expanded = expandAttribute.Expand;
+			}
+			else {
+				// ListMember's ExpandListElements > Class
+				var listType = MemberInfo.Type.GetGenericArguments()[0];
+				var expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(listType, typeof(ExpandAttribute), true);
+				if (expandAttribute != null)
+					expanded = expandAttribute.Expand;
+				expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(MemberInfo.MemberInfo, typeof(ExpandAttribute), true);
+				if (expandAttribute != null && expandAttribute.ExpandListElements.HasValue)
+					expanded = expandAttribute.ExpandListElements.Value;
+			}
 
 			dataList = new NestedUIList();
 			dataList.Width.Set(-14, 1f);
