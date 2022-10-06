@@ -37,12 +37,33 @@
  			services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
  			services.AddService(typeof(IAssetRepository), provider);
  		}
-@@ -597,6 +_,8 @@
+@@ -597,6 +_,29 @@
  			Main.ResourceSetsManager.LoadContent(mode);
  			Main.MinimapFrameManagerInstance.LoadContent(mode);
  			Main.AchievementAdvisor.LoadContent();
 +
 +			UICommon.LoadTextures(); // Added by TML.
++		}
++
++		private static bool canaryFilesChecked;
++		internal static void CheckCanaryFiles() {
++			if (canaryFilesChecked)
++				return;
++
++			// These checks ensure the latest Terraria is installed.
++			try {
++				Main.Assets.AssetLoadFailHandler = null;
++
++				LoadAsset<Texture2D>("Images/Projectile_981", AssetRequestMode.ImmediateLoad);
++			}
++			catch {
++				ModLoader.Engine.ErrorReporting.FatalExit("Terraria assets are missing, make sure to update Terraria to the latest version.");
++			}
++			finally {
++				Main.Assets.AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset;
++			}
++
++			canaryFilesChecked = true;
  		}
  
  		private static Asset<T> LoadAsset<T>(string assetName, AssetRequestMode mode) where T : class => Main.Assets.Request<T>(assetName, mode);

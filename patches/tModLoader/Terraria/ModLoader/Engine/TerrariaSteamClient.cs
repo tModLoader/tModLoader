@@ -140,6 +140,11 @@ namespace Terraria.ModLoader.Engine
 					return;
 				}
 
+				int TerrariaBuildID = SteamApps.GetAppBuildId();
+				Logger.Info("Terraria BuildID: " + TerrariaBuildID);
+				if (TerrariaBuildID < 9653812) // Currently v1.4.4.4. Update this when any Terraria update changes any asset.
+					Logger.Error("Terraria is out of date, you need to update Terraria in Steam.");
+
 				// Unfortunately, Valve doesn't support tModLoader for Family-shared Terraria, which has lead to this workaround.
 				// Does not support Steam Overlay or Steam multiplayer as such.
 				if (SteamApps.BIsSubscribedFromFamilySharing()) {
