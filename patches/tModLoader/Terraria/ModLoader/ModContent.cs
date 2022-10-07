@@ -268,6 +268,12 @@ namespace Terraria.ModLoader
 		public static int TileType<T>() where T : ModTile => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
+		/// Get the id (type) of a ModPylon by class. Assumes one instance per class.
+		/// If nothing is found, returns 0, or the "Forest Pylon" type.
+		/// </summary>
+		public static TeleportPylonType PylonType<T>() where T : ModPylon => GetInstance<T>()?.PylonType ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModTileEntity by class. Assumes one instance per class.
 		/// </summary>
 		public static int TileEntityType<T>() where T : ModTileEntity => GetInstance<T>()?.Type ?? 0;
@@ -300,7 +306,7 @@ namespace Terraria.ModLoader
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 				ContentInstance.Register(mod);
@@ -313,17 +319,27 @@ namespace Terraria.ModLoader
 				mod.loading = false;
 			});
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
+			Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			Main.ResourceSetsManager.AddModdedDisplaySets();
+			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.SetupContent();
+			});
+
+			ContentSamples.Initialize();
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
+			LoadModContent(token, mod => {
 				mod.PostSetupContent();
 				SystemLoader.PostSetupContent(mod);
 				mod.TransferAllAssets();
 			});
+
 
 			MemoryTracking.Finish();
 
@@ -335,12 +351,14 @@ namespace Terraria.ModLoader
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+			SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
+			PylonLoader.Setup();
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
+			KeybindLoader.SetupContent();
 
-			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupBestiary();
 			SetupRecipes(token);
@@ -359,15 +377,13 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.RegisterDefaultDisplays();
 		}
 
-		internal static Mod LoadingMod { get; private set; }
 		private static void LoadModContent(CancellationToken token, Action<Mod> loadAction) {
 			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(num++, mod);
 				try {
-					LoadingMod = mod;
 					loadAction(mod);
 				}
 				catch (Exception e) {
@@ -375,7 +391,6 @@ namespace Terraria.ModLoader
 					throw;
 				}
 				finally {
-					LoadingMod = null;
 					MemoryTracking.Update(mod.Name);
 				}
 			}
@@ -426,10 +441,7 @@ namespace Terraria.ModLoader
 
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
-				if (Main.dedServ)
-					Console.WriteLine($"Unloading {mod.DisplayName}...");
-				else
-					Interface.loadMods.SetCurrentMod(i++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(i++, mod);
 
 				try {
 					MonoModHooks.RemoveAll(mod);
@@ -451,6 +463,7 @@ namespace Terraria.ModLoader
 			PrefixLoader.Unload();
 			DustLoader.Unload();
 			TileLoader.Unload();
+			PylonLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 
@@ -468,6 +481,8 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
+			ResourceOverlayLoader.Unload();
+			ResourceDisplaySetLoader.Unload();
 
 			LoaderManager.Unload();
 
@@ -492,6 +507,7 @@ namespace Terraria.ModLoader
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+			Main.gameTips.Reset();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();
@@ -548,6 +564,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static void CleanupModReferences()
 		{
+			WorldGen.clearWorld();
+
 			// Clear references to ModPlayer instances
 			for (int i = 0; i < Main.player.Length; i++) {
 				Main.player[i] = new Player();
@@ -559,30 +577,11 @@ namespace Terraria.ModLoader
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
-			for (int i = 0; i < Main.npc.Length; i++) {
-				Main.npc[i] = new NPC();
-				Main.npc[i].whoAmI = i;
-			}
-
-			for (int i = 0; i < Main.item.Length; i++) {
-				Main.item[i] = new Item();
-				// item.whoAmI is never used
-			}
-
 			if (ItemSlot.singleSlotArray[0] != null) {
 				ItemSlot.singleSlotArray[0] = new Item();
 			}
 
-			for (int i = 0; i < Main.chest.Length; i++) {
-				Main.chest[i] = new Chest();
-			}
-
-			for (int i = 0; i < Main.projectile.Length; i++) {
-				Main.projectile[i] = new Projectile();
-				// projectile.whoAmI is only set for active projectiles
-			}
-
-			TileEntity.Clear(); // drop all possible references to mod TEs
+			WorldGen.ClearGenerationPasses(); // Clean up modded generation passes
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {

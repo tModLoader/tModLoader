@@ -36,6 +36,16 @@
  			_cachedSandstormSeverity = Sandstorm.Severity;
  			_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
  			_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
+@@ -255,7 +_,8 @@
+ 					}
+ 				}
+ 			}
+-			catch (Exception) {
++			catch (Exception e) {
++				Logging.Terraria.Error($"Error reading WorldFileData: {file}, IsCloudSave={cloudSave}", e);
+ 			}
+ 
+ 			return null;
 @@ -310,6 +_,7 @@
  			Main.checkXMas();
  			Main.checkHalloween();

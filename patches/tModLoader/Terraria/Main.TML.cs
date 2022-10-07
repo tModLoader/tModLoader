@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -186,10 +187,7 @@ namespace Terraria
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
-				string message = Language.GetTextValue("tModLoader.ContentFolderNotFound");
-				Logging.tML.Fatal(message);
-				Interface.MessageBoxShow(message);
-				Environment.Exit(1);
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 			}
 
 			if (Directory.Exists(Path.Combine("Content", "Images")))
@@ -230,6 +228,17 @@ namespace Terraria
 			var tcs = new TaskCompletionSource<T>();
 			QueueMainThreadAction(() => tcs.SetResult(func()));
 			return tcs.Task;
+		}
+
+		public static void AddSignalTraps() {
+			static void Handle(PosixSignalContext ctx) {
+				ctx.Cancel = true;
+				Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");
+				Netplay.Disconnect = true;
+			}
+
+			PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
+			PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
 		}
 	}
 }

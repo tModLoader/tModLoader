@@ -10,9 +10,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 	public class ExamplePetItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Paper Airplane");
-			Tooltip.SetDefault("Summons a Paper Airplane to follow aimlessly behind you");
-
+			// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

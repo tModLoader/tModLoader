@@ -35,6 +35,10 @@ Mods: {
 		DamageClassName: {
 			ExampleDamageClass: example damage
 		}
+
+		Keybind: {
+			RandomBuff: Random Buff
+		}
 		
 		NPCName: {
 			ExampleCustomAISlimeNPC: Flutter Slime
@@ -45,6 +49,8 @@ Mods: {
 		
 		MapObject: {
 			ExampleClock: Example Clock
+			ExamplePylonTile: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
+			ExamplePylonTileAdvanced: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
 		}
 		
 		ItemTooltip: {
@@ -52,7 +58,7 @@ Mods: {
 			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file. 
 			OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 			SarcophagusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
-			ExamplePet:
+			ExamplePetItem:
 				'''
 				Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you
 				Second Line!
@@ -74,27 +80,40 @@ Mods: {
 				The last shot has a 36% chance to not consume bullets
 				Shots that consume ammunition have their damage boosted by 20%
 				'''
+			ExamplePylonItem: 
+			'''
+			Must be within the Example Surface or Underground Biome in order to function.
+			Has no NPC requirements!
+			'''
+			ExamplePylonItemAdvanced: "Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!"
+			ExampleMultiUseItem: Can be used 4 times
 		}
 		
 		ItemName: {
-			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExamplePetItem: "{$Mods.ExampleMod.Common.PaperAirplane}"
 			ExampleSpecificAmmoGun: '''Example Rifle'''
+			ExamplePylonItem: "Example Pylon"
+			ExamplePylonItemAdvanced: "Unstable Pylon"
 		}
 		
 		ProjectileName: {
-			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExamplePetProjectile: "{$Mods.ExampleMod.Common.PaperAirplane}"
 		}
 		
 		BuffName: {
-			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExamplePetBuff: "{$Mods.ExampleMod.Common.PaperAirplane}"
 		}
 		
 		BuffDescription: {
-			ExamplePet: '''"Let this pet be an example to you!"'''
+			ExamplePetBuff: '''"Let this pet be an example to you!"'''
 		}
 		
 		RecipeConditions: {
 			Night: At Low Health
+		}
+
+		ResourceDisplaySet: {
+			ExampleReversedBarsDisplay: Swapped Bars
 		}
 		
 		Bestiary: {
@@ -131,6 +150,11 @@ Mods: {
 			}
 		}
 
+		MessageInfo: {
+			UnstablePylonIsOff: "That Unstable Pylon is currently inactive."
+			NearbyUnstablePylonIsOff: "The nearby Unstable Pylon is currently inactive."
+		}
+		
 		#This is used to display the NPC's dialogues.
 		Dialogue: {
 			ExamplePerson: {
@@ -154,6 +178,13 @@ Mods: {
 				StandardDialogue3 : "I'm a traveling merchant, and I sell things."
 				HiveBackpackDialogue : "Hey, if you find a [i:HiveBackpack], my cousin can upgrade it for you."
 			}
+		}
+
+		GameTips: {
+			ExampleTip0: "Woah! Example Tip!"
+			ExampleTip1: "This tip was added by Example Mod!"
+			ExampleTip2: "This is yet another tip added by Example Mod!"
+			DisabledExampleTip: "This tip will be added but then disabled by Example Mod."
 		}
 	}
 }

@@ -21,7 +21,11 @@
 		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		// "ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		// "ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
-		// "ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
+		// "DependenciesNeededForOtherMods": "\nSome dependencies are missing:",
+		// "InstallDependencies": "Install Dependencies",
+		// "ContinueAnyway": "Continue Anyway",
+		// "ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Voir sur GitHub",
 		"tModLoaderSettings": "Paramètres de tModLoader",
 		"ModMenuSwap": "Changer de Thème de Menu",
@@ -29,6 +33,7 @@
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "Aucun matériel audio trouvé. Désactivation de tout l’audio.",
 		// "13InfoButton": "How to Access 1.3 tModLoader",
+		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",
@@ -36,7 +41,8 @@
 		"ModsDisableAll": "Tout désactiver",
 		"ModsReloadMods": "Relancer les Mods",
 		// "ModsForceReload": "Force Reload",
-		"ModsOpenModsFolder": "Dossier des Mods",
+		"ModsOpenModsFolders": "Dossier des Mods",
+		// "ModsOpenModsFoldersTooltip": "The mods folder in My Games is for manually installed mods.\nThe workshop folder is managed by Steam.",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -80,6 +86,17 @@
 		"ModsNotFoundServer": "Aucun Mod n'a été trouvé à: \"{0}\"\nSi vous exécutez un serveur dédié, vous pouvez utiliser le commutateur de ligne de commande 'modpath' ou le paramètre de configuration du serveur pour spécifier un répertoire de mods personnalisés.\n",
 		"AskForModIndex": "Tapez un nombre pour basculer entre activé/désactivé",
 		"AskForCommand": "Tapez une commande: ",
+
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
 
 		// Interface
 		"BossBarStyle": "Style de Barre de Patron: {0}",
@@ -145,6 +162,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Ressource supposée introuvable :\n    {0}\nRésultat le plus probable: (Possiblement un typo ou un mauvais emplacement?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Exception capturée silencieusement : ",
 		"RuntimeErrorSeeLogsForFullTrace": "(Voir {0} pour plus de détails)",
+		// "PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Ouvrir les Registres",
 		"OpenWebHelp": "Ouvrir l'Aide Internet",
 		"SkipToMainMenu": "Sauter le chargement",
@@ -167,9 +185,13 @@
 		"ModPacksEnterModPackName": "Entrer le nom du Pack",
 		"ModPackViewList": "Voir la liste",
 		"ModPackEnableThisList": "Activer cette liste",
+		// "ModPackEnableThisListDesc": "Enables all mods included in modpack using\nlatest mod versions found on Steam Workshop",
 		"ModPackEnableOnlyThisList": "Activer uniquement cette liste",
+		// "ModPackEnableOnlyThisListDesc": "Disables all mods & enables the modpack using\nlatest mod versions found on Steam Workshop",
 		"ModPackUpdateListWithEnabled": "Mettre à jour la liste en intégrant les Mods actifs",
+		// "ModPackUpdateListWithEnabledDesc": "Updates the mod pack or collection with the\ncurrently enabled set of mods",
 		"ModPackViewModsInModBrowser": "Voir les Mods dans le navigateur",
+		// "ModPackViewModsInModBrowserDesc": "View the mods included in pack on Mod Browser",
 		"ModPackModsAvailableStatus": "{0} Total, {1} Activés, {2} Inactifs, {3} Manquants",
 		"ModPackModsMissing": "Les Mods suivants n'ont pas été trouvés :\n{0}",
 		"ModPackModsContained": "Cette liste contient les Mods suivants :\n{0}",
@@ -178,6 +200,16 @@
 		"ModPackLoadingSpecifiedModPack": "Chargement du Modpack spécifié : {0}",
 		"ModPackDoesNotExist": "Le Modpack {0} n'existe pas.",
 		"ModPackMalformed": "Le Modpack {0} n'a pas été lu correctement, il pourrait être mal formé. ({1})",
+		// "CurrentModPack": "Current Mod Pack: {0}",
+		// "ExportPackInstance": "Export Pack Instance",
+		// "ExportPackInstanceDesc": "Exports a copy of mods to InstallDirectory so\ncan setup second instance of tModLoader\nOR quickly setup a server with the pack",
+		// "DeletePackInstance": "Delete Instance",
+		// "DeletePackInstanceDesc": "Deletes all files in InstallDirectory/<ModPackName>",
+		// "RemovePackLocal": "Remove Pack (Local)",
+		// "RemovePackLocalDesc": "Disables all mods & removes the frozen mods\nfrom tModLoader mod loading path",
+		// "InstallPackLocal": "Import Pack (Local)",
+		// "InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
+		// "ModPackMismatch": "Last Mod Pack: {0}",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisation des Mods",
@@ -271,6 +303,9 @@
 		"ExperimentalFeaturesNo": "Mode expérimental : Non",
 		"RemoveForcedMinimumZoomYes": "Enlever la limite forcée de Zoom Minimum : Oui",
 		"RemoveForcedMinimumZoomNo": "Enlever la limite forcée de Zoom Minimum : Non",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Autoriser de plus grandes Résolutions : Oui",
 		"AllowGreaterResolutionsNo": "Autoriser de plus grandes Résolutions : Non",
 		"ShowMemoryEstimatesYes": "Montrer les estimations de mémoire par Mod : Oui",
@@ -326,7 +361,8 @@
 		"MSCreateMod": "Créer un Mod",
 		"VersionUpgrade": "LIEN: En savoir plus sur la migration des Mods pour la dernière mise à jour",
 		// "MSPortToLatest": "Run tModPorter",
-		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
+		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. After installing, you may need to restart tModLoader. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
+		// "DownloadNetSDK": "Download .NET SDK",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Des bibliothèques logicielles supplémentaires sont requises pour compiler des Mods. (Dossier ModCompile manquant)",
@@ -374,13 +410,13 @@
 		"MSFinding": "Listage des Mods...",
 		"MSInstantiating": "Instanciation des Mods...",
 		"MSSandboxing": "Compatibilisation : {0}",
-		"MSIntializing": "Initialisation : {0}",
 		"MSLoading": "Lancement du Mod : {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finalisation du chargement des ressources",
-		"MSSettingUp": "Installation...",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
-		"AddingModContent": "Ajout de contenu de mod...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
@@ -392,6 +428,12 @@
 		"DefaultTownNPCName": "Sans-Nom",
 		"DefaultTownNPCChat": "Mon Moddeur a oublié de me donner un message de dialogue.",
 		"DefaultNurseCantHealChat": "Je ne sais pas pourquoi je ne peux pas vous soigner, le Moddeur a oublié de me donner un message de dialogue.",
+
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
 
 		// Memory bar
 		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",
@@ -423,7 +465,6 @@
 
 		// MessageBox
 		"ContentFolderNotFound": "Dossier de contenu Terraria introuvable. Si vous avez installé tModLoader via Steam, assurez-vous que Terraria est installé. Sinon, assurez-vous d'installer tModLoader dans un dossier imbriqué dans le répertoire d'installation de Terraria ou un dossier à côté du répertoire d'installation de Terraria.",
-		"MissingServerExecutable": "On dirait que vous n'avez pas fait une installation complète. Il vous manque tModLoaderServer.exe. Vérifiez votre répertoire d'installation et lisez les instructions d'installation.",
 		"GraphicsEngineFailure": "Défaillance du Moteur Graphique",
 		"GraphicsEngineReportUnknown": "Inconnu",
 		"GraphicsEngineReportFailure": "Échec",
@@ -431,15 +472,17 @@
 		"OutOfMemory": "Le jeu a manqué de mémoire. Vous devrez trouver quel mod consomme beaucoup de mémoire et contacter les développeurs ou le supprimer.",
 		"VanillaSteamInstallationNotFound": "Installation de Terraria Steam ou répertoire de contenu de Terraria introuvable.\r\n\r\nVeuillez vous assurer que Terraria 1.4 est installé via Steam.",
 		"SteamAPIHashMismatch": "Incompatibilité de hachage de l'API Steam, supposée piratée.\n\ntModLoader nécessite une installation Terraria légitime pour fonctionner.",
+		// "SteamInitFailed": "SteamAPI.Init failed. Try logging out of Steam and restarting it.\n\nCheck terrariasteamclient.log and Natives.Log for details",
+		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
 		"VanillaGOGNotFound": "{0} introuvable.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner. Cette version de tModLoader attend la version {1} de Terraria, vous devrez peut-être rétrograder ou mettre à niveau Terraria via GOG Galaxy, ou attendre que tModLoader se mette à jour.",
 		"GOGHashMismatch": "{0} n'est pas l'exécutable Terraria non modifié.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner.\r\n\r\nSi vous avez patché le .exe, vous pouvez créer une copie de l'exe d'origine et le nommer \"Terraria_v<VERSION>.exe\"",
 		"DefaultExtraMessage": "Veuillez restaurer votre installation de Terraria, puis installer tModLoader sur Steam ou en suivant les instructions README.txt pour une installation manuelle.",
-		"ClientLogHint": "{0}\n\nClient.un fichier journal contenant des informations d'erreur a été généré dans\n{1}\n(Vous devrez partager ce fichier si vous demandez de l'aide)",
-		"OutOfMemoryHint": "\n\nConseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire. En option, installez tModLoader 64 bits",
-		"ModExceptionHint": "\n\nConseil: C'est probablement la faute d'un mod. Désactivez les mods un par un et vérifiez si le problème persiste",
-		"OneDriveHint": "\n\nConseil: Essayez d'installer/activer OneDrive. Faites un clic droit sur votre dossier de documents et activez \"Toujours enregistrer sur cet appareil\"",
-		"AntivirusHint": "\n\nConseil: Si vous avez un antivirus, essayez d’ajouter Terraria à sa liste blanche/d’exclusion",
-		"TypeInitializationHint": "\n\nConseil: Redémarrez le jeu. Si ce problème persiste, essayez de désinstaller complètement Terraria, puis de réinstaller via Steam, puis de réinstaller tModLoader"
+		"LogPathHint": "{0} fichier journal contenant des informations d'erreur a été généré dans\n{1}\n(Vous devrez partager ce fichier si vous demandez de l'aide)",
+		"OutOfMemoryHint": "Conseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire. En option, installez tModLoader 64 bits",
+		"ModExceptionHint": "Conseil: C'est probablement la faute d'un mod. Désactivez les mods un par un et vérifiez si le problème persiste",
+		"OneDriveHint": "Conseil: Essayez d'installer/activer OneDrive. Faites un clic droit sur votre dossier de documents et activez \"Toujours enregistrer sur cet appareil\"",
+		"AntivirusHint": "Conseil: Si vous avez un antivirus, essayez d’ajouter Terraria à sa liste blanche/d’exclusion",
+		"TypeInitializationHint": "Conseil: Redémarrez le jeu. Si ce problème persiste, essayez de désinstaller complètement Terraria, puis de réinstaller via Steam, puis de réinstaller tModLoader"
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		// "TagsContent": "New Content",
 		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
@@ -500,5 +543,8 @@
 		"InGemCave": "Doit être dans la Grotte des Gemmes",
 		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd",
 		"InGraveyardBiome": "Doit être dans le Biome du Cimetière"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

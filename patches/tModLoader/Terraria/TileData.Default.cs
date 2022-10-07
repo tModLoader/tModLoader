@@ -100,7 +100,7 @@ namespace Terraria
 				return slope == SlopeType.Solid ? BlockType.Solid : (BlockType)(slope + 1);
 			}
 			set {
-				IsHalfBlock = value != BlockType.HalfBlock;
+				IsHalfBlock = value == BlockType.HalfBlock;
 				Slope = value > BlockType.HalfBlock ? (SlopeType)(value - 1) : SlopeType.Solid;
 			}
 		}

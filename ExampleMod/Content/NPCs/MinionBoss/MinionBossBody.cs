@@ -229,6 +229,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
 		}
 
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+			cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			return true;
+		}
+
 		public override void FindFrame(int frameHeight) {
 			// This NPC animates with a simple "go from start frame to final frame, and loop back to start frame" rule
 			// In this case: First stage: 0-1-2-0-1-2, Second stage: 3-4-5-3-4-5, 5 being "total frame count - 1"

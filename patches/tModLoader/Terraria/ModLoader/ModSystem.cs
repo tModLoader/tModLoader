@@ -24,11 +24,11 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModSystem>.Register(this);
 		}
 
-		//ModSystem provides its own PostSetupContent hook which runs in a different context, closer to Mod
-		public sealed override void SetStaticDefaults() { }
-
-		//Per above comment, SetStaticDefaults is unused
-		public sealed override void SetupContent() { }
+		/// <summary>
+		/// Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults.
+		/// This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent
+		/// </summary>
+		public override void SetupContent() => SetStaticDefaults();
 
 		//Hooks
 
@@ -210,6 +210,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="layers">The layers.</param>
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
+
+		/// <summary>
+		/// Allows you to set the visibility of any added vanilla or modded GameTips. In order to add your OWN tips, add them in
+		/// your localization file, with the key prefix of "Mods.ModName.GameTips".
+		/// </summary>
+		/// <param name="gameTips"> The current list of all added game tips. </param>
+		public virtual void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips) { }
 
 		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.

@@ -20,6 +20,9 @@ namespace Terraria.ModLoader.Default
 		private const int ChanceToGetPatreonArmor = 20;
 		private const int ChanceToGetDevArmor = 30;
 
+		internal const byte AccessorySlotPacket = 0;
+		internal const byte StatResourcesPacket = 1;
+
 		public override string Name => "ModLoader";
 		public override Version Version => BuildInfo.tMLVersion;
 
@@ -64,6 +67,23 @@ namespace Terraria.ModLoader.Default
 			return false;
 		}
 
-		public override void HandlePacket(BinaryReader reader, int whoAmI) => ModAccessorySlotPlayer.NetHandler.HandlePacket(reader, whoAmI);
+		public override void HandlePacket(BinaryReader reader, int whoAmI) {
+			byte packetType = reader.ReadByte();
+
+			switch (packetType) {
+				case AccessorySlotPacket:
+					ModAccessorySlotPlayer.NetHandler.HandlePacket(reader, whoAmI);
+					break;
+				case StatResourcesPacket:
+					ConsumedStatIncreasesPlayer.NetHandler.HandlePacket(reader, whoAmI);
+					break;
+			}
+		}
+
+		internal static ModPacket GetPacket(byte packetType) {
+			ModPacket packet = ModContent.GetInstance<ModLoaderMod>().GetPacket();
+			packet.Write(packetType);
+			return packet;
+		}
 	}
 }

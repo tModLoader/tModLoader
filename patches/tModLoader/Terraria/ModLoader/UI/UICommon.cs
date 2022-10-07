@@ -15,23 +15,33 @@ namespace Terraria.ModLoader.UI
 	{
 		public static Color DefaultUIBlue = new Color(73, 94, 171);
 		public static Color DefaultUIBlueMouseOver = new Color(63, 82, 151) * 0.7f;
+		public static Color DefaultUIBorder = Color.Black;
+		public static Color DefaultUIBorderMouseOver = Colors.FancyUIFatButtonMouseOver;
 		public static Color MainPanelBackground = new Color(33, 43, 79) * 0.8f;
 
 		public static StyleDimension MaxPanelWidth = new StyleDimension(600, 0);
 
-		public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default) where T : UIPanel {
+		public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default, Color overBorderColor = default, Color outBorderColor = default) where T : UIPanel {
 			if (overColor == default)
 				overColor = DefaultUIBlue;
 
 			if (outColor == default)
 				outColor = DefaultUIBlueMouseOver;
 
+			if (overBorderColor == default)
+				overBorderColor = DefaultUIBorderMouseOver;
+
+			if (outBorderColor == default)
+				outBorderColor = DefaultUIBorder;
+
 			elem.OnMouseOver += (evt, _) => {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				elem.BackgroundColor = overColor;
+				elem.BorderColor = overBorderColor;
 			};
 			elem.OnMouseOut += (evt, _) => {
 				elem.BackgroundColor = outColor;
+				elem.BorderColor = outBorderColor;
 			};
 			return elem;
 		}
@@ -61,10 +71,10 @@ namespace Terraria.ModLoader.UI
 		public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null) {
 			if (bounds == null)
 				bounds = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-			float x = FontAssets.MouseText.Value.MeasureString(text).X;
+			Vector2 stringSize = FontAssets.MouseText.Value.MeasureString(text);
 			Vector2 vector = Main.MouseScreen + new Vector2(16f);
-			vector.X = Math.Min(vector.X, bounds.Value.Right - x - 16);
-			vector.Y = Math.Min(vector.Y, bounds.Value.Bottom - 30);
+			vector.X = Math.Min(vector.X, bounds.Value.Right - stringSize.X - 16);
+			vector.Y = Math.Min(vector.Y, bounds.Value.Bottom - stringSize.Y - 16);
 			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
 		}
 

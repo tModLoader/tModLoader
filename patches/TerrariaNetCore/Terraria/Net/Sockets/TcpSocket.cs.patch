@@ -1,0 +1,49 @@
+--- src/Terraria/Terraria/Net/Sockets/TcpSocket.cs
++++ src/TerrariaNetCore/Terraria/Net/Sockets/TcpSocket.cs
+@@ -57,6 +_,7 @@
+ 		}
+ 
+ 		private void SendCallback(IAsyncResult result) {
++			/*
+ #if WINDOWS
+ 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)result.AsyncState;
+ #else
+@@ -64,9 +_,15 @@
+ 			LegacyNetBufferPool.ReturnBuffer((byte[])expr_0B[1]);
+ 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)expr_0B[0];
+ #endif
++			*/
++
++			var (callback, state, loanedBuffer) = ((SocketSendCallback, object, byte[]))result.AsyncState;
++			if (loanedBuffer != null)
++				LegacyNetBufferPool.ReturnBuffer(loanedBuffer);
++
+ 			try {
+ 				_connection.GetStream().EndWrite(result);
+-				tuple.Item1(tuple.Item2);
++				callback(state);
+ 			}
+ 			catch (Exception) {
+ 				((ISocket)this).Close();
+@@ -77,6 +_,7 @@
+ 		}
+ 
+ 		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
++			/*
+ #if WINDOWS
+ 			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, new Tuple<SocketSendCallback, object>(callback, state));
+ #else
+@@ -87,6 +_,13 @@
+ 				array
+ 			});
+ #endif
++			*/
++
++			byte[] loanedBuffer = null;
++			if (!OperatingSystem.IsWindows()) // defensively copy the buffer, to prevent overruns when flow control can't keep up with the data write rate
++				loanedBuffer = data = LegacyNetBufferPool.RequestBuffer(data, offset, size);
++
++			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer));
+ 		}
+ 
+ 		void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state) {

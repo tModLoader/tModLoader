@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/XnaDirectContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/XnaDirectContentSource.cs
-@@ -1,56 +_,22 @@
+@@ -1,72 +_,36 @@
  using System;
 -using System.Collections.Generic;
  using System.IO;
@@ -19,8 +19,11 @@
 -			get;
 -			set;
 -		}
- 
- 		public XnaDirectContentSource(string rootDirectory) {
+-
+-		public XnaDirectContentSource(string rootDirectory) {
++		private readonly string _alternateRootDirectory;
++
++		public XnaDirectContentSource(string rootDirectory, string alternateRootDirectory) {
  			_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
 -			BuildFileMap();
 -		}
@@ -56,17 +59,24 @@
 -
 -		public Stream OpenStream(string assetName) {
 -			string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
++			_alternateRootDirectory = AssetPathHelper.CleanPath(alternateRootDirectory);
++
 +			SetAssetNames(
 +				Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
-+				.Select(path => path.Substring(_rootDirectory.Length+1)));
++				.Select(path => path.Substring(_rootDirectory.Length+1))
++				.Concat(Directory.GetFiles(_alternateRootDirectory, "*.xnb", SearchOption.AllDirectories)
++				.Select(path => path.Substring(_alternateRootDirectory.Length + 1))).ToHashSet());
 +		}
 +
 +		public override Stream OpenStream(string assetName) {
 +			string path = Path.Combine(_rootDirectory, assetName);
++			string altPath = Path.Combine(_alternateRootDirectory, assetName);
  			try {
++				if (File.Exists(altPath))
++					return File.OpenRead(altPath);
  				return File.OpenRead(path);
  			}
-@@ -58,15 +_,5 @@
+ 			catch (Exception innerException) {
  				throw AssetLoadException.FromMissingAsset(assetName, innerException);
  			}
  		}

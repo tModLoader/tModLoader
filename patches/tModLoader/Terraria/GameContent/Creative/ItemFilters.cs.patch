@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Creative/ItemFilters.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemFilters.cs
+@@ -5,6 +_,7 @@
+ using Terraria.DataStructures;
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.Creative
 @@ -19,6 +_,7 @@
  			private bool[] _unusedBadPrefixLines = new bool[30];
  			private int _unusedYoyoLogo;
@@ -17,3 +25,12 @@
  				for (int i = 0; i < numLines; i++) {
  					if (_toolTipLines[i].ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  						return true;
+@@ -323,7 +_,7 @@
+ 			private bool[] _fitsFilterByItemType;
+ 
+ 			public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst) {
+-				short num = 5125;
++				int num = ItemLoader.ItemCount;
+ 				_fitsFilterByItemType = new bool[num];
+ 				for (int i = 1; i < num; i++) {
+ 					_fitsFilterByItemType[i] = true;

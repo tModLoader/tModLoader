@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
 	internal class JofairdenHeadShader : JofairdenArmorShaderLayer
 	{
-		private static Asset<Texture2D> _shaderTexture;
+		private Asset<Texture2D> _shaderTexture;
 
 		public override bool IsHeadLayer => true;
 

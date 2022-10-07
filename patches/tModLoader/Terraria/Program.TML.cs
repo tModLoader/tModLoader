@@ -2,12 +2,12 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria
 {
@@ -119,6 +119,11 @@ namespace Terraria
 			}
 			
 			Logging.tML.Info($"Save Are Located At: {Path.GetFullPath(SavePath)}");
+
+			if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
+				Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
+			if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
+				Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
 		}
 
 		private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.

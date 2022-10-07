@@ -117,6 +117,7 @@ namespace Terraria.ModLoader.Config
 	{
 		public static readonly Func<TagCompound, NPCDefinition> DESERIALIZER = Load;
 
+		// TODO: doesn't handle negative I think?
 		public override int Type => NPCID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
 
 		public NPCDefinition() : base() { }

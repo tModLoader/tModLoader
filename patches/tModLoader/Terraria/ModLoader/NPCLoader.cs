@@ -16,6 +16,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -36,7 +37,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static readonly IList<int> blockLoot = new List<int>();
 
-		private static Instanced<GlobalNPC>[] globalNPCsArray = new Instanced<GlobalNPC>[0];
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
 
@@ -129,10 +129,6 @@ namespace Terraria.ModLoader
 				Main.npcFrameCount[k] = 1;
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
-
-			globalNPCsArray = globalNPCs
-				.Select(g => new Instanced<GlobalNPC>(g.index, g))
-				.ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalNPCs);
@@ -292,15 +288,29 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static byte[] WriteExtraAI(NPC npc) {
-			if (npc.ModNPC == null) {
-				return Array.Empty<byte>();
-			}
+		private static HookList HookWriteExtraAI = AddHook<Action<NPC, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
+		public static byte[] WriteExtraAI(NPC npc) {
 			using var stream = new MemoryStream();
 			using var modWriter = new BinaryWriter(stream);
 
-			npc.ModNPC.SendExtraAI(modWriter);
+			npc.ModNPC?.SendExtraAI(modWriter);
+
+			using var bufferedStream = new MemoryStream();
+			using var globalWriter = new BinaryWriter(bufferedStream);
+
+			BitWriter bitWriter = new BitWriter();
+
+			foreach (GlobalNPC g in HookWriteExtraAI.Enumerate(npc.globalNPCs)) {
+				g.SendExtraAI(npc, bitWriter, globalWriter);
+			}
+
+			bitWriter.Flush(modWriter);
+
+			modWriter.Write(bufferedStream.ToArray());
+
+			globalWriter.Flush();
+
 			modWriter.Flush();
 
 			return stream.ToArray();
@@ -310,15 +320,38 @@ namespace Terraria.ModLoader
 			return reader.ReadBytes(reader.Read7BitEncodedInt());
 		}
 
-		public static void ReceiveExtraAI(NPC npc, byte[] extraAI) {
-			if (npc.ModNPC == null) {
-				return;
-			}
+		private static HookList HookReceiveExtraAI = AddHook<Action<NPC, BitReader, BinaryReader>>(g => g.ReceiveExtraAI);
 
+		public static void ReceiveExtraAI(NPC npc, byte[] extraAI) {
 			using var stream = new MemoryStream(extraAI);
 			using var modReader = new BinaryReader(stream);
 
-			npc.ModNPC.ReceiveExtraAI(modReader);
+			npc.ModNPC?.ReceiveExtraAI(modReader);
+
+			BitReader bitReader = new BitReader(modReader);
+
+			try {
+				foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc.globalNPCs)) {
+					g.ReceiveExtraAI(npc, bitReader, modReader);
+				}
+
+				if (bitReader.BitsRead < bitReader.MaxBits) {
+					throw new IOException($"Read underflow {bitReader.MaxBits - bitReader.BitsRead} of {bitReader.MaxBits} compressed bits in ReceiveExtraAI, more info below");
+				}
+
+				if (stream.Position < stream.Length) {
+					throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				}
+			}
+			catch (IOException e) {
+				Logging.tML.Error(e.ToString());
+
+				string culprits = $"Above IOException error in NPC {(npc.ModNPC == null ? npc.TypeName : npc.ModNPC.FullName)} may be caused by one of these:";
+				foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc.globalNPCs)) {
+					culprits += $"\n    {g.Name}";
+				}
+				Logging.tML.Error(culprits);
+			}
 		}
 
 		private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);
@@ -441,7 +474,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalLoot>>(g => g.ModifyGlobalLoot);
 		public static void ModifyGlobalLoot(GlobalLoot globalLoot) {
-			foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCs)) {
 				g.ModifyGlobalLoot(globalLoot);
 			}
 		}
@@ -839,7 +872,7 @@ namespace Terraria.ModLoader
 		private static HookList HookEditSpawnRate = AddHook<DelegateEditSpawnRate>(g => g.EditSpawnRate);
 
 		public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
-			foreach (GlobalNPC g in HookEditSpawnRate.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookEditSpawnRate.Enumerate(globalNPCs)) {
 				g.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
 			}
 		}
@@ -850,7 +883,7 @@ namespace Terraria.ModLoader
 
 		public static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
 			ref int safeRangeX, ref int safeRangeY) {
-			foreach (GlobalNPC g in HookEditSpawnRange.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookEditSpawnRange.Enumerate(globalNPCs)) {
 				g.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
 			}
 		}
@@ -869,7 +902,7 @@ namespace Terraria.ModLoader
 					pool[npc.NPC.type] = weight;
 				}
 			}
-			foreach (GlobalNPC g in HookEditSpawnPool.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookEditSpawnPool.Enumerate(globalNPCs)) {
 				g.EditSpawnPool(pool, spawnInfo);
 			}
 			float totalWeight = 0f;
@@ -926,7 +959,7 @@ namespace Terraria.ModLoader
 		public static void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 			npc.ModNPC?.ModifyNPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 
-			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCs)) {
 				g.Instance(npc).ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 			}
 		}
@@ -1066,7 +1099,7 @@ namespace Terraria.ModLoader
 			else {
 				GetNPC(type)?.SetupShop(shop, ref nextSlot);
 			}
-			foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
 				g.SetupShop(type, shop, ref nextSlot);
 			}
 		}
@@ -1075,7 +1108,7 @@ namespace Terraria.ModLoader
 		private static HookList HookSetupTravelShop = AddHook<DelegateSetupTravelShop>(g => g.SetupTravelShop);
 
 		public static void SetupTravelShop(int[] shop, ref int nextSlot) {
-			foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCs)) {
 				g.SetupTravelShop(shop, ref nextSlot);
 			}
 		}
@@ -1112,7 +1145,7 @@ namespace Terraria.ModLoader
 		private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
 		public static void BuffTownNPC(ref float damageMult, ref int defense) {
-			foreach (GlobalNPC g in HookBuffTownNPC.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookBuffTownNPC.Enumerate(globalNPCs)) {
 				g.BuffTownNPC(ref damageMult, ref defense);
 			}
 		}
@@ -1231,6 +1264,22 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
 				g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
+		}
+
+		private delegate bool DelegateModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox);
+		private static HookList HookModifyCollisionData = AddHook<DelegateModifyCollisionData>(g => g.ModifyCollisionData);
+
+		public static bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+			bool result = true;
+			foreach (GlobalNPC g in HookModifyCollisionData.Enumerate(npc.globalNPCs)) {
+				result &= g.ModifyCollisionData(npc, victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+			}
+
+			if (result && npc.ModNPC != null) {
+				result = npc.ModNPC.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+			}
+
+			return result;
 		}
 
 		internal static void VerifyGlobalNPC(GlobalNPC npc) {

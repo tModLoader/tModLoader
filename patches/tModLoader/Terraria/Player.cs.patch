@@ -43,7 +43,7 @@
  					Main.ToggleGameplayUpdates(state: true);
 +
 +					// Added by TML.
-+					Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking(ModLoader.Core.ModOrganizer.FindMods());
++					Social.Steam.SteamedWraps.BeginPlaytimeTracking();
 +				}
  			}
  		}
@@ -77,6 +77,81 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -516,10 +_,35 @@
+ 		public int ropeCount;
+ 		public int manaRegenBonus;
+ 		public int manaRegenDelayBonus;
++		/// <summary>
++		/// The current vanilla dash that the player is using.<br/>
++		/// The following values correspond to vanilla dashes:<br/>
++		/// 1 => Tabi / Master Ninja Gear<br/>
++		/// 2 => Shield of Cthulhu<br/>
++		/// 3 => Solar Flare armor set bonus<br/>
++		/// 4 => Unused, though a dash for this value DOES exist<br/>
++		/// 5 => Crystal Assassin set bonus<br/>
++		/// </summary>
+ 		public int dashType;
++		/// <summary>
++		/// The current vanilla dash that the player is VISIBLY using.<br/>
++		/// Unlike <see cref="dashType"/>, this does not update if a dash cannot currently be input.<br/>
++		/// </summary>
+ 		public int dash;
++		/// <summary>
++		/// The amount of time this player has left, in ticks, to input the second keystroke of a standard dash input (double-tap left/right).<br/>
++		/// For vanilla dashes, this window is 15 ticks, or a quarter of a second, in total.<br/>
++		/// </summary>
+ 		public int dashTime;
++		/// <summary>
++		/// The amount of time that has passed, in ticks, since this player last performed a dash.
++		/// </summary>
+ 		public int timeSinceLastDashStarted;
++		/// <summary>
++		/// The amount of time that has to pass, in ticks, before a new dash input will be registered.<br/>
++		/// For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br/>
++		/// For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br/>
++		/// </summary>
+ 		public int dashDelay;
+ 		public int eocDash;
+ 		public int eocHit;
+@@ -528,6 +_,23 @@
+ 		public int gem = -1;
+ 		public int gemCount;
+ 		public BitsByte ownedLargeGems;
++		/// <summary>
++		/// The vanilla flask effect which the player currently has active; these affect all melee weapons and whips.<br/>
++		/// Defaults to 0, which denotes that the player does not currently have a flask active.<br/>
++		/// The following values correspond to vanilla flasks:<br/>
++		/// 1 => Flask of Venom (affected weapons proc Acid Venom on hit)<br/>
++		/// 2 => Flask of Cursed Flames (affected weapons proc Cursed Inferno on hit)<br/>
++		/// 3 => Flask of Fire (affected weapons proc On Fire! on hit)<br/>
++		/// 4 => Flask of Gold (affected weapons proc Midas on hit)<br/>
++		/// 5 => Flask of Ichor (affected weapons proc Ichor on hit)<br/>
++		/// 6 => Flask of Nanites (affected weapons proc Confused on hit)<br/>
++		/// 7 => Flask of Party (affected weapons sometimes release confetti explosions on hit)<br/>
++		/// 8 => Flask of Poison (affected weapons proc Poisoned on hit)<br/>
++		/// </summary>
++		// TO-DO:
++		// transform to int later, make proper flask effect system maybe?
++		// concrete use cases exist. just gotta find a way to make a system for 'em intuitive
++		// -thomas
+ 		public byte meleeEnchant;
+ 		public byte pulleyDir;
+ 		public bool pulley;
+@@ -539,7 +_,13 @@
+ 		public int snowBallLauncherInteractionCooldown;
+ 		public bool iceSkate;
+ 		public bool carpet;
+-		public int spikedBoots;
++		/// <summary>
++		/// Used by the Shoe Spikes and Climbing Claws to allow for holding onto walls (of tiles, not to be confused with actual walls).<br/>
++		/// Defaults to 0. Any value higher than 0 allows the player to wall-jump.<br/>
++		/// A value of 1 causes the player to slowly slide down them while holding onto them.<br/>
++		/// A value of 2 or more doesn't give this limitation, allowing the player to stay holding onto a wall indefinitely.
++		/// </summary>
++		public int spikedBoots; // tML: documentation added because this field can be a little tricky to understand at first glance
+ 		public int carpetFrame = -1;
+ 		public float carpetFrameCounter;
+ 		public bool canCarpet;
 @@ -564,7 +_,7 @@
  		public byte oldLuckPotion;
  		public float endurance;
@@ -749,7 +824,7 @@
  			}
  
  			petalTimer = 50;
-@@ -3788,10 +_,20 @@
+@@ -3788,9 +_,22 @@
  			num6 *= num8;
  			num7 *= num8;
  			Projectile.NewProjectile(GetProjectileSource_SetBonus(6), Main.projectile[num5].Center.X - 4f, Main.projectile[num5].Center.Y, num6, num7, 227, crystalLeafDamage, crystalLeafKB, whoAmI);
@@ -760,24 +835,30 @@
  		}
  
  		public void OpenPresent(int itemType) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("present", this, 0))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("present", this, itemType))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("present", this, 0);
++			DropFromItem(itemType);
 +
++			ItemLoader.OpenVanillaBag_Obsolete("present", this, itemType);
++			NPCLoader.blockLoot.Clear();
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
- 				if (Main.netMode == 1)
-@@ -4015,16 +_,40 @@
+@@ -4009,21 +_,42 @@
+ 					}
+ 				default: {
+ 						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
++						// Extra patch context for the below.
+ 						if (Main.netMode == 1)
+ 							NetMessage.SendData(21, -1, -1, null, number21, 1f);
+ 
  						break;
  					}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
-+
-+			//TODO: return statements above probably break this.
++			*/
  		}
  
 +		// Return value added by TML.
@@ -792,56 +873,36 @@
  		}
  
  		public void OpenBossBag(int type) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("bossBag", this, type))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("bossBag", this, type))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("bossBag", this, type);
++			DropFromItem(type);
 +
-+			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
-+				this.TryGettingDevArmor(itemSource_OpenItem);
++			ItemLoader.OpenBossBag_Obsolete(type, this);
++			ItemLoader.OpenVanillaBag_Obsolete("bossBag", this, type);
++
++			if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++				TryGettingDevArmor(GetItemSource_OpenItem(type));
 +			}
 +
-+			// In the following switch, some TryGettingDevArmor lines have been made useless in favor of expanding the TML-added ItemID.BossBag & ItemID.PreHardmodeLikeBossBag sets.
++			NPCLoader.blockLoot.Clear();
 +
-+			static void TryGettingDevArmor(IEntitySource source) {
-+				// A whole lot of nothing!
-+			}
-+
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
  			switch (type) {
  				case 3318: {
- 						if (Main.tenthAnniversaryWorld)
-@@ -4518,12 +_,22 @@
- 			if (type == 5111)
- 				num11 = 668;
+@@ -4560,15 +_,19 @@
+ 				}
  
-+			ItemLoader.OpenBossBag(type, this, ref num11);
-+
--			if (num11 <= 0)
-+			if (num11 <= 0) {
-+				NPCLoader.blockLoot.Clear(); // Clear blockloot
- 				return;
-+			}
+ 				int num15 = (int)value;
++				// Extra patch context for the below.
+ 				if (num15 < 1)
+ 					num15 = 1;
  
-+			/*
- 			NPC nPC = new NPC();
- 			nPC.SetDefaults(num11);
-+			*/
-+			// Slight optimization patch, since we're nearby anyway.
-+			NPC nPC = ContentSamples.NpcsByNetId[num11];
-+
- 			float value = nPC.value;
-+
- 			value *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
- 			if (Main.rand.Next(5) == 0)
- 				value *= 1f + (float)Main.rand.Next(5, 11) * 0.01f;
-@@ -4566,9 +_,13 @@
  				value -= (float)num15;
  				QuickSpawnItem(itemSource_OpenItem, 71, num15);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
 -		private void TryGettingDevArmor(IEntitySource source) {
@@ -851,25 +912,32 @@
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
  				switch (Main.rand.Next(18)) {
  					case 0:
-@@ -4690,6 +_,12 @@
+@@ -4689,6 +_,15 @@
+ 		}
  
  		public void OpenFishingCrate(int crateItemID) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("crate", this, crateItemID))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("crate", this, crateItemID))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("crate", this, crateItemID);
++			DropFromItem(crateItemID);
 +
++			ItemLoader.OpenVanillaBag_Obsolete("crate", this, crateItemID);
++			NPCLoader.blockLoot.Clear();
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
  			bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  			switch (crateItemID) {
- 				case 2334:
-@@ -5978,6 +_,8 @@
+@@ -5974,10 +_,12 @@
+ 						break;
+ 				}
+ 
++				// Extra patch context for the below.
+ 				int number66 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, type44, stack41);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number66, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
  		public int CountItem(int type, int stopCountingAt = 0) {
@@ -884,96 +952,151 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -6017,6 +_,11 @@
+@@ -6017,6 +_,15 @@
  		}
  
  		public void OpenShadowLockbox(int boxType) {
-+			if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, 0))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("obsidianLockBox", this, boxType))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("obsidianLockBox", this, 0);
++			DropFromItem(boxType);
 +
++			ItemLoader.OpenVanillaBag_Obsolete("obsidianLockBox", this, boxType);
++			NPCLoader.blockLoot.Clear();
++
++			/*
  			bool flag = true;
  			while (flag) {
  				flag = false;
-@@ -6046,9 +_,16 @@
+@@ -6042,13 +_,24 @@
+ 						break;
+ 				}
+ 
++				// Extra patch context for the below.
+ 				int number = Item.NewItem(GetItemSource_OpenItem(boxType), (int)position.X, (int)position.Y, width, height, num, 1, noBroadcast: false, -1);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
  		public void OpenLockBox(int lockboxItemType) {
-+			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, 0))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("lockBox", this, lockboxItemType))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("lockBox", this, 0);
++			DropFromItem(lockboxItemType);
 +
++			ItemLoader.OpenVanillaBag_Obsolete("lockBox", this, lockboxItemType);
++			NPCLoader.blockLoot.Clear();
++
++			/*
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6088,10 +_,18 @@
+@@ -6082,15 +_,26 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 
++				// Extra patch context for the below.
+ 				if (Main.rand.Next(3) == 0) {
+ 					int number2 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 329, 1, noBroadcast: false, -1);
+ 					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number2, 1f);
  				}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
++			*/
  		}
  
  		public void OpenHerbBag(int bagType) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, 0))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("herbBag", this, bagType))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("herbBag", this, 0);
++			DropFromItem(bagType);
 +
++			ItemLoader.OpenVanillaBag_Obsolete("herbBag", this, bagType);
++			NPCLoader.blockLoot.Clear();
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
- 				num++;
-@@ -6148,6 +_,8 @@
+@@ -6144,20 +_,27 @@
+ 				if (Main.rand.Next(3) == 0)
+ 					num3 += Main.rand.Next(1, 5);
+ 
++				// Extra patch context for the below.
+ 				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, num2, num3);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
  		public void OpenCanofWorms(int sourceItemType) {
-@@ -6184,6 +_,12 @@
++			DropFromItem(sourceItemType);
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 			QuickSpawnItem(itemSource_OpenItem, 2002, Main.rand.Next(5, 9));
+ 			if (Main.rand.Next(10) < 3)
+ 				QuickSpawnItem(itemSource_OpenItem, 3191, Main.rand.Next(1, 3));
+ 
++			// Extra patch context.
+ 			if (Main.rand.Next(20) == 0)
+ 				QuickSpawnItem(itemSource_OpenItem, 2895);
++			*/
+ 		}
+ 
+ 		public void OpenCapricornTail(int sourceItemType) {
+@@ -6169,6 +_,9 @@
+ 		}
+ 
+ 		public void OpenOyster(int sourceItemType) {
++			DropFromItem(sourceItemType);
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 			if (Main.rand.Next(5) == 0) {
+ 				if (Main.rand.Next(15) == 0)
+@@ -6177,12 +_,23 @@
+ 					QuickSpawnItem(itemSource_OpenItem, 4413);
+ 				else
+ 					QuickSpawnItem(itemSource_OpenItem, 4412);
++				// Extra patch context for the below.
+ 			}
+ 
+ 			QuickSpawnItem(itemSource_OpenItem, 4411);
++			*/
+ 		}
  
  		public void OpenGoodieBag(int itemType) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, 0))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("goodieBag", this, itemType))
 +				return;
 +
-+			ItemLoader.OpenVanillaBag("goodieBag", this, 0);
++			DropFromItem(itemType);
 +
++			ItemLoader.OpenVanillaBag_Obsolete("goodieBag", this, itemType);
++			NPCLoader.blockLoot.Clear();
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			if (Main.rand.Next(150) == 0) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1810);
- 				if (Main.netMode == 1)
-@@ -6460,6 +_,8 @@
- 						break;
- 					}
- 				case 18: {
-+						// Extra patch context for the below.
-+
+@@ -6463,17 +_,22 @@
  						int number5 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1851);
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, number5, 1f);
-@@ -6468,12 +_,18 @@
++						// Extra patch context for the below.
+ 
+ 						number5 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1852);
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, number5, 1f);
  
 +						// Extra patch context for the below.
-+
  						break;
  					}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
++			*/
  		}
  
  		public void UpdateDyes() {
@@ -1063,7 +1186,7 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6598,11 +_,13 @@
+@@ -6598,6 +_,8 @@
  			}
  		}
  
@@ -1072,12 +1195,6 @@
  		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
  			int buffId = buffType[buffIndex];
  			return new EntitySource_Buff(this, buffId, buffIndex);
- 		}
--
-+		
- 		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
- 		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
- 		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
 @@ -6617,21 +_,51 @@
  		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
@@ -2347,7 +2464,14 @@
  			hasFootball = false;
  			drawingFootball = false;
  			minionKB = 0f;
-@@ -13116,11 +_,19 @@
+@@ -13110,17 +_,26 @@
+ 			gravControl = false;
+ 			honeyCombItem = null;
+ 			gravControl2 = false;
++			PlayerLoader.ModifyMaxStats(this);
+ 			statLifeMax2 = statLifeMax;
+ 			statManaMax2 = statManaMax;
+ 			chloroAmmoCost80 = false;
  			huntressAmmoCost90 = false;
  			ammoCost80 = false;
  			ammoCost75 = false;
@@ -2580,6 +2704,22 @@
  							crit2 = true;
  
  						int direction = base.direction;
+@@ -15361,6 +_,15 @@
+ 			solarDashConsumedFlare = false;
+ 		}
+ 
++		/*
++		TO-DO:
++		- make public, as it has little reason to be private and could be of great help to those makin' modded dashes
++		- properly explain how to use this in the context of programmin' a modded dash (use ExampleShield for this; see below)
++		- make ExampleShield use this, and simplify it accordingly (it currently has way too many movin' parts that require extra upkeep, for way too little payoff)
++
++		I'll do all this in an upcomin' PR if nobody else does
++		-thomas
++		*/
+ 		private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null) {
+ 			dir = 0;
+ 			dashing = false;
 @@ -15654,8 +_,10 @@
  				float num5 = 0.1f;
  				if (wingsLogic == 26) {
@@ -2699,6 +2839,24 @@
  			if (i == Main.myPlayer && Main.netMode != 2)
  				LockOnHelper.Update();
  
+@@ -17289,6 +_,7 @@
+ 			if (whoAmI != Main.myPlayer) {
+ 				int num2 = (int)(base.position.X + (float)(width / 2)) / 16;
+ 				int num3 = (int)(base.position.Y + (float)(height / 2)) / 16;
++				/*
+ 				if (!WorldGen.InWorld(num2, num3, 4))
+ 					flag = true;
+ 				else if (Main.tile[num2, num3] == null)
+@@ -17301,6 +_,9 @@
+ 					flag = true;
+ 				else if (Main.tile[num2, num3 + 3] == null)
+ 					flag = true;
++				*/
++				if (Main.netMode == 1 && !Main.sectionManager.TilesLoaded(num2 - 3, num3 - 3, num2 + 3, num3 + 3))
++					flag = true;
+ 
+ 				if (flag) {
+ 					outOfRange = true;
 @@ -17334,6 +_,7 @@
  
  			UpdateHairDyeDust();
@@ -2870,6 +3028,18 @@
  			if (tileSpeed > 3f)
  				tileSpeed = 3f;
  
+@@ -18472,8 +_,11 @@
+ 				wallSpeed = 3f;
+ 
+ 			wallSpeed = 1f / wallSpeed;
++			// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++			/*
+ 			if (statManaMax2 > 400)
+ 				statManaMax2 = 400;
++			*/
+ 
+ 			if (statDefense < 0)
+ 				statDefense = 0;
 @@ -18507,7 +_,9 @@
  				}
  			}
@@ -3309,7 +3479,7 @@
  		}
  
  		public Color ChatColor() {
-@@ -24778,11 +_,22 @@
+@@ -24778,11 +_,21 @@
  				if (!item.active || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item))
  					continue;
  
@@ -3317,7 +3487,6 @@
 +					continue;
 +
  				int itemGrabRange = GetItemGrabRange(item);
-+				ItemLoader.GrabRange(Main.item[j], this, ref itemGrabRange);
  				Rectangle hitbox = item.Hitbox;
  				if (base.Hitbox.Intersects(hitbox)) {
 -					if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
@@ -3344,6 +3513,43 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
+@@ -24905,7 +_,12 @@
+ 			return itemToPickUp;
+ 		}
+ 
++		/// <summary>
++		/// Heals the player for a certain amount.
++		/// </summary>
++		/// <param name="player">The player to heal.</param>
++		/// <param name="amount">The amount to heal the player by.</param>
+-		private void Heal(int amount) {
++		public void Heal(int amount) {
+ 			statLife += amount;
+ 			if (Main.myPlayer == whoAmI)
+ 				HealEffect(amount);
+@@ -24914,7 +_,13 @@
+ 				statLife = statLifeMax2;
+ 		}
+ 
++		/// <summary>
++		/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
++		/// This range, referred to as item grab range, is measured in pixels.
++		/// </summary>
++		/// <param name="item">The item whose grab range is being evaluated.</param>
++		/// <returns>The item grab range of the player, in pixels.</returns>
+-		private int GetItemGrabRange(Item item) {
++		public int GetItemGrabRange(Item item) {
+ 			int num = defaultItemGrabRange;
+ 			if (goldRing && item.IsACoin)
+ 				num += Item.coinGrabRange;
+@@ -24937,6 +_,7 @@
+ 			if (ItemID.Sets.NebulaPickup[item.type])
+ 				num += 100;
+ 
++			ItemLoader.GrabRange(item, this, ref num);
+ 			return num;
+ 		}
+ 
 @@ -25347,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
@@ -3588,7 +3794,7 @@
 +				bool customDamage = false;
 +				bool playSound = true;
 +				bool genGore = true;
-+				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
++				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter))
 +					return 0.0;
 +
  				if (whoAmI == Main.myPlayer && panic)
@@ -3603,9 +3809,20 @@
  				if (Crit)
  					num *= 2;
  
-@@ -27234,7 +_,7 @@
+@@ -27233,8 +_,18 @@
+ 						}
  					}
  
++					if (channel && inventory[selectedItem].InterruptChannelOnHurt) {
++						channel = false;
++					}
++
++					if (itemAnimation > 0 && inventory[selectedItem].StopAnimationOnHurt) {
++						channel = false;
++						itemAnimation = 0;
++						itemAnimationMax = 0;
++					}
++
  					if (invis) {
 -						for (int k = 0; k < 22; k++) {
 +						for (int k = 0; k < MaxBuffs; k++) {
@@ -3626,7 +3843,7 @@
  					}
  
 +					//TODO: Is 'num2' correct? Ensure and add patch context.
-+					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
++					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
  					if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
  						if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
  							NetMessage.SendData(13, -1, -1, null, whoAmI);
@@ -3662,7 +3879,7 @@
 +
 +						PostGore:
 +
-+						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
++						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
  					}
  					else {
  						statLife = 0;
@@ -3755,26 +3972,110 @@
  				return true;
  
  			return false;
-@@ -27961,7 +_,8 @@
+@@ -27829,6 +_,22 @@
+ 				if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !newItem.IsTheSameAs(inventory[i]))
+ 					continue;
+ 
++				if (!ItemLoader.TryStackItems(inventory[i], newItem, out int numTransfered))
++					continue;
++
++				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, inventory[i], numTransfered);
++
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				settings.HandlePostAction(inventory[i]);
++				if (newItem.stack <= 0)
++					return newItem;
++
++				/* TML: #OnStackHook
+ 				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 				if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
+ 					inventory[i].stack += newItem.stack;
+@@ -27848,6 +_,7 @@
+ 					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, inventory[i].maxStack - inventory[i].stack);
+ 
+ 				inventory[i].stack = inventory[i].maxStack;
++				*/
+ 				DoCoins(i);
+ 				if (plr == Main.myPlayer)
+ 					Recipe.FindRecipes();
+@@ -27961,12 +_,25 @@
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
 +			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
-+			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && ItemLoader.CanStack(inv[i], returnItem)) {
+ 			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++				if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
-@@ -27990,7 +_,8 @@
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inv[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inv[i].stack <= inv[i].maxStack) {
+ 					inv[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+@@ -27984,19 +_,38 @@
+ 
+ 				inv[i].stack = inv[i].maxStack;
+ 				settings.HandlePostAction(inv[i]);
++				*/
+ 			}
+ 
+ 			return false;
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
 +			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && ItemLoader.CanStack(inventory[i], newItem)) {
+ 			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++				if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inventory[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inventory[i].stack <= inventory[i].maxStack) {
++
+ 					inventory[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+ 						PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, returnItem.stack, noStack: false, settings.LongText);
+@@ -28021,6 +_,7 @@
+ 					Recipe.FindRecipes();
+ 
+ 				settings.HandlePostAction(inventory[i]);
++				*/
+ 			}
+ 
+ 			return false;
 @@ -28098,6 +_,8 @@
  				return;
  
@@ -4505,6 +4806,88 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -31880,40 +_,78 @@
+ 			}
+ 		}
+ 
++		public void UseManaMaxIncreasingItem(int increase) {
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statManaMax += increase;
++			statManaMax2 += increase;
++			statMana += increase;
++
++			if (Main.myPlayer == whoAmI)
++				ManaEffect(increase);
++		}
++
+ 		private void ItemCheck_UseManaCrystal(Item sItem) {
+-			if (sItem.type == 109 && itemAnimation > 0 && statManaMax < 200 && ItemTimeIsZero) {
++			if (sItem.type == 109 && itemAnimation > 0 && ConsumedManaCrystals < ManaCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statManaMax += 20;
+ 				statManaMax2 += 20;
+ 				statMana += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					ManaEffect(20);
++				*/
++				UseManaMaxIncreasingItem(20);
++				ConsumedManaCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 1);
+ 			}
+ 		}
+ 
++		public void UseHealthMaxIncreasingItem(int increase) {
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statLifeMax += increase;
++			statLifeMax2 += increase;
++			statLife += increase;
++
++			if (Main.myPlayer == whoAmI)
++				HealEffect(increase);
++		}
++
+ 		private void ItemCheck_UseLifeFruit(Item sItem) {
+-			if (sItem.type == 1291 && itemAnimation > 0 && statLifeMax >= 400 && statLifeMax < 500 && ItemTimeIsZero) {
++			if (sItem.type == 1291 && itemAnimation > 0 && ConsumedLifeCrystals == LifeCrystalMax && ConsumedLifeFruit < LifeFruitMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statLifeMax += 5;
+ 				statLifeMax2 += 5;
+ 				statLife += 5;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(5);
++				*/
++				UseHealthMaxIncreasingItem(5);
++				ConsumedLifeFruit++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 2);
+ 			}
+ 		}
+ 
+ 		private void ItemCheck_UseLifeCrystal(Item sItem) {
+-			if (sItem.type == 29 && itemAnimation > 0 && statLifeMax < 400 && ItemTimeIsZero) {
++			if (sItem.type == 29 && itemAnimation > 0 && ConsumedLifeCrystals < LifeCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statLifeMax += 20;
+ 				statLifeMax2 += 20;
+ 				statLife += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(20);
++				*/
++				UseHealthMaxIncreasingItem(20);
++				ConsumedLifeCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 0);
+ 			}
 @@ -32078,7 +_,7 @@
  
  			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -4629,8 +5012,9 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
- 			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
+-			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
 -				speed /= meleeSpeed;
++			if (sItem.melee && !ProjectileID.Sets.NoMeleeSpeedVelocityScaling[projToShoot])
 +				speed /= inverseMeleeSpeed;
 +
 +			// Copied as-is from 1.3
@@ -4872,7 +5256,7 @@
 +			if (CombinedHooks.CanAutoReuseItem(this, sItem) is bool autoReuse)
 +				return autoReuse;
 +
-+			return sItem.autoReuse || autoReuseGlove && (sItem.CountsAsClass(DamageClass.Melee) || sItem.DamageType == DamageClass.SummonMeleeSpeed);
++			return sItem.autoReuse || autoReuseGlove && (sItem.CountsAsClass(DamageClass.Melee) || sItem.CountsAsClass(DamageClass.SummonMeleeSpeed));
  		}
  
  		private void ItemCheck_HandleMount() {
@@ -5483,16 +5867,33 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -38067,6 +_,7 @@
+@@ -38052,7 +_,12 @@
+ 				}
+ 			}
+ 			catch (Exception exception) {
+-				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path);
++				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path); // IO Exception
++
++				if (!Main.gameMenu)
++					WorldGen.SaveAndQuit();
++
++				Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.PlayerSaveFail")}\n\n{exception}", Main.menuMode);
+ 				throw;
+ 			}
+ 		}
+@@ -38067,20 +_,30 @@
  			if (string.IsNullOrEmpty(path))
  				return;
  
-+			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++			*/
  
-@@ -38074,13 +_,20 @@
- 			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			byte[] bytes;
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			using (Stream stream = (Stream)new MemoryStream(2000)) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
 +						PlayerLoader.PreSavePlayer(player);
@@ -5512,6 +5913,20 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
+@@ -38096,9 +_,11 @@
+ 						binaryWriter.Write(player.hideMisc);
+ 						binaryWriter.Write((byte)player.skinVariant);
+ 						binaryWriter.Write(player.statLife);
+-						binaryWriter.Write(player.statLifeMax);
++						// Keep the player state valid with vanilla (#HealthManaAPI)
++						// Any modifications to statLifeMax/statManaMax by mods can just be done during runtime
++						binaryWriter.Write(100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5);
+ 						binaryWriter.Write(player.statMana);
+-						binaryWriter.Write(player.statManaMax);
++						binaryWriter.Write(20 + player.ConsumedManaCrystals * 20);
+ 						binaryWriter.Write(player.extraAccessory);
+ 						binaryWriter.Write(player.unlockedBiomeTorches);
+ 						binaryWriter.Write(player.UsingBiomeTorches);
 @@ -38126,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
@@ -5605,17 +6020,32 @@
  							binaryWriter.Write(player.hideInfo[num7]);
  						}
  
-@@ -38227,9 +_,13 @@
+@@ -38225,11 +_,28 @@
+ 						binaryWriter.Flush();
+ 						cryptoStream.FlushFinalBlock();
  						stream.Flush();
++
++						/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
++						*/
++						bytes = ((MemoryStream)stream).ToArray();
 +
-+						PlayerLoader.PostSavePlayer(player);
++						PlayerLoader.PostSavePlayer(player); // For native data only
  					}
  				}
  			}
 +
-+			PlayerIO.Save(player, path, isCloudSave);
++			// tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
++			var tag = PlayerIO.SaveData(player);
++
++			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			if (FileUtilities.Exists(path, isCloudSave))
++				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++
++			FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
++
++			PlayerIO.Save(tag, path, isCloudSave);
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
@@ -5628,6 +6058,27 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
+@@ -38415,11 +_,20 @@
+ 
+ 							player.statMana = binaryReader.ReadInt32();
+ 							player.statManaMax = binaryReader.ReadInt32();
++							
+ 							if (player.statManaMax > 200)
+ 								player.statManaMax = 200;
+ 
++							// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
+ 							if (player.statMana > 400)
+ 								player.statMana = 400;
++							*/
++
++							// Clamping of the values happens automatically
++							player.ConsumedLifeCrystals = (player.statLifeMax - 100) / 20;
++							player.ConsumedLifeFruit = (player.statLifeMax - 400) / 5;
++							player.ConsumedManaCrystals = (player.statManaMax - 20) / 20;
+ 
+ 							if (num >= 125)
+ 								player.extraAccessory = binaryReader.ReadBoolean();
 @@ -38673,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -5656,14 +6107,15 @@
  			catch {
  			}
  
-@@ -38803,9 +_,12 @@
+@@ -38803,9 +_,13 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
-+			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
++			if(PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tag))
++				PlayerIO.Load(newPlayer, tag);
  			for (int i = 3; i < 10; i++) {
 +				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
 +				/*
@@ -5730,9 +6182,11 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38926,7 +_,7 @@
+@@ -38925,8 +_,9 @@
+ 			lastVisualizedSelectedItem = new Item();
  			grappling[0] = -1;
  			statManaMax = 20;
++			PlayerLoader.ModifyMaxStats(this);
  			extraAccessory = false;
 -			for (int n = 0; n < 625; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {

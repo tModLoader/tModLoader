@@ -1,4 +1,5 @@
 ﻿using Hjson;
+using Terraria.ID;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -60,6 +61,11 @@ namespace Terraria.ModLoader
 
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
+
+				//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
+				if (value.Key.StartsWith($"Mods.{mod.Name}.GameTips.")) {
+					Main.gameTips.allTips.Add(new GameTipData(new LocalizedText(value.Key, value.GetDefault()), mod));
+				}
 			}
 		}
 
@@ -81,6 +87,7 @@ namespace Terraria.ModLoader
 				if (text.Value != null) {
 					text = SetLocalizedText(dict, text);
 					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
+					ContentSamples.ItemsByType[item.Item.type].RebuildTooltip();
 				}
 			}
 

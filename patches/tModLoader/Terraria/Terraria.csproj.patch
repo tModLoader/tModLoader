@@ -40,13 +40,21 @@
      <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
      <Reference Include="MP3Sharp" />
      <Reference Include="Newtonsoft.Json" />
-@@ -34,8 +_,12 @@
+@@ -34,8 +_,20 @@
      <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="log4net" />
 +    <Reference Include="TerrariaHooks" />
 +    <ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
++	<!-- <Temporary> - waiting on https://github.com/MonoMod/MonoMod/pull/108 to be merged & pushed to nuget -->
++    <Reference Include="MonoMod.Backports" />
++    <Reference Include="MonoMod.Core" />
++    <Reference Include="MonoMod.ILHelpers" />
++    <Reference Include="MonoMod.RuntimeDetour" />
++    <Reference Include="MonoMod.Utils" />
++	<PackageReference Include="Mono.Cecil" Version="0.11.4" />
++	<!-- </Temporary> -->
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -66,7 +74,7 @@
    </ItemGroup>
    <ItemGroup>
 +    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.5.31.2" />
++	<!-- <PackageReference Include="MonoModReorg.RuntimeDetour" Version="22.9.29-prerelease" /> -->
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />

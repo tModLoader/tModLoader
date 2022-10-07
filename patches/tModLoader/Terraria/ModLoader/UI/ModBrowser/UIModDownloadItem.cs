@@ -345,6 +345,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			ModDownload.InnerDownloadWithDeps();
+
+			//TODO: Some code to add the 'Installed' item to the UIModDownloaditem and redraw?
 		}
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {

@@ -21,6 +21,11 @@ public class ModPlayerTest : ModPlayer
 		flat += 4;
 	}
 
+	public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
+	public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
+	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
+
 	public override void Load(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
@@ -35,11 +40,11 @@ public class ModPlayerTest : ModPlayer
 	public override void SetupStartInventory(IList<Item> items) {
 		items.Add(9);
 	}
-#endif
 
 	public override Texture2D SetMapBackgroundImage() {
 		return null
 	}
+#endif
 
 	public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 

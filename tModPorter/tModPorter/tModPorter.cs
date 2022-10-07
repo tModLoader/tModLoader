@@ -45,7 +45,7 @@ public class tModPorter
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
 		workspace.WorkspaceFailed += (o, e) => {
-			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure)
+			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.ToString().Contains("This mismatch may cause runtime failures"))
 				throw new Exception(e.Diagnostic.ToString());
 
 			updateProgress(new Warning(e.Diagnostic.ToString()));

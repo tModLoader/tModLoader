@@ -31,7 +31,7 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -102,6 +_,73 @@
+@@ -102,6 +_,84 @@
  			_deleteButton = uIImageButton5;
  			Append(uIImageButton5);
  			num += 4f;
@@ -50,7 +50,9 @@
 +				var currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
 +				var missingMods = data.Player.usedMods.Except(currentModNames).ToList();
 +				var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
-+				if (missingMods.Count > 0 || newMods.Count > 0) {
++				bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModLoader.Core.ModOrganizer.ModPackActive) != data.Player.modPack;
++
++				if (checkModPack || missingMods.Count > 0 || newMods.Count > 0) {
 +					UIText warningLabel = new UIText("", 1f, false) {
 +						VAlign = 0f,
 +						HAlign = 1f
@@ -67,6 +69,15 @@
 +					modListWarning.Top.Set(-2f, 0f);
 +					System.Text.StringBuilder fullSB = new System.Text.StringBuilder(Language.GetTextValue("tModLoader.ModsDifferentSinceLastPlay"));
 +					System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
++					if (checkModPack) {
++						string pack = data.Player.modPack;
++						if (string.IsNullOrEmpty(pack))
++							pack = "None";
++
++						shortSB.Append(Language.GetTextValue("tModLoader.ModPackMismatch", pack));
++						fullSB.Append("\n" + Language.GetTextValue("tModLoader.ModPackMismatch", pack));
++					}
++
 +					if (missingMods.Count > 0) {
 +						shortSB.Append(missingMods.Count > 1 ? Language.GetTextValue("tModLoader.MissingXMods", missingMods.Count) : Language.GetTextValue("tModLoader.Missing1Mod"));
 +						fullSB.Append("\n" + Language.GetTextValue("tModLoader.MissingModsListing", string.Join("\n", missingMods.Select(x => "- " + x))));

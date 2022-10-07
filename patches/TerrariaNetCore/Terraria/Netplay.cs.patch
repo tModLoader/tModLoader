@@ -70,30 +70,6 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
-@@ -261,6 +_,7 @@
- 			}
- 		}
- 
-+		private static bool serverNeedsCleanUp = false;
- 		private static void CleanupServer() {
- 			StopListening();
- 			try {
-@@ -288,6 +_,7 @@
- 
- 		private static void ServerLoop() {
- 			int num = 0;
-+			serverNeedsCleanUp = true;
- 			StartBroadCasting();
- 			while (!Disconnect) {
- 				StartListeningIfNeeded();
-@@ -298,6 +_,7 @@
- 
- 			StopBroadCasting();
- 			CleanupServer();
-+			serverNeedsCleanUp = false;
- 		}
- 
- 		private static void UpdateConnectedClients() {
 @@ -399,6 +_,11 @@
  					flag = false;
  				}
@@ -157,7 +133,7 @@
  				int num = 0;
  				for (int i = 0; i < 255; i++) {
  					if (Main.player[i].active)
-@@ -730,19 +_,30 @@
+@@ -730,13 +_,18 @@
  			if (broadcastThread != null)
  				StopBroadCasting();
  
@@ -177,15 +153,3 @@
  				broadcastThread = null;
  			}
  
- 			if (BroadcastClient != null) {
- 				BroadcastClient.Close();
- 				BroadcastClient = null;
-+			}
-+		}
-+
-+		public static void WaitForClosePortClose() {
-+			while(!serverNeedsCleanUp) {
-+				Thread.Sleep(10);
- 			}
- 		}
- 	}

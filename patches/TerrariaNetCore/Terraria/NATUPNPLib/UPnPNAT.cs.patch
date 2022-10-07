@@ -1,9 +1,10 @@
 --- src/Terraria/Terraria/NATUPNPLib/UPnPNAT.cs
 +++ src/TerrariaNetCore/Terraria/NATUPNPLib/UPnPNAT.cs
-@@ -1,9 +_,12 @@
+@@ -1,9 +_,13 @@
 -#if SERVER
 +using System;
 +using System.Collections;
++using System.Collections.Generic;
  using System.Runtime.CompilerServices;
  using System.Runtime.InteropServices;
 +using UwUPnP;
@@ -14,7 +15,7 @@
  	[ComImport]
  	[CompilerGenerated]
  	[Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
-@@ -12,5 +_,51 @@
+@@ -12,5 +_,52 @@
  	public interface UPnPNAT : IUPnPNAT
  	{
  	}
@@ -47,20 +48,21 @@
 +
 +			public IEnumerator GetEnumerator() {
 +				for (int i = 0; ; i++) {
-+					StaticPortMapping ret;
++					Dictionary<string, string> args;
 +					try {
-+						var args = UPnP.GetGenericPortMappingEntry(i);
-+						ret = new StaticPortMapping
-+						(
-+							InternalPort: int.Parse(args["NewInternalPort"]),
-+							Protocol: args["NewProtocol"],
-+							InternalClient: args["NewInternalClient"]
-+						);
++						args = UPnP.GetGenericPortMappingEntry(i);
 +					}
 +					catch {
 +						yield break;
 +					}
-+					yield return ret;
++
++					if (args == null ||
++							!args.TryGetValue("NewInternalPort", out var s_port) || !int.TryParse(s_port, out int port) ||
++							!args.TryGetValue("NewProtocol", out var protocol) || !args.TryGetValue("NewInternalClient", out var client)) {
++						yield break;
++					}
++
++					yield return new StaticPortMapping(port, protocol, client);
 +				}
 +			}
 +		}

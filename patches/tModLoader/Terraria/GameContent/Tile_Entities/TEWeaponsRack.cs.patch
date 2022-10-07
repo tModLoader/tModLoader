@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
-@@ -1,10 +_,12 @@
+@@ -1,10 +_,13 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.ID;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.GameContent.Tile_Entities
@@ -61,19 +62,33 @@
  			tEWeaponsRack.item = new Item();
  			tEWeaponsRack.item.netDefaults(netid);
  			tEWeaponsRack.item.Prefix(prefix);
-+			*/
-+			tEWeaponsRack.item = item.Clone();
  			tEWeaponsRack.item.stack = stack;
++			*/
++			tEWeaponsRack.item = ItemLoader.TransferWithLimit(item, stack);
 +
  			NetMessage.SendData(86, -1, -1, null, tEWeaponsRack.ID, x, y);
  		}
  
-@@ -215,7 +_,7 @@
- 			if (Main.netMode == 1)
+@@ -212,16 +_,20 @@
+ 					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
+ 			}
+ 
+-			if (Main.netMode == 1)
++			if (Main.netMode == 1) {
  				NetMessage.SendData(123, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
++				ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
++			}
  			else
 -				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
 +				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
  
++			/*
  			player.inventory[player.selectedItem].stack--;
  			if (player.inventory[player.selectedItem].stack <= 0) {
+ 				player.inventory[player.selectedItem].SetDefaults();
+ 				Main.mouseItem.SetDefaults();
+ 			}
++			*/
+ 
+ 			if (player.selectedItem == 58)
+ 				Main.mouseItem = player.inventory[player.selectedItem].Clone();

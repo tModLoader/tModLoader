@@ -65,6 +65,16 @@ namespace Terraria
 		public bool consumeAmmoOnLastShotOnly { get; set; }
 
 		/// <summary>
+		/// When enabled and the player is hurt, <see cref="Player.channel"/> will be set to false
+		/// </summary>
+		public bool InterruptChannelOnHurt { get; set; }
+
+		/// <summary>
+		/// When enabled and the player is hurt, <see cref="Player.channel"/> will be set to false, and the item animation will stop immediately
+		/// </summary>
+		public bool StopAnimationOnHurt { get; set; }
+
+		/// <summary>
 		/// Used to make stackable items reforgeable
 		/// </summary>
 		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
@@ -180,7 +190,7 @@ namespace Terraria
 		}
 
 		private void RestoreMeleeSpeedBehaviorOnVanillaItems() {
-			if (type < ItemID.Count && melee && shoot > 0) {
+			if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type]) {
 				if (noMelee)
 					DamageType = DamageClass.MeleeNoSpeed;
 				else

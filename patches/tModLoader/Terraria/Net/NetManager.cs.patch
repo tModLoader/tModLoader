@@ -9,6 +9,37 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria.Net
+@@ -41,6 +_,8 @@
+ 		}
+ 
+ 		public void Broadcast(NetPacket packet, int ignoreClient = -1) {
++			LogSend(packet, ignoreClient: ignoreClient);
++
+ 			for (int i = 0; i < 256; i++) {
+ 				if (i != ignoreClient && Netplay.Clients[i].IsConnected())
+ 					SendData(Netplay.Clients[i].Socket, packet);
+@@ -48,6 +_,8 @@
+ 		}
+ 
+ 		public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1) {
++			LogSend(packet, ignoreClient: ignoreClient);
++
+ 			for (int i = 0; i < 256; i++) {
+ 				if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
+ 					SendData(Netplay.Clients[i].Socket, packet);
+@@ -76,10 +_,12 @@
+ 		}
+ 
+ 		public void SendToServer(NetPacket packet) {
++			LogSend(packet);
+ 			SendData(Netplay.Connection.Socket, packet);
+ 		}
+ 
+ 		public void SendToClient(NetPacket packet, int playerId) {
++			LogSend(packet, toClient: playerId);
+ 			SendData(Netplay.Clients[playerId].Socket, packet);
+ 		}
+ 
 @@ -90,6 +_,7 @@
  					socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, SendCallback, packet);
  				}
@@ -17,3 +48,15 @@
  				}
  
  				Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);
+@@ -98,6 +_,11 @@
+ 
+ 		public static void SendCallback(object state) {
+ 			((NetPacket)state).Recycle();
++		}
++
++		private void LogSend(NetPacket packet, int toClient = -1, int ignoreClient = -1) {
++			if (ModNet.DetailedLogging)
++				ModNet.LogSend(toClient, ignoreClient, $"NetPacket {_modules[packet.Id].GetType().Name}", packet.Length);
+ 		}
+ 	}
+ }

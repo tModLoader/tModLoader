@@ -381,6 +381,27 @@ namespace Terraria.ModLoader.Config
 
 	}
 
+	/// <summary>
+	/// Affects whether this data will be expanded by default. The default value currently is true. Use the constructor with 2 parameters to control if list elements should be collapsed or expanded.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+	public class ExpandAttribute : Attribute
+	{
+		public bool Expand { get; }
+		public bool? ExpandListElements  { get; }
+
+		// bool? not allowed in attribute ctor, so 2 ctors
+		public ExpandAttribute(bool expand = true) {
+			Expand = expand;
+			ExpandListElements = null;
+		}
+
+		public ExpandAttribute(bool expand = true, bool expandListElements = true) {
+			Expand = expand;
+			ExpandListElements = expandListElements;
+		}
+	}
+
 	// Unimplemented ideas below:
 	/*
 
@@ -396,7 +417,7 @@ namespace Terraria.ModLoader.Config
 	public class StringRepresentationAttribute : Attribute
 	{
 		public Func<string> StringRepresentation { get; set; }
-	
+
 		public StringRepresentationAttribute(Type delegateType, string delegateName) {
 			StringRepresentation = (Func<string>)Delegate.CreateDelegate(delegateType, delegateType.GetMethod(delegateName));
 		}

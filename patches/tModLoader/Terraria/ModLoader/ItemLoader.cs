@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -30,7 +31,6 @@ namespace Terraria.ModLoader
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
 		private static int nextItem = ItemID.Count;
-		private static Instanced<GlobalItem>[] globalItemsArray = new Instanced<GlobalItem>[0];
 
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
@@ -122,10 +122,6 @@ namespace Terraria.ModLoader
 
 			FindVanillaWings();
 
-			globalItemsArray = globalItems
-				.Select(g => new Instanced<GlobalItem>(g.index, g))
-				.ToArray();
-
 			NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {
@@ -147,16 +143,16 @@ namespace Terraria.ModLoader
 			=> item.IsCandidateForReforge && item.damage > 0 && item.ammo == 0 && !item.accessory;
 
 		internal static bool MeleePrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.MeleePrefix();
 
 		internal static bool WeaponPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.melee && item.noUseGraphic;
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.WeaponPrefix();
 
 		internal static bool RangedPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.ranged; //(item.ranged || item.thrown);
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.RangedPrefix();
 
 		internal static bool MagicPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && (item.magic || item.summon);
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.MagicPrefix();
 
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
 
@@ -1135,7 +1131,7 @@ namespace Terraria.ModLoader
 			if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
 				legs.ModItem.UpdateArmorSet(player);
 
-			foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate(globalItems)) {
 				string set = globalItem.IsArmorSet(head, body, legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.UpdateArmorSet(player, set);
@@ -1161,7 +1157,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.PreUpdateVanitySet(player);
 
-			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate(globalItems)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.PreUpdateVanitySet(player, set);
@@ -1187,7 +1183,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.UpdateVanitySet(player);
 
-			foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate(globalItems)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.UpdateVanitySet(player, set);
@@ -1213,7 +1209,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.ArmorSetShadows(player);
 
-			foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate(globalItems)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.ArmorSetShadows(player, set);
@@ -1231,7 +1227,7 @@ namespace Terraria.ModLoader
 
 			texture?.SetMatch(male, ref equipSlot, ref robes);
 
-			foreach (var g in HookSetMatch.Enumerate(globalItemsArray)) {
+			foreach (var g in HookSetMatch.Enumerate(globalItems)) {
 				g.SetMatch(armorSlot, type, male, ref equipSlot, ref robes);
 			}
 		}
@@ -1273,10 +1269,11 @@ namespace Terraria.ModLoader
 			if (!Main.mouseRightRelease)
 				return;
 
-			item.ModItem?.RightClick(player);
+			player.DropFromItem(item.type);
+			RightClickCallHooks(item, player);
 
-			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
-				g.RightClick(item, player);
+			if (ItemID.Sets.BossBag[item.type] && (!ItemID.Sets.PreHardmodeLikeBossBag[item.type] || Main.tenthAnniversaryWorld)) {
+				player.TryGettingDevArmor(player.GetItemSource_OpenItem(item.type));
 			}
 
 			if (ConsumeItem(item, player) && --item.stack == 0)
@@ -1288,36 +1285,89 @@ namespace Terraria.ModLoader
 			Recipe.FindRecipes();
 		}
 
+		internal static void RightClickCallHooks(Item item, Player player) {
+			item.ModItem?.RightClick(player);
+
+			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
+				g.RightClick(item, player);
+			}
+		}
+
 		/// <summary>
 		/// Returns whether ModItem.BossBagNPC is greater than 0. Returns false if item is not a modded item.
 		/// </summary>
+		[Obsolete("Use ItemID.Sets.BossBag", true)]
 		public static bool IsModBossBag(Item item) {
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
 		}
 
+		[Obsolete]
+		internal static bool IsModBossBag_Obsolete(Item item) {
+			return IsModBossBag(item);
+		}
+
+
+		private static HookList HookModifyItemLoot = AddHook<Action<Item, ItemLoot>>(g => g.ModifyItemLoot);
+		
+		/// <summary>
+		/// Calls each GlobalItem.ModifyItemLoot hooks.
+		/// </summary>
+		public static void ModifyItemLoot(Item item, ItemLoot itemLoot) {
+			item.ModItem?.ModifyItemLoot(itemLoot);
+
+			foreach (var g in HookModifyItemLoot.Enumerate(item.globalItems)) {
+				g.ModifyItemLoot(item, itemLoot);
+			}
+		}
+
+		// Remove After 1st September 2022
 		/// <summary>
 		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
 		/// </summary>
-		public static void OpenBossBag(int type, Player player, ref int npc) {
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static void OpenBossBag(int type, Player player, ref int npc)
+		{
 			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.BossBagNPC > 0) {
+			if (modItem != null && modItem.BossBagNPC > 0)
+			{
 				modItem.OpenBossBag(player);
 				npc = modItem.BossBagNPC;
 			}
 		}
 
+		[Obsolete]
+		internal static void OpenBossBag_Obsolete(int type, Player player) {
+			int npc = 0;
+			OpenBossBag(type, player, ref npc);
+			if (npc > 0) {
+				ItemDropRule.CoinsBasedOnNPCValue(npc).TryDroppingItem(new() {
+					player = player,
+					item = type,
+					rng = Main.rand,
+					IsExpertMode = Main.expertMode,
+					IsMasterMode = Main.masterMode,
+				});
+			}
+		}
+
+		[Obsolete]
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
-		
+
+		// Remove After 1st September 2022
 		/// <summary>
 		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
 		/// </summary>
-		public static bool PreOpenVanillaBag(string context, Player player, int arg) {
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static bool PreOpenVanillaBag(string context, Player player, int arg)
+		{
 			bool result = true;
-			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItemsArray)) {
+			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItems))
+			{
 				result &= g.PreOpenVanillaBag(context, player, arg);
 			}
 
-			if (!result) {
+			if (!result)
+			{
 				NPCLoader.blockLoot.Clear(); // clear blockloot
 				return false;
 			}
@@ -1325,33 +1375,43 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		[Obsolete]
+		internal static bool PreOpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
+
+		[Obsolete]
 		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
-		
+
+		// Remove After 1st September 2022
 		/// <summary>
 		/// Calls all GlobalItem.OpenVanillaBag hooks.
 		/// </summary>
-		public static void OpenVanillaBag(string context, Player player, int arg) {
-			foreach (var g in HookOpenVanillaBag.Enumerate(globalItemsArray)) {
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static void OpenVanillaBag(string context, Player player, int arg)
+		{
+			foreach (var g in HookOpenVanillaBag.Enumerate(globalItems))
+			{
 				g.OpenVanillaBag(context, player, arg);
 			}
 		}
 
+		[Obsolete]
+		internal static void OpenVanillaBag_Obsolete(string context, Player player, int arg) => OpenVanillaBag(context, player, arg);
+
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
-		// For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
 		/// <summary>
 		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 		/// </summary>
-		public static bool CanStack(Item item1, Item item2) {
-			if (item1.prefix != item2.prefix) // TML: #StackablePrefixWeapons
+		public static bool CanStack(Item increase, Item decrease) {
+			if (increase.prefix != decrease.prefix) // TML: #StackablePrefixWeapons
 				return false;
 
-			foreach (var g in HookCanStack.Enumerate(globalItemsArray)) {
-				if (!g.CanStack(item1, item2))
+			foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {
+				if (!g.CanStack(increase, decrease))
 					return false;
 			}
 
-			return item1.ModItem?.CanStack(item2) ?? true;
+			return increase.ModItem?.CanStack(decrease) ?? true;
 		}
 
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
@@ -1359,13 +1419,93 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
-		public static bool CanStackInWorld(Item item1, Item item2) {
-			foreach (var g in HookCanStackInWorld.Enumerate(globalItemsArray)) {
-				if (!g.CanStackInWorld(item1, item2))
+		public static bool CanStackInWorld(Item increase, Item decrease) {
+			foreach (var g in HookCanStackInWorld.Enumerate(increase.globalItems)) {
+				if (!g.CanStackInWorld(increase, decrease))
 					return false;
 			}
 
-			return item1.ModItem?.CanStackInWorld(item2) ?? true;
+			return increase.ModItem?.CanStackInWorld(decrease) ?? true;
+		}
+		
+		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
+
+		/// <summary>
+		/// Calls CanStack.  Returns false if CanStack is false.  Calls StackItems if CanStack is true<br/>
+		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.<br/>
+		/// </summary>
+		/// <param name="increase">Item where the stack is being increased.</param>
+		/// <param name="decrease">Item where the stack is being reduced.</param>
+		/// <param name="numTransfered">Amount to be transfered </param>
+		/// <param name="infiniteSource">The final stack of item2</param>
+		public static bool TryStackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false) {
+			numTransfered = 0;
+			if (!CanStack(increase, decrease))
+				return false;
+
+			StackItems(increase, decrease, out numTransfered, infiniteSource);
+
+			return true;
+		}
+
+		/// <summary>
+		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.
+		/// </summary>
+		/// <param name="increase">Item where the stack is being increased.</param>
+		/// <param name="decrease">Item where the stack is being reduced.</param>
+		/// <param name="numTransfered">Amount to be transfered </param>
+		/// <param name="infiniteSource"></param>
+		/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
+		public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int? numToTransfer = null) {
+			numTransfered = numToTransfer ?? Math.Min(decrease.stack, increase.maxStack - increase.stack);
+
+			foreach (var g in HookOnStack.Enumerate(increase.globalItems)) {
+				g.OnStack(increase, decrease, numTransfered);
+			}
+
+			increase.ModItem?.OnStack(decrease, numTransfered);
+
+			if (decrease.favorited) {
+				increase.favorited = true;
+				decrease.favorited = false;
+			}
+
+			increase.stack += numTransfered;
+			if (!infiniteSource)
+				decrease.stack -= numTransfered;
+		}
+
+		private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
+
+		public static Item TransferWithLimit(Item decrease, int limit) {
+			Item increase = decrease.Clone();
+			if (decrease.stack <= limit) {
+				decrease.TurnToAir();
+			}
+			else {
+				SplitStack(increase, decrease, limit);
+			}
+			return increase;
+		}
+
+		/// <summary>
+		/// Called when splitting a stack of items.
+		/// </summary>
+		/// <param name="increase">A clone of decrease.  Stack is set to zero then incremented in SplitStack or after SplitStack is called.</param>
+		/// <param name="decrease">The original item with stack being reduced.</param>
+		/// <param name="numToTransfer">Usually 1, but possible to be higher.</param>
+		public static void SplitStack(Item increase, Item decrease, int numToTransfer) {
+			increase.stack = 0;
+			increase.favorited = false;
+
+			foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
+				g.SplitStack(increase, decrease, numToTransfer);
+			}
+
+			increase.ModItem?.SplitStack(decrease, numToTransfer);
+
+			increase.stack += numToTransfer;
+			decrease.stack -= numToTransfer;
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
@@ -1428,7 +1568,7 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
 			texture?.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 
-			foreach (var g in HookDrawArmorColor.Enumerate(globalItemsArray)) {
+			foreach (var g in HookDrawArmorColor.Enumerate(globalItems)) {
 				g.DrawArmorColor(type, slot, drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 			}
 		}
@@ -1444,7 +1584,7 @@ namespace Terraria.ModLoader
 
 			texture?.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 
-			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItemsArray)) {
+			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItems)) {
 				g.ArmorArmGlowMask(slot, drawPlayer, shadow, ref glowMask, ref color);
 			}
 		}
@@ -1537,7 +1677,7 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
 			bool? retVal = texture?.WingUpdate(player, inUse);
 
-			foreach (var g in HookWingUpdate.Enumerate(globalItemsArray)) {
+			foreach (var g in HookWingUpdate.Enumerate(globalItems)) {
 				retVal |= g.WingUpdate(player.wings, player, inUse);
 			}
 
@@ -1753,7 +1893,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			foreach (var g in HookHoldoutOffset.Enumerate(globalItemsArray)) {
+			foreach (var g in HookHoldoutOffset.Enumerate(globalItems)) {
 				Vector2? modOffset = g.HoldoutOffset(type);
 
 				if (modOffset.HasValue) {
@@ -1828,7 +1968,7 @@ namespace Terraria.ModLoader
 		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType) {
 			GetItem(extractType)?.ExtractinatorUse(ref resultType, ref resultStack);
 
-			foreach (var g in HookExtractinatorUse.Enumerate(globalItemsArray)) {
+			foreach (var g in HookExtractinatorUse.Enumerate(globalItems)) {
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
 			}
 		}
@@ -1851,7 +1991,7 @@ namespace Terraria.ModLoader
 			if (modItem != null)
 				notAvailable |= !modItem.IsAnglerQuestAvailable();
 
-			foreach (var g in HookIsAnglerQuestAvailable.Enumerate(globalItemsArray)) {
+			foreach (var g in HookIsAnglerQuestAvailable.Enumerate(globalItems)) {
 				notAvailable |= !g.IsAnglerQuestAvailable(itemID);
 			}
 		}
@@ -1864,7 +2004,7 @@ namespace Terraria.ModLoader
 			string catchLocation = "";
 			GetItem(type)?.AnglerQuestChat(ref chat, ref catchLocation);
 
-			foreach (var g in HookAnglerChat.Enumerate(globalItemsArray)) {
+			foreach (var g in HookAnglerChat.Enumerate(globalItems)) {
 				g.AnglerChat(type, ref chat, ref catchLocation);
 			}
 

@@ -26,6 +26,16 @@
  			"Up",
  			"Down",
  			"Left",
+@@ -339,6 +_,9 @@
+ 			_fastUseItemInventorySlot = inventorySlot;
+ 			if (inventorySlot < 50 && inventorySlot >= 0) {
+ 				Player localPlayer = Main.LocalPlayer;
++				if (!ItemLoader.CanStack(Main.mouseItem, localPlayer.inventory[inventorySlot]))
++					return;
++
+ 				ItemSlot.PickupItemIntoMouse(localPlayer.inventory, 0, inventorySlot, localPlayer);
+ 			}
+ 		}
 @@ -403,9 +_,21 @@
  			}
  		}

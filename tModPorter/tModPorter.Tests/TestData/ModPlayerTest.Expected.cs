@@ -1,10 +1,11 @@
+using Microsoft.Xna.Framework;
+using Microsoft.XNA.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
 
 public class ModPlayerTest : ModPlayer
 {
@@ -22,6 +23,10 @@ public class ModPlayerTest : ModPlayer
 		damage.Flat += 4;
 	}
 
+	public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) => true;
+	public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) { }
+	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) { }
+
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
@@ -36,10 +41,8 @@ public class ModPlayerTest : ModPlayer
 	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* tModPorter Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
 		items.Add(9);
 	}
-#endif
 
-#if COMPILE_ERROR
-	public override Texture2D SetMapBackgroundImage()/* tModPorter Suggestion: Create a ModBiome (or ModSceneEffect) class and override MapBackground property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ {
+	public override Texture2D SetMapBackgroundImage()/* tModPorter Note: Removed. Create a ModBiome (or ModSceneEffect) class and override MapBackground property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ {
 		return null
 	}
 #endif

@@ -28,16 +28,12 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		protected override string GetPublishedObjectDisplayName() {
-			if (_dataObject == null)
-				return "null";
-
 			return _dataObject.Name;
 		}
 
 		protected override void GoToPublishConfirmation() {
-			if ( /*SocialAPI.Workshop != null && */ _dataObject != null) {
-				SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
-			}
+			/* if ( SocialAPI.Workshop != null) */
+			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
 			if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
 				Main.menuMode = 888;

@@ -12,11 +12,17 @@
  		public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
  		public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
  		public static int nextRecipeGroupIndex;
-@@ -19,10 +_,12 @@
+@@ -19,10 +_,18 @@
  		}
  
  		public static int RegisterGroup(string name, RecipeGroup rec) {
 -			int num = nextRecipeGroupIndex++;
++			// tModLoader: Handle registering to an existing group by merging items and keeping the original group
++			if(recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
++				recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
++				return existingRecipeGroup;
++			}
++
 +			int num = rec.ID = nextRecipeGroupIndex++;
  			recipeGroups.Add(num, rec);
  			recipeGroupIDs.Add(name, num);

@@ -33,7 +33,7 @@ jobs:
         # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
         # The below merger for sure won't work while this branch is ahead of 1.4, so can't fast forward to test.
         - name: Merge
-          if: steps.date.outputs.date < 21
+          #if: steps.date.outputs.date < 21
           uses: tModLoader/gh-action-nightly-merge@master
           with:
               stable_branch: '1.4'
