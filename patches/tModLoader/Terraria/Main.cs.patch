@@ -299,15 +299,6 @@
  		public static Dust[] dust = new Dust[6001];
  		public static Star[] star = new Star[400];
  		public static Item[] item = new Item[401];
-@@ -1126,7 +_,7 @@
- 		public static bool Support4K = true;
- 		public static float MinimumZoomComparerX = 1920f;
- 		public static float MinimumZoomComparerY = 1200f;
--		private static int _renderTargetMaxSize = 2048;
-+		private static int _renderTargetMaxSize = 8192;
- #if XNA
- 		private static GraphicsProfile _selectedGraphicsProfile = GraphicsProfile.Reach;
- 		private static GraphicsProfile _currentGraphicsProfile = GraphicsProfile.Reach;
 @@ -1161,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -571,18 +562,24 @@
  			int currentValue = 0;
  			Configuration.Get("LastLaunchedVersion", ref currentValue);
  			bool flag = false;
-@@ -3266,14 +_,26 @@
+@@ -3266,14 +_,32 @@
  			int currentValue3 = graphics.PreferredBackBufferHeight;
  			Configuration.Get("DisplayWidth", ref currentValue2);
  			Configuration.Get("DisplayHeight", ref currentValue3);
 +
 +			//Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
 +			// Iterates to find the largest display and assumes that is allowed.
-+			int displayIndex = 0;
-+			while (SDL2.SDL.SDL_GetDesktopDisplayMode(displayIndex++, out var sdlMode) == 0) {
-+				maxScreenW = Math.Max(sdlMode.w, maxScreenW);
-+				maxScreenH = Math.Max(sdlMode.h, maxScreenH);
++			for (int i = 0; i < SDL2.SDL.SDL_GetNumVideoDisplays(); i++) {
++				int displayModeIndex = 0;
++				while (SDL2.SDL.SDL_GetDisplayMode(displayModeIndex++, i, out var sdlMode) == 0) {
++					maxScreenW = Math.Max(sdlMode.w, maxScreenW);
++					maxScreenH = Math.Max(sdlMode.h, maxScreenH);
++				}
 +			}
++			Logging.tML.Info($"Maximum Resolution is {maxScreenW} x {maxScreenH}");
++
++			// Update the _renderTargetMaxSize to correctly find max offscreen space, matching vanilla expectations
++			_renderTargetMaxSize = Math.Max(Math.Min(2048, maxScreenW + 192 * 2), maxScreenW);
 +
  			LastLoadedResolution = new Microsoft.Xna.Framework.Point(currentValue2, currentValue3);
  			if (!startFullscreen) {
