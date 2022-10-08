@@ -106,6 +106,13 @@ namespace Terraria.Social.Steam
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
 				string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
+
+				// Solxan: File.Copy sometimes fails to delete the file that it needs to replace.
+				// This mitigates that issue by forcing the deletion before copying.
+				//TODO: But why though? Needs deeper look later.
+				if (File.Exists(modPath))
+					File.Delete(modPath);
+
 				File.Copy(modFile.path, modPath, true);
 
 				// Cleanup Old Folders
@@ -133,7 +140,8 @@ namespace Terraria.Social.Steam
 					if (mod.properties.version >= new Version(buildData["version"]))
 						return false;
 
-				buildData["versionsummary"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
+				if (mod.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor())
+					buildData["versionsummary"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
 			}
 
 			return true;
