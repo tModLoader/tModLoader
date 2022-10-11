@@ -6,15 +6,16 @@ cd "$(dirname "$0")"
 
 echo "Verifying installation directory..."
 
-IllegalFiles='avcodec-58.dll avdevice-58.dll avfilter-7.dll avformat-58.dll avutil-56.dll FAudio.dll ffmpeg.exe ffplay.exe ffprobe.exe FNA.dll Ionic.Zip.CF.dll Ionic.Zip.Reduced.dll libjpeg-9.dll libpng16-16.dll libtheorafile.dll libtiff-5.dll libwebp-7.dll log4net.dll MojoShader.dll Mono.Cecil.dll Mono.Cecil.Mdb.dll Mono.Cecil.Pdb.dll MonoMod.RuntimeDetour.dll MonoMod.RuntimeDetour.xml MonoMod.Utils.dll MonoMod.Utils.xml MP3Sharp.dll Newtonsoft.Json.dll NVorbis.dll postproc-55.dll ReLogicFNA.dll SDL2.dll SDL2_image.dll soft_oal.dll Steamworks.NET.64Bit.dll steam_api64.dll swresample-3.dll swscale-5.dll System.Windows.Forms.Mono.dll zlib1.dll'
 TXTCOLOR_RED='\033[31m'
 TXTCOLOR_NC='\033[0m'
 ShownFileDeletionPrompt=false
 
-for file in $IllegalFiles
-do
-    # We are in LaunchUtils so check the folder above!
-	if [ -f "../$file" ]; then
+CheckAndRemoveFile()
+{
+	# We are in LaunchUtils, so check the folder above!
+	CurrentFilePath="../$1"
+
+	if [ -f "$CurrentFilePath" ]; then
 		if [ $ShownFileDeletionPrompt = false ]; then
 			echo
 			echo -e "${TXTCOLOR_RED}It has been detected that your installation directory contains third-party library files${TXTCOLOR_NC}"
@@ -27,6 +28,49 @@ do
 			ShownFileDeletionPrompt=true
 		fi
 
-		rm "../$file"
+		rm "$CurrentFilePath"
 	fi
-done
+}
+
+# Arrays in shell scripts are completely useless.
+CheckAndRemoveFile "Content/Wave Bank.xwb"
+CheckAndRemoveFile "avcodec-58.dll"
+CheckAndRemoveFile "avdevice-58.dll"
+CheckAndRemoveFile "avfilter-7.dll"
+CheckAndRemoveFile "avformat-58.dll"
+CheckAndRemoveFile "avutil-56.dll"
+CheckAndRemoveFile "FAudio.dll"
+CheckAndRemoveFile "ffmpeg.exe"
+CheckAndRemoveFile "ffplay.exe"
+CheckAndRemoveFile "ffprobe.exe"
+CheckAndRemoveFile "FNA.dll"
+CheckAndRemoveFile "Ionic.Zip.CF.dll"
+CheckAndRemoveFile "Ionic.Zip.Reduced.dll"
+CheckAndRemoveFile "libjpeg-9.dll"
+CheckAndRemoveFile "libpng16-16.dll"
+CheckAndRemoveFile "libtheorafile.dll"
+CheckAndRemoveFile "libtiff-5.dll"
+CheckAndRemoveFile "libwebp-7.dll"
+CheckAndRemoveFile "log4net.dll"
+CheckAndRemoveFile "MojoShader.dll"
+CheckAndRemoveFile "Mono.Cecil.dll"
+CheckAndRemoveFile "Mono.Cecil.Mdb.dll"
+CheckAndRemoveFile "Mono.Cecil.Pdb.dll"
+CheckAndRemoveFile "MonoMod.RuntimeDetour.dll"
+CheckAndRemoveFile "MonoMod.RuntimeDetour.xml"
+CheckAndRemoveFile "MonoMod.Utils.dll"
+CheckAndRemoveFile "MonoMod.Utils.xml"
+CheckAndRemoveFile "MP3Sharp.dll"
+CheckAndRemoveFile "Newtonsoft.Json.dll"
+CheckAndRemoveFile "NVorbis.dll"
+CheckAndRemoveFile "postproc-55.dll"
+CheckAndRemoveFile "ReLogicFNA.dll"
+CheckAndRemoveFile "SDL2.dll"
+CheckAndRemoveFile "SDL2_image.dll"
+CheckAndRemoveFile "soft_oal.dll"
+CheckAndRemoveFile "Steamworks.NET.64Bit.dll"
+CheckAndRemoveFile "steam_api64.dll"
+CheckAndRemoveFile "swresample-3.dll"
+CheckAndRemoveFile "swscale-5.dll"
+CheckAndRemoveFile "System.Windows.Forms.Mono.dll"
+CheckAndRemoveFile "zlib1.dll"
