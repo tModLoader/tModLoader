@@ -10,56 +10,97 @@ namespace tModLoader.BuildTools.Tasks;
 
 public class PackageModFile : TaskBase
 {
+	/// <summary>
+	/// NuGet package references.
+	/// </summary>
 	[Required]
 	public ITaskItem[] PackageReferences { get; set; } = Array.Empty<ITaskItem>();
 
+
+	/// <summary>
+	/// Assembly references.
+	/// </summary>
 	[Required]
 	public ITaskItem[] ReferencePaths { get; set; } = Array.Empty<ITaskItem>();
 
+	/// <summary>
+	/// Mod references.
+	/// </summary>
 	[Required]
 	public ITaskItem[] ModReferences { get; set; } = Array.Empty<ITaskItem>();
 
+	/// <summary>
+	/// The directory where the .csproj is.
+	/// </summary>
 	[Required]
 	public string ProjectDirectory { get; set; } = string.Empty;
 
+
+	/// <summary>
+	/// The directory where the compiled mod assembly is (relative to <see cref="ProjectDirectory"/>).
+	/// </summary>
 	[Required]
 	public string OutputPath { get; set; } = string.Empty;
 
+	/// <summary>
+	/// The assembly name of the mod.
+	/// </summary>
 	[Required]
 	public string AssemblyName { get; set; } = string.Empty;
 
+	/// <summary>
+	/// The version of tModLoader this mod was built for.
+	/// </summary>
 	[Required]
 	public string TmlVersion { get; set; } = string.Empty;
 
+	/// <summary>
+	/// The path to tModLoader's assembly file.
+	/// </summary>
 	[Required]
 	public string TmlDllPath { get; set; } = string.Empty;
 
+	/// <summary>
+	/// The path where the .tmod file should be written to.
+	/// </summary>
 	public string OutputTmodPath { get; set; } = string.Empty;
 
+	/// <summary>
+	/// The mod properties. (Previously found in <c>build.txt</c>)
+	/// </summary>
 	[Required]
 	public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
-	private static readonly IList<string> SourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
+	private static readonly IList<string> SourceExtensions = new List<string> {".csproj", ".cs", ".sln"};
+	private static readonly IList<string> IgnoredNugetPackages = new List<string> {"tModLoader.CodeAssist"};
 
 	protected override void Run() {
+		// Verify the .tmod path exists, and find it if it doesn't
+		if (string.IsNullOrEmpty(OutputTmodPath))
+			OutputTmodPath = SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName);
+		Log.LogMessage(MessageImportance.Normal, $"Using path for .tmod file: {OutputTmodPath}");
+
+		// Check the dll exists
 		string modDllName = Path.ChangeExtension(AssemblyName, ".dll");
 		string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
 		if (!File.Exists(modDllPath))
 			throw new FileNotFoundException("Mod dll not found.", modDllPath);
 		Log.LogMessage(MessageImportance.Low, $"Found mod's dll file: {modDllPath}");
 
+		// Load the mod properties from the .csproj or build.txt
 		BuildProperties modProperties = GetModProperties();
 		Log.LogMessage(MessageImportance.Low, $"Loaded build properties: {modProperties}");
 
-		if (string.IsNullOrEmpty(OutputTmodPath))
-			OutputTmodPath = SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName);
-		Log.LogMessage(MessageImportance.Normal, $"Using path for .tmod file: {OutputTmodPath}");
-
 		TmodFile tmodFile = new(OutputTmodPath, AssemblyName, modProperties.Version, Version.Parse(TmlVersion));
 
+		// Add files to the .tmod file
 		tmodFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
 		AddAllReferences(tmodFile, modProperties);
-		tmodFile.AddFile("Info", modProperties.ToBytes(Version.Parse(TmlVersion)));
+		tmodFile.AddFile("Info", modProperties.ToBytes(TmlVersion));
+
+		string modPdbPath = Path.ChangeExtension(modDllName, ".pdb");
+		if (File.Exists(modPdbPath))
+			tmodFile.AddFile(modPdbPath, File.ReadAllBytes(modPdbPath));
 
 		Log.LogMessage(MessageImportance.Low, "Adding resources...");
 		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
@@ -67,6 +108,7 @@ public class PackageModFile : TaskBase
 			.ToList();
 		Parallel.ForEach(resources, resource => AddResource(tmodFile, resource));
 
+		// Save it
 		Log.LogMessage(MessageImportance.Low, "Saving mod file...");
 		tmodFile.Save();
 	}
@@ -85,10 +127,12 @@ public class PackageModFile : TaskBase
 			string nugetName = "lib/" + taskItem.GetMetadata("NuGetPackageId") + ".dll";
 			string nugetFile = taskItem.GetMetadata("HintPath");
 
-			Log.LogMessage(MessageImportance.Low, $"Adding nuget {nugetName} with path {nugetFile}");
-			if (string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
+			if (string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) {
+				Log.LogMessage(MessageImportance.Low, $"Skipping private reference: {nugetName}");
 				continue;
+			}
 
+			Log.LogMessage(MessageImportance.Low, $"Adding nuget {nugetName} with path {nugetFile}");
 			tmodFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
 			modProperties.AddDllReference(taskItem.GetMetadata("NuGetPackageId"));
 		}
@@ -97,10 +141,12 @@ public class PackageModFile : TaskBase
 			string dllPath = dllReference.GetMetadata("FullPath");
 			string dllName = Path.GetFileNameWithoutExtension(dllPath);
 
-			Log.LogMessage(MessageImportance.Low, $"Adding dll reference with path {dllPath}");
-			if (string.Equals(dllReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
+			if (string.Equals(dllReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) {
+				Log.LogMessage(MessageImportance.Low, $"Skipping private reference: {dllName}");
 				continue;
+			}
 
+			Log.LogMessage(MessageImportance.Low, $"Adding dll reference with path {dllPath}");
 			tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
 			modProperties.AddDllReference(dllName);
 		}
@@ -116,7 +162,13 @@ public class PackageModFile : TaskBase
 
 	private List<ITaskItem> GetNugetReferences() {
 		Dictionary<string, ITaskItem> nugetLookup = PackageReferences.ToDictionary(x => x.ItemSpec);
-		if (nugetLookup.ContainsKey("tModLoader.CodeAssist")) nugetLookup.Remove("tModLoader.CodeAssist");
+		// Check if any packages in IgnoredNugetPackages are present in nugetLookup, and if they are, remove them
+		foreach (string ignoredNugetPackage in IgnoredNugetPackages) {
+			if (nugetLookup.ContainsKey(ignoredNugetPackage)) {
+				Log.LogMessage(MessageImportance.Low, $"Ignoring nuget package: {ignoredNugetPackage}");
+				nugetLookup.Remove(ignoredNugetPackage);
+			}
+		}
 
 		List<ITaskItem> nugetReferences = new List<ITaskItem>();
 		foreach (ITaskItem referencePath in ReferencePaths) {
@@ -172,7 +224,7 @@ public class PackageModFile : TaskBase
 			Log.LogWarning("Mod description not found with path: " + descriptionFilePath);
 			return properties;
 		}
-		properties.SetDescription(File.ReadAllText(descriptionFilePath));
+		properties.Description = File.ReadAllText(descriptionFilePath);
 
 		return properties;
 	}
@@ -183,7 +235,7 @@ public class PackageModFile : TaskBase
 		       relPath[0] == '.' ||
 		       relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
 		       relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
-		       relPath == "build.txt" || // For mod's that still use a build.txt
+		       relPath == "build.txt" || // For mods that still use a build.txt
 		       !properties.IncludeSource && SourceExtensions.Contains(Path.GetExtension(resourcePath)) ||
 		       Path.GetFileName(resourcePath) == "Thumbs.db";
 	}

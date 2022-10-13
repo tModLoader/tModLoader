@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,68 +10,55 @@ namespace tModLoader.BuildTools.ModFile;
 
 public class BuildProperties
 {
-	private List<string> _dllReferences = new();
-	private List<ModReference> _modReferences = new();
-	private List<ModReference> _weakReferences = new();
-	private string[] _sortAfter = Array.Empty<string>();
-	private string[] _sortBefore = Array.Empty<string>();
-	private string[] _buildIgnores = Array.Empty<string>();
-	private string _author = "";
+	public List<string> DllReferences = new();
+	public List<ModReference> ModReferences = new();
+	public List<ModReference> WeakReferences = new();
+	public string[] SortAfter = Array.Empty<string>();
+	public string[] SortBefore = Array.Empty<string>();
+	public string[] BuildIgnores = Array.Empty<string>();
+	public string Author = string.Empty;
 	public Version Version = new(1, 0);
-	private string _displayName = "";
-	private bool _noCompile = false;
-	private bool _hideCode = false;
-	private bool _hideResources = false;
+	public string DisplayName = "";
+	public bool NoCompile = false;
+	public bool HideCode = false;
+	public bool HideResources = false;
 	public bool IncludeSource = false;
+	public bool PlayableOnPreview = true;
+	public string EacPath = string.Empty;
+	public string Homepage = "";
+	public string Description = "";
+	public ModSide Side = ModSide.Both;
 
-	private string _eacPath = "";
-
-	// This .tmod was built against a beta release, preventing publishing.
-	internal bool Beta = false;
-	private string _homepage = "";
-	private string _description = "";
-	private ModSide _side;
-
-	public IEnumerable<ModReference> Refs(bool includeWeak) =>
-		includeWeak ? _modReferences.Concat(_weakReferences) : _modReferences;
+	public IEnumerable<ModReference> Refs(bool includeWeak) => includeWeak ? ModReferences.Concat(WeakReferences) : ModReferences;
 
 	public IEnumerable<string> RefNames(bool includeWeak) => Refs(includeWeak).Select(dep => dep.mod);
 
-	private static IEnumerable<string> ReadList(string value)
-		=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
+	public static IEnumerable<string> ReadList(string value) => value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
 
-	private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
+	public static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
 		foreach (var item in list)
 			writer.Write(item!.ToString()!);
 
 		writer.Write("");
 	}
 
-	internal static BuildProperties ReadTaskItems(IEnumerable<ITaskItem> taskItems) {
-		BuildProperties properties = new BuildProperties();
+	public static BuildProperties ReadTaskItems(IEnumerable<ITaskItem> taskItems) {
+		BuildProperties properties = new();
 
 		foreach (ITaskItem property in taskItems) {
-			string propertyName = property.ItemSpec;
+			string propertyName = char.ToLowerInvariant(property.ItemSpec[0]) + property.ItemSpec.Substring(1);
 			string propertyValue = property.GetMetadata("Value");
-
-			// Make the first letter lowercase
-			propertyName = char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
 
 			ProcessProperty(properties, propertyName, propertyValue);
 		}
 
-		var refs = properties.RefNames(true).ToList();
-		if (refs.Count != refs.Distinct().Count())
-			throw new Exception("Duplicate mod/weak reference");
-
-		//add (mod|weak)References that are not in sortBefore to sortAfter
-		properties._sortAfter = properties.RefNames(true).Where(dep => !properties._sortBefore.Contains(dep))
-			.Concat(properties._sortAfter).Distinct().ToArray();
+		VerifyRefs(properties.RefNames(true).ToList());
+		DistinctRefsToSortAfter(properties);
 
 		return properties;
 	}
 
-	internal static BuildProperties ReadBuildInfo(string buildFile) {
+	public static BuildProperties ReadBuildInfo(string buildFile) {
 		BuildProperties properties = new BuildProperties();
 
 		foreach (string line in File.ReadAllLines(buildFile)) {
@@ -86,160 +74,155 @@ public class BuildProperties
 			ProcessProperty(properties, property, value);
 		}
 
-		var refs = properties.RefNames(true).ToList();
-		if (refs.Count != refs.Distinct().Count())
-			throw new Exception("Duplicate mod/weak reference");
-
-		//add (mod|weak)References that are not in sortBefore to sortAfter
-		properties._sortAfter = properties.RefNames(true).Where(dep => !properties._sortBefore.Contains(dep))
-			.Concat(properties._sortAfter).Distinct().ToArray();
+		VerifyRefs(properties.RefNames(true).ToList());
+		DistinctRefsToSortAfter(properties);
 
 		return properties;
 	}
 
 	private static void ProcessProperty(BuildProperties properties, string property, string value) {
-		if (string.IsNullOrEmpty(value))
-			return;
-
 		switch (property) {
 			case "dllReferences":
-				properties._dllReferences = ReadList(value).ToList();
+				properties.DllReferences = ReadList(value).ToList();
 				break;
 			case "modReferences":
-				properties._modReferences = ReadList(value).Select(ModReference.Parse).ToList();
+				properties.ModReferences = ReadList(value).Select(ModReference.Parse).ToList();
 				break;
 			case "weakReferences":
-				properties._weakReferences = ReadList(value).Select(ModReference.Parse).ToList();
+				properties.WeakReferences = ReadList(value).Select(ModReference.Parse).ToList();
 				break;
 			case "sortBefore":
-				properties._sortBefore = ReadList(value).ToArray();
+				properties.SortBefore = ReadList(value).ToArray();
 				break;
 			case "sortAfter":
-				properties._sortAfter = ReadList(value).ToArray();
+				properties.SortAfter = ReadList(value).ToArray();
 				break;
 			case "author":
-				properties._author = value;
+				properties.Author = value;
 				break;
 			case "version":
 				properties.Version = new Version(value);
 				break;
 			case "displayName":
-				properties._displayName = value;
+				properties.DisplayName = value;
 				break;
 			case "homepage":
-				properties._homepage = value;
+				properties.Homepage = value;
 				break;
 			case "noCompile":
-				properties._noCompile = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+				properties.NoCompile = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
 			case "hideCode":
-				properties._hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+				properties.HideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
 			case "hideResources":
-				properties._hideResources = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+				properties.HideResources = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
 			case "includeSource":
 				properties.IncludeSource = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
+			case "playableOnPreview":
+				properties.PlayableOnPreview = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+				break;
 			case "buildIgnore":
-				properties._buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar))
-					.Where(s => s.Length > 0).ToArray();
+				properties.BuildIgnores = value.Split(',')
+					.Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar))
+					.Where(s => s.Length > 0)
+					.ToArray();
 				break;
 			case "side":
-				if (!Enum.TryParse(value, true, out properties._side))
-					throw new Exception("Side is not one of (Both, Client, Server, NoSync): " + value);
+				if (!Enum.TryParse(value, true, out properties.Side))
+					throw new ArgumentException("Side is not one of (Both, Client, Server, NoSync): " + value);
 				break;
 		}
 	}
 
-	internal void SetDescription(string description) {
-		_description = description;
-	}
-
 	internal void AddDllReference(string name) {
-		_dllReferences.Add(name);
+		DllReferences.Add(name);
 	}
 
 	internal void AddModReference(string modName, bool weak) {
 		if (weak)
-			_weakReferences.Add(ModReference.Parse(modName));
+			WeakReferences.Add(ModReference.Parse(modName));
 		else
-			_modReferences.Add(ModReference.Parse(modName));
+			ModReferences.Add(ModReference.Parse(modName));
 	}
 
-	internal byte[] ToBytes(Version buildVersion) {
+	internal byte[] ToBytes(string buildVersion) {
 		using MemoryStream memoryStream = new MemoryStream();
 		using BinaryWriter writer = new BinaryWriter(memoryStream);
 
-		if (_dllReferences.Count > 0) {
+		if (DllReferences.Count > 0) {
 			writer.Write("dllReferences");
-			WriteList(_dllReferences, writer);
+			WriteList(DllReferences, writer);
 		}
-		if (_modReferences.Count > 0) {
+		if (ModReferences.Count > 0) {
 			writer.Write("modReferences");
-			WriteList(_modReferences, writer);
+			WriteList(ModReferences, writer);
 		}
-		if (_weakReferences.Count > 0) {
+		if (WeakReferences.Count > 0) {
 			writer.Write("weakReferences");
-			WriteList(_weakReferences, writer);
+			WriteList(WeakReferences, writer);
 		}
-		if (_sortAfter.Length > 0) {
+		if (SortAfter.Length > 0) {
 			writer.Write("sortAfter");
-			WriteList(_sortAfter, writer);
+			WriteList(SortAfter, writer);
 		}
-		if (_sortBefore.Length > 0) {
+		if (SortBefore.Length > 0) {
 			writer.Write("sortBefore");
-			WriteList(_sortBefore, writer);
+			WriteList(SortBefore, writer);
 		}
-		if (_author.Length > 0) {
+		if (Author.Length > 0) {
 			writer.Write("author");
-			writer.Write(_author);
+			writer.Write(Author);
 		}
 		writer.Write("version");
 		writer.Write(Version.ToString());
-		if (_displayName.Length > 0) {
+		if (DisplayName.Length > 0) {
 			writer.Write("displayName");
-			writer.Write(_displayName);
+			writer.Write(DisplayName);
 		}
-		if (_homepage.Length > 0) {
+		if (Homepage.Length > 0) {
 			writer.Write("homepage");
-			writer.Write(_homepage);
+			writer.Write(Homepage);
 		}
-		if (_description.Length > 0) {
+		if (Description.Length > 0) {
 			writer.Write("description");
-			writer.Write(_description);
+			writer.Write(Description);
 		}
-		if (_noCompile) {
+		if (NoCompile) {
 			writer.Write("noCompile");
 		}
-		if (!_hideCode) {
+		if (!HideCode) {
 			writer.Write("!hideCode");
 		}
-		if (!_hideResources) {
+		if (!HideResources) {
 			writer.Write("!hideResources");
 		}
 		if (IncludeSource) {
 			writer.Write("includeSource");
 		}
-		if (_eacPath.Length > 0) {
-			writer.Write("eacPath");
-			writer.Write(_eacPath);
+		if (!PlayableOnPreview) {
+			writer.Write("!playableOnPreview");
 		}
-		if (_side != ModSide.Both) {
+		if (EacPath.Length > 0) {
+			writer.Write("eacPath");
+			writer.Write(EacPath);
+		}
+		if (Side != ModSide.Both) {
 			writer.Write("side");
-			writer.Write((byte)_side);
+			writer.Write((byte)Side);
 		}
 
 		writer.Write("buildVersion");
-		writer.Write(buildVersion.ToString());
+		writer.Write(buildVersion);
 
 		writer.Write("");
-		byte[] data = memoryStream.ToArray();
-		return data;
+		return memoryStream.ToArray();
 	}
 
 	internal bool IgnoreFile(string resource) =>
-		_buildIgnores.Any(fileMask => FitsMask(resource, fileMask)) || _dllReferences.Contains("lib/" + Path.GetFileName(resource));
+		BuildIgnores.Any(fileMask => FitsMask(resource, fileMask)) || DllReferences.Contains("lib/" + Path.GetFileName(resource));
 
 	private bool FitsMask(string fileName, string fileMask) {
 		string pattern =
@@ -254,5 +237,13 @@ public class BuildProperties
 		return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileName);
 	}
 
-	public override string ToString() => $"{nameof(_dllReferences)}: {_dllReferences.Count}, {nameof(_modReferences)}: {_modReferences.Count}, {nameof(_weakReferences)}: {_weakReferences.Count}, {nameof(_sortAfter)}: {_sortAfter.Length}, {nameof(_sortBefore)}: {_sortBefore.Length}, {nameof(_buildIgnores)}: {_buildIgnores.Length}, {nameof(_author)}: {_author}, {nameof(Version)}: {Version}, {nameof(_displayName)}: {_displayName}, {nameof(_noCompile)}: {_noCompile}, {nameof(_hideCode)}: {_hideCode}, {nameof(_hideResources)}: {_hideResources}, {nameof(IncludeSource)}: {IncludeSource}, {nameof(_eacPath)}: {_eacPath}, {nameof(Beta)}: {Beta}, {nameof(_homepage)}: {_homepage}, {nameof(_description)}: {_description}, {nameof(_side)}: {_side}";
+	private static void VerifyRefs(List<string> refs) {
+		if (refs.Distinct().Count() != refs.Count) throw new DuplicateNameException("Duplicate mod or weak references.");
+	}
+
+	// Adds (mod|weak)References that are not in sortBefore to sortAfter
+	private static void DistinctRefsToSortAfter(BuildProperties properties) {
+		properties.SortAfter = properties.RefNames(true).Where(dep => !properties.SortBefore.Contains(dep))
+			.Concat(properties.SortAfter).Distinct().ToArray();
+	}
 }
