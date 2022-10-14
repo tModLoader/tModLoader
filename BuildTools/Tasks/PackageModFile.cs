@@ -85,11 +85,11 @@ public class PackageModFile : TaskBase
 		string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
 		if (!File.Exists(modDllPath))
 			throw new FileNotFoundException("Mod dll not found.", modDllPath);
-		Log.LogMessage(MessageImportance.Low, $"Found mod's dll file: {modDllPath}");
+		Log.LogMessage(MessageImportance.Normal, $"Found mod's dll file: {modDllPath}");
 
 		// Load the mod properties from the .csproj or build.txt
 		BuildProperties modProperties = GetModProperties();
-		Log.LogMessage(MessageImportance.Low, $"Loaded build properties: {modProperties}");
+		Log.LogMessage(MessageImportance.Normal, $"Loaded build properties: {modProperties}");
 
 		TmodFile tmodFile = new(OutputTmodPath, AssemblyName, modProperties.Version, Version.Parse(TmlVersion));
 
@@ -102,14 +102,14 @@ public class PackageModFile : TaskBase
 		if (File.Exists(modPdbPath))
 			tmodFile.AddFile(modPdbPath, File.ReadAllBytes(modPdbPath));
 
-		Log.LogMessage(MessageImportance.Low, "Adding resources...");
+		Log.LogMessage(MessageImportance.Normal, "Adding resources...");
 		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
 			.Where(res => !IgnoreResource(modProperties, res))
 			.ToList();
 		Parallel.ForEach(resources, resource => AddResource(tmodFile, resource));
 
 		// Save it
-		Log.LogMessage(MessageImportance.Low, "Saving mod file...");
+		Log.LogMessage(MessageImportance.Normal, "Saving mod file...");
 		tmodFile.Save();
 	}
 
@@ -121,18 +121,18 @@ public class PackageModFile : TaskBase
 		// Letting dll references be anywhere would mean doing some weird filters on references,
 		// or using a custom `<DllReference>` thing that would get translated to a `<Reference>`.
 		List<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory)).ToList();
-		Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count} dll references.");
+		Log.LogMessage(MessageImportance.Normal, $"Found {dllReferences.Count} dll references.");
 
 		foreach (ITaskItem taskItem in nugetReferences) {
 			string nugetName = "lib/" + taskItem.GetMetadata("NuGetPackageId") + ".dll";
 			string nugetFile = taskItem.GetMetadata("HintPath");
 
 			if (string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) {
-				Log.LogMessage(MessageImportance.Low, $"Skipping private reference: {nugetName}");
+				Log.LogMessage(MessageImportance.Normal, $"Skipping private reference: {nugetName}");
 				continue;
 			}
 
-			Log.LogMessage(MessageImportance.Low, $"Adding nuget {nugetName} with path {nugetFile}");
+			Log.LogMessage(MessageImportance.Normal, $"Adding nuget {nugetName} with path {nugetFile}");
 			tmodFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
 			modProperties.AddDllReference(taskItem.GetMetadata("NuGetPackageId"));
 		}
@@ -142,11 +142,11 @@ public class PackageModFile : TaskBase
 			string dllName = Path.GetFileNameWithoutExtension(dllPath);
 
 			if (string.Equals(dllReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) {
-				Log.LogMessage(MessageImportance.Low, $"Skipping private reference: {dllName}");
+				Log.LogMessage(MessageImportance.Normal, $"Skipping private reference: {dllName}");
 				continue;
 			}
 
-			Log.LogMessage(MessageImportance.Low, $"Adding dll reference with path {dllPath}");
+			Log.LogMessage(MessageImportance.Normal, $"Adding dll reference with path {dllPath}");
 			tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
 			modProperties.AddDllReference(dllName);
 		}
@@ -155,7 +155,7 @@ public class PackageModFile : TaskBase
 			string? modName = modReference.GetMetadata("Identity");
 			string? weakRef = modReference.GetMetadata("Weak");
 
-			Log.LogMessage(MessageImportance.Low, $"Adding mod reference with mod name {modName} [Weak: {weakRef}]");
+			Log.LogMessage(MessageImportance.Normal, $"Adding mod reference with mod name {modName} [Weak: {weakRef}]");
 			modProperties.AddModReference(modName, string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase));
 		}
 	}
@@ -165,7 +165,7 @@ public class PackageModFile : TaskBase
 		// Check if any packages in IgnoredNugetPackages are present in nugetLookup, and if they are, remove them
 		foreach (string ignoredNugetPackage in IgnoredNugetPackages) {
 			if (nugetLookup.ContainsKey(ignoredNugetPackage)) {
-				Log.LogMessage(MessageImportance.Low, $"Ignoring nuget package: {ignoredNugetPackage}");
+				Log.LogMessage(MessageImportance.Normal, $"Ignoring nuget package: {ignoredNugetPackage}");
 				nugetLookup.Remove(ignoredNugetPackage);
 			}
 		}
@@ -179,7 +179,7 @@ public class PackageModFile : TaskBase
 			if (string.IsNullOrEmpty(nugetPackageId)) continue;
 			if (!nugetLookup.ContainsKey(nugetPackageId)) continue;
 
-			Log.LogMessage(MessageImportance.Low, $"{nugetPackageId} - v{nugetPackageVersion} - Found at: {hintPath}");
+			Log.LogMessage(MessageImportance.Normal, $"{nugetPackageId} - v{nugetPackageVersion} - Found at: {hintPath}");
 			nugetReferences.Add(referencePath);
 		}
 
@@ -203,7 +203,7 @@ public class PackageModFile : TaskBase
 			if (string.IsNullOrEmpty(modName))
 				throw new Exception("A mod reference must have an identity (Include=\"ModName\"). It should match the internal name of the mod you are referencing.");
 
-			Log.LogMessage(MessageImportance.Low, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");
+			Log.LogMessage(MessageImportance.Normal, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");
 			modReferences.Add(modReference);
 		}
 

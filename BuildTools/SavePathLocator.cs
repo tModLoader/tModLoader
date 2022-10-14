@@ -20,7 +20,7 @@ public static class SavePathLocator
 	}
 
 	public static string FindSaveFolder(TaskLoggingHelper logger, string tmlDllPath) {
-		logger.LogMessage(MessageImportance.Low, "Searching for save path...");
+		logger.LogMessage(MessageImportance.Normal, "Searching for save path...");
 
 		string tmlSteamPath = Path.GetDirectoryName(tmlDllPath) ?? throw new Exception($"Getting directory of {nameof(tmlDllPath)} failed");
 
@@ -33,7 +33,7 @@ public static class SavePathLocator
 
 		if (File.Exists(Path.Combine(tmlSteamPath, "savehere.txt"))) {
 			string path = Path.Combine(tmlSteamPath, fileFolder);
-			logger.LogMessage(MessageImportance.Low, $"Found savehere.txt, saving at {path}");
+			logger.LogMessage(MessageImportance.Normal, $"Found savehere.txt, saving at {path}");
 			return path;
 		}
 
