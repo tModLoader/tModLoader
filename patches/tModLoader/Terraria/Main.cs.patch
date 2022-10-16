@@ -337,7 +337,7 @@
  		public static int selectedPlayer = 0;
  		public static int selectedWorld;
 -		public static int menuMode;
-+		public static int menuMode = Interface.loadModsID;
++		public static int menuMode = Interface.welcomeID;
  		public static int menuSkip;
  		private static bool _needsLanguageSelect = true;
 -		private static Item tooltipPrefixComparisonItem = new Item();
@@ -470,7 +470,7 @@
  			}
  		}
  
-+		/* Disabled, tML only supports HiDef		
++		/* Disabled, tML only supports HiDef
  		public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
  			if (_currentGraphicsProfile != profile || forceSet) {
  				_selectedGraphicsProfile = profile;
@@ -4570,6 +4570,38 @@
  		}
  
  		private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling) {
+@@ -39984,8 +_,12 @@
+ 				num = 0;
+ 			}
+ 
+-			if (Assets.PendingAssets == 0 && _musicLoaded && _artLoaded && Program.LoadedEverything)
++			if (Assets.PendingAssets == 0 && _musicLoaded && _artLoaded && Program.LoadedEverything && !_isAsyncLoadComplete) {
+ 				_isAsyncLoadComplete = true;
++				Initialize_AlmostEverything();
++				PostContentLoadInitialize();
++                Main.MenuUI.SetState(ModLoader.UI.Interface.loadMods);
++			}
+ 
+ 			spriteBatch.Begin();
+ 			splashCounter++;
+@@ -40005,8 +_,6 @@
+ 					b = (byte)((float)(75 - (splashCounter - 125)) / 75f * 255f);
+ 				}
+ 				else {
+-					Initialize_AlmostEverything();
+-					PostContentLoadInitialize();
+ 					showSplash = false;
+ 					fadeCounter = 75;
+ 					splashTimer.Stop();
+@@ -40034,8 +_,6 @@
+ 						num = 1;
+ 					}
+ 					else {
+-						Initialize_AlmostEverything();
+-						PostContentLoadInitialize();
+ 						showSplash = false;
+ 						fadeCounter = 120;
+ 						splashTimer.Stop();
 @@ -40268,9 +_,16 @@
  			float value3 = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
  			value3 = MathHelper.Clamp(value3, 0f, 1f);

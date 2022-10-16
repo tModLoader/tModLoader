@@ -65,7 +65,7 @@ namespace Terraria.ModLoader
 		internal static bool skipLoad;
 		internal static Action OnSuccessfulLoad;
 
-		private static bool isLoading;
+		internal static bool isLoading { get; private set; }
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
@@ -128,7 +128,7 @@ namespace Terraria.ModLoader
 					OnSuccessfulLoad();
 				}
 				else {
-					Main.menuMode = 0;
+					Main.menuMode = Interface.welcomeID;
 				}
 			}
 			catch when (token.IsCancellationRequested) {
