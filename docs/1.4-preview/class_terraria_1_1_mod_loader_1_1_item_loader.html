@@ -429,15 +429,17 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Shoot</b> (<a 
 <tr class="memdesc:a9f8f514af47860e544dd59798404e1c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when splitting a stack of items.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a9f8f514af47860e544dd59798404e1c3">More...</a><br /></td></tr>
 <tr class="separator:a9f8f514af47860e544dd59798404e1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2f50f0bc4f9daeec0c67eaa1d073e81"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ad2f50f0bc4f9daeec0c67eaa1d073e81">StackItems</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> increase, <a class="el" href="class_terraria_1_1_item.html">Item</a> decrease, out int numTransfered, bool infiniteSource=false, int? numToTransfer=null)</td></tr>
-<tr class="memdesc:ad2f50f0bc4f9daeec0c67eaa1d073e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks item1 and item2. Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492" title="Allows you to make things happen when items stack together.">GlobalItem.OnStack</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acca3d93070befea910b34a2dcf26f7a9" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if item1.stack &lt; item1.maxStack.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ad2f50f0bc4f9daeec0c67eaa1d073e81">More...</a><br /></td></tr>
+<tr class="memdesc:ad2f50f0bc4f9daeec0c67eaa1d073e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks <em>increase</em>  and <em>decrease</em>  items. <br  />
+ Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492" title="Allows you to make things happen when items stack together.">GlobalItem.OnStack</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acca3d93070befea910b34a2dcf26f7a9" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if <em>increase</em> .stack is less than <em>increase</em> .maxStack.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ad2f50f0bc4f9daeec0c67eaa1d073e81">More...</a><br /></td></tr>
 <tr class="separator:ad2f50f0bc4f9daeec0c67eaa1d073e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c1ebadb0d4e4abe23ca8cdb0ddf4c5a"><td class="memItemLeft" align="right" valign="top"><a id="a5c1ebadb0d4e4abe23ca8cdb0ddf4c5a" name="a5c1ebadb0d4e4abe23ca8cdb0ddf4c5a"></a>
 static <a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TransferWithLimit</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> decrease, int limit)</td></tr>
 <tr class="separator:a5c1ebadb0d4e4abe23ca8cdb0ddf4c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4a49edfad76b72d1080af9bbe9fab38"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aa4a49edfad76b72d1080af9bbe9fab38">TryStackItems</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> increase, <a class="el" href="class_terraria_1_1_item.html">Item</a> decrease, out int numTransfered, bool infiniteSource=false)</td></tr>
-<tr class="memdesc:aa4a49edfad76b72d1080af9bbe9fab38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls CanStack. Returns false if CanStack is false. Calls StackItems if CanStack is true<br  />
- Stacks item1 and item2. Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492" title="Allows you to make things happen when items stack together.">GlobalItem.OnStack</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acca3d93070befea910b34a2dcf26f7a9" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if item1.stack &lt; item1.maxStack.<br  />
-  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aa4a49edfad76b72d1080af9bbe9fab38">More...</a><br /></td></tr>
+<tr class="memdesc:aa4a49edfad76b72d1080af9bbe9fab38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-circuits if <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#af5082e91bf0a22e19be84e2696ed97eb" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">CanStack</a> hooks don't return true. <br  />
+ Returns the result of the initial check. <br  />
+ <br  />
+   <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aa4a49edfad76b72d1080af9bbe9fab38">More...</a><br /></td></tr>
 <tr class="separator:aa4a49edfad76b72d1080af9bbe9fab38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c17fdcfa48a4f389304e9bd791478b0"><td class="memItemLeft" align="right" valign="top"><a id="a3c17fdcfa48a4f389304e9bd791478b0" name="a3c17fdcfa48a4f389304e9bd791478b0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref float gravity, ref float maxFallSpeed)</td></tr>
@@ -786,7 +788,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Stacks item1 and item2. Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492" title="Allows you to make things happen when items stack together.">GlobalItem.OnStack</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acca3d93070befea910b34a2dcf26f7a9" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if item1.stack &lt; item1.maxStack. </p>
+<p>Stacks <em>increase</em>  and <em>decrease</em>  items. <br  />
+ Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492" title="Allows you to make things happen when items stack together.">GlobalItem.OnStack</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acca3d93070befea910b34a2dcf26f7a9" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if <em>increase</em> .stack is less than <em>increase</em> .maxStack. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">increase</td><td><a class="el" href="class_terraria_1_1_item.html">Item</a> where the stack is being increased.</td></tr>
@@ -846,9 +849,10 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Calls CanStack. Returns false if CanStack is false. Calls StackItems if CanStack is true<br  />
- Stacks item1 and item2. Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a816a6c12dcdb5a80b86b803965c25492" title="Allows you to make things happen when items stack together.">GlobalItem.OnStack</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#acca3d93070befea910b34a2dcf26f7a9" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if item1.stack &lt; item1.maxStack.<br  />
- </p>
+<p>Short-circuits if <a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#af5082e91bf0a22e19be84e2696ed97eb" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">CanStack</a> hooks don't return true. <br  />
+ Returns the result of the initial check. <br  />
+ <br  />
+  </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">increase</td><td><a class="el" href="class_terraria_1_1_item.html">Item</a> where the stack is being increased.</td></tr>
