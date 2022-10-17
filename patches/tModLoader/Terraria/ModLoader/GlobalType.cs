@@ -8,12 +8,16 @@ namespace Terraria.ModLoader
 {
 	public abstract class GlobalType : ModType, IIndexed
 	{
+		private static readonly MethodInfo instancePerEntityGetterMethod = typeof(GlobalType).GetProperty(nameof(InstancePerEntity)).GetGetMethod();
+
 		public ushort Index { get; internal set; }
 
 		/// <summary>
-		/// Whether to create a new instance of this Global for every entity that exists.
-		/// Useful for storing information on an entity. Defaults to false.
-		/// Return true if you need to store information (have non-static fields).
+		/// Whether to create a new instance of this Global for every entity that exists.<br/>
+		/// Useful for storing information on an entity. Defaults to false. <para/> 
+		/// Return <b>true</b> if you need to store information per entity.<br/>
+		/// Return <b>false</b> if you don't, or want to store instance data but keep the type singleton-like.<br/>
+		/// Defaults to <b>false</b>, but this property must be overridden if your type contains instance fields.
 		/// </summary>
 		public virtual bool InstancePerEntity => false;
 
@@ -22,12 +26,14 @@ namespace Terraria.ModLoader
 		protected override void ValidateType() {
 			base.ValidateType();
 
-			var type = GetType();
-			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalType)));
+			const BindingFlags FieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-			if (hasInstanceFields && !InstancePerEntity)
-				throw new Exception($" {GetType().FullName} instance fields but {nameof(InstancePerEntity)} returns false. Either use static fields, or override {nameof(InstancePerEntity)} to return true");
+			var type = GetType();
+			bool hasInstanceFields = type.GetFields(FieldFlags).Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalType)));
+			bool overridesInstancePerEntity = LoaderUtils.HasOverride(type, instancePerEntityGetterMethod);
+
+			if (hasInstanceFields && !overridesInstancePerEntity)
+				throw new Exception($"{type.FullName} contains instance fields but does not override {nameof(InstancePerEntity)}. Either use static fields, or override {nameof(InstancePerEntity)} to return 'true' if the data is meant to be stored per-instance, or 'false' if it's meant to be singleton-like.");
 		}
 
 		public static T Instance<T>(Instanced<T>[] globals, ushort index) where T : class {
