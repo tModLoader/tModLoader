@@ -28,8 +28,22 @@ namespace Terraria.ModLoader
 
 			const BindingFlags FieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
+			static bool IsFieldUserDefined(FieldInfo field) {
+				var declaringType = field.DeclaringType;
+
+				if (!declaringType.IsSubclassOf(typeof(GlobalType))) {
+					return false;
+				}
+
+				if (declaringType.IsGenericType && declaringType.GetGenericTypeDefinition() == typeof(GlobalType<,>)) {
+					return false;
+				}
+
+				return true;
+			}
+
 			var type = GetType();
-			bool hasInstanceFields = type.GetFields(FieldFlags).Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalType)));
+			bool hasInstanceFields = LoaderUtils.GetAllFields(type, FieldFlags).Any(IsFieldUserDefined);
 			bool overridesInstancePerEntity = LoaderUtils.HasOverride(type, instancePerEntityGetterMethod);
 
 			if (hasInstanceFields && !overridesInstancePerEntity)

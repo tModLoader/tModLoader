@@ -148,6 +148,19 @@ namespace Terraria.ModLoader.Core
 			return providers.Where(p => HasOverride(p.GetType(), method));
 		}
 
+		public static IEnumerable<FieldInfo> GetAllFields(Type type, BindingFlags bindingFlags) {
+			bindingFlags |= BindingFlags.DeclaredOnly;
+			bindingFlags &= ~BindingFlags.FlattenHierarchy;
+
+			while (type != null) {
+				foreach (var field in type.GetFields(bindingFlags)) {
+					yield return field;
+				}
+
+				type = type.BaseType;
+			}
+		}
+
 		public static IEnumerable<T> WhereMethodIsOverridden<T, F>(this IEnumerable<T> providers, Expression<Func<T, F>> expr) where F : Delegate =>
 			WhereMethodIsOverridden(providers, expr.ToMethodInfo());
 
