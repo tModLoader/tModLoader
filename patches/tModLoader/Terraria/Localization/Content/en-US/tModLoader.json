@@ -483,6 +483,9 @@
 		"OneDriveHint": "Tip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"",
 		"AntivirusHint": "Tip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
 		"TypeInitializationHint": "Tip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader",
+		"CustomWaveBankFoundWarning": "Wave Bank.xwb found in tModLoader Contents folder, this can lead to issues",
+		"TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "New Content",
 		"TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",

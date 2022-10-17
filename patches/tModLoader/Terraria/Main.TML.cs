@@ -190,6 +190,11 @@ namespace Terraria
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 			}
 
+			// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for
+			if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
+			}
+
 			if (Directory.Exists(Path.Combine("Content", "Images")))
 				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 

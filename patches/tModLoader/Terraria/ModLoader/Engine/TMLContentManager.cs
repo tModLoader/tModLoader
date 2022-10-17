@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -71,7 +72,7 @@ namespace Terraria.ModLoader.Engine
 		public bool TryGetPath(string asset, out string result) {
 			if (alternateContentManager != null && alternateContentManager.TryGetPath(asset, out result)) {
 				if (asset == "Wave Bank.xwb")
-					Logging.tML.Warn("Wave Bank.xwb found in tModLoader Contents folder, this can lead to issues");
+					Logging.tML.Warn(Language.GetTextValue("tModLoader.CustomWaveBankFoundWarning"));
 				return true;
 			}
 

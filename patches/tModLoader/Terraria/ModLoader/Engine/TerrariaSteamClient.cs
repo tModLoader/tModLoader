@@ -15,6 +15,7 @@ namespace Terraria.ModLoader.Engine
 	{
 		private static ILog Logger { get; } = LogManager.GetLogger("TerrariaSteamClient");
 
+		private const int LatestTerrariaBuildID = 9653812; // Currently v1.4.4.4. Update this when any Terraria update changes any asset. Also update InitTMLContentManager with a newly added file
 		private static AnonymousPipeServerStream serverPipe;
 
 		private static string MsgInitFailed = "init_failed";
@@ -142,7 +143,7 @@ namespace Terraria.ModLoader.Engine
 
 				int TerrariaBuildID = SteamApps.GetAppBuildId();
 				Logger.Info("Terraria BuildID: " + TerrariaBuildID);
-				if (TerrariaBuildID < 9653812) // Currently v1.4.4.4. Update this when any Terraria update changes any asset.
+				if (TerrariaBuildID < LatestTerrariaBuildID) 
 					Logger.Error("Terraria is out of date, you need to update Terraria in Steam.");
 
 				// Unfortunately, Valve doesn't support tModLoader for Family-shared Terraria, which has lead to this workaround.
