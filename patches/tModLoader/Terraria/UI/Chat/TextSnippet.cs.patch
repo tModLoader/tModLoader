@@ -8,20 +8,3 @@
  
  namespace Terraria.UI.Chat
  {
-@@ -36,6 +_,16 @@
- 
- 		public virtual Color GetVisibleColor() => ChatManager.WaveColor(Color);
- 
-+		// By default, calls UniqueDraw with float scale parameter for compatibility
-+		public virtual bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), Vector2? scale = null) {
-+			scale ??= Vector2.One;
-+			float minScale = System.MathF.Min(scale.Value.X, scale.Value.Y);
-+#pragma warning disable CS0618
-+			return UniqueDraw(justCheckingString, out size, spriteBatch, position, color, minScale);
-+#pragma warning restore CS0618
-+		}
-+
-+		[Obsolete("Override and call UniqueDraw with Vector2 scale parameter")]
- 		public virtual bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
- 			size = Vector2.Zero;
- 			return false;

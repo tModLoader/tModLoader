@@ -6,8 +6,8 @@
  				num = textSnippet.Scale;
 -				if (textSnippet.UniqueDraw(justCheckingString: true, out Vector2 size, null)) {
 -					vector.X += size.X * baseScale.X * num;
-+				if (textSnippet.UniqueDraw(justCheckingString: true, out Vector2 size, null, default, default, baseScale * num)) {
-+					vector.X += size.X * num;
++				if (textSnippet.UniqueDraw(justCheckingString: true, out Vector2 size, null, scale: baseScale.X * num)) {
++					vector.X += size.X;
  					result.X = Math.Max(result.X, vector.X);
  					result.Y = Math.Max(result.Y, vector.Y + size.Y);
  					continue;
@@ -22,15 +22,20 @@
  						vector.X = zero.X;
  						vector.Y += (float)font.LineSpacing * num2 * baseScale.Y;
  						result.Y = Math.Max(result.Y, vector.Y);
-@@ -181,7 +_,7 @@
+@@ -181,11 +_,11 @@
  					color = textSnippet.GetVisibleColor();
  
  				num2 = textSnippet.Scale;
 -				if (textSnippet.UniqueDraw(justCheckingString: false, out Vector2 size, spriteBatch, vector, color, num2)) {
-+				if (textSnippet.UniqueDraw(justCheckingString: false, out Vector2 size, spriteBatch, vector, color, baseScale * num2)) {
++				if (textSnippet.UniqueDraw(justCheckingString: false, out Vector2 size, spriteBatch, vector, color, baseScale.X * num2)) {
  					if (vec.Between(vector, vector + size))
  						num = i;
  
+-					vector.X += size.X * baseScale.X * num2;
++					vector.X += size.X;
+ 					result.X = Math.Max(result.X, vector.X);
+ 					continue;
+ 				}
 @@ -253,7 +_,13 @@
  
  		public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, float rotation, Color color, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f) {
