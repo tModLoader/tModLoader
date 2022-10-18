@@ -162,7 +162,7 @@ namespace Terraria.ModLoader.UI
 			try {
 				// upgrade start scripts to system mono
 				foreach (var monoPath in new[] { "tModLoader", "tModLoaderServer" })
-					File.Copy("tModLoader-mono", monoPath, true);
+					Utilities.FileUtilities.FileCopySafe("tModLoader-mono", monoPath, true);
 				/*
 				// vanilla start scripts need to be upgraded to copy back the sys/ folder
 				var kickPaths = new List<string> { "TerrariaServer" };
@@ -198,14 +198,14 @@ namespace Terraria.ModLoader.UI
 					string originalXMLFile = Path.Combine(ModCompile.modCompileDir, "tModLoader.xml");
 					string correctXMLFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.xml");
 					if (originalXMLFile != correctXMLFile) {
-						File.Copy(originalXMLFile, correctXMLFile, true);
+						Utilities.FileUtilities.FileCopySafe(originalXMLFile, correctXMLFile, true);
 						File.Delete(originalXMLFile);
 					}
 					string originalPDBFilename = ReLogic.OS.Platform.IsWindows ? "tModLoader.pdb" : (ReLogic.OS.Platform.IsLinux ? "tModLoader_Linux.pdb" : "tModLoader_Mac.pdb");
 					string originalPDBFile = Path.Combine(ModCompile.modCompileDir, originalPDBFilename);
 					string correctPDBFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"{currentEXEFilename}.pdb");
 					if (originalPDBFile != correctPDBFile) {
-						File.Copy(originalPDBFile, correctPDBFile, true);
+						Utilities.FileUtilities.FileCopySafe(originalPDBFile, correctPDBFile, true);
 						File.Delete(originalPDBFile);
 					}
 					// Move the remaining XML documentation files to references folder.

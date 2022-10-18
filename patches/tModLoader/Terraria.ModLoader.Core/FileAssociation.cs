@@ -13,7 +13,7 @@ namespace Terraria.ModLoader.Core
 			if (File.Exists(file)) {
 				string modName = Path.GetFileNameWithoutExtension(file);
 				if (ModLoader.ModPath != Path.GetDirectoryName(file)) {
-					File.Copy(file, Path.Combine(ModLoader.ModPath, Path.GetFileName(file)), true);
+					Utilities.FileUtilities.FileCopySafe(file, Path.Combine(ModLoader.ModPath, Path.GetFileName(file)), true);
 					File.Delete(file);
 					Console.WriteLine($"{modName} installed successfully");
 				}

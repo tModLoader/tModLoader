@@ -24,3 +24,12 @@
  							Main.clearMap = true;
  							Main.loadMap = true;
  							Main.loadMapLock = true;
+@@ -101,7 +_,7 @@
+ 						}
+ 
+ 						if (!isCloudSave)
+-							File.Copy(text, text + ".bad", overwrite: true);
++							Utilities.FileUtilities.FileCopySafe(text, text + ".bad", overwrite: true);
+ 
+ 						Clear();
+ 					}

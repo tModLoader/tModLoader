@@ -109,7 +109,7 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			if (!_aborted) {
 				_fileStream?.Close();
 				PreCopy();
-				File.Copy(_downloadPath, FilePath, true);
+				Utilities.FileUtilities.FileCopySafe(_downloadPath, FilePath, true);
 				File.Delete(_downloadPath);
 				OnComplete?.Invoke();
 			}

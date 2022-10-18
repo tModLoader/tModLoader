@@ -63,7 +63,7 @@
 +									.Where(s => s.EndsWith(".plr") || s.EndsWith(".tplr") || s.EndsWith(".bak"));
 +
 +								foreach (string file in vanillaPlayerFiles) {
-+									File.Copy(file, Path.Combine(Main.PlayerPath, Path.GetFileName(file)), true); // old .bak files might exist, need to have overwrite
++									Utilities.FileUtilities.FileCopySafe(file, Path.Combine(Main.PlayerPath, Path.GetFileName(file)), true); // old .bak files might exist, need to have overwrite
 +								}
 +
 +								// Copy map files
@@ -75,7 +75,7 @@
 +										foreach (string mapFile in mapFiles) {
 +											string mapFileDir = Path.Combine(Main.PlayerPath, Directory.GetParent(mapFile).Name);
 +											Directory.CreateDirectory(mapFileDir);
-+											File.Copy(mapFile, Path.Combine(mapFileDir, Path.GetFileName(mapFile)), true);
++											Utilities.FileUtilities.FileCopySafe(mapFile, Path.Combine(mapFileDir, Path.GetFileName(mapFile)), true);
 +										}
 +									}
 +									catch (Exception e) {

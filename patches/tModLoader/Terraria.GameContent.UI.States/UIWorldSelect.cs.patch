@@ -43,7 +43,7 @@
 +									.Where(s => s.EndsWith(".wld") || s.EndsWith(".twld") || s.EndsWith(".bak"));
 +
 +								foreach (string file in vanillaWorldFiles) {
-+									File.Copy(file, Path.Combine(Main.WorldPath, Path.GetFileName(file)), true);
++									Utilities.FileUtilities.FileCopySafe(file, Path.Combine(Main.WorldPath, Path.GetFileName(file)), true);
 +								}
 +
 +								_currentlyMigratingFiles = false;

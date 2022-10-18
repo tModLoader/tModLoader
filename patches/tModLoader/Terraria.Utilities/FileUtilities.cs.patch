@@ -1,0 +1,39 @@
+--- src/Terraria/Terraria.Utilities/FileUtilities.cs
++++ src/tModLoader/Terraria.Utilities/FileUtilities.cs
+@@ -36,7 +_,7 @@
+ 
+ 		public static void Copy(string source, string destination, bool cloud, bool overwrite = true) {
+ 			if (!cloud)
+-				File.Copy(source, destination, overwrite);
++				Utilities.FileUtilities.FileCopySafe(source, destination, overwrite);
+ 			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+ 				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
+ 		}
+@@ -136,8 +_,26 @@
+ 
+ 			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
+ 			foreach (string obj in directories) {
+-				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
++				Utilities.FileUtilities.FileCopySafe(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
+ 			}
++		}
++
++
++		// A version of File.Copy that falls back to FileStream.CopyTo due to recent issues with Windows 11 22H2 update
++		public static void FileCopySafe(string source, string destination, bool overwrite) {
++			try {
++				File.Copy(source, destination, overwrite);
++			}
++			catch (IOException ex) {
++				if (ex.GetType() != typeof(IOException))
++					throw;
++
++				// fallback for random File.Copy failures on Win11
++				using (var inputstream = File.OpenRead(source))
++				using (var outputstream = File.Create(destination))
++					inputstream.CopyTo(outputstream);
++			}
++			return;
+ 		}
+ 	}
+ }
