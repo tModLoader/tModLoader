@@ -481,6 +481,8 @@
 		"OneDriveHint": "Попробуйте установить/включить OneDrive. Нажмите правую кнопку мыши по папке \"Документы\" и включите \"Всегда сохранять на этом устройстве\"",
 		"AntivirusHint": "Если у Вас есть антивирус, добавьте Terraria в его список исключений/белый список",
 		"TypeInitializationHint": "Перезапустите игру. Если проблема останется, попробуйте полностью удалить Terraria, затем переустановить через Steam, и затем переустановить tModLoader",
+		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Новый контент",
 		"TagsContentDescription": "Добавляет новый контент (т.е. предметы, оружия, НИПов, и т.д.) в игру",

@@ -173,12 +173,12 @@
 
 		// Mod Info
 		// "ModInfoHeader": "Mod Info: ",
-		// "ModInfoVisitHomepage": "Visit the Mod's Homepage for even more info",
+		// "ModInfoVisitHomepage": "Homepage",
 		// "ModInfoExtract": "Extract",
 		// "ModInfoNoDescriptionAvailable": "No description available",
 		// "ModInfoProblemTryAgain": "There was a problem, try again",
 		// "ModInfoDisableModToDelete": "Disable Mod to Delete",
-		// "ModInfoVisitSteampage": "Visit the Mod's Steam Workshop page",
+		// "ModInfoVisitSteampage": "Steam Workshop page",
 
 		// Mod Packs
 		// "ModPacksHeader": "Mod Packs",
@@ -483,6 +483,8 @@
 		// "OneDriveHint": "Tip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"",
 		// "AntivirusHint": "Tip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
 		// "TypeInitializationHint": "Tip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader",
+		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		// "TagsContent": "New Content",
 		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",

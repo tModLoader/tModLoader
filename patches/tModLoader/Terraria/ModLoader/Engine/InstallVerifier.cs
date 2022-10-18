@@ -189,6 +189,9 @@ namespace Terraria.ModLoader.Engine
 				case TerrariaSteamClient.LaunchResult.ErrNotInstalled:
 					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
 					break;
+				case TerrariaSteamClient.LaunchResult.ErrInstallOutOfDate:
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
+					break;
 				default:
 					throw new Exception("Unsupported result type: " + result);
 			}
