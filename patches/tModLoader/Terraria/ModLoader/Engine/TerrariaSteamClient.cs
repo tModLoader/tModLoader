@@ -22,6 +22,7 @@ namespace Terraria.ModLoader.Engine
 		private static string MsgInitSuccess = "init_success";
 		private static string MsgFamilyShared = "family_shared";
 		private static string MsgNotInstalled = "not_installed";
+		private static string MsgInstallOutOfDate = "install_out_of_date";
 		private static string MsgGrant = "grant:";
 		private static string MsgAck = "acknowledged";
 		private static string MsgShutdown = "shutdown";
@@ -31,6 +32,7 @@ namespace Terraria.ModLoader.Engine
 			ErrClientProcDied,
 			ErrSteamInitFailed,
 			ErrNotInstalled,
+			ErrInstallOutOfDate,
 			Ok
 		}
 
@@ -76,6 +78,9 @@ namespace Terraria.ModLoader.Engine
 
 				if (line == MsgNotInstalled)
 					return LaunchResult.ErrNotInstalled;
+
+				if (line == MsgInstallOutOfDate)
+					return LaunchResult.ErrInstallOutOfDate;
 
 				if (line == MsgInitSuccess)
 					break;
@@ -143,8 +148,12 @@ namespace Terraria.ModLoader.Engine
 
 				int TerrariaBuildID = SteamApps.GetAppBuildId();
 				Logger.Info("Terraria BuildID: " + TerrariaBuildID);
-				if (TerrariaBuildID < LatestTerrariaBuildID) 
-					Logger.Error("Terraria is out of date, you need to update Terraria in Steam.");
+				if (TerrariaBuildID < LatestTerrariaBuildID) { 
+					Logger.Fatal("Terraria is out of date, you need to update Terraria in Steam.");
+					Send(MsgInstallOutOfDate);
+					SteamShutdown();
+					return;
+				}
 
 				// Unfortunately, Valve doesn't support tModLoader for Family-shared Terraria, which has lead to this workaround.
 				// Does not support Steam Overlay or Steam multiplayer as such.
