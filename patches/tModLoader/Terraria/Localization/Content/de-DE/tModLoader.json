@@ -483,6 +483,8 @@
 		"OneDriveHint": "Tipp: Versuche OneDrive zu installieren/anzuschalten. Drücke die rechte Maustaste auf deinen Dokumente-Ordner und aktiviere \"Immer auf diesem Gerät speichern\"",
 		"AntivirusHint": "Tipp: Falls du einen Antivirenprogramm hast, versuche Terraria zu dessen Whitelist/Ausschließungsliste hinzuzufügen.",
 		"TypeInitializationHint": "Tipp: Starte das Spiel neu. Wenn das Problem bestehen bleibt, versuche Terraria vollständig zu deinstallieren, es über Steam neu zu installieren und dann tModLoader erneut zu installieren.",
+		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Neue Inhalte",
 		"TagsContentDescription": "Fügt neue Inhalte (z.B. Gegenstände, Waffen, NPCs, usw.) zum Spiel hinzu",
