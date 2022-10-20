@@ -14,6 +14,15 @@
  	{
  		public static class SavedOreTiers
  		{
+@@ -157,7 +_,7 @@
+ 						hashSet.Add(item);
+ 						list.Remove(item);
+ 						Tile tile = Main.tile[item.X, item.Y];
+-						if (!SolidTile(item.X, item.Y) && tile.wall != num && tile.wall != 4 && tile.wall != 40 && tile.wall != 3 && tile.wall != 87 && tile.wall != 34) {
++						if (!SolidTile(item.X, item.Y) && tile.wall != num && WallID.CanBeClearedDuringGeneration[tile.wall]) {
+ 							bool flag = num == 63 || num == 62;
+ 							if (flag && tile.wall == 0) {
+ 								list.Remove(item);
 @@ -690,12 +_,18 @@
  		public delegate bool GetTreeFoliageDataMethod(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight);
  
