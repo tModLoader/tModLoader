@@ -1,14 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -1,16 +_,32 @@
+@@ -1,16 +_,17 @@
  using Microsoft.Xna.Framework;
--using Terraria.DataStructures;
+ using Terraria.DataStructures;
 -#if MONO
-+using System.Runtime.CompilerServices;
- using System.Runtime.InteropServices;
+-using System.Runtime.InteropServices;
 -#endif
-+using Terraria.DataStructures;
-+using Terraria.ID;
 +
 +#pragma warning disable IDE1006 // Naming Styles
  
@@ -16,57 +13,33 @@
  {
 -#if MONO
 -	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-+	// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere. Alike Entities in the ECS game architecture design.
-+#if TILE_X_Y
-+	[StructLayout(LayoutKind.Sequential, Pack = 2)]
- #endif
+-#endif
 -	public class Tile
++	// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere.
++	// Alike Entities in the ECS game architecture design.
++
++	// See Tile.TML.cs for the actual implementation.
 +	public readonly partial struct Tile
  	{
-+		internal readonly uint TileId;
-+#if TILE_X_Y
-+		public readonly ushort X;
-+		public readonly ushort Y;
-+#endif
-+
-+		internal ref ushort type => ref TileType;
-+		internal ref ushort wall => ref WallType;
-+		internal ref byte liquid => ref LiquidAmount;
-+		internal ref short frameX => ref TileFrameX;
-+		internal ref short frameY => ref TileFrameY;
-+
 +		/*
  		public ushort type;
  		public ushort wall;
  		public byte liquid;
-@@ -59,8 +_,19 @@
+@@ -59,7 +_,9 @@
  				return -1;
  			}
  		}
--
--		public Tile() {
 +		*/
-+
-+		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-+#if TILE_X_Y
-+		internal Tile(ushort x, ushort y, uint tileId) {
-+			X = x;
-+			Y = y;
-+#else
-+		internal Tile(uint tileId) {
-+#endif
-+			TileId = tileId;
-+
-+			/*
+ 
++		/*
+ 		public Tile() {
  			type = 0;
  			wall = 0;
- 			liquid = 0;
-@@ -70,8 +_,10 @@
- 			bTileHeader3 = 0;
+@@ -71,7 +_,9 @@
  			frameX = 0;
  			frameY = 0;
-+			*/
  		}
++		*/
  
 +		/*
  		public Tile(Tile copy) {
@@ -133,7 +106,7 @@
 +
 +			return true;
 +
-+			/*			
++			/*
  			if (compTile == null)
  				return false;
  
@@ -154,71 +127,64 @@
  			if (halfBrick())
  				return 1;
  
-@@ -176,44 +_,22 @@
+@@ -176,6 +_,7 @@
  			return num;
  		}
  
--		public void liquidType(int liquidType) {
--			switch (liquidType) {
--				case 0:
--					bTileHeader &= 159;
--					break;
--				case 1:
--					lava(lava: true);
--					break;
--				case 2:
--					honey(honey: true);
--					break;
--				case 3:
--					shimmer(shimmer: true);
--					break;
--			}
--		}
--
--		public byte liquidType() => (byte)((bTileHeader & 0x60) >> 5);
--
--		public bool nactive() {
--			if ((sTileHeader & 0x60) == 32)
--				return true;
--
--			return false;
--		}
-+		internal void liquidType(int liquidType) => LiquidType = liquidType;
-+
-+		internal byte liquidType() => (byte)LiquidType;
-+
-+		internal bool nactive() => HasUnactuatedTile;
++		/*
+ 		public void liquidType(int liquidType) {
+ 			switch (liquidType) {
+ 				case 0:
+@@ -201,8 +_,15 @@
+ 
+ 			return false;
+ 		}
++		*/
  
  		public void ResetToType(ushort type) {
--			liquid = 0;
--			sTileHeader = 32;
--			bTileHeader = 0;
--			bTileHeader2 = 0;
--			bTileHeader3 = 0;
--			frameX = 0;
--			frameY = 0;
--			this.type = type;
 +			ClearMetadata();
++
 +			HasTile = true;
 +			TileType = type;
++
++			/*
+ 			liquid = 0;
+ 			sTileHeader = 32;
+ 			bTileHeader = 0;
+@@ -211,9 +_,14 @@
+ 			frameX = 0;
+ 			frameY = 0;
+ 			this.type = type;
++			*/
  		}
  
  		internal void ClearMetadata() {
 +			Get<LiquidData>() = default;
 +			Get<TileWallWireStateData>() = default;
++
 +			/*
  			liquid = 0;
  			sTileHeader = 0;
  			bTileHeader = 0;
-@@ -221,6 +_,7 @@
+@@ -221,9 +_,10 @@
  			bTileHeader3 = 0;
  			frameX = 0;
  			frameY = 0;
 +			*/
  		}
  
- 		public Color actColor(Color oldColor) {
-@@ -236,7 +_,7 @@
+-		public Color actColor(Color oldColor) {
++		internal Color actColor(Color oldColor) {
+ 			if (!inActive())
+ 				return oldColor;
+ 
+@@ -231,12 +_,12 @@
+ 			return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
+ 		}
+ 
+-		public void actColor(ref Vector3 oldColor) {
++		internal void actColor(ref Vector3 oldColor) {
+ 			if (inActive())
  				oldColor *= 0.4f;
  		}
  
@@ -254,297 +220,26 @@
  			byte b = slope();
  			if (b != 1)
  				return b == 3;
-@@ -275,194 +_,115 @@
- 			bTileHeader = (byte)((bTileHeader & 0xE0) | wallColor);
+@@ -268,7 +_,9 @@
+ 			return true;
  		}
  
-+		internal bool HasSameSlope(Tile tile) => BlockType == tile.BlockType;
++		/*
+ 		public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
 +
-+		internal byte wallColor() => WallColor;
-+
-+		internal void wallColor(byte wallColor) => WallColor = wallColor;
-+
--		public bool lava() => (bTileHeader & 0x60) == 32;
-+		internal bool lava() => LiquidType == LiquidID.Lava;
+ 		public byte wallColor() => (byte)(bTileHeader & 0x1F);
  
--		public void lava(bool lava) {
-+		internal void lava(bool lava) {
- 			if (lava)
--				bTileHeader = (byte)((bTileHeader & 0x9F) | 0x20);
--			else
--				bTileHeader &= 223;
-+				LiquidType = LiquidID.Lava;
-+			else if (LiquidType == LiquidID.Lava)
-+				LiquidType = LiquidID.Water;
+ 		public void wallColor(byte wallColor) {
+@@ -463,6 +_,7 @@
+ 			else
+ 				sTileHeader = (ushort)(sTileHeader & -32769);
  		}
- 
--		public bool honey() => (bTileHeader & 0x60) == 64;
-+		internal bool honey() => LiquidType == LiquidID.Honey;
- 
--		public void honey(bool honey) {
-+		internal void honey(bool honey) {
- 			if (honey)
--				bTileHeader = (byte)((bTileHeader & 0x9F) | 0x40);
--			else
--				bTileHeader &= 191;
-+				LiquidType = LiquidID.Honey;
-+			else if (LiquidType == LiquidID.Honey)
-+				LiquidType = LiquidID.Water;
- 		}
- 
--		public bool shimmer() => (bTileHeader & 0x60) == 96;
-+		internal bool shimmer() => LiquidType == LiquidID.Shimmer;
- 
--		public void shimmer(bool shimmer) {
-+		internal void shimmer(bool shimmer) {
- 			if (shimmer)
--				bTileHeader = (byte)((bTileHeader & 0x9F) | 0x60);
--			else
--				bTileHeader &= 159;
--		}
--
--		public bool wire4() => (bTileHeader & 0x80) == 128;
--
--		public void wire4(bool wire4) {
--			if (wire4)
--				bTileHeader |= 128;
--			else
--				bTileHeader &= 127;
--		}
--
--		public int wallFrameX() => (bTileHeader2 & 0xF) * 36;
--
--		public void wallFrameX(int wallFrameX) {
--			bTileHeader2 = (byte)((bTileHeader2 & 0xF0) | ((wallFrameX / 36) & 0xF));
--		}
--
--		public byte frameNumber() => (byte)((bTileHeader2 & 0x30) >> 4);
--
--		public void frameNumber(byte frameNumber) {
--			bTileHeader2 = (byte)((bTileHeader2 & 0xCF) | ((frameNumber & 3) << 4));
--		}
--
--		public byte wallFrameNumber() => (byte)((bTileHeader2 & 0xC0) >> 6);
--
--		public void wallFrameNumber(byte wallFrameNumber) {
--			bTileHeader2 = (byte)((bTileHeader2 & 0x3F) | ((wallFrameNumber & 3) << 6));
--		}
--
--		public int wallFrameY() => (bTileHeader3 & 7) * 36;
--
--		public void wallFrameY(int wallFrameY) {
--			bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((wallFrameY / 36) & 7));
--		}
--
--		public bool checkingLiquid() => (bTileHeader3 & 8) == 8;
--
--		public void checkingLiquid(bool checkingLiquid) {
--			if (checkingLiquid)
--				bTileHeader3 |= 8;
--			else
--				bTileHeader3 &= 247;
--		}
--
--		public bool skipLiquid() => (bTileHeader3 & 0x10) == 16;
--
--		public void skipLiquid(bool skipLiquid) {
--			if (skipLiquid)
--				bTileHeader3 |= 16;
--			else
--				bTileHeader3 &= 239;
--		}
--
--		public bool invisibleBlock() => (bTileHeader3 & 0x20) == 32;
--
--		public void invisibleBlock(bool invisibleBlock) {
--			if (invisibleBlock)
--				bTileHeader3 |= 32;
--			else
--				bTileHeader3 = (byte)(bTileHeader3 & -33);
--		}
--
--		public bool invisibleWall() => (bTileHeader3 & 0x40) == 64;
--
--		public void invisibleWall(bool invisibleWall) {
--			if (invisibleWall)
--				bTileHeader3 |= 64;
--			else
--				bTileHeader3 = (byte)(bTileHeader3 & -65);
--		}
--
--		public bool fullbrightBlock() => (bTileHeader3 & 0x80) == 128;
--
--		public void fullbrightBlock(bool fullbrightBlock) {
--			if (fullbrightBlock)
--				bTileHeader3 |= 128;
--			else
--				bTileHeader3 = (byte)(bTileHeader3 & -129);
--		}
--
--		public byte color() => (byte)(sTileHeader & 0x1F);
--
--		public void color(byte color) {
--			sTileHeader = (ushort)((sTileHeader & 0xFFE0) | color);
--		}
--
--		public bool active() => (sTileHeader & 0x20) == 32;
--
--		public void active(bool active) {
--			if (active)
--				sTileHeader |= 32;
--			else
--				sTileHeader &= 65503;
--		}
--
--		public bool inActive() => (sTileHeader & 0x40) == 64;
--
--		public void inActive(bool inActive) {
--			if (inActive)
--				sTileHeader |= 64;
--			else
--				sTileHeader &= 65471;
--		}
--
--		public bool wire() => (sTileHeader & 0x80) == 128;
--
--		public void wire(bool wire) {
--			if (wire)
--				sTileHeader |= 128;
--			else
--				sTileHeader &= 65407;
--		}
--
--		public bool wire2() => (sTileHeader & 0x100) == 256;
--
--		public void wire2(bool wire2) {
--			if (wire2)
--				sTileHeader |= 256;
--			else
--				sTileHeader &= 65279;
--		}
--
--		public bool wire3() => (sTileHeader & 0x200) == 512;
--
--		public void wire3(bool wire3) {
--			if (wire3)
--				sTileHeader |= 512;
--			else
--				sTileHeader &= 65023;
--		}
--
--		public bool halfBrick() => (sTileHeader & 0x400) == 1024;
--
--		public void halfBrick(bool halfBrick) {
--			if (halfBrick)
--				sTileHeader |= 1024;
--			else
--				sTileHeader &= 64511;
--		}
--
--		public bool actuator() => (sTileHeader & 0x800) == 2048;
--
--		public void actuator(bool actuator) {
--			if (actuator)
--				sTileHeader |= 2048;
--			else
--				sTileHeader &= 63487;
--		}
--
--		public byte slope() => (byte)((sTileHeader & 0x7000) >> 12);
--
--		public void slope(byte slope) {
--			sTileHeader = (ushort)((sTileHeader & 0x8FFF) | ((slope & 7) << 12));
--		}
--
--		public bool fullbrightWall() => (sTileHeader & 0x8000) == 32768;
--
--		public void fullbrightWall(bool fullbrightWall) {
--			if (fullbrightWall)
--				sTileHeader |= 32768;
--			else
--				sTileHeader = (ushort)(sTileHeader & -32769);
--		}
-+				LiquidType = LiquidID.Shimmer;
-+			else if (LiquidType == LiquidID.Shimmer)
-+				LiquidType = LiquidID.Water;
-+		}
-+
-+		internal bool wire4() => YellowWire;
-+
-+		internal void wire4(bool wire4) => YellowWire = wire4;
-+
-+		internal int wallFrameX() => WallFrameX;
-+
-+		internal void wallFrameX(int wallFrameX) => WallFrameX = wallFrameX;
-+
-+		internal byte frameNumber() => (byte)TileFrameNumber;
-+
-+		internal void frameNumber(byte frameNumber) => TileFrameNumber = frameNumber;
-+
-+		internal byte wallFrameNumber() => (byte)WallFrameNumber;
-+
-+		internal void wallFrameNumber(byte wallFrameNumber) => WallFrameNumber = wallFrameNumber;
-+
-+		internal int wallFrameY() => WallFrameY;
-+
-+		internal void wallFrameY(int wallFrameY) => WallFrameY = wallFrameY;
-+
-+		internal bool checkingLiquid() => CheckingLiquid;
-+
-+		internal void checkingLiquid(bool checkingLiquid) => CheckingLiquid = checkingLiquid;
-+
-+		internal bool skipLiquid() => SkipLiquid;
-+
-+		internal void skipLiquid(bool skipLiquid) => SkipLiquid = skipLiquid;
-+
-+		//TODO: Implement the properties used here.
-+		internal bool invisibleBlock() => InvisibleBlock;
-+
-+		internal void invisibleBlock(bool invisibleBlock) => InvisibleBlock = invisibleBlock;
-+
-+		internal bool invisibleWall() => InvisibleWall;
-+
-+		internal void invisibleWall(bool invisibleWall) => InvisibleWall = invisibleWall;
-+
-+		internal bool fullbrightBlock() => FullbrightBlock;
-+
-+		internal void fullbrightBlock(bool fullbrightBlock) => FullbrightBlock = fullbrightBlock;
-+
-+		internal byte color() => TileColor;
-+
-+		internal void color(byte color) => TileColor = color;
-+
-+		internal bool active() => HasTile;
-+
-+		internal void active(bool active) => HasTile = active;
-+
-+		internal bool inActive() => IsActuated;
-+
-+		internal void inActive(bool inActive) => IsActuated = inActive;
-+
-+		internal bool wire() => RedWire;
-+
-+		internal void wire(bool wire) => RedWire = wire;
-+
-+		internal bool wire2() => BlueWire;
-+
-+		internal void wire2(bool wire2) => BlueWire = wire2;
-+
-+		internal bool wire3() => GreenWire;
-+
-+		internal void wire3(bool wire3) => GreenWire = wire3;
-+
-+		internal bool halfBrick() => IsHalfBlock;
-+
-+		internal void halfBrick(bool halfBrick) => IsHalfBlock = halfBrick;
-+
-+		internal bool actuator() => HasActuator;
-+
-+		internal void actuator(bool actuator) => HasActuator = actuator;
-+
-+		internal byte slope() => (byte)Slope;
-+
-+		internal void slope(byte slope) => Slope = (SlopeType)slope;
++		*/
  
  		public void Clear(TileDataType types) {
  			if ((types & TileDataType.Tile) != 0) {
+@@ -617,3 +_,4 @@
+ 		public override string ToString() => "Tile Type:" + type + " Active:" + active().ToString() + " Wall:" + wall + " Slope:" + slope() + " fX:" + frameX + " fY:" + frameY;
+ 	}
+ }
++

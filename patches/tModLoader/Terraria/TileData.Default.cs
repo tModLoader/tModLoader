@@ -1,18 +1,23 @@
-﻿using Terraria.ID;
+﻿using System;
+using Terraria.ID;
 using static Terraria.TileDataPacking;
 
 namespace Terraria
 {
 	public static class TileDataPacking
 	{
-		public static int Unpack(int bits, int offset, int width) => bits >> offset & ((1 << width) - 1);
+		public static int Unpack(int bits, int offset, int width)
+			=> bits >> offset & ((1 << width) - 1);
 
 		// we also & the incoming value with the bit mask as a high performance safeguard against invalid values spilling over into adjacent bits
-		public static int Pack(int value, int bits, int offset, int width) => bits & ~(((1 << width) - 1) << offset) | (value & ((1 << width) - 1)) << offset;
+		public static int Pack(int value, int bits, int offset, int width)
+			=> bits & ~(((1 << width) - 1) << offset) | (value & ((1 << width) - 1)) << offset;
 
-		public static bool GetBit(int bits, int offset) => (bits & 1 << offset) != 0;
+		public static bool GetBit(int bits, int offset)
+			=> (bits & 1 << offset) != 0;
 
-		public static int SetBit(bool value, int bits, int offset) => value ? bits | 1 << offset : bits & ~(1 << offset);
+		public static int SetBit(bool value, int bits, int offset)
+			=> value ? bits | 1 << offset : bits & ~(1 << offset);
 	}
 
 	public struct TileTypeData : ITileData
@@ -37,6 +42,17 @@ namespace Terraria
 		public int LiquidType		{ get => Unpack(typeAndFlags, 0, 6); set => typeAndFlags = (byte)Pack(value, typeAndFlags, 0, 6); }
 		public bool SkipLiquid		{ get => GetBit(typeAndFlags, 6); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 6); }
 		public bool CheckingLiquid	{ get => GetBit(typeAndFlags, 7); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 7); }
+	}
+
+	//TODO: @ChickenBones, review this, this is a placeholder implementation -- Mirsario.
+	internal struct TileWallBrightnessInvisibilityData : ITileData
+	{
+		private BitsByte bitpack;
+
+		public bool IsTileInvisible { get => bitpack[0]; set => bitpack[0] = value; }
+		public bool IsWallInvisible { get => bitpack[1]; set => bitpack[1] = value; }
+		public bool IsTileFullbright { get => bitpack[2]; set => bitpack[2] = value; }
+		public bool IsWallFullbright { get => bitpack[3]; set => bitpack[3] = value; }
 	}
 
 	public struct TileWallWireStateData : ITileData

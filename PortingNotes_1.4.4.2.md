@@ -85,8 +85,7 @@
 - do we need to clone `notDecraftable`
 
 ## Tile(.TML).cs:
-- Add all the properties "referenced" in the vanilla file - new liquid, invisibility, other stuff.
-- Re-check all patches
+- Patches have been reimplemented, check that again.
 - Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets
 - Remove `TileLoader.MineDamage` it had a weird 1.2 factor in there.
 	
