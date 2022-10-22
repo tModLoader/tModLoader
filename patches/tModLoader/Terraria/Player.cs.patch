@@ -261,6 +261,15 @@
  		public float luck;
  		public float luckMinimumCap = -0.7f;
  		public float luckMaximumCap = 1f;
+@@ -1417,7 +_,7 @@
+ 		private const int SaveSlotIndex_GuideItem = 2;
+ 		private const int SaveSlotIndex_TinkererItem = 3;
+ 		private const int SaveSlotIndexCount = 4;
+-		private Item[] _temporaryItemSlots = new Item[4];
++		internal Item[] _temporaryItemSlots = new Item[4];
+ 
+ 		public Vector2 BlehOldPositionFixer => -Vector2.UnitY;
+ 
 @@ -2084,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -6049,68 +6058,6 @@
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
-@@ -38241,40 +_,49 @@
- 			bb[3] = !Main.reforgeItem.IsAir;
- 			ItemSerializationContext context = ItemSerializationContext.SavingAndLoading;
- 			writer.Write(bb);
-+			// TML: Changed Item.Serialize to ItemIO.Send to serialize and save modded data
- 			if (bb[0])
-+				ItemIO.Send(Main.mouseItem, writer, writeStack: true);
--				Main.mouseItem.Serialize(writer, context);
-+				// Main.mouseItem.Serialize(writer, context);
- 
- 			if (bb[1])
-+				ItemIO.Send(itemByIndex, writer, writeStack: true);
--				itemByIndex.Serialize(writer, context);
-+				// itemByIndex.Serialize(writer, context);
- 
- 			if (bb[2])
-+				ItemIO.Send(Main.guideItem, writer, writeStack: true);
--				Main.guideItem.Serialize(writer, context);
-+				// Main.guideItem.Serialize(writer, context);
- 
- 			if (bb[3])
-+				ItemIO.Send(Main.reforgeItem, writer, writeStack: true);
--				Main.reforgeItem.Serialize(writer, context);
-+				// Main.reforgeItem.Serialize(writer, context);
- 		}
- 
- 		private void LoadTemporaryItemSlotContents(BinaryReader reader) {
- 			BitsByte bitsByte = reader.ReadByte();
- 			ItemSerializationContext context = ItemSerializationContext.SavingAndLoading;
- 			if (bitsByte[0]) {
-+				_temporaryItemSlots[0] = ItemIO.Receive(reader, readStack: true);
--				_temporaryItemSlots[0] = new Item();
-+				// _temporaryItemSlots[0] = new Item();
--				_temporaryItemSlots[0].DeserializeFrom(reader, context);
-+				// _temporaryItemSlots[0].DeserializeFrom(reader, context);
- 			}
- 
- 			if (bitsByte[1]) {
-+				_temporaryItemSlots[1] = ItemIO.Receive(reader, readStack: true);
--				_temporaryItemSlots[1] = new Item();
-+				// _temporaryItemSlots[1] = new Item();
--				_temporaryItemSlots[1].DeserializeFrom(reader, context);
-+				// _temporaryItemSlots[1].DeserializeFrom(reader, context);
- 			}
- 
- 			if (bitsByte[2]) {
-+				_temporaryItemSlots[2] = ItemIO.Receive(reader, readStack: true);
--				_temporaryItemSlots[2] = new Item();
-+				// _temporaryItemSlots[2] = new Item();
--				_temporaryItemSlots[2].DeserializeFrom(reader, context);
-+				// _temporaryItemSlots[2].DeserializeFrom(reader, context);
- 			}
- 
- 			if (bitsByte[3]) {
-+				_temporaryItemSlots[3] = ItemIO.Receive(reader, readStack: true);
--				_temporaryItemSlots[3] = new Item();
-+				// _temporaryItemSlots[3] = new Item();
--				_temporaryItemSlots[3].DeserializeFrom(reader, context);
-+				// _temporaryItemSlots[3].DeserializeFrom(reader, context);
- 			}
- 		}
- 
 @@ -38334,6 +_,8 @@
  
  			Player player = new Player();
