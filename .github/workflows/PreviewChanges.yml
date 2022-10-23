@@ -23,7 +23,7 @@ jobs:
           run: echo "::set-output name=date::$(date +'%d')"
         
         - name: Check out repo
-          if: steps.date.outputs.date < 21
+          #if: steps.date.outputs.date < 21
           uses: actions/checkout@v2
           with:
             ref: 'refs/heads/1.3'
