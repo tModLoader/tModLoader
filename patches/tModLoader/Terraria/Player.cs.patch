@@ -261,6 +261,15 @@
  		public float luck;
  		public float luckMinimumCap = -0.7f;
  		public float luckMaximumCap = 1f;
+@@ -1417,7 +_,7 @@
+ 		private const int SaveSlotIndex_GuideItem = 2;
+ 		private const int SaveSlotIndex_TinkererItem = 3;
+ 		private const int SaveSlotIndexCount = 4;
+-		private Item[] _temporaryItemSlots = new Item[4];
++		internal Item[] _temporaryItemSlots = new Item[4];
+ 
+ 		public Vector2 BlehOldPositionFixer => -Vector2.UnitY;
+ 
 @@ -2084,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
