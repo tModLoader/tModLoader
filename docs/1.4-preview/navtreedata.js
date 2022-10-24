@@ -78,13 +78,13 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_mod_system.html#a389d90d8636cf76d388df212c89170cf",
 "class_terraria_1_1_mod_loader_1_1_mod_tree.html#a35ffba7080fe0aae709e2ef18480630c",
 "class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html",
-"class_terraria_1_1_n_p_c.html#a9bce953a087a9173211da526f6515802",
-"class_terraria_1_1_rain.html",
-"class_terraria_1_1_u_i_1_1_chest_u_i.html",
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_rectangle_mask.html",
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html",
-"namespace_terraria_1_1_mod_loader_1_1_default.html",
-"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html"
+"class_terraria_1_1_n_p_c.html#a98b27f6e6321686ce363b4a00903b90f",
+"class_terraria_1_1_projectile.html#afaa9e0dce1703fc0ce0c72f4685386b5",
+"class_terraria_1_1_u_i_1_1_chat_1_1_text_snippet.html",
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_radial_dither.html",
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html",
+"namespace_terraria_1_1_mod_loader_1_1_config_1_1_u_i.html",
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

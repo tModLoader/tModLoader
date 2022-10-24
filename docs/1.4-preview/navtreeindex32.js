@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html":[3,0,2,5,40],
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html":[2,0,2,6,40],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[3,0,2,5,41],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[2,0,2,6,41],
 "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[2,0,2,6,43],
@@ -247,7 +249,5 @@ var NAVTREEINDEX32 =
 "namespace_terraria_1_1_mod_loader_1_1_config.html":[2,0,2,14,1],
 "namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073":[2,0,2,14,1,31],
 "namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262":[2,0,2,14,1,31,1],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984":[2,0,2,14,1,31,0],
-"namespace_terraria_1_1_mod_loader_1_1_config_1_1_u_i.html":[2,0,2,14,1,0],
-"namespace_terraria_1_1_mod_loader_1_1_core.html":[2,0,2,14,2]
+"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984":[2,0,2,14,1,31,0]
 };
