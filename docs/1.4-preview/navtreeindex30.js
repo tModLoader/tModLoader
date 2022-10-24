@@ -1,5 +1,9 @@
 var NAVTREEINDEX30 =
 {
+"class_terraria_1_1_u_i_1_1_chest_u_i.html":[2,0,2,22,6],
+"class_terraria_1_1_u_i_1_1_chest_u_i_1_1_button_i_d.html":[2,0,2,22,6,0],
+"class_terraria_1_1_u_i_1_1_chest_u_i_1_1_button_i_d.html":[3,0,2,21,6,0],
+"class_terraria_1_1_u_i_1_1_empty_diagnostics_u_i.html":[2,0,2,22,7],
 "class_terraria_1_1_u_i_1_1_empty_diagnostics_u_i.html":[3,0,2,21,7],
 "class_terraria_1_1_u_i_1_1_fancy_error_printer.html":[3,0,2,21,8],
 "class_terraria_1_1_u_i_1_1_fancy_error_printer.html":[2,0,2,22,8],
@@ -245,9 +249,5 @@ var NAVTREEINDEX30 =
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_only_walls.html":[2,0,2,24,13,16],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_radial_dither.html":[2,0,2,24,13,17],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_radial_dither.html":[3,0,2,23,13,17],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_rectangle_mask.html":[2,0,2,24,13,18],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_rectangle_mask.html":[3,0,2,23,13,18],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_shape_scale.html":[2,0,2,24,13,19],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_shape_scale.html":[3,0,2,23,13,19],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[3,0,2,23,13,20]
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_rectangle_mask.html":[2,0,2,24,13,18]
 };

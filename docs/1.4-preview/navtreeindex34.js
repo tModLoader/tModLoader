@@ -1,5 +1,9 @@
 var NAVTREEINDEX34 =
 {
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[3,0,2,7,10],
+"struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[2,0,2,8,11],
+"struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[3,0,2,7,11],
+"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[3,0,2,7,4,12],
 "struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[2,0,2,8,4,12],
 "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html":[2,0,2,8,12],
 "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html":[3,0,2,7,12],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX33 =
 {
+"namespace_terraria_1_1_mod_loader_1_1_default.html":[2,0,2,14,3],
+"namespace_terraria_1_1_mod_loader_1_1_default_1_1_developer.html":[2,0,2,14,3,0],
+"namespace_terraria_1_1_mod_loader_1_1_default_1_1_developer_1_1_jofairden.html":[2,0,2,14,3,0,0],
+"namespace_terraria_1_1_mod_loader_1_1_default_1_1_patreon.html":[2,0,2,14,3,1],
 "namespace_terraria_1_1_mod_loader_1_1_engine.html":[2,0,2,14,4],
 "namespace_terraria_1_1_mod_loader_1_1_exceptions.html":[2,0,2,14,5],
 "namespace_terraria_1_1_mod_loader_1_1_i_o.html":[2,0,2,14,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX33 =
 "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html":[3,0,2,7,9],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html":[2,0,2,8,3,1,0],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html":[3,0,2,7,3,1,0],
-"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[2,0,2,8,10],
-"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[3,0,2,7,10],
-"struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[2,0,2,8,11],
-"struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[3,0,2,7,11],
-"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[3,0,2,7,4,12]
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[2,0,2,8,10]
 };

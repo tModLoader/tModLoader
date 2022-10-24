@@ -99,15 +99,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a367b1382a4eff56f74ab18f87c697e16"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a367b1382a4eff56f74ab18f87c697e16">ConsumeItem</a> (<a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe, int type, ref int amount)</td></tr>
 <tr class="memdesc:a367b1382a4eff56f74ab18f87c697e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to edit the amount of item the player uses in a recipe.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a367b1382a4eff56f74ab18f87c697e16">More...</a><br /></td></tr>
 <tr class="separator:a367b1382a4eff56f74ab18f87c697e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24a07e15a3ffd482277c9cfb6168b128"><td class="memItemLeft" align="right" valign="top"><a id="a24a07e15a3ffd482277c9cfb6168b128" name="a24a07e15a3ffd482277c9cfb6168b128"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCraft</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe, <a class="el" href="class_terraria_1_1_item.html">Item</a> destinationStack)</td></tr>
-<tr class="memdesc:a24a07e15a3ffd482277c9cfb6168b128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">destinationStack</td><td>The stack that the crafted item will be combined with</td></tr>
-  </table>
-  </dd>
-</dl>
-<br /></td></tr>
+<tr class="memitem:a24a07e15a3ffd482277c9cfb6168b128"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a24a07e15a3ffd482277c9cfb6168b128">OnCraft</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe, <a class="el" href="class_terraria_1_1_item.html">Item</a> destinationStack)</td></tr>
+<tr class="memdesc:a24a07e15a3ffd482277c9cfb6168b128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a24a07e15a3ffd482277c9cfb6168b128">More...</a><br /></td></tr>
 <tr class="separator:a24a07e15a3ffd482277c9cfb6168b128"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24af854cab903c27e49315f3e63c1f31"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a24af854cab903c27e49315f3e63c1f31">OnCraft</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_item.html">Item</a> &gt; consumedItems, <a class="el" href="class_terraria_1_1_item.html">Item</a> destinationStack)</td></tr>
 <tr class="memdesc:a24af854cab903c27e49315f3e63c1f31"><td class="mdescLeft">&#160;</td><td class="mdescRight">recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a <a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_creation_context.html">RecipeCreationContext</a>  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a24af854cab903c27e49315f3e63c1f31">More...</a><br /></td></tr>
@@ -171,8 +164,60 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCraft</b> (<
 
 </div>
 </div>
+<a id="a24a07e15a3ffd482277c9cfb6168b128" name="a24a07e15a3ffd482277c9cfb6168b128"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24a07e15a3ffd482277c9cfb6168b128">&#9670;&nbsp;</a></span>OnCraft() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.RecipeLoader.OnCraft </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td>
+          <td class="paramname"><em>recipe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>destinationStack</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td></td></tr>
+    <tr><td class="paramname">recipe</td><td></td></tr>
+    <tr><td class="paramname">destinationStack</td><td>The stack that the crafted item will be combined with</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a24af854cab903c27e49315f3e63c1f31" name="a24af854cab903c27e49315f3e63c1f31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24af854cab903c27e49315f3e63c1f31">&#9670;&nbsp;</a></span>OnCraft()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a24af854cab903c27e49315f3e63c1f31">&#9670;&nbsp;</a></span>OnCraft() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

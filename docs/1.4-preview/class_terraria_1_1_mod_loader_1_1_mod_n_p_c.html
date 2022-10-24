@@ -217,7 +217,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <tr class="separator:ac140a1c20c1b11509616bdf9ae2d7823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cd9c8aa8696ed906faee74df121ee9c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c">ModifyNPCLoot</a> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html">NPCLoot</a> npcLoot)</td></tr>
 <tr class="memdesc:a0cd9c8aa8696ed906faee74df121ee9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot tables to drop on death and to appear in the Bestiary.<br  />
- The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c">More...</a><br /></td></tr>
+ The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot. <br  />
+ This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c">More...</a><br /></td></tr>
 <tr class="separator:a0cd9c8aa8696ed906faee74df121ee9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e0fc1bbed2762481b009f47dd318ee5"><td class="memItemLeft" align="right" valign="top"><a id="a2e0fc1bbed2762481b009f47dd318ee5" name="a2e0fc1bbed2762481b009f47dd318ee5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTypeName</b> (ref string typeName)</td></tr>
@@ -1857,10 +1858,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </div><div class="memdoc">
 
 <p>Allows you to add and modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot tables to drop on death and to appear in the Bestiary.<br  />
- The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot. </p>
+ The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot. <br  />
+ This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">npcLoot</td><td></td></tr>
+    <tr><td class="paramname">npcLoot</td><td>A reference to the item drop database for this npc type</td></tr>
   </table>
   </dd>
 </dl>

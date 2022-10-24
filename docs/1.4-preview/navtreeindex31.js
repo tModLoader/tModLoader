@@ -1,5 +1,9 @@
 var NAVTREEINDEX31 =
 {
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_rectangle_mask.html":[3,0,2,23,13,18],
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_shape_scale.html":[2,0,2,24,13,19],
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_shape_scale.html":[3,0,2,23,13,19],
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[3,0,2,23,13,20],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_tiles.html":[2,0,2,24,13,20],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_walls.html":[3,0,2,23,13,21],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_walls.html":[2,0,2,24,13,21],
@@ -245,9 +249,5 @@ var NAVTREEINDEX31 =
 "interface_terraria_1_1_game_content_1_1_i_on_player_joining.html":[3,0,2,5,39],
 "interface_terraria_1_1_game_content_1_1_i_on_player_joining.html":[2,0,2,6,39],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html":[3,0,2,5,40],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html":[2,0,2,6,40],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[3,0,2,5,41],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[2,0,2,6,41],
-"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[2,0,2,6,43],
-"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[3,0,2,5,43]
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html":[2,0,2,6,40]
 };

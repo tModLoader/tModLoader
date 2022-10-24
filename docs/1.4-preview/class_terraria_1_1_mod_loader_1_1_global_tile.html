@@ -132,7 +132,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int
 <tr class="memdesc:a3b6ea8306dfa056be4a1e51182aa8c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a player stands on the given type of tile. For example, you can make the player slide as if on ice.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a3b6ea8306dfa056be4a1e51182aa8c8c">More...</a><br /></td></tr>
 <tr class="separator:a3b6ea8306dfa056be4a1e51182aa8c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1425f575127b73aafa5e251d970fc28f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1425f575127b73aafa5e251d970fc28f">HitWire</a> (int i, int j, int type)</td></tr>
-<tr class="memdesc:a1425f575127b73aafa5e251d970fc28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1425f575127b73aafa5e251d970fc28f">More...</a><br /></td></tr>
+<tr class="memdesc:a1425f575127b73aafa5e251d970fc28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile. Both Wiring.SkipWire(int, int) and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
+Only called on the server and single player. All wiring happens on the world, not multiplayer clients.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1425f575127b73aafa5e251d970fc28f">More...</a><br /></td></tr>
 <tr class="separator:a1425f575127b73aafa5e251d970fc28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9095b93259d7281f00195030a72313bc"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a9095b93259d7281f00195030a72313bc">IsTileDangerous</a> (int i, int j, int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a9095b93259d7281f00195030a72313bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows red when the given player has the Dangersense buff. <br  />
@@ -818,7 +819,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make something happen when a wire current passes through any tile. </p>
+<p>Allows you to make something happen when a wire current passes through any tile. Both Wiring.SkipWire(int, int) and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
+Only called on the server and single player. All wiring happens on the world, not multiplayer clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>

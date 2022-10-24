@@ -294,8 +294,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitNPC<
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitPvp</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a896355b7a4061e20bc21d3a9e7c10a93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a melee weapon does to a player. <br /></td></tr>
 <tr class="separator:a896355b7a4061e20bc21d3a9e7c10a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae47304276a960c7362f28785e5a98da2"><td class="memItemLeft" align="right" valign="top"><a id="ae47304276a960c7362f28785e5a98da2" name="ae47304276a960c7362f28785e5a98da2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyItemLoot</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="struct_terraria_1_1_mod_loader_1_1_item_loot.html">ItemLoot</a> itemLoot)</td></tr>
+<tr class="memitem:ae47304276a960c7362f28785e5a98da2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae47304276a960c7362f28785e5a98da2">ModifyItemLoot</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="struct_terraria_1_1_mod_loader_1_1_item_loot.html">ItemLoot</a> itemLoot)</td></tr>
+<tr class="memdesc:ae47304276a960c7362f28785e5a98da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify the loot items that spawn from bag items when opened. The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot as well as this hook. A common usage is to use this hook and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> to edit non-expert exlclusive drops for bosses. <br  />
+ This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ae47304276a960c7362f28785e5a98da2">More...</a><br /></td></tr>
 <tr class="separator:ae47304276a960c7362f28785e5a98da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56082e75c7be47f81d6e272415ebaee8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8">ModifyItemScale</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float scale)</td></tr>
 <tr class="memdesc:a56082e75c7be47f81d6e272415ebaee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8">More...</a><br /></td></tr>
@@ -2015,6 +2016,52 @@ This is only called when two items of the same type attempt to stack. </p>
 </dl>
 
 <p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html#acbdf63b748215e9b83e621a8edba10fd">Terraria.ModLoader.Default.UnloadedGlobalItem</a>.</p>
+
+</div>
+</div>
+<a id="ae47304276a960c7362f28785e5a98da2" name="ae47304276a960c7362f28785e5a98da2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47304276a960c7362f28785e5a98da2">&#9670;&nbsp;</a></span>ModifyItemLoot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalItem.ModifyItemLoot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_item_loot.html">ItemLoot</a>&#160;</td>
+          <td class="paramname"><em>itemLoot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to add and modify the loot items that spawn from bag items when opened. The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot as well as this hook. A common usage is to use this hook and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> to edit non-expert exlclusive drops for bosses. <br  />
+ This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>A default item of the type being opened, not the actual item instance</td></tr>
+    <tr><td class="paramname">itemLoot</td><td>A reference to the item drop database for this item type</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
