@@ -3353,12 +3353,12 @@
  								if (inventory[n].stack <= 0)
  									inventory[n].SetDefaults();
  
-@@ -22758,19 +_,22 @@
+@@ -22758,35 +_,40 @@
  							NetMessage.SendData(61, -1, -1, null, whoAmI, 245f);
  					}
  				}
 -				else if (Main.tile[myX, myY].type == 10) {
-+				else if (Main.tile[myX, myY].type == TileID.ClosedDoor || TileLoader.OpenDoorID(Main.tile[myX, myY]) >= 0) {
++				else if (TileLoader.IsClosedDoor(Main.tile[myX, myY])) {
  					flag2 = true;
  					if (WorldGen.IsLockedDoor(myX, myY)) {
  						int num43 = 1141;
@@ -3378,7 +3378,19 @@
  							}
  						}
  					}
-@@ -22786,7 +_,7 @@
+ 					else {
++						int originalClosedDoorType = Main.tile[myX, myY].type;
++
+ 						WorldGen.OpenDoor(myX, myY, direction);
+-						if (Main.tile[myX, myY].type != 10) {
++						if (Main.tile[myX, myY].type != originalClosedDoorType) {
+ 							NetMessage.SendData(19, -1, -1, null, 0, myX, myY, direction);
+ 						}
+ 						else {
+ 							WorldGen.OpenDoor(myX, myY, -direction);
+-							if (Main.tile[myX, myY].type != 10)
++							if (Main.tile[myX, myY].type != originalClosedDoorType)
+ 								NetMessage.SendData(19, -1, -1, null, 0, myX, myY, -direction);
  						}
  					}
  				}

@@ -359,6 +359,9 @@ namespace Terraria.ModLoader
 			return -1;
 		}
 
+		/// <summary>
+		/// Returns true if the tile is a vanilla or modded closed door.
+		/// </summary>
 		public static bool IsClosedDoor(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
 
