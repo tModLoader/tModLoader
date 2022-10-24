@@ -11,10 +11,16 @@
  
  namespace Terraria.ID
  {
-@@ -92,6 +_,7 @@
+@@ -91,7 +_,12 @@
+ 
  				public ItemGroupAndOrderInGroup(Item item) {
  					ItemType = item.type;
- 					Group = GetItemGroup(item, out OrderInGroup);
++					try {
+-					Group = GetItemGroup(item, out OrderInGroup);
++						Group = GetItemGroup(item, out OrderInGroup);
++					} catch (Exception e) {
++						throw new Exception($"An exception occured while processing {(ItemLoader.IsModItem(item.type) ? item.ModItem.FullName : item.Name)}", e);
++					}
 +					ItemLoader.ModifyResearchSorting(item, ref Group);
  				}
  			}
