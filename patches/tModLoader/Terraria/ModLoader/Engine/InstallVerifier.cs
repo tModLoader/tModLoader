@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Engine
 	internal static class InstallVerifier
 	{
 		private static string VanillaExe = "Terraria.exe";
-		private static string CheckExe = $"Terraria_1.4.4.5.exe"; // This should match the hashes. {Main.versionNumber}
+		private static string CheckExe = $"Terraria_1.4.4.7.exe"; // This should match the hashes. {Main.versionNumber}
 		private static string vanillaExePath;
 
 		public static DistributionPlatform DistributionPlatform;
@@ -41,22 +41,22 @@ namespace Terraria.ModLoader.Engine
 				}
 
 				vanillaSteamAPI = "steam_api.dll";
-				gogHash = ToByteArray("cac2ec1ab87b856714e811197f2c5316"); // Don't forget to update CheckExe above
-				steamHash = ToByteArray("827016a1be423c25e239c6da6c9ead16");
+				gogHash = ToByteArray("7e81f3aa3e439a6ac6059026e495b50a"); // Don't forget to update CheckExe above
+				steamHash = ToByteArray("71eca170745336290fbac3201bbda16f");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
 				steamAPIHash = ToByteArray("801e9bf5e5899a41c5999811d870b1ca");
 				vanillaSteamAPI = "libsteam_api.dylib";
-				gogHash = ToByteArray("045e27636950d04d1986307f294aac55");
-				steamHash = ToByteArray("6259687c7098c2edf6200db831c02faa");
+				gogHash = ToByteArray("7ac38d2ea274a0a85c6bfdb0e25cfef9");
+				steamHash = ToByteArray("e6f2f27865643c07f21afc39e33fa14f");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
 				steamAPIHash = ToByteArray("ccdf20f0b2f9abbe1fea8314b9fab096");
 				vanillaSteamAPI = "libsteam_api.so";
-				gogHash = ToByteArray("54467fc23e6f3122a62e461cf2fb2b18");
-				steamHash = ToByteArray("b24b94fec7d20f9dba7329275443a859");
+				gogHash = ToByteArray("fbfa183d31e34914617b6fa5ceeedfdd");
+				steamHash = ToByteArray("01ffcaf4ff59cee83507cd4e54c09cad");
 			}
 			else {
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
