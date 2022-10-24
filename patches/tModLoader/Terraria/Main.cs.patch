@@ -1349,7 +1349,7 @@
 +				}
 +			}
 +
-+			float usedWaterVolume = MathHelper.Clamp(ambientWaterfallStrength / 50f, 0f, 1f);
++			float usedWaterVolume = MathHelper.Clamp((ambientWaterfallStrength / 50f) * (1f - Main.shimmerAlpha), 0f, 1f);
 +
 +			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, usedWaterVolume, new Vector2(ambientWaterfallX, ambientWaterfallY));
 +

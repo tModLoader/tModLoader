@@ -67,7 +67,7 @@
 - Investigate with the new shimmer profiles. 
 - No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles 
 
-## SoundEngine.cs
+## SoundEngine.cs / SoundID.cs
 - PlayTrackedLoopedSound
 	
 ## ItemID.cs

@@ -47,6 +47,11 @@ namespace Terraria.ID
 		public static readonly SoundStyle Coins = new($"{Prefix}Coins");
 		public static readonly SoundStyle Splash = new($"{Prefix}Splash_0") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle SplashWeak = new($"{Prefix}Splash_1") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
+		// Adjust these names if you have better ideas
+		public static readonly SoundStyle Shimmer1 = new($"{Prefix}Splash_2") { Volume = 0.75f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Shimmer2 = new($"{Prefix}Splash_3") { Volume = 0.75f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle ShimmerWeak1 = new($"{Prefix}Splash_4") { Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle ShimmerWeak2 = new($"{Prefix}Splash_5") { Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle FemaleHit = new($"{Prefix}Female_Hit_", 0, 3);
 		public static readonly SoundStyle Tink = new($"{Prefix}Tink_", 0, 3);
 		public static readonly SoundStyle Unlock = new($"{Prefix}Unlock");
@@ -89,8 +94,8 @@ namespace Terraria.ID
 		public static readonly SoundStyle GuitarD = new($"{Prefix}Item_134") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
 		public static readonly SoundStyle GuitarEm = new($"{Prefix}Item_135") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
 		public static readonly SoundStyle GuitarG = new($"{Prefix}Item_136") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarAm = new($"{Prefix}Item_137") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarF = new($"{Prefix}Item_138") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarBm = new($"{Prefix}Item_137") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarAm = new($"{Prefix}Item_138") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
 		public static readonly SoundStyle DrumHiHat = new($"{Prefix}Item_139") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 		public static readonly SoundStyle DrumTomHigh = new($"{Prefix}Item_140") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 		public static readonly SoundStyle DrumTomLow = new($"{Prefix}Item_141") { Volume = 0.7f, Identifier = "Terraria/Drums" };
@@ -104,6 +109,10 @@ namespace Terraria.ID
 		public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3);
 		public static readonly SoundStyle ResearchComplete = new($"{Prefix}Research_0");
 		public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Clown = new($"{Prefix}Zombie_", 121, 3) { Volume = 0.45f, PitchVariance = 0.15f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3) { Volume = 0.3f, PitchVariance = 0.05f };
+		public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3) { Volume = 0.22f, PitchVariance = 0.05f };
+		public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 3) { Volume = 0.2f, PitchVariance = 0.05f };
 		// End of replaced IDs.
 
 		public static readonly SoundStyle NPCHit1 = NPCHitSound(1);
@@ -229,6 +238,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle NPCDeath63 = NPCDeathSound(63);
 		public static readonly SoundStyle NPCDeath64 = NPCDeathSound(64);
 		public static readonly SoundStyle NPCDeath65 = NPCDeathSound(65);
+		public static readonly SoundStyle NPCDeath66 = NPCDeathSound(66);
 		public static int NPCDeathCount = 66; // TML: Changed from short to int.
 		public static readonly SoundStyle Item1 = ItemSound(stackalloc int[] { 1, 18, 19 });
 		public static readonly SoundStyle Item2 = ItemSound(2);
@@ -399,9 +409,16 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item167 = ItemSound(167);
 		public static readonly SoundStyle Item168 = ItemSound(168);
 		public static readonly SoundStyle Item169 = ItemSound(169) with { Pitch = -0.8f };
+		// 1.4.4 and onwards:
 		public static readonly SoundStyle Item170 = ItemSound(170);
 		public static readonly SoundStyle Item171 = ItemSound(171);
 		public static readonly SoundStyle Item172 = ItemSound(172);
+		public static readonly SoundStyle Item173 = ItemSound(173);
+		public static readonly SoundStyle Item174 = ItemSound(174);
+		public static readonly SoundStyle Item175 = ItemSound(175);
+		public static readonly SoundStyle Item176 = ItemSound(176);
+		public static readonly SoundStyle Item177 = ItemSound(177);
+		public static readonly SoundStyle Item178 = ItemSound(178);
 		// ZombieX sound styles are new, and weren't present in vanilla neither as int nor SoundStyle fields. 
 		public static readonly SoundStyle Zombie1 = ZombieSound(1);
 		public static readonly SoundStyle Zombie2 = ZombieSound(2);
@@ -520,6 +537,20 @@ namespace Terraria.ID
 		public static readonly SoundStyle Zombie115 = ZombieSound(115);
 		public static readonly SoundStyle Zombie116 = ZombieSound(116);
 		public static readonly SoundStyle Zombie117 = ZombieSound(117);
+		// 1.4.4 and onwards:
+		public static readonly SoundStyle Zombie118 = ZombieSound(118);
+		public static readonly SoundStyle Zombie119 = ZombieSound(119);
+		public static readonly SoundStyle Zombie120 = ZombieSound(120);
+		public static readonly SoundStyle Zombie121 = ZombieSound(121);
+		public static readonly SoundStyle Zombie122 = ZombieSound(122);
+		public static readonly SoundStyle Zombie123 = ZombieSound(123);
+		public static readonly SoundStyle Zombie124 = ZombieSound(124);
+		public static readonly SoundStyle Zombie125 = ZombieSound(125);
+		public static readonly SoundStyle Zombie126 = ZombieSound(126);
+		public static readonly SoundStyle Zombie127 = ZombieSound(127);
+		public static readonly SoundStyle Zombie128 = ZombieSound(128);
+		public static readonly SoundStyle Zombie129 = ZombieSound(129);
+		public static readonly SoundStyle Zombie130 = ZombieSound(130);
 
 		// Mapping
 
@@ -658,8 +689,8 @@ namespace Terraria.ID
 			LegacySoundIDs.GuitarD => GuitarD,
 			LegacySoundIDs.GuitarEm => GuitarEm,
 			LegacySoundIDs.GuitarG => GuitarG,
+			LegacySoundIDs.GuitarBm => GuitarBm,
 			LegacySoundIDs.GuitarAm => GuitarAm,
-			LegacySoundIDs.GuitarF => GuitarF,
 			LegacySoundIDs.DrumHiHat => DrumHiHat,
 			LegacySoundIDs.DrumTomHigh => DrumTomHigh,
 			LegacySoundIDs.DrumTomLow => DrumTomLow,
