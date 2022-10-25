@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Cinematics/CinematicManager.cs
++++ src/tModLoader/Terraria/Cinematics/CinematicManager.cs
+@@ -28,6 +_,6 @@
+ 		public void StopAll() {
+ 		}
+ 
+-		public bool IsAnyFilmPlaying => _films.Any(x => x.IsActive);
++		public bool IsPlayingFilm => _films.Count > 0 && _films[0].IsActive;
+ 	}
+ }
