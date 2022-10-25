@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/Cinematics/CinematicManager.cs
++++ src/tModLoader/Terraria/Cinematics/CinematicManager.cs
+@@ -1,5 +_,6 @@
+ using Microsoft.Xna.Framework;
+ using System.Collections.Generic;
++using System.Linq;
+ 
+ namespace Terraria.Cinematics
+ {
+@@ -26,5 +_,7 @@
+ 
+ 		public void StopAll() {
+ 		}
++
++		public bool IsActive => _films.Any(x => x.IsActive);
+ 	}
+ }
