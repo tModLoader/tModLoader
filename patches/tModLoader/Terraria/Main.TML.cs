@@ -184,6 +184,7 @@ namespace Terraria
 				if (!Directory.Exists(vanillaContentFolder)) {
 					vanillaContentFolder = "../Content"; // Nested Manual Install
 				}
+				Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
