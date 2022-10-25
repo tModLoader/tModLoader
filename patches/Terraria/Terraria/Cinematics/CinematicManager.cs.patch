@@ -12,6 +12,6 @@
  		public void StopAll() {
  		}
 +
-+		public bool IsActive => _films.Any(x => x.IsActive);
++		public bool IsAnyFilmPlaying => _films.Any(x => x.IsActive);
  	}
  }
