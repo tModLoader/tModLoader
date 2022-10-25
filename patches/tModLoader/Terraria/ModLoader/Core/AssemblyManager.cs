@@ -347,7 +347,7 @@ namespace Terraria.ModLoader.Core
 							.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
 							.Concat<MethodBase>(type.GetConstructors(ALL))
 							.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && filter.ShouldJIT(m) && m.GetMethodBody() != null && m.DeclaringType == type)
+							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type && filter.ShouldJIT(m))
 					)
 					.ToArray();
 
@@ -379,7 +379,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		private static void ForceJITOnMethod(MethodBase method) {
-			RuntimeHelpers.PrepareMethod(method.MethodHandle);
+			if (method.GetMethodBody() != null)
+				RuntimeHelpers.PrepareMethod(method.MethodHandle);
 
 			// Here we check for overrides that override methods that no longer exist.
 			// tModLoader contributors should consult https://github.com/tModLoader/tModLoader/wiki/tModLoader-Style-Guide#be-aware-of-breaking-changes to properly handle breaking changes, especially once 1.4 is stable.
