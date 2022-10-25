@@ -18,7 +18,8 @@ namespace Terraria.ModLoader.Engine
 	internal static class InstallVerifier
 	{
 		private static string VanillaExe = "Terraria.exe";
-		private static string CheckExe = $"Terraria_1.4.4.7.exe"; // This should match the hashes. {Main.versionNumber}
+		private const string CheckExeVersion = "1.4.4.7";
+		private static string CheckExe = $"Terraria_{CheckExeVersion}.exe"; // This should match the hashes. {Main.versionNumber}
 		private static string vanillaExePath;
 
 		public static DistributionPlatform DistributionPlatform;
@@ -207,7 +208,7 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
-				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath) + "\n\n" + Language.GetTextValue("tModLoader.GOGVersionHint", CheckExeVersion));
 			}
 
 			if (Path.GetFileName(vanillaExePath) != CheckExe) {
