@@ -474,6 +474,7 @@
 		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
 		"VanillaGOGNotFound": "Невозможно найти {0}.\r\n\r\nGOG-версиям необходима немодифицированная Terraria для работы. Ожидалась {1} версия Terraria, возможно придётся обновить/откатить Terraria через GOG Galaxy, либо подождите пока tModLoader обновится до этой версии. (VanillaGOGNotFound)",
 		"GOGHashMismatch": "{0} не является немодифицированной Terraria.\r\n\r\nУстановка GOG требует немодифицированную Terraria для работы.\r\n\r\nЕсли вы патчили .exe, скопируйте оригинальный exe и назовите его \"Terraria_v<VERSION>.exe\"",
+		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
 		"DefaultExtraMessage": "восстановите установку Terraria, затем установите tModLoader в Steam или следейте инструкциям из README.txt для ручной установки.",
 		"LogPathHint": "Файл {0} с информацией об ошибке создан в\n{1}\n(Прикрепите этот файл, если попросите о помощи)",
 		"OutOfMemoryHint": "Попробуйте использовать меньше модов либо определите какой мод/моды потребляет много памяти. Опционально, установите 64-битный tModLoader",
