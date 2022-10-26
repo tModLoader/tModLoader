@@ -956,7 +956,7 @@
  					if (item.stack <= 0) {
  						item.SetDefaults();
  						item.active = false;
-@@ -46280,13 +_,46 @@
+@@ -46280,13 +_,47 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
  				default:
@@ -987,6 +987,7 @@
 +		/// <summary>
 +		/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
 +		/// This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"></see> instead, it handles the multiplayer syncing code needed.
++		/// See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
 +		/// The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
 +		/// </summary>
 +		/// <param name="source"></param>
@@ -996,7 +997,7 @@
 +		/// <param name="Height"></param>
 +		/// <param name="Type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
 +		/// <param name="Stack">Item stack</param>
-+		/// <param name="noBroadcast"></param>
++		/// <param name="noBroadcast">Controls whether an item spawned on a server is synced using <see cref="NetMessage.SendData"/> and <see cref="MessageID.SyncItem"/>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <see cref="MessageID.SyncItem"/>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> source code for an example.</param>
 +		/// <param name="pfix"></param>
 +		/// <param name="noGrabDelay"></param>
 +		/// <param name="reverseLookup"></param>
