@@ -330,7 +330,7 @@
  		}
  
  		private bool IsWindBlocked(int x, int y) {
-@@ -4440,16 +_,20 @@
+@@ -4440,16 +_,21 @@
  			if (solidLayer) {
  				_displayDollTileEntityPositions.Clear();
  				_hatRackTileEntityPositions.Clear();
@@ -338,6 +338,7 @@
 -				_reverseVineRootsPositions.Clear();
 +				return;
  			}
++			//TML: Moved so positions get cleared and added in the same frame
 +			_vineRootsPositions.Clear();
 +			_reverseVineRootsPositions.Clear();
  		}
