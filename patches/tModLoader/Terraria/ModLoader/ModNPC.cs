@@ -74,6 +74,9 @@ namespace Terraria.ModLoader
 		/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
 		public bool TownNPCStayingHomeless { get; set; }
 
+		/// <summary> Setting this to true will make the Town NPC not affected by Happiness. Their price modifier will be 1f (neutral). </summary>
+		public bool NoTownNPCHappiness { get; set; } = false;
+
 		protected override NPC CreateTemplateEntity() => new() { ModNPC = this };
 
 		protected sealed override void Register() {

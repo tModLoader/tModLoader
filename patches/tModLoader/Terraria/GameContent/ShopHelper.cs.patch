@@ -40,6 +40,15 @@
  			_database = new PersonalityDatabase();
  			new PersonalityDatabasePopulator().Populate(_database);
  		}
+@@ -86,7 +_,7 @@
+ 				if (npc.type == 656 || npc.type == 637 || npc.type == 638)
+ 					return;
+ 
+-				if (IsNotReallyTownNPC(npc)) {
++				if (IsNotReallyTownNPC(npc) || npc.ModNPC?.NoTownNPCHappiness == true) {
+ 					_currentPriceAdjustment = 1f;
+ 					return;
+ 				}
 @@ -129,7 +_,7 @@
  					_currentPriceAdjustment *= 0.95f;
  				}

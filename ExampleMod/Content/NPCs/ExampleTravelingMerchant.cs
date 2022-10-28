@@ -185,6 +185,7 @@ namespace ExampleMod.Content.NPCs
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
 			TownNPCStayingHomeless = true;
+			NoTownNPCHappiness = true;
 			CreateNewShop();
 		}
 
