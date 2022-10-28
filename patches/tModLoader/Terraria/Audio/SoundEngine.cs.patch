@@ -46,7 +46,7 @@
  		public static void PlaySound(int type, Vector2 position, int style = 1) {
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
-@@ -82,12 +_,13 @@
+@@ -82,11 +_,11 @@
  			return SoundPlayer.GetActiveSound(id);
  		}
  
@@ -58,19 +58,9 @@
 -			return SoundPlayer.Play(style, position);
 +			return SoundPlayer.Play(in style, position);
  		}
-+		*/
  
  		public static SlotId PlayTrackedLoopedSound(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition = null) {
- 			if (Main.dedServ || !IsAudioSupported)
-@@ -96,31 +_,37 @@
- 			return SoundPlayer.PlayLooped(style, position, loopingCondition);
- 		}
- 
-+		//TML: Merged into the above method.
-+		/*
- 		public static SlotId PlayTrackedSound(SoundStyle style) {
- 			if (Main.dedServ || !IsAudioSupported)
- 				return SlotId.Invalid;
+@@ -102,25 +_,29 @@
  
  			return SoundPlayer.Play(style);
  		}

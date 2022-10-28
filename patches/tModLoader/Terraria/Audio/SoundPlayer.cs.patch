@@ -1,11 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,21 +_,74 @@
+@@ -1,24 +_,81 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
 +using System.Diagnostics.CodeAnalysis;
 +using System.Threading.Tasks;
++
++#nullable enable
  
  namespace Terraria.Audio
  {
@@ -17,8 +19,8 @@
  
 -		public SlotId Play(SoundStyle style, Vector2 position) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
-+		//TML: Position parameter made nullable.
-+		public SlotId Play(in SoundStyle style, Vector2? position = null) {
++		//TML: Position parameter made nullable, SoundUpdateCallback parameter merged in, with changed type.
++		public SlotId Play(in SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null) {
 +			if (Main.dedServ)
  				return SlotId.Invalid;
  
@@ -37,13 +39,13 @@
 +			// If not on the main thread - queue a main thread action, and wait for it to complete
 +			if (!Program.IsMainThread) {
 +				var styleCopy = style;
-+				return Main.RunOnMainThread(() => Play_Inner(styleCopy, position)).GetAwaiter().GetResult();
++				return Main.RunOnMainThread(() => Play_Inner(styleCopy, position, updateCallback)).GetAwaiter().GetResult();
 +			}
 +			
-+			return Play_Inner(in style, position);
++			return Play_Inner(in style, position, updateCallback);
 +		}
 +
-+		private SlotId Play_Inner(in SoundStyle style, Vector2? position) {
++		private SlotId Play_Inner(in SoundStyle style, Vector2? position, SoundUpdateCallback? updateCallback) {
 +			// Handle the MaxInstances & RestartIfPlaying properties
 +			int maxInstances = style.MaxInstances;
 +
@@ -59,7 +61,7 @@
 +
 +					switch (style.SoundLimitBehavior) {
 +						case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
-+							activeSound.Sound.Stop(true);
++							activeSound.Sound?.Stop(true);
 +							break;
 +						default:
 +							return SlotId.Invalid;
@@ -75,11 +77,25 @@
 +			}
  
 -			ActiveSound value = new ActiveSound(style, position);
-+			ActiveSound value = new ActiveSound(styleCopy, position);
++			ActiveSound value = new ActiveSound(styleCopy, position, updateCallback);
  			return _trackedSounds.Add(value);
  		}
  
-@@ -34,20 +_,28 @@
++		//TML: Merged into the above method.
++		/*
+ 		public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition) {
+ 			if (Main.dedServ || style == null || !style.IsTrackable)
+ 				return SlotId.Invalid;
+@@ -27,27 +_,37 @@
+ 				return SlotId.Invalid;
+ 
+ 			ActiveSound value = new ActiveSound(style, position, loopingCondition);
++
+ 			return _trackedSounds.Add(value);
+ 		}
++		*/
+ 
+ 		public void Reload() {
  			StopAll();
  		}
  

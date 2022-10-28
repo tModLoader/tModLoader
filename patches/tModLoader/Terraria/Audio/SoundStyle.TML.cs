@@ -5,8 +5,11 @@ using System;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using static Terraria.Audio.ActiveSound;
 
 #nullable enable
+
+// Completely reimplemented by TML.
 
 namespace Terraria.Audio
 {
@@ -15,8 +18,6 @@ namespace Terraria.Audio
 		IgnoreNew,
 		ReplaceOldest,
 	}
-
-	// Completely reimplemented by TML.
 
 	/// <summary>
 	/// This data type describes in detail how a sound should be played.

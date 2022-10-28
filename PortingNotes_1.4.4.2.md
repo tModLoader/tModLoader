@@ -63,10 +63,7 @@
 
 ## TownNPCProfiles
 - Investigate with the new shimmer profiles. 
-- No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles 
-
-## SoundEngine.cs / SoundID.cs
-- PlayTrackedLoopedSound
+- No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles
 	
 ## ItemID.cs
 - ExtractinatorMode (extractinator has changed in 1.4.4, chloro extractinator now exists)

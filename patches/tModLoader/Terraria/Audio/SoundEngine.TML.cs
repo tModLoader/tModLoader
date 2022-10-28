@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,16 +14,16 @@ namespace Terraria.Audio
 	{
 		// Public API methods
 
-		/// <inheritdoc cref="PlaySound(in SoundStyle, Vector2?)" />
+		/// <inheritdoc cref="PlaySound(in SoundStyle, Vector2?, SoundUpdateCallback?)" />
 		/// <summary>
 		/// Attempts to play a sound style with the provided sound style (if it's not null), and returns a valid <see cref="SlotId"/> handle to it on success.
 		/// </summary>
-		public static SlotId PlaySound(in SoundStyle? style, Vector2? position = null) {
+		public static SlotId PlaySound(in SoundStyle? style, Vector2? position = null, SoundUpdateCallback? updateCallback = null) {
 			if (!style.HasValue) {
 				return SlotId.Invalid;
 			}
 
-			return PlaySound(style.Value, position);
+			return PlaySound(style.Value, position, updateCallback);
 		}
 
 		/// <summary>
@@ -30,12 +31,13 @@ namespace Terraria.Audio
 		/// </summary>
 		/// <param name="style"> The sound style that describes everything about the played sound. </param>
 		/// <param name="position"> An optional 2D position to play the sound at. When null, this sound will be heard everywhere. </param>
-		public static SlotId PlaySound(in SoundStyle style, Vector2? position = null) {
+		/// <param name="updateCallback"> A callback for customizing the behavior of the created sound instance, like tying its existence to a projectile using <see cref="ProjectileAudioTracker"/>. </param>
+		public static SlotId PlaySound(in SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null) {
 			if (Main.dedServ || !IsAudioSupported) {
 				return SlotId.Invalid;
 			}
 
-			return SoundPlayer.Play(in style, position);
+			return SoundPlayer.Play(in style, position, updateCallback);
 		}
 
 		/// <inheritdoc cref="SoundPlayer.TryGetActiveSound(SlotId, out ActiveSound?)"/>
@@ -81,6 +83,9 @@ namespace Terraria.Audio
 
 		internal static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null)
 			=> PlaySound(in style, position);
+
+		internal static SlotId PlayTrackedLoopedSound(in SoundStyle style, Vector2 position, Func<bool>? loopingCondition = null)
+			=> PlaySound(in style, (Vector2?)position, (SoundUpdateCallback)(_ => loopingCondition()));
 
 		internal static ActiveSound? GetActiveSound(SlotId slotId)
 			=> TryGetActiveSound(slotId, out var result) ? result : null;
