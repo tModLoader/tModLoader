@@ -71,11 +71,13 @@ namespace Terraria.ModLoader.UI
 		public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null) {
 			if (bounds == null)
 				bounds = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-			Vector2 stringSize = FontAssets.MouseText.Value.MeasureString(text);
+			Vector2 stringSize = Terraria.UI.Chat.ChatManager.GetStringSize(FontAssets.MouseText.Value, text, Vector2.One);
+
 			Vector2 vector = Main.MouseScreen + new Vector2(16f);
 			vector.X = Math.Min(vector.X, bounds.Value.Right - stringSize.X - 16);
 			vector.Y = Math.Min(vector.Y, bounds.Value.Bottom - stringSize.Y - 16);
-			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, 255); // 255 needed for black check in item tags
+			Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, vector, color, 0f, Vector2.Zero, Vector2.One);
 		}
 
 		public static Asset<Texture2D> ButtonErrorTexture { get; internal set; }

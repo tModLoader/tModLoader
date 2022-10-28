@@ -33,6 +33,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static TagCompound SaveData(Player player) {
+			player._temporaryItemSlots[0] = Main.mouseItem;
+			player._temporaryItemSlots[1] = Main.CreativeMenu.GetItemByIndex(0);
+			player._temporaryItemSlots[2] = Main.guideItem;
+			player._temporaryItemSlots[3] = Main.reforgeItem;
 			return new TagCompound {
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
@@ -43,6 +47,7 @@ namespace Terraria.ModLoader.IO
 				["bank2"] = SaveInventory(player.bank2.item),
 				["bank3"] = SaveInventory(player.bank3.item),
 				["bank4"] = SaveInventory(player.bank4.item),
+				["temporaryItemSlots"] = SaveInventory(player._temporaryItemSlots),
 				["hairDye"] = SaveHairDye(player.hairDye),
 				["research"] = SaveResearch(player),
 				["modData"] = SaveModData(player),
@@ -64,6 +69,7 @@ namespace Terraria.ModLoader.IO
 			LoadInventory(player.bank2.item, tag.GetList<TagCompound>("bank2"));
 			LoadInventory(player.bank3.item, tag.GetList<TagCompound>("bank3"));
 			LoadInventory(player.bank4.item, tag.GetList<TagCompound>("bank4"));
+			LoadInventory(player._temporaryItemSlots, tag.GetList<TagCompound>("temporaryItemSlots"));
 			LoadHairDye(player, tag.GetString("hairDye"));
 			LoadResearch(player, tag.GetList<TagCompound>("research"));
 			LoadModData(player, tag.GetList<TagCompound>("modData"));

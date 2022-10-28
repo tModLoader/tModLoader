@@ -184,10 +184,16 @@ namespace Terraria
 				if (!Directory.Exists(vanillaContentFolder)) {
 					vanillaContentFolder = "../Content"; // Nested Manual Install
 				}
+				Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
+			}
+
+			// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
+			if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 			}
 
 			if (Directory.Exists(Path.Combine("Content", "Images")))

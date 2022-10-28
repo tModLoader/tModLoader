@@ -166,8 +166,10 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list
-		/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
 		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="recipe"></param>
+		/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
 		public static void OnCraft(Item item, Recipe recipe, Item destinationStack) {
 			OnCraft(item, recipe, ConsumedItems, destinationStack);
 			ConsumedItems.Clear();

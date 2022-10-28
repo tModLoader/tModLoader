@@ -323,8 +323,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
 		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify NPC loot.
+		/// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
 		/// </summary>
-		/// <param name="npcLoot"></param>
+		/// <param name="npcLoot">A reference to the item drop database for this npc type</param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
 		}
 

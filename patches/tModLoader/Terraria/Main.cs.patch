@@ -562,7 +562,30 @@
  			int currentValue = 0;
  			Configuration.Get("LastLaunchedVersion", ref currentValue);
  			bool flag = false;
-@@ -3272,8 +_,11 @@
+@@ -3266,14 +_,34 @@
+ 			int currentValue3 = graphics.PreferredBackBufferHeight;
+ 			Configuration.Get("DisplayWidth", ref currentValue2);
+ 			Configuration.Get("DisplayHeight", ref currentValue3);
++
++			//Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
++			// Iterates to find the largest display and assumes that is allowed.
++			for (int i = 0; i < SDL2.SDL.SDL_GetNumVideoDisplays(); i++) {
++				int displayModeIndex = 0;
++				while (SDL2.SDL.SDL_GetDisplayMode(displayModeIndex++, i, out var sdlMode) == 0) {
++					maxScreenW = Math.Max(sdlMode.w, maxScreenW);
++					maxScreenH = Math.Max(sdlMode.h, maxScreenH);
++				}
++			}
++
++			Logging.tML.Info($"Maximum Resolution is {maxScreenW} x {maxScreenH}");
++
++			// Update the _renderTargetMaxSize to correctly find max offscreen space: Note, this is bigger than Vanilla!
++			// Solxan: Setting to exact maxScreenW leads to lag, but too big impacts performance. Needs to be sizeable to include ultrawide displays
++			_renderTargetMaxSize = maxScreenW + 200 * 2 * maxScreenW / 1920;
++
+ 			LastLoadedResolution = new Microsoft.Xna.Framework.Point(currentValue2, currentValue3);
+ 			if (!startFullscreen) {
+ 				if (PendingBorderlessState)
  					screenBorderlessPendingResizes = 1;
  
  				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
@@ -2525,7 +2548,7 @@
  			}
  
  			string bestiaryNotes = item.BestiaryNotes;
-@@ -15727,11 +_,12 @@
+@@ -15727,18 +_,19 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {
  					toolTipLine[numLines++] = text2;
@@ -2539,6 +2562,14 @@
  			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);
  			int num = 220;
  			int num2 = 72;
+ 			int num3 = -1;
+ 			float num4 = 1f;
+ 			List<Vector2> list = new List<Vector2>();
+-			Vector2 vector = FontAssets.MouseText.Value.MeasureString(buffString);
++			Vector2 vector = Terraria.UI.Chat.ChatManager.GetStringSize(FontAssets.MouseText.Value, buffString, Vector2.One);
+ 			list.Add(vector);
+ 			int num5 = (int)((float)(screenHeight - Y - 24 - num2) * num4) / 20;
+ 			if (num5 < 1)
 @@ -15746,7 +_,7 @@
  
  			if (bannerMouseOver) {
@@ -2556,8 +2587,13 @@
  			Vector2 zero = Vector2.Zero;
  			foreach (Vector2 item2 in list) {
  				if (zero.X < item2.X)
-@@ -15788,7 +_,7 @@
+@@ -15786,9 +_,12 @@
+ 			if ((float)Y + zero.Y + 4f > (float)screenHeight * num4)
+ 				Y = (int)((float)screenHeight * num4 - zero.Y - 4f);
  
++			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, 255); // 255 needed for black check in item tags
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, buffString, new Vector2(X, Y + vector.Y), color, 0f, Vector2.Zero, Vector2.One);
++			/*
  			for (int k = 0; k < 5; k++) {
  				int num11 = X;
 -				int num12 = Y + (int)FontAssets.MouseText.Value.MeasureString(buffString).Y;
@@ -2565,7 +2601,13 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
-@@ -15815,7 +_,7 @@
+@@ -15810,12 +_,13 @@
+ 
+ 				spriteBatch.DrawString(FontAssets.MouseText.Value, buffString, new Vector2(num11, num12), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			}
++			*/
+ 
+ 			if (!bannerMouseOver)
  				return;
  
  			int num13 = 0;
