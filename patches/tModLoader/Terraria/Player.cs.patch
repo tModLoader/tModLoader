@@ -572,7 +572,7 @@
 +					ManaEffect(healMana);
  			}
  
-+			if (ItemLoader.ConsumeItem(item, this))
++			if (item.consumable && ItemLoader.ConsumeItem(item, this))
 -			item.stack--;
 +				item.stack--;
 +
@@ -630,7 +630,7 @@
 +					ManaEffect(healMana);
  			}
  
-+			if (ItemLoader.ConsumeItem(inventory[num], this))
++			if (inventory[num].consumable && ItemLoader.ConsumeItem(inventory[num], this))
 -			inventory[num].stack--;
 +				inventory[num].stack--;
 +
