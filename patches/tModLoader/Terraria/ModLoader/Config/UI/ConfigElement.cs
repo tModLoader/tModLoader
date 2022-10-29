@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -46,11 +47,14 @@ namespace Terraria.ModLoader.Config.UI
 		protected RangeAttribute RangeAttribute;
 		protected IncrementAttribute IncrementAttribute;
 		protected JsonDefaultValueAttribute JsonDefaultValueAttribute;
+		protected ReloadRequiredAttribute ReloadRequiredAttribute;
 		// Etc
 		protected bool NullAllowed { get; set; }
 		protected internal Func<string> TextDisplayFunction { get; set; }
 		protected Func<string> TooltipFunction { get; set; }
 		protected bool DrawLabel { get; set; } = true;
+		protected object OldValue { get; set; }
+		protected bool ValueChanged => !OldValue.Equals(GetObject());
 
 		public ConfigElement() {
 			Width.Set(0f, 1f);
@@ -69,6 +73,8 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		public virtual void OnBind() {
+			OldValue = GetObject();
+
 			TextDisplayFunction = () => MemberInfo.Name;
 			LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
 
@@ -92,6 +98,7 @@ namespace Terraria.ModLoader.Config.UI
 			IncrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(MemberInfo, Item, List);
 			NullAllowed = ConfigManager.GetCustomAttribute<NullAllowedAttribute>(MemberInfo, Item, List) != null;
 			JsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(MemberInfo, Item, List);
+			ReloadRequiredAttribute = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(MemberInfo, Item, List);
 		}
 
 		protected virtual void SetObject(object value) {
@@ -135,11 +142,20 @@ namespace Terraria.ModLoader.Config.UI
 			if (DrawLabel) {
 				position.X += 8f;
 				position.Y += 8f;
-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+				string label = TextDisplayFunction();
+				if (ReloadRequiredAttribute != null && ValueChanged) {
+					string reloadRequiredColor = Color.Red.Hex3();
+					label += $" [c/{reloadRequiredColor}:({Language.GetTextValue("tModLoader.ModReloadRequired")})]";
+				}
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, label, position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 			}
 
 			if (IsMouseHovering && TooltipFunction != null) {
 				UIModConfig.Tooltip = TooltipFunction();
+				if (ReloadRequiredAttribute != null) {
+					string reloadRequiredColor = Color.Red.Hex3();
+					UIModConfig.Tooltip += $"\n[c/{reloadRequiredColor}:{Language.GetTextValue("tModLoader.ModReloadRequired")}]";
+				}
 				/*
 				string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
 				float x = FontAssets.MouseText.Value.MeasureString(hoverText).X;
