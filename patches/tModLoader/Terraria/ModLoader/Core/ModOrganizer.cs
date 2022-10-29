@@ -138,7 +138,17 @@ namespace Terraria.ModLoader.Core
 				if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
 					continue;
 
-				WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
+				try {
+					WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
+				}
+				catch (OverflowException e) {
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopIrregularDependenciesFailure", mod.DisplayName, e.Message, mod.DisplayName), Interface.loadModsID);
+					Logging.tML.Warn($"Failed to fetch missing dependencies for local mod: {mod.DisplayName}. Irregular dependencies count detected! {e.Message}. Please report this issue to {mod.DisplayName}'s developers!", e);
+				}
+				catch (Exception e) {
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopFetchDependenciesFailure", mod.DisplayName), Interface.loadModsID);
+					Logging.tML.Warn($"Failed to fetch missing dependencies for local mod: {mod.DisplayName}. Check your internet connection or download manually from Steam Workshop!!", e);
+				}
 			}
 
 			// Cull out any dependencies that are already installed.
