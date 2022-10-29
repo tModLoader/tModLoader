@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -16,10 +17,22 @@ namespace Terraria.ModLoader
 		// in WorldGen.do_worldGenCallBack after WorldFile.saveWorld:
 		//  BackupIO.archiveLock = false;
 		public static bool archiveLock = false;
+
+		private static readonly Regex dateRegex = new(@"\d+-\d\d*-\d\d*", RegexOptions.Compiled);
+
 		private static bool IsArchiveOlder(DateTime time, TimeSpan thresholdAge) => (DateTime.Now - time) > thresholdAge;
+
 		private static string GetArchiveName(string name, bool isCloudSave) => name + (isCloudSave ? "-cloud" : "");
+
 		private static string TodaysBackup(string name, bool isCloudSave) => $"{DateTime.Now:yyyy-MM-dd}-{GetArchiveName(name, isCloudSave)}.zip";
-		private static DateTime GetTime(string file) => Convert.ToDateTime(file.Substring(0, 10));
+
+		private static bool TryGetTime(string file, out DateTime result) {
+			var match = dateRegex.Match(file);
+
+			result = default;
+
+			return match.Success && DateTime.TryParse(match.Value, out result);
+		}
 
 		/// <summary>
 		/// Run a given archiving task, which will archive to a backup .zip file
@@ -70,32 +83,43 @@ namespace Terraria.ModLoader
 		/// - One backup per month for all time
 		/// </summary>
 		private static void DeleteOldArchives(string dir, bool isCloudSave, string name) {
-			var path = Path.Combine(dir, TodaysBackup(name, isCloudSave));
+			string path = Path.Combine(dir, TodaysBackup(name, isCloudSave));
+
 			if (File.Exists(path)) {
 				DeleteArchive(path);
 			}
 
-			var archives = new DirectoryInfo(dir).GetFiles($"*{GetArchiveName(name, isCloudSave)}*.zip", SearchOption.TopDirectoryOnly)
-				.OrderBy(f => GetTime(f.Name))
+			(FileInfo file, DateTime date)[] archives = new DirectoryInfo(dir)
+				.GetFiles($"*{GetArchiveName(name, isCloudSave)}*.zip", SearchOption.TopDirectoryOnly)
+				.Select(f => (f, TryGetTime(f.Name, out var date) ? date : default))
+				.Where(tuple => tuple.Item2 != default) // Ignore files with non-parsable filenames/dates.
+				.OrderBy(tuple => tuple.Item2)
 				.ToArray();
 
-			FileInfo previous = null;
+			(FileInfo file, DateTime date)? previous = null;
 
 			foreach (var archived in archives) {
-				if (previous == null) {
+				if (!previous.HasValue) {
 					previous = archived;
 					continue;
 				}
 
-				var time = GetTime(archived.Name);
-				var freshness =
-					IsArchiveOlder(time, TimeSpan.FromDays(30))
-					? 30 : IsArchiveOlder(time, TimeSpan.FromDays(7))
-					? 7 : 1;
+				int freshness;
 
-				if ((time - GetTime(previous.Name)).Days < freshness) {
-					DeleteArchive(previous.FullName);
+				if (IsArchiveOlder(archived.date, TimeSpan.FromDays(30))) {
+					freshness = 30;
 				}
+				else if (IsArchiveOlder(archived.date, TimeSpan.FromDays(7))) {
+					freshness = 7;
+				}
+				else {
+					freshness = 1;
+				}
+
+				if ((archived.date - previous.Value.date).Days < freshness) {
+					DeleteArchive(previous.Value.file.FullName);
+				}
+
 				previous = archived;
 			}
 		}

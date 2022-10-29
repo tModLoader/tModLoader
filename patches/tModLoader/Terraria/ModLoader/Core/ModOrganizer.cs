@@ -531,44 +531,61 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static void CleanupOldPublish(string repo) {
+			if (BuildInfo.IsPreview)
+				RemoveSkippablePreview(repo);
+
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 			if (tmods.Length <= 3)
 				return;
 
-			string location = FindOldest(repo);
-			if (location.EndsWith(".tmod"))
-				File.Delete(location);
-			else
-				Directory.Delete(location, true);
-		}
+			// Solxan: We want to keep 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+			// we need to rollback to the last stable due to a signficant bug.
+			// We thus check for what the previous Stable was and compare for anything less than that.
+			
+			string deleteFolder = null;
+			var lowestVersion = BuildInfo.stableVersion.MajorMinor();
 
-		internal static string FindOldest(string repo) {
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length == 1)
-				return tmods[0];
+			for (int i = 0; i < tmods.Length; i++) {
+				var filename = tmods[i];
 
-			string val = null;
-			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-
-				if (match.Success) {
-					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers > currVersion) {
-						continue;
-					}
-					else {
-						val = Directory.GetParent(fileName).ToString();
-						currVersion = testVers;
-					}
+				// Legacy, non-folder .tmods
+				if (filename.EndsWith(".tmod") && tmods.Length > 3) {
+					File.Delete(filename);
+					return;
 				}
-				else {
-					val = fileName;
-					break;
+
+				var match = PublishFolderMetadata.Match(filename);
+				if (match.Success) {
+					var checkVersion = new Version(match.Groups[1].Value);
+
+					// If the mod copy is from a legacy version
+					if (checkVersion < lowestVersion) {
+						lowestVersion = checkVersion;
+						deleteFolder = filename;
+					}
 				}
 			}
 
-			return val;
+			if (deleteFolder != null)
+				Directory.Delete(deleteFolder, true);
+		}
+
+		// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
+		private static void RemoveSkippablePreview(string repo) {
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+
+			for (int i = 0; i < tmods.Length; i++) {
+				var filename = tmods[i];
+
+				var match = PublishFolderMetadata.Match(filename);
+				if (!match.Success)
+					continue;
+
+				var checkVersion = new Version(match.Groups[1].Value);
+
+				if (checkVersion > BuildInfo.stableVersion && checkVersion < BuildInfo.tMLVersion.MajorMinor())
+					Directory.Delete(filename, true);
+			}
 		}
 
 		internal static void DeleteMod(LocalMod tmod) {

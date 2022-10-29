@@ -1431,8 +1431,10 @@ namespace Terraria.ModLoader
 		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
 
 		/// <summary>
-		/// Calls CanStack.  Returns false if CanStack is false.  Calls StackItems if CanStack is true<br/>
-		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.<br/>
+		/// Short-circuits if <see cref="CanStack"/> hooks don't return true.
+		/// <br/> Returns the result of the initial check.
+		/// <br/>
+		/// <br/> <inheritdoc cref="StackItems"/>
 		/// </summary>
 		/// <param name="increase">Item where the stack is being increased.</param>
 		/// <param name="decrease">Item where the stack is being reduced.</param>
@@ -1440,6 +1442,7 @@ namespace Terraria.ModLoader
 		/// <param name="infiniteSource">The final stack of item2</param>
 		public static bool TryStackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false) {
 			numTransfered = 0;
+
 			if (!CanStack(increase, decrease))
 				return false;
 
@@ -1449,7 +1452,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.
+		/// Stacks <paramref name="increase"/> and <paramref name="decrease"/> items.
+		/// <br/> Calls all <see cref="GlobalItem.OnStack"/> and <see cref="ModItem.OnStack"/> hooks if <paramref name="increase"/>.stack is less than <paramref name="increase"/>.maxStack.
 		/// </summary>
 		/// <param name="increase">Item where the stack is being increased.</param>
 		/// <param name="decrease">Item where the stack is being reduced.</param>

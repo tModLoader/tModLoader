@@ -3,7 +3,7 @@
 	<!-- Common -->
 	<PropertyGroup>
 		<RootNamespace>Terraria.ModLoader</RootNamespace>
-		<ApplicationIcon>../patches/tModLoader/Terraria/tModLoader.ico</ApplicationIcon>
+		<ApplicationIcon>./Setup/tModLoaderSetup.ico</ApplicationIcon>
 		<!-- Avoid weird 'Duplicate attribute' build errors -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
