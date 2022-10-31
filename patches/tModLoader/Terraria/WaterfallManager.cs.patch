@@ -67,7 +67,7 @@
  			if (Main.liquidAlpha[13] > 0f)
  				DrawWaterfall(24, Main.liquidAlpha[13]);
 +
-+			LoaderManager.Get<WaterStylesLoader>().DrawWaterfall(this, spriteBatch);
++			LoaderManager.Get<WaterStylesLoader>().DrawWaterfall(this);
  		}
  	}
  }

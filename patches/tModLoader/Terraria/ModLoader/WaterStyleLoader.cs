@@ -69,28 +69,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void DrawWatersToScreen(bool bg) {
-			for (int k = VanillaCount; k < TotalCount; k++) {
-				if (Main.liquidAlpha[k] > 0f) {
-					if (bg) {
-						if (Main.waterStyle < k) {
-							Main.instance.DrawWater(bg, k, Main.liquidAlpha[k]);
-						}
-						else {
-							Main.instance.DrawWater(bg, k, 1f);
-						}
-					}
-					else {
-						Main.instance.DrawWater(bg, k, Main.liquidAlpha[k]);
-					}
-				}
-			}
-		}
-
-		public void DrawWaterfall(WaterfallManager waterfallManager, SpriteBatch spriteBatch) {
+		public void DrawWaterfall(WaterfallManager waterfallManager) {
 			foreach (ModWaterStyle waterStyle in list) {
 				if (Main.liquidAlpha[waterStyle.Slot] > 0f) {
-					waterfallManager.DrawWaterfall(spriteBatch, waterStyle.ChooseWaterfallStyle(), Main.liquidAlpha[waterStyle.Slot]);
+					waterfallManager.DrawWaterfall(waterStyle.ChooseWaterfallStyle(), Main.liquidAlpha[waterStyle.Slot]);
 				}
 			}
 		}

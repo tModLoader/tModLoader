@@ -4544,6 +4544,16 @@
  					if (remixWorld) {
  						if ((double)(screenPosition.Y / 16f) > rockLayer)
  							return 7;
+@@ -46778,6 +_,9 @@
+ 			if (liquidStyle != 1)
+ 				return liquidStyle != 11;
+ 
++			if (liquidStyle >= Main.maxLiquidTypes)
++				return true; // currently all modded liquid styles come from WaterStylesLoader
++
+ 			return false;
+ 		}
+ 
 @@ -46793,6 +_,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
@@ -4552,13 +4562,17 @@
  			}
  
  			if (!drawToScreen && !isBackground) {
-@@ -46818,9 +_,12 @@
+@@ -46810,7 +_,7 @@
  			}
  
+ 			bool flag = false;
+-			for (int j = 0; j < 15; j++) {
++			for (int j = 0; j < LoaderManager.Get<WaterStylesLoader>().TotalCount; j++) {
+ 				if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
+ 					DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], drawSinglePassLiquids: false);
+ 					flag = true;
+@@ -46820,7 +_,7 @@
  			DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
-+
-+		postWaterDraw:
-+			LoaderManager.Get<WaterStylesLoader>().DrawWatersToScreen(isBackground);
  		}
  
 -		protected void DrawLiquid(bool bg = false, int waterStyle = 0, float Alpha = 1f, bool drawSinglePassLiquids = true) {
