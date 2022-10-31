@@ -93,6 +93,7 @@ namespace Terraria.ID
 		public const short OtherworldlyHallow = 88;
 		public const short Credits = 89;
 		public const short Deerclops = 90;
-		public const short Count = 91;
+		public const short Shimmer = 91;
+		public const short Count = 92;
 	}
 }
