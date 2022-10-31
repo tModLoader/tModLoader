@@ -23,7 +23,7 @@ namespace ExampleMod.Content.BossBars
 			return null;
 		}
 
-		public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float lifePercent, ref float shieldPercent) {
+		public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float life, ref float lifeMax, ref float shield, ref float shieldMax)/* tModPorter Note: life and shield current and max values are now separate to allow for hp/shield number text draw */ {
 			// Here the game wants to know if to draw the boss bar or not. Return false whenever the conditions don't apply.
 			// If there is no possibility of returning false (or null) the bar will get drawn at times when it shouldn't, so write defensive code!
 

@@ -36,6 +36,8 @@ public class ModNPCTest : ModNPC
 		Vector2 screen = screenPos - Vector2.One * 6f;
 	}
 
+	public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */ => false;
+
 #if COMPILE_ERROR
 	public override string[] AltTextures/* tModPorter Suggestion: Create a ITownNPCProfile, in its GetTextureNPCShouldUse, check for npc.altTexture to return the texture you want. Then, use TownNPCProfile hook to return an instance of that ITownNPCProfile */ => new string[0];
 

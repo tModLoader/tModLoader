@@ -64,6 +64,10 @@ public class SimpleRenamedVanillaMembersTest
 		Lighting.BlackOut();
 		NetMessage.BroadcastChatMessage(null, Color.White, -1);
 
+#if COMPILE_ERROR
+		if (Main.fastForwardTime) { }		
+#endif
+
 		int dustFire = DustID.Fire;
 
 		int water = Tile.Liquid_Water;
@@ -101,11 +105,17 @@ public class SimpleRenamedVanillaMembersTest
 		var thrownCost33 = player.thrownCost33;
 		var thrownCost50 = player.thrownCost50;
 		var thrownVelocity = player.thrownVelocity;
+		player.IsAValidEquipmentSlotForIteration(0);
+#if COMPILE_ERROR
+		player.VanillaUpdateEquip(null);
+#endif
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
 		var item = new Item();
 		var owner = item.owner;
+		var vanity = item.canBePlacedInVanityRegardlessOfConditions;
+		item.DefaultToPlacableWall(0);
 
 		var item2 = new Item();
 		var isTheSameAs = item.IsTheSameAs(item2);

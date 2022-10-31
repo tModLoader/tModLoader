@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Tiles
 
 	public class ExampleOreSystem : ModSystem
 	{
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.
 
 			// The first step is an Ore. Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Tiles
 				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 
 				// WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
-				int y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY);
+				int y = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, Main.maxTilesY);
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
 				// Feel free to experiment with strength and step to see the shape they generate.

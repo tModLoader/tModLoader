@@ -87,23 +87,9 @@
 - Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets
 - Remove `TileLoader.MineDamage` it had a weird 1.2 factor in there.
 
-## tModPorter:
-- `MessageID.SendNPCBuffs -> NPCBuffs`
-- `MessageID.Unlock -> LockAndUnlock`
-- `MessageID.StartPlaying -> InitialSpawn`
-- `MessageID.SpawnBoss -> SpawnBossUseLicenseStartEvent`
-- `MessageID.Teleport -> TeleportEntity`
-- `ModBossBar.ModifyInfo` params changed, `lifePercent` and `shieldPercent` split into `life, lifeMax` and `shield, shieldMax` respectively.
-- `BossBarDrawParams`
-	- `LifePercentToShow -> Life / LifeMax`
-	- `ShieldPercentToShow -> Shield / ShieldMax`
-- `Player.IsAValidEquipmentSlotForIteration -> IsItemSlotUnlockedAndUsable`
-- `Player.VanillaUpdateEquip` is now split into `GrantPrefixBenefits` and `GrantArmorBenefits`
-	- Note: `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
-- `ModSystem.ModifyWorldGenTasks` - `totalWeight` parameter changed from `float` to `double`.
-- `ModNPC.CanTownNPCSpawn` - `money` param removed. Copy the implementation of `NPC.SpawnAllowed_Merchant` in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick.
+## Porting Notes:
+- `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
 
 ## WorldGen.cs:
 - TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`
-- Publicize pretty much every field? A huge patch with that had to be deleted.
 - Comment on Convert needs to be updated for new biome types, `BiomeConversionID` now exists

@@ -65,6 +65,10 @@ public class SimpleRenamedVanillaMembersTest
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
 
+#if COMPILE_ERROR
+		if (Main.fastForwardTime/* tModPorter Note: Removed. Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk */) { }		
+#endif
+
 		int dustFire = DustID.Torch;
 
 		int water = LiquidID.Water;
@@ -102,11 +106,17 @@ public class SimpleRenamedVanillaMembersTest
 		var thrownCost33 = player.ThrownCost33;
 		var thrownCost50 = player.ThrownCost50;
 		var thrownVelocity = player.ThrownVelocity;
+		player.IsItemSlotUnlockedAndUsable(0);
+#if COMPILE_ERROR
+		player.VanillaUpdateEquip(null)/* tModPorter Note: Removed. Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots) */;
+#endif
 
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
 		var item = new Item();
 		var owner = item.playerIndexTheItemIsReservedFor;
+		var vanity = item.hasVanityEffects;
+		item.DefaultToPlaceableWall(0);
 
 		var item2 = new Item();
 		var isTheSameAs = item.type == item2.type;

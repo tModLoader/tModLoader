@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items
 			Item.value = Item.buyPrice(0, 0, 0, 0); // Value is the number of coins the item is worth (Platinum, Gold, Silver, Copper)
 			Item.accessory = true; // Whether or not the item is an accessory.
 			Item.rare = ItemRarityID.Green;
-			Item.canBePlacedInVanityRegardlessOfConditions = true; // Allows the golf ball to be placed in vanity, despite not having a vanity slot (headSlot, neckSlot etc).
+			Item.hasVanityEffects = true; // Allows the golf ball to be placed in vanity, despite not having a vanity slot (headSlot, neckSlot etc).
 		}
 	}
 }

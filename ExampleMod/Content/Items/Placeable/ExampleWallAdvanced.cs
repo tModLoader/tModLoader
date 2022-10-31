@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToPlacableWall((ushort)ModContent.WallType<Walls.ExampleWallAdvanced>());
+			Item.DefaultToPlaceableWall((ushort)ModContent.WallType<Walls.ExampleWallAdvanced>());
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

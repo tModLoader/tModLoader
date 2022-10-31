@@ -71,6 +71,9 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModCactus",			Removed("Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModPalmTree",		Removed("Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead"));
 
+		RefactorInstanceMember("Terraria.DataStructures.BossBarDrawParams", "LifePercentToShow",	Removed("Suggest: Life / LifeMax"));
+		RefactorInstanceMember("Terraria.DataStructures.BossBarDrawParams", "ShieldPercentToShow",	Removed("Suggest: Shield / ShieldMax"));
+
 		// TODO, assignment rewriter
 		// RefactorInstanceMember("Terraria.ModLoader.ModBlockType", "HitSound", Comment("Suggestion: Use a SoundStyle here"));
 
@@ -156,10 +159,12 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"PlaceInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"SetNPCNameList", comment: "Suggestion: Return a list of names");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanTownNPCSpawn", comment: "Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick.");
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpHeight");
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpSpeed");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"IsLoadingEnabled");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"CloneNewInstances"); // public -> protected
+		ChangeHookSignature("Terraria.ModLoader.ModBossBar",		"ModifyInfo", comment: "Note: life and shield current and max values are now separate to allow for hp/shield number text draw");
 
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
@@ -235,6 +240,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"TileCountsAvailable");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"ModifyWorldGenTasks");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
 

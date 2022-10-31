@@ -36,6 +36,8 @@ public class ModNPCTest : ModNPC
 		Vector2 screen = Main.screenPosition - Vector2.One * 6f;
 	}
 
+	public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
+
 #if COMPILE_ERROR
 	public override string[] AltTextures => new string[0];
 

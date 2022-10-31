@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Items.Consumables
 				else {
 					// If the player is in multiplayer, request a spawn
 					// This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in MinionBossBody
-					NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+					NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
 				}
 			}
 

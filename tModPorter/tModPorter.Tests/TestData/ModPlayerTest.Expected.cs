@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using Microsoft.XNA.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
