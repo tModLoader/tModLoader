@@ -14,9 +14,9 @@
 -		private Tile[,] _tileArray;
 +		private Tilemap _tileArray;
  		private TilePaintSystemV2 _paintSystem;
+ 		private bool _shouldShowInvisibleWalls;
  
- 		public WallDrawing(TilePaintSystemV2 paintSystem) {
-@@ -61,8 +_,9 @@
+@@ -74,8 +_,9 @@
  			Rectangle value2 = new Rectangle(0, 0, 32, 32);
  			int underworldLayer = Main.UnderworldLayer;
  			Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
@@ -28,8 +28,13 @@
  					Tile tile = _tileArray[j, i];
  					if (tile == null) {
  						tile = new Tile();
-@@ -73,6 +_,10 @@
- 					if (wall <= 0 || FullTile(j, i))
+@@ -83,9 +_,15 @@
+ 					}
+ 
+ 					ushort wall = tile.wall;
++					//TML: Prior to 1.4.4, the check was just the line below. Should PreDraw be called for "invisible walls"?
++					//if (wall <= 0 || FullTile(j, i))
+ 					if (wall <= 0 || FullTile(j, i) || (wall == 318 && !_shouldShowInvisibleWalls) || (tile.invisibleWall() && !_shouldShowInvisibleWalls))
  						continue;
  
 +					if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
@@ -37,9 +42,9 @@
 +					}
 +
  					Color color = Lighting.GetColor(j, i);
- 					if (tile.wallColor() == 31)
+ 					if (tile.fullbrightWall())
  						color = Color.White;
-@@ -129,6 +_,9 @@
+@@ -155,6 +_,9 @@
  						if (flag3)
  							spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + value, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  					}

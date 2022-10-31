@@ -1,29 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -11,12 +_,14 @@
- using Terraria.IO;
+@@ -9,6 +_,7 @@
+ using Terraria.Audio;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
- using Terraria.Utilities;
- #if !XNA
- using Terraria.Social.Base;
-+using Terraria.ModLoader.IO;
- #endif
- using NATUPNPLib;
- 
-@@ -43,6 +_,7 @@
- 		public static int ListenPort = 7777;
- 		public static bool IsListening = true;
- 		public static bool UseUPNP = true;
-+		public static bool SaveOnServerExit = true;
- 		public static bool Disconnect;
- 		public static bool SpamCheck = false;
- 		public static bool HasClients;
-@@ -160,6 +_,8 @@
+@@ -157,6 +_,8 @@
  		}
  
  		private static void OnConnectionAccepted(ISocket client) {
@@ -32,25 +17,7 @@
  			int num = FindNextOpenClientSlot();
  			if (num != -1) {
  				Clients[num].Reset();
-@@ -278,6 +_,7 @@
- 				Clients[i].Reset();
- 			}
- 
-+			/*
- 			if (Main.menuMode != 15) {
- 				Main.netMode = 0;
- 				Main.menuMode = 10;
-@@ -287,7 +_,9 @@
- 			else {
- 				Main.netMode = 0;
- 			}
-+			*/
- 
-+			Main.netMode = 0;
- 			Main.myPlayer = 0;
- 		}
- 
-@@ -324,7 +_,7 @@
+@@ -295,7 +_,7 @@
  				}
  
  				if (Clients[i].IsActive) {
@@ -59,7 +26,7 @@
  					Clients[i].PendingTerminationApproved = true;
  					continue;
  				}
-@@ -418,6 +_,12 @@
+@@ -390,6 +_,12 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
@@ -72,7 +39,7 @@
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -434,11 +_,11 @@
+@@ -406,11 +_,11 @@
  			Main.netMode = 1;
  			Main.menuMode = 14;
  			if (!Main.autoPass)
@@ -86,7 +53,7 @@
  		}
  
  		private static void InnerClientLoop() {
-@@ -476,6 +_,7 @@
+@@ -448,6 +_,7 @@
  							Main.cloudAlpha = Main.maxRaining;
  							Main.ToggleGameplayUpdates(state: false);
  							WorldGen.clearWorld();
@@ -94,7 +61,7 @@
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -527,6 +_,10 @@
+@@ -499,6 +_,10 @@
  				}
  
  				if (!Main.gameMenu) {
@@ -105,7 +72,7 @@
  					Main.gameMenu = true;
  					Main.SwitchNetMode(0);
  					MapHelper.noStatusText = true;
-@@ -591,7 +_,22 @@
+@@ -563,7 +_,22 @@
  			thread.Start();
  		}
  

@@ -25,11 +25,11 @@
  				for (int i = 0; i < numLines; i++) {
  					if (_toolTipLines[i].ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  						return true;
-@@ -323,7 +_,7 @@
+@@ -334,7 +_,7 @@
  			private bool[] _fitsFilterByItemType;
  
  			public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst) {
--				short num = 5125;
+-				short num = 5453;
 +				int num = ItemLoader.ItemCount;
  				_fitsFilterByItemType = new bool[num];
  				for (int i = 1; i < num; i++) {

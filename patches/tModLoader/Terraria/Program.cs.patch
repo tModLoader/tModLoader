@@ -24,9 +24,9 @@
 -	public static class Program
 +	public static partial class Program
  	{
- 		/* hide unused consts
- 		public const bool IsServer = false;
-@@ -30,6 +_,10 @@
+ #if XNA
+ 		public static bool IsXna = true;
+@@ -35,6 +_,10 @@
  		public static bool LoadedEverything;
  		public static IntPtr JitForcedMethodCache;
  
@@ -37,25 +37,19 @@
  		public static float LoadedPercentage {
  			get {
  				if (ThingsToLoad == 0)
-@@ -55,21 +_,15 @@
+@@ -60,6 +_,7 @@
  			LoadedEverything = true;
  		}
  
--		private static void ForceJITOnAssembly(Assembly assembly) {
--			Type[] types = assembly.GetTypes();
--			for (int i = 0; i < types.Length; i++) {
--#if WINDOWS || NETCORE
--				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
--#else
--				MethodInfo[] methods = types[i].GetMethods();
--#endif
--				foreach (MethodInfo methodInfo in methods) {
--					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if WINDOWS || NETCORE
--						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
--#else
--						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
--#endif
++		/*
+ 		private static void ForceJITOnAssembly(Assembly assembly) {
+ 			Type[] types = assembly.GetTypes();
+ 			foreach (Type type in types) {
+@@ -71,6 +_,16 @@
+ 						else
+ 							RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
+ 					}
++					*/
 +		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
 +			var methodsToJIT = CollectMethodsToJIT(types);
 +
@@ -68,39 +62,32 @@
  				}
  
  				ThingsLoaded++;
-@@ -85,10 +_,13 @@
+@@ -86,8 +_,14 @@
  		}
  
  		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
--			ThingsToLoad = assembly.GetTypes().Length;
--			ForceJITOnAssembly(assembly);
--			if (initializeStaticMembers)
--				ForceStaticInitializers(assembly);
++ 			/*
+ 			ThingsToLoad = assembly.GetTypes().Length;
+ 			ForceJITOnAssembly(assembly);
++ 			*/
 +			var types = assembly.GetTypes();
 +			ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
 +
 +			ForceJITOnAssembly(types);
-+			if (initializeStaticMembers) {
-+				ForceStaticInitializers(types);
-+			}
+ 			if (initializeStaticMembers)
+ 				ForceStaticInitializers(assembly);
  		}
- 
- 		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -124,9 +_,12 @@
- 		}
- 
- 		private static void InitializeConsoleOutput() {
--			if (!Main.dedServ && Debugger.IsAttached)
-+			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
+@@ -128,6 +_,9 @@
+ 			if (Debugger.IsAttached)
  				return;
  
-+			if (!Main.dedServ)
++			if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
 +				Platform.Get<IWindowService>().HideConsole();
 +
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -138,24 +_,68 @@
+@@ -139,22 +_,67 @@
  			}
  		}
  
@@ -119,13 +106,24 @@
  			if (monoArgs)
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
-+			LaunchParameters = Utils.ParseArguements(args);
-+
++			/*
+ 			if (IsFna)
+ 				TrySettingFNAToOpenGL(args);
++			*/
+ 
+ 			LaunchParameters = Utils.ParseArguements(args);
 +			if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
 +				TerrariaSteamClient.Run();
 +				Environment.Exit(1);
 +			}
-+			
++
+ 			SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+-#if SERVER
+-			Main.dedServ = true;
+-#else
+ 			// Unify server and client dll via launch param
+-			Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +
 +			try {
@@ -160,33 +158,26 @@
 +				// Inside the build from command line, the application exits
 +				// Anything beyond this point will not be executed
 +				ModCompile.BuildModCommandLine(build);
-+
- 			if (Platform.IsOSX) {
- 				Main.OnEngineLoad += delegate {
+ 
+ 			if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
+ 				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
+@@ -162,7 +_,7 @@
+ 
+ 			ThreadPool.SetMinThreads(8, 8);
+ 			InitializeConsoleOutput();
+-			SetupLogging();
++			//SetupLogging();
+ 			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
+ 			RunGame();
+ 		}
+@@ -174,9 +_,11 @@
  					Main.instance.IsMouseVisible = false;
  				};
  			}
- 
--			LaunchParameters = Utils.ParseArguements(args);
--#if SERVER
--			Main.dedServ = true;
--#else
--			Main.dedServ = LaunchParameters.ContainsKey("-server");
--#endif
 -
- 			if (Main.dedServ) {
- 				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
- 			}
-@@ -163,10 +_,13 @@
- 			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
- 			InitializeConsoleOutput();
--			SetupLogging();
-+			//Program.SetupLogging();
- 			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
-+
++			
 +			InstallVerifier.Startup();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
@@ -194,9 +185,9 @@
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
-@@ -176,12 +_,13 @@
- 					else
- 						main.DedServ();
+@@ -186,12 +_,13 @@
+ 
+ 					main.Run();
  				}
 -				catch (Exception e) {
 -					DisplayException(e);
@@ -211,7 +202,7 @@
  		private static void TrySettingFNAToOpenGL(string[] args) {
  			bool flag = false;
  			for (int i = 0; i < args.Length; i++) {
-@@ -220,5 +_,6 @@
+@@ -230,5 +_,6 @@
  			catch {
  			}
  		}

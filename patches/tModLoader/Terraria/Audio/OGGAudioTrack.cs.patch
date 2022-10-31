@@ -1,24 +1,22 @@
 --- src/TerrariaNetCore/Terraria/Audio/OGGAudioTrack.cs
 +++ src/tModLoader/Terraria/Audio/OGGAudioTrack.cs
-@@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework.Audio;
+@@ -3,6 +_,7 @@
  using NVorbis;
+ using System.Collections.Generic;
  using System.IO;
 +using System;
  
  namespace Terraria.Audio
  {
-@@ -49,17 +_,35 @@
+@@ -51,15 +_,33 @@
  		}
  
  		private void FindLoops() {
 +			// Vanilla: Code is faulty, tries to parse the whole comment as one integer.
 +			/*
- 			string[] comments = _vorbisReader.Comments;
- 			foreach (string vorbisComment in comments) {
- 				TryGettingVariable(vorbisComment, "LOOPSTART", ref _loopStart);
- 				TryGettingVariable(vorbisComment, "LOOPEND", ref _loopEnd);
- 			}
+ 			IDictionary<string, IList<string>> all = _vorbisReader.Tags.All;
+ 			TryReadingTag(all, "LOOPSTART", ref _loopStart);
+ 			TryReadingTag(all, "LOOPEND", ref _loopEnd);
 +			*/
 +
 +			// TML: Fixed parsing
@@ -36,9 +34,9 @@
  
 +		// See the above.
 +		/*
- 		private void TryGettingVariable(string vorbisComment, string variableWeLookFor, ref int variableValueHolder) {
- 			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment, out int result))
- 				variableValueHolder = result;
+ 		private void TryReadingTag(IDictionary<string, IList<string>> tags, string entryName, ref int result) {
+ 			if (tags.TryGetValue(entryName, out IList<string> value) && value.Count > 0 && int.TryParse(value[0], out int result2))
+ 				result = result2;
  		}
 +		*/
  

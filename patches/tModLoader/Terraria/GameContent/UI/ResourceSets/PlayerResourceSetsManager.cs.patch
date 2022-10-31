@@ -17,7 +17,7 @@
  			if (_loadedContent)
  				SetActiveFromLoadedConfigKey();
  		}
-@@ -46,11 +_,18 @@
+@@ -49,11 +_,18 @@
  		}
  
  		private void SetActive(string name) {
@@ -36,7 +36,7 @@
  		}
  
  		private void SetActiveFrame(IPlayerResourcesDisplaySet set) {
-@@ -68,6 +_,7 @@
+@@ -71,6 +_,7 @@
  		}
  
  		public void CycleResourceSet() {
@@ -44,7 +44,7 @@
  			IPlayerResourcesDisplaySet lastFrame = null;
  			_sets.Values.FirstOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
  				if (frame == _activeSet)
-@@ -81,6 +_,8 @@
+@@ -84,6 +_,8 @@
  				lastFrame = _sets.Values.Last();
  
  			SetActiveFrame(lastFrame);

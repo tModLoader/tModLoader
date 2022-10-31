@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
-@@ -3,11 +_,17 @@
+@@ -3,11 +_,20 @@
  using ReLogic.Content;
  using ReLogic.Graphics;
  using Terraria.DataStructures;
@@ -11,98 +11,115 @@
  {
  	public class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
  	{
++		// Added by TML: [[
 +		private PlayerStatsSnapshot preparedSnapshot;
++		private ResourceDrawSettings defaultResourceDrawSettings; // Replace uses of 'default' with this.
 +
 +		public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
++		// ]]
 +
  		private float _currentPlayerLife;
  		private float _lifePerHeart;
  		private int _playerLifeFruitCount;
-@@ -71,6 +_,9 @@
+@@ -77,14 +_,20 @@
  		}
  
  		private void DrawLifeBar(SpriteBatch spriteBatch) {
 +			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
 +			if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, true, ref color, out bool drawText))
 +				goto SkipDrawing;
++
  			Vector2 vector = new Vector2(Main.screenWidth - 300 + 4, 15f);
++			// Extra patch context.
+ 			if (_drawText) {
+ 				vector.Y += 6f;
+ 				DrawLifeBarText(spriteBatch, vector + new Vector2(-4f, 3f));
+ 			}
+ 
  			bool isHovered = false;
- 			ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
-@@ -82,6 +_,8 @@
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
- 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
- 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
-+			resourceDrawSettings.DisplaySet = this;
- 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
- 			resourceDrawSettings = default(ResourceDrawSettings);
- 			resourceDrawSettings.ElementCount = _heartCountRow2;
-@@ -92,6 +_,8 @@
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
- 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
- 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
-+			resourceDrawSettings.DisplaySet = this;
- 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
- 			resourceDrawSettings = default(ResourceDrawSettings);
+-			ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
++
++			ResourceDrawSettings resourceDrawSettings = defaultResourceDrawSettings;
  			resourceDrawSettings.ElementCount = _heartCountRow1;
-@@ -102,6 +_,8 @@
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector;
+@@ -94,7 +_,7 @@
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
- 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
-+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
-+			resourceDrawSettings.DisplaySet = this;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
- 			resourceDrawSettings = default(ResourceDrawSettings);
+-			resourceDrawSettings = default(ResourceDrawSettings);
++			resourceDrawSettings = defaultResourceDrawSettings;
  			resourceDrawSettings.ElementCount = _heartCountRow2;
-@@ -112,8 +_,12 @@
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 			resourceDrawSettings.ElementIndexOffset = 10;
+ 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(0f, 28f);
+@@ -104,7 +_,7 @@
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-			resourceDrawSettings = default(ResourceDrawSettings);
++			resourceDrawSettings = defaultResourceDrawSettings;
+ 			resourceDrawSettings.ElementCount = _heartCountRow1;
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 15f);
+@@ -114,7 +_,7 @@
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
-+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
-+			resourceDrawSettings.DisplaySet = this;
+ 			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-			resourceDrawSettings = default(ResourceDrawSettings);
++			resourceDrawSettings = defaultResourceDrawSettings;
+ 			resourceDrawSettings.ElementCount = _heartCountRow2;
+ 			resourceDrawSettings.ElementIndexOffset = 10;
+ 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 15f) + new Vector2(0f, 28f);
+@@ -124,7 +_,10 @@
+ 			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverLife = isHovered;
 +			_hoverLife = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, true);
++
 +			SkipDrawing:
 +			ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, true, color, drawText);
  		}
  
  		private static void DrawLifeBarText(SpriteBatch spriteBatch, Vector2 topLeftAnchor) {
-@@ -127,6 +_,9 @@
+@@ -138,10 +_,14 @@
  		}
  
  		private void DrawManaBar(SpriteBatch spriteBatch) {
 +			Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
 +			if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, false, ref color, out bool drawText))
 +				goto SkipDrawing;
++
  			Vector2 vector = new Vector2(Main.screenWidth - 40, 22f);
  			_ = _starCount;
  			bool isHovered = false;
-@@ -139,6 +_,8 @@
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
+-			ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
++			ResourceDrawSettings resourceDrawSettings = defaultResourceDrawSettings;
+ 			resourceDrawSettings.ElementCount = _starCount;
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector;
+@@ -151,7 +_,7 @@
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
-+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
-+			resourceDrawSettings.DisplaySet = this;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
- 			resourceDrawSettings = default(ResourceDrawSettings);
+-			resourceDrawSettings = default(ResourceDrawSettings);
++			resourceDrawSettings = defaultResourceDrawSettings;
  			resourceDrawSettings.ElementCount = _starCount;
-@@ -149,8 +_,12 @@
- 			resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitY;
+ 			resourceDrawSettings.ElementIndexOffset = 0;
+ 			resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 16f);
+@@ -161,7 +_,10 @@
  			resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  			resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
-+			resourceDrawSettings.StatsSnapshot = preparedSnapshot;
-+			resourceDrawSettings.DisplaySet = this;
  			resourceDrawSettings.Draw(spriteBatch, ref isHovered);
 -			_hoverMana = isHovered;
 +			_hoverMana = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, false);
++
 +			SkipDrawing:
 +			ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, false, color, drawText);
  		}
  
  		private static void DrawManaText(SpriteBatch spriteBatch) {
-@@ -230,13 +_,22 @@
+@@ -241,13 +_,27 @@
  			_lifePerHeart = playerStatsSnapshot.LifePerSegment;
  			_currentPlayerLife = playerStatsSnapshot.Life;
  			_manaPerStar = playerStatsSnapshot.ManaPerSegment;
@@ -121,7 +138,12 @@
 +			_starCount = playerStatsSnapshot.AmountOfManaStars;
  			_currentPlayerMana = playerStatsSnapshot.Mana;
  			_lastStarFillingIndex = (int)(_currentPlayerMana / _manaPerStar);
++
 +			preparedSnapshot = playerStatsSnapshot;
++
++			defaultResourceDrawSettings = default; // Cached to avoid copypasting.
++			defaultResourceDrawSettings.StatsSnapshot = preparedSnapshot;
++			defaultResourceDrawSettings.DisplaySet = this;
  		}
  
  		public void TryToHover() {

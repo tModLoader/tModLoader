@@ -87,10 +87,6 @@ namespace Terraria
 		}
 
 		private static void SetSavePath() {
-			SavePath =
-				LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
-				Platform.Get<IPathService>().GetStoragePath($"Terraria");
-
 			bool saveHere = File.Exists("savehere.txt");
 			bool tmlSaveDirectoryParameterSet = LaunchParameters.ContainsKey("-tmlsavedirectory");
 

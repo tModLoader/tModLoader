@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
-@@ -1,10 +_,11 @@
- using Microsoft.Xna.Framework;
+@@ -2,10 +_,11 @@
  using Microsoft.Xna.Framework.Graphics;
  using System.Collections.Generic;
+ using Terraria.IO;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.BigProgressBar
@@ -13,8 +13,8 @@
  	{
  		private IBigProgressBar _currentBar;
  		private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
-@@ -50,16 +_,30 @@
- 			{ 668, _deerclopsBar }		};
+@@ -59,16 +_,30 @@
+ 		}
  
  		public void Update() {
 +			if (BossBarLoader.CurrentStyle.PreventUpdate)
@@ -45,7 +45,7 @@
  		}
  
  		private void TryFindingNPCToTrack() {
-@@ -88,7 +_,12 @@
+@@ -97,7 +_,12 @@
  			bigProgressBarInfo.npcIndexToAimAt = npcIndex;
  			BigProgressBarInfo info = bigProgressBarInfo;
  			IBigProgressBar bigProgressBar = _bossBar;

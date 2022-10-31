@@ -17,7 +17,7 @@
 +			useDestinationRectangle = true;
  		}
  
- 		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, SpriteEffects effect, int inactiveLayerDepth) {
+ 		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, SpriteEffects effect, float inactiveLayerDepth = 0f) {
 @@ -121,7 +_,7 @@
  			scale = Vector2.One;
  			shader = 0;

@@ -39,15 +39,15 @@
  		public void EscapeElements() {
 @@ -59,14 +_,25 @@
  			if (!Main.dedServ) {
- 			GetMousePosition();
- 			_wasMouseDown = Main.mouseLeft;
-+			_wasMouseRightDown = Main.mouseRight;
-+			_wasMouseMiddleDown = Main.mouseMiddle;
-+			_wasMouseXButton1Down = Main.mouseXButton1;
-+			_wasMouseXButton2Down = Main.mouseXButton2;
+ 				GetMousePosition();
+ 				_wasMouseDown = Main.mouseLeft;
++				_wasMouseRightDown = Main.mouseRight;
++				_wasMouseMiddleDown = Main.mouseMiddle;
++				_wasMouseXButton1Down = Main.mouseXButton1;
++				_wasMouseXButton2Down = Main.mouseXButton2;
 +
- 			if (_lastElementHover != null)
- 				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
+ 				if (_lastElementHover != null)
+ 					_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
  			}
  
  			_lastElementHover = null;

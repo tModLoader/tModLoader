@@ -49,7 +49,7 @@
 @@ -94,6 +_,8 @@
  
  			if (flag) {
- 				flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true);
+ 				flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillarsAndMoonlordCountdown: true);
 +				flag = PylonLoader.ValidTeleportCheck_PreAnyDanger(info) is bool value ? value :
 +					info.ModPylon?.ValidTeleportCheck_AnyDanger(info) ?? flag;
  				if (!flag)
@@ -70,7 +70,7 @@
  				int num = 0;
  				for (int i = 0; i < _pylons.Count; i++) {
  					TeleportPylonInfo info2 = _pylons[i];
- 					if (!player.InInteractionRange(info2.PositionInTiles.X, info2.PositionInTiles.Y))
+ 					if (!player.InInteractionRange(info2.PositionInTiles.X, info2.PositionInTiles.Y, TileReachCheckSettings.Pylons))
  						continue;
 +					nearbyInfo = info2;
  
@@ -105,7 +105,7 @@
  			}
  		}
  
--		public static bool IsPlayerNearAPylon(Player player) => player.IsTileTypeInInteractionRange(597);
+-		public static bool IsPlayerNearAPylon(Player player) => player.IsTileTypeInInteractionRange(597, TileReachCheckSettings.Pylons);
 +		public static bool IsPlayerNearAPylon(Player player) => TileID.Sets.CountsAsPylon.Any(player.IsTileTypeInInteractionRange);
  
  		private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
@@ -128,14 +128,14 @@
  			Rectangle rectangle = new Rectangle(centerPoint.X - Main.buffScanAreaWidth / 2, centerPoint.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
  			int num = necessaryNPCCount;
  			for (int i = 0; i < 200; i++) {
-@@ -220,6 +_,10 @@
- 		}
+@@ -223,6 +_,10 @@
+ 			if (Main.netMode != 2 && Main.DroneCameraTracker != null && Main.DroneCameraTracker.IsInUse())
+ 				return false;
  
- 		private bool DoesPylonAcceptTeleportation(TeleportPylonInfo info, Player player) {
 +			if (PylonLoader.ValidTeleportCheck_PreBiomeRequirements(info, _sceneMetrics) is bool value)
 +				return value;
 +			if (info.ModPylon is ModPylon pylon) 
 +				return pylon.ValidTeleportCheck_BiomeRequirements(info, _sceneMetrics);
  			switch (info.TypeOfPylon) {
  				case TeleportPylonType.SurfacePurity: {
- 						bool num = (double)info.PositionInTiles.Y <= Main.worldSurface;
+ 						bool flag = (double)info.PositionInTiles.Y <= Main.worldSurface;

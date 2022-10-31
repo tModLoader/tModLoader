@@ -20,7 +20,7 @@
  		public static int ForceMoveTo = -1;
  		private const float PanelTextureHeight = 30f;
  		private static List<string> _BindingsFullLine = new List<string> {
-@@ -39,15 +_,21 @@
+@@ -43,15 +_,21 @@
  			"sp10",
  			"sp11",
  			"sp12",
@@ -44,7 +44,7 @@
  		private bool OnKeyboard = true;
  		private bool OnGameplay = true;
  		private List<UIElement> _bindsKeyboard = new List<UIElement>();
-@@ -209,6 +_,9 @@
+@@ -213,6 +_,9 @@
  			List<string> bindings = new List<string> {
  				"MouseLeft",
  				"MouseRight",
@@ -54,7 +54,7 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -232,6 +_,9 @@
+@@ -240,6 +_,9 @@
  			List<string> bindings2 = new List<string> {
  				"MouseLeft",
  				"MouseRight",
@@ -64,7 +64,7 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -300,26 +_,48 @@
+@@ -312,26 +_,48 @@
  				"sp13"
  			};
  
@@ -113,7 +113,7 @@
  		}
  
  		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode) {
-@@ -357,6 +_,9 @@
+@@ -369,6 +_,9 @@
  				case 4:
  					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
  					break;
@@ -123,7 +123,7 @@
  			}
  
  			CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
-@@ -378,6 +_,9 @@
+@@ -390,6 +_,9 @@
  				case 4:
  					text = Lang.menu[198];
  					break;
@@ -133,7 +133,7 @@
  			}
  
  			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
-@@ -420,6 +_,15 @@
+@@ -432,6 +_,15 @@
  					continue;
  				}
  
@@ -149,7 +149,7 @@
  				UIElement uIElement3 = CreatePanel(bindings[i], currentInputMode, color);
  				uIElement3.Width.Set(-5f, 0.5f);
  				uIElement3.Height.Set(0f, 1f);
-@@ -530,6 +_,25 @@
+@@ -542,6 +_,25 @@
  
  						return uIKeybindingSimpleListItem4;
  					}
@@ -175,7 +175,7 @@
  				case "sp14": {
  						UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
  						uIKeybindingToggleListItem.OnClick += delegate {
-@@ -602,11 +_,39 @@
+@@ -614,11 +_,39 @@
  						}
  					}, 1008, color);
  				default:

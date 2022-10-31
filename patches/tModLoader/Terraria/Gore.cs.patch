@@ -13,7 +13,7 @@
  	{
  		public static int goreTime = 600;
  		public Vector2 position;
-@@ -239,6 +_,10 @@
+@@ -254,6 +_,11 @@
  			if (Main.netMode == 2 || !active)
  				return;
  
@@ -21,18 +21,26 @@
 +				return;
 +
 +			GoreLoader.SetupUpdateType(this);
- 			switch (GoreID.Sets.SpecialAI[type]) {
- 				case 4:
- 					UpdateAmbientFloorCloud();
-@@ -830,6 +_,7 @@
++
+ 			if (sticky) {
+ 				if (DeactivateIfOutsideOfWorld())
+ 					return;
+@@ -849,11 +_,14 @@
+ 					num38 *= 0.3f;
+ 				}
+ 
++				// Extra patch context.
+ 				if (TextureAssets.Gore[type].IsLoaded)
+ 					Lighting.AddLight((int)((position.X + (float)TextureAssets.Gore[type].Width() * scale / 2f) / 16f), (int)((position.Y + (float)TextureAssets.Gore[type].Height() * scale / 2f) / 16f), num38, num39, num40);
  				else
- 					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num37, num38, num39);
+ 					Lighting.AddLight((int)((position.X + 32f * scale / 2f) / 16f), (int)((position.Y + 32f * scale / 2f) / 16f), num38, num39, num40);
  			}
++
 +			GoreLoader.TakeDownUpdateType(this);
  		}
  
  		private void Gore_UpdateLeaf() {
-@@ -989,16 +_,28 @@
+@@ -1013,16 +_,28 @@
  				alpha++;
  		}
  
@@ -65,7 +73,7 @@
  			if (Main.netMode == 2)
  				return 600;
  
-@@ -1035,6 +_,13 @@
+@@ -1062,6 +_,13 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
@@ -79,7 +87,7 @@
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);
  				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
-@@ -1149,6 +_,12 @@
+@@ -1179,6 +_,12 @@
  		}
  
  		public Color GetAlpha(Color newColor) {

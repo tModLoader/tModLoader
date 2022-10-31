@@ -9,8 +9,8 @@
  	{
  		public static class Sets
  		{
--			public static SetFactory Factory = new SetFactory(46);
+-			public static SetFactory Factory = new SetFactory(81);
 +			public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
- 			public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21);
+ 			public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21, 80);
  		}
  

@@ -34,7 +34,7 @@
  				if (_delayUntilNextAttempt == 0) {
  					_delayUntilNextAttempt = 60;
  					TrySpawningFairies();
-@@ -61,12 +_,14 @@
+@@ -63,12 +_,14 @@
  
  			int oneOverSpawnChance = GetOneOverSpawnChance();
  			bool flag = false;

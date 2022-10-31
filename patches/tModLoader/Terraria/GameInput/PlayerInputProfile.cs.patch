@@ -14,11 +14,11 @@
  	{
  		public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
  			{ InputMode.Keyboard, new KeyConfiguration() },
-@@ -185,9 +_,12 @@
+@@ -198,9 +_,12 @@
  		}
  
  		public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode) {
--			string[] keysToCopy = new string[19] {
+-			string[] keysToCopy = new string[23] {
 +			string[] keysToCopy = new string[] {
  				"MouseLeft",
  				"MouseRight",

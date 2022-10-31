@@ -6,7 +6,7 @@
  
 +		public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
 +		public ref int SourceNPCIndex => ref _sourceNPCIndex;
-+		public ref int SourceProjectileIndex => ref _sourceProjectileIndex;
++		public ref int SourceProjectileLocalIndex => ref _sourceProjectileLocalIndex;
 +		public ref int SourceOtherIndex => ref _sourceOtherIndex;
 +		public ref int SourceItemType => ref _sourceItemType;
 +		public ref int SourceItemPrefix => ref _sourceItemPrefix;
@@ -14,7 +14,7 @@
 +
  		public int? SourceProjectileType {
  			get {
- 				if (_sourceProjectileIndex == -1)
+ 				if (_sourceProjectileLocalIndex == -1)
 @@ -21,6 +_,7 @@
  
  				return _sourceProjectileType;

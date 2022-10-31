@@ -1,14 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,77 @@
+@@ -1,21 +_,74 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
 +using System.Diagnostics.CodeAnalysis;
- #if FNA
- using System.Threading;
 +using System.Threading.Tasks;
- #endif
  
  namespace Terraria.Audio
  {
@@ -82,7 +79,7 @@
  			return _trackedSounds.Add(value);
  		}
  
-@@ -26,20 +_,28 @@
+@@ -34,20 +_,28 @@
  			StopAll();
  		}
  
@@ -113,7 +110,7 @@
  
  		public void PauseAll() {
  			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
-@@ -61,6 +_,21 @@
+@@ -69,6 +_,21 @@
  			_trackedSounds.Clear();
  		}
  
@@ -133,10 +130,10 @@
 +		}
 +
  		public void Update() {
- #if FNA
- 			Monitor.Enter(SoundEngine.AudioLock);
-@@ -80,7 +_,7 @@
- #endif
+ 			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+ 				try {
+@@ -82,7 +_,7 @@
+ 			}
  		}
  
 -		public ActiveSound FindActiveSound(SoundStyle style) {

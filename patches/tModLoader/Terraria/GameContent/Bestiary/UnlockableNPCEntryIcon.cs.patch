@@ -17,7 +17,7 @@
  
  				if (asset != null && asset.IsLoaded)
  					_customTexture = asset;
-@@ -162,7 +_,7 @@
+@@ -165,7 +_,7 @@
  				return;
  			}
  

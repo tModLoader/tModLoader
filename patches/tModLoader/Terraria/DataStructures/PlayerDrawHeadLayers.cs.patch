@@ -12,7 +12,7 @@
  	public static class PlayerDrawHeadLayers
  	{
  		public static void DrawPlayer_0_(ref PlayerDrawHeadSet drawinfo) {
-@@ -332,4 +_,5 @@
+@@ -353,4 +_,5 @@
  			drawData.Add(item);
  		}
  	}

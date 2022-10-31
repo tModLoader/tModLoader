@@ -12,8 +12,8 @@
      <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
      <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
-@@ -19,4 +_,9 @@
-     <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
+@@ -16,4 +_,9 @@
+   <ItemGroup>
      <EmbeddedResource Include="Microsoft/**" />
    </ItemGroup>
 +  <ItemDefinitionGroup>

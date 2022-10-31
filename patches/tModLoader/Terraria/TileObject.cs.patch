@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
-@@ -138,7 +_,7 @@
+@@ -138,7 +_,8 @@
  			return true;
  		}
  
--		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false) {
-+		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, bool checkStay = false) {
++		//TML: Added 'checkStay' parameter.
+-		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null) {
++		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null, bool checkStay = false) {
  			TileObjectData tileData = TileObjectData.GetTileData(type, style);
  			objectData = Empty;
  			if (tileData == null)
@@ -22,8 +23,8 @@
  						}
  
  						bool flag4 = false;
--						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type])
-+						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type] && !checkStay)
+-						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484 || tileSafely.type == 654) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type])
++						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484 || tileSafely.type == 654) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type] && !checkStay)
  							flag4 = true;
  
  						if (flag4 || flag2 || flag3) {

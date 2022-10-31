@@ -27,7 +27,7 @@
  			for (int i = 0; i < 256; i++) {
  				if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
  					SendData(Netplay.Clients[i].Socket, packet);
-@@ -76,10 +_,12 @@
+@@ -86,10 +_,12 @@
  		}
  
  		public void SendToServer(NetPacket packet) {
@@ -40,7 +40,7 @@
  			SendData(Netplay.Clients[playerId].Socket, packet);
  		}
  
-@@ -90,6 +_,7 @@
+@@ -100,6 +_,7 @@
  					socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, SendCallback, packet);
  				}
  				catch {
@@ -48,7 +48,7 @@
  				}
  
  				Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);
-@@ -98,6 +_,11 @@
+@@ -108,6 +_,11 @@
  
  		public static void SendCallback(object state) {
  			((NetPacket)state).Recycle();

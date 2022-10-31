@@ -16,7 +16,7 @@
  	{
  		public enum ItemSacrificeResult
  		{
-@@ -194,9 +_,21 @@
+@@ -206,10 +_,22 @@
  		}
  
  		public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
@@ -30,16 +30,17 @@
 +
 +		// allows to sacrifice any item without needing to go through the ui
 +		public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false) {
- 			int amountNeeded = 0;
+ 			int amountNeededTotal = 0;
+ 			int amountWeHave = 0;
  			amountWeSacrificed = 0;
 -			Item item = _itemSlotsForUI[0];
 +			if (!ItemLoader.CanResearch(item))
 +				return ItemSacrificeResult.CannotSacrifice;
 +
- 			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
+ 			if (!Main.LocalPlayerCreativeTracker.ItemSacrifices.TryGetSacrificeNumbers(item.type, out amountWeHave, out amountNeededTotal))
  				return ItemSacrificeResult.CannotSacrifice;
  
-@@ -216,16 +_,17 @@
+@@ -227,16 +_,17 @@
  			}
  
  			bool num3 = num2 == num;

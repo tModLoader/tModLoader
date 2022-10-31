@@ -9,7 +9,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -110,7 +_,8 @@
+@@ -126,7 +_,8 @@
  		private static ushort dirtPosition;
  		private static ushort rockPosition;
  		private static ushort hellPosition;
@@ -19,24 +19,38 @@
  		private static ushort[] snowTypes;
  		private static ushort wallRangeStart;
  		private static ushort wallRangeEnd;
-@@ -1438,6 +_,7 @@
+@@ -1593,6 +_,7 @@
  
- 			hellPosition = num12;
- 			colorLookup[num12] = color9;
-+			modPosition = (ushort)(num12 + 1);
+ 			hellPosition = num20;
+ 			colorLookup[num20] = color10;
++			modPosition = (ushort)(num20 + 1); // Added by TML.
  			snowTypes = new ushort[6];
  			snowTypes[0] = tileLookup[147];
  			snowTypes[1] = tileLookup[161];
-@@ -1556,7 +_,7 @@
- 					int num4 = tile.liquidType();
- 					num3 = liquidPosition + num4;
+@@ -1734,7 +_,7 @@
+ 					int num5 = tile.liquidType();
+ 					num3 = liquidPosition + num5;
  				}
--				else if (tile.wall > 0 && tile.wall < 316) {
-+				else if (tile.wall > 0 && tile.wall < WallLoader.WallCount) {
+-				else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < 347) {
++				else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
  					int wall = tile.wall;
  					num3 = wallLookup[wall];
  					num = tile.wallColor();
-@@ -1627,7 +_,9 @@
+@@ -1763,6 +_,7 @@
+ 			if (num3 == 0) {
+ 				if ((double)j < Main.worldSurface) {
+ 					if (Main.remixWorld) {
++						// Patch note: num2, used below.
+ 						num2 = 5;
+ 						num3 = 100;
+ 					}
+@@ -1806,12 +_,15 @@
+ 
+ 					num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
+ 				}
++				// Extra patch context.
+ 				else {
+ 					num3 = hellPosition;
  				}
  			}
  
@@ -46,17 +60,19 @@
 +			return MapTile.Create(mapType, (byte)num2, (byte)num);
  		}
  
- 		public static void GetTileBaseOption(int y, Tile tileCache, ref int baseOption) {
-@@ -2261,7 +_,7 @@
- 								byte b5 = 0;
+ 		public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption) {
+@@ -2569,7 +_,10 @@
+ 								byte b6 = 0;
  								int num7;
  								ushort num8;
--								if (mapTile.Light <= 18) {
++								/*
+ 								if (mapTile.Light <= 18) {
++								*/
 +								if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
  									flag2 = false;
  									flag = false;
  									num7 = 0;
-@@ -2405,7 +_,9 @@
+@@ -2727,7 +_,9 @@
  
  						deflateStream.Dispose();
  						FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);

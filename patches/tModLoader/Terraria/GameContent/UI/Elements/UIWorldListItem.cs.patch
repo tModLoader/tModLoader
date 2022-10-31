@@ -16,7 +16,7 @@
  using Terraria.Social;
  using Terraria.UI;
  
-@@ -30,6 +_,8 @@
+@@ -29,6 +_,8 @@
  		private Asset<Texture2D> _buttonDeleteTexture;
  		private UIImageButton _deleteButton;
  		private int _orderInList;
@@ -25,7 +25,7 @@
  		private bool _canBePlayed;
  
  		public bool IsFavorite => _data.IsFavorite;
-@@ -37,6 +_,7 @@
+@@ -36,6 +_,7 @@
  		public UIWorldListItem(WorldFileData data, int orderInList, bool canBePlayed) {
  			_orderInList = orderInList;
  			_data = data;
@@ -33,7 +33,7 @@
  			_canBePlayed = canBePlayed;
  			LoadTextures();
  			InitializeAppearance();
-@@ -87,6 +_,17 @@
+@@ -97,6 +_,17 @@
  				num += 24f;
  			}
  
@@ -51,7 +51,7 @@
  			UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
  			uIImageButton5.VAlign = 1f;
  			uIImageButton5.Left.Set(num, 0f);
-@@ -137,6 +_,7 @@
+@@ -147,6 +_,7 @@
  			_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
  			_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  			_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
@@ -59,7 +59,7 @@
  		}
  
  		private void InitializeAppearance() {
-@@ -199,8 +_,16 @@
+@@ -188,8 +_,16 @@
  		private void CloudMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
@@ -78,7 +78,7 @@
  		}
  
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-@@ -229,8 +_,12 @@
+@@ -218,8 +_,12 @@
  		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_data.MoveToLocal();
@@ -92,7 +92,7 @@
  
  			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  			if (_data.IsCloudSave)
-@@ -259,7 +_,7 @@
+@@ -248,7 +_,7 @@
  		}
  
  		private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
@@ -101,7 +101,7 @@
  				_data.SetAsActive();
  				SoundEngine.PlaySound(10);
  				Main.GetInputText("");
-@@ -270,9 +_,29 @@
+@@ -259,9 +_,29 @@
  				else
  					Main.menuMode = 10;
  
@@ -132,7 +132,7 @@
  		}
  
  		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
-@@ -283,6 +_,9 @@
+@@ -272,6 +_,9 @@
  				return true;
  			}
  
@@ -142,7 +142,7 @@
  			bool flag = Main.ActivePlayerFileData.Player.difficulty == 3;
  			bool isJourneyMode = value.IsJourneyMode;
  			if (flag && !isJourneyMode) {
-@@ -299,6 +_,13 @@
+@@ -288,6 +_,13 @@
  				return true;
  			}
  
@@ -156,7 +156,7 @@
  			return false;
  		}
  
-@@ -342,10 +_,16 @@
+@@ -331,10 +_,16 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
  		}
  

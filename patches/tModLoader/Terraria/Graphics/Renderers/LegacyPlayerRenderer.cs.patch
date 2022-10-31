@@ -37,36 +37,28 @@
  			if (drawPlayer.ShouldNotDraw)
  				return;
  
-@@ -117,7 +_,15 @@
+@@ -117,8 +_,22 @@
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
 +
-+			if (headOnly) {
-+				drawinfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
-+			}
-+			else {
--			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
-+				drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
-+			}
++			if (headOnly)
++				drawInfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
++			else
+-			drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
++				drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
 +
-+			/*
- 			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
-@@ -198,6 +_,15 @@
- 			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_38_EyebrellaCloud(ref drawinfo);
-+			*/
-+			PlayerLoader.ModifyDrawInfo(ref drawinfo);
+-			DrawPlayer_UseNormalLayers(ref drawInfo);
++			//DrawPlayer_UseNormalLayers(ref drawInfo);
++			PlayerLoader.ModifyDrawInfo(ref drawInfo);
 +
-+			foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawinfo)) {
++			foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawInfo)) {
 +				if (!headOnly || layer.IsHeadLayer) {
-+					layer.DrawWithTransformationAndChildren(ref drawinfo);
++					layer.DrawWithTransformationAndChildren(ref drawInfo);
 +				}
 +			}
 +
- 			PlayerDrawLayers.DrawPlayer_MakeIntoFirstFractalAfterImage(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawinfo);
++			PlayerDrawLayers.DrawPlayer_MakeIntoFirstFractalAfterImage(ref drawInfo); // tML, copied from UseNormalLayers
+ 			PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawInfo);
  			if (scale != 1f)
+ 				PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, scale);

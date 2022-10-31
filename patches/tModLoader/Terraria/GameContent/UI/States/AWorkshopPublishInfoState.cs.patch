@@ -83,16 +83,7 @@
  		}
  
  		protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
-@@ -232,7 +_,7 @@
- 		}
- 
- 		private void steamDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) {
--			ProcessStart("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
-+			Utils.OpenToURL("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
- 		}
- 
- 		public static void ProcessStart(string path) {
-@@ -529,14 +_,14 @@
+@@ -518,14 +_,14 @@
  			container.Append(uISlicedImage);
  			UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
  				HAlign = 0f,
@@ -109,7 +100,7 @@
  			uIText.IsWrapped = true;
  			uISlicedImage.Append(uIText);
  			_descriptionText = uIText;
-@@ -625,7 +_,8 @@
+@@ -614,7 +_,8 @@
  				UsedTags = (from x in _tagOptions
  							where x.IsSelected
  							select x.OptionValue).ToArray(),
@@ -119,7 +110,7 @@
  			};
  		}
  
-@@ -634,6 +_,7 @@
+@@ -623,6 +_,7 @@
  				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  			};
  

@@ -45,7 +45,7 @@
  				for (int i = 0; i < 100; i++) {
  					string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
  					if (text == value.Value)
-@@ -312,7 +_,7 @@
+@@ -298,7 +_,7 @@
  			if (!_categoryGroupedKeys.ContainsKey(categoryName))
  				return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
  
@@ -54,7 +54,7 @@
  			return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
  		}
  
-@@ -320,7 +_,7 @@
+@@ -306,7 +_,7 @@
  			if (!_categoryGroupedKeys.ContainsKey(categoryName))
  				return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
  

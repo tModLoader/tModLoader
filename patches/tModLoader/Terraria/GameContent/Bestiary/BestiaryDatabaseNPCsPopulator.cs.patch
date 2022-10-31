@@ -34,7 +34,7 @@
  		private BestiaryEntry Register(BestiaryEntry entry) => _currentDatabase.Register(entry);
  		private IBestiaryEntryFilter Register(IBestiaryEntryFilter filter) => _currentDatabase.Register(filter);
  
-@@ -562,6 +_,7 @@
+@@ -572,6 +_,7 @@
  		}
  
  		private void AddTownNPCs_Manual() {
@@ -42,7 +42,7 @@
  			Register(BestiaryEntry.TownNPC(22));
  			Register(BestiaryEntry.TownNPC(17));
  			Register(BestiaryEntry.TownNPC(18));
-@@ -601,13 +_,18 @@
+@@ -619,13 +_,18 @@
  		}
  
  		private void AddEmptyEntries_CrittersAndEnemies_Automated() {

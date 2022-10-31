@@ -10,8 +10,8 @@
  
  namespace Terraria.GameContent.Tile_Entities
  {
--	public class TEItemFrame : TileEntity
-+	public partial class TEItemFrame : TileEntity
+-	public class TEItemFrame : TileEntity, IFixLoadedData
++	public partial class TEItemFrame : TileEntity, IFixLoadedData
  	{
  		private static byte _myEntityID;
  		public Item item;

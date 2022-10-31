@@ -1,14 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework;
+@@ -2,6 +_,7 @@
  using System;
+ using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.Enums;
-@@ -11,10 +_,12 @@
+@@ -15,10 +_,12 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -21,11 +21,11 @@
 +	public partial class Item : Entity
  	{
  		private string _nameOverride;
- 		public const int luckPotionDuration1 = 10800;
-@@ -33,43 +_,210 @@
- 		private readonly int eclipsePrice = sellPrice(0, 7, 50);
+ 		public const int luckPotionDuration1 = 18000;
+@@ -38,44 +_,211 @@
  		private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  		private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
+ 		public static int CommonMaxStack = 9999;
 +		/// <summary>
 +		/// The number of cached item spawns by type.<br/>
 +		/// A value of -1 means that an item type is not being cached.<br/>
@@ -60,30 +60,30 @@
 +		/// An array for converting an <see cref="headSlot"/> value into a <see cref="type"/> value.<br/>
 +		/// Indexed by <see cref="headSlot"/>. Defaults to 0.<br/>
 +		/// </summary>
- 		public static int[] headType = new int[277];
+ 		public static int[] headType = new int[282];
 +		/// <summary>
 +		/// An array for converting an <see cref="bodySlot"/> value into a <see cref="type"/> value.<br/>
 +		/// Indexed by <see cref="bodySlot"/>. Defaults to 0.<br/>
 +		/// </summary>
- 		public static int[] bodyType = new int[246];
+ 		public static int[] bodyType = new int[248];
 +		/// <summary>
 +		/// An array for converting an <see cref="legSlot"/> value into a <see cref="type"/> value.<br/>
 +		/// Indexed by <see cref="legSlot"/>. Defaults to 0.<br/>
 +		/// </summary>
- 		public static int[] legType = new int[234];
+ 		public static int[] legType = new int[236];
 +		/// <summary>
 +		/// If true, categorizes the given item type as a staff.<br/>
 +		/// Staffs are held differently when their <see cref="useStyle"/> is <see cref="ItemUseStyleID.Shoot"/>, but are otherwise no different than any other item.<br/>
 +		/// Indexed by <see cref="type"/>. Defaults to <see langword="false"/>.<br/>
 +		/// </summary>
- 		public static bool[] staff = new bool[5125];
+ 		public static bool[] staff = new bool[5453];
 +		/// <summary>
 +		/// If true, categorizes the given item type as a claw.<br/>
 +		/// Claws are held differently when their <see cref="useStyle"/> is <see cref="ItemUseStyleID.Swing"/>, but are otherwise no different than any other item.<br/>
 +		/// Used exclusively by the Bladed Glove in vanilla.<br/>
 +		/// Indexed by <see cref="type"/>. Defaults to <see langword="false"/>.<br/>
 +		/// </summary>
- 		public static bool[] claw = new bool[5125];
+ 		public static bool[] claw = new bool[5453];
  		public bool flame;
 +		/// <summary>
 +		/// If true, then the given item will show all placed wires and actuators when held.<br/>
@@ -209,6 +209,7 @@
 +		/// Defaults to 0.<br/>
 +		/// </summary>
  		public byte paint;
+ 		public byte paintCoating;
 +		/// <summary>
 +		/// If true, then the given item is instanced per-client.<br/>
 +		/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
@@ -236,7 +237,7 @@
  		public bool favorited;
  		public int holdStyle;
  		public int useStyle;
-@@ -98,7 +_,7 @@
+@@ -104,7 +_,7 @@
  		public int alpha;
  		public short glowMask;
  		public float scale = 1f;
@@ -245,7 +246,7 @@
  		public int defense;
  		public int headSlot = -1;
  		public int bodySlot = -1;
-@@ -142,17 +_,74 @@
+@@ -148,18 +_,75 @@
  		public int buffTime;
  		public int mountType = -1;
  		public bool cartTrack;
@@ -270,6 +271,7 @@
 +		/// Defaults to <see langword="null"/>.<br/>
 +		/// </summary>
  		public int? shopCustomPrice;
+ 		public bool shootsEveryUse;
 +		/// <summary>
 +		/// If true, the given item is categorized as a Dungeon Defenders 2 summon item.<br/>
 +		/// DD2 summon items get a counter for how much Etherian Mana is in the player's inventory.<br/>
@@ -325,9 +327,9 @@
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -160,6 +_,18 @@
- 		public const int WALL_PLACEMENT_USETIME = 7;
- 		public static int numberOfNewItems = 0;
+@@ -172,6 +_,18 @@
+ 		public bool shimmered;
+ 		public float shimmerTime;
  
 +		public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
@@ -344,9 +346,9 @@
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
  
  		public string HoverName {
-@@ -181,11 +_,11 @@
- 			}
- 		}
+@@ -195,11 +_,11 @@
+ 
+ 		public bool FitsAccessoryVanitySlot => true;
  
 -		public int OriginalRarity => ContentSamples.ItemsByType[type].rare;
 -
@@ -359,187 +361,87 @@
 +
 +		public int OriginalDefense => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.defense : 0;
  
- 		public bool IsACoin {
- 			get {
-@@ -270,6 +_,10 @@
+ 		public ItemVariant Variant {
+ 			get;
+@@ -304,6 +_,10 @@
  				return false;
  
  			UnifiedRandom unifiedRandom = WorldGen.gen ? WorldGen.genRand : Main.rand;
-+			bool? applyPrefixOverride = ItemLoader.PrefixChance(this, pre, unifiedRandom);
++			bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
 +			if (!applyPrefixOverride ?? false)
 +				return false;
 +
- 			int num = pre;
- 			float num2 = 1f;
- 			float num3 = 1f;
-@@ -288,15 +_,20 @@
- 				num7 = 1f;
- 				num8 = 0;
+ 			int rolledPrefix = prefixWeWant;
+ 			float dmg = 1f;
+ 			float kb = 1f;
+@@ -315,7 +_,7 @@
+ 			bool flag = true;
+ 			while (flag) {
  				flag = false;
--				if (num == -1 && unifiedRandom.Next(4) == 0)
-+				if (pre == -1 && !(applyPrefixOverride ?? false) && unifiedRandom.NextBool(4))
- 					num = 0;
+-				if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
++				if (rolledPrefix == -1 && unifiedRandom.NextBool(4) && !(applyPrefixOverride ?? false))
+ 					rolledPrefix = 0;
  
- 				if (pre < -1)
- 					num = -1;
- 
- 				if (num == -1 || num == -2 || num == -3) {
-+					int modPrefix = ItemLoader.ChoosePrefix(this, unifiedRandom);
-+					if (modPrefix >= 0) {
-+						num = modPrefix;
-+					}
--					if (type == 1 || type == 4 || type == 6 || type == 7 || type == 10 || type == 24 || type == 45 || type == 46 || type == 65 || type == 103 || type == 104 || type == 121 || type == 122 || type == 155 || type == 190 || type == 196 || type == 198 || type == 199 || type == 200 || type == 201 || type == 202 || type == 203 || type == 4258 || type == 204 || type == 213 || type == 217 || type == 273 || type == 367 || type == 368 || type == 426 || type == 482 || type == 483 || type == 484 || type == 653 || type == 654 || type == 656 || type == 657 || type == 659 || type == 660 || type == 671 || type == 672 || type == 674 || type == 675 || type == 676 || type == 723 || type == 724 || type == 757 || type == 776 || type == 777 || type == 778 || type == 787 || type == 795 || type == 797 || type == 798 || type == 799 || type == 881 || type == 882 || type == 921 || type == 922 || type == 989 || type == 990 || type == 991 || type == 992 || type == 993 || type == 1123 || type == 1166 || type == 1185 || type == 1188 || type == 1192 || type == 1195 || type == 1199 || type == 1202 || type == 1222 || type == 1223 || type == 1224 || type == 1226 || type == 1227 || type == 1230 || type == 1233 || type == 1234 || type == 1294 || type == 1304 || type == 1305 || type == 1306 || type == 1320 || type == 1327 || type == 1506 || type == 1507 || type == 1786 || type == 1826 || type == 1827 || type == 1909 || type == 1917 || type == 1928 || type == 2176 || type == 2273 || type == 2608 || type == 2341 || type == 2330 || type == 2320 || type == 2516 || type == 2517 || type == 2746 || type == 2745 || type == 3063 || type == 3018 || type == 3211 || type == 3013 || type == 3258 || type == 3106 || type == 3065 || type == 2880 || type == 3481 || type == 3482 || type == 3483 || type == 3484 || type == 3485 || type == 3487 || type == 3488 || type == 3489 || type == 3490 || type == 3491 || type == 3493 || type == 3494 || type == 3495 || type == 3496 || type == 3497 || type == 3499 || type == 3500 || type == 3501 || type == 3502 || type == 3503 || type == 3505 || type == 3506 || type == 3507 || type == 3508 || type == 3509 || type == 3511 || type == 3512 || type == 3513 || type == 3514 || type == 3515 || type == 3517 || type == 3518 || type == 3519 || type == 3520 || type == 3521 || type == 3522 || type == 3523 || type == 3524 || type == 3525 || type == 3462 || type == 3465 || type == 3466 || type == 2772 || type == 2775 || type == 2776 || type == 2777 || type == 2780 || type == 2781 || type == 2782 || type == 2785 || type == 2786 || type == 3349 || type == 3352 || type == 3351 || (type >= 3764 && type <= 3769) || type == 4259 || type == 3772 || type == 3823 || type == 3827 || type == 186 || type == 946 || type == 4059 || type == 4317 || type == 4463 || type == 486 || type == 4707 || type == 4711 || type == 4956 || type == 4923 || type == 4672 || type == 4913 || type == 4912 || type == 4911 || type == 4678 || type == 4679 || type == 4680 || type == 4914 || type == 5074 || type == 5094 || type == 5095 || type == 5096 || type == 5097) {
-+					else if (type == 1 || type == 4 || type == 6 || type == 7 || type == 10 || type == 24 || type == 45 || type == 46 || type == 65 || type == 103 || type == 104 || type == 121 || type == 122 || type == 155 || type == 190 || type == 196 || type == 198 || type == 199 || type == 200 || type == 201 || type == 202 || type == 203 || type == 4258 || type == 204 || type == 213 || type == 217 || type == 273 || type == 367 || type == 368 || type == 426 || type == 482 || type == 483 || type == 484 || type == 653 || type == 654 || type == 656 || type == 657 || type == 659 || type == 660 || type == 671 || type == 672 || type == 674 || type == 675 || type == 676 || type == 723 || type == 724 || type == 757 || type == 776 || type == 777 || type == 778 || type == 787 || type == 795 || type == 797 || type == 798 || type == 799 || type == 881 || type == 882 || type == 921 || type == 922 || type == 989 || type == 990 || type == 991 || type == 992 || type == 993 || type == 1123 || type == 1166 || type == 1185 || type == 1188 || type == 1192 || type == 1195 || type == 1199 || type == 1202 || type == 1222 || type == 1223 || type == 1224 || type == 1226 || type == 1227 || type == 1230 || type == 1233 || type == 1234 || type == 1294 || type == 1304 || type == 1305 || type == 1306 || type == 1320 || type == 1327 || type == 1506 || type == 1507 || type == 1786 || type == 1826 || type == 1827 || type == 1909 || type == 1917 || type == 1928 || type == 2176 || type == 2273 || type == 2608 || type == 2341 || type == 2330 || type == 2320 || type == 2516 || type == 2517 || type == 2746 || type == 2745 || type == 3063 || type == 3018 || type == 3211 || type == 3013 || type == 3258 || type == 3106 || type == 3065 || type == 2880 || type == 3481 || type == 3482 || type == 3483 || type == 3484 || type == 3485 || type == 3487 || type == 3488 || type == 3489 || type == 3490 || type == 3491 || type == 3493 || type == 3494 || type == 3495 || type == 3496 || type == 3497 || type == 3499 || type == 3500 || type == 3501 || type == 3502 || type == 3503 || type == 3505 || type == 3506 || type == 3507 || type == 3508 || type == 3509 || type == 3511 || type == 3512 || type == 3513 || type == 3514 || type == 3515 || type == 3517 || type == 3518 || type == 3519 || type == 3520 || type == 3521 || type == 3522 || type == 3523 || type == 3524 || type == 3525 || (type >= 3462 && type <= 3466) || (type >= 2772 && type <= 2786) || type == 3349 || type == 3352 || type == 3351 || (type >= 3764 && type <= 3769) || type == 4259 || type == 3772 || type == 3823 || type == 3827 || type == 186 || type == 946 || type == 4059 || type == 4317 || type == 4463 || type == 486 || type == 4707 || type == 4711 || type == 4956 || type == 4923 || type == 4788 || type == 4790 || type == 4789 || type == 4672 || type == 4913 || type == 4912 || type == 4911 || type == 4678 || type == 4679 || type == 4680 || type == 4914 || type == 5074 || type == 5094 || type == 5095 || type == 5096 || type == 5097 || ItemLoader.MeleePrefix(this)) {
-+						const int numVanilla = 40;
--						int num9 = unifiedRandom.Next(40);
-+						int num9 = unifiedRandom.Next(numVanilla);
- 						if (num9 == 0)
- 							num = 1;
- 
-@@ -416,9 +_,12 @@
- 
- 						if (num9 == 39)
- 							num = 81;
-+
-+						PrefixLoader.Roll(this, ref num, numVanilla, unifiedRandom, PrefixCategory.AnyWeapon, PrefixCategory.Melee);
- 					}
--					else if (type == 162 || type == 5011 || type == 5012 || type == 160 || type == 163 || type == 220 || type == 274 || type == 277 || type == 280 || type == 383 || type == 384 || type == 385 || type == 386 || type == 387 || type == 388 || type == 389 || type == 390 || type == 406 || type == 537 || type == 550 || type == 579 || type == 756 || type == 759 || type == 801 || type == 802 || type == 1186 || type == 1189 || type == 1190 || type == 1193 || type == 1196 || type == 1197 || type == 1200 || type == 1203 || type == 1204 || type == 1228 || type == 1231 || type == 1232 || type == 1259 || type == 1262 || type == 1297 || type == 1314 || type == 1325 || type == 1947 || type == 2332 || type == 2331 || type == 2342 || type == 2424 || type == 2611 || type == 2798 || type == 3012 || type == 3473 || type == 3098 || type == 3368 || type == 3835 || type == 3836 || type == 3858 || type == 4061 || type == 4144 || type == 4272 || type == 2774 || type == 2773 || type == 2779 || type == 2778 || type == 2784 || type == 2783 || type == 3464 || type == 3463 || type == 4788 || type == 4789 || type == 4790) {
-+					else if (type == 162 || type == 5011 || type == 5012 || type == 160 || type == 163 || type == 220 || type == 274 || type == 277 || type == 280 || type == 383 || type == 384 || type == 385 || type == 386 || type == 387 || type == 388 || type == 389 || type == 390 || type == 406 || type == 537 || type == 550 || type == 579 || type == 756 || type == 759 || type == 801 || type == 802 || type == 1186 || type == 1189 || type == 1190 || type == 1193 || type == 1196 || type == 1197 || type == 1200 || type == 1203 || type == 1204 || type == 1228 || type == 1231 || type == 1232 || type == 1259 || type == 1262 || type == 1297 || type == 1314 || type == 1325 || type == 1947 || type == 2332 || type == 2331 || type == 2342 || type == 2424 || type == 2611 || type == 2798 || type == 3012 || type == 3473 || type == 3098 || type == 3368 || type == 3835 || type == 3836 || type == 3858 || type == 4061 || type == 4144 || type == 4272 || type == 2774 || type == 2773 || type == 2779 || type == 2778 || type == 2784 || type == 2783 || type == 3464 || type == 3463 || ItemLoader.WeaponPrefix(this)) {
-+						const int numVanilla = 14;
--						int num10 = unifiedRandom.Next(14);
-+						int num10 = unifiedRandom.Next(numVanilla);
- 						if (num10 == 0)
- 							num = 36;
- 
-@@ -460,9 +_,12 @@
- 
- 						if (num10 == 13)
- 							num = 61;
-+
-+						PrefixLoader.Roll(this, ref num, numVanilla, unifiedRandom, PrefixCategory.AnyWeapon);
- 					}
--					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953 || type == 5117) {
-+					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953 || type == 5117 || ItemLoader.RangedPrefix(this)) {
-+						const int numVanilla = 35;
--						int num11 = unifiedRandom.Next(35);
-+						int num11 = unifiedRandom.Next(numVanilla);
- 						if (num11 == 0)
- 							num = 16;
- 
-@@ -567,9 +_,12 @@
- 
- 						if (num11 == 34)
- 							num = 82;
-+
-+						PrefixLoader.Roll(this, ref num, numVanilla, unifiedRandom, PrefixCategory.AnyWeapon, PrefixCategory.Ranged);
- 					}
--					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 5114 || type == 5119 || type == 5118 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062) {
-+					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 5114 || type == 5119 || type == 5118 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062 || ItemLoader.MagicPrefix(this)) {
-+						const int numVanilla = 36;
--						int num12 = unifiedRandom.Next(36);
-+						int num12 = unifiedRandom.Next(numVanilla);
- 						if (num12 == 0)
- 							num = 26;
- 
-@@ -677,9 +_,12 @@
- 
- 						if (num12 == 35)
- 							num = 83;
-+
-+						PrefixLoader.Roll(this, ref num, numVanilla, unifiedRandom, PrefixCategory.AnyWeapon, PrefixCategory.Magic);
- 					}
--					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760) {
-+					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760 || ItemLoader.WeaponPrefix(this)) {
-+						const int numVanilla = 14;
--						int num13 = unifiedRandom.Next(14);
-+						int num13 = unifiedRandom.Next(numVanilla);
- 						if (type == 3389)
- 							num13 = unifiedRandom.Next(15);
- 
-@@ -727,12 +_,15 @@
- 
- 						if (num13 == 14)
- 							num = 84;
-+
-+						PrefixLoader.Roll(this, ref num, numVanilla, unifiedRandom, PrefixCategory.AnyWeapon);
- 					}
- 					else {
- 						if (!IsAPrefixableAccessory())
- 							return false;
- 
- 						num = unifiedRandom.Next(62, 81);
-+						PrefixLoader.Roll(this, ref num, 81 - 62, unifiedRandom, PrefixCategory.Accessory);
- 					}
- 				}
- 
-@@ -740,7 +_,7 @@
+ 				if (prefixWeWant < -1)
+@@ -328,7 +_,7 @@
  					case -3:
  						return true;
  					case -1:
--						if ((num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && unifiedRandom.Next(3) != 0)
-+						if ((num == 7 || num == 8 || num == 9 || num == 10 || num == 11 || num == 22 || num == 23 || num == 24 || num == 29 || num == 30 || num == 31 || num == 39 || num == 40 || num == 56 || num == 41 || num == 47 || num == 48 || num == 49) && !(applyPrefixOverride ?? false) && !unifiedRandom.NextBool(3))
- 							num = 0;
+-						if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && unifiedRandom.Next(3) != 0)
++						if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && !(applyPrefixOverride ?? false) && !unifiedRandom.NextBool(3))
+ 							rolledPrefix = 0;
  						break;
  				}
-@@ -1019,6 +_,8 @@
- 						num8 = 2;
- 						break;
- 				}
-+				if (num >= PrefixID.Count)
-+					PrefixLoader.GetPrefix(num)?.SetStats(ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num8);
- 
- 				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
- 					flag = true;
-@@ -1040,11 +_,19 @@
- 					num = -1;
+@@ -338,11 +_,19 @@
+ 					rolledPrefix = -1;
  				}
  
-+				if (num >= PrefixID.Count)
-+					PrefixLoader.GetPrefix(num)?.ValidateItem(this, ref flag);
++				if (rolledPrefix >= PrefixID.Count)
++					PrefixLoader.GetPrefix(rolledPrefix)?.ValidateItem(this, ref flag);
 +
- 				if (pre == -2 && num == 0) {
- 					num = -1;
+ 				if (prefixWeWant == -2 && rolledPrefix == 0) {
+ 					rolledPrefix = -1;
  					flag = true;
  				}
 +
-+				if (!flag && !ItemLoader.AllowPrefix(this, num))
++				if (!flag && !ItemLoader.AllowPrefix(this, rolledPrefix))
 +					flag = true;
  			}
 +
 +			UndoItemAnimationCompensations();
  
- 			damage = (int)Math.Round((float)damage * num2);
- 			useAnimation = (int)Math.Round((float)useAnimation * num4);
-@@ -1055,6 +_,12 @@
- 			scale *= num5;
- 			shootSpeed *= num6;
- 			crit += num8;
+ 			damage = (int)Math.Round((float)damage * dmg);
+ 			useAnimation = (int)Math.Round((float)useAnimation * spd);
+@@ -353,6 +_,12 @@
+ 			scale *= size;
+ 			shootSpeed *= shtspd;
+ 			crit += crt;
 +
-+			if (num >= PrefixID.Count)
-+				PrefixLoader.GetPrefix(num)?.Apply(this);
++			if (rolledPrefix >= PrefixID.Count)
++				PrefixLoader.GetPrefix(rolledPrefix)?.Apply(this);
 +
 +			ApplyItemAnimationCompensationsToVanillaItems();
 +
- 			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
- 			if (num == 62 || num == 69 || num == 73 || num == 77)
- 				num14 *= 1.05f;
-@@ -1068,6 +_,10 @@
- 			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
- 				num14 *= 1.2f;
+ 			float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
+ 			if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
+ 				num *= 1.05f;
+@@ -366,6 +_,10 @@
+ 			if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
+ 				num *= 1.2f;
  
-+			if (num >= PrefixID.Count)
-+				PrefixLoader.GetPrefix(num)?.ModifyValue(ref num14);
++			if (rolledPrefix >= PrefixID.Count)
++				PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
 +
 +			int baseRarity = rare;
- 			if ((double)num14 >= 1.2)
+ 			if ((double)num >= 1.2)
  				rare += 2;
- 			else if ((double)num14 >= 1.05)
-@@ -1077,17 +_,22 @@
- 			else if ((double)num14 <= 0.95)
+ 			else if ((double)num >= 1.05)
+@@ -375,17 +_,22 @@
+ 			else if ((double)num <= 0.95)
  				rare--;
  
 +			if (baseRarity >= ItemRarityID.Count)
-+				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num14);
++				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num);
 +			else if (rare > ItemRarityID.Purple)
 +				rare = ItemRarityID.Purple;
 +
@@ -553,14 +455,24 @@
 +					rare = RarityLoader.RarityCount - 1;
  			}
  
- 			num14 *= num14;
- 			value = (int)((float)value * num14);
--			prefix = (byte)num;
-+			prefix = num;
+ 			num *= num;
+ 			value = (int)((float)value * num);
+-			prefix = (byte)rolledPrefix;
++			prefix = rolledPrefix;
  			return true;
  		}
  
-@@ -1120,6 +_,8 @@
+@@ -700,6 +_,9 @@
+ 					dmg = 1.05f;
+ 					crt = 2;
+ 					break;
++				default:
++					PrefixLoader.GetPrefix(rolledPrefix)?.SetStats(ref dmg, ref kb, ref spd, ref size, ref shtspd, ref mcst, ref crt);
++					break;
+ 			}
+ 
+ 			if (dmg != 1f && Math.Round((float)damage * dmg) == (double)damage)
+@@ -781,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
  		public bool checkMat() {
@@ -569,7 +481,7 @@
  			if (type >= 71 && type <= 74) {
  				material = false;
  				return false;
-@@ -1319,6 +_,9 @@
+@@ -983,6 +_,9 @@
  		}
  
  		public static int BannerToItem(int banner) {
@@ -577,12 +489,12 @@
 +				return NPCLoader.bannerToItem[banner];
 +
  			int num = 0;
- 			if (banner >= 276)
- 				return 4965 + banner - 276;
-@@ -2084,9 +_,10 @@
- 					return 287;
- 				case 133:
+ 			if (banner == 289)
+ 				return 5352;
+@@ -1754,9 +_,10 @@
  					return 288;
+ 				case 676:
+ 					return 289;
 -				default:
 -					return 0;
  			}
@@ -592,10 +504,10 @@
  		}
  
  		public static int BannerToNPC(int i) {
-@@ -2655,9 +_,10 @@
- 					return 176;
- 				case 288:
+@@ -2329,9 +_,10 @@
  					return 133;
+ 				case 289:
+ 					return 676;
 -				default:
 -					return 0;
  			}
@@ -605,7 +517,7 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -7929,6 +_,7 @@
+@@ -7653,6 +_,7 @@
  					value = 300;
  					break;
  				case 434:
@@ -613,7 +525,7 @@
  					autoReuse = true;
  					useStyle = 5;
  					useAnimation = 12;
-@@ -8902,6 +_,7 @@
+@@ -8625,6 +_,7 @@
  					rare = 2;
  					break;
  				case 506:
@@ -621,7 +533,7 @@
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
-@@ -12284,6 +_,7 @@
+@@ -12051,6 +_,7 @@
  					scale = 1.15f;
  					break;
  				case 779:
@@ -629,7 +541,7 @@
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
-@@ -22916,6 +_,7 @@
+@@ -22737,6 +_,7 @@
  					melee = true;
  					return;
  				case 1910:
@@ -637,16 +549,7 @@
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
-@@ -29993,7 +_,7 @@
- 							case 2888:
- 								useStyle = 5;
- 								useAnimation = 24;
--								useTime = 23;
-+								useTime = 24;
- 								width = 12;
- 								height = 28;
- 								shoot = 469;
-@@ -36960,6 +_,7 @@
+@@ -36851,6 +_,7 @@
  					shootSpeed = 17f;
  					return;
  				case 3852:
@@ -654,7 +557,7 @@
  					useStyle = 5;
  					useAnimation = 25;
  					useTime = 3;
-@@ -43196,6 +_,7 @@
+@@ -43113,6 +_,7 @@
  					expert = true;
  					break;
  				case 4952:
@@ -662,7 +565,7 @@
  					autoReuse = true;
  					useStyle = 14;
  					holdStyle = 6;
-@@ -43217,6 +_,8 @@
+@@ -43134,6 +_,8 @@
  					flame = true;
  					break;
  				case 4953:
@@ -671,7 +574,7 @@
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
-@@ -44343,7 +_,8 @@
+@@ -46313,7 +_,8 @@
  			shoot = projectileId;
  			UseSound = SoundID.Item152;
  			noMelee = true;
@@ -681,7 +584,7 @@
  			noUseGraphic = true;
  			damage = dmg;
  			knockBack = kb;
-@@ -44387,7 +_,7 @@
+@@ -46363,7 +_,7 @@
  			return false;
  		}
  
@@ -690,7 +593,7 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
-@@ -44420,7 +_,8 @@
+@@ -46396,7 +_,8 @@
  			}
  		}
  
@@ -700,7 +603,7 @@
  			useStyle = 1;
  			autoReuse = true;
  			useTurn = true;
-@@ -44799,6 +_,11 @@
+@@ -46787,6 +_,11 @@
  			mountType = mount;
  		}
  
@@ -709,10 +612,10 @@
 +		/// Specifically: useStyle = 1;	useTurn = true;	useAnimation = 15; useTime = 7; autoReuse = true; maxStack = 999; consumable = true; createWall = wallToPlace; width = 12; height = 12;<br/>
 +		/// </summary>
 +		/// <param name="wallToPlace"></param>
- 		public void DefaultToPlacableWall(ushort wallToPlace) {
+ 		public void DefaultToPlaceableWall(ushort wallToPlace) {
  			useStyle = 1;
  			useTurn = true;
-@@ -44818,6 +_,14 @@
+@@ -46806,6 +_,14 @@
  			crit = bonusCritChance;
  		}
  
@@ -727,7 +630,7 @@
  		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
  			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
  			width = 14;
-@@ -44836,6 +_,15 @@
+@@ -46824,6 +_,15 @@
  			magic = true;
  		}
  
@@ -743,8 +646,8 @@
  		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
  			autoReuse = hasAutoReuse;
  			useStyle = 5;
-@@ -44861,7 +_,7 @@
- 			maxStack = 999;
+@@ -46849,7 +_,7 @@
+ 			maxStack = CommonMaxStack;
  		}
  
 -		private void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
@@ -752,7 +655,7 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -44921,6 +_,18 @@
+@@ -46909,6 +_,18 @@
  			autoReuse = true;
  		}
  
@@ -771,8 +674,8 @@
  		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
  			if (useGulpSound)
  				UseSound = SoundID.Item3;
-@@ -45006,6 +_,18 @@
- 			SetDefaults(Type, noMatCheck: false);
+@@ -46994,6 +_,18 @@
+ 			SetDefaults(Type, noMatCheck: false, null);
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
@@ -787,21 +690,21 @@
 +			globalItems = originalGlobals;
 +		}
 +
- 		public void SetDefaults(int Type, bool noMatCheck = false) {
+ 		public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) {
  			if (Type < 0) {
  				netDefaults(Type);
-@@ -45018,8 +_,10 @@
+@@ -47006,8 +_,10 @@
  				playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  			ResetStats(Type);
 +			/*
- 			if (type >= 5125)
+ 			if (type >= 5453)
  				type = 0;
 +			*/
  
- 			if (type == 0) {
- 				netID = 0;
-@@ -45044,7 +_,18 @@
+ 			if (variant == null)
+ 				variant = ItemVariants.SelectVariant(Type);
+@@ -47038,7 +_,18 @@
  				SetDefaults5(type);
  			}
  
@@ -821,8 +724,8 @@
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -45193,11 +_,12 @@
- 				maxStack = 999;
+@@ -47202,11 +_,12 @@
+ 				maxStack = CommonMaxStack;
  
  			netID = type;
 +			ItemLoader.SetDefaults(this);
@@ -830,12 +733,12 @@
  				material = ItemID.Sets.IsAMaterial[type];
  
  			RebuildTooltip();
--			if (type > 0 && type < 5125 && ItemID.Sets.Deprecated[type]) {
+-			if (type > 0 && type < 5453 && ItemID.Sets.Deprecated[type]) {
 +			if (type > 0 && ItemID.Sets.Deprecated[type]) {
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45207,14 +_,27 @@
+@@ -47221,14 +_,27 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -851,7 +754,7 @@
 +			StopAnimationOnHurt = false;
 +			DamageType = DamageClass.Default;
  			sentry = false;
- 			canBePlacedInVanityRegardlessOfConditions = false;
+ 			hasVanityEffects = false;
  			DD2Summon = false;
  			shopSpecialCurrency = -1;
  			shopCustomPrice = null;
@@ -863,7 +766,7 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -45231,10 +_,12 @@
+@@ -47246,10 +_,12 @@
  			mech = false;
  			flame = false;
  			reuseDelay = 0;
@@ -876,7 +779,7 @@
  			placeStyle = 0;
  			buffTime = 0;
  			buffType = 0;
-@@ -45310,6 +_,10 @@
+@@ -47327,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -884,18 +787,18 @@
 +			if (modColor.HasValue)
 +				return modColor.Value;
 +
- 			switch (type) {
- 				case 3318:
- 				case 3319:
-@@ -45616,6 +_,7 @@
- 				timeSinceItemSpawned += num3;
+ 			if (ItemID.Sets.BossBag[type])
+ 				return Color.Lerp(newColor, Color.White, 0.4f);
+ 
+@@ -47951,6 +_,7 @@
+ 				timeSinceItemSpawned += num7;
  			}
  
 +			ItemLoader.PostUpdate(this);
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45696,6 +_,7 @@
+@@ -48044,6 +_,7 @@
  		}
  
  		private void CheckLavaDeath(int i) {
@@ -903,34 +806,24 @@
  			if (type == 267) {
  				if (Main.netMode == 1)
  					return;
-@@ -45715,7 +_,9 @@
+@@ -48097,7 +_,7 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
-+			else if (canBurnInLava == false)
-+				return;
--			else if (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0) {
-+			else if (canBurnInLava == true || (playerIndexTheItemIsReservedFor == Main.myPlayer && type != 312 && type != 318 && type != 173 && type != 174 && type != 4422 && type != 175 && type != 2701 && rare == 0)) {
+-			else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < 5453 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++			else if (canBurnInLava ?? (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type])) {
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45725,6 +_,7 @@
+@@ -48107,6 +_,7 @@
  		}
  
- 		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
+ 		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i) {
 +			ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
- 			if (ItemID.Sets.ItemNoGravity[type]) {
+ 			if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;
  				if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
-@@ -45735,6 +_,7 @@
- 					base.velocity.Y = 0f;
- 			}
- 			else {
-+				//patch file: num, num2
- 				base.velocity.Y += gravity;
- 				if (base.velocity.Y > maxFallSpeed)
- 					base.velocity.Y = maxFallSpeed;
-@@ -45934,14 +_,25 @@
+@@ -48488,14 +_,25 @@
  					num2 *= 2;
  
  				if (num < (float)num2) {
@@ -956,7 +849,7 @@
  					if (item.stack <= 0) {
  						item.SetDefaults();
  						item.active = false;
-@@ -46280,13 +_,46 @@
+@@ -48893,13 +_,46 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
  				default:
@@ -1004,7 +897,7 @@
  		public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
  			if (WorldGen.gen)
  				return 0;
-@@ -46294,6 +_,9 @@
+@@ -48907,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -1014,7 +907,7 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
-@@ -46363,6 +_,8 @@
+@@ -48976,6 +_,8 @@
  			if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
  				item.newAndShiny = true;
  
@@ -1023,7 +916,7 @@
  			if (Main.netMode == 2 && !noBroadcast)
  				NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  			else if (Main.netMode == 0)
-@@ -46434,14 +_,17 @@
+@@ -49053,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -1044,7 +937,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46460,17 +_,43 @@
+@@ -49079,17 +_,43 @@
  			}
  		}
  
@@ -1093,7 +986,7 @@
  			if (netID == compareItem.netID && stack == compareItem.stack)
  				return prefix != compareItem.prefix;
  
-@@ -46493,6 +_,8 @@
+@@ -49117,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -1102,7 +995,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46513,7 +_,7 @@
+@@ -49137,7 +_,7 @@
  			if (context == ItemSerializationContext.SavingAndLoading) {
  				writer.Write(netID);
  				writer.Write(stack);
@@ -1111,11 +1004,11 @@
  			}
  		}
  
-@@ -46524,7 +_,7 @@
+@@ -49148,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  
--			if (type >= 5125)
+-			if (type >= 5453)
 +			if (type >= ItemLoader.ItemCount)
  				TurnToAir();
  		}

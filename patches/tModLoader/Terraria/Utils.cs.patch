@@ -1,14 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -4,7 +_,6 @@
- using Microsoft.Xna.Framework.Input;
- using ReLogic.Content;
- using ReLogic.Graphics;
--using ReLogic.OS;
- using System;
- using System.Collections;
- using System.Collections.Generic;
-@@ -24,7 +_,7 @@
+@@ -25,7 +_,7 @@
  
  namespace Terraria
  {
@@ -17,7 +9,7 @@
  	{
  		public delegate bool TileActionAttempt(int x, int y);
  
-@@ -200,7 +_,8 @@
+@@ -286,7 +_,8 @@
  			ArrayList arrayList = new ArrayList();
  			string text = "";
  			for (int i = 0; i < brokenArgs.Length; i++) {
@@ -27,7 +19,7 @@
  					if (text != "") {
  						arrayList.Add(text);
  						text = "";
-@@ -263,6 +_,12 @@
+@@ -364,6 +_,12 @@
  								num2 -= 16;
  
  							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
@@ -40,52 +32,7 @@
  							if (num3 < 0)
  								num3 = 0;
  
-@@ -306,8 +_,8 @@
- 			}
- 
- 			if (maxLines != -1) {
--				while (list.Count > 10) {
-+				while (list.Count > maxLines) {
--					list.RemoveAt(10);
-+					list.RemoveAt(maxLines);
- 				}
- 			}
- 
-@@ -529,18 +_,22 @@
- 
- 		public static void OpenFolder(string folderPath) {
- 			if (TryCreatingDirectory(folderPath)) {
--#if !LINUX
--				if (Platform.IsWindows)
--					Process.Start("explorer.exe", folderPath);
--				else
--					Process.Start(folderPath);
--#else
--				Process.Start(new ProcessStartInfo(folderPath) {
--					FileName = "open-folder",
--					Arguments = folderPath,
--					UseShellExecute = true,
--					CreateNoWindow = true
-+#if !LINUX && !NETCORE
-+				Process.Start(folderPath);
-+#elif LINUX
-+				Process.Start(
-+					new ProcessStartInfo(folderPath) {
-+						FileName = "open-folder",
-+						Arguments = folderPath,
-+						UseShellExecute = true,
-+						CreateNoWindow = true
- 				});
-+#else
-+				Process.Start(
-+					new ProcessStartInfo(folderPath) {
-+						UseShellExecute = true
-+					}
-+				);
- #endif
- 			}
- 		}
-@@ -551,6 +_,11 @@
+@@ -645,6 +_,11 @@
  			return array;
  		}
  
@@ -97,7 +44,7 @@
  		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1140,14 +_,17 @@
+@@ -1273,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

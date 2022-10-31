@@ -8,17 +8,26 @@
  
  namespace Terraria.GameContent
  {
-@@ -201,7 +_,8 @@
- 					case 511:
+@@ -143,6 +_,7 @@
+ 			bool result = false;
+ 			if (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].active()) {
+ 				switch (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type) {
++					/*
+ 					case 4:
+ 					case 10:
+ 					case 11:
+@@ -193,7 +_,9 @@
  					case 573:
  					case 621:
+ 					case 642:
 -						result = true;
++					*/		
 +					default:
 +						result = TileID.Sets.DisableSmartCursor[Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type];
  						break;
  					case 314:
  						if (providedInfo.player.gravDir == 1f)
-@@ -1551,11 +_,13 @@
+@@ -1567,11 +_,13 @@
  					if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]) || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
  						continue;
  
@@ -33,10 +42,10 @@
  						case 2:
  						case 23:
  						case 53:
-@@ -1567,19 +_,31 @@
- 						case 234:
- 						case 477:
- 						case 492:
+@@ -1586,19 +_,31 @@
+ 						case 633:
+ 						case 661:
+ 						case 662:
 -							if (tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
 -								_targets.Add(new Tuple<int, int>(i, j));
 +							tileTypeValid = true;
@@ -67,7 +76,7 @@
  						switch (tile10.type) {
  							case 2:
  							case 23:
-@@ -2149,7 +_,7 @@
+@@ -2171,7 +_,7 @@
  			int reachableEndY = providedInfo.reachableEndY;
  			_ = providedInfo.screenTargetX;
  			_ = providedInfo.screenTargetY;

@@ -15,7 +15,7 @@
  		public List<int> Dust;
  		public List<int> Gore;
  		public Player drawPlayer;
-@@ -48,30 +_,39 @@
+@@ -49,30 +_,39 @@
  				result.Height--;
  				return result;
  			}
@@ -55,14 +55,14 @@
 +				hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
  
  			skinDyePacked = drawPlayer.skinDyePacked;
- 			if (drawPlayer.face > 0 && drawPlayer.face < 20)
+ 			if (drawPlayer.face > 0 && drawPlayer.face < 22)
  				Main.instance.LoadAccFace(drawPlayer.face);
  
 +			/*
  			cHead = drawPlayer.cHead;
  			cFace = drawPlayer.cFace;
  			cFaceHead = drawPlayer.cFaceHead;
-@@ -79,10 +_,12 @@
+@@ -80,10 +_,12 @@
  			cUnicornHorn = drawPlayer.cUnicornHorn;
  			cAngelHalo = drawPlayer.cAngelHalo;
  			cBeard = drawPlayer.cBeard;
@@ -76,7 +76,7 @@
  			colorEyeWhites = Main.quickAlpha(Color.White, Alpha);
  			colorEyes = Main.quickAlpha(drawPlayer.eyeColor, Alpha);
  			colorHair = Main.quickAlpha(drawPlayer.GetHairColor(useLighting: false), Alpha);
-@@ -93,14 +_,23 @@
+@@ -99,14 +_,23 @@
  				playerEffect = SpriteEffects.FlipHorizontally;
  
  			headVect = new Vector2((float)drawPlayer.legFrame.Width * 0.5f, (float)drawPlayer.legFrame.Height * 0.4f);
@@ -97,10 +97,10 @@
 +			// Workaround for movement bobbing affecting head-only rendering.
 +			Position -= Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height];
 +
- 			if (drawPlayer.head > 0 && drawPlayer.head < 277) {
+ 			if (drawPlayer.head > 0 && drawPlayer.head < 282) {
  				Main.instance.LoadArmorHead(drawPlayer.head);
  				int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
-@@ -120,13 +_,15 @@
+@@ -126,13 +_,15 @@
  			if (drawPlayer.beard > 0 && drawPlayer.beard < 5)
  				Main.instance.LoadAccBeard(drawPlayer.beard);
  
@@ -112,7 +112,7 @@
 +			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 +			/*
  			helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
- 			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 277 && drawPlayer.head != 28);
+ 			helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 282 && drawPlayer.head != 28);
 +			*/
  		}
  	}

@@ -53,10 +53,10 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -46,18 +_,30 @@
+@@ -44,18 +_,30 @@
+     <EmbeddedResource Include="Microsoft/**" />
+   </ItemGroup>
    <ItemGroup>
-     <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
-     <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
 -    <None Remove="Libraries/Mono/**" />
 +    <Compile Remove="Libraries/Common/TerrariaHooks.dll" />
      <None Remove="Libraries/Windows/**" />

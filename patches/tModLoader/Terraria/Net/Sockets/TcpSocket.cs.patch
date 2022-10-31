@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Net/Sockets/TcpSocket.cs
 +++ src/tModLoader/Terraria/Net/Sockets/TcpSocket.cs
-@@ -1,9 +_,11 @@
+@@ -1,10 +_,12 @@
+ using ReLogic.OS;
 +using Steamworks;
  using System;
  using System.Collections.Generic;
@@ -12,7 +13,7 @@
  
  namespace Terraria.Net.Sockets
  {
-@@ -34,6 +_,9 @@
+@@ -35,6 +_,9 @@
  		}
  
  		void ISocket.Close() {
@@ -22,14 +23,9 @@
  			_remoteAddress = null;
  			_connection.Close();
  		}
-@@ -67,11 +_,17 @@
- #endif
- 			*/
- 
--			var (callback, state, loanedBuffer) = ((SocketSendCallback, object, byte[]))result.AsyncState;
-+			var (callback, state, loanedBuffer, size) = ((SocketSendCallback, object, byte[], int))result.AsyncState;
- 			if (loanedBuffer != null)
- 				LegacyNetBufferPool.ReturnBuffer(loanedBuffer);
+@@ -68,7 +_,13 @@
+ 				tuple = (Tuple<SocketSendCallback, object>)obj[0];
+ 			}
  
 +			if (ModNet.DetailedLogging)
 +				ModNet.Debug(_remoteAddress, $"sent {size}");
@@ -39,12 +35,12 @@
 +					return; // reduce exception spam, because `GetStream` is invalid on a closed/disposed connection
 +
  				_connection.GetStream().EndWrite(result);
- 				callback(state);
+ 				tuple.Item1(tuple.Item2);
  			}
-@@ -97,11 +_,19 @@
- #endif
- 			*/
+@@ -81,6 +_,14 @@
+ 		}
  
+ 		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
 +			if (!_connection.Connected) { // replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
 +				ModNet.Warn("TcpSocket, AsyncSend after connection closed.");
 +				return;
@@ -53,16 +49,10 @@
 +			if (ModNet.DetailedLogging)
 +				ModNet.Debug(_remoteAddress, $"send {size}");
 +
- 			byte[] loanedBuffer = null;
- 			if (!OperatingSystem.IsWindows()) // defensively copy the buffer, to prevent overruns when flow control can't keep up with the data write rate
- 				loanedBuffer = data = LegacyNetBufferPool.RequestBuffer(data, offset, size);
- 
--			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer));
-+			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer, size));
- 		}
- 
- 		void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state) {
-@@ -149,7 +_,8 @@
+ 			if (!Platform.IsWindows) {
+ 				byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
+ 				_connection.GetStream().BeginWrite(array, 0, size, SendCallback, new object[2] {
+@@ -138,7 +_,8 @@
  			while (_isListening && !Netplay.Disconnect) {
  				try {
  					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());

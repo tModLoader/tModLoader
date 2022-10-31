@@ -10,4 +10,4 @@
 +		internal static TileMaterial[] MaterialsByTileId; // TML: Changed to internal and removed readonly so the array can be resized for modded tiles
  
  		static TileMaterials() {
- 			MaterialsByTileId = new TileMaterial[625];
+ 			MaterialsByTileId = new TileMaterial[693];

@@ -9,8 +9,8 @@
  
  namespace Terraria.GameContent.Tile_Entities
  {
--	public class TEHatRack : TileEntity
-+	public sealed partial class TEHatRack : TileEntity
+-	public class TEHatRack : TileEntity, IFixLoadedData
++	public sealed partial class TEHatRack : TileEntity, IFixLoadedData
  	{
  		private static byte _myEntityID;
  		private const int MyTileID = 475;

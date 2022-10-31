@@ -6,8 +6,10 @@
 		{
 			public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 			public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
-			public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492);
-			public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234);
+			public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
+
+			/// <summary> Tiles within this set are allowed to be replaced by generating ore. </summary>
+			public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234, 396, 397, 401, 403, 400, 398, 399, 402);
 
 			/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 			public static bool[] CanBeSloped = Factory.CreateBoolSet();
@@ -20,10 +22,10 @@
 
 			/// <summary> Whether or not the smart cursor function is disabled when the cursor hovers above this tile. </summary>
 			// Maybe this should be a hook instead?
-			public static bool[] DisableSmartCursor = Factory.CreateBoolSet(4, 10, 11, 13, 21, 29, 33, 49, 50, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 174, 207, 209, 212, 216, 219, 237, 287, 334, 335, 338, 354, 386, 387, 388, 389, 411, 425, 441, 463, 467, 468, 491, 494, 510, 511, 573, 621);
+			public static bool[] DisableSmartCursor = Factory.CreateBoolSet(4, 10, 11, 13, 21, 29, 33, 49, 50, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 174, 207, 209, 212, 216, 219, 237, 287, 334, 335, 338, 354, 386, 387, 388, 389, 411, 425, 441, 463, 467, 468, 491, 494, 510, 511, 573, 621, 642);
 
 			/// <summary> Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. </summary>
-			public static bool[] DisableSmartInteract = Factory.CreateBoolSet(4, 33, 334, 395, 410, 455, 471, 480, 509, 520);
+			public static bool[] DisableSmartInteract = Factory.CreateBoolSet(4, 33, 334, 395, 410, 455, 471, 480, 509, 520, 657, 658);
 
 			/// <summary> Whether or not this tile is a valid spawn point. </summary>
 			public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
@@ -47,7 +49,7 @@
 			public static bool[] CountsAsLavaSource = Factory.CreateBoolSet();
 
 			/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
-			public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530);
+			public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530, 637, 655);
 
 			/// <summary>
 			/// Whether or not this tile will prevent sand/slush from falling beneath it.

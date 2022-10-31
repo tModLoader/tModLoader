@@ -20,12 +20,13 @@
  				if (position.Y > 1500f)
  					hidden = true;
  
-@@ -154,7 +_,7 @@
+@@ -157,7 +_,8 @@
  			}
  
  			if (fadeIn > 0f) {
++				//TML: dayRate -> desiredWorldEventsUpdateRate
 -				float num = 6.1728395E-05f * (float)Main.dayRate;
 +				float num = 6.1728395E-05f * (float)Main.desiredWorldEventsUpdateRate;
+ 				num *= 10f;
  				fadeIn -= num;
  				if (fadeIn < 0f)
- 					fadeIn = 0f;

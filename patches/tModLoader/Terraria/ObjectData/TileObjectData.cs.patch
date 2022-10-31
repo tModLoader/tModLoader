@@ -94,7 +94,7 @@
  			get {
  				if (_subTiles == null)
  					return _baseObject.SubTiles;
-@@ -1339,6 +_,18 @@
+@@ -1365,6 +_,18 @@
  				if (_liquidDeath.water)
  					WaterPlacement = LiquidPlacement.NotAllowed;
  			}
@@ -113,7 +113,7 @@
  		}
  
  		private void WriteCheck() {
-@@ -1350,13 +_,15 @@
+@@ -1376,13 +_,15 @@
  			readOnlyData = true;
  		}
  
@@ -130,16 +130,16 @@
  						if (LavaPlacement == LiquidPlacement.NotAllowed)
  							return false;
  						if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1364,6 +_,8 @@
- 						break;
+@@ -1391,6 +_,8 @@
  					case 0:
  					case 2:
+ 					case 3:
 +						if (checkStay && !WaterDeath)
 +							break;
  						if (WaterPlacement == LiquidPlacement.NotAllowed)
  							return false;
  						if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1467,13 +_,17 @@
+@@ -1495,13 +_,17 @@
  			newTile = new TileObjectData(_baseObject);
  		}
  
@@ -154,12 +154,12 @@
 +			newTile = new TileObjectData(_baseObject);
 +		}
 +
--		private static void addSubTile(int style) {
-+		public static void addSubTile(int style) {
+-		private static void addSubTile(params int[] styles) {
++		public static void addSubTile(params int[] styles) {
  			newSubTile.Calculate();
- 			List<TileObjectData> list;
- 			if (!newTile._hasOwnSubTiles) {
-@@ -1495,7 +_,7 @@
+ 			foreach (int num in styles) {
+ 				List<TileObjectData> list;
+@@ -1548,7 +_,7 @@
  			newSubTile = new TileObjectData(_baseObject);
  		}
  
@@ -168,7 +168,7 @@
  			newAlternate.Calculate();
  			if (!newTile._hasOwnAlternates)
  				newTile.Alternates = new List<TileObjectData>();
-@@ -4189,7 +_,6 @@
+@@ -4547,7 +_,6 @@
  			newTile.StyleMultiplier = 3;
  			newTile.StyleHorizontal = true;
  			addTile(615);
@@ -176,7 +176,7 @@
  		}
  
  		public static bool CustomPlace(int type, int style) {
-@@ -4343,6 +_,68 @@
+@@ -4714,6 +_,68 @@
  			TileObjectData tileData = GetTileData(type, style);
  			if (tileData != null)
  				baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);

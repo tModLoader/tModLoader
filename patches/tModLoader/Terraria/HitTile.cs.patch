@@ -8,12 +8,12 @@
  using Terraria.Utilities;
  
  namespace Terraria
-@@ -291,7 +_,7 @@
+@@ -293,7 +_,7 @@
  
- 				bool flag2 = false;
  				bool flag3 = false;
--				if (Main.tile[x, y].type == 10) {
-+				if (TileLoader.IsClosedDoor(Main.tile[x, y])) {
- 					flag2 = false;
+ 				bool flag4 = false;
+-				if (tile.type == 10) {
++				if (TileLoader.IsClosedDoor(tile)) {
+ 					flag3 = false;
  				}
- 				else if (Main.tileSolid[Main.tile[x, y].type] && !Main.tileSolidTop[Main.tile[x, y].type]) {
+ 				else if (Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) {

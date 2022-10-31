@@ -15,8 +15,8 @@
  	{
 -		private readonly List<GenPass> _passes = new List<GenPass>();
 +		internal readonly List<GenPass> _passes = new List<GenPass>();
--		private float _totalLoadWeight;
-+		internal float _totalLoadWeight;
+-		private double _totalLoadWeight;
++		internal double _totalLoadWeight;
 -		private readonly int _seed;
 +		internal readonly int _seed;
  		private readonly WorldGenConfiguration _configuration;

@@ -1,23 +1,21 @@
 --- src/TerrariaNetCore/Terraria/Social/SocialAPI.cs
 +++ src/tModLoader/Terraria/Social/SocialAPI.cs
-@@ -1,4 +_,5 @@
+@@ -1,6 +_,7 @@
+ using ReLogic.OS;
+ using System;
  using System.Collections.Generic;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -21,21 +_,34 @@
+@@ -23,16 +_,27 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
 +			_modules = new List<ISocialModule>();
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
- 
- 				/*
- 				mode = SocialMode.Steam;
- 				*/
--				if (!Main.dedServ) // #if !SERVER
+-				if (!Main.dedServ)
 -					mode = SocialMode.Steam;
 +
 +				// Added FamilyShared check as workaround for #881
@@ -32,10 +30,7 @@
 +					}
 +#endif
 +				}
-+
-+				// ^^^ Confusing
- 
- 				if (Main.dedServ && Program.LaunchParameters.ContainsKey("-steam"))
+ 				else if (Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
  			}
  
@@ -44,27 +39,29 @@
  			JoinRequests = new ServerJoinRequestsManager();
  			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  			switch (Mode) {
-@@ -46,10 +_,9 @@
- 					LoadWeGame();
+@@ -44,9 +_,8 @@
  					break;
  			}
-+			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
  
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
++			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
 +			SteamedWraps.Initialize();
  		}
  
  		public static void Shutdown() {
-@@ -73,25 +_,45 @@
- 		private static void LoadDiscord() {
+@@ -72,10 +_,18 @@
+ 				_ = Environment.Is64BitProcess;
  		}
  
-+		private static bool _steamAPILoaded = false;
++		private static bool _steamAPILoaded;
++
 -		private static void LoadSteam() {
 +		internal static void LoadSteam() {
-+			if (_steamAPILoaded) return;
++			if (_steamAPILoaded)
++				return;
++
  			LoadModule<Terraria.Social.Steam.CoreSocialModule>();
  			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
 +			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
@@ -75,20 +72,13 @@
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
- 			Platform = LoadModule<Terraria.Social.Steam.PlatformSocialModule>();
+@@ -85,10 +_,25 @@
+ 			else
+ 				Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
  
--			if (Main.dedServ) {
-+			if (Main.dedServ) { // #if SERVER
- 				Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
--				return;
-+				goto SkipClientCode;
- 			}
- 
- 			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
-+
++			/*
  			WeGameHelper.WriteDebugString("LoadSteam modules");
-+
-+			SkipClientCode:
++			*/
 +
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
@@ -98,7 +88,8 @@
 +			ModLoader.Engine.Steam.PostInit();
  		}
 +
-+		private static bool _wegameAPILoaded = false;
++		// Added by TML.
++		private static bool _wegameAPILoaded;
  
  		private static void LoadWeGame() {
 +			if (_wegameAPILoaded)
@@ -107,24 +98,15 @@
  			LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
  			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
-@@ -99,11 +_,19 @@
+@@ -99,6 +_,12 @@
+ 				Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
  
- 			if (Main.dedServ) { // #if SERVER
- 				Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
--				return;
-+				goto SkipClientCode;
- 			}
--
-+			
- 			Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
-+
  			WeGameHelper.WriteDebugString("LoadWeGame modules");
-+
-+			SkipClientCode:
 +
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}
++
 +			_wegameAPILoaded = true;
  		}
  	}
