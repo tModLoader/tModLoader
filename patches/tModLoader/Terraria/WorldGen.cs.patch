@@ -310,17 +310,15 @@
  							return;
  						}
  					}
-@@ -2609,6 +_,13 @@
+@@ -2609,6 +_,11 @@
  			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
  
 +			// Move rest of method to main thread to fix concurrent modification exceptions
-+			// EDIT: Shouldn't this use Main.QueueMainThreadAction ?
-+			Main.OnTickForInternalCodeOnly += FinishPlayWorld;
++			Main.QueueMainThreadAction(FinishPlayWorld);
 +		}
 +
 +		internal static void FinishPlayWorld() {
-+			Main.OnTickForInternalCodeOnly -= FinishPlayWorld;
  			Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
  			_lastSeed = Main.ActiveWorldFileData.Seed;
  			WorldFile.SetOngoingToTemps();
