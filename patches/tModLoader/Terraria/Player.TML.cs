@@ -124,11 +124,8 @@ namespace Terraria
 		/// <param name="item">The item you want to be cloned</param>
 		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
 		public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1) {
-			int index = Item.NewItem(source, getRect(), item.type, stack, false, -1, false, false);
-			Item clone = Main.item[index] = item.Clone();
-			clone.whoAmI = index;
-			clone.position = position;
-			clone.stack = stack;
+			int index = Item.NewItem(source, getRect(), item, false, false, false);
+			Main.item[index].stack = stack;
 
 			// Sync the item for mp
 			if (Main.netMode == NetmodeID.MultiplayerClient)
@@ -464,18 +461,13 @@ namespace Terraria
 		/// </summary>
 		public void DropItem(IEntitySource source, Vector2 position, ref Item item) {
 			if (item.stack > 0) {
-				int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item.type);
+				int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item);
 				var itemDrop = Main.item[itemDropId];
 
-				itemDrop.netDefaults(item.netID);
-				itemDrop.Prefix(item.prefix);
-				itemDrop.stack = item.stack;
 				itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
 				itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
 				itemDrop.noGrabDelay = 100;
 				itemDrop.newAndShiny = false;
-				itemDrop.ModItem = item.ModItem;
-				itemDrop.globalItems = item.globalItems;
 
 				if (Main.netMode == 1)
 					NetMessage.SendData(21, -1, -1, null, itemDropId);

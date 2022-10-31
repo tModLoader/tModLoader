@@ -5740,7 +5740,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37704,24 +_,54 @@
+@@ -37704,37 +_,60 @@
  
  		public void DropItems() {
  			IEntitySource itemSource_Death = GetItemSource_Death();
@@ -5769,24 +5769,22 @@
  						flag = false;
  
  					if (flag) {
+-						int num = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, inventory[i].type);
+-						Main.item[num].netDefaults(inventory[i].netID);
+-						Main.item[num].Prefix(inventory[i].prefix);
+-						Main.item[num].stack = inventory[i].stack;
 +						int stack = item.stack;
 +						if (startCounts.ContainsKey(item.netID)) {
 +							stack -= startCounts[item.netID];
 +							startCounts[item.netID] = 0;
 +						}
 +
- 						int num = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, inventory[i].type);
- 						Main.item[num].netDefaults(inventory[i].netID);
- 						Main.item[num].Prefix(inventory[i].prefix);
--						Main.item[num].stack = inventory[i].stack;
++						int num = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, inventory[i]);
 +						Main.item[num].stack = stack; // inventory[i].stack
  						Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num].noGrabDelay = 100;
  						Main.item[num].newAndShiny = false;
-+
-+						Main.item[num].ModItem = item.ModItem;
-+						Main.item[num].globalItems = item.globalItems;
 +
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num);
@@ -5797,44 +5795,57 @@
  				}
  
  				inventory[i].TurnToAir();
-@@ -37735,6 +_,10 @@
+ 				if (i < armor.Length) {
+ 					if (armor[i].stack > 0) {
+-						int num2 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, armor[i].type);
++						int num2 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, armor[i]);
+-						Main.item[num2].netDefaults(armor[i].netID);
+-						Main.item[num2].Prefix(armor[i].prefix);
+-						Main.item[num2].stack = armor[i].stack;
+ 						Main.item[num2].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
 +
-+						Main.item[num2].ModItem = armor[i].ModItem;
-+						Main.item[num2].globalItems = armor[i].globalItems;
-+
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
-@@ -37752,6 +_,8 @@
+@@ -37744,10 +_,7 @@
+ 
+ 				if (i < dye.Length) {
+ 					if (dye[i].stack > 0) {
+-						int num3 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, dye[i].type);
++						int num3 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, dye[i]);
+-						Main.item[num3].netDefaults(dye[i].netID);
+-						Main.item[num3].Prefix(dye[i].prefix);
+-						Main.item[num3].stack = dye[i].stack;
+ 						Main.item[num3].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
- 						Main.item[num3].newAndShiny = false;
-+						Main.item[num3].ModItem = dye[i].ModItem;
-+						Main.item[num3].globalItems = dye[i].globalItems;
- 						if (Main.netMode == 1)
- 							NetMessage.SendData(21, -1, -1, null, num3);
- 					}
-@@ -37769,6 +_,8 @@
+@@ -37761,10 +_,7 @@
+ 
+ 				if (i < miscEquips.Length) {
+ 					if (miscEquips[i].stack > 0) {
+-						int num4 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscEquips[i].type);
++						int num4 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscEquips[i]);
+-						Main.item[num4].netDefaults(miscEquips[i].netID);
+-						Main.item[num4].Prefix(miscEquips[i].prefix);
+-						Main.item[num4].stack = miscEquips[i].stack;
+ 						Main.item[num4].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num4].noGrabDelay = 100;
- 						Main.item[num4].newAndShiny = false;
-+						Main.item[num4].ModItem = miscEquips[i].ModItem;
-+						Main.item[num4].globalItems = miscEquips[i].globalItems;
- 						if (Main.netMode == 1)
- 							NetMessage.SendData(21, -1, -1, null, num4);
- 					}
-@@ -37788,6 +_,8 @@
+@@ -37780,10 +_,7 @@
+ 					continue;
+ 
+ 				if (miscDyes[i].stack > 0) {
+-					int num5 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscDyes[i].type);
++					int num5 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscDyes[i]);
+-					Main.item[num5].netDefaults(miscDyes[i].netID);
+-					Main.item[num5].Prefix(miscDyes[i].prefix);
+-					Main.item[num5].stack = miscDyes[i].stack;
+ 					Main.item[num5].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  					Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num5].noGrabDelay = 100;
- 					Main.item[num5].newAndShiny = false;
-+					Main.item[num5].ModItem = miscDyes[i].ModItem;
-+					Main.item[num5].globalItems = miscDyes[i].globalItems;
- 					if (Main.netMode == 1)
- 						NetMessage.SendData(21, -1, -1, null, num5);
- 				}
 @@ -37795,12 +_,26 @@
  				miscDyes[i].TurnToAir();
  			}

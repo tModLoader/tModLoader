@@ -1015,6 +1015,20 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
+@@ -46344,6 +_,13 @@
+ 			item.SetDefaults(Type);
+ 			item.Prefix(pfix);
+ 			item.stack = Stack;
++
++			return Item.NewItem_Inner(num, source, X, Y, Width, Height, item, noBroadcast, noGrabDelay);
++		}
++		
++		private static int NewItem_Inner(int num, IEntitySource source, int X, int Y, int Width, int Height, Item item, bool noBroadcast = false, bool noGrabDelay = false) {
++			int Type = item.type;
++
+ 			item.position.X = X + Width / 2 - item.width / 2;
+ 			item.position.Y = Y + Height / 2 - item.height / 2;
+ 			item.wet = Collision.WetCollision(item.position, item.width, item.height);
 @@ -46363,6 +_,8 @@
  			if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
  				item.newAndShiny = true;
