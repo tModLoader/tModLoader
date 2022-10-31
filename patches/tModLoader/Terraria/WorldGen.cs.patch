@@ -1112,6 +1112,31 @@
  					TileFrame(num7, num8);
  				}
  			}
+@@ -32104,6 +_,16 @@
+ 		}
+ 
+ 		public static void GetCactusType(int tileX, int tileY, int frameX, int frameY, out bool evil, out bool good, out bool crimson) {
++			GetCactusType(tileX, tileY, frameX, frameY, out evil, out good, out crimson, out _);
++		}
++
++		public static void GetCactusType(int tileX, int tileY, int frameX, int frameY, out int type) {
++			GetCactusType(tileX, tileY, frameX, frameY, out _, out _, out _, out type);
++		}
++
++		public static void GetCactusType(int tileX, int tileY, int frameX, int frameY, out bool evil, out bool good, out bool crimson, out int type) {
++			type = 0;
++
+ 			evil = false;
+ 			good = false;
+ 			crimson = false;
+@@ -32137,6 +_,7 @@
+ 				tile = Main.tile[num, num2];
+ 			}
+ 
++			type = tile.type;
+ 			if (tile.type == 112)
+ 				evil = true;
+ 
 @@ -32332,6 +_,9 @@
  				if (!flag)
  					return;

@@ -101,12 +101,16 @@
  				int num2 = 9;
  				int typeOfPylon = (int)info.TypeOfPylon;
  				int number = 0;
-@@ -185,17 +_,25 @@
+@@ -185,17 +_,30 @@
  			}
  		}
  
--		public static bool IsPlayerNearAPylon(Player player) => player.IsTileTypeInInteractionRange(597, TileReachCheckSettings.Pylons);
-+		public static bool IsPlayerNearAPylon(Player player) => TileID.Sets.CountsAsPylon.Any(player.IsTileTypeInInteractionRange);
++		/*
+ 		public static bool IsPlayerNearAPylon(Player player) => player.IsTileTypeInInteractionRange(597, TileReachCheckSettings.Pylons);
++		*/
++
++		public static bool IsPlayerNearAPylon(Player player)
++			=> TileID.Sets.CountsAsPylon.Any(id => player.IsTileTypeInInteractionRange(id, TileReachCheckSettings.Pylons));
  
  		private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
 +			if (PylonLoader.ValidTeleportCheck_PreNPCCount(info, ref necessaryNPCCount) is bool value)

@@ -28,7 +28,6 @@
 		/// Only survives while in liquid
 		/// </summary>
 		public const short BreatheBubble = 34;
-		public const short Ash = 36;
 		public const short Obsidian = 37;
 		public const short Mud = 38;
 		public const short JungleGrass = 39;
@@ -140,7 +139,6 @@
 		public const short Water_Crimson = 123;
 		public const short SandstormInABottle = 124;
 		public const short Shadewood = 126;
-		public const short Flare = 127;
 		public const short Chlorophyte = 128;
 		public const short Rope = 129;
 		public const short Firework_Red = 130;

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -592,14 +593,8 @@ namespace Terraria.ModLoader.IO
 		internal static void EraseWorld(string path, bool cloudSave) {
 			path = Path.ChangeExtension(path, ".twld");
 			if (!cloudSave) {
-				if (OperatingSystem.IsWindows()) {
-					FileOperationAPIWrapper.MoveToRecycleBin(path);
-					FileOperationAPIWrapper.MoveToRecycleBin(path + ".bak");
-				}
-				else {
-					File.Delete(path);
-					File.Delete(path + ".bak");
-				}
+				Platform.Get<IPathService>().MoveToRecycleBin(path);
+				Platform.Get<IPathService>().MoveToRecycleBin(path + ".bak");
 			}
 			else if (SocialAPI.Cloud != null) {
 				SocialAPI.Cloud.Delete(path);

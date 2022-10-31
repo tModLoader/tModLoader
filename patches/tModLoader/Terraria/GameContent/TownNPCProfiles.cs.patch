@@ -7,7 +7,7 @@
  
  namespace Terraria.GameContent
  {
-@@ -83,7 +_,19 @@
+@@ -83,12 +_,24 @@
  			{ 684, new Profiles.LegacyNPCProfile("Images/TownNPCs/SlimeCopper", 53) }		};
  		public static TownNPCProfiles Instance = new TownNPCProfiles();
  
@@ -28,3 +28,9 @@
  		public static ITownNPCProfile LegacyWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniquePartyTexture = true, bool uniquePartyTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.LegacyNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, includeDefault: true, uniquePartyTexture), new Profiles.LegacyNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, includeDefault: true, uniquePartyTextureShimmered));
  		public static ITownNPCProfile TransformableWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniqueCreditTexture = true, bool uniqueCreditTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.TransformableNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, uniqueCreditTexture), new Profiles.TransformableNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, uniqueCreditTextureShimmered));
  
+ 		public static int GetHeadIndexSafe(NPC npc) {
+-			if (Instance.GetProfile(npc.type, out ITownNPCProfile profile))
++			if (Instance.GetProfile(npc, out ITownNPCProfile profile))
+ 				return profile.GetHeadTextureIndex(npc);
+ 
+ 			return NPC.TypeToDefaultHeadIndex(npc.type);

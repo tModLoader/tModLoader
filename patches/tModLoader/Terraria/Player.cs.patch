@@ -205,8 +205,8 @@
 +		internal ref StatModifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref StatModifier magicDamage => ref GetDamage(DamageClass.Magic);
 +		internal ref StatModifier rangedDamage => ref GetDamage(DamageClass.Ranged);
-+		internal ref float rangedMultDamage => ref GetDamage(DamageClass.Ranged).multiplicative;
-+		internal float arrowDamageAdditiveStack => ref arrowDamage.multiplicative;
++		//public float rangedMultDamage = 1;
++		private ref StatModifier arrowDamageAdditiveStack => ref arrowDamage;
 +		public StatModifier arrowDamage = StatModifier.Default;
 +		public StatModifier bulletDamage = StatModifier.Default;
 +		public StatModifier rocketDamage = StatModifier.Default;
@@ -261,6 +261,32 @@
  		public float luck;
  		public float luckMinimumCap = -0.7f;
  		public float luckMaximumCap = 1f;
+@@ -2074,11 +_,13 @@
+ 			}
+ 		}
+ 
++		/*
+ 		public float bowEffectiveDamage => (rangedDamage / rangedMultDamage + arrowDamageAdditiveStack) * rangedMultDamage * arrowDamage;
+ 
+ 		public float gunEffectiveDamage => rangedDamage * bulletDamage;
+ 
+ 		public float specialistEffectiveDamage => rangedDamage * rocketDamage;
++		*/
+ 
+ 		public bool ShouldNotDraw {
+ 			get {
+@@ -2135,7 +_,10 @@
+ 
+ 		public bool ItemTimeIsZero => itemTime == 0;
+ 
+-		public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax - 1;
++		/// <summary>
++		/// Returns true if the item animation is in its first frame.
++		/// </summary>
++		public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax/* - 1*/; //TML: #2351
+ 
+ 		public float NormalizedLuck {
+ 			get {
 @@ -2296,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -1490,6 +1516,15 @@
  
  			for (int num = 13; num < 20; num++) {
  				if (IsItemSlotUnlockedAndUsable(num))
+@@ -9417,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void GrantArmorBenefits(Item armorPiece) {
++		public void GrantArmorBenefits(Item armorPiece) {
+ 			int type = armorPiece.type;
+ 			RefreshInfoAccsFromItemType(type);
+ 			RefreshMechanicalAccsFromItemType(type);
 @@ -9591,6 +_,9 @@
  				armorPenetration += 5;
  
@@ -1752,14 +1787,18 @@
  				moveSpeed += 0.05f;
  			}
  
-@@ -10224,6 +_,7 @@
+@@ -10224,9 +_,10 @@
  				maxMinions++;
  				minionDamage += 0.11f;
  			}
 +			ItemLoader.UpdateEquip(armorPiece, this);
  		}
  
- 		private void GrantPrefixBenefits(Item item) {
+-		private void GrantPrefixBenefits(Item item) {
++		public void GrantPrefixBenefits(Item item) {
+ 			if (item.prefix == 62)
+ 				statDefense++;
+ 
 @@ -10243,43 +_,61 @@
  				statManaMax2 += 20;
  
@@ -2624,7 +2663,28 @@
  			wingTime = wingTimeMax;
  			rocketTime = rocketTimeMax;
  			rocketDelay = 0;
-@@ -18050,6 +_,9 @@
+@@ -18032,10 +_,10 @@
+ 			if (gravDir == -1f)
+ 				num2 = (int)(position.Y - 0.1f) / 16;
+ 
+-			Tile floorTile = GetFloorTile(num, num2);
++			Tile? floorTile = GetFloorTile(num, num2);
+ 			int num3 = -1;
+ 			if (floorTile != null)
+-				num3 = floorTile.type;
++				num3 = floorTile.Value.type;
+ 
+ 			if (num3 <= -1) {
+ 				ResetFloorFlags();
+@@ -18043,18 +_,21 @@
+ 			}
+ 
+ 			sticky = (num3 == 229);
+-			slippy = IsTileIceSkateSlippery(floorTile);
++			slippy = TileID.Sets.IceSkateSlippery[num3];
+ 			slippy2 = (num3 == 197);
+ 			powerrun = (num3 == 198);
+ 			runningOnSand = (TileID.Sets.Conversion.Sand[num3] || TileID.Sets.Conversion.Sandstone[num3] || TileID.Sets.Conversion.HardenedSand[num3]);
  			if (num3 == 666 && whoAmI == Main.myPlayer)
  				AddBuff(120, 180);
  
@@ -2633,6 +2693,23 @@
 +
  			if (Main.tile[num - 1, num2].slope() != 0 || Main.tile[num, num2].slope() != 0 || Main.tile[num + 1, num2].slope() != 0)
  				num3 = -1;
+ 
+ 			if (!wet && !mount.Cart)
+-				MakeFloorDust(Falling, num3, floorTile.color());
++				MakeFloorDust(Falling, num3, floorTile.Value.color());
+ 		}
+ 
+ 		public void ResetFloorFlags() {
+@@ -18065,8 +_,8 @@
+ 			runningOnSand = false;
+ 		}
+ 
+-		public static Tile GetFloorTile(int x, int y) {
++		public static Tile? GetFloorTile(int x, int y) {
+-			Tile result = null;
++			Tile? result = null;
+ 			if (Main.tile[x - 1, y] == null)
+ 				Main.tile[x - 1, y] = new Tile();
  
 @@ -18110,7 +_,7 @@
  					MovementVector = movementVector
@@ -3602,6 +3679,15 @@
  							if (buffType[k] == 10)
  								DelBuff(k);
  						}
+@@ -29070,7 +_,7 @@
+ 							if (damageSource.TryGetCausingEntity(out entity))
+ 								spawnSource = GetProjectileSource_OnHurt(entity, 1);
+ 
+-							int num4 = Projectile.NewProjectile(spawnSource, base.Center.X, base.Center.Y, 0f, 0f, 608, (int)(150f * meleeDamage), 15f, Main.myPlayer);
++							int num4 = Projectile.NewProjectile(spawnSource, base.Center.X, base.Center.Y, 0f, 0f, 608, (int)GetTotalDamage(DamageClass.Melee).ApplyTo(150f), 15f, Main.myPlayer);
+ 							Main.projectile[num4].netUpdate = true;
+ 							Main.projectile[num4].Kill();
+ 						}
 @@ -29080,7 +_,7 @@
  						float num5 = 0.15f * (float)beetleOrbs;
  						num2 = (int)((double)(1f - num5) * num2);
@@ -4069,6 +4155,20 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
+@@ -32591,10 +_,10 @@
+ 					controlUseItem = true;
+ 
+ 				if (!cursorItemIconEnabled && item.stack > 0 && item.fishingPole > 0) {
+-					Fishing_GetBait(out int _, out int baitType);
+-					if (baitType > 0) {
++					Fishing_GetBait(out var bait);
++					if (bait != null) {
+ 						cursorItemIconEnabled = true;
+-						cursorItemIconID = baitType;
++						cursorItemIconID = bait.type;
+ 						cursorItemIconPush = 6;
+ 					}
+ 				}
 @@ -32622,6 +_,54 @@
  				}
  			}

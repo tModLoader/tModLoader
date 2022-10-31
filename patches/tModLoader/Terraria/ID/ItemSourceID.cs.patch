@@ -13,7 +13,7 @@
  	{
  		public const int None = 0;
  		public const int SetBonus_Nebula = 1;
-@@ -13,5 +_,14 @@
+@@ -13,5 +_,18 @@
  		public const int Shimmer = 8;
  		public const int Digesting = 9;
  		public const int Count = 10;
@@ -23,6 +23,10 @@
 +			LuckyCoin => nameof(LuckyCoin),
 +			PlayerDropItemCheck => nameof(PlayerDropItemCheck),
 +			GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
++			SortingWithNoSpace => nameof(SortingWithNoSpace),
++			Shimmer => nameof(Shimmer),
++			Digesting => nameof(Digesting),
++
 +			PlayerDeath or TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_(Death and TorchGod)' being added.
 +			_ => null,
 +		};

@@ -21,8 +21,10 @@ namespace Terraria.GameContent.Creative
 			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))
 				return 0;
 
-			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(type, out int amountSacrificed);
+			Main.LocalPlayerCreativeTracker.ItemSacrifices._sacrificesCountByItemIdCache.TryGetValue(type, out int amountSacrificed);
+
 			fullyResearched = amountSacrificed >= amountNeeded;
+
 			return amountSacrificed;
 		}
 
@@ -35,7 +37,8 @@ namespace Terraria.GameContent.Creative
 			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))
 				return null;
 
-			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(type, out int amountSacrificed);
+			Main.LocalPlayerCreativeTracker.ItemSacrifices._sacrificesCountByItemIdCache.TryGetValue(type, out int amountSacrificed);
+
 			return Utils.Clamp(amountNeeded - amountSacrificed, 0, amountNeeded);
 		}
 	}

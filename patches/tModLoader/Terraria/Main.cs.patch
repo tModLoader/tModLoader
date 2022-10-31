@@ -4866,6 +4866,15 @@
  				else
  					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
  			}
+@@ -51498,7 +_,7 @@
+ 			Vector2 origin = value3.Size() / 2f;
+ 			if (theStar.falling) {
+ 				theStar.fadeIn = 0f;
+-				int num8 = theStar.fallTime;
++				double num8 = theStar.fallTime;
+ 				float num9 = 30f;
+ 				if ((float)num8 > num9)
+ 					num8 = (int)num9;
 @@ -51535,6 +_,8 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);

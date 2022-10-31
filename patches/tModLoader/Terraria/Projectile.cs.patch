@@ -903,6 +903,37 @@
  									float num992 = Distance(new Vector2(num989 * 16 + 8, num990 * 16 + 8));
  									if (num992 < num985 || num985 == -1f) {
  										num985 = num992;
+@@ -28181,8 +_,11 @@
+ 					NetMessage.SendData(32, -1, -1, null, chestIndex, num);
+ 			}
+ 
++			//TML: Added context below
++			const string Context = "GasTrap";
++
+ 			if (!flag)
+-				Item.NewItem(pos: new Vector2(theChest.x * 16 + gasOffsetX, theChest.y * 16 + gasOffsetY), source: new EntitySource_OverfullChest(theChest.x, theChest.y, theChest), randomBox: Vector2.One, Type: 5356);
++				Item.NewItem(pos: new Vector2(theChest.x * 16 + gasOffsetX, theChest.y * 16 + gasOffsetY), source: new EntitySource_OverfullChest(theChest.x, theChest.y, theChest, Context), randomBox: Vector2.One, Type: 5356);
+ 		}
+ 
+ 		private void AI_111_DryadsWard() {
+@@ -28767,7 +_,7 @@
+ 
+ 		private void AI_190_NightsEdge() {
+ 			if (localAI[0] == 0f && type == 984) {
+-				SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound(SoundID.Item60, base.position);
++				SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound((SoundStyle?)SoundID.Item60, base.position);
+ 				if (soundEffectInstance != null)
+ 					soundEffectInstance.Volume *= 0.65f;
+ 			}
+@@ -28890,7 +_,7 @@
+ 		private void AI_188_LightsBane() {
+ 			if (soundDelay == 0) {
+ 				soundDelay = -1;
+-				SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound(SoundID.Item60, base.Center);
++				SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound((SoundStyle?)SoundID.Item60, base.Center);
+ 				if (soundEffectInstance != null)
+ 					soundEffectInstance.Volume *= 0.15f * ai[0];
+ 			}
 @@ -29214,7 +_,7 @@
  			}
  

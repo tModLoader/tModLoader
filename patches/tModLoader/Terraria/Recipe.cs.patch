@@ -310,7 +310,7 @@
  					Item item = recipe.requiredItem[j];
  					if (item.type == 0)
  						break;
-@@ -584,6 +_,8 @@
+@@ -584,14 +_,17 @@
  			RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
  			rec = new RecipeGroup(() => "replaceme pressureplate", 852, 543, 542, 541, 1151, 529, 853, 4261);
  			RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PressurePlate", rec);
@@ -319,6 +319,17 @@
  		}
  
  		public static void UpdateItemVariants() {
+ 			for (int i = 0; i < maxRecipes; i++) {
+ 				Recipe obj = Main.recipe[i];
+ 				obj.createItem.Refresh();
++
+-				Item[] array = obj.requiredItem;
++				var array = obj.requiredItem;
+-				for (int j = 0; j < array.Length; j++) {
++				for (int j = 0; j < array.Count; j++) {
+ 					array[j].Refresh();
+ 				}
+ 			}
 @@ -14462,11 +_,16 @@
  			AddRecipe();
  			CreateReverseWallRecipes();

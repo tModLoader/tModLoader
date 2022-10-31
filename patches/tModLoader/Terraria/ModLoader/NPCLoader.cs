@@ -937,12 +937,11 @@ namespace Terraria.ModLoader
 			return npc;
 		}
 
-		public static void CanTownNPCSpawn(int numTownNPCs, int money) {
+		public static void CanTownNPCSpawn(int numTownNPCs) {
 			foreach (ModNPC modNPC in npcs) {
 				var npc = modNPC.NPC;
 
-				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) &&
-					modNPC.CanTownNPCSpawn(numTownNPCs, money)) {
+				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) && modNPC.CanTownNPCSpawn(numTownNPCs)) {
 
 					Main.townNPCCanSpawn[npc.type] = true;
 
@@ -971,13 +970,15 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyTypeName(NPC npc, ref string typeName);
 		private static HookList HookModifyTypeName = AddHook<DelegateModifyTypeName>(g => g.ModifyTypeName);
-		public static void ModifyTypeName(NPC npc, ref string typeName) {
+		public static string ModifyTypeName(NPC npc, string typeName) {
 			if (npc.ModNPC != null)
 				npc.ModNPC.ModifyTypeName(ref typeName);
 
 			foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
 				g.ModifyTypeName(npc, ref typeName);
 			}
+
+			return typeName;
 		}
 
 		private delegate void DelegateModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox);
@@ -1009,20 +1010,19 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
-		public static bool CanChat(NPC npc, bool vanillaCanChat) {
-			bool defaultCanChat = npc.ModNPC?.CanChat() ?? vanillaCanChat;
+		public static bool? CanChat(NPC npc) {
+			bool? ret = npc.ModNPC?.CanChat();
 
 			foreach (GlobalNPC g in HookCanChat.Enumerate(npc.globalNPCs)) {
-				bool? canChat = g.CanChat(npc);
-				if (canChat.HasValue) {
-					if (!canChat.Value) {
+				if (g.CanChat(npc) is bool canChat) {
+					if (!canChat) {
 						return false;
 					}
-					defaultCanChat = true;
+					ret = true;
 				}
 			}
 
-			return defaultCanChat;
+			return ret;
 		}
 
 		private delegate void DelegateGetChat(NPC npc, ref string chat);

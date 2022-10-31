@@ -77,7 +77,9 @@ namespace Terraria.ModLoader
 		/// Player.VanillaUpdateEquips(FunctionalItem), Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals), Player.ApplyEquipVanity(VanityItem)
 		/// </summary>
 		public virtual void ApplyEquipEffects() {
-			Player.VanillaUpdateEquip(FunctionalItem);
+			if (FunctionalItem.accessory)
+				Player.GrantPrefixBenefits(FunctionalItem);
+
 			Player.ApplyEquipFunctional(FunctionalItem, HideVisuals);
 			Player.ApplyEquipVanity(VanityItem);
 		}

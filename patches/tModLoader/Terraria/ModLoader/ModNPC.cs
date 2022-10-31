@@ -567,9 +567,8 @@ namespace Terraria.ModLoader
 		/// Whether or not the conditions have been met for this town NPC to be able to move into town. For example, the Demolitionist requires that any player has an explosive.
 		/// </summary>
 		/// <param name="numTownNPCs"></param>
-		/// <param name="money"></param>
 		/// <returns></returns>
-		public virtual bool CanTownNPCSpawn(int numTownNPCs, int money) {
+		public virtual bool CanTownNPCSpawn(int numTownNPCs) {
 			return false;
 		}
 

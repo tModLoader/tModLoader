@@ -100,7 +100,7 @@ namespace Terraria.ModLoader.Default
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 			for (int k = 0; k < SlotCount; k++) {
-				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
+				if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
 					Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
 				}
 			}
@@ -113,7 +113,7 @@ namespace Terraria.ModLoader.Default
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 			for (int k = 0; k < SlotCount; k++) {
-				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
+				if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
 					var vanitySlot = k + SlotCount;
 					if (!Player.ItemIsVisuallyIncompatible(exAccessorySlot[vanitySlot]))
 						Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
@@ -129,7 +129,7 @@ namespace Terraria.ModLoader.Default
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 			for (int i = 0; i < SlotCount * 2; i++) {
-				if (loader.ModdedIsAValidEquipmentSlotForIteration(i, Player)) {
+				if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
 					int num = i % exDyesAccessory.Length;
 					Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
 				}
@@ -143,7 +143,7 @@ namespace Terraria.ModLoader.Default
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 			for (int k = 0; k < SlotCount; k++) {
-				if (loader.ModdedIsAValidEquipmentSlotForIteration(k, Player)) {
+				if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
 					loader.CustomUpdateEquips(k, Player);
 				}
 			}
@@ -154,7 +154,7 @@ namespace Terraria.ModLoader.Default
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 			var pos = Player.position + Player.Size / 2;
 			for (int i = 0; i < SlotCount; i++) {
-				if (loader.ModdedIsAValidEquipmentSlotForIteration(i, Player)) {
+				if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
 					Player.DropItem(itemSource, pos, ref exAccessorySlot[i]);
 					Player.DropItem(itemSource, pos, ref exAccessorySlot[i + SlotCount]);
 					Player.DropItem(itemSource, pos, ref exDyesAccessory[i]);

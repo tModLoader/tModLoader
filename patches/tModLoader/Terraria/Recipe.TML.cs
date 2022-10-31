@@ -205,7 +205,7 @@ namespace Terraria
 		/// <param name="stack"></param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
-			AddGroup(recipeGroup.ID);
+			AddGroup(recipeGroup.RegisteredId);
 
 			return this;
 		}

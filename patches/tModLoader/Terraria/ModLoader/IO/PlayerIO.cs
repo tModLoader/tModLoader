@@ -113,18 +113,22 @@ namespace Terraria.ModLoader.IO
 
 		public static List<TagCompound> SaveResearch(Player player) {
 			var list = new List<TagCompound>();
-			var dictionary = new Dictionary<int, int>(player.creativeTracker.ItemSacrifices.SacrificesCountByItemIdCache);
+			var dictionary = new Dictionary<int, int>(player.creativeTracker.ItemSacrifices._sacrificesCountByItemIdCache);
+
 			foreach (var item in dictionary) {
 				ModItem modItem = ItemLoader.GetItem(item.Key);
+
 				if (modItem != null) {
 					TagCompound tag = new TagCompound {
 						["mod"] = modItem.Mod.Name,
 						["name"] = modItem.Name,
 						["sacrificeCount"] = item.Value
 					};
+
 					list.Add(tag);
 				}
 			}
+
 			return list.Count > 0 ? list : null;
 		}
 
@@ -143,7 +147,7 @@ namespace Terraria.ModLoader.IO
 					int sacrificeCount = tag.GetInt("sacrificeCount");
 					var itemSacrifices = player.creativeTracker.ItemSacrifices;
 					itemSacrifices._sacrificeCountByItemPersistentId[persistentId] = sacrificeCount;
-					itemSacrifices.SacrificesCountByItemIdCache[netId] = sacrificeCount;
+					itemSacrifices._sacrificesCountByItemIdCache[netId] = sacrificeCount;
 				}
 				else {
 					player.GetModPlayer<UnloadedPlayer>().unloadedResearch.Add(tag);

@@ -14,7 +14,7 @@ namespace Terraria.UI
 
 			//TML: Check if there is an empty slot available in functional slots, and if not, track the last available slot
 			for (int i = 3; i < 10; i++) {
-				if (player.IsAValidEquipmentSlotForIteration(i)) {
+				if (player.IsItemSlotUnlockedAndUsable(i)) {
 					if (player.armor[i].type == 0 && ItemLoader.CanEquipAccessory(item, i, false)) {
 						accSlotToSwapTo = i - 3;
 						break;
@@ -25,7 +25,7 @@ namespace Terraria.UI
 			//TML: Check our modded functional slots
 			if (accSlotToSwapTo < 0) {
 				for (int i = 0; i < accessories.Length / 2; i++) {
-					if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i, player)) {
+					if (accLoader.ModdedIsItemSlotUnlockedAndUsable(i, player)) {
 						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item, (int)Context.ModdedAccessorySlot) && ItemLoader.CanEquipAccessory(item, i, true)) {
 							accSlotToSwapTo = i + 20;
 							break;

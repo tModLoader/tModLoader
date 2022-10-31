@@ -23,10 +23,12 @@
  			_remoteAddress = null;
  			_connection.Close();
  		}
-@@ -68,7 +_,13 @@
+@@ -68,7 +_,15 @@
  				tuple = (Tuple<SocketSendCallback, object>)obj[0];
  			}
  
++			(var state, var size) = ((object, int))tuple.Item2;
++			tuple = Tuple.Create(tuple.Item1, state);
 +			if (ModNet.DetailedLogging)
 +				ModNet.Debug(_remoteAddress, $"sent {size}");
 +
@@ -37,7 +39,7 @@
  				_connection.GetStream().EndWrite(result);
  				tuple.Item1(tuple.Item2);
  			}
-@@ -81,6 +_,14 @@
+@@ -81,6 +_,17 @@
  		}
  
  		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
@@ -48,6 +50,9 @@
 +
 +			if (ModNet.DetailedLogging)
 +				ModNet.Debug(_remoteAddress, $"send {size}");
++
++			// tML, for debugging
++			state = (state, size);
 +
  			if (!Platform.IsWindows) {
  				byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);

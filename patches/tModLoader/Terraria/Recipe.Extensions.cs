@@ -47,7 +47,7 @@ namespace Terraria
 			return HasRecipeGroup(id);
 		}
 
-		public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.ID);
+		public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.RegisteredId);
 
 		public bool HasTile(int tileID) => requiredTile.Contains(tileID);
 

@@ -139,7 +139,7 @@
 +					break;
 +				case 80:
 +				case 227:
-+					GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out bool evil, out bool good, out bool crimson, out int sandType);
++					WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
 +
 +					if (!TileLoader.CanGrowModCactus(sandType))
 +						break;
@@ -174,7 +174,7 @@
 +					break;
 +				case 80:
 +				case 227:
-+					GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out bool evil, out bool good, out bool crimson, out int sandType);
++					WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
 +
 +					if (!TileLoader.CanGrowModCactus(sandType))
 +						break;

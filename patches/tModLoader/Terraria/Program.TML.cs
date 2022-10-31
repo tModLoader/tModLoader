@@ -13,7 +13,6 @@ namespace Terraria
 {
 	public static partial class Program
 	{
-		public static string SavePath { get; private set; } // Moved from Main to avoid triggering the Main static constructor before logging initializes
 		public static string SavePathShared { get; private set; } // Points to the Stable tModLoader save folder, used for Mod Sources only currently
 
 		private static IEnumerable<MethodInfo> GetAllMethods(Type type) {

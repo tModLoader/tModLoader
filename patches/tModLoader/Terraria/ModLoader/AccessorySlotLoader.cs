@@ -161,11 +161,11 @@ namespace Terraria.ModLoader
 			bool flag4 = false;
 
 			if (modded) {
-				flag3 = !ModdedIsAValidEquipmentSlotForIteration(slot, Player);
+				flag3 = !ModdedIsItemSlotUnlockedAndUsable(slot, Player);
 				flag4 = !ModdedCanSlotBeShown(slot);
 			}
 			else {
-				flag3 = !Player.IsAValidEquipmentSlotForIteration(slot);
+				flag3 = !Player.IsItemSlotUnlockedAndUsable(slot);
 				if (slot == 8) {
 					flag4 = (slot == 8) && !Player.CanDemonHeartAccessoryBeShown();
 				}
@@ -417,7 +417,7 @@ namespace Terraria.ModLoader
 
 		public AccessorySlotType ContextToEnum(int context) => (AccessorySlotType)Math.Abs(context);
 
-		public bool ModdedIsAValidEquipmentSlotForIteration(int index, Player player) => Get(index, player).IsEnabled();
+		public bool ModdedIsItemSlotUnlockedAndUsable(int index, Player player) => Get(index, player).IsEnabled();
 
 		public void CustomUpdateEquips(int index, Player player) => Get(index, player).ApplyEquipEffects();
 
@@ -443,7 +443,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo) {
 			for (int num = ModSlotPlayer(Player).SlotCount - 1; num >= 0; num--) {
-				if (ModdedIsAValidEquipmentSlotForIteration(num, Player)) {
+				if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
 					if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
 						accSlotToSwapTo = num + 20;
 					}
@@ -458,7 +458,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool PreferredGolfBall(ref int projType) {
 			for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
-				if (ModdedIsAValidEquipmentSlotForIteration(num, Player)) {
+				if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
 					Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
 					if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 						projType = item2.shoot;

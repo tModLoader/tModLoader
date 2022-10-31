@@ -195,7 +195,7 @@
  						BitsByte bitsByte2 = (byte)0;
  						BitsByte bitsByte3 = (byte)0;
 -						Tile tile = null;
-+						Tile tile4 = default;
++						Tile tile = default;
  						for (int k = num2; k < num2 + num4; k++) {
  							for (int l = num3; l < num3 + num5; l++) {
  								if (Main.tile[k, l] == null)

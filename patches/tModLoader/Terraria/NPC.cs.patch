@@ -235,7 +235,7 @@
 +		/// Type names are the base titles given to any NPC, and are typically shared amongst all instances of an NPC. For example, the Stylist's type name will always be "Stylist".<br/>
 +		/// To modify the type name of a specific NPC, make use of the ModifyTypeName hooks in <see cref="GlobalNPC"/> and <see cref="ModLoader.ModNPC"/>, according to your needs.<br/>
 +		/// </summary>
-+		public string TypeName => NPCLoader.GetTypeName(this, Lang.GetNPCNameValue(netID));
++		public string TypeName => NPCLoader.ModifyTypeName(this, Lang.GetNPCNameValue(netID));
  
 +		/// <summary>
 +		/// The FULL name of this NPC.<br/>
@@ -546,6 +546,15 @@
  			if (spawnparams.sizeScaleOverride.HasValue) {
  				int num3 = (int)((float)width * scale);
  				int num4 = (int)((float)height * scale);
+@@ -10802,7 +_,7 @@
+ 				friendly = true;
+ 			}
+ 
+-			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData.Value, spawnparams.strengthMultiplierOverride);
+ 			life = lifeMax;
+ 		}
+ 
 @@ -11439,6 +_,7 @@
  				}
  			}
@@ -554,6 +563,16 @@
  			defDefense = defense;
  			defDamage = damage;
  			life = lifeMax;
+@@ -11803,7 +_,8 @@
+ 			if (flag)
+ 				value2 = vector;
+ 
++			//TML: Added context
+-			Projectile.NewProjectile(new EntitySource_DebugCommand(), value2 + value, Vector2.Zero, 995, 0, 0f, Main.myPlayer);
++			Projectile.NewProjectile(new EntitySource_DebugCommand("DryadStardewAnimation"), value2 + value, Vector2.Zero, 995, 0, 0f, Main.myPlayer);
+ 		}
+ 
+ 		private void AI_047_GolemFist() {
 @@ -12258,6 +_,18 @@
  		}
  
@@ -964,6 +983,15 @@
  			int num2 = 0;
  			if (aiAction == 0)
  				num2 = ((velocity.Y < 0f) ? 2 : ((velocity.Y > 0f) ? 3 : ((velocity.X != 0f) ? 1 : 0)));
+@@ -51232,7 +_,7 @@
+ 				case 684: {
+ 						int num231 = isLikeATownNPC ? NPCID.Sets.ExtraFramesCount[type] : 0;
+ 						bool flag11 = NPCID.Sets.IsTownSlime[type];
+-						if (false && !Main.dedServ && TownNPCProfiles.Instance.GetProfile(type, out ITownNPCProfile profile)) {
++						if (false && !Main.dedServ && TownNPCProfiles.Instance.GetProfile(this, out ITownNPCProfile profile)) {
+ 							Asset<Texture2D> textureNPCShouldUse = profile.GetTextureNPCShouldUse(this);
+ 							if (textureNPCShouldUse.IsLoaded) {
+ 								num = textureNPCShouldUse.Height() / Main.npcFrameCount[type];
 @@ -57920,7 +_,10 @@
  					if (Main.tile[x, y].type == 467)
  						number2 = 5;
@@ -1005,7 +1033,15 @@
  			noSpawnCycle = true;
  			if (townNPC && type != 37 && type != 453) {
  				if (Main.netMode != 2)
-@@ -58519,6 +_,7 @@
+@@ -58512,13 +_,14 @@
+ 			if (townNPC && Main.netMode != 1 && homeless && WorldGen.prioritizedTownNPCType == type)
+ 				WorldGen.prioritizedTownNPCType = 0;
+ 
+-			LegacySoundStyle legacySoundStyle = DeathSound;
++			var legacySoundStyle = DeathSound;
+ 			if (type == 229 && IsShimmerVariant)
+ 				legacySoundStyle = SoundID.NPCDeath6;
+ 
  			if (legacySoundStyle != null)
  				SoundEngine.PlaySound(legacySoundStyle, base.position);
  
@@ -1359,6 +1395,15 @@
  					nPC.townNpcVariationIndex = profile.RollVariation();
  					nPC.GivenName = profile.GetNameForVariant(nPC);
  				}
+@@ -64104,7 +_,7 @@
+ 		}
+ 
+ 		public bool RerollVariation() {
+-			if (!TownNPCProfiles.Instance.GetProfile(type, out ITownNPCProfile profile))
++			if (!TownNPCProfiles.Instance.GetProfile(this, out ITownNPCProfile profile))
+ 				return false;
+ 
+ 			int num = townNpcVariationIndex;
 @@ -64325,12 +_,16 @@
  				return 0.0;
  

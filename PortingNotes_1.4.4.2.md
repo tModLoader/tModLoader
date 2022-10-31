@@ -1,8 +1,6 @@
 # TODOs
 
-## Etc.
-
-- Check pylon hooks for player.InInteractionRange/IsTileTypeInInteractionRange and new TileReachCheckSettings.Pylons param
+## General
 
 - Axe of regrowth needs a lookup to the sapling type of a given modtree
 
@@ -84,20 +82,28 @@
 - `Item.PopulateMaterialCache()` do we need this anymore?
 - do we need to clone `notDecraftable`
 
+## ItemCreationContexts.cs:
+- Merge with the new `Terraria.DataStructures.ItemCreationContext`.
+- Adjust `Main.CraftItem`, `Item.OnCreated(ItemCreationContext)`, `RecipeLoader.OnCraft(...)` accordingly.
+
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.
 - Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets
 - Remove `TileLoader.MineDamage` it had a weird 1.2 factor in there.
-	
+
 ## tModPorter:
-- MessageID.SendNPCBuffs -> NPCBuffs
-- MessageID.Unlock -> LockAndUnlock
-- MessageID.StartPlaying -> InitialSpawn
-- MessageID.SpawnBoss -> SpawnBossUseLicenseStartEvent
-- MessageID.Teleport -> TeleportEntity
+- `ModSystem.ModifyWorldGenTasks`'s `totalWeight` parameter changed from `float` to `double`.
+- `MessageID.SendNPCBuffs -> NPCBuffs`
+- `MessageID.Unlock -> LockAndUnlock`
+- `MessageID.StartPlaying -> InitialSpawn`
+- `MessageID.SpawnBoss -> SpawnBossUseLicenseStartEvent`
+- `MessageID.Teleport -> TeleportEntity`
+- `Player.IsAValidEquipmentSlotForIteration -> IsItemSlotUnlockedAndUsable`
+- `Player.VanillaUpdateEquip` is now split into `GrantPrefixBenefits` and `GrantArmorBenefits`
+	- Note: `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
+- `ModNPC.CanTownNPCSpawn` - `money` param removed. Copy the implementation of `NPC.SpawnAllowed_Merchant` in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick.
 
 ## WorldGen.cs:
-- `GetCactusType` add `, out int type`, set to `type = Main.tile[num, num2].type;` near end
 - TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`
 - Publicize pretty much every field? A huge patch with that had to be deleted.
 - Comment on Convert needs to be updated for new biome types, `BiomeConversionID` now exists

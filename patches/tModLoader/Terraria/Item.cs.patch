@@ -363,6 +363,20 @@
  
  		public ItemVariant Variant {
  			get;
+@@ -279,7 +_,13 @@
+ 			}
+ 		}
+ 
++		/*
+ 		public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
++		*/
++
++		// Internal redirect
++		internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
++
+ 		public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
+ 
+ 		private bool CanHavePrefixes() {
 @@ -304,6 +_,10 @@
  				return false;
  
@@ -724,7 +738,7 @@
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47202,11 +_,12 @@
+@@ -47202,18 +_,20 @@
  				maxStack = CommonMaxStack;
  
  			netID = type;
@@ -738,6 +752,15 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
+ 			}
+ 		}
+ 
++		//TODO: This is a temporary patch, Terraria.ModLoader.ItemCreationContext needs to be merged into the new vanilla type.
+-		public void OnCreated(ItemCreationContext context) {
++		public void OnCreated(Terraria.DataStructures.ItemCreationContext context) {
+ 			if (type == 5437)
+ 				SetDefaults(5358);
+ 		}
 @@ -47221,14 +_,27 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;

@@ -32,6 +32,8 @@ public readonly partial struct Tile
 	internal bool halfBrick() => IsHalfBlock;
 	internal void halfBrick(bool halfBrick) => IsHalfBlock = halfBrick;
 
+	internal bool HasSameSlope(Tile tile) => Slope == tile.Slope;
+
 	// Framing
 
 	internal ref short frameX => ref TileFrameX;

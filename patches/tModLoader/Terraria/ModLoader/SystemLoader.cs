@@ -377,7 +377,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
+		public static void ModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight) {
 			foreach (var system in HookModifyWorldGenTasks.arr) {
 				try {
 					system.ModifyWorldGenTasks(passes, ref totalWeight);

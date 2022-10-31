@@ -8,6 +8,16 @@
  
  namespace Terraria.GameContent
  {
+@@ -25,7 +_,8 @@
+ 		}
+ 
+ 		public bool TryGetSittingBlock(Player player, out Tile tile) {
+-			tile = null;
++			tile = default;
++
+ 			if (!isSitting)
+ 				return false;
+ 
 @@ -257,7 +_,18 @@
  					}
  			}
