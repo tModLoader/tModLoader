@@ -44,6 +44,8 @@ var class_terraria_1_1_player =
     [ "PickAmmo", "class_terraria_1_1_player.html#a0ca7bc7c39cf2642cdf95bafec66bfc4", null ],
     [ "QuickSpawnClonedItem", "class_terraria_1_1_player.html#ac8e5c39660c6e962f59e3c43d6a60b3d", null ],
     [ "QuickSpawnClonedItemDirect", "class_terraria_1_1_player.html#a5ed1223475e699eadfd5f32afc4bd915", null ],
+    [ "QuickSpawnItem", "class_terraria_1_1_player.html#a7616aec29b372f7e4415764ff39f15ed", null ],
+    [ "QuickSpawnItem", "class_terraria_1_1_player.html#a8450e80a28c5e987708b06fb38a162f1", null ],
     [ "QuickSpawnItemDirect", "class_terraria_1_1_player.html#afea62f497a7c045d77f74f037fd96333", null ],
     [ "QuickSpawnItemDirect", "class_terraria_1_1_player.html#a17d2abd5c4b7970f1d2cd2e54644ad4d", null ],
     [ "TryGetModPlayer< T >", "class_terraria_1_1_player.html#aca88704e73774f4fd62591ae800dd963", null ],

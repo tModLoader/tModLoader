@@ -915,8 +915,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuickMount</b> ()</td
 <tr class="memitem:a5ed1223475e699eadfd5f32afc4bd915"><td class="memItemLeft" align="right" valign="top"><a id="a5ed1223475e699eadfd5f32afc4bd915" name="a5ed1223475e699eadfd5f32afc4bd915"></a>
 <a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickSpawnClonedItemDirect</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, int stack=1)</td></tr>
 <tr class="separator:a5ed1223475e699eadfd5f32afc4bd915"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7616aec29b372f7e4415764ff39f15ed"><td class="memItemLeft" align="right" valign="top"><a id="a7616aec29b372f7e4415764ff39f15ed" name="a7616aec29b372f7e4415764ff39f15ed"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>QuickSpawnItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int item, int stack=1)</td></tr>
+<tr class="memitem:a7616aec29b372f7e4415764ff39f15ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a7616aec29b372f7e4415764ff39f15ed">QuickSpawnItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int item, int stack=1)</td></tr>
+<tr class="memdesc:a7616aec29b372f7e4415764ff39f15ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an item into the world at this players position. This is a simpler alternative to <a class="el" href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055" title="Spawns an item into the game world with the given type and stack size. The X, Y, Width,...">Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)</a>. This method can be called from multiplayer client code without necessitating manually syncing the item. <br  />
+ Use <a class="el" href="class_terraria_1_1_player.html#ac8e5c39660c6e962f59e3c43d6a60b3d" title="Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)">QuickSpawnClonedItem(IEntitySource, Item, int)</a> if a specific instance of an <a class="el" href="class_terraria_1_1_item.html">Item</a> needs to be spawned into the world to preserve modded data.  <a href="class_terraria_1_1_player.html#a7616aec29b372f7e4415764ff39f15ed">More...</a><br /></td></tr>
 <tr class="separator:a7616aec29b372f7e4415764ff39f15ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8450e80a28c5e987708b06fb38a162f1"><td class="memItemLeft" align="right" valign="top"><a id="a8450e80a28c5e987708b06fb38a162f1" name="a8450e80a28c5e987708b06fb38a162f1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>QuickSpawnItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, int stack=1)</td></tr>
@@ -5569,6 +5570,52 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7616aec29b372f7e4415764ff39f15ed" name="a7616aec29b372f7e4415764ff39f15ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7616aec29b372f7e4415764ff39f15ed">&#9670;&nbsp;</a></span>QuickSpawnItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.QuickSpawnItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>stack</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spawns an item into the world at this players position. This is a simpler alternative to <a class="el" href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055" title="Spawns an item into the game world with the given type and stack size. The X, Y, Width,...">Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)</a>. This method can be called from multiplayer client code without necessitating manually syncing the item. <br  />
+ Use <a class="el" href="class_terraria_1_1_player.html#ac8e5c39660c6e962f59e3c43d6a60b3d" title="Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)">QuickSpawnClonedItem(IEntitySource, Item, int)</a> if a specific instance of an <a class="el" href="class_terraria_1_1_item.html">Item</a> needs to be spawned into the world to preserve modded data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td></td></tr>
+    <tr><td class="paramname">item</td><td></td></tr>
+    <tr><td class="paramname">stack</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the item within Main.item</dd></dl>
 
 </div>
 </div>
