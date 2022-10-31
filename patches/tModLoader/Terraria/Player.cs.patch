@@ -5724,7 +5724,7 @@
  			fileIO.Write(newPlayer.voidVaultInfo);
  			for (int num5 = 0; num5 < 44; num5++) {
 -				if (Main.buffNoSave[newPlayer.buffType[num5]]) {
-+				if (Main.buffNoSave[newPlayer.buffType[num5]] || true) {// don't save buffs to vanilla player
++				if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {// don't save buffs to vanilla player
  					fileIO.Write(0);
  					fileIO.Write(0);
  				}
@@ -5756,6 +5756,26 @@
  			catch {
  			}
  
+@@ -41564,11 +_,18 @@
+ 			_visualCloneStream.Seek(0L, SeekOrigin.Begin);
+ 			Serialize(_visualCloneDummyData, this, _visualCloneWriter);
+ 			_visualCloneStream.Seek(0L, SeekOrigin.Begin);
+-			Deserialize(_visualCloneDummyData, player, _visualCloneReader, 271, out bool _);
++			Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), 271, out bool _);
+ 			return player;
+ 		}
+ 
+ 		private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName) {
++			if (!PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
++				tag = null;
++
++			Deserialize(data, newPlayer, fileIO, tag, release, out gotToReadName);
++		}
++
++		private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName) {
+ 			gotToReadName = false;
+ 			newPlayer.name = fileIO.ReadString();
+ 			gotToReadName = true;
 @@ -41632,11 +_,20 @@
  
  			newPlayer.statMana = fileIO.ReadInt32();
@@ -5781,8 +5801,8 @@
  				}
  			}
  
-+			if (PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
-+				PlayerIO.Load(newPlayer, tag);
++			if (modData != null)
++				PlayerIO.Load(newPlayer, modData);
 +
  			LoadPlayer_LastMinuteFixes(newPlayer);
  		}

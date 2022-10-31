@@ -88,7 +88,6 @@
 - Remove `TileLoader.MineDamage` it had a weird 1.2 factor in there.
 
 ## tModPorter:
-- `ModSystem.ModifyWorldGenTasks`'s `totalWeight` parameter changed from `float` to `double`.
 - `MessageID.SendNPCBuffs -> NPCBuffs`
 - `MessageID.Unlock -> LockAndUnlock`
 - `MessageID.StartPlaying -> InitialSpawn`
@@ -101,6 +100,7 @@
 - `Player.IsAValidEquipmentSlotForIteration -> IsItemSlotUnlockedAndUsable`
 - `Player.VanillaUpdateEquip` is now split into `GrantPrefixBenefits` and `GrantArmorBenefits`
 	- Note: `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
+- `ModSystem.ModifyWorldGenTasks` - `totalWeight` parameter changed from `float` to `double`.
 - `ModNPC.CanTownNPCSpawn` - `money` param removed. Copy the implementation of `NPC.SpawnAllowed_Merchant` in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick.
 
 ## WorldGen.cs:
