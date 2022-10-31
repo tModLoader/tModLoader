@@ -39,7 +39,6 @@
 ## Player
 - Add hook for `RefreshInfoAccsFromItemType`
 - Add `ItemLoader.ConsumeItem` check to `QuickHeal` and `QuickMana`
-- Check `LoadPlayer_LastMinuteFixes`, we completely copy this method (bad) and there's no need for the extra `playerFileData` parameter and we're missing `pStone` check
 - Move `OnHit` and `ModifyHit` into `CombinedHooks`
 - Check implementation of `rangedMultDamage` and `arrowDamageAdditiveStack`
 - `summonerWeaponSpeedBonus`? Is this a class specific weapon bonus. What about `whipUseTimeMultiplier`?

@@ -5777,27 +5777,39 @@
  
  			if (release >= 125)
  				newPlayer.extraAccessory = fileIO.ReadBoolean();
-@@ -42035,7 +_,7 @@
+@@ -42035,6 +_,9 @@
  				}
  			}
  
--			LoadPlayer_LastMinuteFixes(newPlayer);
-+			LoadPlayer_LastMinuteFixes(player, playerFileData);
- 		}
- 
- 		private static void AdjustRespawnTimerForWorldJoining(Player newPlayer) {
-@@ -42089,9 +_,13 @@
- 			}
- 		}
- 
--		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
- 			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
-+			if(PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tag))
++			if (PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
 +				PlayerIO.Load(newPlayer, tag);
++
+ 			LoadPlayer_LastMinuteFixes(newPlayer);
+ 		}
+ 
+@@ -42091,7 +_,25 @@
+ 
+ 		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
+ 			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
++
  			for (int i = 3; i < 10; i++) {
-+				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
-+				/*
++				LoadPlayer_LastMinuteFixes(newPlayer, newPlayer.armor[i]);
++			}
++
++			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
++			for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
++				LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.exAccessorySlot[i]);
++			}
++
++			LoadPlayer_Finish(newPlayer);
++		}
++
++		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, Item item) {
++			var armor = newPlayer.armor;
++			newPlayer.armor = new[] {item};
++			int i = 0;
++
++			{
  				int type = newPlayer.armor[i].type;
  				if (type == 908 || type == 5000)
  					newPlayer.lavaMax += 420;
@@ -5813,21 +5825,16 @@
  
  				if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
  					newPlayer.noFallDmg = true;
-@@ -42109,9 +_,17 @@
- 					newPlayer.pStone = true;
- 
+@@ -42111,7 +_,12 @@
  				newPlayer.lavaTime = newPlayer.lavaMax;
-+				*/
  			}
  
++			newPlayer.armor = armor;
++		}
++
++		private static void LoadPlayer_Finish(Player newPlayer) {
  			newPlayer.FixLoadedData();
-+
-+			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
-+			for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
-+				LoadPlayer_LastMinuteFixes(modSlotPlayer.exAccessorySlot[i], newPlayer);
-+			}
-+
-+			newPlayer.ResetEffects();
++			newPlayer.ResetEffects(); // Added by tML, makes sure player is ready to go!
  		}
  
  		public static PlayerFileData GetFileData(string file, bool cloudSave) {
