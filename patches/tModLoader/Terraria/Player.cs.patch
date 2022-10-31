@@ -856,7 +856,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
-@@ -4009,21 +_,42 @@
+@@ -4009,21 +_,50 @@
  					}
  				default: {
  						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
@@ -871,6 +871,14 @@
  		}
  
 +		// Return value added by TML.
++		/// <summary>
++		/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
++		/// <br/> Use <see cref="QuickSpawnClonedItem(IEntitySource, Item, int)"/> if a specific instance of an Item needs to be spawned into the world to preserve modded data.
++		/// </summary>
++		/// <param name="source"></param>
++		/// <param name="item"></param>
++		/// <param name="stack"></param>
++		/// <returns>The index of the item within <see cref="Main.item"/></returns>
 -		public void QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
 +		public int QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
  			int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);

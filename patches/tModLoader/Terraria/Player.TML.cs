@@ -137,6 +137,7 @@ namespace Terraria
 			return index;
 		}
 
+		/// <inheritdoc cref="QuickSpawnItem(IEntitySource, int, int)"/>
 		public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
 			=> QuickSpawnItem(source, item.type, stack);
 
