@@ -95,6 +95,10 @@
 - `MessageID.StartPlaying -> InitialSpawn`
 - `MessageID.SpawnBoss -> SpawnBossUseLicenseStartEvent`
 - `MessageID.Teleport -> TeleportEntity`
+- `ModBossBar.ModifyInfo` params changed, `lifePercent` and `shieldPercent` split into `life, lifeMax` and `shield, shieldMax` respectively.
+- `BossBarDrawParams`
+	- `LifePercentToShow -> Life / LifeMax`
+	- `ShieldPercentToShow -> Shield / ShieldMax`
 - `Player.IsAValidEquipmentSlotForIteration -> IsItemSlotUnlockedAndUsable`
 - `Player.VanillaUpdateEquip` is now split into `GrantPrefixBenefits` and `GrantArmorBenefits`
 	- Note: `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.

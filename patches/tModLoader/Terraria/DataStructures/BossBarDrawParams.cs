@@ -35,39 +35,53 @@ namespace Terraria.DataStructures
 		public Color IconColor;
 
 		/// <summary>
-		/// The % the bar should be filled with.
+		/// The current life of the boss
 		/// </summary>
-		public float LifePercentToShow;
+		public float Life;
 
 		/// <summary>
-		/// The % the shield bar should be filled with. Defaults to 0f (no shield drawn).
+		/// The max life of the boss (the amount it spawned with)
 		/// </summary>
-		public float ShieldPercentToShow;
+		public float LifeMax;
+
+		/// <summary>
+		/// The current shield of the boss
+		/// </summary>
+		public float Shield;
+
+		/// <summary>
+		/// The max shield of the boss (may be 0 if the boss has no shield)
+		/// </summary>
+		public float ShieldMax;
 
 		/// <summary>
 		/// The scale the icon is drawn with. Defaults to 1f, modify if icon is bigger or smaller than 26x28.
 		/// </summary>
 		public float IconScale;
 
-		public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float lifePercentToShow, float shieldPercentToShow = 0f, float iconScale = 1f) {
+		public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield = 0f, float shieldMax = 0f, float iconScale = 1f) {
 			BarTexture = barTexture;
 			BarCenter = barCenter;
 			IconTexture = iconTexture;
 			IconFrame = iconFrame;
 			IconColor = iconColor;
-			LifePercentToShow = lifePercentToShow;
-			ShieldPercentToShow = shieldPercentToShow;
+			Life = life;
+			LifeMax = lifeMax;
+			Shield = shield;
+			ShieldMax = shieldMax;
 			IconScale = iconScale;
 		}
 
-		public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float lifePercentToShow, out float shieldPercentToShow, out float iconScale) {
+		public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale) {
 			barTexture = BarTexture;
 			barCenter = BarCenter;
 			iconTexture = IconTexture;
 			iconFrame = IconFrame;
 			iconColor = IconColor;
-			lifePercentToShow = LifePercentToShow;
-			shieldPercentToShow = ShieldPercentToShow;
+			life = Life;
+			lifeMax = LifeMax;
+			shield = Shield;
+			shieldMax = ShieldMax;
 			iconScale = IconScale;
 		}
 	}

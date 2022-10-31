@@ -15,7 +15,7 @@
  		public static void DrawFancyBar(SpriteBatch spriteBatch, float lifeAmount, float lifeMax, Texture2D barIconTexture, Rectangle barIconFrame) {
 +			if (BossBarLoader.drawingInfo.HasValue) {
 +				//Code of the shieldPercent overload is nearly identical
-+				DrawFancyBar(spriteBatch, lifePercent, barIconTexture, barIconFrame, 0f);
++				DrawFancyBar(spriteBatch, lifeAmount, lifeMax, barIconTexture, barIconFrame, shieldCurrent: 0, shieldMax: 0);
 +				return;
 +			}
 +
@@ -35,7 +35,7 @@
 +				Color iconColor = Color.White;
 +				float iconScale = 1f;
 +
-+				BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifePercent, shieldPercent, iconScale);
++				BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, shieldCurrent, shieldMax, iconScale);
 +
 +				bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
 +				if (!skipped)
@@ -49,3 +49,14 @@
  			Point p = new Point(456, 22);
  			Point p2 = new Point(32, 24);
  			int verticalFrames = 6;
+@@ -107,8 +_,10 @@
+ 			spriteBatch.Draw(value, vector, value2, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(value, rectangle.TopLeft(), value3, Color.White, 0f, Vector2.Zero, new Vector2(num2 / value3.Width, 1f), SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(value, rectangle.TopLeft() + new Vector2(num2 - 2, 0f), value4, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++			if (shieldMax <= 0) goto skipShield;
+ 			spriteBatch.Draw(value, rectangle.TopLeft(), value5, Color.White, 0f, Vector2.Zero, new Vector2(num4 / value5.Width, 1f), SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(value, rectangle.TopLeft() + new Vector2(num4 - 2, 0f), value6, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++			skipShield:
+ 			Rectangle value7 = value.Frame(1, verticalFrames);
+ 			spriteBatch.Draw(value, vector, value7, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 			Vector2 value8 = new Vector2(4f, 20f) + barIconFrame.Size() / 2f;

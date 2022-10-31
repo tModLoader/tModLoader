@@ -230,7 +230,7 @@ namespace Terraria.ModLoader
 			//DrawFancyBar without shieldPercent gets redirected to DrawFancyBar with shieldPercent as 0f
 			//DrawFancyBar with shieldPercent gets redirected to this
 
-			(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float lifePercentToShow, float shieldPercentToShow, float iconScale) = drawParams;
+			(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield, float shieldMax, float iconScale) = drawParams;
 
 			Point barSize = new Point(456, 22); //Size of the bar
 			Point topLeftOffset = new Point(32, 24); //Where the top left of the bar starts
@@ -239,7 +239,7 @@ namespace Terraria.ModLoader
 			Rectangle bgFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 3);
 			Color bgColor = Color.White * 0.2f;
 
-			int scale = (int)(barSize.X * lifePercentToShow);
+			int scale = (int)(barSize.X * life / lifeMax);
 			scale -= scale % 2;
 			Rectangle barFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 2);
 			barFrame.X += topLeftOffset.X;
@@ -253,7 +253,7 @@ namespace Terraria.ModLoader
 			tipFrame.Width = 2;
 			tipFrame.Height = barSize.Y;
 
-			int shieldScale = (int)(barSize.X * shieldPercentToShow);
+			int shieldScale = (int)(barSize.X * shield / shieldMax);
 			shieldScale -= shieldScale % 2;
 
 			Rectangle barShieldFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 5);
@@ -284,7 +284,7 @@ namespace Terraria.ModLoader
 			spriteBatch.Draw(barTexture, barTopLeft + new Vector2(scale - 2, 0f), tipFrame, barColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
 			//Bar itself (shield)
-			if (shieldPercentToShow != 0f) {
+			if (shield > 0f) {
 				stretchScale = new Vector2(shieldScale / barFrame.Width, 1f);
 				spriteBatch.Draw(barTexture, barTopLeft, barShieldFrame, barColor, 0f, Vector2.Zero, stretchScale, SpriteEffects.None, 0f);
 

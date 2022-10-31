@@ -16,11 +16,17 @@ namespace Terraria.ModLoader
 	{
 		internal int index;
 
-		private float lifePercent;
-		public float LifePercent => lifePercent;
+		private float life;
+		public float Life => life;
 
-		private float shieldPercent;
-		public float ShieldPercent => shieldPercent;
+		private float lifeMax;
+		public float LifeMax => lifeMax;
+
+		private float shield;
+		public float Shield => shield;
+
+		private float shieldMax;
+		public float ShieldMax => shieldMax;
 
 		protected sealed override void Register() => BossBarLoader.AddBossBar(this);
 
@@ -40,10 +46,12 @@ namespace Terraria.ModLoader
 		/// <para>Return false to prevent this ModBossBar from being drawn so that the game will try to pick a different one.</para>
 		/// </summary>
 		/// <param name="info">Contains the index of the NPC the game decided to focus on</param>
-		/// <param name="lifePercent">The % the bar should be filled with</param>
-		/// <param name="shieldPercent">The % the bar should be filled with (shield)</param>
+		/// <param name="life">The current life of the boss</param>
+		/// <param name="lifeMax">The max (initial) life of the boss</param>
+		/// <param name="shield">The current shield of the boss</param>
+		/// <param name="shieldMax">The max shield for the boss (may be 0 if the boss has no shield)</param>
 		/// <returns><see langword="null"/> for "single-segment" NPC logic, <see langword="true"/> for allowing drawing, <see langword="false"/> for preventing drawing</returns>
-		public virtual bool? ModifyInfo(ref BigProgressBarInfo info, ref float lifePercent, ref float shieldPercent) => null;
+		public virtual bool? ModifyInfo(ref BigProgressBarInfo info, ref float life, ref float lifeMax, ref float shield, ref float shieldMax) => null;
 
 		/// <summary>
 		/// Allows you to draw things before the default draw code is ran. Return false to prevent drawing the ModBossBar. Returns true by default.
@@ -68,14 +76,15 @@ namespace Terraria.ModLoader
 				return false;
 
 			//No GlobalBossBar hook for this as info should not be modified from the outside
-			bool? modify = ModifyInfo(ref info, ref lifePercent, ref shieldPercent);
+			bool? modify = ModifyInfo(ref info, ref life, ref lifeMax, ref shield, ref shieldMax);
 			if (!modify.HasValue) {
 				NPC npc = Main.npc[info.npcIndexToAimAt];
 
 				if (!npc.active)
 					return false;
 
-				lifePercent = Utils.Clamp(npc.life / (float)npc.lifeMax, 0f, 1f);
+				life = Utils.Clamp(npc.life, 0f, npc.lifeMax);
+				lifeMax = npc.lifeMax;
 
 				return true;
 			}
@@ -89,7 +98,7 @@ namespace Terraria.ModLoader
 			iconFrame ??= iconTexture.Frame();
 
 			//TML handles modifying draw parameters inside of it
-			BigProgressBarHelper.DrawFancyBar(spriteBatch, lifePercent, iconTexture, iconFrame.Value, shieldPercent);
+			BigProgressBarHelper.DrawFancyBar(spriteBatch, life, lifeMax, iconTexture, iconFrame.Value, shield, shieldMax);
 		}
 	}
 }
