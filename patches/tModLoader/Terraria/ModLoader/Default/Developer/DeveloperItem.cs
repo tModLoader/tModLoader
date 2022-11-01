@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.GameContent.Creative;
 
 namespace Terraria.ModLoader.Default.Developer
 {
@@ -14,6 +15,7 @@ namespace Terraria.ModLoader.Default.Developer
 			string displayName = Name.Replace('_', ' ');
 			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
