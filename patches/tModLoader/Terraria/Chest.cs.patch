@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -8,6 +_,7 @@
+@@ -8,10 +_,11 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
@@ -8,6 +8,11 @@
  
  namespace Terraria
  {
+-	public class Chest
++	public partial class Chest
+ 	{
+ 		public const float chestStackRange = 250f;
+ 		public const int maxChestTypes = 52;
 @@ -193,12 +_,15 @@
  			return list;
  		}
@@ -147,7 +152,7 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -902,9 +_,12 @@
+@@ -902,15 +_,18 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -160,6 +165,13 @@
  		}
  
  		public void SetupShop(int type) {
+ 			bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
+ 			Item[] array = item;
+-			for (int i = 0; i < 40; i++) {
++			/*for (int i = 0; i < 40; i++) {
+ 				array[i] = new Item();
+ 			}
+ 
 @@ -2015,12 +_,12 @@
  						num++;
  						array[num].SetDefaults(1979);
@@ -175,11 +187,16 @@
  							array[num].SetDefaults(1978);
  							num++;
  						}
-@@ -2611,6 +_,7 @@
- 					array[num++].SetDefaults(4921);
- 			}
+@@ -2609,9 +_,10 @@
  
-+			NPCLoader.SetupShop(type, this, ref num);
- 			for (int num13 = 0; num13 < num; num13++) {
+ 				if (Main.player[Main.myPlayer].ZoneGlowshroom && num < 39)
+ 					array[num++].SetDefaults(4921);
+-			}
++			}*/
+ 
++			array = ReSetupShop(out int slots, type);
+-			for (int num13 = 0; num13 < num; num13++) {
++			for (int num13 = 0; num13 < slots; num13++) {
  				array[num13].isAShopItem = true;
  			}
+ 		}

@@ -1090,8 +1090,10 @@ namespace Terraria.ModLoader
 		}
 
 		private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
+		[Obsolete]
 		private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
 
+		[Obsolete]
 		public static void SetupShop(int type, Chest shop, ref int nextSlot) {
 			if (type < shopToNPC.Length) {
 				type = shopToNPC[type];
@@ -1101,6 +1103,26 @@ namespace Terraria.ModLoader
 			}
 			foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
 				g.SetupShop(type, shop, ref nextSlot);
+			}
+		}
+
+
+		private delegate void DelegateSetupShopNew(int type, ChestLoot chestLoot);
+		private static HookList HookSetupShopNew = AddHook<DelegateSetupShopNew>(g => g.SetupShop);
+		private static HookList HookPostSetupShop = AddHook<DelegateSetupShopNew>(g => g.PostSetupShop);
+
+		public static void SetupShop(int type, ChestLoot chestLoot) {
+			if (type < shopToNPC.Length) {
+				type = shopToNPC[type];
+			}
+			else {
+				GetNPC(type)?.SetupShop(chestLoot);
+			}
+			foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
+				g.SetupShop(type, chestLoot);
+			}
+			foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
+				g.PostSetupShop(type, chestLoot);
 			}
 		}
 
