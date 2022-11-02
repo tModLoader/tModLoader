@@ -1,17 +1,20 @@
-﻿using ExampleMod.Items.ExampleDamageClass;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.UI;
-using static Terraria.ModLoader.ModContent;
+using ExampleMod.Common.Players;
+using ExampleMod.Content.Items.Weapons;
+using Terraria.GameContent;
+using System.Collections.Generic;
 
-namespace ExampleMod.UI
+namespace ExampleMod.Common.UI.ExampleResourceUI
 {
 	internal class ExampleResourceBar : UIState
 	{
 		// For this bar we'll be using a frame texture and then a gradient inside bar, as it's one of the more simpler approaches while still looking decent.
-		// Once this is all set up make sure to go and do the required stuff for most UI's in the Mod class.
+		// Once this is all set up make sure to go and do the required stuff for most UI's in the ModSystem class.
 		private UIText text;
 		private UIElement area;
 		private UIImage barFrame;
@@ -20,14 +23,14 @@ namespace ExampleMod.UI
 
 		public override void OnInitialize() {
 			// Create a UIElement for all the elements to sit on top of, this simplifies the numbers as nested elements can be positioned relative to the top left corner of this element. 
-			// UIElement is invisible and has no padding. You can use a UIPanel if you wish for a background.
+			// UIElement is invisible and has no padding.
 			area = new UIElement();
 			area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
 			area.Top.Set(30, 0f); // Placing it just a bit below the top of the screen.
 			area.Width.Set(182, 0f); // We will be placing the following 2 UIElements within this 182x60 area.
 			area.Height.Set(60, 0f);
 
-			barFrame = new UIImage(GetTexture("ExampleMod/UI/ExampleResourceFrame"));
+			barFrame = new UIImage(ModContent.Request<Texture2D>("ExampleMod/Common/UI/ExampleResourceUI/ExampleResourceFrame")); // Frame of our resource bar
 			barFrame.Left.Set(22, 0f);
 			barFrame.Top.Set(0, 0f);
 			barFrame.Width.Set(138, 0f);
@@ -48,17 +51,18 @@ namespace ExampleMod.UI
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
-			// This prevents drawing unless we are using an ExampleDamageItem
-			if (!(Main.LocalPlayer.HeldItem.modItem is ExampleDamageItem))
+			// This prevents drawing unless we are using an ExampleCustomResourceWeapon
+			if (Main.LocalPlayer.HeldItem.ModItem is not ExampleCustomResourceWeapon)
 				return;
 
 			base.Draw(spriteBatch);
 		}
 
+		// Here we draw our UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 
-			var modPlayer = Main.LocalPlayer.GetModPlayer<ExampleDamagePlayer>();
+			var modPlayer = Main.LocalPlayer.GetModPlayer<ExampleResourcePlayer>();
 			// Calculate quotient
 			float quotient = (float)modPlayer.exampleResourceCurrent / modPlayer.exampleResourceMax2; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
 			quotient = Utils.Clamp(quotient, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
@@ -75,19 +79,54 @@ namespace ExampleMod.UI
 			int right = hitbox.Right;
 			int steps = (int)((right - left) * quotient);
 			for (int i = 0; i < steps; i += 1) {
-				//float percent = (float)i / steps; // Alternate Gradient Approach
+				// float percent = (float)i / steps; // Alternate Gradient Approach
 				float percent = (float)i / (right - left);
-				spriteBatch.Draw(Main.magicPixel, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
 			}
 		}
+
 		public override void Update(GameTime gameTime) {
-			if (!(Main.LocalPlayer.HeldItem.modItem is ExampleDamageItem))
+			if (Main.LocalPlayer.HeldItem.ModItem is not ExampleCustomResourceWeapon)
 				return;
 
-			var modPlayer = Main.LocalPlayer.GetModPlayer<ExampleDamagePlayer>();
+			var modPlayer = Main.LocalPlayer.GetModPlayer<ExampleResourcePlayer>();
 			// Setting the text per tick to update and show our resource values.
 			text.SetText($"Example Resource: {modPlayer.exampleResourceCurrent} / {modPlayer.exampleResourceMax2}");
 			base.Update(gameTime);
+		}
+	}
+
+	class ExampleResourseUISystem : ModSystem
+	{
+		private UserInterface ExampleResourceBarUserInterface;
+
+		internal ExampleResourceBar ExampleResourceBar;
+
+		public override void Load() {
+			// All code below runs only if we're not loading on a server
+			if (!Main.dedServ) {
+				ExampleResourceBar = new();
+				ExampleResourceBarUserInterface = new();
+				ExampleResourceBarUserInterface.SetState(ExampleResourceBar);
+			}
+		}
+
+		public override void UpdateUI(GameTime gameTime) {
+			ExampleResourceBarUserInterface?.Update(gameTime);
+		}
+
+		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
+			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+			if (resourceBarIndex != -1) {
+				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
+					"ExampleMod: Example Resource Bar",
+					delegate {
+						ExampleResourceBarUserInterface.Draw(Main.spriteBatch, new GameTime());
+						return true;
+					},
+					InterfaceScaleType.UI)
+				);
+			}
 		}
 	}
 }
