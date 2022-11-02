@@ -89,6 +89,7 @@
 
 ## Porting Notes:
 - `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
+- `ModWaterStyle` now requires an additional texture, `_Slope`. See `ExampleWaterStyle` for details.
 
 ## WorldGen.cs:
 - TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`
