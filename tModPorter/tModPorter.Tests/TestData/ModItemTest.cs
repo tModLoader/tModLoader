@@ -16,6 +16,7 @@ public class ModItemTest : ModItem
 
 #if COMPILE_ERROR
 		Console.WriteLine(item.IsCandidateForReforge);
+		item.CloneWithModdedDataFrom(item);
 #endif
 	}
 

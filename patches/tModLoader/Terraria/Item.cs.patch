@@ -1063,7 +1063,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -49079,17 +_,43 @@
+@@ -49079,17 +_,30 @@
  			}
  		}
  
@@ -1077,19 +1077,6 @@
 +			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
 +				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(this, newItem)))
-+				.ToArray();
-+
-+			return newItem;
-+		}
-+
-+		// clones the item, but copies over the data from another data source
-+		// specifically needed for reforging
-+		public Item CloneWithModdedDataFrom(Item dataSource) {
-+			Item newItem = (Item)MemberwiseClone();
-+
-+			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
-+			newItem.globalItems = dataSource.globalItems
-+				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(dataSource, newItem)))
 +				.ToArray();
 +
 +			return newItem;
@@ -1139,3 +1126,25 @@
  				TurnToAir();
  		}
  
+@@ -49161,6 +_,7 @@
+ 
+ 		public void Refresh(bool onlyIfVariantChanged = true) {
+ 			if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
++				/*
+ 				bool flag = favorited;
+ 				int num = stack;
+ 				int num2 = netID;
+@@ -49169,6 +_,13 @@
+ 				Prefix(prefixWeWant);
+ 				stack = num;
+ 				favorited = flag;
++				*/
++
++				// TODO, could speed this up by reusing the memory stream, reader and writer, perhaps with a `ThreadLocalCache`?
++				using var ms = new MemoryStream(64);
++				ItemIO.Send(this, new BinaryWriter(ms), writeStack: true, writeFavorite: true);
++				ms.Position = 0;
++				ItemIO.Receive(this, new BinaryReader(ms), readStack: true, readFavorite: true);
+ 			}
+ 		}
+ 	}
