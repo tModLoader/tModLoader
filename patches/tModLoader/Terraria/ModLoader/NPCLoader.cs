@@ -1121,6 +1121,12 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
 				g.SetupShop(type, chestLoot);
 			}
+		}
+
+		public static void PostSetupShop(int type, ChestLoot chestLoot) {
+			if (type < shopToNPC.Length) {
+				type = shopToNPC[type];
+			}
 			foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
 				g.PostSetupShop(type, chestLoot);
 			}

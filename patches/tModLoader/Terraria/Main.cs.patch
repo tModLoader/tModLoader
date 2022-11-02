@@ -1142,6 +1142,16 @@
  			ClientInitialize();
  			base.Initialize();
  		}
+@@ -4993,6 +_,9 @@
+ 			ItemDropDatabase itemDropDatabase = new ItemDropDatabase();
+ 			itemDropDatabase.Populate();
+ 			ItemDropsDB = itemDropDatabase;
++			ChestLootDatabase chestLootDatabase = new();
++			chestLootDatabase.Initialize();
++			ChestLootDatabase = chestLootDatabase;
+ 			bestiaryDatabase.Merge(ItemDropsDB);
+ 			PylonSystem = new TeleportPylonsSystem();
+ 			ItemDropSolver = new ItemDropResolver(itemDropDatabase);
 @@ -8372,11 +_,18 @@
  		public static void LoadTestLog(string logname) {
  		}
