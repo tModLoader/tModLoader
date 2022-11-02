@@ -956,7 +956,7 @@
  					if (item.stack <= 0) {
  						item.SetDefaults();
  						item.active = false;
-@@ -46280,13 +_,47 @@
+@@ -46280,20 +_,61 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
  				default:
@@ -1003,9 +1003,13 @@
 +		/// <param name="reverseLookup"></param>
 +		/// <returns></returns>
  		public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
++			return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
++		}
++
++		private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
  			if (WorldGen.gen)
  				return 0;
-@@ -46294,6 +_,9 @@
+ 
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -1015,17 +1019,33 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
-@@ -46344,6 +_,13 @@
- 			item.SetDefaults(Type);
- 			item.Prefix(pfix);
- 			item.stack = Stack;
-+
-+			return Item.NewItem_Inner(num, source, X, Y, Width, Height, item, noBroadcast, noGrabDelay);
-+		}
-+		
-+		private static int NewItem_Inner(int num, IEntitySource source, int X, int Y, int Width, int Height, Item item, bool noBroadcast = false, bool noGrabDelay = false) {
-+			int Type = item.type;
-+
+@@ -46328,7 +_,7 @@
+ 					Type = 1868;
+ 			}
+ 
+-			if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
++			if (itemToClone != null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
+ 				cachedItemSpawnsByType[Type] += Stack;
+ 				return 400;
+ 			}
+@@ -46339,11 +_,16 @@
+ 				num = PickAnItemSlotToSpawnItemOn(reverseLookup, num);
+ 
+ 			Main.timeItemSlotCannotBeReusedFor[num] = 0;
+-			Main.item[num] = new Item();
++			Main.item[num] = itemToClone?.Clone() ?? new Item();
+ 			Item item = Main.item[num];
++			if (itemToClone == null) {
+-			item.SetDefaults(Type);
++				item.SetDefaults(Type);
+-			item.Prefix(pfix);
++				item.Prefix(pfix);
+-			item.stack = Stack;
++				item.stack = Stack;
++			}
++			else {
++				Type = itemToClone.type; // just to be safe if IL edits change type swaps and velocity tweaks.
++			}
  			item.position.X = X + Width / 2 - item.width / 2;
  			item.position.Y = Y + Height / 2 - item.height / 2;
  			item.wet = Collision.WetCollision(item.position, item.width, item.height);

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria.DataStructures;
@@ -177,28 +178,7 @@ namespace Terraria
 		/// <br/><br/>This particular overload uses an Item instead of just the item type. All modded data will be preserved.
 		/// </summary>
 		public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, Item item, bool noBroadcast = false, bool noGrabDelay = false, bool reverseLookup = false) {
-			int Type = item.type;
-
-			if (WorldGen.gen)
-				return 0;
-
-			if (Main.rand == null)
-				Main.rand = new UnifiedRandom();
-
-			if (NPCLoader.blockLoot.Contains(Type))
-				return Main.maxItems;
-
-			// cachedItemSpawnsByType feature deliberately omitted from this NewItem
-
-			Main.item[400] = new Item();
-			int num = 400;
-			if (Main.netMode != 1)
-				num = PickAnItemSlotToSpawnItemOn(reverseLookup, num);
-
-			Main.timeItemSlotCannotBeReusedFor[num] = 0;
-			Main.item[num] = item.Clone();
-
-			return Item.NewItem_Inner(num, source, X, Y, Width, Height, Main.item[num], noBroadcast, noGrabDelay);
+			return Item.NewItem_Inner(source, X, Y, Width, Height, item, item.type, item.stack, noBroadcast, item.prefix, noGrabDelay, reverseLookup);
 		}
 
 		/// <summary>
