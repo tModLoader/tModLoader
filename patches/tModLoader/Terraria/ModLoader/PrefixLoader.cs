@@ -10,12 +10,12 @@ namespace Terraria.ModLoader
 	{
 		// TODO storing twice? could see a better implementation
 		internal static readonly IList<ModPrefix> prefixes = new List<ModPrefix>();
-		internal static readonly IDictionary<PrefixCategory, IList<ModPrefix>> categoryPrefixes;
+		internal static readonly IDictionary<PrefixCategory, List<ModPrefix>> categoryPrefixes;
 
 		public static int PrefixCount { get; private set; } = PrefixID.Count;
 
 		static PrefixLoader() {
-			categoryPrefixes = new Dictionary<PrefixCategory, IList<ModPrefix>>();
+			categoryPrefixes = new Dictionary<PrefixCategory, List<ModPrefix>>();
 
 			foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
 				categoryPrefixes[category] = new List<ModPrefix>();
@@ -44,8 +44,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns a list of all modded prefixes of a certain category.
 		/// </summary>
-		public static List<ModPrefix> GetPrefixesInCategory(PrefixCategory category)
-			=> new List<ModPrefix>(categoryPrefixes[category]);
+		public static IReadOnlyList<ModPrefix> GetPrefixesInCategory(PrefixCategory category)
+			=> categoryPrefixes[category];
 
 		internal static void ResizeArrays()
 			=> Array.Resize(ref Lang.prefix, PrefixCount);
@@ -60,22 +60,66 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.
-		/// </summary>
-		public static void Roll(Item item, ref int prefix, int vanillaWeight, UnifiedRandom unifiedRandom, params PrefixCategory[] categories) {
+		public static bool CanRoll(Item item, int prefix) {
+			if (!ItemLoader.AllowPrefix(item, prefix))
+				return false;
+
+			if (GetPrefix(prefix) is ModPrefix modPrefix) {
+				if (!modPrefix.CanRoll(item))
+					return false;
+
+				if (modPrefix.Category is PrefixCategory.Custom)
+					return true;
+
+				return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || itemCategory == PrefixCategory.AnyWeapon && IsWeaponSubCategory(modPrefix.Category));
+			}
+
+			if (item.GetPrefixCategory() is PrefixCategory category) {
+				if (Item.GetVanillaPrefixes(category).Contains(prefix))
+					return true;
+			}
+
+			return false;
+		}
+
+		public static bool Roll(Item item, UnifiedRandom unifiedRandom, out int prefix, bool justCheck) {
+			if (ItemLoader.ChoosePrefix(item, unifiedRandom) is int forcedPrefix && forcedPrefix > 0 && CanRoll(item, forcedPrefix)) {
+				prefix = forcedPrefix;
+				return true;
+			}
+
+			prefix = 0;
 			var wr = new WeightedRandom<int>(unifiedRandom);
 
-			foreach (PrefixCategory category in categories) {
+			void AddCategory(PrefixCategory category) {
 				foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
 					wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 				}
 			}
 
-			if (vanillaWeight > 0)
-				wr.Add((byte)prefix, vanillaWeight);
+			if (item.GetPrefixCategory() is not PrefixCategory category)
+				return false;
 
-			prefix = wr.Get();
+			if (justCheck)
+				return true; // if it has a category, there are probably prefixes in that category...
+
+			foreach (int pre in Item.GetVanillaPrefixes(category))
+				wr.Add(pre, 1);
+
+			AddCategory(category);
+			if (IsWeaponSubCategory(category))
+				AddCategory(PrefixCategory.AnyWeapon);
+
+			// try 50 times
+			for (int i = 0; i < 50; i ++) {
+				prefix = wr.Get();
+				if (ItemLoader.AllowPrefix(item, prefix))
+					return true;
+			}
+
+			return false;
 		}
+
+		public static bool IsWeaponSubCategory(PrefixCategory category) => category is PrefixCategory.Melee || category is PrefixCategory.Ranged || category is PrefixCategory.Magic;
 	}
 }

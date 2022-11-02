@@ -74,11 +74,6 @@ namespace Terraria
 		/// </summary>
 		public bool StopAnimationOnHurt { get; set; }
 
-		/// <summary>
-		/// Used to make stackable items reforgeable
-		/// </summary>
-		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
-
 		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.

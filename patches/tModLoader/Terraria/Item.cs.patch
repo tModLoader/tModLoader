@@ -363,7 +363,7 @@
  
  		public ItemVariant Variant {
  			get;
-@@ -279,7 +_,13 @@
+@@ -279,10 +_,17 @@
  			}
  		}
  
@@ -376,56 +376,80 @@
 +
  		public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
  
- 		private bool CanHavePrefixes() {
-@@ -304,6 +_,10 @@
+-		private bool CanHavePrefixes() {
++		public bool CanHavePrefixes() {
++			/*
+ 			if (type != 0 && maxStack == 1) {
+ 				if (damage <= 0)
+ 					return accessory;
+@@ -291,6 +_,13 @@
+ 			}
+ 
+ 			return false;
++			*/
++
++			return type != 0
++				&& ItemID.Sets.CanGetPrefixes[type]
++				&& (maxStack == 1 || AllowReforgeForStackableItem)
++				&& ammo == 0
++				&& (damage > 0 || IsAPrefixableAccessory());
+ 		}
+ 
+ 		public bool Prefix(int prefixWeWant) {
+@@ -303,7 +_,14 @@
+ 			if (!CanHavePrefixes())
  				return false;
  
++			if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
++				return false;
++
  			UnifiedRandom unifiedRandom = WorldGen.gen ? WorldGen.genRand : Main.rand;
 +			bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
-+			if (!applyPrefixOverride ?? false)
++			if (applyPrefixOverride is false)
 +				return false;
 +
  			int rolledPrefix = prefixWeWant;
  			float dmg = 1f;
  			float kb = 1f;
-@@ -315,7 +_,7 @@
+@@ -315,12 +_,16 @@
  			bool flag = true;
  			while (flag) {
  				flag = false;
 -				if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
-+				if (rolledPrefix == -1 && unifiedRandom.NextBool(4) && !(applyPrefixOverride ?? false))
- 					rolledPrefix = 0;
+-					rolledPrefix = 0;
++				if (applyPrefixOverride is true) { } else
++				if (rolledPrefix == -1 && unifiedRandom.NextBool(4))
++					return true;
  
  				if (prefixWeWant < -1)
-@@ -328,7 +_,7 @@
+ 					rolledPrefix = -1;
+ 
++				if (prefixWeWant == -3) // faster check implementation than actually rolling.
++					return PrefixLoader.Roll(this, unifiedRandom, out _, justCheck: true);
++
+ 				if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
+ 					return false;
+ 
+@@ -328,8 +_,9 @@
  					case -3:
  						return true;
  					case -1:
--						if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && unifiedRandom.Next(3) != 0)
-+						if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && !(applyPrefixOverride ?? false) && !unifiedRandom.NextBool(3))
- 							rolledPrefix = 0;
++						if (applyPrefixOverride is true) { } else
+ 						if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && unifiedRandom.Next(3) != 0)
+-							rolledPrefix = 0;
++							return true;
  						break;
  				}
-@@ -338,11 +_,19 @@
- 					rolledPrefix = -1;
- 				}
  
-+				if (rolledPrefix >= PrefixID.Count)
-+					PrefixLoader.GetPrefix(rolledPrefix)?.ValidateItem(this, ref flag);
-+
- 				if (prefixWeWant == -2 && rolledPrefix == 0) {
- 					rolledPrefix = -1;
- 					flag = true;
+@@ -344,6 +_,8 @@
  				}
-+
-+				if (!flag && !ItemLoader.AllowPrefix(this, rolledPrefix))
-+					flag = true;
  			}
-+
-+			UndoItemAnimationCompensations();
  
++			UndoItemAnimationCompensations();
++
  			damage = (int)Math.Round((float)damage * dmg);
  			useAnimation = (int)Math.Round((float)useAnimation * spd);
+ 			useTime = (int)Math.Round((float)useTime * spd);
 @@ -353,6 +_,12 @@
  			scale *= size;
  			shootSpeed *= shtspd;
@@ -476,16 +500,95 @@
  			return true;
  		}
  
-@@ -700,6 +_,9 @@
+@@ -393,6 +_,7 @@
+ 			if (!CanHavePrefixes())
+ 				return false;
+ 
++			/*
+ 			int[] rollablePrefixes = GetRollablePrefixes();
+ 			if (rollablePrefixes == null)
+ 				return false;
+@@ -403,6 +_,9 @@
+ 			}
+ 
+ 			return false;
++			*/
++
++			return PrefixLoader.CanRoll(this, prefix);
+ 		}
+ 
+ 		public bool CanApplyPrefix(int prefix) {
+@@ -700,6 +_,12 @@
  					dmg = 1.05f;
  					crt = 2;
  					break;
-+				default:
-+					PrefixLoader.GetPrefix(rolledPrefix)?.SetStats(ref dmg, ref kb, ref spd, ref size, ref shtspd, ref mcst, ref crt);
++				case int pre when PrefixLoader.GetPrefix(pre) is ModPrefix modPrefix:
++					if (!modPrefix.AllStatChangesHaveEffectOn(this))
++						return false;
++
++					modPrefix.SetStats(ref dmg, ref kb, ref spd, ref size, ref shtspd, ref mcst, ref crt);
 +					break;
  			}
  
  			if (dmg != 1f && Math.Round((float)damage * dmg) == (double)damage)
+@@ -717,7 +_,7 @@
+ 			return true;
+ 		}
+ 
+-		public int[] GetRollablePrefixes() {
++		internal int[] GetRollablePrefixes() {
+ 			_ = type;
+ 			if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
+ 				return PrefixLegacy.Prefixes.PrefixesForSwords;
+@@ -743,13 +_,48 @@
+ 			return null;
+ 		}
+ 
++		// Added by tML
++		public PrefixCategory? GetPrefixCategory() {
++			if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
++				return PrefixCategory.Melee;
++			
++			if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
++				return PrefixCategory.Ranged;
++
++			if (PrefixLegacy.ItemSets.MagicAndSummon[type] || ItemLoader.MagicPrefix(this))
++				return PrefixCategory.Magic;
++
++			if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this))
++				return PrefixCategory.AnyWeapon;
++
++			if (IsAPrefixableAccessory())
++				return PrefixCategory.Accessory;
++
++			return null;
++		}
++
++		// Added by tML
++		public static int[] GetVanillaPrefixes(PrefixCategory category) => category switch {
++			PrefixCategory.Melee => PrefixLegacy.Prefixes.PrefixesForSwords,
++			PrefixCategory.Ranged => PrefixLegacy.Prefixes.PrefixesForGunsBows,
++			PrefixCategory.Magic => PrefixLegacy.Prefixes.PrefixesForMagicAndSummons,
++			PrefixCategory.AnyWeapon => PrefixLegacy.Prefixes.PrefixesForSpears,
++			PrefixCategory.Accessory => PrefixLegacy.Prefixes.PrefixesForAccessories,
++			_ => Array.Empty<int>(),
++		};
++
+ 		private bool RollAPrefix(UnifiedRandom random, ref int rolledPrefix) {
++			/*
+ 			int[] rollablePrefixes = GetRollablePrefixes();
+ 			if (rollablePrefixes == null)
+ 				return false;
+ 
+ 			rolledPrefix = rollablePrefixes[random.Next(rollablePrefixes.Length)];
++			
+ 			return true;
++			*/
++
++			return PrefixLoader.Roll(this, random, out rolledPrefix, justCheck: false);
+ 		}
+ 
+ 		public bool IsAPrefixableAccessory() {
 @@ -781,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  

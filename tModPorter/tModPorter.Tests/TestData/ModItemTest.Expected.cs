@@ -14,6 +14,10 @@ public class ModItemTest : ModItem
 		Item.accessory = true;
 		Console.Write(Item.accessory);
 		Item.useTime += 2;
+
+#if COMPILE_ERROR
+		Console.WriteLine(Item.IsCandidateForReforge/* tModPorter Note: Removed. Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable */);
+#endif
 	}
 
 #if COMPILE_ERROR

@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.ModLoader;
 
 public class ModPrefixTest : ModPrefix
 {
@@ -8,4 +9,6 @@ public class ModPrefixTest : ModPrefix
 		ModPrefix modPrefix = PrefixLoader.GetPrefix(Type);
 		modPrefix = PrefixLoader.GetPrefix(Type);
 	}
+
+	public override bool AllStatChangesHaveEffectOn(Item item) { }
 }

@@ -20,10 +20,6 @@
 - Remove `CanBurnInLava` hook
 - Remove `CloneWithModdedDataFrom`, investigate `ResetPrefix`
 - Check new `OnCreated` hook
-- Disable 'illegal prefix removal'?
-- Cleanup `applyPrefixOverride` patch, move `ValidateItem` into `TryGetPrefixStatMultipliersForItem`
-- Reimplement PrefixLoader.Roll
-- Adjust CanHavePrefixes to allow stackable items to be prefixed
 
 ## NPC
 - Remove `NPCHeadLoader.GetNPCFromHeadSlot`

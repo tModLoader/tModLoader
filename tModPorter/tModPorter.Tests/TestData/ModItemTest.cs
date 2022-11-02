@@ -13,6 +13,10 @@ public class ModItemTest : ModItem
 		item.accessory = true;
 		Console.Write(item.accessory);
 		item.useTime += 2;
+
+#if COMPILE_ERROR
+		Console.WriteLine(item.IsCandidateForReforge);
+#endif
 	}
 
 #if COMPILE_ERROR
