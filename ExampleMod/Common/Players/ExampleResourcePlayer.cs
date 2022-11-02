@@ -47,7 +47,7 @@ namespace ExampleMod.Common.Players
 		// Lets do all our logic for the custom resource here, such as limiting it, increasing it and so on.
 		private void UpdateResource() {
 			// For our resource lets make it regen slowly over time to keep it simple, let's use exampleResourceRegenTimer to count up to whatever value we want, then increase currentResource.
-			exampleResourceRegenTimer++; //Increase it by 60 per second, or 1 per tick.
+			exampleResourceRegenTimer++; // Increase it by 60 per second, or 1 per tick.
 
 			// A simple timer that goes up to 3 seconds, increases the exampleResourceCurrent by 1 and then resets back to 0.
 			if (exampleResourceRegenTimer > 180 / exampleResourceRegenRate) {
