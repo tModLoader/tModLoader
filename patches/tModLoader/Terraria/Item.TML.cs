@@ -1,13 +1,10 @@
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 
 namespace Terraria
 {
