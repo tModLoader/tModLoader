@@ -188,10 +188,7 @@ namespace Terraria
 			if (NPCLoader.blockLoot.Contains(Type))
 				return Main.maxItems;
 
-			if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
-				cachedItemSpawnsByType[Type] += item.stack;
-				return 400;
-			}
+			// cachedItemSpawnsByType feature deliberately omitted from this NewItem
 
 			Main.item[400] = new Item();
 			int num = 400;
