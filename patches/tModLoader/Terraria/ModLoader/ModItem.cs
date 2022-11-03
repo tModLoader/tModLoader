@@ -46,12 +46,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
-		/// <summary>
-		/// Easy get/set for an item's Sacrifice Total Count
-		/// </summary>
+		// Deprecation date: 2022.11.XX
+		/// <inheritdoc cref="Item.SacrificeTotal"/>
+		[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.SacrificeTotal)} instead.", error: true)]
 		public int SacrificeTotal {
-			get => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
-			set => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+			get => Item.SacrificeTotal;
+			set => Item.SacrificeTotal = value;
 		}
 
 		protected override Item CreateTemplateEntity() => new() { ModItem = this };
