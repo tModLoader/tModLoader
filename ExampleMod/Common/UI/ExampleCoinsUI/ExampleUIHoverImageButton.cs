@@ -3,7 +3,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
-namespace ExampleMod.Common.UI
+namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
 	// This ExampleUIHoverImageButton class inherits from UIImageButton. 
 	// Inheriting is a great tool for UI design. 

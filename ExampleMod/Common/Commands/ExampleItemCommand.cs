@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Commands
@@ -16,7 +17,7 @@ namespace ExampleMod.Common.Commands
 		// A short usage explanation for this command
 		public override string Usage
 			=> "/item <type|name> [stack]" +
-			"\n type — typeID of item." +
+			"\n type — ItemID of item." +
 			"\n name — name of Item in current localization." +
 			"\n Replace spaces in item name with underscores.";
 
@@ -36,7 +37,7 @@ namespace ExampleMod.Common.Commands
 				string name = args[0].Replace("_", " ");
 
 				// We go through all the subjects to find the required typeId
-				// Only if the name of the item matches the desired one in the current localization(no case sensitive) 
+				// Only if the name of the item matches the desired one in the current localization (no case sensitive) 
 				for (int k = 1; k < ItemLoader.ItemCount; k++) {
 					if (name.ToLower() == Lang.GetItemNameValue(k).ToLower()) {
 						type = k;
@@ -57,7 +58,7 @@ namespace ExampleMod.Common.Commands
 			}
 
 			// Spawn the item where the calling player is
-			caller.Player.QuickSpawnItem(type, stack);
+			caller.Player.QuickSpawnItem(new EntitySource_DebugCommand($"{nameof(ExampleMod)}_{nameof(ExampleItemCommand)}"), type, stack);
 		}
 	}
 }

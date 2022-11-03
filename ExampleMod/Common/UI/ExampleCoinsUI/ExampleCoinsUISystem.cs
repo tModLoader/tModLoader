@@ -5,12 +5,12 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace ExampleMod.Common.Systems
+namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
-	public class SystemUI : ModSystem
+	public class ExampleCoinsUISystem : ModSystem
 	{
 		private UserInterface exampleCoinUserInterface;
-		internal ExampleCoinsUI exampleCoinsUI;
+		internal ExampleCoinsUIState exampleCoinsUI;
         
 		// These two methods will set the state of our custom UI, causing it to show or hide
 		public void ShowMyUI() {
@@ -25,7 +25,7 @@ namespace ExampleMod.Common.Systems
 			// Create custom interface which can swap between different UIStates
 			exampleCoinUserInterface = new UserInterface();
 			// Creating custom UIState
-			exampleCoinsUI = new ExampleCoinsUI();
+			exampleCoinsUI = new ExampleCoinsUIState();
 
 			// Activate calls Initialize() on the UIState if not initialized, then calls OnActivate and then calls Activate on every child element
 			exampleCoinsUI.Activate();

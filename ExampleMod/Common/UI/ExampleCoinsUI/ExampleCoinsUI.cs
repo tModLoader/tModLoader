@@ -11,12 +11,12 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace ExampleMod.Common.UI
+namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
 	// ExampleUIs visibility is toggled by typing "/coin" in chat (See CoinCommand.cs)
 	// ExampleCoinsUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement
 	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI 
-	internal class ExampleCoinsUI : UIState
+	internal class ExampleCoinsUIState : UIState
 	{
 		public ExampleDragableUIPanel CoinCounterPanel;
 		public UIMoneyDisplay MoneyDisplay;
@@ -36,14 +36,14 @@ namespace ExampleMod.Common.UI
 
 			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement. 
 			// By properly nesting UIElements, we can position things relatively to each other easily.
-			Asset<Texture2D> buttonPlayTexture = ModContent.GetTexture("Terraria/Images/UI/ButtonPlay");
+			Asset<Texture2D> buttonPlayTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay");
 			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, "Reset Coins Per Minute Counter");
 			SetRectangle(playButton, left: 110f, top: 10f, width: 22f, height: 22f);
 			// UIHoverImageButton doesn't do anything when Clicked. Here we assign a method that we'd like to be called when the button is clicked.
 			playButton.OnClick += new MouseEvent(PlayButtonClicked);
 			CoinCounterPanel.Append(playButton);
 
-			Asset<Texture2D> buttonDeleteTexture = ModContent.GetTexture("Terraria/Images/UI/ButtonDelete");
+			Asset<Texture2D> buttonDeleteTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonDelete");
 			ExampleUIHoverImageButton closeButton = new ExampleUIHoverImageButton(buttonDeleteTexture, Language.GetTextValue("LegacyInterface.52")); // Localized text for "Close"
 			SetRectangle(closeButton, left: 140f, top: 10f, width: 22f, height: 22f);
 			closeButton.OnClick += new MouseEvent(CloseButtonClicked);
@@ -75,7 +75,7 @@ namespace ExampleMod.Common.UI
 
 		private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			ModContent.GetInstance<SystemUI>().HideMyUI();
+			ModContent.GetInstance<ExampleCoinsUISystem>().HideMyUI();
 		}
 
 		public void UpdateValue(int pickedUp) {
@@ -93,7 +93,6 @@ namespace ExampleMod.Common.UI
 		private readonly Texture2D[] coinsTextures = new Texture2D[4];
 
 		public UIMoneyDisplay() {
-			
 			startTime = null;
 			
 			for (int j = 0; j < 4; j++) {
@@ -151,7 +150,7 @@ namespace ExampleMod.Common.UI
 		public override bool OnPickup(Item item, Player player) {
 			// If we have picked up coins of any type, then we will update the values in exampleCoinsUI
 			if (item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin)
-				ModContent.GetInstance<SystemUI>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
+				ModContent.GetInstance<ExampleCoinsUISystem>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
 
 			return base.OnPickup(item, player);
 		}

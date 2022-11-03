@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.Systems;
+using ExampleMod.Common.UI.ExampleCoinsUI;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Commands
@@ -18,7 +19,7 @@ namespace ExampleMod.Common.Commands
 			=> "Show the coin rate UI";
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
-			ModContent.GetInstance<SystemUI>().ShowMyUI();
+			ModContent.GetInstance<ExampleCoinsUISystem>().ShowMyUI();
 		}
 	}
 }

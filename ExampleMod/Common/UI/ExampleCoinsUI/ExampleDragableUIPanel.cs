@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
-namespace ExampleMod.Common.UI
+namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
 	// This DragableUIPanel class inherits from UIPanel
 	// Inheriting is a great tool for UI design. By inheriting, we get the background drawing for free from UIPanel
@@ -16,7 +16,6 @@ namespace ExampleMod.Common.UI
 		private Vector2 offset;
 		// A flag that checks if the panel is currently being dragged
 		private bool dragging;
-
 
 		public override void MouseDown(UIMouseEvent evt) {
 			// When you override UIElement methods, don't forget call the base method
