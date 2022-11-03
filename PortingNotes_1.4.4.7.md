@@ -61,9 +61,6 @@
 ## ItemID.cs
 - ExtractinatorMode (extractinator has changed in 1.4.4, chloro extractinator now exists)
 
-## TileID.cs
-- Check the old/new `TouchDamage*` properties
-
 ## PlayerDrawLayers.cs:
 - Re-ensure that all upper bound ID checks are gone, some patches had to be removed.
 - Add new layer for `DrawPlayer_JimsDroneRadio`

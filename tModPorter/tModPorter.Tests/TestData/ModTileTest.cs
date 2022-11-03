@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,6 +35,14 @@ public class ModTileTest : ModTile
 		SetModTree(new ExampleTree());
 		SetModCactus(new ExampleCactus());
 		SetModPalmTree(new ExamplePalmTree());
+#endif
+	}
+
+	override void SetStaticDefaults() {
+#if COMPILE_ERROR
+		TileID.Sets.TouchDamageSands[Type] = 15;
+		TileID.Sets.TouchDamageOther[Type] = 99;
+		TileID.Sets.TouchDamageVines[Type] = 10;
 #endif
 	}
 

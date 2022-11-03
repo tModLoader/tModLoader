@@ -191,6 +191,10 @@ public static partial class Config
 
 		RenameType("Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerResourcesDisplaySet");
 
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageSands", Comment("Suggestion: Suffocate"));
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageOther", Comment("Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding"));
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageVines", Comment("Suggestion: TouchDamageImmediate and TouchDamageDestroyTile"));
+
 		AddWorldGenToGenVars();
 	}
 

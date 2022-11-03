@@ -39,6 +39,14 @@ public class ModTileTest : ModTile
 #endif
 	}
 
+	override void SetStaticDefaults() {
+#if COMPILE_ERROR
+		TileID.Sets.TouchDamageSands/* tModPorter Suggestion: Suffocate */[Type] = 15;
+		TileID.Sets.TouchDamageOther/* tModPorter Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding */[Type] = 99;
+		TileID.Sets.TouchDamageVines/* tModPorter Suggestion: TouchDamageImmediate and TouchDamageDestroyTile */[Type] = 10;
+#endif
+	}
+
 #if COMPILE_ERROR
 	public override int SaplingGrowthType(ref int style)/* tModPorter Note: Removed. Use ModTree.SaplingGrowthType */ { return -1; }
 #endif
