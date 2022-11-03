@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Tooltip.SetDefault("Counts as a water, lava, and honey source\n"
 							 + "'A shame there's no example liquids (yet)'");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

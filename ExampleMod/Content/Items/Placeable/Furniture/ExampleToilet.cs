@@ -1,5 +1,4 @@
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -10,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			DisplayName.SetDefault("Example Toilet");
 			Tooltip.SetDefault("This is a modded toilet.");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

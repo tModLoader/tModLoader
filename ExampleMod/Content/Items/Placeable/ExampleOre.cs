@@ -1,5 +1,4 @@
 ﻿using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -7,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleOre : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+			Item.SacrificeTotal = 100;
 			ItemID.Sets.SortingPriorityMaterials[Item.type] = 58;
 		}
 

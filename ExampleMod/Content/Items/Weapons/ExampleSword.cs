@@ -2,7 +2,6 @@ using ExampleMod.Content.Rarities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -12,7 +11,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded sword."); // The (English) text shown below your weapon's name.
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

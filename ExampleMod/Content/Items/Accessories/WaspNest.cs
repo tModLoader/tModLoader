@@ -1,10 +1,9 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using Mono.Cecil.Cil;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -44,7 +43,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

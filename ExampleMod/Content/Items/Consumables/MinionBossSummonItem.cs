@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using ExampleMod.Content.NPCs.MinionBoss;
 
@@ -14,7 +13,7 @@ namespace ExampleMod.Content.Items.Consumables
 			DisplayName.SetDefault("Minion Boss Summon Item");
 			Tooltip.SetDefault("Summons Minion Boss");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			Item.SacrificeTotal = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
 
 			// If this would be for a vanilla boss that has no summon item, you would have to include this line here:

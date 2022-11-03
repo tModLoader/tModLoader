@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,7 +11,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shotgun.");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

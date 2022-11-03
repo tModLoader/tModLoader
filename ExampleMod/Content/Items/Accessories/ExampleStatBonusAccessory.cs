@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Content.DamageClasses;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
@@ -17,7 +16,7 @@ namespace ExampleMod.Content.Items.Accessories
 							 + "Magic attacks ignore an additional 5 defense points\n"
 							 + "Increases ranged firing speed by 15%");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

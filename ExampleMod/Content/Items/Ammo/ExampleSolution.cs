@@ -1,12 +1,10 @@
-﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Tiles;
+﻿using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Ammo
@@ -19,7 +17,7 @@ namespace ExampleMod.Content.Items.Ammo
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+			Item.SacrificeTotal = 99;
 		}
 
 		public override void SetDefaults() {

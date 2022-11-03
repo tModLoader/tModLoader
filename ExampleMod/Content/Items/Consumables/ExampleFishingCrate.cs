@@ -1,8 +1,7 @@
 ﻿using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -19,7 +18,7 @@ namespace ExampleMod.Content.Items.Consumables
 			ItemID.Sets.IsFishingCrate[Type] = true;
 			//ItemID.Sets.IsFishingCrateHardmode[Type] = true; // This is a crate that mimics a pre-hardmode biome crate, so this is commented out
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 10;
+			Item.SacrificeTotal = 10;
 		}
 
 		public override void SetDefaults() {

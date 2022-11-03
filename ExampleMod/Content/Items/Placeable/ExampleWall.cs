@@ -1,6 +1,5 @@
 using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -9,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wall.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
+			Item.SacrificeTotal = 400;
 		}
 
 		public override void SetDefaults() {

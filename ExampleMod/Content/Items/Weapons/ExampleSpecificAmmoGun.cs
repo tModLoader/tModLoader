@@ -1,8 +1,5 @@
-using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,7 +11,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public bool consumptionDamageBoost = false;
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleGun"; //TODO: remove when sprite is made for this
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

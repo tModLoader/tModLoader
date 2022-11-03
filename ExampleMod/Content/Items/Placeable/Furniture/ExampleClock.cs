@@ -1,5 +1,4 @@
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -9,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded clock.");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

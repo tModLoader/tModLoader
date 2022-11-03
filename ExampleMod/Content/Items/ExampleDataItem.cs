@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -16,7 +15,7 @@ namespace ExampleMod.Content.Items
 			DisplayName.SetDefault("Hot Potato");
 			Tooltip.SetDefault("Something magical happens when the timer runs out...");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

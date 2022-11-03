@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Relic");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

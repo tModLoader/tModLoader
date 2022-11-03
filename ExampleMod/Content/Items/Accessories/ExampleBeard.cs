@@ -1,6 +1,5 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
@@ -14,7 +13,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded beard which matches your hair color.");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 
 			ArmorIDs.Beard.Sets.UseHairColor[Item.beardSlot] = true;
 		}

@@ -2,7 +2,6 @@ using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -11,7 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded torch.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+			Item.SacrificeTotal = 100;
 		}
 
 		public override void SetDefaults() {

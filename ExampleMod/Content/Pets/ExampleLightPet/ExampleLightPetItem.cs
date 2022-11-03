@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Content.Items;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
@@ -13,7 +12,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			DisplayName.SetDefault("Annoying Light");
 			Tooltip.SetDefault("Summons an annoying light");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

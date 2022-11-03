@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Pets.ExamplePet
@@ -11,7 +10,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 	{
 		public override void SetStaticDefaults() {
 			// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

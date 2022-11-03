@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,12 +11,13 @@ namespace ExampleMod.Content.Items.Armor
 	{
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
+
 			DisplayName.SetDefault("Example Breastplate");
 			Tooltip.SetDefault("This is a modded body armor."
 				+ "\nImmunity to 'On Fire!'"
 				+ "\n+20 max mana and +1 max minions");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

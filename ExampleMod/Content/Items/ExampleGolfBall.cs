@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Content.Projectiles;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -9,7 +8,7 @@ namespace ExampleMod.Content.Items
 	public class ExampleGolfBall : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {

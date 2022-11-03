@@ -1,5 +1,4 @@
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -9,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded chest.");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {
@@ -39,7 +38,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleChestKey : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3; // Biome keys usually take 1 item to research instead.
+			Item.SacrificeTotal = 3; // Biome keys usually take 1 item to research instead.
 		}
 
 		public override void SetDefaults() {
