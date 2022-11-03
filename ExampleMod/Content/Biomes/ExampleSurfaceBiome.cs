@@ -8,10 +8,8 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Biomes
 {
 	// Shows setting up two basic biomes. For a more complicated example, please request.
-	public class ExampleSurfaceBiome : ModBiome	
+	public class ExampleSurfaceBiome : ModBiome
 	{
-		public override bool IsPrimaryBiome => true; // Allows this biome to impact NPC prices
-
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("ExampleMod/ExampleWaterStyle"); // Sets a water style for when inside this biome
 		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("ExampleMod/ExampleSurfaceBackgroundStyle");
@@ -24,10 +22,12 @@ namespace ExampleMod.Content.Biomes
 		public override string BestiaryIcon => base.BestiaryIcon;
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
+		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
 
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Surface");
+			// This translation is set in localization files
+			// DisplayName.SetDefault("Example Surface");
 		}
 
 		// Calculate when the biome is active.
@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Biomes
 			// Second, we will limit this biome to the inner horizontal third of the map as our second custom condition
 			bool b2 = Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < Main.maxTilesX / 6;
 
-			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition. 
+			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
 			return b1 && b2 && b3;
 		}

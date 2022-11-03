@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -31,7 +32,7 @@ namespace Terraria.ModLoader
 
 		private static ModMenu switchToMenu = null;
 
-		private static bool loading = true;
+		internal static bool loading = true;
 
 		internal static string LastSelectedModMenu = MenutML.FullName;
 		internal static string KnownMenuSaveString = string.Join(",", menus.Select(m => m.FullName));
@@ -101,10 +102,10 @@ namespace Terraria.ModLoader
 
 			Texture2D logo = currentMenu.Logo.Value;
 			Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
-			float scale = 1;
+			float scale = logoScale;
 
 			if (currentMenu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
-				spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * (currentMenu is MenutML ? 0.84f : scale), SpriteEffects.None, 0f);
+				spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), scale, SpriteEffects.None, 0f);
 			}
 			currentMenu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
 
@@ -144,11 +145,13 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Unload() {
-			currentMenu = MenutML; // Prevent asset disposed exceptions by disallowing modded menus during the unload process.
-
 			loading = true;
-			if (menus.IndexOf(currentMenu) >= DefaultMenuCount) {
+			// Prevent asset disposed exceptions by disallowing modded menus during the unload process.
+			if (menus.IndexOf(currentMenu, 0, DefaultMenuCount) == -1) {
 				switchToMenu = MenutML;
+				while (currentMenu != MenutML) {
+					Thread.Yield();
+				}
 			}
 
 			lock (menus) {

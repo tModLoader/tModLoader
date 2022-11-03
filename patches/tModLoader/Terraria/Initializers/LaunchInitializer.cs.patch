@@ -1,16 +1,17 @@
---- src/Terraria/Terraria/Initializers/LaunchInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
-@@ -1,6 +_,9 @@
+@@ -1,6 +_,10 @@
  using System;
  using System.Diagnostics;
 +using System.Linq;
 +using System.Text.RegularExpressions;
  using Terraria.Localization;
 +using Terraria.ModLoader.Core;
++using Terraria.ModLoader.Engine;
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -23,6 +_,10 @@
+@@ -26,12 +_,16 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -21,7 +22,14 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -38,6 +_,29 @@
+ 			string iP;
+ 			if ((iP = TryParameter("-j", "-join")) != null)
+-				game.AutoJoin(iP);
++				game.AutoJoin(iP, TryParameter("-plr", "-player"));
+ 
+ 			string arg;
+ 			if ((arg = TryParameter("-pass", "-password")) != null) {
+@@ -41,6 +_,34 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -45,37 +53,37 @@
 +					(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
 +					Main.LoadWorlds();
 +					(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
++					if (!GameContent.UI.States.UIWorldSelect.CanWorldBePlayed(Main.ActiveWorldFileData))
++						throw new Exception($"The selected character {playerName} can not be used with the selected world {worldName}.\n" +
++							$"This could be due to mismatched Journey Mode or other mod specific changes." +
++							$"Check in Game Menus for more information.");
++
 +					WorldGen.playWorld();
 +				};
 +			}
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -99,6 +_,16 @@
+@@ -102,6 +_,14 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
-+			string publish;
-+			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
++			if (TryParameter("-publish") is string publish) {
 +				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +				// Application Exits
-+			} 
++			}
 +
-+			string install;
-+			if ((install = TryParameter("-install")) != null)
++			if (TryParameter("-install") is string install)
 +				FileAssociationSupport.HandleFileAssociation(install);
 +
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -107,6 +_,15 @@
+@@ -110,6 +_,12 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
  
-+			string modPath;
-+			if ((modPath = TryParameter(new string[] {
-+				"-modpath"
-+			})) != null)
++			if (TryParameter("-modpath") is string modPath)
 +				ModOrganizer.modPath = modPath;
 +
 +			if (HasParameter("-showserverconsole"))
@@ -84,7 +92,7 @@
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
  				Netplay.BanFilePath = banFilePath;
-@@ -155,7 +_,7 @@
+@@ -158,7 +_,7 @@
  			return false;
  		}
  

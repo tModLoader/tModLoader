@@ -9,24 +9,25 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.
+	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 	/// </summary>
-	public abstract class ModItem : ModTexturedType
+	public abstract class ModItem : ModType<Item, ModItem>
 	{
 		/// <summary>
 		/// The item object that this ModItem controls.
 		/// </summary>
-		public Item Item { get; internal set; }
+		public Item Item => Entity;
 
 		/// <summary>
-		/// Shorthand for item.type;
+		/// Shorthand for Item.type;
 		/// </summary>
 		public int Type => Item.type;
 
@@ -36,12 +37,30 @@ namespace Terraria.ModLoader
 		public ModTranslation DisplayName { get; internal set; }
 
 		/// <summary>
-		/// The translations for the display name of this tooltip.
+		/// The translations for the tooltip of this item.
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
-		public ModItem() {
-			Item = new Item { ModItem = this };
+		/// <summary>
+		/// The file name of this type's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
+
+		/// <summary>
+		/// Easy get/set for an item's Sacrifice Total Count
+		/// </summary>
+		public int SacrificeTotal {
+			get => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
+			set => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+		}
+
+		protected override Item CreateTemplateEntity() => new() { ModItem = this };
+
+		protected override void ValidateType() {
+			base.ValidateType();
+
+			if (!IsCloneable)
+				Cloning.WarnNotCloneable(GetType());
 		}
 
 		protected sealed override void Register() {
@@ -58,10 +77,10 @@ namespace Terraria.ModLoader
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
+					EquipLoader.AddEquipTexture(Mod, $"{Texture}_{equip}", equip, this);
 				}
 			}
-			
+
 			OnCreate(new InitializationContext());
 		}
 
@@ -73,20 +92,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Create a copy of this ModItem. Called when an item is cloned.
-		/// </summary>
-		/// <param name="item">The new item</param>
-		public virtual ModItem Clone(Item item) {
-			ModItem clone = (ModItem)MemberwiseClone();
-			clone.Item = item;
-			return clone;
-		}
-
-		/// <summary>
-		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
+		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc.
 		/// For those that are familiar with tAPI, this has the same function as .json files.
 		/// </summary>
 		public virtual void SetDefaults() {
+		}
+
+		/// <summary>
+		/// Gets called when your item spawns in world
+		/// </summary>
+		public virtual void OnSpawn(IEntitySource source) {
 		}
 
 		public virtual void OnCreate(ItemCreationContext context) {
@@ -120,17 +135,46 @@ namespace Terraria.ModLoader
 		public virtual int ChoosePrefix(UnifiedRandom rand) => -1;
 
 		/// <summary>
+		/// Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not.
+		/// Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix
+		/// </summary>
+		public virtual bool MeleePrefix()
+			=> Item.melee && !Item.noUseGraphic;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not.
+		/// Takes priority over RangedPrefix and MagicPrefix
+		/// Ignored if MeleePrefix returns true
+		/// </summary>
+		public virtual bool WeaponPrefix()
+			=> Item.melee && Item.noUseGraphic;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.
+		/// Takes priority over MagicPrefix
+		/// </summary>
+		public virtual bool RangedPrefix()
+			=> Item.ranged || Item.CountsAsClass(DamageClass.Throwing);
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should receive magic prefixes and false if it should not.
+		/// </summary>
+		public virtual bool MagicPrefix()
+			=> Item.magic || Item.summon;
+
+		/// <summary>
 		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 		/// To prevent rolling of a prefix on spawn, return false when pre is -1.
 		/// To force rolling of a prefix on spawn, return true when pre is -1.
-		/// 
+		///
 		/// To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time.
 		/// To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time.
-		/// 
+		///
 		/// To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete.
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
 		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
+		/// <param name="rand">The random number generator class to be used in random choices</param>
 		/// <returns></returns>
 		public virtual bool? PrefixChance(int pre, UnifiedRandom rand) => null;
 
@@ -146,6 +190,14 @@ namespace Terraria.ModLoader
 		public virtual bool CanUseItem(Player player) {
 			return true;
 		}
+
+		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of this item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="player"> The player. </param>
+		public virtual bool? CanAutoReuseItem(Player player) => null;
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item in its use animation.
@@ -235,12 +287,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage, ref float flat) {
+		/// <param name="player">The player using the item.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
+		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage) {
 		}
 
 		/// <summary>
@@ -251,49 +303,134 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
 		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="knockback">The knockback</param>
-		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
+		/// <param name="player">The Player that owns the bait</param>
+		public virtual bool? CanConsumeBait(Player player) {
+			return null;
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
 		/// </summary>
-		/// <param name="player">The player using this item</param>
-		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
-		public virtual void ModifyWeaponCrit(Player player, ref int crit) {
-		}
-
-		/// <summary>
-		/// Allows you to modify the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo.
-		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="type">The ID of the projectile shot</param>
-		/// <param name="speed">The speed of the projectile shot</param>
-		/// <param name="damage">The damage of the projectile shot</param>
-		/// <param name="knockback">The speed of the projectile shot</param>
-		public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-		}
-		
-		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Called both by the gun and by the ammo; if at least one returns false then the ammo will not be used. By default returns true.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
-		/// </summary>
-		/// <param name="player">The player.</param>
-		/// <returns></returns>
-		public virtual bool ConsumeAmmo(Player player) {
+		public virtual bool CanResearch() {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to makes things happen when ammo is consumed. Called both by the gun and by the ammo.
-		/// Called before the ammo stack is reduced.
+		/// Allows you to create custom behaviour when an item is accepted by the Research function
 		/// </summary>
-		/// <param name="player">The player.</param>
-		public virtual void OnConsumeAmmo(Player player) {
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(bool fullyResearched) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
+		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
+		public virtual void ModifyWeaponCrit(Player player, ref float crit) {
+		}
+
+		/// <summary>
+		/// Whether or not having no ammo prevents an item that uses ammo from shooting.
+		/// Return false to allow shooting with no ammo in the inventory, in which case this item will act as if the default ammo for it is being used.
+		/// Returns true by default.
+		/// </summary>
+		public virtual bool NeedsAmmo(Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo.
+		/// </summary>
+		/// <param name="weapon">The item that is using this ammo.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="type">The ID of the fired projectile.</param>
+		/// <param name="speed">The speed of the fired projectile.</param>
+		/// <param name="damage">
+		/// The damage modifier for the projectile.<br></br>
+		/// Total weapon damage is included as Flat damage.<br></br>
+		/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
+		/// </param>
+		/// <param name="knockback">The knockback of the fired projectile.</param>
+		public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+		}
+
+		/// <summary>
+		/// Whether or not the given ammo item is valid for this weapon. If this, or <see cref="CanBeChosenAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon. <br></br>
+		/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br></br>
+		/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="ammo">The ammo that the weapon is attempting to select.</param>
+		/// <param name="player">The player which this weapon and the potential ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool? CanChooseAmmo(Item ammo, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Whether or not this ammo item is valid for the given weapon. If this, or <see cref="CanChooseAmmo"/> on the weapon, returns false, then the ammo will not be valid for this weapon.<br></br>
+		/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid.<br></br>
+		/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="weapon">The weapon attempting to select the ammo.</param>
+		/// <param name="player">The player which the weapon and this potential ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeChosenAsAmmo(Item weapon, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption.<br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="ammo">The ammo that the weapon is attempting to consume.</param>
+		/// <param name="player">The player which this weapon and the ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool CanConsumeAmmo(Item ammo, Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Whether or not this ammo item will be consumed by the given weapon.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption.<br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="weapon">The weapon attempting to consume the ammo.</param>
+		/// <param name="player">The player which the weapon and this ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool CanBeConsumedAsAmmo(Item weapon, Player player) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given ammo is consumed by this weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+		/// </summary>
+		/// <param name="ammo">The ammo that this weapon is currently using.</param>
+		/// <param name="player">The player which this weapon and the ammo belong to.</param>
+		public virtual void OnConsumeAmmo(Item ammo, Player player) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this ammo is consumed by the given weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+		/// </summary>
+		/// <param name="weapon">The weapon that is currently using this ammo.</param>
+		/// <param name="player">The player which the weapon and this ammo belong to.</param>
+		public virtual void OnConsumedAsAmmo(Item weapon, Player player) {
 		}
 
 		/// <summary>
@@ -306,7 +443,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.<br/>
+		/// These parameters will be provided to <see cref="Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="position"> The center position of the projectile. </param>
@@ -318,7 +456,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
+		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -328,7 +467,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
@@ -347,6 +486,41 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		/// <param name="hitbox">The hitbox.</param>
 		public virtual void MeleeEffects(Player player, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to determine whether this item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="player">The player attempting to catch the NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanCatchNPC(NPC target, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when this item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(NPC npc, Player player, bool failed) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="player">The player wielding this item.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to this item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Player player, ref float scale) {
 		}
 
 		/// <summary>
@@ -525,24 +699,30 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="head">The head.</param>
 		/// <param name="body">The body.</param>
 		/// <param name="legs">The legs.</param>
 		public virtual bool IsVanitySet(int head, int body, int legs) {
-			Item headItem = new Item();
-			if (head >= 0) {
-				headItem.SetDefaults(Item.headType[head], true);
-			}
-			Item bodyItem = new Item();
-			if (body >= 0) {
-				bodyItem.SetDefaults(Item.bodyType[body], true);
-			}
-			Item legItem = new Item();
-			if (legs >= 0) {
-				legItem.SetDefaults(Item.legType[legs], true);
-			}
+			int headItemType = 0;
+			if (head >= 0)
+				headItemType = Item.headType[head];
+
+			Item headItem = ContentSamples.ItemsByType[headItemType];
+
+			int bodyItemType = 0;
+			if (body >= 0)
+				bodyItemType = Item.bodyType[body];
+
+			Item bodyItem = ContentSamples.ItemsByType[bodyItemType];
+
+			int legsItemType = 0;
+			if (legs >= 0)
+				legsItemType = Item.legType[legs];
+
+			Item legItem = ContentSamples.ItemsByType[legsItemType];
+
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
@@ -587,33 +767,69 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this item is right-clicked in the inventory. Useful for goodie bags.
+		/// Allows you to make things happen when this item is right-clicked in the inventory.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		public virtual void RightClick(Player player) {
 		}
-
-		/// <summary>
-		/// Allows you to give items to the given player when this item is right-clicked in the inventory if the bossBagNPC field has been set to a positive number. This ignores the CanRightClick and RightClick hooks.
-		/// </summary>
-		/// <param name="player">The player.</param>
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
 		public virtual void OpenBossBag(Player player) {
 		}
 
 		/// <summary>
-		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
-		/// This is only called when attempting to stack with an item of the same type.
+		/// Allows you to add and modify the loot items that spawn from bag items when opened.
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+		/// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
 		/// </summary>
-		/// <param name="item2">The item this is trying to stack with</param>
+		/// <param name="itemLoot">A reference to the item drop database for this item type</param>
+		public virtual void ModifyItemLoot(ItemLoot itemLoot) {
+		}
+
+		/// <summary>
+		/// Allows you to decide if this item is allowed to stack with another of its type.
+		/// <br/>This is only called when attempting to stack with an item of the same type.
+		/// <br/>This is not called for coins in inventory/UI.
+		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
+		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
-		public virtual bool CanStackInWorld(Item item2) {
+		public virtual bool CanStack(Item decrease) {
 			return true;
 		}
 
 		/// <summary>
-		/// Returns if the normal reforge pricing is applied. 
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// <br/>This is only called when attempting to stack with an item of the same type.
+		/// </summary>
+		/// <returns>Whether or not the item is allowed to stack</returns>
+		public virtual bool CanStackInWorld(Item decrease) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when items stack together.<br/>
+		/// This item will have its stack increased that will have its stack increased.
+		/// </summary>
+		/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
+		public virtual void OnStack(Item decrease, int numberToBeTransfered) {
+
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.<br/>
+		/// Item is always the new stack which is a clone of decrease.  Item.stack will always be 0.  It is increased after SplitStack.
+		/// </summary>
+		/// <param name="decrease">The original item that will have it's stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
+		public virtual void SplitStack(Item decrease, int numberToBeTransfered) {
+
+		}
+
+		/// <summary>
+		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
-		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
+		/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
 		public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount) {
 			return true;
@@ -622,7 +838,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
-		/// Reforging preserves modded data on the item. 
+		/// Reforging preserves modded data on the item.
 		/// </summary>
 		public virtual bool PreReforge() {
 			return true;
@@ -633,46 +849,6 @@ namespace Terraria.ModLoader
 		/// Useful for modifying modded data based on the reforge result.
 		/// </summary>
 		public virtual void PostReforge() {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when this body armor is worn. By default both flags will be false. Note that if drawHands is false, the arms will not be drawn either. Also note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHands">if set to <c>true</c> [draw hands].</param>
-		/// <param name="drawArms">if set to <c>true</c> [draw arms].</param>
-		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head armor is worn. By default both flags will be false. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <param name="drawHair">if set to <c>true</c> [draw hair].</param>
-		/// <param name="drawAltHair">if set to <c>true</c> [draw alt hair].</param>
-		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when this head armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawHead() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when this body armor is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawBody() {
-			return true;
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when this leg armor or shoe accessory is worn. Returns true by default. Note that this hook is only ever called through this item's associated equipment texture.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawLegs() {
-			return true;
 		}
 
 		/// <summary>
@@ -742,7 +918,7 @@ namespace Terraria.ModLoader
 		public virtual bool? CanBurnInLava() {
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 		/// </summary>
@@ -878,7 +1054,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		public virtual bool CanEquipAccessory(Player player, int slot) {
+		/// <param name="modded">If the inventory slot index is for modded slots.</param>
+		public virtual bool CanEquipAccessory(Player player, int slot, bool modded) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
+		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+		/// </summary>
+		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
 			return true;
 		}
 
@@ -929,39 +1114,42 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
-		/// </summary>
-		public virtual bool OnlyShootOnSwing => false;
-
-		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
+		[Obsolete("Use ModifyItemLoot to set drops. Set ItemID.Sets.BossBag[Type] in SetStaticDefaults", true)]
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>
-		/// Allows you to save custom data for this item. Returns null by default.
+		/// Allows you to save custom data for this item.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data that you have saved for this item.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag">The tag.</param>
-		public virtual void Load(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
+		//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Allows you to send custom data for this item between client and server.
+		/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) {
 		}
 
+		//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Receives the custom data sent in the NetSend hook.
+		/// Receives the custom data sent in NetSend.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) {
@@ -977,6 +1165,7 @@ namespace Terraria.ModLoader
 		/// Allows you to make anything happen when the player crafts this item using the given recipe.
 		/// </summary>
 		/// <param name="recipe">The recipe that was used to craft this item.</param>
+		[Obsolete("Use OnCreate and check if context is RecipeCreationContext", true)]
 		public virtual void OnCraft(Recipe recipe) {
 		}
 
@@ -1022,6 +1211,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, Item.type, amount);
+		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 	}
 }

@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 	/// This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData.
 	/// </summary>
 	[Autoload]
-	public abstract partial class PlayerDrawLayer : ModType 
+	public abstract partial class PlayerDrawLayer : ModType
 	{
 		public abstract class Transformation
 		{
@@ -37,7 +37,6 @@ namespace Terraria.ModLoader
 		public bool Visible { get; private set; } = true;
 
 		public virtual Transformation Transform { get; }
-
 
 		private readonly List<PlayerDrawLayer> _childrenBefore = new List<PlayerDrawLayer>();
 		public IReadOnlyList<PlayerDrawLayer> ChildrenBefore => _childrenBefore;
@@ -75,7 +74,7 @@ namespace Terraria.ModLoader
 				child.ResetVisibility(drawInfo);
 		}
 
-		/// <summary> Draws this layer. </summary>
+		/// <summary> Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check <code>if(drawinfo.shadow == 0f)</code> to only draw for the original player image.</summary>
 		protected abstract void Draw(ref PlayerDrawSet drawInfo);
 
 		public void DrawWithTransformationAndChildren(ref PlayerDrawSet drawInfo) {

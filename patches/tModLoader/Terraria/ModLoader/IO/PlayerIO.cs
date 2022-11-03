@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
@@ -21,12 +20,24 @@ namespace Terraria.ModLoader.IO
 
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
-		internal static void Save(Player player, string path, bool isCloudSave) {
+		internal static void Save(TagCompound tag, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-			var tag = new TagCompound {
+			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
+				TagIO.ToStream(tag, stream);
+				if (isCloudSave && SocialAPI.Cloud != null)
+					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
+			}
+		}
+
+		internal static TagCompound SaveData(Player player) {
+			player._temporaryItemSlots[0] = Main.mouseItem;
+			player._temporaryItemSlots[1] = Main.CreativeMenu.GetItemByIndex(0);
+			player._temporaryItemSlots[2] = Main.guideItem;
+			player._temporaryItemSlots[3] = Main.reforgeItem;
+			return new TagCompound {
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
 				["inventory"] = SaveInventory(player.inventory),
@@ -36,35 +47,19 @@ namespace Terraria.ModLoader.IO
 				["bank2"] = SaveInventory(player.bank2.item),
 				["bank3"] = SaveInventory(player.bank3.item),
 				["bank4"] = SaveInventory(player.bank4.item),
+				["temporaryItemSlots"] = SaveInventory(player._temporaryItemSlots),
 				["hairDye"] = SaveHairDye(player.hairDye),
 				["research"] = SaveResearch(player),
 				["modData"] = SaveModData(player),
 				["modBuffs"] = SaveModBuffs(player),
 				["infoDisplays"] = SaveInfoDisplays(player),
-				["usedMods"] = SaveUsedMods(player)
+				["usedMods"] = SaveUsedMods(player),
+				["usedModPack"] = SaveUsedModPack(player)
 			};
-
-			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-				TagIO.ToStream(tag, stream);
-				if (isCloudSave && SocialAPI.Cloud != null)
-					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-			}
 		}
+
 		//add near end of Terraria.Player.LoadPlayer before accessory check
-		internal static void Load(Player player, string path, bool isCloudSave) {
-			path = Path.ChangeExtension(path, ".tplr");
-
-			if (!FileUtilities.Exists(path, isCloudSave))
-				return;
-
-			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				//LoadLegacy(player, buf);
-				return;
-			}
-
-			var tag = TagIO.FromStream(new MemoryStream(buf));
+		internal static void Load(Player player, TagCompound tag) {
 			LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 			LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
 			LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
@@ -74,21 +69,44 @@ namespace Terraria.ModLoader.IO
 			LoadInventory(player.bank2.item, tag.GetList<TagCompound>("bank2"));
 			LoadInventory(player.bank3.item, tag.GetList<TagCompound>("bank3"));
 			LoadInventory(player.bank4.item, tag.GetList<TagCompound>("bank4"));
+			LoadInventory(player._temporaryItemSlots, tag.GetList<TagCompound>("temporaryItemSlots"));
 			LoadHairDye(player, tag.GetString("hairDye"));
 			LoadResearch(player, tag.GetList<TagCompound>("research"));
 			LoadModData(player, tag.GetList<TagCompound>("modData"));
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 			LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
+			LoadUsedModPack(player, tag.GetString("usedModPack"));
+		}
+
+		internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag) {
+			path = Path.ChangeExtension(path, ".tplr");
+			tag = new TagCompound();
+
+			if (!FileUtilities.Exists(path, isCloudSave))
+				return false;
+
+			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+
+			if (buf[0] != 0x1F || buf[1] != 0x8B) {
+				//LoadLegacy(player, buf);
+				return false;
+			}
+
+			tag = TagIO.FromStream(new MemoryStream(buf));
+			return true;
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv) {
 			var list = new List<TagCompound>();
 			for (int k = 0; k < inv.Length; k++) {
-				if (ItemLoader.NeedsModSaving(inv[k])) {
-					var tag = ItemIO.Save(inv[k]);
-					tag.Set("slot", (short)k);
-					list.Add(tag);
+				var globalData = ItemIO.SaveGlobals(inv[k]);
+				if (globalData != null || ItemLoader.NeedsModSaving(inv[k])) {
+					var tag = ItemIO.Save(inv[k], globalData);
+					if (tag.Count != 0) {
+						tag.Set("slot", (short)k);
+						list.Add(tag);
+					}
 				}
 			}
 			return list.Count > 0 ? list : null;
@@ -160,17 +178,23 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
+
+			var saveData = new TagCompound();
+
 			foreach (var modPlayer in player.modPlayers) {
-				var data = modPlayer.Save();
-				if (data == null)
+				modPlayer.SaveData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = modPlayer.Mod.Name,
 					["name"] = modPlayer.Name,
-					["data"] = data
+					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
+
 			return list;
 		}
 
@@ -183,7 +207,7 @@ namespace Terraria.ModLoader.IO
 					var modPlayer = player.GetModPlayer(modPlayerBase);
 
 					try {
-						modPlayer.Load(tag.GetCompound("data"));
+						modPlayer.LoadData(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						var mod = modPlayer.Mod;
@@ -287,6 +311,14 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<string> SaveUsedMods(Player player) {
 			return ModLoader.Mods.Select(m => m.Name).Except(new[] { "ModLoader" }).ToList();
+		}
+
+		internal static void LoadUsedModPack(Player player, string modpack) {
+			player.modPack = modpack;
+		}
+
+		internal static string SaveUsedModPack(Player player) {
+			return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
 		}
 
 		//add to end of Terraria.IO.PlayerFileData.MoveToCloud

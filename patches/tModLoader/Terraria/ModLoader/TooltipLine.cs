@@ -10,29 +10,34 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The name of the mod adding this tooltip line. This will be "Terraria" for all vanilla tooltip lines.
 		/// </summary>
-		public readonly string mod;
+		public readonly string Mod;
+
 		/// <summary>
 		/// The name of the tooltip, used to help you identify its function.
 		/// </summary>
 		public readonly string Name;
+
 		/// <summary>
 		/// The actual text that this tooltip displays.
 		/// </summary>
-		public string text;
+		public string Text;
+
 		/// <summary>
 		/// Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.
 		/// </summary>
-		public bool isModifier = false;
+		public bool IsModifier;
+
 		/// <summary>
 		/// If isModifier is true, this determines whether the tooltip is colored green or red.
 		/// </summary>
-		public bool isModifierBad = false;
+		public bool IsModifierBad;
+
 		/// <summary>
 		/// This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden.
 		/// </summary>
-		public Color? overrideColor = null;
+		public Color? OverrideColor;
 
-		internal bool oneDropLogo = false;
+		internal bool OneDropLogo;
 
 		/// <summary>
 		/// Creates a tooltip line object with the given mod, identifier name, and text.<para />
@@ -94,21 +99,21 @@ namespace Terraria.ModLoader
 		/// <param name="name">The name of the tooltip</param>
 		/// <param name="text">The content of the tooltip</param>
 		public TooltipLine(Mod mod, string name, string text) {
-			this.mod = mod.Name;
-			this.Name = name;
-			this.text = text;
+			Mod = mod.Name;
+			Name = name;
+			Text = text;
 		}
 
 		internal TooltipLine(string mod, string name, string text) {
-			this.mod = mod;
-			this.Name = name;
-			this.text = text;
+			Mod = mod;
+			Name = name;
+			Text = text;
 		}
 
 		internal TooltipLine(string name, string text) {
-			this.mod = "Terraria";
-			this.Name = name;
-			this.text = text;
+			Mod = "Terraria";
+			Name = name;
+			Text = text;
 		}
 	}
 }

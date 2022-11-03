@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
 @@ -10,6 +_,7 @@
  using Terraria.GameContent.UI.Elements;
@@ -66,7 +66,7 @@
 +
 +			// Added by tML
 +			if (_isMod)
-+				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer")); 
++				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
 +
  			uiList.Add(CreatePreviewImageSelectionPanel("image"));
  			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
@@ -109,6 +109,16 @@
  			uIText.IsWrapped = true;
  			uISlicedImage.Append(uIText);
  			_descriptionText = uIText;
+@@ -625,7 +_,8 @@
+ 				UsedTags = (from x in _tagOptions
+ 							where x.IsSelected
+ 							select x.OptionValue).ToArray(),
+-				PreviewImagePath = _previewImagePath
++				PreviewImagePath = _previewImagePath,
++				ChangeNotes = (this as WorkshopPublishInfoStateForMods).changeNotes,
+ 			};
+ 		}
+ 
 @@ -634,6 +_,7 @@
  				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  			};

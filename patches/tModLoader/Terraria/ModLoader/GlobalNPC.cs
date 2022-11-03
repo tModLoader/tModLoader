@@ -1,66 +1,44 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
+using System.IO;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Core;
+using Terraria.ID;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : GlobalType<NPC>
+	public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
-			
-			index = (ushort)NPCLoader.globalNPCs.Count;
+
+			Index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
 
-		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
-
-		/// <summary>
-		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
-		/// Defaults to false (using default constructor).
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalNPC. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
-		/// </summary>
-		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance. 
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalNPC NewInstance(NPC npc) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-			return copy;
-		}
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, Index);
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.
 		/// </summary>
-		/// <param name="npc"></param>
 		public virtual void SetDefaults(NPC npc) {
+		}
+
+		/// <summary>
+		/// Gets called when any NPC spawns in world
+		/// </summary>
+		public virtual void OnSpawn(NPC npc, IEntitySource source) {
 		}
 
 		/// <summary>
@@ -79,6 +57,37 @@ namespace Terraria.ModLoader
 		/// <param name="database"></param>
 		/// <param name="bestiaryEntry"></param>
 		public virtual void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(NPC npc, ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+		}
+
+		/// <summary>
+		/// Allows you to set the town NPC profile that a given NPC uses.
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <returns>The profile that you want the given NPC to use.<br></br>
+		/// This will only influence their choice of profile if you do not return null.<br></br>
+		/// By default, returns null, which causes no change.</returns>
+		public virtual ITownNPCProfile ModifyTownNPCProfile(NPC npc) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to modify the list of names available to the given town NPC.
+		/// </summary>
+		public virtual void ModifyNPCNameList(NPC npc, List<string> nameList) {
 		}
 
 		/// <summary>
@@ -112,6 +121,29 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Use this judiciously to avoid straining the network.
+		/// <br/>Checks and methods such as <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on the server.
+		/// </summary>
+		/// <param name="npc">The NPC.</param>
+		/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
+		/// <param name="binaryWriter">The writer.</param>
+		public virtual void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter) {
+		}
+
+		/// <summary>
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
+		/// <br/>Can be called on multiplayer clients.
+		/// </summary>
+		/// <param name="npc">The NPC.</param>
+		/// <param name="bitReader">The compressible bit reader.</param>
+		/// <param name="binaryReader">The reader.</param>
+		public virtual void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader) {
+		}
+
+		/// <summary>
 		/// Allows you to modify the frame from an NPC's texture that is drawn, which is necessary in order to animate NPCs.
 		/// </summary>
 		/// <param name="npc"></param>
@@ -120,11 +152,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
+		/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="hitDirection"></param>
-		/// <param name="damage"></param>
 		public virtual void HitEffect(NPC npc, int hitDirection, double damage) {
 		}
 
@@ -178,25 +208,53 @@ namespace Terraria.ModLoader
 		public virtual void OnKill(NPC npc) {
 		}
 
-        /// <summary>
-        /// Allows you to make things happen when an NPC is caught. Ran Serverside.
-        /// </summary>
-        /// <param name="npc">The caught NPC</param>
-        /// <param name="player">The player catching the NPC</param>
-        /// <param name="item">The item that will be spawned</param>
-        public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		/// <summary>
+		/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
+		/// <br/>Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
+		/// </summary>
+		public virtual bool? CanFallThroughPlatforms(NPC npc) {
+			return null;
 		}
 
 		/// <summary>
-		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="npcLoot"></param>
+		/// <param name="npc">The NPC that can potentially be caught.</param>
+		/// <param name="item">The item with which the player is trying to catch the given NPC.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
+		/// <br/> This hook only runs once per npc type during mod loading, any dynamic behavior must be contained in the rules themselves.
+		/// </summary>
+		/// <param name="npc">A default npc of the type being opened, not the actual npc instance</param>
+		/// <param name="npcLoot">reference to the item drop database for this npc type</param>
 		public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		}
 
 		/// <summary>
-		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="globalLoot"></param>
 		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
@@ -522,6 +580,18 @@ namespace Terraria.ModLoader
 		public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
 		}
 
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
+		/// <summary>
+		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
+		/// </summary>
+		/// <param name="npc">The current npc being talked to</param>
+		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		public virtual void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+		}
+		*/
+
 		/// <summary>
 		/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
 		/// </summary>
@@ -630,6 +700,51 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+
+		/// <summary>
+		/// Allows you to modify the npc's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="victimHitbox"></param>
+		/// <param name="immunityCooldownSlot"></param>
+		/// <param name="damageMultiplier"></param>
+		/// <param name="npcHitbox"></param>
+		/// <returns></returns>
+		public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false.
+		/// <br/><b>NOTE:</b> A town NPC will always be saved (except the Travelling Merchant that never will).
+		/// <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public virtual bool NeedSaving(NPC npc) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to save custom data for the given npc.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+		/// <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
+		public virtual void SaveData(NPC npc, TagCompound tag) {
+		}
+
+		/// <summary>
+		/// Allows you to load custom data that you have saved for the given npc.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="tag"></param>
+		public virtual void LoadData(NPC npc, TagCompound tag) {
 		}
 	}
 }

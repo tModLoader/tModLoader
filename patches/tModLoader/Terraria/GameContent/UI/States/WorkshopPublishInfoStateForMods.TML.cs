@@ -16,6 +16,7 @@ namespace Terraria.GameContent.UI.States
 		public const string TmlRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
 
 		private readonly NameValueCollection _buildData;
+		internal string changeNotes;
 
 		public WorkshopPublishInfoStateForMods(UIState stateToGoBackTo, TmodFile modFile, NameValueCollection buildData)
 			: base(stateToGoBackTo, modFile) {
@@ -23,19 +24,16 @@ namespace Terraria.GameContent.UI.States
 			_publishedObjectNameDescriptorTexKey = "Workshop.ModName";
 			_buildData = buildData;
 			_previewImagePath = buildData["iconpath"];
+			changeNotes = buildData["changelog"];
 		}
 
 		protected override string GetPublishedObjectDisplayName() {
-			if (_dataObject == null)
-				return "null";
-
 			return _dataObject.Name;
 		}
 
 		protected override void GoToPublishConfirmation() {
-			if ( /*SocialAPI.Workshop != null && */ _dataObject != null) {
-				SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
-			}
+			/* if ( SocialAPI.Workshop != null) */
+			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
 			if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
 				Main.menuMode = 888;

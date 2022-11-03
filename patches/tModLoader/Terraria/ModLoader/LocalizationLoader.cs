@@ -1,4 +1,5 @@
 ﻿using Hjson;
+using Terraria.ID;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,7 @@ using Terraria.UI;
 namespace Terraria.ModLoader
 {
 	public static class LocalizationLoader
-    {
+	{
 		private static readonly Dictionary<string, ModTranslation> translations = new();
 
 		/// <summary>
@@ -36,16 +37,18 @@ namespace Terraria.ModLoader
 			translations[translation.Key] = translation;
 		}
 
-		internal static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
+		public static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
 			=> GetOrCreateTranslation($"Mods.{mod.Name}.{key}", defaultEmpty);
 
-		internal static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
+		public static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
 			key = key.Replace(" ", "_");
 
 			if (translations.TryGetValue(key, out var translation))
 				return translation;
-
-			return new ModTranslation(key, defaultEmpty);
+			
+			var newTranslation = new ModTranslation(key, defaultEmpty);
+			translations[key] = newTranslation;
+			return newTranslation;
 		}
 
 		internal static void Autoload(Mod mod) {
@@ -58,6 +61,11 @@ namespace Terraria.ModLoader
 
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
+
+				//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
+				if (value.Key.StartsWith($"Mods.{mod.Name}.GameTips.")) {
+					Main.gameTips.allTips.Add(new GameTipData(new LocalizedText(value.Key, value.GetDefault()), mod));
+				}
 			}
 		}
 
@@ -79,6 +87,7 @@ namespace Terraria.ModLoader
 				if (text.Value != null) {
 					text = SetLocalizedText(dict, text);
 					Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
+					ContentSamples.ItemsByType[item.Item.type].RebuildTooltip();
 				}
 			}
 
@@ -190,7 +199,7 @@ namespace Terraria.ModLoader
 				}
 
 				string lastKey = splitKey.Last();
-				
+
 				if (curObj.ContainsKey(splitKey.Last()) && curObj[lastKey] is JObject) {
 					// this value has children - needs to go into object as a $parentValue entry
 					((JObject)curObj[lastKey]).Add("$parentValue", value);
@@ -210,8 +219,12 @@ namespace Terraria.ModLoader
 
 		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));
-				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
+				using var stream = mod.File.GetStream(translationFile);
+				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+
+				string translationFileContents = streamReader.ReadToEnd();
+
+				var culture = GameCulture.FromPath(translationFile.Name);
 
 				// Parse HJSON and convert to standard JSON
 				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
@@ -219,10 +232,28 @@ namespace Terraria.ModLoader
 				// Parse JSON
 				var jsonObject = JObject.Parse(jsonString);
 				// Flatten JSON into dot seperated key and value
-				var flattened = jsonObject
-					.SelectTokens("$..*")
-					.Where(t => !t.HasValues)
-					.ToDictionary(t => t.Path, t => t.ToString());
+				var flattened = new Dictionary<string, string>();
+
+				foreach (JToken t in jsonObject.SelectTokens("$..*")) {
+					if (t.HasValues) {
+						continue;
+					}
+
+					// Custom implementation of Path to allow "x.y" keys
+					string path = "";
+					JToken current = t;
+
+					for (JToken parent = t.Parent; parent != null; parent = parent.Parent) {
+						path = parent switch {
+							JProperty property => property.Name + (path == string.Empty ? string.Empty : "." + path),
+							JArray array => array.IndexOf(current) + (path == string.Empty ? string.Empty : "." + path),
+							_ => path
+						};
+						current = parent;
+					}
+
+					flattened.Add(path, t.ToString());
+				}
 
 				foreach (var (key, value) in flattened) {
 					string effectiveKey = key.Replace(".$parentVal", "");

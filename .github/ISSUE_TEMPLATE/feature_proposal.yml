@@ -1,0 +1,63 @@
+name: Feature Proposal
+description: Propose a new feature/change for tModLoader
+labels: ["Type: Change/Feature Request", "NEW ISSUE"] 
+body:
+- type: markdown
+  attributes:
+    value: |
+      Please keep in mind that the tModLoader software is built by the community.
+      By submitting your proposal you agree that it may become part of tModLoader as a whole, or partially.
+      The development time it takes for your proposal may vary, the TML Team can give no expected time when your proposal will be addressed or implemented.
+      The TML Team reserves their right to take ideas from your proposal but are not required to necessarily accept your proposal. 
+- type: markdown
+  attributes:
+    value: |
+      ## Is there an existing suggestion for this?
+      Please search to see if an issue already exists for the feature you wish to propose. If there is, please add to that issue instead of making a new issue.
+      Please note if your proposal already exists either by you or someone else that it is highly likely yours will be closed.
+- type: dropdown
+  id: contribute
+  attributes:
+    label: Do you intend to personally contribute/program this feature?
+    description: If you feel confident that you can contribute this feature, feel free to work on it after getting some initial feedback. If you can't, don't worry, there are many people who can help and the suggestion is great by itself.
+    multiple: false
+    options:
+      - 'Yes'
+      - 'No'
+  validations:
+    required: true
+- type: dropdown
+  id: requestor
+  attributes:
+    label: I would like to see this change made to improve my experience with
+    description: In order to help understand the issue, we would like to know if the primary use case for this change is to help you create mods, improve experience playing TML, or improve codebase of TML itself as a maintainer
+    multiple: false
+    options:
+      - 'Mod capability as a Modder'
+      - 'Gameplay as a Player'
+      - 'tModLoader code as a Contributor/Maintainer'
+  validations:
+    required: true    
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: |
+      Describe your proposal. 
+    placeholder: |
+      A new hook called HookName could allow modders to...
+- type: textarea
+  id: why
+  attributes:
+    label: What does this proposal attempt to solve or improve?
+    description: |
+      Describe how your proposal is beneficial for the tModLoader software. Please list an example use case for the new feature, such as describing an example of how a mod would use the new feature. 
+    placeholder: |
+      It is currently impossible to program a mod to do...
+      This new feature would allow a mod to implement...
+- type: textarea
+  id: alternatives
+  attributes:
+    label: Which (other) solutions should be considered?
+    description: |
+      Are there alternatives to your proposal? Please list them here. It is okay to leave this empty if none are applicable.

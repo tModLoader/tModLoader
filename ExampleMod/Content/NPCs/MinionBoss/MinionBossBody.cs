@@ -113,7 +113,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
 					BuffID.Poisoned,
-					BuffID.Venom, // If you make it immune to Poisoned, also make it immune to Venom
 
 					BuffID.Confused // Most NPCs have this
 				}
@@ -155,9 +154,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Custom boss bar
 			NPC.BossBar = ModContent.GetInstance<MinionBossBossBar>();
 
-			// Important if this boss has a treasure bag
-			BossBag = ModContent.ItemType<MinionBossBag>();
-
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ) {
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Ropocalypse2");
@@ -176,8 +172,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
 			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			// This requires you to set BossBag in SetDefaults accordingly
-			npcLoot.Add(ItemDropRule.BossBag(BossBag));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
 
 			// Trophies are spawned with 1/10 chance
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
@@ -234,6 +229,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
 		}
 
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+			cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			return true;
+		}
+
 		public override void FindFrame(int frameHeight) {
 			// This NPC animates with a simple "go from start frame to final frame, and loop back to start frame" rule
 			// In this case: First stage: 0-1-2-0-1-2, Second stage: 3-4-5-3-4-5, 5 being "total frame count - 1"
@@ -275,12 +275,14 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				int backGoreType = Mod.Find<ModGore>("MinionBossBody_Back").Type;
 				int frontGoreType = Mod.Find<ModGore>("MinionBossBody_Front").Type;
 
+				var entitySource = NPC.GetSource_Death();
+
 				for (int i = 0; i < 2; i++) {
-					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
-					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
+					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
+					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
 				}
 
-				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);
+				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
 			}
 		}
 
@@ -330,9 +332,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 
 			int count = MinionCount();
+			var entitySource = NPC.GetSource_FromAI();
 
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 				NPC minionNPC = Main.npc[index];
 
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
@@ -507,7 +510,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				var entitySource = NPC.GetSource_FromAI();
+
+				Projectile.NewProjectile(entitySource, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Map/IMapLayer.cs
++++ src/tModLoader/Terraria/Map/IMapLayer.cs
+@@ -3,5 +_,9 @@
+ 	public interface IMapLayer
+ 	{
+ 		void Draw(ref MapOverlayDrawContext context, ref string text);
++
++		bool Visible { get; internal set; }
++
++		void Hide() => Visible = false;
+ 	}
+ }

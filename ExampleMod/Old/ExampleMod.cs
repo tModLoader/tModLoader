@@ -28,7 +28,6 @@ namespace ExampleMod
 		public static DynamicSpriteFont exampleFont;
 
 		private UserInterface _exampleUserInterface;
-		private UserInterface _exampleResourceBarUserInterface;
 
 		internal UserInterface ExamplePersonUserInterface;
 		internal ExampleUI ExampleUI;
@@ -63,9 +62,6 @@ namespace ExampleMod
 			if (!Main.dedServ) {
 				// Add certain equip textures
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
-				AddEquipTexture(new Items.Armor.BlockyHead(), null, EquipType.Head, "BlockyHead", "ExampleMod/Items/Armor/ExampleCostume_Head");
-				AddEquipTexture(new Items.Armor.BlockyBody(), null, EquipType.Body, "BlockyBody", "ExampleMod/Items/Armor/ExampleCostume_Body", "ExampleMod/Items/Armor/ExampleCostume_Arms");
-				AddEquipTexture(new Items.Armor.BlockyLegs(), null, EquipType.Legs, "BlockyLeg", "ExampleMod/Items/Armor/ExampleCostume_Legs");
 
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/MarbleGallery"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
@@ -98,11 +94,6 @@ namespace ExampleMod
 				ExampleUI.Activate();
 				_exampleUserInterface = new UserInterface();
 				_exampleUserInterface.SetState(ExampleUI);
-
-				// Custom Resource Bar
-				ExampleResourceBar = new ExampleResourceBar();
-				_exampleResourceBarUserInterface = new UserInterface();
-				_exampleResourceBarUserInterface.SetState(ExampleResourceBar);
 
 				// UserInterface can only show 1 UIState at a time. If you want different "pages" for a UI, switch between UIStates on the same UserInterface instance. 
 				// We want both the Coin counter and the Example Person UI to be independent and coexist simultaneously, so we have them each in their own UserInterface.
@@ -314,7 +305,6 @@ namespace ExampleMod
 			if (ExampleUI.Visible) {
 				_exampleUserInterface?.Update(gameTime);
 			}
-			_exampleResourceBarUserInterface?.Update(gameTime);
 			ExamplePersonUserInterface?.Update(gameTime);
 		}
 
@@ -340,18 +330,6 @@ namespace ExampleMod
 					delegate {
 						// If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
 						ExamplePersonUserInterface.Draw(Main.spriteBatch, new GameTime());
-						return true;
-					},
-					InterfaceScaleType.UI)
-				);
-			}
-
-			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
-			if (resourceBarIndex != -1) {
-				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
-					"ExampleMod: Example Resource Bar",
-					delegate {
-						_exampleResourceBarUserInterface.Draw(Main.spriteBatch, new GameTime());
 						return true;
 					},
 					InterfaceScaleType.UI)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -8,10 +9,11 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	public class UICreateMod : UIState
+	public class UICreateMod : UIState, IHaveBackButtonCommand
 	{
 		private UIElement _baseElement;
 		private UITextPanel<string> _messagePanel;
@@ -19,6 +21,7 @@ namespace Terraria.ModLoader.UI
 		private UIFocusInputTextField _modDiplayName;
 		private UIFocusInputTextField _modAuthor;
 		private UIFocusInputTextField _basicSword;
+		public UIState PreviousUIState { get; set; }
 
 		public override void OnInitialize()
 		{
@@ -149,8 +152,17 @@ namespace Terraria.ModLoader.UI
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 		{
+			HandleBackButtonUsage();
+		}
+
+		public void HandleBackButtonUsage() {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 			Main.menuMode = Interface.modSourcesID;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			base.DrawSelf(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement)
@@ -233,10 +245,10 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""../tModLoader.targets"" />
+  <Import Project=""..\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -248,9 +260,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("../tModLoader.targets"))
+			if (!fileContents.Contains("..\\tModLoader.targets"))
 				return true;
-			if (!fileContents.Contains("<TargetFramework>net5.0</TargetFramework>"))
+			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
 
 			return false;
@@ -265,13 +277,13 @@ $@"{{
       ""commandName"": ""Executable"",
       ""executablePath"": ""dotnet"",
       ""commandLineArgs"": ""$(tMLPath)"",
-      ""workingDirectory"": ""$(TerrariaSteamPath)""
+      ""workingDirectory"": ""$(tMLSteamPath)""
     }},
     ""TerrariaServer"": {{
       ""commandName"": ""Executable"",
       ""executablePath"": ""dotnet"",
       ""commandLineArgs"": ""$(tMLServerPath)"",
-      ""workingDirectory"": ""$(TerrariaSteamPath)""
+      ""workingDirectory"": ""$(tMLSteamPath)""
     }}
   }}
 }}";
@@ -288,13 +300,13 @@ namespace {modNameTrimmed}.Items
 {{
 	public class {basicSwordName} : ModItem
 	{{
-		public override void SetStaticDefaults() 
+		public override void SetStaticDefaults()
 		{{
 			// DisplayName.SetDefault(""{basicSwordName}""); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			Tooltip.SetDefault(""This is a basic modded sword."");
 		}}
 
-		public override void SetDefaults() 
+		public override void SetDefaults()
 		{{
 			Item.damage = 50;
 			Item.DamageType = DamageClass.Melee;
@@ -310,7 +322,7 @@ namespace {modNameTrimmed}.Items
 			Item.autoReuse = true;
 		}}
 
-		public override void AddRecipes() 
+		public override void AddRecipes()
 		{{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.DirtBlock, 10);

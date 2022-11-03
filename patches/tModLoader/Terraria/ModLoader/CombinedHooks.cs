@@ -6,19 +6,19 @@ namespace Terraria.ModLoader
 {
 	public static class CombinedHooks
 	{
-		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
-			ItemLoader.ModifyWeaponDamage(item, player, ref damage, ref flat);
-			PlayerLoader.ModifyWeaponDamage(player, item, ref damage, ref flat);
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+			ItemLoader.ModifyWeaponDamage(item, player, ref damage);
+			PlayerLoader.ModifyWeaponDamage(player, item, ref damage);
 		}
 
-		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			ItemLoader.ModifyWeaponCrit(item, player, ref crit);
 			PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 		}
 
-		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
-			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
-			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback, ref flat);
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
+			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback);
+			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback);
 		}
 
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
@@ -36,9 +36,41 @@ namespace Terraria.ModLoader
 			PlayerLoader.OnMissingMana(player, item, neededMana);
 		}
 
-		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
+		public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+			return PlayerLoader.CanConsumeAmmo(player, weapon, ammo) && ItemLoader.CanConsumeAmmo(weapon, ammo, player);
+		}
+
+		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
+			PlayerLoader.OnConsumeAmmo(player, weapon, ammo);
+			ItemLoader.OnConsumeAmmo(weapon, ammo, player);
+		}
+
+		//TODO: Fix various inconsistencies with calls of UseItem
 		public static bool CanUseItem(Player player, Item item) {
-			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
+			return PlayerLoader.CanUseItem(player, item) && ItemLoader.CanUseItem(item, player);
+		}
+
+		// In Player.TryAllowingItemReuse_Inner
+		public static bool? CanAutoReuseItem(Player player, Item item) {
+			bool? result = null;
+
+			bool ModifyResult(bool? nbool) {
+				if (nbool.HasValue) {
+					result = nbool.Value;
+				}
+
+				return result != false;
+			}
+
+			if (!ModifyResult(PlayerLoader.CanAutoReuseItem(player, item))) {
+				return false;
+			}
+
+			if (!ModifyResult(ItemLoader.CanAutoReuseItem(item, player))) {
+				return false;
+			}
+
+			return result;
 		}
 
 		public static bool CanShoot(Player player, Item item) {
@@ -50,9 +82,9 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 
-		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = PlayerLoader.Shoot(player, item, source, position, velocity, type, damage, knockback);
-			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult); 
+			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult);
 		}
 
 		public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {
@@ -81,12 +113,21 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		public static void ModifyItemScale(Player player, Item item, ref float scale) {
+			ItemLoader.ModifyItemScale(item, player, ref scale);
+			PlayerLoader.ModifyItemScale(player, item, ref scale);
+		}
+
 		public static float TotalUseSpeedMultiplier(Player player, Item item) {
-			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player);
+			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 		}
 
 		public static float TotalUseTimeMultiplier(Player player, Item item) {
-			return PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player) / TotalUseSpeedMultiplier(player, item);
+			float useTimeMult = PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
+			if (!item.attackSpeedOnlyAffectsWeaponAnimation)
+				useTimeMult /= TotalUseSpeedMultiplier(player, item);
+
+			return useTimeMult;
 		}
 
 		public static int TotalUseTime(float useTime, Player player, Item item) {
@@ -95,6 +136,7 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		// TO-DO: should this be affected by item.attackSpeedOnlyAffectsWeaponAnimation?
 		public static float TotalUseAnimationMultiplier(Player player, Item item) {
 			float result = PlayerLoader.UseAnimationMultiplier(player, item) * ItemLoader.UseAnimationMultiplier(item, player);
 
@@ -113,6 +155,46 @@ namespace Terraria.ModLoader
 			int result = Math.Max(1, (int)(useAnimation * TotalUseAnimationMultiplier(player, item)));
 
 			return result;
+		}
+
+		public static bool? CanConsumeBait(Player player, Item item) {
+			bool? ret = PlayerLoader.CanConsumeBait(player, item);
+			if (ItemLoader.CanConsumeBait(player, item) is bool b) {
+				ret = (ret ?? true) && b;
+			}
+			return ret;
+		}
+
+		public static bool? CanCatchNPC(Player player, NPC npc, Item item) {
+			bool? canCatchOverall = null;
+			bool? canCatchOnPlayer = PlayerLoader.CanCatchNPC(player, npc, item);
+			if (canCatchOnPlayer.HasValue) {
+				if (!canCatchOnPlayer.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnItem = ItemLoader.CanCatchNPC(item, npc, player);
+			if (canCatchOnItem.HasValue) {
+				if (!canCatchOnItem.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnNPC = NPCLoader.CanBeCaughtBy(npc, item, player);
+			if (canCatchOnNPC.HasValue) {
+				if (!canCatchOnNPC.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			return canCatchOverall;
+		}
+
+		public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed) {
+			PlayerLoader.OnCatchNPC(player, npc, item, failed);
+			ItemLoader.OnCatchNPC(item, npc, player, failed);
+			NPCLoader.OnCaughtBy(npc, player, item, failed);
 		}
 	}
 }

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Base/WorkshopIssueReporter.cs
+--- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
 @@ -35,17 +_,30 @@
  
@@ -8,7 +8,7 @@
 +			Utils.LogAndConsoleErrorMessage(textValue);
 +			if (Main.dedServ)
 +				return;
-+			
++
  			AddReport(textValue);
  			OpenReportsScreen();
  		}
@@ -43,12 +43,9 @@
  			AddReport(textValueWith);
  			NotifyReportsScreen();
  		}
-@@ -65,8 +_,13 @@
- 				FilePath = path,
- 				Reason = exception.ToString()
+@@ -67,6 +_,11 @@
  			};
--
-+			
+ 
  			string textValueWith = Language.GetTextValueWith(textKey, obj);
 +
 +			Utils.LogAndConsoleErrorMessage(textValueWith);

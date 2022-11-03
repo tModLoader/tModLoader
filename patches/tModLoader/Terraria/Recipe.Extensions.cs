@@ -120,26 +120,18 @@ namespace Terraria
 		#region RemoveX
 		public bool RemoveIngredient(Item item) => requiredItem.Remove(item);
 
+		public bool RemoveIngredient(int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
+
 		public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
 
 		public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
-		
+
 		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
-		public bool RemoveRecipe() {
+		public void DisableRecipe() {
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
-			if (Main.recipe[RecipeIndex] != this)
-				return false;
-			for (int j = RecipeIndex; j < numRecipes - 1; j++) {
-				Recipe recipe = Main.recipe[j + 1];
-				Main.recipe[j] = recipe;
-				recipe.RecipeIndex--;
-			}
-
-			Main.recipe[numRecipes - 1] = new Recipe();
-			numRecipes--;
-			return true;
+			Disabled = true;
 		}
 		#endregion
 

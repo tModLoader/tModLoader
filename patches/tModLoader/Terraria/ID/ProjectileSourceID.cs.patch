@@ -1,0 +1,42 @@
+--- src/TerrariaNetCore/Terraria/ID/ProjectileSourceID.cs
++++ src/tModLoader/Terraria/ID/ProjectileSourceID.cs
+@@ -1,6 +_,11 @@
++#nullable enable
++
++using System;
++
+ namespace Terraria.ID
+ {
++	//TML: Internalized in favor of string contexts on every entity source.
+-	public static class ProjectileSourceID
++	internal static class ProjectileSourceID
+ 	{
+ 		public const int None = 0;
+ 		public const int SetBonus_SolarExplosion_WhenTakingDamage = 1;
+@@ -21,5 +_,26 @@
+ 		public const int SetBonus_GhostHurt = 16;
+ 		public const int VampireKnives = 18;
+ 		public const int Count = 19;
++
++		public static string? ToContextString(int itemSourceId) => itemSourceId switch {
++			SetBonus_SolarExplosion_WhenTakingDamage => nameof(SetBonus_SolarExplosion_WhenTakingDamage),
++			SetBonus_SolarExplosion_WhenDashing => nameof(SetBonus_SolarExplosion_WhenDashing),
++			SetBonus_ForbiddenStorm => nameof(SetBonus_ForbiddenStorm),
++			SetBonus_Titanium => nameof(SetBonus_Titanium),
++			SetBonus_Orichalcum => nameof(SetBonus_Orichalcum),
++			SetBonus_Chlorophyte => nameof(SetBonus_Chlorophyte),
++			SetBonus_Stardust => nameof(SetBonus_Stardust),
++			WeaponEnchantment_Confetti => nameof(WeaponEnchantment_Confetti),
++			PlayerDeath_TombStone => nameof(PlayerDeath_TombStone),
++			FallingStar => nameof(FallingStar),
++			PlayerHurt_DropFootball => nameof(PlayerHurt_DropFootball),
++			StormTigerTierSwap => nameof(StormTigerTierSwap),
++			AbigailTierSwap => nameof(AbigailTierSwap),
++			SetBonus_GhostHeal => nameof(SetBonus_GhostHeal),
++			SetBonus_GhostHurt => nameof(SetBonus_GhostHurt),
++			VampireKnives => nameof(VampireKnives),
++			TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_TorchGod' being added.
++			_ => null,
++		};
+ 	}
+ }

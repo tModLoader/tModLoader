@@ -1,4 +1,8 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.Social.Steam;
 using Terraria.UI;
@@ -10,10 +14,10 @@ namespace Terraria.GameContent.UI.States
 		private UIElement _buttonMods;
 		private UIElement _buttonModSources;
 		private UIElement _buttonModBrowser;
-		private UIElement _buttonTBD;
+		private UIElement _buttonModPack;
 
 		private UIElement MakeButton_OpenModsMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuManageMods");
+			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubManageMods", "tModLoader.MenuManageMods");
 			uIElement.OnClick += Click_OpenModsMenu;
 			_buttonMods = uIElement;
 			return uIElement;
@@ -26,7 +30,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_OpenModSourcesMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishResourcepacks", "tModLoader.MenuDevelopMods");
+			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDevelopMods", "tModLoader.MenuDevelopMods");
 			uIElement.OnClick += Click_OpenModSourcesMenu;
 			_buttonModSources = uIElement;
 			return uIElement;
@@ -39,7 +43,7 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private UIElement MakeButton_OpenModBrowserMenu() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubWorlds", "tModLoader.MenuDownloadMods");
+			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDownloadMods", "tModLoader.MenuDownloadMods");
 			uIElement.OnClick += Click_OpenModBrowserMenu;
 			_buttonModBrowser = uIElement;
 			return uIElement;
@@ -51,15 +55,21 @@ namespace Terraria.GameContent.UI.States
 			Main.MenuUI.SetState(Interface.modBrowser);
 		}
 
-		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To Be Determined");
-			uIElement.OnClick += Click_OpenTBDMenu;
-			_buttonTBD = uIElement;
+		private UIElement MakeButton_ModPackMenu() {
+			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubModPacks", "tModLoader.ModsModPacks");
+			uIElement.OnClick += Click_OpenModPackMenu;
+			_buttonModPack = uIElement;
 			return uIElement;
 		}
 
-		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
+		private void Click_OpenModPackMenu(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
+			Interface.modPacksMenu.PreviousUIState = this;
+			Main.MenuUI.SetState(Interface.modPacksMenu);
+		}
+
+		private UIElement MakeFancyButtonMod(string path, string textKey) {
+			return MakeFancyButtonInner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
 		}
 	}
 }

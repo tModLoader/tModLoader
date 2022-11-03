@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a Send method that's used to actually send everything you've written between client and server.
-	/// 
+	///
 	/// ModPacket has all the same methods as BinaryWriter, and some additional ones.
 	/// </summary>
 	/// <seealso cref="System.IO.BinaryWriter" />
@@ -28,16 +28,14 @@ namespace Terraria.ModLoader
 		public void Send(int toClient = -1, int ignoreClient = -1) {
 			Finish();
 
+			if (ModNet.DetailedLogging)
+				ModNet.LogSend(toClient, ignoreClient, $"ModPacket.Send {ModNet.GetMod(netID)?.Name ?? "ModLoader"}({netID})", len);
+
 			if (Main.netMode == 1) {
 				Netplay.Connection.Socket.AsyncSend(buf, 0, len, SendCallback);
 
-				LegacyNetDiagnosticsUI.txMsg++;
-				LegacyNetDiagnosticsUI.txData += len;
-
-				if (netID > 0) {
-					ModNet.txMsgType[netID]++;
-					ModNet.txDataType[netID] += len;
-				}
+				if (netID >= 0)
+					ModNet.ModNetDiagnosticsUI.CountSentMessage(netID, len);
 			}
 			else if (toClient != -1) {
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);

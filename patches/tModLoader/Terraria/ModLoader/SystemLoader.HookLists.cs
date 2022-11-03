@@ -3,10 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Graphics;
+using Terraria.IO;
 using Terraria.Localization;
+using Terraria.Map;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -29,27 +33,29 @@ namespace Terraria.ModLoader
 
 		private static readonly List<HookList> hooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate {
+			var hook = new HookList(func.ToMethodInfo());
 
 			hooks.Add(hook);
-			
+
 			return hook;
 		}
 
 		private static void RebuildHooks() {
 			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(Systems, hook.method);
+				hook.arr = Systems.WhereMethodIsOverridden(hook.method).ToArray();
 			}
 		}
 
 		//Delegates
-		
+
 		private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
-		
+
 		private delegate void DelegateModifySunLightColor(ref Color tileColor, ref Color backgroundColor);
-		
+
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
+
+		private delegate void DelegatePreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
 
@@ -63,9 +69,17 @@ namespace Terraria.ModLoader
 
 		//HookLists
 
+		private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
+
+		private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);
+
+		private static HookList HookAddRecipeGroups = AddHook<Action>(s => s.AddRecipeGroups);
+
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
 		private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
+
+		private static HookList HookCanWorldBePlayed = AddHook<Func<PlayerFileData, WorldFileData, bool>>(s => s.CanWorldBePlayed);
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(s => s.ModifyScreenPosition);
 
@@ -74,6 +88,8 @@ namespace Terraria.ModLoader
 		private static HookList HookModifySunLightColor = AddHook<DelegateModifySunLightColor>(s => s.ModifySunLightColor);
 
 		private static HookList HookModifyLightingBrightness = AddHook<DelegateModifyLightingBrightness>(s => s.ModifyLightingBrightness);
+
+		private static HookList HookPreDrawMapIconOverlay = AddHook<DelegatePreDrawMapIconOverlay>(s => s.PreDrawMapIconOverlay);
 
 		private static HookList HookPostDrawFullscreenMap = AddHook<DelegatePostDrawFullscreenMap>(s => s.PostDrawFullscreenMap);
 
@@ -120,6 +136,8 @@ namespace Terraria.ModLoader
 		private static HookList HookPostUpdateEverything = AddHook<Action>(s => s.PostUpdateEverything);
 
 		private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>> (s => s.ModifyInterfaceLayers);
+
+		private static HookList HookModifyGameTipVisibility = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTipVisibility);
 
 		private static HookList HookPostDrawInterface = AddHook<Action<SpriteBatch>>(s => s.PostDrawInterface);
 

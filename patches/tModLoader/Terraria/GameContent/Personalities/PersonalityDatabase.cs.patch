@@ -1,0 +1,45 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Personalities/PersonalityDatabase.cs
++++ src/tModLoader/Terraria/GameContent/Personalities/PersonalityDatabase.cs
+@@ -5,7 +_,9 @@
+ 	public class PersonalityDatabase
+ 	{
+ 		private Dictionary<int, PersonalityProfile> _personalityProfiles;
++		/*
+ 		private PersonalityProfile _trashEntry = new PersonalityProfile();
++		*/
+ 
+ 		public PersonalityDatabase() {
+ 			_personalityProfiles = new Dictionary<int, PersonalityProfile>();
+@@ -24,11 +_,32 @@
+ 			}
+ 		}
+ 
++		/*
+ 		public PersonalityProfile GetByNPCID(int npcId) {
+ 			if (_personalityProfiles.TryGetValue(npcId, out PersonalityProfile value))
+ 				return value;
+ 
+ 			return _trashEntry;
++		}
++		*/
++
++		//TML: Added as a replacement for the dummy-returning 'GetByNPCID' for clarity.
++		public bool TryGetProfileByNPCID(int npcId, out PersonalityProfile profile) {
++			if (_personalityProfiles.TryGetValue(npcId, out profile))
++				return true;
++
++			profile = null;
++
++			return false;
++		}
++
++		// Added by TML.
++		public PersonalityProfile GetOrCreateProfileByNPCID(int npcId) {
++			if (!_personalityProfiles.TryGetValue(npcId, out PersonalityProfile value)) {
++				_personalityProfiles[npcId] = value = new PersonalityProfile();
++			}
++
++			return value;
+ 		}
+ 	}
+ }

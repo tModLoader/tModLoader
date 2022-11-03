@@ -23,6 +23,12 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
 using Terraria.Initializers;
+using Terraria.Map;
+using Terraria.GameContent.Creative;
+using Terraria.Graphics.Effects;
+using Terraria.GameContent.Skies;
+using Terraria.GameContent;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -90,9 +96,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist. 
+		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
 		/// </summary>
 		/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
+		/// <param name="mode">The desired timing for when the asset actually loads. Use ImmediateLoad if you need correct dimensions immediately, such as with UI initialization</param>
 		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
 			SplitName(name, out string modName, out string subName);
 
@@ -111,7 +118,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Returns whether or not a asset with the specified name exists.
-		/// Includes the mod name prefix like GetAsset
+		/// Includes the mod name prefix like Request
 		/// </summary>
 		public static bool HasAsset(string name) {
 			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
@@ -261,6 +268,12 @@ namespace Terraria.ModLoader
 		public static int TileType<T>() where T : ModTile => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
+		/// Get the id (type) of a ModPylon by class. Assumes one instance per class.
+		/// If nothing is found, returns 0, or the "Forest Pylon" type.
+		/// </summary>
+		public static TeleportPylonType PylonType<T>() where T : ModPylon => GetInstance<T>()?.PylonType ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModTileEntity by class. Assumes one instance per class.
 		/// </summary>
 		public static int TileEntityType<T>() where T : ModTileEntity => GetInstance<T>()?.Type ?? 0;
@@ -293,8 +306,9 @@ namespace Terraria.ModLoader
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
+			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
+				if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 				ContentInstance.Register(mod);
 				mod.loading = true;
 				mod.AutoloadConfig();
@@ -305,56 +319,71 @@ namespace Terraria.ModLoader
 				mod.loading = false;
 			});
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSSettingUp");
+			Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
-			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			Main.ResourceSetsManager.AddModdedDisplaySets();
+			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.SetupContent();
+			});
+
+			ContentSamples.Initialize();
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
+			LoadModContent(token, mod => {
 				mod.PostSetupContent();
 				SystemLoader.PostSetupContent(mod);
 				mod.TransferAllAssets();
 			});
+
 
 			MemoryTracking.Finish();
 
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
 
+			ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
+
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+			SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
+			PylonLoader.Setup();
 			MapLoader.SetupModMap();
+			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
-			
-			ContentSamples.Initialize();
+			KeybindLoader.SetupContent();
+
 			PlayerInput.reinitialize = true;
-			SetupBestiary(token);
+			SetupBestiary();
 			SetupRecipes(token);
 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 			ItemSorting.SetupWhiteLists();
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+
+			ModOrganizer.SaveLastLaunchedMods();
 		}
-		
+
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 			DamageClassLoader.RegisterDefaultClasses();
 			InfoDisplayLoader.RegisterDefaultDisplays();
 		}
 
-		internal static Mod LoadingMod { get; private set; }
 		private static void LoadModContent(CancellationToken token, Action<Mod> loadAction) {
 			MemoryTracking.Checkpoint();
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(num++, mod);
 				try {
-					LoadingMod = mod;
 					loadAction(mod);
 				}
 				catch (Exception e) {
@@ -362,32 +391,31 @@ namespace Terraria.ModLoader
 					throw;
 				}
 				finally {
-					LoadingMod = null;
 					MemoryTracking.Update(mod.Name);
 				}
 			}
 		}
 
-		private static void SetupBestiary(CancellationToken token) {
+		private static void SetupBestiary() {
 			//Beastiary DB
 			var bestiaryDatabase = new BestiaryDatabase();
 			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 			Main.BestiaryDB = bestiaryDatabase;
 			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
-			
+
 			//Drops DB
 			var itemDropDatabase = new ItemDropDatabase();
 			itemDropDatabase.Populate();
 			Main.ItemDropsDB = itemDropDatabase;
-			
+
 			//Update the bestiary DB with the drops DB.
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
-			
+
 			//Etc
-			
+
 			if (!Main.dedServ)
 				Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
-			
+
 			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
 			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
@@ -404,22 +432,19 @@ namespace Terraria.ModLoader
 			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
 			RecipeLoader.setupRecipes = false;
+			ContentSamples.FixItemsAfterRecipesAreAdded();
+			RecipeLoader.PostSetupRecipes();
 		}
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
-			
+
 			int i = 0;
-			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
-				if (Main.dedServ)
-					Console.WriteLine($"Unloading {mod.DisplayName}...");
-				else
-					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
-				
-				MonoModHooks.RemoveAll(mod);
-				
+				Interface.loadMods.SetCurrentMod(i++, mod);
+
 				try {
+					MonoModHooks.RemoveAll(mod);
 					mod.Close();
 					mod.UnloadContent();
 				}
@@ -432,17 +457,21 @@ namespace Terraria.ModLoader
 
 		//TODO: Unhardcode ALL of this.
 		internal static void Unload() {
-			ContentInstance.Clear();
-			ModTypeLookup.Clear();
+			TypeCaching.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			PrefixLoader.Unload();
 			DustLoader.Unload();
 			TileLoader.Unload();
+			PylonLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
+
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
+			if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
+				TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
+
 			BossBarLoader.Unload();
 			PlayerLoader.Unload();
 			BuffLoader.Unload();
@@ -451,14 +480,15 @@ namespace Terraria.ModLoader
 			DamageClassLoader.Unload();
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
-			SoundLoader.Unload();
+			PlantLoader.UnloadPlants();
+			ResourceOverlayLoader.Unload();
+			ResourceDisplaySetLoader.Unload();
 
 			LoaderManager.Unload();
 
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemLoader.Unload();
-			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -466,6 +496,7 @@ namespace Terraria.ModLoader
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
+			TileEntity.manager.Reset();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			RecipeLoader.Unload();
@@ -475,6 +506,8 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
+			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+			Main.gameTips.Reset();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();
@@ -483,7 +516,9 @@ namespace Terraria.ModLoader
 			// WallID.Search = IdDictionary.Create<WallID, ushort>();
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
+			CreativeItemSacrificesCatalog.Instance.Initialize();
 			ContentSamples.Initialize();
+			SetupBestiary();
 
 			CleanupModReferences();
 		}
@@ -508,7 +543,6 @@ namespace Terraria.ModLoader
 			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
-				SoundLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}
@@ -518,6 +552,10 @@ namespace Terraria.ModLoader
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
+
+			// TML: Due to Segments.PlayerSegment._player being initialized way before any mods are loaded, calling methods on this player (which vanilla does) will crash since no ModPlayers are set up for it, so reinitialize it
+			if (!Main.dedServ)
+				SkyManager.Instance["CreditsRoll"] = new CreditsRollSky();
 		}
 
 		/// <summary>
@@ -526,6 +564,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static void CleanupModReferences()
 		{
+			WorldGen.clearWorld();
+
 			// Clear references to ModPlayer instances
 			for (int i = 0; i < Main.player.Length; i++) {
 				Main.player[i] = new Player();
@@ -537,30 +577,11 @@ namespace Terraria.ModLoader
 			Main._characterSelectMenu._playerList?.Clear();
 			Main.PlayerList.Clear();
 
-			for (int i = 0; i < Main.npc.Length; i++) {
-				Main.npc[i] = new NPC();
-				Main.npc[i].whoAmI = i;
-			}
-
-			for (int i = 0; i < Main.item.Length; i++) {
-				Main.item[i] = new Item();
-				// item.whoAmI is never used
-			}
-
 			if (ItemSlot.singleSlotArray[0] != null) {
 				ItemSlot.singleSlotArray[0] = new Item();
 			}
 
-			for (int i = 0; i < Main.chest.Length; i++) {
-				Main.chest[i] = new Chest();
-			}
-
-			for (int i = 0; i < Main.projectile.Length; i++) {
-				Main.projectile[i] = new Projectile();
-				// projectile.whoAmI is only set for active projectiles
-			}
-
-			TileEntity.Clear(); // drop all possible references to mod TEs
+			WorldGen.ClearGenerationPasses(); // Clean up modded generation passes
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {

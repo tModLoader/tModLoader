@@ -13,8 +13,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public bool HasAura => _auraTime > 0;
 
-		public override bool CloneNewInstances => true;
-
 		public override void ResetEffects() {
 			HasSetBonus = false;
 		}
@@ -58,22 +56,18 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			}
 		}
 
-		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 			if (_lastLife <= -1) {
 				_lastLife = Player.statLife;
 			}
 
 			int diff = _lastLife - Player.statLife;
-			
+
 			if (diff >= 0.1f * Player.statLifeMax2) {
 				_auraTime = 300 + diff;
 			}
-			
-			_lastLife = Player.statLife;
-		}
 
-		public object Clone() {
-			return MemberwiseClone();
+			_lastLife = Player.statLife;
 		}
 	}
 }

@@ -1,12 +1,12 @@
 "DepotBuildConfig"
 {
   "DepotID" "1281934"
-  "ContentRoot" "../artifacts/Debug"
+  "ContentRoot" "../artifacts/Build"
   "FileMapping"
   {
     "LocalPath" "*"
     "DepotPath" "."
     "recursive" "1"
   }
-  "FileExclusion" "*.pdb"
+  "FileExclusion" "*-win-x64.zip"
 }

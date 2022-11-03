@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
+using Terraria.Initializers;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -29,6 +31,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			// Note: This is a hacky solution that doesn't respect the actual KeyboardUI["Inventory"] keybind. Hopefully later Terraria updates handle allowing the inventory/back keybind to work properly in situations where text is being input
+			if (Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape)) {
+				UILinksInitializer.FancyExit();
+			}
 			GameInput.PlayerInput.WritingText = true;
 			Main.instance.HandleIME();
 			string newString = Main.GetInputText(_currentString);
@@ -36,11 +42,11 @@ namespace Terraria.ModLoader.UI
 				_currentString = newString;
 				OnTextChange?.Invoke(this, EventArgs.Empty);
 			}
-			
+
 			string displayString = _currentString;
 			if (++_textBlinkerCount / 20 % 2 == 0)
 				displayString += "|";
-			
+
 			CalculatedStyle space = GetDimensions();
 			if (_currentString.Length == 0) {
 				Utils.DrawBorderString(spriteBatch, _hintText, new Vector2(space.X, space.Y), Color.Gray);

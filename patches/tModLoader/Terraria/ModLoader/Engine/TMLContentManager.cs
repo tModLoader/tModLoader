@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Engine
 {
 	internal class TMLContentManager : ContentManager
 	{
-		private readonly TMLContentManager alternateContentManager;
+		internal readonly TMLContentManager alternateContentManager;
 		private readonly HashSet<string> ExistingImages = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
 		private int loadedAssets = 0;
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Engine
 
 		protected override Stream OpenStream(string assetName) {
 			if (!assetName.StartsWith("tmod:")) {
-				if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb"))) { 
+				if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb"))) {
 					try {
 						return alternateContentManager.OpenStream(assetName);
 					}

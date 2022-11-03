@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to customize the behavior of a custom gore.
 	/// </summary>
+	[Autoload(Side = ModSide.Client)]
 	public abstract class ModGore : ModTexturedType
 	{
 		internal string nameOverride;
@@ -28,7 +30,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify a gore's fields when it is created.
 		/// </summary>
-		public virtual void OnSpawn(Gore gore) { }
+		public virtual void OnSpawn(Gore gore, IEntitySource source) { }
 
 		//in Terraria.Gore.Update at beginning of if block checking for active add
 		//  if(this.modGore != null && !this.modGore.Update(this)) { return; }
@@ -45,10 +47,5 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual Color? GetAlpha(Gore gore, Color lightColor) => null;
-
-		/// <summary>
-		/// Allows you to determine whether or not this gore will draw behind tiles, etc. Returns false by default.
-		/// </summary>
-		public virtual bool DrawBehind(Gore gore) => false;
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.GameContent.Creative;
 
 namespace Terraria.ModLoader.Default.Developer
 {
@@ -12,8 +13,9 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override void SetStaticDefaults() {
 			string displayName = Name.Replace('_', ' ');
-			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
+			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -23,7 +25,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			var line = new TooltipLine(Mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
-				overrideColor = Color.OrangeRed
+				OverrideColor = Color.OrangeRed
 			};
 			tooltips.Add(line);
 		}

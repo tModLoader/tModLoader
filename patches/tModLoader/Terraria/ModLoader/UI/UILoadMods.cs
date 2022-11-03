@@ -39,15 +39,19 @@ namespace Terraria.ModLoader.UI
 			SubProgressText = "";
 		}
 
-		private void SetProgressText(string text) {
-			Logging.tML.Info(text);
+		private void SetProgressText(string text, string logText = null) {
+			Logging.tML.Info(logText ?? text);
 			if (Main.dedServ) Console.WriteLine(text);
 			else DisplayText = text;
 		}
 
-		public void SetCurrentMod(int i, string mod) {
-			SetProgressText(Language.GetTextValue(stageText, mod));
+		public void SetCurrentMod(int i, string modName, string displayName, Version version) {
+			var display = $"{displayName} v{version}";
+			var log = $"{modName} ({displayName}) v{version}";
+			SetProgressText(Language.GetTextValue(stageText, display), Language.GetTextValue(stageText, log));
 			Progress = i / (float)modCount;
 		}
+
+		public void SetCurrentMod(int i, Mod mod) => SetCurrentMod(i, mod.Name, mod.DisplayName, mod.Version);
 	}
 }

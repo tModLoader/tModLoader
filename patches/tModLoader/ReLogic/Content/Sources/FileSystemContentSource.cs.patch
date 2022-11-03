@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/Sources/FileSystemContentSource.cs
+--- src/TerrariaNetCore/ReLogic/Content/Sources/FileSystemContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
 @@ -4,16 +_,10 @@
  

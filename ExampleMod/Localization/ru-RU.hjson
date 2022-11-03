@@ -8,7 +8,7 @@ Mods: {
 		}
 		
 		NPCName: {
-			FlutterSlime: Порхающий слизень
+			ExampleCustomAISlimeNPC: Порхающий слизень
 			Example_Person: Пример человека
 		}
 		
@@ -48,6 +48,11 @@ Mods: {
 		
 		Bestiary: {
 			ExamplePerson: Построен из блоков, с руками из стали. Качает своё железо и днём и ночью.
+		}
+
+		Prefix: {
+			ExamplePrefix: Пример префикса
+			ExampleDerivedPrefix: Пример префикса с наследованием
 		}
 	}
 }

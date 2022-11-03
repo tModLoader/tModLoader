@@ -11,6 +11,16 @@ root = true
 # C# files
 [*.cs]
 
+# Accessibility modifiers required - This shows up on partials even if they have accessibility defined in one of the main parts.
+dotnet_diagnostic.IDE0040.severity = none
+
+# A bunch of the following diagnostics are useless for us, as we aren't the authors of this game.
+
+# Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none 
+# Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = none
+
 #### Core EditorConfig Options ####
 
 # Indentation and spacing
@@ -21,6 +31,7 @@ root = true
 # New line preferences
 	end_of_line = crlf
 	insert_final_newline = false
+	trim_trailing_whitespace = true
 
 #### .NET Coding Conventions ####
 
@@ -83,7 +94,7 @@ root = true
 	# Prefer block bodies for constructors
 	csharp_style_expression_bodied_constructors = false:suggestion
 	# Prefer expression-bodied members for methods, properties, indexers and accessors when they will be a single line
-	csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+	csharp_style_expression_bodied_methods = false:suggestion
 	csharp_style_expression_bodied_properties = when_on_single_line:suggestion
 	csharp_style_expression_bodied_indexers = when_on_single_line:suggestion
 	csharp_style_expression_bodied_accessors = when_on_single_line:suggestion

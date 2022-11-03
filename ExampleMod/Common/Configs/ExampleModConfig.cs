@@ -8,7 +8,7 @@ namespace ExampleMod.Common.Configs
 		// ConfigScope.ClientSide should be used for client side, usually visual or audio tweaks.
 		// ConfigScope.ServerSide should be used for basically everything else, including disabling items or changing NPC behaviours
 		public override ConfigScope Mode => ConfigScope.ServerSide;
-		
+
 		// The "$" character before a name means it should interpret the name as a translation key and use the loaded translation with the same key.
 		// The things in brackets are known as "Attributes".
 		[Header("$Mods.ExampleMod.Config.ItemHeader")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category.

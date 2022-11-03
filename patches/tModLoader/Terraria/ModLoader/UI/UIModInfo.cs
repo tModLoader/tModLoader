@@ -1,22 +1,15 @@
-using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Security;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
@@ -46,11 +39,11 @@ namespace Terraria.ModLoader.UI
 		private bool _ready;
 
 		private CancellationTokenSource _cts;
-		
+
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
 				Width = {Percent = 0.8f},
-				MaxWidth = UICommon.MaxPanelWidth,
+				MaxWidth = new StyleDimension(800f, 0f), //UICommon.MaxPanelWidth,
 				Top = {Pixels = 220},
 				Height = {Pixels = -220, Percent = 1f},
 				HAlign = 0.5f
@@ -85,7 +78,7 @@ namespace Terraria.ModLoader.UI
 			_uIElement.Append(_uITextPanel);
 
 			_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
-				Width = {Percent = 0.5f},
+				Width = {Percent = 0.49f},
 				Height = {Pixels = 40},
 				HAlign = 1f,
 				VAlign = 1f,
@@ -94,7 +87,7 @@ namespace Terraria.ModLoader.UI
 			_modHomepageButton.OnClick += VisitModHomePage;
 
 			_modSteamButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitSteampage")) {
-				Width = { Percent = 0.5f },
+				Width = { Percent = 0.49f },
 				Height = { Pixels = 40 },
 				HAlign = 0f,
 				VAlign = 1f,
@@ -152,7 +145,7 @@ namespace Terraria.ModLoader.UI
 			}
 			_url = url;
 			_loadFromWeb = loadFromWeb;
-			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && Social.Steam.WorkshopHelper.ModManager.GetPublishIdLocal(localMod, out ulong publishId))
+			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && WorkshopHelper.GetPublishIdLocal(localMod.modFile, out ulong publishId))
 				_publishedFileId = publishId.ToString();
 			else
 				_publishedFileId = publishedFileId;
@@ -190,22 +183,9 @@ namespace Terraria.ModLoader.UI
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
-			string tmodPath = _localMod.modFile.path;
+			ModOrganizer.DeleteMod(_localMod);
 
-			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
-				string parentDir = Directory.GetParent(tmodPath).ToString();
-				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
-
-				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
-
-				var modManager = new Social.Steam.WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-
-				modManager.Uninstall(parentDir);
-			}
-			else {
-				File.Delete(tmodPath);
-			}
-
+			Task.Run(() => { Interface.modBrowser.InnerPopulateModBrowser(); });
 
 			Main.menuMode = _gotoMenu;
 		}
@@ -217,22 +197,24 @@ namespace Terraria.ModLoader.UI
 
 		private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
+			VisitModSteamPageInner();
+		}
 
+		private void VisitModSteamPageInner() {
 			string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
 
-			if (Social.Steam.WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled())
+			if (SteamedWraps.SteamClient && Steamworks.SteamUtils.IsOverlayEnabled())
 				Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
 			else
 				Utils.OpenToURL(url);
 		}
 
-
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			
+
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = _gotoMenu;
-			
+
 			if (_modHomepageButton.IsMouseHovering) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
 			}
@@ -268,7 +250,7 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime) {
 			if (!_loading && _ready) {
 				_modInfo.SetText(_info);
-				
+
 				if (!string.IsNullOrEmpty(_url)){
 					_uIElement.Append(_modHomepageButton);
 				}

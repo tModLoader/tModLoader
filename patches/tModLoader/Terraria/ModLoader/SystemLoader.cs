@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.Graphics;
+using Terraria.IO;
 using Terraria.Localization;
+using Terraria.Map;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -16,13 +19,24 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static partial class SystemLoader
 	{
-		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
+		internal static readonly List<ModSystem> Systems = new();
+		internal static readonly Dictionary<Mod, List<ModSystem>> SystemsByMod = new();
 
 		internal static ModSystem[] NetSystems { get; private set; }
 
-		internal static void Add(ModSystem modSystem) => Systems.Add(modSystem);
+		internal static void Add(ModSystem modSystem) {
+			if (!SystemsByMod.TryGetValue(modSystem.Mod, out var modsSystems)) {
+				SystemsByMod[modSystem.Mod] = modsSystems = new();
+			}
 
-		internal static void Unload() => Systems.Clear();
+			Systems.Add(modSystem);
+			modsSystems.Add(modSystem);
+		}
+
+		internal static void Unload() {
+			Systems.Clear();
+			SystemsByMod.Clear();
+		}
 
 		internal static void ResizeArrays() {
 			NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
@@ -50,14 +64,58 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void OnModLoad(Mod mod) {
-			foreach (var system in Systems.Where(s => s.Mod == mod)) {
-				system.OnModLoad();
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.OnModLoad();
+				}
+			}
+		}
+
+		internal static void OnModUnload(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.OnModUnload();
+				}
 			}
 		}
 
 		internal static void PostSetupContent(Mod mod) {
-			foreach (var system in Systems.Where(s => s.Mod == mod)) {
-				system.PostSetupContent();
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostSetupContent();
+				}
+			}
+		}
+
+		internal static void AddRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.AddRecipes();
+				}
+			}
+		}
+
+		internal static void PostAddRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostAddRecipes();
+				}
+			}
+		}
+
+		internal static void PostSetupRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostSetupRecipes();
+				}
+			}
+		}
+
+		internal static void AddRecipeGroups(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.AddRecipeGroups();
+				}
 			}
 		}
 
@@ -71,6 +129,18 @@ namespace Terraria.ModLoader
 			foreach (var system in HookOnWorldUnload.arr) {
 				system.OnWorldUnload();
 			}
+		}
+
+		public static bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldData, out ModSystem rejector) {
+			foreach (var system in HookCanWorldBePlayed.arr) {
+				if (!system.CanWorldBePlayed(playerData, worldData)) {
+					rejector = system;
+					return false;
+				}
+			}
+
+			rejector = null;
+			return true;
 		}
 
 		public static void ModifyScreenPosition() {
@@ -112,6 +182,12 @@ namespace Terraria.ModLoader
 
 			negLight = Math.Max(negLight, 0.001f);
 			negLight2 = Math.Max(negLight2, 0.001f);
+		}
+
+		public static void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) {
+			foreach (var system in HookPreDrawMapIconOverlay.arr) {
+				system.PreDrawMapIconOverlay(layers, mapOverlayDrawContext);
+			}
 		}
 
 		public static void PostDrawFullscreenMap(ref string mouseText) {
@@ -259,6 +335,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		public static void ModifyGameTipVisibility(IReadOnlyList<GameTipData> tips) {
+			foreach (var system in HookModifyGameTipVisibility.arr) {
+				system.ModifyGameTipVisibility(tips);
+			}
+		}
+
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {
 			foreach (var system in HookPostDrawInterface.arr) {
 				system.PostDrawInterface(spriteBatch);
@@ -297,7 +379,19 @@ namespace Terraria.ModLoader
 
 		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
 			foreach (var system in HookModifyWorldGenTasks.arr) {
-				system.ModifyWorldGenTasks(passes, ref totalWeight);
+				try {
+					system.ModifyWorldGenTasks(passes, ref totalWeight);
+				}
+				catch (Exception e) {
+					string message = string.Join(
+						"\n",
+						system.FullName + " : " + Language.GetTextValue("tModLoader.WorldGenError"),
+						e
+					);
+					Utils.ShowFancyErrorMessage(message, 0);
+
+					throw;
+				}
 			}
 		}
 

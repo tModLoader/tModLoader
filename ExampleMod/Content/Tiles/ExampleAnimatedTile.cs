@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -71,12 +73,22 @@ namespace ExampleMod.Content.Tiles
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
 		}
 
+		// This method allows you to change the sound a tile makes when hit
+		public override bool KillSound(int i, int j, bool fail) {
+			// Play the glass shattering sound instead of the normal digging sound if the tile is destroyed on this hit
+			if (!fail) {
+				SoundEngine.PlaySound(SoundID.Shatter, new Vector2(i, j).ToWorldCoordinates());
+				return false;
+			}
+			return base.KillSound(i, j, fail);
+		}
+
 		//TODO: It's better to have an actual class for this example, instead of comments
 
 		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things
 		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			// Instead of SetSpriteEffects
-			// Flips the sprite if x coord is odd. Makes the tile more interesting 
+			// Flips the sprite if x coord is odd. Makes the tile more interesting
 			SpriteEffects effects = SpriteEffects.None;
 			if (i % 2 == 1)
 				effects = SpriteEffects.FlipHorizontally;
@@ -134,7 +146,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 

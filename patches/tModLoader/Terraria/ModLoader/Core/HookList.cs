@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader.Core
 {
-	public class HookList<T> where T : GlobalType
+	public class HookList<T> where T : class
 	{
-		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
+		// Don't change a single line without performance testing and checking the disassembly. As of NET 6.0.0, this implementation is on par with hand-coding C#
 		// Disassembly checked using Relyze Desktop 3.3.0
 		public ref struct InstanceEnumerator
 		{
 			// These have to be arrays rather than ReadOnlySpan as the JIT won't unpack/promote 'struct in struct' (or span in struct either)
 			// Revisit with .NET 6 https://github.com/dotnet/runtime/issues/37924
 			private readonly Instanced<T>[] instances;
-			private readonly int[] hookInds;
+			private readonly int[] hookIndices;
 
 			// ideally this would be Instanced<T> and drop the need for the ii variable in the MoveNext function
 			// but again, struct in struct promotion (and also increasing the 'field count'
@@ -27,9 +29,9 @@ namespace Terraria.ModLoader.Core
 			//private int j;
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public InstanceEnumerator(Instanced<T>[] instances, int[] hookInds) {
+			public InstanceEnumerator(Instanced<T>[] instances, int[] hookIndices) {
 				this.instances = instances;
-				this.hookInds = hookInds;
+				this.hookIndices = hookIndices;
 				current = default;
 				ij = 0;
 				//i = 0;
@@ -40,17 +42,20 @@ namespace Terraria.ModLoader.Core
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public bool MoveNext() {
-				var ii = -1;
-				while ((int)(ij >> 32) < hookInds.Length) {
-					int hookIndex = hookInds[(int)(ij >> 32)];
+				int ii = -1;
+
+				while ((int)(ij >> 32) < hookIndices.Length) {
+					int hookIndex = hookIndices[(int)(ij >> 32)];
+
 					ij += 1L << 32;
+
 					while (ii < hookIndex) {
 						if ((int)ij == instances.Length)
 							return false;
 
 						var inst = instances[(int)(ij++)];
-						ii = inst.index;
-						current = inst.instance;
+						ii = inst.Index;
+						current = inst.Instance;
 					}
 
 					if (ii == hookIndex) {
@@ -66,33 +71,38 @@ namespace Terraria.ModLoader.Core
 
 		public readonly MethodInfo method;
 
-		private int[] registeredGlobalIndices = Array.Empty<int>();
+		private int[] indices = Array.Empty<int>();
 
-		internal HookList(MethodInfo method) {
+		public HookList(MethodInfo method) {
 			this.method = method;
 		}
+		
+		public InstanceEnumerator Enumerate(Instanced<T>[] instances)
+			=> new(instances, indices);
 
-		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
+		public FilteredArrayEnumerator<T> Enumerate(T[] instances)
+			=> new(instances, indices);
 
-		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, registeredGlobalIndices);
+		public FilteredSpanEnumerator<T> Enumerate(ReadOnlySpan<T> instances)
+			=> new(instances, indices);
 
-		public void Update(IList<T> instances) {
-			registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);
+		public FilteredSpanEnumerator<T> Enumerate(List<T> instances) =>
+			Enumerate(CollectionsMarshal.AsSpan(instances));
+
+		public void Update<U>(IList<U> instances) where U : IIndexed {
+			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
 		}
+
+		public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
+			=> new(expr.ToMethodInfo());
 	}
 
-	public class HookList<TGlobal, TDelegate> : HookList<TGlobal>
-		where TGlobal : GlobalType
-		where TDelegate : Delegate
+	public static class HookList
 	{
-		public TDelegate Invoke { get; private set; }
-
-		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
-			Invoke = getInvoker(this);
-		}
-
-		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
-			Invoke = getInvoker(this);
-		}
+		public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType
+			=> hookList.Enumerate(entity.Globals.array);
+		
+		public static FilteredSpanEnumerator<T> Enumerate<T>(this HookList<T> hookList, IEntityWithInstances<T> entity) where T : class, IIndexed
+			=> hookList.Enumerate(entity.Instances);
 	}
 }

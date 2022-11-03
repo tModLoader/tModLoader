@@ -53,7 +53,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
 					BuffID.Poisoned,
-					BuffID.Venom, // If you make it immune to Poisoned, also make it immune to Venom
 
 					BuffID.Confused // Most NPCs have this
 				}
@@ -104,14 +103,21 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return Color.White * NPC.Opacity;
 		}
 
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+			cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			return true;
+		}
+
 		public override void HitEffect(int hitDirection, double damage) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals
 
 				int dustType = 59; // Some blue dust, read the dust guide on the wiki for how to find the perfect dust
+
 				for (int i = 0; i < 20; i++) {
 					Vector2 velocity = NPC.velocity + new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f));
 					Dust dust = Dust.NewDustPerfect(NPC.Center, dustType, velocity, 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
+
 					dust.noLight = true;
 					dust.noGravity = true;
 					dust.fadeIn = Main.rand.NextFloat(0.3f, 0.8f);

@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.GameContent;
 using Terraria.ModLoader.Core;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -19,8 +20,6 @@ namespace Terraria.ModLoader
 		private static int nextBuff = BuffID.Count;
 		internal static readonly IList<ModBuff> buffs = new List<ModBuff>();
 		internal static readonly IList<GlobalBuff> globalBuffs = new List<GlobalBuff>();
-		private static readonly bool[] vanillaLongerExpertDebuff = new bool[BuffID.Count];
-		private static readonly bool[] vanillaCanBeCleared = new bool[BuffID.Count];
 
 		private delegate void DelegateUpdatePlayer(int type, Player player, ref int buffIndex);
 		private static DelegateUpdatePlayer[] HookUpdatePlayer;
@@ -32,36 +31,12 @@ namespace Terraria.ModLoader
 		private static DelegateModifyBuffTip[] HookModifyBuffTip;
 		private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
-
-		static BuffLoader() {
-			for (int k = 0; k < BuffID.Count; k++) {
-				vanillaCanBeCleared[k] = true;
-			}
-			vanillaLongerExpertDebuff[BuffID.Poisoned] = true;
-			vanillaLongerExpertDebuff[BuffID.Darkness] = true;
-			vanillaLongerExpertDebuff[BuffID.Cursed] = true;
-			vanillaLongerExpertDebuff[BuffID.OnFire] = true;
-			vanillaLongerExpertDebuff[BuffID.Bleeding] = true;
-			vanillaLongerExpertDebuff[BuffID.Confused] = true;
-			vanillaLongerExpertDebuff[BuffID.Slow] = true;
-			vanillaLongerExpertDebuff[BuffID.Weak] = true;
-			vanillaLongerExpertDebuff[BuffID.Silenced] = true;
-			vanillaLongerExpertDebuff[BuffID.BrokenArmor] = true;
-			vanillaLongerExpertDebuff[BuffID.CursedInferno] = true;
-			vanillaLongerExpertDebuff[BuffID.Frostburn] = true;
-			vanillaLongerExpertDebuff[BuffID.Chilled] = true;
-			vanillaLongerExpertDebuff[BuffID.Frozen] = true;
-			vanillaLongerExpertDebuff[BuffID.Ichor] = true;
-			vanillaLongerExpertDebuff[BuffID.Venom] = true;
-			vanillaLongerExpertDebuff[BuffID.Blackout] = true;
-			vanillaCanBeCleared[BuffID.PotionSickness] = false;
-			vanillaCanBeCleared[BuffID.Werewolf] = false;
-			vanillaCanBeCleared[BuffID.Merfolk] = false;
-			vanillaCanBeCleared[BuffID.WaterCandle] = false;
-			vanillaCanBeCleared[BuffID.Campfire] = false;
-			vanillaCanBeCleared[BuffID.HeartLamp] = false;
-			vanillaCanBeCleared[BuffID.NoBuilding] = false;
-		}
+		private delegate bool DelegatePreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams);
+		private static DelegatePreDraw[] HookPreDraw;
+		private delegate void DelegatePostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams);
+		private static DelegatePostDraw[] HookPostDraw;
+		private delegate bool DelegateRightClick(int type, int buffIndex);
+		private static DelegateRightClick[] HookRightClick;
 
 		internal static int ReserveBuffID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
@@ -107,13 +82,19 @@ namespace Terraria.ModLoader
 			extraPlayerBuffCount = ModLoader.Mods.Any() ? ModLoader.Mods.Max(m => (int)m.ExtraPlayerBuffSlots) : 0;
 
 			//Hooks
+
+			// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
+			// Remove generic arguments once fixed.
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
 			ModLoader.BuildGlobalHook(ref HookReApplyNPC, globalBuffs, g => g.ReApply);
-			ModLoader.BuildGlobalHook(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegateModifyBuffTip>(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
 			ModLoader.BuildGlobalHook(ref HookCustomBuffTipSize, globalBuffs, g => g.CustomBuffTipSize);
 			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegatePreDraw>(ref HookPreDraw, globalBuffs, g => g.PreDraw);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegatePostDraw>(ref HookPostDraw, globalBuffs, g => g.PostDraw);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegateRightClick>(ref HookRightClick, globalBuffs, g => g.RightClick);
 		}
 
 		internal static void Unload() {
@@ -170,10 +151,6 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		public static bool LongerExpertDebuff(int buff) => GetBuff(buff)?.LongerExpertDebuff ?? vanillaLongerExpertDebuff[buff];
-
-		public static bool CanBeCleared(int buff) => GetBuff(buff)?.CanBeCleared ?? vanillaCanBeCleared[buff];
-
 		public static void ModifyBuffTip(int buff, ref string tip, ref int rare) {
 			if (IsModBuff(buff)) {
 				GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
@@ -193,6 +170,37 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookDrawCustomBuffTip) {
 				hook(buffTip, spriteBatch, originX, originY);
 			}
+		}
+
+		public static bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
+			bool result = true;
+			foreach (var hook in HookPreDraw) {
+				result &= hook(spriteBatch, type, buffIndex, ref drawParams);
+			}
+			if (result && IsModBuff(type)) {
+				return GetBuff(type).PreDraw(spriteBatch, buffIndex, ref drawParams);
+			}
+			return result;
+		}
+
+		public static void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+			if (IsModBuff(type)) {
+				GetBuff(type).PostDraw(spriteBatch, buffIndex, drawParams);
+			}
+			foreach (var hook in HookPostDraw) {
+				hook(spriteBatch, type, buffIndex, drawParams);
+			}
+		}
+
+		public static bool RightClick(int type, int buffIndex) {
+			bool result = true;
+			foreach (var hook in HookRightClick) {
+				result &= hook(type, buffIndex);
+			}
+			if (IsModBuff(type)) {
+				result &= GetBuff(type).RightClick(buffIndex);
+			}
+			return result;
 		}
 	}
 }

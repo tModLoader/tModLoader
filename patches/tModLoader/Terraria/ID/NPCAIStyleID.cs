@@ -6,6 +6,10 @@ namespace Terraria.ID
 	{
 		public static readonly IdDictionary Search = IdDictionary.Create<NPCAIStyleID, short>();
 		/// <summary>
+		/// Used by: <see cref="NPCID.BoundGoblin"/>, <see cref="NPCID.BoundWizard"/>, <see cref="NPCID.BoundMechanic"/>, <see cref="NPCID.WebbedStylist"/>, <see cref="NPCID.SleepingAngler"/>, <see cref="NPCID.BartenderUnconscious"/>, <see cref="NPCID.GolferRescue"/>
+		/// </summary>
+		public const short FaceClosestPlayer = 0;
+		/// <summary>
 		/// Used by: <see cref="NPCID.BigCrimslime"/>, <see cref="NPCID.LittleCrimslime"/>, <see cref="NPCID.JungleSlime"/>, <see cref="NPCID.YellowSlime"/>, <see cref="NPCID.RedSlime"/>, <see cref="NPCID.PurpleSlime"/>, <see cref="NPCID.BlackSlime"/>, <see cref="NPCID.BabySlime"/>, <see cref="NPCID.Pinky"/>, <see cref="NPCID.GreenSlime"/>, <see cref="NPCID.Slimer2"/>, <see cref="NPCID.Slimeling"/>, <see cref="NPCID.BlueSlime"/>, <see cref="NPCID.MotherSlime"/>, <see cref="NPCID.LavaSlime"/>, <see cref="NPCID.DungeonSlime"/>, <see cref="NPCID.CorruptSlime"/>, <see cref="NPCID.IlluminantSlime"/>, <see cref="NPCID.ToxicSludge"/>, <see cref="NPCID.IceSlime"/>, <see cref="NPCID.Crimslime"/>, <see cref="NPCID.SpikedIceSlime"/>, <see cref="NPCID.SpikedJungleSlime"/>, <see cref="NPCID.UmbrellaSlime"/>, <see cref="NPCID.RainbowSlime"/>, <see cref="NPCID.SlimeMasked"/>, <see cref="NPCID.HoppinJack"/>, <see cref="NPCID.SlimeRibbonWhite"/>, <see cref="NPCID.SlimeRibbonYellow"/>, <see cref="NPCID.SlimeRibbonGreen"/>, <see cref="NPCID.SlimeRibbonRed"/>, <see cref="NPCID.Grasshopper"/>, <see cref="NPCID.GoldGrasshopper"/>, <see cref="NPCID.SlimeSpiked"/>, <see cref="NPCID.SandSlime"/>, <see cref="NPCID.QueenSlimeMinionBlue"/>, <see cref="NPCID.QueenSlimeMinionPink"/>, <see cref="NPCID.GoldenSlime"/>
 		/// </summary>
 		public const short Slime = 1;

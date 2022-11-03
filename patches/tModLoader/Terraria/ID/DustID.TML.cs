@@ -45,7 +45,7 @@
 		public const short Poisoned = 46;
 		public const short Cobalt = 48;
 		public const short Mythril = 49;
-		public const short Adamantine = 50;
+		public const short Adamantite = 50;
 		public const short SnowBlock = 51;
 		public const short Pearlsand = 51;
 		public const short UnholyWater = 52; //??? might need verification
@@ -197,7 +197,7 @@
 		public const short BubbleBurst_Purple = 179;
 		public const short DungeonSpirit = 180;
 		public const short GiantCursedSkullBolt = 181;
-		public const short TheDestoryer = 182;
+		public const short TheDestroyer = 182;
 		public const short VampireHeal = 183;
 		public const short ScourgeOfTheCorruptor = 184;
 		public const short FrostHydra = 185;

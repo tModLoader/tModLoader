@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 @@ -1,6 +_,9 @@
  using Microsoft.Xna.Framework;
@@ -18,12 +18,41 @@
  			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
  				float num = 1f;
  				float num2 = 1f;
-@@ -55,20 +_,26 @@
+@@ -34,19 +_,16 @@
+ 						value.Frame();
+ 				}
+ 
+-				num2 *= scale;
+-				num *= num2;
+-				if (num > 0.75f)
+-					num = 0.75f;
+-
++				num = scale * 0.75f;
++				// removed double application of scale
+ 				if (!justCheckingString && color != Color.Black) {
+ 					float inventoryScale = Main.inventoryScale;
+-					Main.inventoryScale = scale * num;
++					Main.inventoryScale = num;
+-					ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * scale * num, Color.White);
++					ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * num, Color.White);
+ 					Main.inventoryScale = inventoryScale;
+ 				}
+ 
+-				size = new Vector2(32f) * scale * num;
++				size = new Vector2(32f) * num;
+ 				return true;
+ 			}
+ 
+@@ -55,20 +_,30 @@
  
  		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
  			Item item = new Item();
 -			if (int.TryParse(text, out int result))
 +			if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
++				item.netDefaults(result);
++
++			// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
++			if(ID.ItemID.Search.TryGetId(text, out result))
  				item.netDefaults(result);
  
  			if (item.type <= 0)
@@ -67,7 +96,7 @@
 +			// do not write other option, base64 holds all the info.
 +			if (I.ModItem != null || I.globalItems.Any()) {
 +				str = str + "/d" + ItemIO.ToBase64(I);
-+				
++
 +				goto End;
 +			}
 +

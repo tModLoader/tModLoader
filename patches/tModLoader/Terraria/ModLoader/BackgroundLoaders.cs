@@ -27,15 +27,22 @@ namespace Terraria.ModLoader
 			Initialize(VanillaBackgroundTextureCount);
 		}
 
-		/// <summary> Returns the slot/ID of the background texture with the given name. Throws exceptions on failure. </summary>
+		/// <summary> Returns the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. Throws exceptions on failure. </summary>
 		public static int GetBackgroundSlot(string texture) => backgrounds[texture];
 
-		/// <summary> Safely attempts to output the slot/ID of the background texture with the given name. </summary>
+		/// <summary> Returns the slot/ID of the background texture with the given mod and path. Throws exceptions on failure. </summary>
+		public static int GetBackgroundSlot(Mod mod, string texture) => GetBackgroundSlot($"{mod.Name}/{texture}");
+
+		/// <summary> Safely attempts to output the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. </summary>
 		public static bool TryGetBackgroundSlot(string texture, out int slot) => backgrounds.TryGetValue(texture, out slot);
+
+		/// <summary> Safely attempts to output the slot/ID of the background texture with the given mod and path. </summary>
+		public static bool TryGetBackgroundSlot(Mod mod, string texture, out int slot) => TryGetBackgroundSlot($"{mod.Name}/{texture}", out slot);
 
 		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.
 		/// </summary>
+		/// <param name="mod">The mod that owns this background.</param>
 		/// <param name="texture">The texture.</param>
 		public static void AddBackgroundTexture(Mod mod, string texture) {
 			if (mod == null)
@@ -89,7 +96,7 @@ namespace Terraria.ModLoader
 	[Autoload(Side = ModSide.Client)]
 	public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroundBackgroundStyle>
 	{
-		public const int VanillaUndergroundBackgroundStylesCount = 18;
+		public const int VanillaUndergroundBackgroundStylesCount = 22;
 
 		public UndergroundBackgroundStylesLoader() {
 			Initialize(VanillaUndergroundBackgroundStylesCount);
@@ -139,6 +146,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal override void Unload() {
+			base.Unload();
 			loaded = false;
 		}
 
@@ -170,7 +178,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawFarTexture() {
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 				return;
 			}
 
@@ -215,7 +223,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawMiddleTexture() {
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 				return;
 			}
 
@@ -254,7 +262,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawCloseBackground(int style) {
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 				return;
 			}
 
@@ -331,8 +339,10 @@ namespace Terraria.ModLoader
 		internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;
 
 		internal static void ResizeAndFillArrays(bool unloading = false) {
-			ModLoader.BuildGlobalHook(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
-			ModLoader.BuildGlobalHook(ref HookChooseSurfaceBackgroundStyle, globalBackgroundStyles, g => g.ChooseSurfaceBackgroundStyle);
+			// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
+			// Remove generic arguments once fixed.
+			ModLoader.BuildGlobalHook<GlobalBackgroundStyle, DelegateChooseUndergroundBackgroundStyle>(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
+			ModLoader.BuildGlobalHook<GlobalBackgroundStyle, DelegateChooseSurfaceBackgroundStyle>(ref HookChooseSurfaceBackgroundStyle, globalBackgroundStyles, g => g.ChooseSurfaceBackgroundStyle);
 			ModLoader.BuildGlobalHook(ref HookFillUndergroundTextureArray, globalBackgroundStyles, g => g.FillUndergroundTextureArray);
 			ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBackgroundStyles, g => g.ModifyFarSurfaceFades);
 

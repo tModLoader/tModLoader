@@ -14,7 +14,7 @@
 				KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
 				SkeletronBossBag, WallOfFleshBossBag, DestroyerBossBag, TwinsBossBag, SkeletronPrimeBossBag,
 				PlanteraBossBag, GolemBossBag, FishronBossBag, CultistBossBag, MoonLordBossBag,
-				BossBagBetsy, FairyQueenBossBag, QueenSlimeBossBag
+				BossBagBetsy, FairyQueenBossBag, QueenSlimeBossBag, DeerclopsBossBag
 			);
 
 			/// <summary>
@@ -23,7 +23,51 @@
 			/// </summary>
 			public static bool[] PreHardmodeLikeBossBag = Factory.CreateBoolSet(
 				KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
-				SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag
+				SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag, DeerclopsBossBag
+			);
+
+			/// <summary>
+			/// Set for catching tools (bug net-type items which can catch critters).<br></br>
+			/// If you want your catching tool to be able to catch the Underworld's lava critters, don't forget to use the <see cref="LavaproofCatchingTool"/> set in conjunction with this one.
+			/// </summary>
+			public static bool[] CatchingTool = Factory.CreateBoolSet(
+				BugNet,
+				GoldenBugNet,
+				FireproofBugNet
+			);
+
+			/// <summary>
+			/// Set for catching tools which can catch the Underworld's lava critters.<br></br>
+			/// Don't forget to use the <see cref="CatchingTool"/> set in conjunction with this one. 
+			/// </summary>
+			public static bool[] LavaproofCatchingTool = Factory.CreateBoolSet(
+				GoldenBugNet,
+				FireproofBugNet
+			);
+
+			/// <summary>
+			/// Set for easily defining weapons as spears.<br/>
+			/// Only used for vanilla spears to make sure they still scale with attack speed (though it's encouraged to set this for your spears as well, for cross-mod support).<br/>
+			/// </summary>
+			public static bool[] Spears = Factory.CreateBoolSet(
+				Spear,
+				Trident,
+				Swordfish,
+				ThunderSpear,
+				TheRottedFork,
+				DarkLance,
+				CobaltNaginata,
+				PalladiumPike,
+				MythrilHalberd,
+				OrichalcumHalberd,
+				AdamantiteGlaive,
+				TitaniumTrident,
+				ObsidianSwordfish,
+				Gungnir,
+				MushroomSpear,
+				MonkStaffT2,
+				ChlorophytePartisan,
+				NorthPole
 			);
 		}
 	}

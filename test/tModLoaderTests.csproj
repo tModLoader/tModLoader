@@ -1,33 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Terraria.ModLoader</RootNamespace>
-    <TestProjectType>UnitTest</TestProjectType>
-    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Test Local\**" />
-    <EmbeddedResource Remove="Test Local\**" />
-    <None Remove="Test Local\**" />
+    <Compile Remove="Test Local\**;*Performance\**" />
+    <EmbeddedResource Remove="Test Local\**;*Performance\**" />
+    <None Remove="Test Local\**;*Performance\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
-    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.dll">
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Game.dll">
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Graphics.dll">
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="../src/tModLoader/Terraria/Libraries/Native/Windows32/Microsoft.Xna.Framework.Xact.dll">
-      <Private>true</Private>
-    </Reference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\tModLoader\Terraria\Terraria.csproj" />
+		<Reference Include="Ionic.Zip.Reduced">
+			<HintPath>..\src\tModLoader\Terraria\Libraries\Common\Ionic.Zip.Reduced.dll</HintPath>
+		</Reference>
   </ItemGroup>
 </Project>

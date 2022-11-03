@@ -3,8 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using ExampleMod.Content.Biomes;
 using Terraria.ModLoader.Utilities;
+using Terraria.DataStructures;
+using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Buffs;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -41,13 +43,29 @@ namespace ExampleMod.Content.NPCs
 			SpawnModBiomes = new int[1] { ModContent.GetInstance<ExampleSurfaceBiome>().Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot) { 
-			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 50)); // Drop shackles with a 1 out of 50 chance.
-			npcLoot.Add(ItemDropRule.Common(ItemID.ZombieArm, 250)); // Drop zombie arm with a 1 out of 250 chance.	
+		public override void ModifyNPCLoot(NPCLoot npcLoot) {
+			// Since Party Zombie is essentially just another variation of Zombie, we'd like to mimic the Zombie drops.
+			// To do this, we can either (1) copy the drops from the Zombie directly or (2) just recreate the drops in our code.
+			// (1) Copying the drops directly means that if Terraria updates and changes the Zombie drops, your ModNPC will also inherit the changes automatically.
+			// (2) Recreating the drops can give you more control if desired but requires consulting the wiki, bestiary, or source code and then writing drop code.
+
+			// (1) This example shows copying the drops directly. For consistency and mod compatibility, we suggest using the smallest positive NPCID when dealing with npcs with many variants and shared drop pools.
+			var zombieDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.Zombie, false); // false is important here
+			foreach (var zombieDropRule in zombieDropRules) {
+				// In this foreach loop, we simple add each drop to the PartyZombie drop pool. 
+				npcLoot.Add(zombieDropRule);
+			}
+
+			// (2) This example shows recreating the drops. This code is commented out because we are using the previous method instead.
+			// npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 50)); // Drop shackles with a 1 out of 50 chance.
+			// npcLoot.Add(ItemDropRule.Common(ItemID.ZombieArm, 250)); // Drop zombie arm with a 1 out of 250 chance.
+
+			// Finally, we can add additional drops. Many Zombie variants have their own unique drops: https://terraria.fandom.com/wiki/Zombie
+			npcLoot.Add(ItemDropRule.Common(ItemID.Confetti, 100)); // 1% chance to drop Confetti
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-			return SpawnCondition.OverworldNightMonster.Chance * 0.2f;
+			return SpawnCondition.OverworldNightMonster.Chance * 0.2f; // Spawn with 1/5th the chance of a regular zombie.
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -57,21 +75,38 @@ namespace ExampleMod.Content.NPCs
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie.")
+				new FlavorTextBestiaryInfoElement("This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie."),
+
+				// By default the last added IBestiaryBackgroundImagePathAndColorProvider will be used to show the background image.
+				// The ExampleSurfaceBiome ModBiomeBestiaryInfoElement is automatically populated into bestiaryEntry.Info prior to this method being called
+				// so we use this line to tell the game to prioritize a specific InfoElement for sourcing the background image.
+				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
 			});
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
 			// Spawn confetti when this zombie is hit.
+
 			for (int i = 0; i < 10; i++) {
 				int dustType = Main.rand.Next(139, 143);
 				var dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, dustType);
 
 				dust.velocity.X += Main.rand.NextFloat(-0.05f, 0.05f);
 				dust.velocity.Y += Main.rand.NextFloat(-0.05f, 0.05f);
-				
+
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
+		}
+
+		public override void OnHitPlayer(Player target, int damage, bool crit) {
+			// Here we can make things happen if this NPC hits a player via its hitbox (not projectiles it shoots, this is handled in the projectile code usually)
+			// Common use is applying buffs/debuffs:
+
+			int buffType = ModContent.BuffType<AnimatedBuff>();
+			// Alternatively, you can use a vanilla buff: int buffType = BuffID.Slow;
+
+			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
+			target.AddBuff(buffType, timeToAdd);
 		}
 	}
 }

@@ -90,6 +90,8 @@ namespace Terraria.ModLoader.Core
 				return stream.ReadBytes(entry.Length);
 		}
 
+		public List<string> GetFileNames() => files.Keys.ToList();
+
 		public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
@@ -360,7 +362,7 @@ namespace Terraria.ModLoader.Core
 
 			reader.ReadString(); //tModLoader version
 			if (!reader.ReadBytes(20).SequenceEqual(Hash))
-				throw new Exception($"File has been modifed, hash. {path}");
+				throw new Exception($"File has been modified, hash. {path}");
 
 			// could also check name and version but hash should suffice
 		}

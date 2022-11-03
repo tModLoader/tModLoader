@@ -60,7 +60,7 @@ namespace ExampleMod.Content.NPCs
 
 		// This method allows you to specify that this npc should be drawn behind certain elements
 		public override void DrawBehind(int index) {
-			// The 6 available positions are as follows:  
+			// The 6 available positions are as follows:
 			switch (CurrentLayer) {
 				case 0: // Behind tiles and walls
 					Main.instance.DrawCacheNPCsMoonMoon.Add(index);

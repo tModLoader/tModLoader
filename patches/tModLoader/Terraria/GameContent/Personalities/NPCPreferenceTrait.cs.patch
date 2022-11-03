@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Personalities/NPCPreferenceTrait.cs
++++ src/tModLoader/Terraria/GameContent/Personalities/NPCPreferenceTrait.cs
+@@ -7,6 +_,9 @@
+ 
+ 		public void ModifyShopPrice(HelperInfo info, ShopHelper shopHelperInstance) {
+ 			if (info.nearbyNPCsByType[NpcId]) {
++				shopHelperInstance.ApplyNpcRelationshipEffect(NpcId, Level);
++
++				/*
+ 				switch (Level) {
+ 					case AffectionLevel.Love:
+ 						shopHelperInstance.LoveNPC(NpcId);
+@@ -21,6 +_,7 @@
+ 						shopHelperInstance.HateNPC(NpcId);
+ 						break;
+ 				}
++				*/
+ 			}
+ 		}
+ 	}

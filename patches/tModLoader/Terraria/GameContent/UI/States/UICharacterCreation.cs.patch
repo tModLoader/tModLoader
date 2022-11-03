@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/UICharacterCreation.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UICharacterCreation.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UICharacterCreation.cs
 @@ -13,6 +_,7 @@
  using Terraria.Initializers;
@@ -8,12 +8,26 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -1019,8 +_,13 @@
+ 		private void SetupPlayerStatsAndInventoryBasedOnDifficulty() {
+ 			int num = 0;
+ 			if (_player.difficulty == 3) {
++				PlayerLoader.ModifyMaxStats(_player);
++				_player.statLife = _player.statLifeMax;
++				_player.statMana = _player.statManaMax;
++				/*
+ 				_player.statLife = (_player.statLifeMax = 100);
+ 				_player.statMana = (_player.statManaMax = 20);
++				*/
+ 				_player.inventory[num].SetDefaults(6);
+ 				_player.inventory[num++].Prefix(-1);
+ 				_player.inventory[num].SetDefaults(1);
 @@ -1055,6 +_,8 @@
  
  			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
  			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
 +
-+			PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir)));
++			PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone())));
  		}
  
  		private bool GetHexColor(string hexString, out Vector3 hsl) {

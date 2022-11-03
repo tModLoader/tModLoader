@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 	{
 		private const float PADDING = 5f;
 		public readonly ModDownloadItem ModDownload;
-		
+
 		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;
@@ -81,8 +81,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_moreInfoButton.OnClick += ViewModInfo;
 			Append(_moreInfoButton);
 
-			if (!ModLoader.versionedName.Contains(ModDownload.ModloaderVersion)) {
-				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", ModDownload.ModloaderVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
+			var modBuildVersion = new Version(ModDownload.ModloaderVersion.Replace("tModLoader v",""));
+			if (!BuildInfo.IsDev && BuildInfo.tMLVersion < modBuildVersion) {
+				string updateVersion = $"v{modBuildVersion}";
+				bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
+				if (BuildInfo.IsStable && new Version(modBuildVersion.Major, modBuildVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
+					updateVersion = $"Preview {updateVersion}";
+
+				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
 				tMLUpdateRequired.CopyStyle(_moreInfoButton);
 				tMLUpdateRequired.Width.Pixels = 340;
@@ -91,6 +97,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 					Utils.OpenToURL("https://github.com/tModLoader/tModLoader/releases/latest");
 				};
 				Append(tMLUpdateRequired);
+			}
+			else if (ModDownload.NeedsGameRestart) {
+				_updateButton = new UIImage(UICommon.ButtonExclamationTexture);
+				_updateButton.CopyStyle(_moreInfoButton);
+				_updateButton.Left.Pixels += 36 + PADDING;
+				_updateButton.OnClick += ShowGameNeedsRestart;
+				Append(_updateButton);
 			}
 			else if (ModDownload.HasUpdate || ModDownload.Installed == null) {
 				_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
@@ -121,6 +134,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 		}
 
+		private void ShowGameNeedsRestart(UIMouseEvent evt, UIElement element) {
+			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", ModDownload.DisplayName), Interface.modBrowserID);
+		}
 		public override int CompareTo(object obj) {
 			var item = obj as UIModDownloadItem;
 			switch (Interface.modBrowser.SortMode) {
@@ -190,7 +206,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			DrawTimeText(spriteBatch, drawPos);
 
 			if (_updateButton?.IsMouseHovering == true) {
-				tooltip = UpdateText;
+				tooltip = Language.GetTextValue("tModLoader.BrowserRejectWarning");
 			}
 			else if (_updateWithDepsButton?.IsMouseHovering == true) {
 				tooltip = UpdateWithDepsText;
@@ -284,7 +300,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModDownload.ModIconStatus = ModIconStatus.APPENDED;
 			_modName.Left.Pixels -= ModIconAdjust;
 			_moreInfoButton.Left.Pixels -= ModIconAdjust;
-			_updateButton.Left.Pixels -= ModIconAdjust;
+			if(_updateButton != null)
+				_updateButton.Left.Pixels -= ModIconAdjust;
 			if (_updateWithDepsButton != null)
 				_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
 		}
@@ -328,6 +345,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			ModDownload.InnerDownloadWithDeps();
+
+			//TODO: Some code to add the 'Installed' item to the UIModDownloaditem and redraw?
 		}
 
 		private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {

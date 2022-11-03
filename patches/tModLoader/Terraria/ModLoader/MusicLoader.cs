@@ -166,7 +166,7 @@ namespace Terraria.ModLoader
 			if (mod.File is null)
 				return;
 
-			foreach (string musicPath in mod.RootContentSource.EnumerateAssets().Where(path => supportedExtensions.Contains(Path.GetExtension(path)) && path.StartsWith("Music/") || path.Contains("/Music/"))) {
+			foreach (string musicPath in mod.RootContentSource.EnumerateAssets().Where(path => supportedExtensions.Contains(Path.GetExtension(path)) && (path.StartsWith("Music/") || path.Contains("/Music/")))) {
 				AddMusic(mod, Path.ChangeExtension(musicPath, null));
 			}
 		}
@@ -187,6 +187,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void CloseModStreams(Mod mod) {
+			if (!Program.IsMainThread) {
+				Main.RunOnMainThread(() => CloseModStreams(mod)).GetAwaiter().GetResult();
+				return;
+			}
+
 			string prefix = $"{mod.Name}/";
 
 			foreach (string musicPath in musicByPath.Keys.Where(x => x.StartsWith(prefix)))
@@ -198,8 +203,7 @@ namespace Terraria.ModLoader
 				return;
 
 			int slot = musicByPath[musicPath];
-
-			if (legacyAudioSystem.AudioTracks[slot] is not null)
+			if (slot < legacyAudioSystem.AudioTracks.Length)
 				legacyAudioSystem.AudioTracks[slot]?.Dispose();
 		}
 

@@ -1,14 +1,12 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using ReLogic.Content;
-using ReLogic.Content.Sources;
+﻿using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using Terraria.Audio;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
@@ -25,12 +23,12 @@ namespace Terraria.ModLoader
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		internal void SetupContent() {
-			foreach (var e in content.OfType<ModType>()) {
-				e.SetupContent();
-			}
+			LoaderUtils.ForEachAndAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
 		}
 
 		internal void UnloadContent() {
+			SystemLoader.OnModUnload(this);
+
 			Unload();
 
 			foreach (var loadable in content.Reverse()) {
@@ -52,30 +50,17 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			LocalizationLoader.Autoload(this);
-
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
-			IList<Type> modSounds = new List<Type>();
+			if (ContentAutoloadingEnabled) {
+				var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
+					.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+					.Where(t => t.IsAssignableTo(typeof(ILoadable)))
+					.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
+					.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+					.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			Type modType = GetType();
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				if (type == modType) continue;
-				if (type.IsAbstract) continue;
-				if (type.ContainsGenericParameters) continue;
-				if (type.GetConstructor(new Type[0]) == null) continue;//don't autoload things with no default constructor
-
-				if (type.IsSubclassOf(typeof(ModSound))) {
-					modSounds.Add(type);
-				}
-				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
-				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement
-				// can be enclosed in a ContentAutoloadingEnabled check. - pbone
-				else if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
-					var autoload = AutoloadAttribute.GetValue(type);
-					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type));
-					}
-				}
+				LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
 			}
 
 			// Skip loading client assets if this is a dedicated server;
@@ -84,9 +69,6 @@ namespace Terraria.ModLoader
 
 			if (GoreAutoloadingEnabled)
 				GoreLoader.AutoloadGores(this);
-			
-			if (SoundAutoloadingEnabled)
-				AutoloadSounds(modSounds);
 
 			if (MusicAutoloadingEnabled)
 				MusicLoader.AutoloadMusic(this);
@@ -100,39 +82,50 @@ namespace Terraria.ModLoader
 			fileHandle = File?.Open();
 			RootContentSource = CreateDefaultContentSource();
 			Assets = new AssetRepository(Main.instance.Services.Get<AssetReaderCollection>(), new[] { RootContentSource }) {
-				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
+				AssetLoadFailHandler = OnceFailedLoadingAnAsset
 			};
 		}
 
-		private void AutoloadSounds(IList<Type> modSounds) {
-			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
+		internal void TransferAllAssets() {
+			initialTransferComplete = false;
+			Assets.TransferAllAssets();
+			initialTransferComplete = true;
+			if (AssetExceptions.Count > 0) {
+				if (AssetExceptions.Count == 1)
+					throw AssetExceptions[0];
 
-			const string SoundFolder = "Sounds/";
-
-			foreach (string soundPath in RootContentSource.EnumerateAssets().Where(t => t.Contains(SoundFolder))) {
-				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
-				SoundType soundType = SoundType.Custom;
-
-				if (substring.StartsWith("Item/")) {
-					soundType = SoundType.Item;
-				}
-				else if (substring.StartsWith("NPCHit/")) {
-					soundType = SoundType.NPCHit;
-				}
-				else if (substring.StartsWith("NPCKilled/")) {
-					soundType = SoundType.NPCKilled;
-				}
-
-				ModSound modSound = null;
-				if (modSoundNames.TryGetValue($"{Name}/{soundPath}".Replace('/', '.'), out Type t))
-					modSound = (ModSound)Activator.CreateInstance(t);
-
-				AddSound(soundType, $"{Name}/{soundPath}", modSound);
+				if (AssetExceptions.Count > 0)
+					throw new MultipleException(AssetExceptions);
 			}
 		}
 
-		internal void TransferAllAssets() {
-			Assets.TransferAllAssets();
+		internal bool initialTransferComplete;
+		internal List<Exception> AssetExceptions = new List<Exception>();
+		internal void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
+			if (initialTransferComplete) {
+				// TODO: Add a user friendly indicator/inbox for viewing these errors that happen in-game
+				Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
+				Terraria.UI.FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+			}
+			else {
+				if (e is AssetLoadException AssetLoadException) {
+					// Fix this once ContenSources are sane with extensions
+					ICollection<string> keys = RootContentSource.EnumerateAssets().ToList();
+					var cleanKeys = new List<string>();
+					foreach (var key in keys) {
+						string keyWithoutExtension = key.Substring(0, key.LastIndexOf("."));
+						string extension = RootContentSource.GetExtension(keyWithoutExtension);
+						if (extension != null) {
+							cleanKeys.Add(key.Substring(0, key.LastIndexOf(extension)));
+						}
+					}
+					var MissingResourceException = new Exceptions.MissingResourceException(assetPath.Replace("\\", "/"), cleanKeys);
+					AssetExceptions.Add(MissingResourceException);
+				}
+				else {
+					AssetExceptions.Add(e);
+				}
+			}
 		}
 	}
 }

@@ -1,11 +1,12 @@
---- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
+--- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,15 +_,21 @@
+@@ -1,15 +_,22 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
++using System.Linq;
  using Terraria.IO;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -23,16 +24,17 @@
  		public class UGCBased
  		{
  			public struct SteamWorkshopItem
-@@ -20,6 +_,8 @@
+@@ -20,6 +_,9 @@
  				public string[] Tags;
  				public string Title;
  				public ERemoteStoragePublishedFileVisibility? Visibility;
 +				// Added by TML.
 +				public NameValueCollection BuildData;
++				public string ChangeNotes;
  			}
  
  			public class Downloader
-@@ -34,26 +_,60 @@
+@@ -34,14 +_,29 @@
  					private set;
  				}
  
@@ -51,50 +53,25 @@
  				public static Downloader Create() => new Downloader();
  
  				public List<string> GetListOfSubscribedItemsPaths() {
-+					List<string> list = new List<string>();
-+
-+					if (ModManager.SteamUser) {
-+						var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
-+						foreach (var app in array) {
-+							SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
-+							var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(), "workshop", "content", app.m_AppId.ToString());
-+							if (Directory.Exists(workshopLoc)) {
-+								list.AddRange(Directory.EnumerateDirectories(workshopLoc));
-+							}
-+						}
-+					}
-+					else if (Main.dedServ) {
-+						// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
-+						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.ToString());
-+						if (Directory.Exists(workshopLoc)) {
-+							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
-+						}
-+					}
-+
-+					// Load mods installed by GoG / Manually copied steamapps\workshop directories.
-+					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
-+					if (Directory.Exists(gogDirectory)) {
-+						list.AddRange(Directory.EnumerateDirectories(gogDirectory));
-+					}
++					// Needs to read tML then Terraria to simplify obtaining tmodloader workshop folder
++					return new AppId_t[] { ModLoader.Engine.Steam.TMLAppID_t, ModLoader.Engine.Steam.TerrariaAppId_t }
++						.Select(app => Path.Combine(GetWorkshopFolder(app), "content", app.ToString()))
++						.Where(Directory.Exists)
++						.SelectMany(Directory.EnumerateDirectories)
++						.ToList();
 +
 +					/*
  					PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
  					SteamUGC.GetSubscribedItems(array, (uint)array.Length);
  					ulong punSizeOnDisk = 0uL;
- 					string pchFolder = string.Empty;
- 					uint punTimeStamp = 0u;
--					List<string> list = new List<string>();
-+					
- 					PublishedFileId_t[] array2 = array;
- 					for (int i = 0; i < array2.Length; i++) {
- 						if (SteamUGC.GetItemInstallInfo(array2[i], out punSizeOnDisk, out pchFolder, 1024u, out punTimeStamp))
- 							list.Add(pchFolder);
+@@ -55,6 +_,7 @@
  					}
--
-+					*/
+ 
  					return list;
++					*/
  				}
  
+ 				public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
 @@ -62,6 +_,7 @@
  				public bool Refresh(WorkshopIssueReporter issueReporter) {
  					ResourcePackPaths.Clear();
@@ -120,7 +97,7 @@
 +				protected EResult _updateCallback;
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
-+				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0) {
++				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null) {
 +					Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  					_issueReporter = issueReporter;
  					_endAction = endAction;
@@ -130,13 +107,14 @@
  					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  					_entryData = new SteamWorkshopItem {
  						Title = itemTitle,
-@@ -171,16 +_,32 @@
+@@ -171,16 +_,33 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
 -						Visibility = visibility
 +						Visibility = visibility,
-+						BuildData = buildData
++						BuildData = buildData,
++						ChangeNotes = changeNotes
  					};
  
 -					ulong? num = null;
@@ -189,7 +167,7 @@
 +						return;
 +
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
 +
 +					if (_createCallback != EResult.k_EResultOK)
@@ -197,7 +175,7 @@
 +
 +					UpdateItem(creatingItem:true);
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
  				}
  
@@ -206,7 +184,7 @@
 +					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
-+						ReportCheckSteamLogs();
++						SteamedWraps.ReportCheckSteamLogs();
 +						_endAction(this);
 +						return;
 +					}
@@ -219,7 +197,7 @@
 +						_endAction(this);
 +						return;
 +					}
-+					
++
 +					// On servers we want to control this more tightly due to threading constraints.
 +					if (!Main.dedServ)
 +						UpdateItem();
@@ -228,12 +206,10 @@
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -223,27 +_,26 @@
- 					else {
+@@ -224,27 +_,27 @@
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
--					}
-+					} 
+ 					}
 +					*/
  				}
  
@@ -255,32 +231,41 @@
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  					if (_entryData.Title != null)
--						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-+						SteamUGC.SetItemTitle(uGCUpdateHandle_t, TmlModNamePrefix + _entryData.Title);
+ 						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
  
- 					if (_entryData.Description != null)
--						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
-+						SteamUGC.SetItemDescription(uGCUpdateHandle_t, TmlModDescriptionPrefix + _entryData.Description);
+-					if (_entryData.Description != null)
++					if (!string.IsNullOrEmpty(_entryData.Description))
+ 						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
  
++					Logging.tML.Info("Adding tags and visibility");
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  					SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-@@ -253,21 +_,63 @@
+ 					if (_entryData.PreviewImagePath != null)
+@@ -253,21 +_,73 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
++					Logging.tML.Info("Setting the language for default description");
++					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
++
 +					string patchNotes = "";
 +
++					// Needed for backwards compat on version metadata change
++					_entryData.BuildData["version"] = "0.0.0";
++
 +					if (_entryData.BuildData != null) {
++						Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 +						foreach (var key in MetadataKeys) {
 +							SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 +							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 +						}
 +
-+						patchNotes = $"{_entryData.BuildData["version"]} learn more @ {_entryData.BuildData["homepage"]}";
++						patchNotes = $"Version {_entryData.BuildData["trueversion"]} has been published to {BuildInfo.Purpose} learn more @ {_entryData.BuildData["homepage"]}\n{_entryData.ChangeNotes}";
 +
 +						string refs = _entryData.BuildData["workshopdeps"];
 +
 +						if (!string.IsNullOrWhiteSpace(refs)) {
++							Logging.tML.Info("Adding dependencies to Workshop Upload");
 +							string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
 +
 +							foreach (string dependency in dependencies) {
@@ -298,19 +283,21 @@
 +
 +					_updateCallback = EResult.k_EResultNone;
 +
++					Logging.tML.Info("Submitting workshop update handle to Steam");
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
 -					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
 +					SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
  					_updateHandle = uGCUpdateHandle_t;
  					_updateItemHook.Set(hAPICall, UpdateItemResult);
  					CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
++					Logging.tML.Info("Handle submitted. Waiting on Steam");
 +
 +
 +					if (!Main.dedServ || creatingItem)
 +						return;
-+					
++
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_updateCallback == EResult.k_EResultNone);
  				}
  
@@ -324,13 +311,22 @@
  
 -					switch (param.m_eResult) {
 +					if (_updateCallback != EResult.k_EResultOK)
-+						ReportCheckSteamLogs();
++						SteamedWraps.ReportCheckSteamLogs();
 +
 +					switch (_updateCallback) {
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
-@@ -305,6 +_,16 @@
+@@ -291,6 +_,8 @@
+ 							break;
+ 					}
+ 
++					SteamUGC.SubscribeItem(_publishedFileID);
++
+ 					_endAction(this);
+ 				}
+ 
+@@ -305,6 +_,15 @@
  						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  						return false;
  					}
@@ -338,7 +334,6 @@
 +
 +				private bool WrappedWriteManifest() {
 +					string headerText = GetHeaderText();
-+					TryWritingManifestToFolder(_entryData.BuildData["manifestfolder"], headerText);
 +					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
 +						return true;
 +

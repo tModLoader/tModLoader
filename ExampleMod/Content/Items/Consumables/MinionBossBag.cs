@@ -7,15 +7,13 @@ using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Content.Items.Consumables
 {
 	// Basic code for a boss treasure bag
 	public class MinionBossBag : ModItem
 	{
-		// Sets the associated NPC this treasure bag is dropped from
-		public override int BossBagNPC => ModContent.NPCType<MinionBossBody>();
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
@@ -39,13 +37,12 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
-		public override void OpenBossBag(Player player) {
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
-			if (Main.rand.NextBool(7)) {
-				player.QuickSpawnItem(ModContent.ItemType<MinionBossMask>());
-			}
+		public override void ModifyItemLoot(ItemLoot itemLoot) {
+			// We have to replicate the expert drops from MinionBossBody here
 
-			player.QuickSpawnItem(ModContent.ItemType<ExampleItem>(), Main.rand.Next(12, 16));
+			itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<MinionBossMask>(), 7));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1, 12, 16));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<MinionBossBody>()));
 		}
 
 		// Below is code for the visuals
@@ -114,7 +111,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			for (float i = 0f; i < 1f; i += 0.34f) {
 				float radians = (i + timer) * MathHelper.TwoPi;
-				
+
 				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
 			}
 

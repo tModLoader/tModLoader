@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -13,6 +15,7 @@ using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
 using Terraria.Social.Steam;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -65,6 +68,15 @@ namespace Terraria.ModLoader.UI
 		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
+			/*
+			 * string legacyInfoButton = Language.GetTextValue("tModLoader.13InfoButton");
+			buttonNames[buttonIndex] = legacyInfoButton;
+			if (selectedMenu == buttonIndex) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+			}
+			buttonIndex++;
+			numButtons++;
+			*/
 		}
 
 		internal static void ResetData() {
@@ -90,8 +102,6 @@ namespace Terraria.ModLoader.UI
 		//	virticalSpacing[numButtons - 1] = 8;
 		//}
 
-		private static bool betaWelcomed = false;
-
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
@@ -100,27 +110,86 @@ namespace Terraria.ModLoader.UI
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
-				//else if (ModLoader.ShowWhatsNew) {
-				//	// TODO: possibly pull from github
-				//	ModLoader.ShowWhatsNew = false;
-				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage"), Main.menuMode);
-				//}
 
-#if RELEASE
-				// Temporary display for the alpha/beta version.
-				if (!betaWelcomed) {
-					betaWelcomed = true;
-					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+				if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+					ModLoader.WarnedFamilyShare = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 				}
-#endif
+
+				/*
+				else if (!ModLoader.AlphaWelcomed) {
+					ModLoader.AlphaWelcomed = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+					Main.SaveSettings();
+				}
+				*/
+				else if (ModLoader.ShowWhatsNew) {
+					ModLoader.ShowWhatsNew = false;
+					if (File.Exists("RecentGitHubCommits.txt")) {
+						bool LastLaunchedShaInRecentGitHubCommits = false;
+						var messages = new StringBuilder();
+						var recentcommitsfilecontents = File.ReadLines("RecentGitHubCommits.txt");
+						foreach (var commitEntry in recentcommitsfilecontents) {
+							string[] parts = commitEntry.Split(' ', 2);
+							if (parts.Length == 2) {
+								string sha = parts[0];
+								string message = parts[1];
+								if (sha != ModLoader.LastLaunchedTModLoaderAlphaSha)
+									messages.Append("\n  " + message);
+								if (sha == ModLoader.LastLaunchedTModLoaderAlphaSha) {
+									LastLaunchedShaInRecentGitHubCommits = true;
+									break;
+								}
+							}
+						}
+						if (LastLaunchedShaInRecentGitHubCommits)
+							infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
+								() => {
+									SoundEngine.PlaySound(SoundID.MenuOpen);
+									Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
+								});
+					}
+				}
+				else if (ModLoader.PreviewFreezeNotification) {
+					ModLoader.PreviewFreezeNotification = false;
+					ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+						() => {
+							SoundEngine.PlaySound(SoundID.MenuOpen);
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
+						});
+					Main.SaveSettings();
+				}
+				else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+					ModLoader.DownloadedDependenciesOnStartup = true;
+
+					// Find dependencies that need to be downloaded.
+					var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
+					bool promptDepDownloads = deps.Count != 0;
+
+					string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
+                    string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
+                    string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+                    string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+                    string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+                    Action downloadAction = () => {
+	                    if (promptDepDownloads) {
+							//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
+							WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
+						}
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(message))
+	                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modSourcesID) {
-				Main.MenuUI.SetState(modSources);
 				Main.menuMode = 888;
+				Main.MenuUI.SetState(modSources);
 			}
 			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
@@ -180,7 +249,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 7;
+				numButtons = 10;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -206,6 +275,14 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.autoReloadRequiredModsLeavingModsScreen ? Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenNo"));
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.autoReloadRequiredModsLeavingModsScreen = !ModLoader.autoReloadRequiredModsLeavingModsScreen;
+				}
+
 				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
@@ -223,6 +300,13 @@ namespace Terraria.ModLoader.UI
 				}
 
 				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.AttackSpeedScalingTooltipVisibility{ModLoader.attackSpeedScalingTooltipVisibility}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.attackSpeedScalingTooltipVisibility = (ModLoader.attackSpeedScalingTooltipVisibility + 1) % 3;
+				}
+
+				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowMemoryEstimates{(ModLoader.showMemoryEstimates ? "Yes" : "No")}");
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
@@ -234,6 +318,13 @@ namespace Terraria.ModLoader.UI
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowNewUpdatedModsInfo{(ModLoader.showNewUpdatedModsInfo ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.showNewUpdatedModsInfo = !ModLoader.showNewUpdatedModsInfo;
 				}
 
 				/*
@@ -272,10 +363,10 @@ namespace Terraria.ModLoader.UI
 			while (!exit) {
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
-				var mods = ModOrganizer.FindMods();
+				var mods = ModOrganizer.FindMods(logDuplicates: true);
 				for (int k = 0; k < mods.Length; k++) {
 					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
-					Console.WriteLine(" (" + (ModLoader.IsEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
+					Console.WriteLine(" (" + (mods[k].Enabled ? "enabled" : "disabled") + ")");
 				}
 				if (mods.Length == 0) {
 					Console.ForegroundColor = ConsoleColor.Yellow;
@@ -333,16 +424,14 @@ namespace Terraria.ModLoader.UI
 				else {
 					string modname = command;
 					try {
-						if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
-							Console.WriteLine(Language.GetTextValue("NoWorkshopAccess"));
+						if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection())
 							break;
-						}
 
 						var info = WorkshopHelper.QueryHelper.FindModDownloadItem(modname);
-						if(info == null)
+						if (info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
-							info.InnerDownloadWithDeps(); 
+							info.InnerDownloadWithDeps().GetAwaiter().GetResult();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));
@@ -350,41 +439,6 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			//Console.Clear();
-		}
-
-		internal static void MessageBoxShow(string text, string caption = null) {
-			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
-			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
-			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, Path.Combine(Main.SavePath, "Logs"));
-			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
-				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, Path.Combine(Main.SavePath, "Logs"));
-#if !MAC
-			System.Windows.Forms.MessageBox.Show(message, caption);
-#else
-			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
-			Process.Start("fake-messagebox.txt");
-#endif
-		}
-
-		internal static void MessageBoxShow(Exception e, string caption = null, bool generateTip = false) {
-			string tip = "";
-
-			if (generateTip) {
-				if (e is OutOfMemoryException)
-					tip = Language.GetTextValue("tModLoader.OutOfMemoryHint");
-				else if (e is InvalidOperationException || e is NullReferenceException || e is IndexOutOfRangeException || e is ArgumentNullException)
-					tip = Language.GetTextValue("tModLoader.ModExceptionHint");
-				else if (e is IOException && e.Message.Contains("cloud file provider"))
-					tip = Language.GetTextValue("tModLoader.OneDriveHint");
-				else if (e is System.Threading.SynchronizationLockException)
-					tip = Language.GetTextValue("tModLoader.AntivirusHint");
-				else if (e is TypeInitializationException)
-					tip = Language.GetTextValue("tModLoader.TypeInitializationHint");
-			}
-
-			string message = e.ToString() + tip;
-
-			MessageBoxShow(message, caption);
 		}
 	}
 }

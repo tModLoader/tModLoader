@@ -1,11 +1,9 @@
 using log4net;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -13,24 +11,22 @@ using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
-using Terraria.GameContent;
-using Terraria.ModLoader.Assets;
 using ReLogic.Content.Sources;
-using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// Mod is an abstract class that you will override. It serves as a central place from which the mod's contents are stored. It provides methods for you to use or override.
 	/// </summary>
-	public abstract partial class Mod
+	public partial class Mod
 	{
 		/// <summary>
 		/// The TmodFile object created when tModLoader reads this mod.
 		/// </summary>
 		internal TmodFile File { get; set; }
 		/// <summary>
-		/// The assembly code this is loaded when tModLoader loads this mod.
+		/// The assembly code this is loaded when tModLoader loads this mod. <br/>
+		/// Do NOT call <see cref="Assembly.GetTypes"/> on this as it will error out if the mod uses the <see cref="ExtendsFromModAttribute"/> attribute to inherit from weakly referenced mods. Use <see cref="AssemblyManager.GetLoadableTypes(Assembly)"/> instead.
 		/// </summary>
 		public Assembly Code { get; internal set; }
 		/// <summary>
@@ -60,10 +56,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool GoreAutoloadingEnabled { get; init; } = true;
 		/// <summary>
-		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
-		/// </summary>
-		public bool SoundAutoloadingEnabled { get; init; } = true;
-		/// <summary>
 		/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
 		/// </summary>
 		public bool MusicAutoloadingEnabled { get; init; } = true;
@@ -87,11 +79,14 @@ namespace Terraria.ModLoader
 		public IContentSource RootContentSource { get; private set; }
 
 		internal short netID = -1;
+		public short NetID => netID;
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;
 
 		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
+
+		public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
 
 		internal void AutoloadConfig()
 		{
@@ -99,7 +94,7 @@ namespace Terraria.ModLoader
 				return;
 
 			// TODO: Attribute to specify ordering of ModConfigs
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)
 				{
@@ -107,11 +102,11 @@ namespace Terraria.ModLoader
 				}
 				if (type.IsSubclassOf(typeof(ModConfig)))
 				{
-					var mc = (ModConfig)Activator.CreateInstance(type);
+					var mc = (ModConfig)Activator.CreateInstance(type, true)!;
 					// Skip loading ClientSide on Main.dedServ?
 					if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");
-					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense. 
+					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ClientSide but this Mods ModSide is Server");
 					mc.Mod = this;
 					var name = type.Name;
@@ -147,86 +142,6 @@ namespace Terraria.ModLoader
 
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
-		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
-		/// (The item parameter may be null if you don't want to associate an item with the texture.) 
-		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property. 
-		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture. 
-		/// Returns the ID / slot that is assigned to the equipment texture.
-		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <param name="texture">The texture.</param>
-		/// <param name="armTexture">The arm texture (for body slots).</param>
-		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
-		/// <returns></returns>
-		public int AddEquipTexture(ModItem item, EquipType type, string texture) {
-			return AddEquipTexture(new EquipTexture(), item, type, texture);
-		}
-
-		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
-		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks. 
-		/// All other parameters are the same as the other AddEquipTexture.
-		/// </summary>
-		/// <param name="equipTexture">The equip texture.</param>
-		/// <param name="item">The item.</param>
-		/// <param name="type">The type.</param>
-		/// <param name="texture">The texture.</param>
-		/// <returns></returns>
-		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
-			if (!loading)
-				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
-
-			ModContent.Request<Texture2D>(texture); //ensure texture exists
-
-			equipTexture.Texture = texture;
-			equipTexture.Mod = this;
-			equipTexture.Name = item.Name;
-			equipTexture.Type = type;
-			equipTexture.Item = item;
-			int slot = equipTexture.Slot = EquipLoader.ReserveEquipID(type);
-
-			EquipLoader.equipTextures[type][slot] = equipTexture;
-			equipTextures[Tuple.Create(item.Name, type)] = equipTexture;
-
-			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
-				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
-
-			slots[type] = slot;
-
-			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
-				EquipLoader.slotToId[type][slot] = item.Type;
-
-			return slot;
-		}
-
-		/// <summary>
-		/// Gets the EquipTexture instance corresponding to the name and EquipType. Returns null if no EquipTexture with the given name and EquipType is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type">The type.</param>
-		/// <returns></returns>
-		public EquipTexture GetEquipTexture(string name, EquipType type) =>
-			equipTextures.TryGetValue(Tuple.Create(name, type), out var texture) ? texture : null;
-
-		/// <summary>
-		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public int GetEquipSlot(string name, EquipType type) => GetEquipTexture(name, type)?.Slot ?? -1;
-
-		/// <summary>
-		/// Same as GetEquipSlot, except returns the number as an sbyte (signed byte) for your convenience.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public sbyte GetAccessorySlot(string name, EquipType type) => (sbyte)GetEquipSlot(name, type);
-
 		/// <summary> Attempts to find the content instance from this mod with the specified name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		public T Find<T>(string name) where T : IModType => ModContent.Find<T>(Name, name);
@@ -249,7 +164,7 @@ namespace Terraria.ModLoader
 			int slot = NPCHeadLoader.ReserveHeadSlot();
 
 			NPCHeadLoader.heads[texture] = slot;
-			
+
 			if (!Main.dedServ) {
 				ModContent.Request<Texture2D>(texture);
 			}
@@ -283,41 +198,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
+		/// Retrieves the names of every file packaged into this mod.
+		/// Note that this includes extensions, and for images the extension will always be <c>.rawimg</c>.
 		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="soundPath">The sound path.</param>
-		/// <param name="modSound">The mod sound.</param>
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
-			if (!loading)
-				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
-
-			int id = SoundLoader.ReserveSoundID(type);
-
-			soundPath = soundPath[..^Path.GetExtension(soundPath).Length];
-			SoundLoader.sounds[type][soundPath] = id;
-
-			if (modSound != null) {
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.Sound = ModContent.Request<SoundEffect>(soundPath);
-			}
-		}
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public int GetSoundSlot(SoundType type, string name) => SoundLoader.GetSoundSlot(type, Name + '/' + name);
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
+		public List<string> GetFileNames() => File?.GetFileNames();
 
 		/// <summary>
 		/// Retrieve contents of files within the tmod file
@@ -330,6 +215,7 @@ namespace Terraria.ModLoader
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
+		/// <param name="newFileStream"></param>
 		/// <returns></returns>
 		public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
@@ -348,7 +234,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
+		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content">Expert Cross Mod Content Guide</see> explains how to use this hook to implement and utilize cross-mod capabilities.
 		/// </summary>
 		public virtual object Call(params object[] args) {
 			return null;
@@ -382,6 +269,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
+		[Obsolete("Use Recipe.Create", true)]
+		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(result, amount);
+
+		[Obsolete("Use Recipe.Clone", true)]
+		public Recipe CloneRecipe(Recipe recipe) => recipe.Clone();
 	}
 }
