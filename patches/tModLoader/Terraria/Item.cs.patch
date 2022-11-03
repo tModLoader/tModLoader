@@ -956,7 +956,7 @@
  					if (item.stack <= 0) {
  						item.SetDefaults();
  						item.active = false;
-@@ -46280,20 +_,61 @@
+@@ -46280,20 +_,63 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
  				default:
@@ -976,12 +976,14 @@
 +		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 +		/// <br/><br/>This particular overload uses two Vector2 to determine the actual spawn position.
 +		/// </summary>
++		/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
  		public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-+		
++
 +		/// <summary>
 +		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 +		/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
 +		/// </summary>
++		/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
  		public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
  
 +		/// <summary>
@@ -1001,7 +1003,7 @@
 +		/// <param name="pfix"></param>
 +		/// <param name="noGrabDelay"></param>
 +		/// <param name="reverseLookup"></param>
-+		/// <returns></returns>
++		/// <returns>The index of the item within <see cref="Main.item"/></returns>
  		public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
 +			return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
 +		}
@@ -1028,24 +1030,20 @@
  				cachedItemSpawnsByType[Type] += Stack;
  				return 400;
  			}
-@@ -46339,11 +_,16 @@
- 				num = PickAnItemSlotToSpawnItemOn(reverseLookup, num);
- 
+@@ -46341,9 +_,16 @@
  			Main.timeItemSlotCannotBeReusedFor[num] = 0;
--			Main.item[num] = new Item();
-+			Main.item[num] = itemToClone?.Clone() ?? new Item();
+ 			Main.item[num] = new Item();
  			Item item = Main.item[num];
-+			if (itemToClone == null) {
--			item.SetDefaults(Type);
-+				item.SetDefaults(Type);
--			item.Prefix(pfix);
-+				item.Prefix(pfix);
--			item.stack = Stack;
-+				item.stack = Stack;
-+			}
-+			else {
++			if (itemToClone != null) {
++				Main.item[num] = itemToClone.Clone();
++				item = Main.item[num];
 +				Type = itemToClone.type; // just to be safe if IL edits change type swaps and velocity tweaks.
++				goto skipItemCreation;
 +			}
+ 			item.SetDefaults(Type);
+ 			item.Prefix(pfix);
+ 			item.stack = Stack;
++			skipItemCreation:
  			item.position.X = X + Width / 2 - item.width / 2;
  			item.position.Y = Y + Height / 2 - item.height / 2;
  			item.wet = Collision.WetCollision(item.position, item.width, item.height);
