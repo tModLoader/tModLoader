@@ -221,6 +221,15 @@
  			return num;
  		}
  
+@@ -2819,7 +_,7 @@
+ 			vertices.TopRightColor *= num7;
+ 			bool flag7 = false;
+ 			if (flag6) {
+-				for (int i = 0; i < 15; i++) {
++				for (int i = 0; i < LoaderManager.Get<WaterStylesLoader>().TotalCount; i++) {
+ 					if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
+ 						DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
+ 						flag7 = true;
 @@ -3049,7 +_,8 @@
  			}
  		}

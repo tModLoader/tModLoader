@@ -10,6 +10,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -89,6 +90,7 @@ namespace Terraria.ModLoader
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
 			LoaderUtils.ResetStaticMembers(typeof(AmmoID), true);
+			LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets), true);
 
 			//Etc
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
@@ -139,20 +141,17 @@ namespace Terraria.ModLoader
 		internal static bool IsModItem(int index)
 			=> index >= ItemID.Count;
 
-		private static bool GeneralPrefix(Item item)
-			=> item.IsCandidateForReforge && item.damage > 0 && item.ammo == 0 && !item.accessory;
-
 		internal static bool MeleePrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.MeleePrefix();
+			=> item.ModItem != null && item.ModItem.MeleePrefix();
 
 		internal static bool WeaponPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.WeaponPrefix();
+			=> item.ModItem != null && item.ModItem.WeaponPrefix();
 
 		internal static bool RangedPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.RangedPrefix();
+			=> item.ModItem != null && item.ModItem.RangedPrefix();
 
 		internal static bool MagicPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.MagicPrefix();
+			=> item.ModItem != null && item.ModItem.MagicPrefix();
 
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
 

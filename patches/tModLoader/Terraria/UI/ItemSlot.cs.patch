@@ -60,7 +60,7 @@
 +									/*
  									if (item.maxStack == 1 && item.Prefix(-3))
 +									*/
-+									if (item.IsCandidateForReforge && item.Prefix(-3)) // TML: #StackablePrefixWeapons
++									if (item.Prefix(-3)) // TML: #StackablePrefixWeapons
  										Main.cursorOverride = 9;
  								}
  								else if (context == 0 && Main.InGuideCraftMenu) {
@@ -70,7 +70,7 @@
  							else if (context == 0 && Main.InReforgeMenu) {
 -								if (item.maxStack == 1 && item.Prefix(-3))
 +								//if (item.maxStack == 1 && item.Prefix(-3))
-+								if (item.IsCandidateForReforge && item.Prefix(-3)) // TML: #StackablePrefixWeapons
++								if (item.Prefix(-3)) // TML: #StackablePrefixWeapons
  									Main.cursorOverride = 9;
  							}
  							else if (context == 0 && Main.InGuideCraftMenu) {

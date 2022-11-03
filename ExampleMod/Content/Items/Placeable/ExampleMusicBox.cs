@@ -10,6 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 			DisplayName.SetDefault("Music Box (Marble Gallery)");
 
 			Item.SacrificeTotal = 1;
+			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla
 
 			// The following code links the music box's item and tile with a music track:
 			//   When music with the given ID is playing, equipped music boxes have a chance to change their id to the given item type.

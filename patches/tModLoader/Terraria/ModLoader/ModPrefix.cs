@@ -72,10 +72,11 @@ namespace Terraria.ModLoader
 			ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus) { }
 
 		/// <summary>
-		/// Validates whether this prefix with the custom data stats set from SetStats is allowed on the given item.
-		/// It is not allowed if one of the stat changes do not cause any change (eg. percentage being too small to make a difference).
+		/// Use this to check whether modifiers to custom stats would be too small to have an effect after rounding, and prevent the prefix from being applied to the given item if there would be no change.
+		/// <para/>Vanilla stat changes (<seealso cref="SetStats"/>) are checked automatically, so there is no need to override this method to check them
 		/// </summary>
-		public virtual void ValidateItem(Item item, ref bool invalid) { }
+		/// <returns>false to prevent the prefix from being applied</returns>
+		public virtual bool AllStatChangesHaveEffectOn(Item item) => true;
 
 		/// <summary>
 		/// Applies the custom data stats set in SetStats to the given item.

@@ -116,6 +116,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
+			Array.Resize(ref NPC.ShimmeredTownNPCs, nextNPC);
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);

@@ -244,6 +244,9 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
 
+		RenameMethod("Terraria.ModLoader.ModPrefix", from: "ValidateItem", to: "AllStatChangesHaveEffectOn");
+		ChangeHookSignature("Terraria.ModLoader.ModPrefix", "AllStatChangesHaveEffectOn");
+
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.InfoDisplay",	from: "SetDefaults", to: "SetStaticDefaults");
@@ -373,5 +376,8 @@ public static partial class Config
 
 		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
 		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
+
+		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
+		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
 	}
 }

@@ -14,16 +14,10 @@
 	```
 ## Main
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
-- `NPC.CanTownNPCSpawn` money parameter removed check it yourself.
 
 ## Item
 - Remove `CanBurnInLava` hook
-- Remove `CloneWithModdedDataFrom`, investigate `ResetPrefix`
 - Check new `OnCreated` hook
-- Disable 'illegal prefix removal'?
-- Cleanup `applyPrefixOverride` patch, move `ValidateItem` into `TryGetPrefixStatMultipliersForItem`
-- Reimplement PrefixLoader.Roll
-- Adjust CanHavePrefixes to allow stackable items to be prefixed
 
 ## NPC
 - Remove `NPCHeadLoader.GetNPCFromHeadSlot`
@@ -89,6 +83,8 @@
 
 ## Porting Notes:
 - `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
+- `ModWaterStyle` now requires an additional texture, `_Slope`. See `ExampleWaterStyle` for details.
+- Reforging is now implemented via `Item.ResetPrefix`. This sets `prefix` to 0 and then refreshes the item. Make sure any custom fields set by custom prefixes are not serialized independently.
 
 ## WorldGen.cs:
 - TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`

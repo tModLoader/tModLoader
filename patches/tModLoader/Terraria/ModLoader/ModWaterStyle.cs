@@ -18,6 +18,7 @@ namespace Terraria.ModLoader
 		public int Slot { get; internal set; }
 
 		public virtual string BlockTexture => Texture + "_Block";
+		public virtual string SlopeTexture => Texture + "_Slope";
 
 		protected sealed override void Register() {
 			Slot = LoaderManager.Get<WaterStylesLoader>().Register(this);
@@ -29,6 +30,7 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 
 			TextureAssets.Liquid[Slot] = ModContent.Request<Texture2D>(BlockTexture);
+			TextureAssets.LiquidSlope[Slot] = ModContent.Request<Texture2D>(BlockTexture);
 		}
 
 		/// <summary>
