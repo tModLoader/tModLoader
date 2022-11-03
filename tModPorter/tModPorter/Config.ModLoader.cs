@@ -103,6 +103,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 		RenameMethod("Terraria.ModLoader.ModTree",		from: "GrowthFXGore",		to: "TreeLeaf");
 		RenameMethod("Terraria.ModLoader.ModPalmTree",	from: "GrowthFXGore",		to: "TreeLeaf");
+		RenameMethod("Terraria.Player",					from: "QuickSpawnClonedItem",to: "QuickSpawnItem");
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"HoldStyle");
