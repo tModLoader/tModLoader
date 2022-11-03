@@ -6,23 +6,28 @@ namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEHatRack
 	{
-		public override TagCompound Save() {
-			return new TagCompound {
-				{ "items", PlayerIO.SaveInventory(_items) },
-				{ "dyes", PlayerIO.SaveInventory(_dyes) },
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["items"] = PlayerIO.SaveInventory(_items);
+			tag["dyes"] = PlayerIO.SaveInventory(_dyes);
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			PlayerIO.LoadInventory(_items, tag.GetList<TagCompound>("items"));
 			PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 		}
 
+		//NOTE: _items length is 2, so we can compress it to one bitsbyte
 		public override void NetSend(BinaryWriter writer) {
-			writer.Write(BitsByte.ComposeBitsBytesChain(false, _items.Select(i => !i.IsAir).ToArray())[0]);
-			writer.Write(BitsByte.ComposeBitsBytesChain(false, _dyes.Select(i => !i.IsAir).ToArray())[0]);
+			BitsByte itemsBits = default;
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < _items.Length; i++) {
+				itemsBits[i] = !_items[i].IsAir;
+				itemsBits[i + _items.Length] = !_dyes[i].IsAir;
+			}
+
+			writer.Write(itemsBits);
+
+			for (int i = 0; i < _items.Length; i++) {
 				var item = _items[i];
 
 				if (!item.IsAir) {
@@ -30,7 +35,7 @@ namespace Terraria.GameContent.Tile_Entities
 				}
 			}
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < _dyes.Length; i++) {
 				var dye = _dyes[i];
 
 				if (!dye.IsAir) {
@@ -41,14 +46,13 @@ namespace Terraria.GameContent.Tile_Entities
 
 		public override void NetReceive(BinaryReader reader) {
 			BitsByte presentItems = reader.ReadByte();
-			BitsByte presentDyes = reader.ReadByte();
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < _items.Length; i++) {
 				_items[i] = presentItems[i] ? ItemIO.Receive(reader, true) : new Item();
 			}
 
-			for (int i = 0; i < 8; i++) {
-				_dyes[i] = presentDyes[i] ? ItemIO.Receive(reader, true) : new Item();
+			for (int i = 0; i < _dyes.Length; i++) {
+				_dyes[i] = presentItems[i + _items.Length] ? ItemIO.Receive(reader, true) : new Item();
 			}
 		}
 	}

@@ -6,6 +6,7 @@ namespace Terraria.ModLoader.Default
 {
 	public class StartBag : ModLoaderModItem
 	{
+		[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
 		private List<Item> items = new List<Item>();
 
 		public override void SetStaticDefaults() {
@@ -28,20 +29,22 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void RightClick(Player player) {
+			var itemSource = player.GetItemSource_OpenItem(Type);
+
 			foreach (Item item in items) {
-				int k = Item.NewItem((int)player.position.X, (int)player.position.Y, player.width, player.height,
-							item.type, item.stack, false, item.prefix, false, false);
+				int k = Item.NewItem(itemSource, player.getRect(), item.type, item.stack, prefixGiven: item.prefix);
+
 				if (Main.netMode == 1) {
 					NetMessage.SendData(ID.MessageID.SyncItem, -1, -1, null, k, 1f);
 				}
 			}
 		}
 
-		public override TagCompound Save() {
-			return new TagCompound { ["items"] = items };
+		public override void SaveData(TagCompound tag) {
+			tag["items"] = items;
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			items = tag.Get<List<Item>>("items");
 		}
 	}

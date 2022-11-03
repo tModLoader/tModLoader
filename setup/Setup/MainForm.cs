@@ -22,14 +22,18 @@ namespace Terraria.ModLoader.Setup
 			InitializeComponent();
 
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
+			// Terraria
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
-			taskButtons[buttonSetupDebugging] = () => new SetupDebugTask(this);
+			// Terraria .NET Core
+			taskButtons[buttonDiffTerrariaNetCore] = () => new DiffTask(this, "src/Terraria", "src/TerrariaNetCore", "patches/TerrariaNetCore", new ProgramSetting<DateTime>("TerrariaNetCoreDiffCutoff"));
+			taskButtons[buttonPatchTerrariaNetCore] = () => new PatchTask(this, "src/Terraria", "src/TerrariaNetCore", "patches/TerrariaNetCore", new ProgramSetting<DateTime>("TerrariaNetCoreDiffCutoff"));
+			// tModLoader
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/TerrariaNetCore", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/TerrariaNetCore", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
 
 			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchModLoader, buttonSetupDebugging }
+				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchTerrariaNetCore, buttonPatchModLoader }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
@@ -83,12 +87,13 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemTerraria_Click(object sender, EventArgs e)
 		{
-			SelectTerrariaDialog();
+			SelectAndSetTerrariaDirectoryDialog();
 		}
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
 			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
+			Settings.Default.TerrariaNetCoreDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
 			Settings.Default.Save();
 		}

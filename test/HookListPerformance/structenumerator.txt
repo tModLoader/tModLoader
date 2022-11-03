@@ -1,0 +1,98 @@
+   209: 
+   210:         private static float HookDoEffectStructEnumeratorVersion(float input, Instanced<GlobalItem>[] instances, int[] hookInds)
+   211:         {
+   212:             float result = 1;
+00007FFC8B4CA850 48 81 EC C8 00 00 00 sub         rsp,0C8h  
+00007FFC8B4CA857 C5 F8 77             vzeroupper  
+00007FFC8B4CA85A C5 F8 29 B4 24 B0 00 00 00 vmovaps     xmmword ptr [rsp+0B0h],xmm6  
+00007FFC8B4CA863 C5 D8 57 E4          vxorps      xmm4,xmm4,xmm4  
+00007FFC8B4CA867 48 B8 70 FF FF FF FF FF FF FF mov         rax,0FFFFFFFFFFFFFF70h  
+00007FFC8B4CA871 C5 F9 7F A4 04 B0 00 00 00 vmovdqa     xmmword ptr [rsp+rax+0B0h],xmm4  
+00007FFC8B4CA87A C5 F9 7F A4 04 C0 00 00 00 vmovdqa     xmmword ptr [rsp+rax+0C0h],xmm4  
+00007FFC8B4CA883 C5 F9 7F A4 04 D0 00 00 00 vmovdqa     xmmword ptr [rsp+rax+0D0h],xmm4  
+00007FFC8B4CA88C 48 83 C0 30          add         rax,30h  
+00007FFC8B4CA890 75 DF                jne         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+021h (07FFC8B4CA871h)  
+00007FFC8B4CA892 C5 F8 28 F0          vmovaps     xmm6,xmm0  
+00007FFC8B4CA896 48 85 D2             test        rdx,rdx  
+00007FFC8B4CA899 75 06                jne         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+051h (07FFC8B4CA8A1h)  
+00007FFC8B4CA89B 33 C0                xor         eax,eax  
+00007FFC8B4CA89D 33 C9                xor         ecx,ecx  
+00007FFC8B4CA89F EB 07                jmp         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+058h (07FFC8B4CA8A8h)  
+00007FFC8B4CA8A1 48 8D 42 10          lea         rax,[rdx+10h]  
+00007FFC8B4CA8A5 8B 4A 08             mov         ecx,dword ptr [rdx+8]  
+00007FFC8B4CA8A8 4D 85 C0             test        r8,r8  
+00007FFC8B4CA8AB 75 07                jne         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+064h (07FFC8B4CA8B4h)  
+00007FFC8B4CA8AD 33 D2                xor         edx,edx  
+00007FFC8B4CA8AF 45 33 C9             xor         r9d,r9d  
+00007FFC8B4CA8B2 EB 08                jmp         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+06Ch (07FFC8B4CA8BCh)  
+00007FFC8B4CA8B4 49 8D 50 10          lea         rdx,[r8+10h]  
+00007FFC8B4CA8B8 45 8B 48 08          mov         r9d,dword ptr [r8+8]  
+00007FFC8B4CA8BC 4C 8D 44 24 60       lea         r8,[rsp+60h]  
+00007FFC8B4CA8C1 49 89 00             mov         qword ptr [r8],rax  
+00007FFC8B4CA8C4 41 89 48 08          mov         dword ptr [r8+8],ecx  
+00007FFC8B4CA8C8 48 8D 44 24 70       lea         rax,[rsp+70h]  
+00007FFC8B4CA8CD 48 89 10             mov         qword ptr [rax],rdx  
+00007FFC8B4CA8D0 44 89 48 08          mov         dword ptr [rax+8],r9d  
+00007FFC8B4CA8D4 33 C0                xor         eax,eax  
+00007FFC8B4CA8D6 48 89 44 24 50       mov         qword ptr [rsp+50h],rax  
+00007FFC8B4CA8DB 89 44 24 58          mov         dword ptr [rsp+58h],eax  
+00007FFC8B4CA8DF 89 44 24 5C          mov         dword ptr [rsp+5Ch],eax  
+   213:             foreach (var globalItem in new InstanceEnumerator<GlobalItem>(instances, hookInds))
+00007FFC8B4CA8E3 C5 FA 6F 44 24 50    vmovdqu     xmm0,xmmword ptr [rsp+50h]  
+00007FFC8B4CA8E9 C5 FA 7F 44 24 20    vmovdqu     xmmword ptr [rsp+20h],xmm0  
+00007FFC8B4CA8EF C5 FA 6F 44 24 60    vmovdqu     xmm0,xmmword ptr [rsp+60h]  
+00007FFC8B4CA8F5 C5 FA 7F 44 24 30    vmovdqu     xmmword ptr [rsp+30h],xmm0  
+00007FFC8B4CA8FB C5 FA 6F 44 24 70    vmovdqu     xmm0,xmmword ptr [rsp+70h]  
+00007FFC8B4CA901 C5 FA 7F 44 24 40    vmovdqu     xmmword ptr [rsp+40h],xmm0  
+00007FFC8B4CA907 C5 FA 6F 44 24 20    vmovdqu     xmm0,xmmword ptr [rsp+20h]  
+00007FFC8B4CA90D C5 FA 7F 84 24 80 00 00 00 vmovdqu     xmmword ptr [rsp+80h],xmm0  
+00007FFC8B4CA916 C5 FA 6F 44 24 30    vmovdqu     xmm0,xmmword ptr [rsp+30h]  
+00007FFC8B4CA91C C5 FA 7F 84 24 90 00 00 00 vmovdqu     xmmword ptr [rsp+90h],xmm0  
+00007FFC8B4CA925 C5 FA 6F 44 24 40    vmovdqu     xmm0,xmmword ptr [rsp+40h]  
+00007FFC8B4CA92B C5 FA 7F 84 24 A0 00 00 00 vmovdqu     xmmword ptr [rsp+0A0h],xmm0  
+00007FFC8B4CA934 EB 16                jmp         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+0FCh (07FFC8B4CA94Ch)  
+00007FFC8B4CA936 48 8B 84 24 80 00 00 00 mov         rax,qword ptr [rsp+80h]  
+00007FFC8B4CA93E C5 CA 59 40 08       vmulss      xmm0,xmm6,dword ptr [rax+8]  
+00007FFC8B4CA943 E8 D8 67 DD 5F       call        00007FFCEB2A1120  
+00007FFC8B4CA948 C5 FA 59 F6          vmulss      xmm6,xmm0,xmm6  
+00007FFC8B4CA94C B8 FF FF FF FF       mov         eax,0FFFFFFFFh  
+00007FFC8B4CA951 E9 87 00 00 00       jmp         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+018Dh (07FFC8B4CA9DDh)  
+00007FFC8B4CA956 8B 94 24 8C 00 00 00 mov         edx,dword ptr [rsp+8Ch]  
+00007FFC8B4CA95D 48 8D 8C 24 A0 00 00 00 lea         rcx,[rsp+0A0h]  
+00007FFC8B4CA965 44 8D 42 01          lea         r8d,[rdx+1]  
+00007FFC8B4CA969 44 89 84 24 8C 00 00 00 mov         dword ptr [rsp+8Ch],r8d  
+00007FFC8B4CA971 3B 51 08             cmp         edx,dword ptr [rcx+8]  
+00007FFC8B4CA974 0F 83 90 00 00 00    jae         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+01BAh (07FFC8B4CAA0Ah)  
+00007FFC8B4CA97A 48 8B 09             mov         rcx,qword ptr [rcx]  
+00007FFC8B4CA97D 48 63 D2             movsxd      rdx,edx  
+00007FFC8B4CA980 8B 0C 91             mov         ecx,dword ptr [rcx+rdx*4]  
+00007FFC8B4CA983 3B C1                cmp         eax,ecx  
+00007FFC8B4CA985 7D 4E                jge         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+0185h (07FFC8B4CA9D5h)  
+00007FFC8B4CA987 8B 84 24 88 00 00 00 mov         eax,dword ptr [rsp+88h]  
+00007FFC8B4CA98E 3B 84 24 98 00 00 00 cmp         eax,dword ptr [rsp+98h]  
+00007FFC8B4CA995 74 5A                je          ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+01A1h (07FFC8B4CA9F1h)  
+00007FFC8B4CA997 8B 94 24 88 00 00 00 mov         edx,dword ptr [rsp+88h]  
+00007FFC8B4CA99E 48 8D 84 24 90 00 00 00 lea         rax,[rsp+90h]  
+00007FFC8B4CA9A6 44 8D 42 01          lea         r8d,[rdx+1]  
+00007FFC8B4CA9AA 44 89 84 24 88 00 00 00 mov         dword ptr [rsp+88h],r8d  
+00007FFC8B4CA9B2 3B 50 08             cmp         edx,dword ptr [rax+8]  
+00007FFC8B4CA9B5 73 53                jae         ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+01BAh (07FFC8B4CAA0Ah)  
+00007FFC8B4CA9B7 48 63 D2             movsxd      rdx,edx  
+00007FFC8B4CA9BA 48 C1 E2 04          shl         rdx,4  
+00007FFC8B4CA9BE 48 03 10             add         rdx,qword ptr [rax]  
+00007FFC8B4CA9C1 4C 8B 02             mov         r8,qword ptr [rdx]  
+00007FFC8B4CA9C4 48 0F BF 42 08       movsx       rax,word ptr [rdx+8]  
+00007FFC8B4CA9C9 4C 89 84 24 80 00 00 00 mov         qword ptr [rsp+80h],r8  
+00007FFC8B4CA9D1 3B C1                cmp         eax,ecx  
+00007FFC8B4CA9D3 7C B2                jl          ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+0137h (07FFC8B4CA987h)  
+00007FFC8B4CA9D5 3B C1                cmp         eax,ecx  
+00007FFC8B4CA9D7 0F 84 59 FF FF FF    je          ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+0E6h (07FFC8B4CA936h)  
+00007FFC8B4CA9DD 8B 94 24 8C 00 00 00 mov         edx,dword ptr [rsp+8Ch]  
+00007FFC8B4CA9E4 3B 94 24 A8 00 00 00 cmp         edx,dword ptr [rsp+0A8h]  
+00007FFC8B4CA9EB 0F 8C 65 FF FF FF    jl          ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+0106h (07FFC8B4CA956h)  
+   215: 
+   216:             return result;
+00007FFC8B4CA9F1 C5 FA 10 05 2F 00 00 00 vmovss      xmm0,dword ptr [ConsoleApp2.Program.HookDoEffectStructEnumeratorVersion(Single, Instanced`1<GlobalItem>[], Int32[])+01D8h (07FFC8B4CAA28h)]  
+00007FFC8B4CA9F9 C5 F8 28 B4 24 B0 00 00 00 vmovaps     xmm6,xmmword ptr [rsp+0B0h]  
+00007FFC8B4CAA02 48 81 C4 C8 00 00 00 add         rsp,0C8h  
+00007FFC8B4CAA09 C3                   ret  

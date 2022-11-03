@@ -1,18 +1,12 @@
 --- src/decompiled/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -256,6 +_,7 @@
+@@ -256,6 +_,9 @@
  		}
  
  		public void Update() {
-+#if CLIENT
++			if (Main.dedServ)
++				return;
++
  			double num = Math.Abs(Main.WindForVisuals);
  			num = Utils.GetLerpValue(0.08f, 1.2f, (float)num, clamped: true);
  			_treeWindCounter += 0.004166666666666667 + 0.004166666666666667 * num * 2.0;
-@@ -266,6 +_,7 @@
- 			EnsureWindGridSize();
- 			_windGrid.Update();
- 			_shouldShowInvisibleBlocks = Main.LocalPlayer.CanSeeInvisibleBlocks;
-+#endif
- 		}
- 
- 		public void PreDrawTiles(bool solidLayer, bool forRenderTargets, bool intoRenderTargets) {

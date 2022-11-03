@@ -4,7 +4,7 @@ namespace Terraria.ModLoader.Config.UI
 {
 	internal class ArrayElement : CollectionElement
 	{
-		Type itemType;
+		private Type itemType;
 
 		protected override bool CanAdd => false;
 
@@ -25,17 +25,19 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected override void PrepareTypes() {
-			itemType = memberInfo.Type.GetElementType();
+			itemType = MemberInfo.Type.GetElementType();
 		}
 
 		protected override void SetupList() {
-			dataList.Clear();
-			Array array = memberInfo.GetValue(item) as Array;
+			DataList.Clear();
+
+			Array array = MemberInfo.GetValue(Item) as Array;
 			int count = array.Length;
 			int top = 0;
+
 			for (int i = 0; i < count; i++) {
 				int index = i;
-				UIModConfig.WrapIt(dataList, ref top, memberInfo, item, 0, data, itemType, index);
+				UIModConfig.WrapIt(DataList, ref top, MemberInfo, Item, 0, Data, itemType, index);
 			}
 		}
 	}

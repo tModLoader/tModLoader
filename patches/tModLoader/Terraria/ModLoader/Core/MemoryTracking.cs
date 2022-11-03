@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace Terraria.ModLoader.Core
 {
@@ -48,13 +49,17 @@ namespace Terraria.ModLoader.Core
 				var usage = modMemoryUsageEstimates[mod.Name];
 
 				usage.textures = mod.Assets
-					.EnumerateLoadedAssets<Texture2D>()
+					.GetLoadedAssets()
+					.OfType<Asset<Texture2D>>()
 					.Select(asset => asset.Value)
+					.Where(val => val != null)
 					.Sum(tex => tex.Width * tex.Height * 4);
 
 				usage.sounds = mod.Assets
-					.EnumerateLoadedAssets<SoundEffect>()
+					.GetLoadedAssets()
+					.OfType<Asset<SoundEffect>>()
 					.Select(asset => asset.Value)
+					.Where(val => val != null)
 					.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 			}
 			Logging.tML.Info($"RAM usage: {UI.UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}");

@@ -1,24 +1,39 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureManager.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureManager.cs
-@@ -9,7 +_,11 @@
+@@ -6,11 +_,25 @@
+ {
+ 	public class CaptureManager : IDisposable
+ 	{
++		// 'Terraria' patchstep: Client initialization has been moved to LoadContent to prevent FNA deadlocks
++		
++		/*
+ 		public static CaptureManager Instance = new CaptureManager();
++		*/
++		private static CaptureManager _instance;
++		
  		private CaptureInterface _interface;
  		private CaptureCamera _camera;
  
-+#if CLIENT
++		public static CaptureManager Instance {
++			get => Main.dedServ ? new CaptureManager() : _instance;
++			set => _instance = value;
++		}
++
++		/*
  		public bool IsCapturing => _camera.IsCapturing;
-+#else
-+		public bool IsCapturing => false;
-+#endif
++		*/
++		public bool IsCapturing => !Main.dedServ && _camera.IsCapturing;
  
  		public bool Active {
  			get {
-@@ -32,7 +_,9 @@
+@@ -33,6 +_,10 @@
  
  		public CaptureManager() {
  			_interface = new CaptureInterface();
-+#if CLIENT
++
++			if (Main.dedServ) // #if SERVER
++				return;
++
  			_camera = new CaptureCamera(Main.instance.GraphicsDevice);
-+#endif
  		}
  
- 		public void Scrolling() {

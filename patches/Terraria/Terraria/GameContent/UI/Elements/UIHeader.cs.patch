@@ -4,11 +4,11 @@
  			set {
  				if (_text != value) {
  					_text = value;
-+#if CLIENT
++					if (!Main.dedServ) {
  					Vector2 vector = FontAssets.DeathText.Value.MeasureString(Text);
  					Width.Pixels = vector.X;
  					Height.Pixels = vector.Y;
-+#endif
++					}
  					Width.Precent = 0f;
  					Height.Precent = 0f;
  					Recalculate();

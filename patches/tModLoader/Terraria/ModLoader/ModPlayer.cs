@@ -2,11 +2,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -14,37 +13,42 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType
+	public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
+		public ushort Index { get; internal set; }
+
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player Player { get; internal set; }
+		public Player Player => Entity;
 
-		internal int index;
+		protected override Player CreateTemplateEntity() => null;
 
-		internal ModPlayer CreateFor(Player newPlayer) {
-			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			modPlayer.Mod = Mod;
-			modPlayer.Player = newPlayer;
-			modPlayer.index = index;
-			modPlayer.Initialize();
-			return modPlayer;
+		public override ModPlayer NewInstance(Player entity) {
+			var inst = base.NewInstance(entity);
+			
+			inst.Index = Index;
+
+			return inst;
 		}
 
 		public bool TypeEquals(ModPlayer other) {
 			return Mod == other.Mod && Name == other.Name;
 		}
 
-		/// <summary>
-		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
-		/// </summary>
-		public virtual bool CloneNewInstances => true;
-		
+		protected override void ValidateType() {
+			base.ValidateType();
+			
+			LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+			LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
+		}
+
 		protected sealed override void Register() {
 			ModTypeLookup<ModPlayer>.Register(this);
-			PlayerHooks.Add(this);
+			PlayerLoader.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.
@@ -56,6 +60,17 @@ namespace Terraria.ModLoader
 		/// This is where you reset any fields you add to your ModPlayer subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 		/// </summary>
 		public virtual void ResetEffects() {
+		}
+
+		/// <summary>
+		/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied<br/>
+		/// <b>NOTE:</b> You should NOT modify <see cref="Player.statLifeMax"/> nor <see cref="Player.statManaMax"/> here.  Use the <paramref name="health"/> and <paramref name="mana"/> parameters.
+		/// </summary>
+		/// <param name="health">The modifier to the player's maximum health</param>
+		/// <param name="mana">The modifier to the player's maximum mana</param>
+		public virtual void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
+			health = StatModifier.Default;
+			mana = StatModifier.Default;
 		}
 
 		/// <summary>
@@ -71,72 +86,31 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to save custom data for this player. Returns null by default.
+		/// Allows you to save custom data for this player.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to load custom data you have saved for this player.
+		/// Allows you to load custom data that you have saved for this player.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag"></param>
-		public virtual void Load(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
-		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PreSavePlayer() {
 		}
 
 		/// <summary>
-		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save. 
+		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 		/// </summary>
 		public virtual void PostSavePlayer() {
-		}
-
-		/// <summary>
-		/// Allows you to set biome variables in your ModPlayer class based on tile counts.
-		/// </summary>
-		public virtual void UpdateBiomes() {
-		}
-
-		/// <summary>
-		/// Whether or not this player and the other player parameter have the same custom biome variables. This hook is used to help with client/server syncing. Returns true by default.
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public virtual bool CustomBiomesMatch(Player other) {
-			return true;
-		}
-
-		/// <summary>
-		/// In this hook, you should copy the custom biome variables from this player to the other player parameter. This hook is used to help with client/server syncing.
-		/// </summary>
-		/// <param name="other"></param>
-		public virtual void CopyCustomBiomesTo(Player other) {
-		}
-
-		/// <summary>
-		/// Allows you to send custom biome information between client and server.
-		/// </summary>
-		/// <param name="writer"></param>
-		public virtual void SendCustomBiomes(BinaryWriter writer) {
-		}
-
-		/// <summary>
-		/// Allows you to do things with the custom biome information you send between client and server.
-		/// </summary>
-		/// <param name="reader"></param>
-		public virtual void ReceiveCustomBiomes(BinaryReader reader) {
-		}
-
-		/// <summary>
-		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
-		/// </summary>
-		public virtual void UpdateBiomeVisuals() {
 		}
 
 		/// <summary>
@@ -163,21 +137,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the background that displays when viewing the map. Return null if you do not want to change the background. Returns null by default.
-		/// </summary>
-		/// <returns></returns>
-		public virtual Texture2D GetMapBackgroundImage() {
-			return null;
-		}
-
-		/// <summary>
-		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
+		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {
 		}
 
 		/// <summary>
-		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
+		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing Player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment Player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
 		/// </summary>
 		public virtual void UpdateLifeRegen() {
 		}
@@ -203,14 +169,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to check on hotkeys you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay. 
+		/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
 		/// </summary>
 		/// <param name="triggersSet"></param>
 		public virtual void ProcessTriggers(TriggersSet triggersSet) {
 		}
 
 		/// <summary>
-		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of player.controlLeft and player.controlRight. This is called sometime after PreUpdate is called.
+		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
 		/// </summary>
 		public virtual void SetControls() {
 		}
@@ -228,7 +194,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called after Update Accessories. 
+		/// Called after Update Accessories.
 		/// </summary>
 		public virtual void UpdateEquips() {
 		}
@@ -237,6 +203,24 @@ namespace Terraria.ModLoader
 		/// This is called right after all of this player's equipment and armor sets update on the player, which is sometime after PostUpdateBuffs is called. This can be used to modify the effects that the equipment had on this player, and can also be used for general update tasks.
 		/// </summary>
 		public virtual void PostUpdateEquips() {
+		}
+
+		/// <summary>
+		/// Is called in Player.Frame() after vanilla functional slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.Frame() after vanilla vanity slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleVanityAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.UpdateDyes(), including selection screen. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateDyes() {
 		}
 
 		/// <summary>
@@ -264,12 +248,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is called after VanillaUpdateVanityAccessory() in player.UpdateEquips()
-		/// </summary>
-		public virtual void UpdateVanityAccessories() {
-		}
-
-		/// <summary>
 		/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
 		/// </summary>
 		public virtual void FrameEffects() {
@@ -287,11 +265,15 @@ namespace Terraria.ModLoader
 		/// <param name="playSound"></param>
 		/// <param name="genGore"></param>
 		/// <param name="damageSource"></param>
+		/// <param name="cooldownCounter"></param>
 		/// <returns></returns>
 		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
 			return true;
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
 
 		/// <summary>
 		/// Allows you to make anything happen right before damage is subtracted from the player's health.
@@ -301,8 +283,12 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
-		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		/// <param name="cooldownCounter"></param>
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 		/// <summary>
 		/// Allows you to make anything happen when the player takes damage.
@@ -312,8 +298,12 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
-		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		/// <param name="cooldownCounter"></param>
+		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
+
+		[Obsolete("Parameters changed, run tModPorter", true)]
+		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 		/// <summary>
 		/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
@@ -370,22 +360,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to multiply an item's regular use time. Returns 1f by default. Values greater than 1 increase the item speed.
+		/// Allows you to change the effective useTime of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>The amount you wish to multiply with.</returns>
-		public virtual float UseTimeMultiplier(Item item) {
-			return 1f;
-		}
+		/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
+		public virtual float UseTimeMultiplier(Item item) => 1f;
 
 		/// <summary>
-		/// Allows you to multiply an item's regular melee speed. Returns 1f by default. Values greater than 1 increase the item speed.
+		/// Allows you to change the effective useAnimation of an item.
+		/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
 		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <returns>The amount you wish to multiply with.</returns>
-		public virtual float MeleeSpeedMultiplier(Item item) {
-			return 1f;
-		}
+		/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
+		public virtual float UseAnimationMultiplier(Item item) => 1f;
+
+		/// <summary>
+		/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
+		/// <br/> Useful for status effects.
+		/// </summary>
+		/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
+		public virtual float UseSpeedMultiplier(Item item) => 1f;
 
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
@@ -433,64 +426,85 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
+		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="knockback"></param>
-		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item</param>
-		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
+		/// <param name="item">The item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
+		public virtual void ModifyWeaponCrit(Item item, ref float crit) {
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption. <br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The weapon that this player is attempting to use.</param>
+		/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
 		/// <returns></returns>
-		public virtual bool ConsumeAmmo(Item weapon, Item ammo) {
+		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed.
-		/// Called before the ammo stack is reduced.
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
-		/// <returns></returns>
+		/// <param name="weapon">The weapon that is currently using the given ammo.</param>
+		/// <param name="ammo">The ammo that the given weapon is currently using.</param>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
 		}
 
 		/// <summary>
-		/// This is called before this player's weapon creates a projectile. You can use it to create special effects, such as changing the speed, changing the initial position, and/or firing multiple projectiles. Return false to stop the game from shooting the default projectile (do this if you manually spawn your own projectile). Returns true by default.
+		/// Allows you to prevent an item from shooting a projectile on use. Returns true by default.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="position"></param>
-		/// <param name="speedX"></param>
-		/// <param name="speedY"></param>
-		/// <param name="type"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockBack"></param>
+		/// <param name="item"> The item being used. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Item item, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public virtual bool CanShoot(Item item) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		}
+
+		/// <summary>
+		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+		/// </summary>
+		/// <param name="item"> The item being used. </param>
+		/// <param name="source"> The projectile source's information. </param>
+		/// <param name="position"> The center position of the projectile. </param>
+		/// <param name="velocity"> The velocity of the projectile. </param>
+		/// <param name="type"> The ID of the projectile. </param>
+		/// <param name="damage"> The damage of the projectile. </param>
+		/// <param name="knockback"> The knockback of the projectile. </param>
+		public virtual bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
@@ -500,6 +514,40 @@ namespace Terraria.ModLoader
 		/// <param name="item"></param>
 		/// <param name="hitbox"></param>
 		public virtual void MeleeEffects(Item item, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the target can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
+		public virtual bool? CanCatchNPC(NPC target, Item item) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(NPC npc, Item item, bool failed) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="item">The item to modify the scale of.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to the given item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Item item, ref float scale) {
 		}
 
 		/// <summary>
@@ -692,17 +740,40 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item the player gains from catching a fish. The fishingRod and bait parameters refer to the said items in the player's inventory. The liquidType parameter is 0 if the player is fishing in water, 1 for lava, and 2 for honey. The poolSize parameter is the tile size of the pool the player is fishing in. The worldLayer parameter is 0 if the player is in the sky, 1 if the player is on the surface, 2 if the player is underground, 3 if the player is in the caverns, and 4 if the player is in the underworld. The questFish parameter is the item ID for the day's Angler quest. Modify the caughtType parameter to change the item the player catches. The junk parameter is whether the player catches junk; you can set this to true if you make the player catch a junk item, and is mostly used to pass information (has no effect on the game).
+		/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+		/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
+		/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
 		/// </summary>
-		/// <param name="fishingRod"></param>
-		/// <param name="bait"></param>
-		/// <param name="power"></param>
-		/// <param name="liquidType"></param>
-		/// <param name="poolSize"></param>
-		/// <param name="worldLayer"></param>
-		/// <param name="questFish"></param>
-		/// <param name="caughtType"></param>
-		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		public virtual void ModifyFishingAttempt(ref FishingAttempt attempt) {
+		}
+
+		/// <summary>
+		/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
+		/// </summary>
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave &lt;0 for no item</param>
+		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave &lt;0 for no NPC spawn</param>
+		/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
+		/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
+		public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the item caught by the fishing player, including stack
+		/// </summary>
+		/// <param name="fish">The item (Fish) to modify</param>
+		public virtual void ModifyCaughtFish(Item fish) {
+		}
+
+		/// <summary>
+		/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+		/// Not consuming will always take priority over forced consumption
+		/// </summary>
+		/// <param name="bait">The item (bait) that would be consumed</param>
+		public virtual bool? CanConsumeBait(Item bait) {
+			return null;
 		}
 
 		/// <summary>
@@ -730,7 +801,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to Main.playerDrawDust, and the indexes of any gore you create to Main.playerDrawGore.
+		/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br/>
+		/// This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
 		/// </summary>
 		/// <param name="drawInfo"></param>
 		/// <param name="r"></param>
@@ -749,7 +821,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to reorder the player draw layers. 
+		/// Allows you to reorder the player draw layers.
 		/// This is called once at the end of mod loading, not during the game.
 		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
@@ -758,9 +830,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the visiblity of layers about to be drawn
+		/// Allows you to modify the visibility of layers about to be drawn
 		/// </summary>
-		/// <param name="layers"></param>
+		/// <param name="drawInfo"></param>
 		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 
@@ -817,6 +889,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Called whenever the player hovers over an item slot. This can be used to override <see cref="Main.cursorOverride"/>
+		/// <br>See <see cref="ID.CursorOverrideID"/> for cursor override style IDs</br>
+		/// </summary>
+		/// <param name="inventory">The array of items the slot is part of.</param>
+		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
+		/// <param name="slot">The index in the inventory of the hover slot.</param>
+		/// <returns>Whether or not to block the default code that modifies <see cref="Main.cursorOverride"/> from running. Returns false by default.</returns>
+		public virtual bool HoverSlot(Item[] inventory, int context, int slot) {
+			return false;
+		}
+
+		/// <summary>
 		/// Called whenever the player sells an item to an NPC.
 		/// </summary>
 		/// <param name="vendor">The NPC vendor.</param>
@@ -865,6 +949,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="item"> The item. </param>
+		public virtual bool? CanAutoReuseItem(Item item) => null;
+
+		/// <summary>
 		/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
 		/// </summary>
 		/// <param name="nurse">The Nurse NPC instance.</param>
@@ -901,7 +993,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}

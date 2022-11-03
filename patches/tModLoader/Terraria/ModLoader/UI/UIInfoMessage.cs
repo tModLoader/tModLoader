@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIInfoMessage : UIState
+	internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	{
 		private UIElement _area;
 		private UIMessageBox _messageBox;
@@ -17,6 +19,8 @@ namespace Terraria.ModLoader.UI
 		private int _gotoMenu;
 		private Action _altAction;
 		private string _altText;
+		private string _okText;
+		public UIState PreviousUIState { get; set; }
 
 		public override void OnInitialize() {
 			_area = new UIElement {
@@ -74,21 +78,29 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			_messageBox.SetText(_message);
 			_buttonAlt.SetText(_altText);
+			if (_okText != null)
+				_button.SetText(_okText);
 			bool showAlt = !string.IsNullOrEmpty(_altText);
 			_button.Left.Percent = showAlt ? 0 : .25f;
 			_area.AddOrRemoveChild(_buttonAlt, showAlt);
 		}
 
-		internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null) {
+		internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null) {
 			_message = message;
 			_gotoMenu = gotoMenu;
 			_gotoState = state;
 			_altText = altButtonText;
 			_altAction = altButtonAction;
+			_okText = okButtonText;
 			Main.menuMode = Interface.infoMessageID;
+			Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
+			HandleBackButtonUsage();
+		}
+
+		public void HandleBackButtonUsage() {
 			SoundEngine.PlaySound(10);
 			Main.menuMode = _gotoMenu;
 			if (_gotoState != null)
@@ -99,6 +111,11 @@ namespace Terraria.ModLoader.UI
 			SoundEngine.PlaySound(10);
 			_altAction?.Invoke();
 			Main.menuMode = _gotoMenu;
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			base.DrawSelf(spriteBatch);
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		}
 	}
 }

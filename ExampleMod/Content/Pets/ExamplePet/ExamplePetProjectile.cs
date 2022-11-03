@@ -7,8 +7,6 @@ namespace ExampleMod.Content.Pets.ExamplePet
 	public class ExamplePetProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Paper Airplane");
-
 			Main.projFrames[Projectile.type] = 4;
 			Main.projPet[Projectile.type] = true;
 		}
@@ -30,7 +28,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 
-			//Keep the projectile from disappearing as long as the player isn't dead and has the pet buff.
+			// Keep the projectile from disappearing as long as the player isn't dead and has the pet buff.
 			if (!player.dead && player.HasBuff(ModContent.BuffType<ExamplePetBuff>())) {
 				Projectile.timeLeft = 2;
 			}

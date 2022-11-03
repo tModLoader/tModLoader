@@ -142,33 +142,6 @@ namespace ExampleMod.NPCs
 			}
 		}
 
-		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type == NPCID.Dryad) {
-				shop.item[nextSlot].SetDefaults(ItemType<CarKey>());
-				nextSlot++;
-
-				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value. 
-				// Editing item.value in SetupShop is an incorrect approach.
-				shop.item[nextSlot].SetDefaults(ItemType<CarKey>());
-				shop.item[nextSlot].shopCustomPrice = 2;
-				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals; // omit this line if shopCustomPrice should be in regular coins. 
-				nextSlot++;
-
-				shop.item[nextSlot].SetDefaults(ItemType<CarKey>());
-				shop.item[nextSlot].shopCustomPrice = 3;
-				shop.item[nextSlot].shopSpecialCurrency = ExampleMod.FaceCustomCurrencyId;
-				nextSlot++;
-			}
-			else if (type == NPCID.Wizard && Main.expertMode) {
-				shop.item[nextSlot].SetDefaults(ItemType<Infinity>());
-				nextSlot++;
-			}
-			else if (type == NPCID.Stylist) {
-				shop.item[nextSlot].SetDefaults(ItemType<ExampleHairDye>());
-				nextSlot++;
-			}
-		}
-
 		// Make any NPC with a chat complain to the player if they have the stinky debuff.
 		public override void GetChat(NPC npc, ref string chat) {
 			if (Main.LocalPlayer.HasBuff(BuffID.Stinky)) {

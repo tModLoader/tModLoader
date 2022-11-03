@@ -1,58 +1,30 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using Terraria.ModLoader.Core;
+using System.IO;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public abstract class GlobalProjectile : GlobalType<Projectile>
+	public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 	{
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = (ushort)ProjectileLoader.globalProjectiles.Count;
+			Index = (ushort)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
-		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
+		public sealed override void SetupContent() => SetStaticDefaults();
 
-		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
-		/// Defaults to false (using default constructor).
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalProjectile. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
-		/// </summary>
-		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalProjectile NewInstance(Projectile projectile) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-
-			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-
-			return copy;
-		}
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, Index);
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
@@ -61,6 +33,12 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Projectile projectile) {
 		}
 
+		/// <summary>
+		/// Gets called when any projectiles spawns in world
+		/// </summary>
+		public virtual void OnSpawn(Projectile projectile, IEntitySource source) {
+		}
+		
 		/// <summary>
 		/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 		/// </summary>
@@ -85,6 +63,29 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Use this judiciously to avoid straining the network.
+		/// <br/>Checks and methods such as <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
+		/// <param name="binaryWriter">The writer.</param>
+		public virtual void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter) {
+		}
+
+		/// <summary>
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="bitReader">The compressible bit reader.</param>
+		/// <param name="binaryReader">The reader.</param>
+		public virtual void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader) {
+		}
+
+		/// <summary>
 		/// Whether or not the given projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default.
 		/// </summary>
 		/// <param name="projectile"></param>
@@ -94,14 +95,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="fallThrough"></param>
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.width. </param>
+		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.height. </param>
+		/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from the projectile's real center. If vanilla or a mod don't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 
@@ -134,7 +136,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.
+		/// Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>
@@ -176,6 +178,14 @@ namespace Terraria.ModLoader
 		/// <param name="projectile"></param>
 		/// <param name="hitbox"></param>
 		public virtual void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <param name="damageScale">The damage scaling</param>
+		public virtual void ModifyDamageScaling(Projectile projectile, ref float damageScale) {
 		}
 
 		/// <summary>
@@ -293,33 +303,28 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+		/// Allows you to draw things behind a projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <returns></returns>
-		public virtual bool PreDrawExtras(Projectile projectile, SpriteBatch spriteBatch) {
+		/// <param name="projectile"> The projectile. </param>
+		public virtual bool PreDrawExtras(Projectile projectile) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Return false to stop the game from drawing the projectile (useful if you're manually drawing the projectile). Returns true by default.
+		/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		/// <returns></returns>
-		public virtual bool PreDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center. </param>
+		public virtual bool PreDraw(Projectile projectile, ref Color lightColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of a projectile. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of a projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="lightColor"></param>
-		public virtual void PostDraw(Projectile projectile, SpriteBatch spriteBatch, Color lightColor) {
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
+		public virtual void PostDraw(Projectile projectile, Color lightColor) {
 		}
 
 		/// <summary>
@@ -327,11 +332,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="index"></param>
-		/// <param name="drawCacheProjsBehindNPCsAndTiles"></param>
-		/// <param name="drawCacheProjsBehindNPCs"></param>
-		/// <param name="drawCacheProjsBehindProjectiles"></param>
-		/// <param name="drawCacheProjsOverWiresUI"></param>
-		public virtual void DrawBehind(Projectile projectile, int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
+		/// <param name="behindNPCsAndTiles"></param>
+		/// <param name="behindNPCs"></param>
+		/// <param name="behindProjectiles"></param>
+		/// <param name="overPlayers"></param>
+		/// <param name="overWiresUI"></param>
+		public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		}
 
 		/// <summary>

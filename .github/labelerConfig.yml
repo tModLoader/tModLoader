@@ -1,0 +1,19 @@
+# Add/remove labels if issue matches the regex specified
+OS-Linux:
+    - 'OS.*Linux'
+OS-Mac:
+    - 'OS.*Mac'
+Requestor-Player:
+    - 'Gameplay as a Player'
+Requestor-Modders:
+    - 'Mod capability as a Modder'
+Requestor-TML Maintainers:
+    - 'tModLoader code as a Contributor/Maintainer'
+Codebase-1.4 TML:
+    - 'Version.*Latest 1.4-*'
+Codebase-1.3 TML:
+    - 'Version.*Latest 1.3'
+Steam:
+    - 'Platform.*Steam'
+GOG:
+    - 'Platform.*GOG'

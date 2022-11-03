@@ -1,8 +1,11 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
-@@ -1,9 +_,10 @@
+@@ -1,9 +_,13 @@
  using System.IO;
++using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
++using Terraria.ID;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.GameContent.Tile_Entities
@@ -23,3 +26,67 @@
  			writer.Write((short)item.stack);
  		}
  
+@@ -92,20 +_,23 @@
+ 
+ 		public void DropItem() {
+ 			if (Main.netMode != 1)
+-				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item.netID, 1, noBroadcast: false, item.prefix);
++				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item, noBroadcast: false);
+ 
+ 			item = new Item();
+ 		}
+ 
+-		public static void TryPlacing(int x, int y, int netid, int prefix, int stack) {
++		public static void TryPlacing(int x, int y, Item item, int stack) {
+ 			WorldGen.RangeFrame(x, y, x + 2, y + 2);
+ 			int num = Find(x, y);
+ 			if (num == -1) {
++				/*
+ 				int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 32, 1);
+ 				Main.item[num2].netDefaults(netid);
+ 				Main.item[num2].Prefix(prefix);
+ 				Main.item[num2].stack = stack;
+ 				NetMessage.SendData(21, -1, -1, null, num2);
++				*/
++				Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
+ 				return;
+ 			}
+ 
+@@ -113,10 +_,14 @@
+ 			if (tEItemFrame.item.stack > 0)
+ 				tEItemFrame.DropItem();
+ 
++			/*
+ 			tEItemFrame.item = new Item();
+ 			tEItemFrame.item.netDefaults(netid);
+ 			tEItemFrame.item.Prefix(prefix);
+ 			tEItemFrame.item.stack = stack;
++			*/
++			tEItemFrame.item = ItemLoader.TransferWithLimit(item, stack);
++
+ 			NetMessage.SendData(86, -1, -1, null, tEItemFrame.ID, x, y);
+ 		}
+ 
+@@ -167,16 +_,20 @@
+ 					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
+ 			}
+ 
+-			if (Main.netMode == 1)
++			if (Main.netMode == 1) {
+ 				NetMessage.SendData(89, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
++				ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
++			}
+ 			else
+-				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
++				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
+ 
++			/*
+ 			player.inventory[player.selectedItem].stack--;
+ 			if (player.inventory[player.selectedItem].stack <= 0) {
+ 				player.inventory[player.selectedItem].SetDefaults();
+ 				Main.mouseItem.SetDefaults();
+ 			}
++			*/
+ 
+ 			if (player.selectedItem == 58)
+ 				Main.mouseItem = player.inventory[player.selectedItem].Clone();

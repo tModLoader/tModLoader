@@ -1,0 +1,37 @@
+--- src/decompiled/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
++++ src/Terraria/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Runtime.InteropServices;
+ 
+ namespace ReLogic.Peripherals.RGB.Razer
+ {
+@@ -8,6 +_,9 @@
+ 		private readonly List<RgbDevice> _devices = new List<RgbDevice>();
+ 		private bool _isInitialized;
+ 		private readonly VendorColorProfile _colorProfiles;
++#if NETCORE
++		private bool _initializationFailed;
++#endif
+ 
+ 		public RazerDeviceGroup(VendorColorProfile colorProfiles) {
+ 			_colorProfiles = colorProfiles;
+@@ -16,6 +_,17 @@
+ 		protected override void Initialize() {
+ 			if (_isInitialized)
+ 				return;
++
++#if NETCORE
++			if (_initializationFailed)
++				return;
++
++			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++				_initializationFailed = true;
++
++				return;
++			}
++#endif
+ 
+ 			try {
+ 				RzResult rzResult = NativeMethods.Init();

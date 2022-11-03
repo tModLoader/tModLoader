@@ -12,7 +12,8 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Homing Projectile"); // Name of the projectile. It can be appear in chat
-			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true; // Tell the game that it is a homing projectile
+
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		// Setting the default parameters of the projectile
@@ -28,7 +29,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.light = 1f; // How much light emit around the projectile
 			Projectile.tileCollide = false; // Can the projectile collide with tiles?
-			Projectile.timeLeft = 600; //The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 		}
 
 		// Custom AI
@@ -36,13 +37,13 @@ namespace ExampleMod.Content.Projectiles
 			float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 5f; // The speed at which the projectile moves towards the target
 
-			// Trying to find NPC closest to the projectile 
+			// Trying to find NPC closest to the projectile
 			NPC closestNPC = FindClosestNPC(maxDetectRadius);
 			if (closestNPC == null)
 				return;
 
 			// If found, change the velocity of the projectile and turn it in the direction of the target
-			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero 
+			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
 			Projectile.velocity =  (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
@@ -54,7 +55,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-			
+
 			// Loop through all NPCs(max always 200)
 			for (int k = 0; k < Main.maxNPCs; k++) {
 				NPC target = Main.npc[k];
@@ -68,7 +69,7 @@ namespace ExampleMod.Content.Projectiles
 				if (target.CanBeChasedBy()) {
 					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-					
+
 					// Check if it is within the radius
 					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
 						sqrMaxDetectDistance = sqrDistanceToTarget;

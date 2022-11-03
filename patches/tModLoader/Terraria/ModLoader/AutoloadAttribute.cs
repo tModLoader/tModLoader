@@ -27,7 +27,7 @@ namespace Terraria.ModLoader
 			//The first should be the most derived attribute.
 			var mostDerived = (AutoloadAttribute)all.FirstOrDefault();
 			//If there were no declarations, then return null.
-			return mostDerived??Default;
+			return mostDerived ?? Default;
 		}
 	}
 }

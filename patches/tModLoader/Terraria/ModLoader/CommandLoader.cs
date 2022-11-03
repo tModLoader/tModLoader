@@ -36,6 +36,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Finds a command by name. Handles mod prefixing. Replies with error messages.
 		/// </summary>
+		/// <param name="caller">Handles relaying the results of the command and narrows down the search by CommandType context</param>
+		/// <param name="name">The name of the command to retrieve</param>
 		/// <param name="mc">The found command, or null if an error was encountered.</param>
 		/// <returns>True if a ModCommand was found, or an error message was replied. False if the command is unrecognized.</returns>
 		internal static bool GetCommand(CommandCaller caller, string name, out ModCommand mc) {
@@ -82,7 +84,7 @@ namespace Terraria.ModLoader
 			args = args.Skip(1).ToArray();
 
 			if (caller.CommandType != CommandType.Console) {
-				if (name[0] != '/')
+				if (name == "" || name[0] != '/')
 					return false;
 
 				name = name.Substring(1);

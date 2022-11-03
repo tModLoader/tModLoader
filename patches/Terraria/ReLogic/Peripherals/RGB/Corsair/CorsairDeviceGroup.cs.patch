@@ -1,0 +1,30 @@
+--- src/decompiled/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
++++ src/Terraria/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
+@@ -17,6 +_,9 @@
+ 		private readonly List<RgbDevice> _devices = new List<RgbDevice>();
+ 		private State _state;
+ 		private readonly VendorColorProfile _colorProfiles;
++#if NETCORE
++		private bool _initializationFailed;
++#endif
+ 
+ 		public CorsairDeviceGroup(VendorColorProfile colorProfiles) {
+ 			_colorProfiles = colorProfiles;
+@@ -25,6 +_,17 @@
+ 		protected override void Initialize() {
+ 			if (_state == State.AnyDevicesAdded)
+ 				return;
++
++#if NETCORE
++			if (_initializationFailed)
++				return;
++
++			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++				_initializationFailed = true;
++
++				return;
++			}
++#endif
+ 
+ 			try {
+ 				if (_state < State.HandshakeCompleted) {

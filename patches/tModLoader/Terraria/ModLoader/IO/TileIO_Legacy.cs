@@ -22,6 +22,10 @@ namespace Terraria.ModLoader.IO
 		}
 
 		internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
+			if (!tag.ContainsKey("data")) {
+				return;
+			}
+
 			// Retrieve Locational-Specific Data from 'Data' and apply
 			using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
 			using (var reader = new BinaryReader(memoryStream)) {
@@ -44,7 +48,7 @@ namespace Terraria.ModLoader.IO
 				// Skip vanilla tiles
 				if (!nextModTile) {
 					skip = reader.ReadByte();
-					
+
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
 							if (!NextLocation(ref i, ref j)) {
@@ -153,7 +157,7 @@ namespace Terraria.ModLoader.IO
 
 		/// <summary>
 		/// Increases the provided x and y coordinates to the next location in accordance with order-sensitive position IDs.
-		/// Typically used in clustering duplicate data across multiple consecutive locations, such as in ModLoader.TileIO 
+		/// Typically used in clustering duplicate data across multiple consecutive locations, such as in ModLoader.TileIO
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>

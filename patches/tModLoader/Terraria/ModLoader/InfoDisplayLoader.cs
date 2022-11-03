@@ -10,17 +10,17 @@ namespace Terraria.ModLoader
 		internal static readonly List<InfoDisplay> InfoDisplays = new List<InfoDisplay>() {
 			InfoDisplay.Watches,
 			InfoDisplay.WeatherRadio,
-			InfoDisplay.FishFinder,
-			InfoDisplay.Compass,
-			InfoDisplay.DepthMeter,
-			InfoDisplay.Radar,
-			InfoDisplay.TallyCounter,
 			InfoDisplay.Sextant,
-			InfoDisplay.Dummy,
-			InfoDisplay.Stopwatch,
+			InfoDisplay.FishFinder,
 			InfoDisplay.MetalDetector,
 			InfoDisplay.LifeformAnalyzer,
-			InfoDisplay.DPSMeter
+			InfoDisplay.Radar,
+			InfoDisplay.TallyCounter,
+			InfoDisplay.Dummy,
+			InfoDisplay.DPSMeter,
+			InfoDisplay.Stopwatch,
+			InfoDisplay.Compass,
+			InfoDisplay.DepthMeter
 		};
 
 		private static readonly int DefaultDisplayCount = InfoDisplays.Count;
@@ -82,8 +82,9 @@ namespace Terraria.ModLoader
 		public static bool Active(InfoDisplay info) {
 			bool active = info.Active();
 			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
-				if (global.Active(info).HasValue)
-					active &= global.Active(info).Value;
+				bool? val = global.Active(info);
+				if (val.HasValue)
+					active &= val.Value;
 			}
 			return active;
 		}

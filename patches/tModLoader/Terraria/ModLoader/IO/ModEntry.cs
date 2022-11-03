@@ -13,7 +13,7 @@
 			type = loadedType = block.Type;
 			modName = block.Mod.Name;
 			name = block.Name;
-			vanillaReplacementType = block.vanillaFallbackOnModDeletion;
+			vanillaReplacementType = block.VanillaFallbackOnModDeletion;
 			unloadedType = GetUnloadedType(block.Type);
 		}
 

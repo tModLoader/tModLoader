@@ -1,9 +1,7 @@
 --- src/decompiled/Terraria/Chat/Commands/SayChatCommand.cs
 +++ src/Terraria/Terraria/Chat/Commands/SayChatCommand.cs
-@@ -1,3 +_,6 @@
-+#if SERVER
+@@ -1,3 +_,4 @@
 +using System;
-+#endif
  using Terraria.Localization;
  
  namespace Terraria.Chat.Commands
@@ -11,9 +9,9 @@
  	{
  		public void ProcessIncomingMessage(string text, byte clientId) {
  			ChatHelper.BroadcastChatMessageAs(clientId, NetworkText.FromLiteral(text), Main.player[clientId].ChatColor());
-+#if SERVER
-+			Console.WriteLine("<{0}> {1}",Main.player[clientId].name,text);
-+#endif
++
++			if (Main.dedServ) // #if SERVER
++				Console.WriteLine("<{0}> {1}", Main.player[clientId].name, text);
  		}
  
  		public void ProcessOutgoingMessage(ChatMessage message) {

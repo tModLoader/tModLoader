@@ -1,9 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
+using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -11,14 +15,20 @@ using Terraria.WorldBuilding;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it. 
+	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it.
 	/// </summary>
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			SystemHooks.Add(this);
+			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
+
+		/// <summary>
+		/// Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults.
+		/// This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent
+		/// </summary>
+		public override void SetupContent() => SetStaticDefaults();
 
 		//Hooks
 
@@ -28,12 +38,43 @@ namespace Terraria.ModLoader
 		public virtual void OnModLoad() { }
 
 		/// <summary>
+		/// This hook is called right before Mod.UnLoad()
+		/// </summary>
+		public virtual void OnModUnload() { }
+
+		/// <summary>
 		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).
 		/// </summary>
 		public virtual void PostSetupContent() { }
 
 		/// <summary>
+		/// Override this method to add recipes to the game.
+		/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+		/// </summary>
+		public virtual void AddRecipes() { }
+
+		/// <summary>
+		/// This provides a hook into the mod-loading process immediately after recipes have been added.
+		/// <br/> You can use this to edit recipes added by other mods.
+		/// </summary>
+		public virtual void PostAddRecipes() { }
+
+		/// <summary>
+		/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
+		/// </summary>
+		public virtual void PostSetupRecipes() {
+		}
+
+		/// <summary>
+		/// Override this method to add recipe groups to the game.
+		/// <br/> You must add recipe groups by calling the <see cref="RecipeGroup.RegisterGroup"/> method here.
+		/// <br/> A recipe group is a set of items that can be used interchangeably in the same recipe.
+		/// </summary>
+		public virtual void AddRecipeGroups() { }
+
+		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
+		/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
 		/// </summary>
 		public virtual void OnWorldLoad() { }
 
@@ -41,13 +82,6 @@ namespace Terraria.ModLoader
 		/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
 		/// </summary>
 		public virtual void OnWorldUnload() { }
-
-		/// <summary>
-		/// Allows you to determine what music should currently play.
-		/// </summary>
-		/// <param name="music">The music.</param>
-		/// <param name="priority">The music priority.</param>
-		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) { }
 
 		/// <summary>
 		/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
@@ -178,28 +212,29 @@ namespace Terraria.ModLoader
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
 
 		/// <summary>
-		/// Allows you to modify color of light the sun emits.
+		/// Allows you to set the visibility of any added vanilla or modded GameTips. In order to add your OWN tips, add them in
+		/// your localization file, with the key prefix of "Mods.ModName.GameTips".
 		/// </summary>
-		/// <param name="tileColor">Tile lighting color</param>
-		/// <param name="backgroundColor">Background lighting color</param>
-		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
-
-		/// <summary>
-		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
-		/// </summary>
-		/// <param name="scale">Brightness scale</param>
-		public virtual void ModifyLightingBrightness(ref float scale) { }
+		/// <param name="gameTips"> The current list of all added game tips. </param>
+		public virtual void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips) { }
 
 		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
-		/// 
+		///
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>
 		public virtual void PostDrawInterface(SpriteBatch spriteBatch) { }
 
 		/// <summary>
-		/// Called while the fullscreen map is active. Allows custom drawing to the map.
+		/// Called right before map icon overlays are drawn. Use this hook to selectively hide existing <see cref="IMapLayer"/> or <see cref="ModMapLayer"/>
+		/// </summary>
+		/// <param name="layers"></param>
+		/// <param name="mapOverlayDrawContext"></param>
+		public virtual void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) { }
+
+		/// <summary>
+		/// Called while the fullscreen map is active. Allows custom drawing to the map. Using <see cref="ModMapLayer"/> is more compatible and allows drawing on the minimap and fullscreen maps.
 		/// </summary>
 		/// <param name="mouseText">The mouse text.</param>
 		public virtual void PostDrawFullscreenMap(ref string mouseText) { }
@@ -210,7 +245,7 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdateInput() { }
 
 		/// <summary>
-		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
+		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.
 		/// </summary>
 		public virtual void PreSaveAndQuit() { }
 
@@ -220,29 +255,58 @@ namespace Terraria.ModLoader
 		public virtual void PostDrawTiles() { }
 
 		/// <summary>
-		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
-		/// You may want to consider Main.fastForwardTime and CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled here.
+		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
+		/// All fields are measured in in-game minutes per real-life second (min/sec).
+		/// You may want to consider <see cref="Main.fastForwardTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
 		/// </summary>
-		public virtual void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) { }
+		/// <param name="timeRate">The speed at which time flows in min/sec.</param>
+		/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
+		/// <param name="eventUpdateRate">The speed at which various events in the world (weather changes, fallen star/fairy spawns, etc.) update in min/sec.</param>
+		public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 		/// <summary>
-		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.
+		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags.
+		/// <br/>For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		public virtual TagCompound SaveWorldData() => null;
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveWorldData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data you have saved for this system in the currently loading world.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
+		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadWorldData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.
+		/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
 		/// </summary>
+		public virtual bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData) {
+			return true;
+		}
+
+		public virtual string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData) {
+			return $"The selected character {playerData.Name} can not be used with the selected world {worldData.Name}.\n" +
+							$"This could be due to mismatched Journey Mode or other mod specific changes.";
+		}
+
+		/// <summary>
+		/// Allows you to send custom data between clients and server, which will be handled in <see cref="NetReceive"/>. This is useful for syncing information such as bosses that have been defeated.
+		/// <br/>Called whenever <see cref="MessageID.WorldData"/> is successfully sent, for example after a boss is defeated, a new day starts, or a player joins the server.
+		/// <br/>Only called on the server.
+		/// </summary>
+		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) { }
 
 		/// <summary>
-		/// Allows you to do things with custom data that is received between clients and server.
+		/// Use this to receive information that was sent in <see cref="NetSend"/>.
+		/// <br/>Called whenever <see cref="MessageID.WorldData"/> is successfully received.
+		/// <br/>Only called on the client.
 		/// </summary>
+		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) { }
 
 		/// <summary>
@@ -262,6 +326,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows a mod to run code before a world is generated.
+		/// <br/>If you use this to initialize data used during worldgen, which you save on the world, also initialize it in <see cref="OnWorldLoad"/>.
 		/// </summary>
 		public virtual void PreWorldGen() { }
 
@@ -282,18 +347,27 @@ namespace Terraria.ModLoader
 		public virtual void ResetNearbyTileEffects() { }
 
 		/// <summary>
-		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
-		/// </summary>
-		public virtual void TileCountsAvailable(int[] tileCounts) { }
-
-		/// <summary>
-		/// Allows you to change the water style (determines water color) that is currently being used.
-		/// </summary>
-		public virtual void ChooseWaterStyle(ref int style) { }
-
-		/// <summary>
 		/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"
 		/// </summary>
 		public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
+
+		/// <summary>
+		/// Allows you to modify color of light the sun emits.
+		/// </summary>
+		/// <param name="tileColor">Tile lighting color</param>
+		/// <param name="backgroundColor">Background lighting color</param>
+		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
+
+		/// <summary>
+		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+		/// </summary>
+		/// <param name="scale">Brightness scale</param>
+		public virtual void ModifyLightingBrightness(ref float scale) { }
+
+		/// <summary>
+		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
+		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
+		/// </summary>
+		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 	}
 }

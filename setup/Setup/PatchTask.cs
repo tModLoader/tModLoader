@@ -40,9 +40,6 @@ namespace Terraria.ModLoader.Setup
 
 		public override bool StartupWarning()
 		{
-#if AUTO
-			return true;
-#endif
 			return MessageBox.Show(
 					"Any changes in /" + patchedDir + " that have not been converted to patches will be lost.",
 					"Possible loss of data", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
@@ -51,7 +48,7 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			Program.UpdateTargetsFile(); //Update branch information
+			Program.UpdateTargetsFiles(); //Update branch information
 
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
 
@@ -99,17 +96,21 @@ namespace Terraria.ModLoader.Setup
 
 			//Remove files and directories that weren't in patches and original src.
 
-			taskInterface.SetStatus("Deleting Old Src");
+			taskInterface.SetStatus("Deleting Old Src Files");
 
 			foreach (var (file, relPath) in EnumerateSrcFiles(patchedDir))
 				if (!newFiles.Contains(file))
 					File.Delete(file);
 
+			taskInterface.SetStatus("Deleting Old Src's Empty Directories");
+
 			DeleteEmptyDirs(patchedDir);
+
+			taskInterface.SetStatus("Old Src Removed");
 
 			//Show patch reviewer if there were any fuzzy patches.
 
-			if (fuzzy > 0)
+			if (fuzzy > 0 || mode == Patcher.Mode.FUZZY && failures > 0)
 				taskInterface.Invoke(new Action(() => ShowReviewWindow(results)));
 		}
 

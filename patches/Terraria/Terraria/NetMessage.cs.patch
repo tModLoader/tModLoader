@@ -1,41 +1,39 @@
 --- src/decompiled/Terraria/NetMessage.cs
 +++ src/Terraria/Terraria/NetMessage.cs
-@@ -2062,6 +_,13 @@
+@@ -2081,6 +_,12 @@
  
  		public static void CheckBytes(int bufferIndex = 256) {
  			lock (buffer[bufferIndex]) {
-+#if SERVER
-+				if (Netplay.Clients[bufferIndex].PendingTermination) {
++				if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
 +					Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
 +					buffer[bufferIndex].checkBytes = false;
 +					return;
 +				}
-+#endif
++
  				int num = 0;
  				int num2 = buffer[bufferIndex].totalData;
  				try {
-@@ -2070,6 +_,13 @@
+@@ -2089,6 +_,13 @@
  						if (num2 >= num3) {
  							long position = buffer[bufferIndex].reader.BaseStream.Position;
  							buffer[bufferIndex].GetData(num + 2, num3 - 2, out int _);
-+#if SERVER
-+							if (Netplay.Clients[bufferIndex].PendingTermination) {
++
++							if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
 +								Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
 +								buffer[bufferIndex].checkBytes = false;
 +								break;
 +							}
-+#endif
++
  							buffer[bufferIndex].reader.BaseStream.Position = position + num3;
  							num2 -= num3;
  							num += num3;
-@@ -2080,6 +_,10 @@
+@@ -2099,6 +_,9 @@
  					}
  				}
  				catch (Exception) {
-+#if SERVER
-+					if (num < NetMessage.buffer.Length - 100)
++					if (Main.dedServ && num < NetMessage.buffer.Length - 100)
 +						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
-+#endif
++
  					num2 = 0;
  					num = 0;
  				}

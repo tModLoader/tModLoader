@@ -53,12 +53,6 @@ namespace Terraria.ModLoader
 			return mountData.ModMount != null;
 		}
 
-		internal static void SetupMount(Mount.MountData mount) {
-			if (IsModMount(mount)) {
-				GetMount(mount.ModMount.Type).SetupMount(mount);
-			}
-		}
-
 		public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity) {
 			if (IsModMount(mount)) {
 				mount.ModMount.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);
@@ -116,7 +110,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a ModPlayer class since ModMount is shared between all players.
-		/// Custom dust spawning logic is also possible via the skipDust parameter. 
+		/// Custom dust spawning logic is also possible via the skipDust parameter.
 		/// </summary>
 		/// <param name="mount"></param>
 		/// <param name="player"></param>

@@ -8,7 +8,7 @@ namespace ExampleMod.Content
 	// Take a look at the ExampleInfoDisplayPlayer at the end of the file to see how to use it
 	class ExampleInfoDisplay : InfoDisplay
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// This is the name that will show up when hovering over icon of this info display
 			InfoName.SetDefault("Minion Count");
 		}

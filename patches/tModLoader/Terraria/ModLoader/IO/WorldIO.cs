@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
@@ -27,9 +29,13 @@ namespace Terraria.ModLoader.IO
 				["npcs"] = SaveNPCs(),
 				["tileEntities"] = TileIO.SaveTileEntities(),
 				["killCounts"] = SaveNPCKillCounts(),
+				["bestiaryKills"] = SaveNPCBestiaryKills(),
+				["bestiarySights"] = SaveNPCBestiarySights(),
+				["bestiaryChats"] = SaveNPCBestiaryChats(),
 				["anglerQuest"] = SaveAnglerQuest(),
 				["townManager"] = SaveTownManager(),
-				["modData"] = SaveModData()
+				["modData"] = SaveModData(),
+				["alteredVanillaFields"] = SaveAlteredVanillaFields()
 			};
 
 			var stream = new MemoryStream();
@@ -65,6 +71,9 @@ namespace Terraria.ModLoader.IO
 			}
 			LoadChestInventory(tag.GetList<TagCompound>("chests")); // Must occur after tiles are loaded
 			LoadNPCKillCounts(tag.GetList<TagCompound>("killCounts"));
+			LoadNPCBestiaryKills(tag.GetList<TagCompound>("bestiaryKills"));
+			LoadNPCBestiarySights(tag.GetList<TagCompound>("bestiarySights"));
+			LoadNPCBestiaryChats(tag.GetList<TagCompound>("bestiaryChats"));
 			LoadAnglerQuest(tag.GetCompound("anglerQuest"));
 			LoadTownManager(tag.GetList<TagCompound>("townManager"));
 			try {
@@ -74,6 +83,7 @@ namespace Terraria.ModLoader.IO
 				customDataFail = e;
 				throw;
 			}
+			LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
 		}
 
 		internal static List<TagCompound> SaveChestInventory() {
@@ -116,33 +126,75 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveNPCs() {
 			var list = new List<TagCompound>();
-			for (int k = 0; k < Main.npc.Length; k++) {
-				NPC npc = Main.npc[k];
-				if (npc.active && NPCLoader.IsModNPC(npc)) {
-					if (npc.townNPC) {
-						TagCompound tag = new TagCompound {
-							["mod"] = npc.ModNPC.Mod.Name,
-							["name"] = npc.ModNPC.Name,
-							["displayName"] = npc.GivenName,
-							["x"] = npc.position.X,
-							["y"] = npc.position.Y,
-							["homeless"] = npc.homeless,
-							["homeTileX"] = npc.homeTileX,
-							["homeTileY"] = npc.homeTileY
-						};
-						list.Add(tag);
+			var data = new TagCompound();
+
+			for (int index = 0; index < Main.maxNPCs; index++) {
+				NPC npc = Main.npc[index];
+
+				if (!npc.active || !NPCLoader.SavesAndLoads(npc)) {
+					continue;
+				}
+
+				var globalData = new List<TagCompound>();
+
+				foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.Instance)) {
+					if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
+						globalData.AddRange(unloadedGlobalNPC.data);
+						continue;
 					}
-					else if (NPCID.Sets.SavesAndLoads[npc.type]) {
-						TagCompound tag = new TagCompound {
-							["mod"] = npc.ModNPC.Mod.Name,
-							["name"] = npc.ModNPC.Name,
-							["x"] = npc.position.X,
-							["y"] = npc.position.Y
-						};
-						list.Add(tag);
+
+					globalNPC.SaveData(npc, data);
+
+					if (data.Count != 0) {
+						globalData.Add(new TagCompound {
+							["mod"] = globalNPC.Mod.Name,
+							["name"] = globalNPC.Name,
+							["data"] = data
+						});
+
+						data = new TagCompound();
 					}
 				}
+
+				TagCompound tag;
+
+				if (NPCLoader.IsModNPC(npc)) {
+					npc.ModNPC.SaveData(data);
+
+					tag = new TagCompound {
+						["mod"] = npc.ModNPC.Mod.Name,
+						["name"] = npc.ModNPC.Name
+					};
+
+					if (data.Count != 0) {
+						tag["data"] = data;
+						data = new TagCompound();
+					}
+
+					if (npc.townNPC) {
+						tag["displayName"] = npc.GivenName;
+						tag["homeless"] = npc.homeless;
+						tag["homeTileX"] = npc.homeTileX;
+						tag["homeTileY"] = npc.homeTileY;
+					}
+				}
+				else if (globalData.Count != 0) {
+					tag = new TagCompound {
+						["mod"] = "Terraria",
+						["name"] = NPCID.Search.GetName(npc.type)
+					};
+				}
+				else {
+					continue;
+				}
+
+				tag["x"] = npc.position.X;
+				tag["y"] = npc.position.Y;
+				tag["globalData"] = globalData;
+
+				list.Add(tag);
 			}
+
 			return list;
 		}
 
@@ -150,28 +202,89 @@ namespace Terraria.ModLoader.IO
 			if (list == null) {
 				return;
 			}
+
 			int nextFreeNPC = 0;
+
 			foreach (TagCompound tag in list) {
-				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
-					while (nextFreeNPC < 200 && Main.npc[nextFreeNPC].active) {
-						nextFreeNPC++;
+				NPC npc = null;
+
+				while (nextFreeNPC < Main.maxNPCs && Main.npc[nextFreeNPC].active) {
+					nextFreeNPC++;
+				}
+
+				if ((string)tag["mod"] == "Terraria") {
+					int npcId = NPCID.Search.GetId((string)tag["name"]);
+					float x = (float)tag["x"];
+					float y = (float)tag["y"];
+
+					int index;
+
+					for (index = 0; index < Main.maxNPCs; index++) {
+						npc = Main.npc[index];
+
+						if (npc.active) {
+							if (npc.type == npcId && npc.position.X == x && npc.position.Y == y) break;
+						}
 					}
-					if (nextFreeNPC >= 200) {
-						break;
-					}
-					NPC npc = Main.npc[nextFreeNPC];
-					npc.SetDefaults(modNpc.Type);
-					npc.position.X = tag.GetFloat("x");
-					npc.position.Y = tag.GetFloat("y");
-					if (npc.townNPC) {
-						npc.GivenName = tag.GetString("displayName");
-						npc.homeless = tag.GetBool("homeless");
-						npc.homeTileX = tag.GetInt("homeTileX");
-						npc.homeTileY = tag.GetInt("homeTileY");
+
+					if (index == Main.maxNPCs) {
+						if (nextFreeNPC == Main.maxNPCs) {
+							ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+							continue;
+						}
+						else {
+							npc = Main.npc[nextFreeNPC];
+							npc.SetDefaults(npc.type);
+							npc.position = new Vector2(x, y);
+						}
 					}
 				}
 				else {
-					ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+					if (!ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+						continue;
+					}
+
+					if (nextFreeNPC == Main.maxNPCs) {
+						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+						continue;
+					}
+
+					npc = Main.npc[nextFreeNPC];
+					npc.SetDefaults(modNpc.Type);
+					npc.position.X = (float)tag["x"];
+					npc.position.Y = (float)tag["y"];
+
+					if (npc.townNPC) {
+						npc.GivenName = (string)tag["displayName"];
+						npc.homeless = tag.GetBool("homeless");
+						npc.homeTileX = (int)tag["homeTileX"];
+						npc.homeTileY = (int)tag["homeTileY"];
+					}
+
+					if (tag.ContainsKey("data")) {
+						npc.ModNPC.LoadData((TagCompound)tag["data"]);
+					}
+				}
+
+				IList<TagCompound> globalData = tag.GetList<TagCompound>("globalData");
+
+				foreach (TagCompound tagCompound in globalData) {
+					string modName = (string)tagCompound["mod"];
+
+					if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
+						GlobalNPC globalNPC2 = globalNPC.Instance(npc);
+
+						try {
+							globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
+						}
+						catch (Exception inner) {
+							throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom player data for {modName}", inner);
+						}
+					}
+					else {
+						npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tagCompound);
+					}
 				}
 			}
 		}
@@ -179,13 +292,15 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveNPCKillCounts() {
 			var list = new List<TagCompound>();
 			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
-				if (NPC.killCount[type] <= 0)
+				int killCount = NPC.killCount[type];
+				if (killCount <= 0)
 					continue;
 
+				ModNPC modNPC = NPCLoader.GetNPC(type);
 				list.Add(new TagCompound {
-					["mod"] = NPCLoader.GetNPC(type).Mod.Name,
-					["name"] = NPCLoader.GetNPC(type).Name,
-					["count"] = NPC.killCount[type]
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name,
+					["count"] = killCount
 				});
 			}
 			return list;
@@ -198,6 +313,91 @@ namespace Terraria.ModLoader.IO
 				}
 				else {
 					ModContent.GetInstance<UnloadedSystem>().unloadedKillCounts.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCBestiaryKills() {
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
+				int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
+				if (killCount <= 0)
+					continue;
+
+				ModNPC modNPC = NPCLoader.GetNPC(type);
+				list.Add(new TagCompound {
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name,
+					["count"] = killCount
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCBestiaryKills(IList<TagCompound> list) {
+			foreach (var tag in list) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
+					Main.BestiaryTracker.Kills.SetKillCountDirectly(persistentId, tag.GetInt("count"));
+				}
+				else {
+					ModContent.GetInstance<UnloadedSystem>().unloadedBestiaryKills.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCBestiarySights() {
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
+				bool seen = Main.BestiaryTracker.Sights.GetWasNearbyBefore(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
+				if (!seen)
+					continue;
+
+				ModNPC modNPC = NPCLoader.GetNPC(type);
+				list.Add(new TagCompound {
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCBestiarySights(IList<TagCompound> list) {
+			foreach (var tag in list) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
+					Main.BestiaryTracker.Sights.SetWasSeenDirectly(persistentId);
+				}
+				else {
+					ModContent.GetInstance<UnloadedSystem>().unloadedBestiarySights.Add(tag);
+				}
+			}
+		}
+
+		internal static List<TagCompound> SaveNPCBestiaryChats() {
+			var list = new List<TagCompound>();
+			for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
+				bool chatted = Main.BestiaryTracker.Chats.GetWasChatWith(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[type]);
+				if (!chatted)
+					continue;
+
+				ModNPC modNPC = NPCLoader.GetNPC(type);
+				list.Add(new TagCompound {
+					["mod"] = modNPC.Mod.Name,
+					["name"] = modNPC.Name
+				});
+			}
+			return list;
+		}
+
+		internal static void LoadNPCBestiaryChats(IList<TagCompound> list) {
+			foreach (var tag in list) {
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+					string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[modNpc.Type];
+					Main.BestiaryTracker.Chats.SetWasChatWithDirectly(persistentId);
+				}
+				else {
+					ModContent.GetInstance<UnloadedSystem>().unloadedBestiaryChats.Add(tag);
 				}
 			}
 		}
@@ -264,17 +464,20 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData() {
 			var list = new List<TagCompound>();
 
-			foreach (var system in SystemHooks.Systems) {
-				var data = system.SaveWorldData();
+			var saveData = new TagCompound();
 
-				if (data == null)
+			foreach (var system in SystemLoader.Systems) {
+				system.SaveWorldData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = system.Mod.Name,
 					["name"] = system.Name,
-					["data"] = data
+					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
 
 			return list;
@@ -297,21 +500,32 @@ namespace Terraria.ModLoader.IO
 			}
 		}
 
+		internal static TagCompound SaveAlteredVanillaFields() {
+			return new TagCompound {
+				["timeCultists"] = CultistRitual.delay,
+				["timeRain"] = Main.rainTime,
+				["timeSandstorm"] = Sandstorm.TimeLeft
+			};
+		}
+
+		internal static void LoadAlteredVanillaFields(TagCompound compound) {
+			CultistRitual.delay = compound.GetDouble("timeCultists");
+			Main.rainTime = compound.GetDouble("timeRain");
+			Sandstorm.TimeLeft = compound.GetDouble("timeSandstorm");
+		}
+
 		public static void SendModData(BinaryWriter writer) {
-			foreach (var system in SystemHooks.NetSystems)
+			foreach (var system in SystemLoader.NetSystems)
 				writer.SafeWrite(w => system.NetSend(w));
 		}
 
 		public static void ReceiveModData(BinaryReader reader) {
-			foreach (var system in SystemHooks.NetSystems) {
+			foreach (var system in SystemLoader.NetSystems) {
 				try {
 					reader.SafeRead(r => system.NetReceive(r));
 				}
 				catch (IOException e) {
-					if (FrameworkVersion.Framework == Framework.Mono) {
-						Logging.tML.Error(e);
-					}
-
+					Logging.tML.Error(e.ToString());
 					Logging.tML.Error($"Above IOException error caused by {system.Name} from the {system.Mod.Name} mod.");
 				}
 			}
@@ -378,13 +592,14 @@ namespace Terraria.ModLoader.IO
 		internal static void EraseWorld(string path, bool cloudSave) {
 			path = Path.ChangeExtension(path, ".twld");
 			if (!cloudSave) {
-#if WINDOWS
-				FileOperationAPIWrapper.MoveToRecycleBin(path);
-				FileOperationAPIWrapper.MoveToRecycleBin(path + ".bak");
-#else
-				File.Delete(path);
-				File.Delete(path + ".bak");
-#endif
+				if (OperatingSystem.IsWindows()) {
+					FileOperationAPIWrapper.MoveToRecycleBin(path);
+					FileOperationAPIWrapper.MoveToRecycleBin(path + ".bak");
+				}
+				else {
+					File.Delete(path);
+					File.Delete(path + ".bak");
+				}
 			}
 			else if (SocialAPI.Cloud != null) {
 				SocialAPI.Cloud.Delete(path);

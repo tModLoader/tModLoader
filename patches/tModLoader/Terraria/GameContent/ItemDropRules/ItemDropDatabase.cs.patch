@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 @@ -1,12 +_,13 @@
  using System.Collections.Generic;
@@ -8,7 +8,8 @@
  
  namespace Terraria.GameContent.ItemDropRules
  {
- 	public class ItemDropDatabase
+-	public class ItemDropDatabase
++	public partial class ItemDropDatabase
  	{
 -		private List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
 +		internal List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
@@ -24,23 +25,41 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
-@@ -114,6 +_,11 @@
+@@ -70,7 +_,8 @@
+ 			return entry;
+ 		}
+ 
++		//TML: Made public
+-		private void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry) {
++		public void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry) {
+ 			if (_entriesByNpcNetId.ContainsKey(npcNetId))
+ 				_entriesByNpcNetId[npcNetId].Remove(entry);
+ 		}
+@@ -114,6 +_,27 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
 +
++			RegisterBossBags();
++			RegisterCrateDrops();
++			RegisterObsidianLockbox();
++			RegisterLockbox();
++			RegisterHerbBag();
++			RegisterGoodieBag();
++			RegisterPresent();
++			RegisterCanOfWorms();
++			RegisterOyster();
++			RegisterCapricorns();
++
++			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
++
 +			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 +				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
++			}
++			foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
++				ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
 +			}
 +
  			TrimDuplicateRulesForNegativeIDs();
  		}
  
-@@ -593,6 +_,7 @@
- 			RegisterToGlobal(new ItemDropWithConditionRule(520, 5, 1, 1, new Conditions.SoulOfLight()));
- 			RegisterToGlobal(new ItemDropWithConditionRule(521, 5, 1, 1, new Conditions.SoulOfNight()));
- 			RegisterToGlobal(ItemDropRule.ByCondition(new Conditions.PirateMap(), 1315, 100));
-+			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
- 		}
- 
- 		private void RegisterFoodDrops() {

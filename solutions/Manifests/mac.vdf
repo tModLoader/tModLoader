@@ -1,0 +1,12 @@
+"DepotBuildConfig"
+{
+  "DepotID" "1281934"
+  "ContentRoot" "../artifacts/Build"
+  "FileMapping"
+  {
+    "LocalPath" "*"
+    "DepotPath" "."
+    "recursive" "1"
+  }
+  "FileExclusion" "*-win-x64.zip"
+}

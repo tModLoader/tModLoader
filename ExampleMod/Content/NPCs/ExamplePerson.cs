@@ -1,6 +1,8 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
+using ExampleMod.Content.Items.Armor;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
@@ -16,15 +18,23 @@ using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using ReLogic.Content;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.NPCs
 {
-	// [AutoloadHead] and npc.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
+		public int NumberOfTimesTalkedTo = 0;
+
 		public override void SetStaticDefaults() {
-			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
+			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 
@@ -45,6 +55,18 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
+			// NOTE: The following code uses chaining - a style that works due to the fact that the SetXAffection methods return the same NPCHappiness instance they're called on.
+			NPC.Happiness
+				.SetBiomeAffection<ForestBiome>(AffectionLevel.Like) // Example Person prefers the forest.
+				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike) // Example Person dislikes the snow.
+				.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
+				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
+				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
+				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
+				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
+			; // < Mind the semicolon!
 		}
 
 		public override void SetDefaults() {
@@ -81,9 +103,11 @@ namespace ExampleMod.Content.NPCs
 
 		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
 		// Returning false will allow you to manually draw your NPC
-		public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			// This code slowly rotates the NPC in the bestiary
+			// (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
 			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers)) {
-                drawModifiers.Rotation += 0.001f;
+				drawModifiers.Rotation += 0.001f;
 
 				// Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
 				NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
@@ -101,7 +125,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) { // Reqirements for the town NPC to spawn.
+		public override bool CanTownNPCSpawn(int numTownNPCs, int money) { // Requirements for the town NPC to spawn.
 			for (int k = 0; k < 255; k++) {
 				Player player = Main.player[k];
 				if (!player.active) {
@@ -122,12 +146,12 @@ namespace ExampleMod.Content.NPCs
 			int score = 0;
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					int type = Main.tile[x, y].type;
+					int type = Main.tile[x, y].TileType;
 					if (type == ModContent.TileType<ExampleBlock>() || type == ModContent.TileType<ExampleChair>() || type == ModContent.TileType<ExampleWorkbench>() || type == ModContent.TileType<ExampleBed>() || type == ModContent.TileType<ExampleDoorOpen>() || type == ModContent.TileType<ExampleDoorClosed>()) {
 						score++;
 					}
 
-					if (Main.tile[x, y].wall == ModContent.WallType<ExampleWall>()) {
+					if (Main.tile[x, y].WallType == ModContent.WallType<ExampleWall>()) {
 						score++;
 					}
 				}
@@ -136,20 +160,17 @@ namespace ExampleMod.Content.NPCs
 			return score >= ((right - left) * (bottom - top)) / 2;
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Someone";
+		public override ITownNPCProfile TownNPCProfile() {
+			return new ExamplePersonProfile();
+		}
 
-				case 1:
-					return "Somebody";
-
-				case 2:
-					return "Blocky";
-
-				default:
-					return "Colorless";
-			}
+		public override List<string> SetNPCNameList() {
+			return new List<string>() {
+				"Someone",
+				"Somebody",
+				"Blocky",
+				"Colorless"
+			};
 		}
 
 		public override void FindFrame(int frameHeight) {
@@ -169,14 +190,21 @@ namespace ExampleMod.Content.NPCs
 
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
-				chat.Add("Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?");
+				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add("Sometimes I feel like I'm different from everyone else here.");
-			chat.Add("What's your favorite color? My favorite colors are white and black.");
-			chat.Add("What? I don't have any arms or legs? Oh, don't be ridiculous!");
-			chat.Add("This message has a weight of 5, meaning it appears 5 times more often.", 5.0);
-			chat.Add("This message has a weight of 0.1, meaning it appears 10 times as rare.", 0.1);
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
+
+			NumberOfTimesTalkedTo++;
+			if (NumberOfTimesTalkedTo >= 10) {
+				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
+			}
+
 			return chat; // chat is implicitly cast to a string.
 		}
 
@@ -198,9 +226,10 @@ namespace ExampleMod.Content.NPCs
 					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
 
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
+					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(ModContent.ItemType<WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
 
 					return;
 				}
@@ -246,8 +275,8 @@ namespace ExampleMod.Content.NPCs
 		// 	}
 		//
 		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.GetMod("SummonersAssociation");
-		// 	// if (modSummonersAssociation != null) {
+		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
+		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
 		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
 		// 	// 	nextSlot++;
 		// 	// }
@@ -259,14 +288,13 @@ namespace ExampleMod.Content.NPCs
 		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
 		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
 		// 	// 		nextSlot++;
-		// 	// 		// TODO: Have tModLoader handle index issues.
+		// 	// 		//TODO: Have tModLoader handle index issues.
 		// 	// 	}
 		// 	// }
 		// }
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			// Readd this once ExampleCostume is implemented.
-			// npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>(), 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
 		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
@@ -276,7 +304,7 @@ namespace ExampleMod.Content.NPCs
 		public override void OnGoToStatue(bool toKingStatue) {
 			if (Main.netMode == NetmodeID.Server) {
 				ModPacket packet = Mod.GetPacket();
-				packet.Write((byte)ExampleModMessageType.ExampleTeleportToStatue);
+				packet.Write((byte)ExampleMod.MessageType.ExampleTeleportToStatue);
 				packet.Write((byte)NPC.whoAmI);
 				packet.Send();
 			}
@@ -320,5 +348,31 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
+
+		public override void LoadData(TagCompound tag) {
+			NumberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
+		}
+
+		public override void SaveData(TagCompound tag) {
+			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
+		}
+	}
+
+	public class ExamplePersonProfile : ITownNPCProfile
+	{
+		public int RollVariation() => 0;
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+
+			if (npc.altTexture == 1)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+		}
+
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
 	}
 }

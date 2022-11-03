@@ -3,16 +3,17 @@ using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Windows;
-using XnaToFna;
-using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup
 {
 	internal class HookGenTask : SetupOperation
 	{
-		const string libsPath = "src/tModLoader/Terraria/Libraries";
+		private const string dotnetSdkVersion = "6.0.3";
+		private const string libsPath = "src/tModLoader/Terraria/Libraries";
+		private const string binLibsPath = "src/tModLoader/Terraria/bin/Release/net6.0/Libraries";
+		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Release/net6.0/tModLoader.dll";
+		private const string installedNetRefs = $@"\dotnet\packs\Microsoft.NETCore.App.Ref\{dotnetSdkVersion}\ref\net6.0";
 
 		public HookGenTask(ITaskInterface taskInterface) : base(taskInterface)
 		{
@@ -20,53 +21,55 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			string targetExePath = @"src/tModLoader/Terraria/bin/WindowsDebug/net45/Terraria.exe";
-			if (!File.Exists(targetExePath)) {
-				var result = MessageBox.Show($"\"{targetExePath}\" does not exist. Use Vanilla exe instead?", "tML exe not found", MessageBoxButton.YesNo);
-				if (result != MessageBoxResult.Yes) {
-					taskInterface.SetStatus("Cancelled");
-					return;
-				}
-
-				if (!File.Exists(TerrariaPath))
-					throw new FileNotFoundException(TerrariaPath);
-
-				targetExePath = TerrariaPath;
+			if (!File.Exists(tmlAssemblyPath)) {
+				MessageBox.Show($"\"{tmlAssemblyPath}\" does not exist.", "tML exe not found", MessageBoxButton.OK);
+				taskInterface.SetStatus("Cancelled");
+				return;
 			}
-			var outputPath = Path.Combine(libsPath, "XNA", "TerrariaHooks.dll");
+
+			string outputPath = Path.Combine(libsPath, "Common", "TerrariaHooks.dll");
+
 			if (File.Exists(outputPath))
 				File.Delete(outputPath);
 
-			taskInterface.SetStatus($"Hooking: Terraria.exe -> XNA/TerrariaHooks.dll");
-			HookGen(targetExePath, outputPath);
+			taskInterface.SetStatus($"Hooking: tModLoader.dll -> TerrariaHooks.dll");
 
-			taskInterface.SetStatus($"XnaToFna: XNA/TerrariaHooks.dll -> FNA/TerrariaHooks.dll");
+			if (!HookGen(tmlAssemblyPath, outputPath)) {
+				taskInterface.SetStatus("Cancelled");
+				return;
+			}
 
-			var fnaPath = Path.Combine(libsPath, "FNA", "TerrariaHooks.dll");
-			if (File.Exists(fnaPath))
-				File.Delete(fnaPath);
-
-			File.Copy(outputPath, fnaPath);
-			XnaToFna(fnaPath);
-
-			File.Delete(Path.ChangeExtension(fnaPath, "pdb"));
+			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
 			MessageBox.Show("Success. Make sure you diff tModLoader after this");
 		}
 
-		public static void HookGen(string inputPath, string outputPath)
+		public static bool HookGen(string inputPath, string outputPath)
 		{
+			string dotnetReferencesDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + installedNetRefs;
+
+			// Ensure that refs are present, for gods sake!
+			if (!Directory.Exists(dotnetReferencesDirectory) || Directory.GetFiles(dotnetReferencesDirectory, "*.dll").Length == 0) {
+				// Replace with exceptions if this is ever called in CLI.
+				MessageBox.Show(
+					$@"Unable to find reference libraries for .NET SDK '{dotnetSdkVersion}' - ""{dotnetReferencesDirectory}"" does not exist.",
+					$".NET SDK {dotnetSdkVersion} not found",
+					MessageBoxButton.OK
+				);
+
+				return false;
+			}
+
 			using var mm = new MonoModder {
 				InputPath = inputPath,
 				OutputPath = outputPath,
 				ReadingMode = ReadingMode.Deferred,
-				
-				DependencyDirs = { 
-					Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5",
-					Path.Combine(libsPath, "Common")
-				},
+
+				DependencyDirs = { dotnetReferencesDirectory },
 				MissingDependencyThrow = false,
 			};
+
+			mm.DependencyDirs.AddRange(Directory.GetDirectories(binLibsPath, "*", SearchOption.AllDirectories));
 
 			mm.Read();
 			mm.MapDependencies();
@@ -74,9 +77,14 @@ namespace Terraria.ModLoader.Setup
 			var gen = new HookGenerator(mm, "TerrariaHooks") {
 				HookPrivate = true,
 			};
+
 			gen.Generate();
+
 			RemoveModLoaderTypes(gen.OutputModule);
+
 			gen.OutputModule.Write(outputPath);
+
+			return true;
 		}
 
 		private static void RemoveModLoaderTypes(ModuleDefinition module)
@@ -84,24 +92,6 @@ namespace Terraria.ModLoader.Setup
 			for (int i = module.Types.Count - 1; i >= 0; i--)
 				if (module.Types[i].FullName.Contains("Terraria.ModLoader"))
 					module.Types.RemoveAt(i);
-		}
-
-		public static void XnaToFna(string inputPath)
-		{
-			using var xnaToFnaUtil = new XnaToFnaUtil {
-				HookCompat = false,
-				HookHacks = false,
-				HookEntryPoint = false,
-				HookBinaryFormatter = false,
-				HookReflection = false,
-				AddAssemblyReference = false
-			};
-			var fnaPath = Path.Combine(libsPath, "FNA", "FNA.dll");
-			xnaToFnaUtil.ScanPath(fnaPath);
-			xnaToFnaUtil.ScanPath(inputPath);
-
-			AppDomain.CurrentDomain.AssemblyResolve += (sender, resArgs) => new AssemblyName(resArgs.Name).Name == "FNA" ? Assembly.Load(File.ReadAllBytes(fnaPath)) : null;
-			xnaToFnaUtil.RelinkAll();
 		}
 	}
 }

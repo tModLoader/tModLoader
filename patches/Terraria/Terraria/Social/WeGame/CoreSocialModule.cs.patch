@@ -1,19 +1,24 @@
 --- src/decompiled/Terraria/Social/WeGame/CoreSocialModule.cs
 +++ src/Terraria/Terraria/Social/WeGame/CoreSocialModule.cs
-@@ -20,9 +_,13 @@
+@@ -20,10 +_,14 @@
  		public void Initialize() {
  			RailGameID railGameID = new RailGameID();
  			railGameID.id_ = 2000328uL;
-+#if CLIENT
- 			string[] array = new string[1] {
- 				" "
- 			};
-+#else
-+			string[] array = Environment.GetCommandLineArgs();
-+#endif
- 
+-			string[] array = new string[1] {
+-				" "
+-			};
+-
++			string[] array = new string[0];
++			if (!Main.dedServ) {
++				array = new string[1] {
++					" "
++				};
++			} else {
++				array = Environment.GetCommandLineArgs();
++			}
  			if (rail_api.RailNeedRestartAppForCheckingEnvironment(railGameID, array.Length, array))
  				Environment.Exit(1);
+ 
 @@ -57,7 +_,12 @@
  		}
  

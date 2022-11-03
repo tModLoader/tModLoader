@@ -1,22 +1,11 @@
 --- src/decompiled/Terraria/Minecart.cs
 +++ src/Terraria/Terraria/Minecart.cs
-@@ -1,6 +_,8 @@
- using Microsoft.Xna.Framework;
- using System;
-+#if CLIENT
- using Terraria.GameContent;
-+#endif
- 
- namespace Terraria
- {
-@@ -55,8 +_,10 @@
+@@ -55,7 +_,7 @@
  		private static int[][] _tileHeight;
  
  		public static void Initialize() {
-+#if CLIENT
- 			if ((float)TextureAssets.MinecartMount.Width() != 50f)
+-			if ((float)TextureAssets.MinecartMount.Width() != 50f)
++			if (!Main.dedServ && (float)TextureAssets.MinecartMount.Width() != 50f)
  				throw new Exception("Be sure to update Minecart.textureWidth to match the actual texture size of " + 50f + ".");
-+#endif
  
  			_rightSideConnection = new int[36];
- 			_leftSideConnection = new int[36];

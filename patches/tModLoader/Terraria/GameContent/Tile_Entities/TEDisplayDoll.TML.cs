@@ -6,21 +6,27 @@ namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEDisplayDoll
 	{
-		public override TagCompound Save() {
-			return new TagCompound {
-				{ "items", PlayerIO.SaveInventory(_items) },
-				{ "dyes", PlayerIO.SaveInventory(_dyes) },
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["items"] = PlayerIO.SaveInventory(_items);
+			tag["dyes"] = PlayerIO.SaveInventory(_dyes);
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			PlayerIO.LoadInventory(_items, tag.GetList<TagCompound>("items"));
 			PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 		}
 
 		public override void NetSend(BinaryWriter writer) {
-			writer.Write(BitsByte.ComposeBitsBytesChain(false, _items.Select(i => !i.IsAir).ToArray())[0]);
-			writer.Write(BitsByte.ComposeBitsBytesChain(false, _dyes.Select(i => !i.IsAir).ToArray())[0]);
+			BitsByte itemsBits = default;
+			BitsByte dyesBits = default;
+
+			for (int i = 0; i < 8; i++) {
+				itemsBits[i] = !_items[i].IsAir;
+				dyesBits[i] = !_dyes[i].IsAir;
+			}
+
+			writer.Write(itemsBits);
+			writer.Write(dyesBits);
 
 			for (int i = 0; i < 8; i++) {
 				var item = _items[i];

@@ -56,7 +56,6 @@ namespace Terraria.ModLoader.Core
 		internal bool hideCode = false;
 		internal bool hideResources = false;
 		internal bool includeSource = false;
-		internal bool includePDB = true;
 		internal string eacPath = "";
 		// This .tmod was built against a beta release, preventing publishing.
 		internal bool beta = false;
@@ -64,6 +63,7 @@ namespace Terraria.ModLoader.Core
 		internal string homepage = "";
 		internal string description = "";
 		internal ModSide side;
+		internal bool playableOnPreview = true;
 
 		public IEnumerable<ModReference> Refs(bool includeWeak) =>
 			includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -139,6 +139,9 @@ namespace Terraria.ModLoader.Core
 					case "noCompile":
 						properties.noCompile = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
+					case "playableOnPreview":
+						properties.playableOnPreview = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+						break;
 					case "hideCode":
 						properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
@@ -147,9 +150,6 @@ namespace Terraria.ModLoader.Core
 						break;
 					case "includeSource":
 						properties.includeSource = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
-						break;
-					case "includePDB":
-						properties.includePDB = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "buildIgnore":
 						properties.buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)).Where(s => s.Length > 0).ToArray();
@@ -217,6 +217,9 @@ namespace Terraria.ModLoader.Core
 					if (noCompile) {
 						writer.Write("noCompile");
 					}
+					if (!playableOnPreview) {
+						writer.Write("!playableOnPreview");
+					}
 					if (!hideCode) {
 						writer.Write("!hideCode");
 					}
@@ -226,9 +229,6 @@ namespace Terraria.ModLoader.Core
 					if (includeSource) {
 						writer.Write("includeSource");
 					}
-					if (includePDB) {
-						writer.Write("includePDB");
-					}
 					if (eacPath.Length > 0) {
 						writer.Write("eacPath");
 						writer.Write(eacPath);
@@ -236,9 +236,6 @@ namespace Terraria.ModLoader.Core
 					if (side != ModSide.Both) {
 						writer.Write("side");
 						writer.Write((byte)side);
-					}
-					if (!BuildInfo.IsRelease) {
-						writer.Write("beta");
 					}
 
 					writer.Write("buildVersion");
@@ -295,6 +292,9 @@ namespace Terraria.ModLoader.Core
 					if (tag == "noCompile") {
 						properties.noCompile = true;
 					}
+					if (tag == "!playableOnPreview") {
+						properties.playableOnPreview = false;
+					}
 					if (tag == "!hideCode") {
 						properties.hideCode = false;
 					}
@@ -304,17 +304,11 @@ namespace Terraria.ModLoader.Core
 					if (tag == "includeSource") {
 						properties.includeSource = true;
 					}
-					if (tag == "includePDB") {
-						properties.includePDB = true;
-					}
 					if (tag == "eacPath") {
 						properties.eacPath = reader.ReadString();
 					}
 					if (tag == "side") {
 						properties.side = (ModSide)reader.ReadByte();
-					}
-					if (tag == "beta") {
-						properties.beta = true;
 					}
 					if (tag == "buildVersion") {
 						properties.buildVersion = new Version(reader.ReadString());
@@ -348,8 +342,8 @@ namespace Terraria.ModLoader.Core
 				sb.AppendLine($"hideResources = true");
 			if (properties.includeSource)
 				sb.AppendLine($"includeSource = true");
-			if (properties.includePDB)
-				sb.AppendLine($"includePDB = true");
+			if (!properties.playableOnPreview)
+				sb.AppendLine($"playableOnPreview = false");
 			// buildIgnores isn't preserved in Info, but it doesn't matter with extraction since the ignored files won't be present anyway.
 			// if (properties.buildIgnores.Length > 0)
 			//	sb.AppendLine($"buildIgnores = {string.Join(", ", properties.buildIgnores)}");

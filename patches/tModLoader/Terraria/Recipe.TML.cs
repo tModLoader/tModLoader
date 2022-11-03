@@ -72,7 +72,7 @@ namespace Terraria
 
 			public Condition(NetworkText description, Predicate<Recipe> predicate) {
 				DescriptionText = description ?? throw new ArgumentNullException(nameof(description));
-				Predicate = predicate ?? throw new ArgumentNullException(nameof(description));
+				Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 			}
 
 			public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
@@ -94,24 +94,31 @@ namespace Terraria
 				amount = amountUsed;
 			};
 		}
-		
+
 		public readonly Mod Mod;
 		public readonly List<Condition> Conditions = new List<Condition>();
 
-		public delegate void OnCraftCallback(Recipe recipe, Item item);
+		public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
-		
+
 		internal OnCraftCallback OnCraftHooks { get; private set; }
 		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
 		private void AddGroup(int id) {
 			acceptedGroups.Add(id);
 		}
-		
+
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
-		public int RecipeIndex { get; private set; }
+		public int RecipeIndex { get; internal set; }
+
+		public (Recipe target, bool after) Ordering { get; internal set; }
+
+		/// <summary>
+		/// Any recipe with this flag won't be shown in game.
+		/// </summary>
+		public bool Disabled { get; private set; }
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -120,7 +127,7 @@ namespace Terraria
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient(int itemID, int stack = 1) {
 			requiredItem.Add(new Item(itemID) { stack = stack });
-			
+
 			return this;
 		}
 
@@ -150,7 +157,6 @@ namespace Terraria
 		/// <summary>
 		/// Adds an ingredient to this recipe of the given type of item and stack size.
 		/// </summary>
-		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 			=> AddIngredient(ModContent.ItemType<T>(), stack);
@@ -167,7 +173,7 @@ namespace Terraria
 
 			int id = RecipeGroup.recipeGroupIDs[name];
 			var group = RecipeGroup.recipeGroups[id];
-			
+
 			AddIngredient(group.IconicItemId, stack);
 			AddGroup(id);
 
@@ -183,9 +189,9 @@ namespace Terraria
 		public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
 			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 				throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
-			
+
 			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
-			
+
 			AddIngredient(rec.IconicItemId, stack);
 			AddGroup(recipeGroupId);
 
@@ -196,13 +202,14 @@ namespace Terraria
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup.
 		/// </summary>
 		/// <param name="recipeGroup">The RecipeGroup.</param>
+		/// <param name="stack"></param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
 			AddGroup(recipeGroup.ID);
 
 			return this;
 		}
-		
+
 		/// <summary>
 		/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddTile(TileID.WorkBenches)</c>
 		/// </summary>
@@ -211,7 +218,7 @@ namespace Terraria
 		public Recipe AddTile(int tileID) {
 			if (tileID < 0 || tileID >= TileLoader.TileCount)
 				throw new RecipeException($"No tile has ID '{tileID}'.");
-			
+
 			requiredTile.Add(tileID);
 
 			return this;
@@ -225,7 +232,7 @@ namespace Terraria
 		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).</exception>
 		public Recipe AddTile(Mod mod, string tileName) {
 			mod ??= this.Mod;
-			
+
 			if (!ModContent.TryFind(mod.Name, tileName, out ModTile tile))
 				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).");
 
@@ -257,6 +264,12 @@ namespace Terraria
 		/// <param name="conditions">An array of conditions.</param>
 		public Recipe AddCondition(params Condition[] conditions) => AddCondition((IEnumerable<Condition>)conditions);
 
+		public Recipe AddCondition(Condition condition) {
+			Conditions.Add(condition);
+
+			return this;
+		}
+
 		/// <summary>
 		/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
@@ -285,13 +298,122 @@ namespace Terraria
 			return this;
 		}
 
+		#region Ordering
+
+		/// <summary>
+		/// Sets the Ordering of this recipe. This recipe can't already have one.
+		/// </summary>
+		private Recipe SetOrdering(Recipe recipe, bool after) {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("You can only move recipes during setup");
+			if (Main.recipe[recipe.RecipeIndex] != recipe)
+				throw new RecipeException("The selected recipe is not registered.");
+			if (Ordering.target != null)
+				throw new RecipeException("This recipe already has an ordering.");
+			Ordering = (recipe, after);
+
+			var target = recipe;
+			do {
+				if (target == this)
+					throw new Exception("Recipe ordering loop!");
+
+				target = target.Ordering.target;
+			} while (target != null);
+
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe before the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe SortBeforeFirstRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return SortBefore(target);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe before the one given as parameter. Both recipes must already be registered.
+		/// </summary>
+		public Recipe SortBefore(Recipe recipe) => SetOrdering(recipe, false);
+
+		/// <summary>
+		/// Sorts the recipe after the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe SortAfterFirstRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return SortAfter(target);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe after the one given as parameter. Both recipes must already be registered.
+		/// </summary>
+		public Recipe SortAfter(Recipe recipe) => SetOrdering(recipe, true);
+
+		#endregion
+
+		/// <summary>
+		/// Returns a clone of this recipe except the source mod of the Recipe will the currently loading mod.
+		/// <br/> The clone will have to be registered after being tweaked.
+		/// </summary>
+		public Recipe Clone() {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("A Recipe can only be cloned inside recipe related methods");
+
+			ArgumentNullException.ThrowIfNull(RecipeLoader.CurrentMod);
+			var clone = new Recipe(RecipeLoader.CurrentMod);
+
+			clone.createItem = createItem.Clone();
+
+			clone.requiredItem = new List<Item>(requiredItem.Select(x => x.Clone()).ToArray());
+			clone.requiredTile = new List<int>(requiredTile.ToArray());
+			clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
+
+			// These fields shouldn't be true, but are here just in case.
+			clone.needHoney = needHoney;
+			clone.needWater = needWater;
+			clone.needLava = needLava;
+			clone.anyWood = anyWood;
+			clone.anyIronBar = anyIronBar;
+			clone.anyPressurePlate = anyPressurePlate;
+			clone.anySand = anySand;
+			clone.anyFragment = anyFragment;
+			clone.alchemy = alchemy;
+			clone.needSnowBiome = needSnowBiome;
+			clone.needGraveyardBiome = needGraveyardBiome;
+
+			clone.OnCraftHooks = OnCraftHooks;
+			clone.ConsumeItemHooks = ConsumeItemHooks;
+			foreach (Condition condition in Conditions) {
+				clone.AddCondition(condition);
+			}
+
+			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
+			// it here to not have multiple dupliocate hooks.
+			if (clone.requiredTile.Contains(TileID.Bottles))
+				clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
+
+			return clone;
+		}
+
 		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void Register() {
+		public Recipe Register() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
+
+			if (RecipeIndex >= 0)
+				throw new RecipeException("There was an attempt to register an already registered recipe.");
 
 			if (requiredTile.Contains(TileID.Bottles))
 				AddConsumeItemCallback(ConsumptionRules.Alchemy);
@@ -308,17 +430,23 @@ namespace Terraria
 					Main.availableRecipeY[k] = 65f * k;
 				}
 			}
-			
-			Main.recipe[numRecipes] = this;			
+
+			Main.recipe[numRecipes] = this;
 			RecipeIndex = numRecipes;
 			numRecipes++;
+
+			if (RecipeLoader.FirstRecipeForItem[createItem.type] == null)
+				RecipeLoader.FirstRecipeForItem[createItem.type] = this;
+
+			return this;
 		}
 
-		internal static Recipe Create(Mod mod, int result, int amount) {
-			var recipe = new Recipe(mod);
-
+		public static Recipe Create(int result, int amount = 1) {
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be created inside recipe related methods");
+
+			ArgumentNullException.ThrowIfNull(RecipeLoader.CurrentMod);
+			var recipe = new Recipe(RecipeLoader.CurrentMod);
 
 			recipe.createItem.SetDefaults(result, false);
 			recipe.createItem.stack = amount;

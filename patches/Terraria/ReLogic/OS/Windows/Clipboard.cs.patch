@@ -1,0 +1,36 @@
+--- src/decompiled/ReLogic/OS/Windows/Clipboard.cs
++++ src/Terraria/ReLogic/OS/Windows/Clipboard.cs
+@@ -1,7 +_,9 @@
+ using ReLogic.OS.Base;
+ using System;
+ using System.Threading;
++#if WINDOWS
+ using System.Windows.Forms;
++#endif
+ 
+ namespace ReLogic.OS.Windows
+ {
+@@ -15,7 +_,11 @@
+ 
+ 			try {
+ 				InvokeInStaThread(delegate {
++#if WINDOWS
+ 					System.Windows.Forms.Clipboard.SetText(text);
++#else
++					NativeClipboard.SetText(text);
++#endif
+ 				});
+ 			}
+ 			catch {
+@@ -25,7 +_,11 @@
+ 
+ 		private string TryToGetClipboardText() {
+ 			try {
++#if WINDOWS
+ 				return InvokeInStaThread(() => System.Windows.Forms.Clipboard.GetText());
++#else
++				return InvokeInStaThread(() => NativeClipboard.TryGetText(out var text) ? text : "");
++#endif
+ 			}
+ 			catch {
+ 				string result = "";

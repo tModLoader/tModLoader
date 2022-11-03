@@ -14,9 +14,8 @@ using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
-using ReLogic.OS;
 using System.IO;
-using Microsoft.Xna.Framework.Input;
+using ReLogic.Utilities;
 
 namespace Terraria.ModLoader.UI
 {
@@ -26,6 +25,8 @@ namespace Terraria.ModLoader.UI
 
 		private UIImage _moreInfoButton;
 		private UIImage _modIcon;
+		private UIImageFramed updatedModDot;
+		private Version previousVersionHint;
 		private UIHoverImage _keyImage;
 		private UIImage _configButton;
 		private UIText _modName;
@@ -38,6 +39,7 @@ namespace Terraria.ModLoader.UI
 		private UIImage _blockInput;
 		private UIPanel _deleteModDialog;
 		private readonly LocalMod _mod;
+		private bool modFromLocalModFolder;
 
 		private bool _configChangesRequireReload;
 		private bool _loaded;
@@ -49,6 +51,7 @@ namespace Terraria.ModLoader.UI
 		private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
 
 		public string ModName => _mod.Name;
+		public bool NeedsReload => _mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload);
 
 		public UIModItem(LocalMod mod) {
 			_mod = mod;
@@ -63,28 +66,20 @@ namespace Terraria.ModLoader.UI
 			base.OnInitialize();
 
 			string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-			if (_mod.tModLoaderVersion < new Version(0, 10)) {
-				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
-			}
-
 			if (_mod.modFile.HasFile("icon.png")) {
 				try {
-					Asset<Texture2D> modIconTexture;
-
 					using (_mod.modFile.Open())
-					using (var s = _mod.modFile.GetStream("icon.png"))
-						modIconTexture = ModLoader.ManifestAssets.CreateUntrackedAsset(
-							$"Terraria.ModLoader.UI.Browser.{_mod.Name}.icon.png",
-							Texture2D.FromStream(Main.instance.GraphicsDevice, s)
-						);
+					using (var s = _mod.modFile.GetStream("icon.png")) {
+						var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png").Value;
 
-					if (modIconTexture.Width() == 80 && modIconTexture.Height() == 80) {
-						_modIcon = new UIImage(modIconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						Append(_modIcon);
-						_modIconAdjust += 85;
+						if (iconTexture.Width == 80 && iconTexture.Height == 80) {
+							_modIcon = new UIImage(iconTexture) {
+								Left = { Percent = 0f },
+								Top = { Percent = 0f }
+							};
+							Append(_modIcon);
+							_modIconAdjust += 85;
+						}
 					}
 				}
 				catch (Exception e) {
@@ -142,6 +137,7 @@ namespace Terraria.ModLoader.UI
 				Append(_modReferenceIcon);
 			}
 
+			/*
 			if (_mod.modFile.ValidModBrowserSignature) {
 				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
 					Left = { Pixels = -20, Percent = 1f }
@@ -149,8 +145,10 @@ namespace Terraria.ModLoader.UI
 
 				Append(_keyImage);
 			}
+			*/
 
-			if (ModCompile.DeveloperMode && ModLoader.badUnloaders.Contains(ModName)) {
+			// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
+			if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
@@ -159,14 +157,28 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 
 				_modName.Left.Pixels += _keyImage.Width.Pixels + PADDING * 2f;
+				_modName.Recalculate();
 			}
 
+			/*
 			if (_mod.properties.beta) {
 				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.ShadowKey].Name), Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }
 				};
 
 				Append(_keyImage);
+			}
+			*/
+
+			if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
+				BackgroundColor = Color.MediumPurple * 0.7f;
+				modFromLocalModFolder = true;
+			}
+			else {
+				var steamIcon = new UIImage(TextureAssets.Extra[243]) {
+					Left = { Pixels = -22, Percent = 1f }
+				};
+				Append(steamIcon);
 			}
 
 			if (loadedMod != null) {
@@ -204,13 +216,27 @@ namespace Terraria.ModLoader.UI
 				_deleteModButton.OnClick += QuickModDelete;
 				Append(_deleteModButton);
 			}
+
+			var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
+			if (oldModVersionData != default) {
+				previousVersionHint = oldModVersionData.previousVersion;
+				var toggleImage = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
+				updatedModDot = new UIImageFramed(toggleImage, toggleImage.Frame(2, 1, 1, 0)) {
+					Left = { Pixels = _modName.GetInnerDimensions().ToRectangle().Right + 8 /* _modIconAdjust*/, Percent = 0f },
+					Top = { Pixels = 5, Percent = 0f },
+					Color = previousVersionHint == null ? Color.Green : new Color(6, 95, 212)
+				};
+				//_modName.Left.Pixels += 18; // use these 2 for left of the modname
+
+				Append(updatedModDot);
+			}
 		}
 
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
-		private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
+		/*private void GenerateLangTemplate_OnClick(UIMouseEvent evt, UIElement listeningElement) {
 			Mod loadedMod = ModLoader.GetMod(ModName);
 			var dictionary = (Dictionary<string, ModTranslation>)loadedMod.translations;
-			/*var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
+			var result = loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "=")
 				.Concat(loadedMod.items.Where(x => !dictionary.ContainsValue(x.Value.Tooltip)).Select(x => x.Value.Tooltip.Key + "="))
 				.Concat(loadedMod.npcs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
 				.Concat(loadedMod.buffs.Where(x => !dictionary.ContainsValue(x.Value.DisplayName)).Select(x => x.Value.DisplayName.Key + "="))
@@ -221,10 +247,10 @@ namespace Terraria.ModLoader.UI
 
 			result = result.Select(x => x.Remove(0, $"Mods.{ModName}.".Length));
 
-			Platform.Get<IClipboard>().Value = string.Join("\n", result);*/
+			Platform.Get<IClipboard>().Value = string.Join("\n", result);
 
 			// TODO: ITranslatable or something?
-		}
+		}*/
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			_tooltip = null;
@@ -275,18 +301,28 @@ namespace Terraria.ModLoader.UI
 			else if (_configButton?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsOpenConfig");
 			}
+			else if (updatedModDot?.IsMouseHovering == true) {
+				if (previousVersionHint == null)
+					_tooltip = Language.GetTextValue("tModLoader.ModAddedSinceLastLaunchMessage");
+				else
+					_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
+			}
 		}
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
 			BackgroundColor = UICommon.DefaultUIBlue;
 			BorderColor = new Color(89, 116, 213);
+			if(modFromLocalModFolder)
+				BackgroundColor = Color.MediumPurple;
 		}
 
 		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
 			BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			BorderColor = new Color(89, 116, 213) * 0.7f;
+			if (modFromLocalModFolder)
+				BackgroundColor = Color.MediumPurple * 0.7f;
 		}
 
 		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
@@ -309,34 +345,24 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement) {
-			var modList = ModOrganizer.FindMods();
 			var missingRefs = new List<string>();
-
-			EnableDepsRecursive(modList, _modReferences, missingRefs);
+			EnableDepsRecursive(missingRefs);
 
 			if (missingRefs.Any()) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missingRefs)), Interface.modsMenuID);
 			}
 		}
 
-		private void EnableDepsRecursive(LocalMod[] modList, string[] modRefs, List<string> missingRefs) {
-			ModLoader.PauseSavingEnabledMods = true;
-			foreach (var modRef in modRefs) {
-				// To enable the ref, its own refs must also be enabled
-				var refLocalMod = modList.FirstOrDefault(m => m.Name == modRef);
-				if (refLocalMod != null) {
-					// Enable refs recursively
-					// This might trigger multiple "Enabling mod X" logs, but the enabled is a hash set so there will be no problems
-					var modRefsOfModRef = refLocalMod.properties.modReferences.Select(x => x.mod).ToArray();
-					EnableDepsRecursive(modList, modRefsOfModRef, missingRefs);
+		private void EnableDepsRecursive(List<string> missingRefs) {
+			foreach (var name in _modReferences) {
+				var dep = Interface.modsMenu.FindUIModItem(name);
+				if (dep == null) {
+					missingRefs.Add(name);
+					continue;
 				}
-				else {
-					missingRefs.Add(modRef);
-				}
-				ModLoader.EnableMod(modRef);
-				Interface.modsMenu.FindUIModItem(modRef)?.Enable();
+				dep.EnableDepsRecursive(missingRefs);
+				dep.Enable();
 			}
-			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
@@ -419,8 +445,8 @@ namespace Terraria.ModLoader.UI
 				Interface.modsMenu.Append(_blockInput);
 
 				_deleteModDialog = new UIPanel() {
-					Width = { Percent = .20f },
-					Height = { Percent = .20f },
+					Width = { Percent = .30f },
+					Height = { Percent = .30f },
 					HAlign = .5f,
 					VAlign = .5f,
 					BackgroundColor = new Color(63, 82, 151),
@@ -469,7 +495,10 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			File.Delete(_mod.modFile.path);
+			ModOrganizer.DeleteMod(_mod);
+
+			Interface.modsMenu.needsMBRefresh = true;
+
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();
 		}

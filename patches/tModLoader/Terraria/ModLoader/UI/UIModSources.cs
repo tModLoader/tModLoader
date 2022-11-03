@@ -1,14 +1,19 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
@@ -16,8 +21,9 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModSources : UIState
+	internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
+		public UIState PreviousUIState { get; set; }
 		private readonly List<UIModSourceItem> _items = new List<UIModSourceItem>();
 		private UIList _modList;
 		private float modListViewPosition;
@@ -27,6 +33,7 @@ namespace Terraria.ModLoader.UI
 		private UIInputTextField filterTextBox;
 		private UILoaderAnimatedImage _uiLoader;
 		private CancellationTokenSource _cts;
+		private bool dotnetSDKFound;
 
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
@@ -67,6 +74,7 @@ namespace Terraria.ModLoader.UI
 				Width = { Pixels = 120 },
 				Height = { Pixels = 20 }
 			};
+			filterTextBox.OnRightClick += (a, b) => filterTextBox.Text = "";
 			filterTextBox.OnTextChange += (a, b) => _updateNeeded = true;
 			upperMenuContainer.Append(filterTextBox);
 			_uIPanel.Append(upperMenuContainer);
@@ -114,6 +122,7 @@ namespace Terraria.ModLoader.UI
 			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
 			buttonCreateMod.CopyStyle(buttonBA);
 			buttonCreateMod.HAlign = 1f;
+			buttonCreateMod.Top.Pixels = -20;
 			buttonCreateMod.WithFadedMouseOver();
 			buttonCreateMod.OnClick += ButtonCreateMod_OnClick;
 			_uIElement.Append(buttonCreateMod);
@@ -133,12 +142,6 @@ namespace Terraria.ModLoader.UI
 			buttonOS.OnClick += OpenSources;
 			_uIElement.Append(buttonOS);
 
-			var buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"));
-			buttonMP.CopyStyle(buttonB);
-			buttonMP.HAlign = 1f;
-			buttonMP.WithFadedMouseOver();
-			buttonMP.OnClick += ManagePublished;
-			_uIElement.Append(buttonMP);
 			Append(_uIElement);
 		}
 
@@ -147,18 +150,8 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.createModID;
 		}
 
-		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-			Main.menuMode = Interface.managePublishedID;
-			if (ModLoader.modBrowserPassphrase == string.Empty) {
-				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
-			}
-		}
-
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-			Main.menuMode = 0;
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {
@@ -184,8 +177,39 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
+			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 			base.Draw(spriteBatch);
-			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+			DrawMigrationGuideLink();
+		}
+
+		//TODO: simplify this method
+		private void DrawMigrationGuideLink() {
+			string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
+			float scale = 1f;
+
+			var font = FontAssets.MouseText.Value;
+			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
+			Vector2 origin = sizes;
+			Color color = Color.IndianRed;
+			if(sizes.X > 430) {
+				scale = 430 / sizes.X;
+				sizes.X *= scale;
+			}
+
+			int xLoc = (int)(Main.screenWidth / 2 + 134);
+			int yLoc = (int)(sizes.Y + 244f);
+
+			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, origin, new Vector2(scale, 1f), SpriteEffects.None, 0f);
+
+			var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
+			if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
+				return;
+			}
+
+			if (Main.mouseLeftRelease && Main.mouseLeft) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+			}
 		}
 
 		public override void OnActivate() {
@@ -194,6 +218,8 @@ namespace Terraria.ModLoader.UI
 			_uIPanel.Append(_uiLoader);
 			_modList.Clear();
 			_items.Clear();
+			if (ShowInfoMessages())
+				return;
 			Populate();
 		}
 
@@ -204,22 +230,68 @@ namespace Terraria.ModLoader.UI
 			modListViewPosition = _modList.ViewPosition;
 		}
 
-		internal void Populate() {
-			Task.Factory.StartNew(
-				delegate {
-					var modSources = ModCompile.FindModSources();
-					var modFiles = ModOrganizer.FindMods();
-					return Tuple.Create(modSources, modFiles);
-				}, _cts.Token)
-				.ContinueWith(task => {
-					var modSources = task.Result.Item1;
-					var modFiles = task.Result.Item2;
-					foreach (string sourcePath in modSources) {
-						var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
-						_items.Add(new UIModSourceItem(sourcePath, builtMod));
+		private bool ShowInfoMessages() {
+			if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
+				ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+				ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
+				Main.SaveSettings();
+				return true;
+			}
+
+			if (!CheckDotnet()) {
+				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+				return true;
+			}
+
+			return false;
+		}
+
+		private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null) {
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey),
+			() => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Utils.OpenToURL(url);
+			});
+		}
+
+		private bool CheckDotnet() {
+			if (dotnetSDKFound)
+				return true;
+
+			try {
+				string output = Process.Start(new ProcessStartInfo {
+					FileName = "dotnet",
+					Arguments = "--list-sdks",
+					UseShellExecute = false,
+					RedirectStandardOutput = true
+				}).StandardOutput.ReadToEnd();
+				Logging.tML.Info("\n" + output);
+
+				foreach (var line in output.Split('\n')) {
+					var dotnetVersion = new Version(new Regex("([0-9.]+).*").Match(line).Groups[1].Value);
+					if (dotnetVersion >= new Version(6, 0)) {
+						dotnetSDKFound = true;
+						break;
 					}
-					_updateNeeded = true;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Debug("'dotnet --list-sdks' check failed: ", e);
+			}
+
+			return dotnetSDKFound;
+		}
+
+		internal void Populate() {
+			Task.Run(() => {
+				var modSources = ModCompile.FindModSources();
+				var modFiles = ModOrganizer.FindDevFolderMods();
+				foreach (string sourcePath in modSources) {
+					var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+					_items.Add(new UIModSourceItem(sourcePath, builtMod));
+				}
+				_updateNeeded = true;
+			});
 		}
 
 		public override void Update(GameTime gameTime) {

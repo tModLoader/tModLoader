@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -47,6 +48,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		static ContentInstance() {
+			TypeCaching.OnClear += Clear;
+		}
+
 		private static ConcurrentDictionary<Type, ContentEntry> contentByType = new ConcurrentDictionary<Type, ContentEntry>();
 
 		private static ContentEntry Factory(Type t) => new ContentEntry();
@@ -55,9 +60,12 @@ namespace Terraria.ModLoader
 
 		public static void Register(object obj) => contentByType.GetOrAdd(obj.GetType(), Factory).Register(obj);
 
-		internal static void Clear() {
-			foreach (var entry in contentByType)
+		private static void Clear() {
+			foreach (var entry in contentByType) {
 				entry.Value.Clear();
+				if (entry.Key.Assembly != typeof(ContentEntry).Assembly)
+					contentByType.TryRemove(entry.Key, out _);
+			}
 		}
 	}
 

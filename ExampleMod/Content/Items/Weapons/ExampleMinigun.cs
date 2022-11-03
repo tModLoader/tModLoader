@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,6 +10,8 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded minigun.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -45,18 +48,19 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// The following method gives this gun a 38% chance to not consume ammo
-		public override bool ConsumeAmmo(Player player) {
+		public override bool CanConsumeAmmo(Item ammo, Player player) {
 			return Main.rand.NextFloat() >= 0.38f;
 		}
 
-		// The following method makes the gun slightly inaccurate
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
-			Vector2 velocity = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(10));
-			
-			speedX = velocity.X;
-			speedY = velocity.Y;
+		// The following method allows this gun to shoot when having no ammo, as long as the player has at least 10 example items in their inventory.
+		// The gun will then shoot as if the default ammo for it, in this case the musket ball, is being used.
+		public override bool NeedsAmmo(Player player) {
+			return player.CountItem(ModContent.ItemType<ExampleItem>(), 10) < 10;
+		}
 
-			return true;
+		// The following method makes the gun slightly inaccurate
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			velocity = velocity.RotatedByRandom(MathHelper.ToRadians(10));
 		}
 
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.

@@ -1,35 +1,12 @@
 --- src/decompiled/Terraria/Netplay.cs
 +++ src/Terraria/Terraria/Netplay.cs
-@@ -3,6 +_,9 @@
- using System.Linq;
- using System.Net;
- using System.Net.Sockets;
-+#if !WINDOWS
-+using System.Runtime.CompilerServices;
-+#endif
- using System.Threading;
- using Terraria.Audio;
- using Terraria.IO;
-@@ -12,6 +_,12 @@
- using Terraria.Net.Sockets;
- using Terraria.Social;
- using Terraria.Utilities;
-+#if !WINDOWS
-+using Terraria.Social.Base;
-+#endif
-+#if SERVER && WINDOWS
-+using NATUPNPLib;
-+#endif
- 
- namespace Terraria
- {
 @@ -40,6 +_,10 @@
  		public static bool SpamCheck = false;
  		public static bool HasClients;
  		private static Thread _serverThread;
-+#if SERVER && WINDOWS
-+		public static UPnPNAT _upnpnat;
-+		public static IStaticPortMappingCollection _mappings;
++#if SERVER
++		private static UPnPNAT _upnpnat;
++		private static IStaticPortMappingCollection _mappings;
 +#endif
  		public static MessageBuffer fullBuffer = new MessageBuffer();
  		private static int _currentRequestId;
@@ -38,7 +15,7 @@
  		}
  
  		private static void OpenPort(int port) {
-+#if SERVER && WINDOWS
++#if SERVER
 +			string localIPAddress = GetLocalIPAddress();
 +			if (_upnpnat == null) {
 +				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
@@ -60,7 +37,7 @@
  		}
  
  		private static void ClosePort(int port) {
-+#if SERVER && WINDOWS
++#if SERVER
 +			string localIPAddress = GetLocalIPAddress();
 +			bool flag = false;
 +			if (_mappings == null)
@@ -77,41 +54,29 @@
  		}
  
  		private static void ServerFullWriteCallBack(object state) {
-@@ -362,6 +_,11 @@
- 					flag = false;
- 				}
- 				catch {
-+#if MAC
-+					Thread.Sleep(200);
-+					Netplay.Connection.Socket.Close();
-+					Netplay.Connection.Socket = new TcpSocket();
-+#endif
- 					if (!Disconnect && Main.gameMenu)
- 						flag = true;
- 				}
-@@ -617,12 +_,26 @@
+@@ -618,12 +_,26 @@
  		}
  
  		public static void Initialize() {
-+#if CLIENT
- 			NetMessage.buffer[256] = new MessageBuffer();
- 			NetMessage.buffer[256].whoAmI = 256;
-+#else
++#if SERVER
 +			for (int i = 0; i < 257; i++) {
 +				if (i < 256)
-+					Netplay.Clients[i] = new RemoteClient();
-+				
++					Clients[i] = new RemoteClient();
++
 +				NetMessage.buffer[i] = new MessageBuffer();
 +				NetMessage.buffer[i].whoAmI = i;
 +			}
 +#endif
++
+ 			NetMessage.buffer[256] = new MessageBuffer();
+ 			NetMessage.buffer[256].whoAmI = 256;
  		}
  
  		public static void UpdateInMainThread() {
-+#if CLIENT
- 			UpdateClientInMainThread();
-+#else
++#if SERVER
 +			UpdateServerInMainThread();
++#else
+ 			UpdateClientInMainThread();
 +#endif
  		}
  

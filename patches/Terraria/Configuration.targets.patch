@@ -1,6 +1,6 @@
 --- src/decompiled/Configuration.targets
 +++ src/Terraria/Configuration.targets
-@@ -1,11 +_,19 @@
+@@ -1,11 +_,20 @@
  <Project>
    <PropertyGroup>
      <TargetFramework>net40</TargetFramework>
@@ -10,6 +10,7 @@
      <PlatformTarget>x86</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
      <Optimize>true</Optimize>
++	<LangVersion>latest</LangVersion>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
 +    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>

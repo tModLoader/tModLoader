@@ -1,13 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.
 	/// </summary>
-	public abstract class GlobalTile : ModType
+	public abstract class GlobalTile : GlobalBlockType
 	{
 		/// <summary>
 		/// A convenient method for adding an integer to the end of an array. This can be used with the arrays in TileID.Sets.RoomNeeds.
@@ -19,89 +20,22 @@ namespace Terraria.ModLoader
 			array[array.Length - 1] = type;
 		}
 
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded tree.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="tree"></param>
-		public void AddModTree(int soilType, ModTree tree) {
-			TileLoader.trees[soilType] = tree;
-		}
-
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded palm tree.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="palmTree"></param>
-		public void AddModPalmTree(int soilType, ModPalmTree palmTree) {
-			TileLoader.palmTrees[soilType] = palmTree;
-		}
-
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded cactus.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="cactus"></param>
-		public void AddModCactus(int soilType, ModCactus cactus) {
-			TileLoader.cacti[soilType] = cactus;
-		}
-
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalTile>.Register(this);
 			TileLoader.globalTiles.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetDefaults();
-
-		/// <summary>
-		/// Allows you to modify the properties of any tile in the game. Most properties are stored as arrays throughout the Terraria code.
-		/// </summary>
-		public virtual void SetDefaults() {
-		}
-
-		/// <summary>
-		/// Allows you to customize which sound you want to play when the tile at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile. Returns true by default.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public virtual bool KillSound(int i, int j, int type) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to change how many dust particles are created when the tile at the given coordinates is hit.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="fail"></param>
-		/// <param name="num"></param>
-		public virtual void NumDust(int i, int j, int type, bool fail, ref int num) {
-		}
-
-		/// <summary>
-		/// Allows you to modify the default type of dust created when the tile at the given coordinates is hit. Return false to stop the default dust (the dustType parameter) from being created. Returns true by default.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="dustType"></param>
-		/// <returns></returns>
-		public virtual bool CreateDust(int i, int j, int type, ref int dustType) {
-			return true;
-		}
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="wormChance"></param>
-		/// <param name="grassHopperChance"></param>
-		/// <param name="jungleGrubChance"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
+		/// <param name="wormChance">Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</param>
+		/// <param name="grassHopperChance">Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</param>
+		/// <param name="jungleGrubChance">Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</param>
 		public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
 		}
 
@@ -115,9 +49,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine whether or not the tile at the given coordinates can be hit by anything. Returns true by default. blockDamaged currently has no use.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
 		/// <param name="blockDamaged"></param>
 		/// <returns></returns>
 		public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged) {
@@ -127,66 +61,55 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. If <paramref name="fail"/> is true, the tile will not be mined; <paramref name="effectOnly"/> makes it so that only dust is created; <paramref name="noItem"/> stops items from dropping.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="fail"></param>
-		/// <param name="effectOnly"></param>
-		/// <param name="noItem"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
+		/// <param name="fail">If true, the tile won't be mined</param>
+		/// <param name="effectOnly">If true, only the dust visuals will happen</param>
+		/// <param name="noItem">If true, the corrsponding item won't drop</param>
 		public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
-		}
-
-		/// <summary>
-		/// Whether or not the tile at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public virtual bool CanExplode(int i, int j, int type) {
-			return true;
 		}
 
 		/// <summary>
 		/// Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
 		/// <param name="closer"></param>
 		public virtual void NearbyEffects(int i, int j, int type, bool closer) {
 		}
 
 		/// <summary>
-		/// Allows you to determine how much light the block emits. Make sure you set Main.tileLighted[type] to true in SetDefaults for this to work.
+		/// Allows you to determine whether this tile glows red when the given player has the Dangersense buff.
+		/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
+		/// <br/>This is only called on the local client.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="r"></param>
-		/// <param name="g"></param>
-		/// <param name="b"></param>
-		public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
+		/// <param name="player">Main.LocalPlayer</param>
+		public virtual bool? IsTileDangerous(int i, int j, int type, Player player) {
+			return null;
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the block glows red when the given player has the Dangersense buff.
+		/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
+		/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="player"></param>
-		/// <returns></returns>
-		public virtual bool Dangersense(int i, int j, int type, Player player) {
-			return false;
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
+		public virtual bool? IsTileSpelunkable(int i, int j, int type) {
+			return null;
 		}
 
 		/// <summary>
 		/// Allows you to determine whether or not a tile will draw itself flipped in the world.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The tile type</param>
 		/// <param name="spriteEffects"></param>
 		public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
 		}
@@ -198,77 +121,37 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind the tile at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="spriteBatch"></param>
-		/// <returns></returns>
-		public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
+		/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
-		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
-		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The Tile type of the tile being drawn</param>
+		/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
+		/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
+		public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of the tile at the given coordinates. This can also be used to do things such as creating dust. Called on active tiles. See also ModSystem.PostDrawTiles.
+		/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <param name="spriteBatch"></param>
-		public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
-		}
-
-		/// <summary>
-		/// Special Draw. Only called if coordinates are placed in Main.specX/Y during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
-		/// </summary>
-		/// <param name="i">The i.</param>
-		/// <param name="j">The j.</param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The Tile type of the tile being drawn</param>
+		/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
 		public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) {
-		}
-
-		/// <summary>
-		/// Called for every tile the world randomly decides to update in a given tick. Useful for things such as growing or spreading.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		public virtual void RandomUpdate(int i, int j, int type) {
 		}
 
 		/// <summary>
 		/// Called for every tile that updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		/// <param name="resetFrame"></param>
 		/// <param name="noBreak"></param>
 		/// <returns></returns>
 		public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to stop a tile from being placed at the given coordinates. Return false to block the tile from being placed. Returns true by default.
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public virtual bool CanPlace(int i, int j, int type) {
 			return true;
 		}
 
@@ -284,8 +167,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make something happen when any tile is right-clicked by the player.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		public virtual void RightClick(int i, int j, int type) {
 		}
@@ -293,8 +176,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make something happen when the mouse hovers over any tile. Useful for showing item icons or text on the mouse.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		public virtual void MouseOver(int i, int j, int type) {
 		}
@@ -302,17 +185,17 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to make something happen when the mouse hovers over any tile, even when the player is far away. Useful for showing what's written on signs, etc.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		public virtual void MouseOverFar(int i, int j, int type) {
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can become selected when the cursor is hovering over a tile and the auto selection hotkey is pressed.
+		/// Allows you to determine whether the given item can become selected when the cursor is hovering over a tile and the auto selection keybind is pressed.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		/// <param name="item"></param>
 		/// <returns></returns>
@@ -323,8 +206,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not the vanilla HitWire code and the HitWire hook is allowed to run. Useful for overriding vanilla behavior by returning false. Returns true by default.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		/// <returns></returns>
 		public virtual bool PreHitWire(int i, int j, int type) {
@@ -332,10 +215,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make something happen when a wire current passes through any tile.
+		/// Allows you to make something happen when a wire current passes through any tile. Both <see cref="Wiring.SkipWire(int, int)"/> and <see cref="NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType)"/> are usually required in the logic used in this method to correctly work.
+		/// <br/>Only called on the server and single player. All wiring happens on the world, not multiplayer clients. 
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		public virtual void HitWire(int i, int j, int type) {
 		}
@@ -343,8 +227,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single Player.
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
 		/// <returns></returns>
 		public virtual bool Slope(int i, int j, int type) {
@@ -365,25 +249,6 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="style"></param>
 		public virtual void ChangeWaterfallStyle(int type, ref int style) {
-		}
-
-		/// <summary>
-		/// Allows a tile to support a sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns -1 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same ID; even if you only have a single sapling in an ID, you must still set this to 0.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="style"></param>
-		/// <returns></returns>
-		public virtual int SaplingGrowthType(int type, ref int style) {
-			return -1;
-		}
-
-		/// <summary>
-		/// Allows you to do something when this tile is placed. Called on the local Client and Single Player.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
-		/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
-		/// <param name="item">The item used to place this tile.</param>
-		public virtual void PlaceInWorld(int i, int j, Item item) {
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalWall> globalWalls = new List<GlobalWall>();
 		private static bool loaded = false;
 
-		private static Func<int, int, int, bool>[] HookKillSound;
+		private static Func<int, int, int, bool, bool>[] HookKillSound;
 		private delegate void DelegateNumDust(int i, int j, int type, bool fail, ref int num);
 		private static DelegateNumDust[] HookNumDust;
 		private delegate bool DelegateCreateDust(int i, int j, int type, ref int dustType);
@@ -29,10 +30,13 @@ namespace Terraria.ModLoader
 		private static DelegateDrop[] HookDrop;
 		private delegate void DelegateKillWall(int i, int j, int type, ref bool fail);
 		private static DelegateKillWall[] HookKillWall;
+		private static Func<int, int, int, bool>[] HookCanPlace;
 		private static Func<int, int, int, bool>[] HookCanExplode;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
 		private static Action<int, int, int>[] HookRandomUpdate;
+		private delegate bool DelegateWallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber);
+		private static DelegateWallFrame[] HookWallFrame;
 		private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 		private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 		private static Action<int, int, int, Item>[] HookPlaceInWorld;
@@ -82,13 +86,17 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.wallFrame, nextWall);
 			Array.Resize(ref Main.wallFrameCounter, nextWall);
 
+			// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
+			// Remove generic arguments once fixed.
 			ModLoader.BuildGlobalHook(ref HookKillSound, globalWalls, g => g.KillSound);
-			ModLoader.BuildGlobalHook(ref HookNumDust, globalWalls, g => g.NumDust);
-			ModLoader.BuildGlobalHook(ref HookCreateDust, globalWalls, g => g.CreateDust);
-			ModLoader.BuildGlobalHook(ref HookDrop, globalWalls, g => g.Drop);
-			ModLoader.BuildGlobalHook(ref HookKillWall, globalWalls, g => g.KillWall);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateNumDust>(ref HookNumDust, globalWalls, g => g.NumDust);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateCreateDust>(ref HookCreateDust, globalWalls, g => g.CreateDust);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateDrop>(ref HookDrop, globalWalls, g => g.Drop);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateKillWall>(ref HookKillWall, globalWalls, g => g.KillWall);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateWallFrame>(ref HookWallFrame, globalWalls, g => g.WallFrame);
+			ModLoader.BuildGlobalHook(ref HookCanPlace, globalWalls, g => g.CanPlace);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
-			ModLoader.BuildGlobalHook(ref HookModifyLight, globalWalls, g => g.ModifyLight);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateModifyLight>(ref HookModifyLight, globalWalls, g => g.ModifyLight);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalWalls, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
@@ -130,22 +138,24 @@ namespace Terraria.ModLoader
 				wall = (ushort)wallTable[wall];
 			}
 		}
-		//in Terraria.WorldGen.KillWall add if(!WallLoader.KillSound(i, j, tile.wall)) { } to beginning of
-		//  if/else chain for playing sounds, and turn first if into else if
-		public static bool KillSound(int i, int j, int type) {
+
+		public static bool KillSound(int i, int j, int type, bool fail) {
 			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type)) {
+				if (!hook(i, j, type, fail))
 					return false;
-				}
 			}
-			ModWall modWall = GetWall(type);
+
+			var modWall = GetWall(type);
+
 			if (modWall != null) {
-				if (!modWall.KillSound(i, j)) {
+				if (!modWall.KillSound(i, j, fail))
 					return false;
-				}
-				SoundEngine.PlaySound(modWall.SoundType, i * 16, j * 16, modWall.SoundStyle);
+
+				SoundEngine.PlaySound(modWall.HitSound, new Vector2(i * 16, j * 16));
+
 				return false;
 			}
+
 			return true;
 		}
 		//in Terraria.WorldGen.KillWall after if statement setting num to 3 add
@@ -187,6 +197,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//in Terraria.Player.PlaceThing_Walls after bool flag = true;, before PlaceThing_TryReplacingWalls
+		//  flag &= WallLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
+		public static bool CanPlace(int i, int j, int type) {
+			foreach (var hook in HookCanPlace) {
+				if (!hook(i, j, type)) {
+					return false;
+				}
+			}
+			return GetWall(type)?.CanPlace(i, j) ?? true;
+		}
+
 		public static bool CanExplode(int i, int j, int type) {
 			foreach (var hook in HookCanExplode) {
 				if (!hook(i, j, type)) {
@@ -214,6 +235,26 @@ namespace Terraria.ModLoader
 				hook(i, j, type);
 			}
 		}
+
+		//in Terraria.Framing.WallFrame after the 'if (num == 15)' block
+		//	if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
+		//		return;
+		public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
+			ModWall modWall = GetWall(type);
+
+			if (modWall != null) {
+				if(!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
+					return false;
+			}
+
+			foreach (var hook in HookWallFrame) {
+				if (!hook(i, j, type, randomizeFrame, ref style, ref frameNumber))
+					return false;
+			}
+
+			return true;
+		}
+
 		//in Terraria.Main.Update after vanilla wall animations call WallLoader.AnimateWalls();
 		public static void AnimateWalls() {
 			if (loaded) {

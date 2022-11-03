@@ -1,6 +1,10 @@
---- src/Terraria/Terraria/Net/Sockets/TcpSocket.cs
+--- src/TerrariaNetCore/Terraria/Net/Sockets/TcpSocket.cs
 +++ src/tModLoader/Terraria/Net/Sockets/TcpSocket.cs
-@@ -4,6 +_,7 @@
+@@ -1,9 +_,11 @@
++using Steamworks;
+ using System;
+ using System.Collections.Generic;
+ using System.Net;
  using System.Net.Sockets;
  using System.Threading;
  using Terraria.Localization;
@@ -8,12 +12,63 @@
  
  namespace Terraria.Net.Sockets
  {
-@@ -134,7 +_,7 @@
+@@ -34,6 +_,9 @@
+ 		}
+ 
+ 		void ISocket.Close() {
++			if (_remoteAddress != null)
++				ModNet.Log(_remoteAddress, "Closing TcpSocket");
++
+ 			_remoteAddress = null;
+ 			_connection.Close();
+ 		}
+@@ -67,11 +_,17 @@
+ #endif
+ 			*/
+ 
+-			var (callback, state, loanedBuffer) = ((SocketSendCallback, object, byte[]))result.AsyncState;
++			var (callback, state, loanedBuffer, size) = ((SocketSendCallback, object, byte[], int))result.AsyncState;
+ 			if (loanedBuffer != null)
+ 				LegacyNetBufferPool.ReturnBuffer(loanedBuffer);
+ 
++			if (ModNet.DetailedLogging)
++				ModNet.Debug(_remoteAddress, $"sent {size}");
++
+ 			try {
++				if (!_connection.Connected)
++					return; // reduce exception spam, because `GetStream` is invalid on a closed/disposed connection
++
+ 				_connection.GetStream().EndWrite(result);
+ 				callback(state);
+ 			}
+@@ -97,11 +_,19 @@
+ #endif
+ 			*/
+ 
++			if (!_connection.Connected) { // replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
++				ModNet.Warn("TcpSocket, AsyncSend after connection closed.");
++				return;
++			}
++
++			if (ModNet.DetailedLogging)
++				ModNet.Debug(_remoteAddress, $"send {size}");
++
+ 			byte[] loanedBuffer = null;
+ 			if (!OperatingSystem.IsWindows()) // defensively copy the buffer, to prevent overruns when flow control can't keep up with the data write rate
+ 				loanedBuffer = data = LegacyNetBufferPool.RequestBuffer(data, offset, size);
+ 
+-			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer));
++			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer, size));
+ 		}
+ 
+ 		void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state) {
+@@ -149,7 +_,8 @@
  			while (_isListening && !Netplay.Disconnect) {
  				try {
  					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());
++					// moved to Netplay.OnConnectionAccepted to report steam connections as well
 -					Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
-+					Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
++					// Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
  					_listenerCallback(socket);
  				}
  				catch (Exception) {

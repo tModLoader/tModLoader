@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
@@ -10,19 +8,15 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Steamworks;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
-using Version = System.Version;
 using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
-using ReLogic.Graphics;
+using System.Runtime.CompilerServices;
 
 namespace Terraria.ModLoader
 {
@@ -33,101 +27,96 @@ namespace Terraria.ModLoader
 	{
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
-		// public static bool ShowWhatsNew;
+		// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
+		public static string LastLaunchedTModLoaderAlphaSha;
+		public static bool ShowWhatsNew;
+		public static bool AlphaWelcomed;
+		public static bool PreviewFreezeNotification;
+		public static bool DownloadedDependenciesOnStartup;
 		public static bool ShowFirstLaunchWelcomeMessage;
+		public static bool SeenFirstLaunchModderWelcomeMessage;
+		public static bool WarnedFamilyShare;
+		public static Version LastPreviewFreezeNotificationSeen;
 
-		public static string versionedName => ModCompile.DeveloperMode ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
+		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
-		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + (FrameworkVersion.Framework == Framework.NetFramework ? "n" : (FrameworkVersion.Framework == Framework.Mono ? "o" : "u"));
+#if NETCORE
+		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.DistributionPlatform == DistributionPlatform.GoG ? "g" : "s") + "c";
+#else
+		public static string CompressedPlatformRepresentation => "w" + (InstallVerifier.IsGoG ? "g" : "s") + "n";
+#endif
 
 		public static string ModPath => ModOrganizer.modPath;
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
-		private static WeakReference[] weakModReferences = new WeakReference[0];
 
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
 
-		private static string steamID64 = "";
-		internal static string SteamID64 {
-			get => InstallVerifier.IsGoG ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
-			set => steamID64 = value;
-		}
-
 		internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
+		internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
+		internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
-
+		internal static bool showNewUpdatedModsInfo = true;
 		internal static bool skipLoad;
-
 		internal static Action OnSuccessfulLoad;
+
+		private static bool isLoading;
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
-		internal static ModAssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
+		internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
-
-		// Get
 
 		/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		public static Mod GetMod(string name) => modsByName[name];
 
-		// TryGet
-
 		/// <summary> Safely attempts to get the instance of the Mod with the specified name. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public static bool TryGetMod(string name, out Mod result) => modsByName.TryGetValue(name, out result);
 
+		/// <summary> Safely checks whether or not a mod with the specified internal name is currently loaded. </summary>
+		/// <returns> Whether or not a mod with the provided internal name has been found. </returns>
+		public static bool HasMod(string name) => modsByName.ContainsKey(name);
+
 		internal static void EngineInit()
 		{
-			DotNet45Check();
 			FileAssociationSupport.UpdateFileAssociation();
-			GLCallLocker.Init();
-			HiDefGraphicsIssues.Init();
+			FolderShortcutSupport.UpdateFolderShortcuts();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
-			XnaTitleContainerRelativePathFix.Init();
+			FNAFixes.Init();
+			LoaderManager.AutoLoad();
 		}
 
 		internal static void PrepareAssets()
 		{
-			if (Main.dedServ) {
-				return;
-			}
-
-			var assetReaderCollection = AssetInitializer.assetReaderCollection;
-
-			var asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
-			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
-
-			var assetLoader = new AssetLoader(assetReaderCollection);
-
 			ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
-			ManifestAssets = new ModAssetRepository(assetReaderCollection, assetLoader, asyncAssetLoader, new[] { ManifestContentSource });
+			ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
+				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
+			};
 		}
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
 
-		private static bool isLoading = false;
 		private static void Load(CancellationToken token = default)
 		{
+			if (isLoading)
+				throw new Exception("Load called twice");
+			isLoading = true;
+
+			if (!Unload())
+				return;
+
+			var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 			try {
-				if (isLoading)
-					throw new Exception("Load called twice");
-				isLoading = true;
-
-				if (!Unload())
-					return;
-
-				var modInstances = ModOrganizer.LoadMods(token);
-
-				weakModReferences = modInstances.Select(x => new WeakReference(x)).ToArray();
+				var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
+				var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
 				foreach (var mod in Mods)
@@ -163,9 +152,13 @@ namespace Terraria.ModLoader
 
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
-					var mod = ModOrganizer.FindMods().FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
+					var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
+					if (mod != null)
+						msg += $" v{mod.properties.version}";
 					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+					if (e is Exceptions.JITException)
+						msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 				}
 				if (responsibleMods.Count > 0)
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
@@ -188,26 +181,9 @@ namespace Terraria.ModLoader
 				OnSuccessfulLoad = null;
 				skipLoad = false;
 				ModNet.NetReloadActive = false;
+				//TODO: FUTURE
+				//GOGModUpdateChecker.CheckModUpdates();
 			}
-		}
-
-		private static void DotNet45Check()
-		{
-			if (FrameworkVersion.Framework != Framework.NetFramework || FrameworkVersion.Version >= new Version(4, 5))
-				return;
-
-			var msg = Language.GetTextValue("tModLoader.LoadErrorDotNet45Required");
-#if CLIENT
-			Interface.MessageBoxShow(msg);
-			Process.Start("https://dotnet.microsoft.com/download/dotnet-framework");
-#else
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine(msg);
-			Console.ResetColor();
-			Console.WriteLine("Press any key to exit...");
-			Console.ReadKey();
-#endif
-			Environment.Exit(-1);
 		}
 
 		internal static void Reload()
@@ -218,12 +194,12 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.loadModsID;
 		}
 
-		private static bool Unload()
+		internal static bool Unload()
 		{
 			try {
-				// have to move unload logic to a separate method so the stack frame is cleared. Otherwise unloading can capture mod instances in local variables, even with memory barriers (thanks compiler weirdness)
-				do_Unload();
-				WarnModsStillLoaded();
+				var weakModRefs = GetWeakModRefs();
+				Mods_Unload();
+				WarnModsStillLoaded(weakModRefs);
 				return true;
 			}
 			catch (Exception e) {
@@ -239,32 +215,36 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void do_Unload()
+		internal static bool IsUnloadedModStillAlive(string name) => AssemblyManager.OldLoadContexts().Contains(name);
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static WeakReference<Mod>[] GetWeakModRefs() => Mods.Select(x => new WeakReference<Mod>(x)).ToArray();
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void Mods_Unload()
 		{
-			Logging.tML.Info("Unloading mods");
-			if (Main.dedServ) {
-				Console.WriteLine("Unloading mods...");
-			}
-			else {
-				Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
-			}
+			Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
 			ModContent.UnloadModContent();
+
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
-
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
-			GC.Collect();
+			AssemblyManager.Unload();
 		}
 
-		internal static List<string> badUnloaders = new List<string>();
-		private static void WarnModsStillLoaded()
-		{
-			badUnloaders = weakModReferences.Where(r => r.IsAlive).Select(r => ((Mod)r.Target).Name).ToList();
-			foreach (var modName in badUnloaders)
-				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", modName);
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void WarnModsStillLoaded(IReadOnlyList<WeakReference<Mod>> weakModRefs) {
+			foreach (var alcName in AssemblyManager.OldLoadContexts().Distinct()) {
+				if (weakModRefs.Any(modRef => modRef.TryGetTarget(out var mod) && mod.Name == alcName)) {
+					Logging.tML.WarnFormat($"{alcName} mod class still using memory. Some content references have probably not been cleared. Use a heap dump to figure out why.");
+				}
+				else {
+					Logging.tML.WarnFormat($"{alcName} AssemblyLoadContext still using memory. Some classes are being held by Terraria or another mod. Use a heap dump to figure out why.");
+				}
+			}
 		}
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
@@ -305,97 +285,100 @@ namespace Terraria.ModLoader
 			return f.VerifySignature(mod.Hash, mod.Signature);
 		}
 
-		private static bool _pauseSavingEnabledMods;
-		private static bool _needsSavingEnabledMods;
-		internal static bool PauseSavingEnabledMods {
-			get => _pauseSavingEnabledMods;
-			set {
-				if (_pauseSavingEnabledMods == value) { return; }
-				if (!value && _needsSavingEnabledMods) {
-					ModOrganizer.SaveEnabledMods();
-					_needsSavingEnabledMods = false;
-				}
-				_pauseSavingEnabledMods = value;
-			}
-		}
 		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
 		private static HashSet<string> _enabledMods;
-		internal static HashSet<string> EnabledMods => _enabledMods ?? (_enabledMods = ModOrganizer.LoadEnabledMods());
+		internal static HashSet<string> EnabledMods => _enabledMods ??= ModOrganizer.LoadEnabledMods();
 
 		internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
 		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
 		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
-		internal static void SetModEnabled(string modName, bool active)
-		{
-			if (active) {
+		internal static void SetModEnabled(string modName, bool active) {
+			if (active == IsEnabled(modName))
+				return;
+
+			Logging.tML.Info($"{(active ? "Enabling" : "Disabling")} Mod: {modName}");
+			if (active)
 				EnabledMods.Add(modName);
-				Logging.tML.InfoFormat("Enabling Mod: {0}", modName);
-			}
-			else {
+			else
 				EnabledMods.Remove(modName);
-				Logging.tML.InfoFormat("Disabling Mod: {0}", modName);
-			}
-			if (PauseSavingEnabledMods) {
-				_needsSavingEnabledMods = true;
-			}
-			else {
-				ModOrganizer.SaveEnabledMods();
-			}
+
+			ModOrganizer.SaveEnabledMods();
+		}
+
+		internal static void DisableAllMods() {
+			Logging.tML.InfoFormat($"Disabling All Mods: {string.Join(", ", EnabledMods)}");
+			EnabledMods.Clear();
+			ModOrganizer.SaveEnabledMods();
 		}
 
 		internal static void SaveConfiguration()
 		{
 			Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
-			Main.Configuration.Put("SteamID64", steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
+			Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
+			Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 			Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
+			Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
+			Main.Configuration.Put("SeenFirstLaunchModderWelcomeMessage", SeenFirstLaunchModderWelcomeMessage);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
+			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
+			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+			Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
+			Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		}
 
 		internal static void LoadConfiguration()
 		{
 			Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
-			Main.Configuration.Get("SteamID64", ref steamID64);
 			Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
 			Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
+			Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
+			Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+			Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
+			Main.Configuration.Get("SeenFirstLaunchModderWelcomeMessage", ref SeenFirstLaunchModderWelcomeMessage);
+			Main.Configuration.Get(nameof(ModOrganizer.ModPackActive), ref ModOrganizer.ModPackActive);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
+			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
+			Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
+			LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		}
 
 		internal static void MigrateSettings()
 		{
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
-			
-			/*
-			if (LastLaunchedTModLoaderVersion < version)
+
+			// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
+			if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 				ShowWhatsNew = true;
-			*/
+				// TODO: Start retrieving what's new data from github here.
+			}
 
 			if (LastLaunchedTModLoaderVersion == new Version(0, 0))
 				ShowFirstLaunchWelcomeMessage = true;
@@ -404,56 +387,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows type inference on T and F
 		/// </summary>
-		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
-		{
+		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
 			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
-		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
-		{
-			return BuildGlobalHook(providers, Method(expr));
-		}
-
-		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method)
-		{
-			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-
-			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
-		}
-
-		internal static int[] BuildGlobalHookNew<T>(IList<T> providers, MethodInfo method) {
-			if (!method.IsVirtual)
-				throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-			var list = new List<int>();
-
-			for (int i = 0; i < providers.Count; i++) {
-				if (providers[i].GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)) {
-					list.Add(i);
-				}
-			}
-
-			return list.ToArray();
-		}
-
-		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
-		{
-			MethodInfo method;
-
-			try {
-				var convert = expr.Body as UnaryExpression;
-				var makeDelegate = convert.Operand as MethodCallExpression;
-				var methodArg = makeDelegate.Object as ConstantExpression;
-				method = methodArg.Value as MethodInfo;
-				if (method == null) throw new NullReferenceException();
-			}
-			catch (Exception e) {
-				throw new ArgumentException("Invalid hook expression " + expr, e);
-			}
-
-			return method;
+		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
+			return providers.WhereMethodIsOverridden(expr).ToArray();
 		}
 	}
 }

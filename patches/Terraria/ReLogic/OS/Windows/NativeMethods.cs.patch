@@ -1,0 +1,31 @@
+--- src/decompiled/ReLogic/OS/Windows/NativeMethods.cs
++++ src/Terraria/ReLogic/OS/Windows/NativeMethods.cs
+@@ -1,6 +_,8 @@
+ using System;
+ using System.Runtime.InteropServices;
++#if !NETCORE
+ using System.Windows.Forms;
++#endif
+ 
+ namespace ReLogic.OS.Windows
+ {
+@@ -85,8 +_,10 @@
+ 		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 		public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 
++#if !NETCORE
+ 		[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+ 		public static extern bool TranslateMessage(ref Message message);
++#endif
+ 
+ 		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 		public static extern IntPtr GetForegroundWindow();
+@@ -106,5 +_,8 @@
+ 
+ 		[DllImport("gdi32.dll")]
+ 		public static extern int GetDeviceCaps(IntPtr hdc, DeviceCap nIndex);
++
++		[DllImport("user32.dll")]
++		public static extern IntPtr GetDC(IntPtr hWnd);
+ 	}
+ }
