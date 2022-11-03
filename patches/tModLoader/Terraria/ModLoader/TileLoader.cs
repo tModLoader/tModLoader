@@ -716,12 +716,6 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		public static void MineDamage(int minePower, ref int damage) {
-			Tile target = Main.tile[Player.tileTargetX, Player.tileTargetY];
-			ModTile modTile = GetTile(target.type);
-			damage += modTile != null ? (int)(1.2f * minePower / modTile.MineResist) : (int)(1.2f * minePower);
-		}
-
 		public static void PickPowerCheck(Tile target, int pickPower, ref int damage) {
 			ModTile modTile = GetTile(target.type);
 			if (modTile != null && pickPower < modTile.MinPick) {

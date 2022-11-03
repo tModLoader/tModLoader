@@ -79,7 +79,6 @@
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.
 - Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets
-- Remove `TileLoader.MineDamage` it had a weird 1.2 factor in there.
 
 ## Porting Notes:
 - `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
