@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/ChestUI.cs
 +++ src/tModLoader/Terraria/UI/ChestUI.cs
-@@ -6,6 +_,8 @@
+@@ -7,6 +_,8 @@
  using Terraria.GameContent;
  using Terraria.GameInput;
  using Terraria.Localization;
@@ -9,7 +9,7 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -105,6 +_,8 @@
+@@ -106,6 +_,8 @@
  						text = Lang.chestType2[tile.frameX / 36].Value;
  					else if (tile.type == 88)
  						text = Lang.dresserType[tile.frameX / 54].Value;
@@ -18,7 +18,7 @@
  				}
  			}
  			else if (player.chest == -2) {
-@@ -400,12 +_,17 @@
+@@ -401,12 +_,17 @@
  								if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  									continue;
  
@@ -36,7 +36,7 @@
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -424,13 +_,19 @@
+@@ -425,13 +_,19 @@
  									NetMessage.SendData(32, -1, -1, null, player.chest, i);
  							}
  							else if (player.chest == -3) {
@@ -56,7 +56,7 @@
  									SoundEngine.PlaySound(7);
  									if (player.inventory[num].stack <= 0) {
  										player.inventory[num].SetDefaults();
-@@ -444,13 +_,19 @@
+@@ -445,13 +_,19 @@
  								}
  							}
  							else if (player.chest == -4) {
@@ -76,7 +76,7 @@
  									SoundEngine.PlaySound(7);
  									if (player.inventory[num].stack <= 0) {
  										player.inventory[num].SetDefaults();
-@@ -464,13 +_,19 @@
+@@ -465,13 +_,19 @@
  								}
  							}
  							else if (player.chest == -5) {
@@ -96,7 +96,7 @@
  									SoundEngine.PlaySound(7);
  									if (player.inventory[num].stack <= 0) {
  										player.inventory[num].SetDefaults();
-@@ -483,13 +_,19 @@
+@@ -484,13 +_,19 @@
  									}
  								}
  							}
@@ -116,49 +116,41 @@
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -625,18 +_,24 @@
- 				int num3 = list2[k];
- 				int netID = item[num3].netID;
- 				foreach (KeyValuePair<int, int> item2 in dictionary) {
-+					//if (item2.Value == netID && array[item2.Key].netID == netID) {
- 					if (item2.Value == netID && array[item2.Key].netID == netID) {
- 						int num4 = array[item2.Key].stack;
- 						int num5 = item[num3].maxStack - item[num3].stack;
- 						if (num5 == 0)
- 							break;
- 
-+						ItemLoader.TryStackItems(item[num3], array[item2.Key], out _);
-+						SoundEngine.PlaySound(7);
-+
-+						/* TML: #OnStackHook
- 						if (num4 > num5)
+@@ -651,13 +_,16 @@
  							num4 = num5;
  
  						SoundEngine.PlaySound(7);
+-						if (canVisualizeTransfers)
++						ItemLoader.TryStackItems(item[num3], array[item2.Key], out num4);
++						if (canVisualizeTransfers && num4 > 0)
+ 							Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num3], num4);
+ 
++						/* TML: #OnStackHook
  						item[num3].stack += num4;
  						array[item2.Key].stack -= num4;
-+						*/
  						if (array[item2.Key].stack == 0)
  							array[item2.Key].SetDefaults();
++						*/
  
-@@ -677,11 +_,16 @@
- 						if (num9 == 0)
- 							break;
- 
-+						// Outmost for iterates over empty slots, flag not true means item was not put in yet (meaning CanStack does not have to be checked)
-+						ItemLoader.TryStackItems(item[num6], array[item5.Key], out _);
-+
-+						/* TML: #OnStackHook
+ 						array2[num3] = true;
+ 					}
+@@ -701,11 +_,14 @@
  						if (num8 > num9)
  							num8 = num9;
  
+-						if (canVisualizeTransfers)
++						ItemLoader.TryStackItems(item[num6], array[item5.Key], out num8);
++						if (canVisualizeTransfers && num8 > 0)
+ 							Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num6], num8);
+ 
++						/* TML: #OnStackHook
  						item[num6].stack += num8;
  						array[item5.Key].stack -= num8;
 +						*/
  						if (array[item5.Key].stack == 0)
  							array[item5.Key] = new Item();
  					}
-@@ -756,7 +_,8 @@
+@@ -780,7 +_,8 @@
  			List<int> list2 = new List<int>();
  			for (int num = 57; num >= 0; num--) {
  				if ((num < 50 || num >= 54) && (inventory[num].type < 71 || inventory[num].type > 74)) {
@@ -168,7 +160,7 @@
  						hashSet.Add(inventory[num].netID);
  						if (inventory[num].stack < inventory[num].maxStack)
  							list.Add(num);
-@@ -769,7 +_,8 @@
+@@ -793,7 +_,8 @@
  
  			bool flag = false;
  			for (int i = 0; i < item.Length; i++) {
@@ -178,7 +170,7 @@
  					continue;
  
  				bool flag2 = false;
-@@ -782,12 +_,17 @@
+@@ -806,12 +_,17 @@
  					if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  						continue;
  
@@ -196,7 +188,7 @@
  					flag = true;
  					if (inventory[num2].stack == inventory[num2].maxStack) {
  						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-@@ -1012,6 +_,9 @@
+@@ -1045,6 +_,9 @@
  					if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
  						continue;
  
@@ -206,7 +198,7 @@
  					int num = I.stack;
  					if (I.stack + chestinv[i].stack > chestinv[i].maxStack)
  						num = chestinv[i].maxStack - chestinv[i].stack;
-@@ -1021,8 +_,12 @@
+@@ -1054,8 +_,12 @@
  						break;
  					}
  

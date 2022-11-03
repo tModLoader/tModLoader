@@ -10,5 +10,7 @@ public class ModPrefixTest : ModPrefix
 		modPrefix = GetPrefix(Type);
 	}
 
+#if COMPILE_ERROR
 	public override void ValidateItem(Item item, ref bool invalid) { }
+#endif
 }

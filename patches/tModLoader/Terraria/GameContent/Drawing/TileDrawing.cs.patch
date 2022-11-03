@@ -238,9 +238,9 @@
 +		//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
 +		internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache) {
  			bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654;
- 			if (tileCache.slope() == 0 && !tileCache.inActive()) {
- 				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
-@@ -3060,6 +_,10 @@
+ 			flag |= (Main.getGoodWorld && typeCache == 230);
+ 			flag |= (Main.dontStarveWorld && typeCache == 80);
+@@ -3062,6 +_,10 @@
  					flag = (flag || typeCache == 162);
  			}
  
@@ -251,7 +251,7 @@
  			return flag;
  		}
  
-@@ -3070,7 +_,7 @@
+@@ -3072,7 +_,7 @@
  			return _tileSolid[typeCache];
  		}
  
@@ -260,7 +260,7 @@
  			if (Main.InSmartCursorHighlightArea(x, y, out bool actuallySelected)) {
  				int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
  				if (num > 10) {
-@@ -3110,7 +_,7 @@
+@@ -3112,7 +_,7 @@
  
  		private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
  
@@ -269,7 +269,7 @@
  			tileTop = 0;
  			tileWidth = 16;
  			tileHeight = 16;
-@@ -3185,7 +_,9 @@
+@@ -3187,7 +_,9 @@
  						tileWidth = 20;
  						tileHeight = 20;
  						int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
@@ -280,7 +280,7 @@
  						break;
  					}
  				case 583:
-@@ -3209,7 +_,10 @@
+@@ -3211,7 +_,10 @@
  						tileWidth = 20;
  						tileHeight = 20;
  						int palmTreeBiome = GetPalmTreeBiome(x, y);
@@ -292,7 +292,7 @@
  						break;
  					}
  				case 4:
-@@ -4781,6 +_,10 @@
+@@ -4783,6 +_,10 @@
  						break;
  					}
  			}
@@ -303,7 +303,7 @@
  		}
  
  		private bool IsWindBlocked(int x, int y) {
-@@ -4851,11 +_,14 @@
+@@ -4853,11 +_,14 @@
  			}
  		}
  
@@ -320,7 +320,7 @@
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;
-@@ -5463,12 +_,26 @@
+@@ -5465,12 +_,26 @@
  			}
  		}
  
@@ -348,7 +348,7 @@
  		private void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType) {
  			Tile tile = Main.tile[x, y + 1];
  			if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
-@@ -5478,6 +_,12 @@
+@@ -5480,6 +_,12 @@
  			}
  		}
  
@@ -361,7 +361,7 @@
  		private void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType) {
  			int num = 0;
  			if (Main.WindForVisuals > 0.2f)
-@@ -5533,6 +_,8 @@
+@@ -5535,6 +_,8 @@
  				type = 706;
  			else if (Main.waterStyle == 12)
  				type = 1147;
@@ -370,7 +370,7 @@
  			else if (Main.waterStyle > 1)
  				type = 706 + Main.waterStyle - 1;
  
-@@ -5558,7 +_,17 @@
+@@ -5560,7 +_,17 @@
  			_gore[num2].velocity *= 0f;
  		}
  
@@ -389,7 +389,7 @@
  			if (!Main.SettingsEnabled_TilesSwayInWind)
  				return 0f;
  
-@@ -5581,7 +_,22 @@
+@@ -5583,7 +_,22 @@
  			return num2 * lerpValue;
  		}
  
@@ -413,7 +413,7 @@
  			if (!Main.SettingsEnabled_TilesSwayInWind)
  				return false;
  
-@@ -5867,6 +_,8 @@
+@@ -5869,6 +_,8 @@
  
  					Main.spriteBatch.Draw(value7, vector, value8, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  				}
@@ -422,7 +422,7 @@
  			}
  		}
  
-@@ -6115,6 +_,24 @@
+@@ -6117,6 +_,24 @@
  							num20 = 2;
  						}
  
@@ -447,7 +447,7 @@
  						int frameY2 = Main.tile[x, y].frameY;
  						byte tileColor4 = tile.color();
  						Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6139,16 +_,23 @@
+@@ -6141,16 +_,23 @@
  
  		private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor) {
  			Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -473,7 +473,7 @@
  
  			return texture2D;
  		}
-@@ -6295,7 +_,7 @@
+@@ -6297,7 +_,7 @@
  		}
  
  		private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust) {
@@ -482,7 +482,7 @@
  				if (tileLight.R < byte.MaxValue)
  					tileLight.R = byte.MaxValue;
  
-@@ -6314,7 +_,7 @@
+@@ -6316,7 +_,7 @@
  				}
  			}
  
@@ -491,7 +491,7 @@
  				if (tileLight.R < 200)
  					tileLight.R = 200;
  
-@@ -6354,7 +_,17 @@
+@@ -6356,7 +_,17 @@
  			}
  		}
  
@@ -510,7 +510,7 @@
  			_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out int windTimeLeft, out int directionX, out int _);
  			if (windTimeLeft >= pushAnimationTimeTotal / 2)
  				return (float)(pushAnimationTimeTotal - windTimeLeft) * pushForcePerFrame * (float)directionX;
-@@ -6374,7 +_,18 @@
+@@ -6376,7 +_,18 @@
  			}
  		}
  

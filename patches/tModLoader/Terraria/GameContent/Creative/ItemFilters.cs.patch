@@ -29,7 +29,7 @@
  			private bool[] _fitsFilterByItemType;
  
  			public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst) {
--				short num = 5453;
+-				short num = 5456;
 +				int num = ItemLoader.ItemCount;
  				_fitsFilterByItemType = new bool[num];
  				for (int i = 1; i < num; i++) {

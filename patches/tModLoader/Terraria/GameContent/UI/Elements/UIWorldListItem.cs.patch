@@ -100,8 +100,8 @@
 +			if (listeningElement == evt.Target && _data.IsValid && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
  				_data.SetAsActive();
  				SoundEngine.PlaySound(10);
- 				Main.GetInputText("");
-@@ -259,9 +_,29 @@
+ 				Main.clrInput();
+@@ -260,9 +_,29 @@
  				else
  					Main.menuMode = 10;
  
@@ -132,7 +132,7 @@
  		}
  
  		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
-@@ -272,6 +_,9 @@
+@@ -273,6 +_,9 @@
  				return true;
  			}
  
@@ -142,7 +142,7 @@
  			bool flag = Main.ActivePlayerFileData.Player.difficulty == 3;
  			bool isJourneyMode = value.IsJourneyMode;
  			if (flag && !isJourneyMode) {
-@@ -288,6 +_,13 @@
+@@ -289,6 +_,13 @@
  				return true;
  			}
  
@@ -156,7 +156,7 @@
  			return false;
  		}
  
-@@ -331,10 +_,16 @@
+@@ -332,10 +_,16 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
  		}
  

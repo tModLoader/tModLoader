@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Biomes/CaveHouse/HouseBuilder.cs
 +++ src/tModLoader/Terraria/GameContent/Biomes/CaveHouse/HouseBuilder.cs
-@@ -99,7 +_,7 @@
+@@ -104,7 +_,7 @@
  
  		private UnifiedRandom _random => WorldGen.genRand;
  

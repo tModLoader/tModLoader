@@ -106,6 +106,7 @@ public class SimpleRenamedVanillaMembersTest
 		var thrownCost33 = player.ThrownCost33;
 		var thrownCost50 = player.ThrownCost50;
 		var thrownVelocity = player.ThrownVelocity;
+		var discount = player.discountAvailable;
 		player.IsItemSlotUnlockedAndUsable(0);
 #if COMPILE_ERROR
 		player.VanillaUpdateEquip(null)/* tModPorter Note: Removed. Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots) */;

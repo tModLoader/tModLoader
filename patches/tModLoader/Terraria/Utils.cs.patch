@@ -44,7 +44,7 @@
  		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1273,14 +_,17 @@
+@@ -1311,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

@@ -105,6 +105,7 @@ public class SimpleRenamedVanillaMembersTest
 		var thrownCost33 = player.thrownCost33;
 		var thrownCost50 = player.thrownCost50;
 		var thrownVelocity = player.thrownVelocity;
+		var discount = player.discount;
 		player.IsAValidEquipmentSlotForIteration(0);
 #if COMPILE_ERROR
 		player.VanillaUpdateEquip(null);

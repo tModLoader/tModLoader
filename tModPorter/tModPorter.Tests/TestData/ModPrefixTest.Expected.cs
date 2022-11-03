@@ -10,5 +10,7 @@ public class ModPrefixTest : ModPrefix
 		modPrefix = PrefixLoader.GetPrefix(Type);
 	}
 
+#if COMPILE_ERROR
 	public override bool AllStatChangesHaveEffectOn(Item item) { }
+#endif
 }

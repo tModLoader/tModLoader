@@ -17,7 +17,7 @@
  
  		public class ItemSets
  		{
--			public static SetFactory Factory = new SetFactory(5453);
+-			public static SetFactory Factory = new SetFactory(5456);
 +			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  			public static bool[] BoomerangsChakrams = Factory.CreateBoolSet(55, 119, 191, 284, 670, 1122, 1513, 1569, 1571, 1825, 1918, 3054, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 5294, 3030, 3543, 4764, 4818, 4760, 561, 1324, 5298);
  			public static bool[] ItemsThatCanHaveLegendary2 = Factory.CreateBoolSet(3389);

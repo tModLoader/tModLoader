@@ -21,7 +21,7 @@
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -4939,7 +_,7 @@
+@@ -4941,7 +_,7 @@
  			if (!dedServ) {
  				Map = new WorldMap(maxTilesX, maxTilesY);
  				Configuration.Load();
@@ -30,7 +30,7 @@
  				base.Content.RootDirectory = "Content";
  			}
  		}
-@@ -38618,6 +_,9 @@
+@@ -38627,6 +_,9 @@
  
  			Assets.TransferCompletedAssets();
  			Exit();

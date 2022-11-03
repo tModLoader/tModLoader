@@ -23,7 +23,7 @@
  
  			public static void SetCreativeMenuOrder() {
  				List<Item> list = new List<Item>();
--				for (int i = 1; i < 5453; i++) {
+-				for (int i = 1; i < 5456; i++) {
 +				for (int i = 1; i < ItemLoader.ItemCount; i++) {
  					Item item = new Item();
  					item.SetDefaults(i);
@@ -55,12 +55,12 @@
  			}
  
  			ItemsByType.Clear();
--			for (int k = 0; k < 5453; k++) {
+-			for (int k = 0; k < 5456; k++) {
 +			for (int k = 0; k < ItemLoader.ItemCount; k++) {
  				Item item = new Item();
  				item.SetDefaults(k);
  				ItemsByType[k] = item;
-@@ -924,7 +_,7 @@
+@@ -927,7 +_,7 @@
  			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  			nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
  			NPCSpawnParams spawnparams = nPCSpawnParams;

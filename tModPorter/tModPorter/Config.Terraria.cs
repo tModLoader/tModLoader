@@ -171,6 +171,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "thrownCost33",		to: "ThrownCost33");
 		RenameInstanceField("Terraria.Player",	from: "thrownCost50",		to: "ThrownCost50");
 		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
+		RenameInstanceField("Terraria.Player",	from: "discount",			to: "discountAvailable");
 
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");

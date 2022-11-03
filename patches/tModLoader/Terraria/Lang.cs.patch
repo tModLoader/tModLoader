@@ -14,7 +14,7 @@
  		public static LocalizedText[] prefix = new LocalizedText[85];
 -		public static LocalizedText[] _mapLegendCache;
 +		public static MapLegend _mapLegendCache;
--		private static LocalizedText[] _itemNameCache = new LocalizedText[5453];
+-		private static LocalizedText[] _itemNameCache = new LocalizedText[5456];
 +		internal static LocalizedText[] _itemNameCache = new LocalizedText[ItemID.Count];
 -		private static LocalizedText[] _projectileNameCache = new LocalizedText[1022];
 +		internal static LocalizedText[] _projectileNameCache = new LocalizedText[ProjectileID.Count];
@@ -25,7 +25,7 @@
 +		internal static LocalizedText[] _buffNameCache = new LocalizedText[BuffID.Count];
 -		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[355];
 +		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
--		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5453];
+-		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5456];
 +		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
  		private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
  
@@ -47,7 +47,7 @@
 -			id = ItemID.FromNetId((short)id);
 +				id = ItemID.FromNetId((short)id);
 +
--			if (id > 0 && id < 5453 && _itemNameCache[id] != null)
+-			if (id > 0 && id < 5456 && _itemNameCache[id] != null)
 +			if (id > 0 && id < _itemNameCache.Length && _itemNameCache[id] != null)
  				return _itemNameCache[id];
  

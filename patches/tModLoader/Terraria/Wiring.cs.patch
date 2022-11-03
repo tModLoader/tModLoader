@@ -182,7 +182,7 @@
  										}
  
  										break;
-@@ -2194,6 +_,8 @@
+@@ -2195,6 +_,8 @@
  					NetMessage.SendTileSquare(-1, i, j);
  					break;
  			}
@@ -191,7 +191,7 @@
  		}
  
  		public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn) {
-@@ -2498,7 +_,7 @@
+@@ -2499,7 +_,7 @@
  			return false;
  		}
  
@@ -200,7 +200,7 @@
  			if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  				return;
  
-@@ -2515,7 +_,7 @@
+@@ -2516,7 +_,7 @@
  			}
  		}
  
@@ -209,7 +209,7 @@
  			Main.tile[i, j].inActive(inActive: false);
  			WorldGen.SquareTileFrame(i, j, resetFrame: false);
  			if (Main.netMode != 1)
-@@ -2597,7 +_,11 @@
+@@ -2598,7 +_,11 @@
  			if (!flag)
  				MassWireOperationStep(user, pe, toolMode, ref wireCount, ref actuatorCount);
  
