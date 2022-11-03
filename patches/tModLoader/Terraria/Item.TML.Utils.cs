@@ -1,3 +1,4 @@
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -10,7 +11,7 @@ partial class Item
 	/// <br/> <b>NOTE:</b> The accessed values are stored per item type, not per item instance. You're recommended to only use the setter in load-time hooks, like <see cref="ModType.SetStaticDefaults"/>.
 	/// </summary>
 	public int SacrificeTotal {
-		get => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[type];
-		set => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[type] = value;
+		get => CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.TryGetValue(type, out int result) ? result : 0;
+		set => CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[type] = value;
 	}
 }
