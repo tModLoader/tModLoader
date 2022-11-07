@@ -37,7 +37,6 @@
 - Check implementation of `rangedMultDamage` and `arrowDamageAdditiveStack`
 - `summonerWeaponSpeedBonus`? Is this a class specific weapon bonus. What about `whipUseTimeMultiplier`?
 - Remove caps in `CapAttackSpeeds`
-- Reimplement `ExtractinatorUse` hooks
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
 - Make sure loadout serialization doesn't save modded data to the vanilla .plr
@@ -58,8 +57,6 @@
 - Investigate with the new shimmer profiles. 
 - No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles
 	
-## ItemID.cs
-- ExtractinatorMode (extractinator has changed in 1.4.4, chloro extractinator now exists)
 
 ## PlayerDrawLayers.cs:
 - Re-ensure that all upper bound ID checks are gone, some patches had to be removed.
