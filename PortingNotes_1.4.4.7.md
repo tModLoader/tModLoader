@@ -61,10 +61,6 @@
 ## ItemID.cs
 - ExtractinatorMode (extractinator has changed in 1.4.4, chloro extractinator now exists)
 
-## PlayerDrawLayers.cs:
-- Re-ensure that all upper bound ID checks are gone, some patches had to be removed.
-- Add new layer for `DrawPlayer_JimsDroneRadio`
-
 ## Recipe.cs
 - `Item.PopulateMaterialCache()` do we need this anymore?
 - do we need to clone `notDecraftable`

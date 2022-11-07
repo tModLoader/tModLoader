@@ -110,6 +110,9 @@ namespace Terraria.DataStructures
 		/// <summary> Draws the pulley if the player is hanging on a rope. </summary>
 		public static readonly PlayerDrawLayer Pulley = new VanillaPlayerDrawLayer(nameof(Pulley), DrawPlayer_24_Pulley, TorsoGroup);
 
+		/// <summary> Draws the pulley if the player is hanging on a rope. </summary>
+		public static readonly PlayerDrawLayer JimsDroneRadio = new VanillaPlayerDrawLayer(nameof(JimsDroneRadio), DrawPlayer_JimsDroneRadio, TorsoGroup);
+
 		/// <summary> Draws the back part of player's front accessory. </summary>
 		public static readonly PlayerDrawLayer FrontAccBack = new VanillaPlayerDrawLayer(nameof(FrontAccBack), DrawPlayer_32_FrontAcc_BackPart, TorsoGroup);
 
@@ -200,6 +203,7 @@ namespace Terraria.DataStructures
 			FaceAcc,
 			MountFront,
 			Pulley,
+			JimsDroneRadio,
 			FrontAccBack,
 			Shield,
 			SolarShield,
