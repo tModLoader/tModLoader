@@ -157,7 +157,7 @@
  		public float endurance;
  		public float whipRangeMultiplier;
 -		public float whipUseTimeMultiplier;
-+		internal ref float whipUseTimeMultiplier => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
++		//public float whipUseTimeMultiplier;
  		public bool loveStruck;
  		public bool stinky;
  		public bool resistCold;
@@ -179,7 +179,7 @@
  		public int statDefense;
  		public int statLifeMax = 100;
  		public int statLifeMax2 = 100;
-@@ -1184,20 +_,24 @@
+@@ -1184,21 +_,25 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -197,6 +197,7 @@
 -		public float minionDamage = 1f;
 -		public float minionKB;
 -		public float meleeSpeed = 1f;
+-		public float summonerWeaponSpeedBonus;
 +		internal ref float allCrit => ref GetCritChance(DamageClass.Generic);
 +		internal ref float meleeCrit => ref GetCritChance(DamageClass.Melee);
 +		internal ref float magicCrit => ref GetCritChance(DamageClass.Magic);
@@ -215,9 +216,10 @@
 +		internal ref float minionKB => ref GetKnockback(DamageClass.Summon).Base;
 +		internal ref float meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
 +		internal float inverseMeleeSpeed => 1 / GetTotalAttackSpeed(DamageClass.Melee); // meleeSpeed is now a damage multiplier, so inverseMeleeSpeed is the useTime multiplier. By using GetTotalAttackSpeed we also incorporate anyone that adds attackSpeed to the Generic damage class
- 		public float summonerWeaponSpeedBonus;
++		internal ref float summonerWeaponSpeedBonus => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
+ 		public float wallSpeed = 1f;
 @@ -1233,12 +_,30 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
@@ -2099,7 +2101,7 @@
  				float num17 = 1.15f;
  				float num18 = 1f / num17;
 -				whipUseTimeMultiplier *= num18;
-+				whipUseTimeMultiplier *= num17;
++				summonerWeaponSpeedBonus += num17; // tML: Obsidian armor changed to additive.
  			}
  
  			ApplyArmorSoundAndDustChanges();
@@ -3055,6 +3057,18 @@
  		}
  
  		private void TryToShimmerUnstuck() {
+@@ -21752,9 +_,11 @@
+ 		}
+ 
+ 		private void CapAttackSpeeds() {
++			/*
+ 			float num = meleeSpeed;
+ 			meleeSpeed = TurnAttackSpeedToUseTimeMultiplier(num);
+ 			summonerWeaponSpeedBonus = TurnAttackSpeedToUseTimeMultiplier(num + summonerWeaponSpeedBonus);
++			*/
+ 		}
+ 
+ 		private float TurnAttackSpeedToUseTimeMultiplier(float speed) {
 @@ -21844,6 +_,9 @@
  		}
  

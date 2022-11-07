@@ -34,9 +34,6 @@
 - Add hook for `RefreshInfoAccsFromItemType`
 - Add `ItemLoader.ConsumeItem` check to `QuickHeal` and `QuickMana`
 - Move `OnHit` and `ModifyHit` into `CombinedHooks`
-- Check implementation of `rangedMultDamage` and `arrowDamageAdditiveStack`
-- `summonerWeaponSpeedBonus`? Is this a class specific weapon bonus. What about `whipUseTimeMultiplier`?
-- Remove caps in `CapAttackSpeeds`
 - Reimplement `ExtractinatorUse` hooks
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
