@@ -988,6 +988,15 @@
  		public int FindTargetWithLineOfSight(float maxRange = 800f) {
  			float num = maxRange;
  			int result = -1;
+@@ -32210,7 +_,7 @@
+ 					break;
+ 			}
+ 
+-			num4 *= 1f / player.meleeSpeed;
++			num4 *= 1f / player.inverseMeleeSpeed;
+ 			float scaleFactor = num3 + num4 * num2;
+ 			float num7 = num5 + num6 * num2;
+ 			float f = velocity.ToRotation();
 @@ -32406,7 +_,7 @@
  				ai[1] += 1f;
  			}

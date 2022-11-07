@@ -369,9 +369,17 @@
  				case 25:
  				case 27:
  				case 33:
-@@ -1032,6 +_,13 @@
- 				if (!Main.mouseRight)
+@@ -1035,20 +_,29 @@
+ 				if (context == 0 && Main.mouseRightRelease)
+ 					TryItemSwap(inv[slot]);
+ 
+-				if (context == 0 && ItemID.Sets.OpenableBag[inv[slot].type]) {
++				if (context == 0 && Main.ItemDropsDB.GetRulesForItemID(inv[slot].type).Any()) {
+ 					if (Main.mouseRightRelease)
+ 						TryOpenContainer(inv[slot], player);
+ 
  					return;
+ 				}
  
 +				if (context == 0 && ItemLoader.CanRightClick(inv[slot])) {
 +					if (Main.mouseRightRelease)
@@ -380,11 +388,6 @@
 +					return;
 +				}
 +
- 				if (context == 0 && Main.mouseRightRelease)
- 					TryItemSwap(inv[slot]);
- 
-@@ -1044,11 +_,13 @@
- 
  				switch (context) {
  					case 9:
 +					case -11:
@@ -444,15 +447,30 @@
  
  			if (inv[slot].stack <= 0)
  				inv[slot] = new Item();
-@@ -1187,8 +_,10 @@
- 
+@@ -1181,14 +_,20 @@
+ 			else if (item.type == 1869) {
+ 				player.OpenPresent(1869);
+ 			}
+-			else {
+-				if (item.type != 599 && item.type != 600 && item.type != 601)
++			else if (item.type == 599 && item.type == 600 && item.type == 601) {
+-					return;
+-
  				player.OpenLegacyPresent(item.type);
  			}
+-
+-			item.stack--;
++			else {
++				if (!ItemLoader.CanRightClick(item))
++					return;
++
++				player.DropFromItem(item.type);
++			}
++
 +			ItemLoader.RightClickCallHooks(item, player);
 +			if (ItemLoader.ConsumeItem(item, player))
 +				item.stack--;
- 
--			item.stack--;
++
  			if (item.stack == 0)
  				item.SetDefaults();
  

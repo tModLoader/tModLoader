@@ -654,16 +654,12 @@ namespace Terraria.ModLoader
 		public virtual void RightClick(Item item, Player player) {
 		}
 
+		/// <summary>
+		/// This hook is not instanced. Use this to setup a loot table for an item.
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="itemLoot"></param>
 		public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot) {
-		}
-		
-		[Obsolete("Use ModifyItemLoot instead", true)]
-		public virtual bool PreOpenVanillaBag(string context, Player player, int arg) {
-			return true;
-		}
-		
-		[Obsolete("Use ModifyItemLoot instead", true)]
-		public virtual void OpenVanillaBag(string context, Player player, int arg) {
 		}
 
 		/// <summary>

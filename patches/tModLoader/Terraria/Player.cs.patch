@@ -157,7 +157,7 @@
  		public float endurance;
  		public float whipRangeMultiplier;
 -		public float whipUseTimeMultiplier;
-+		internal ref float whipUseTimeMultiplier => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
++		//public float whipUseTimeMultiplier;
  		public bool loveStruck;
  		public bool stinky;
  		public bool resistCold;
@@ -179,7 +179,7 @@
  		public int statDefense;
  		public int statLifeMax = 100;
  		public int statLifeMax2 = 100;
-@@ -1184,20 +_,24 @@
+@@ -1184,21 +_,25 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -197,6 +197,7 @@
 -		public float minionDamage = 1f;
 -		public float minionKB;
 -		public float meleeSpeed = 1f;
+-		public float summonerWeaponSpeedBonus;
 +		internal ref float allCrit => ref GetCritChance(DamageClass.Generic);
 +		internal ref float meleeCrit => ref GetCritChance(DamageClass.Melee);
 +		internal ref float magicCrit => ref GetCritChance(DamageClass.Magic);
@@ -215,9 +216,10 @@
 +		internal ref float minionKB => ref GetKnockback(DamageClass.Summon).Base;
 +		internal ref float meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
 +		internal float inverseMeleeSpeed => 1 / GetTotalAttackSpeed(DamageClass.Melee); // meleeSpeed is now a damage multiplier, so inverseMeleeSpeed is the useTime multiplier. By using GetTotalAttackSpeed we also incorporate anyone that adds attackSpeed to the Generic damage class
- 		public float summonerWeaponSpeedBonus;
++		internal ref float summonerWeaponSpeedBonus => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
+ 		public float wallSpeed = 1f;
 @@ -1233,12 +_,30 @@
  		public bool oldAdjWater;
  		public bool oldAdjHoney;
@@ -742,17 +744,11 @@
  			bool flag = victim is NPC && (((NPC)victim).type == 488 || ((NPC)victim).SpawnedFromStatue);
  			if (titaniumStormCooldown > 0)
  				flag = true;
-@@ -4074,6 +_,15 @@
+@@ -4074,6 +_,9 @@
  		}
  
  		public void OpenPresent(int itemType) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("present", this, itemType))
-+				return;
-+
 +			DropFromItem(itemType);
-+
-+			ItemLoader.OpenVanillaBag_Obsolete("present", this, itemType);
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
@@ -771,7 +767,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			int num = Main.rand.Next(14);
  			if (num == 0 && Main.hardMode) {
-@@ -4315,18 +_,39 @@
+@@ -4315,18 +_,31 @@
  			}
  			else {
  				int number3 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
@@ -794,19 +790,11 @@
  		}
  
  		public void OpenBossBag(int type) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("bossBag", this, type))
-+				return;
-+
 +			DropFromItem(type);
-+
-+			ItemLoader.OpenBossBag_Obsolete(type, this);
-+			ItemLoader.OpenVanillaBag_Obsolete("bossBag", this, type);
 +
 +			if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
 +				TryGettingDevArmor(GetItemSource_OpenItem(type));
 +			}
-+
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			GameModeData gameModeInfo = Main.GameModeInfo;
@@ -833,17 +821,11 @@
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 8 : 16) == 0) {
  				switch (Main.rand.Next(18)) {
  					case 0:
-@@ -5027,6 +_,15 @@
+@@ -5027,6 +_,9 @@
  		}
  
  		public void OpenFishingCrate(int crateItemID) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("crate", this, crateItemID))
-+				return;
-+
 +			DropFromItem(crateItemID);
-+
-+			ItemLoader.OpenVanillaBag_Obsolete("crate", this, crateItemID);
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
@@ -873,23 +855,17 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -6442,6 +_,15 @@
+@@ -6442,6 +_,9 @@
  		}
  
  		public void OpenShadowLockbox(int boxType) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("obsidianLockBox", this, boxType))
-+				return;
-+
 +			DropFromItem(boxType);
-+
-+			ItemLoader.OpenVanillaBag_Obsolete("obsidianLockBox", this, boxType);
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(boxType);
  			while (flag) {
-@@ -6469,14 +_,25 @@
+@@ -6469,14 +_,19 @@
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  
  				if (Main.rand.Next(5) == 0) {
@@ -903,19 +879,13 @@
  		}
  
  		public void OpenLockBox(int lockboxItemType) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("lockBox", this, lockboxItemType))
-+				return;
-+
 +			DropFromItem(lockboxItemType);
-+
-+			ItemLoader.OpenVanillaBag_Obsolete("lockBox", this, lockboxItemType);
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6510,15 +_,26 @@
+@@ -6510,15 +_,20 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  
@@ -930,13 +900,7 @@
  		}
  
  		public void OpenHerbBag(int bagType) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("herbBag", this, bagType))
-+				return;
-+
 +			DropFromItem(bagType);
-+
-+			ItemLoader.OpenVanillaBag_Obsolete("herbBag", this, bagType);
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
@@ -976,7 +940,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
  			if (Main.rand.Next(5) == 0) {
  				if (Main.rand.Next(15) == 0)
-@@ -6597,12 +_,23 @@
+@@ -6597,12 +_,17 @@
  					QuickSpawnItem(itemSource_OpenItem, 4413);
  				else
  					QuickSpawnItem(itemSource_OpenItem, 4412);
@@ -988,13 +952,7 @@
  		}
  
  		public void OpenGoodieBag(int itemType) {
-+			if (!ItemLoader.PreOpenVanillaBag_Obsolete("goodieBag", this, itemType))
-+				return;
-+
 +			DropFromItem(itemType);
-+
-+			ItemLoader.OpenVanillaBag_Obsolete("goodieBag", this, itemType);
-+			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
@@ -2099,7 +2057,7 @@
  				float num17 = 1.15f;
  				float num18 = 1f / num17;
 -				whipUseTimeMultiplier *= num18;
-+				whipUseTimeMultiplier *= num17;
++				summonerWeaponSpeedBonus += num17; // tML: Obsidian armor changed to additive.
  			}
  
  			ApplyArmorSoundAndDustChanges();
@@ -3055,6 +3013,18 @@
  		}
  
  		private void TryToShimmerUnstuck() {
+@@ -21752,9 +_,11 @@
+ 		}
+ 
+ 		private void CapAttackSpeeds() {
++			/*
+ 			float num = meleeSpeed;
+ 			meleeSpeed = TurnAttackSpeedToUseTimeMultiplier(num);
+ 			summonerWeaponSpeedBonus = TurnAttackSpeedToUseTimeMultiplier(num + summonerWeaponSpeedBonus);
++			*/
+ 		}
+ 
+ 		private float TurnAttackSpeedToUseTimeMultiplier(float speed) {
 @@ -21844,6 +_,9 @@
  		}
  

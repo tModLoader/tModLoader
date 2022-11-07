@@ -34,9 +34,6 @@
 - Add hook for `RefreshInfoAccsFromItemType`
 - Add `ItemLoader.ConsumeItem` check to `QuickHeal` and `QuickMana`
 - Move `OnHit` and `ModifyHit` into `CombinedHooks`
-- Check implementation of `rangedMultDamage` and `arrowDamageAdditiveStack`
-- `summonerWeaponSpeedBonus`? Is this a class specific weapon bonus. What about `whipUseTimeMultiplier`?
-- Remove caps in `CapAttackSpeeds`
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
 - Make sure loadout serialization doesn't save modded data to the vanilla .plr
@@ -47,9 +44,6 @@
 +					return;
 ```
 
-## ItemSlot
-- `ItemLoader.CanRightClick` and `ItemLoader.RightClick` conditions don't need to check `Main.mouseRight[Release]`
-
 ## MessageBuffer
 - `ModTile.ChestDrop` and `DresserDrop` code/patches are atrocious.
 
@@ -57,10 +51,6 @@
 - Investigate with the new shimmer profiles. 
 - No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles
 	
-
-## PlayerDrawLayers.cs:
-- Re-ensure that all upper bound ID checks are gone, some patches had to be removed.
-- Add new layer for `DrawPlayer_JimsDroneRadio`
 
 ## Recipe.cs
 - `Item.PopulateMaterialCache()` do we need this anymore?
