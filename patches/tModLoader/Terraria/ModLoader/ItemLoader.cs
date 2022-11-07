@@ -1862,14 +1862,14 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private delegate void DelegateExtractinatorUse(int extractType, ref int resultType, ref int resultStack);
+		private delegate void DelegateExtractinatorUse(int extractType, int extractinatorBlockType, ref int resultType, ref int resultStack);
 		private static HookList HookExtractinatorUse = AddHook<DelegateExtractinatorUse>(g => g.ExtractinatorUse);
 
-		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType) {
-			GetItem(extractType)?.ExtractinatorUse(ref resultType, ref resultStack);
+		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType, int extractinatorBlockType) {
+			GetItem(extractType)?.ExtractinatorUse(extractinatorBlockType, ref resultType, ref resultStack);
 
 			foreach (var g in HookExtractinatorUse.Enumerate(globalItems)) {
-				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
+				g.ExtractinatorUse(extractType, extractinatorBlockType, ref resultType, ref resultStack);
 			}
 		}
 

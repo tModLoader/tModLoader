@@ -46,12 +46,17 @@
  			public static bool[] IsFishingCrateHardmode = Factory.CreateBoolSet(3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
  			public static bool[] CanBePlacedOnWeaponRacks = Factory.CreateBoolSet(3196, 166, 235, 3115, 167, 2896, 3547, 580, 937, 4423, 4824, 4825, 4826, 4827, 4908, 4909, 4094, 4039, 4092, 4093, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598, 905, 1326, 5335, 3225, 2303, 2299, 2290, 2317, 2305, 2304, 2313, 2318, 2312, 2306, 2308, 2319, 2314, 2302, 2315, 2307, 2310, 2301, 2298, 2316, 2309, 2321, 2297, 2300, 2311, 2420, 2438, 2437, 2436, 4401, 4402, 2475, 2476, 2450, 2477, 2478, 2451, 2479, 2480, 2452, 2453, 2481, 2454, 2482, 2483, 2455, 2456, 2457, 2458, 2459, 2460, 2484, 2472, 2461, 2462, 2463, 2485, 2464, 2465, 2486, 2466, 2467, 2468, 2487, 2469, 2488, 2470, 2471, 2473, 2474, 4393, 4394);
  			public static int[] TextureCopyLoad = Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 3665, 3706, 3665, 4713, 4712, 5167, 5156, 5188, 5177, 5209, 5198);
-@@ -953,9 +_,14 @@
+@@ -952,10 +_,18 @@
+ 			public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
  			public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
  			public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581, 4143);
- 			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
-+			// TODO: Paired with a change in Player.ExtractinatorUse, non default extractType goes by itemId so DesertFossil is 3347 rather than 1 now
-+			// public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 3347);
++			// Paired with a change in Player.ExtractinatorUse, non default extractType goes by iconic ItemID:
++			// DesertFossil is 3347 rather than 1, 2339/2338/2337 are 2337 rather than 2, 4354/4389/4377/4378/5127/5128 are now 4354 rather than 3.
++			/// <summary>
++			/// Indicates which extractinator type an item belongs to. An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info. Use this in conjunction with <see cref="ModItem.ExtractinatorUse(int, ref int, ref int)"/> or <see cref="GlobalItem.ExtractinatorUse(int, int, ref int, ref int)"/>. 
++			/// </summary>
+-			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
++			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss);
  			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
  			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
  			public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);

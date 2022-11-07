@@ -69,4 +69,6 @@ public class ModItemTest : ModItem
 #if COMPILE_ERROR
 	public override TagCompound Save() => new TagCompound();
 #endif
+
+	public override void ExtractinatorUse(ref int resultType, ref int resultStack) { /* Empty */ }
 }

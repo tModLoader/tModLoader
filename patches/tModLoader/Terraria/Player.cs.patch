@@ -3982,11 +3982,36 @@
  				if (targetItem.stack <= 0)
  					targetItem.SetDefaults();
  
+@@ -31953,13 +_,13 @@
+ 			int num6 = -1;
+ 			int num7 = 1;
+ 			switch (extractType) {
+-				case 1:
++				case ItemID.DesertFossil:
+ 					num /= 3;
+ 					num2 *= 2;
+ 					num3 = 20;
+ 					num4 = 10;
+ 					break;
+-				case 2:
++				case ItemID.OldShoe:
+ 					num = -1;
+ 					num2 = -1;
+ 					num3 = -1;
+@@ -31967,7 +_,7 @@
+ 					num5 = 1;
+ 					num7 = -1;
+ 					break;
+-				case 3:
++				case ItemID.LavaMoss:
+ 					num = -1;
+ 					num2 = -1;
+ 					num3 = -1;
 @@ -32337,6 +_,8 @@
  					num9 += Main.rand.Next(0, 6);
  			}
  
-+			ItemLoader.ExtractinatorUse(ref num5, ref num6, extractType);
++			ItemLoader.ExtractinatorUse(ref num8, ref num9, extractType, extractinatorBlockType);
 +
  			if (num8 > 0)
  				DropItemFromExtractinator(num8, num9);
