@@ -8,7 +8,7 @@ namespace Terraria.GameContent.ItemDropRules
 		private Dictionary<int, List<IItemDropRule>> _entriesByItemId = new Dictionary<int, List<IItemDropRule>>();
 		private Dictionary<int, List<int>> _itemIdsByType = new Dictionary<int, List<int>>();
 
-		public List<IItemDropRule> GetRulesForItemID(int itemID, bool includeGlobalDrops = true) {
+		public List<IItemDropRule> GetRulesForItemID(int itemID) {
 			List<IItemDropRule> list = new List<IItemDropRule>();
 
 			if (_entriesByItemId.TryGetValue(itemID, out List<IItemDropRule> value))

@@ -45,9 +45,6 @@
 +					return;
 ```
 
-## ItemSlot
-- `ItemLoader.CanRightClick` and `ItemLoader.RightClick` conditions don't need to check `Main.mouseRight[Release]`
-
 ## MessageBuffer
 - `ModTile.ChestDrop` and `DresserDrop` code/patches are atrocious.
 

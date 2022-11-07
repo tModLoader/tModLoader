@@ -772,10 +772,6 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		public virtual void RightClick(Player player) {
 		}
-		
-		[Obsolete("Use ModifyItemLoot instead", true)]
-		public virtual void OpenBossBag(Player player) {
-		}
 
 		/// <summary>
 		/// Allows you to add and modify the loot items that spawn from bag items when opened.
@@ -1111,12 +1107,6 @@ namespace Terraria.ModLoader
 		/// <param name="catchLocation">The catch location.</param>
 		public virtual void AnglerQuestChat(ref string description, ref string catchLocation) {
 		}
-
-		/// <summary>
-		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
-		/// </summary>
-		[Obsolete("Use ModifyItemLoot to set drops. Set ItemID.Sets.BossBag[Type] in SetStaticDefaults", true)]
-		public virtual int BossBagNPC => 0;
 
 		/// <summary>
 		/// Allows you to save custom data for this item.
