@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -51,6 +52,11 @@ public class ModItemTest : ModItem
 		damage += 0.1f;
 		damage *= 0.2f;
 		damage.Flat += 4;
+	}
+
+	public override void OnCreated(ItemCreationContext context) {
+		if (context is RecipeItemCreationContext) { }
+		else if (context is InitializationItemCreationContext) { }
 	}
 
 #if COMPILE_ERROR

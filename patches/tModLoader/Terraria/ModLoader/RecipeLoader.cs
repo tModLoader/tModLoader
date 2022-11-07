@@ -5,6 +5,7 @@ using System.Reflection;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.Core;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -161,7 +162,7 @@ namespace Terraria.ModLoader
 		/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
 		public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems, Item destinationStack) {
 			recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems, destinationStack);
-			ItemLoader.OnCreate(item, new RecipeCreationContext { recipe = recipe, ConsumedItems = consumedItems, DestinationStack = destinationStack });
+			item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems, destinationStack));
 		}
 
 		/// <summary>

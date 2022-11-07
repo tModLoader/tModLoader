@@ -81,7 +81,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			OnCreate(new InitializationContext());
+			OnCreated(new InitializationItemCreationContext());
 		}
 
 		public sealed override void SetupContent() {
@@ -104,7 +104,7 @@ namespace Terraria.ModLoader
 		public virtual void OnSpawn(IEntitySource source) {
 		}
 
-		public virtual void OnCreate(ItemCreationContext context) {
+		public virtual void OnCreated(ItemCreationContext context) {
 		}
 
 		/// <summary>

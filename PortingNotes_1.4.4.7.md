@@ -17,7 +17,10 @@
 
 ## Item
 - Remove `CanBurnInLava` hook
-- Check new `OnCreated` hook
+
+## ItemSlot
+- Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
+Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
 
 ## NPC
 - Remove `NPCHeadLoader.GetNPCFromHeadSlot`
@@ -55,10 +58,6 @@
 ## Recipe.cs
 - `Item.PopulateMaterialCache()` do we need this anymore?
 - do we need to clone `notDecraftable`
-
-## ItemCreationContexts.cs:
-- Merge with the new `Terraria.DataStructures.ItemCreationContext`.
-- Adjust `Main.CraftItem`, `Item.OnCreated(ItemCreationContext)`, `RecipeLoader.OnCraft(...)` accordingly.
 
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.

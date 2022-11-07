@@ -52,6 +52,11 @@ public class ModItemTest : ModItem
 		flat += 4;
 	}
 
+	public override void OnCreate(ItemCreationContext context) {
+		if (context is RecipeCreationContext) { }
+		else if (context is InitializationContext) { }
+	}
+
 #if COMPILE_ERROR
 	public override bool DrawHead() { return true; /* Empty */ }
 

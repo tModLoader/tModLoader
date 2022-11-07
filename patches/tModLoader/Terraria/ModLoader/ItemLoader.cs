@@ -179,14 +179,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookOnCreate = AddHook<Action<Item, ItemCreationContext>>(g => g.OnCreate);
+		private static HookList HookOnCreate = AddHook<Action<Item, ItemCreationContext>>(g => g.OnCreated);
 
-		public static void OnCreate(Item item, ItemCreationContext context) {
+		public static void OnCreated(Item item, ItemCreationContext context) {
 			foreach (var g in HookOnCreate.Enumerate(item.globalItems)) {
-				g.OnCreate(item, context);
+				g.OnCreated(item, context);
 			}
 
-			item.ModItem?.OnCreate(context);
+			item.ModItem?.OnCreated(context);
 		}
 
 		private static HookList HookChoosePrefix = AddHook<Func<Item, UnifiedRandom, int>>(g => g.ChoosePrefix);

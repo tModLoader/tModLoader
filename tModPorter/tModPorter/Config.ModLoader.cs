@@ -106,6 +106,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 		RenameMethod("Terraria.ModLoader.ModTree",		from: "GrowthFXGore",		to: "TreeLeaf");
 		RenameMethod("Terraria.ModLoader.ModPalmTree",	from: "GrowthFXGore",		to: "TreeLeaf");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "OnCreate",			to: "OnCreated");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "OnCreate",			to: "OnCreated");
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"HoldStyle");
@@ -332,6 +334,9 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.ModSurfaceBgStyle",	to: "Terraria.ModLoader.ModSurfaceBackgroundStyle");
 		RenameType(from: "Terraria.ModLoader.ModUgBgStyle",			to: "Terraria.ModLoader.ModUndergroundBackgroundStyle");
 		RenameType(from: "Terraria.ModLoader.PlayerDrawInfo",		to: "Terraria.DataStructures.PlayerDrawSet");
+		RenameType(from: "Terraria.ModLoader.ItemCreationContext",	to: "Terraria.DataStructures.ItemCreationContext");
+		RenameType(from: "Terraria.ModLoader.RecipeCreationContext",to: "Terraria.DataStructures.RecipeItemCreationContext");
+		RenameType(from: "Terraria.ModLoader.InitializationContext",to: "Terraria.ModLoader.InitializationItemCreationContext");
 
 		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "position", to: "Position");
 		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "itemLocation", to: "ItemLocation");

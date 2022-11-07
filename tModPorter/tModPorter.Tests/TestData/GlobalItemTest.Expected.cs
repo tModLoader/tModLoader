@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -26,6 +27,8 @@ public class GlobalItemTest : GlobalItem
 		damage *= 0.2f;
 		damage.Flat += 4;
 	}
+
+	public override void OnCreated(Item item, ItemCreationContext context) { }
 
 #if COMPILE_ERROR
 	public override bool DrawHead(int head)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[head] = false if you returned false */ { return true; /* Empty */ }

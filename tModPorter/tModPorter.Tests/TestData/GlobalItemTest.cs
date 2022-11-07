@@ -26,6 +26,8 @@ public class GlobalItemTest : GlobalItem
 		flat += 4;
 	}
 
+	public override void OnCreate(Item item, ItemCreationContext context) { }
+
 #if COMPILE_ERROR
 	public override bool DrawHead(int head) { return true; /* Empty */ }
 
