@@ -905,12 +905,18 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator.
-		/// An extractType of 0 represents the default extraction (Silt and Slush).
-		/// By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
-		///
-		/// This method is not instanced.
+		/// <br/> An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info.
+		/// <br/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
+		/// <br/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
+		/// <br/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in ExampleAdvancedFlail.cs.
+		/// <br/> 
+		/// <br/> This method is not instanced.
 		/// </summary>
-		public virtual void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack) {
+		/// <param name="extractType">The extractinator type corresponding to the items being processed</param>
+		/// <param name="extractinatorBlockType">Which Extractinator tile is being used, <see cref="TileID.Extractinator"/> or <see cref="TileID.ChlorophyteExtractinator"/>.</param>
+		/// <param name="resultType">Type of the result.</param>
+		/// <param name="resultStack">The result stack.</param>
+		public virtual void ExtractinatorUse(int extractType, int extractinatorBlockType, ref int resultType, ref int resultStack) {
 		}
 
 		/// <summary>

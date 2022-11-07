@@ -65,7 +65,7 @@ namespace ExampleMod.Content.Items.Placeable
 				.Register();
 		}
 
-		public override void ExtractinatorUse(ref int resultType, ref int resultStack) { // Calls upon use of an extractinator. Below is the chance you will get ExampleOre from the extractinator.
+		public override void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack) { // Calls upon use of an extractinator. Below is the chance you will get ExampleOre from the extractinator.
 			if (Main.rand.NextBool(3)) {
 				resultType = ModContent.ItemType<ExampleOre>();  // Get this from the extractinator with a 1 in 3 chance.
 				if (Main.rand.NextBool(5)) {

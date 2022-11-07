@@ -39,7 +39,7 @@ public class ModTileTest : ModTile
 #endif
 	}
 
-	override void SetStaticDefaults() {
+	public override void SetStaticDefaults() {
 #if COMPILE_ERROR
 		TileID.Sets.TouchDamageSands/* tModPorter Suggestion: Suffocate */[Type] = 15;
 		TileID.Sets.TouchDamageOther/* tModPorter Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding */[Type] = 99;

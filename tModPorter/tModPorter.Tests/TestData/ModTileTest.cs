@@ -38,7 +38,7 @@ public class ModTileTest : ModTile
 #endif
 	}
 
-	override void SetStaticDefaults() {
+	public override void SetStaticDefaults() {
 #if COMPILE_ERROR
 		TileID.Sets.TouchDamageSands[Type] = 15;
 		TileID.Sets.TouchDamageOther[Type] = 99;

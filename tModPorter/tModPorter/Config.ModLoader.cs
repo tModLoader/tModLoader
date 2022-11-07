@@ -131,6 +131,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"CanConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"OnConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"OnConsumeAmmo");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ExtractinatorUse");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ExtractinatorUse");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PostDraw");

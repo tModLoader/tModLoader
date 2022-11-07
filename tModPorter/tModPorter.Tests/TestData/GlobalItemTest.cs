@@ -43,4 +43,6 @@ public class GlobalItemTest : GlobalItem
 #if COMPILE_ERROR
 	public override TagCompound Save(Item item) => new TagCompound();
 #endif
+
+	public override void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack) { /* Empty */ }
 }

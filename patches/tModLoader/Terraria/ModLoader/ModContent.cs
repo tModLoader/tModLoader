@@ -512,6 +512,7 @@ namespace Terraria.ModLoader
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+			ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 			Main.gameTips.Reset();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
