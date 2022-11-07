@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items
 		public float durability;
 
 		public override void SetDefaults() {
-			Item.maxStack = 99; // This item is stackable, otherwise the example wouldn't work
+			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
 			Item.width = 8;
 			Item.height = 8;
 		}

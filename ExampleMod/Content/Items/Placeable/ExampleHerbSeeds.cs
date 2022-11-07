@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
@@ -18,7 +19,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useAnimation = 15;
 			Item.useTime = 10;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.placeStyle = 0;
 			Item.width = 12;

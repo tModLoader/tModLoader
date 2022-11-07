@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
@@ -14,7 +15,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetDefaults() {
 			Item.width = 28;
 			Item.height = 20;
-			Item.maxStack = 99;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 15;

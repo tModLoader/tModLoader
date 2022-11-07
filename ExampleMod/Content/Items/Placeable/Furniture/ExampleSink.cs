@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.useAnimation = 15;
 			Item.useTime = 10;
 			Item.autoReuse = true;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.createTile = ModContent.TileType<Tiles.ExampleSink>();
 			Item.width = 24;

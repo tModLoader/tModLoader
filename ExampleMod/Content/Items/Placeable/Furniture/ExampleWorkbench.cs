@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
@@ -25,7 +26,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.useTime = 10;
 			Item.useAnimation = 15;
 
-			Item.maxStack = 99;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.value = 150;
 		}

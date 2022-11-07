@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using ExampleMod.Content.Items.Weapons;
@@ -19,7 +20,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetDefaults() {
 			Item.width = 20;
 			Item.height = 20;
-			Item.maxStack = 99;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 750; // The cost of the item in copper coins. (1 = 1 copper, 100 = 1 silver, 1000 = 1 gold, 10000 = 1 platinum)
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useTurn = true;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,7 +13,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetDefaults() {
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 15;

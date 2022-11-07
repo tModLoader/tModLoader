@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items
 		public override void SetDefaults() {
 			Item.width = 18;
 			Item.height = 18;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000; // Makes the item worth 1 gold.
 			Item.rare = ItemRarityID.Orange;
 		}

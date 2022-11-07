@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
@@ -16,7 +17,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleToilet>());
 			Item.value = 150;
-			Item.maxStack = 99;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 16;
 			Item.height = 24;
 		}

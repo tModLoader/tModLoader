@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.height = 12;
 			Item.value = Item.buyPrice(0, 0, 25);
 			Item.rare = ItemRarityID.Orange;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 		}
 

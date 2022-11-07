@@ -1,4 +1,5 @@
 using ExampleMod.Content.Tiles.Furniture;
+using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
@@ -18,7 +19,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 8;
 			Item.height = 8;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true; // This marks the item as consumable, making it automatically be consumed when it's used as ammunition, or something else, if possible.
 			Item.knockBack = 1.5f;
 			Item.value = 10;

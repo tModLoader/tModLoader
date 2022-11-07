@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = 99; // This item is stackable, otherwise the example wouldn't work
+			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
 			Item.consumable = true;
 			Item.width = 22;
 			Item.height = 26;

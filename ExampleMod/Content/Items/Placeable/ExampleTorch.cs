@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.useTime = 10;
 			Item.holdStyle = ItemHoldStyleID.HoldFront;
 			Item.autoReuse = true;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.createTile = ModContent.TileType<Tiles.ExampleTorch>();
 			Item.width = 10;
