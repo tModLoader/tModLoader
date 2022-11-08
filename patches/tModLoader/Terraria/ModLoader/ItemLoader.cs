@@ -1235,10 +1235,14 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Calls ModItem.CanRightClick, then all GlobalItem.CanRightClick hooks, until one of the returns true.
+		/// Also returns true if ItemID.Sets.OpenableBag
 		/// </summary>
 		public static bool CanRightClick(Item item) {
 			if (item.IsAir)
 				return false;
+
+			if (ItemID.Sets.OpenableBag[item.type])
+				return true;
 
 			if (item.ModItem != null && item.ModItem.CanRightClick())
 				return true;
