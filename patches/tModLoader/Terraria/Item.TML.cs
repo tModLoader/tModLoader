@@ -132,25 +132,6 @@ namespace Terraria
 			return true;
 		}
 
-		internal static void PopulateMaterialCache() {
-			for (int i = 0; i < Recipe.numRecipes; i++) {
-				foreach (Item item in Main.recipe[i].requiredItem) {
-					ItemID.Sets.IsAMaterial[item.type] = true;
-				}
-			}
-
-			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values) {
-				foreach (var item in recipeGroup.ValidItems) {
-					ItemID.Sets.IsAMaterial[item] = true;
-				}
-			}
-
-			ItemID.Sets.IsAMaterial[71] = false;
-			ItemID.Sets.IsAMaterial[72] = false;
-			ItemID.Sets.IsAMaterial[73] = false;
-			ItemID.Sets.IsAMaterial[74] = false;
-		}
-
 		/// <summary>
 		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 		/// <br/><br/>This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.

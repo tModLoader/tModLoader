@@ -25,6 +25,16 @@
  			public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  				1533,
  				1534,
+@@ -299,7 +_,9 @@
+ 					}
+ 				}
+ 			});
++			/// <summary>Indicates that this item is used in at least 1 recipe.</summary>
+ 			public static bool[] IsAMaterial = Factory.CreateBoolSet();
++			/// <summary>Indicates that this item is used in at least 1 not disabled recipe that isn't set to not decraftable. The value corresponds to the index of the Recipe in <see cref="Main.recipe"/> array. If multiple recipes craft the same item, the recipe added last will be returned.</summary>
+ 			public static int[] IsCrafted = Factory.CreateIntSet();
+ 			public static int[] IsCraftedCrimson = Factory.CreateIntSet();
+ 			public static int[] IsCraftedCorruption = Factory.CreateIntSet();
 @@ -309,7 +_,7 @@
  			public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
  			public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);

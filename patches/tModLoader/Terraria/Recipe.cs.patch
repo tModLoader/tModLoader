@@ -18,7 +18,7 @@
  	{
  		private struct RequiredItemEntry
  		{
-@@ -15,27 +_,28 @@
+@@ -15,41 +_,42 @@
  			public int stack;
  		}
  
@@ -61,10 +61,14 @@
 +		internal bool needSnowBiome;
 -		public bool needGraveyardBiome;
 +		internal bool needGraveyardBiome;
- 		public bool needEverythingSeed;
- 		public bool notDecraftable;
- 		public bool crimson;
-@@ -43,13 +_,13 @@
+-		public bool needEverythingSeed;
++		internal bool needEverythingSeed;
+-		public bool notDecraftable;
++		internal bool notDecraftable;
+-		public bool crimson;
++		internal bool crimson;
+-		public bool corruption;
++		internal bool corruption;
  		private static bool _hasDelayedFindRecipes;
  		private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
  
@@ -117,7 +121,7 @@
  				int num = acceptedGroups[i];
  				if (num == -1)
  					break;
-@@ -110,12 +_,8 @@
+@@ -110,19 +_,15 @@
  		}
  
  		public bool AcceptedByItemGroups(int invType, int reqType) {
@@ -132,16 +136,30 @@
  					return true;
  			}
  
-@@ -133,23 +_,26 @@
- 			return item;
+ 			return false;
  		}
  
+-		public Item AddCustomShimmerResult(int itemType, int itemStack = 1) {
++		public Recipe AddCustomShimmerResult(int itemType, int itemStack = 1) {
+ 			if (customShimmerResults == null)
+ 				customShimmerResults = new List<Item>();
+ 
+@@ -130,26 +_,29 @@
+ 			item.SetDefaults(itemType);
+ 			item.stack = itemStack;
+ 			customShimmerResults.Add(item);
+-			return item;
+-		}
+-
 -		public Recipe() {
 -			for (int i = 0; i < maxRequirements; i++) {
 -				requiredItem[i] = new Item();
 -				requiredTile[i] = -1;
 -				acceptedGroups[i] = -1;
 -			}
++			return this;
++		}
++
 +		static Recipe() {
 +			currentRecipe = new Recipe {
 +				requiredItem = new List<Item>(),
@@ -333,7 +351,7 @@
  					array[j].Refresh();
  				}
  			}
-@@ -14504,12 +_,17 @@
+@@ -14504,10 +_,14 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
@@ -347,10 +365,7 @@
 +			FixRecipeGroups();
  			CreateRequiredItemQuickLookups();
  			ShimmerTransforms.UpdateRecipeSets();
-+			Item.PopulateMaterialCache(); // is this needed anymore?
  		}
- 
- 		private static void ReplaceItemUseFlagsWithRecipeGroups() {
 @@ -14529,21 +_,17 @@
  		}
  
@@ -408,15 +423,53 @@
  				}
  
  				Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -14566,7 +_,7 @@
+@@ -14566,16 +_,45 @@
  		}
  
  		public static void UpdateWhichItemsAreMaterials() {
 -			for (int i = 0; i < 5456; i++) {
++			for (int i = 0; i < Recipe.numRecipes; i++) {
++				if (Main.recipe[i].Disabled)
++					continue;
++
++				foreach (Item item in Main.recipe[i].requiredItem) {
++					ItemID.Sets.IsAMaterial[item.type] = true;
++				}
++			}
++
++			// TODO: Check that each group is used at least once?
++			foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values) {
++				foreach (var item in recipeGroup.ValidItems) {
++					ItemID.Sets.IsAMaterial[item] = true;
++				}
++			}
++
++			ItemID.Sets.IsAMaterial[71] = false;
++			ItemID.Sets.IsAMaterial[72] = false;
++			ItemID.Sets.IsAMaterial[73] = false;
++			ItemID.Sets.IsAMaterial[74] = false;
++			ItemID.Sets.IsAMaterial[4076] = false;
++			ItemID.Sets.IsAMaterial[4131] = false;
++			ItemID.Sets.IsAMaterial[5325] = false;
++
++			/*
 +			for (int i = 0; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
+ 				ItemID.Sets.IsAMaterial[i] = item.material;
+ 			}
++			*/
+ 		}
+ 
+ 		public static void UpdateWhichItemsAreCrafted() {
+ 			for (int i = 0; i < numRecipes; i++) {
++				if (Main.recipe[i].Disabled)
++					continue;
++
+ 				if (!Main.recipe[i].notDecraftable)
+ 					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
+ 
 @@ -15715,23 +_,24 @@
  		private static void CreateReversePlatformRecipes() {
  			int num = numRecipes;
@@ -483,7 +536,7 @@
  			if (ingredients.Length == 1) {
  				ingredients = new int[2] {
  					ingredients[0],
-@@ -15778,18 +_,50 @@
+@@ -15778,18 +_,51 @@
  			}
  		}
  
@@ -512,6 +565,7 @@
 +			ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +			ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +			ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++			ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
 +
 +			currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +			currentRecipe.requiredTile.RemoveAll(tile => tile == -1);
