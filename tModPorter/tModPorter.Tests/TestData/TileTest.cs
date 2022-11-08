@@ -23,11 +23,9 @@ public class TileTest
 		tile.inActive(!tile.inActive());
 		tile.actuator(!tile.actuator());
 
-#if COMPILE_ERROR // byte -> SlopeType, byte -> BlockType
 		byte b = tile.slope();
 		tile.slope(b);
 		byte blockType = tile.blockType();
-#endif
 		tile.slope(tile.slope() == 2 ? 1 : 0);
 
 		tile.halfBrick(!tile.halfBrick());
@@ -50,9 +48,7 @@ public class TileTest
 
 		if (tile.nactive()) { }
 		if (tile.HasSameSlope(tile)) { }
-#if COMPILE_ERROR
 		if (tile.isTheSameAs(tile)) { }
-#endif
 	}
 
 	void TileLiquid(Tile tile, Tile tile2, byte liquidType) {
@@ -62,9 +58,7 @@ public class TileTest
 		tile.liquidType(liquidType);
 
 		tile.liquid = 255;
-#if COMPILE_ERROR // byte -> int
 		liquidType = tile.liquidType();
-#endif
 		tile.lava(true);
 		tile.honey(true);
 
@@ -72,10 +66,8 @@ public class TileTest
 		if (tile.lava() != tile2.lava()) { }
 		if (!tile.lava()) { }
 
-#if COMPILE_ERROR
 		tile.lava(false);
 		tile.honey(false);
 		tile.lava(liquid > 0);
-#endif
 	}
 }

@@ -11,6 +11,10 @@ public class ModBossBarTest : ModBossBar
 
 	public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {
 #if COMPILE_ERROR
+		// not-yet-implemented
+		float lifePercent = drawParams.LifePercentToShow;
+		float shieldPercent = drawParams.ShieldPercentToShow;
+		// instead-expect
 		float lifePercent = drawParams.LifePercentToShow/* tModPorter Note: Removed. Suggest: Life / LifeMax */;
 		float shieldPercent = drawParams.ShieldPercentToShow/* tModPorter Note: Removed. Suggest: Shield / ShieldMax */;
 #endif

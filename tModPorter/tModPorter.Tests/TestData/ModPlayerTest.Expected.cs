@@ -18,9 +18,16 @@ public class ModPlayerTest : ModPlayer
 	public override void ModifyWeaponCrit(Item item, ref float crit) { /* Empty */ }
 
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+		// not-yet-implemented
 		damage += 0.1f;
 		damage *= 0.2f;
 		damage.Flat += 4;
+		// instead-expect
+#if COMPILE_ERROR
+		add += 0.1f;
+		mult *= 0.2f;
+		flat += 4;
+#endif
 	}
 
 	public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) => true;
@@ -51,6 +58,7 @@ public class ModPlayerTest : ModPlayer
 
 	public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 		// The following are 1.3 parameters written out using new 1.4 syntax
+		// not-yet-implemented
 		Item fishingRodLocal = attempt.playerFishingConditions.Pole;
 		Item baitLocal = attempt.playerFishingConditions.Bait;
 		int powerLocal = attempt.fishingLevel;
@@ -59,6 +67,17 @@ public class ModPlayerTest : ModPlayer
 		int worldLayerLocal = attempt.heightLevel;
 		int questFishLocal = attempt.questFish;
 		ref int caughtTypeLocal = ref itemDrop;
+		// instead-expect
+#if COMPILE_ERROR
+		Item fishingRodLocal = fishingRod;
+		Item baitLocal = bait;
+		int powerLocal = power;
+		int liquidTypeLocal = liquidType;
+		int poolSizeLocal = poolSize;
+		int worldLayerLocal = worldLayer;
+		int questFishLocal = questFish;
+		ref int caughtTypeLocal = ref caughtType;
+#endif
 		// ref int junkLocal = ref junk; // Can't really be transformed, unless you check for fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
 	}
 }

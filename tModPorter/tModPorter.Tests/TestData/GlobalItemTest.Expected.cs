@@ -23,9 +23,16 @@ public class GlobalItemTest : GlobalItem
 	public override void ModifyWeaponCrit(Item item, Player player, ref float crit) { /* Empty */ }
 
 	public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
+		// not-yet-implemented
 		damage += 0.1f;
 		damage *= 0.2f;
 		damage.Flat += 4;
+		// instead-expect
+#if COMPILE_ERROR
+		add += 0.1f;
+		mult *= 0.2f;
+		flat += 4;
+#endif
 	}
 
 	public override void OnCreated(Item item, ItemCreationContext context) { }

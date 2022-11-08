@@ -12,11 +12,17 @@ public class GlobalNPCTest : GlobalNPC
 	public override bool SpecialOnKill(NPC npc) { return true; /* Empty */ }
 
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		// not-yet-implemented
 		spriteBatch.Draw(null, npc.Center - screenPos, drawColor);
+		// instead-expect
+		spriteBatch.Draw(null, npc.Center - Main.screenPosition, drawColor);
 		return true;
 	}
 
 	public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		// not-yet-implemented
 		spriteBatch.Draw(null, npc.Center - screenPos, drawColor);
+		// instead-expect
+		spriteBatch.Draw(null, npc.Center - Main.screenPosition, drawColor);
 	}
 }

@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 
-#if COMPILE_ERROR
 public class IEntitySourceTest
 {
 	void Method() {
@@ -45,4 +44,3 @@ public class ModWallWithEntitySource : ModWall
 		Projectile.NewProjectile(new Vector2(), new Vector2(), 3, 4, 5, 6, 7, 8);
 	}
 }
-#endif

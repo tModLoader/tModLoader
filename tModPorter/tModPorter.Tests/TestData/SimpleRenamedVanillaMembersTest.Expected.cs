@@ -20,7 +20,12 @@ public class SimpleRenamedVanillaMembersTest
 		var lightMode = Lighting.LegacyEngine.Mode;
 		var technicallyABoss = NPCID.Sets.ShouldBeCountedAsBoss;
 		var homing = ProjectileID.Sets.CultistIsResistantTo;
+		// not-yet-implemented
 		var rasterizer = Main.Rasterizer;
+		// instead-expect
+#if COMPILE_ERROR
+		var rasterizer = Main.instance.Rasterizer;
+#endif
 
 		var waterCandles = Main.SceneMetrics.WaterCandleCount;
 		var peaceCandles = Main.SceneMetrics.PeaceCandleCount;
@@ -66,7 +71,7 @@ public class SimpleRenamedVanillaMembersTest
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
 
 #if COMPILE_ERROR
-		if (Main.fastForwardTime/* tModPorter Note: Removed. Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk */) { }		
+		if (Main.fastForwardTime/* tModPorter Note: Removed. Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk */) { }
 #endif
 
 		int dustFire = DustID.Torch;
@@ -100,9 +105,16 @@ public class SimpleRenamedVanillaMembersTest
 		var doubleJumpSail = player.hasJumpOption_Sail;
 		var doubleJumpSandstorm = player.hasJumpOption_Sandstorm;
 		var doubleJumpUnicorn = player.hasJumpOption_Unicorn;
+		// not-yet-implemented
 		var hasBanner = Main.SceneMetrics.hasBanner;
 		var bannerBuff = Main.SceneMetrics.NPCBannerBuff;
 		var extraAccessorySlots = player.GetAmountOfExtraAccessorySlotsToShow();
+		// instead-expect
+#if COMPILE_ERROR
+		var hasBanner = player.hasBanner;
+		var bannerBuff = player.NPCBannerBuff;
+		var extraAccessorySlots = player.extraAccessorySlots;
+#endif
 		var thrownCost33 = player.ThrownCost33;
 		var thrownCost50 = player.ThrownCost50;
 		var thrownVelocity = player.ThrownVelocity;
@@ -112,7 +124,12 @@ public class SimpleRenamedVanillaMembersTest
 		player.VanillaUpdateEquip(null)/* tModPorter Note: Removed. Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots) */;
 #endif
 
+		// not-yet-implemented
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
+		// instead-expect
+#if COMPILE_ERROR
+		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
+#endif
 
 		var item = new Item();
 		var owner = item.playerIndexTheItemIsReservedFor;
@@ -120,15 +137,33 @@ public class SimpleRenamedVanillaMembersTest
 		item.DefaultToPlaceableWall(0);
 
 		var item2 = new Item();
+		// not-yet-implemented
 		var isTheSameAs = item.type == item2.type;
 		var isTheSameAsExpression = (1 > 2 ? item : item2).type == (1 > 2 ? item2 : item).type;
 		var isTheSameAsNegated = item.type != item2.type;
 		var isTheSameAsNegatedVariant = item.type != item2.type;
+		// instead-expect
+#if COMPILE_ERROR
+		var isTheSameAs = item.IsTheSameAs(item2);
+		var isTheSameAsExpression = (1 > 2 ? item : item2).IsTheSameAs((1 > 2 ? item2 : item));
+		var isTheSameAsNegated = !item.IsTheSameAs(item2);
+		var isTheSameAsNegatedVariant = item.IsTheSameAs(item2) == false;
+#endif
 		var isNotTheSameAs = item.IsNotSameTypePrefixAndStack(item2);
 
 		NPC npc = new NPC();
+		// not-yet-implemented
 		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
+		// instead-expect
+		npc.damage = (int)(80f * Main.GameModeInfo.EnemyDamageMultiplier); // int cast matches return type
+#if COMPILE_ERROR
+#endif
 
+		// not-yet-implemented
 		Utils.TileActionAttempt cut = DelegateMethods.CutTiles;
+		// instead-expect
+#if COMPILE_ERROR
+		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
+#endif
 	}
 }

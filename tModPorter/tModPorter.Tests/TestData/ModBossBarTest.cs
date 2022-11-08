@@ -10,10 +10,8 @@ public class ModBossBarTest : ModBossBar
 	public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float lifePercent, ref float shieldPercent) => null;
 
 	public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {
-#if COMPILE_ERROR
 		float lifePercent = drawParams.LifePercentToShow;
 		float shieldPercent = drawParams.ShieldPercentToShow;
-#endif
 		return false;
 	}
 }

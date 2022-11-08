@@ -15,10 +15,7 @@ public class ModNPCTest : ModNPC
 		Console.Write(drawOffsetY);
 		Console.Write(banner);
 		Console.Write(bannerItem);
-
-#if COMPILE_ERROR
 		Console.Write(bossBag);
-#endif
 	}
 
 	public override bool PreNPCLoot() { return true; /*empty*/ }
@@ -38,9 +35,7 @@ public class ModNPCTest : ModNPC
 
 	public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
 
-#if COMPILE_ERROR
 	public override string[] AltTextures => new string[0];
 
 	public override string TownNPCName() { return "Name"; }
-#endif
 }

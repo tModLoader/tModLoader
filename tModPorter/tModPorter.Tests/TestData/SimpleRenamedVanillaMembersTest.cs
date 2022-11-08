@@ -50,12 +50,10 @@ public class SimpleRenamedVanillaMembersTest
 		var damageMultiplier = Main.damageMultiplier;
 
 		int copperTierOreInt = WorldGen.CopperTierOre;
-#if COMPILE_ERROR // ushort -> int
 		ushort copperTierOre = WorldGen.CopperTierOre;
 		ushort ironTierOre = WorldGen.IronTierOre;
 		ushort silverTierOre = WorldGen.SilverTierOre;
 		ushort goldTierOre = WorldGen.GoldTierOre;
-#endif
 		int oreTier1 = WorldGen.oreTier1;
 		int oreTier2 = WorldGen.oreTier2;
 		int oreTier3 = WorldGen.oreTier3;
@@ -64,9 +62,7 @@ public class SimpleRenamedVanillaMembersTest
 		Lighting.BlackOut();
 		NetMessage.BroadcastChatMessage(null, Color.White, -1);
 
-#if COMPILE_ERROR
-		if (Main.fastForwardTime) { }		
-#endif
+		if (Main.fastForwardTime) { }
 
 		int dustFire = DustID.Fire;
 
@@ -75,14 +71,12 @@ public class SimpleRenamedVanillaMembersTest
 		int lava = Tile.Liquid_Lava;
 
 		// Yes. The variables are named with opposing sides in 1.3, the underlying values are the same
-#if COMPILE_ERROR // int -> BlockType
 		int type_Solid = Tile.Type_Solid;
 		int type_Halfbrick = Tile.Type_Halfbrick;
 		int type_SlopeDownRight = Tile.Type_SlopeDownRight;
 		int type_SlopeDownLeft = Tile.Type_SlopeDownLeft;
 		int type_SlopeUpRight = Tile.Type_SlopeUpRight;
 		int type_SlopeUpLeft = Tile.Type_SlopeUpLeft;
-#endif
 
 		var tileObjectData = new TileObjectData();
 		var hookCheck = tileObjectData.HookCheck;
@@ -107,9 +101,7 @@ public class SimpleRenamedVanillaMembersTest
 		var thrownVelocity = player.thrownVelocity;
 		var discount = player.discount;
 		player.IsAValidEquipmentSlotForIteration(0);
-#if COMPILE_ERROR
 		player.VanillaUpdateEquip(null);
-#endif
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 

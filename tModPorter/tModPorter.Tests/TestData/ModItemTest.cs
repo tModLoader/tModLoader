@@ -14,17 +14,13 @@ public class ModItemTest : ModItem
 		Console.Write(item.accessory);
 		item.useTime += 2;
 
-#if COMPILE_ERROR
 		Console.WriteLine(item.IsCandidateForReforge);
 		item.CloneWithModdedDataFrom(item);
-#endif
 	}
 
-#if COMPILE_ERROR
 	public override bool IgnoreDamageModifiers => false;
 
 	public override bool OnlyShootOnSwing => false;
-#endif
 
 	public override bool CloneNewInstances => false;
 
@@ -57,7 +53,6 @@ public class ModItemTest : ModItem
 		else if (context is InitializationContext) { }
 	}
 
-#if COMPILE_ERROR
 	public override bool DrawHead() { return true; /* Empty */ }
 
 	public override bool DrawBody() { return true; /* Empty */ }
@@ -67,13 +62,10 @@ public class ModItemTest : ModItem
 	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
 
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
-#endif
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 
-#if COMPILE_ERROR
 	public override TagCompound Save() => new TagCompound();
-#endif
 
 	public override void ExtractinatorUse(ref int resultType, ref int resultStack) { /* Empty */ }
 }
