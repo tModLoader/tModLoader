@@ -17,8 +17,14 @@ namespace Terraria.ModLoader.Setup
 		private static readonly AdhocWorkspace workspace = new();
 
 		static FormatTask() {
-			var optionSet = workspace.Options
-				.WithChangedOption(new OptionKey(FormattingOptions.UseTabs, LanguageNames.CSharp), true)
+			var optionSet = workspace.CurrentSolution.Options;
+
+			// Essentials
+			optionSet = optionSet
+				.WithChangedOption(FormattingOptions.UseTabs, LanguageNames.CSharp, true);
+
+			// K&R
+			optionSet = optionSet
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAccessors, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, false)
@@ -26,6 +32,11 @@ namespace Terraria.ModLoader.Setup
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousTypes, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+
+			// Fix switch indentation
+			optionSet = optionSet
+				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSection, true)
+				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSectionWhenBlock, false);
 
 			workspace.TryApplyChanges(workspace.CurrentSolution.WithOptions(optionSet));
 		}
