@@ -77,6 +77,11 @@ namespace Terraria.ModLoader
 			return !Main.PylonSystem.HasPylonOfType(PylonType);
 		}
 
+		[Obsolete]
+		public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+			return null;
+		}
+
 		/// <summary>
 		/// Whether or not this Pylon should be sold by the specified NPC type and with the given player.
 		/// This should return the ITEM TYPE of the item that places this ModPylon, if one exists. If you don't
@@ -85,14 +90,13 @@ namespace Terraria.ModLoader
 		/// Returns null by default.
 		/// </br>
 		/// </summary>
-		/// <param name="npcType"> The type of the NPC currently being spoken to to determine the shop of. </param>
 		/// <param name="player"> The current player asking said NPC type what they have for sale. </param>
 		/// <param name="isNPCHappyEnough">
 		/// Whether or not this NPC is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness.
 		/// For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
 		/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code> 
 		/// </param>
-		public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+		public virtual int? IsPylonForSale(Player player, bool isNPCHappyEnough) {
 			return null;
 		}
 

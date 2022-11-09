@@ -3,7 +3,7 @@
 	/// <summary>
 	/// This is a GlobalNPC native to tML that handles adding Pylon items to NPC's shops, to save on patch size within vanilla.
 	/// </summary>
-	public sealed class PylonShopNPC : GlobalNPC
+	/*public sealed class PylonShopNPC : GlobalNPC
 	{
 		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
 			foreach (ModPylon pylon in PylonLoader.modPylons) {
@@ -16,5 +16,5 @@
 				}
 			}
 		}
-	}
+	}*/
 }

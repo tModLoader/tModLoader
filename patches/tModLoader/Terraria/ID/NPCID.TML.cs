@@ -50,6 +50,8 @@ namespace Terraria.ID
 			/// Note: This set DOES NOT DO ANYTHING if your NPC doesn't use the Vanilla TownNPC aiStyle (aiStyle == 7).
 			/// </remarks>
 			public static bool[] AllowDoorInteraction = Factory.CreateBoolSet();
+
+			public static bool[] CannotHaveGlobalNpcStuff = Factory.CreateBoolSet(true, 368, 453);
 		}
 	}
 }

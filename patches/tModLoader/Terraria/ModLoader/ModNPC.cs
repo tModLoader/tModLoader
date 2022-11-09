@@ -322,9 +322,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
 		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify NPC loot.
-		/// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
 		/// </summary>
-		/// <param name="npcLoot">A reference to the item drop database for this npc type</param>
+		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
 		}
 
@@ -568,9 +567,8 @@ namespace Terraria.ModLoader
 		/// Whether or not the conditions have been met for this town NPC to be able to move into town. For example, the Demolitionist requires that any player has an explosive.
 		/// </summary>
 		/// <param name="numTownNPCs"></param>
-		/// <param name="money"></param>
 		/// <returns></returns>
-		public virtual bool CanTownNPCSpawn(int numTownNPCs, int money) {
+		public virtual bool CanTownNPCSpawn(int numTownNPCs) {
 			return false;
 		}
 
@@ -641,11 +639,18 @@ namespace Terraria.ModLoader
 		public virtual void OnChatButtonClicked(bool firstButton, ref bool shop) {
 		}
 
-		[Obsolete("abc", true)]
+		[Obsolete]
 		public virtual void SetupShop(Chest shop, ref int nextSlot) {
 		}
 
-		public virtual void SetupShop(ChestLoot chestLoot) { // Should Chest parameter be kept?
+		/// <summary>
+		/// Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
+		/// </summary>
+		/// <param name="shop"></param>
+		public virtual void SetupShop(ChestLoot shop) {
+		}
+
+		public virtual void PostSetupShop(ChestLoot shop) {
 		}
 
 		/// <summary>
@@ -736,18 +741,6 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
-		}
-
-		/// <summary>
-		/// Allows you to modify the npc's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
-		/// </summary>
-		/// <param name="victimHitbox"></param>
-		/// <param name="immunityCooldownSlot"></param>
-		/// <param name="damageMultiplier"></param>
-		/// <param name="npcHitbox"></param>
-		/// <returns></returns>
-		public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
-			return true;
 		}
 
 		/// <summary>

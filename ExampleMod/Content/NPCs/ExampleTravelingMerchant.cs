@@ -30,8 +30,7 @@ namespace ExampleMod.Content.NPCs
 		// saved and loaded with the world in TravelingMerchantSystem
 		public static double spawnTime = double.MaxValue;
 
-		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
-		public List<Item> shopItems = new List<Item>();
+		public static int[] shopItems; // static cause realistically we would NEVER have two merchants at the same time.
 
 		public override bool PreAI() {
 			if ((!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(NPC.Center)) // If it's past the despawn time and the NPC isn't onscreen
@@ -90,7 +89,7 @@ namespace ExampleMod.Content.NPCs
 				return false;
 
 			// can't spawn if the sundial is active
-			if (Main.fastForwardTime)
+			if (Main.IsFastForwardingTime())
 				return false;
 
 			// can spawn if daytime, and between the spawn and despawn times
@@ -113,51 +112,11 @@ namespace ExampleMod.Content.NPCs
 			return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
 		}
 
-		public void CreateNewShop() {
-			// create a list of item ids
-			var itemIds = new List<int>();
-
-			// For each slot we add a switch case to determine what should go in that slot
-			switch (Main.rand.Next(2)) {
-				case 0:
-					itemIds.Add(ModContent.ItemType<ExampleItem>());
-					break;
-				default:
-					itemIds.Add(ModContent.ItemType<ExampleSoul>());
-					break;
-			}
-
-			switch (Main.rand.Next(2)) {
-				case 0:
-					itemIds.Add(ModContent.ItemType<ExampleDye>());
-					break;
-				default:
-					itemIds.Add(ModContent.ItemType<ExampleHairDye>());
-					break;
-			}
-
-			switch (Main.rand.Next(4)) {
-				case 0:
-					itemIds.Add(ModContent.ItemType<ExampleDoor>());
-					break;
-				case 1:
-					itemIds.Add(ModContent.ItemType<ExampleBed>());
-					break;
-				case 2:
-					itemIds.Add(ModContent.ItemType<ExampleChest>());
-					break;
-				default:
-					itemIds.Add(ModContent.ItemType<ExamplePickaxe>());
-					break;
-			}
-
-			// convert to a list of items
-			shopItems = new List<Item>();
-			foreach (int itemId in itemIds) {
-				Item item = new Item();
-				item.SetDefaults(itemId);
-				shopItems.Add(item);
-			}
+		public static void CreateNewShop() {
+			shopItems = new int[3];
+			shopItems[0] = Main.rand.Next(2);
+			shopItems[1] = Main.rand.Next(2);
+			shopItems[2] = Main.rand.Next(4);
 		}
 
 		public override void SetStaticDefaults() {
@@ -193,7 +152,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void LoadData(TagCompound tag) {
-			shopItems = tag.Get<List<Item>>("shopItems");
+			shopItems = tag.Get<int[]>("itemIds");
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
@@ -203,7 +162,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
+		public override bool CanTownNPCSpawn(int numTownNPCs) {
 			return false; // This should always be false, because we spawn in the Traveling Merchant manually
 		}
 
@@ -254,14 +213,23 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot) {
-			foreach (Item item in shopItems) {
-				// We don't want "empty" items and unloaded items to appear
-				if (item == null || item.type == ItemID.None)
-					continue;
+		public override void SetupShop(ChestLoot shop) {
+			ChestLoot.Entry[] entries = new ChestLoot.Entry[3];
 
-				shop.item[nextSlot].SetDefaults(item.type);
-				nextSlot++;
+			entries[0] = new ChestLoot.Entry(ModContent.ItemType<ExampleItem>(), new ChestLoot.Condition(NetworkText.Empty, () => shopItems[0] == 0))
+				.OnFail(ModContent.ItemType<ExampleSoul>());
+
+			entries[1] = new ChestLoot.Entry(ModContent.ItemType<ExampleDye>(), new ChestLoot.Condition(NetworkText.Empty, () => shopItems[1] == 0))
+				.OnFail(ModContent.ItemType<ExampleHairDye>());
+
+			int i = shopItems[2];
+			entries[2] = new ChestLoot.Entry(ModContent.ItemType<ExampleDoor>(), new ChestLoot.Condition(NetworkText.Empty, () => i == 0))
+				.OnFail(new ChestLoot.Entry(ModContent.ItemType<ExampleBed>(), new ChestLoot.Condition(NetworkText.Empty, () => i == 1)))
+				.OnFail(new ChestLoot.Entry(ModContent.ItemType<ExampleChest>(), new ChestLoot.Condition(NetworkText.Empty, () => i == 2)))
+				.OnFail(ModContent.ItemType<ExamplePickaxe>());
+
+			foreach (var entry in entries) {
+				shop.Add(entry);
 			}
 		}
 

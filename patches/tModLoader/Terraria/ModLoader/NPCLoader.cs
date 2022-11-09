@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly List<GlobalNPC> globalNPCs = new();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
+		internal static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
 		/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 		/// </summary>
@@ -116,6 +116,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.npcFrameCount, nextNPC);
 			Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, nextNPC);
 			Array.Resize(ref NPC.killCount, nextNPC);
+			Array.Resize(ref NPC.ShimmeredTownNPCs, nextNPC);
 			Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
 			Array.Resize(ref Lang._npcNameCache, nextNPC);
 			Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
@@ -937,12 +938,11 @@ namespace Terraria.ModLoader
 			return npc;
 		}
 
-		public static void CanTownNPCSpawn(int numTownNPCs, int money) {
+		public static void CanTownNPCSpawn(int numTownNPCs) {
 			foreach (ModNPC modNPC in npcs) {
 				var npc = modNPC.NPC;
 
-				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) &&
-					modNPC.CanTownNPCSpawn(numTownNPCs, money)) {
+				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) && modNPC.CanTownNPCSpawn(numTownNPCs)) {
 
 					Main.townNPCCanSpawn[npc.type] = true;
 
@@ -971,13 +971,15 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyTypeName(NPC npc, ref string typeName);
 		private static HookList HookModifyTypeName = AddHook<DelegateModifyTypeName>(g => g.ModifyTypeName);
-		public static void ModifyTypeName(NPC npc, ref string typeName) {
+		public static string ModifyTypeName(NPC npc, string typeName) {
 			if (npc.ModNPC != null)
 				npc.ModNPC.ModifyTypeName(ref typeName);
 
 			foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
 				g.ModifyTypeName(npc, ref typeName);
 			}
+
+			return typeName;
 		}
 
 		private delegate void DelegateModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox);
@@ -1009,20 +1011,19 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
-		public static bool CanChat(NPC npc, bool vanillaCanChat) {
-			bool defaultCanChat = npc.ModNPC?.CanChat() ?? vanillaCanChat;
+		public static bool? CanChat(NPC npc) {
+			bool? ret = npc.ModNPC?.CanChat();
 
 			foreach (GlobalNPC g in HookCanChat.Enumerate(npc.globalNPCs)) {
-				bool? canChat = g.CanChat(npc);
-				if (canChat.HasValue) {
-					if (!canChat.Value) {
+				if (g.CanChat(npc) is bool canChat) {
+					if (!canChat) {
 						return false;
 					}
-					defaultCanChat = true;
+					ret = true;
 				}
 			}
 
-			return defaultCanChat;
+			return ret;
 		}
 
 		private delegate void DelegateGetChat(NPC npc, ref string chat);
@@ -1090,7 +1091,6 @@ namespace Terraria.ModLoader
 		}
 
 		private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
-		[Obsolete]
 		private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
 
 		[Obsolete]
@@ -1106,29 +1106,31 @@ namespace Terraria.ModLoader
 			}
 		}
 
-
-		private delegate void DelegateSetupShopNew(int type, ChestLoot chestLoot);
+		private delegate void DelegateSetupShopNew(int type, ChestLoot shop);
 		private static HookList HookSetupShopNew = AddHook<DelegateSetupShopNew>(g => g.SetupShop);
 		private static HookList HookPostSetupShop = AddHook<DelegateSetupShopNew>(g => g.PostSetupShop);
 
-		public static void SetupShop(int type, ChestLoot chestLoot) {
+		public static void SetupShop(int type, ChestLoot shop) {
 			if (type < shopToNPC.Length) {
 				type = shopToNPC[type];
 			}
 			else {
-				GetNPC(type)?.SetupShop(chestLoot);
+				GetNPC(type)?.SetupShop(shop);
 			}
 			foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
-				g.SetupShop(type, chestLoot);
+				g.SetupShop(type, shop);
 			}
 		}
 
-		public static void PostSetupShop(int type, ChestLoot chestLoot) {
+		public static void PostSetupShop(int type, ChestLoot shop) {
 			if (type < shopToNPC.Length) {
 				type = shopToNPC[type];
 			}
-			foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
-				g.PostSetupShop(type, chestLoot);
+			else {
+				GetNPC(type)?.PostSetupShop(shop);
+			}
+			foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
+				g.PostSetupShop(type, shop);
 			}
 		}
 
@@ -1292,22 +1294,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
 				g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
-		}
-
-		private delegate bool DelegateModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox);
-		private static HookList HookModifyCollisionData = AddHook<DelegateModifyCollisionData>(g => g.ModifyCollisionData);
-
-		public static bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
-			bool result = true;
-			foreach (GlobalNPC g in HookModifyCollisionData.Enumerate(npc.globalNPCs)) {
-				result &= g.ModifyCollisionData(npc, victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
-			}
-
-			if (result && npc.ModNPC != null) {
-				result = npc.ModNPC.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
-			}
-
-			return result;
 		}
 
 		internal static void VerifyGlobalNPC(GlobalNPC npc) {

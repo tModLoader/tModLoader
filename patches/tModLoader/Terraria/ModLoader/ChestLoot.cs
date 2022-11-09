@@ -27,6 +27,8 @@ namespace Terraria.ModLoader
 			public static readonly Condition BloodMoon = new(NetworkText.Empty, () => Main.bloodMoon);
 			public static readonly Condition Eclipse = new(NetworkText.Empty, () => Main.eclipse);
 			public static readonly Condition NotEclipse = new(NetworkText.Empty, () => !Main.eclipse);
+			public static readonly Condition RemixWorld = new(NetworkText.Empty, () => Main.remixWorld);
+			public static readonly Condition TenthAnniversary = new(NetworkText.Empty, () => Main.tenthAnniversaryWorld);
 			public static readonly Condition BirthdayPartyIsUp = new(NetworkText.Empty, () => BirthdayParty.PartyIsUp);
 			public static readonly Condition NightLanternsUp = new(NetworkText.Empty, () => LanternNight.LanternsUp);
 			public static readonly Condition IsMoonFull = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.Full);
@@ -46,6 +48,18 @@ namespace Terraria.ModLoader
 			public static readonly Condition InDesertBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneDesert);
 			public static readonly Condition InGraveyard = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneGraveyard);
 			public static readonly Condition InGlowshroomBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneGlowshroom);
+			public static readonly Condition InBeachBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneBeach);
+			public static readonly Condition InDungeonBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneDungeon);
+			public static readonly Condition NotInSnowBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneSnow);
+			public static readonly Condition NotInJungleBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneJungle);
+			public static readonly Condition NotInCorruptBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneCorrupt);
+			public static readonly Condition NotInCrimsonBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneCrimson);
+			public static readonly Condition NotInHallowBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneHallow);
+			public static readonly Condition NotInDesertBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneDesert);
+			public static readonly Condition NotInGraveyard = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneGraveyard);
+			public static readonly Condition NotInGlowshroomBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneGlowshroom);
+			public static readonly Condition NotInBeachBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneBeach);
+			public static readonly Condition NotInDungeonBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneDungeon);
 			public static readonly Condition CorruptionWorld = new(NetworkText.Empty, () => !WorldGen.crimson);
 			public static readonly Condition CrimsonWorld = new(NetworkText.Empty, () => WorldGen.crimson);
 			public static readonly Condition DownedKingSlime = new(NetworkText.Empty, () => NPC.downedSlimeKing);
@@ -56,11 +70,16 @@ namespace Terraria.ModLoader
 			public static readonly Condition DownedQueenBee = new(NetworkText.Empty, () => NPC.downedQueenBee);
 			public static readonly Condition DownedSkeletron = new(NetworkText.Empty, () => NPC.downedBoss3);
 			public static readonly Condition DownedMechBossAny = new(NetworkText.Empty, () => NPC.downedMechBossAny);
+			public static readonly Condition DownedTwins = new(NetworkText.Empty, () => NPC.downedMechBoss2);
+			public static readonly Condition DownedDestroyer = new(NetworkText.Empty, () => NPC.downedMechBoss1);
+			public static readonly Condition DownedSkeletronPrime = new(NetworkText.Empty, () => NPC.downedMechBoss3);
 			public static readonly Condition DownedPlantera = new(NetworkText.Empty, () => NPC.downedPlantBoss);
 			public static readonly Condition DownedGolem = new(NetworkText.Empty, () => NPC.downedGolemBoss);
 			public static readonly Condition DownedCultist = new(NetworkText.Empty, () => NPC.downedAncientCultist);
+			public static readonly Condition DownedMoonLord = new(NetworkText.Empty, () => NPC.downedMoonlord);
 			public static readonly Condition DownedClown = new(NetworkText.Empty, () => NPC.downedClown);
 			public static readonly Condition DownedPirates = new(NetworkText.Empty, () => NPC.downedPirates);
+			public static readonly Condition DownedMartians = new(NetworkText.Empty, () => NPC.downedMartians);
 			public static readonly Condition DownedFrost = new(NetworkText.Empty, () => NPC.downedFrost);
 			#endregion
 
@@ -80,18 +99,47 @@ namespace Terraria.ModLoader
 		public struct Entry {
 			public readonly Item item;
 			private readonly List<ICondition> conditions;
+			private readonly bool askingNicelyToNotAdd = false;
 			private bool hide;
 
-			public bool Hidden { private get => hide; set {
-					if (value)
-						hide = true;
-				}
+			public Dictionary<bool, List<Entry>> ChainedEntries;
+
+			public bool Hidden { private get => hide; set => hide = true; }
+
+			public Entry(params ICondition[] condition) : this(emptyInstance, condition) {
+				askingNicelyToNotAdd = true;
 			}
+
+			public Entry(int item, params ICondition[] condition) : this(ContentSamples.ItemsByType[item], condition) { }
 
 			public Entry(Item item, params ICondition[] condition) {
 				hide = false;
 				this.item = item;
 				conditions = condition.ToList();
+
+				ChainedEntries = new()
+				{
+					{ false, new() },
+					{ true, new() }
+				};
+			}
+
+			public Entry OnSuccess(int itemId, params ICondition[] condition) {
+				return OnSuccess(new Entry(ContentSamples.ItemsByType[itemId], condition));
+			}
+
+			public Entry OnSuccess(Entry entry) {
+				ChainedEntries[true].Add(entry);
+				return this;
+			}
+
+			public Entry OnFail(int itemId, params ICondition[] condition) {
+				return OnFail(new Entry(ContentSamples.ItemsByType[itemId], condition));
+			}
+
+			public Entry OnFail(Entry entry) {
+				ChainedEntries[false].Add(entry);
+				return this;
 			}
 
 			public void AddCondition(ICondition condition) {
@@ -100,9 +148,6 @@ namespace Terraria.ModLoader
 			}
 
 			public bool IsAvailable() {
-				if (hide)
-					return false;
-
 				foreach (ICondition condition in conditions) {
 					if (!condition.IsAvailable()) {
 						return false;
@@ -110,20 +155,96 @@ namespace Terraria.ModLoader
 				}
 				return true;
 			}
+
+			public void TryAdd(List<Item> items) {
+				if (hide)
+					return;
+
+				if (IsAvailable()) {
+					if (askingNicelyToNotAdd) {
+						items.Add(item);
+					}
+					foreach (var entry in ChainedEntries[true]) {
+						entry.TryAdd(items);
+					}
+				}
+				else {
+					foreach (var entry in ChainedEntries[false]) {
+						entry.TryAdd(items);
+					}
+				}
+			}
 		}
 
 		private static readonly Item emptyInstance = new();
+		private static readonly Item defaultInstance = default;
 
 		private readonly List<Entry> items;
 
-		public IReadOnlyList<Entry> Items => items;
+		private readonly List<(int nextTo, bool after)> putCandidates;
+		private readonly List<Entry> putCandidates2; // list that contains all entries those going to get from putCandidates
 
-		public Entry this[int item] => items.Find(x => x.item.type.Equals(item));
+		public IReadOnlyList<Entry> Items {
+			get {
+				List<Entry> entries = items;
+				return entries;
+			}
+		}
 
-		public Entry this[Index index] => items[index];
+		public Entry this[int item] {
+			get {
+				int index = items.FindIndex(x => x.item.type.Equals(item));
+				bool hasInNormal = index != -1;
+				if (hasInNormal)
+					return items[index];
+
+				index = putCandidates2.FindIndex(x => x.item.type.Equals(item));
+				return putCandidates2[index];
+			}
+		}
+
+		public Entry this[Index index] {
+			get {
+				var ind2 = items.ElementAtOrDefault(index);
+				bool hasInNormal = ind2.item != defaultInstance;
+				if (hasInNormal)
+					return ind2;
+
+				return putCandidates2.ElementAtOrDefault(index);
+			}
+		}
 
 		public ChestLoot() {
 			items = new();
+			putCandidates = new();
+			putCandidates2 = new();
+		}
+
+		private void AddCandidates(IList<Entry> entries) {
+			IReadOnlyList<(int nextTo, bool after)> candidates = putCandidates;
+			candidates = candidates.Reverse().ToList();
+
+			List<(int nextTo, bool after)> unsuccessedCandidates = new();
+
+			for (int i = 0; i < 2; i++) { // run twice, cause mods might want to add to chained items
+				var a = candidates;
+				if (i == 1)
+					a = unsuccessedCandidates;
+
+				foreach (var (nextTo, after) in a) {
+					int index = items.FindIndex(x => x.item.type.Equals(nextTo));
+					if (index != -1) {
+						entries.Insert(index + after.ToInt(), putCandidates2[index]);
+					}
+					else {
+						unsuccessedCandidates.Add((nextTo, after));
+					}
+				}
+			}
+		}
+
+		public void Add(Entry entry) {
+			items.Add(entry);
 		}
 
 		public bool Add(int item, params ICondition[] condition) {
@@ -131,33 +252,34 @@ namespace Terraria.ModLoader
 		}
 
 		public bool Add(Item item, params ICondition[] condition) {
-			items.Add(new(item, condition));
+			Add(new Entry(item, condition));
 			return true;
 		}
 
-		private bool PutAt(int index, int item, params ICondition[] condition) {
-			return PutAt(index, ContentSamples.ItemsByType[item], condition);
+		private bool PutAt(int destination, Item item, bool after, params ICondition[] condition) {
+			putCandidates.Add(new(destination, after));
+			putCandidates2.Add(new(item, condition));
+			return true;
 		}
 
-		private bool PutAt(int index, Item item, params ICondition[] condition) {
-			items.Insert(index, new(item, condition));
-			return true;
+		private bool PutAt(int destination, int item, bool after, params ICondition[] condition) {
+			return PutAt(destination, ContentSamples.ItemsByType[item], after, condition);
 		}
 
 		public bool InsertBefore(int destination, int item, params ICondition[] condition) {
-			return PutAt(destination, item, condition);
+			return PutAt(destination, item, false, condition);
 		}
 
 		public bool InsertBefore(int destination, Item item, params ICondition[] condition) {
-			return PutAt(destination, item, condition);
+			return PutAt(destination, item, false, condition);
 		}
 
 		public bool InsertAfter(int destination, int item, params ICondition[] condition) {
-			return PutAt(destination + 1, item, condition);
+			return PutAt(destination + 1, item, true, condition);
 		}
 
 		public bool InsertAfter(int destination, Item item, params ICondition[] condition) {
-			return PutAt(destination + 1, item, condition);
+			return PutAt(destination + 1, item, true, condition);
 		}
 
 		public bool Hide(int item) {
@@ -172,12 +294,13 @@ namespace Terraria.ModLoader
 
 		public Item[] Build(out int slots, bool lastSlotEmpty = true) {
 			List<Item> array = new();
+			List<Entry> oldEntries = items; // incase current instance still gets used after building for some reason.
 
-			foreach (Entry group in items) {
-				if (group.IsAvailable()) {
-					array.Add(group.item);
-				}
+			AddCandidates(oldEntries);
+			foreach (Entry group in oldEntries) {
+				group.TryAdd(array);
 			}
+
 			slots = array.Count;
 			if (array.Count < 40) {
 				array.AddRange(Enumerable.Repeat(emptyInstance, 40 - array.Count));
@@ -187,9 +310,6 @@ namespace Terraria.ModLoader
 				array[^1] = emptyInstance;
 
 			return array.ToArray();
-		}
-
-		public void Register(ModNPC npc) {
 		}
 	}
 }

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -8,10 +_,11 @@
+@@ -9,6 +_,7 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
@@ -8,12 +8,7 @@
  
  namespace Terraria
  {
--	public class Chest
-+	public partial class Chest
- 	{
- 		public const float chestStackRange = 250f;
- 		public const int maxChestTypes = 52;
-@@ -193,12 +_,15 @@
+@@ -201,12 +_,15 @@
  			return list;
  		}
  
@@ -31,10 +26,10 @@
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
  
-@@ -229,6 +_,16 @@
- 							continue;
- 
- 						flag = true;
+@@ -249,6 +_,16 @@
+ 					}
+ 					else if (item.IsTheSameAs(Main.chest[i].item[j])) {
+ 						flag2 = true;
 +						// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
 +						if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out _))
 +							continue;
@@ -48,15 +43,21 @@
  						int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  						if (num > 0) {
  							if (num > item.stack)
-@@ -241,6 +_,7 @@
+@@ -260,11 +_,13 @@
+ 								Main.chest[i].item[j].stack += num;
+ 							}
+ 
++							// Extra context.
+ 							if (item.stack <= 0) {
+ 								item.SetDefaults();
  								return item;
  							}
  						}
 +						*/
  					}
  					else {
- 						flag2 = true;
-@@ -273,6 +_,17 @@
+ 						flag3 = true;
+@@ -322,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
  			int num2 = tileSafely.frameX / 36;
@@ -74,7 +75,7 @@
  			switch (type2) {
  				case 21:
  					switch (num2) {
-@@ -318,6 +_,7 @@
+@@ -367,6 +_,7 @@
  					}
  					return false;
  			}
@@ -82,7 +83,7 @@
  
  			SoundEngine.PlaySound(22, X * 16, Y * 16);
  			for (int i = X; i <= X + 1; i++) {
-@@ -325,7 +_,7 @@
+@@ -374,7 +_,7 @@
  					Tile tileSafely2 = Framing.GetTileSafely(i, j);
  					if (tileSafely2.type == type2) {
  						tileSafely2.frameX -= num;
@@ -91,7 +92,7 @@
  						for (int k = 0; k < 4; k++) {
  							Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  						}
-@@ -412,15 +_,21 @@
+@@ -522,15 +_,21 @@
  			}
  			else {
  				switch (type) {
@@ -116,7 +117,7 @@
  				}
  			}
  
-@@ -505,14 +_,15 @@
+@@ -615,14 +_,15 @@
  			}
  		}
  
@@ -135,7 +136,7 @@
  					if (item[num2] == null || item[num2].type == 0)
  						break;
  
-@@ -520,7 +_,7 @@
+@@ -630,15 +_,18 @@
  					continue;
  				}
  
@@ -143,36 +144,40 @@
 +				break;
  			}
  
++			// Extra patch context.
  			item[num2] = newItem.Clone();
-@@ -529,6 +_,7 @@
+ 			item[num2].favorited = false;
+ 			item[num2].buyOnce = true;
  			item[num2].stack -= num;
  			_ = item[num2].value;
  			_ = 0;
++			
 +			return num2;
  		}
  
- 		public static void SetupTravelShop() {
-@@ -902,15 +_,18 @@
- 							Main.travelShop[num2++] = 3636;
- 							Main.travelShop[num2++] = 3641;
- 							break;
+ 		public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count) {
+@@ -715,8 +_,11 @@
+ 						Main.travelShop[count++] = 3636;
+ 						Main.travelShop[count++] = 3641;
+ 						break;
 +						//patch file: num2
- 					}
  				}
  			}
 +
-+			NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
++			NPCLoader.SetupTravelShop(Main.travelShop, ref count);
  		}
  
- 		public void SetupShop(int type) {
- 			bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
- 			Item[] array = item;
--			for (int i = 0; i < 40; i++) {
-+			/*for (int i = 0; i < 40; i++) {
- 				array[i] = new Item();
+ 		public static bool SetupTravelShop_CanAddItemToShop(int it) {
+@@ -1156,7 +_,7 @@
  			}
  
-@@ -2015,12 +_,12 @@
+ 			int num = 0;
+-			switch (type) {
++			/*switch (type) {
+ 				case 1: {
+ 						array[num].SetDefaults(88);
+ 						num++;
+@@ -2295,12 +_,12 @@
  						num++;
  						array[num].SetDefaults(1979);
  						num++;
@@ -187,16 +192,29 @@
  							array[num].SetDefaults(1978);
  							num++;
  						}
-@@ -2609,9 +_,10 @@
- 
- 				if (Main.player[Main.myPlayer].ZoneGlowshroom && num < 39)
+@@ -2965,13 +_,24 @@
+ 				if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
  					array[num++].SetDefaults(4921);
--			}
-+			}*/
+ 			}
++			*/
  
-+			array = ReSetupShop(out int slots, type);
--			for (int num13 = 0; num13 < num; num13++) {
-+			for (int num13 = 0; num13 < slots; num13++) {
++			int tmld = NPCLoader.shopToNPC.Length < type ? NPCLoader.shopToNPC[type] : type;
++			ChestLoot loot = Main.TMLLootDatabase.GetNpcShopById(type);
++			if (!NPCID.Sets.CannotHaveGlobalNpcStuff[tmld]) {
++				foreach (var globalEntry in Main.TMLLootDatabase.GetGlobalNpcShopEntries()) {
++					loot.Add(globalEntry);
++				}
++			}
++			array = loot.Build(out num);
++
++			NPCLoader.SetupShop(type, this, ref num);
+ 			for (int num13 = 0; num13 < num; num13++) {
  				array[num13].isAShopItem = true;
  			}
  		}
+ 
+-		private static bool BestiaryGirl_IsFairyTorchAvailable() {
++		internal static bool BestiaryGirl_IsFairyTorchAvailable() { // TML: made from private to internal.
+ 			if (!DidDiscoverBestiaryEntry(585))
+ 				return false;
+ 
