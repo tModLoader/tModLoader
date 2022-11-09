@@ -15,20 +15,15 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			Item.flame = true;
-			Item.noWet = true;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTurn = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.holdStyle = ItemHoldStyleID.HoldFront;
-			Item.autoReuse = true;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleTorch>();
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleTorch>());
 			Item.width = 10;
 			Item.height = 12;
 			Item.value = 50;
+
+			// In addition to the normal placeable tile defaults, torch items need these.
+			Item.holdStyle = ItemHoldStyleID.HoldFront;
+			Item.flame = true;
+			Item.noWet = true;
 		}
 
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { // Overrides the default sorting method of this Item.

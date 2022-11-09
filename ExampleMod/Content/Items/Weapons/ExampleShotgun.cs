@@ -16,6 +16,8 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void SetDefaults() {
+			// Modders can use Item.DefaultToRangedWeapon to quickly set many common properties, such as: useTime, useAnimation, useStyle, autoReuse, DamageType, shoot, shootSpeed, useAmmo, and noMelee. These are all shown individually here for teaching purposes.
+
 			// Common Properties
 			Item.width = 44; // Hitbox width of the item.
 			Item.height = 18; // Hitbox height of the item.

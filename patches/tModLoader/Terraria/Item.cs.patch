@@ -246,7 +246,13 @@
  		public int defense;
  		public int headSlot = -1;
  		public int bodySlot = -1;
-@@ -148,18 +_,75 @@
+@@ -143,23 +_,81 @@
+ 		public bool social;
+ 		public bool vanity;
+ 		public bool material;
++		/// <summary>If true, the item won't be drawn while the holding player is wet. The player will also not be in the animation frame corresponding to the item holdStyle</summary>
+ 		public bool noWet;
+ 		public int buffType;
  		public int buffTime;
  		public int mountType = -1;
  		public bool cartTrack;
@@ -669,6 +675,24 @@
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
+@@ -30123,6 +_,17 @@
+ 				value = buyPrice(0, 2, 70);
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to quest fish items.<br/>
++		/// Specifically:<code>
++		/// questItem = true;
++		///	maxStack = 1;
++		///	width = 26;
++		///	height = 26;
++		///	uniqueStack = true;
++		///	rare = <see cref="ItemRarityID.Quest"/>;
++		/// </code>
++		/// </summary>
+ 		public void DefaultToQuestFish() {
+ 			questItem = true;
+ 			maxStack = 1;
 @@ -36856,6 +_,7 @@
  					shootSpeed = 17f;
  					return;
@@ -677,6 +701,33 @@
  					useStyle = 5;
  					useAnimation = 25;
  					useTime = 3;
+@@ -38292,6 +_,26 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to golf ball items.<br/>
++		/// Specifically:<code>
++		///	shoot = projid;
++		///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
++		///	shootSpeed = 12f;
++		///	width = 18;
++		///	height = 20;
++		///	maxStack = 1;
++		///	UseSound = <see cref="SoundID.Item1"/>;
++		///	useAnimation = 15;
++		///	useTime = 15;
++		///	noUseGraphic = true;
++		///	noMelee = true;
++		///	accessory = true;
++		///	SetShopValues(ItemRarityColor.Green2, buyPrice(0, 1));
++		///	hasVanityEffects = true;
++		/// </code>
++		/// </summary>
++		/// <param name="projid"></param>
+ 		public void DefaultToGolfBall(int projid) {
+ 			shoot = projid;
+ 			useStyle = 1;
 @@ -43118,6 +_,7 @@
  					expert = true;
  					break;
@@ -694,6 +745,27 @@
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
+@@ -46312,6 +_,20 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to Clentaminator ammo solution items.<br/>
++		/// Specifically:<code>
++		///	shoot = projectileId - 145;
++		/// ammo = AmmoID.Solution;
++		/// width = 10;
++		///	height = 12;
++		/// value = buyPrice(0, 0, 15);
++		/// rare = 3;
++		///	maxStack = CommonMaxStack;
++		///	consumable = true;
++		/// </code>
++		/// </summary>
++		/// <param name="projectileId"></param>
+ 		public void DefaultToSolution(int projectileId) {
+ 			shoot = projectileId - 145;
+ 			ammo = AmmoID.Solution;
 @@ -46333,7 +_,8 @@
  			shoot = projectileId;
  			UseSound = SoundID.Item152;
@@ -723,26 +795,88 @@
  			useStyle = 1;
  			autoReuse = true;
  			useTurn = true;
-@@ -46807,6 +_,11 @@
- 			mountType = mount;
+@@ -46430,6 +_,21 @@
+ 			makeNPC = npcIdToSpawnOnUse;
  		}
  
 +		/// <summary>
-+		/// This method sets a variety of common Item values common to placeable walls.<br/>
-+		/// Specifically: useStyle = 1;	useTurn = true;	useAnimation = 15; useTime = 7; autoReuse = true; maxStack = CommonMaxStack; consumable = true; createWall = wallToPlace; width = 12; height = 12;<br/>
++		/// This method sets a variety of Item values common to staff magic weapons.<br/>
++		/// Specifically:<code>
++		/// DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
++		/// mana = manaPerShot;
++		///	width = 40;
++		///	height = 40;
++		///	UseSound = <see cref="SoundID.Item43"/>;
++		/// </code>
++		/// Addtionally: <br/><inheritdoc cref="DefaultToMagicWeapon" />
++		/// </summary>
++		/// <param name="projType"></param>
++		/// <param name="pushForwardSpeed">Passed into DefaultToMagicWeapon as the shotVelocity parameter</param>
++		/// <param name="singleShotTime"></param>
++		/// <param name="manaPerShot"></param>
+ 		public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
+ 			DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
+ 			mana = manaPerShot;
+@@ -46438,6 +_,25 @@
+ 			UseSound = SoundID.Item43;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to spear weapons.<br/>
++		/// Specifically:<code>
++		/// useStyle = <see cref="ItemUseStyleID.Shoot"/>;
++		/// useAnimation = animationTime;
++		/// useTime = animationTime;
++		/// shootSpeed = pushForwardSpeed;
++		/// width = 32;
++		/// height = 32;
++		/// UseSound = SoundID.Item1;
++		/// shoot = projType;
++		/// noMelee = true;
++		/// noUseGraphic = true;
++		/// DamageType = DamageClass.Melee;
++		/// </code>
++		/// </summary>
++		/// <param name="projType"></param>
++		/// <param name="pushForwardSpeed"></param>
++		/// <param name="animationTime"></param>
+ 		public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
+ 			useStyle = 5;
+ 			useAnimation = 31;
+@@ -46807,7 +_,24 @@
+ 			mountType = mount;
+ 		}
+ 
++		// tML: changed to take an int instead of a ushort for convenience and consistency purposes
++		/// <summary>
++		/// This method sets a variety of Item values common to placeable walls.<br/>
++		/// Specifically:<code>
++		///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
++		///	useTurn = true;
++		///	useAnimation = 15;
++		///	useTime = 7;
++		///	autoReuse = true;
++		///	maxStack = <see cref="CommonMaxStack"/>;
++		///	consumable = true;
++		///	createWall = wallToPlace;
++		///	width = 12;
++		///	height = 12;
++		///	</code>
 +		/// </summary>
 +		/// <param name="wallToPlace"></param>
- 		public void DefaultToPlaceableWall(ushort wallToPlace) {
+-		public void DefaultToPlaceableWall(ushort wallToPlace) {
++		public void DefaultToPlaceableWall(int wallToPlace) {
  			useStyle = 1;
  			useTurn = true;
+ 			useAnimation = 15;
 @@ -46826,6 +_,14 @@
  			crit = bonusCritChance;
  		}
  
 +		/// <summary>
-+		/// This method sets a variety of common Item values common to bow weapons.<br/>
-+		/// Specifically: width = 14; height = 30; UseSound = SoundID.Item5;<br/>
-+		/// Addtionally: <inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
++		/// This method sets a variety of Item values common to bow weapons.<br/>
++		/// Specifically: <code>width = 14;<br/>height = 30;<br/>UseSound = SoundID.Item5;</code><br/>
++		/// Addtionally: <br/><inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
 +		/// </summary>
 +		/// <param name="singleShotTime"></param>
 +		/// <param name="shotVelocity"></param>
@@ -750,13 +884,47 @@
  		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
  			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
  			width = 14;
-@@ -46844,6 +_,15 @@
+@@ -46833,6 +_,23 @@
+ 			UseSound = SoundID.Item5;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to magic weapons.<br/>
++		/// Specifically:<code>
++		/// autoReuse = hasAutoReuse;
++		/// useStyle = <see cref="ItemUseStyleID.Shoot"/>;
++		/// useAnimation = singleShotTime;
++		/// useTime = singleShotTime;
++		/// shoot = projType;
++		/// shootSpeed = shotVelocity;
++		/// noMelee = true;
++		/// DamageType = DamageClass.Magic;
++		/// </code>
++		/// </summary>
++		/// <param name="projType"></param>
++		/// <param name="singleShotTime"></param>
++		/// <param name="shotVelocity"></param>
++		/// <param name="hasAutoReuse"></param>
+ 		public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 5;
+@@ -46844,6 +_,25 @@
  			magic = true;
  		}
  
 +		/// <summary>
-+		/// This method sets a variety of common Item values common to ranged weapons.<br/>
-+		/// Specifically: autoReuse = hasAutoReuse; useStyle = 5; useAnimation = singleShotTime; useTime = singleShotTime; shoot = baseProjType; useAmmo = ammoID; shootSpeed = shotVelocity; noMelee = true; ranged = true;<br/>
++		/// This method sets a variety of Item values common to ranged weapons.<br/>
++		/// Specifically:<code>
++		/// autoReuse = hasAutoReuse;
++		/// useStyle = <see cref="ItemUseStyleID.Shoot"/>;
++		/// useAnimation = singleShotTime;
++		/// useTime = singleShotTime;
++		/// shoot = baseProjType;
++		/// useAmmo = ammoID;
++		/// shootSpeed = shotVelocity;
++		/// noMelee = true;
++		/// DamageType = DamageClass.Ranged;
++		/// </code>
 +		/// </summary>
 +		/// <param name="baseProjType"></param>
 +		/// <param name="ammoID"></param>
@@ -766,6 +934,32 @@
  		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
  			autoReuse = hasAutoReuse;
  			useStyle = 5;
+@@ -46856,6 +_,25 @@
+ 			ranged = true;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to thrown weapons.<br/>
++		/// Specifically:<code>
++		/// autoReuse = hasAutoReuse;
++		///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
++		///	useAnimation = singleShotTime;
++		///	useTime = singleShotTime;
++		///	shoot = baseProjType;
++		///	shootSpeed = shotVelocity;
++		///	noMelee = true;
++		///	DamageType = DamageClass.Ranged;
++		///	consumable = true;
++		///	maxStack = <see cref="CommonMaxStack"/>;
++		/// </code>
++		/// </summary>
++		/// <param name="baseProjType"></param>
++		/// <param name="singleShotTime"></param>
++		/// <param name="shotVelocity"></param>
++		/// <param name="hasAutoReuse"></param>
+ 		public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 1;
 @@ -46869,7 +_,7 @@
  			maxStack = CommonMaxStack;
  		}
@@ -775,13 +969,42 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
+@@ -46887,10 +_,28 @@
+ 			useTime = 10;
+ 		}
+ 
++		/// <inheritdoc cref="DefaultToPlaceableTile(ushort, int)"/>
+ 		public void DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
+ 			DefaultToPlaceableTile((ushort)tileIDToPlace, tileStyleToPlace);
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to items that place tiles.<br/>
++		/// Specifically:<code>
++		/// createTile = tileIDToPlace;
++		/// placeStyle = tileStyleToPlace;
++		/// width = 14;
++		/// height = 14;
++		/// useStyle = <see cref="ItemUseStyleID.Swing"/>;
++		/// useAnimation = 15; useTime = 10;<br/>
++		/// maxStack = <see cref="CommonMaxStack"/>;
++		/// useTurn = true;
++		/// autoReuse = true;
++		/// consumable = true;
++		/// </code>
++		/// </summary>
++		/// <param name="tileIDToPlace"></param>
++		/// <param name="tileStyleToPlace"></param>
+ 		public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
+ 			createTile = tileIDToPlace;
+ 			placeStyle = tileStyleToPlace;
 @@ -46929,6 +_,18 @@
  			autoReuse = true;
  		}
  
 +		/// <summary>
-+		/// This method sets a variety of common Item values common to food items.<br/>
-+		/// Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? DrinkLiquid : EatFood;<br/>
++		/// This method sets a variety of Item values common to food items.<br/>
++		/// Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;<br/>
 +		/// useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true;<br/>
 +		/// buffType = foodbuff; buffTime = foodbuffduration; rare = Blue; value = 20 silver;
 +		/// </summary>
@@ -794,6 +1017,24 @@
  		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
  			if (useGulpSound)
  				UseSound = SoundID.Item3;
+@@ -46967,11 +_,17 @@
+ 			healLife = healingAmount;
+ 		}
+ 
++		/// <summary>
++		/// A helper method that sets item rarity and item value. 
++		/// </summary>
++		/// <param name="rarity"></param>
++		/// <param name="coinValue"></param>
+ 		public void SetShopValues(ItemRarityColor rarity, int coinValue) {
+ 			rare = (int)rarity;
+ 			value = coinValue;
+ 		}
+ 
++		/// <summary>Modders should not use this.</summary>
+ 		public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID) {
+ 			width = newwidth;
+ 			height = newheight;
 @@ -47014,6 +_,18 @@
  			SetDefaults(Type, noMatCheck: false, null);
  		}

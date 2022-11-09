@@ -969,7 +969,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See https://terraria.gamepedia.com/Nurse for the default pricing.
+		/// Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See https://terraria.wiki.gg/wiki/Nurse for the default pricing.
 		/// </summary>
 		/// <param name="nurse">The Nurse NPC instance.</param>
 		/// <param name="health">How much health the player gains.</param>
