@@ -423,7 +423,7 @@
  				}
  
  				Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -14566,16 +_,45 @@
+@@ -14566,16 +_,46 @@
  		}
  
  		public static void UpdateWhichItemsAreMaterials() {
@@ -444,6 +444,7 @@
 +				}
 +			}
 +
++			// These come from the removed Item.checkMat. Coins and Void Bag. Void Bag is removed since it would be odd to have the Material tooltip appear on the open bag and not be present on the closed bag
 +			ItemID.Sets.IsAMaterial[71] = false;
 +			ItemID.Sets.IsAMaterial[72] = false;
 +			ItemID.Sets.IsAMaterial[73] = false;

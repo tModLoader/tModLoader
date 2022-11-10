@@ -281,16 +281,16 @@ namespace Terraria
 			return this;
 		}
 
-		public Recipe SetDecraftable(bool decraftable) {
-			notDecraftable = !decraftable;
+		public Recipe DisableShimmer() {
+			notDecraftable = true;
 			return this;
 		}
-		public Recipe SetCrimson(bool crimson) {
-			this.crimson = crimson;
+		public Recipe CrimsonOnly() {
+			crimson = true;
 			return this;
 		}
-		public Recipe SetCorruption(bool corruption) {
-			this.corruption = corruption;
+		public Recipe CorruptionOnly() {
+			corruption = true;
 			return this;
 		}
 

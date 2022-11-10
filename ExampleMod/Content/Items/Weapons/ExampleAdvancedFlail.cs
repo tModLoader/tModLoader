@@ -39,23 +39,9 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			// The recipes in ExampleFlail and ExampleAndvancedFlail showcase customizing the decrafting feature of the Shimmer liquid.
-			// By default, Shimmer will tranform crafted items back into their original recipe ingredients.
-
-			// Many items have multiple recipes. The last added recipe will usually be used for shimmer decrafting.
-			// If your recipes are crimson or corruption specific, use SetCorruption and SetCrimson to indicate which recipe should be used for decrafting with which evil world type.
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
-				.AddIngredient(ItemID.RottenChunk)
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
-				.SetCorruption(true)
-				.Register();
-
-			CreateRecipe()
-				.AddIngredient<ExampleItem>()
-				.AddIngredient(ItemID.Vertebrae)
-				.AddTile<Tiles.Furniture.ExampleWorkbench>()
-				.SetCrimson(true)
 				.Register();
 		}
 	}

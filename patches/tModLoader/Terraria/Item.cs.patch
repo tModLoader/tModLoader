@@ -930,7 +930,7 @@
  				Recipe recipe = Main.recipe[decraftingRecipeIndex];
  				int num12 = 0;
 -				bool flag = recipe.requiredItem[1].stack > 0;
-+				bool flag = recipe.requiredItem.Count > 1 && recipe.requiredItem[1].stack > 0;
++				bool flag = recipe.requiredItem.Count > 1;
  				IEnumerable<Item> enumerable = recipe.requiredItem;
  				if (recipe.customShimmerResults != null)
  					enumerable = recipe.customShimmerResults;
