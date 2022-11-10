@@ -22,7 +22,7 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 18000;
-@@ -38,44 +_,211 @@
+@@ -38,73 +_,323 @@
  		private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  		private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
  		public static int CommonMaxStack = 9999;
@@ -235,22 +235,166 @@
 +		/// Defaults to <see langword="false"/>.<br/>
 +		/// </summary>
  		public bool favorited;
++		/// <summary>
++		/// Assign to an <see cref="ItemHoldStyleID"/> value to give this item a specific animation while the player is not using the item, but the item is currently selected. Leave as 0 and use <see cref="ModLoader.ModItem.HoldStyle(Player, Rectangle)"/> hook to implement a custom animation.
++		/// <br/> Defaults to <see cref="ItemHoldStyleID.None"/>.
++		/// </summary>
  		public int holdStyle;
++		/// <summary>
++		/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use. Leave as 0 and use <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
++		/// <br/> Defaults to <see cref="ItemUseStyleID.None"/>.
++		/// </summary>
  		public int useStyle;
-@@ -104,7 +_,7 @@
+ 		public bool channel;
++		/// <summary>
++		/// Whether the item is an accessory.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool accessory;
++		/// <summary>
++		/// The time span of the using animation for the item in ticks. This is independant of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <see cref="useTime"/> as this is only the animation.
++		/// <br/> Blocks use 15. Default value is 100. Terraria runs at 60 frames per second, so 15 is 1/4th of a second.
++		/// </summary>
+ 		public int useAnimation;
++		/// <summary>
++		/// The time span of using the item in ticks. This is independant of the time it takes for the item animation to finish. 
++		/// <br/> Blocks use 10. Default value is 100.
++		/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L111">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
++		/// </summary>
+ 		public int useTime;
+ 		public int stack;
++		/// <summary>
++		/// The maximum number of items that can be contained within a single stack. <see cref="stack"/> indicates the current stack size.
++		/// <br/> Defaults to 1.
++		/// </summary>
+ 		public int maxStack;
++		/// <summary>
++		/// The Pickaxe power of this item. For example, <c>Item.pick = 50;</c> will appear as 50% Pickaxe Power in the tooltip.
++		/// <br/> The <see href="https://terraria.wiki.gg/wiki/Pickaxes">Pickaxes wiki page</see> is a good resource for finding a suitable value.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int pick;
++		/// <summary>
++		/// The Axe power of this item. The Axe power percentage shown to the user is five times this value, so adjust accordingly. For example, <c>Item.axe = 20;</c> will appear as 60% Axe Power in the tooltip.
++		/// <br/> The <see href="https://terraria.wiki.gg/wiki/Axes">Axes wiki page</see> is a good resource for finding a suitable value.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int axe;
++		/// <summary>
++		/// The Hammer power of this item. For example, <c>Item.hammer = 70;</c> will appear as 70% Hammer Power in the tooltip.
++		/// <br/> The <see href="https://terraria.wiki.gg/wiki/Hammers">Hammers wiki page</see> is a good resource for finding a suitable value.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int hammer;
+ 		public int tileBoost;
++		/// <summary>
++		/// The ID of the tile this item places on use. Either a <see cref="TileID"/> entry or <see cref="ModContent.TileType{T}"/>, for example <see cref="TileID.WorkBenches"/> or ModContent.ItemType&lt;ExampleWorkbench&gt;()
++		/// <br/> Defaults to -1.
++		/// </summary>
+ 		public int createTile = -1;
++		/// <summary>
++		/// The ID of the wall this item places on use. Either a <see cref="WallID"/> entry or <see cref="ModContent.WallType{T}"/>, for example <see cref="WallID.TopazGemspark"/> or ModContent.ItemType&lt;ExampleWall&gt;()
++		/// <br/> Defaults to -1.
++		/// </summary>
+ 		public int createWall = -1;
++		/// <summary>
++		/// The style of the tile being placed. Used for tiles that have a different look depending on the item used to place them.
++		/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#multiple-styles">Basic Tile guide</see> explains more about this concept.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int placeStyle;
++		/// <summary>
++		/// The base damage inflicted by this item. The <see href="https://terraria.wiki.gg/wiki/List_of_weapons">List of weapons wiki page</see> can be a useful guide for deciding on a value.
++		/// <br/> Defaults to -1.
++		/// </summary>
+ 		public int damage;
++		/// <summary>
++		/// The force of the knock back. Max value is 20. The <see href="https://terraria.wiki.gg/wiki/Knockback">Knockback wiki page</see> has info on existing values. The <see href="https://terraria.wiki.gg/wiki/List_of_weapons">List of weapons wiki page</see> can also be a useful guide for deciding on a value.
++		/// <br/> Defaults to 0f.
++		/// </summary>
+ 		public float knockBack;
+ 		public int healLife;
+ 		public int healMana;
+ 		public bool potion;
++		/// <summary>
++		/// Whether the item is consumed after use. If consumed, the item stack will decrease by 1. Modders can use the <see cref="ModItem.ConsumeItem(Player)"/> hook to dynamically decide if the item should be consumed. Modders can use <see cref="ModItem.OnConsumeItem(Player)"/> to act on an item being consumed.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool consumable;
++		/// <summary>
++		/// Whether the item is in continuous use while the mouse button is held down.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool autoReuse;
++		/// <summary>
++		/// Whether the player can turn around while the using animation of this item is happening.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool useTurn;
+ 		public Color color;
  		public int alpha;
  		public short glowMask;
++		/// <summary>
++		/// The size multiplier of the item's sprite while the item is being used. Also increases range for melee weapons.
++		/// <br/> Defaults to 1f.
++		/// </summary>
  		public float scale = 1f;
 -		public LegacySoundStyle UseSound;
++		/// <summary>
++		/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
++		/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
++		/// <br/> For example <c>Item.UseSound = SoundID.Item1;</c> can be used for the sword swing sound.
++		/// <br/> Defaults to null.
++		/// </summary>
 +		public SoundStyle? UseSound;
  		public int defense;
  		public int headSlot = -1;
  		public int bodySlot = -1;
-@@ -143,23 +_,81 @@
+@@ -125,8 +_,24 @@
+ 		public ItemTooltip ToolTip;
+ 		public string BestiaryNotes;
+ 		public int playerIndexTheItemIsReservedFor = 255;
++		/// <summary>
++		/// Indicates the rarity of an item. Assign to a <see cref="ItemRarityID"/> value. Vanilla values range from -1 to 13.
++		/// <br/> Items with <see cref="ItemRarityID.White"/> rarity will burn in lava unless <see cref="ModItem.CanBurnInLava"/> or <see cref="ItemID.Sets.IsLavaImmuneRegardlessOfRarity"/> are used.
++		/// <br/> Modded rarities can be assigned by: <c>Item.rare = ModContent.RarityType&lt;ExampleModRarity&gt;();</c>
++		/// <br/> The <see href="https://terraria.wiki.gg/wiki/Rarity">Rarity wiki page</see> has guidelines for deciding on a suitable rarity.
++		/// <br/> Defaults to <see cref="ItemRarityID.White"/>
++		/// </summary>
+ 		public int rare;
++		/// <summary>
++		/// The ID of the projectile that is fired by this item on use. Either a <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.FireArrow"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;()
++		/// <br/> If this weapon uses <see cref="useAmmo"/>, then this value is ignored as the projectile will be decided by the ammo item, but shoot should still be 10 by convention.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int shoot;
++		/// <summary>
++		/// The velocity in pixels the projectile fired by this item will have. Actual velocity depends on the projectile being fired. If your weapon is shooting projectiles and they are stationary, change this to something like 10f. Throwing Knife uses 10f. Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
++		/// <br/> Defaults to 0f.
++		/// </summary>
+ 		public float shootSpeed;
+ 		public int ammo = AmmoID.None;
+ 		public bool notAmmo;
+@@ -136,31 +_,101 @@
+ 		public bool buyOnce;
+ 		public int mana;
+ 		public bool noUseGraphic;
++		/// <summary>
++		/// If true, the item's using animation will not deal damage. Set to true on most weapons that aren't swords.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool noMelee;
+ 		public int timeSinceTheItemHasBeenReservedForSomeone;
++		/// <summary>
++		/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
++		/// <br/> For convenience, you can also use the <see cref="Item.buyPrice(int, int, int, int)"/> method for setting values: <c>Item.value = Item.buyPrice(0, 1, 4, 62);</c> You can also use the <see cref="Item.sellPrice(int, int, int, int)"/> method if you would rather think about an item's value the other way. Both <c>Item.buyPrice(0, 0, 10, 55)</c> and <c>Item.sellPrice(0, 0, 2, 11)</c> would set the value to <c>1055</c>.
++		/// </summary>
+ 		public int value;
+ 		public bool buy;
  		public bool social;
  		public bool vanity;
  		public bool material;
-+		/// <summary>If true, the item won't be drawn while the holding player is wet. The player will also not be in the animation frame corresponding to the item holdStyle</summary>
++		/// <summary>If true, the item won't be drawn while the holding player is wet. The player will also not be in the animation frame corresponding to the item's holdStyle</summary>
  		public bool noWet;
  		public int buffType;
  		public int buffTime;
@@ -331,8 +475,13 @@
 +			}
 +		}
  		public bool sentry;
++		/// <summary>
++		/// A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items.
++		/// <br/> Defaults to 0.
++		/// </summary>
  		public int reuseDelay;
  		public bool newAndShiny;
+ 		[Old("This is used to allow items to be discerned as vanity even if they didn't have visual slots to poll against")]
 @@ -172,6 +_,18 @@
  		public bool shimmered;
  		public float shimmerTime;
@@ -927,7 +1076,7 @@
 +		/// </code>
 +		/// </summary>
 +		/// <param name="baseProjType"></param>
-+		/// <param name="ammoID"></param>
++		/// <param name="ammoID">The Ammo ID this weapon will consume. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information</param>
 +		/// <param name="singleShotTime"></param>
 +		/// <param name="shotVelocity"></param>
 +		/// <param name="hasAutoReuse"></param>
@@ -998,15 +1147,24 @@
  		public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
  			createTile = tileIDToPlace;
  			placeStyle = tileStyleToPlace;
-@@ -46929,6 +_,18 @@
+@@ -46929,6 +_,27 @@
  			autoReuse = true;
  		}
  
 +		/// <summary>
 +		/// This method sets a variety of Item values common to food items.<br/>
-+		/// Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;<br/>
-+		/// useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true;<br/>
-+		/// buffType = foodbuff; buffTime = foodbuffduration; rare = Blue; value = 20 silver;
++		/// Specifically: <code>
++		/// UseSound = useGulpSound ? Item3 : Item2;
++		/// useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;
++		/// useTurn = true;
++		/// useAnimation = useTime = animationTime;
++		/// maxStack = 30;
++		/// consumable = true;
++		/// buffType = foodbuff;
++		/// buffTime = foodbuffduration;
++		/// rare = Blue;
++		/// value = 20 silver;
++		/// </code>
 +		/// </summary>
 +		/// <param name="newwidth"></param>
 +		/// <param name="newheight"></param>

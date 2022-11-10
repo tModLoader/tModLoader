@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
++++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
+@@ -1,5 +_,9 @@
+ namespace Terraria.ID
+ {
++	/// <summary>
++	/// Assign <see cref="Item.useStyle"/> to one of these to give your item an animation while in use. The <see href="https://terraria.wiki.gg/wiki/Use_Style_IDs">Use Style IDs wiki page</see> has examples and animations of each of these use styles.
++	/// <br/> If none of these animations match what you want, consider making the animation a behavior of a held projectile or use the <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
++	/// </summary>
+ 	public class ItemUseStyleID
+ 	{
+ 		public const int None = 0;
+@@ -7,6 +_,9 @@
+ 		public const int DrinkOld = 7;
+ 		public const int Thrust = 3;
+ 		public const int HoldUp = 4;
++		/// <summary>
++		/// Item is held in front of player pointing towards mouse. Item sprite should be oriented horizontally with handle at left and muzzle end at right. Set <c><see cref="Item.staff"/>[Type] = true;</c> in SetStaticDefaults if the weapon sprite is oriented like a staff (handle at bottom left, end at top right).
++		/// </summary>
+ 		public const int Shoot = 5;
+ 		public const int DrinkLong = 6;
+ 		public const int EatFood = 2;

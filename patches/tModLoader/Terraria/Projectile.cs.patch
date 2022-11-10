@@ -307,7 +307,7 @@
 +		/// <param name="Y"></param>
 +		/// <param name="SpeedX"></param>
 +		/// <param name="SpeedY"></param>
-+		/// <param name="Type">Either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.FireArrow"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;()</param>
++		/// <param name="Type">Either a <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.FireArrow"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;()</param>
 +		/// <param name="Damage"></param>
 +		/// <param name="KnockBack"></param>
 +		/// <param name="Owner"></param>
