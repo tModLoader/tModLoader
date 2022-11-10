@@ -1162,7 +1162,7 @@
 +		/// consumable = true;
 +		/// buffType = foodbuff;
 +		/// buffTime = foodbuffduration;
-+		/// rare = Blue;
++		/// rare = <see cref="ItemRarityID.Blue"/>;
 +		/// value = 20 silver;
 +		/// </code>
 +		/// </summary>
