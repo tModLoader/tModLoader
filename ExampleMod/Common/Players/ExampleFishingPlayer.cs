@@ -70,7 +70,7 @@ namespace ExampleMod.Common.Players
 			// Here we will set the catch conditions for our ExampleQuestFish
 			int exampleQuestFish = ModContent.ItemType<Content.Items.ExampleQuestFish>(); // We'll store the type as a variable, since we'll be referencing it several times
 			// First we check if today's quest matches our quest fish
-			if (attempt.questFish == ModContent.ItemType<Content.Items.ExampleQuestFish>()) {
+			if (attempt.questFish == exampleQuestFish) {
 				// Now we'll check if the player already has the fish, and if they've completed today's quest yet
 				if (!Player.HasItem(exampleQuestFish) && !Main.anglerQuestFinished) {
 					// Our ExampleQuestFish states that it can only be caught whilst upside-down, so we'll have to check the gravity
