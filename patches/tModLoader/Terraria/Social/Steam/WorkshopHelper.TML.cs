@@ -342,6 +342,11 @@ namespace Terraria.Social.Steam
 
 					var pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
 
+					// Some weired mod will have a super big m_unNumChildren and will cause game crash.
+					if (pDetails.m_unNumChildren > 1000) {
+						throw new OverflowException("Numbers of dependencies exceeds 1000. Dependencies from Steam Workshop: " + pDetails.m_unNumChildren);
+					}
+
 					if (queryChildren) {
 						ugcChildren = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, 0, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId).ToList();
 					}
@@ -417,7 +422,7 @@ namespace Terraria.Social.Steam
 
 						// Backwards compat code for the metadata version change
 						if (metadata["versionsummary"] == null)
-							metadata["versionsummary"] = metadata["version"]; 
+							metadata["versionsummary"] = metadata["version"];
 
 						string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
 
@@ -457,9 +462,9 @@ namespace Terraria.Social.Steam
 						SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
 						// Check against installed mods for updates
-						
+
 						bool updateIsDowngrade = false;
-						
+
 						var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
 						bool update = installed != null && DoesWorkshopItemNeedUpdate(id, installed, cVersion.modV);
 

@@ -1755,6 +1755,15 @@
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
+@@ -13445,7 +_,7 @@
+ 
+ 		private static void DoUpdate_Enter_ToggleChat() {
+ 			if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt) && hasFocus) {
+-				if (chatRelease && !drawingPlayerChat && !editSign && !editChest && !gameMenu && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape)) {
++				if (chatRelease && !drawingPlayerChat && !editSign && !editChest && !gameMenu && !InGameUI.IsVisible && !ingameOptionsWindow && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape)) {
+ 					SoundEngine.PlaySound(10);
+ 					OpenPlayerChat();
+ 					chatText = "";
 @@ -13516,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;

@@ -26,14 +26,12 @@
  			writer.Write((short)item.stack);
  		}
  
-@@ -93,20 +_,26 @@
+@@ -93,20 +_,23 @@
  
  		public void DropItem() {
  			if (Main.netMode != 1)
-+				/*
- 				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
-+				*/
-+				Item.DropItem(new EntitySource_TileBreak(Position.X, Position.Y), item, new Rectangle(Position.X * 16, Position.Y * 16, 16, 16));
+-				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
++				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item, noBroadcast: false);
  
  			item = new Item();
  		}
@@ -50,7 +48,7 @@
  				Main.item[num2].stack = stack;
  				NetMessage.SendData(21, -1, -1, null, num2);
 +				*/
-+				Item.DropItem(new EntitySource_TileBreak(x, y), item, new Rectangle(x * 16, y * 16, 16, 16));
++				Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
  				return;
  			}
  

@@ -11,7 +11,7 @@ namespace tModPorter.Rewriters;
 
 public class MemberUseRewriter : BaseRewriter {
 
-	public delegate SyntaxNode RewriteMemberUse(MemberUseRewriter rw, IInvalidOperation op, IdentifierNameSyntax memberName);
+	public delegate SyntaxNode RewriteMemberUse(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName);
 
 	private static List<(string type, string name, RewriteMemberUse handler)> handlers = new();
 
