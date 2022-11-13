@@ -251,6 +251,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
+	<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
