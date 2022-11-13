@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemHoldStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemHoldStyleID.cs
-@@ -1,5 +_,9 @@
+@@ -1,14 +_,50 @@
  namespace Terraria.ID
  {
 +	/// <summary>
@@ -9,4 +9,45 @@
 +	/// </summary>
  	public class ItemHoldStyleID
  	{
++		/// <summary>
++		/// Default. No specific animation will happen while this item is held.
++		/// <br/>Used by any item by default. 
++		/// </summary>
  		public const int None = 0;
++		/// <summary>
++		/// Holding out in front of player.
++		/// <br/> Used for items such as torches, candles, and glowsticks
++		/// </summary>
+ 		public const int HoldFront = 1;
++		/// <summary>
++		/// Holding up above player head.
++		/// <br/>Used by <see cref="ItemID.BreathingReed"/>, <see cref="ItemID.Umbrella"/>, and <see cref="ItemID.TragicUmbrella"/>
++		/// </summary>
+ 		public const int HoldUp = 2;
++		/// <summary>
++		/// Holding out, but hand placed lower.
++		/// <br/>Used only by <see cref="ItemID.MagicalHarp"/>
++		/// </summary>
+ 		public const int HoldHeavy = 3;
++		/// <summary>
++		/// Item held by both hands low.
++		/// <br/> Used by Golf Clubs.
++		/// </summary>
+ 		public const int HoldGolfClub = 4;
++		/// <summary>
++		/// Item held very low.
++		/// <br/> Used by guitar-shaped instruments
++		/// </summary>
+ 		public const int HoldGuitar = 5;
++		/// <summary>
++		/// Item is held high by off hand.
++		/// <br/> Used by Nightglow.
++		/// </summary>
+ 		public const int HoldLamp = 6;
++		/// <summary>
++		/// Arm is held close to body, as if holding a remote control joystick.
++		/// <br/> Used by Kwad Racer Drone
++		/// </summary>
+ 		public const int HoldRadio = 7;
+ 	}
+ }

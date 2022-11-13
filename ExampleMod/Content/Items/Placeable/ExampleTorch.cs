@@ -15,15 +15,10 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleTorch>());
-			Item.width = 10;
-			Item.height = 12;
+			// DefaultToTorch sets various properties common to torch placing items. Hover over DefaultToTorch in Visual Studio to see the specific properties set.
+			// Of particular note to torches are Item.holdStyle, Item.flame, and Item.noWet. 
+			Item.DefaultToTorch(ModContent.TileType<Tiles.ExampleTorch>(), 0, false);
 			Item.value = 50;
-
-			// In addition to the normal placeable tile defaults, torch items need these.
-			Item.holdStyle = ItemHoldStyleID.HoldFront;
-			Item.flame = true;
-			Item.noWet = true;
 		}
 
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { // Overrides the default sorting method of this Item.
