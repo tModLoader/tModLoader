@@ -33,7 +33,7 @@ namespace Terraria
 		public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
 		public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 		public static double timePass; // used to account for more precise time rates when deciding when to update weather
-		public static TMLLootDatabase TMLLootDatabase;
+		public static TMLLootDatabase TMLLootDB;
 
 		internal static TMLContentManager AlternateContentManager;
 		public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();

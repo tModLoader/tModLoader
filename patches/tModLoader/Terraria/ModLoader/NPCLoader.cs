@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 		internal static readonly List<GlobalNPC> globalNPCs = new();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-		internal static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
+		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
 		/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 		/// </summary>
@@ -1106,40 +1106,50 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateSetupShopNew(int type, ChestLoot shop);
+		private delegate void DelegateSetupShopNew(int type, ChestLoot chestLoot);
 		private static HookList HookSetupShopNew = AddHook<DelegateSetupShopNew>(g => g.SetupShop);
 		private static HookList HookPostSetupShop = AddHook<DelegateSetupShopNew>(g => g.PostSetupShop);
 
-		public static void SetupShop(int type, ChestLoot shop) {
+		public static void SetupShop(int type, ChestLoot chestLoot) {
 			if (type < shopToNPC.Length) {
 				type = shopToNPC[type];
 			}
 			else {
-				GetNPC(type)?.SetupShop(shop);
+				GetNPC(type)?.SetupShop(chestLoot);
 			}
 			foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
-				g.SetupShop(type, shop);
+				g.SetupShop(type, chestLoot);
 			}
 		}
 
-		public static void PostSetupShop(int type, ChestLoot shop) {
+		public static void PostSetupShop(int type, ChestLoot chestLoot) {
 			if (type < shopToNPC.Length) {
 				type = shopToNPC[type];
 			}
 			else {
-				GetNPC(type)?.PostSetupShop(shop);
+				GetNPC(type)?.PostSetupShop(chestLoot);
 			}
-			foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
-				g.PostSetupShop(type, shop);
+			foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
+				g.PostSetupShop(type, chestLoot);
 			}
 		}
 
 		private delegate void DelegateSetupTravelShop(int[] shop, ref int nextSlot);
 		private static HookList HookSetupTravelShop = AddHook<DelegateSetupTravelShop>(g => g.SetupTravelShop);
 
+		[Obsolete]
 		public static void SetupTravelShop(int[] shop, ref int nextSlot) {
 			foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCs)) {
 				g.SetupTravelShop(shop, ref nextSlot);
+			}
+		}
+
+		private delegate void DelegateSetupTravelShopNew(LootTable lootTable);
+		private static HookList HookSetupTravelShopNew = AddHook<DelegateSetupTravelShopNew>(g => g.SetupTravelShop);
+
+		public static void SetupTravelShop(LootTable lootTable) {
+			foreach (GlobalNPC g in HookSetupTravelShopNew.Enumerate(globalNPCs)) {
+				g.SetupTravelShop(lootTable);
 			}
 		}
 

@@ -3476,7 +3476,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -34205,17 +_,35 @@
+@@ -34205,17 +_,33 @@
  		}
  
  		public static void CraftItem(Recipe r) {
@@ -3493,14 +3493,8 @@
 +				return;
 +
 +			Item crafted = r.createItem.Clone();
-+			if (crafted.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
-+				crafted.Prefix(-1);
- 
- 			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
- 			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
- 			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
- 			r.Create();
-+			crafted.OnCreated(new RecipeItemCreationContext(r));
++			crafted.Prefix(-1);
++			r.Create();
 +			RecipeLoader.OnCraft(crafted, r, mouseItem);
 +			if (mouseItem.stack > 0) {
 +				ItemLoader.StackItems(mouseItem, crafted, out _);
@@ -3508,6 +3502,11 @@
 +			else {
 +				mouseItem = crafted;
 +			}
+ 
+ 			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
+ 			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
+ 			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
+-			r.Create();
 +
  			if (mouseItem.type > 0 || r.createItem.type > 0)
  				SoundEngine.PlaySound(7);

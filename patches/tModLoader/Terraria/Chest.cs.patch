@@ -168,15 +168,14 @@
  		}
  
  		public static bool SetupTravelShop_CanAddItemToShop(int it) {
-@@ -1156,7 +_,7 @@
- 			}
+@@ -1149,6 +_,7 @@
+ 		}
  
- 			int num = 0;
--			switch (type) {
-+			/*switch (type) {
- 				case 1: {
- 						array[num].SetDefaults(88);
- 						num++;
+ 		public void SetupShop(int type) {
++			/*
+ 			bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
+ 			Item[] array = item;
+ 			for (int i = 0; i < 40; i++) {
 @@ -2295,12 +_,12 @@
  						num++;
  						array[num].SetDefaults(1979);
@@ -192,29 +191,23 @@
  							array[num].SetDefaults(1978);
  							num++;
  						}
-@@ -2965,13 +_,24 @@
+@@ -2965,13 +_,17 @@
  				if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
  					array[num++].SetDefaults(4921);
  			}
 +			*/
  
-+			int tmld = NPCLoader.shopToNPC.Length < type ? NPCLoader.shopToNPC[type] : type;
-+			ChestLoot loot = Main.TMLLootDatabase.GetNpcShopById(type);
-+			if (!NPCID.Sets.CannotHaveGlobalNpcStuff[tmld]) {
-+				foreach (var globalEntry in Main.TMLLootDatabase.GetGlobalNpcShopEntries()) {
-+					loot.Add(globalEntry);
-+				}
-+			}
-+			array = loot.Build(out num);
-+
++			ChestLoot loot = Main.TMLLootDB.GetNpcShopById(type);
++			item = loot.Build(out int num);
 +			NPCLoader.SetupShop(type, this, ref num);
  			for (int num13 = 0; num13 < num; num13++) {
- 				array[num13].isAShopItem = true;
+-				array[num13].isAShopItem = true;
++				item[num13].isAShopItem = true;
  			}
  		}
  
 -		private static bool BestiaryGirl_IsFairyTorchAvailable() {
-+		internal static bool BestiaryGirl_IsFairyTorchAvailable() { // TML: made from private to internal.
++		internal static bool BestiaryGirl_IsFairyTorchAvailable() { // TML: from private to internal
  			if (!DidDiscoverBestiaryEntry(585))
  				return false;
  
