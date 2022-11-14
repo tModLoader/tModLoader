@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -9,6 +_,7 @@
+@@ -9,6 +_,8 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
 +using Terraria.ModLoader;
++using System;
  
  namespace Terraria
  {
@@ -156,19 +157,33 @@
  		}
  
  		public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count) {
-@@ -715,8 +_,11 @@
- 						Main.travelShop[count++] = 3636;
- 						Main.travelShop[count++] = 3641;
- 						break;
-+						//patch file: num2
- 				}
+@@ -1098,7 +_,20 @@
+ 				num++;
  			}
-+
-+			NPCLoader.SetupTravelShop(Main.travelShop, ref count);
- 		}
  
- 		public static bool SetupTravelShop_CanAddItemToShop(int it) {
-@@ -1149,6 +_,7 @@
++			Main.TMLLootDB.TravellingMerchantEntries.SetRand(() => player.Random);
++			List<PoolItem> items = Main.TMLLootDB.TravellingMerchantEntries.Roll(num, shouldCalculateWeight: false);
+ 			int count = 0;
++			for (int i = 0; i < items.Count; i++) {
++				if (items[i].Item == 0)
++					continue;
++
++				Main.travelShop[i] = items[i].Item;
++				count++;
++			}
++			NPCLoader.SetupTravelShop(Main.travelShop, ref count);
++			Main.travelShop[^1] = 0;
++
++			/*int count = 0;
+ 			int added = 0;
+ 			int[] array = new int[6] {
+ 				100,
+@@ -1145,10 +_,11 @@
+ 				return;
+ 			} while (!SetupTravelShop_CanAddItemToShop(it3));
+ 
+-			SetupTravelShop_AddToShop(it3, ref added, ref count);
++			SetupTravelShop_AddToShop(it3, ref added, ref count);*/
  		}
  
  		public void SetupShop(int type) {
@@ -191,15 +206,26 @@
  							array[num].SetDefaults(1978);
  							num++;
  						}
-@@ -2965,13 +_,17 @@
+@@ -2965,13 +_,28 @@
  				if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
  					array[num++].SetDefaults(4921);
  			}
 +			*/
++
++			int num = 0;
++			if (type == 19) {
++				for (int num11 = 0; num11 < 40; num11++) {
++					if (Main.travelShop[num11] != 0) {
++						item[num++].netDefaults(Main.travelShop[num11]);
++					}
++				}
++			}
++			else {
++				ChestLoot loot = Main.TMLLootDB.GetNpcShopById(type);
++				item = loot.Build(out num);
++				NPCLoader.SetupShop(type, this, ref num);
++			}
  
-+			ChestLoot loot = Main.TMLLootDB.GetNpcShopById(type);
-+			item = loot.Build(out int num);
-+			NPCLoader.SetupShop(type, this, ref num);
  			for (int num13 = 0; num13 < num; num13++) {
 -				array[num13].isAShopItem = true;
 +				item[num13].isAShopItem = true;

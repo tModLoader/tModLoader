@@ -1,157 +1,87 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Terraria.Utilities;
 
-namespace Terraria.ModLoader {
-	public static class LootTables {
-		public static LootTable TravellingMerchant;
+namespace Terraria.ModLoader
+{
+	public sealed class LuckRandom : UnifiedRandom {
+		public float Luck { get; }
 
-		public static void InitializeTravellingMerchantLoot() {
-			const int r0 = 6;
-			const int r1 = 5;
-			const int r2 = 4;
-			const int r3 = 3;
-			const int r4 = 2;
-			const int r5 = 1;
+		public LuckRandom() : this(0f) {
+		}
 
-			TravellingMerchant = new() {
-				Pools = new() {
-					new() {
-						Entries = new() {
-							new(3309, r4),
-							new(3314, r3),
-							new(1987, r5),
+		public LuckRandom(float luck) {
+			Luck = luck;
+		}
 
-							new(2270, r4, onRoll: () => Main.hardMode ? null : false),
-							new(4760, r4, onRoll: () => Main.hardMode ? null : false),
-							new(2278, r4),
-							new(2271, r4),
+		public override int Next(int maxValue) {
+			if (Luck > 0f && Main.rand.NextFloat() < Luck)
+				return Main.rand.Next(Main.rand.Next(maxValue / 2, maxValue));
 
-							new(2223, r3, onRoll: () => (Main.hardMode && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) ? null : false),
-							new(2272, r3),
-							new(2276, r3),
-							new(2284, r3),
-							new(2285, r3),
-							new(2286, r3),
-							new(2287, r3),
-							new(4744, r3),
-							new(2296, r3, onRoll: () => NPC.downedBoss3 ? null : false),
-							new(3628, r3),
-							new(4091, r3, onRoll: () => Main.hardMode ? null : false),
-							new(4603, r3),
-							new(4604, r3),
-							new(5297, r3),
-							new(4605, r3),
-							new(4550, r3),
+			if (Luck < 0f && Main.rand.NextFloat() < 0f - Luck)
+				return Main.rand.Next(Main.rand.Next(maxValue, maxValue * 2));
 
-							new(2268, r2),
-							new(2269, r2, onRoll: () => WorldGen.shadowOrbSmashed ? null : false),
-							new(1988, r2),
-							new(2275, r2),
-							new(2279, r2),
-							new(2277, r2),
-							new PoolEntry(4555, r0).Then(new(4556, 1)).Then(new(4557, 1)),
-							new PoolEntry(4321, r2).Then(new(4322, 1)),
-							new PoolEntry(4323, r2).Then(new(4324, 1)).Then(new(4365, 1)),
-							new PoolEntry(5390, r2).Then(new(5386, 1)).Then(new(5387, 1)),
-							new(4549, r2),
-							new(4561, r2),
-							new(4774, r2),
-							new(5136, r2),
-							new(5305, r2),
-							new(4562, r2),
-							new(4558, r2),
-							new(4559, r2),
-							new(4563, r2),
-							new PoolEntry(4666, r2).Then(new(4664, 1)).Then(new(4665, 1)),
-							new(4347, r2, onRoll: () => (!Main.hardMode && (NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee)) ? null : false),
-							new(4348, r2, onRoll: () => (Main.hardMode && (NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee)) ? null : false),
-							new(3262, r2, onRoll: () => NPC.downedBoss1 ? null : false),
-							new(3284, r2, onRoll: () => NPC.downedMechBossAny ? null : false),
+			return Main.rand.Next(maxValue);
+		}
 
-							new(2267, r1),
-							new(2214, r1),
-							new(2215, r1),
-							new(2216, r1),
-							new(2217, r1),
-							new(3624, r1),
-							new(671, r1, onRoll: () => /*Main.remixWorld*/ false ? null : false),
-							new(2273, r1, onRoll: () => !/*Main.remixWorld*/false ? null : false),
-							new(2274, r1),
+		public override int Next(int minValue, int maxValue) {
+			if (Luck > 0f && Main.rand.NextFloat() < Luck)
+				return Main.rand.Next(Main.rand.Next(minValue / 2, maxValue));
 
-							new(2266, r0),
-							new(2281, r0),
-							new(2282, r0),
-							new(2283, r0),
-							new(2258, r0),
-							new(2242, r0),
-							new PoolEntry(2260, r0).Then(new(2261, 1)).Then(new(2262, 1)),
-							new(3637, r0),
-							new(4420, r0),
-							new(3119, r0),
-							new(3118, r0),
-							new(3099, r0),
-						}
-					},
-					new() {
-						Entries = new() {
-							new(5121, r3, onRoll: () => !Main.dontStarveWorld ? null : false),
-							new(5122, r3, onRoll: () => !Main.dontStarveWorld ? null : false),
-							new(5124, r3, onRoll: () => !Main.dontStarveWorld ? null : false),
-							new(5123, r3, onRoll: () => !Main.dontStarveWorld ? null : false),
+			if (Luck < 0f && Main.rand.NextFloat() < 0f - Luck)
+				return Main.rand.Next(Main.rand.Next(minValue, maxValue * 2));
 
-							new(3596, r2, onRoll: () => (Main.hardMode && NPC.downedMoonlord) ? null : false),
-							new(2865, r2, onRoll: () => (Main.hardMode && NPC.downedMartians) ? null : false),
-							new(2866, r2, onRoll: () => (Main.hardMode && NPC.downedMartians) ? null : false),
-							new(2867, r2, onRoll: () => (Main.hardMode && NPC.downedMartians) ? null : false),
-							new(3055, r2, onRoll: () => NPC.downedFrost ? null : false),
-							new(3056, r2, onRoll: () => NPC.downedFrost ? null : false),
-							new(3057, r2, onRoll: () => NPC.downedFrost ? null : false),
-							new(3058, r2, onRoll: () => NPC.downedFrost ? null : false),
-							new(3059, r2, onRoll: () => NPC.downedFrost ? null : false),
-							new(5243, r2, onRoll: () => (Main.hardMode && NPC.downedMoonlord) ? null : false),
+			return Main.rand.Next(minValue, maxValue);
+		}
 
-							new(5121, r1, onRoll: () => Main.dontStarveWorld ? null : false),
-							new(5122, r1, onRoll: () => Main.dontStarveWorld ? null : false),
-							new(5124, r1, onRoll: () => Main.dontStarveWorld ? null : false),
-							new(5123, r1, onRoll: () => Main.dontStarveWorld ? null : false),
-							new(5225, r1),
-							new(5229, r1),
-							new(5232, r1),
-							new(5389, r1),
-							new(5233, r1),
-							new(5241, r1),
-							new(5244, r1),
-							new(5242, r1),
-						}
-					}
-				}
-			};
+		public override double NextDouble() {
+			if (Luck > 0f && Main.rand.NextDouble() < Luck)
+				return Main.rand.NextFloat(Main.rand.NextFloat(0.5f));
+
+			if (Luck < 0f && Main.rand.NextDouble() < 0 - Luck)
+				return Main.rand.NextFloat(Main.rand.NextFloat(2f));
+
+			return Main.rand.NextDouble();
 		}
 	}
 
-	public sealed class LootTable {
-		public List<LootTablePool> Pools { get; set; } = new();
-		private UnifiedRandom BackendRand { get; }
-		public UnifiedRandom GetRand() => BackendRand ?? Main.rand;
+	[DebuggerDisplay("Count = {Pools.Count}")]
+	public sealed class LootTable : IEnumerable<LootTablePool> {
+		public List<LootTablePool> Pools { get; private set; } = new List<LootTablePool>();
+		private Func<UnifiedRandom> _rand;
+		public UnifiedRandom Rand => GetRand();
 
-		public LootTable(UnifiedRandom rand = null) {
-			BackendRand = rand;
+		public LootTable(Func<UnifiedRandom> rand = null) {
+			_rand = rand;
+		}
+
+		public void Add(LootTablePool pool) {
+			Pools.Add(pool);
 		}
 
 		public void CalculateWeight() {
 			double sum = 0;
-			foreach (var pool in Pools) {
-				foreach (var entry in pool.Entries) {
+			foreach (LootTablePool pool in Pools) {
+				foreach (PoolEntry entry in pool.Entries) {
 					sum += entry.Weight;
 				}
-			}
-			foreach (var pool in Pools) {
-				foreach (var e in pool.Entries) {
+
+				foreach (PoolEntry e in pool.Entries) {
 					e.TotalWeight = sum;
 				}
+				sum = 0.0;
 			}
+		}
+
+		public UnifiedRandom GetRand() {
+			return _rand?.Invoke() ?? Main.rand;
+		}
+
+		public void SetRand(Func<UnifiedRandom> rand) {
+			_rand = rand;
 		}
 
 		public List<PoolItem> Roll(int? dropAtleastXItems = null, bool ignoreDuplicates = true, bool shouldCalculateWeight = true) {
@@ -159,16 +89,20 @@ namespace Terraria.ModLoader {
 				CalculateWeight();
 
 			int a = 0;
-			List<PoolItem> winners = new();
-			if (dropAtleastXItems is null)
-				goto normal;
+			List<PoolItem> winners = new List<PoolItem>();
+			if (dropAtleastXItems is null) {
+				foreach (LootTablePool pool in Pools) {
+					winners.AddRange(pool.Roll(GetRand, ref a));
+				}
+				return winners;
+			}
 
 			while (true) {
 				for (int i = 0; i < Pools.Count; i++) {
 					List<PoolItem> e2 = Pools[i].Roll(GetRand, ref a);
 					if (ignoreDuplicates) {
 						IReadOnlyList<PoolItem> e = e2;
-						foreach (var r in e.Where(r => winners.Any(y => y.Item.Equals(r.Item))).ToArray()) {
+						foreach (PoolItem r in e.Where(r => winners.Any(y => y.Item.Equals(r.Item))).ToArray()) {
 							e2.Remove(r);
 						}
 					}
@@ -178,16 +112,69 @@ namespace Terraria.ModLoader {
 						return winners;
 				}
 			}
+		}
 
-		normal:
-			foreach (var pool in Pools) {
-				winners.AddRange(pool.Roll(GetRand, ref a));
+		public Enumerator GetEnumerator()
+			=> new Enumerator(this);
+
+		IEnumerator<LootTablePool> IEnumerable<LootTablePool>.GetEnumerator()
+			=> new Enumerator(this);
+
+		IEnumerator IEnumerable.GetEnumerator()
+			=> new Enumerator(this);
+
+		public struct Enumerator : IEnumerator<LootTablePool>, IEnumerator
+		{
+			private readonly LootTable _table;
+			private int _index;
+			private LootTablePool _current;
+
+			internal Enumerator(LootTable table) {
+				_table = table;
+				_index = 0;
+				_current = default;
 			}
-			return winners;
+
+			public void Dispose() {
+			}
+
+			public bool MoveNext() {
+				LootTable localList = _table;
+
+				if ((uint)_index < (uint)localList.Pools.Count) {
+					_current = localList.Pools[_index];
+					_index++;
+					return true;
+				}
+				return MoveNextRare();
+			}
+
+			private bool MoveNextRare() {
+				_index = _table.Pools.Count + 1;
+				_current = default;
+				return false;
+			}
+
+			public LootTablePool Current => _current!;
+
+			object IEnumerator.Current {
+				get {
+					if (_index == 0 || _index == _table.Pools.Count + 1) {
+						throw new InvalidOperationException();
+					}
+					return Current;
+				}
+			}
+
+			void IEnumerator.Reset() {
+				_index = 0;
+				_current = default;
+			}
 		}
 	}
-	public sealed class LootTablePool {
-		public List<PoolEntry> Entries = new();
+	[DebuggerDisplay("Rolls = {MinRolls + 1}-{MaxRolls}, Count = {Entries.Count}")]
+	public sealed class LootTablePool : IEnumerable<PoolEntry> {
+		public List<PoolEntry> Entries { get; private set; } = new List<PoolEntry>();
 
 		public int MinRolls { get; }
 		public int MaxRolls { get; }
@@ -200,7 +187,7 @@ namespace Terraria.ModLoader {
 		}
 
 		public List<PoolItem> Roll(Func<UnifiedRandom> rand, ref int a) {
-			Dictionary<int, List<PoolItem>> winners = new();
+			Dictionary<int, List<PoolItem>> winners = new Dictionary<int, List<PoolItem>>();
 			int maxRolls = MaxRolls + rand().Next(BonusRolls + 1);
 			for (int i = MinRolls; i < maxRolls; i++) {
 				for (int l = 0; l < Entries.Count; l++) {
@@ -212,13 +199,76 @@ namespace Terraria.ModLoader {
 					break;
 				}
 			}
-			return new(winners.Values.SelectMany(x => x));
+			return new List<PoolItem>(winners.Values.SelectMany(x => x));
+		}
+
+		public void Add(PoolEntry entry) {
+			Entries.Add(entry);
+		}
+
+		public Enumerator GetEnumerator()
+			=> new Enumerator(this);
+
+		IEnumerator<PoolEntry> IEnumerable<PoolEntry>.GetEnumerator()
+			=> new Enumerator(this);
+
+		IEnumerator IEnumerable.GetEnumerator()
+			=> new Enumerator(this);
+
+		public struct Enumerator : IEnumerator<PoolEntry>, IEnumerator
+		{
+			private readonly LootTablePool _table;
+			private int _index;
+			private PoolEntry _current;
+
+			internal Enumerator(LootTablePool table) {
+				_table = table;
+				_index = 0;
+				_current = default;
+			}
+
+			public void Dispose() {
+			}
+
+			public bool MoveNext() {
+				LootTablePool localList = _table;
+
+				if ((uint)_index < (uint)localList.Entries.Count) {
+					_current = localList.Entries[_index];
+					_index++;
+					return true;
+				}
+				return MoveNextRare();
+			}
+
+			private bool MoveNextRare() {
+				_index = _table.Entries.Count + 1;
+				_current = default;
+				return false;
+			}
+
+			public PoolEntry Current => _current!;
+
+			object IEnumerator.Current {
+				get {
+					if (_index == 0 || _index == _table.Entries.Count + 1) {
+						throw new InvalidOperationException();
+					}
+					return Current;
+				}
+			}
+
+			void IEnumerator.Reset() {
+				_index = 0;
+				_current = default;
+			}
 		}
 	}
+	[DebuggerDisplay("Item = {Item}, Count = {MinCount + 1}-{MaxCount}, Weight = {Weight}")]
 	public sealed class PoolEntry {
 		public event Func<bool?> OnRoll;
 
-		public List<PoolEntry> ChainedEntries { get; } = new();
+		public List<PoolEntry> ChainedEntries { get; } = new List<PoolEntry>();
 
 		public int MinCount { get; }
 		public int MaxCount { get; }
@@ -226,30 +276,31 @@ namespace Terraria.ModLoader {
 		public int Item { get; }
 		public double Weight { get; }
 
-		internal double TotalWeight { get; set; } = double.MaxValue;
+		internal double TotalWeight { get; set; }
 
-		public PoolEntry(int item, double weight, int minCount = 0, int maxCount = 1, Func<bool?> onRoll = null) {
+		public PoolEntry(int item, double weight = 1.0, int minCount = 0, int maxCount = 1, Func<bool?> onRoll = null) {
 			Item = item;
 			Weight = weight;
 			MinCount = minCount;
 			MaxCount = maxCount;
 			OnRoll = onRoll;
+			TotalWeight = weight;
 		}
 
 		public List<PoolItem> Roll(Func<UnifiedRandom> rand, bool first, ref int a) {
-			List<PoolItem> entries = new();
+			List<PoolItem> entries = new List<PoolItem>();
 			bool? flag = OnRoll?.Invoke();
-			double percent = 10000.0 / (TotalWeight / Weight);
+			double percent = 1.0 / (TotalWeight / Weight);
 
 			if (flag == false || flag == null && rand().NextDouble() > percent)
 				return entries;
 
-			entries.Add(new(Item, rand().Next(MinCount, MaxCount) + 1));
+			entries.Add(new PoolItem(Item, rand().Next(MinCount, MaxCount) + 1));
 			if (!first) {
 				a++;
 			}
-			foreach (var entry in ChainedEntries) {
-				var list = entry.Roll(rand, false, ref a);
+			foreach (PoolEntry entry in ChainedEntries) {
+				List<PoolItem> list = entry.Roll(rand, false, ref a);
 				a += list.Count;
 				entries.AddRange(list);
 			}
@@ -261,6 +312,7 @@ namespace Terraria.ModLoader {
 			return this;
 		}
 	}
+	[DebuggerDisplay("Item = {Item}, Count = {Count}")]
 	public readonly record struct PoolItem(int Item, int Count) {
 	}
 }

@@ -18,6 +18,7 @@ namespace Terraria
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
 		public Item equippedWings = null;
+		public LuckRandom Random => new(luck);
 
 		private int consumedLifeCrystals;
 
@@ -137,7 +138,6 @@ namespace Terraria
 			return index;
 		}
 
-		/// <inheritdoc cref="QuickSpawnItem(IEntitySource, int, int)"/>
 		public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
 			=> QuickSpawnItem(source, item.type, stack);
 
@@ -405,31 +405,6 @@ namespace Terraria
 		public bool ZoneNormalSpace => ZonePurity && ZoneSkyHeight;
 
 		/// <summary>
-		/// Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load.
-		/// Only run on the Player select screen during loading of data.
-		/// Primarily meant to prevent unwarranted first few frame fall damage/lava damage if load lagging
-		/// Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots.
-		/// </summary>
-		public static void LoadPlayer_LastMinuteFixes(Item item, Player newPlayer) {
-			int type = item.type;
-			if (type == 908 || type == 4874 || type == 5000)
-				newPlayer.lavaMax += 420;
-
-			if (type == 906 || type == 4038)
-				newPlayer.lavaMax += 420;
-
-			if (newPlayer.wingsLogic == 0 && item.wingSlot >= 0) {
-				newPlayer.wingsLogic = item.wingSlot;
-				newPlayer.equippedWings = item;
-			}
-
-			if (type == 158 || type == 396 || type == 1250 || type == 1251 || type == 1252)
-				newPlayer.noFallDmg = true;
-
-			newPlayer.lavaTime = newPlayer.lavaMax;
-		}
-
-		/// <summary>
 		/// Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items.
 		/// </summary>
 		public void UpdateVisibleAccessories(Item item, bool invisible, int slot = -1, bool modded = false) {
@@ -572,11 +547,6 @@ namespace Terraria
 		/// It is recommended to use ai counters for the lifetime of animation bound projectiles instead.
 		/// </summary>
 		public bool ItemAnimationEndingOrEnded => itemAnimation <= 1;
-
-		/// <summary>
-		/// Returns true if the item animation is in its first frame.
-		/// </summary>
-		public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax;
 
 		/// <summary>
 		/// The number of times the item has been used/fired this animation (swing)
