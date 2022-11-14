@@ -236,7 +236,7 @@
  		public int keepTime;
  		public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
 +		/// <summary>
-+		/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item in stance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement. 
++		/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement. 
 +		/// </summary>
  		public int type;
 +		/// <summary>
@@ -1017,6 +1017,37 @@
  		public void DefaultToSolution(int projectileId) {
  			shoot = projectileId - 145;
  			ammo = AmmoID.Solution;
+@@ -46323,6 +_,30 @@
+ 			consumable = true;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of Item values common to whip weapons.<br/>
++		/// Specifically:<code>
++		/// autoReuse = false;
++		///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
++		///	useAnimation = animationTotalTime;
++		///	useTime = animationTotalTime;
++		///	width = 18;
++		///	height = 18;
++		///	shoot = projectileId;
++		///	UseSound = <see cref="SoundID.Item152"/>;
++		///	noMelee = true;
++		///	DamageType = <see cref="DamageClass.SummonMeleeSpeed"/>;
++		///	noUseGraphic = true;
++		///	damage = dmg;
++		///	knockBack = kb;
++		///	shootSpeed = shootspeed;
++		/// </code>
++		/// </summary>
++		/// <param name="projectileId"></param>
++		/// <param name="dmg"></param>
++		/// <param name="kb"></param>
++		/// <param name="shootspeed"></param>
++		/// <param name="animationTotalTime"></param>
+ 		public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30) {
+ 			autoReuse = false;
+ 			useStyle = 1;
 @@ -46333,7 +_,8 @@
  			shoot = projectileId;
  			UseSound = SoundID.Item152;

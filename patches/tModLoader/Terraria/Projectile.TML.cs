@@ -8,6 +8,9 @@ namespace Terraria
 {
 	public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	{
+		/// <summary>
+		/// The ModProjectile instance that controls the behavior of this projectile. This property is null if this is not a modded projectile.
+		/// </summary>
 		public ModProjectile ModProjectile { get; internal set; }
 
 		internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
@@ -15,12 +18,12 @@ namespace Terraria
 		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
 		/// <summary>
-		/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float)"/>
+		/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
 		/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual Projectile instance rather than the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 		/// <br/> A short-hand for <code> Main.projectile[Projectile.NewProjectile(...)] </code>
 		/// </summary>
-		public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
-			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
+		public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
+			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1, ai2)];
 
 		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>

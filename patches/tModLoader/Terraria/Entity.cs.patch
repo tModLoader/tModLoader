@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,8 +_,15 @@
+@@ -3,9 +_,19 @@
  
  namespace Terraria
  {
@@ -15,5 +15,20 @@
 +		/// <br/> Player: <see cref="Main.player"/>
 +		/// </summary>
  		public int whoAmI;
++		/// <summary>
++		/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array.
++		/// </summary>
  		public bool active;
  		internal long entityId;
+ 		public Vector2 position;
+@@ -16,6 +_,10 @@
+ 		public int direction = 1;
+ 		public int width;
+ 		public int height;
++		/// <summary>
++		/// The Entity is currently in water.
++		/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
++		/// </summary>
+ 		public bool wet;
+ 		public bool shimmerWet;
+ 		public bool honeyWet;

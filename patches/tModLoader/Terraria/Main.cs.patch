@@ -239,6 +239,19 @@
  		public static bool raining;
  		public static bool eclipse;
  		public static float eclipseLight;
+@@ -800,6 +_,12 @@
+ 		public static int BartenderHelpTextIndex = 0;
+ 		public static bool autoGen;
+ 		public static bool autoPause = false;
++		/// <summary>
++		/// Indicates how many frames of animation are in each projectile type spritesheet.<br/>
++		/// Use <see cref="Projectile.frame"/> to animate the projectile.<br/>
++		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#animationmultiple-frames">Basic Projectile Guide</see> teaches how to animate projectiles.<br/>
++		/// Indexed by <see cref="Projectile.type"/>. Defaults to 1.
++		/// </summary>
+ 		public static int[] projFrames = new int[1022];
+ 		public static bool[] projPet = new bool[1022];
+ 		public static float demonTorch = 1f;
 @@ -832,7 +_,11 @@
  		public static float invAlpha = 1f;
  		public static float invDir = 1f;
