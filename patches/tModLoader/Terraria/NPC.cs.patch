@@ -50,7 +50,7 @@
  		private static int townRangeX = sWidth;
  		private static int townRangeY = sHeight;
 +		/// <summary>
-+		/// Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flys have values around .1f and .25. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6.
++		/// Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flys have values around 0.1f and 0.25f. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6.
 +		/// <br/> Proper npcSlots values help balance the game and prevents the player from randomly being overwhelmed by powerful enemies. The <see href="https://terraria.wiki.gg/wiki/NPC_spawning#Spawn_rates">Spawn rates section on the NPC spawning wiki page</see> lists vanilla npcSlots values. Use this as a guide to find a suitable value.
 +		/// <br/> Defaults to 1f.
 +		/// </summary>
