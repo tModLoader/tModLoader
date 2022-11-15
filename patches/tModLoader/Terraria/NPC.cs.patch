@@ -13,7 +13,7 @@
  	{
  		private const int NPC_TARGETS_START = 300;
  		public bool IsABestiaryIconDummy;
-@@ -65,7 +_,12 @@
+@@ -65,8 +_,17 @@
  		public int altTexture;
  		public int townNpcVariationIndex;
  		public Vector2 netOffset = Vector2.Zero;
@@ -25,21 +25,35 @@
 +		/// </summary>
 +		public int catchItem; // tML: changed to int for convenience and consistency purposes
  		public short releaseOwner = 255;
++		/// <summary>
++		/// How rare the NPC is for the Lifeform Analyzer. For example: 4 is for Tim and Mimics, 1 is for bound town NPCs.
++		/// <br/> Defaults to 0.
++		/// </summary>
  		public int rarity;
  		public static bool taxCollector = false;
-@@ -99,6 +_,10 @@
+ 		public bool[] playerInteraction = new bool[256];
+@@ -99,6 +_,12 @@
  		public static int deerclopsBoss = -1;
  		public int netSkip;
  		public bool netAlways;
 +		/// <summary>
-+		/// Stores the index of a single NPC. This NPC will then share a health pool with that NPC.<br/>
++		/// Stores the index (the <see cref="Entity.whoAmI"/>) of a single NPC. This NPC will then share a health pool with that NPC.<br/>
 +		/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
++		/// This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part npcs will have the default value of -1 still.
++		/// <br/> Defaults to -1.
 +		/// </summary>
  		public int realLife = -1;
  		private string _givenName = "";
  		public static int sWidth = 1920;
-@@ -113,7 +_,7 @@
+@@ -111,9 +_,14 @@
+ 		private static int activeRangeY = (int)((double)sHeight * 2.1);
+ 		private static int townRangeX = sWidth;
  		private static int townRangeY = sHeight;
++		/// <summary>
++		/// Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flys have values around .1f and .25. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6.
++		/// <br/> Proper npcSlots values help balance the game and prevents the player from randomly being overwhelmed by powerful enemies. The <see href="https://terraria.wiki.gg/wiki/NPC_spawning#Spawn_rates">Spawn rates section on the NPC spawning wiki page</see> lists vanilla npcSlots values. Use this as a guide to find a suitable value.
++		/// <br/> Defaults to 1f.
++		/// </summary>
  		public float npcSlots = 1f;
  		private static bool noSpawnCycle = false;
 -		private static int activeTime = 750;
@@ -47,10 +61,13 @@
  		private static int defaultSpawnRate = 600;
  		private static int defaultMaxSpawns = 5;
  		public float shimmerTransparency;
-@@ -121,7 +_,7 @@
+@@ -121,7 +_,10 @@
  		public const int maxBuffs = 20;
  		public int[] buffType = new int[20];
  		public int[] buffTime = new int[20];
++		/// <summary>
++		/// Make the NPC immune to buffs/debuffs. Example: <c>NPC.buffImmune[BuffID.OnFire] = true;</c>
++		/// </summary>
 -		public bool[] buffImmune = new bool[355];
 +		public bool[] buffImmune = new bool[BuffLoader.BuffCount];
  		public bool canDisplayBuffs = true;
@@ -200,17 +217,49 @@
  		public static bool downedMechBoss3 = false;
  		public static bool[] npcsFoundForCheckActive = new bool[688];
  		public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -243,14 +_,22 @@
+@@ -233,47 +_,130 @@
+ 		private static int maxSpawns = defaultMaxSpawns;
+ 		public int soundDelay;
+ 		public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
++		/// <summary>
++		/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
++		/// </summary>
+ 		public int[] immune = new int[256];
+ 		public int directionY = 1;
+ 		public int type;
+ 		public float[] ai = new float[maxAI];
+ 		public float[] localAI = new float[maxAI];
+ 		public int aiAction;
++		/// <summary>
++		/// 
++		/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++		/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
++		/// <br/> If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int aiStyle;
  		public bool justHit;
  		public int timeLeft;
  		public int target = -1;
 +		/// <summary>
 +		/// The amount of contact damage this NPC deals.<br/>
 +		/// Changing this WILL NOT change the amount of damage done by projectiles.<br/>
++		/// Usually damage is scaled by some factor when NPC spawn projectiles with Projectile.NewProjectile in AI code. For example, passing in <c>(int)(NPC.damage * 0.5f)</c> as the Damage parameter.
++		/// <br/> The <see href="https://terraria.wiki.gg/wiki/List_of_NPCs">List of NPCs wiki page</see> can be useful for finding appropriate values.
 +		/// </summary>
  		public int damage;
++		/// <summary>
++		/// How resistant to damage this NPC is.
++		/// <br/> The <see href="https://terraria.wiki.gg/wiki/List_of_NPCs">List of NPCs wiki page</see> can be useful for finding appropriate values.
++		/// </summary>
  		public int defense;
++		/// <summary>
++		/// Stores the value of <see cref="damage"/> at the end of SetDefaults. Useful for scaling damage in AI code conditionally.
++		/// </summary>
  		public int defDamage;
++		/// <summary>
++		/// Stores the value of <see cref="defense"/> at the end of SetDefaults. Useful for scaling defense in AI code, like how King Slime changes defense as it gets smaller.
++		/// </summary>
  		public int defDefense;
 +		/// <summary>
 +		/// Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion.<br/>
@@ -220,11 +269,87 @@
  		public bool trapImmune;
 -		public LegacySoundStyle HitSound;
 -		public LegacySoundStyle DeathSound;
++		/// <summary>
++		/// The sound that plays when this npc is hit. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
++		/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
++		/// <br/> For example <c>NPC.HitSound = SoundID.NPCHit1;</c> can be used for the typical NPC hit sound.
++		/// <br/> Defaults to null.
++		/// </summary>
 +		public SoundStyle? HitSound;
++		/// <summary>
++		/// The sound that plays when this npc dies. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
++		/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
++		/// <br/> For example <c>NPC.DeathSound = SoundID.NPCDeath1;</c> can be used for the typical NPC kill sound.
++		/// <br/> Defaults to null.
++		/// </summary>
 +		public SoundStyle? DeathSound;
++		/// <summary>
++		/// The current life of the NPC. Automatically set to the value of <see cref="lifeMax"/> at the end of SetDefaults.
++		/// </summary>
  		public int life;
++		/// <summary>
++		/// The maximum life of this NPC.
++		/// </summary>
  		public int lifeMax;
  		public Rectangle targetRect;
+ 		public double frameCounter;
+ 		public Rectangle frame;
+ 		public Color color;
++		/// <summary>
++		/// 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Can be used to fade an NPC in and out.
++		/// <br/> Use <see cref="Opacity"/> instead for a 0f to 1f scaling that uses the high value for fully opaque, as is more typical in computer graphics.
++		/// <br/> Defaults to 0.
++		/// </summary>
+ 		public int alpha;
++		/// <summary>
++		/// Indicates that this NPC is drawn at a specific layer in the render order. Must use in conjunction with <see cref="ModNPC.DrawBehind(int)"/>.
++		/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
++		/// </summary>
+ 		public bool hide;
++		/// <summary>
++		/// Makes the NPC bigger or smaller. Bigger than 1f is bigger.
++		/// <br/> Defaults to 1f.
++		/// </summary>
+ 		public float scale = 1f;
++		/// <summary>
++		/// How much of the knockback it receives will actually apply. 1f: full knockback; 0f: no knockback.
++		/// <br/> Defaults to 1f.
++		/// </summary>
+ 		public float knockBackResist = 1f;
+ 		public int oldDirectionY;
+ 		public int oldTarget;
+ 		public float rotation;
++		/// <summary>
++		/// If true, the npc will not be affected by gravity. Demon Eyes and other floating npc use this.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool noGravity;
++		/// <summary>
++		/// If true, the npc does not collide with tiles, making the npc pass through tiles freely. Meteor Head and Worm npc use this.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public bool noTileCollide;
+ 		public bool netUpdate;
+ 		public bool netUpdate2;
+ 		public bool collideX;
+ 		public bool collideY;
++		/// <summary>
++		/// Set to true if the NPC is a boss. Prevents off-screen despawn. Bosses also need <c>[AutoloadBossHead]</c> annotated on the ModNPC class itself to fully register as a boss.
++		/// </summary>
+ 		public bool boss;
+ 		public int spriteDirection = -1;
++		/// <summary>
++		/// Indicates that this NPC draws behind solid tiles.
++		/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
++		/// </summary>
+ 		public bool behindTiles;
+ 		public bool lavaImmune;
++		/// <summary>
++		/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
++		/// </summary>
+ 		public float value;
+ 		public int extraValue;
+ 		public bool dontTakeDamage;
 @@ -462,8 +_,20 @@
  			}
  		}

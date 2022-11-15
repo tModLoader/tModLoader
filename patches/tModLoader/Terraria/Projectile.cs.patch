@@ -16,12 +16,12 @@
  	{
  		private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  		{
-@@ -65,70 +_,228 @@
+@@ -65,70 +_,233 @@
  		public bool arrow;
  		public int numHits;
  		public bool bobber;
 +		/// <summary>
-+		/// Indicates that this projectile will be synced to a joining player (by default, any projectiles active before the player joins (besides pets) are not synced over). Example: glowsticks
++		/// Indicates that this projectile will be synced to a joining player (by default, any projectiles active before the player joins (besides projectiles with type in <see cref="Main.projPet"/>) are not synced over). Example: glowsticks
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public bool netImportant;
@@ -78,7 +78,9 @@
  		public float gfxOffY;
  		public float stepSpeed = 1f;
 +		/// <summary>
-+		/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle to mimic AI code already in the game. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++		/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++		/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai">Basic Projectile Guide</see> teaches how to use an existing aiStyle.
++		/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +		/// <br/> Defaults to 0.
 +		/// </summary>
  		public int aiStyle;
@@ -101,6 +103,9 @@
 +		/// </summary>
  		public bool hostile;
  		public bool reflected;
++		/// <summary>
++		/// This will always be set in Projectile.NewProjectile based on the weapons knockback and player stat modifiers. Modders should not set this in <see cref="ModProjectile.SetDefaults"/> as it will be overwritten.
++		/// </summary>
  		public float knockBack;
 +		/// <summary>
 +		/// If True, this projectile will hurt enemies (!<see cref="NPC.friendly"/>)

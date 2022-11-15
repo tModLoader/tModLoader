@@ -376,7 +376,7 @@
 +		/// </summary>
  		public Color color;
 +		/// <summary>
-+		/// Set to a value from 0 to 255 to control how transparant the item will appear when drawn. Gel uses 175, gemstone items use 50. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
++		/// Set to a value from 0 to 255 to control how transparant the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
 +		/// <br/> Defaults to 0.
 +		/// </summary>
  		public int alpha;
