@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToMusicBox(0, ModContent.TileType<ExampleMusicBoxTile>());
+			Item.DefaultToMusicBox(ModContent.TileType<ExampleMusicBoxTile>(), 0);
 		}
 	}
 }
