@@ -14,11 +14,10 @@ namespace Terraria.ModLoader.Setup
 {
 	public partial class FormatTask : SetupOperation
 	{
-		private static AdhocWorkspace workspace = new AdhocWorkspace();
-		static FormatTask() {
-			FixRoslynFormatter.Apply();
+		private static readonly AdhocWorkspace workspace = new AdhocWorkspace();
 
-			workspace.Options = workspace.Options
+		static FormatTask() {
+			var optionSet = workspace.Options
 				.WithChangedOption(new OptionKey(FormattingOptions.UseTabs, LanguageNames.CSharp), true)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
@@ -28,6 +27,8 @@ namespace Terraria.ModLoader.Setup
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousTypes, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+
+			workspace.TryApplyChanges(workspace.CurrentSolution.WithOptions(optionSet));
 		}
 
 		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) { }
