@@ -2,9 +2,9 @@
 +++ src/Terraria/Terraria/Audio/OGGAudioTrack.cs
 @@ -1,3 +_,4 @@
 +#if !SERVER
- using Microsoft.Xna.Framework.Audio;
- using NVorbis;
  using System.Collections.Generic;
+ using System.IO;
+ using Microsoft.Xna.Framework.Audio;
 @@ -65,3 +_,4 @@
  		_vorbisReader.Dispose();
  	}

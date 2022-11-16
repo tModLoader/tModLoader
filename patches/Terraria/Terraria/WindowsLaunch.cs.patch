@@ -5,8 +5,8 @@
  using System;
  using System.IO;
  using System.Reflection;
-@@ -63,6 +_,11 @@
- 			}
+@@ -62,6 +_,11 @@
+ 			return Assembly.Load(array);
  		};
  
 +#if SERVER

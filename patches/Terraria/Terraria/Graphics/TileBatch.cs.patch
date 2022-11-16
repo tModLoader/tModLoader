@@ -1,12 +1,13 @@
 --- src/decompiled/Terraria/Graphics/TileBatch.cs
 +++ src/Terraria/Terraria/Graphics/TileBatch.cs
-@@ -1,9 +_,13 @@
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
+@@ -1,10 +_,14 @@
  using System;
 +#if FNA
 +using System.Collections.Generic;
 +#endif
+ using System.Runtime.CompilerServices;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  
  namespace Terraria.Graphics;
  
@@ -14,7 +15,7 @@
  public class TileBatch
  {
  	private struct SpriteData
-@@ -317,3 +_,355 @@
+@@ -318,3 +_,355 @@
  		}
  	}
  }
