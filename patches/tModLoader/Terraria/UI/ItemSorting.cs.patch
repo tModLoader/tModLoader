@@ -6,72 +6,72 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.UI
- {
+ namespace Terraria.UI;
+ 
 @@ -812,7 +_,7 @@
- 			list.Add(ItemSortingLayers.LastTilesCommon);
- 			list.Add(ItemSortingLayers.LastNotTrash);
- 			list.Add(ItemSortingLayers.LastTrash);
--			for (int i = -48; i < 5456; i++) {
-+			for (int i = -48; i < ItemLoader.ItemCount; i++) {
- 				Item item = new Item();
- 				item.netDefaults(i);
- 				list2.Add(item);
+ 		list.Add(ItemSortingLayers.LastTilesCommon);
+ 		list.Add(ItemSortingLayers.LastNotTrash);
+ 		list.Add(ItemSortingLayers.LastTrash);
+-		for (int i = -48; i < 5456; i++) {
++		for (int i = -48; i < ItemLoader.ItemCount; i++) {
+ 			Item item = new Item();
+ 			item.netDefaults(i);
+ 			list2.Add(item);
 @@ -834,14 +_,14 @@
- 		private static void SetupSortingPriorities() {
- 			Player player = Main.player[Main.myPlayer];
- 			_layerList.Clear();
--			List<float> list = new List<float> {
-+			List<StatModifier> list = new List<StatModifier> {
- 				player.meleeDamage,
- 				player.rangedDamage,
- 				player.magicDamage,
- 				player.minionDamage
- 			};
+ 	private static void SetupSortingPriorities() {
+ 		Player player = Main.player[Main.myPlayer];
+ 		_layerList.Clear();
+-		List<float> list = new List<float> {
++		List<StatModifier> list = new List<StatModifier> {
+ 			player.meleeDamage,
+ 			player.rangedDamage,
+ 			player.magicDamage,
+ 			player.minionDamage
+ 		};
  
--			list.Sort((float x, float y) => y.CompareTo(x));
-+			list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
- 			for (int i = 0; i < 5; i++) {
- 				if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
- 					list.RemoveAt(0);
+-		list.Sort((float x, float y) => y.CompareTo(x));
++		list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
+ 		for (int i = 0; i < 5; i++) {
+ 			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
+ 				list.RemoveAt(0);
 @@ -922,7 +_,12 @@
- 						continue;
+ 					continue;
  
- 					Item item3 = inv[list[k]];
-+					//if (item2.type == item3.type && item3.stack != item3.maxStack) {
- 					if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+						if (!ItemLoader.TryStackItems(item2, item3, out _))
-+							continue;
-+
-+						/* TML: #OnStackHook
- 						int num2 = item3.stack;
- 						if (num < num2)
- 							num2 = num;
-@@ -930,6 +_,7 @@
- 						item2.stack += num2;
- 						item3.stack -= num2;
- 						num -= num2;
-+						*/
- 						if (item3.stack == 0) {
- 							inv[list[k]] = new Item();
- 							list.Remove(list[k]);
-@@ -1198,6 +_,11 @@
- 			for (int i = loopStartIndex; i < loopEndIndex; i++) {
- 				Item item = inv[i];
- 				if (item.stack >= 1 && item.type == itemToRefill.type) {
-+					if (!ItemLoader.TryStackItems(itemToRefill, inv[i], out int numTransfered))
+ 				Item item3 = inv[list[k]];
++				//if (item2.type == item3.type && item3.stack != item3.maxStack) {
+ 				if (item2.type == item3.type && item3.stack != item3.maxStack) {
++					if (!ItemLoader.TryStackItems(item2, item3, out _))
 +						continue;
 +
-+					num -= numTransfered;
-+					/*
- 					int num2 = item.stack;
- 					if (num2 > num)
++					/* TML: #OnStackHook
+ 					int num2 = item3.stack;
+ 					if (num < num2)
  						num2 = num;
-@@ -1205,6 +_,7 @@
+@@ -930,6 +_,7 @@
+ 					item2.stack += num2;
+ 					item3.stack -= num2;
  					num -= num2;
- 					itemToRefill.stack += num2;
- 					item.stack -= num2;
 +					*/
- 					if (item.stack <= 0)
- 						item.TurnToAir();
+ 					if (item3.stack == 0) {
+ 						inv[list[k]] = new Item();
+ 						list.Remove(list[k]);
+@@ -1198,6 +_,11 @@
+ 		for (int i = loopStartIndex; i < loopEndIndex; i++) {
+ 			Item item = inv[i];
+ 			if (item.stack >= 1 && item.type == itemToRefill.type) {
++				if (!ItemLoader.TryStackItems(itemToRefill, inv[i], out int numTransfered))
++					continue;
++
++				num -= numTransfered;
++				/*
+ 				int num2 = item.stack;
+ 				if (num2 > num)
+ 					num2 = num;
+@@ -1205,6 +_,7 @@
+ 				num -= num2;
+ 				itemToRefill.stack += num2;
+ 				item.stack -= num2;
++				*/
+ 				if (item.stack <= 0)
+ 					item.TurnToAir();
  

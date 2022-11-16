@@ -6,23 +6,23 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.ObjectInteractions
- {
-@@ -226,6 +_,8 @@
- 						break;
- 				}
+ namespace Terraria.GameContent.ObjectInteractions;
  
-+				TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
+@@ -226,6 +_,8 @@
+ 					break;
+ 			}
+ 
++			TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
 +
- 				if (num7 == 0 || num8 == 0)
- 					continue;
+ 			if (num7 == 0 || num8 == 0)
+ 				continue;
  
 @@ -366,6 +_,8 @@
- 								targets.Add(new Tuple<int, int>(i, j));
- 							break;
- 					}
-+					if (TileLoader.HasSmartInteract(i, j, tile.type, settings))
-+						targets.Add(new Tuple<int, int>(i, j));
+ 							targets.Add(new Tuple<int, int>(i, j));
+ 						break;
  				}
++				if (TileLoader.HasSmartInteract(i, j, tile.type, settings))
++					targets.Add(new Tuple<int, int>(i, j));
  			}
  		}
+ 	}

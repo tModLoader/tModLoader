@@ -1,38 +1,37 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
 +++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
-@@ -1,6 +_,35 @@
+@@ -1,5 +_,34 @@
 +using System.Collections.Generic;
 +
 +#nullable enable
 +
- namespace Terraria.DataStructures
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// This object encapsulates context information about the source of a particular spawning event of an Item/Projectile/NPC/etc. Aids in facilitating many modding situations and used in various OnSpawn hooks.<br/>
++/// The <see href="https://github.com/tModLoader/tModLoader/wiki/IEntitySource">IEntitySource Guide</see> teaches how and why to use this.
++/// </summary>
+ public interface IEntitySource
  {
-+	/// <summary>
-+	/// This object encapsulates context information about the source of a particular spawning event of an Item/Projectile/NPC/etc. Aids in facilitating many modding situations and used in various OnSpawn hooks.<br/>
-+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/IEntitySource">IEntitySource Guide</see> teaches how and why to use this.
-+	/// </summary>
- 	public interface IEntitySource
- 	{
-+		// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
-+		private static readonly Stack<IEntitySource> fallbacks = new();
++	// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
++	private static readonly Stack<IEntitySource> fallbacks = new();
 +
-+		string? Context { get; }
++	string? Context { get; }
 +
-+		internal static IEntitySource? GetFallback() {
-+			if (fallbacks.TryPeek(out var result)) {
-+				return result;
-+			}
-+
-+			return null;
++	internal static IEntitySource? GetFallback() {
++		if (fallbacks.TryPeek(out var result)) {
++			return result;
 +		}
 +
-+		internal static void PushFallback(IEntitySource source)
-+			=> fallbacks.Push(source);
++		return null;
++	}
 +
-+		internal static void PopFallback()
-+			=> fallbacks.Pop();
++	internal static void PushFallback(IEntitySource source)
++		=> fallbacks.Push(source);
 +
-+		internal static void ClearFallbacks()
-+			=> fallbacks.Clear();
- 	}
++	internal static void PopFallback()
++		=> fallbacks.Pop();
++
++	internal static void ClearFallbacks()
++		=> fallbacks.Clear();
  }

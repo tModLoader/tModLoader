@@ -10,204 +10,204 @@
  using Terraria.UI.Gamepad;
  
 @@ -106,6 +_,8 @@
- 						text = Lang.chestType2[tile.frameX / 36].Value;
- 					else if (tile.type == 88)
- 						text = Lang.dresserType[tile.frameX / 54].Value;
-+					else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] || TileID.Sets.BasicDresser[Main.tile[player.chestX, player.chestY].type])
-+						text = TileLoader.ContainerName(Main.tile[player.chestX, player.chestY].type);
- 				}
+ 					text = Lang.chestType2[tile.frameX / 36].Value;
+ 				else if (tile.type == 88)
+ 					text = Lang.dresserType[tile.frameX / 54].Value;
++				else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] || TileID.Sets.BasicDresser[Main.tile[player.chestX, player.chestY].type])
++					text = TileLoader.ContainerName(Main.tile[player.chestX, player.chestY].type);
  			}
- 			else if (player.chest == -2) {
+ 		}
+ 		else if (player.chest == -2) {
 @@ -401,12 +_,17 @@
- 								if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
- 									continue;
+ 							if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
+ 								continue;
  
-+								if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[num], out _))
-+									continue;
++							if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[num], out _))
++								continue;
 +
-+								/* TML: #OnStackHook
- 								int num2 = player.inventory[num].stack;
- 								if (player.inventory[num].stack + chest.item[i].stack > chest.item[i].maxStack)
- 									num2 = chest.item[i].maxStack - chest.item[i].stack;
++							/* TML: #OnStackHook
+ 							int num2 = player.inventory[num].stack;
+ 							if (player.inventory[num].stack + chest.item[i].stack > chest.item[i].maxStack)
+ 								num2 = chest.item[i].maxStack - chest.item[i].stack;
  
- 								player.inventory[num].stack -= num2;
- 								chest.item[i].stack += num2;
-+								*/
- 								SoundEngine.PlaySound(7);
- 								if (player.inventory[num].stack <= 0) {
- 									player.inventory[num].SetDefaults();
+ 							player.inventory[num].stack -= num2;
+ 							chest.item[i].stack += num2;
++							*/
+ 							SoundEngine.PlaySound(7);
+ 							if (player.inventory[num].stack <= 0) {
+ 								player.inventory[num].SetDefaults();
 @@ -425,13 +_,19 @@
- 									NetMessage.SendData(32, -1, -1, null, player.chest, i);
- 							}
- 							else if (player.chest == -3) {
-+								//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
- 								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
-+									if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out _))
-+										continue;
-+
-+									/* TML: #OnStackHook
- 									int num3 = player.inventory[num].stack;
- 									if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
- 										num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
- 
- 									player.inventory[num].stack -= num3;
- 									player.bank2.item[i].stack += num3;
-+									*/
- 									SoundEngine.PlaySound(7);
- 									if (player.inventory[num].stack <= 0) {
- 										player.inventory[num].SetDefaults();
-@@ -445,13 +_,19 @@
- 								}
- 							}
- 							else if (player.chest == -4) {
-+								//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
- 								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
-+									if (!ItemLoader.TryStackItems(player.bank3.item[i], player.inventory[num], out _))
-+										continue;
-+
-+									/* TML: #OnStackHook
- 									int num4 = player.inventory[num].stack;
- 									if (player.inventory[num].stack + player.bank3.item[i].stack > player.bank3.item[i].maxStack)
- 										num4 = player.bank3.item[i].maxStack - player.bank3.item[i].stack;
- 
- 									player.inventory[num].stack -= num4;
- 									player.bank3.item[i].stack += num4;
-+									*/
- 									SoundEngine.PlaySound(7);
- 									if (player.inventory[num].stack <= 0) {
- 										player.inventory[num].SetDefaults();
-@@ -465,13 +_,19 @@
- 								}
- 							}
- 							else if (player.chest == -5) {
-+								//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
- 								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
-+									if (!ItemLoader.TryStackItems(player.bank4.item[i], player.inventory[num], out _))
-+										continue;
-+
-+									/* TML: #OnStackHook
- 									int num5 = player.inventory[num].stack;
- 									if (player.inventory[num].stack + player.bank4.item[i].stack > player.bank4.item[i].maxStack)
- 										num5 = player.bank4.item[i].maxStack - player.bank4.item[i].stack;
- 
- 									player.inventory[num].stack -= num5;
- 									player.bank4.item[i].stack += num5;
-+									*/
- 									SoundEngine.PlaySound(7);
- 									if (player.inventory[num].stack <= 0) {
- 										player.inventory[num].SetDefaults();
-@@ -484,13 +_,19 @@
- 									}
- 								}
- 							}
-+							//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
- 							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
-+								if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out _))
+ 								NetMessage.SendData(32, -1, -1, null, player.chest, i);
+ 						}
+ 						else if (player.chest == -3) {
++							//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
+ 							if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
++								if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out _))
 +									continue;
 +
 +								/* TML: #OnStackHook
- 								int num6 = player.inventory[num].stack;
- 								if (player.inventory[num].stack + player.bank.item[i].stack > player.bank.item[i].maxStack)
- 									num6 = player.bank.item[i].maxStack - player.bank.item[i].stack;
+ 								int num3 = player.inventory[num].stack;
+ 								if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
+ 									num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
  
- 								player.inventory[num].stack -= num6;
- 								player.bank.item[i].stack += num6;
+ 								player.inventory[num].stack -= num3;
+ 								player.bank2.item[i].stack += num3;
 +								*/
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
+@@ -445,13 +_,19 @@
+ 							}
+ 						}
+ 						else if (player.chest == -4) {
++							//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
+ 							if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
++								if (!ItemLoader.TryStackItems(player.bank3.item[i], player.inventory[num], out _))
++									continue;
++
++								/* TML: #OnStackHook
+ 								int num4 = player.inventory[num].stack;
+ 								if (player.inventory[num].stack + player.bank3.item[i].stack > player.bank3.item[i].maxStack)
+ 									num4 = player.bank3.item[i].maxStack - player.bank3.item[i].stack;
+ 
+ 								player.inventory[num].stack -= num4;
+ 								player.bank3.item[i].stack += num4;
++								*/
+ 								SoundEngine.PlaySound(7);
+ 								if (player.inventory[num].stack <= 0) {
+ 									player.inventory[num].SetDefaults();
+@@ -465,13 +_,19 @@
+ 							}
+ 						}
+ 						else if (player.chest == -5) {
++							//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
+ 							if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
++								if (!ItemLoader.TryStackItems(player.bank4.item[i], player.inventory[num], out _))
++									continue;
++
++								/* TML: #OnStackHook
+ 								int num5 = player.inventory[num].stack;
+ 								if (player.inventory[num].stack + player.bank4.item[i].stack > player.bank4.item[i].maxStack)
+ 									num5 = player.bank4.item[i].maxStack - player.bank4.item[i].stack;
+ 
+ 								player.inventory[num].stack -= num5;
+ 								player.bank4.item[i].stack += num5;
++								*/
+ 								SoundEngine.PlaySound(7);
+ 								if (player.inventory[num].stack <= 0) {
+ 									player.inventory[num].SetDefaults();
+@@ -484,13 +_,19 @@
+ 								}
+ 							}
+ 						}
++						//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
+ 						else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
++							if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out _))
++								continue;
++
++							/* TML: #OnStackHook
+ 							int num6 = player.inventory[num].stack;
+ 							if (player.inventory[num].stack + player.bank.item[i].stack > player.bank.item[i].maxStack)
+ 								num6 = player.bank.item[i].maxStack - player.bank.item[i].stack;
+ 
+ 							player.inventory[num].stack -= num6;
+ 							player.bank.item[i].stack += num6;
++							*/
+ 							SoundEngine.PlaySound(7);
+ 							if (player.inventory[num].stack <= 0) {
+ 								player.inventory[num].SetDefaults();
 @@ -651,13 +_,16 @@
- 							num4 = num5;
+ 						num4 = num5;
  
- 						SoundEngine.PlaySound(7);
--						if (canVisualizeTransfers)
-+						ItemLoader.TryStackItems(item[num3], array[item2.Key], out num4);
-+						if (canVisualizeTransfers && num4 > 0)
- 							Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num3], num4);
+ 					SoundEngine.PlaySound(7);
+-					if (canVisualizeTransfers)
++					ItemLoader.TryStackItems(item[num3], array[item2.Key], out num4);
++					if (canVisualizeTransfers && num4 > 0)
+ 						Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num3], num4);
  
-+						/* TML: #OnStackHook
- 						item[num3].stack += num4;
- 						array[item2.Key].stack -= num4;
- 						if (array[item2.Key].stack == 0)
- 							array[item2.Key].SetDefaults();
-+						*/
++					/* TML: #OnStackHook
+ 					item[num3].stack += num4;
+ 					array[item2.Key].stack -= num4;
+ 					if (array[item2.Key].stack == 0)
+ 						array[item2.Key].SetDefaults();
++					*/
  
- 						array2[num3] = true;
- 					}
+ 					array2[num3] = true;
+ 				}
 @@ -701,11 +_,14 @@
- 						if (num8 > num9)
- 							num8 = num9;
+ 					if (num8 > num9)
+ 						num8 = num9;
  
--						if (canVisualizeTransfers)
-+						ItemLoader.TryStackItems(item[num6], array[item5.Key], out num8);
-+						if (canVisualizeTransfers && num8 > 0)
- 							Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num6], num8);
+-					if (canVisualizeTransfers)
++					ItemLoader.TryStackItems(item[num6], array[item5.Key], out num8);
++					if (canVisualizeTransfers && num8 > 0)
+ 						Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num6], num8);
  
-+						/* TML: #OnStackHook
- 						item[num6].stack += num8;
- 						array[item5.Key].stack -= num8;
-+						*/
- 						if (array[item5.Key].stack == 0)
- 							array[item5.Key] = new Item();
- 					}
++					/* TML: #OnStackHook
+ 					item[num6].stack += num8;
+ 					array[item5.Key].stack -= num8;
++					*/
+ 					if (array[item5.Key].stack == 0)
+ 						array[item5.Key] = new Item();
+ 				}
 @@ -780,7 +_,8 @@
- 			List<int> list2 = new List<int>();
- 			for (int num = 57; num >= 0; num--) {
- 				if ((num < 50 || num >= 54) && (inventory[num].type < 71 || inventory[num].type > 74)) {
--					if (inventory[num].stack > 0 && inventory[num].maxStack > 1 && inventory[num].prefix == 0) {
-+					//if (inventory[num].stack > 0 && inventory[num].maxStack > 1 && inventory[num].prefix == 0) {
-+					if (inventory[num].stack > 0 && inventory[num].maxStack > 1) { // TML: #StackablePrefixWeapons, checked moved down
- 						hashSet.Add(inventory[num].netID);
- 						if (inventory[num].stack < inventory[num].maxStack)
- 							list.Add(num);
+ 		List<int> list2 = new List<int>();
+ 		for (int num = 57; num >= 0; num--) {
+ 			if ((num < 50 || num >= 54) && (inventory[num].type < 71 || inventory[num].type > 74)) {
+-				if (inventory[num].stack > 0 && inventory[num].maxStack > 1 && inventory[num].prefix == 0) {
++				//if (inventory[num].stack > 0 && inventory[num].maxStack > 1 && inventory[num].prefix == 0) {
++				if (inventory[num].stack > 0 && inventory[num].maxStack > 1) { // TML: #StackablePrefixWeapons, checked moved down
+ 					hashSet.Add(inventory[num].netID);
+ 					if (inventory[num].stack < inventory[num].maxStack)
+ 						list.Add(num);
 @@ -793,7 +_,8 @@
  
- 			bool flag = false;
- 			for (int i = 0; i < item.Length; i++) {
--				if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].netID))
-+				//if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].netID))
-+				if (item[i].stack < 1 || !hashSet.Contains(item[i].netID)) // TML: #StackablePrefixWeapons, checked moved down
+ 		bool flag = false;
+ 		for (int i = 0; i < item.Length; i++) {
+-			if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].netID))
++			//if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].netID))
++			if (item[i].stack < 1 || !hashSet.Contains(item[i].netID)) // TML: #StackablePrefixWeapons, checked moved down
+ 				continue;
+ 
+ 			bool flag2 = false;
+@@ -806,12 +_,17 @@
+ 				if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;
  
- 				bool flag2 = false;
-@@ -806,12 +_,17 @@
- 					if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
- 						continue;
- 
-+					if (!ItemLoader.TryStackItems(inventory[num2], item[i], out _)) // TML: #StackablePrefixWeapons, check moved here
-+						continue;
++				if (!ItemLoader.TryStackItems(inventory[num2], item[i], out _)) // TML: #StackablePrefixWeapons, check moved here
++					continue;
 +
-+					/* TML: #OnStackHook
- 					int num3 = item[i].stack;
- 					if (inventory[num2].maxStack - inventory[num2].stack < num3)
- 						num3 = inventory[num2].maxStack - inventory[num2].stack;
++				/* TML: #OnStackHook
+ 				int num3 = item[i].stack;
+ 				if (inventory[num2].maxStack - inventory[num2].stack < num3)
+ 					num3 = inventory[num2].maxStack - inventory[num2].stack;
  
- 					inventory[num2].stack += num3;
- 					item[i].stack -= num3;
-+					*/
- 					flag = true;
- 					if (inventory[num2].stack == inventory[num2].maxStack) {
- 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
+ 				inventory[num2].stack += num3;
+ 				item[i].stack -= num3;
++				*/
+ 				flag = true;
+ 				if (inventory[num2].stack == inventory[num2].maxStack) {
+ 					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
 @@ -1045,6 +_,9 @@
- 					if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
- 						continue;
+ 				if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
+ 					continue;
  
-+					if (!ItemLoader.CanStack(chestinv[i], I))
-+						continue;
++				if (!ItemLoader.CanStack(chestinv[i], I))
++					continue;
 +
- 					int num = I.stack;
- 					if (I.stack + chestinv[i].stack > chestinv[i].maxStack)
- 						num = chestinv[i].maxStack - chestinv[i].stack;
+ 				int num = I.stack;
+ 				if (I.stack + chestinv[i].stack > chestinv[i].maxStack)
+ 					num = chestinv[i].maxStack - chestinv[i].stack;
 @@ -1054,8 +_,12 @@
- 						break;
- 					}
+ 					break;
+ 				}
  
-+					ItemLoader.StackItems(chestinv[i], I, out _);
++				ItemLoader.StackItems(chestinv[i], I, out _);
 +
-+					/* TML: #OnStackHook
- 					I.stack -= num;
- 					chestinv[i].stack += num;
-+					*/
- 					SoundEngine.PlaySound(7);
- 					if (I.stack <= 0) {
- 						I.SetDefaults();
++				/* TML: #OnStackHook
+ 				I.stack -= num;
+ 				chestinv[i].stack += num;
++				*/
+ 				SoundEngine.PlaySound(7);
+ 				if (I.stack <= 0) {
+ 					I.SetDefaults();

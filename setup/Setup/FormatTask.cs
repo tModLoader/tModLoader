@@ -72,13 +72,14 @@ namespace Terraria.ModLoader.Setup
 			}
 
 			node = new AddVisualNewlinesRewriter().Visit(node);
+			node = new FileScopedNamespaceRewriter().Visit(node);
 			node = Formatter.Format(node, workspace, cancellationToken: cancellationToken);
 			node = new CollectionInitializerFormatter().Visit(node);
 			return node;
 		}
 
 		public static string Format(string source, CancellationToken cancellationToken, bool aggressive) {
-			var tree = CSharpSyntaxTree.ParseText(source);
+			var tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
 			return Format(tree.GetRoot(), cancellationToken, aggressive).ToFullString();
 		}
 	}

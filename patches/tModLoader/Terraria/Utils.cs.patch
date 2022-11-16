@@ -2,66 +2,66 @@
 +++ src/tModLoader/Terraria/Utils.cs
 @@ -25,7 +_,7 @@
  
- namespace Terraria
+ namespace Terraria;
+ 
+-public static class Utils
++public static partial class Utils
  {
--	public static class Utils
-+	public static partial class Utils
- 	{
- 		public delegate bool TileActionAttempt(int x, int y);
+ 	public delegate bool TileActionAttempt(int x, int y);
  
 @@ -286,7 +_,8 @@
- 			ArrayList arrayList = new ArrayList();
- 			string text = "";
- 			for (int i = 0; i < brokenArgs.Length; i++) {
--				if (brokenArgs[i].StartsWith("-")) {
-+				//TML: Steam uses +connect_lobby as an argument, so had to add == "+" so this wouldn't break that argument.
-+				if (brokenArgs[i].StartsWith("-") || brokenArgs[i].StartsWith("+")) {
- 					if (text != "") {
- 						arrayList.Add(text);
- 						text = "";
+ 		ArrayList arrayList = new ArrayList();
+ 		string text = "";
+ 		for (int i = 0; i < brokenArgs.Length; i++) {
+-			if (brokenArgs[i].StartsWith("-")) {
++			//TML: Steam uses +connect_lobby as an argument, so had to add == "+" so this wouldn't break that argument.
++			if (brokenArgs[i].StartsWith("-") || brokenArgs[i].StartsWith("+")) {
+ 				if (text != "") {
+ 					arrayList.Add(text);
+ 					text = "";
 @@ -364,6 +_,12 @@
- 								num2 -= 16;
+ 							num2 -= 16;
  
- 							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
-+							for (int i = 0; i < list3[l].Text.Length; i++) {
-+								// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
-+								if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
-+									num3 = i;
-+							}
+ 						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
++						for (int i = 0; i < list3[l].Text.Length; i++) {
++							// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
++							if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
++								num3 = i;
++						}
 +
- 							if (num3 < 0)
- 								num3 = 0;
+ 						if (num3 < 0)
+ 							num3 = 0;
  
 @@ -645,6 +_,11 @@
- 			return array;
- 		}
+ 		return array;
+ 	}
  
-+		/// <summary>
-+		/// Generates a random value between 0f (inclusive) and 1f (exclusive). <br/>It will not return 1f.
-+		/// </summary>
-+		/// <param name="r"></param>
-+		/// <returns></returns>
- 		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
- 		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
- 		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
++	/// <summary>
++	/// Generates a random value between 0f (inclusive) and 1f (exclusive). <br/>It will not return 1f.
++	/// </summary>
++	/// <param name="r"></param>
++	/// <returns></returns>
+ 	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
+ 	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
+ 	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
 @@ -1311,14 +_,17 @@
- 				text.Substring(0, maxCharactersDisplayed);
+ 			text.Substring(0, maxCharactersDisplayed);
  
- 			DynamicSpriteFont value = FontAssets.DeathText.Value;
-+			/*
- 			for (int i = -1; i < 2; i++) {
- 				for (int j = -1; j < 2; j++) {
--					spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
-+					spriteBatch.DrawString(value, text, pos + new Vector2((float)i, (float)j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
- 				}
+ 		DynamicSpriteFont value = FontAssets.DeathText.Value;
++		/*
+ 		for (int i = -1; i < 2; i++) {
+ 			for (int j = -1; j < 2; j++) {
+-				spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
++				spriteBatch.DrawString(value, text, pos + new Vector2((float)i, (float)j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
  			}
--
- 			spriteBatch.DrawString(value, text, pos, color, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
--			return value.MeasureString(text) * scale;
-+			*/
-+			Vector2 vector = ChatManager.GetStringSize(value, text, Vector2.One);
-+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
-+			return vector * scale;
  		}
+-
+ 		spriteBatch.DrawString(value, text, pos, color, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
+-		return value.MeasureString(text) * scale;
++		*/
++		Vector2 vector = ChatManager.GetStringSize(value, text, Vector2.One);
++		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
++		return vector * scale;
+ 	}
  
- 		public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color)) {
+ 	public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color)) {

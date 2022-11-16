@@ -7,8 +7,8 @@
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
  
-@@ -63,3 +_,4 @@
- 		}
+@@ -62,3 +_,4 @@
+ 		return null;
  	}
  }
 +*/

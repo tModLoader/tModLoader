@@ -9,9 +9,9 @@
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Engine;
  
- internal static class MonoLaunch
- {
-@@ -14,7 +_,14 @@
+ namespace Terraria;
+ 
+@@ -15,7 +_,14 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
@@ -26,7 +26,7 @@
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -32,7 +_,25 @@
+@@ -33,7 +_,25 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -53,7 +53,7 @@
  	}
  
  #if NETCORE
-@@ -53,17 +_,17 @@
+@@ -54,17 +_,17 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  

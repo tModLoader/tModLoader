@@ -1,15 +1,15 @@
 --- src/Terraria/ReLogic/OS/Platform.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Platform.cs
 @@ -9,7 +_,11 @@
+ 
+ public abstract class Platform : IDisposable
  {
- 	public abstract class Platform : IDisposable
- 	{
 -#if WINDOWS
 +#if NETCORE
-+		public static readonly Platform Current =
-+			OperatingSystem.IsWindows() ? new WindowsPlatform() :
-+			OperatingSystem.IsMacOS() ? new OsxPlatform() : new LinuxPlatform();
++	public static readonly Platform Current =
++		OperatingSystem.IsWindows() ? new WindowsPlatform() :
++		OperatingSystem.IsMacOS() ? new OsxPlatform() : new LinuxPlatform();
 +#elif WINDOWS
- 		public static readonly Platform Current = new WindowsPlatform();
+ 	public static readonly Platform Current = new WindowsPlatform();
  #elif LINUX
- 		public static readonly Platform Current = new LinuxPlatform();
+ 	public static readonly Platform Current = new LinuxPlatform();

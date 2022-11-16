@@ -7,24 +7,24 @@
 +using System.Linq;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameInput
+ namespace Terraria.GameInput;
+ 
+-public class PlayerInputProfile
++public partial class PlayerInputProfile
  {
--	public class PlayerInputProfile
-+	public partial class PlayerInputProfile
- 	{
- 		public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
+ 	public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
  			{ InputMode.Keyboard, new KeyConfiguration() },
 @@ -198,9 +_,12 @@
- 		}
+ 	}
  
- 		public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode) {
--			string[] keysToCopy = new string[23] {
-+			string[] keysToCopy = new string[] {
- 				"MouseLeft",
- 				"MouseRight",
-+				"MouseMiddle",
-+				"MouseXButton1",
-+				"MouseXButton2",
- 				"Up",
- 				"Down",
- 				"Left",
+ 	public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode) {
+-		string[] keysToCopy = new string[23] {
++		string[] keysToCopy = new string[] {
+ 			"MouseLeft",
+ 			"MouseRight",
++			"MouseMiddle",
++			"MouseXButton1",
++			"MouseXButton2",
+ 			"Up",
+ 			"Down",
+ 			"Left",

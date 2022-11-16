@@ -8,29 +8,29 @@
  using System.Windows.Forms;
 +#endif
  
- namespace ReLogic.OS.Windows
- {
+ namespace ReLogic.OS.Windows;
+ 
 @@ -15,7 +_,11 @@
  
- 			try {
- 				InvokeInStaThread(delegate {
+ 		try {
+ 			InvokeInStaThread(delegate {
 +#if NETCORE
-+					NativeClipboard.SetText(text);
++				NativeClipboard.SetText(text);
 +#else
- 					System.Windows.Forms.Clipboard.SetText(text);
+ 				System.Windows.Forms.Clipboard.SetText(text);
 +#endif
- 				});
- 			}
- 			catch {
+ 			});
+ 		}
+ 		catch {
 @@ -25,7 +_,11 @@
  
- 		private string TryToGetClipboardText() {
- 			try {
+ 	private string TryToGetClipboardText() {
+ 		try {
 +#if NETCORE
-+				return InvokeInStaThread(() => NativeClipboard.TryGetText(out var text) ? text : "");
++			return InvokeInStaThread(() => NativeClipboard.TryGetText(out var text) ? text : "");
 +#else
- 				return InvokeInStaThread(() => System.Windows.Forms.Clipboard.GetText());
+ 			return InvokeInStaThread(() => System.Windows.Forms.Clipboard.GetText());
 +#endif
- 			}
- 			catch {
- 				string result = "";
+ 		}
+ 		catch {
+ 			string result = "";

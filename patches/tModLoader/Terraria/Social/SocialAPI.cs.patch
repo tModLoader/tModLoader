@@ -9,105 +9,104 @@
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
 @@ -23,16 +_,27 @@
- 		public static SocialMode Mode => _mode;
+ 	public static SocialMode Mode => _mode;
  
- 		public static void Initialize(SocialMode? mode = null) {
-+			_modules = new List<ISocialModule>();
- 			if (!mode.HasValue) {
- 				mode = SocialMode.None;
--				if (!Main.dedServ)
--					mode = SocialMode.Steam;
+ 	public static void Initialize(SocialMode? mode = null) {
++		_modules = new List<ISocialModule>();
+ 		if (!mode.HasValue) {
+ 			mode = SocialMode.None;
+-			if (!Main.dedServ)
+-				mode = SocialMode.Steam;
 +
-+				// Added FamilyShared check as workaround for #881
-+				if (!Main.dedServ && !SteamedWraps.FamilyShared) { // #if !SERVER
++			// Added FamilyShared check as workaround for #881
++			if (!Main.dedServ && !SteamedWraps.FamilyShared) { // #if !SERVER
 +#if DEBUG
-+					if (!Program.LaunchParameters.ContainsKey("-nosteam")) {
++				if (!Program.LaunchParameters.ContainsKey("-nosteam")) {
 +#endif
-+						if (InstallVerifier.DistributionPlatform == DistributionPlatform.Steam) {
-+							mode = SocialMode.Steam;
-+						}
-+#if DEBUG
++					if (InstallVerifier.DistributionPlatform == DistributionPlatform.Steam) {
++						mode = SocialMode.Steam;
 +					}
-+#endif
++#if DEBUG
 +				}
- 				else if (Program.LaunchParameters.ContainsKey("-steam"))
- 					mode = SocialMode.Steam;
- 			}
++#endif
++			}
+ 			else if (Program.LaunchParameters.ContainsKey("-steam"))
+ 				mode = SocialMode.Steam;
+ 		}
  
- 			_mode = mode.Value;
--			_modules = new List<ISocialModule>();
- 			JoinRequests = new ServerJoinRequestsManager();
- 			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
- 			switch (Mode) {
+ 		_mode = mode.Value;
+-		_modules = new List<ISocialModule>();
+ 		JoinRequests = new ServerJoinRequestsManager();
+ 		Main.OnTickForInternalCodeOnly += JoinRequests.Update;
+ 		switch (Mode) {
 @@ -44,9 +_,8 @@
- 					break;
- 			}
- 
--			foreach (ISocialModule module in _modules) {
--				module.Initialize();
--			}
-+			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
-+			SteamedWraps.Initialize();
+ 				break;
  		}
  
- 		public static void Shutdown() {
+-		foreach (ISocialModule module in _modules) {
+-			module.Initialize();
+-		}
++		//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
++		SteamedWraps.Initialize();
+ 	}
+ 
+ 	public static void Shutdown() {
 @@ -72,10 +_,18 @@
- 				_ = Environment.Is64BitProcess;
- 		}
+ 			_ = Environment.Is64BitProcess;
+ 	}
  
-+		private static bool _steamAPILoaded;
++	private static bool _steamAPILoaded;
 +
--		private static void LoadSteam() {
-+		internal static void LoadSteam() {
-+			if (_steamAPILoaded)
-+				return;
+-	private static void LoadSteam() {
++	internal static void LoadSteam() {
++		if (_steamAPILoaded)
++			return;
 +
- 			LoadModule<Terraria.Social.Steam.CoreSocialModule>();
- 			Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
-+			// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
-+			//if (!ModLoader.Engine.Steam.IsSteamApp) {
--			Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+				//Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+			//}
- 			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
- 			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
- 			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
+ 		LoadModule<Terraria.Social.Steam.CoreSocialModule>();
+ 		Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
++		// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
++		//if (!ModLoader.Engine.Steam.IsSteamApp) {
+-		Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++			//Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++		//}
+ 		Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
+ 		Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
+ 		Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
 @@ -85,10 +_,25 @@
- 			else
- 				Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
+ 		else
+ 			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
  
-+			/*
- 			WeGameHelper.WriteDebugString("LoadSteam modules");
-+			*/
++		/*
+ 		WeGameHelper.WriteDebugString("LoadSteam modules");
++		*/
 +
-+			foreach (ISocialModule module in _modules) {
-+				module.Initialize();
-+			}
++		foreach (ISocialModule module in _modules) {
++			module.Initialize();
++		}
 +
-+			_steamAPILoaded = true;
-+			ModLoader.Engine.Steam.PostInit();
- 		}
++		_steamAPILoaded = true;
++		ModLoader.Engine.Steam.PostInit();
+ 	}
 +
-+		// Added by TML.
-+		private static bool _wegameAPILoaded;
++	// Added by TML.
++	private static bool _wegameAPILoaded;
  
- 		private static void LoadWeGame() {
-+			if (_wegameAPILoaded)
-+				return;
+ 	private static void LoadWeGame() {
++		if (_wegameAPILoaded)
++			return;
 +
- 			LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
- 			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
- 			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
-@@ -99,6 +_,12 @@
- 				Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
+ 		LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
+ 		Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
+ 		Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
+@@ -99,5 +_,11 @@
+ 			Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
  
- 			WeGameHelper.WriteDebugString("LoadWeGame modules");
+ 		WeGameHelper.WriteDebugString("LoadWeGame modules");
 +
-+			foreach (ISocialModule module in _modules) {
-+				module.Initialize();
-+			}
++		foreach (ISocialModule module in _modules) {
++			module.Initialize();
++		}
 +
-+			_wegameAPILoaded = true;
- 		}
++		_wegameAPILoaded = true;
  	}
  }

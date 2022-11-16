@@ -6,47 +6,46 @@
  using System.Windows.Forms;
 +using Terraria.ModLoader.Engine;
  
- namespace Terraria.UI
- {
+ namespace Terraria.UI;
+ 
 @@ -37,8 +_,7 @@
- 				AppendSuggestions(stringBuilder, suggestions);
- 				stringBuilder.AppendLine();
- 				IncludeOriginalMessage(stringBuilder, exception);
--				ShowTheBox(stringBuilder.ToString());
--				Console.WriteLine(stringBuilder.ToString());
-+				ErrorReporting.MessageBoxShow(stringBuilder.ToString());
- 			}
+ 			AppendSuggestions(stringBuilder, suggestions);
+ 			stringBuilder.AppendLine();
+ 			IncludeOriginalMessage(stringBuilder, exception);
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(stringBuilder.ToString());
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
  		}
+ 	}
  
 @@ -70,8 +_,7 @@
- 				AppendSuggestions(stringBuilder, list);
- 				stringBuilder.AppendLine();
- 				IncludeOriginalMessage(stringBuilder, exception);
--				ShowTheBox(stringBuilder.ToString());
--				Console.WriteLine(stringBuilder.ToString());
-+				ErrorReporting.MessageBoxShow(stringBuilder.ToString());
- 			}
+ 			AppendSuggestions(stringBuilder, list);
+ 			stringBuilder.AppendLine();
+ 			IncludeOriginalMessage(stringBuilder, exception);
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(stringBuilder.ToString());
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
  		}
+ 	}
  
 @@ -103,8 +_,7 @@
- 				AppendSuggestions(stringBuilder, list);
- 				stringBuilder.AppendLine();
- 				IncludeOriginalMessage(stringBuilder, exception);
--				ShowTheBox(stringBuilder.ToString());
--				Console.WriteLine(exception);
-+				ErrorReporting.MessageBoxShow(stringBuilder.ToString());
- 			}
+ 			AppendSuggestions(stringBuilder, list);
+ 			stringBuilder.AppendLine();
+ 			IncludeOriginalMessage(stringBuilder, exception);
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(exception);
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
  		}
- 
-@@ -120,9 +_,11 @@
- 			}
- 		}
- 
-+		/* Use ErrorReporting.MessageBoxShow instead
- 		private static void ShowTheBox(string preparedMessage) {
- 			if (Platform.IsWindows && !Main.dedServ)
- 				MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
- 		}
-+		*/
  	}
+ 
+@@ -120,8 +_,10 @@
+ 		}
+ 	}
+ 
++	/* Use ErrorReporting.MessageBoxShow instead
+ 	private static void ShowTheBox(string preparedMessage) {
+ 		if (Platform.IsWindows && !Main.dedServ)
+ 			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+ 	}
++	*/
  }

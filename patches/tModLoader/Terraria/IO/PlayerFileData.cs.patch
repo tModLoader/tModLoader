@@ -10,35 +10,35 @@
  using Terraria.Utilities;
  
 @@ -13,6 +_,7 @@
- 		private TimeSpan _playTime = TimeSpan.Zero;
- 		private readonly Stopwatch _timer = new Stopwatch();
- 		private bool _isTimerActive;
-+		public CustomModDataException customDataFail = null;
+ 	private TimeSpan _playTime = TimeSpan.Zero;
+ 	private readonly Stopwatch _timer = new Stopwatch();
+ 	private bool _isTimerActive;
++	public CustomModDataException customDataFail = null;
  
- 		public Player Player {
- 			get {
+ 	public Player Player {
+ 		get {
 @@ -66,6 +_,7 @@
- 			if (!FileUtilities.MoveToCloud(base.Path, playerPathFromName))
- 				return;
+ 		if (!FileUtilities.MoveToCloud(base.Path, playerPathFromName))
+ 			return;
  
-+			PlayerIO.MoveToCloud(Path, playerPathFromName);
- 			string fileName = GetFileName(includeExtension: false);
- 			string path = Main.PlayerPath + System.IO.Path.DirectorySeparatorChar + fileName + System.IO.Path.DirectorySeparatorChar;
- 			if (Directory.Exists(path)) {
++		PlayerIO.MoveToCloud(Path, playerPathFromName);
+ 		string fileName = GetFileName(includeExtension: false);
+ 		string path = Main.PlayerPath + System.IO.Path.DirectorySeparatorChar + fileName + System.IO.Path.DirectorySeparatorChar;
+ 		if (Directory.Exists(path)) {
 @@ -90,6 +_,7 @@
- 			if (!FileUtilities.MoveToLocal(base.Path, playerPathFromName))
- 				return;
+ 		if (!FileUtilities.MoveToLocal(base.Path, playerPathFromName))
+ 			return;
  
-+			PlayerIO.MoveToLocal(Path, playerPathFromName);
- 			string fileName = GetFileName(includeExtension: false);
- 			string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
- 			foreach (string item in (from path in SocialAPI.Cloud.GetFiles().ToList()
++		PlayerIO.MoveToLocal(Path, playerPathFromName);
+ 		string fileName = GetFileName(includeExtension: false);
+ 		string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
+ 		foreach (string item in (from path in SocialAPI.Cloud.GetFiles().ToList()
 @@ -106,7 +_,7 @@
- 		}
+ 	}
  
- 		private bool MapBelongsToPath(string mapPath, string filePath) {
--			if (!filePath.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase))
-+			if (!filePath.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) && !filePath.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
- 				return false;
+ 	private bool MapBelongsToPath(string mapPath, string filePath) {
+-		if (!filePath.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase))
++		if (!filePath.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) && !filePath.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
+ 			return false;
  
- 			string value = mapPath.Replace('\\', '/');
+ 		string value = mapPath.Replace('\\', '/');

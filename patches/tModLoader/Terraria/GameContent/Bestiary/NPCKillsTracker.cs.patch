@@ -7,13 +7,13 @@
  using Terraria.GameContent.NetModules;
 @@ -46,8 +_,9 @@
  
- 		public void Save(BinaryWriter writer) {
- 			lock (_killCountsByNpcId) {
-+				var vanillaOnly = _killCountsByNpcId.Where(pair => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(pair.Key, out int netId) && netId < NPCID.Count);
--				writer.Write(_killCountsByNpcId.Count);
-+				writer.Write(vanillaOnly.Count());
--				foreach (KeyValuePair<string, int> item in _killCountsByNpcId) {
-+				foreach (KeyValuePair<string, int> item in vanillaOnly) {
- 					writer.Write(item.Key);
- 					writer.Write(item.Value);
- 				}
+ 	public void Save(BinaryWriter writer) {
+ 		lock (_killCountsByNpcId) {
++			var vanillaOnly = _killCountsByNpcId.Where(pair => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(pair.Key, out int netId) && netId < NPCID.Count);
+-			writer.Write(_killCountsByNpcId.Count);
++			writer.Write(vanillaOnly.Count());
+-			foreach (KeyValuePair<string, int> item in _killCountsByNpcId) {
++			foreach (KeyValuePair<string, int> item in vanillaOnly) {
+ 				writer.Write(item.Key);
+ 				writer.Write(item.Value);
+ 			}

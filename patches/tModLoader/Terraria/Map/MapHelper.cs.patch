@@ -10,75 +10,75 @@
  using Terraria.Utilities;
  
 @@ -126,7 +_,8 @@
- 		private static ushort dirtPosition;
- 		private static ushort rockPosition;
- 		private static ushort hellPosition;
-+		internal static ushort modPosition;
--		private static Color[] colorLookup;
-+		internal static Color[] colorLookup;
- 		private static ushort[] snowTypes;
- 		private static ushort wallRangeStart;
- 		private static ushort wallRangeEnd;
+ 	private static ushort dirtPosition;
+ 	private static ushort rockPosition;
+ 	private static ushort hellPosition;
++	internal static ushort modPosition;
+-	private static Color[] colorLookup;
++	internal static Color[] colorLookup;
+ 	private static ushort[] snowTypes;
+ 	private static ushort wallRangeStart;
+ 	private static ushort wallRangeEnd;
 @@ -1593,6 +_,7 @@
  
- 			hellPosition = num20;
- 			colorLookup[num20] = color10;
-+			modPosition = (ushort)(num20 + 1); // Added by TML.
- 			snowTypes = new ushort[6];
- 			snowTypes[0] = tileLookup[147];
- 			snowTypes[1] = tileLookup[161];
+ 		hellPosition = num20;
+ 		colorLookup[num20] = color10;
++		modPosition = (ushort)(num20 + 1); // Added by TML.
+ 		snowTypes = new ushort[6];
+ 		snowTypes[0] = tileLookup[147];
+ 		snowTypes[1] = tileLookup[161];
 @@ -1734,7 +_,7 @@
- 					int num5 = tile.liquidType();
- 					num3 = liquidPosition + num5;
- 				}
--				else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < 347) {
-+				else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
- 					int wall = tile.wall;
- 					num3 = wallLookup[wall];
- 					num = tile.wallColor();
+ 				int num5 = tile.liquidType();
+ 				num3 = liquidPosition + num5;
+ 			}
+-			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < 347) {
++			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
+ 				int wall = tile.wall;
+ 				num3 = wallLookup[wall];
+ 				num = tile.wallColor();
 @@ -1763,6 +_,7 @@
- 			if (num3 == 0) {
- 				if ((double)j < Main.worldSurface) {
- 					if (Main.remixWorld) {
-+						// Patch note: num2, used below.
- 						num2 = 5;
- 						num3 = 100;
- 					}
+ 		if (num3 == 0) {
+ 			if ((double)j < Main.worldSurface) {
+ 				if (Main.remixWorld) {
++					// Patch note: num2, used below.
+ 					num2 = 5;
+ 					num3 = 100;
+ 				}
 @@ -1806,12 +_,15 @@
  
- 					num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
- 				}
-+				// Extra patch context.
- 				else {
- 					num3 = hellPosition;
- 				}
+ 				num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
  			}
- 
--			return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
-+			ushort mapType = (ushort)(num3 + baseOption);
-+			MapLoader.ModMapOption(ref mapType, i, j);
-+			return MapTile.Create(mapType, (byte)num2, (byte)num);
++			// Extra patch context.
+ 			else {
+ 				num3 = hellPosition;
+ 			}
  		}
  
- 		public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption) {
+-		return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
++		ushort mapType = (ushort)(num3 + baseOption);
++		MapLoader.ModMapOption(ref mapType, i, j);
++		return MapTile.Create(mapType, (byte)num2, (byte)num);
+ 	}
+ 
+ 	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption) {
 @@ -2569,7 +_,10 @@
- 								byte b6 = 0;
- 								int num7;
- 								ushort num8;
-+								/*
- 								if (mapTile.Light <= 18) {
-+								*/
-+								if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
- 									flag2 = false;
- 									flag = false;
- 									num7 = 0;
+ 							byte b6 = 0;
+ 							int num7;
+ 							ushort num8;
++							/*
+ 							if (mapTile.Light <= 18) {
++							*/
++							if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
+ 								flag2 = false;
+ 								flag = false;
+ 								num7 = 0;
 @@ -2727,7 +_,9 @@
  
- 						deflateStream.Dispose();
- 						FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
-+						//patch file: text
- 					}
-+					MapIO.WriteModFile(text, isCloudSave);
+ 					deflateStream.Dispose();
+ 					FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
++					//patch file: text
  				}
++				MapIO.WriteModFile(text, isCloudSave);
  			}
+ 		}
  

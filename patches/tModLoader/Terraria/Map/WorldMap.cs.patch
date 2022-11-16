@@ -10,17 +10,17 @@
  
 @@ -79,6 +_,7 @@
  
- 			if (!FileUtilities.Exists(text, isCloudSave)) {
- 				Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
-+				//patch file: text
- 				return;
- 			}
+ 		if (!FileUtilities.Exists(text, isCloudSave)) {
+ 			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
++			//patch file: text
+ 			return;
+ 		}
  
 @@ -93,6 +_,7 @@
- 								MapHelper.LoadMapVersion2(binaryReader, num);
+ 							MapHelper.LoadMapVersion2(binaryReader, num);
  
- 							ClearEdges();
-+							MapIO.ReadModFile(text, isCloudSave);
- 							Main.clearMap = true;
- 							Main.loadMap = true;
- 							Main.loadMapLock = true;
+ 						ClearEdges();
++						MapIO.ReadModFile(text, isCloudSave);
+ 						Main.clearMap = true;
+ 						Main.loadMap = true;
+ 						Main.loadMapLock = true;

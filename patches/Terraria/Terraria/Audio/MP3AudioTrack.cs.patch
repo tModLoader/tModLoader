@@ -5,8 +5,8 @@
  using Microsoft.Xna.Framework.Audio;
  using System.IO;
  using XPT.Core.Audio.MP3Sharp;
-@@ -36,3 +_,4 @@
- 		}
+@@ -35,3 +_,4 @@
+ 			_soundEffectInstance.SubmitBuffer(_bufferToSubmit);
  	}
  }
 +#endif

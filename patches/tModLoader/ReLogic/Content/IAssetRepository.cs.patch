@@ -6,21 +6,20 @@
  using System.Collections.Generic;
 +using System.IO;
  
- namespace ReLogic.Content
- {
-@@ -25,8 +_,14 @@
+ namespace ReLogic.Content;
  
- 		void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
+@@ -25,7 +_,13 @@
  
--		Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
-+		Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
+ 	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
+ 
+-	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
++	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
 +
-+		Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
++	Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
  
- 		void TransferCompletedAssets();
+ 	void TransferCompletedAssets();
 +
-+		// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
-+		internal Asset<T> Request<T>(string assetName) where T : class
-+			=> Request<T>(assetName, AssetRequestMode.ImmediateLoad);
- 	}
++	// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
++	internal Asset<T> Request<T>(string assetName) where T : class
++		=> Request<T>(assetName, AssetRequestMode.ImmediateLoad);
  }

@@ -5,33 +5,33 @@
  using Terraria.GameContent.ItemDropRules;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.Bestiary
+ namespace Terraria.GameContent.Bestiary;
+ 
+-public class BestiaryDatabase
++public partial class BestiaryDatabase
  {
--	public class BestiaryDatabase
-+	public partial class BestiaryDatabase
- 	{
- 		public delegate void BestiaryEntriesPass(BestiaryEntry entry);
+ 	public delegate void BestiaryEntriesPass(BestiaryEntry entry);
  
 @@ -26,6 +_,13 @@
- 				if (nPCNetIdBestiaryInfoElement != null)
- 					_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;
- 			}
-+			Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
-+			if (mod == null)
-+				_vanillaEntries.Add(entry);
-+			else if (_byMod.ContainsKey(mod))
-+				_byMod[mod].Add(entry);
-+			else
-+				_byMod.Add(mod, new List<BestiaryEntry> { entry });
- 
- 			return entry;
+ 			if (nPCNetIdBestiaryInfoElement != null)
+ 				_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;
  		}
++		Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
++		if (mod == null)
++			_vanillaEntries.Add(entry);
++		else if (_byMod.ContainsKey(mod))
++			_byMod[mod].Add(entry);
++		else
++			_byMod.Add(mod, new List<BestiaryEntry> { entry });
+ 
+ 		return entry;
+ 	}
 @@ -49,7 +_,7 @@
- 		}
+ 	}
  
- 		public void Merge(ItemDropDatabase dropsDatabase) {
--			for (int i = -65; i < 688; i++) {
-+			for (int i = -65; i < NPCLoader.NPCCount; i++) {
- 				ExtractDropsForNPC(dropsDatabase, i);
- 			}
+ 	public void Merge(ItemDropDatabase dropsDatabase) {
+-		for (int i = -65; i < 688; i++) {
++		for (int i = -65; i < NPCLoader.NPCCount; i++) {
+ 			ExtractDropsForNPC(dropsDatabase, i);
  		}
+ 	}

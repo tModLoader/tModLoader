@@ -7,53 +7,53 @@
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
  
- namespace Terraria
+ namespace Terraria;
 @@ -11,7 +_,8 @@
- 		public int Id;
- 		public string Name = "Anonymous";
- 		public bool IsActive;
--		public bool PendingTermination;
-+		//TML: Turned from a field into a private setter property.
-+		public bool PendingTermination { get; private set; }
- 		public bool PendingTerminationApproved;
- 		public bool IsAnnouncementCompleted;
- 		public int State;
+ 	public int Id;
+ 	public string Name = "Anonymous";
+ 	public bool IsActive;
+-	public bool PendingTermination;
++	//TML: Turned from a field into a private setter property.
++	public bool PendingTermination { get; private set; }
+ 	public bool PendingTerminationApproved;
+ 	public bool IsAnnouncementCompleted;
+ 	public int State;
 @@ -32,6 +_,12 @@
- 		public float SpamWaterMax = 50f;
- 		private volatile bool _isReading;
+ 	public float SpamWaterMax = 50f;
+ 	private volatile bool _isReading;
  
-+		// log a reason for terminating clients
-+		internal void SetPendingTermination(string reason) {
-+			PendingTermination = true;
-+			ModNet.Log(Id, "Terminating: " + reason);
-+		}
++	// log a reason for terminating clients
++	internal void SetPendingTermination(string reason) {
++		PendingTermination = true;
++		ModNet.Log(Id, "Terminating: " + reason);
++	}
 +
- 		public bool IsConnected() {
- 			if (Socket != null)
- 				return Socket.IsConnected();
+ 	public bool IsConnected() {
+ 		if (Socket != null)
+ 			return Socket.IsConnected();
 @@ -189,14 +_,14 @@
- 				}
- 			}
- 			catch {
--				PendingTermination = true;
-+				SetPendingTermination("Exception in RemoteClient.TryRead");
  			}
  		}
+ 		catch {
+-			PendingTermination = true;
++			SetPendingTermination("Exception in RemoteClient.TryRead");
+ 		}
+ 	}
  
- 		private void ServerReadCallBack(object state, int length) {
- 			if (!Netplay.Disconnect) {
- 				if (length == 0) {
--					PendingTermination = true;
-+					SetPendingTermination("ServerReadCallBack returned no data");
- 				}
- 				else {
- 					try {
+ 	private void ServerReadCallBack(object state, int length) {
+ 		if (!Netplay.Disconnect) {
+ 			if (length == 0) {
+-				PendingTermination = true;
++				SetPendingTermination("ServerReadCallBack returned no data");
+ 			}
+ 			else {
+ 				try {
 @@ -238,7 +_,7 @@
- 					StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
- 				}
- 				catch (Exception) {
--					PendingTermination = true;
-+					SetPendingTermination("Exception in Socket.GetRemoteAddress while updating StatusText (State == 10)");
- 				}
+ 				StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
+ 			}
+ 			catch (Exception) {
+-				PendingTermination = true;
++				SetPendingTermination("Exception in Socket.GetRemoteAddress while updating StatusText (State == 10)");
  			}
  		}
+ 	}

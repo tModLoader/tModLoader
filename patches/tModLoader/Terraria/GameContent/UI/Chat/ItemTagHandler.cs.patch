@@ -11,77 +11,77 @@
  using Terraria.UI.Chat;
  
 @@ -22,6 +_,7 @@
- 				Main.instance.MouseText(_item.Name, _item.rare, 0);
- 			}
+ 			Main.instance.MouseText(_item.Name, _item.rare, 0);
+ 		}
  
-+			//TODO possibly allow modders to custom draw here
- 			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
- 				float num = 1f;
- 				float num2 = 1f;
++		//TODO possibly allow modders to custom draw here
+ 		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
+ 			float num = 1f;
+ 			float num2 = 1f;
 @@ -55,20 +_,30 @@
  
- 		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
- 			Item item = new Item();
--			if (int.TryParse(text, out int result))
-+			if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
-+				item.netDefaults(result);
+ 	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
+ 		Item item = new Item();
+-		if (int.TryParse(text, out int result))
++		if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
++			item.netDefaults(result);
 +
-+			// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
-+			if(ID.ItemID.Search.TryGetId(text, out result))
- 				item.netDefaults(result);
++		// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
++		if(ID.ItemID.Search.TryGetId(text, out result))
+ 			item.netDefaults(result);
  
- 			if (item.type <= 0)
- 				return new TextSnippet(text);
+ 		if (item.type <= 0)
+ 			return new TextSnippet(text);
  
- 			item.stack = 1;
-+			// options happen here, we add MID (=ModItemData) options
- 			if (options != null) {
-+				// don't know why all these options here in vanilla,
-+				// since it only assumed one option (stack OR prefix, since prefixed items don't stack)
- 				string[] array = options.Split(',');
- 				for (int i = 0; i < array.Length; i++) {
- 					if (array[i].Length == 0)
- 						continue;
+ 		item.stack = 1;
++		// options happen here, we add MID (=ModItemData) options
+ 		if (options != null) {
++			// don't know why all these options here in vanilla,
++			// since it only assumed one option (stack OR prefix, since prefixed items don't stack)
+ 			string[] array = options.Split(',');
+ 			for (int i = 0; i < array.Length; i++) {
+ 				if (array[i].Length == 0)
+ 					continue;
  
- 					switch (array[i][0]) {
-+						case 'd': // MID is present, we will override
-+							item = ItemIO.FromBase64(array[i].Substring(1));
-+							break;
- 						case 's':
- 						case 'x': {
- 								if (int.TryParse(array[i].Substring(1), out int result3))
+ 				switch (array[i][0]) {
++					case 'd': // MID is present, we will override
++						item = ItemIO.FromBase64(array[i].Substring(1));
++						break;
+ 					case 's':
+ 					case 'x': {
+ 							if (int.TryParse(array[i].Substring(1), out int result3))
 @@ -78,7 +_,7 @@
- 							}
- 						case 'p': {
- 								if (int.TryParse(array[i].Substring(1), out int result2))
--									item.Prefix((byte)Utils.Clamp(result2, 0, 85));
-+									item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
+ 						}
+ 					case 'p': {
+ 							if (int.TryParse(array[i].Substring(1), out int result2))
+-								item.Prefix((byte)Utils.Clamp(result2, 0, 85));
++								item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  
- 								break;
- 							}
+ 							break;
+ 						}
 @@ -97,13 +_,25 @@
- 			};
- 		}
+ 		};
+ 	}
  
-+		// we do not alter vanilla ways of doing things
-+		// this can lead to trouble in future patches
- 		public static string GenerateTag(Item I) {
- 			string text = "[i";
-+			// assuming we have modded data, simply write the item as base64
-+			// do not write other option, base64 holds all the info.
-+			if (I.ModItem != null || I.globalItems.Any()) {
-+				text = text + "/d" + ItemIO.ToBase64(I);
++	// we do not alter vanilla ways of doing things
++	// this can lead to trouble in future patches
+ 	public static string GenerateTag(Item I) {
+ 		string text = "[i";
++		// assuming we have modded data, simply write the item as base64
++		// do not write other option, base64 holds all the info.
++		if (I.ModItem != null || I.globalItems.Any()) {
++			text = text + "/d" + ItemIO.ToBase64(I);
 +
-+				goto End;
-+			}
++			goto End;
++		}
 +
- 			if (I.prefix != 0)
- 				text = text + "/p" + I.prefix;
+ 		if (I.prefix != 0)
+ 			text = text + "/p" + I.prefix;
  
- 			if (I.stack != 1)
- 				text = text + "/s" + I.stack;
+ 		if (I.stack != 1)
+ 			text = text + "/s" + I.stack;
 +
-+			End:
++		End:
  
- 			return text + ":" + I.netID + "]";
- 		}
+ 		return text + ":" + I.netID + "]";
+ 	}

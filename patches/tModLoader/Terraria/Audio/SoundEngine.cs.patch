@@ -2,101 +2,101 @@
 +++ src/tModLoader/Terraria/Audio/SoundEngine.cs
 @@ -6,9 +_,9 @@
  
- namespace Terraria.Audio
+ namespace Terraria.Audio;
+ 
+-public static class SoundEngine
++public static partial class SoundEngine
  {
--	public static class SoundEngine
-+	public static partial class SoundEngine
- 	{
--		public static LegacySoundPlayer LegacySoundPlayer;
-+		internal static LegacySoundPlayer LegacySoundPlayer;
- 		public static SoundPlayer SoundPlayer;
- 		public static bool AreSoundsPaused;
+-	public static LegacySoundPlayer LegacySoundPlayer;
++	internal static LegacySoundPlayer LegacySoundPlayer;
+ 	public static SoundPlayer SoundPlayer;
+ 	public static bool AreSoundsPaused;
  
 @@ -19,6 +_,8 @@
  
- 		public static void Initialize() {
- 			IsAudioSupported = TestAudioSupport();
-+			if (!IsAudioSupported)
-+				Utils.ShowFancyErrorMessage(Localization.Language.GetTextValue("tModLoader.AudioNotSupported"), ModLoader.UI.Interface.loadModsID);
- 		}
+ 	public static void Initialize() {
+ 		IsAudioSupported = TestAudioSupport();
++		if (!IsAudioSupported)
++			Utils.ShowFancyErrorMessage(Localization.Language.GetTextValue("tModLoader.AudioNotSupported"), ModLoader.UI.Interface.loadModsID);
+ 	}
  
- 		public static void Load(IServiceProvider services) {
+ 	public static void Load(IServiceProvider services) {
 @@ -29,6 +_,15 @@
- 		}
+ 	}
  
- 		public static void Update() {
-+			// Thread safety test code, don't anyone dare to ship this.
-+			/*
-+			if (Main.rand.Next(3) == 0) {
-+				System.Threading.ThreadPool.QueueUserWorkItem(_ => {
-+					PlaySound(new SoundStyle($"Terraria/Sounds/Zombie_{Main.rand.Next(1, 100)}"));
-+				});
-+			}
-+			*/
-+
- 			if (IsAudioSupported) {
- 				if (Main.audioSystem != null)
- 					Main.audioSystem.UpdateAudioEngine();
-@@ -55,6 +_,8 @@
- 			}
- 		}
- 
-+		//TML: See SoundEngine.TML.cs for new PlaySound overloads
+ 	public static void Update() {
++		// Thread safety test code, don't anyone dare to ship this.
 +		/*
- 		public static void PlaySound(int type, Vector2 position, int style = 1) {
- 			PlaySound(type, (int)position.X, (int)position.Y, style);
++		if (Main.rand.Next(3) == 0) {
++			System.Threading.ThreadPool.QueueUserWorkItem(_ => {
++				PlaySound(new SoundStyle($"Terraria/Sounds/Zombie_{Main.rand.Next(1, 100)}"));
++			});
++		}
++		*/
++
+ 		if (IsAudioSupported) {
+ 			if (Main.audioSystem != null)
+ 				Main.audioSystem.UpdateAudioEngine();
+@@ -55,6 +_,8 @@
  		}
+ 	}
+ 
++	//TML: See SoundEngine.TML.cs for new PlaySound overloads
++	/*
+ 	public static void PlaySound(int type, Vector2 position, int style = 1) {
+ 		PlaySound(type, (int)position.X, (int)position.Y, style);
+ 	}
 @@ -82,11 +_,11 @@
- 			return SoundPlayer.GetActiveSound(id);
- 		}
+ 		return SoundPlayer.GetActiveSound(id);
+ 	}
  
--		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
-+		public static SlotId PlayTrackedSound(SoundStyle style, Vector2? position = null) {
- 			if (Main.dedServ || !IsAudioSupported)
- 				return SlotId.Invalid;
+-	public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
++	public static SlotId PlayTrackedSound(SoundStyle style, Vector2? position = null) {
+ 		if (Main.dedServ || !IsAudioSupported)
+ 			return SlotId.Invalid;
  
--			return SoundPlayer.Play(style, position);
-+			return SoundPlayer.Play(in style, position);
- 		}
+-		return SoundPlayer.Play(style, position);
++		return SoundPlayer.Play(in style, position);
+ 	}
  
- 		public static SlotId PlayTrackedLoopedSound(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition = null) {
+ 	public static SlotId PlayTrackedLoopedSound(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition = null) {
 @@ -102,25 +_,29 @@
  
- 			return SoundPlayer.Play(style);
- 		}
-+		*/
+ 		return SoundPlayer.Play(style);
+ 	}
++	*/
  
- 		public static void StopTrackedSounds() {
- 			if (!Main.dedServ && IsAudioSupported)
- 				SoundPlayer.StopAll();
- 		}
+ 	public static void StopTrackedSounds() {
+ 		if (!Main.dedServ && IsAudioSupported)
+ 			SoundPlayer.StopAll();
+ 	}
  
-+		//TML: Removed; Sound styles no longer use IDs anywhere.
-+		/*
- 		public static SoundEffect GetTrackableSoundByStyleId(int id) {
- 			if (Main.dedServ || !IsAudioSupported)
- 				return null;
++	//TML: Removed; Sound styles no longer use IDs anywhere.
++	/*
+ 	public static SoundEffect GetTrackableSoundByStyleId(int id) {
+ 		if (Main.dedServ || !IsAudioSupported)
+ 			return null;
  
- 			return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
- 		}
-+		*/
+ 		return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
+ 	}
++	*/
  
- 		public static void StopAmbientSounds() {
- 			if (!Main.dedServ && IsAudioSupported && LegacySoundPlayer != null)
- 				LegacySoundPlayer.StopAmbientSounds();
- 		}
+ 	public static void StopAmbientSounds() {
+ 		if (!Main.dedServ && IsAudioSupported && LegacySoundPlayer != null)
+ 			LegacySoundPlayer.StopAmbientSounds();
+ 	}
  
--		public static ActiveSound FindActiveSound(SoundStyle style) {
-+		public static ActiveSound FindActiveSound(in SoundStyle style) {
- 			if (Main.dedServ || !IsAudioSupported)
- 				return null;
+-	public static ActiveSound FindActiveSound(SoundStyle style) {
++	public static ActiveSound FindActiveSound(in SoundStyle style) {
+ 		if (Main.dedServ || !IsAudioSupported)
+ 			return null;
  
 @@ -303,7 +_,7 @@
- 				}
  			}
- 			catch (NoAudioHardwareException) {
--				Console.WriteLine("No audio hardware found. Disabling all audio.");
-+				ModLoader.Logging.tML.Warn("No audio hardware found. Disabling all audio.");
- 				return false;
- 			}
- 			catch {
+ 		}
+ 		catch (NoAudioHardwareException) {
+-			Console.WriteLine("No audio hardware found. Disabling all audio.");
++			ModLoader.Logging.tML.Warn("No audio hardware found. Disabling all audio.");
+ 			return false;
+ 		}
+ 		catch {

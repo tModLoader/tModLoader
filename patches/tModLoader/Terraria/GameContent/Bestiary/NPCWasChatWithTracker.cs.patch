@@ -7,13 +7,13 @@
  using Terraria.GameContent.NetModules;
 @@ -41,8 +_,9 @@
  
- 		public void Save(BinaryWriter writer) {
- 			lock (_entryCreationLock) {
-+				var vanillaOnly = _chattedWithPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
--				writer.Write(_chattedWithPlayer.Count);
-+				writer.Write(vanillaOnly.Count());
--				foreach (string item in _chattedWithPlayer) {
-+				foreach (string item in vanillaOnly) {
- 					writer.Write(item);
- 				}
+ 	public void Save(BinaryWriter writer) {
+ 		lock (_entryCreationLock) {
++			var vanillaOnly = _chattedWithPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
+-			writer.Write(_chattedWithPlayer.Count);
++			writer.Write(vanillaOnly.Count());
+-			foreach (string item in _chattedWithPlayer) {
++			foreach (string item in vanillaOnly) {
+ 				writer.Write(item);
  			}
+ 		}

@@ -1,14 +1,14 @@
 --- src/TerrariaNetCore/Terraria/UI/StyleDimension.cs
 +++ src/tModLoader/Terraria/UI/StyleDimension.cs
 @@ -7,6 +_,11 @@
- 		public float Pixels;
- 		public float Precent;
+ 	public float Pixels;
+ 	public float Precent;
  
-+		public float Percent {
-+			get => Precent;
-+			set => Precent = value;
-+		}
++	public float Percent {
++		get => Precent;
++		set => Precent = value;
++	}
 +
- 		public StyleDimension(float pixels, float precent) {
- 			Pixels = pixels;
- 			Precent = precent;
+ 	public StyleDimension(float pixels, float precent) {
+ 		Pixels = pixels;
+ 		Precent = precent;

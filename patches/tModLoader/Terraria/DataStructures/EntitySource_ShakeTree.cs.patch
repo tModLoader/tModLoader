@@ -1,16 +1,15 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_ShakeTree.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_ShakeTree.cs
-@@ -1,9 +_,11 @@
+@@ -1,8 +_,10 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
+ namespace Terraria.DataStructures;
+ 
+ public class EntitySource_ShakeTree : AEntitySource_Tile
  {
- 	public class EntitySource_ShakeTree : AEntitySource_Tile
- 	{
--		public EntitySource_ShakeTree(int tileCoordsX, int tileCoordsY)
--			: base(tileCoordsX, tileCoordsY) {
-+		public EntitySource_ShakeTree(int tileCoordsX, int tileCoordsY, string? context = null)
-+			: base(tileCoordsX, tileCoordsY, context) {
- 		}
+-	public EntitySource_ShakeTree(int tileCoordsX, int tileCoordsY)
+-		: base(tileCoordsX, tileCoordsY) {
++	public EntitySource_ShakeTree(int tileCoordsX, int tileCoordsY, string? context = null)
++		: base(tileCoordsX, tileCoordsY, context) {
  	}
  }

@@ -7,19 +7,19 @@
  using System.Windows.Forms;
 +#endif
  
- namespace ReLogic.OS.Windows
- {
+ namespace ReLogic.OS.Windows;
+ 
 @@ -119,8 +_,13 @@
- 		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
- 		public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
 +#if NETCORE
-+		[DllImport("user32.dll")]
-+		public static extern IntPtr GetDC(IntPtr hWnd);
++	[DllImport("user32.dll")]
++	public static extern IntPtr GetDC(IntPtr hWnd);
 +#else
- 		[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
- 		public static extern bool TranslateMessage(ref Message message);
+ 	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+ 	public static extern bool TranslateMessage(ref Message message);
 +#endif
  
- 		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
- 		public static extern IntPtr GetForegroundWindow();
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr GetForegroundWindow();

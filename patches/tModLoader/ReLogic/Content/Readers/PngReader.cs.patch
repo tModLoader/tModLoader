@@ -9,28 +9,28 @@
  using System.Threading;
 +using System.Threading.Tasks;
  
- namespace ReLogic.Content.Readers
- {
-@@ -16,15 +_,20 @@
- 			_graphicsDevice = graphicsDevice;
- 			_colorProcessingCache = new ThreadLocal<Color[]>();
- 		}
-+		
-+		public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
+ namespace ReLogic.Content.Readers;
  
--		public T FromStream<T>(Stream stream) where T : class {
-+		public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
- 			if (typeof(T) != typeof(Texture2D))
- 				throw AssetLoadException.FromInvalidReader<PngReader, T>();
+@@ -16,15 +_,20 @@
+ 		_graphicsDevice = graphicsDevice;
+ 		_colorProcessingCache = new ThreadLocal<Color[]>();
+ 	}
++	
++	public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
+ 
+-	public T FromStream<T>(Stream stream) where T : class {
++	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
+ 		if (typeof(T) != typeof(Texture2D))
+ 			throw AssetLoadException.FromInvalidReader<PngReader, T>();
  
  #if NETCORE
- 			IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
- 			PreMultiplyAlpha(img, len);
--			
+ 		IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
+ 		PreMultiplyAlpha(img, len);
+-		
 +
-+			await mainThreadCtx;
-+			Debug.Assert(mainThreadCtx.IsCompleted);
++		await mainThreadCtx;
++		Debug.Assert(mainThreadCtx.IsCompleted);
 +
- 			var texture2D = new Texture2D(_graphicsDevice, width, height);
- 			texture2D.SetDataPointerEXT(0, null, img, len);
- 			FNA3D.FNA3D_Image_Free(img);
+ 		var texture2D = new Texture2D(_graphicsDevice, width, height);
+ 		texture2D.SetDataPointerEXT(0, null, img, len);
+ 		FNA3D.FNA3D_Image_Free(img);

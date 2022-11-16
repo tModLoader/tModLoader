@@ -2,19 +2,19 @@
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadLayers.cs
 @@ -8,6 +_,11 @@
  
- namespace Terraria.DataStructures
- {
-+	// 'Head-only' draw layers are no longer used, even internally.
-+	// At first this class was just marked internal, but now it's completely gone, due to the shenanigans that had to happen in PlayerDrawHeadSet.cs (basicaly the type is removed)
-+	// --Mirsario.
+ namespace Terraria.DataStructures;
+ 
++// 'Head-only' draw layers are no longer used, even internally.
++// At first this class was just marked internal, but now it's completely gone, due to the shenanigans that had to happen in PlayerDrawHeadSet.cs (basicaly the type is removed)
++// --Mirsario.
 +
-+	/*
- 	public static class PlayerDrawHeadLayers
- 	{
- 		public static void DrawPlayer_0_(ref PlayerDrawHeadSet drawinfo) {
-@@ -353,4 +_,5 @@
- 			drawData.Add(item);
- 		}
++/*
+ public static class PlayerDrawHeadLayers
+ {
+ 	public static void DrawPlayer_0_(ref PlayerDrawHeadSet drawinfo) {
+@@ -352,4 +_,5 @@
+ 		item.shader = shaderTechnique;
+ 		drawData.Add(item);
  	}
-+	*/
++*/
  }

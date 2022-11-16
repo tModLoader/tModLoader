@@ -9,25 +9,25 @@
  using Terraria.UI.Gamepad;
  
 @@ -1078,8 +_,13 @@
- 			int num = 0;
- 			byte difficulty = _player.difficulty;
- 			if (difficulty == 3) {
-+				PlayerLoader.ModifyMaxStats(_player);
-+				_player.statLife = _player.statLifeMax;
-+				_player.statMana = _player.statManaMax;
-+				/*
- 				_player.statLife = (_player.statLifeMax = 100);
- 				_player.statMana = (_player.statManaMax = 20);
-+				*/
- 				_player.inventory[num].SetDefaults(6);
- 				_player.inventory[num++].Prefix(-1);
- 				_player.inventory[num].SetDefaults(1);
+ 		int num = 0;
+ 		byte difficulty = _player.difficulty;
+ 		if (difficulty == 3) {
++			PlayerLoader.ModifyMaxStats(_player);
++			_player.statLife = _player.statLifeMax;
++			_player.statMana = _player.statManaMax;
++			/*
+ 			_player.statLife = (_player.statLifeMax = 100);
+ 			_player.statMana = (_player.statManaMax = 20);
++			*/
+ 			_player.inventory[num].SetDefaults(6);
+ 			_player.inventory[num++].Prefix(-1);
+ 			_player.inventory[num].SetDefaults(1);
 @@ -1117,6 +_,8 @@
  
- 			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
- 			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
+ 		_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
+ 		CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
 +
-+			PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone())));
- 		}
++		PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone())));
+ 	}
  
- 		private bool GetHexColor(string hexString, out Vector3 hsl) {
+ 	private bool GetHexColor(string hexString, out Vector3 hsl) {

@@ -5,13 +5,13 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.Initializers
+ namespace Terraria.Initializers;
+ 
+ public class WingStatsInitializer
  {
- 	public class WingStatsInitializer
- 	{
- 		public static void Load() {
--			WingStats[] array = new WingStats[47];
-+			WingStats[] array = new WingStats[EquipLoader.nextEquip[EquipType.Wings]];
- 			float flySpeedOverride = 3f;
- 			float flySpeedOverride2 = 6f;
- 			float flySpeedOverride3 = 6.25f;
+ 	public static void Load() {
+-		WingStats[] array = new WingStats[47];
++		WingStats[] array = new WingStats[EquipLoader.nextEquip[EquipType.Wings]];
+ 		float flySpeedOverride = 3f;
+ 		float flySpeedOverride2 = 6f;
+ 		float flySpeedOverride3 = 6.25f;

@@ -5,8 +5,8 @@
  using Microsoft.Xna.Framework.Audio;
  using NVorbis;
  using System.Collections.Generic;
-@@ -66,3 +_,4 @@
- 		}
+@@ -65,3 +_,4 @@
+ 		_vorbisReader.Dispose();
  	}
  }
 +#endif

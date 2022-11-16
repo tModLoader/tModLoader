@@ -3,16 +3,16 @@
 @@ -1,11 +_,13 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_TileInteraction : AEntitySource_Tile
- 	{
- 		public readonly Entity Entity;
+ namespace Terraria.DataStructures;
  
--		public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY)
--			: base(tileCoordsX, tileCoordsY) {
-+		public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null)
-+			: base(tileCoordsX, tileCoordsY, context) {
- 			Entity = entity;
- 		}
+ public class EntitySource_TileInteraction : AEntitySource_Tile
+ {
+ 	public readonly Entity Entity;
+ 
+-	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY)
+-		: base(tileCoordsX, tileCoordsY) {
++	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null)
++		: base(tileCoordsX, tileCoordsY, context) {
+ 		Entity = entity;
  	}
+ }

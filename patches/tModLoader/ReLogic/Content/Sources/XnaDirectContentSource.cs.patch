@@ -6,79 +6,78 @@
  using System.IO;
 +using System.Linq;
  
- namespace ReLogic.Content.Sources
- {
--	public class XnaDirectContentSource : IContentSource
-+	public class XnaDirectContentSource : ContentSource
- 	{
- 		private readonly string _rootDirectory;
--		private readonly HashSet<string> _files = new HashSet<string>();
--		private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
--
--		public IContentValidator ContentValidator {
--			get;
--			set;
--		}
+ namespace ReLogic.Content.Sources;
  
- 		public XnaDirectContentSource(string rootDirectory) {
- 			_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
--			BuildFileMap();
+-public class XnaDirectContentSource : IContentSource
++public class XnaDirectContentSource : ContentSource
+ {
+ 	private readonly string _rootDirectory;
+-	private readonly HashSet<string> _files = new HashSet<string>();
+-	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
+-
+-	public IContentValidator ContentValidator {
+-		get;
+-		set;
+-	}
+ 
+ 	public XnaDirectContentSource(string rootDirectory) {
+ 		_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
+-		BuildFileMap();
+-	}
+-
+-	private void BuildFileMap() {
+-		_files.Clear();
+-		string[] files = Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories);
+-		foreach (string text in files) {
+-			_files.Add(text.ToLower());
+-		}
+-	}
+-
+-	public bool HasAsset(string assetName) {
+-		string text = Path.Combine(_rootDirectory, assetName) + ".xnb";
+-		if (_rejections.IsRejected(assetName))
+-			return false;
+-
+-		return _files.Contains(text.ToLower());
+-	}
+-
+-	public List<string> GetAllAssetsStartingWith(string assetNameStart) {
+-		string value = Path.Combine(_rootDirectory, assetNameStart).ToLower();
+-		List<string> list = new List<string>();
+-		foreach (string file in _files) {
+-			if (file.StartsWith(value))
+-				list.Add(file);
 -		}
 -
--		private void BuildFileMap() {
--			_files.Clear();
--			string[] files = Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories);
--			foreach (string text in files) {
--				_files.Add(text.ToLower());
--			}
--		}
+-		return list;
+-	}
 -
--		public bool HasAsset(string assetName) {
--			string text = Path.Combine(_rootDirectory, assetName) + ".xnb";
--			if (_rejections.IsRejected(assetName))
--				return false;
+-	public string GetExtension(string assetName) => ".xnb";
 -
--			return _files.Contains(text.ToLower());
--		}
--
--		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
--			string value = Path.Combine(_rootDirectory, assetNameStart).ToLower();
--			List<string> list = new List<string>();
--			foreach (string file in _files) {
--				if (file.StartsWith(value))
--					list.Add(file);
--			}
--
--			return list;
--		}
--
--		public string GetExtension(string assetName) => ".xnb";
--
--		public Stream OpenStream(string assetName) {
--			string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
-+			SetAssetNames(
-+				Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
-+				.Select(path => path.Substring(_rootDirectory.Length+1)));
-+		}
+-	public Stream OpenStream(string assetName) {
+-		string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
++		SetAssetNames(
++			Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
++			.Select(path => path.Substring(_rootDirectory.Length+1)));
++	}
 +
-+		public override Stream OpenStream(string assetName) {
-+			string path = Path.Combine(_rootDirectory, assetName);
- 			try {
- 				return File.OpenRead(path);
- 			}
-@@ -58,15 +_,5 @@
- 				throw AssetLoadException.FromMissingAsset(assetName, innerException);
- 			}
++	public override Stream OpenStream(string assetName) {
++		string path = Path.Combine(_rootDirectory, assetName);
+ 		try {
+ 			return File.OpenRead(path);
  		}
--
--		public void RejectAsset(string assetName, IRejectionReason reason) {
--			_rejections.Reject(assetName, reason);
--		}
--
--		public void ClearRejections() {
--			_rejections.Clear();
--		}
--
--		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
+@@ -58,14 +_,4 @@
+ 			throw AssetLoadException.FromMissingAsset(assetName, innerException);
+ 		}
  	}
+-
+-	public void RejectAsset(string assetName, IRejectionReason reason) {
+-		_rejections.Reject(assetName, reason);
+-	}
+-
+-	public void ClearRejections() {
+-		_rejections.Clear();
+-	}
+-
+-	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
  }

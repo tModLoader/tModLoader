@@ -2,41 +2,41 @@
 +++ src/Terraria/Terraria/Main.cs
 @@ -74,7 +_,20 @@
  
- namespace Terraria
- {
+ namespace Terraria;
+ 
 +#if !WINDOWS
-+	class Control
-+	{
-+		internal static Form FromHandle(IntPtr handle) {
-+			throw new NotImplementedException();
-+		}
++class Control
++{
++	internal static Form FromHandle(IntPtr handle) {
++		throw new NotImplementedException();
 +	}
++}
 +#endif
 +
 +#if SERVER
-+	public class Main : Terraria.Server.Game
++public class Main : Terraria.Server.Game
 +#else
- 	public class Main : Game
+ public class Main : Game
 +#endif
- 	{
- 		public delegate void OnPlayerSelected(PlayerFileData player);
+ {
+ 	public delegate void OnPlayerSelected(PlayerFileData player);
  
 @@ -4941,7 +_,7 @@
- 			if (!dedServ) {
- 				Map = new WorldMap(maxTilesX, maxTilesY);
- 				Configuration.Load();
--				graphics = new GraphicsDeviceManager(this as Game);
-+				graphics = new GraphicsDeviceManager(((object)this) as Game);
- 				base.Content.RootDirectory = "Content";
- 			}
+ 		if (!dedServ) {
+ 			Map = new WorldMap(maxTilesX, maxTilesY);
+ 			Configuration.Load();
+-			graphics = new GraphicsDeviceManager(this as Game);
++			graphics = new GraphicsDeviceManager(((object)this) as Game);
+ 			base.Content.RootDirectory = "Content";
  		}
+ 	}
 @@ -38627,6 +_,9 @@
  
- 			Assets.TransferCompletedAssets();
- 			Exit();
+ 		Assets.TransferCompletedAssets();
+ 		Exit();
 +#if MAC && !SERVER
-+			SDL2.SDL.SDL_DestroyWindow(base.Window.Handle);
++		SDL2.SDL.SDL_DestroyWindow(base.Window.Handle);
 +#endif
- 		}
+ 	}
  
- 		private void Main_Exiting(object sender, EventArgs e) {
+ 	private void Main_Exiting(object sender, EventArgs e) {

@@ -7,13 +7,13 @@
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
- namespace Terraria
+ namespace Terraria;
 @@ -293,7 +_,7 @@
  
- 				bool flag3 = false;
- 				bool flag4 = false;
--				if (tile.type == 10) {
-+				if (TileLoader.IsClosedDoor(tile)) {
- 					flag3 = false;
- 				}
- 				else if (Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) {
+ 			bool flag3 = false;
+ 			bool flag4 = false;
+-			if (tile.type == 10) {
++			if (TileLoader.IsClosedDoor(tile)) {
+ 				flag3 = false;
+ 			}
+ 			else if (Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) {

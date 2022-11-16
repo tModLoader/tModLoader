@@ -5,9 +5,10 @@ using System.IO;
 using System.Reflection;
 using Terraria;
 
+namespace Terraria;
+
 internal static class MonoLaunch
 {
-
 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
 
 	private static void Main(string[] args) {

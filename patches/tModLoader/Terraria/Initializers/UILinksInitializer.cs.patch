@@ -11,52 +11,52 @@
  using Terraria.UI.Gamepad;
  
 @@ -662,7 +_,7 @@
- 				return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
- 			};
+ 			return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
+ 		};
  
--			for (int num14 = 600; num14 <= 650; num14++) {
-+			for (int num14 = 600; num14 <= 698; num14++) { // TODO: document tML change. Why 650 -> 658?
- 				UILinkPoint value13 = new UILinkPoint(num14, enabled: true, num14 + 10, num14 - 10, num14 - 1, num14 + 1);
- 				cp14.LinkMap.Add(num14, value13);
- 			}
-@@ -672,7 +_,7 @@
- 				if (num58 == 0)
- 					num58 = 100;
- 
--				for (int num59 = 0; num59 < 50; num59++) {
-+				for (int num59 = 0; num59 < 98; num59++) { // TODO: document tML change. Why 50 -> 98?
- 					cp14.LinkMap[600 + num59].Up = ((num59 % num58 == 0) ? (-1) : (600 + num59 - 1));
- 					if (cp14.LinkMap[600 + num59].Up == -1) {
- 						if (num59 >= num58 * 2)
-@@ -900,10 +_,12 @@
- 				}
- 
- 				bool flag4 = Main.mouseItem.stack <= 0;
--				if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
-+				//if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
-+				if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem)))
- 					str2 = ((!flag4) ? (str2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"])) : (str2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"])));
- 
--				if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
-+				//if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
-+				if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem))
- 					str2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
- 
- 				if (flag3)
-@@ -1616,6 +_,16 @@
- 					break;
- 				case 7:
- 					(Main.MenuUI.CurrentState as IHaveBackButtonCommand)?.HandleBackButtonUsage();
-+					break;
-+				case 100:
-+					SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);
-+					Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
-+					break;
-+				case 101:
-+					Interface.modBrowser.BackClick(null, null);
-+					break;
-+				case 102:
-+					Interface.modsMenu.BackClick(null, null);
- 					break;
- 			}
+-		for (int num14 = 600; num14 <= 650; num14++) {
++		for (int num14 = 600; num14 <= 698; num14++) { // TODO: document tML change. Why 650 -> 658?
+ 			UILinkPoint value13 = new UILinkPoint(num14, enabled: true, num14 + 10, num14 - 10, num14 - 1, num14 + 1);
+ 			cp14.LinkMap.Add(num14, value13);
  		}
+@@ -672,7 +_,7 @@
+ 			if (num58 == 0)
+ 				num58 = 100;
+ 
+-			for (int num59 = 0; num59 < 50; num59++) {
++			for (int num59 = 0; num59 < 98; num59++) { // TODO: document tML change. Why 50 -> 98?
+ 				cp14.LinkMap[600 + num59].Up = ((num59 % num58 == 0) ? (-1) : (600 + num59 - 1));
+ 				if (cp14.LinkMap[600 + num59].Up == -1) {
+ 					if (num59 >= num58 * 2)
+@@ -900,10 +_,12 @@
+ 			}
+ 
+ 			bool flag4 = Main.mouseItem.stack <= 0;
+-			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
++			//if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
++			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem)))
+ 				str2 = ((!flag4) ? (str2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"])) : (str2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"])));
+ 
+-			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
++			//if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
++			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem))
+ 				str2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
+ 
+ 			if (flag3)
+@@ -1616,6 +_,16 @@
+ 				break;
+ 			case 7:
+ 				(Main.MenuUI.CurrentState as IHaveBackButtonCommand)?.HandleBackButtonUsage();
++				break;
++			case 100:
++				SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);
++				Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
++				break;
++			case 101:
++				Interface.modBrowser.BackClick(null, null);
++				break;
++			case 102:
++				Interface.modsMenu.BackClick(null, null);
+ 				break;
+ 		}
+ 	}

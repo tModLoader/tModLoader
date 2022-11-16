@@ -7,21 +7,21 @@
 +using Microsoft.Xna.Framework.Graphics;
  #endif
  
- namespace Terraria.Utilities
+ namespace Terraria.Utilities;
+ 
+ public static class PlatformUtilities
  {
- 	public static class PlatformUtilities
- 	{
 -#if FNA
 +#if NETCORE
-+		// Use FNA3D.WritePNGStream to avoid SDL_image dependency
-+		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
-+			if (width * height * 4 > data.Length)
-+				throw new IndexOutOfRangeException($"Data length {data.Length} must be >= width({width})*height({height})*4");
++	// Use FNA3D.WritePNGStream to avoid SDL_image dependency
++	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
++		if (width * height * 4 > data.Length)
++			throw new IndexOutOfRangeException($"Data length {data.Length} must be >= width({width})*height({height})*4");
 +
-+			fixed (byte* ptr = data)
-+				FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
-+		}
++		fixed (byte* ptr = data)
++			FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
++	}
 +#elif FNA
- 		private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH) {
- 			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);
- 			SDL.SDL_LockSurface(intPtr);
+ 	private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH) {
+ 		IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);
+ 		SDL.SDL_LockSurface(intPtr);

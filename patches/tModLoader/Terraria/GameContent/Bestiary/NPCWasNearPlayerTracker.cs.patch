@@ -7,13 +7,13 @@
  using System.IO;
 @@ -49,8 +_,9 @@
  
- 		public void Save(BinaryWriter writer) {
- 			lock (_entryCreationLock) {
-+				var vanillaOnly = _wasNearPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
--				writer.Write(_wasNearPlayer.Count);
-+				writer.Write(vanillaOnly.Count());
--				foreach (string item in _wasNearPlayer) {
-+				foreach (string item in vanillaOnly) {
- 					writer.Write(item);
- 				}
+ 	public void Save(BinaryWriter writer) {
+ 		lock (_entryCreationLock) {
++			var vanillaOnly = _wasNearPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
+-			writer.Write(_wasNearPlayer.Count);
++			writer.Write(vanillaOnly.Count());
+-			foreach (string item in _wasNearPlayer) {
++			foreach (string item in vanillaOnly) {
+ 				writer.Write(item);
  			}
+ 		}

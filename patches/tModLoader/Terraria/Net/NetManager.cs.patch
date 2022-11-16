@@ -8,55 +8,54 @@
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
  
- namespace Terraria.Net
+ namespace Terraria.Net;
 @@ -41,6 +_,8 @@
- 		}
+ 	}
  
- 		public void Broadcast(NetPacket packet, int ignoreClient = -1) {
-+			LogSend(packet, ignoreClient: ignoreClient);
+ 	public void Broadcast(NetPacket packet, int ignoreClient = -1) {
++		LogSend(packet, ignoreClient: ignoreClient);
 +
- 			for (int i = 0; i < 256; i++) {
- 				if (i != ignoreClient && Netplay.Clients[i].IsConnected())
- 					SendData(Netplay.Clients[i].Socket, packet);
+ 		for (int i = 0; i < 256; i++) {
+ 			if (i != ignoreClient && Netplay.Clients[i].IsConnected())
+ 				SendData(Netplay.Clients[i].Socket, packet);
 @@ -48,6 +_,8 @@
- 		}
+ 	}
  
- 		public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1) {
-+			LogSend(packet, ignoreClient: ignoreClient);
+ 	public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1) {
++		LogSend(packet, ignoreClient: ignoreClient);
 +
- 			for (int i = 0; i < 256; i++) {
- 				if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
- 					SendData(Netplay.Clients[i].Socket, packet);
+ 		for (int i = 0; i < 256; i++) {
+ 			if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
+ 				SendData(Netplay.Clients[i].Socket, packet);
 @@ -86,10 +_,12 @@
- 		}
+ 	}
  
- 		public void SendToServer(NetPacket packet) {
-+			LogSend(packet);
- 			SendData(Netplay.Connection.Socket, packet);
- 		}
+ 	public void SendToServer(NetPacket packet) {
++		LogSend(packet);
+ 		SendData(Netplay.Connection.Socket, packet);
+ 	}
  
- 		public void SendToClient(NetPacket packet, int playerId) {
-+			LogSend(packet, toClient: playerId);
- 			SendData(Netplay.Clients[playerId].Socket, packet);
- 		}
+ 	public void SendToClient(NetPacket packet, int playerId) {
++		LogSend(packet, toClient: playerId);
+ 		SendData(Netplay.Clients[playerId].Socket, packet);
+ 	}
  
 @@ -100,6 +_,7 @@
- 					socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, SendCallback, packet);
- 				}
- 				catch {
-+					Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
- 				}
+ 				socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, SendCallback, packet);
+ 			}
+ 			catch {
++				Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
+ 			}
  
- 				Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);
-@@ -108,6 +_,11 @@
+ 			Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);
+@@ -108,5 +_,10 @@
  
- 		public static void SendCallback(object state) {
- 			((NetPacket)state).Recycle();
-+		}
+ 	public static void SendCallback(object state) {
+ 		((NetPacket)state).Recycle();
++	}
 +
-+		private void LogSend(NetPacket packet, int toClient = -1, int ignoreClient = -1) {
-+			if (ModNet.DetailedLogging)
-+				ModNet.LogSend(toClient, ignoreClient, $"NetPacket {_modules[packet.Id].GetType().Name}", packet.Length);
- 		}
++	private void LogSend(NetPacket packet, int toClient = -1, int ignoreClient = -1) {
++		if (ModNet.DetailedLogging)
++			ModNet.LogSend(toClient, ignoreClient, $"NetPacket {_modules[packet.Id].GetType().Name}", packet.Length);
  	}
  }

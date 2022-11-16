@@ -7,30 +7,30 @@
 +using Terraria.ModLoader;
  using Terraria.UI;
  
- namespace Terraria.GameContent.Creative
+ namespace Terraria.GameContent.Creative;
 @@ -19,6 +_,7 @@
- 			private bool[] _unusedBadPrefixLines = new bool[30];
- 			private int _unusedYoyoLogo;
- 			private int _unusedResearchLine;
-+			private string[] _toolTipNames = new string[30];
- 			private string _search;
+ 		private bool[] _unusedBadPrefixLines = new bool[30];
+ 		private int _unusedYoyoLogo;
+ 		private int _unusedResearchLine;
++		private string[] _toolTipNames = new string[30];
+ 		private string _search;
  
- 			public bool FitsFilter(Item entry) {
+ 		public bool FitsFilter(Item entry) {
 @@ -27,7 +_,7 @@
  
- 				int numLines = 1;
- 				float knockBack = entry.knockBack;
--				Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines);
-+				Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines, _toolTipNames);
- 				for (int i = 0; i < numLines; i++) {
- 					if (_toolTipLines[i].ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
- 						return true;
+ 			int numLines = 1;
+ 			float knockBack = entry.knockBack;
+-			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines);
++			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines, _toolTipNames);
+ 			for (int i = 0; i < numLines; i++) {
+ 				if (_toolTipLines[i].ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
+ 					return true;
 @@ -334,7 +_,7 @@
- 			private bool[] _fitsFilterByItemType;
+ 		private bool[] _fitsFilterByItemType;
  
- 			public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst) {
--				short num = 5456;
-+				int num = ItemLoader.ItemCount;
- 				_fitsFilterByItemType = new bool[num];
- 				for (int i = 1; i < num; i++) {
- 					_fitsFilterByItemType[i] = true;
+ 		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst) {
+-			short num = 5456;
++			int num = ItemLoader.ItemCount;
+ 			_fitsFilterByItemType = new bool[num];
+ 			for (int i = 1; i < num; i++) {
+ 				_fitsFilterByItemType[i] = true;
