@@ -35,7 +35,7 @@
  
  			int num = tile.frameX % 72 / 18;
  			Rectangle value = new Rectangle(tileCoordsForToggling.X * 16, tileCoordsForToggling.Y * 16, 16, 48);
-@@ -315,10 +_,11 @@
+@@ -316,10 +_,11 @@
  		Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
  		if (tile == null)
  			return false;

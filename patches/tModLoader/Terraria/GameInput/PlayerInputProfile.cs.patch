@@ -13,8 +13,8 @@
 +public partial class PlayerInputProfile
  {
  	public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
- 			{ InputMode.Keyboard, new KeyConfiguration() },
-@@ -198,9 +_,12 @@
+ 		{ InputMode.Keyboard, new KeyConfiguration() },
+@@ -199,9 +_,12 @@
  	}
  
  	public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode) {

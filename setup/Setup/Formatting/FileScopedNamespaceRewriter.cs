@@ -17,9 +17,13 @@ namespace Terraria.ModLoader.Setup.Formatting
 						node.Name.GetTrailingTrivia().Add(SyntaxFactory.EndOfLine(Environment.NewLine))),
 					node.Externs,
 					node.Usings,
-					node.Members) // rely on the formatter to fix the indentation of the members for us
+					Unindent(node.Members))
 				.WithTriviaFrom(node);
 			return fs;
+		}
+
+		private static SyntaxList<MemberDeclarationSyntax> Unindent(SyntaxList<MemberDeclarationSyntax> members) {
+			return new UnindentRewriter().VisitList(members);
 		}
 	}
 }

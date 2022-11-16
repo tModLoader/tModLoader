@@ -13,7 +13,7 @@
  {
  	private IBigProgressBar _currentBar;
  	private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
-@@ -59,16 +_,30 @@
+@@ -60,16 +_,30 @@
  	}
  
  	public void Update() {
@@ -45,7 +45,7 @@
  	}
  
  	private void TryFindingNPCToTrack() {
-@@ -97,7 +_,12 @@
+@@ -98,7 +_,12 @@
  		bigProgressBarInfo.npcIndexToAimAt = npcIndex;
  		BigProgressBarInfo info = bigProgressBarInfo;
  		IBigProgressBar bigProgressBar = _bossBar;

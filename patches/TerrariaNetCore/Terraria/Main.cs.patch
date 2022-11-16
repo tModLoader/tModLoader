@@ -9,7 +9,7 @@
  class Control
  {
  	internal static Form FromHandle(IntPtr handle) {
-@@ -3327,6 +_,7 @@
+@@ -3330,6 +_,7 @@
  
  		PendingBorderlessState = screenBorderless;
  		screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
@@ -17,7 +17,7 @@
  		if (Platform.IsWindows && !dedServ) {
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
-@@ -3342,6 +_,7 @@
+@@ -3345,6 +_,7 @@
  
  			form.BringToFront();
  		}
@@ -25,7 +25,7 @@
  
  		int currentValue2 = graphics.PreferredBackBufferWidth;
  		int currentValue3 = graphics.PreferredBackBufferHeight;
-@@ -3708,8 +_,12 @@
+@@ -3711,8 +_,12 @@
  						if (num >= 2)
  							terrariasFixedTiming = binaryReader.ReadBoolean();
  
@@ -38,7 +38,7 @@
  
  						if (num >= 4) {
  							int width = binaryReader.ReadInt32();
-@@ -4947,7 +_,7 @@
+@@ -4950,7 +_,7 @@
  		}
  	}
  
@@ -47,7 +47,7 @@
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
  		base.Exiting += Main_Exiting;
-@@ -9005,6 +_,7 @@
+@@ -9008,6 +_,7 @@
  		if (SocialAPI.Workshop != null)
  			SocialAPI.Workshop.LoadEarlyContent();
  
@@ -55,7 +55,7 @@
  		AssetSourceController.UseResourcePacks(AssetInitializer.CreateResourcePackList(base.Services));
  		AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  		ChromaInitializer.Load();
-@@ -13554,6 +_,7 @@
+@@ -13557,6 +_,7 @@
  
  			UpdateOldNPCShop();
  			hasFocus = base.IsActive;
@@ -63,7 +63,7 @@
  			if (Platform.IsWindows) {
  				Form form = Control.FromHandle(base.Window.Handle) as Form;
  				bool num3 = form.WindowState == FormWindowState.Minimized;
-@@ -13562,6 +_,7 @@
+@@ -13565,6 +_,7 @@
  				if (num3)
  					hasFocus = false;
  			}
@@ -71,7 +71,7 @@
  
  			if (!hasFocus && netMode == 0) {
  				if (!Platform.IsOSX)
-@@ -42399,6 +_,7 @@
+@@ -42402,6 +_,7 @@
  		return result;
  	}
  
@@ -79,7 +79,7 @@
  	private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form) {
  		if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
  			screenBorderlessPendingResizes--;
-@@ -42424,6 +_,7 @@
+@@ -42427,6 +_,7 @@
  		form.Location = new System.Drawing.Point(0, 0);
  		form.FormBorderStyle = FormBorderStyle.None;
  	}
@@ -87,7 +87,7 @@
  
  	public static void OpenCharacterSelectUI() {
  		menuMode = 888;
-@@ -53994,6 +_,9 @@
+@@ -53997,6 +_,9 @@
  
  	public static void SetDisplayMode(int width, int height, bool fullscreen) {
  		bool flag = false;
@@ -97,7 +97,7 @@
  		Form form = null;
  		if (Platform.IsWindows) {
  			form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -54008,6 +_,8 @@
+@@ -54011,6 +_,8 @@
  		else {
  			screenMaximized = false;
  		}
@@ -106,7 +106,7 @@
  
  		bool flag2 = false;
  		int num3;
-@@ -54023,11 +_,13 @@
+@@ -54026,11 +_,13 @@
  				}
  			}
  
@@ -120,7 +120,7 @@
  
  			if (width > maxScreenW) {
  				float num = (float)height / (float)width;
-@@ -54055,6 +_,7 @@
+@@ -54058,6 +_,7 @@
  		}
  		else {
  			PlayerInput.RawMouseScale = Vector2.One;
@@ -128,7 +128,7 @@
  			if (Platform.IsWindows) {
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
-@@ -54062,6 +_,7 @@
+@@ -54065,6 +_,7 @@
  					height = displayHeight[0];
  				}
  			}
@@ -136,7 +136,7 @@
  
  			width = Math.Min(width, maxScreenW);
  			height = Math.Min(height, maxScreenH);
-@@ -54070,6 +_,7 @@
+@@ -54073,6 +_,7 @@
  			flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
  		}
  
@@ -144,7 +144,7 @@
  		if (Platform.IsWindows && !fullscreen && !flag2) {
  			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  				width = form.ClientSize.Width;
-@@ -54081,6 +_,7 @@
+@@ -54084,6 +_,7 @@
  				flag2 = true;
  			}
  		}
@@ -152,7 +152,7 @@
  
  		width &= 0x7FFFFFFE;
  		height &= 0x7FFFFFFE;
-@@ -54111,6 +_,7 @@
+@@ -54114,6 +_,7 @@
  			PendingResolutionWidth = screenWidth;
  			PendingResolutionHeight = screenHeight;
  			PlayerInput.CacheOriginalScreenDimensions();
@@ -160,7 +160,7 @@
  			if (Platform.IsWindows && !fullscreen) {
  				if (screenBorderless) {
  					ApplyBorderlessResolution(form);
-@@ -54123,6 +_,7 @@
+@@ -54126,6 +_,7 @@
  				form.SendToBack();
  				form.BringToFront();
  			}

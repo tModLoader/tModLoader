@@ -12,12 +12,12 @@
  	{
 +		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
- 				{ 759, new Dictionary<int, int> {
- 						{
-@@ -257,6 +_,10 @@
- 							717
- 						}
- 					} }		};
+ 			{
+ 				759,
+@@ -93,6 +_,10 @@
+ 				}
+ 			}
+ 		};
 +
 +		public static bool[] IsArrow = Factory.CreateBoolSet(false, Arrow, Stake);
 +		public static bool[] IsBullet = Factory.CreateBoolSet(false, Bullet, CandyCorn);
