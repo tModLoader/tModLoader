@@ -1,14 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Biomes/DeadMansChestBiome.cs
 +++ src/tModLoader/Terraria/GameContent/Biomes/DeadMansChestBiome.cs
 @@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework;
  using Newtonsoft.Json;
- using System.Collections.Generic;
  using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
  
-@@ -200,7 +_,7 @@
+@@ -192,7 +_,7 @@
  	}
  
  	private void PlaceBoulderTrapSpot(Point position, int yPush) {

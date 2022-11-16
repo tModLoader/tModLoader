@@ -9,10 +9,10 @@
  	private bool _didClickSomething;
  	private bool _didClickSearchBar;
  
-@@ -140,16 +_,12 @@
- 			TextOriginY = 0f
+@@ -141,16 +_,12 @@
  		};
  
+ 		_progressPercentText = progressPercentText;
 -		UIColoredSliderSimple uIColoredSliderSimple = new UIColoredSliderSimple {
 +		ModLoader.UI.UIBestiaryBar uIColoredSliderSimple = new ModLoader.UI.UIBestiaryBar(Main.BestiaryDB) {
  			Width = new StyleDimension(0f, 1f),
@@ -27,7 +27,7 @@
  		_unlocksProgressBar = uIColoredSliderSimple;
  		container.Append(uIColoredSliderSimple);
  	}
-@@ -488,7 +_,7 @@
+@@ -490,7 +_,7 @@
  		_progressReport = GetUnlockProgress();
  		string completionPercentText = GetCompletionPercentText();
  		_progressPercentText.SetText(completionPercentText);

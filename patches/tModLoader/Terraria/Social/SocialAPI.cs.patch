@@ -1,22 +1,23 @@
 --- src/TerrariaNetCore/Terraria/Social/SocialAPI.cs
 +++ src/tModLoader/Terraria/Social/SocialAPI.cs
 @@ -1,6 +_,7 @@
- using ReLogic.OS;
  using System;
  using System.Collections.Generic;
+ using ReLogic.OS;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -23,16 +_,27 @@
+@@ -23,19 +_,27 @@
  	public static SocialMode Mode => _mode;
  
  	public static void Initialize(SocialMode? mode = null) {
 +		_modules = new List<ISocialModule>();
  		if (!mode.HasValue) {
  			mode = SocialMode.None;
--			if (!Main.dedServ)
--				mode = SocialMode.Steam;
+-			if (Main.dedServ) {
+-				if (Program.LaunchParameters.ContainsKey("-steam"))
+-					mode = SocialMode.Steam;
 +
 +			// Added FamilyShared check as workaround for #881
 +			if (!Main.dedServ && !SteamedWraps.FamilyShared) { // #if !SERVER
@@ -29,9 +30,11 @@
 +#if DEBUG
 +				}
 +#endif
-+			}
- 			else if (Program.LaunchParameters.ContainsKey("-steam"))
+ 			}
+-			else {
++			else if (Program.LaunchParameters.ContainsKey("-steam"))
  				mode = SocialMode.Steam;
+-			}
  		}
  
  		_mode = mode.Value;
@@ -39,7 +42,7 @@
  		JoinRequests = new ServerJoinRequestsManager();
  		Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  		switch (Mode) {
-@@ -44,9 +_,8 @@
+@@ -47,9 +_,8 @@
  				break;
  		}
  
@@ -51,7 +54,7 @@
  	}
  
  	public static void Shutdown() {
-@@ -72,10 +_,18 @@
+@@ -75,10 +_,18 @@
  			_ = Environment.Is64BitProcess;
  	}
  
@@ -72,7 +75,7 @@
  		Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  		Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  		Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
-@@ -85,10 +_,25 @@
+@@ -88,10 +_,25 @@
  		else
  			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
  
@@ -98,7 +101,7 @@
  		LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
  		Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  		Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
-@@ -99,5 +_,11 @@
+@@ -102,5 +_,11 @@
  			Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
  
  		WeGameHelper.WriteDebugString("LoadWeGame modules");

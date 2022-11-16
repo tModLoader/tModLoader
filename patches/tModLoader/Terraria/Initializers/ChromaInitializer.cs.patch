@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/ChromaInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/ChromaInitializer.cs
-@@ -35,24 +_,83 @@
+@@ -444,24 +_,83 @@
  	public static IntRgbGameValueTracker Event_ManaPercent;
  	public static IntRgbGameValueTracker Event_BreathPercent;
  
@@ -84,7 +84,7 @@
  		Main.Configuration.OnSave += delegate (Preferences config) {
  			config.Put("RGBUpdatesPerSecond", rgbUpdateRate);
  			config.Put("UseRazerRGB", useRazer);
-@@ -64,7 +_,9 @@
+@@ -473,7 +_,9 @@
  			config.Put("UseSteelSeriesRGB", useSteelSeries);
  			config.Put("SteelSeriesColorProfile", steelSeriesColorProfile);
  		};

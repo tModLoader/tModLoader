@@ -64,36 +64,30 @@
  	public bool needEverythingSeed;
  	public bool notDecraftable;
  	public bool crimson;
-@@ -43,13 +_,13 @@
+@@ -43,11 +_,11 @@
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
  
 -	public void RequireGroup(string name) {
 +	private void RequireGroup(string name) {
- 		if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out int value))
+ 		if (!RecipeGroup.recipeGroupIDs.TryGetValue(name, out var value))
  			return;
  
- 		int num = 0;
- 		while (true) {
--			if (num < maxRequirements) {
-+			if (num < acceptedGroups.Count) {
- 				if (acceptedGroups[num] == -1)
- 					break;
- 
-@@ -63,10 +_,10 @@
- 		acceptedGroups[num] = value;
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < acceptedGroups.Count; i++) {
+ 			if (acceptedGroups[i] == -1) {
+ 				acceptedGroups[i] = value;
+ 				break;
+@@ -56,7 +_,7 @@
  	}
  
--	public void RequireGroup(int id) {
-+	private void RequireGroup(int id) {
- 		int num = 0;
- 		while (true) {
--			if (num < maxRequirements) {
-+			if (num < acceptedGroups.Count) {
- 				if (acceptedGroups[num] == -1)
- 					break;
- 
-@@ -81,12 +_,8 @@
+ 	public void RequireGroup(int id) {
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < acceptedGroups.Count; i++) {
+ 			if (acceptedGroups[i] == -1) {
+ 				acceptedGroups[i] = id;
+ 				break;
+@@ -65,12 +_,8 @@
  	}
  
  	public bool ProcessGroupsForText(int type, out string theText) {
@@ -108,7 +102,7 @@
  				theText = RecipeGroup.recipeGroups[num].GetText();
  				return true;
  			}
-@@ -97,7 +_,7 @@
+@@ -81,7 +_,7 @@
  	}
  
  	public bool AcceptsGroup(int groupId) {
@@ -117,7 +111,7 @@
  			int num = acceptedGroups[i];
  			if (num == -1)
  				break;
-@@ -110,12 +_,8 @@
+@@ -94,12 +_,8 @@
  	}
  
  	public bool AcceptedByItemGroups(int invType, int reqType) {
@@ -132,7 +126,7 @@
  				return true;
  		}
  
-@@ -133,23 +_,26 @@
+@@ -117,23 +_,26 @@
  		return item;
  	}
  
@@ -171,7 +165,7 @@
  			int num = item2.stack;
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
-@@ -166,6 +_,8 @@
+@@ -150,6 +_,8 @@
  				}
  			}
  
@@ -180,7 +174,7 @@
  			if (num <= 0)
  				continue;
  
-@@ -177,10 +_,13 @@
+@@ -161,10 +_,13 @@
  
  				if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
  					if (item.stack > num) {
@@ -194,7 +188,7 @@
  						num -= item.stack;
  						array[k] = new Item();
  					}
-@@ -236,6 +_,8 @@
+@@ -220,6 +_,8 @@
  					continue;
  
  				if (item.stack > num) {
@@ -203,7 +197,7 @@
  					item.stack -= num;
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
  						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
-@@ -243,6 +_,7 @@
+@@ -227,6 +_,7 @@
  					num = 0;
  				}
  				else {
@@ -211,7 +205,7 @@
  					num -= item.stack;
  					array[m] = new Item();
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
-@@ -256,7 +_,7 @@
+@@ -240,7 +_,7 @@
  		FindRecipes();
  	}
  
@@ -220,7 +214,7 @@
  		if (!anyWood)
  			return false;
  
-@@ -289,7 +_,7 @@
+@@ -273,7 +_,7 @@
  		}
  	}
  
@@ -229,7 +223,7 @@
  		if (!anyIronBar)
  			return false;
  
-@@ -302,7 +_,7 @@
+@@ -286,7 +_,7 @@
  		return true;
  	}
  
@@ -238,7 +232,7 @@
  		if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
  			return false;
  
-@@ -312,7 +_,7 @@
+@@ -296,7 +_,7 @@
  		return false;
  	}
  
@@ -247,7 +241,7 @@
  		if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
  			return false;
  
-@@ -322,7 +_,7 @@
+@@ -306,7 +_,7 @@
  		return false;
  	}
  
@@ -256,7 +250,7 @@
  		if (!anyPressurePlate)
  			return false;
  
-@@ -383,7 +_,7 @@
+@@ -367,7 +_,7 @@
  			if (recipe.createItem.type == 0)
  				break;
  
@@ -265,7 +259,7 @@
  				AddToAvailableRecipes(i);
  		}
  
-@@ -397,7 +_,7 @@
+@@ -381,7 +_,7 @@
  	}
  
  	public static bool CollectedEnoughItemsToCraftRecipeOld(Recipe tempRec) {
@@ -274,7 +268,7 @@
  			Item item = tempRec.requiredItem[i];
  			if (item.type == 0)
  				break;
-@@ -422,7 +_,7 @@
+@@ -406,7 +_,7 @@
  	}
  
  	public static bool CollectedEnoughItemsToCraftRecipeNew(Recipe tempRec) {
@@ -283,7 +277,7 @@
  			RequiredItemEntry requiredItemEntry = tempRec.requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup == 0)
  				break;
-@@ -438,7 +_,7 @@
+@@ -422,7 +_,7 @@
  	}
  
  	private static bool PlayerMeetsEnvironmentConditions(Player player, Recipe tempRec) {
@@ -292,7 +286,7 @@
  		bool flag = !tempRec.needHoney || tempRec.needHoney == player.adjHoney;
  		bool flag2 = !tempRec.needLava || tempRec.needLava == player.adjLava;
  		bool flag3 = !tempRec.needSnowBiome || player.ZoneSnow;
-@@ -448,7 +_,7 @@
+@@ -432,7 +_,7 @@
  	}
  
  	private static bool PlayerMeetsTileRequirements(Player player, Recipe tempRec) {
@@ -301,7 +295,7 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
-@@ -508,7 +_,10 @@
+@@ -492,7 +_,10 @@
  			if (recipe.createItem.type == 0)
  				break;
  
@@ -313,7 +307,7 @@
  				Item item = recipe.requiredItem[j];
  				if (item.type == 0)
  					break;
-@@ -601,14 +_,17 @@
+@@ -585,14 +_,17 @@
  		RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
  		rec = new RecipeGroup(() => "replaceme pressureplate", 852, 543, 542, 541, 1151, 529, 853, 4261);
  		RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PressurePlate", rec);
@@ -333,7 +327,7 @@
  				array[j].Refresh();
  			}
  		}
-@@ -14504,12 +_,17 @@
+@@ -14488,12 +_,17 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
  		CreateReversePlatformRecipes();
@@ -351,7 +345,7 @@
  	}
  
  	private static void ReplaceItemUseFlagsWithRecipeGroups() {
-@@ -14529,21 +_,17 @@
+@@ -14513,21 +_,17 @@
  	}
  
  	private static void CreateRequiredItemQuickLookups() {
@@ -377,7 +371,7 @@
  
  					RecipeGroup recipeGroup = RecipeGroup.recipeGroups[num];
  					if (recipeGroup.ValidItems.Contains(item.type))
-@@ -14555,10 +_,28 @@
+@@ -14539,10 +_,28 @@
  		}
  	}
  
@@ -408,7 +402,7 @@
  			}
  
  			Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -14566,7 +_,7 @@
+@@ -14550,7 +_,7 @@
  	}
  
  	public static void UpdateWhichItemsAreMaterials() {
@@ -417,7 +411,7 @@
  			Item item = new Item();
  			item.SetDefaults(i, noMatCheck: true);
  			item.checkMat();
-@@ -15715,23 +_,24 @@
+@@ -15699,23 +_,24 @@
  	private static void CreateReversePlatformRecipes() {
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
@@ -447,7 +441,7 @@
  			}
  		}
  	}
-@@ -15739,28 +_,29 @@
+@@ -15723,28 +_,29 @@
  	private static void CreateReverseWallRecipes() {
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
@@ -483,7 +477,7 @@
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
  				ingredients[0],
-@@ -15778,18 +_,50 @@
+@@ -15762,18 +_,50 @@
  		}
  	}
  

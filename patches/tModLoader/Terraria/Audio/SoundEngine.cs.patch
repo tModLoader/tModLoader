@@ -12,7 +12,7 @@
  	public static SoundPlayer SoundPlayer;
  	public static bool AreSoundsPaused;
  
-@@ -19,6 +_,8 @@
+@@ -16,6 +_,8 @@
  
  	public static void Initialize() {
  		IsAudioSupported = TestAudioSupport();
@@ -21,7 +21,7 @@
  	}
  
  	public static void Load(IServiceProvider services) {
-@@ -29,6 +_,15 @@
+@@ -26,6 +_,15 @@
  	}
  
  	public static void Update() {
@@ -37,7 +37,7 @@
  		if (IsAudioSupported) {
  			if (Main.audioSystem != null)
  				Main.audioSystem.UpdateAudioEngine();
-@@ -55,6 +_,8 @@
+@@ -52,6 +_,8 @@
  		}
  	}
  
@@ -46,7 +46,7 @@
  	public static void PlaySound(int type, Vector2 position, int style = 1) {
  		PlaySound(type, (int)position.X, (int)position.Y, style);
  	}
-@@ -82,11 +_,11 @@
+@@ -79,11 +_,11 @@
  		return SoundPlayer.GetActiveSound(id);
  	}
  
@@ -60,7 +60,7 @@
  	}
  
  	public static SlotId PlayTrackedLoopedSound(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition = null) {
-@@ -102,25 +_,29 @@
+@@ -99,25 +_,29 @@
  
  		return SoundPlayer.Play(style);
  	}
@@ -91,8 +91,8 @@
  		if (Main.dedServ || !IsAudioSupported)
  			return null;
  
-@@ -303,7 +_,7 @@
- 			}
+@@ -299,7 +_,7 @@
+ 			SoundEffect.FromStream(stream);
  		}
  		catch (NoAudioHardwareException) {
 -			Console.WriteLine("No audio hardware found. Disabling all audio.");

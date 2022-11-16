@@ -55,7 +55,7 @@
 @@ -320,6 +_,10 @@
  			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
- 		int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
+ 		int id = (Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest]);
 +		string modText = ItemLoader.AnglerChat(id);
 +		if (modText != null)
 +			return modText;

@@ -155,7 +155,7 @@
  	private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement) {
  		_deleteButtonLabel.SetText("");
  	}
-@@ -179,8 +_,12 @@
+@@ -180,8 +_,12 @@
  	private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  		if (_data.IsCloudSave)
  			_data.MoveToLocal();
@@ -169,8 +169,8 @@
  
  		((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  		if (_data.IsCloudSave)
-@@ -229,6 +_,13 @@
- 		(base.Parent.Parent as UIList)?.UpdateOrder();
+@@ -223,6 +_,13 @@
+ 			uIList.UpdateOrder();
  	}
  
 +	private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -181,9 +181,9 @@
 +	}
 +
  	public override int CompareTo(object obj) {
- 		UICharacterListItem uICharacterListItem = obj as UICharacterListItem;
- 		if (uICharacterListItem != null) {
-@@ -288,11 +_,11 @@
+ 		if (obj is UICharacterListItem uICharacterListItem) {
+ 			if (IsFavorite && !uICharacterListItem.IsFavorite)
+@@ -281,11 +_,11 @@
  		DrawPanel(spriteBatch, vector2, num2);
  		spriteBatch.Draw(TextureAssets.Heart.Value, vector2 + new Vector2(5f, 2f), Color.White);
  		vector2.X += 10f + (float)TextureAssets.Heart.Width();

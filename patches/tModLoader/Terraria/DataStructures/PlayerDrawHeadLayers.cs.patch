@@ -12,9 +12,8 @@
  public static class PlayerDrawHeadLayers
  {
  	public static void DrawPlayer_0_(ref PlayerDrawHeadSet drawinfo) {
-@@ -352,4 +_,5 @@
- 		item.shader = shaderTechnique;
+@@ -353,3 +_,4 @@
  		drawData.Add(item);
  	}
-+*/
  }
++*/

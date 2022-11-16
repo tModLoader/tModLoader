@@ -1,15 +1,13 @@
 --- src/TerrariaNetCore/ReLogic/Content/Readers/PngReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/PngReader.cs
-@@ -1,8 +_,10 @@
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
+@@ -1,6 +_,8 @@
  using System;
 +using System.Diagnostics;
  using System.IO;
  using System.Threading;
 +using System.Threading.Tasks;
- 
- namespace ReLogic.Content.Readers;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  
 @@ -16,15 +_,20 @@
  		_graphicsDevice = graphicsDevice;

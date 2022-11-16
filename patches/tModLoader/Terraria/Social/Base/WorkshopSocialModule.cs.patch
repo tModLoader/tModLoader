@@ -7,5 +7,5 @@
 -public abstract class WorkshopSocialModule : ISocialModule
 +public abstract partial class WorkshopSocialModule : ISocialModule
  {
- 	public WorkshopBranding Branding {
- 		get;
+ 	public WorkshopBranding Branding { get; protected set; }
+ 

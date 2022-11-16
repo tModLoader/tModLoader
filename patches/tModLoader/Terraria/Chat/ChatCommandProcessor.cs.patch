@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Chat/ChatCommandProcessor.cs
 +++ src/tModLoader/Terraria/Chat/ChatCommandProcessor.cs
 @@ -3,6 +_,7 @@
- using System.Linq;
+ using ReLogic.Utilities;
  using Terraria.Chat.Commands;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -17,6 +17,6 @@
 +			return;
 +		}
 +
- 		if (_commands.TryGetValue(message.CommandId, out IChatCommand value)) {
+ 		if (_commands.TryGetValue(message.CommandId, out var value)) {
  			value.ProcessIncomingMessage(message.Text, (byte)clientId);
  			message.Consume();

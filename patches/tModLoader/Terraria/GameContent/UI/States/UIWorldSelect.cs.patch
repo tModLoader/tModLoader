@@ -1,16 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldSelect.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldSelect.cs
-@@ -2,8 +_,10 @@
- using Microsoft.Xna.Framework.Graphics;
+@@ -1,6 +_,8 @@
  using System;
  using System.Collections.Generic;
 +using System.IO;
  using System.Linq;
- using Terraria.Audio;
 +using System.Threading.Tasks;
- using Terraria.GameContent.UI.Elements;
- using Terraria.GameInput;
- using Terraria.ID;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Terraria.Audio;
 @@ -11,6 +_,8 @@
  using Terraria.Localization;
  using Terraria.UI;

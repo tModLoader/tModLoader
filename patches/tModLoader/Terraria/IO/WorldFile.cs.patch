@@ -36,8 +36,8 @@
  		_cachedSandstormSeverity = Sandstorm.Severity;
  		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
  		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -386,7 +_,8 @@
- 				}
+@@ -384,7 +_,8 @@
+ 				return worldFileData;
  			}
  		}
 -		catch (Exception) {
@@ -46,7 +46,7 @@
  		}
  
  		return null;
-@@ -441,6 +_,7 @@
+@@ -439,6 +_,7 @@
  		Main.checkXMas();
  		Main.checkHalloween();
  		bool flag = loadFromCloud && SocialAPI.Cloud != null;
@@ -54,16 +54,16 @@
  		if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  			if (!flag) {
  				for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -487,6 +_,8 @@
- 						CheckSavedOreTiers();
- 						binaryReader.Close();
- 						memoryStream.Close();
-+						SystemLoader.OnWorldLoad();
-+						WorldIO.Load(Main.worldPathName, flag);
- 						if (num3 != 0)
- 							WorldGen.loadFailed = true;
- 						else
-@@ -645,6 +_,9 @@
+@@ -485,6 +_,8 @@
+ 				CheckSavedOreTiers();
+ 				binaryReader.Close();
+ 				memoryStream.Close();
++				SystemLoader.OnWorldLoad();
++				WorldIO.Load(Main.worldPathName, flag);
+ 				if (num3 != 0)
+ 					WorldGen.loadFailed = true;
+ 				else
+@@ -641,6 +_,9 @@
  		if (Main.worldPathName == null)
  			return;
  
@@ -73,7 +73,7 @@
  		new Stopwatch().Start();
  		int num;
  		byte[] array;
-@@ -682,6 +_,7 @@
+@@ -677,6 +_,7 @@
  
  		if (text != null && array2 != null)
  			FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
@@ -81,7 +81,7 @@
  	}
  
  	private static void DoRollingBackups(string backupWorldWritePath) {
-@@ -745,18 +_,18 @@
+@@ -740,18 +_,18 @@
  		_tempMoonPhase = Main.moonPhase;
  		_tempBloodMoon = Main.bloodMoon;
  		_tempEclipse = Main.eclipse;
@@ -103,7 +103,7 @@
  		_tempMaxRain = Main.maxRaining;
  		_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
  		_tempLanternNightGenuine = LanternNight.GenuineLanterns;
-@@ -782,7 +_,7 @@
+@@ -777,7 +_,7 @@
  		_tempSandstormSeverity = _cachedSandstormSeverity.Value;
  		_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
  		_tempRaining = Main.raining;
@@ -112,7 +112,7 @@
  		_tempMaxRain = Main.maxRaining;
  		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
  		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
-@@ -853,7 +_,7 @@
+@@ -848,7 +_,7 @@
  			}
  
  			if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
@@ -121,7 +121,7 @@
  		}
  	}
  
-@@ -1026,7 +_,11 @@
+@@ -1021,7 +_,11 @@
  		}
  
  		writer.Write(NPC.savedAngler);
@@ -134,39 +134,39 @@
  		writer.Write(NPC.savedStylist);
  		writer.Write(NPC.savedTaxCollector);
  		writer.Write(NPC.savedGolfer);
-@@ -1130,7 +_,7 @@
+@@ -1125,7 +_,7 @@
  				byte b3;
- 				byte b4 = b3 = (b2 = (b = 0));
+ 				byte b4 = (b3 = (b2 = (b = 0)));
  				bool flag = false;
 -				if (tile.active())
 +				if (tile.active() && tile.type < TileID.Count)
  					flag = true;
  
  				if (flag) {
-@@ -1144,9 +_,11 @@
+@@ -1139,9 +_,11 @@
  					}
  
  					if (Main.tileFrameImportant[tile.type]) {
 +						short frameX = tile.frameX;
 +						TileIO.VanillaSaveFrames(tile, ref frameX);
--						array[num3] = (byte)(tile.frameX & 0xFF);
-+						array[num3] = (byte)(frameX & 0xFF);
+-						array[num3] = (byte)((uint)tile.frameX & 0xFFu);
++						array[num3] = (byte)((uint)frameX & 0xFFu);
  						num3++;
 -						array[num3] = (byte)((tile.frameX & 0xFF00) >> 8);
 +						array[num3] = (byte)((frameX & 0xFF00) >> 8);
  						num3++;
- 						array[num3] = (byte)(tile.frameY & 0xFF);
+ 						array[num3] = (byte)((uint)tile.frameY & 0xFFu);
  						num3++;
-@@ -1161,7 +_,7 @@
+@@ -1156,7 +_,7 @@
  					}
  				}
  
 -				if (tile.wall != 0) {
 +				if (tile.wall != 0 && tile.wall < WallID.Count) {
- 					b4 = (byte)(b4 | 4);
+ 					b4 = (byte)(b4 | 4u);
  					array[num3] = (byte)tile.wall;
  					num3++;
-@@ -1314,7 +_,7 @@
+@@ -1309,7 +_,7 @@
  			writer.Write(chest.name);
  			for (int l = 0; l < 40; l++) {
  				Item item = chest.item[l];
@@ -175,7 +175,7 @@
  					writer.Write((short)0);
  					continue;
  				}
-@@ -1325,7 +_,7 @@
+@@ -1320,7 +_,7 @@
  				writer.Write((short)item.stack);
  				if (item.stack > 0) {
  					writer.Write(item.netID);
@@ -184,7 +184,7 @@
  				}
  			}
  		}
-@@ -1364,7 +_,7 @@
+@@ -1359,7 +_,7 @@
  
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
@@ -193,7 +193,7 @@
  				writer.Write(nPC.active);
  				writer.Write(nPC.netID);
  				writer.Write(nPC.GivenName);
-@@ -1384,7 +_,7 @@
+@@ -1379,7 +_,7 @@
  		writer.Write(value: false);
  		for (int k = 0; k < Main.npc.Length; k++) {
  			NPC nPC2 = Main.npc[k];
@@ -202,7 +202,7 @@
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2120,8 +_,13 @@
+@@ -2116,8 +_,13 @@
  
  				while (num3 > 0) {
  					j++;
@@ -217,7 +217,7 @@
  				}
  			}
  		}
-@@ -2224,7 +_,7 @@
+@@ -2220,7 +_,7 @@
  			int num3 = reader.ReadInt32();
  			Tile tile = Main.tile[num2, num3];
  			Sign sign;
@@ -226,7 +226,7 @@
  				sign = new Sign();
  				sign.text = text;
  				sign.x = num2;
-@@ -2547,6 +_,7 @@
+@@ -2543,6 +_,7 @@
  			return result;
  		}
  		catch (Exception value) {

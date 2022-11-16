@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/WallDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
 @@ -3,13 +_,14 @@
- using System.Diagnostics;
+ using Microsoft.Xna.Framework.Graphics;
  using Terraria.Graphics;
  using Terraria.ID;
 +using Terraria.ModLoader;
@@ -17,7 +17,7 @@
  	private bool _shouldShowInvisibleWalls;
  
 @@ -74,8 +_,9 @@
- 		Rectangle value2 = new Rectangle(0, 0, 32, 32);
+ 		Rectangle value = new Rectangle(0, 0, 32, 32);
  		int underworldLayer = Main.UnderworldLayer;
  		Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
 +		// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
@@ -46,7 +46,7 @@
  					color = Color.White;
 @@ -155,6 +_,9 @@
  					if (flag3)
- 						spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + value, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 						spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + vector, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  				}
 +
 +				PostDraw:

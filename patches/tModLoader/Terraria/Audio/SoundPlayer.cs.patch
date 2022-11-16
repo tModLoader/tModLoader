@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
 @@ -1,24 +_,81 @@
+ using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
- using System.Collections.Generic;
 +using System.Diagnostics.CodeAnalysis;
 +using System.Threading.Tasks;
 +

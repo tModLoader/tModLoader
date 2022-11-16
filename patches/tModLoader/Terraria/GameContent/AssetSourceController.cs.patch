@@ -9,7 +9,7 @@
  	private readonly List<IContentSource> _staticSources;
  	private readonly IAssetRepository _assetRepository;
  
-@@ -46,7 +_,7 @@
+@@ -43,7 +_,7 @@
  
  		list.AddRange(_staticSources);
  		foreach (IContentSource item in list) {

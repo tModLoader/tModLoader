@@ -1,13 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Net/Sockets/TcpSocket.cs
 +++ src/tModLoader/Terraria/Net/Sockets/TcpSocket.cs
-@@ -1,10 +_,12 @@
- using ReLogic.OS;
-+using Steamworks;
- using System;
- using System.Collections.Generic;
- using System.Net;
+@@ -4,7 +_,9 @@
  using System.Net.Sockets;
  using System.Threading;
+ using ReLogic.OS;
++using Steamworks;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  

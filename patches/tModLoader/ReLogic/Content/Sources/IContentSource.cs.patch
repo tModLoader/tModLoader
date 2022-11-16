@@ -7,9 +7,9 @@
  
  namespace ReLogic.Content.Sources;
  
-@@ -10,17 +_,27 @@
- 		set;
- 	}
+@@ -7,17 +_,27 @@
+ {
+ 	IContentValidator ContentValidator { get; set; }
  
 -	bool HasAsset(string assetName);
 +	RejectedAssetCollection Rejections { get; }

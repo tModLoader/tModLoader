@@ -78,19 +78,19 @@
 +	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
  
  	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
-+		string str;
++		string text;
 +
 +		if (_currentNPCBeingTalkedTo.type < NPCID.Count)
--		string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+			str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
+-		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
++			text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +		else {
 +			var modNpc = _currentNPCBeingTalkedTo.ModNPC;
 +
-+			str = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
++			text = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
 +		}
 +
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
- 			str += "Transformed";
+ 			text += "Transformed";
  
 @@ -172,6 +_,33 @@
  		_currentHappiness = _currentHappiness + textValueWith + " ";

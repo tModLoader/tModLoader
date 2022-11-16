@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TilePaintSystemV2.cs
 +++ src/tModLoader/Terraria/GameContent/TilePaintSystemV2.cs
 @@ -3,6 +_,8 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
- using System;
- using System.Collections.Generic;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  

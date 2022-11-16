@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
 @@ -1,11 +_,12 @@
- using ReLogic.Reflection;
  using System.Collections.Generic;
+ using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
  namespace Terraria.ID;

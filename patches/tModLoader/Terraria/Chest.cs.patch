@@ -117,7 +117,7 @@
  			}
  		}
  
-@@ -615,14 +_,15 @@
+@@ -615,12 +_,14 @@
  		}
  	}
  
@@ -129,34 +129,26 @@
 -			return;
 +			return 0;
  
- 		int num2 = 0;
- 		while (true) {
--			if (num2 < 39) {
-+			if (num2 < 38) { // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
- 				if (item[num2] == null || item[num2].type == 0)
- 					break;
- 
-@@ -630,15 +_,18 @@
- 				continue;
++		// tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
+-		for (int i = 0; i < 39; i++) {
++		for (int i = 0; i < 38; i++) {
+ 			if (item[i] == null || item[i].type == 0) {
+ 				item[i] = newItem.Clone();
+ 				item[i].favorited = false;
+@@ -628,9 +_,11 @@
+ 				item[i].stack -= num;
+ 				_ = item[i].value;
+ 				_ = 0;
+-				break;
++				return i;
  			}
- 
--			return;
-+			break;
  		}
- 
-+		// Extra patch context.
- 		item[num2] = newItem.Clone();
- 		item[num2].favorited = false;
- 		item[num2].buyOnce = true;
- 		item[num2].stack -= num;
- 		_ = item[num2].value;
- 		_ = 0;
 +		
-+		return num2;
++		return 0;
  	}
  
  	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count) {
-@@ -715,8 +_,11 @@
+@@ -707,8 +_,11 @@
  					Main.travelShop[count++] = 3636;
  					Main.travelShop[count++] = 3641;
  					break;
@@ -168,7 +160,7 @@
  	}
  
  	public static bool SetupTravelShop_CanAddItemToShop(int it) {
-@@ -2295,12 +_,12 @@
+@@ -2284,12 +_,12 @@
  					num++;
  					array[num].SetDefaults(1979);
  					num++;
@@ -183,7 +175,7 @@
  						array[num].SetDefaults(1978);
  						num++;
  					}
-@@ -2966,6 +_,7 @@
+@@ -2955,6 +_,7 @@
  				array[num++].SetDefaults(4921);
  		}
  

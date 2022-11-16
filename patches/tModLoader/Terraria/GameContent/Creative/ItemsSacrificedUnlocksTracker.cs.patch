@@ -16,9 +16,9 @@
 -	private Dictionary<int, int> _sacrificesCountByItemIdCache;
 +	internal Dictionary<int, int> _sacrificesCountByItemIdCache;
  
- 	public int LastEditId {
- 		get;
-@@ -72,7 +_,11 @@
+ 	public int LastEditId { get; private set; }
+ 
+@@ -69,7 +_,11 @@
  	}
  
  	public void Save(BinaryWriter writer) {

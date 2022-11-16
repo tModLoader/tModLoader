@@ -14,4 +14,4 @@
 +			for (int i = 1; i < BuffLoader.BuffCount; i++) {
  				bool flag = BuffID.Sets.IsAnNPCWhipDebuff[i];
  				bool flag2 = false;
- 				flag2 |= (flag && ImmuneToWhips);
+ 				flag2 |= flag && ImmuneToWhips;

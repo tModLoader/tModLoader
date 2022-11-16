@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -4,6 +_,7 @@
+@@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
@@ -9,7 +9,7 @@
  using System.Runtime.CompilerServices;
  using System.Text;
 @@ -11,12 +_,16 @@
- using System.Windows.Forms;
+ using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -175,25 +175,22 @@
  			};
  		}
 -
--		using (Main main = new Main()) {
--			try {
+-		using Main main = new Main();
 +		
 +		InstallVerifier.Startup();
-+		try {
+ 		try {
 +			ModLoader.ModLoader.EngineInit();
 +			using (Main main = new Main()) {
- 				Lang.InitializeLegacyLocalization();
- 				SocialAPI.Initialize();
- 				LaunchInitializer.LoadParameters(main);
-@@ -186,12 +_,13 @@
+ 			Lang.InitializeLegacyLocalization();
+ 			SocialAPI.Initialize();
+ 			LaunchInitializer.LoadParameters(main);
+@@ -186,11 +_,13 @@
  
- 				main.Run();
- 			}
--			catch (Exception e) {
--				DisplayException(e);
--			}
+ 			main.Run();
+ 		}
 +		}
-+		catch (Exception e) {
+ 		catch (Exception e) {
+-			DisplayException(e);
 +			ErrorReporting.FatalExit("Main engine crash", e);
  		}
  	}
@@ -202,7 +199,7 @@
  	private static void TrySettingFNAToOpenGL(string[] args) {
  		bool flag = false;
  		for (int i = 0; i < args.Length; i++) {
-@@ -230,4 +_,5 @@
+@@ -229,4 +_,5 @@
  		catch {
  		}
  	}

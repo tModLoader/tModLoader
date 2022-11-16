@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
 @@ -4,10 +_,11 @@
- using System.IO;
+ using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
  using Terraria.GameInput;
 +using Terraria.ModLoader;

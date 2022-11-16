@@ -8,7 +8,7 @@
  		lock (_ioLock) {
  			if (SocialAPI.Achievements != null)
  				SocialAPI.Achievements.StoreStats();
-@@ -76,10 +_,12 @@
+@@ -73,10 +_,12 @@
  	public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
  
  	public void Load() {

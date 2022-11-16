@@ -13,7 +13,7 @@
  namespace Terraria.Initializers;
 @@ -23,12 +_,16 @@
  		string s;
- 		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
+ 		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out var result))
  			Netplay.ListenPort = result;
 +
 +		string modPack;
@@ -99,5 +99,5 @@
 -	private static string TryParameter(params string[] keys) {
 +	public static string TryParameter(params string[] keys) {
  		for (int i = 0; i < keys.Length; i++) {
- 			if (Program.LaunchParameters.TryGetValue(keys[i], out string value)) {
+ 			if (Program.LaunchParameters.TryGetValue(keys[i], out var value)) {
  				if (value == null)

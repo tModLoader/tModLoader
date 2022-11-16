@@ -1,14 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -1,16 +_,17 @@
+@@ -4,13 +_,17 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
--#if MONO
--using System.Runtime.InteropServices;
--#endif
-+
-+#pragma warning disable IDE1006 // Naming Styles
  
++#pragma warning disable IDE1006 // Naming Styles
++
  namespace Terraria;
  
 -#if MONO
@@ -227,12 +224,12 @@
 +	/*
  	public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
 +
- 	public byte wallColor() => (byte)(bTileHeader & 0x1F);
+ 	public byte wallColor() => (byte)(bTileHeader & 0x1Fu);
  
  	public void wallColor(byte wallColor) {
 @@ -463,6 +_,7 @@
  		else
- 			sTileHeader = (ushort)(sTileHeader & -32769);
+ 			sTileHeader = (ushort)(sTileHeader & 0xFFFF7FFFu);
  	}
 +	*/
  

@@ -12,8 +12,8 @@
  {
  	public delegate void BestiaryEntriesPass(BestiaryEntry entry);
  
-@@ -26,6 +_,13 @@
- 			if (nPCNetIdBestiaryInfoElement != null)
+@@ -25,6 +_,13 @@
+ 			if (entry.Info[i] is NPCNetIdBestiaryInfoElement nPCNetIdBestiaryInfoElement)
  				_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;
  		}
 +		Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
@@ -26,7 +26,7 @@
  
  		return entry;
  	}
-@@ -49,7 +_,7 @@
+@@ -48,7 +_,7 @@
  	}
  
  	public void Merge(ItemDropDatabase dropsDatabase) {

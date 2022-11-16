@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/XnaDirectContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/XnaDirectContentSource.cs
-@@ -1,56 +_,22 @@
+@@ -1,53 +_,22 @@
  using System;
 -using System.Collections.Generic;
  using System.IO;
@@ -15,10 +15,7 @@
 -	private readonly HashSet<string> _files = new HashSet<string>();
 -	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
 -
--	public IContentValidator ContentValidator {
--		get;
--		set;
--	}
+-	public IContentValidator ContentValidator { get; set; }
  
  	public XnaDirectContentSource(string rootDirectory) {
  		_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
@@ -66,7 +63,7 @@
  		try {
  			return File.OpenRead(path);
  		}
-@@ -58,14 +_,4 @@
+@@ -55,14 +_,4 @@
  			throw AssetLoadException.FromMissingAsset(assetName, innerException);
  		}
  	}

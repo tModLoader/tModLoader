@@ -10,4 +10,4 @@
 +	public static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
  	private static ILightingEngine _activeEngine;
  
- 	public static float GlobalBrightness {
+ 	public static float GlobalBrightness { get; set; }

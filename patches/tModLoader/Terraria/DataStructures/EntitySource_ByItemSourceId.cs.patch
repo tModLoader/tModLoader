@@ -8,9 +8,8 @@
  public class EntitySource_ByItemSourceId : IEntitySource
  {
  	public readonly Entity Entity;
-@@ -9,4 +_,5 @@
- 		Entity = entity;
+@@ -10,3 +_,4 @@
  		SourceId = itemSourceId;
  	}
-+*/
  }
++*/

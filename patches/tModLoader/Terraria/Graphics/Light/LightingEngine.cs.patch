@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
 @@ -3,6 +_,7 @@
- using System;
- using System.Collections.Generic;
  using System.Diagnostics;
+ using Microsoft.Xna.Framework;
+ using ReLogic.Threading;
 +using Terraria.ModLoader;
  
  namespace Terraria.Graphics.Light;

@@ -83,7 +83,7 @@
  	}
  
  	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
-@@ -518,14 +_,14 @@
+@@ -514,14 +_,14 @@
  		container.Append(uISlicedImage);
  		UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
  			HAlign = 0f,
@@ -100,7 +100,7 @@
  		uIText.IsWrapped = true;
  		uISlicedImage.Append(uIText);
  		_descriptionText = uIText;
-@@ -614,7 +_,8 @@
+@@ -610,7 +_,8 @@
  			UsedTags = (from x in _tagOptions
  						where x.IsSelected
  						select x.OptionValue).ToArray(),
@@ -110,7 +110,7 @@
  		};
  	}
  
-@@ -623,6 +_,7 @@
+@@ -619,6 +_,7 @@
  			new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  		};
  

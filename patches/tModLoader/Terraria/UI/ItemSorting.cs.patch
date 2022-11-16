@@ -55,7 +55,7 @@
  					if (item3.stack == 0) {
  						inv[list[k]] = new Item();
  						list.Remove(list[k]);
-@@ -1198,6 +_,11 @@
+@@ -1202,6 +_,11 @@
  		for (int i = loopStartIndex; i < loopEndIndex; i++) {
  			Item item = inv[i];
  			if (item.stack >= 1 && item.type == itemToRefill.type) {
@@ -67,7 +67,7 @@
  				int num2 = item.stack;
  				if (num2 > num)
  					num2 = num;
-@@ -1205,6 +_,7 @@
+@@ -1209,6 +_,7 @@
  				num -= num2;
  				itemToRefill.stack += num2;
  				item.stack -= num2;

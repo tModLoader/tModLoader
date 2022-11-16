@@ -71,7 +71,7 @@
 +		bool mouseMiddleDown = Main.mouseMiddle && Main.hasFocus;
 +		bool mouseXButton1Down = Main.mouseXButton1 && Main.hasFocus;
 +		bool mouseXButton2Down = Main.mouseXButton2 && Main.hasFocus;
- 		UIElement uIElement = Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null;
+ 		UIElement uIElement = (Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null);
  		_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  		bool flag2 = _clickDisabledTimeRemaining > 0.0;
 +		try { // tmodloader added try-catch-finally. Try not to indent to keep patch clean.

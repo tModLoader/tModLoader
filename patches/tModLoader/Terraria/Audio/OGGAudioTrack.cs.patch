@@ -1,13 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Audio/OGGAudioTrack.cs
 +++ src/tModLoader/Terraria/Audio/OGGAudioTrack.cs
-@@ -3,6 +_,7 @@
- using NVorbis;
+@@ -1,4 +_,5 @@
+ #if !SERVER
++using System;
  using System.Collections.Generic;
  using System.IO;
-+using System;
- 
- namespace Terraria.Audio;
- 
+ using Microsoft.Xna.Framework.Audio;
 @@ -51,15 +_,33 @@
  	}
  
@@ -35,7 +33,7 @@
 +	// See the above.
 +	/*
  	private void TryReadingTag(IDictionary<string, IList<string>> tags, string entryName, ref int result) {
- 		if (tags.TryGetValue(entryName, out IList<string> value) && value.Count > 0 && int.TryParse(value[0], out int result2))
+ 		if (tags.TryGetValue(entryName, out var value) && value.Count > 0 && int.TryParse(value[0], out var result2))
  			result = result2;
  	}
 +	*/

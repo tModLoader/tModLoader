@@ -29,8 +29,8 @@
  	public static ITownNPCProfile TransformableWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniqueCreditTexture = true, bool uniqueCreditTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.TransformableNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, uniqueCreditTexture), new Profiles.TransformableNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, uniqueCreditTextureShimmered));
  
  	public static int GetHeadIndexSafe(NPC npc) {
--		if (Instance.GetProfile(npc.type, out ITownNPCProfile profile))
-+		if (Instance.GetProfile(npc, out ITownNPCProfile profile))
+-		if (Instance.GetProfile(npc.type, out var profile))
++		if (Instance.GetProfile(npc, out var profile))
  			return profile.GetHeadTextureIndex(npc);
  
  		return NPC.TypeToDefaultHeadIndex(npc.type);

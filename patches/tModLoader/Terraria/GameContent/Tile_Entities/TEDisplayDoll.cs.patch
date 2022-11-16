@@ -37,7 +37,7 @@
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -435,18 +_,27 @@
+@@ -436,18 +_,27 @@
  		if (dye)
  			item = _dyes[itemIndex];
  

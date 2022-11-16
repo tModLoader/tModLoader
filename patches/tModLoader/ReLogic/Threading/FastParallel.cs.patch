@@ -24,9 +24,9 @@
 +	
 +	private static bool skipPrioritySetAttempts; // Added by TML.
  
- 	public static bool ForceTasksOnCallingThread {
- 		get;
-@@ -48,7 +_,13 @@
+ 	public static bool ForceTasksOnCallingThread { get; set; }
+ 
+@@ -45,7 +_,13 @@
  			num2 = 1;
  
  		ThreadPriority priority = Thread.CurrentThread.Priority;
@@ -40,7 +40,7 @@
  		int num3 = num / num2;
  		int num4 = num % num2;
  		CountdownEvent countdownEvent = new CountdownEvent(num2);
-@@ -68,13 +_,34 @@
+@@ -65,13 +_,34 @@
  				ThreadPool.QueueUserWorkItem(InvokeTask, rangeTask);
  		}
  

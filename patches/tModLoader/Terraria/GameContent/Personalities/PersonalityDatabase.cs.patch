@@ -16,7 +16,7 @@
  
 +	/*
  	public PersonalityProfile GetByNPCID(int npcId) {
- 		if (_personalityProfiles.TryGetValue(npcId, out PersonalityProfile value))
+ 		if (_personalityProfiles.TryGetValue(npcId, out var value))
  			return value;
  
  		return _trashEntry;
