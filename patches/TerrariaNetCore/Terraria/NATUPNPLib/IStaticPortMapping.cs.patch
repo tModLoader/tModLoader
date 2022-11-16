@@ -12,8 +12,8 @@
  [CompilerGenerated]
  [Guid("6F10711F-729B-41E5-93B8-F21D0F818DF1")]
 @@ -35,4 +_,11 @@
- 
- 	void _VtblGap1_2();
+ 		get;
+ 	}
  }
 -#endif
 +*/
