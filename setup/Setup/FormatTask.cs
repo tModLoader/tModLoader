@@ -14,12 +14,11 @@ namespace Terraria.ModLoader.Setup
 {
 	public partial class FormatTask : SetupOperation
 	{
-		private static readonly AdhocWorkspace workspace = new AdhocWorkspace();
+		private static readonly AdhocWorkspace workspace = new();
 
 		static FormatTask() {
 			var optionSet = workspace.Options
 				.WithChangedOption(new OptionKey(FormattingOptions.UseTabs, LanguageNames.CSharp), true)
-				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAccessors, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, false)

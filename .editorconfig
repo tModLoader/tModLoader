@@ -138,8 +138,8 @@ dotnet_diagnostic.CA2211.severity = none
 	csharp_new_line_before_finally = true
 	csharp_new_line_before_members_in_anonymous_types = true
 	csharp_new_line_before_members_in_object_initializers = true
-	# Require braces to be on a new line for types (Allman). Everything else uses K&R.
-	csharp_new_line_before_open_brace = types
+	# Common K&R - require braces to be on a new line for types and methods, but not for anything else.
+	csharp_new_line_before_open_brace = types, methods
 	csharp_new_line_between_query_expression_clauses = true
 
 # Indentation preferences
