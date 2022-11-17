@@ -7,18 +7,18 @@
  using Terraria.Social;
  
  namespace Terraria.Net.Sockets;
-@@ -19,6 +_,7 @@
- 
- 	void ISocket.Close() {
+@@ -22,6 +_,7 @@
+ 	void ISocket.Close()
+ 	{
  		if (_remoteAddress != null) {
 +			ModNet.Log(_remoteAddress, "Closing SocialSocket");
  			SocialAPI.Network.Close(_remoteAddress);
  			_remoteAddress = null;
  		}
-@@ -32,6 +_,14 @@
- 	}
+@@ -37,6 +_,14 @@
  
- 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
+ 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
+ 	{
 +		if (_remoteAddress == null) { // replace first chance exception with a cleaner log message, because Send fails on a null _remoteAddress
 +			ModNet.Warn("SocialSocket, AsyncSend after connection closed.");
 +			return;

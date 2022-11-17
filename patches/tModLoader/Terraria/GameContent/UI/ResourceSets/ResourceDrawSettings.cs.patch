@@ -16,9 +16,9 @@
 +	public IPlayerResourcesDisplaySet DisplaySet;
 +	public int ResourceIndexOffset;
  
- 	public void Draw(SpriteBatch spriteBatch, ref bool isHovered) {
- 		int elementCount = ElementCount;
-@@ -36,7 +_,19 @@
+ 	public void Draw(SpriteBatch spriteBatch, ref bool isHovered)
+ 	{
+@@ -37,7 +_,19 @@
  			if (rectangle2.Contains(value))
  				isHovered = true;
  

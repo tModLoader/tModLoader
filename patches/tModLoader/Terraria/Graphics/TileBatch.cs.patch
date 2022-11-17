@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/TileBatch.cs
 +++ src/tModLoader/Terraria/Graphics/TileBatch.cs
-@@ -578,7 +_,7 @@
+@@ -605,7 +_,7 @@
  		for (int i = 0; i <= _lastBatchDrawGroupIndex; i++) {
  			BatchDrawGroup batchDrawGroup = _batchDrawGroups[i];
  			int vertexCount = batchDrawGroup.VertexCount;

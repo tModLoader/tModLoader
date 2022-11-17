@@ -16,7 +16,7 @@
  	private TilePaintSystemV2 _paintSystem;
  	private bool _shouldShowInvisibleWalls;
  
-@@ -74,8 +_,9 @@
+@@ -78,8 +_,9 @@
  		Rectangle value = new Rectangle(0, 0, 32, 32);
  		int underworldLayer = Main.UnderworldLayer;
  		Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
@@ -28,7 +28,7 @@
  				Tile tile = _tileArray[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -83,9 +_,15 @@
+@@ -87,9 +_,15 @@
  				}
  
  				ushort wall = tile.wall;
@@ -44,7 +44,7 @@
  				Color color = Lighting.GetColor(j, i);
  				if (tile.fullbrightWall())
  					color = Color.White;
-@@ -155,6 +_,9 @@
+@@ -159,6 +_,9 @@
  					if (flag3)
  						spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + vector, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  				}

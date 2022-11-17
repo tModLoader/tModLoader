@@ -10,9 +10,9 @@
  	public readonly Entity Entity;
  
 -	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY)
--		: base(tileCoordsX, tileCoordsY) {
+-		: base(tileCoordsX, tileCoordsY)
 +	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null)
-+		: base(tileCoordsX, tileCoordsY, context) {
++		: base(tileCoordsX, tileCoordsY, context)
+ 	{
  		Entity = entity;
  	}
- }

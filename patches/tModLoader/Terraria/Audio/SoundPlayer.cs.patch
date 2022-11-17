@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,81 @@
+@@ -1,25 +_,83 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
@@ -17,10 +17,11 @@
  {
  	private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
--	public SlotId Play(SoundStyle style, Vector2 position) {
--		if (Main.dedServ || style == null || !style.IsTrackable)
+-	public SlotId Play(SoundStyle style, Vector2 position)
 +	//TML: Position parameter made nullable, SoundUpdateCallback parameter merged in, with changed type.
-+	public SlotId Play(in SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null) {
++	public SlotId Play(in SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
+ 	{
+-		if (Main.dedServ || style == null || !style.IsTrackable)
 +		if (Main.dedServ)
  			return SlotId.Invalid;
  
@@ -45,7 +46,8 @@
 +		return Play_Inner(in style, position, updateCallback);
 +	}
 +
-+	private SlotId Play_Inner(in SoundStyle style, Vector2? position, SoundUpdateCallback? updateCallback) {
++	private SlotId Play_Inner(in SoundStyle style, Vector2? position, SoundUpdateCallback? updateCallback)
++	{
 +		// Handle the MaxInstances & RestartIfPlaying properties
 +		int maxInstances = style.MaxInstances;
 +
@@ -83,10 +85,10 @@
  
 +	//TML: Merged into the above method.
 +	/*
- 	public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition) {
+ 	public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition)
+ 	{
  		if (Main.dedServ || style == null || !style.IsTrackable)
- 			return SlotId.Invalid;
-@@ -27,27 +_,37 @@
+@@ -29,14 +_,18 @@
  			return SlotId.Invalid;
  
  		ActiveSound value = new ActiveSound(style, position, loopingCondition);
@@ -95,18 +97,17 @@
  	}
 +	*/
  
- 	public void Reload() {
+ 	public void Reload()
+ 	{
  		StopAll();
  	}
  
 +	//TML: Merged into the above method.
 +	/*
--	public SlotId Play(SoundStyle style) {
-+	public SlotId Play(ISoundStyle style) {
--		if (Main.dedServ || style == null || !style.IsTrackable)
-+		if (Main.dedServ || style == null)
- 			return SlotId.Invalid;
- 
+ 	public SlotId Play(SoundStyle style)
+ 	{
+ 		if (Main.dedServ || style == null || !style.IsTrackable)
+@@ -45,7 +_,12 @@
  		ActiveSound value = new ActiveSound(style);
  		return _trackedSounds.Add(value);
  	}
@@ -116,21 +117,23 @@
 +	internal ActiveSound GetActiveSound(SlotId id)
 +		=> TryGetActiveSound(id, out var result) ? result : null;
 +	/*
- 	public ActiveSound GetActiveSound(SlotId id) {
+ 	public ActiveSound GetActiveSound(SlotId id)
+ 	{
  		if (!_trackedSounds.Has(id))
- 			return null;
+@@ -53,6 +_,7 @@
  
  		return _trackedSounds[id];
  	}
 +	*/
  
- 	public void PauseAll() {
- 		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
-@@ -69,6 +_,21 @@
+ 	public void PauseAll()
+ 	{
+@@ -77,6 +_,22 @@
  		_trackedSounds.Clear();
  	}
  
-+	public void StopAll(in SoundStyle style) {
++	public void StopAll(in SoundStyle style)
++	{
 +		List<SlotVector<ActiveSound>.ItemPair> stopped = new();
 +
 +		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
@@ -145,15 +148,15 @@
 +		}
 +	}
 +
- 	public void Update() {
+ 	public void Update()
+ 	{
  		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
- 			try {
-@@ -82,7 +_,7 @@
+@@ -91,7 +_,7 @@
  		}
  	}
  
--	public ActiveSound FindActiveSound(SoundStyle style) {
-+	public ActiveSound FindActiveSound(in SoundStyle style) {
+-	public ActiveSound FindActiveSound(SoundStyle style)
++	public ActiveSound FindActiveSound(in SoundStyle style)
+ 	{
  		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
  			if (item.Value.Style == style)
- 				return item.Value;

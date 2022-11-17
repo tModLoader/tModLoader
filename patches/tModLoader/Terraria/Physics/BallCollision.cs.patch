@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Physics/BallCollision.cs
 +++ src/tModLoader/Terraria/Physics/BallCollision.cs
-@@ -151,7 +_,7 @@
+@@ -156,7 +_,7 @@
  		tileEdges = ((!(velocity.Y > velocity.X)) ? (tileEdges | TileEdges.TopRightSlope) : (tileEdges | TileEdges.BottomLeftSlope));
  		tileEdges = ((!(velocity.Y > 0f - velocity.X)) ? (tileEdges | TileEdges.TopLeftSlope) : (tileEdges | TileEdges.BottomRightSlope));
  		collisionPoint = Vector2.Zero;

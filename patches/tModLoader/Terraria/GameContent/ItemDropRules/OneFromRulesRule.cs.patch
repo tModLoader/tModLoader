@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
-@@ -6,11 +_,15 @@
+@@ -6,12 +_,16 @@
  {
  	public IItemDropRule[] options;
  	public int chanceDenominator;
@@ -10,15 +10,16 @@
  
 +	public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options) : this(chanceDenominator, 1, options) { }
 +
--	public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options) {
-+	public OneFromRulesRule(int chanceDenominator, int chanceNumerator, params IItemDropRule[] options) {
+-	public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options)
++	public OneFromRulesRule(int chanceDenominator, int chanceNumerator, params IItemDropRule[] options)
+ 	{
  		this.chanceDenominator = chanceDenominator;
 +		this.chanceNumerator = chanceNumerator;
  		this.options = options;
  		ChainedRules = new List<IItemDropRuleChainAttempt>();
  	}
-@@ -26,7 +_,7 @@
- 	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction) {
+@@ -29,7 +_,7 @@
+ 	{
  		int num = -1;
  		ItemDropAttemptResult result;
 -		if (info.rng.Next(chanceDenominator) == 0) {
@@ -26,10 +27,10 @@
  			num = info.rng.Next(options.Length);
  			resolveAction(options[num], info);
  			result = default(ItemDropAttemptResult);
-@@ -40,7 +_,7 @@
- 	}
+@@ -44,7 +_,7 @@
  
- 	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+ 	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
 -		float num = 1f / (float)chanceDenominator;
 +		float num = chanceNumerator / (float)chanceDenominator;
  		float num2 = num * ratesInfo.parentDroprateChance;

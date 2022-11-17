@@ -9,7 +9,7 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -106,6 +_,8 @@
+@@ -109,6 +_,8 @@
  					text = Lang.chestType2[tile.frameX / 36].Value;
  				else if (tile.type == 88)
  					text = Lang.dresserType[tile.frameX / 54].Value;
@@ -18,7 +18,7 @@
  			}
  		}
  		else if (player.chest == -2) {
-@@ -401,12 +_,17 @@
+@@ -410,12 +_,17 @@
  							if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  								continue;
  
@@ -36,7 +36,7 @@
  							SoundEngine.PlaySound(7);
  							if (player.inventory[num].stack <= 0) {
  								player.inventory[num].SetDefaults();
-@@ -425,13 +_,19 @@
+@@ -434,13 +_,19 @@
  								NetMessage.SendData(32, -1, -1, null, player.chest, i);
  						}
  						else if (player.chest == -3) {
@@ -56,7 +56,7 @@
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -445,13 +_,19 @@
+@@ -454,13 +_,19 @@
  							}
  						}
  						else if (player.chest == -4) {
@@ -76,7 +76,7 @@
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -465,13 +_,19 @@
+@@ -474,13 +_,19 @@
  							}
  						}
  						else if (player.chest == -5) {
@@ -96,7 +96,7 @@
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -484,13 +_,19 @@
+@@ -493,13 +_,19 @@
  								}
  							}
  						}
@@ -116,7 +116,7 @@
  							SoundEngine.PlaySound(7);
  							if (player.inventory[num].stack <= 0) {
  								player.inventory[num].SetDefaults();
-@@ -651,13 +_,16 @@
+@@ -661,13 +_,16 @@
  						num4 = num5;
  
  					SoundEngine.PlaySound(7);
@@ -134,7 +134,7 @@
  
  					array2[num3] = true;
  				}
-@@ -701,11 +_,14 @@
+@@ -711,11 +_,14 @@
  					if (num8 > num9)
  						num8 = num9;
  
@@ -150,7 +150,7 @@
  					if (array[item5.Key].stack == 0)
  						array[item5.Key] = new Item();
  				}
-@@ -780,7 +_,8 @@
+@@ -794,7 +_,8 @@
  		List<int> list2 = new List<int>();
  		for (int num = 57; num >= 0; num--) {
  			if ((num < 50 || num >= 54) && (inventory[num].type < 71 || inventory[num].type > 74)) {
@@ -160,7 +160,7 @@
  					hashSet.Add(inventory[num].netID);
  					if (inventory[num].stack < inventory[num].maxStack)
  						list.Add(num);
-@@ -793,7 +_,8 @@
+@@ -807,7 +_,8 @@
  
  		bool flag = false;
  		for (int i = 0; i < item.Length; i++) {
@@ -170,7 +170,7 @@
  				continue;
  
  			bool flag2 = false;
-@@ -806,12 +_,17 @@
+@@ -820,12 +_,17 @@
  				if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;
  
@@ -188,7 +188,7 @@
  				flag = true;
  				if (inventory[num2].stack == inventory[num2].maxStack) {
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-@@ -1045,6 +_,9 @@
+@@ -1061,6 +_,9 @@
  				if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
  					continue;
  
@@ -198,7 +198,7 @@
  				int num = I.stack;
  				if (I.stack + chestinv[i].stack > chestinv[i].maxStack)
  					num = chestinv[i].maxStack - chestinv[i].stack;
-@@ -1054,8 +_,12 @@
+@@ -1070,8 +_,12 @@
  					break;
  				}
  

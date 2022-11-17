@@ -19,7 +19,7 @@
  	{
  		public readonly float PitchVariance;
  		public readonly float Volume;
-@@ -18,9 +_,28 @@
+@@ -19,9 +_,28 @@
  			Volume = volume;
  			Type = type;
  		}
@@ -48,7 +48,7 @@
  	public const int Dig = 0;
  	public const int PlayerHit = 1;
  	public const int Item = 2;
-@@ -91,6 +_,14 @@
+@@ -92,6 +_,14 @@
  	public const int Cockatiel = 67;
  	public const int Macaw = 68;
  	public const int Toucan = 69;
@@ -63,7 +63,7 @@
  	public static readonly LegacySoundStyle NPCHit1 = new LegacySoundStyle(3, 1);
  	public static readonly LegacySoundStyle NPCHit2 = new LegacySoundStyle(3, 2);
  	public static readonly LegacySoundStyle NPCHit3 = new LegacySoundStyle(3, 3);
-@@ -393,8 +_,12 @@
+@@ -394,8 +_,12 @@
  	public static readonly LegacySoundStyle Item176 = new LegacySoundStyle(2, 176);
  	public static readonly LegacySoundStyle Item177 = new LegacySoundStyle(2, 177);
  	public static readonly LegacySoundStyle Item178 = new LegacySoundStyle(2, 178);
@@ -77,7 +77,7 @@
  	public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
  	public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
  	public static readonly LegacySoundStyle BlizzardStrongLoop = CreateTrackable("blizzard_strong_loop", SoundType.Ambient).WithVolume(0.5f);
-@@ -508,9 +_,9 @@
+@@ -509,9 +_,9 @@
  	public static Dictionary<string, ushort> IndexByName = null;
  	public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;
  
@@ -89,7 +89,7 @@
  	private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
  	private static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
  	private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
-@@ -520,6 +_,7 @@
+@@ -522,6 +_,7 @@
  			_trackableLegacySoundPathList = new List<string>();
  
  		int count = _trackableLegacySoundPathList.Count;
@@ -97,7 +97,7 @@
  		if (variations == 1) {
  			_trackableLegacySoundPathList.Add(name);
  		}
-@@ -529,7 +_,11 @@
+@@ -531,7 +_,11 @@
  			}
  		}
  
@@ -108,4 +108,4 @@
 +		return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", 0, variations, type);
  	}
  
- 	public static void FillAccessMap() {
+ 	public static void FillAccessMap()

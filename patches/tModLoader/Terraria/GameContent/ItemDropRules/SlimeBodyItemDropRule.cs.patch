@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
-@@ -20,7 +_,7 @@
- 	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+@@ -23,7 +_,7 @@
+ 	{
  		int itemId = (int)info.npc.ai[1];
  		GetDropInfo(itemId, out var amountDroppedMinimum, out var amountDroppedMaximum);
 -		CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));

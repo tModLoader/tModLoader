@@ -23,16 +23,16 @@
  	public event ScrollWheelEvent OnScrollWheel;
  	public event ElementEvent OnUpdate;
  
-@@ -132,6 +_,8 @@
+@@ -142,6 +_,8 @@
  		Elements.Clear();
  	}
  
 +	public bool HasChild(UIElement child) => Elements.Contains(child);
 +
- 	public virtual void Draw(SpriteBatch spriteBatch) {
+ 	public virtual void Draw(SpriteBatch spriteBatch)
+ 	{
  		bool overflowHidden = OverflowHidden;
- 		bool useImmediateMode = UseImmediateMode;
-@@ -152,13 +_,15 @@
+@@ -163,13 +_,15 @@
  		if (overflowHidden) {
  			spriteBatch.End();
  			Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
@@ -49,13 +49,14 @@
  			spriteBatch.End();
  			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
-@@ -357,6 +_,134 @@
+@@ -384,6 +_,150 @@
  
  		if (Parent != null)
  			Parent.DoubleClick(evt);
 +	}
 +
-+	public virtual void RightMouseDown(UIMouseEvent evt) {
++	public virtual void RightMouseDown(UIMouseEvent evt)
++	{
 +		if (OnRightMouseDown != null)
 +			OnRightMouseDown(evt, this);
 +
@@ -63,7 +64,8 @@
 +			Parent.RightMouseDown(evt);
 +	}
 +
-+	public virtual void RightMouseUp(UIMouseEvent evt) {
++	public virtual void RightMouseUp(UIMouseEvent evt)
++	{
 +		if (OnRightMouseUp != null)
 +			OnRightMouseUp(evt, this);
 +
@@ -71,7 +73,8 @@
 +			Parent.RightMouseUp(evt);
 +	}
 +
-+	public virtual void RightClick(UIMouseEvent evt) {
++	public virtual void RightClick(UIMouseEvent evt)
++	{
 +		if (OnRightClick != null)
 +			OnRightClick(evt, this);
 +
@@ -79,7 +82,8 @@
 +			Parent.RightClick(evt);
 +	}
 +
-+	public virtual void RightDoubleClick(UIMouseEvent evt) {
++	public virtual void RightDoubleClick(UIMouseEvent evt)
++	{
 +		if (OnRightDoubleClick != null)
 +			OnRightDoubleClick(evt, this);
 +
@@ -87,7 +91,8 @@
 +			Parent.RightDoubleClick(evt);
 +	}
 +
-+	public virtual void MiddleMouseDown(UIMouseEvent evt) {
++	public virtual void MiddleMouseDown(UIMouseEvent evt)
++	{
 +		if (OnMiddleMouseDown != null)
 +			OnMiddleMouseDown(evt, this);
 +
@@ -95,7 +100,8 @@
 +			Parent.MiddleMouseDown(evt);
 +	}
 +
-+	public virtual void MiddleMouseUp(UIMouseEvent evt) {
++	public virtual void MiddleMouseUp(UIMouseEvent evt)
++	{
 +		if (OnMiddleMouseUp != null)
 +			OnMiddleMouseUp(evt, this);
 +
@@ -103,7 +109,8 @@
 +			Parent.MiddleMouseUp(evt);
 +	}
 +
-+	public virtual void MiddleClick(UIMouseEvent evt) {
++	public virtual void MiddleClick(UIMouseEvent evt)
++	{
 +		if (OnMiddleClick != null)
 +			OnMiddleClick(evt, this);
 +
@@ -111,7 +118,8 @@
 +			Parent.MiddleClick(evt);
 +	}
 +
-+	public virtual void MiddleDoubleClick(UIMouseEvent evt) {
++	public virtual void MiddleDoubleClick(UIMouseEvent evt)
++	{
 +		if (OnMiddleDoubleClick != null)
 +			OnMiddleDoubleClick(evt, this);
 +
@@ -119,7 +127,8 @@
 +			Parent.MiddleDoubleClick(evt);
 +	}
 +
-+	public virtual void XButton1MouseDown(UIMouseEvent evt) {
++	public virtual void XButton1MouseDown(UIMouseEvent evt)
++	{
 +		if (OnXButton1MouseDown != null)
 +			OnXButton1MouseDown(evt, this);
 +
@@ -127,7 +136,8 @@
 +			Parent.XButton1MouseDown(evt);
 +	}
 +
-+	public virtual void XButton1MouseUp(UIMouseEvent evt) {
++	public virtual void XButton1MouseUp(UIMouseEvent evt)
++	{
 +		if (OnXButton1MouseUp != null)
 +			OnXButton1MouseUp(evt, this);
 +
@@ -135,7 +145,8 @@
 +			Parent.XButton1MouseUp(evt);
 +	}
 +
-+	public virtual void XButton1Click(UIMouseEvent evt) {
++	public virtual void XButton1Click(UIMouseEvent evt)
++	{
 +		if (OnXButton1Click != null)
 +			OnXButton1Click(evt, this);
 +
@@ -143,7 +154,8 @@
 +			Parent.XButton1Click(evt);
 +	}
 +
-+	public virtual void XButton1DoubleClick(UIMouseEvent evt) {
++	public virtual void XButton1DoubleClick(UIMouseEvent evt)
++	{
 +		if (OnXButton1DoubleClick != null)
 +			OnXButton1DoubleClick(evt, this);
 +
@@ -151,7 +163,8 @@
 +			Parent.XButton1DoubleClick(evt);
 +	}
 +
-+	public virtual void XButton2MouseDown(UIMouseEvent evt) {
++	public virtual void XButton2MouseDown(UIMouseEvent evt)
++	{
 +		if (OnXButton2MouseDown != null)
 +			OnXButton2MouseDown(evt, this);
 +
@@ -159,7 +172,8 @@
 +			Parent.XButton2MouseDown(evt);
 +	}
 +
-+	public virtual void XButton2MouseUp(UIMouseEvent evt) {
++	public virtual void XButton2MouseUp(UIMouseEvent evt)
++	{
 +		if (OnXButton2MouseUp != null)
 +			OnXButton2MouseUp(evt, this);
 +
@@ -167,7 +181,8 @@
 +			Parent.XButton2MouseUp(evt);
 +	}
 +
-+	public virtual void XButton2Click(UIMouseEvent evt) {
++	public virtual void XButton2Click(UIMouseEvent evt)
++	{
 +		if (OnXButton2Click != null)
 +			OnXButton2Click(evt, this);
 +
@@ -175,7 +190,8 @@
 +			Parent.XButton2Click(evt);
 +	}
 +
-+	public virtual void XButton2DoubleClick(UIMouseEvent evt) {
++	public virtual void XButton2DoubleClick(UIMouseEvent evt)
++	{
 +		if (OnXButton2DoubleClick != null)
 +			OnXButton2DoubleClick(evt, this);
 +
@@ -183,4 +199,4 @@
 +			Parent.XButton2DoubleClick(evt);
  	}
  
- 	public virtual void ScrollWheel(UIScrollWheelEvent evt) {
+ 	public virtual void ScrollWheel(UIScrollWheelEvent evt)

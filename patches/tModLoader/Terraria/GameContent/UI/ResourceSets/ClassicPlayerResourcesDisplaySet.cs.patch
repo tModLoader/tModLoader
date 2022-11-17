@@ -22,7 +22,7 @@
  	private int UI_ScreenAnchorX;
  
  	public string NameKey { get; private set; }
-@@ -31,9 +_,23 @@
+@@ -34,9 +_,23 @@
  		SpriteBatch spriteBatch = Main.spriteBatch;
  		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
  		UIDisplay_LifePerHeart = 20f;
@@ -46,7 +46,7 @@
  		int num = localPlayer.statLifeMax / 20;
  		int num2 = (localPlayer.statLifeMax - 400) / 5;
  		if (num2 < 0)
-@@ -46,6 +_,7 @@
+@@ -49,6 +_,7 @@
  
  		int num3 = localPlayer.statLifeMax2 - localPlayer.statLifeMax;
  		UIDisplay_LifePerHeart += num3 / num;
@@ -54,7 +54,7 @@
  		int num4 = (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart);
  		if (num4 >= 10)
  			num4 = 10;
-@@ -57,6 +_,10 @@
+@@ -60,6 +_,10 @@
  			spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, new Vector2((float)(500 + 13 * num4) + vector.X * 0.5f + (float)UI_ScreenAnchorX, 6f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
  		}
  
@@ -65,7 +65,7 @@
  		for (int i = 1; i < (int)((float)localPlayer.statLifeMax2 / UIDisplay_LifePerHeart) + 1; i++) {
  			int num5 = 255;
  			float num6 = 1f;
-@@ -92,6 +_,21 @@
+@@ -95,6 +_,21 @@
  
  			int a = (int)((double)num5 * 0.9);
  			if (!localPlayer.ghost) {
@@ -87,7 +87,7 @@
  				if (num2 > 0) {
  					num2--;
  					spriteBatch.Draw(TextureAssets.Heart2.Value, new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + TextureAssets.Heart.Width() / 2, 32f + ((float)TextureAssets.Heart.Height() - (float)TextureAssets.Heart.Height() * num6) / 2f + (float)num9 + (float)(TextureAssets.Heart.Height() / 2)), new Rectangle(0, 0, TextureAssets.Heart.Width(), TextureAssets.Heart.Height()), new Color(num5, num5, num5, a), 0f, new Vector2(TextureAssets.Heart.Width() / 2, TextureAssets.Heart.Height() / 2), num6, SpriteEffects.None, 0f);
-@@ -99,8 +_,12 @@
+@@ -102,8 +_,12 @@
  				else {
  					spriteBatch.Draw(TextureAssets.Heart.Value, new Vector2(500 + 26 * (i - 1) + num8 + UI_ScreenAnchorX + TextureAssets.Heart.Width() / 2, 32f + ((float)TextureAssets.Heart.Height() - (float)TextureAssets.Heart.Height() * num6) / 2f + (float)num9 + (float)(TextureAssets.Heart.Height() / 2)), new Rectangle(0, 0, TextureAssets.Heart.Width(), TextureAssets.Heart.Height()), new Color(num5, num5, num5, a), 0f, new Vector2(TextureAssets.Heart.Width() / 2, TextureAssets.Heart.Height() / 2), num6, SpriteEffects.None, 0f);
  				}
@@ -99,8 +99,8 @@
 +		ResourceOverlayLoader.PostDrawResourceDisplay(snapshot, this, true, color, drawText);
  	}
  
- 	private void DrawMana() {
-@@ -108,8 +_,19 @@
+ 	private void DrawMana()
+@@ -112,8 +_,19 @@
  		SpriteBatch spriteBatch = Main.spriteBatch;
  		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
  		UIDisplay_ManaPerStar = 20;
@@ -120,7 +120,7 @@
  
  		_ = localPlayer.statManaMax2 / 20;
  		Vector2 vector = FontAssets.MouseText.Value.MeasureString(Lang.inter[2].Value);
-@@ -118,6 +_,11 @@
+@@ -122,6 +_,11 @@
  			num = (int)vector.X + 5;
  
  		spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[2].Value, new Vector2(800 - num + UI_ScreenAnchorX, 6f), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -132,7 +132,7 @@
  		for (int i = 1; i < localPlayer.statManaMax2 / UIDisplay_ManaPerStar + 1; i++) {
  			int num2 = 255;
  			bool flag = false;
-@@ -144,27 +_,58 @@
+@@ -148,28 +_,59 @@
  			if (flag)
  				num3 += Main.cursorScale - 1f;
  
@@ -157,7 +157,8 @@
 +		ResourceOverlayLoader.PostDrawResourceDisplay(snapshot, this, false, color, drawText);
  	}
  
- 	public void TryToHover() {
+ 	public void TryToHover()
+ 	{
  		Vector2 mouseScreen = Main.MouseScreen;
  		Player localPlayer = Main.LocalPlayer;
 +

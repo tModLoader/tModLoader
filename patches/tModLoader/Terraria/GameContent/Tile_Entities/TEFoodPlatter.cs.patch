@@ -15,10 +15,10 @@
  {
  	private static byte _myEntityID;
  	public Item item;
-@@ -77,8 +_,8 @@
- 	}
+@@ -87,8 +_,8 @@
  
- 	public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
+ 	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
+ 	{
 -		writer.Write((short)item.netID);
 -		writer.Write(item.prefix);
 +		ItemIO.WriteShortVanillaID(item, writer);
@@ -26,9 +26,9 @@
  		writer.Write((short)item.stack);
  	}
  
-@@ -93,20 +_,26 @@
- 
- 	public void DropItem() {
+@@ -105,21 +_,27 @@
+ 	public void DropItem()
+ 	{
  		if (Main.netMode != 1)
 +			/*
  			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
@@ -38,8 +38,9 @@
  		item = new Item();
  	}
  
--	public static void TryPlacing(int x, int y, int netid, int prefix, int stack) {
-+	public static void TryPlacing(int x, int y, Item item, int stack) {
+-	public static void TryPlacing(int x, int y, int netid, int prefix, int stack)
++	public static void TryPlacing(int x, int y, Item item, int stack)
+ 	{
  		WorldGen.RangeFrame(x, y, x + 1, y + 1);
  		int num = Find(x, y);
  		if (num == -1) {
@@ -54,7 +55,7 @@
  			return;
  		}
  
-@@ -114,10 +_,15 @@
+@@ -127,10 +_,15 @@
  		if (tEFoodPlatter.item.stack > 0)
  			tEFoodPlatter.DropItem();
  
@@ -70,7 +71,7 @@
  		NetMessage.SendData(86, -1, -1, null, tEFoodPlatter.ID, x, y);
  	}
  
-@@ -159,16 +_,20 @@
+@@ -175,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}
  

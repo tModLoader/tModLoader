@@ -30,12 +30,12 @@
 -	public T Value { get; private set; }
 +	public Action Wait { get; internal set; }
  
- 	internal Asset(string name) {
- 		State = AssetState.NotLoaded;
-@@ -29,11 +_,9 @@
- 	}
+ 	internal Asset(string name)
+ 	{
+@@ -32,11 +_,9 @@
  
- 	internal void Unload() {
+ 	internal void Unload()
+ 	{
 -		if (Value is IDisposable disposable)
 -			disposable.Dispose();
 -
@@ -46,7 +46,7 @@
  		Source = null;
  	}
  
-@@ -41,15 +_,11 @@
+@@ -45,15 +_,11 @@
  		if (value == null)
  			throw new ArgumentNullException("value");
  
@@ -65,8 +65,8 @@
 +		State = AssetState.Loaded;
  	}
  
- 	internal void SetToLoadingState() {
-@@ -60,12 +_,12 @@
+ 	internal void SetToLoadingState()
+@@ -66,12 +_,12 @@
  		if (IsDisposed)
  			return;
  

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIKeybindingSimpleListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIKeybindingSimpleListItem.cs
-@@ -32,6 +_,12 @@
+@@ -34,6 +_,12 @@
  		position.Y += 2f + num;
  		string text = _GetTextFunction();
  		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale);

@@ -15,8 +15,8 @@
 +		private string[] _toolTipNames = new string[30];
  		private string _search;
  
- 		public bool FitsFilter(Item entry) {
-@@ -27,7 +_,7 @@
+ 		public bool FitsFilter(Item entry)
+@@ -28,7 +_,7 @@
  
  			int numLines = 1;
  			float knockBack = entry.knockBack;
@@ -25,10 +25,10 @@
  			for (int i = 0; i < numLines; i++) {
  				if (_toolTipLines[i].ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  					return true;
-@@ -334,7 +_,7 @@
- 		private bool[] _fitsFilterByItemType;
+@@ -354,7 +_,7 @@
  
- 		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst) {
+ 		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst)
+ 		{
 -			short num = 5456;
 +			int num = ItemLoader.ItemCount;
  			_fitsFilterByItemType = new bool[num];

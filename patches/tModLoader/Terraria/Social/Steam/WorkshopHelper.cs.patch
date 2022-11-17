@@ -34,14 +34,15 @@
  		}
  
  		public class Downloader
-@@ -28,14 +_,26 @@
+@@ -28,16 +_,28 @@
  
  			public List<string> WorldPaths { get; private set; }
  
 +			// Added by TML.
 +			public List<string> ModPaths { get; private set; }
 +
- 			public Downloader() {
+ 			public Downloader()
+ 			{
  				ResourcePackPaths = new List<string>();
  				WorldPaths = new List<string>();
 +				ModPaths = new List<string>();
@@ -49,7 +50,8 @@
  
  			public static Downloader Create() => new Downloader();
  
- 			public List<string> GetListOfSubscribedItemsPaths() {
+ 			public List<string> GetListOfSubscribedItemsPaths()
+ 			{
 +				// Needs to read tML then Terraria to simplify obtaining tmodloader workshop folder
 +				return new AppId_t[] { ModLoader.Engine.Steam.TMLAppID_t, ModLoader.Engine.Steam.TerrariaAppId_t }
 +					.Select(app => Path.Combine(GetWorkshopFolder(app), "content", app.ToString()))
@@ -61,7 +63,7 @@
  				PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
  				SteamUGC.GetSubscribedItems(array, (uint)array.Length);
  				ulong punSizeOnDisk = 0uL;
-@@ -49,6 +_,7 @@
+@@ -51,6 +_,7 @@
  				}
  
  				return list;
@@ -69,15 +71,15 @@
  			}
  
  			public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
-@@ -56,6 +_,7 @@
- 			public bool Refresh(WorkshopIssueReporter issueReporter) {
+@@ -59,6 +_,7 @@
+ 			{
  				ResourcePackPaths.Clear();
  				WorldPaths.Clear();
 +				ModPaths.Clear();
  				foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
  					if (listOfSubscribedItemsPath == null)
  						continue;
-@@ -69,6 +_,8 @@
+@@ -72,6 +_,8 @@
  						if (!(text == "World")) {
  							if (text == "ResourcePack")
  								ResourcePackPaths.Add(listOfSubscribedItemsPath);
@@ -86,15 +88,16 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -152,12 +_,16 @@
+@@ -161,13 +_,17 @@
  			private CallResult<SubmitItemUpdateResult_t> _updateItemHook;
  			private FinishedPublishingAction _endAction;
  			private WorkshopIssueReporter _issueReporter;
 +			protected EResult _createCallback;
 +			protected EResult _updateCallback;
  
--			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
-+			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null) {
+-			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags)
++			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
+ 			{
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  				_issueReporter = issueReporter;
  				_endAction = endAction;
@@ -104,7 +107,7 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -165,16 +_,33 @@
+@@ -175,16 +_,33 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
@@ -146,10 +149,10 @@
  					UpdateItem();
  				}
  				else {
-@@ -199,13 +_,56 @@
- 			}
+@@ -212,14 +_,57 @@
  
- 			private void CreateItem() {
+ 			private void CreateItem()
+ 			{
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.CreateItem", _entryData.Title));
 +
 +				_createCallback = EResult.k_EResultNone;
@@ -177,7 +180,8 @@
  			}
  
 +			// Rewrote to reduce duplicate publishing in the event that user needs to accept workshop agreement.
- 			private void CreateItemResult(CreateItemResult_t param, bool bIOFailure) {
+ 			private void CreateItemResult(CreateItemResult_t param, bool bIOFailure)
+ 			{
 +				_createCallback = param.m_eResult;
 +				if (param.m_eResult != EResult.k_EResultOK) {
 +					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
@@ -203,7 +207,7 @@
  				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  					_endAction(this);
-@@ -218,27 +_,27 @@
+@@ -232,28 +_,28 @@
  					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  					_endAction(this);
  				}
@@ -214,13 +218,14 @@
  
  			protected abstract void PrepareContentForUpdate();
  
--			private void UpdateItem() {
+-			private void UpdateItem()
++			private void UpdateItem(bool creatingItem = false)
+ 			{
 -				string headerText = GetHeaderText();
 -				if (!TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText)) {
 -					_endAction(this);
 -					return;
 -				}
-+			private void UpdateItem(bool creatingItem = false) {
 +				WrappedWriteManifest();
 +
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.UpdateItem", _entryData.Title));
@@ -238,7 +243,7 @@
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
  				if (_entryData.PreviewImagePath != null)
-@@ -247,21 +_,73 @@
+@@ -262,22 +_,74 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -298,7 +303,8 @@
 +				} while (_updateCallback == EResult.k_EResultNone);
  			}
  
- 			private void UpdateItemResult(SubmitItemUpdateResult_t param, bool bIOFailure) {
+ 			private void UpdateItemResult(SubmitItemUpdateResult_t param, bool bIOFailure)
+ 			{
 +				_updateCallback = param.m_eResult;
  				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
@@ -314,7 +320,7 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -285,6 +_,8 @@
+@@ -301,6 +_,8 @@
  						break;
  				}
  
@@ -323,13 +329,14 @@
  				_endAction(this);
  			}
  
-@@ -299,6 +_,15 @@
+@@ -316,6 +_,16 @@
  					_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  					return false;
  				}
 +			}
 +
-+			private bool WrappedWriteManifest() {
++			private bool WrappedWriteManifest()
++			{
 +				string headerText = GetHeaderText();
 +				if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
 +					return true;
@@ -338,4 +345,4 @@
 +				return false;
  			}
  
- 			public bool TryGetProgress(out float progress) {
+ 			public bool TryGetProgress(out float progress)

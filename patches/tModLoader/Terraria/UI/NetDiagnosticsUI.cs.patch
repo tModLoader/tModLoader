@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/NetDiagnosticsUI.cs
 +++ src/tModLoader/Terraria/UI/NetDiagnosticsUI.cs
-@@ -34,6 +_,7 @@
+@@ -37,6 +_,7 @@
  		}
  	}
  

@@ -8,15 +8,16 @@
  
  namespace Terraria;
  
-@@ -201,12 +_,15 @@
+@@ -206,13 +_,16 @@
  		return list;
  	}
  
 -	public static bool IsLocked(int x, int y) => IsLocked(Main.tile[x, y]);
 +	public static bool IsLocked(int x, int y) => IsLocked(x, y, Main.tile[x, y]);
  
--	public static bool IsLocked(Tile t) {
-+	public static bool IsLocked(int x, int y, Tile t) {
+-	public static bool IsLocked(Tile t)
++	public static bool IsLocked(int x, int y, Tile t)
+ 	{
  		if (t == null)
  			return true;
  
@@ -26,7 +27,7 @@
  		if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  			return true;
  
-@@ -249,6 +_,16 @@
+@@ -257,6 +_,16 @@
  				}
  				else if (item.IsTheSameAs(Main.chest[i].item[j])) {
  					flag2 = true;
@@ -43,7 +44,7 @@
  					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  					if (num > 0) {
  						if (num > item.stack)
-@@ -260,11 +_,13 @@
+@@ -268,11 +_,13 @@
  							Main.chest[i].item[j].stack += num;
  						}
  
@@ -57,7 +58,7 @@
  				}
  				else {
  					flag3 = true;
-@@ -322,6 +_,17 @@
+@@ -333,6 +_,17 @@
  		Tile tileSafely = Framing.GetTileSafely(X, Y);
  		int type2 = tileSafely.type;
  		int num2 = tileSafely.frameX / 36;
@@ -75,7 +76,7 @@
  		switch (type2) {
  			case 21:
  				switch (num2) {
-@@ -367,6 +_,7 @@
+@@ -378,6 +_,7 @@
  				}
  				return false;
  		}
@@ -83,7 +84,7 @@
  
  		SoundEngine.PlaySound(22, X * 16, Y * 16);
  		for (int i = X; i <= X + 1; i++) {
-@@ -374,7 +_,7 @@
+@@ -385,7 +_,7 @@
  				Tile tileSafely2 = Framing.GetTileSafely(i, j);
  				if (tileSafely2.type == type2) {
  					tileSafely2.frameX -= num;
@@ -92,7 +93,7 @@
  					for (int k = 0; k < 4; k++) {
  						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
-@@ -522,15 +_,21 @@
+@@ -540,15 +_,21 @@
  		}
  		else {
  			switch (type) {
@@ -117,12 +118,13 @@
  			}
  		}
  
-@@ -615,12 +_,14 @@
+@@ -637,13 +_,15 @@
  		}
  	}
  
--	public void AddItemToShop(Item newItem) {
-+	public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
+-	public void AddItemToShop(Item newItem)
++	public int AddItemToShop(Item newItem) //tML: Now returns the item's index.
+ 	{
  		int num = Main.shopSellbackHelper.Remove(newItem);
 +
  		if (num >= newItem.stack)
@@ -135,7 +137,7 @@
  			if (item[i] == null || item[i].type == 0) {
  				item[i] = newItem.Clone();
  				item[i].favorited = false;
-@@ -628,9 +_,11 @@
+@@ -651,9 +_,11 @@
  				item[i].stack -= num;
  				_ = item[i].value;
  				_ = 0;
@@ -143,12 +145,12 @@
 +				return i;
  			}
  		}
-+		
++
 +		return 0;
  	}
  
- 	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count) {
-@@ -707,8 +_,11 @@
+ 	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count)
+@@ -731,8 +_,11 @@
  					Main.travelShop[count++] = 3636;
  					Main.travelShop[count++] = 3641;
  					break;
@@ -159,23 +161,23 @@
 +		NPCLoader.SetupTravelShop(Main.travelShop, ref count);
  	}
  
- 	public static bool SetupTravelShop_CanAddItemToShop(int it) {
-@@ -2284,12 +_,12 @@
+ 	public static bool SetupTravelShop_CanAddItemToShop(int it)
+@@ -2314,12 +_,12 @@
+ 				num++;
+ 				array[num].SetDefaults(1979);
+ 				num++;
+-				if (Main.player[Main.myPlayer].statLifeMax >= 400) {
++				if (Main.player[Main.myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 					array[num].SetDefaults(1977);
  					num++;
- 					array[num].SetDefaults(1979);
- 					num++;
--					if (Main.player[Main.myPlayer].statLifeMax >= 400) {
-+					if (Main.player[Main.myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
- 						array[num].SetDefaults(1977);
- 						num++;
- 					}
+ 				}
  
--					if (Main.player[Main.myPlayer].statManaMax >= 200) {
-+					if (Main.player[Main.myPlayer].ConsumedManaCrystals == Player.ManaCrystalMax) {
- 						array[num].SetDefaults(1978);
- 						num++;
- 					}
-@@ -2955,6 +_,7 @@
+-				if (Main.player[Main.myPlayer].statManaMax >= 200) {
++				if (Main.player[Main.myPlayer].ConsumedManaCrystals == Player.ManaCrystalMax) {
+ 					array[num].SetDefaults(1978);
+ 					num++;
+ 				}
+@@ -2985,6 +_,7 @@
  				array[num++].SetDefaults(4921);
  		}
  

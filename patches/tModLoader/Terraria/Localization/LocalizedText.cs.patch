@@ -26,9 +26,9 @@
 +		}
 +	}
  
- 	internal LocalizedText(string key, string text) {
- 		Key = key;
-@@ -59,9 +_,72 @@
+ 	internal LocalizedText(string key, string text)
+ 	{
+@@ -64,9 +_,73 @@
  		return text.Value;
  	}
  
@@ -41,7 +41,8 @@
 +	
 +	private static readonly Regex PluralizationPatternRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // "{0} {^0:item,items}"
 +
-+	public string Format(params object[] args) {
++	public string Format(params object[] args)
++	{
 +		string value = Value;
 +
 +		value = PluralizationPatternRegex.Replace(value, delegate (Match match) {

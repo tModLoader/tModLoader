@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,21 +_,30 @@
+@@ -11,22 +_,31 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.IO;
@@ -14,7 +14,8 @@
  {
 +	internal static AssetReaderCollection assetReaderCollection;
 +
- 	public static void CreateAssetServices(GameServiceContainer services) {
+ 	public static void CreateAssetServices(GameServiceContainer services)
+ 	{
 -		AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
 +		assetReaderCollection = new AssetReaderCollection();
  		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
@@ -37,7 +38,7 @@
  		services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
  		services.AddService(typeof(IAssetRepository), provider);
  	}
-@@ -602,6 +_,8 @@
+@@ -614,6 +_,8 @@
  		Main.ResourceSetsManager.LoadContent(mode);
  		Main.MinimapFrameManagerInstance.LoadContent(mode);
  		Main.AchievementAdvisor.LoadContent();

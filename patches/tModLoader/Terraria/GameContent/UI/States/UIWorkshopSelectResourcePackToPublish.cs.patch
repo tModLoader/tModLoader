@@ -10,6 +10,6 @@
 +		set => _menuToGoBackTo = value;
 +	}
 +
- 	public UIWorkshopSelectResourcePackToPublish(UIState menuToGoBackTo) {
+ 	public UIWorkshopSelectResourcePackToPublish(UIState menuToGoBackTo)
+ 	{
  		_menuToGoBackTo = menuToGoBackTo;
- 	}

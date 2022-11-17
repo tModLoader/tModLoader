@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.LootSimulation;
  
-@@ -55,7 +_,7 @@
+@@ -59,7 +_,7 @@
  		string text = "";
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();

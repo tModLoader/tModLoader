@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
-@@ -174,9 +_,12 @@
- 	private int IndexOf(int x, int y) => x * Height + y;
+@@ -182,9 +_,12 @@
  
- 	public void SetSize(int width, int height) {
+ 	public void SetSize(int width, int height)
+ 	{
 -		if (width * height > _colors.Length) {
 -			_colors = new Vector3[width * height];
 -			_mask = new LightMaskMode[width * height];

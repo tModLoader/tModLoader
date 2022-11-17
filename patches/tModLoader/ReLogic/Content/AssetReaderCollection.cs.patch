@@ -7,19 +7,21 @@
  using ReLogic.Content.Readers;
  
  namespace ReLogic.Content;
-@@ -7,19 +_,16 @@
+@@ -7,21 +_,17 @@
  public class AssetReaderCollection
  {
  	private readonly Dictionary<string, IAssetReader> _readersByExtension = new Dictionary<string, IAssetReader>();
 +	private string[] _extensions;
  
- 	public void RegisterReader(IAssetReader reader, params string[] extensions) {
+ 	public void RegisterReader(IAssetReader reader, params string[] extensions)
+ 	{
  		foreach (string text in extensions) {
  			_readersByExtension[text.ToLower()] = reader;
  		}
 -	}
 -
--	public T Read<T>(Stream stream, string extension) where T : class {
+-	public T Read<T>(Stream stream, string extension) where T : class
+-	{
 -		if (!_readersByExtension.TryGetValue(extension.ToLower(), out var value))
 -			throw AssetLoadException.FromMissingReader(extension);
 -

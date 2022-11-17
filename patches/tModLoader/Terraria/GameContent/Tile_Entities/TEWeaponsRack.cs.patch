@@ -15,10 +15,10 @@
  {
  	private static byte _myEntityID;
  	public Item item;
-@@ -78,8 +_,8 @@
- 	}
+@@ -88,8 +_,8 @@
  
- 	public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
+ 	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
+ 	{
 -		writer.Write((short)item.netID);
 -		writer.Write(item.prefix);
 +		ItemIO.WriteShortVanillaID(item, writer);
@@ -26,9 +26,9 @@
  		writer.Write((short)item.stack);
  	}
  
-@@ -137,20 +_,26 @@
- 
- 	public void DropItem() {
+@@ -150,21 +_,27 @@
+ 	public void DropItem()
+ 	{
  		if (Main.netMode != 1)
 +			/*
  			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item.netID, 1, noBroadcast: false, item.prefix);
@@ -38,8 +38,9 @@
  		item = new Item();
  	}
  
--	public static void TryPlacing(int x, int y, int netid, int prefix, int stack) {
-+	public static void TryPlacing(int x, int y, Item item, int stack) {
+-	public static void TryPlacing(int x, int y, int netid, int prefix, int stack)
++	public static void TryPlacing(int x, int y, Item item, int stack)
+ 	{
  		WorldGen.RangeFrame(x, y, x + 3, y + 3);
  		int num = Find(x, y);
  		if (num == -1) {
@@ -54,7 +55,7 @@
  			return;
  		}
  
-@@ -158,10 +_,14 @@
+@@ -172,10 +_,14 @@
  		if (tEWeaponsRack.item.stack > 0)
  			tEWeaponsRack.DropItem();
  
@@ -69,7 +70,7 @@
  		NetMessage.SendData(86, -1, -1, null, tEWeaponsRack.ID, x, y);
  	}
  
-@@ -212,16 +_,20 @@
+@@ -229,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}
  

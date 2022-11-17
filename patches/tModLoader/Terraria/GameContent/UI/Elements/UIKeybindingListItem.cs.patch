@@ -8,8 +8,8 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -99,11 +_,19 @@
- 	private string GetFriendlyName() {
+@@ -104,11 +_,19 @@
+ 	{
  		switch (_keybind) {
  			default:
 +				if (KeybindLoader.modKeybinds.TryGetValue(_keybind, out ModKeybind modKeybind))

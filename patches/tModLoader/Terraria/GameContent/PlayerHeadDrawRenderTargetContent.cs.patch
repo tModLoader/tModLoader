@@ -6,15 +6,15 @@
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.DataStructures;
  
-@@ -17,6 +_,7 @@
- 
- 	internal override void DrawTheContent(SpriteBatch spriteBatch) {
+@@ -19,6 +_,7 @@
+ 	internal override void DrawTheContent(SpriteBatch spriteBatch)
+ 	{
  		if (_player != null && !_player.ShouldNotDraw) {
 +			/*
  			_drawData.Clear();
  			_dust.Clear();
  			_gore.Clear();
-@@ -32,6 +_,9 @@
+@@ -34,6 +_,9 @@
  			PlayerDrawHeadLayers.DrawPlayer_07_JustHair(ref drawinfo);
  			PlayerDrawHeadLayers.DrawPlayer_08_FaceAcc(ref drawinfo);
  			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);

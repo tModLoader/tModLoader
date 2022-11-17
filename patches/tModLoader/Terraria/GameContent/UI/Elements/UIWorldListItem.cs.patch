@@ -24,15 +24,15 @@
  	private bool _canBePlayed;
  
  	public bool IsFavorite => _data.IsFavorite;
-@@ -35,6 +_,7 @@
- 	public UIWorldListItem(WorldFileData data, int orderInList, bool canBePlayed) {
+@@ -36,6 +_,7 @@
+ 	{
  		_orderInList = orderInList;
  		_data = data;
 +		_fileSize = (ulong)FileUtilities.GetFileSize(data.Path, data.IsCloudSave);
  		_canBePlayed = canBePlayed;
  		LoadTextures();
  		InitializeAppearance();
-@@ -96,6 +_,17 @@
+@@ -97,6 +_,17 @@
  			num += 24f;
  		}
  
@@ -50,16 +50,16 @@
  		UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
  		uIImageButton5.VAlign = 1f;
  		uIImageButton5.Left.Set(num, 0f);
-@@ -146,6 +_,7 @@
+@@ -148,6 +_,7 @@
  		_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
  		_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  		_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 +		_configTexture = ModLoader.UI.UICommon.ButtonConfigTexture;
  	}
  
- 	private void InitializeAppearance() {
-@@ -187,8 +_,16 @@
- 	private void CloudMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+ 	private void InitializeAppearance()
+@@ -195,8 +_,17 @@
+ 	{
  		if (_data.IsCloudSave)
  			_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
 -		else
@@ -72,13 +72,14 @@
 +		}
 +	}
 +
-+	private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement) {
++	private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement)
++	{
 +		_buttonLabel.SetText("Edit World Config");
  	}
  
- 	private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-@@ -217,8 +_,12 @@
- 	private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
+ 	private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement)
+@@ -231,8 +_,12 @@
+ 	{
  		if (_data.IsCloudSave)
  			_data.MoveToLocal();
 -		else
@@ -91,16 +92,16 @@
  
  		((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  		if (_data.IsCloudSave)
-@@ -239,7 +_,7 @@
- 	}
+@@ -255,7 +_,7 @@
  
- 	private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
+ 	private void PlayGame(UIMouseEvent evt, UIElement listeningElement)
+ 	{
 -		if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
 +		if (listeningElement == evt.Target && _data.IsValid && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
  			_data.SetAsActive();
  			SoundEngine.PlaySound(10);
  			Main.clrInput();
-@@ -251,9 +_,29 @@
+@@ -267,9 +_,30 @@
  			else
  				Main.menuMode = 10;
  
@@ -119,7 +120,8 @@
  		}
 +	}
 +
-+	internal static Action PlayReload() {
++	internal static Action PlayReload()
++	{
 +		// Main.ActivePlayerFileData gets cleared during reload
 +		var path = Main.ActivePlayerFileData.Path;
 +		var isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
@@ -130,8 +132,8 @@
 +		};
  	}
  
- 	private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
-@@ -264,6 +_,9 @@
+ 	private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode)
+@@ -281,6 +_,9 @@
  			return true;
  		}
  
@@ -141,7 +143,7 @@
  		bool flag = Main.ActivePlayerFileData.Player.difficulty == 3;
  		bool isJourneyMode = value.IsJourneyMode;
  		if (flag && !isJourneyMode) {
-@@ -280,6 +_,13 @@
+@@ -297,6 +_,13 @@
  			return true;
  		}
  
@@ -155,14 +157,16 @@
  		return false;
  	}
  
-@@ -325,9 +_,15 @@
+@@ -347,10 +_,17 @@
  		_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
  	}
  
-+	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
++	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
++	{
 +	}
 +
- 	public override int CompareTo(object obj) {
+ 	public override int CompareTo(object obj)
+ 	{
  		if (obj is UIWorldListItem uIWorldListItem)
  			return _orderInList.CompareTo(uIWorldListItem._orderInList);
 +

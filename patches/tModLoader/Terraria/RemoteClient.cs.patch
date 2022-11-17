@@ -18,20 +18,21 @@
  	public bool PendingTerminationApproved;
  	public bool IsAnnouncementCompleted;
  	public int State;
-@@ -32,6 +_,12 @@
+@@ -32,6 +_,13 @@
  	public float SpamWaterMax = 50f;
  	private volatile bool _isReading;
  
 +	// log a reason for terminating clients
-+	internal void SetPendingTermination(string reason) {
++	internal void SetPendingTermination(string reason)
++	{
 +		PendingTermination = true;
 +		ModNet.Log(Id, "Terminating: " + reason);
 +	}
 +
- 	public bool IsConnected() {
+ 	public bool IsConnected()
+ 	{
  		if (Socket != null)
- 			return Socket.IsConnected();
-@@ -189,14 +_,14 @@
+@@ -199,7 +_,7 @@
  			}
  		}
  		catch {
@@ -40,7 +41,8 @@
  		}
  	}
  
- 	private void ServerReadCallBack(object state, int length) {
+@@ -207,7 +_,7 @@
+ 	{
  		if (!Netplay.Disconnect) {
  			if (length == 0) {
 -				PendingTermination = true;
@@ -48,7 +50,7 @@
  			}
  			else {
  				try {
-@@ -238,7 +_,7 @@
+@@ -250,7 +_,7 @@
  				StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
  			}
  			catch (Exception) {

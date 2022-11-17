@@ -8,7 +8,7 @@
  
  namespace Terraria.UI;
  
-@@ -37,8 +_,7 @@
+@@ -38,8 +_,7 @@
  			AppendSuggestions(stringBuilder, suggestions);
  			stringBuilder.AppendLine();
  			IncludeOriginalMessage(stringBuilder, exception);
@@ -18,7 +18,7 @@
  		}
  	}
  
-@@ -70,8 +_,7 @@
+@@ -72,8 +_,7 @@
  			AppendSuggestions(stringBuilder, list);
  			stringBuilder.AppendLine();
  			IncludeOriginalMessage(stringBuilder, exception);
@@ -28,7 +28,7 @@
  		}
  	}
  
-@@ -103,8 +_,7 @@
+@@ -106,8 +_,7 @@
  			AppendSuggestions(stringBuilder, list);
  			stringBuilder.AppendLine();
  			IncludeOriginalMessage(stringBuilder, exception);
@@ -38,12 +38,13 @@
  		}
  	}
  
-@@ -120,8 +_,10 @@
+@@ -125,9 +_,11 @@
  		}
  	}
  
 +	/* Use ErrorReporting.MessageBoxShow instead
- 	private static void ShowTheBox(string preparedMessage) {
+ 	private static void ShowTheBox(string preparedMessage)
+ 	{
  		if (Platform.IsWindows && !Main.dedServ)
  			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
  	}

@@ -9,7 +9,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -173,8 +_,20 @@
+@@ -180,8 +_,20 @@
  				break;
  		}
  

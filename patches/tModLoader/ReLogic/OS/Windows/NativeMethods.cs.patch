@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/OS/Windows/NativeMethods.cs
 +++ src/tModLoader/ReLogic/OS/Windows/NativeMethods.cs
-@@ -185,4 +_,14 @@
+@@ -189,4 +_,14 @@
  	}
  
  	private static bool DeleteCompletelySilent(string path) => DeleteFile(path, FileOperationFlags.FOF_SILENT | FileOperationFlags.FOF_NOCONFIRMATION | FileOperationFlags.FOF_NOERRORUI);

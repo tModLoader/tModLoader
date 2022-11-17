@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/AchievementsSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/AchievementsSocialModule.cs
-@@ -92,7 +_,7 @@
- 	}
+@@ -105,7 +_,7 @@
  
- 	private void OnUserStatsReceived(UserStatsReceived_t results) {
+ 	private void OnUserStatsReceived(UserStatsReceived_t results)
+ 	{
 -		if (results.m_nGameID == 105600 && results.m_steamIDUser == SteamUser.GetSteamID())
 +		if (results.m_nGameID == 1281930 && results.m_steamIDUser == SteamUser.GetSteamID())
  			_areStatsReceived = true;

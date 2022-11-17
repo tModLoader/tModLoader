@@ -11,27 +11,27 @@
  
  namespace Terraria.ID;
  
-@@ -92,6 +_,7 @@
- 			public ItemGroupAndOrderInGroup(Item item) {
+@@ -94,6 +_,7 @@
+ 			{
  				ItemType = item.type;
  				Group = GetItemGroup(item, out OrderInGroup);
 +				ItemLoader.ModifyResearchSorting(item, ref Group);
  			}
  		}
  
-@@ -635,7 +_,7 @@
- 
- 		public static void SetCreativeMenuOrder() {
+@@ -639,7 +_,7 @@
+ 		public static void SetCreativeMenuOrder()
+ 		{
  			List<Item> list = new List<Item>();
 -			for (int i = 1; i < 5456; i++) {
 +			for (int i = 1; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -724,11 +_,13 @@
- 	public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
+@@ -734,11 +_,13 @@
  
- 	public static void Initialize() {
+ 	public static void Initialize()
+ 	{
 +		Main.rand ??= new UnifiedRandom((int)DateTime.Now.Ticks);
 +
  		NpcsByNetId.Clear();
@@ -43,7 +43,7 @@
  			NPC nPC = new NPC();
  			nPC.SetDefaults(i);
  			NpcsByNetId[i] = nPC;
-@@ -740,14 +_,14 @@
+@@ -750,14 +_,14 @@
  
  		ModifyNPCIds();
  		ProjectilesByType.Clear();
@@ -60,7 +60,7 @@
  			Item item = new Item();
  			item.SetDefaults(k);
  			ItemsByType[k] = item;
-@@ -927,7 +_,7 @@
+@@ -946,7 +_,7 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
  		NPCSpawnParams spawnparams = nPCSpawnParams;

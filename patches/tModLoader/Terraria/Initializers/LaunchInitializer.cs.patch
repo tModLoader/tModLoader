@@ -11,7 +11,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers;
-@@ -23,12 +_,16 @@
+@@ -25,13 +_,17 @@
  		string s;
  		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out var result))
  			Netplay.ListenPort = result;
@@ -21,7 +21,8 @@
 +			ModOrganizer.commandLineModPack = modPack;
  	}
  
- 	private static void LoadClientParameters(Main game) {
+ 	private static void LoadClientParameters(Main game)
+ 	{
  		string iP;
  		if ((iP = TryParameter("-j", "-join")) != null)
 -			game.AutoJoin(iP);
@@ -29,7 +30,7 @@
  
  		string arg;
  		if ((arg = TryParameter("-pass", "-password")) != null) {
-@@ -38,6 +_,34 @@
+@@ -41,6 +_,34 @@
  
  		if (HasParameter("-host"))
  			game.AutoHost();
@@ -63,8 +64,8 @@
 +		}
  	}
  
- 	private static void LoadServerParameters(Main game) {
-@@ -99,6 +_,14 @@
+ 	private static void LoadServerParameters(Main game)
+@@ -103,6 +_,14 @@
  		if ((s2 = TryParameter("-language")) != null)
  			LanguageManager.Instance.SetLanguage(s2);
  
@@ -79,7 +80,7 @@
  		string worldName;
  		if ((worldName = TryParameter("-worldname")) != null)
  			game.SetWorldName(worldName);
-@@ -107,6 +_,12 @@
+@@ -111,6 +_,12 @@
  		if ((newMOTD = TryParameter("-motd")) != null)
  			game.NewMOTD(newMOTD);
  
@@ -92,12 +93,12 @@
  		string banFilePath;
  		if ((banFilePath = TryParameter("-banlist")) != null)
  			Netplay.BanFilePath = banFilePath;
-@@ -155,7 +_,7 @@
+@@ -160,7 +_,7 @@
  		return false;
  	}
  
--	private static string TryParameter(params string[] keys) {
-+	public static string TryParameter(params string[] keys) {
+-	private static string TryParameter(params string[] keys)
++	public static string TryParameter(params string[] keys)
+ 	{
  		for (int i = 0; i < keys.Length; i++) {
  			if (Program.LaunchParameters.TryGetValue(keys[i], out var value)) {
- 				if (value == null)

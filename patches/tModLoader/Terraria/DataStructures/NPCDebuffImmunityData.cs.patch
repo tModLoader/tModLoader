@@ -6,9 +6,9 @@
  
  namespace Terraria.DataStructures;
  
-@@ -10,7 +_,7 @@
- 
- 	public void ApplyToNPC(NPC npc) {
+@@ -11,7 +_,7 @@
+ 	public void ApplyToNPC(NPC npc)
+ 	{
  		if (ImmuneToWhips || ImmuneToAllBuffsThatAreNotWhips) {
 -			for (int i = 1; i < 355; i++) {
 +			for (int i = 1; i < BuffLoader.BuffCount; i++) {

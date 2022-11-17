@@ -9,18 +9,18 @@
  {
  	private Dictionary<string, IPlayerResourcesDisplaySet> _sets = new Dictionary<string, IPlayerResourcesDisplaySet>();
  	private IPlayerResourcesDisplaySet _activeSet;
-@@ -21,6 +_,7 @@
- 
- 	private void Configuration_OnLoad(Preferences obj) {
+@@ -23,6 +_,7 @@
+ 	private void Configuration_OnLoad(Preferences obj)
+ 	{
  		_activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
 +		_activeSetConfigKeyOriginal = _activeSetConfigKey;
  		if (_loadedContent)
  			SetActiveFromLoadedConfigKey();
  	}
-@@ -46,11 +_,18 @@
- 	}
+@@ -52,11 +_,18 @@
  
- 	private void SetActive(string name) {
+ 	private void SetActive(string name)
+ 	{
 +		/*
  		IPlayerResourcesDisplaySet playerResourcesDisplaySet = _sets.FirstOrDefault((KeyValuePair<string, IPlayerResourcesDisplaySet> pair) => pair.Key == name).Value;
  		if (playerResourcesDisplaySet == null)
@@ -35,16 +35,16 @@
 +		SetActiveFrameFromIndex(index);
  	}
  
- 	private void SetActiveFrame(IPlayerResourcesDisplaySet set) {
-@@ -68,6 +_,7 @@
- 	}
+ 	private void SetActiveFrame(IPlayerResourcesDisplaySet set)
+@@ -78,6 +_,7 @@
  
- 	public void CycleResourceSet() {
+ 	public void CycleResourceSet()
+ 	{
 +		/*
  		IPlayerResourcesDisplaySet lastFrame = null;
  		_sets.Values.FirstOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
  			if (frame == _activeSet)
-@@ -81,5 +_,7 @@
+@@ -91,5 +_,7 @@
  			lastFrame = _sets.Values.Last();
  
  		SetActiveFrame(lastFrame);

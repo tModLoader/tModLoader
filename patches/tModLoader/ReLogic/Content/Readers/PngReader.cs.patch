@@ -9,18 +9,19 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  
-@@ -16,15 +_,20 @@
+@@ -17,8 +_,10 @@
  		_graphicsDevice = graphicsDevice;
  		_colorProcessingCache = new ThreadLocal<Color[]>();
  	}
 +	
 +	public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
  
--	public T FromStream<T>(Stream stream) where T : class {
-+	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
+-	public T FromStream<T>(Stream stream) where T : class
++	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
+ 	{
  		if (typeof(T) != typeof(Texture2D))
  			throw AssetLoadException.FromInvalidReader<PngReader, T>();
- 
+@@ -26,7 +_,10 @@
  #if NETCORE
  		IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
  		PreMultiplyAlpha(img, len);

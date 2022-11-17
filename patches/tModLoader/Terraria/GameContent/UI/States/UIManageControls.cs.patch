@@ -44,7 +44,7 @@
  	private bool OnKeyboard = true;
  	private bool OnGameplay = true;
  	private List<UIElement> _bindsKeyboard = new List<UIElement>();
-@@ -213,6 +_,9 @@
+@@ -215,6 +_,9 @@
  		List<string> bindings = new List<string> {
  			"MouseLeft",
  			"MouseRight",
@@ -54,7 +54,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -240,6 +_,9 @@
+@@ -242,6 +_,9 @@
  		List<string> bindings2 = new List<string> {
  			"MouseLeft",
  			"MouseRight",
@@ -64,7 +64,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -312,26 +_,48 @@
+@@ -314,26 +_,48 @@
  			"sp13"
  		};
  
@@ -112,8 +112,8 @@
 +		_bindsGamepadUI.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
  	}
  
- 	private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode) {
-@@ -369,6 +_,9 @@
+ 	private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode)
+@@ -372,6 +_,9 @@
  			case 4:
  				uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
  				break;
@@ -123,7 +123,7 @@
  		}
  
  		CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
-@@ -390,6 +_,9 @@
+@@ -393,6 +_,9 @@
  			case 4:
  				text = Lang.menu[198];
  				break;
@@ -133,7 +133,7 @@
  		}
  
  		UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
-@@ -432,6 +_,15 @@
+@@ -436,6 +_,15 @@
  				continue;
  			}
  
@@ -149,33 +149,33 @@
  			UIElement uIElement3 = CreatePanel(bindings[i], currentInputMode, color);
  			uIElement3.Width.Set(-5f, 0.5f);
  			uIElement3.Height.Set(0f, 1f);
-@@ -542,6 +_,25 @@
+@@ -547,6 +_,25 @@
  
- 					return uIKeybindingSimpleListItem4;
- 				}
+ 				return uIKeybindingSimpleListItem4;
+ 			}
 +			case ResetModKeybinds: {
-+					UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
-+					uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+						string copyableProfileName = GetCopyableProfileName();
-+						PlayerInput.CurrentProfile.CopyModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
-+					};
++				UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
++				uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
++					string copyableProfileName = GetCopyableProfileName();
++					PlayerInput.CurrentProfile.CopyModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
++				};
 +
-+					return uIElement7;
-+				}
++				return uIElement7;
++			}
 +			case ClearModKeybinds: {
-+					UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
-+					uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+						foreach (var modKeybind in KeybindLoader.Keybinds) {
-+							PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.FullName].Clear();
-+						}
-+					};
++				UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
++				uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
++					foreach (var modKeybind in KeybindLoader.Keybinds) {
++						PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.FullName].Clear();
++					}
++				};
 +
-+					return uIElement7;
-+				}
++				return uIElement7;
++			}
  			case "sp14": {
- 					UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
- 					uIKeybindingToggleListItem.OnClick += delegate {
-@@ -614,11 +_,39 @@
+ 				UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
+ 				uIKeybindingToggleListItem.OnClick += delegate {
+@@ -619,12 +_,40 @@
  					}
  				}, 1008, color);
  			default:
@@ -204,7 +204,8 @@
  		}
  	}
  
- 	public override void OnActivate() {
+ 	public override void OnActivate()
+ 	{
 +		// TODO, only if new mod controls -- seems to be cause of bug on reload.
 +		_bindsKeyboard.Clear();
 +		_bindsGamepad.Clear();

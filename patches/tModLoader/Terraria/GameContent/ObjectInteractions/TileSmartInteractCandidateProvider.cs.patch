@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.ObjectInteractions;
  
-@@ -223,6 +_,8 @@
+@@ -227,6 +_,8 @@
  					break;
  			}
  
@@ -17,7 +17,7 @@
  			if (num7 == 0 || num8 == 0)
  				continue;
  
-@@ -363,6 +_,8 @@
+@@ -368,6 +_,8 @@
  							targets.Add(new Tuple<int, int>(i, j));
  						break;
  				}

@@ -7,9 +7,9 @@
  using Microsoft.Xna.Framework;
  using Terraria.GameContent.NetModules;
  using Terraria.ID;
-@@ -49,8 +_,9 @@
- 
- 	public void Save(BinaryWriter writer) {
+@@ -55,8 +_,9 @@
+ 	public void Save(BinaryWriter writer)
+ 	{
  		lock (_entryCreationLock) {
 +			var vanillaOnly = _wasNearPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
 -			writer.Write(_wasNearPlayer.Count);

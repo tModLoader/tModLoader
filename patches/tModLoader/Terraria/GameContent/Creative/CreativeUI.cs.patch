@@ -16,20 +16,22 @@
  {
  	public enum ItemSacrificeResult
  	{
-@@ -203,10 +_,22 @@
- 	}
+@@ -220,10 +_,24 @@
  
- 	public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
+ 	public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed)
+ 	{
 +		return SacrificeItem(ref _itemSlotsForUI[0], out amountWeSacrificed);
 +	}
 +
 +	// allows to sacrifice any item without needing to go through the ui
-+	public static ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed) {
++	public static ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed)
++	{
 +		return SacrificeItem(ref toSacrifice, out amountWeSacrificed);
 +	}
 +
 +	// allows to sacrifice any item without needing to go through the ui
-+	public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false) {
++	public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false)
++	{
  		int amountNeededTotal = 0;
  		int amountWeHave = 0;
  		amountWeSacrificed = 0;
@@ -40,7 +42,7 @@
  		if (!Main.LocalPlayerCreativeTracker.ItemSacrifices.TryGetSacrificeNumbers(item.type, out amountWeHave, out amountNeededTotal))
  			return ItemSacrificeResult.CannotSacrifice;
  
-@@ -224,16 +_,17 @@
+@@ -241,16 +_,17 @@
  		}
  
  		bool num3 = num2 == num;

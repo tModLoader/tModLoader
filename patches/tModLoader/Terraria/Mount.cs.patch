@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -84,8 +_,10 @@
+@@ -89,8 +_,10 @@
  		}
  	}
  
@@ -20,7 +20,7 @@
  		public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureExtra = Asset<Texture2D>.Empty;
-@@ -163,7 +_,7 @@
+@@ -168,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
  	public const int DrawFrontExtra = 3;
@@ -29,7 +29,7 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -177,29 +_,30 @@
+@@ -182,29 +_,30 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
@@ -82,10 +82,10 @@
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
-@@ -2118,13 +_,13 @@
- 	}
+@@ -2131,13 +_,13 @@
  
- 	public static int GetHeightBoost(int MountType) {
+ 	public static int GetHeightBoost(int MountType)
+ 	{
 -		if (MountType <= -1 || MountType >= MountID.Count)
 +		if (MountType <= -1 || MountType >= mounts.Length)
  			return 0;
@@ -93,12 +93,12 @@
  		return mounts[MountType].heightBoost;
  	}
  
--	public int JumpHeight(float xVelocity) {
-+	public int JumpHeight(Player player, float xVelocity) {
+-	public int JumpHeight(float xVelocity)
++	public int JumpHeight(Player player, float xVelocity)
+ 	{
  		int num = _data.jumpHeight;
  		switch (_type) {
- 			case 0:
-@@ -2134,6 +_,7 @@
+@@ -2148,6 +_,7 @@
  				num += (int)(Math.Abs(xVelocity) / 2.5f);
  				break;
  			case 4:
@@ -106,7 +106,7 @@
  			case 49:
  				if (_frameState == 4)
  					num += 5;
-@@ -2143,10 +_,12 @@
+@@ -2157,10 +_,12 @@
  		if (_shouldSuperCart)
  			num = SuperCartJumpHeight;
  
@@ -114,13 +114,13 @@
  		return num;
  	}
  
--	public float JumpSpeed(float xVelocity) {
+-	public float JumpSpeed(float xVelocity)
 +	//TML: Added 'player' parameter.
-+	public float JumpSpeed(Player player, float xVelocity) {
++	public float JumpSpeed(Player player, float xVelocity)
+ 	{
  		float num = _data.jumpSpeed;
  		switch (_type) {
- 			case 0:
-@@ -2155,6 +_,7 @@
+@@ -2170,6 +_,7 @@
  				break;
  			case 4:
  			case 49:
@@ -128,7 +128,7 @@
  				if (_frameState == 4)
  					num += 2.5f;
  				break;
-@@ -2162,6 +_,8 @@
+@@ -2177,6 +_,8 @@
  
  		if (_shouldSuperCart)
  			num = SuperCartJumpSpeed;
@@ -137,7 +137,7 @@
  
  		return num;
  	}
-@@ -2475,7 +_,10 @@
+@@ -2503,7 +_,10 @@
  						Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
  						Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);
  						Projectile.NewProjectile(GetProjectileSpawnSource(mountedPlayer), vector.X, vector.Y, vector2.X, vector2.Y, 930, damage, 0f, Main.myPlayer);
@@ -148,7 +148,7 @@
  					}
  
  					int type = 14;
-@@ -2490,7 +_,10 @@
+@@ -2518,7 +_,10 @@
  					v *= 12f;
  					v = v.RotatedByRandom(0.20000000298023224);
  					Projectile.NewProjectile(GetProjectileSpawnSource(mountedPlayer), vector4.X, vector4.Y, v.X, v.Y, type, damage2, 0f, Main.myPlayer);
@@ -159,17 +159,17 @@
  				}
  				break;
  			case 8:
-@@ -2687,6 +_,9 @@
- 	private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
+@@ -2719,6 +_,9 @@
  
- 	public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
+ 	public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
+ 	{
 +		if (!MountLoader.UpdateFrame(mountedPlayer, state, velocity))
 +			return;
 +
  		if (_frameState != state) {
  			_frameState = state;
  			if (_type != 48 || (state != 1 && state != 2))
-@@ -3434,7 +_,7 @@
+@@ -3473,7 +_,7 @@
  
  		Tile tileSafely = Framing.GetTileSafely(p.X, p.Y);
  		if (WorldGen.SolidTile(p)) {
@@ -178,8 +178,8 @@
  			if (num > 1)
  				num = 1;
  
-@@ -3544,6 +_,9 @@
- 	public void UpdateEffects(Player mountedPlayer) {
+@@ -3588,6 +_,9 @@
+ 	{
  		mountedPlayer.autoJump = AutoJump;
  		_shouldSuperCart = MountID.Sets.Cart[_type] && mountedPlayer.UsingSuperCart;
 +
@@ -188,7 +188,7 @@
  		if (_shouldSuperCart) {
  			CastSuperCartLaser(mountedPlayer);
  			float num = 1f + Math.Abs(mountedPlayer.velocity.X) / RunSpeed * 2.5f;
-@@ -3703,10 +_,13 @@
+@@ -3747,10 +_,13 @@
  					else
  						Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector9.X, vector9.Y, vector9.Z);
  
@@ -202,7 +202,7 @@
  				}
  				if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  					mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -3904,7 +_,7 @@
+@@ -3952,7 +_,7 @@
  		if (_type == -1)
  			return;
  
@@ -211,15 +211,15 @@
  			if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
  				return;
  		}
-@@ -3958,6 +_,7 @@
- 
- 	public bool AimAbility(Player mountedPlayer, Vector2 mousePosition) {
+@@ -4009,6 +_,7 @@
+ 	public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
+ 	{
  		_aiming = true;
 +		MountLoader.AimAbility(this, mountedPlayer, mousePosition);
  		switch (_type) {
  			case 9: {
- 					int frameExtra = _frameExtra;
-@@ -4421,10 +_,13 @@
+ 				int frameExtra = _frameExtra;
+@@ -4473,10 +_,13 @@
  				break;
  		}
  
@@ -233,7 +233,7 @@
  			if (texture2D2 != null) {
  				item = new DrawData(texture2D2, Position, value, color * ((float)(int)drawColor.A / 255f), num9, origin, scale, spriteEffects);
  				item.shader = currentShader;
-@@ -4559,6 +_,8 @@
+@@ -4612,6 +_,8 @@
  			bool cart = Cart;
  			_active = false;
  			mountedPlayer.ClearBuff(_data.buff);
@@ -242,7 +242,7 @@
  			_mountSpecificData = null;
  			_ = _type;
  			if (cart) {
-@@ -4569,7 +_,8 @@
+@@ -4622,7 +_,8 @@
  
  			mountedPlayer.fullRotation = 0f;
  			mountedPlayer.fullRotationOrigin = Vector2.Zero;
@@ -252,16 +252,16 @@
  			Reset();
  			mountedPlayer.position.Y += mountedPlayer.height;
  			mountedPlayer.height = 42;
-@@ -4580,7 +_,7 @@
- 	}
+@@ -4634,7 +_,7 @@
  
- 	public void SetMount(int m, Player mountedPlayer, bool faceLeft = false) {
+ 	public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
+ 	{
 -		if (_type == m || m <= -1 || m >= MountID.Count || (m == 5 && mountedPlayer.wet))
 +		if (_type == m || m <= -1 || m >= mounts.Length || (m == 5 && mountedPlayer.wet))
  			return;
  
  		if (_active) {
-@@ -4647,7 +_,10 @@
+@@ -4701,7 +_,10 @@
  		if (_type == 35)
  			_mountSpecificData = new ExtraFrameMountData();
  

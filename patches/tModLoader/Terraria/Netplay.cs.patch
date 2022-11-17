@@ -8,16 +8,16 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -155,6 +_,8 @@
- 	}
+@@ -165,6 +_,8 @@
  
- 	private static void OnConnectionAccepted(ISocket client) {
+ 	private static void OnConnectionAccepted(ISocket client)
+ 	{
 +		Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress().GetFriendlyName()));
 +
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -294,7 +_,7 @@
+@@ -312,7 +_,7 @@
  			}
  
  			if (Clients[i].IsActive) {
@@ -26,10 +26,10 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -389,6 +_,12 @@
- 	}
+@@ -413,6 +_,12 @@
  
- 	private static void ClientLoopSetup(RemoteAddress address) {
+ 	private static void ClientLoopSetup(RemoteAddress address)
+ 	{
 +		string friendlyName = address.GetFriendlyName();
 +		if (string.IsNullOrEmpty(friendlyName))
 +			Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
@@ -39,7 +39,7 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -405,11 +_,11 @@
+@@ -429,11 +_,11 @@
  		Main.netMode = 1;
  		Main.menuMode = 14;
  		if (!Main.autoPass)
@@ -52,8 +52,8 @@
 +		Connection.ReadBuffer = new byte[ushort.MaxValue];
  	}
  
- 	private static void InnerClientLoop() {
-@@ -447,6 +_,7 @@
+ 	private static void InnerClientLoop()
+@@ -472,6 +_,7 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
@@ -61,7 +61,7 @@
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
-@@ -498,6 +_,10 @@
+@@ -523,6 +_,10 @@
  			}
  
  			if (!Main.gameMenu) {
@@ -72,12 +72,13 @@
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
  				MapHelper.noStatusText = true;
-@@ -561,7 +_,22 @@
+@@ -589,7 +_,23 @@
  		thread.Start();
  	}
  
 -	public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
-+	public static bool SetRemoteIP(string remoteAddress) {
++	public static bool SetRemoteIP(string remoteAddress)
++	{
 +		if (remoteAddress.Contains(':')) {
 +			int colonInd = remoteAddress.LastIndexOf(':');
 +			if (int.TryParse(remoteAddress.AsSpan(colonInd + 1), out int port)) {
@@ -94,5 +95,5 @@
 +		return SetRemoteIPOld(remoteAddress);
 +	}
  
- 	public static bool SetRemoteIPOld(string remoteAddress) {
- 		try {
+ 	public static bool SetRemoteIPOld(string remoteAddress)
+ 	{

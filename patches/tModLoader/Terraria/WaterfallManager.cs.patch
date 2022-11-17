@@ -23,16 +23,16 @@
  	private int wFallFrCounter;
  	private int regularFrame;
  	private int wFallFrCounter2;
-@@ -211,7 +_,7 @@
+@@ -216,7 +_,7 @@
  		}
  	}
  
--	private void DrawWaterfall(int Style = 0, float Alpha = 1f) {
-+	internal void DrawWaterfall(int Style = 0, float Alpha = 1f) {
+-	private void DrawWaterfall(int Style = 0, float Alpha = 1f)
++	internal void DrawWaterfall(int Style = 0, float Alpha = 1f)
+ 	{
  		Main.tileSolid[546] = false;
  		float num = 0f;
- 		float num2 = 99999f;
-@@ -472,6 +_,9 @@
+@@ -478,6 +_,9 @@
  						num12 = 15 + num34 - 262;
  						break;
  				}
@@ -42,7 +42,7 @@
  
  				Color color5 = Lighting.GetColor(num13, num14);
  				if (k > 50)
-@@ -729,6 +_,9 @@
+@@ -737,6 +_,9 @@
  				break;
  		}
  
@@ -52,17 +52,17 @@
  		aColor = new Color((int)num, (int)num2, (int)num3, (int)num4);
  		return aColor;
  	}
-@@ -773,6 +_,9 @@
- 	}
+@@ -784,6 +_,9 @@
  
- 	private static void AddLight(int waterfallType, int x, int y) {
+ 	private static void AddLight(int waterfallType, int x, int y)
+ 	{
 +		if (waterfallType >= maxTypes)
 +			LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).AddLight(x, y);
 +		
  		switch (waterfallType) {
  			case 1: {
- 					float r;
-@@ -889,5 +_,7 @@
+ 				float r;
+@@ -901,5 +_,7 @@
  
  		if (Main.liquidAlpha[13] > 0f)
  			DrawWaterfall(24, Main.liquidAlpha[13]);

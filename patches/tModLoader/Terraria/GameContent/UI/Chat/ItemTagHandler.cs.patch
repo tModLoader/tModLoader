@@ -10,17 +10,17 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -22,6 +_,7 @@
+@@ -24,6 +_,7 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
 +		//TODO possibly allow modders to custom draw here
- 		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
+ 		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
+ 		{
  			float num = 1f;
- 			float num2 = 1f;
-@@ -55,20 +_,30 @@
- 
- 	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
+@@ -59,20 +_,30 @@
+ 	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
+ 	{
  		Item item = new Item();
 -		if (int.TryParse(text, out var result))
 +		if (int.TryParse(text, out var result) && result < ItemLoader.ItemCount)
@@ -49,23 +49,24 @@
 +						break;
  					case 's':
  					case 'x': {
- 							if (int.TryParse(array[i].Substring(1), out var result3))
-@@ -78,7 +_,7 @@
- 						}
+ 						if (int.TryParse(array[i].Substring(1), out var result3))
+@@ -82,7 +_,7 @@
+ 					}
  					case 'p': {
- 							if (int.TryParse(array[i].Substring(1), out var result2))
--								item.Prefix((byte)Utils.Clamp(result2, 0, 85));
-+								item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
+ 						if (int.TryParse(array[i].Substring(1), out var result2))
+-							item.Prefix((byte)Utils.Clamp(result2, 0, 85));
++							item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  
- 							break;
- 						}
-@@ -97,13 +_,25 @@
+ 						break;
+ 					}
+@@ -101,14 +_,26 @@
  		};
  	}
  
 +	// we do not alter vanilla ways of doing things
 +	// this can lead to trouble in future patches
- 	public static string GenerateTag(Item I) {
+ 	public static string GenerateTag(Item I)
+ 	{
  		string text = "[i";
 +		// assuming we have modded data, simply write the item as base64
 +		// do not write other option, base64 holds all the info.

@@ -16,11 +16,11 @@
 -	private bool[] _hasRoom = new bool[688];
 +	internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
- 	public void AddOccupantsToList(int x, int y, List<int> occupantsList) {
- 		AddOccupantsToList(new Point(x, y), occupantsList);
-@@ -73,8 +_,16 @@
- 
- 	public void Save(BinaryWriter writer) {
+ 	public void AddOccupantsToList(int x, int y, List<int> occupantsList)
+ 	{
+@@ -82,8 +_,16 @@
+ 	public void Save(BinaryWriter writer)
+ 	{
  		lock (EntityCreationLock) {
 -			writer.Write(_roomLocationPairs.Count);
 +			int count = 0;

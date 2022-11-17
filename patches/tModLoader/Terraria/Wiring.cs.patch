@@ -49,26 +49,26 @@
 +	public static int _currentWireColor;
  	private static int CurrentUser = 255;
  
- 	public static void SetCurrentUser(int plr = -1) {
-@@ -338,7 +_,7 @@
+ 	public static void SetCurrentUser(int plr = -1)
+@@ -349,7 +_,7 @@
  		}
  	}
  
--	private static bool CheckMech(int i, int j, int time) {
-+	public static bool CheckMech(int i, int j, int time) {
+-	private static bool CheckMech(int i, int j, int time)
++	public static bool CheckMech(int i, int j, int time) 
+ 	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
- 				return false;
-@@ -397,7 +_,7 @@
+@@ -410,7 +_,7 @@
  		}
  	}
  
--	private static void TripWire(int left, int top, int width, int height) {
-+	public static void TripWire(int left, int top, int width, int height) {
+-	private static void TripWire(int left, int top, int width, int height)
++	public static void TripWire(int left, int top, int width, int height)
+ 	{
  		if (Main.netMode == 1)
  			return;
- 
-@@ -808,6 +_,9 @@
+@@ -827,6 +_,9 @@
  		if (!tile.active())
  			return;
  
@@ -78,7 +78,7 @@
  		switch (type) {
  			case 144:
  				HitSwitch(i, j);
-@@ -1173,14 +_,14 @@
+@@ -1192,14 +_,14 @@
  			return;
  		}
  
@@ -95,94 +95,94 @@
  			int num67 = 1;
  			if (Main.rand.Next(2) == 0)
  				num67 = -1;
-@@ -1268,7 +_,7 @@
+@@ -1287,7 +_,7 @@
  
- 					break;
- 				}
+ 				break;
+ 			}
 -			case 4:
 +			case int _ when TileID.Sets.Torch[type]:
  				ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
  				break;
  			case 429: {
-@@ -1659,6 +_,7 @@
- 				}
+@@ -1678,6 +_,7 @@
+ 			}
  			case 35:
  			case 139:
 +			case int _ when TileLoader.IsModMusicBox(tile):
  				WorldGen.SwitchMB(i, j);
  				break;
  			case 207:
-@@ -2064,14 +_,24 @@
- 										break;
+@@ -2083,14 +_,24 @@
+ 								break;
  
- 									int num120 = 50;
+ 							int num120 = 50;
++							/*
+ 							int[] array2 = new int[num120];
++							*/
++							List<int> array2 = new List<int>();
+ 							int num121 = 0;
+ 							for (int num122 = 0; num122 < 200; num122++) {
++								bool vanillaCanGo = false;
++
+ 								if (Main.npc[num122].active && (Main.npc[num122].type == 17 || Main.npc[num122].type == 19 || Main.npc[num122].type == 22 || Main.npc[num122].type == 38 || Main.npc[num122].type == 54 || Main.npc[num122].type == 107 || Main.npc[num122].type == 108 || Main.npc[num122].type == 142 || Main.npc[num122].type == 160 || Main.npc[num122].type == 207 || Main.npc[num122].type == 209 || Main.npc[num122].type == 227 || Main.npc[num122].type == 228 || Main.npc[num122].type == 229 || Main.npc[num122].type == 368 || Main.npc[num122].type == 369 || Main.npc[num122].type == 550 || Main.npc[num122].type == 441 || Main.npc[num122].type == 588)) {
 +									/*
- 									int[] array2 = new int[num120];
+ 									array2[num121] = num122;
 +									*/
-+									List<int> array2 = new List<int>();
- 									int num121 = 0;
- 									for (int num122 = 0; num122 < 200; num122++) {
-+										bool vanillaCanGo = false;
++									vanillaCanGo = true;
++								}
 +
- 										if (Main.npc[num122].active && (Main.npc[num122].type == 17 || Main.npc[num122].type == 19 || Main.npc[num122].type == 22 || Main.npc[num122].type == 38 || Main.npc[num122].type == 54 || Main.npc[num122].type == 107 || Main.npc[num122].type == 108 || Main.npc[num122].type == 142 || Main.npc[num122].type == 160 || Main.npc[num122].type == 207 || Main.npc[num122].type == 209 || Main.npc[num122].type == 227 || Main.npc[num122].type == 228 || Main.npc[num122].type == 229 || Main.npc[num122].type == 368 || Main.npc[num122].type == 369 || Main.npc[num122].type == 550 || Main.npc[num122].type == 441 || Main.npc[num122].type == 588)) {
-+											/*
- 											array2[num121] = num122;
-+											*/
-+											vanillaCanGo = true;
-+										}
++								if (Main.npc[num122].active && NPCLoader.CanGoToStatue(Main.npc[num122], true, vanillaCanGo)) {
++									array2.Add(num122);
+ 									num121++;
+-									if (num121 >= num120)
+-										break;
+ 								}
+ 							}
+ 
+@@ -2099,6 +_,7 @@
+ 								Main.npc[num123].position.X = num112 - Main.npc[num123].width / 2;
+ 								Main.npc[num123].position.Y = num113 - Main.npc[num123].height - 1;
+ 								NetMessage.SendData(23, -1, -1, null, num123);
++								NPCLoader.OnGoToStatue(Main.npc[num123], true);
+ 							}
+ 
+ 							break;
+@@ -2108,14 +_,24 @@
+ 								break;
+ 
+ 							int num116 = 50;
++							/*
+ 							int[] array = new int[num116];
++							*/
++							List<int> array = new List<int>();
+ 							int num117 = 0;
+ 							for (int num118 = 0; num118 < 200; num118++) {
++								bool vanillaCanGo = false;
 +
-+										if (Main.npc[num122].active && NPCLoader.CanGoToStatue(Main.npc[num122], true, vanillaCanGo)) {
-+											array2.Add(num122);
- 											num121++;
--											if (num121 >= num120)
--												break;
- 										}
- 									}
- 
-@@ -2080,6 +_,7 @@
- 										Main.npc[num123].position.X = num112 - Main.npc[num123].width / 2;
- 										Main.npc[num123].position.Y = num113 - Main.npc[num123].height - 1;
- 										NetMessage.SendData(23, -1, -1, null, num123);
-+										NPCLoader.OnGoToStatue(Main.npc[num123], true);
- 									}
- 
- 									break;
-@@ -2089,14 +_,24 @@
- 										break;
- 
- 									int num116 = 50;
+ 								if (Main.npc[num118].active && (Main.npc[num118].type == 18 || Main.npc[num118].type == 20 || Main.npc[num118].type == 124 || Main.npc[num118].type == 178 || Main.npc[num118].type == 208 || Main.npc[num118].type == 353 || Main.npc[num118].type == 633 || Main.npc[num118].type == 663)) {
 +									/*
- 									int[] array = new int[num116];
+ 									array[num117] = num118;
 +									*/
-+									List<int> array = new List<int>();
- 									int num117 = 0;
- 									for (int num118 = 0; num118 < 200; num118++) {
-+										bool vanillaCanGo = false;
++									vanillaCanGo = true;
++								}
 +
- 										if (Main.npc[num118].active && (Main.npc[num118].type == 18 || Main.npc[num118].type == 20 || Main.npc[num118].type == 124 || Main.npc[num118].type == 178 || Main.npc[num118].type == 208 || Main.npc[num118].type == 353 || Main.npc[num118].type == 633 || Main.npc[num118].type == 663)) {
-+											/*
- 											array[num117] = num118;
-+											*/
-+											vanillaCanGo = true;
-+										}
-+
-+										if (Main.npc[num118].active && NPCLoader.CanGoToStatue(Main.npc[num118], false, vanillaCanGo)) {
-+											array.Add(num118);
- 											num117++;
--											if (num117 >= num116)
--												break;
- 										}
- 									}
++								if (Main.npc[num118].active && NPCLoader.CanGoToStatue(Main.npc[num118], false, vanillaCanGo)) {
++									array.Add(num118);
+ 									num117++;
+-									if (num117 >= num116)
+-										break;
+ 								}
+ 							}
  
-@@ -2105,6 +_,7 @@
- 										Main.npc[num119].position.X = num112 - Main.npc[num119].width / 2;
- 										Main.npc[num119].position.Y = num113 - Main.npc[num119].height - 1;
- 										NetMessage.SendData(23, -1, -1, null, num119);
-+										NPCLoader.OnGoToStatue(Main.npc[num119], false);
- 									}
+@@ -2124,6 +_,7 @@
+ 								Main.npc[num119].position.X = num112 - Main.npc[num119].width / 2;
+ 								Main.npc[num119].position.Y = num113 - Main.npc[num119].height - 1;
+ 								NetMessage.SendData(23, -1, -1, null, num119);
++								NPCLoader.OnGoToStatue(Main.npc[num119], false);
+ 							}
  
- 									break;
-@@ -2187,6 +_,8 @@
+ 							break;
+@@ -2206,6 +_,8 @@
  				NetMessage.SendTileSquare(-1, i, j);
  				break;
  		}
@@ -190,26 +190,26 @@
 +		TileLoader.HitWire(i, j, type);
  	}
  
- 	public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn) {
-@@ -2491,7 +_,7 @@
+ 	public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn)
+@@ -2523,7 +_,7 @@
  		return false;
  	}
  
--	private static void DeActive(int i, int j) {
-+	public static void DeActive(int i, int j) {
+-	private static void DeActive(int i, int j)
++	public static void DeActive(int i, int j)
+ 	{
  		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  			return;
- 
-@@ -2508,7 +_,7 @@
+@@ -2541,7 +_,7 @@
  		}
  	}
  
--	private static void ReActive(int i, int j) {
-+	public static void ReActive(int i, int j) {
+-	private static void ReActive(int i, int j)
++	public static void ReActive(int i, int j)
+ 	{
  		Main.tile[i, j].inActive(inActive: false);
  		WorldGen.SquareTileFrame(i, j, resetFrame: false);
- 		if (Main.netMode != 1)
-@@ -2590,7 +_,11 @@
+@@ -2625,7 +_,11 @@
  		if (!flag)
  			MassWireOperationStep(user, pe, toolMode, ref wireCount, ref actuatorCount);
  

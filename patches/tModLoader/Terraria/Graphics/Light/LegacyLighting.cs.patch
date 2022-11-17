@@ -8,7 +8,7 @@
  
  namespace Terraria.Graphics.Light;
  
-@@ -568,6 +_,7 @@
+@@ -584,6 +_,7 @@
  			ScanOreFinderData = Main.LocalPlayer.accOreFinder
  		});
  
@@ -16,7 +16,7 @@
  		_tileScanner.Update();
  		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
  			DrawInvisibleWalls = Main.ShouldShowInvisibleWalls()
-@@ -575,6 +_,7 @@
+@@ -591,6 +_,7 @@
  
  		for (int m = num; m < num2; m++) {
  			LightingState[] array3 = _states[m - _expandedRectLeft];
@@ -24,7 +24,7 @@
  			for (int n = num3; n < num4; n++) {
  				LightingState lightingState2 = array3[n - _expandedRectTop];
  				Tile tile = Main.tile[m, n];
-@@ -743,6 +_,8 @@
+@@ -760,6 +_,8 @@
  						_wetLightB = 0f;
  						break;
  				}
@@ -33,7 +33,7 @@
  			}
  			else {
  				_negLight = 0.9f;
-@@ -769,6 +_,8 @@
+@@ -786,6 +_,8 @@
  				_negLight *= 0.85f;
  				_negLight2 *= 0.85f;
  			}
@@ -42,7 +42,7 @@
  		}
  		else {
  			_negLight = 0.04f;
-@@ -793,6 +_,7 @@
+@@ -810,6 +_,7 @@
  				_negLight2 += 0.18f;
  			}
  

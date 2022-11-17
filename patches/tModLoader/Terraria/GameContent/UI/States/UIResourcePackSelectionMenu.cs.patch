@@ -10,6 +10,6 @@
 +		set => _uiStateToGoBackTo = value;
 +	}
 +
- 	public UIResourcePackSelectionMenu(UIState uiStateToGoBackTo, AssetSourceController sourceController, ResourcePackList currentResourcePackList) {
+ 	public UIResourcePackSelectionMenu(UIState uiStateToGoBackTo, AssetSourceController sourceController, ResourcePackList currentResourcePackList)
+ 	{
  		_sourceController = sourceController;
- 		_uiStateToGoBackTo = uiStateToGoBackTo;

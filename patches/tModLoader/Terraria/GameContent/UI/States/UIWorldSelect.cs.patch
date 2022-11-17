@@ -24,9 +24,9 @@
  	private bool skipDraw;
 +	private static bool _currentlyMigratingFiles;
  
- 	public override void OnInitialize() {
- 		UIElement uIElement = new UIElement();
-@@ -133,12 +_,194 @@
+ 	public override void OnInitialize()
+ 	{
+@@ -141,13 +_,196 @@
  		foreach (WorldFileData item in orderedEnumerable) {
  			_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
  		}
@@ -77,7 +77,8 @@
 +		}
 +	}
 +
-+	private void AddIndividualWorldMigrationButtons() {
++	private void AddIndividualWorldMigrationButtons()
++	{
 +		UIExpandablePanel playerMigrationPanel = new UIExpandablePanel();
 +		_worldList.Add(playerMigrationPanel);
 +
@@ -214,12 +215,13 @@
 +		}
  	}
  
--	private bool CanWorldBePlayed(WorldFileData file) {
-+	internal static bool CanWorldBePlayed(WorldFileData file) {
+-	private bool CanWorldBePlayed(WorldFileData file)
++	internal static bool CanWorldBePlayed(WorldFileData file)
+ 	{
  		bool num = Main.ActivePlayerFileData.Player.difficulty == 3;
  		bool flag = file.GameMode == 3;
 -		return num == flag;
 +		return (num == flag) && SystemLoader.CanWorldBePlayed(Main.ActivePlayerFileData, file, out var _);
  	}
  
- 	public override void Draw(SpriteBatch spriteBatch) {
+ 	public override void Draw(SpriteBatch spriteBatch)

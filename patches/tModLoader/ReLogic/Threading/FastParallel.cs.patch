@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/ReLogic/Threading/FastParallel.cs
 +++ src/tModLoader/ReLogic/Threading/FastParallel.cs
-@@ -22,12 +_,25 @@
- 		}
+@@ -24,12 +_,25 @@
  
- 		public void Invoke() {
+ 		public void Invoke()
+ 		{
 +			/*
  			if (_fromInclusive != _toExclusive)
  				_action(_fromInclusive, _toExclusive, _context);
@@ -26,7 +26,7 @@
  
  	public static bool ForceTasksOnCallingThread { get; set; }
  
-@@ -45,7 +_,13 @@
+@@ -49,7 +_,13 @@
  			num2 = 1;
  
  		ThreadPriority priority = Thread.CurrentThread.Priority;
@@ -40,7 +40,7 @@
  		int num3 = num / num2;
  		int num4 = num % num2;
  		CountdownEvent countdownEvent = new CountdownEvent(num2);
-@@ -65,13 +_,34 @@
+@@ -69,14 +_,35 @@
  				ThreadPool.QueueUserWorkItem(InvokeTask, rangeTask);
  		}
  
@@ -58,7 +58,8 @@
 +		TrySetThreadPriority(Thread.CurrentThread, priority);
  	}
  
- 	private static void InvokeTask(object context) {
+ 	private static void InvokeTask(object context)
+ 	{
  		((RangeTask)context).Invoke();
 +	}
 +	

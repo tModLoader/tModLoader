@@ -40,5 +40,5 @@
 +
 +		public static bool[] NoMeleeSpeedVelocityScaling = Factory.CreateBoolSet(MonkStaffT2, MonkStaffT3, JoustingLance, ShadowJoustingLance, HallowJoustingLance);
  
- 		public static SettingsForCharacterPreview SimpleLoop(int startFrame, int frameCount, int delayPerFrame = 4, bool bounceLoop = false) {
- 			if (frameCount < 1)
+ 		public static SettingsForCharacterPreview SimpleLoop(int startFrame, int frameCount, int delayPerFrame = 4, bool bounceLoop = false)
+ 		{

@@ -21,9 +21,9 @@
 -	public List<TeleportPylonInfo> Pylons => _pylons;
 +	public IReadOnlyList<TeleportPylonInfo> Pylons => _pylons;
  
- 	public void Update() {
- 		if (Main.netMode != 1) {
-@@ -46,10 +_,18 @@
+ 	public void Update()
+ 	{
+@@ -49,10 +_,18 @@
  		Utils.Swap(ref _pylons, ref _pylonsOld);
  		_pylons.Clear();
  		foreach (TileEntity value in TileEntity.ByPosition.Values) {
@@ -45,7 +45,7 @@
  				TeleportPylonInfo item = teleportPylonInfo;
  				_pylons.Add(item);
  			}
-@@ -93,6 +_,8 @@
+@@ -99,6 +_,8 @@
  
  		if (flag) {
  			flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillarsAndMoonlordCountdown: true);
@@ -54,7 +54,7 @@
  			if (!flag)
  				key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  		}
-@@ -116,14 +_,18 @@
+@@ -122,14 +_,18 @@
  			if (!flag)
  				key = "Net.CannotTeleportToPylonBecauseNotMeetingBiomeRequirements";
  		}
@@ -75,7 +75,7 @@
  
  				if (num < 1)
  					num = 1;
-@@ -147,7 +_,7 @@
+@@ -153,7 +_,7 @@
  			}
  
  			if (!flag2) {
@@ -84,7 +84,7 @@
  				switch (num) {
  					default:
  						key = "Net.CannotTeleportToPylonBecausePlayerIsNotNearAPylon";
-@@ -161,9 +_,14 @@
+@@ -167,9 +_,14 @@
  				}
  			}
  		}
@@ -100,7 +100,7 @@
  			int num2 = 9;
  			int typeOfPylon = (int)info.TypeOfPylon;
  			int number = 0;
-@@ -179,17 +_,30 @@
+@@ -185,12 +_,23 @@
  		}
  	}
  
@@ -111,7 +111,8 @@
 +	public static bool IsPlayerNearAPylon(Player player)
 +		=> TileID.Sets.CountsAsPylon.Any(id => player.IsTileTypeInInteractionRange(id, TileReachCheckSettings.Pylons));
  
- 	private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
+ 	private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount)
+ 	{
 +		if (PylonLoader.ValidTeleportCheck_PreNPCCount(info, ref necessaryNPCCount) is bool value)
 +			return value;
 +		if (info.ModPylon is ModPylon pylon)
@@ -123,15 +124,16 @@
  
  		Point16 positionInTiles = info.PositionInTiles;
  		return DoesPositionHaveEnoughNPCs(necessaryNPCCount, positionInTiles);
- 	}
+@@ -198,6 +_,8 @@
  
- 	public static bool DoesPositionHaveEnoughNPCs(int necessaryNPCCount, Point16 centerPoint) {
+ 	public static bool DoesPositionHaveEnoughNPCs(int necessaryNPCCount, Point16 centerPoint)
+ 	{
 +		if (necessaryNPCCount <= 0) 
 +			return true;
  		Rectangle rectangle = new Rectangle(centerPoint.X - Main.buffScanAreaWidth / 2, centerPoint.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
  		int num = necessaryNPCCount;
  		for (int i = 0; i < 200; i++) {
-@@ -217,6 +_,10 @@
+@@ -227,6 +_,10 @@
  		if (Main.netMode != 2 && Main.DroneCameraTracker != null && Main.DroneCameraTracker.IsInUse())
  			return false;
  
@@ -141,4 +143,4 @@
 +			return pylon.ValidTeleportCheck_BiomeRequirements(info, _sceneMetrics);
  		switch (info.TypeOfPylon) {
  			case TeleportPylonType.SurfacePurity: {
- 					bool flag = (double)info.PositionInTiles.Y <= Main.worldSurface;
+ 				bool flag = (double)info.PositionInTiles.Y <= Main.worldSurface;

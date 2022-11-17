@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/AEntitySource_OnHit.cs
 +++ src/tModLoader/Terraria/DataStructures/AEntitySource_OnHit.cs
-@@ -1,12 +_,21 @@
+@@ -1,13 +_,22 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
@@ -15,10 +15,11 @@
  	public readonly Entity EntityStriking;
  	public readonly Entity EntityStruck;
  
--	public AEntitySource_OnHit(Entity entityStriking, Entity entityStruck) {
+-	public AEntitySource_OnHit(Entity entityStriking, Entity entityStruck)
 +	public string? Context { get; }
 +
-+	public EntitySource_OnHit(Entity entityStriking, Entity entityStruck, string? context = null) {
++	public EntitySource_OnHit(Entity entityStriking, Entity entityStruck, string? context = null)
+ 	{
  		EntityStriking = entityStriking;
  		EntityStruck = entityStruck;
 +		Context = context;

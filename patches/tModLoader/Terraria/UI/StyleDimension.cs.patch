@@ -9,6 +9,6 @@
 +		set => Precent = value;
 +	}
 +
- 	public StyleDimension(float pixels, float precent) {
+ 	public StyleDimension(float pixels, float precent)
+ 	{
  		Pixels = pixels;
- 		Precent = precent;

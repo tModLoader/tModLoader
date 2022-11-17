@@ -9,7 +9,7 @@
  	private bool _didClickSomething;
  	private bool _didClickSearchBar;
  
-@@ -141,16 +_,12 @@
+@@ -145,16 +_,12 @@
  		};
  
  		_progressPercentText = progressPercentText;
@@ -27,7 +27,7 @@
  		_unlocksProgressBar = uIColoredSliderSimple;
  		container.Append(uIColoredSliderSimple);
  	}
-@@ -490,7 +_,7 @@
+@@ -527,7 +_,7 @@
  		_progressReport = GetUnlockProgress();
  		string completionPercentText = GetCompletionPercentText();
  		_progressPercentText.SetText(completionPercentText);
@@ -35,4 +35,4 @@
 +		_unlocksProgressBar.RecalculateBars();
  	}
  
- 	private void Click_CloseSortingGrid(UIMouseEvent evt, UIElement listeningElement) {
+ 	private void Click_CloseSortingGrid(UIMouseEvent evt, UIElement listeningElement)

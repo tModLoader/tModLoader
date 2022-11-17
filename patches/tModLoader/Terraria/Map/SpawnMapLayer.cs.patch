@@ -6,6 +6,6 @@
  {
 +	public bool Visible { get; set; } = true;
 +
- 	public void Draw(ref MapOverlayDrawContext context, ref string text) {
+ 	public void Draw(ref MapOverlayDrawContext context, ref string text)
+ 	{
  		Player localPlayer = Main.LocalPlayer;
- 		Vector2 position = new Vector2(localPlayer.SpawnX, localPlayer.SpawnY);

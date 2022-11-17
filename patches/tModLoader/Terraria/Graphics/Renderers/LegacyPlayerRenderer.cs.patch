@@ -8,15 +8,15 @@
  
  namespace Terraria.Graphics.Renderers;
  
-@@ -30,6 +_,7 @@
- 	}
+@@ -32,6 +_,7 @@
  
- 	public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color)) {
+ 	public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color))
+ 	{
 +		/*
  		if (!drawPlayer.ShouldNotDraw) {
  			_drawData.Clear();
  			_dust.Clear();
-@@ -48,6 +_,9 @@
+@@ -50,6 +_,9 @@
  			CreateOutlines(alpha, scale, borderColor);
  			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
  		}
@@ -25,19 +25,20 @@
 +		DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, alpha: alpha, scale: scale, headOnly: true);
  	}
  
- 	private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -110,6 +_,10 @@
- 	}
+ 	private void CreateOutlines(float alpha, float scale, Color borderColor)
+@@ -114,6 +_,11 @@
  
- 	public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
+ 	public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f)
+ 	{
 +		DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
 +	}
 +
-+	private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float alpha = 1f, float scale = 1f, bool headOnly = false) {
++	private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float alpha = 1f, float scale = 1f, bool headOnly = false)
++	{
  		if (drawPlayer.ShouldNotDraw)
  			return;
  
-@@ -117,8 +_,22 @@
+@@ -121,8 +_,22 @@
  		_drawData.Clear();
  		_dust.Clear();
  		_gore.Clear();

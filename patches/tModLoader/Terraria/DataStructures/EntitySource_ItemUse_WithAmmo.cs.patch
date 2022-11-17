@@ -10,9 +10,9 @@
  	public readonly int AmmoItemIdUsed;
  
 -	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed)
--		: base(entity, item) {
+-		: base(entity, item)
 +	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed, string? context = null)
-+		: base(entity, item, context) {
++		: base(entity, item, context)
+ 	{
  		AmmoItemIdUsed = ammoItemIdUsed;
  	}
- }

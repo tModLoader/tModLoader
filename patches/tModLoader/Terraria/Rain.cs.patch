@@ -7,9 +7,9 @@
 +	// tML: Store the water style so that type can be used for modded rain.
 +	public byte waterStyle;
  
- 	public static void ClearRain() {
- 		for (int i = 0; i < Main.maxRain; i++) {
-@@ -132,6 +_,14 @@
+ 	public static void ClearRain()
+ 	{
+@@ -136,6 +_,14 @@
  		rain.scale = 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  		rain.velocity = Velocity * rain.scale;
  		rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);
@@ -24,7 +24,7 @@
  		rain.type = (byte)(Main.waterStyle * 3 + Main.rand.Next(3));
  		return num;
  	}
-@@ -174,6 +_,14 @@
+@@ -179,6 +_,14 @@
  		rain.scale = 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  		rain.velocity = Velocity * rain.scale;
  		rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);

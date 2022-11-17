@@ -13,5 +13,5 @@
  	public TeleportPylonType TypeOfPylon;
 +	public ModPylon ModPylon => PylonLoader.GetModPylon(TypeOfPylon);
  
- 	public bool Equals(TeleportPylonInfo other) {
- 		if (PositionInTiles == other.PositionInTiles)
+ 	public bool Equals(TeleportPylonInfo other)
+ 	{
