@@ -19,13 +19,14 @@
  	{
  		public readonly float PitchVariance;
  		public readonly float Volume;
-@@ -19,9 +_,28 @@
+@@ -19,9 +_,29 @@
  			Volume = volume;
  			Type = type;
  		}
 +
 +		// Added by TML:
-+		public void Apply(ref SoundStyle style) {
++		public void Apply(ref SoundStyle style)
++		{
 +			style.PitchVariance = PitchVariance;
 +			style.Volume = Volume;
 +			style.Type = Type;

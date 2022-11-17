@@ -742,15 +742,16 @@
  		Vector2 vector = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
  		float num21 = (float)Main.mouseX + Main.screenPosition.X - vector.X;
  		float num22 = (float)Main.mouseY + Main.screenPosition.Y - vector.Y;
-@@ -4057,6 +_,11 @@
+@@ -4057,6 +_,12 @@
  		if (Main.myPlayer != whoAmI)
  			return;
  
 +		OnHit_Inner(x, y, victim);
 +		PlayerLoader.OnHitAnything(this, x, y, victim);
 +	}
-+			
-+	private void OnHit_Inner(float x, float y, Entity victim) {
++
++	private void OnHit_Inner(float x, float y, Entity victim)
++	{
  		bool flag = victim is NPC && (((NPC)victim).type == 488 || ((NPC)victim).SpawnedFromStatue);
  		if (titaniumStormCooldown > 0)
  			flag = true;
@@ -5252,14 +5253,15 @@
  					item = inventory[k];
  					canShoot = true;
  					break;
-@@ -40975,10 +_,39 @@
+@@ -40975,10 +_,40 @@
  			}
  		}
  
 +		return item;
 +	}
 +
-+	internal void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
++	internal void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
++	{
 +		usedAmmoItemId = 0;
 +		Item item = ChooseAmmo(sItem);
 +		canShoot = item != null;
@@ -5336,7 +5338,7 @@
  
  		if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  			if (speed < 20f) {
-@@ -41052,11 +_,62 @@
+@@ -41052,11 +_,63 @@
  					speed = 20f;
  			}
  
@@ -5367,7 +5369,8 @@
 +	/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
 +	/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
 +	/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
-+	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot) {
++	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot)
++	{
 +		Item sItem = weapon;
 +		Item item = ammo;
 +		/*
@@ -5542,7 +5545,7 @@
  			}
  
  			inventory[i].TurnToAir();
-@@ -41655,12 +_,26 @@
+@@ -41655,12 +_,27 @@
  			loadouts[type].TryDroppingItems(this, itemSource_Death);
  		}
  
@@ -5564,7 +5567,8 @@
 +
 +		return inventory;
 +	}
-+	private void DropItems_End(IList<Item> startInventory) { //Split by tML.
++	private void DropItems_End(IList<Item> startInventory) // Split by tML.
++	{ 
 +		PlayerLoader.SetStartInventory(this, startInventory);
  		Main.mouseItem.TurnToAir();
  	}

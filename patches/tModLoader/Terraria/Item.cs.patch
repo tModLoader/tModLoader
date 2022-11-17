@@ -327,13 +327,14 @@
  	public bool sentry;
  	public int reuseDelay;
  	public bool newAndShiny;
-@@ -172,6 +_,18 @@
+@@ -172,6 +_,19 @@
  	public bool shimmered;
  	public float shimmerTime;
  
 +	public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
-+	public Item(int setDefaultsToType, int stack = 1, int prefix = 0) {
++	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
++	{
 +		SetDefaults(setDefaultsToType);
 +
 +		if (setDefaultsToType > 0)

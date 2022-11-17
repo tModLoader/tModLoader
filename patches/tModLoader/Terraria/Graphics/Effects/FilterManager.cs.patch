@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/FilterManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/FilterManager.cs
-@@ -189,4 +_,11 @@
+@@ -189,4 +_,12 @@
  
  		return true;
  	}
 +
-+	internal void DeactivateAll() {
++	internal void DeactivateAll()
++	{
 +		foreach (string key in _effects.Keys) {
 +			if (this[key].IsActive())
 +				this[key].Deactivate(new object[0]);

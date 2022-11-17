@@ -68,8 +68,8 @@ namespace System.Windows.Forms
 			text = "Retry"
 		};
 
-		public static DialogResult Show(string msg, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
-
+		public static DialogResult Show(string msg, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
+		{
 			var msgBox = new SDL.SDL_MessageBoxData {
 				flags = (SDL.SDL_MessageBoxFlags)icon,
 				message = msg,

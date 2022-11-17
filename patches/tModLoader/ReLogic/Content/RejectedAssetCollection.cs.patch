@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/RejectedAssetCollection.cs
 +++ src/tModLoader/ReLogic/Content/RejectedAssetCollection.cs
-@@ -8,20 +_,30 @@
+@@ -8,20 +_,31 @@
  
  	public void Reject(string assetPath, IRejectionReason reason)
  	{
@@ -11,7 +11,8 @@
  	}
  
 -	public bool IsRejected(string assetPath) => _rejectedAssetsAndReasons.ContainsKey(assetPath);
-+	public bool IsRejected(string assetPath) {
++	public bool IsRejected(string assetPath)
++	{
 +		lock (_rejectedAssetsAndReasons) {
 +			return _rejectedAssetsAndReasons.ContainsKey(assetPath);
 +		}

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,64 +_,154 @@
+@@ -1,64 +_,159 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
@@ -38,12 +38,14 @@
 +		public readonly IAsset asset;
 +		public readonly AssetRepository repository;
 +
-+		internal ContinuationScheduler(IAsset asset, AssetRepository repository) {
++		internal ContinuationScheduler(IAsset asset, AssetRepository repository)
++		{
 +			this.asset = asset;
 +			this.repository = repository;
 +		}
 +
-+		public void OnCompleted(Action continuation) {
++		public void OnCompleted(Action continuation)
++		{
 +			if (asset == null)
 +				throw new Exception("Main thread transition requested without an asset");
 +
@@ -60,11 +62,12 @@
 +		public void OnCompleted(Action action) => ContinuationScheduler.OnCompleted(action);
 +
 +		public bool IsCompleted => Monitor.IsEntered(ContinuationScheduler.repository._requestLock);
-+		public void GetResult() {}
++		public void GetResult() { }
 +	}
 +
 +	private static Thread _mainThread;
-+	public static void SetMainThread() {
++	public static void SetMainThread()
++	{
 +		if (_mainThread != null)
 +			throw new InvalidOperationException("Main thread already set");
 +
@@ -73,12 +76,14 @@
 +
 +	public static bool IsMainThread => Thread.CurrentThread == _mainThread;
 +
-+	public static void ThrowIfNotMainThread() {
++	public static void ThrowIfNotMainThread()
++	{
 +		if (!IsMainThread)
 +			throw new Exception("Must be on main thread");
 +	}
 +
-+	private void Invoke(Action action) {
++	private void Invoke(Action action)
++	{
 +		// Skip loading assets if this is a dedicated server; this avoids deadlocks on waiting for queue to empty
 +		if (_readers == null) {
 +			_assetTransferQueue.Clear();

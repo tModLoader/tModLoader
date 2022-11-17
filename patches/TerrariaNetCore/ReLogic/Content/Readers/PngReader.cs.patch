@@ -25,13 +25,14 @@
  	}
  
  	protected virtual void Dispose(bool disposing)
-@@ -52,4 +_,17 @@
+@@ -52,4 +_,18 @@
  	{
  		Dispose(disposing: true);
  	}
 +
 +#if NETCORE
-+	private static unsafe void PreMultiplyAlpha(IntPtr img, int len) {
++	private static unsafe void PreMultiplyAlpha(IntPtr img, int len)
++	{
 +		byte* colors = (byte*)img.ToPointer();
 +
 +		for (int i = 0; i < len; i += 4) {

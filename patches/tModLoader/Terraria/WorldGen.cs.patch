@@ -311,7 +311,7 @@
  						return;
  					}
  				}
-@@ -2670,6 +_,11 @@
+@@ -2670,6 +_,12 @@
  		if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  			Main.anglerQuestFinished = true;
  
@@ -319,7 +319,8 @@
 +		Main.QueueMainThreadAction(FinishPlayWorld);
 +	}
 +
-+	internal static void FinishPlayWorld() {
++	internal static void FinishPlayWorld()
++	{
  		Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
  		_lastSeed = Main.ActiveWorldFileData.Seed;
  		WorldFile.SetOngoingToTemps();
@@ -694,7 +695,7 @@
  		IsGeneratingHardMode = true;
  		TryProtectingSpawnedItems();
  		if (Main.rand == null)
-@@ -19375,10 +_,27 @@
+@@ -19375,10 +_,28 @@
  			}
  		}
  		else {
@@ -718,18 +719,20 @@
 +	}
 +
 +	// Split from smCallback
-+	private static void HardmodeWallsTask(GenerationProgress progress, GameConfiguration configuration) {
++	private static void HardmodeWallsTask(GenerationProgress progress, GameConfiguration configuration)
++	{
  		double num9 = (double)Main.maxTilesX / 4200.0;
  		int num10 = (int)(25.0 * num9);
  		ShapeData shapeData = new ShapeData();
-@@ -19408,13 +_,26 @@
+@@ -19408,13 +_,28 @@
  				shapeData.Clear();
  			}
  		}
 +	}
  
 +	// Split from smCallback
-+	private static void HardmodeAnnouncementTask(GenerationProgress progress, GameConfiguration configuration) {
++	private static void HardmodeAnnouncementTask(GenerationProgress progress, GameConfiguration configuration)
++	{
  		if (Main.netMode == 0)
  			Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
  		else if (Main.netMode == 2)
@@ -739,7 +742,8 @@
 +	}
 +
 +	// Split from smCallback
-+	private static void smCallback_End(List<GenPass> hardmodeTasks) {
++	private static void smCallback_End(List<GenPass> hardmodeTasks)
++	{
 +		SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
 +
 +		foreach (GenPass task in hardmodeTasks) {

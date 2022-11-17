@@ -58,8 +58,8 @@ namespace Terraria.Audio
 		/// <summary>
 		/// Call this before loading the FAudio dll
 		/// </summary>
-		public static void Init() {
-
+		public static void Init()
+		{
 			var gstreamer_dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", "Windows", "gstreamer");
 			Environment.SetEnvironmentVariable("GST_REGISTRY", Path.Combine(gstreamer_dir, "registry"));
 			Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(gstreamer_dir, "plugins"));

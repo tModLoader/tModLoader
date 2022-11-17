@@ -88,7 +88,7 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,68 @@
+@@ -147,23 +_,69 @@
  		}
  	}
  
@@ -152,7 +152,8 @@
 +
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
-+	public static void LaunchGame_(bool isServer) {
++	public static void LaunchGame_(bool isServer)
++	{
 +		Main.dedServ = isServer;
 +
 +		//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?

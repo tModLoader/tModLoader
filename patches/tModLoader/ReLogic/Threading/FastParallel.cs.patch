@@ -40,7 +40,7 @@
  		int num3 = num / num2;
  		int num4 = num % num2;
  		CountdownEvent countdownEvent = new CountdownEvent(num2);
-@@ -69,14 +_,35 @@
+@@ -69,14 +_,36 @@
  				ThreadPool.QueueUserWorkItem(InvokeTask, rangeTask);
  		}
  
@@ -62,10 +62,11 @@
  	{
  		((RangeTask)context).Invoke();
 +	}
-+	
++
 +	// Added by TML.
 +	// A workaround for a (Mac-specific?) issue with thread priority setting throwing 'ThreadStateException: Unable to set thread priority.'.
-+	private static void TrySetThreadPriority(Thread thread, ThreadPriority priority) {
++	private static void TrySetThreadPriority(Thread thread, ThreadPriority priority)
++	{
 +		if (skipPrioritySetAttempts)
 +			return;
 +

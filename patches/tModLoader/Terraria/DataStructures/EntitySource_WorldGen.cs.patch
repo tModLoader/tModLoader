@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_WorldGen.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_WorldGen.cs
-@@ -1,5 +_,12 @@
+@@ -1,5 +_,13 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
@@ -9,7 +9,8 @@
  {
 +	public string? Context { get; }
 +
-+	public EntitySource_WorldGen(string? context = null) {
++	public EntitySource_WorldGen(string? context = null)
++	{
 +		Context = context;
 +	}
  }

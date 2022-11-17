@@ -33,7 +33,7 @@
  			int minVertexIndex = _vertexBufferPosition * 4;
  			int numVertices = num3 * 4;
  			int startIndex = _vertexBufferPosition * 6;
-@@ -336,3 +_,355 @@
+@@ -336,3 +_,383 @@
  		}
  	}
  }
@@ -54,13 +54,15 @@
 +		public readonly int Index;
 +		public int Count;
 +
-+		public BatchDrawInfo(Texture2D texture, int index, int count) {
++		public BatchDrawInfo(Texture2D texture, int index, int count)
++		{
 +			Texture = texture;
 +			Index = index;
 +			Count = count;
 +		}
 +
-+		public BatchDrawInfo(Texture2D texture) {
++		public BatchDrawInfo(Texture2D texture)
++		{
 +			Texture = texture;
 +			Index = 0;
 +			Count = 0;
@@ -76,19 +78,22 @@
 +
 +		public int VertexCount => SpriteCount * 4;
 +
-+		public BatchDrawGroup() {
++		public BatchDrawGroup()
++		{
 +			VertexArray = new VertexPositionColorTexture[8192];
 +			BatchDraws = new BatchDrawInfo[2048];
 +			BatchDrawCount = 0;
 +			SpriteCount = 0;
 +		}
 +
-+		public void Reset() {
++		public void Reset()
++		{
 +			BatchDrawCount = 0;
 +			SpriteCount = 0;
 +		}
 +
-+		public void AddBatch(BatchDrawInfo batch) {
++		public void AddBatch(BatchDrawInfo batch)
++		{
 +			BatchDraws[BatchDrawCount++] = batch;
 +		}
 +	}
@@ -106,31 +111,38 @@
 +	private readonly GraphicsDevice _graphicsDevice;
 +	private SpriteBatch _spriteBatch;
 +
-+	public void Begin(RasterizerState rasterizer, Matrix transformation) {
++	public void Begin(RasterizerState rasterizer, Matrix transformation)
++	{
 +		Begin(SpriteSortMode.Deferred, null, null, null, rasterizer, null, transformation);
 +	}
 +
-+	public void Begin(Matrix transformation) {
++	public void Begin(Matrix transformation)
++	{
 +		Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, transformation);
 +	}
 +
-+	public void Begin() {
++	public void Begin()
++	{
 +		Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
 +	}
 +
-+	public void Begin(SpriteSortMode sortMode, BlendState blendState) {
++	public void Begin(SpriteSortMode sortMode, BlendState blendState)
++	{
 +		Begin(sortMode, blendState, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
 +	}
 +
-+	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState) {
++	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
++	{
 +		Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, null, Matrix.Identity);
 +	}
 +
-+	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect) {
++	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect)
++	{
 +		Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, Matrix.Identity);
 +	}
 +
-+	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix transformationMatrix) {
++	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix transformationMatrix)
++	{
 +		if (sortMode != 0 && sortMode != SpriteSortMode.Texture)
 +			throw new NotImplementedException("TileBatch only supports SpriteSortMode.Deferred and SpriteSortMode.Texture.");
 +
@@ -139,26 +151,31 @@
 +		_spriteBatch.End();
 +	}
 +
-+	public void End() {
++	public void End()
++	{
 +		if (_sortMode == SpriteSortMode.Deferred)
 +			DrawBatch();
 +		else if (_sortMode == SpriteSortMode.Texture)
 +			SortedDrawBatch();
 +	}
 +
-+	public void Draw(Texture2D texture, Vector2 position, VertexColors colors) {
++	public void Draw(Texture2D texture, Vector2 position, VertexColors colors)
++	{
 +		Draw(texture, position, null, colors, Vector2.Zero, 1f, SpriteEffects.None);
 +	}
 +
-+	public void Draw(Texture2D texture, Vector4 destination, VertexColors colors) {
++	public void Draw(Texture2D texture, Vector4 destination, VertexColors colors)
++	{
 +		InternalDraw(texture, destination, null, colors, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 +	}
 +
-+	public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors) {
++	public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors)
++	{
 +		InternalDraw(texture, destination, sourceRectangle, colors, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 +	}
 +
-+	public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, float scale, SpriteEffects effects) {
++	public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, float scale, SpriteEffects effects)
++	{
 +		float z;
 +		float w;
 +		if (sourceRectangle.HasValue) {
@@ -173,11 +190,13 @@
 +		InternalDraw(texture, new Vector4(position.X, position.Y, z, w), sourceRectangle, colors, 0f, origin * scale, effects, 0f);
 +	}
 +
-+	public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, SpriteEffects effects, float rotation) {
++	public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, SpriteEffects effects, float rotation)
++	{
 +		InternalDraw(texture, destination, sourceRectangle, colors, rotation, origin, effects, 0f);
 +	}
 +
-+	internal void InternalDraw(Texture2D texture, Vector4 destinationRectangle, Rectangle? sourceRectangle, VertexColors colors, float rotation, Vector2 origin, SpriteEffects effect, float depth) {
++	internal void InternalDraw(Texture2D texture, Vector4 destinationRectangle, Rectangle? sourceRectangle, VertexColors colors, float rotation, Vector2 origin, SpriteEffects effect, float depth)
++	{
 +		Vector4 sourceRectangle2 = default(Vector4);
 +		if (sourceRectangle.HasValue) {
 +			sourceRectangle2.X = sourceRectangle.Value.X;
@@ -213,7 +232,8 @@
 +		QueueSprite(destinationRectangle, -origin, colors, sourceRectangle2, texCoordTL, texCoordBR, texture, depth, rotation);
 +	}
 +
-+	public TileBatch(GraphicsDevice graphicsDevice) {
++	public TileBatch(GraphicsDevice graphicsDevice)
++	{
 +		_spriteBatch = new SpriteBatch(graphicsDevice);
 +		_graphicsDevice = graphicsDevice;
 +		for (int i = 0; i < 32; i++) {
@@ -223,16 +243,19 @@
 +		_sortedIndexBuffer = new DynamicIndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 12288, BufferUsage.WriteOnly);
 +	}
 +
-+	~TileBatch() {
++	~TileBatch()
++	{
 +		Dispose();
 +	}
 +
-+	public void Dispose() {
++	public void Dispose()
++	{
 +		_sortedIndexBuffer.Dispose();
 +		_spriteBatch.Dispose();
 +	}
 +
-+	private void SortAndApplyIndexData(BatchDrawGroup batchDrawGroup) {
++	private void SortAndApplyIndexData(BatchDrawGroup batchDrawGroup)
++	{
 +		Array.Sort(batchDrawGroup.BatchDraws, 0, batchDrawGroup.BatchDrawCount, TextureComparer.Instance);
 +		int num = 0;
 +		for (int i = 0; i < batchDrawGroup.BatchDrawCount; i++) {
@@ -252,7 +275,8 @@
 +		_sortedIndexBuffer.SetData(_sortedIndexData, 0, num);
 +	}
 +
-+	private void SortedDrawBatch() {
++	private void SortedDrawBatch()
++	{
 +		if (_lastBatchDrawGroupIndex == 0 && _batchDrawGroups[_lastBatchDrawGroupIndex].SpriteCount == 0)
 +			return;
 +
@@ -284,7 +308,8 @@
 +		_lastBatchDrawGroupIndex = 0;
 +	}
 +
-+	private void DrawBatch() {
++	private void DrawBatch()
++	{
 +		if (_lastBatchDrawGroupIndex == 0 && _batchDrawGroups[_lastBatchDrawGroupIndex].SpriteCount == 0)
 +			return;
 +
@@ -307,7 +332,8 @@
 +		_lastBatchDrawGroupIndex = 0;
 +	}
 +
-+	private void QueueSprite(Vector4 destinationRect, Vector2 origin, VertexColors colors, Vector4 sourceRectangle, Vector2 texCoordTL, Vector2 texCoordBR, Texture2D texture, float depth, float rotation) {
++	private void QueueSprite(Vector4 destinationRect, Vector2 origin, VertexColors colors, Vector4 sourceRectangle, Vector2 texCoordTL, Vector2 texCoordBR, Texture2D texture, float depth, float rotation)
++	{
 +		UpdateCurrentBatchDraw(texture);
 +		float num = origin.X / sourceRectangle.Z;
 +		float num2 = origin.Y / sourceRectangle.W;
@@ -360,7 +386,8 @@
 +		batchDrawGroup.SpriteCount++;
 +	}
 +
-+	private void UpdateCurrentBatchDraw(Texture2D texture) {
++	private void UpdateCurrentBatchDraw(Texture2D texture)
++	{
 +		BatchDrawGroup batchDrawGroup = _batchDrawGroups[_lastBatchDrawGroupIndex];
 +		if (batchDrawGroup.SpriteCount >= 2048) {
 +			_currentBatchDrawInfo.Count = 2048 - _currentBatchDrawInfo.Index;
@@ -380,7 +407,8 @@
 +		}
 +	}
 +
-+	private void FlushRemainingBatch() {
++	private void FlushRemainingBatch()
++	{
 +		BatchDrawGroup batchDrawGroup = _batchDrawGroups[_lastBatchDrawGroupIndex];
 +		if (_currentBatchDrawInfo.Index != batchDrawGroup.SpriteCount) {
 +			_currentBatchDrawInfo.Count = batchDrawGroup.SpriteCount - _currentBatchDrawInfo.Index;

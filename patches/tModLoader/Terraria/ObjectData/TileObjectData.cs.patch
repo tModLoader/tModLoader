@@ -179,13 +179,14 @@
  	}
  
  	public static bool CustomPlace(int type, int style)
-@@ -4742,5 +_,67 @@
+@@ -4742,5 +_,69 @@
  		TileObjectData tileData = GetTileData(type, style);
  		if (tileData != null)
  			baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);
 +	}
 +
-+	public static int GetTileStyle(Tile getTile) {
++	public static int GetTileStyle(Tile getTile)
++	{
 +		if (getTile == null || !getTile.active())
 +			return -1;
 +
@@ -214,7 +215,8 @@
 +		return num5;
 +	}
 +
-+	public static void GetTileInfo(Tile getTile, ref int style, ref int alternate) {
++	public static void GetTileInfo(Tile getTile, ref int style, ref int alternate)
++	{
 +		if (getTile == null || !getTile.active())
 +			return;
 +

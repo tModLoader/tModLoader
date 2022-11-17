@@ -976,14 +976,15 @@
  		if (ForcePartyHatOn)
  			return true;
  
-@@ -49772,6 +_,10 @@
+@@ -49772,6 +_,11 @@
  			num = TextureAssets.Npc[type].Height() / Main.npcFrameCount[type];
  		}
  
 +		NPCLoader.FindFrame(this, num);
 +	}
 +
-+	public void VanillaFindFrame(int num, bool isLikeATownNPC, int type) {
++	public void VanillaFindFrame(int num, bool isLikeATownNPC, int type)
++	{
  		int num2 = 0;
  		if (aiAction == 0)
  			num2 = ((velocity.Y < 0f) ? 2 : ((velocity.Y > 0f) ? 3 : ((velocity.X != 0f) ? 1 : 0)));

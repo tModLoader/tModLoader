@@ -8,12 +8,13 @@
  namespace ReLogic.Localization.IME;
  
  internal class FnaIme : PlatformIme
-@@ -12,6 +_,12 @@
+@@ -12,6 +_,13 @@
  
  	public override uint SelectedCandidate => 0u;
  
 +#if FNA
-+	public FnaIme() {
++	public FnaIme()
++	{
 +		TextInputEXT.TextInput += OnCharCallback;
 +	}
 +#endif

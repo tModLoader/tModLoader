@@ -37,13 +37,14 @@
  	}
  
  	public void Draw(SpriteBatch spriteBatch)
-@@ -98,5 +_,12 @@
+@@ -98,5 +_,13 @@
  		}
  
  		return MathHelper.Clamp(num, 0f, 1f);
 +	}
 +
-+	internal void DeactivateAll() {
++	internal void DeactivateAll()
++	{
 +		foreach (string key in _effects.Keys) {
 +			if (this[key].IsActive())
 +				this[key].Deactivate(new object[0]);
