@@ -10,11 +10,11 @@
 +#endif
  
  	public WindowsPlatform()
- 		: base(PlatformType.Windows) {
-@@ -17,6 +_,10 @@
- 	}
+ 		: base(PlatformType.Windows)
+@@ -19,6 +_,10 @@
  
- 	public override void InitializeClientServices(IntPtr windowHandle) {
+ 	public override void InitializeClientServices(IntPtr windowHandle)
+ 	{
 +#if NETCORE
 +		RegisterService((IImeService)new FnaIme());
 +	}
@@ -22,7 +22,7 @@
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);
  
-@@ -34,4 +_,5 @@
+@@ -37,4 +_,5 @@
  			base.Dispose(disposing);
  		}
  	}

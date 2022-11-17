@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Initializers/ChromaInitializer.cs
 +++ src/TerrariaNetCore/Terraria/Initializers/ChromaInitializer.cs
-@@ -488,8 +_,10 @@
+@@ -489,8 +_,10 @@
  
  		LoadSpecialRulesForDevices();
  		AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
@@ -10,4 +10,4 @@
 +#endif
  	}
  
- 	private static void LoadSpecialRulesForDevices() {
+ 	private static void LoadSpecialRulesForDevices()

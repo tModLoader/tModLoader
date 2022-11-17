@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/Peripherals/RGB/Razer/NativeMethods.cs
 +++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Razer/NativeMethods.cs
-@@ -161,35 +_,47 @@
+@@ -167,35 +_,47 @@
  		}
  	}
  
