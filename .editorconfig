@@ -35,6 +35,9 @@ dotnet_diagnostic.CA2211.severity = none
 
 #### .NET Coding Conventions ####
 
+# File-scoped namespaces
+	csharp_style_namespace_declarations = file_scoped:warning
+
 # Organize usings
 	dotnet_separate_import_directive_groups = false
 	dotnet_sort_system_directives_first = true

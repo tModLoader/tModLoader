@@ -6,27 +6,26 @@ using System.Reflection;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
 
-namespace Terraria.ModLoader.Assets
+namespace Terraria.ModLoader.Assets;
+
+public sealed class AssemblyResourcesContentSource : ContentSource
 {
-	public sealed class AssemblyResourcesContentSource : ContentSource
-	{
-		private readonly string rootPath;
-		private readonly Assembly assembly;
+	private readonly string rootPath;
+	private readonly Assembly assembly;
 
-		public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null) {
-			this.assembly = assembly;
+	public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null) {
+		this.assembly = assembly;
 
-			IEnumerable<string> resourceNames = assembly.GetManifestResourceNames();
-			if (rootPath != null) {
-				resourceNames = resourceNames
-					.Where(p => p.StartsWith(rootPath))
-					.Select(p => p.Substring(rootPath.Length));
-			}
-
-			this.rootPath = rootPath ?? "";
-			SetAssetNames(resourceNames);
+		IEnumerable<string> resourceNames = assembly.GetManifestResourceNames();
+		if (rootPath != null) {
+			resourceNames = resourceNames
+				.Where(p => p.StartsWith(rootPath))
+				.Select(p => p.Substring(rootPath.Length));
 		}
 
-		public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);
+		this.rootPath = rootPath ?? "";
+		SetAssetNames(resourceNames);
 	}
+
+	public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);
 }
