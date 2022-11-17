@@ -165,26 +165,26 @@
  
 +	private void BoringSetup_End() {
 +		/*
- 		hidesTopSkin = (drawPlayer.body == 82 || drawPlayer.body == 83 || drawPlayer.body == 93 || drawPlayer.body == 21 || drawPlayer.body == 22);
- 		hidesBottomSkin = (drawPlayer.body == 93 || drawPlayer.legs == 20 || drawPlayer.legs == 21);
+ 		hidesTopSkin = drawPlayer.body == 82 || drawPlayer.body == 83 || drawPlayer.body == 93 || drawPlayer.body == 21 || drawPlayer.body == 22;
+ 		hidesBottomSkin = drawPlayer.body == 93 || drawPlayer.legs == 20 || drawPlayer.legs == 21;
 +		*/
 +		hidesTopSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesTopSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesTopSkin[drawPlayer.legs]);
 +		hidesBottomSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesBottomSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesBottomSkin[drawPlayer.legs]);
 +		isBottomOverriden = PlayerDrawLayers.IsBottomOverridden(ref this);
 +
- 		drawFloatingTube = (drawPlayer.hasFloatingTube && !hideEntirePlayer);
+ 		drawFloatingTube = drawPlayer.hasFloatingTube && !hideEntirePlayer;
  		drawUnicornHorn = drawPlayer.hasUnicornHorn;
  		drawAngelHalo = drawPlayer.hasAngelHalo;
 @@ -1414,9 +_,9 @@
  	private void CreateCompositeData() {
  		frontShoulderOffset = Vector2.Zero;
  		backShoulderOffset = Vector2.Zero;
--		usesCompositeTorso = (drawPlayer.body > 0 && drawPlayer.body < 248 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
--		usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && drawPlayer.handon < 24 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
--		usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && drawPlayer.handoff < 16 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
-+		usesCompositeTorso = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
-+		usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
-+		usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
+-		usesCompositeTorso = drawPlayer.body > 0 && drawPlayer.body < 248 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body];
+-		usesCompositeFrontHandAcc = drawPlayer.handon > 0 && drawPlayer.handon < 24 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon];
+-		usesCompositeBackHandAcc = drawPlayer.handoff > 0 && drawPlayer.handoff < 16 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff];
++		usesCompositeTorso = drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body];
++		usesCompositeFrontHandAcc = drawPlayer.handon > 0 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon];
++		usesCompositeBackHandAcc = drawPlayer.handoff > 0 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff];
  		if (drawPlayer.body < 1)
  			usesCompositeTorso = true;
  

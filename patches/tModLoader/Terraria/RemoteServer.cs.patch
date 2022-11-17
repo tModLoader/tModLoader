@@ -13,6 +13,6 @@
  		catch (Exception value) {
  			try {
 +				Logging.Terraria.Error("Client Read Thread", value);
- 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
- 					streamWriter.WriteLine(DateTime.Now);
- 					streamWriter.WriteLine(value);
+ 				using StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true);
+ 				streamWriter.WriteLine(DateTime.Now);
+ 				streamWriter.WriteLine(value);

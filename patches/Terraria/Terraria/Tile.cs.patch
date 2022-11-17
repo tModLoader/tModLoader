@@ -1,11 +1,11 @@
 --- src/decompiled/Terraria/Tile.cs
 +++ src/Terraria/Terraria/Tile.cs
 @@ -1,8 +_,14 @@
- using Microsoft.Xna.Framework;
- using Terraria.DataStructures;
 +#if MONO
 +using System.Runtime.InteropServices;
 +#endif
+ using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
  
  namespace Terraria;
  

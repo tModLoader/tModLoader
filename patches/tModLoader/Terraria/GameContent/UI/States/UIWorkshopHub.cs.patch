@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorkshopHub.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopHub.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
+ using System;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
 +using ReLogic.Content;
- using System;
  using Terraria.Audio;
  using Terraria.GameContent.UI.Elements;
+ using Terraria.ID;
 @@ -10,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.States;

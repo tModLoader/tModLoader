@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetReaderCollection.cs
 +++ src/tModLoader/ReLogic/Content/AssetReaderCollection.cs
-@@ -1,25 +_,22 @@
- using ReLogic.Content.Readers;
+@@ -1,5 +_,5 @@
  using System.Collections.Generic;
 -using System.IO;
 +using System.Linq;
+ using ReLogic.Content.Readers;
  
  namespace ReLogic.Content;
- 
+@@ -7,19 +_,16 @@
  public class AssetReaderCollection
  {
  	private readonly Dictionary<string, IAssetReader> _readersByExtension = new Dictionary<string, IAssetReader>();
@@ -20,7 +20,7 @@
 -	}
 -
 -	public T Read<T>(Stream stream, string extension) where T : class {
--		if (!_readersByExtension.TryGetValue(extension.ToLower(), out IAssetReader value))
+-		if (!_readersByExtension.TryGetValue(extension.ToLower(), out var value))
 -			throw AssetLoadException.FromMissingReader(extension);
 -
 -		return value.FromStream<T>(stream);

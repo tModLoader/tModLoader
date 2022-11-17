@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
 @@ -4,6 +_,7 @@
- using System.Collections;
- using System.Collections.Generic;
  using System.IO;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Content.Sources;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria.Audio;

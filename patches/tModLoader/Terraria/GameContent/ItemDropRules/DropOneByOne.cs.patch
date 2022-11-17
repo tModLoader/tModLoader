@@ -5,21 +5,14 @@
  using System.Collections.Generic;
  
  namespace Terraria.GameContent.ItemDropRules;
-@@ -19,7 +_,11 @@
+@@ -19,11 +_,21 @@
  	}
  
  	public int itemId;
 -	public Parameters parameters;
-+
-+	public Parameters parameters {
-+		get;
-+		private init;
-+	}
++	public Parameters parameters { get; private init; }
  
- 	public List<IItemDropRuleChainAttempt> ChainedRules {
- 		get;
-@@ -27,6 +_,16 @@
- 	}
+ 	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
  
  	public DropOneByOne(int itemId, Parameters parameters) {
 +		if (parameters.MinimumItemDropsCount > parameters.MaximumItemDropsCount) {
@@ -35,7 +28,7 @@
  		ChainedRules = new List<IItemDropRuleChainAttempt>();
  		this.parameters = parameters;
  		this.itemId = itemId;
-@@ -40,7 +_,7 @@
+@@ -37,7 +_,7 @@
  			int minValue = parameters.MinimumStackPerChunkBase + activePlayersCount * parameters.BonusMinDropsPerChunkPerPlayer;
  			int num2 = parameters.MaximumStackPerChunkBase + activePlayersCount * parameters.BonusMaxDropsPerChunkPerPlayer;
  			for (int i = 0; i < num; i++) {

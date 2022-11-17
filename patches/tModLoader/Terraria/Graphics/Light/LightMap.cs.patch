@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
-@@ -195,9 +_,12 @@
+@@ -174,9 +_,12 @@
  	private int IndexOf(int x, int y) => x * Height + y;
  
  	public void SetSize(int width, int height) {

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
 +++ src/tModLoader/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
-@@ -235,7 +_,7 @@
+@@ -234,7 +_,7 @@
  					throw new ServerDownException(ex.Message);
  				default:
  					_logException("Unexpected status", ex);

@@ -1,13 +1,11 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemSlot.cs
 +++ src/tModLoader/Terraria/UI/ItemSlot.cs
-@@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
+@@ -1,4 +_,5 @@
  using System;
 +using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
- using Terraria.DataStructures;
- using Terraria.GameContent;
 @@ -10,12 +_,13 @@
  using Terraria.GameInput;
  using Terraria.ID;
@@ -304,7 +302,7 @@
 -			if ((uint)context <= 4u || context == 32)
 +			//if ((uint)context <= 4u || context == 32)
 +			if ((uint)context <= 4u && context >= 0 || context == 32)
- 				flag = (Main.player[Main.myPlayer].chest == -1);
+ 				flag = Main.player[Main.myPlayer].chest == -1;
  
  			if (ShiftInUse && flag && (!NotUsingGamepad || !Options.DisableQuickTrash)) {
 @@ -796,27 +_,29 @@
@@ -393,23 +391,23 @@
  				case 11:
  					if (Main.mouseRightRelease)
  						SwapVanityEquip(inv, context, slot, player);
- 					return;
+ 					break;
  				case 12:
 +				case -12:
  				case 25:
  				case 27:
  				case 33:
-@@ -1090,7 +_,8 @@
+@@ -1089,7 +_,8 @@
  
- 			int num = Main.superFastStack + 1;
- 			for (int i = 0; i < num; i++) {
--				if ((Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
-+				//if ((Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
-+				if ((Main.mouseItem.IsTheSameAs(inv[slot]) && ItemLoader.CanStack(Main.mouseItem, inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
- 					PickupItemIntoMouse(inv, context, slot, player);
- 					SoundEngine.PlaySound(12);
- 					RefreshStackSplitCooldown();
-@@ -1101,24 +_,33 @@
+ 						int num = Main.superFastStack + 1;
+ 						for (int i = 0; i < num; i++) {
+-							if ((Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
++							//if ((Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
++							if ((Main.mouseItem.IsTheSameAs(inv[slot]) && ItemLoader.CanStack(Main.mouseItem, inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
+ 								PickupItemIntoMouse(inv, context, slot, player);
+ 								SoundEngine.PlaySound(12);
+ 								RefreshStackSplitCooldown();
+@@ -1104,24 +_,33 @@
  
  	public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player) {
  		if (Main.mouseItem.type == 0) {
@@ -446,7 +444,7 @@
  
  		if (inv[slot].stack <= 0)
  			inv[slot] = new Item();
-@@ -1181,14 +_,17 @@
+@@ -1184,14 +_,17 @@
  		else if (item.type == 1869) {
  			player.OpenPresent(1869);
  		}
@@ -470,7 +468,7 @@
  		if (item.stack == 0)
  			item.SetDefaults();
  
-@@ -1199,22 +_,25 @@
+@@ -1202,22 +_,25 @@
  	}
  
  	private static void SwapVanityEquip(Item[] inv, int context, int slot, Player player) {
@@ -502,7 +500,7 @@
  		SoundEngine.PlaySound(7);
  		Recipe.FindRecipes();
  		if (inv[slot].stack > 0) {
-@@ -1240,12 +_,15 @@
+@@ -1243,12 +_,15 @@
  
  	private static void TryPickupDyeToCursor(int context, Item[] inv, int slot, Player player) {
  		bool flag = false;
@@ -520,7 +518,7 @@
  
  			inv[slot].SetDefaults();
  			SoundEngine.PlaySound(7);
-@@ -1345,12 +_,15 @@
+@@ -1348,12 +_,15 @@
  
  		_ = Main.instance.shop[Main.npcShop];
  		bool flag = (Main.mouseRight && rightClickIsValid) || (Main.mouseLeft && leftClickIsValid);
@@ -537,7 +535,7 @@
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
  
-@@ -1363,25 +_,36 @@
+@@ -1366,25 +_,36 @@
  					SoundEngine.PlaySound(18);
  				else
  					SoundEngine.PlaySound(7);
@@ -575,7 +573,7 @@
  		}
  	}
  
-@@ -1484,6 +_,12 @@
+@@ -1487,6 +_,12 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
  					break;
@@ -588,25 +586,25 @@
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
  					break;
-@@ -1606,6 +_,16 @@
+@@ -1609,6 +_,16 @@
  			case 33:
- 				num7 = 1;
+ 				num9 = 1;
  				break;
 +			// Added by TML:
 +			case -10:
-+				num7 = 11;
++				num9 = 11;
 +				break;
 +			case -11:
-+				num7 = 2;
++				num9 = 2;
 +				break;
 +			case -12:
-+				num7 = 1;
++				num9 = 1;
 +				break;
  			case 16:
- 				num7 = 4;
+ 				num9 = 4;
  				break;
-@@ -1628,7 +_,17 @@
- 			Rectangle rectangle = value6.Frame(3, 6, num7 % 3, num7 / 3);
+@@ -1631,7 +_,17 @@
+ 			Rectangle rectangle = value6.Frame(3, 6, num9 % 3, num9 / 3);
  			rectangle.Width -= 2;
  			rectangle.Height -= 2;
 +
@@ -623,19 +621,19 @@
  		}
  
  		Vector2 vector = value.Size() * inventoryScale;
-@@ -1687,7 +_,7 @@
+@@ -1690,7 +_,7 @@
  					int useAmmo = item.useAmmo;
- 					num8 = 0;
+ 					num10 = 0;
  					for (int j = 0; j < 58; j++) {
 -						if (inv[j].ammo == useAmmo)
 +						if (inv[j].stack > 0 && ItemLoader.CanChooseAmmo(item, inv[j], player))
- 							num8 += inv[j].stack;
+ 							num10 += inv[j].stack;
  					}
  				}
-@@ -1733,13 +_,17 @@
+@@ -1736,13 +_,17 @@
  				Vector2 position2 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  				Color color3 = item.GetAlpha(color) * ((float)player.potionDelay / (float)player.potionDelayTime);
- 				spriteBatch.Draw(TextureAssets.Cd.Value, position2, null, color3, 0f, default(Vector2), scale3, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(TextureAssets.Cd.Value, position2, null, color3, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 +
 +				// Extra context.
  			}
@@ -644,15 +642,15 @@
 +			if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
  				Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  				Color white = Color.White;
- 				spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, white, 0f, default(Vector2), scale3, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, white, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
  			}
 +
 +			// Extra context.
  		}
  		else if (context == 6) {
- 			Texture2D value13 = TextureAssets.Trash.Value;
-@@ -1824,6 +_,10 @@
- 		DrawItem_GetColorAndScale(item, scale, ref environmentColor, sizeLimit, ref frame, out Color itemLight, out float finalDrawScale);
+ 			Texture2D value11 = TextureAssets.Trash.Value;
+@@ -1827,6 +_,10 @@
+ 		DrawItem_GetColorAndScale(item, scale, ref environmentColor, sizeLimit, ref frame, out var itemLight, out var finalDrawScale);
  		SpriteEffects effects = SpriteEffects.None;
  		Vector2 origin = frame.Size() / 2f;
 +
@@ -662,7 +660,7 @@
  		spriteBatch.Draw(value, screenPositionForItemCenter, frame, item.GetAlpha(itemLight), 0f, origin, finalDrawScale, effects, 0f);
  		if (item.color != Color.Transparent) {
  			Color newColor = environmentColor;
-@@ -1852,6 +_,9 @@
+@@ -1855,6 +_,9 @@
  				}
  		}
  
@@ -672,7 +670,7 @@
  		return finalDrawScale;
  	}
  
-@@ -1899,6 +_,27 @@
+@@ -1902,6 +_,27 @@
  				if (inv == localPlayer.miscDyes)
  					result = 185 + slot;
  				break;
@@ -700,7 +698,7 @@
  			case 19:
  				result = 180;
  				break;
-@@ -2095,7 +_,7 @@
+@@ -2098,7 +_,7 @@
  			inv[slot] = ArmorSwap(inv[slot], out success);
  			if (success) {
  				Main.EquipPageSelected = 0;
@@ -709,7 +707,7 @@
  			}
  		}
  
-@@ -2126,7 +_,18 @@
+@@ -2129,7 +_,18 @@
  		return true;
  	}
  
@@ -729,7 +727,7 @@
  		if (isEquipLocked(item.type))
  			return true;
  
-@@ -2154,6 +_,7 @@
+@@ -2157,6 +_,7 @@
  		return false;
  	}
  
@@ -737,7 +735,7 @@
  	private static Item DyeSwap(Item item, out bool success) {
  		success = false;
  		if (item.dye <= 0)
-@@ -2168,8 +_,13 @@
+@@ -2171,8 +_,13 @@
  			}
  		}
  
@@ -752,7 +750,7 @@
  
  		if (dyeSlotCount < 0)
  			dyeSlotCount = 9;
-@@ -2211,6 +_,9 @@
+@@ -2214,6 +_,9 @@
  			player.armor[num + 2] = item.Clone();
  		}
  		else if (item.accessory) {
@@ -762,7 +760,7 @@
  			int num2 = 3;
  			for (int i = 3; i < 10; i++) {
  				if (player.IsItemSlotUnlockedAndUsable(i)) {
-@@ -2248,6 +_,8 @@
+@@ -2251,6 +_,8 @@
  			result = player.armor[num3].Clone();
  			player.armor[num3] = item.Clone();
  			accSlotToSwapTo = 0;
@@ -771,7 +769,7 @@
  		}
  
  		SoundEngine.PlaySound(7);
-@@ -2342,7 +_,7 @@
+@@ -2345,7 +_,7 @@
  	}
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false) {

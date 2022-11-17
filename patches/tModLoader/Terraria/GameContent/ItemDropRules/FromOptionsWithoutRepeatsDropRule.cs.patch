@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/FromOptionsWithoutRepeatsDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/FromOptionsWithoutRepeatsDropRule.cs
-@@ -29,7 +_,7 @@
+@@ -26,7 +_,7 @@
  				break;
  
  			int index = info.rng.Next(_temporaryAvailableItems.Count);

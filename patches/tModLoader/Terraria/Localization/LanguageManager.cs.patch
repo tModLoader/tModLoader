@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
 @@ -12,14 +_,15 @@
- using System.Threading;
+ using ReLogic.Graphics;
  using Terraria.GameContent;
  using Terraria.Initializers;
 +using Terraria.ModLoader;
@@ -18,7 +18,7 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -96,6 +_,10 @@
+@@ -93,6 +_,10 @@
  			}
  
  			LoadLanguage(culture);
@@ -29,7 +29,7 @@
  			ActiveCulture = culture;
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -137,10 +_,13 @@
+@@ -134,10 +_,13 @@
  		}
  	}
  
@@ -45,7 +45,7 @@
  			for (int i = 0; i < 100; i++) {
  				string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
  				if (text == value.Value)
-@@ -298,7 +_,7 @@
+@@ -291,7 +_,7 @@
  		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
  
@@ -54,7 +54,7 @@
  		return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
  	}
  
-@@ -306,7 +_,7 @@
+@@ -299,7 +_,7 @@
  		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
  

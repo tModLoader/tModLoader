@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
-@@ -5,6 +_,7 @@
+@@ -1,6 +_,7 @@
  using System;
  using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
- using Terraria.ID;
- 
- namespace Terraria.Audio;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Content;
 @@ -41,8 +_,8 @@
  	public SoundEffectInstance SoundInstancePixie;
  	public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];

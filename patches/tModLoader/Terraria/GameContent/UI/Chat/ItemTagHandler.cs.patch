@@ -22,8 +22,8 @@
  
  	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
  		Item item = new Item();
--		if (int.TryParse(text, out int result))
-+		if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
+-		if (int.TryParse(text, out var result))
++		if (int.TryParse(text, out var result) && result < ItemLoader.ItemCount)
 +			item.netDefaults(result);
 +
 +		// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
@@ -49,11 +49,11 @@
 +						break;
  					case 's':
  					case 'x': {
- 							if (int.TryParse(array[i].Substring(1), out int result3))
+ 							if (int.TryParse(array[i].Substring(1), out var result3))
 @@ -78,7 +_,7 @@
  						}
  					case 'p': {
- 							if (int.TryParse(array[i].Substring(1), out int result2))
+ 							if (int.TryParse(array[i].Substring(1), out var result2))
 -								item.Prefix((byte)Utils.Clamp(result2, 0, 85));
 +								item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  

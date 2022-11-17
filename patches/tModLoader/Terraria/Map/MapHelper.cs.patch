@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Map/MapHelper.cs
 +++ src/tModLoader/Terraria/Map/MapHelper.cs
 @@ -5,6 +_,8 @@
- using System.IO;
- using System.Threading;
+ using Ionic.Zlib;
+ using Microsoft.Xna.Framework;
  using Terraria.IO;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
@@ -61,24 +61,22 @@
  	}
  
  	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption) {
-@@ -2569,7 +_,10 @@
- 							byte b6 = 0;
- 							int num7;
- 							ushort num8;
-+							/*
- 							if (mapTile.Light <= 18) {
-+							*/
-+							if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
- 								flag2 = false;
- 								flag = false;
- 								num7 = 0;
-@@ -2727,7 +_,9 @@
+@@ -2570,7 +_,10 @@
+ 					byte b6 = 0;
+ 					int num7;
+ 					ushort num8;
++					/*
+ 					if (mapTile.Light <= 18) {
++					*/
++					if (mapTile.Light <= 18 || mapTile.Type >= modPosition) {
+ 						flag2 = false;
+ 						flag = false;
+ 						num7 = 0;
+@@ -2728,6 +_,7 @@
  
- 					deflateStream.Dispose();
- 					FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
-+					//patch file: text
- 				}
-+				MapIO.WriteModFile(text, isCloudSave);
- 			}
+ 			deflateStream.Dispose();
+ 			FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
++			MapIO.WriteModFile(text, isCloudSave);
  		}
  
+ 		noStatusText = false;

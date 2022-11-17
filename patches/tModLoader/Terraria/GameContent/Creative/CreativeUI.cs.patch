@@ -16,7 +16,7 @@
  {
  	public enum ItemSacrificeResult
  	{
-@@ -206,10 +_,22 @@
+@@ -203,10 +_,22 @@
  	}
  
  	public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
@@ -40,7 +40,7 @@
  		if (!Main.LocalPlayerCreativeTracker.ItemSacrifices.TryGetSacrificeNumbers(item.type, out amountWeHave, out amountNeededTotal))
  			return ItemSacrificeResult.CannotSacrifice;
  
-@@ -227,16 +_,17 @@
+@@ -224,16 +_,17 @@
  		}
  
  		bool num3 = num2 == num;

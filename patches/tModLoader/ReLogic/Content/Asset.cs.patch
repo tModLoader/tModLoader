@@ -1,13 +1,12 @@
 --- src/TerrariaNetCore/ReLogic/Content/Asset.cs
 +++ src/tModLoader/ReLogic/Content/Asset.cs
-@@ -1,5 +_,7 @@
- using ReLogic.Content.Sources;
+@@ -1,4 +_,6 @@
  using System;
 +using System.Threading;
 +using System.Threading.Tasks;
+ using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
- 
 @@ -7,6 +_,10 @@
  {
  	public static readonly Asset<T> Empty = new Asset<T>("");
@@ -16,31 +15,30 @@
 +
 +	private T ownValue;
 +
- 	public string Name {
- 		get;
- 		private set;
-@@ -29,10 +_,12 @@
- 		private set;
- 	}
+ 	public string Name { get; private set; }
  
--	public T Value {
--		get;
--		private set;
--	}
+ 	public bool IsLoaded => State == AssetState.Loaded;
+@@ -17,7 +_,12 @@
+ 
+ 	public IContentSource Source { get; private set; }
+ 
 +	public T Value => IsLoaded ? ownValue : DefaultValue;
 +
 +	internal Action Continuation { get; set; }
 +	Action IAsset.Continuation { set => Continuation = value; }
 +
+-	public T Value { get; private set; }
 +	public Action Wait { get; internal set; }
  
  	internal Asset(string name) {
  		State = AssetState.NotLoaded;
-@@ -44,9 +_,9 @@
+@@ -29,11 +_,9 @@
  	}
  
  	internal void Unload() {
--		(Value as IDisposable)?.Dispose();
+-		if (Value is IDisposable disposable)
+-			disposable.Dispose();
+-
 +		(ownValue as IDisposable)?.Dispose();
  		State = AssetState.NotLoaded;
 -		Value = null;
@@ -48,17 +46,19 @@
  		Source = null;
  	}
  
-@@ -54,13 +_,11 @@
+@@ -41,15 +_,11 @@
  		if (value == null)
  			throw new ArgumentNullException("value");
  
 -		if (source == null)
 -			throw new ArgumentNullException("source");
 -
--		(Value as IDisposable)?.Dispose();
-+		(ownValue as IDisposable)?.Dispose();
+-		if (Value is IDisposable disposable)
+-			disposable.Dispose();
+-
 -		State = AssetState.Loaded;
 -		Value = value;
++		(ownValue as IDisposable)?.Dispose();
 +		ownValue = value;
  		Source = source;
 +		Thread.MemoryBarrier();
@@ -66,7 +66,7 @@
  	}
  
  	internal void SetToLoadingState() {
-@@ -71,12 +_,12 @@
+@@ -60,12 +_,12 @@
  		if (IsDisposed)
  			return;
  

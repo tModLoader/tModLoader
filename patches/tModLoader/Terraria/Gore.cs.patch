@@ -13,7 +13,7 @@
  {
  	public static int goreTime = 600;
  	public Vector2 position;
-@@ -254,6 +_,11 @@
+@@ -255,6 +_,11 @@
  		if (Main.netMode == 2 || !active)
  			return;
  
@@ -25,7 +25,7 @@
  		if (sticky) {
  			if (DeactivateIfOutsideOfWorld())
  				return;
-@@ -849,11 +_,14 @@
+@@ -850,11 +_,14 @@
  				num38 *= 0.3f;
  			}
  
@@ -40,7 +40,7 @@
  	}
  
  	private void Gore_UpdateLeaf() {
-@@ -1013,16 +_,28 @@
+@@ -1014,16 +_,28 @@
  			alpha++;
  	}
  
@@ -73,7 +73,7 @@
  		if (Main.netMode == 2)
  			return 600;
  
-@@ -1062,6 +_,13 @@
+@@ -1063,6 +_,13 @@
  		Main.gore[num].alpha = 0;
  		Main.gore[num].rotation = 0f;
  		Main.gore[num].scale = Scale;
@@ -87,7 +87,7 @@
  		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  			Main.gore[num].type = Main.rand.Next(11, 14);
  			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
-@@ -1179,6 +_,12 @@
+@@ -1182,6 +_,12 @@
  	}
  
  	public Color GetAlpha(Color newColor) {

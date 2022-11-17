@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
-@@ -25,21 +_,21 @@
+@@ -22,21 +_,21 @@
  	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
  		ItemDropAttemptResult result;
  		if (!NPC.downedMechBoss1 && info.player.RollLuck(2500) == 0) {

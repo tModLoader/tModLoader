@@ -1,15 +1,14 @@
 --- src/Terraria/ReLogic/OS/Windows/Clipboard.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/Clipboard.cs
-@@ -1,7 +_,9 @@
- using ReLogic.OS.Base;
+@@ -1,6 +_,8 @@
  using System;
  using System.Threading;
 +#if WINDOWS
  using System.Windows.Forms;
 +#endif
+ using ReLogic.OS.Base;
  
  namespace ReLogic.OS.Windows;
- 
 @@ -15,7 +_,11 @@
  
  		try {

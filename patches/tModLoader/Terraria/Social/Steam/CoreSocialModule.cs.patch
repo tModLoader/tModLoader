@@ -1,12 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/CoreSocialModule.cs
 @@ -1,16 +_,18 @@
- using ReLogic.OS;
- using Steamworks;
  using System;
 +using System.IO;
  using System.Threading;
  using System.Windows.Forms;
+ using ReLogic.OS;
+ using Steamworks;
  using Terraria.Localization;
 +using Terraria.ModLoader.Engine;
  

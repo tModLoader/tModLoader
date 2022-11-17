@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -7,21 +_,15 @@
+@@ -7,18 +_,15 @@
  
  namespace ReLogic.Content.Sources;
  
@@ -15,15 +15,12 @@
  
  	public int EntryCount => _entries.Count;
  
--	public IContentValidator ContentValidator {
--		get;
--		set;
--	}
+-	public IContentValidator ContentValidator { get; set; }
 -
  	public ZipContentSource(string path)
  		: this(path, "") {
  	}
-@@ -32,7 +_,7 @@
+@@ -29,7 +_,7 @@
  			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
  
  		_basePath = CleanZipPath(contentDir);
@@ -32,7 +29,7 @@
  	}
  
  	public ZipContentSource(ZipFile zip, string contentDir) {
-@@ -41,55 +_,30 @@
+@@ -38,55 +_,30 @@
  			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
  
  		_basePath = CleanZipPath(contentDir);
@@ -42,7 +39,7 @@
  
 -	public bool HasAsset(string assetName) {
 +	public override Stream OpenStream(string assetName) {
--		if (!_entries.TryGetValue(assetName, out ZipEntry _))
+-		if (!_entries.TryGetValue(assetName, out var _))
 -			return false;
 -
 -		if (_rejections.IsRejected(assetName))
@@ -62,14 +59,14 @@
 -	}
 -
 -	public string GetExtension(string assetName) {
--		if (!_entries.TryGetValue(assetName, out ZipEntry value))
+-		if (!_entries.TryGetValue(assetName, out var value))
 -			throw AssetLoadException.FromMissingAsset(assetName);
 -
 -		return Path.GetExtension(value.FileName) ?? "";
 -	}
 -
 -	public Stream OpenStream(string assetName) {
- 		if (!_entries.TryGetValue(assetName, out ZipEntry value))
+ 		if (!_entries.TryGetValue(assetName, out var value))
  			throw AssetLoadException.FromMissingAsset(assetName);
  
  		MemoryStream memoryStream = new MemoryStream((int)value.UncompressedSize);
@@ -96,7 +93,7 @@
  	}
  
  	private static bool ZipPathContainsInvalidCharacters(string path) {
-@@ -122,14 +_,4 @@
+@@ -119,14 +_,4 @@
  	public void Dispose() {
  		Dispose(disposing: true);
  	}

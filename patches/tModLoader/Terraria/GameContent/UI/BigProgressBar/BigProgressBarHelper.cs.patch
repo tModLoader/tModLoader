@@ -59,4 +59,4 @@
 +		skipShield:
  		Rectangle value7 = value.Frame(1, verticalFrames);
  		spriteBatch.Draw(value, vector, value7, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
- 		Vector2 value8 = new Vector2(4f, 20f) + barIconFrame.Size() / 2f;
+ 		Vector2 vector2 = new Vector2(4f, 20f) + barIconFrame.Size() / 2f;

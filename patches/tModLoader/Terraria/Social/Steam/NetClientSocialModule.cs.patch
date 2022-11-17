@@ -10,8 +10,8 @@
  	}
  
  	private void CheckParameters() {
--		if (Program.LaunchParameters.ContainsKey("+connect_lobby") && ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out ulong result))
-+		if (ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out ulong result))
+-		if (Program.LaunchParameters.ContainsKey("+connect_lobby") && ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out var result))
++		if (ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out var result))
  			ConnectToLobby(result);
 +		else {
 +			Main.menuMode = 0;

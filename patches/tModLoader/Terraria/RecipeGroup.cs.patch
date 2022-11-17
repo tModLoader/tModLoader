@@ -19,7 +19,7 @@
 +			return existingRecipeGroup;
 +		}
 +
- 		int num = rec.RegisteredId = nextRecipeGroupIndex++;
+ 		int num = (rec.RegisteredId = nextRecipeGroupIndex++);
  		recipeGroups.Add(num, rec);
  		recipeGroupIDs.Add(name, num);
  		return num;

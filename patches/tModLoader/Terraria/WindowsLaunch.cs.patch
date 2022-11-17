@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/WindowsLaunch.cs
 +++ src/tModLoader/Terraria/WindowsLaunch.cs
-@@ -63,7 +_,8 @@
- 				return Assembly.Load(array);
- 			}
+@@ -62,7 +_,8 @@
+ 			stream.Read(array, 0, array.Length);
+ 			return Assembly.Load(array);
  		};
 -
 +		if (File.Exists("ReLogic.dll"))

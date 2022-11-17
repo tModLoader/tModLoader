@@ -4,9 +4,9 @@
 +#if SERVER && WINDOWS
 +using NATUPNPLib;
 +#endif
- using ReLogic.OS;
  using System;
  using System.IO;
+ using System.Linq;
 @@ -41,6 +_,10 @@
  	public static bool SpamCheck = false;
  	public static bool HasClients;
@@ -18,7 +18,7 @@
  	public static MessageBuffer fullBuffer = new MessageBuffer();
  	private static int _currentRequestId;
  	private static UdpClient BroadcastClient = null;
-@@ -110,9 +_,42 @@
+@@ -108,9 +_,42 @@
  	}
  
  	private static void OpenPort(int port) {

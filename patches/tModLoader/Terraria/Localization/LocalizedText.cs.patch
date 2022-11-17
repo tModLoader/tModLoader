@@ -5,16 +5,16 @@
  using System.ComponentModel;
  using System.Text.RegularExpressions;
  
-@@ -8,10 +_,19 @@
+@@ -8,8 +_,20 @@
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
  	public readonly string Key;
+-
+-	public string Value { get; private set; }
 +	public LocalizedText Override;
 +	private string value;
- 
- 	public string Value {
--		get;
--		private set;
++
++	public string Value {
 +		get {
 +			if (Override != null)
 +				return Override.Value;
@@ -24,10 +24,11 @@
 +		private set {
 +			this.value = value;
 +		}
- 	}
++	}
  
  	internal LocalizedText(string key, string text) {
-@@ -62,9 +_,72 @@
+ 		Key = key;
+@@ -59,9 +_,72 @@
  		return text.Value;
  	}
  

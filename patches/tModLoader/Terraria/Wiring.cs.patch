@@ -68,7 +68,7 @@
  		if (Main.netMode == 1)
  			return;
  
-@@ -816,6 +_,9 @@
+@@ -808,6 +_,9 @@
  		if (!tile.active())
  			return;
  
@@ -78,7 +78,7 @@
  		switch (type) {
  			case 144:
  				HitSwitch(i, j);
-@@ -1181,14 +_,14 @@
+@@ -1173,14 +_,14 @@
  			return;
  		}
  
@@ -95,7 +95,7 @@
  			int num67 = 1;
  			if (Main.rand.Next(2) == 0)
  				num67 = -1;
-@@ -1276,7 +_,7 @@
+@@ -1268,7 +_,7 @@
  
  					break;
  				}
@@ -104,7 +104,7 @@
  				ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
  				break;
  			case 429: {
-@@ -1667,6 +_,7 @@
+@@ -1659,6 +_,7 @@
  				}
  			case 35:
  			case 139:
@@ -112,7 +112,7 @@
  				WorldGen.SwitchMB(i, j);
  				break;
  			case 207:
-@@ -2072,14 +_,24 @@
+@@ -2064,14 +_,24 @@
  										break;
  
  									int num120 = 50;
@@ -139,7 +139,7 @@
  										}
  									}
  
-@@ -2088,6 +_,7 @@
+@@ -2080,6 +_,7 @@
  										Main.npc[num123].position.X = num112 - Main.npc[num123].width / 2;
  										Main.npc[num123].position.Y = num113 - Main.npc[num123].height - 1;
  										NetMessage.SendData(23, -1, -1, null, num123);
@@ -147,7 +147,7 @@
  									}
  
  									break;
-@@ -2097,14 +_,24 @@
+@@ -2089,14 +_,24 @@
  										break;
  
  									int num116 = 50;
@@ -174,7 +174,7 @@
  										}
  									}
  
-@@ -2113,6 +_,7 @@
+@@ -2105,6 +_,7 @@
  										Main.npc[num119].position.X = num112 - Main.npc[num119].width / 2;
  										Main.npc[num119].position.Y = num113 - Main.npc[num119].height - 1;
  										NetMessage.SendData(23, -1, -1, null, num119);
@@ -182,7 +182,7 @@
  									}
  
  									break;
-@@ -2195,6 +_,8 @@
+@@ -2187,6 +_,8 @@
  				NetMessage.SendTileSquare(-1, i, j);
  				break;
  		}
@@ -191,7 +191,7 @@
  	}
  
  	public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn) {
-@@ -2499,7 +_,7 @@
+@@ -2491,7 +_,7 @@
  		return false;
  	}
  
@@ -200,7 +200,7 @@
  		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  			return;
  
-@@ -2516,7 +_,7 @@
+@@ -2508,7 +_,7 @@
  		}
  	}
  
@@ -209,7 +209,7 @@
  		Main.tile[i, j].inActive(inActive: false);
  		WorldGen.SquareTileFrame(i, j, resetFrame: false);
  		if (Main.netMode != 1)
-@@ -2598,7 +_,11 @@
+@@ -2590,7 +_,11 @@
  		if (!flag)
  			MassWireOperationStep(user, pe, toolMode, ref wireCount, ref actuatorCount);
  

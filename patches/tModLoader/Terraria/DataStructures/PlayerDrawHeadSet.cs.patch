@@ -104,15 +104,15 @@
  		if (drawPlayer.beard > 0 && drawPlayer.beard < 5)
  			Main.instance.LoadAccBeard(drawPlayer.beard);
  
--		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out bool _, out helmetIsOverFullHair);
+-		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out var _, out helmetIsOverFullHair);
  		hairOffset = drawPlayer.GetHairDrawOffset(drawPlayer.hair, hatHair);
  		hairOffset.Y *= drawPlayer.Directions.Y;
  		helmetOffset = drawPlayer.GetHelmetDrawOffset();
  		helmetOffset.Y *= drawPlayer.Directions.Y;
 +		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 +		/*
- 		helmetIsTall = (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158);
- 		helmetIsNormal = (!helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 282 && drawPlayer.head != 28);
+ 		helmetIsTall = drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158;
+ 		helmetIsNormal = !helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 282 && drawPlayer.head != 28;
 +		*/
  	}
  }

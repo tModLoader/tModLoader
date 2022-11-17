@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
-@@ -25,7 +_,7 @@
+@@ -22,7 +_,7 @@
  	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
  		ItemDropAttemptResult result;
  		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {

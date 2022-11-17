@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TreePaintSystemData.cs
 +++ src/tModLoader/Terraria/GameContent/TreePaintSystemData.cs
-@@ -1,4 +_,5 @@
- using System;
+@@ -1,3 +_,6 @@
++using System;
 +using Terraria.ModLoader;
- 
++
  namespace Terraria.GameContent;
  
-@@ -215,6 +_,11 @@
+ public static class TreePaintSystemData
+@@ -213,6 +_,11 @@
  			case 5:
  				switch (tileStyle) {
  					default:
@@ -18,7 +19,7 @@
  						return WoodPurity;
  					case 0:
  						return WoodCorruption;
-@@ -234,6 +_,11 @@
+@@ -232,6 +_,11 @@
  			case 323:
  				switch (tileStyle) {
  					default:
@@ -30,7 +31,7 @@
  						return WoodPurity;
  					case 0:
  					case 4:
-@@ -276,6 +_,27 @@
+@@ -274,6 +_,27 @@
  	public static TreePaintingSettings GetTreeFoliageSettings(int foliageIndex, int foliageStyle) {
  		switch (foliageIndex) {
  			default:

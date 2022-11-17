@@ -9,16 +9,16 @@
  
  namespace Terraria.GameContent.UI.ResourceSets;
  
-@@ -26,6 +_,8 @@
+@@ -25,6 +_,8 @@
+ 	private Asset<Texture2D> _panelRightHP;
  	private Asset<Texture2D> _panelMiddleMP;
  	private Asset<Texture2D> _panelRightMP;
- 
++	
 +	public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
-+
- 	public string NameKey {
- 		get;
- 		private set;
-@@ -73,6 +_,10 @@
+ 
+ 	public string NameKey { get; private set; }
+ 
+@@ -67,6 +_,10 @@
  			DrawLifeBarText(spriteBatch, new Vector2(num3, num2));
  		}
  
@@ -29,7 +29,7 @@
  		Vector2 vector = new Vector2(num3, num2);
  		vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
  		bool isHovered = false;
-@@ -85,18 +_,29 @@
+@@ -79,18 +_,29 @@
  		resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
@@ -59,7 +59,7 @@
  		isHovered = false;
  		Vector2 vector2 = new Vector2(num3 - 10, num2 + 24);
  		vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
-@@ -109,18 +_,26 @@
+@@ -103,18 +_,26 @@
  		resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
  		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
  		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
@@ -86,8 +86,8 @@
  	}
  
  	private static void DrawManaText(SpriteBatch spriteBatch) {
-@@ -146,14 +_,22 @@
- 		spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, value + new Vector2(vector.X * 0.5f, 0f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
+@@ -140,14 +_,22 @@
+ 		spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, vector + new Vector2(vector2.X * 0.5f, 0f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
  	}
  
 +	private PlayerStatsSnapshot preparedSnapshot;
@@ -109,7 +109,7 @@
  	}
  
  	private void LifePanelDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
-@@ -167,6 +_,10 @@
+@@ -161,6 +_,10 @@
  		}
  		else if (elementIndex != firstElementIndex) {
  			sprite = _panelMiddleHP;
@@ -120,7 +120,7 @@
  		}
  	}
  
-@@ -181,25 +_,46 @@
+@@ -175,25 +_,46 @@
  		}
  		else if (elementIndex != firstElementIndex) {
  			sprite = _panelMiddleMP;
@@ -167,7 +167,7 @@
  		drawScale = 1f;
  		Rectangle value = sprite.Frame();
  		int num3 = (int)((float)value.Width * (1f - num));
-@@ -212,6 +_,10 @@
+@@ -206,6 +_,10 @@
  	private void ManaFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
  		sprite = _mpFill;
  		FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);

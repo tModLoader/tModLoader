@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/GameContent/DoorOpeningHelper.cs
 +++ src/tModLoader/Terraria/GameContent/DoorOpeningHelper.cs
 @@ -2,6 +_,8 @@
- using System;
  using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
  using Terraria.GameInput;
 +using Terraria.ID;
 +using Terraria.ModLoader;

@@ -9,7 +9,7 @@
  {
  	public delegate bool TileActionAttempt(int x, int y);
  
-@@ -286,7 +_,8 @@
+@@ -279,7 +_,8 @@
  		ArrayList arrayList = new ArrayList();
  		string text = "";
  		for (int i = 0; i < brokenArgs.Length; i++) {
@@ -19,7 +19,7 @@
  				if (text != "") {
  					arrayList.Add(text);
  					text = "";
-@@ -364,6 +_,12 @@
+@@ -357,6 +_,12 @@
  							num2 -= 16;
  
  						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
@@ -32,7 +32,7 @@
  						if (num3 < 0)
  							num3 = 0;
  
-@@ -645,6 +_,11 @@
+@@ -638,6 +_,11 @@
  		return array;
  	}
  
@@ -44,7 +44,7 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1311,14 +_,17 @@
+@@ -1304,14 +_,17 @@
  			text.Substring(0, maxCharactersDisplayed);
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;

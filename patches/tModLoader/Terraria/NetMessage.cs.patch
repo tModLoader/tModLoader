@@ -1,13 +1,12 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
-@@ -3,6 +_,7 @@
- using Microsoft.Xna.Framework.Graphics.PackedVector;
+@@ -1,5 +_,6 @@
  using System;
  using System.IO;
 +using System.Threading;
- using Terraria.Chat;
- using Terraria.DataStructures;
- using Terraria.GameContent;
+ using Ionic.Zlib;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics.PackedVector;
 @@ -10,6 +_,8 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
@@ -62,9 +61,9 @@
 -						writer.Write(player4.hairDye);
 +							writer.Write7BitEncodedInt(player4.hairDye);
 +
- 						BitsByte bb16 = (byte)0;
+ 						BitsByte bitsByte16 = (byte)0;
  						for (int num11 = 0; num11 < 8; num11++) {
- 							bb16[num11] = player4.hideVisibleAccessory[num11];
+ 							bitsByte16[num11] = player4.hideVisibleAccessory[num11];
 @@ -173,12 +_,19 @@
  
  						num13 = item6.stack;
@@ -140,25 +139,25 @@
  				case 24:
 @@ -678,12 +_,17 @@
  						if (projectile.knockBack != 0f)
- 							bb24[5] = true;
+ 							bitsByte24[5] = true;
  
 -						if (projectile.type > 0 && projectile.type < 1022 && ProjectileID.Sets.NeedsUUID[projectile.type])
 +						if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
- 							bb24[7] = true;
+ 							bitsByte24[7] = true;
  
  						if (projectile.originalDamage != 0)
- 							bb24[6] = true;
+ 							bitsByte24[6] = true;
  
 +						byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
 +						bool hasExtraAI = extraAI?.Length > 0;
 +
-+						bb24[2] = hasExtraAI; // This bit is unused by vanilla.
++						bitsByte24[2] = hasExtraAI; // This bit is unused by vanilla.
 +
- 						if ((byte)bb25 != 0)
- 							bb24[2] = true;
+ 						if ((byte)bitsByte25 != 0)
+ 							bitsByte24[2] = true;
  
 @@ -715,11 +_,18 @@
- 						if (bb25[0])
+ 						if (bitsByte25[0])
  							writer.Write(projectile.ai[2]);
  
 +						if (hasExtraAI) {
@@ -272,7 +271,7 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
-@@ -1297,9 +_,17 @@
+@@ -1296,9 +_,17 @@
  						writer.Write((short)number);
  						writer.Write((short)number2);
  						Item item2 = Main.player[(int)number4].inventory[(int)number3];
@@ -293,7 +292,7 @@
  						break;
  					}
  				case 124: {
-@@ -1363,9 +_,17 @@
+@@ -1361,9 +_,17 @@
  						writer.Write((short)number);
  						writer.Write((short)number2);
  						Item item = Main.player[(int)number4].inventory[(int)number3];
@@ -314,7 +313,7 @@
  						break;
  					}
  				case 134: {
-@@ -1446,6 +_,15 @@
+@@ -1444,6 +_,15 @@
  				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num23);
  
  			writer.BaseStream.Position = position;
@@ -330,7 +329,7 @@
  			writer.Write((ushort)num23);
  			writer.BaseStream.Position = num23;
  			if (Main.netMode == 1) {
-@@ -1658,7 +_,7 @@
+@@ -1656,7 +_,7 @@
  
  			buffer[num].writeLocked = false;
  			if (msgType == 2 && Main.netMode == 2) {
@@ -339,7 +338,7 @@
  				Netplay.Clients[num].PendingTerminationApproved = true;
  			}
  		}
-@@ -1684,11 +_,11 @@
+@@ -1681,11 +_,11 @@
  		int num6 = 0;
  		byte b = 0;
  		byte[] array = new byte[16];
@@ -353,7 +352,7 @@
  					num4 = (short)(num4 + 1);
  					continue;
  				}
-@@ -1735,7 +_,7 @@
+@@ -1732,7 +_,7 @@
  						}
  					}
  
@@ -362,7 +361,7 @@
  						short num8 = (short)Chest.FindChest(j, i);
  						if (num8 != -1) {
  							_compressChestList[num] = num8;
-@@ -1755,7 +_,7 @@
+@@ -1752,7 +_,7 @@
  							_compressSignList[num2++] = num10;
  					}
  
@@ -371,7 +370,7 @@
  						short num11 = (short)Sign.ReadSign(j, i);
  						if (num11 != -1)
  							_compressSignList[num2++] = num11;
-@@ -1945,9 +_,17 @@
+@@ -1942,9 +_,17 @@
  			writer.Write(sign.text);
  		}
  
@@ -390,7 +389,7 @@
  		}
  	}
  
-@@ -1959,16 +_,20 @@
+@@ -1955,16 +_,20 @@
  	}
  
  	public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height) {
@@ -412,7 +411,7 @@
  
  					continue;
  				}
-@@ -2147,7 +_,7 @@
+@@ -2143,7 +_,7 @@
  
  		num3 = reader.ReadInt16();
  		for (int m = 0; m < num3; m++) {
@@ -421,7 +420,7 @@
  			TileEntity.ByID[tileEntity.ID] = tileEntity;
  			TileEntity.ByPosition[tileEntity.Position] = tileEntity;
  		}
-@@ -2156,20 +_,42 @@
+@@ -2152,20 +_,42 @@
  	}
  
  	public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256) {
@@ -466,7 +465,7 @@
  				}
  			}
  		}
-@@ -2185,12 +_,16 @@
+@@ -2181,12 +_,16 @@
  
  			int num = 0;
  			int num2 = buffer[bufferIndex].totalData;
@@ -479,12 +478,12 @@
  					int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
  					if (num2 >= num3) {
  						long position = buffer[bufferIndex].reader.BaseStream.Position;
--						buffer[bufferIndex].GetData(num + 2, num3 - 2, out int _);
+-						buffer[bufferIndex].GetData(num + 2, num3 - 2, out var _);
 +						buffer[bufferIndex].GetData(num + 2, num3 - 2, out msgId);
  						if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
  							Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
  							buffer[bufferIndex].checkBytes = false;
-@@ -2206,10 +_,13 @@
+@@ -2202,10 +_,13 @@
  					break;
  				}
  			}
@@ -499,7 +498,7 @@
  				num2 = 0;
  				num = 0;
  			}
-@@ -2220,6 +_,8 @@
+@@ -2216,6 +_,8 @@
  				}
  
  				buffer[bufferIndex].totalData = num2;
@@ -508,7 +507,7 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
-@@ -2427,7 +_,7 @@
+@@ -2423,7 +_,7 @@
  		}
  
  		if (!flag) {
@@ -517,7 +516,7 @@
  			Netplay.Disconnect = true;
  		}
  	}
-@@ -2479,11 +_,12 @@
+@@ -2475,11 +_,12 @@
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
@@ -531,7 +530,7 @@
  			}
  
  			return;
-@@ -2495,7 +_,7 @@
+@@ -2491,7 +_,7 @@
  			Netplay.Clients[plr].IsAnnouncementCompleted = false;
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  			if (Main.dedServ)

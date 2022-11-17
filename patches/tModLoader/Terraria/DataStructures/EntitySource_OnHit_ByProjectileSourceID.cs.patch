@@ -10,9 +10,8 @@
  {
  	public readonly int SourceId;
  
-@@ -8,4 +_,5 @@
- 		: base(entityStriking, entityStruck) {
+@@ -9,3 +_,4 @@
  		SourceId = projectileSourceId;
  	}
-+*/
  }
++*/

@@ -4,8 +4,8 @@
  using System;
  using System.IO;
 +#if FNA
-+using SDL2;
 +using System.Runtime.InteropServices;
++using SDL2;
 +#endif
  
  namespace Terraria.Utilities;

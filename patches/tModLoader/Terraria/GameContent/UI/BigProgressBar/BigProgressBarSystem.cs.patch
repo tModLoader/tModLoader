@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
 @@ -2,10 +_,11 @@
+ using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
- using System.Collections.Generic;
  using Terraria.IO;
 +using Terraria.ModLoader;
  
@@ -54,8 +54,8 @@
 +		if (nPC.BossBar != null) {
 +			bigProgressBar = nPC.BossBar;
 +		}
--		if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
-+		else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
+-		if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out var value))
++		else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out var value))
  			bigProgressBar = value;
  
  		if (!bigProgressBar.ValidateAndCollectNecessaryInfo(ref info))

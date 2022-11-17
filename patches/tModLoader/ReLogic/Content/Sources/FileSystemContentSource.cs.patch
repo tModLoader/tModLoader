@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/FileSystemContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
-@@ -4,16 +_,10 @@
+@@ -4,13 +_,10 @@
  
  namespace ReLogic.Content.Sources;
  
@@ -11,14 +11,11 @@
  	private readonly Dictionary<string, string> _nameToAbsolutePath = new Dictionary<string, string>();
 -	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
 -
--	public IContentValidator ContentValidator {
--		get;
--		set;
--	}
+-	public IContentValidator ContentValidator { get; set; }
  
  	public int FileCount => _nameToAbsolutePath.Count;
  
-@@ -23,33 +_,10 @@
+@@ -20,33 +_,10 @@
  			_basePath += Path.DirectorySeparatorChar;
  
  		BuildNameToAbsolutePathDictionary();
@@ -42,7 +39,7 @@
 -	}
 -
 -	public string GetExtension(string assetName) {
--		if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
+-		if (!_nameToAbsolutePath.TryGetValue(assetName, out var value))
 -			throw AssetLoadException.FromMissingAsset(assetName);
 -
 -		return Path.GetExtension(value) ?? "";
@@ -51,10 +48,10 @@
  
 -	public Stream OpenStream(string assetName) {
 +	public override Stream OpenStream(string assetName) {
- 		if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
+ 		if (!_nameToAbsolutePath.TryGetValue(assetName, out var value))
  			throw AssetLoadException.FromMissingAsset(assetName);
  
-@@ -69,21 +_,10 @@
+@@ -66,21 +_,10 @@
  			string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < files.Length; i++) {
  				string fullPath = Path.GetFullPath(files[i]);

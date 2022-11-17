@@ -8,7 +8,7 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -157,6 +_,8 @@
+@@ -155,6 +_,8 @@
  	}
  
  	private static void OnConnectionAccepted(ISocket client) {
@@ -17,7 +17,7 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -295,7 +_,7 @@
+@@ -294,7 +_,7 @@
  			}
  
  			if (Clients[i].IsActive) {
@@ -26,7 +26,7 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -390,6 +_,12 @@
+@@ -389,6 +_,12 @@
  	}
  
  	private static void ClientLoopSetup(RemoteAddress address) {
@@ -39,7 +39,7 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -406,11 +_,11 @@
+@@ -405,11 +_,11 @@
  		Main.netMode = 1;
  		Main.menuMode = 14;
  		if (!Main.autoPass)
@@ -53,7 +53,7 @@
  	}
  
  	private static void InnerClientLoop() {
-@@ -448,6 +_,7 @@
+@@ -447,6 +_,7 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
@@ -61,7 +61,7 @@
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
-@@ -499,6 +_,10 @@
+@@ -498,6 +_,10 @@
  			}
  
  			if (!Main.gameMenu) {
@@ -72,7 +72,7 @@
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
  				MapHelper.noStatusText = true;
-@@ -563,7 +_,22 @@
+@@ -561,7 +_,22 @@
  		thread.Start();
  	}
  
