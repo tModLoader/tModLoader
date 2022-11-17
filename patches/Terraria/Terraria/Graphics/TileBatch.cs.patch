@@ -15,6 +15,24 @@
  public class TileBatch
  {
  	private struct SpriteData
+@@ -305,8 +_,17 @@
+ 				}
+ 			}
+ 
++			//TODO:
++			// Decompilation bugfix.
++			// Remove this change whenever ICSharpCode.Decompiler 8.0.0 or 8.0.0.*-preview3 releases.
++
++			/*
+ 			int offsetInBytes = _vertexBufferPosition * System.Runtime.CompilerServices.Unsafe.SizeOf<VertexPositionColorTexture>() * 4;
+ 			_vertexBuffer.SetData(offsetInBytes, _vertices, 0, num3 * 4, System.Runtime.CompilerServices.Unsafe.SizeOf<VertexPositionColorTexture>(), options);
++			*/
++			int offsetInBytes = _vertexBufferPosition * sizeof(VertexPositionColorTexture) * 4;
++			_vertexBuffer.SetData(offsetInBytes, _vertices, 0, num3 * 4, sizeof(VertexPositionColorTexture), options);
++
+ 			int minVertexIndex = _vertexBufferPosition * 4;
+ 			int numVertices = num3 * 4;
+ 			int startIndex = _vertexBufferPosition * 6;
 @@ -318,3 +_,355 @@
  		}
  	}
