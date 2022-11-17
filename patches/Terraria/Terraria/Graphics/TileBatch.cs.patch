@@ -15,7 +15,7 @@
  public class TileBatch
  {
  	private struct SpriteData
-@@ -305,8 +_,17 @@
+@@ -323,8 +_,17 @@
  				}
  			}
  
@@ -33,7 +33,7 @@
  			int minVertexIndex = _vertexBufferPosition * 4;
  			int numVertices = num3 * 4;
  			int startIndex = _vertexBufferPosition * 6;
-@@ -318,3 +_,355 @@
+@@ -336,3 +_,355 @@
  		}
  	}
  }

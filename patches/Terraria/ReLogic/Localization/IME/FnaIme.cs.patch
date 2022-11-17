@@ -18,12 +18,12 @@
 +	}
 +#endif
 +
- 	private void OnCharCallback(char key) {
+ 	private void OnCharCallback(char key)
+ 	{
  		if (base.IsEnabled)
- 			OnKeyPress(key);
-@@ -21,6 +_,11 @@
- 
- 	protected override void Dispose(bool disposing) {
+@@ -23,6 +_,11 @@
+ 	protected override void Dispose(bool disposing)
+ 	{
  		if (!_disposedValue) {
 +#if FNA
 +			if (disposing)

@@ -18,10 +18,10 @@
  	public static MessageBuffer fullBuffer = new MessageBuffer();
  	private static int _currentRequestId;
  	private static UdpClient BroadcastClient = null;
-@@ -108,9 +_,42 @@
- 	}
+@@ -115,10 +_,43 @@
  
- 	private static void OpenPort(int port) {
+ 	private static void OpenPort(int port)
+ 	{
 +#if SERVER && WINDOWS
 +		string localIPAddress = GetLocalIPAddress();
 +		if (_upnpnat == null) {
@@ -43,7 +43,8 @@
 +#endif
  	}
  
- 	private static void ClosePort(int port) {
+ 	private static void ClosePort(int port)
+ 	{
 +#if SERVER && WINDOWS
 +		string localIPAddress = GetLocalIPAddress();
 +		bool flag = false;
@@ -60,4 +61,4 @@
 +#endif
  	}
  
- 	private static void ServerFullWriteCallBack(object state) {
+ 	private static void ServerFullWriteCallBack(object state)

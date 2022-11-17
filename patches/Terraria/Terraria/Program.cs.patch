@@ -17,7 +17,7 @@
  	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  	public static string SavePath;
  	public const string TerrariaSaveFolderPath = "Terraria";
-@@ -144,6 +_,9 @@
+@@ -153,6 +_,9 @@
  
  		LaunchParameters = Utils.ParseArguements(args);
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));

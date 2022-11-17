@@ -5,7 +5,7 @@
  using System;
  using System.IO;
  using System.Reflection;
-@@ -62,6 +_,11 @@
+@@ -64,6 +_,11 @@
  			return Assembly.Load(array);
  		};
  

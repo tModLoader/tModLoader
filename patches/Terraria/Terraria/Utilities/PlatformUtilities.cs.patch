@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Utilities/PlatformUtilities.cs
 +++ src/Terraria/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,11 +_,49 @@
+@@ -1,12 +_,50 @@
  using System;
  using System.IO;
 +#if FNA
@@ -45,7 +45,8 @@
 +		stream.Write(array, 0, array.Length);
 +	}
 +#else
- 	public static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
+ 	public static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
+ 	{
  		throw new NotSupportedException("Use Bitmap to save png images on windows");
  	}
 +#endif
