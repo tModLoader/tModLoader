@@ -400,7 +400,7 @@ namespace Terraria.ModLoader.Setup
 				foreach (var r in projectReferences) {
 					w.WriteStartElement("EmbeddedResource");
 					w.WriteAttributeString("Include", $"../{r.Name}/bin/$(Configuration)/$(TargetFramework)/{r.Name}.dll");
-					w.WriteAttributeString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
+					w.WriteElementString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
 					w.WriteEndElement();
 				}
 
