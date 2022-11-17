@@ -1,10 +1,9 @@
-﻿namespace Terraria.ModLoader.UI.ModBrowser
+﻿namespace Terraria.ModLoader.UI.ModBrowser;
+
+public enum UpdateFilter
 {
-	public enum UpdateFilter
-	{
-		All,
-		Available,
-		UpdateOnly,
-		InstalledOnly
-	}
+	All,
+	Available,
+	UpdateOnly,
+	InstalledOnly
 }
