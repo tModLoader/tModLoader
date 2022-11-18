@@ -9,6 +9,16 @@
  
  namespace ReLogic.OS.Windows;
  
+@@ -97,7 +_,8 @@
+ 		FO_RENAME
+ 	}
+ 
++	//TML: Removed packing, as it would cause crashes.
+-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
++	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto /*, Pack = 1*/)]
+ 	private struct SHFILEOPSTRUCT
+ 	{
+ 		public IntPtr hwnd;
 @@ -121,8 +_,13 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
