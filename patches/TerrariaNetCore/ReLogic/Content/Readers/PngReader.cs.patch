@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/Content/Readers/PngReader.cs
 +++ src/TerrariaNetCore/ReLogic/Content/Readers/PngReader.cs
-@@ -21,6 +_,16 @@
+@@ -23,6 +_,16 @@
  		if (typeof(T) != typeof(Texture2D))
  			throw AssetLoadException.FromInvalidReader<PngReader, T>();
  
@@ -17,21 +17,22 @@
  		Texture2D texture2D = Texture2D.FromStream(_graphicsDevice, stream);
  		int num = texture2D.Width * texture2D.Height;
  		if (!_colorProcessingCache.IsValueCreated || _colorProcessingCache.Value.Length < num)
-@@ -34,6 +_,7 @@
+@@ -36,6 +_,7 @@
  
  		texture2D.SetData(value, 0, num);
  		return texture2D as T;
 +#endif
  	}
  
- 	protected virtual void Dispose(bool disposing) {
-@@ -48,4 +_,17 @@
- 	public void Dispose() {
+ 	protected virtual void Dispose(bool disposing)
+@@ -52,4 +_,18 @@
+ 	{
  		Dispose(disposing: true);
  	}
 +
 +#if NETCORE
-+	private static unsafe void PreMultiplyAlpha(IntPtr img, int len) {
++	private static unsafe void PreMultiplyAlpha(IntPtr img, int len)
++	{
 +		byte* colors = (byte*)img.ToPointer();
 +
 +		for (int i = 0; i < len; i += 4) {

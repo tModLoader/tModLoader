@@ -6,14 +6,15 @@
  namespace Terraria.DataStructures;
  
  public class EntitySource_ItemOpen : IEntitySource
-@@ -5,8 +_,11 @@
+@@ -5,9 +_,12 @@
  	public readonly Entity Entity;
  	public readonly int ItemType;
  
--	public EntitySource_ItemOpen(Entity entity, int itemType) {
+-	public EntitySource_ItemOpen(Entity entity, int itemType)
 +	public string? Context { get; }
 +
-+	public EntitySource_ItemOpen(Entity entity, int itemType, string? context = null) {
++	public EntitySource_ItemOpen(Entity entity, int itemType, string? context = null)
+ 	{
  		Entity = entity;
  		ItemType = itemType;
 +		Context = context;

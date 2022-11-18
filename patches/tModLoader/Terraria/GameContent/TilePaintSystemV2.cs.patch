@@ -9,10 +9,10 @@
  
  namespace Terraria.GameContent;
  
-@@ -74,7 +_,36 @@
- 		public TreeFoliageVariantKey Key;
+@@ -80,7 +_,36 @@
  
- 		public override void Prepare() {
+ 		public override void Prepare()
+ 		{
 -			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
 +			Asset<Texture2D> asset;
 +
@@ -47,10 +47,10 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -88,7 +_,21 @@
- 		public TreeFoliageVariantKey Key;
+@@ -96,7 +_,21 @@
  
- 		public override void Prepare() {
+ 		public override void Prepare()
+ 		{
 -			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
 +			Asset<Texture2D> asset;
 +
@@ -70,10 +70,10 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -102,7 +_,19 @@
- 		public TileVariationkey Key;
+@@ -112,7 +_,19 @@
  
- 		public override void Prepare() {
+ 		public override void Prepare()
+ 		{
 -			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
 +			Asset<Texture2D> asset;
 +
@@ -91,10 +91,10 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -116,7 +_,7 @@
- 		public WallVariationKey Key;
+@@ -128,7 +_,7 @@
  
- 		public override void Prepare() {
+ 		public override void Prepare()
+ 		{
 -			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Wall[Key.WallType].Name);
 +			Asset<Texture2D> asset = TextureAssets.Wall[Key.WallType];
  			PrepareTextureIfNecessary(asset.Value);

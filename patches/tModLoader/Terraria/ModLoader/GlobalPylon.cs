@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Terraria.Map;
 
@@ -25,7 +25,8 @@ public abstract class GlobalPylon : ModType
 	/// <param name="drawColor"> The draw color of the icon. This is bright white when the player is near a Pylon, but gray and translucent otherwise. </param>
 	/// <param name="deselectedScale"> The scale of the icon if it is NOT currently being hovered over. In vanilla, this is 1f, or 100%. </param>
 	/// <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
-	public virtual bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, ref TeleportPylonInfo pylonInfo, ref bool isNearPylon, ref Color drawColor, ref float deselectedScale, ref float selectedScale) {
+	public virtual bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, ref TeleportPylonInfo pylonInfo, ref bool isNearPylon, ref Color drawColor, ref float deselectedScale, ref float selectedScale)
+	{
 		return true;
 	}
 
@@ -43,7 +44,8 @@ public abstract class GlobalPylon : ModType
 	/// <br>If the server disagrees with the client that the given pylon CANNOT be placed for any given reason, the server will reject the placement
 	/// and subsequently break the associated tile.</br>
 	/// </remarks>
-	public virtual bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+	public virtual bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType)
+	{
 		return null;
 	}
 
@@ -60,7 +62,8 @@ public abstract class GlobalPylon : ModType
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
 	/// <param name="defaultNecessaryNPCCount"> The default amount of NPCs nearby required to satisfy a VANILLA pylon. </param>
-	public virtual bool? ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount) {
+	public virtual bool? ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount)
+	{
 		return null;
 	}
 
@@ -76,7 +79,8 @@ public abstract class GlobalPylon : ModType
 	/// as whatever one returns false (if any) will determine the error message sent to the player.
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
-	public virtual bool? ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo) {
+	public virtual bool? ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo)
+	{
 		return null;
 	}
 
@@ -93,7 +97,8 @@ public abstract class GlobalPylon : ModType
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
 	/// <param name="sceneData"> The scene metrics data AT THE LOCATION of the destination pylon, NOT the player. </param>
-	public virtual bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
+	public virtual bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData)
+	{
 		return null;
 	}
 

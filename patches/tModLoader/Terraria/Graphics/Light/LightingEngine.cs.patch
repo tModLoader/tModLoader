@@ -8,7 +8,7 @@
  
  namespace Terraria.Graphics.Light;
  
-@@ -161,6 +_,13 @@
+@@ -171,6 +_,13 @@
  				break;
  		}
  
@@ -22,7 +22,7 @@
  		if (Main.player[Main.myPlayer].nightVision) {
  			workingLightMap.LightDecayThroughAir *= 1.03f;
  			workingLightMap.LightDecayThroughSolid *= 1.03f;
-@@ -183,6 +_,15 @@
+@@ -193,6 +_,15 @@
  
  		workingLightMap.LightDecayThroughAir *= Player.airLightDecay;
  		workingLightMap.LightDecayThroughSolid *= Player.solidLightDecay;
@@ -37,4 +37,4 @@
 +		workingLightMap.LightDecayThroughSolid *= throughSolid;
  	}
  
- 	private void ApplyPerFrameLights() {
+ 	private void ApplyPerFrameLights()

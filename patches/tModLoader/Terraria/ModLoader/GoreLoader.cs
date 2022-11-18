@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +17,8 @@ public static class GoreLoader
 	public static int GoreCount { get; private set; } = GoreID.Count;
 
 	/// <summary> Registers a new gore with the provided texture. </summary>
-	public static void AddGoreFromTexture<TGore>(Mod mod, string texture) where TGore : ModGore, new() {
+	public static void AddGoreFromTexture<TGore>(Mod mod, string texture) where TGore : ModGore, new()
+	{
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
 
@@ -34,7 +35,8 @@ public static class GoreLoader
 	}
 
 	//Called by ModGore.Register
-	internal static void RegisterModGore(ModGore modGore) {
+	internal static void RegisterModGore(ModGore modGore)
+	{
 		int id = GoreCount++;
 
 		modGore.Type = id;
@@ -42,7 +44,8 @@ public static class GoreLoader
 		gores[id] = modGore;
 	}
 
-	internal static void AutoloadGores(Mod mod) {
+	internal static void AutoloadGores(Mod mod)
+	{
 		foreach (string fullTexturePath in mod.RootContentSource.EnumerateAssets().Where(t => t.Contains("Gores/"))) {
 			string texturePath = Path.ChangeExtension(fullTexturePath, null);
 
@@ -56,7 +59,8 @@ public static class GoreLoader
 	}
 
 	//in Terraria.GameContent.ChildSafety make SafeGore internal and not readonly
-	internal static void ResizeAndFillArrays() {
+	internal static void ResizeAndFillArrays()
+	{
 		//Textures
 		Array.Resize(ref TextureAssets.Gore, GoreCount);
 
@@ -74,26 +78,30 @@ public static class GoreLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		gores.Clear();
 
 		GoreCount = GoreID.Count;
 	}
 
-	internal static ModGore GetModGore(int type) {
+	internal static ModGore GetModGore(int type)
+	{
 		gores.TryGetValue(type, out var modGore);
 
 		return modGore;
 	}
 
-	internal static void SetupUpdateType(Gore gore) {
+	internal static void SetupUpdateType(Gore gore)
+	{
 		if (gore.ModGore != null && gore.ModGore.UpdateType > 0) {
 			gore.realType = gore.type;
 			gore.type = gore.ModGore.UpdateType;
 		}
 	}
 
-	internal static void TakeDownUpdateType(Gore gore) {
+	internal static void TakeDownUpdateType(Gore gore)
+	{
 		if (gore.realType > 0) {
 			gore.type = gore.realType;
 			gore.realType = 0;

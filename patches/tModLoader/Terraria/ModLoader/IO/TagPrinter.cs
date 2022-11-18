@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +11,13 @@ public class TagPrinter
 	private string indent = "";
 	private StringBuilder sb = new StringBuilder();
 
-	public override string ToString() {
+	public override string ToString()
+	{
 		return sb.ToString();
 	}
 
-	private string TypeString(Type type) {
+	private string TypeString(Type type)
+	{
 		if (type == typeof(byte)) return "byte";
 		if (type == typeof(short)) return "short";
 		if (type == typeof(int)) return "int";
@@ -30,7 +32,8 @@ public class TagPrinter
 		throw new ArgumentException("Unknown Type: " + type);
 	}
 
-	private void WriteList<T>(char start, char end, bool multiline, IEnumerable<T> list, Action<T> write) {
+	private void WriteList<T>(char start, char end, bool multiline, IEnumerable<T> list, Action<T> write)
+	{
 		sb.Append(start);
 		indent += "  ";
 		var first = true;
@@ -46,7 +49,8 @@ public class TagPrinter
 		sb.Append(end);
 	}
 
-	private void WriteEntry(KeyValuePair<string, object> entry) {
+	private void WriteEntry(KeyValuePair<string, object> entry)
+	{
 		if (entry.Value == null) {
 			sb.Append('"').Append(entry.Key).Append("\" = null");
 			return;
@@ -64,7 +68,8 @@ public class TagPrinter
 		WriteValue(entry.Value);
 	}
 
-	private void WriteValue(object elem) {
+	private void WriteValue(object elem)
+	{
 		if (elem is byte)
 			sb.Append((byte)elem);
 		else if (elem is short)
@@ -101,13 +106,15 @@ public class TagPrinter
 		}
 	}
 
-	public static string Print(TagCompound tag) {
+	public static string Print(TagCompound tag)
+	{
 		var printer = new TagPrinter();
 		printer.WriteValue(tag);
 		return printer.ToString();
 	}
 
-	public static string Print(KeyValuePair<string, object> entry) {
+	public static string Print(KeyValuePair<string, object> entry)
+	{
 		var printer = new TagPrinter();
 		printer.WriteEntry(entry);
 		return printer.ToString();

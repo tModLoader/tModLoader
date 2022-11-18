@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,8 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 {
 	protected override DefinitionOptionElement<NPCDefinition> CreateDefinitionOptionElement() => new NPCDefinitionOptionElement(Value, 0.5f);
 
-	protected override List<DefinitionOptionElement<NPCDefinition>> CreateDefinitionOptionElementList() {
+	protected override List<DefinitionOptionElement<NPCDefinition>> CreateDefinitionOptionElementList()
+	{
 		OptionScale = 0.8f;
 		var options = new List<DefinitionOptionElement<NPCDefinition>>();
 
@@ -31,7 +32,8 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 		return options;
 	}
 
-	protected override List<DefinitionOptionElement<NPCDefinition>> GetPassedOptionElements() {
+	protected override List<DefinitionOptionElement<NPCDefinition>> GetPassedOptionElements()
+	{
 		var passed = new List<DefinitionOptionElement<NPCDefinition>>();
 
 		foreach (var option in Options) {
@@ -57,10 +59,12 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 
 internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinition>
 {
-	public NPCDefinitionOptionElement(NPCDefinition definition, float scale = .75f) : base(definition, scale) {
+	public NPCDefinitionOptionElement(NPCDefinition definition, float scale = .75f) : base(definition, scale)
+	{
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		CalculatedStyle dimensions = base.GetInnerDimensions();
 
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);

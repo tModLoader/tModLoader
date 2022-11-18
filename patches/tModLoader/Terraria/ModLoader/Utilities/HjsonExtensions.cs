@@ -1,4 +1,4 @@
-﻿using Hjson;
+using Hjson;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -44,7 +44,8 @@ internal static class HjsonExtensions
 	private static readonly Func<char, bool> needsQuotes = GetDelegateOfMethod<Func<char, bool>>(HjsonWriter, nameof(needsQuotes));
 	private static readonly Func<char, bool> isPunctuatorChar = GetDelegateOfMethod<Func<char, bool>>(HjsonValue, "IsPunctuatorChar");
 
-	public static string ToFancyHjsonString(this JsonValue value, HjsonStyle? style = null) {
+	public static string ToFancyHjsonString(this JsonValue value, HjsonStyle? style = null)
+	{
 		var stringWriter = new StringWriter();
 		var usedStyle = style ?? DefaultHjsonStyle;
 
@@ -53,7 +54,8 @@ internal static class HjsonExtensions
 		return stringWriter.ToString();
 	}
 
-	private static void WriteFancyHjsonValue(TextWriter tw, JsonValue value, int level, in HjsonStyle style, bool hasComments = false, bool noIndentation = false, bool isRootObject = false) {
+	private static void WriteFancyHjsonValue(TextWriter tw, JsonValue value, int level, in HjsonStyle style, bool hasComments = false, bool noIndentation = false, bool isRootObject = false)
+	{
 		switch (value.JsonType) {
 			case JsonType.Object:
 				var jObject = value.Qo();
@@ -179,7 +181,8 @@ internal static class HjsonExtensions
 		}
 	}
 
-	public static string GetRawString(this JsonValue value) {
+	public static string GetRawString(this JsonValue value)
+	{
 		return value.JsonType switch {
 			JsonType.String => ((string)value) ?? "",
 			JsonType.Number => ((IFormattable)value).ToString("G", NumberFormatInfo.InvariantInfo).ToLowerInvariant(),
@@ -187,12 +190,14 @@ internal static class HjsonExtensions
 		};
 	}
 
-	private static void NewLine(TextWriter tw, int level) {
+	private static void NewLine(TextWriter tw, int level)
+	{
 		tw.Write("\r\n");
 		tw.Write(new string('\t', level));
 	}
 
-	private static void WriteString(TextWriter tw, string value, int level, bool hasComment, string separator) {
+	private static void WriteString(TextWriter tw, string value, int level, bool hasComment, string separator)
+	{
 		if (value == "") {
 			tw.Write(separator + "\"\"");
 			return;
@@ -249,15 +254,18 @@ internal static class HjsonExtensions
 		}
 	}
 
-	private static string GetComments(Dictionary<string, string> comments, string key) {
+	private static string GetComments(Dictionary<string, string> comments, string key)
+	{
 		return comments.ContainsKey(key) ? GetComments(comments[key]) : "";
 	}
 
-	private static string GetComments(List<string> comments, int index) {
+	private static string GetComments(List<string> comments, int index)
+	{
 		return comments.Count > index ? GetComments(comments[index]) : "";
 	}
 
-	private static string GetComments(string text) {
+	private static string GetComments(string text)
+	{
 		if (string.IsNullOrEmpty(text))
 			return string.Empty;
 
@@ -277,7 +285,8 @@ internal static class HjsonExtensions
 	private static bool TestCommentString(string text)
 		=> text.Length > 0 && text[text[0] == '\r' && text.Length > 1 ? 1 : 0] != '\n';
 
-	private static T GetDelegateOfMethod<T>(string type, string methodName) where T : Delegate {
+	private static T GetDelegateOfMethod<T>(string type, string methodName) where T : Delegate
+	{
 		return typeof(HjsonValue)
 			.Assembly
 			.GetType(type)

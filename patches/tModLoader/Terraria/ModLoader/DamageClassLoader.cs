@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader;
@@ -24,25 +24,30 @@ public static class DamageClassLoader
 
 	private static readonly int DefaultClassCount = DamageClasses.Count;
 
-	static DamageClassLoader() {
+	static DamageClassLoader()
+	{
 		RegisterDefaultClasses();
 		ResizeArrays();
 	}
 
-	internal static int Add(DamageClass damageClass) {
+	internal static int Add(DamageClass damageClass)
+	{
 		DamageClasses.Add(damageClass);
 		return DamageClasses.Count - 1;
 	}
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		RebuildEffectInheritanceCache();
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		DamageClasses.RemoveRange(DefaultClassCount, DamageClasses.Count - DefaultClassCount);
 	}
 
-	private static void RebuildEffectInheritanceCache() {
+	private static void RebuildEffectInheritanceCache()
+	{
 		effectInheritanceCache = new bool[DamageClassCount, DamageClassCount];
 
 		for (int i = 0; i < DamageClasses.Count; i++) {
@@ -54,7 +59,8 @@ public static class DamageClassLoader
 		}
 	}
 
-	internal static void RegisterDefaultClasses() {
+	internal static void RegisterDefaultClasses()
+	{
 		int i = 0;
 		foreach (var damageClass in DamageClasses) {
 			damageClass.Type = i++;

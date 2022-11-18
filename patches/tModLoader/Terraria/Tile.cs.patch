@@ -29,20 +29,20 @@
 +	*/
  
 +	/*
- 	public Tile() {
+ 	public Tile()
+ 	{
  		type = 0;
- 		wall = 0;
-@@ -71,7 +_,9 @@
+@@ -72,7 +_,9 @@
  		frameX = 0;
  		frameY = 0;
  	}
 +	*/
  
 +	/*
- 	public Tile(Tile copy) {
+ 	public Tile(Tile copy)
+ 	{
  		if (copy == null) {
- 			type = 0;
-@@ -96,10 +_,14 @@
+@@ -98,11 +_,15 @@
  			frameY = copy.frameY;
  		}
  	}
@@ -50,40 +50,42 @@
  
  	public object Clone() => MemberwiseClone();
  
- 	public void ClearEverything() {
+ 	public void ClearEverything()
+ 	{
 +		TileData.ClearSingle(TileId);
 +
 +		/*
  		type = 0;
  		wall = 0;
  		liquid = 0;
-@@ -109,6 +_,7 @@
+@@ -112,6 +_,7 @@
  		bTileHeader3 = 0;
  		frameX = 0;
  		frameY = 0;
 +		*/
  	}
  
- 	public void ClearTile() {
-@@ -119,6 +_,9 @@
- 	}
+ 	public void ClearTile()
+@@ -124,6 +_,9 @@
  
- 	public void CopyFrom(Tile from) {
+ 	public void CopyFrom(Tile from)
+ 	{
 +		TileData.CopySingle(from.TileId, TileId);
 +
 +		/*
  		type = from.type;
  		wall = from.wall;
  		liquid = from.liquid;
-@@ -128,9 +_,30 @@
+@@ -133,10 +_,31 @@
  		bTileHeader3 = from.bTileHeader3;
  		frameX = from.frameX;
  		frameY = from.frameY;
 +		*/
  	}
  
--	public bool isTheSameAs(Tile compTile) {
-+	internal bool isTheSameAs(Tile compTile) {
+-	public bool isTheSameAs(Tile compTile)
++	internal bool isTheSameAs(Tile compTile)
+ 	{
 +		if (Get<TileWallWireStateData>().NonFrameBits != compTile.Get<TileWallWireStateData>().NonFrameBits)
 +			return false;
 +
@@ -107,7 +109,7 @@
  		if (compTile == null)
  			return false;
  
-@@ -159,13 +_,15 @@
+@@ -165,13 +_,15 @@
  			return false;
  		}
  
@@ -119,26 +121,27 @@
 +		*/
  	}
  
--	public int blockType() {
-+	internal int blockType() {
+-	public int blockType()
++	internal int blockType()
+ 	{
  		if (halfBrick())
  			return 1;
- 
-@@ -176,6 +_,7 @@
+@@ -183,6 +_,7 @@
  		return num;
  	}
  
 +	/*
- 	public void liquidType(int liquidType) {
+ 	public void liquidType(int liquidType)
+ 	{
  		switch (liquidType) {
- 			case 0:
-@@ -201,8 +_,15 @@
+@@ -210,9 +_,16 @@
  
  		return false;
  	}
 +	*/
  
- 	public void ResetToType(ushort type) {
+ 	public void ResetToType(ushort type)
+ 	{
 +		ClearMetadata();
 +
 +		HasTile = true;
@@ -148,14 +151,15 @@
  		liquid = 0;
  		sTileHeader = 32;
  		bTileHeader = 0;
-@@ -211,9 +_,14 @@
+@@ -221,10 +_,15 @@
  		frameX = 0;
  		frameY = 0;
  		this.type = type;
 +		*/
  	}
  
- 	internal void ClearMetadata() {
+ 	internal void ClearMetadata()
+ 	{
 +		Get<LiquidData>() = default;
 +		Get<TileWallWireStateData>() = default;
 +
@@ -163,61 +167,62 @@
  		liquid = 0;
  		sTileHeader = 0;
  		bTileHeader = 0;
-@@ -221,9 +_,10 @@
+@@ -232,9 +_,10 @@
  		bTileHeader3 = 0;
  		frameX = 0;
  		frameY = 0;
 +		*/
  	}
  
--	public Color actColor(Color oldColor) {
-+	internal Color actColor(Color oldColor) {
+-	public Color actColor(Color oldColor)
++	internal Color actColor(Color oldColor)
+ 	{
  		if (!inActive())
  			return oldColor;
- 
-@@ -231,12 +_,12 @@
+@@ -243,13 +_,13 @@
  		return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
  	}
  
--	public void actColor(ref Vector3 oldColor) {
-+	internal void actColor(ref Vector3 oldColor) {
+-	public void actColor(ref Vector3 oldColor)
++	internal void actColor(ref Vector3 oldColor)
+ 	{
  		if (inActive())
  			oldColor *= 0.4f;
  	}
  
--	public bool topSlope() {
-+	internal bool topSlope() {
+-	public bool topSlope()
++	internal bool topSlope()
+ 	{
  		byte b = slope();
  		if (b != 1)
- 			return b == 2;
-@@ -244,7 +_,7 @@
+@@ -258,7 +_,7 @@
  		return true;
  	}
  
--	public bool bottomSlope() {
-+	internal bool bottomSlope() {
+-	public bool bottomSlope()
++	internal bool bottomSlope()
+ 	{
  		byte b = slope();
  		if (b != 3)
- 			return b == 4;
-@@ -252,7 +_,7 @@
+@@ -267,7 +_,7 @@
  		return true;
  	}
  
--	public bool leftSlope() {
-+	internal bool leftSlope() {
+-	public bool leftSlope()
++	internal bool leftSlope()
+ 	{
  		byte b = slope();
  		if (b != 2)
- 			return b == 4;
-@@ -260,7 +_,7 @@
+@@ -276,7 +_,7 @@
  		return true;
  	}
  
--	public bool rightSlope() {
-+	internal bool rightSlope() {
+-	public bool rightSlope()
++	internal bool rightSlope()
+ 	{
  		byte b = slope();
  		if (b != 1)
- 			return b == 3;
-@@ -268,7 +_,9 @@
+@@ -285,7 +_,9 @@
  		return true;
  	}
  
@@ -226,16 +231,16 @@
 +
  	public byte wallColor() => (byte)(bTileHeader & 0x1Fu);
  
- 	public void wallColor(byte wallColor) {
-@@ -463,6 +_,7 @@
+ 	public void wallColor(byte wallColor)
+@@ -504,6 +_,7 @@
  		else
  			sTileHeader = (ushort)(sTileHeader & 0xFFFF7FFFu);
  	}
 +	*/
  
- 	public void Clear(TileDataType types) {
- 		if ((types & TileDataType.Tile) != 0) {
-@@ -616,3 +_,4 @@
+ 	public void Clear(TileDataType types)
+ 	{
+@@ -666,3 +_,4 @@
  
  	public override string ToString() => "Tile Type:" + type + " Active:" + active().ToString() + " Wall:" + wall + " Slope:" + slope() + " fX:" + frameX + " fY:" + frameY;
  }

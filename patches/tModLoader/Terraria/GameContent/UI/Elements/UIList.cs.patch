@@ -9,7 +9,7 @@
  {
  	public delegate bool ElementSearchMethod(UIElement element);
  
-@@ -29,9 +_,9 @@
+@@ -30,9 +_,9 @@
  		public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
  	}
  

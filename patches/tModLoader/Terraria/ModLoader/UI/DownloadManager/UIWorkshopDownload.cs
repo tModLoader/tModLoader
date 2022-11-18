@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Terraria.Audio;
 using Terraria.Localization;
 
@@ -10,13 +10,15 @@ internal class UIWorkshopDownload : UIProgress
 
 	public int PreviousMenuMode { get; set; } = -1;
 
-	public UIWorkshopDownload(int previousMenuMode) {
+	public UIWorkshopDownload(int previousMenuMode)
+	{
 		downloadTimer = new Stopwatch();
 		PreviousMenuMode = previousMenuMode;
 		Main.menuMode = 888;
 	}
 
-	public void PrepUIForDownload(string displayName) {
+	public void PrepUIForDownload(string displayName)
+	{
 		_progressBar.UpdateProgress(0f);
 		_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", displayName);
 		downloadTimer.Restart();
@@ -25,7 +27,8 @@ internal class UIWorkshopDownload : UIProgress
 		_cancelButton.Remove();
 	}
 
-	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded) {
+	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded)
+	{
 		_progressBar.UpdateProgress(progress);
 
 		double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
@@ -34,7 +37,8 @@ internal class UIWorkshopDownload : UIProgress
 		SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 	}
 
-	public void Leave(bool refreshBrowser) {
+	public void Leave(bool refreshBrowser)
+	{
 		// Due to issues with Steam moving files from downloading folder to installed folder,
 		// there can be some latency in detecting it's installed. - Solxan
 		System.Threading.Thread.Sleep(50);
@@ -49,7 +53,8 @@ internal class UIWorkshopDownload : UIProgress
 		ReturnToPreviousMenu();
 	}
 
-	public void ReturnToPreviousMenu() {
+	public void ReturnToPreviousMenu()
+	{
 		if (PreviousMenuMode == -1) {
 			Main.menuMode = 0;
 			return;

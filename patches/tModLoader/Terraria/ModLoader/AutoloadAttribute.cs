@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace Terraria.ModLoader;
@@ -17,11 +17,13 @@ public sealed class AutoloadAttribute : Attribute
 
 	public bool NeedsAutoloading => Value && Core.ModOrganizer.LoadSide(Side);
 
-	public AutoloadAttribute(bool value = true) {
+	public AutoloadAttribute(bool value = true)
+	{
 		Value = value;
 	}
 
-	public static AutoloadAttribute GetValue(Type type) {
+	public static AutoloadAttribute GetValue(Type type)
+	{
 		//Get all AutoloadAttributes on the type.
 		object[] all = type.GetCustomAttributes(typeof(AutoloadAttribute), true);
 		//The first should be the most derived attribute.

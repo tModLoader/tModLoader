@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
 
@@ -15,7 +15,8 @@ public abstract class ModBackgroundStyle:ModType
 /// </summary>
 public abstract class ModUndergroundBackgroundStyle:ModBackgroundStyle
 {
-	protected override sealed void Register() {
+	protected override sealed void Register()
+	{
 		Slot = LoaderManager.Get<UndergroundBackgroundStylesLoader>().Register(this);
 	}
 
@@ -32,7 +33,8 @@ public abstract class ModUndergroundBackgroundStyle:ModBackgroundStyle
 /// </summary>
 public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
 {
-	protected override sealed void Register() {
+	protected override sealed void Register()
+	{
 		Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
 	}
 
@@ -46,21 +48,24 @@ public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the very back of the background. BackgroundTextureLoader.GetBackgroundSlot may be useful here, as well as for the other texture-choosing hooks.
 	/// </summary>
-	public virtual int ChooseFarTexture() {
+	public virtual int ChooseFarTexture()
+	{
 		return -1;
 	}
 
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the middle of the background.
 	/// </summary>
-	public virtual int ChooseMiddleTexture() {
+	public virtual int ChooseMiddleTexture()
+	{
 		return -1;
 	}
 
 	/// <summary>
 	/// Gives you complete freedom over how the closest part of the background is drawn. Return true for ChooseCloseTexture to have an effect; return false to disable tModLoader's own code for drawing the close background.
 	/// </summary>
-	public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch) {
+	public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch)
+	{
 		return true;
 	}
 
@@ -72,7 +77,8 @@ public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
 	/// <param name="a">a?</param>
 	/// <param name="b">b?</param>
 	/// <returns></returns>
-	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) {
+	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
+	{
 		return -1;
 	}
 }
@@ -82,7 +88,8 @@ public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
 /// </summary>
 public abstract class GlobalBackgroundStyle : ModType
 {
-	protected override sealed void Register() {
+	protected override sealed void Register()
+	{
 		ModTypeLookup<GlobalBackgroundStyle>.Register(this);
 		GlobalBackgroundStyleLoader.globalBackgroundStyles.Add(this);
 	}
@@ -92,24 +99,28 @@ public abstract class GlobalBackgroundStyle : ModType
 	/// <summary>
 	/// Allows you to change which underground background style is being used.
 	/// </summary>
-	public virtual void ChooseUndergroundBackgroundStyle(ref int style) {
+	public virtual void ChooseUndergroundBackgroundStyle(ref int style)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to change which surface background style is being used.
 	/// </summary>
-	public virtual void ChooseSurfaceBackgroundStyle(ref int style) {
+	public virtual void ChooseSurfaceBackgroundStyle(ref int style)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to change which textures make up the underground background by assigning their background slots/IDs to the given array. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
 	/// </summary>
-	public virtual void FillUndergroundTextureArray(int style, int[] textureSlots) {
+	public virtual void FillUndergroundTextureArray(int style, int[] textureSlots)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the transparency of all background styles that exist. The style parameter is the current style that is being used.
 	/// </summary>
-	public virtual void ModifyFarSurfaceFades(int style, float[] fades, float transitionSpeed) {
+	public virtual void ModifyFarSurfaceFades(int style, float[] fades, float transitionSpeed)
+	{
 	}
 }

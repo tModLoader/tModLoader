@@ -6,15 +6,16 @@
  namespace Terraria.DataStructures;
  
  public class EntitySource_Buff : IEntitySource
-@@ -5,10 +_,13 @@
+@@ -5,11 +_,14 @@
  	public readonly Entity Entity;
  	public readonly int BuffId;
  	public readonly int BuffIndex;
 +	
 +	public string? Context { get; }
  
--	public EntitySource_Buff(Entity entity, int buffId, int buffIndex) {
-+	public EntitySource_Buff(Entity entity, int buffId, int buffIndex, string? context = null) {
+-	public EntitySource_Buff(Entity entity, int buffId, int buffIndex)
++	public EntitySource_Buff(Entity entity, int buffId, int buffIndex, string? context = null)
+ 	{
  		Entity = entity;
  		BuffId = buffId;
  		BuffIndex = buffIndex;

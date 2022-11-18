@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
@@ -13,7 +13,8 @@ internal class IntInputElement : ConfigElement
 	public int Max { get; set; } = 100;
 	public int Increment { get; set; } = 1;
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		IntList = (IList<int>)List;
@@ -88,7 +89,8 @@ internal class IntRangeElement : PrimitiveRangeElement<int>
 		set => SetValue((int)Math.Round((value * (Max - Min) + Min) * (1f / Increment)) * Increment);
 	}
 
-	public IntRangeElement() {
+	public IntRangeElement()
+	{
 		Min = 0;
 		Max = 100;
 		Increment = 1;
@@ -105,7 +107,8 @@ internal class UIntElement : PrimitiveRangeElement<uint>
 		set => SetValue((uint)Math.Round((value * (Max - Min) + Min) * (1f / Increment)) * Increment);
 	}
 
-	public UIntElement() {
+	public UIntElement()
+	{
 		Min = 0;
 		Max = 100;
 		Increment = 1;
@@ -122,7 +125,8 @@ internal class ByteElement : PrimitiveRangeElement<byte>
 		set => SetValue(Convert.ToByte((int)Math.Round((value * (Max - Min) + Min) * (1f / Increment)) * Increment));
 	}
 
-	public ByteElement() {
+	public ByteElement()
+	{
 		Min = 0;
 		Max = 255;
 		Increment = 1;

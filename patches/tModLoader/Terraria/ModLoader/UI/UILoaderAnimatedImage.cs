@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.UI;
@@ -18,7 +18,8 @@ internal sealed class UILoaderAnimatedImage : UIElement
 	private Asset<Texture2D> _backgroundTexture;
 	private Asset<Texture2D> _loaderTexture;
 
-	public UILoaderAnimatedImage(float left, float top, float scale = 1f) {
+	public UILoaderAnimatedImage(float left, float top, float scale = 1f)
+	{
 		_scale = scale;
 		Width.Pixels = 200f * scale;
 		Height.Pixels = 200f * scale;
@@ -26,12 +27,14 @@ internal sealed class UILoaderAnimatedImage : UIElement
 		VAlign = top;
 	}
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_backgroundTexture = UICommon.LoaderBgTexture;
 		_loaderTexture = UICommon.LoaderTexture;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		if (++FrameTick >= MAX_DELAY) {
 			FrameTick = 0;
 			if (++Frame >= MAX_FRAMES)

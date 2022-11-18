@@ -7,8 +7,8 @@
 +// @todo: if need be, we can add register tag handlers here
  public static class ChatInitializer
  {
- 	public static void Load() {
-@@ -24,10 +_,12 @@
+ 	public static void Load()
+@@ -25,10 +_,12 @@
  			"name"
  		});
  

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,8 @@ public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 {
 	private Dictionary<string, object> dict = new Dictionary<string, object>();
 
-	public T Get<T>(string key) {
+	public T Get<T>(string key)
+	{
 		if(!TryGet(key, out T value) && value == null) {
 			try {
 				return TagIO.Deserialize<T>(null);
@@ -29,7 +30,8 @@ public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 		return value;
 	}
 
-	public bool TryGet<T>(string key, out T value) {
+	public bool TryGet<T>(string key, out T value)
+	{
 		if (!dict.TryGetValue(key, out object tag)) {
 			value = default;
 			return false;
@@ -46,7 +48,8 @@ public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	}
 
 	//if value is null, calls RemoveTag, also performs type checking
-	public void Set(string key, object value, bool replace = false) {
+	public void Set(string key, object value, bool replace = false)
+	{
 		if (value == null) {
 			Remove(key);
 			return;
@@ -86,27 +89,32 @@ public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	public bool GetBool(string key) => Get<bool>(key);
 
 	//type expansion helpers
-	public short GetAsShort(string key) {
+	public short GetAsShort(string key)
+	{
 		var o = Get<object>(key);
 		return o as short? ?? o as byte? ?? 0;
 	}
 
-	public int GetAsInt(string key) {
+	public int GetAsInt(string key)
+	{
 		var o = Get<object>(key);
 		return o as int? ?? o as short? ?? o as byte? ?? 0;
 	}
 
-	public long GetAsLong(string key) {
+	public long GetAsLong(string key)
+	{
 		var o = Get<object>(key);
 		return o as long? ?? o as int? ?? o as short? ?? o as byte? ?? 0;
 	}
 
-	public double GetAsDouble(string key) {
+	public double GetAsDouble(string key)
+	{
 		var o = Get<object>(key);
 		return o as double? ?? o as float? ?? 0;
 	}
 
-	public object Clone() {
+	public object Clone()
+	{
 		var copy = new TagCompound();
 		foreach (var entry in this)
 			copy.Set(entry.Key, TagIO.Clone(entry.Value));
@@ -114,7 +122,8 @@ public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 		return copy;
 	}
 
-	public override string ToString() {
+	public override string ToString()
+	{
 		return TagPrinter.Print(this);
 	}
 

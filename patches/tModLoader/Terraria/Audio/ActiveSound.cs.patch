@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -1,33 +_,57 @@
+@@ -1,34 +_,58 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
 +using System;
@@ -44,9 +44,10 @@
 -	public bool IsPlaying => Sound.State == SoundState.Playing;
 +	public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing; //TML: Made error-safe
  
--	public ActiveSound(SoundStyle style, Vector2 position) {
+-	public ActiveSound(SoundStyle style, Vector2 position)
 +	//TML: Position parameter made nullable, SoundUpdateCallback added with changed type.
-+	public ActiveSound(SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null) {
++	public ActiveSound(SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
+ 	{
  		Position = position;
  		Volume = 1f;
  		Pitch = style.PitchVariance;
@@ -60,16 +61,17 @@
  
 +	//TML: Merged with the above constructor.
 +	/*
- 	public ActiveSound(SoundStyle style) {
+ 	public ActiveSound(SoundStyle style)
+ 	{
  		Position = Vector2.Zero;
- 		Volume = 1f;
-@@ -45,17 +_,25 @@
+@@ -48,18 +_,26 @@
  		Style = style;
  		PlayLooped(condition);
  	}
 +	*/
  
- 	private void Play() {
+ 	private void Play()
+ 	{
 +		if (!Program.IsMainThread) {
 +			RunOnMainThreadAndWait(Play);
 +			return;
@@ -86,16 +88,17 @@
  	}
  
 +	/*
- 	private void PlayLooped(LoopedPlayCondition condition) {
+ 	private void PlayLooped(LoopedPlayCondition condition)
+ 	{
  		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
- 		soundEffectInstance.Pitch += Style.GetRandomPitch();
-@@ -67,18 +_,34 @@
+@@ -72,21 +_,37 @@
  		Sound = soundEffectInstance;
  		Update();
  	}
 +	*/
  
- 	public void Stop() {
+ 	public void Stop()
+ 	{
 +		if (!Program.IsMainThread) {
 +			RunOnMainThreadAndWait(Stop);
 +			return;
@@ -105,7 +108,8 @@
  			Sound.Stop();
  	}
  
- 	public void Pause() {
+ 	public void Pause()
+ 	{
 +		if (!Program.IsMainThread) {
 +			RunOnMainThreadAndWait(Pause);
 +			return;
@@ -115,7 +119,8 @@
  			Sound.Pause();
  	}
  
- 	public void Resume() {
+ 	public void Resume()
+ 	{
 +		if (!Program.IsMainThread) {
 +			RunOnMainThreadAndWait(Resume);
 +			return;
@@ -124,7 +129,7 @@
  		if (Sound != null && Sound.State == SoundState.Paused)
  			Sound.Resume();
  	}
-@@ -87,18 +_,27 @@
+@@ -96,18 +_,27 @@
  		if (Sound == null)
  			return;
  
@@ -156,7 +161,7 @@
  			num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
  		}
  
-@@ -109,6 +_,12 @@
+@@ -118,6 +_,12 @@
  				break;
  			case SoundType.Ambient:
  				num *= Main.ambientVolume;
@@ -169,7 +174,7 @@
  				break;
  			case SoundType.Music:
  				num *= Main.musicVolume;
-@@ -119,4 +_,8 @@
+@@ -128,4 +_,8 @@
  		Sound.Volume = num;
  		Sound.Pitch = Pitch;
  	}

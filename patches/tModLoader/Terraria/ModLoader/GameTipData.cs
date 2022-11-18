@@ -1,4 +1,4 @@
-﻿using Terraria.Localization;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -43,14 +43,16 @@ public sealed class GameTipData
 
 	internal bool isVisible = true;
 
-	public GameTipData(LocalizedText text, Mod mod) {
+	public GameTipData(LocalizedText text, Mod mod)
+	{
 		TipText = text;
 		Mod = mod;
 		Name = text.Key.Replace($"Mods.{mod.Name}.GameTips.", "");
 		FullName = $"{Mod.Name}/{Name}";
 	}
 
-	internal GameTipData(LocalizedText text) {
+	internal GameTipData(LocalizedText text)
+	{
 		TipText = text;
 		Mod = null;
 		Name = text.Key;
@@ -60,7 +62,8 @@ public sealed class GameTipData
 	/// <summary>
 	/// Until reload, prevents this tip from ever appearing during loading screens.
 	/// </summary>
-	public void Hide() {
+	public void Hide()
+	{
 		isVisible = false;
 	}
 }

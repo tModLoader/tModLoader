@@ -10,6 +10,6 @@
 +		set => _menuToGoBackTo = value;
 +	}
 +
- 	public UIWorkshopSelectWorldToPublish(UIState menuToGoBackTo) {
+ 	public UIWorkshopSelectWorldToPublish(UIState menuToGoBackTo)
+ 	{
  		_menuToGoBackTo = menuToGoBackTo;
- 	}

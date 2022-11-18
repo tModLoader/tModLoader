@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace Terraria.ModLoader.Core;
@@ -14,7 +14,8 @@ internal sealed class EntryReadStream : Stream
 
 	public string Name => entry.Name;
 
-	public EntryReadStream(TmodFile file, TmodFile.FileEntry entry, Stream stream, bool leaveOpen) {
+	public EntryReadStream(TmodFile file, TmodFile.FileEntry entry, Stream stream, bool leaveOpen)
+	{
 		this.file = file;
 		this.entry = entry;
 		this.stream = stream;
@@ -44,12 +45,14 @@ internal sealed class EntryReadStream : Stream
 
 	public override void Flush() => throw new NotImplementedException();
 
-	public override int Read(byte[] buffer, int offset, int count) {
+	public override int Read(byte[] buffer, int offset, int count)
+	{
 		count = Math.Min(count, (int)(Length - Position));
 		return stream.Read(buffer, offset, count);
 	}
 
-	public override long Seek(long offset, SeekOrigin origin) {
+	public override long Seek(long offset, SeekOrigin origin)
+	{
 		if (origin == SeekOrigin.Current) {
 			long target = Position + offset;
 			if (target < 0 || target > Length)
@@ -66,7 +69,8 @@ internal sealed class EntryReadStream : Stream
 
 	public override void Write(byte[] buffer, int offset, int count) => throw new NotImplementedException();
 
-	public override void Close() {
+	public override void Close()
+	{
 		if (stream == null)
 			return;
 

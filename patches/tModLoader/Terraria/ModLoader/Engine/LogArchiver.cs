@@ -1,4 +1,4 @@
-﻿using Ionic.Zip;
+using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,7 +86,8 @@ internal static class LogArchiver
 		}
 	}
 
-	private static void MoveOldLogs() {
+	private static void MoveOldLogs()
+	{
 		foreach (string log in GetOldLogs()) {
 			Archive(log, Path.GetFileNameWithoutExtension(log));
 		}

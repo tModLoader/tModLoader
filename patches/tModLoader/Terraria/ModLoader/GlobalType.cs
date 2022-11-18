@@ -19,7 +19,8 @@ public abstract class GlobalType : ModType, IIndexed
 
 	internal GlobalType() { }
 
-	protected override void ValidateType() {
+	protected override void ValidateType()
+	{
 		base.ValidateType();
 
 		var type = GetType();
@@ -30,7 +31,8 @@ public abstract class GlobalType : ModType, IIndexed
 			throw new Exception($" {GetType().FullName} instance fields but {nameof(InstancePerEntity)} returns false. Either use static fields, or override {nameof(InstancePerEntity)} to return true");
 	}
 
-	public static T Instance<T>(Instanced<T>[] globals, ushort index) where T : class {
+	public static T Instance<T>(Instanced<T>[] globals, ushort index) where T : class
+	{
 		for (int i = 0; i < globals.Length; i++) {
 			var g = globals[i];
 
@@ -48,7 +50,8 @@ public abstract class GlobalType : ModType, IIndexed
 	public static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType) where TGlobal : GlobalType where TResult : TGlobal
 		=> TryGetGlobal(globals, exactType, out TResult result) ? result : throw new KeyNotFoundException($"Instance of '{typeof(TResult).Name}' does not exist on the current {typeof(TEntity).Name}.");
 
-	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance, out TResult result) where TGlobal : GlobalType where TResult : TGlobal {
+	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance, out TResult result) where TGlobal : GlobalType where TResult : TGlobal
+	{
 		if (baseInstance == null) {
 			result = default;
 			return false;
@@ -58,7 +61,8 @@ public abstract class GlobalType : ModType, IIndexed
 		return result != null;
 	}
 
-	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType, out TResult result) where TGlobal : GlobalType where TResult : TGlobal {
+	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType, out TResult result) where TGlobal : GlobalType where TResult : TGlobal
+	{
 		if (exactType) {
 			return TryGetGlobal(globals, ModContent.GetInstance<TResult>(), out result);
 		}
@@ -107,7 +111,8 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType where TGlobal : 
 	/// <param name="from">The entity being cloned</param>
 	/// <param name="to">The new clone of the entity</param>
 	/// <returns>A clone of this global</returns>
-	public virtual TGlobal Clone(TEntity from, TEntity to) {
+	public virtual TGlobal Clone(TEntity from, TEntity to)
+	{
 		if (!IsCloneable)
 			Cloning.WarnNotCloneable(GetType());
 
@@ -119,7 +124,8 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType where TGlobal : 
 	/// </summary>
 	/// <param name="target">The entity instance the global is being instantiated for</param>
 	/// <returns></returns>
-	public virtual TGlobal NewInstance(TEntity target) {
+	public virtual TGlobal NewInstance(TEntity target)
+	{
 		if (CloneNewInstances)
 			return Clone(default, target);
 

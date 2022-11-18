@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
 
@@ -6,7 +6,8 @@ public abstract class ModRarity : ModType
 {
 	public int Type { get; internal set; }
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModRarity>.Register(this);
 		Type = RarityLoader.Add(this);
 	}

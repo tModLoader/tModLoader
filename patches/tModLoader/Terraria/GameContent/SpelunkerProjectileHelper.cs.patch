@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/SpelunkerProjectileHelper.cs
 +++ src/tModLoader/Terraria/GameContent/SpelunkerProjectileHelper.cs
-@@ -36,7 +_,7 @@
+@@ -39,7 +_,7 @@
  		for (int i = num3; i <= num4; i++) {
  			for (int j = num5; j <= num6; j++) {
  				Tile tile = Main.tile[i, j];

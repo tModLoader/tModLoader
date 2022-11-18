@@ -11,5 +11,5 @@
 -	protected int _shaderDataCount;
 +	internal int _shaderDataCount;
  
- 	public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData {
- 		_shaderLookupDictionary[itemId] = ++_shaderDataCount;
+ 	public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData
+ 	{

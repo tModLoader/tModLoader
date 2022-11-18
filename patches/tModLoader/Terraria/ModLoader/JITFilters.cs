@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -6,7 +6,8 @@ namespace Terraria.ModLoader;
 
 public class PreJITFilter
 {
-	public virtual bool ShouldJIT(MemberInfo member) {
+	public virtual bool ShouldJIT(MemberInfo member)
+	{
 		return member.GetCustomAttributes<MemberJitAttribute>().All(a => a.ShouldJIT(member));
 	}
 }
@@ -26,7 +27,8 @@ public sealed class JITWhenModsEnabledAttribute : MemberJitAttribute
 {
 	public readonly string[] Names;
 
-	public JITWhenModsEnabledAttribute(params string[] names) {
+	public JITWhenModsEnabledAttribute(params string[] names)
+	{
 		Names = names ?? throw new ArgumentNullException(nameof(names));
 	}
 

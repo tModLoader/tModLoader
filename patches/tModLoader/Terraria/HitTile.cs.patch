@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  
  namespace Terraria;
-@@ -293,7 +_,7 @@
+@@ -307,7 +_,7 @@
  
  			bool flag3 = false;
  			bool flag4 = false;

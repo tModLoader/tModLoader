@@ -1,11 +1,12 @@
-﻿using Terraria.ID;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon;
 
 [AutoloadEquip(EquipType.Head)]
 internal class toplayz_Head : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 28;
@@ -16,13 +17,15 @@ internal class toplayz_Head : PatreonItem
 [AutoloadEquip(EquipType.Body)]
 internal class toplayz_Body : PatreonItem
 {
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		base.SetStaticDefaults();
 
 		ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
 	}
 
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 30;
@@ -33,13 +36,15 @@ internal class toplayz_Body : PatreonItem
 [AutoloadEquip(EquipType.Legs)]
 internal class toplayz_Legs : PatreonItem
 {
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		base.SetStaticDefaults();
 
 		ArmorIDs.Legs.Sets.HidesBottomSkin[Item.legSlot] = true;
 	}
 
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 22;

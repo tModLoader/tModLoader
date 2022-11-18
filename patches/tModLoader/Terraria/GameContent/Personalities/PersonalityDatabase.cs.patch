@@ -8,14 +8,15 @@
  	private PersonalityProfile _trashEntry = new PersonalityProfile();
 +	*/
  
- 	public PersonalityDatabase() {
- 		_personalityProfiles = new Dictionary<int, PersonalityProfile>();
-@@ -24,10 +_,31 @@
+ 	public PersonalityDatabase()
+ 	{
+@@ -27,11 +_,34 @@
  		}
  	}
  
 +	/*
- 	public PersonalityProfile GetByNPCID(int npcId) {
+ 	public PersonalityProfile GetByNPCID(int npcId)
+ 	{
  		if (_personalityProfiles.TryGetValue(npcId, out var value))
  			return value;
  
@@ -24,7 +25,8 @@
 +	*/
 +
 +	//TML: Added as a replacement for the dummy-returning 'GetByNPCID' for clarity.
-+	public bool TryGetProfileByNPCID(int npcId, out PersonalityProfile profile) {
++	public bool TryGetProfileByNPCID(int npcId, out PersonalityProfile profile)
++	{
 +		if (_personalityProfiles.TryGetValue(npcId, out profile))
 +			return true;
 +
@@ -34,7 +36,8 @@
 +	}
 +
 +	// Added by TML.
-+	public PersonalityProfile GetOrCreateProfileByNPCID(int npcId) {
++	public PersonalityProfile GetOrCreateProfileByNPCID(int npcId)
++	{
 +		if (!_personalityProfiles.TryGetValue(npcId, out PersonalityProfile value)) {
 +			_personalityProfiles[npcId] = value = new PersonalityProfile();
 +		}

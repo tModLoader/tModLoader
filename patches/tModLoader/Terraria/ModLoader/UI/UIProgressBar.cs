@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
@@ -23,7 +23,8 @@ internal class UIProgressBar : UIPanel
 
 	private UIAutoScaleTextTextPanel<string> _textPanel;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_textPanel = new UIAutoScaleTextTextPanel<string>(_cachedText ?? "", 1f, true) {
 			Top = { Pixels = 10 },
 			HAlign = 0.5f,
@@ -34,7 +35,8 @@ internal class UIProgressBar : UIPanel
 		Append(_textPanel);
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		// Sometimes the element gets initialized before the cache is set
@@ -44,7 +46,8 @@ internal class UIProgressBar : UIPanel
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle space = GetInnerDimensions();
 		spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)space.X + 10, (int)space.Y + (int)space.Height / 2 + 20, (int)space.Width - 20, 10), new Rectangle(0, 0, 1, 1), new Color(0, 0, 70));

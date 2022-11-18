@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/NetServerSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/NetServerSocialModule.cs
-@@ -106,8 +_,10 @@
- 	}
+@@ -118,8 +_,10 @@
  
- 	private void OnLobbyCreated(LobbyCreated_t result, bool failure) {
+ 	private void OnLobbyCreated(LobbyCreated_t result, bool failure)
+ 	{
 -		if (!failure)
 +		if (!failure) {
  			SteamFriends.SetRichPresence("status", Language.GetTextValue("Social.StatusInGame"));
@@ -11,8 +11,8 @@
 +		}
  	}
  
- 	private bool OnPacketRead(byte[] data, int length, CSteamID userId) {
-@@ -176,6 +_,9 @@
+ 	private bool OnPacketRead(byte[] data, int length, CSteamID userId)
+@@ -190,6 +_,9 @@
  
  			_connectionStateMap[steamIDRemote] = ConnectionState.Authenticating;
  			_connectionAcceptedCallback(new SocialSocket(new SteamAddress(steamIDRemote)));

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +15,8 @@ public class TopoSort<T>
 		private string CycleToString(List<T> cycle) => "Dependency Cycle: " + string.Join(" -> ", cycle);
 		public override string Message => string.Join(Environment.NewLine, cycles.Select(CycleToString));
 
-		public void Add(List<T> cycle) {
+		public void Add(List<T> cycle)
+		{
 			cycles.Add(cycle);
 			foreach (var e in cycle)
 				set.Add(e);
@@ -26,7 +27,8 @@ public class TopoSort<T>
 	private IDictionary<T, List<T>> dependencyDict = new Dictionary<T, List<T>>();
 	private IDictionary<T, List<T>> dependentDict = new Dictionary<T, List<T>>();
 
-	public TopoSort(IEnumerable<T> elements, Func<T, IEnumerable<T>> dependencies = null, Func<T, IEnumerable<T>> dependents = null) {
+	public TopoSort(IEnumerable<T> elements, Func<T, IEnumerable<T>> dependencies = null, Func<T, IEnumerable<T>> dependents = null)
+	{
 		list = elements.ToList().AsReadOnly();
 		if (dependencies != null)
 			foreach (var t in list)
@@ -39,7 +41,8 @@ public class TopoSort<T>
 					AddEntry(t, dependent);
 	}
 
-	public void AddEntry(T dependency, T dependent) {
+	public void AddEntry(T dependency, T dependent)
+	{
 		if (!dependencyDict.TryGetValue(dependent, out List<T> list))
 			dependencyDict[dependent] = list = new List<T>();
 		list.Add(dependency);
@@ -48,7 +51,8 @@ public class TopoSort<T>
 		list.Add(dependent);
 	}
 
-	private static void BuildSet(T t, IDictionary<T, List<T>> dict, ISet<T> set) {
+	private static void BuildSet(T t, IDictionary<T, List<T>> dict, ISet<T> set)
+	{
 		if (!dict.TryGetValue(t, out List<T> list))
 			return;
 
@@ -57,27 +61,32 @@ public class TopoSort<T>
 				BuildSet(entry, dict, set);
 	}
 
-	public List<T> Dependencies(T t) {
+	public List<T> Dependencies(T t)
+	{
 		return dependencyDict.TryGetValue(t, out List<T> list) ? list : new List<T>();
 	}
 
-	public List<T> Dependents(T t) {
+	public List<T> Dependents(T t)
+	{
 		return dependentDict.TryGetValue(t, out List<T> list) ? list : new List<T>();
 	}
 
-	public ISet<T> AllDependencies(T t) {
+	public ISet<T> AllDependencies(T t)
+	{
 		var set = new HashSet<T>();
 		BuildSet(t, dependencyDict, set);
 		return set;
 	}
 
-	public ISet<T> AllDependendents(T t) {
+	public ISet<T> AllDependendents(T t)
+	{
 		var set = new HashSet<T>();
 		BuildSet(t, dependentDict, set);
 		return set;
 	}
 
-	public List<T> Sort() {
+	public List<T> Sort()
+	{
 		var ex = new SortingException();
 		var visiting = new Stack<T>();
 		var sorted = new List<T>();

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 namespace Terraria.GameContent;
@@ -11,7 +11,8 @@ public partial class Profiles
 		private int _defaultVariationHeadIndex;
 		private Asset<Texture2D> _defaultNoAlt;
 
-		public AlternateLegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
+		public AlternateLegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex)
+		{
 			_rootFilePath = npcFileTitleFilePath;
 			_defaultVariationHeadIndex = defaultHeadIndex;
 			if (Main.dedServ)

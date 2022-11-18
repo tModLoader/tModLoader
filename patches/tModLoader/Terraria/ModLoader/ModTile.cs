@@ -52,7 +52,8 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 	/// </summary>
-	public void AddToArray(ref int[] array) {
+	public void AddToArray(ref int[] array)
+	{
 		Array.Resize(ref array, array.Length + 1);
 		array[array.Length - 1] = Type;
 	}
@@ -60,7 +61,8 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null) {
+	public void AddMapEntry(Color color, LocalizedText name = null)
+	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name);
 			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
@@ -73,7 +75,8 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, ModTranslation name) {
+	public void AddMapEntry(Color color, ModTranslation name)
+	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name);
 			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
@@ -86,7 +89,8 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc) {
+	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
+	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name, nameFunc);
 			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
@@ -99,7 +103,8 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc) {
+	public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
+	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name, nameFunc);
 			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
@@ -109,7 +114,8 @@ public abstract class ModTile : ModBlockType
 		}
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 
 		ModTypeLookup<ModTile>.Register(this);
@@ -119,7 +125,8 @@ public abstract class ModTile : ModBlockType
 		TileLoader.tiles.Add(this);
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		TextureAssets.Tile[Type] = ModContent.Request<Texture2D>(Texture);
 
 		SetStaticDefaults();
@@ -147,7 +154,8 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Allows you to override some default properties of this tile, such as Main.tileNoSunLight and Main.tileObsidianKill.
 	/// </summary>
-	public virtual void PostSetDefaults() {
+	public virtual void PostSetDefaults()
+	{
 	}
 
 	/// <summary>
@@ -157,7 +165,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="settings">Use if you need special conditions, like settings.player.HasItem(ItemID.LihzahrdPowerCell)</param>
 	/// <returns></returns>
-	public virtual bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
+	public virtual bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
+	{
 		return false;
 	}
 
@@ -170,7 +179,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="frameWidth">Width of each tile, in pixels</param>
 	/// <param name="frameHeight">Height of each tile, in pixels</param>
 	/// <param name="extraY">Additional offset applied after calculations with frameHeight, in pixels</param>
-	public virtual void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+	public virtual void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY)
+	{
 	}
 
 	/// <summary>
@@ -182,7 +192,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="info">The parameters for setting the anchor and offsets. You need to edit this</param>
-	public virtual void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info) {
+	public virtual void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info)
+	{
 	}
 
 	/// <summary>
@@ -193,7 +204,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="info">The parameters for setting the anchor and offsets. Default values match the regular vanilla bed.</param>
-	public virtual void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {
+	public virtual void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info)
+	{
 	}
 
 	/// <summary>
@@ -204,7 +216,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="wormChance">Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</param>
 	/// <param name="grassHopperChance">Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</param>
 	/// <param name="jungleGrubChance">Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</param>
-	public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+	public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+	{
 	}
 
 	/// <summary>
@@ -212,7 +225,8 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool Drop(int i, int j) {
+	public virtual bool Drop(int i, int j)
+	{
 		return true;
 	}
 
@@ -222,7 +236,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="blockDamaged"></param>
-	public virtual bool CanKillTile(int i, int j, ref bool blockDamaged) {
+	public virtual bool CanKillTile(int i, int j, ref bool blockDamaged)
+	{
 		return true;
 	}
 
@@ -234,7 +249,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="fail">If true, the tile won't be mined</param>
 	/// <param name="effectOnly">If true, only the dust visuals will happen</param>
 	/// <param name="noItem">If true, the corrsponding item won't drop</param>
-	public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
+	public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
+	{
 	}
 
 	/// <summary>
@@ -244,7 +260,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="frameX">The TileFrameX of the Tile at the coordinates</param>
 	/// <param name="frameY">The TileFrameY of the Tile at the coordinates</param>
-	public virtual void KillMultiTile(int i, int j, int frameX, int frameY) {
+	public virtual void KillMultiTile(int i, int j, int frameX, int frameY)
+	{
 	}
 
 	/// <summary>
@@ -253,7 +270,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="closer"></param>
-	public virtual void NearbyEffects(int i, int j, bool closer) {
+	public virtual void NearbyEffects(int i, int j, bool closer)
+	{
 	}
 
 	/// <summary>
@@ -271,7 +289,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="player">Main.LocalPlayer</param>
-	public virtual bool IsTileDangerous(int i, int j, Player player) {
+	public virtual bool IsTileDangerous(int i, int j, Player player)
+	{
 		return false;
 	}
 
@@ -281,7 +300,8 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool IsTileSpelunkable(int i, int j) {
+	public virtual bool IsTileSpelunkable(int i, int j)
+	{
 		return false;
 	}
 
@@ -291,7 +311,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="spriteEffects"></param>
-	public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
+	public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects)
+	{
 	}
 
 	/// <summary>
@@ -306,7 +327,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="height"></param>
 	/// <param name="tileFrameX"></param>
 	/// <param name="tileFrameY"></param>
-	public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+	public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+	{
 	}
 
 	/// <summary>
@@ -322,7 +344,8 @@ public abstract class ModTile : ModBlockType
 	///}</code>
 	///	or, to mimic another tile, simply:
 	///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
-	public virtual void AnimateTile(ref int frame, ref int frameCounter) {
+	public virtual void AnimateTile(ref int frame, ref int frameCounter)
+	{
 	}
 
 	/// <summary>
@@ -334,7 +357,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="frameXOffset">The offset to frameX.</param>
 	/// <param name="frameYOffset">The offset to frameY.</param>
-	public virtual void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
+	public virtual void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
+	{
 	}
 
 	/// <summary>
@@ -345,7 +369,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="spriteBatch"></param>
 	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
-	public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+	public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
 	}
 
 	/// <summary>
@@ -354,7 +379,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="spriteBatch"></param>
-	public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
+	public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
+	{
 	}
 
 	/// <summary>
@@ -364,7 +390,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="resetFrame"></param>
 	/// <param name="noBreak"></param>
-	public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
+	public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+	{
 		return true;
 	}
 
@@ -374,7 +401,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <returns>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.</returns>
-	public virtual bool RightClick(int i, int j) {
+	public virtual bool RightClick(int i, int j)
+	{
 		return false;
 	}
 
@@ -383,7 +411,8 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual void MouseOver(int i, int j) {
+	public virtual void MouseOver(int i, int j)
+	{
 	}
 
 	/// <summary>
@@ -391,7 +420,8 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual void MouseOverFar(int i, int j) {
+	public virtual void MouseOverFar(int i, int j)
+	{
 	}
 
 	/// <summary>
@@ -400,7 +430,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="item">The inventory item</param>
-	public virtual bool AutoSelect(int i, int j, Item item) {
+	public virtual bool AutoSelect(int i, int j, Item item)
+	{
 		return false;
 	}
 
@@ -409,7 +440,8 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual void HitWire(int i, int j) {
+	public virtual void HitWire(int i, int j)
+	{
 	}
 
 	/// <summary>
@@ -417,7 +449,8 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool Slope(int i, int j) {
+	public virtual bool Slope(int i, int j)
+	{
 		return true;
 	}
 
@@ -425,13 +458,15 @@ public abstract class ModTile : ModBlockType
 	/// Allows you to make something happen when a player stands on this type of tile. For example, you can make the player slide as if on ice.
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void FloorVisuals(Player player) {
+	public virtual void FloorVisuals(Player player)
+	{
 	}
 
 	/// <summary>
 	/// Whether or not this tile creates dust when the player walks on it. Returns false by default.
 	/// </summary>
-	public virtual bool HasWalkDust() {
+	public virtual bool HasWalkDust()
+	{
 		return false;
 	}
 
@@ -441,14 +476,16 @@ public abstract class ModTile : ModBlockType
 	/// <param name="dustType"></param>
 	/// <param name="makeDust"></param>
 	/// <param name="color"></param>
-	public virtual void WalkDust(ref int dustType, ref bool makeDust, ref Color color) {
+	public virtual void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to change the style of waterfall that passes through or over this type of tile.
 	/// </summary>
 	/// <param name="style"></param>
-	public virtual void ChangeWaterfallStyle(ref int style) {
+	public virtual void ChangeWaterfallStyle(ref int style)
+	{
 	}
 
 	/// <summary>

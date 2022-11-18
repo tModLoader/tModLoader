@@ -127,7 +127,8 @@ public partial class Mod
 
 	public void AddContent<T>() where T:ILoadable, new() => AddContent(new T());
 
-	public void AddContent(ILoadable instance){
+	public void AddContent(ILoadable instance)
+	{
 		if (!loading)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
@@ -157,7 +158,8 @@ public partial class Mod
 	/// <param name="texture">The texture.</param>
 	/// <returns>The boss head txture slot</returns>
 	/// <exception cref="MissingResourceException"></exception>
-	public int AddNPCHeadTexture(int npcType, string texture) {
+	public int AddNPCHeadTexture(int npcType, string texture)
+	{
 		if (!loading)
 			throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -184,7 +186,8 @@ public partial class Mod
 	/// <param name="texture">The texture.</param>
 	/// <param name="npcType">An optional npc id for NPCID.Sets.BossHeadTextures</param>
 	/// <returns>The boss head txture slot</returns>
-	public int AddBossHeadTexture(string texture, int npcType = -1) {
+	public int AddBossHeadTexture(string texture, int npcType = -1)
+	{
 		if (!loading)
 			throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -223,7 +226,8 @@ public partial class Mod
 
 	public bool HasAsset(string assetName) => RootContentSource.HasAsset(assetName);
 
-	public bool RequestAssetIfExists<T>(string assetName, out Asset<T> asset) where T : class {
+	public bool RequestAssetIfExists<T>(string assetName, out Asset<T> asset) where T : class
+	{
 		if (!HasAsset(assetName)) {
 			asset = default;
 			return false;
@@ -237,7 +241,8 @@ public partial class Mod
 	/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br/>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content">Expert Cross Mod Content Guide</see> explains how to use this hook to implement and utilize cross-mod capabilities.
 	/// </summary>
-	public virtual object Call(params object[] args) {
+	public virtual object Call(params object[] args)
+	{
 		return null;
 	}
 
@@ -247,7 +252,8 @@ public partial class Mod
 	/// <param name="capacity">The capacity.</param>
 	/// <returns></returns>
 	/// <exception cref="System.Exception">Cannot get packet for " + Name + " because it does not exist on the other side</exception>
-	public ModPacket GetPacket(int capacity = 256) {
+	public ModPacket GetPacket(int capacity = 256)
+	{
 		if (netID < 0)
 			throw new Exception("Cannot get packet for " + Name + " because it does not exist on the other side");
 

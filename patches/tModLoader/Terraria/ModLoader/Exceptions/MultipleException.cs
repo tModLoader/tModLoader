@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Exceptions;
@@ -11,7 +11,8 @@ public class MultipleException : AggregateException
 
 	public MultipleException(IEnumerable<Exception> exceptions) : this(DefaultMessage, exceptions) { }
 
-	public MultipleException(string message, IEnumerable<Exception> exceptions) : base(exceptions) {
+	public MultipleException(string message, IEnumerable<Exception> exceptions) : base(exceptions)
+	{
 		_message = message;
 	}
 

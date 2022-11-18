@@ -18,7 +18,7 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -93,6 +_,10 @@
+@@ -101,6 +_,10 @@
  			}
  
  			LoadLanguage(culture);
@@ -29,12 +29,13 @@
  			ActiveCulture = culture;
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -134,10 +_,13 @@
+@@ -144,11 +_,14 @@
  		}
  	}
  
--	private void ProcessCopyCommandsInTexts() {
-+	internal void ProcessCopyCommandsInTexts() {
+-	private void ProcessCopyCommandsInTexts()
++	internal void ProcessCopyCommandsInTexts()
+ 	{
 -		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
 +		Regex regex = new Regex(@"{\$([\w\.]+)}", RegexOptions.Compiled);
  		foreach (KeyValuePair<string, LocalizedText> localizedText in _localizedTexts) {
@@ -45,7 +46,7 @@
  			for (int i = 0; i < 100; i++) {
  				string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
  				if (text == value.Value)
-@@ -291,7 +_,7 @@
+@@ -310,7 +_,7 @@
  		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
  
@@ -54,7 +55,7 @@
  		return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
  	}
  
-@@ -299,7 +_,7 @@
+@@ -319,7 +_,7 @@
  		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
  

@@ -10,17 +10,17 @@
  
  namespace Terraria.Net.Sockets;
  
-@@ -35,6 +_,9 @@
- 	}
+@@ -38,6 +_,9 @@
  
- 	void ISocket.Close() {
+ 	void ISocket.Close()
+ 	{
 +		if (_remoteAddress != null)
 +			ModNet.Log(_remoteAddress, "Closing TcpSocket");
 +
  		_remoteAddress = null;
  		_connection.Close();
  	}
-@@ -68,7 +_,15 @@
+@@ -75,7 +_,15 @@
  			tuple = (Tuple<SocketSendCallback, object>)obj[0];
  		}
  
@@ -36,10 +36,10 @@
  			_connection.GetStream().EndWrite(result);
  			tuple.Item1(tuple.Item2);
  		}
-@@ -81,6 +_,17 @@
- 	}
+@@ -90,6 +_,17 @@
  
- 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
+ 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
+ 	{
 +		if (!_connection.Connected) { // replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
 +			ModNet.Warn("TcpSocket, AsyncSend after connection closed.");
 +			return;
@@ -54,7 +54,7 @@
  		if (!Platform.IsWindows) {
  			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
  			_connection.GetStream().BeginWrite(array, 0, size, SendCallback, new object[2] {
-@@ -138,7 +_,8 @@
+@@ -152,7 +_,8 @@
  		while (_isListening && !Netplay.Disconnect) {
  			try {
  				ISocket socket = new TcpSocket(_listener.AcceptTcpClient());

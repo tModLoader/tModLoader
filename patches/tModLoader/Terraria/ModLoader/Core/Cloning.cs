@@ -1,4 +1,4 @@
-﻿using ReLogic.Content;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,8 @@ public static class Cloning
 
 		public bool IsCloneable => overridesClone || fieldsWhichMightNeedDeepCloning.Length == 0 && baseTypeInfo.IsCloneable;
 
-		public void Warn() {
+		public void Warn()
+		{
 			if (warnCheckDone)
 				return;
 
@@ -51,7 +52,8 @@ public static class Cloning
 	private static Dictionary<Type, TypeCloningInfo> typeInfos = new();
 	private static ConditionalWeakTable<Type, object> immutableTypes = new();
 
-	public static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate {
+	public static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate
+	{
 		var type = t.GetType();
 		return typeInfos.TryGetValue(type, out var typeInfo) ? typeInfo.IsCloneable : ComputeInfo(t.GetType(), cloneMethod.ToMethodInfo()).IsCloneable;
 	}
@@ -61,7 +63,8 @@ public static class Cloning
 	private static TypeCloningInfo GetOrComputeInfo(Type type, MethodInfo cloneMethod) =>
 		typeInfos.TryGetValue(type, out var typeInfo) ? typeInfo : ComputeInfo(type, cloneMethod);
 
-	private static TypeCloningInfo ComputeInfo(Type type, MethodInfo cloneMethod) {
+	private static TypeCloningInfo ComputeInfo(Type type, MethodInfo cloneMethod)
+	{
 		var info = new TypeCloningInfo {
 			type = type,
 			overridesClone = LoaderUtils.GetDerivedDefinition(type, cloneMethod).DeclaringType == type,
@@ -79,14 +82,16 @@ public static class Cloning
 		return info;
 	}
 
-	private static bool IsCloneByReference(FieldInfo f) {
+	private static bool IsCloneByReference(FieldInfo f)
+	{
 		return f.GetCustomAttribute<CloneByReference>() != null || IsCloneByReference(f.FieldType);
 	}
 
 	// note that value typed fields could still contain references... maybe detect later
 	private static bool IsCloneByReference(Type type) => type.IsValueType || type.GetCustomAttribute<CloneByReference>() != null || IsImmutable(type);
 
-	public static bool IsImmutable(Type type) {
+	public static bool IsImmutable(Type type)
+	{
 		if (type.IsGenericType && !type.IsGenericTypeDefinition && IsImmutable(type.GetGenericTypeDefinition()))
 			return true;
 
@@ -95,7 +100,8 @@ public static class Cloning
 		}
 	}
 
-	public static void AddImmutableType(Type type) {
+	public static void AddImmutableType(Type type)
+	{
 		lock (immutableTypes) {
 			immutableTypes.AddOrUpdate(type, null);
 		}
@@ -103,7 +109,8 @@ public static class Cloning
 
 	public static void WarnNotCloneable(Type type) => typeInfos[type].Warn();
 
-	static Cloning() {
+	static Cloning()
+	{
 		TypeCaching.OnClear += typeInfos.Clear;
 		AddImmutableType(typeof(string));
 		AddImmutableType(typeof(Asset<>));

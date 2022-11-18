@@ -20,7 +20,8 @@ internal class UIExtractMod : UIProgress
 
 	private CancellationTokenSource _cts;
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 
 		_cts = new CancellationTokenSource();
@@ -31,13 +32,15 @@ internal class UIExtractMod : UIProgress
 		Task.Run(Extract, _cts.Token);
 	}
 
-	internal void Show(LocalMod mod, int gotoMenu) {
+	internal void Show(LocalMod mod, int gotoMenu)
+	{
 		this.mod = mod;
 		this.gotoMenu = gotoMenu;
 		Main.menuMode = Interface.extractModID;
 	}
 
-	private Task Extract() {
+	private Task Extract()
+	{
 		StreamWriter log = null;
 		IDisposable modHandle = null;
 		try {

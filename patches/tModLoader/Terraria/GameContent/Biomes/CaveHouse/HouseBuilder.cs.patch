@@ -7,5 +7,5 @@
 -	private Tile[,] _tiles => Main.tile;
 +	private Tilemap _tiles => Main.tile;
  
- 	private HouseBuilder() {
- 		IsValid = false;
+ 	private HouseBuilder()
+ 	{

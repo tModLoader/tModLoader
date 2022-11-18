@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.BigProgressBar;
 
 namespace Terraria.ModLoader;
@@ -38,19 +38,22 @@ public abstract class ModBossBarStyle : ModType
 	/// </summary>
 	/// <param name="currentBar">The boss bar that vanilla update code decided to draw. Can be null if skipped or if no suitable NPCs found. Can be casted to ModBossBar</param>
 	/// <param name="info">Contains the index of the NPC the game decided to focus on</param>
-	public virtual void Update(IBigProgressBar currentBar, ref BigProgressBarInfo info) {
+	public virtual void Update(IBigProgressBar currentBar, ref BigProgressBarInfo info)
+	{
 	}
 
 	/// <summary>
 	/// Called when this ModBossBarStyle is selected
 	/// </summary>
-	public virtual void OnSelected() {
+	public virtual void OnSelected()
+	{
 	}
 
 	/// <summary>
 	/// Called when this ModBossBarStyle is deselected
 	/// </summary>
-	public virtual void OnDeselected() {
+	public virtual void OnDeselected()
+	{
 	}
 
 	/// <summary>
@@ -59,6 +62,7 @@ public abstract class ModBossBarStyle : ModType
 	/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
 	/// <param name="currentBar">The boss bar that vanilla update code decided to draw. Can be null if skipped or if no suitable NPCs found. Can be casted to ModBossBar</param>
 	/// <param name="info">Contains the index of the NPC the game decided to focus on</param>
-	public virtual void Draw(SpriteBatch spriteBatch, IBigProgressBar currentBar, BigProgressBarInfo info) {
+	public virtual void Draw(SpriteBatch spriteBatch, IBigProgressBar currentBar, BigProgressBarInfo info)
+	{
 	}
 }

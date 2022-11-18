@@ -30,7 +30,8 @@ public class UICycleImage : UIElement
 	protected int DrawHeight => (int)Height.Pixels;
 	protected int DrawWidth => (int)Width.Pixels;
 
-	public UICycleImage(Asset<Texture2D> texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2) {
+	public UICycleImage(Asset<Texture2D> texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2)
+	{
 		_texture = texture;
 		_textureOffsetX = textureOffsetX;
 		_textureOffsetY = textureOffsetY;
@@ -40,24 +41,28 @@ public class UICycleImage : UIElement
 		_padding = padding;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		CalculatedStyle dimensions = GetDimensions();
 		Point point = new Point(_textureOffsetX, _textureOffsetY + (_padding + DrawHeight) * _currentState);
 		Color color = IsMouseHovering ? Color.White : Color.Silver;
 		spriteBatch.Draw(_texture.Value, new Rectangle((int)dimensions.X, (int)dimensions.Y, DrawWidth, DrawHeight), new Rectangle(point.X, point.Y, DrawWidth, DrawHeight), color);
 	}
 
-	public override void Click(UIMouseEvent evt) {
+	public override void Click(UIMouseEvent evt)
+	{
 		CurrentState = (_currentState + 1) % _states;
 		base.Click(evt);
 	}
 
-	public override void RightClick(UIMouseEvent evt) {
+	public override void RightClick(UIMouseEvent evt)
+	{
 		CurrentState = (_currentState + _states - 1) % _states;
 		base.RightClick(evt);
 	}
 
-	internal void SetCurrentState(int sortMode) {
+	internal void SetCurrentState(int sortMode)
+	{
 		CurrentState = sortMode;
 	}
 }

@@ -9,5 +9,5 @@
 -	private static readonly bool[] BeelistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 41, 43, 44, 226, 203, 112, 25, 151, 21, 467);
 +	internal static bool[] BeelistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 41, 43, 44, 226, 203, 112, 25, 151, 21, 467);
  
- 	public static HouseBuilder CreateBuilder(Point origin, StructureMap structures) {
- 		List<Rectangle> list = CreateRooms(origin);
+ 	public static HouseBuilder CreateBuilder(Point origin, StructureMap structures)
+ 	{

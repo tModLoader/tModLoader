@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
@@ -12,20 +12,24 @@ public static class ResourceOverlayLoader
 
 	internal static readonly IList<ModResourceOverlay> overlays = new List<ModResourceOverlay>();
 
-	internal static int Add(ModResourceOverlay overlay) {
+	internal static int Add(ModResourceOverlay overlay)
+	{
 		overlays.Add(overlay);
 		return OverlayCount - 1;
 	}
 
-	public static ModResourceOverlay GetOverlay(int type) {
+	public static ModResourceOverlay GetOverlay(int type)
+	{
 		return type >= 0 && type < OverlayCount ? overlays[type] : null;
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		overlays.Clear();
 	}
 
-	public static bool PreDrawResource(ResourceOverlayDrawContext context) {
+	public static bool PreDrawResource(ResourceOverlayDrawContext context)
+	{
 		bool result = true;
 
 		foreach (ModResourceOverlay overlay in overlays) {
@@ -35,7 +39,8 @@ public static class ResourceOverlayLoader
 		return result;
 	}
 
-	public static void PostDrawResource(ResourceOverlayDrawContext context) {
+	public static void PostDrawResource(ResourceOverlayDrawContext context)
+	{
 		foreach (ModResourceOverlay overlay in overlays) {
 			overlay.PostDrawResource(context);
 		}
@@ -45,13 +50,15 @@ public static class ResourceOverlayLoader
 	/// Draws a resource, typically life or mana
 	/// </summary>
 	/// <param name="drawContext">The drawing context</param>
-	public static void DrawResource(ResourceOverlayDrawContext drawContext) {
+	public static void DrawResource(ResourceOverlayDrawContext drawContext)
+	{
 		if (PreDrawResource(drawContext))
 			drawContext.Draw();
 		PostDrawResource(drawContext);
 	}
 
-	public static bool PreDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, ref Color textColor, out bool drawText) {
+	public static bool PreDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, ref Color textColor, out bool drawText)
+	{
 		bool result = true;
 		drawText = true;
 
@@ -63,13 +70,15 @@ public static class ResourceOverlayLoader
 		return result;
 	}
 
-	public static void PostDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, Color textColor, bool drawText) {
+	public static void PostDrawResourceDisplay(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife, Color textColor, bool drawText)
+	{
 		foreach (ModResourceOverlay overlay in overlays) {
 			overlay.PostDrawResourceDisplay(snapshot, displaySet, drawingLife, textColor, drawText);
 		}
 	}
 
-	public static bool DisplayHoverText(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife) {
+	public static bool DisplayHoverText(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, bool drawingLife)
+	{
 		bool result = true;
 
 		foreach (ModResourceOverlay overlay in overlays) {

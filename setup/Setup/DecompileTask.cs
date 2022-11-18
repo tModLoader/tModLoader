@@ -384,26 +384,33 @@ namespace Terraria.ModLoader.Setup
 
 				// references
 				w.WriteStartElement("ItemGroup");
-				foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
-					if (r.Name == "mscorlib") continue;
 
-					if (decompiledLibraries?.Contains(r.Name) ?? false) {
-						w.WriteStartElement("ProjectReference");
-						w.WriteAttributeString("Include", $"../{r.Name}/{r.Name}.csproj");
-						w.WriteEndElement();
+				var references = module.AssemblyReferences.Where(r => r.Name != "mscorlib").OrderBy(r => r.Name).ToArray();
+				var projectReferences = decompiledLibraries != null
+					? references.Where(r => decompiledLibraries.Contains(r.Name)).ToArray()
+					: Array.Empty<ICSharpCode.Decompiler.Metadata.AssemblyReference>();
+				var normalReferences = references.Except(projectReferences).ToArray();
 
-						w.WriteStartElement("EmbeddedResource");
-						w.WriteAttributeString("Include", $"../{r.Name}/bin/$(Configuration)/$(TargetFramework)/{r.Name}.dll");
-						w.WriteElementString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
-					}
-					else {
-						w.WriteStartElement("Reference");
-						w.WriteAttributeString("Include", r.Name);
-					}
+				foreach (var r in projectReferences) {
+					w.WriteStartElement("ProjectReference");
+					w.WriteAttributeString("Include", $"../{r.Name}/{r.Name}.csproj");
 					w.WriteEndElement();
 				}
-				w.WriteEndElement(); // </ItemGroup>
 
+				foreach (var r in projectReferences) {
+					w.WriteStartElement("EmbeddedResource");
+					w.WriteAttributeString("Include", $"../{r.Name}/bin/$(Configuration)/$(TargetFramework)/{r.Name}.dll");
+					w.WriteElementString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
+					w.WriteEndElement();
+				}
+
+				foreach (var r in normalReferences) {
+					w.WriteStartElement("Reference");
+					w.WriteAttributeString("Include", r.Name);
+					w.WriteEndElement();
+				}
+
+				w.WriteEndElement(); // </ItemGroup>
 			});
 		}
 
@@ -417,7 +424,7 @@ namespace Terraria.ModLoader.Setup
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
-				using (var w = new XmlTextWriter(sw)) {
+				using (var w = CreateXmlWriter(sw)) {
 					w.Formatting = System.Xml.Formatting.Indented;
 					w.WriteStartElement("Project");
 					w.WriteAttributeString("Sdk", "Microsoft.NET.Sdk");
@@ -462,7 +469,7 @@ namespace Terraria.ModLoader.Setup
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
-				using (var w = new XmlTextWriter(sw)) {
+				using (var w = CreateXmlWriter(sw)) {
 					w.Formatting = System.Xml.Formatting.Indented;
 					w.WriteStartElement("Project");
 
@@ -497,6 +504,15 @@ namespace Terraria.ModLoader.Setup
 					sw.Write(Environment.NewLine);
 				}
 			});
+		}
+
+		private static XmlTextWriter CreateXmlWriter(StreamWriter streamWriter)
+		{
+			return new XmlTextWriter(streamWriter) {
+				Formatting = System.Xml.Formatting.Indented,
+				IndentChar = '\t',
+				Indentation = 1,
+			};
 		}
 
 		private IEnumerable<string> ApplyWildcards(IEnumerable<string> include, IReadOnlyList<string> exclude) {

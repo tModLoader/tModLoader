@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System.Linq;
 using Terraria.Chat;
 using Terraria.Localization;
@@ -11,7 +11,8 @@ internal class ModlistCommand : ModCommand
 	//note that Chat | Server is a strange combination, as Chat overrides Server. Normally one would use World
 	public override CommandType Type => CommandType.Chat | CommandType.Server | CommandType.Console;
 	public override string Description => Language.GetTextValue("tModLoader.CommandModListDescription");
-	public override void Action(CommandCaller caller, string input, string[] args) {
+	public override void Action(CommandCaller caller, string input, string[] args)
+	{
 		var mods = ModLoader.Mods.Skip(1);//ignore the built in Modloader mod
 
 		if (Main.netMode == 1) { //multiplayer client

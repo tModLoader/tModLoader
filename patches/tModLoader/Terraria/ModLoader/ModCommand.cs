@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria.Chat;
 using Terraria.Localization;
@@ -50,7 +50,8 @@ public abstract class ModCommand : ModType
 	/// <summary>A short description of this command.</summary>
 	public virtual string Description => "";
 
-	protected override sealed void Register() {
+	protected override sealed void Register()
+	{
 		CommandLoader.Add(this);
 	}
 
@@ -67,11 +68,13 @@ public class UsageException : Exception
 
 	public UsageException() { }
 
-	public UsageException(string msg) {
+	public UsageException(string msg)
+	{
 		this.msg = msg;
 	}
 
-	public UsageException(string msg, Color color) {
+	public UsageException(string msg, Color color)
+	{
 		this.msg = msg;
 		this.color = color;
 	}
@@ -82,7 +85,8 @@ internal class ChatCommandCaller : CommandCaller
 	public CommandType CommandType => CommandType.Chat;
 	public Player Player => Main.player[Main.myPlayer];
 
-	public void Reply(string text, Color color = default(Color)) {
+	public void Reply(string text, Color color = default(Color))
+	{
 		if (color == default(Color))
 			color = Color.White;
 		foreach (var line in text.Split('\n'))
@@ -92,14 +96,16 @@ internal class ChatCommandCaller : CommandCaller
 
 internal class PlayerCommandCaller : CommandCaller
 {
-	public PlayerCommandCaller(Player player) {
+	public PlayerCommandCaller(Player player)
+	{
 		Player = player;
 	}
 	public CommandType CommandType => CommandType.Server;
 
 	public Player Player { get; }
 
-	public void Reply(string text, Color color = default(Color)) {
+	public void Reply(string text, Color color = default(Color))
+	{
 		if (color == default(Color))
 			color = Color.White;
 
@@ -113,7 +119,8 @@ internal class ConsoleCommandCaller : CommandCaller
 	public CommandType CommandType => CommandType.Console;
 	public Player Player => null;
 
-	public void Reply(string text, Color color = default(Color)) {
+	public void Reply(string text, Color color = default(Color))
+	{
 		foreach (var line in text.Split('\n'))
 			Console.WriteLine(line);
 	}

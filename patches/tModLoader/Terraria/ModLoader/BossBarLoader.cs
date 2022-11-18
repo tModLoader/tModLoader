@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -56,7 +56,8 @@ public static class BossBarLoader
 	/// </summary>
 	internal static readonly Dictionary<int, Asset<Texture2D>> bossBarTextures = new Dictionary<int, Asset<Texture2D>>();
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		drawingInfo = null;
 		vanillaBossBarTexture = null;
 		styleLoading = true;
@@ -68,7 +69,8 @@ public static class BossBarLoader
 		bossBarTextures.Clear();
 	}
 
-	internal static void AddBossBar(ModBossBar bossBar) {
+	internal static void AddBossBar(ModBossBar bossBar)
+	{
 		bossBar.index = bossBars.Count;
 		bossBars.Add(bossBar);
 		ModTypeLookup<ModBossBar>.Register(bossBar);
@@ -78,12 +80,14 @@ public static class BossBarLoader
 			bossBarTextures[bossBar.index] = bossBarTexture;
 	}
 
-	internal static void AddGlobalBossBar(GlobalBossBar globalBossBar) {
+	internal static void AddGlobalBossBar(GlobalBossBar globalBossBar)
+	{
 		globalBossBars.Add(globalBossBar);
 		ModTypeLookup<GlobalBossBar>.Register(globalBossBar);
 	}
 
-	internal static void AddBossBarStyle(ModBossBarStyle bossBarStyle) {
+	internal static void AddBossBarStyle(ModBossBarStyle bossBarStyle)
+	{
 		lock (bossBarStyles) {
 			bossBarStyles.Add(bossBarStyle);
 			ModTypeLookup<ModBossBarStyle>.Register(bossBarStyle);
@@ -99,7 +103,8 @@ public static class BossBarLoader
 	/// <summary>
 	/// Sets the saved style that should be switched to, handles possibly unloaded/invalid ones and defaults to the vanilla style
 	/// </summary>
-	internal static void GotoSavedStyle() {
+	internal static void GotoSavedStyle()
+	{
 		switchToStyle = vanillaStyle;
 		if (ModContent.TryFind(lastSelectedStyle, out ModBossBarStyle value))
 			switchToStyle = value;
@@ -110,7 +115,8 @@ public static class BossBarLoader
 	/// <summary>
 	/// Checks if the style was changed and applies it, saves the config if required
 	/// </summary>
-	internal static void HandleStyle() {
+	internal static void HandleStyle()
+	{
 		if (switchToStyle != null && switchToStyle != CurrentStyle) {
 			CurrentStyle.OnDeselected();
 			CurrentStyle = switchToStyle;
@@ -129,7 +135,8 @@ public static class BossBarLoader
 	/// </summary>
 	/// <param name="bossBar">The ModBossBar</param>
 	/// <returns>Its texture, or the vanilla texture</returns>
-	public static Asset<Texture2D> GetTexture(ModBossBar bossBar) {
+	public static Asset<Texture2D> GetTexture(ModBossBar bossBar)
+	{
 		if (!bossBarTextures.TryGetValue(bossBar.index, out Asset<Texture2D> texture))
 			texture = VanillaBossBarTexture;
 		return texture;
@@ -141,7 +148,8 @@ public static class BossBarLoader
 	/// <param name="npc">The NPC</param>
 	/// <param name="value">When this method returns, contains the ModBossBar associated with the specified NPC</param>
 	/// <returns><see langword="true"/> if a ModBossBar is assigned to it; otherwise, <see langword="false"/>.</returns>
-	public static bool NpcToBossBar(NPC npc, out ModBossBar value) {
+	public static bool NpcToBossBar(NPC npc, out ModBossBar value)
+	{
 		value = null;
 		if (npc.BossBar is ModBossBar bossBar)
 			value = bossBar;
@@ -151,7 +159,8 @@ public static class BossBarLoader
 	/// <summary>
 	/// Inserts the boss bar style select option into the main and ingame menu under the "Interface" category
 	/// </summary>
-	internal static string InsertMenu(out Action onClick) {
+	internal static string InsertMenu(out Action onClick)
+	{
 		string styleText = null;
 		ModBossBarStyle pendingBossBarStyle = null;
 		foreach (ModBossBarStyle bossBarStyle in bossBarStyles) {
@@ -174,7 +183,8 @@ public static class BossBarLoader
 		return Language.GetTextValue("tModLoader.BossBarStyle", styleText);
 	}
 
-	public static bool PreDraw(SpriteBatch spriteBatch, BigProgressBarInfo info, ref BossBarDrawParams drawParams) {
+	public static bool PreDraw(SpriteBatch spriteBatch, BigProgressBarInfo info, ref BossBarDrawParams drawParams)
+	{
 		int index = info.npcIndexToAimAt;
 		if (index < 0 || index > Main.maxNPCs)
 			return false; //Invalid data, abort
@@ -198,7 +208,8 @@ public static class BossBarLoader
 		return modify;
 	}
 
-	public static void PostDraw(SpriteBatch spriteBatch, BigProgressBarInfo info, BossBarDrawParams drawParams) {
+	public static void PostDraw(SpriteBatch spriteBatch, BigProgressBarInfo info, BossBarDrawParams drawParams)
+	{
 		int index = info.npcIndexToAimAt;
 		if (index < 0 || index > Main.maxNPCs)
 			return; //Invalid data, abort
@@ -226,7 +237,8 @@ public static class BossBarLoader
 	/// </summary>
 	/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
 	/// <param name="drawParams">The draw parameters for the boss bar</param>
-	public static void DrawFancyBar_TML(SpriteBatch spriteBatch, BossBarDrawParams drawParams) {
+	public static void DrawFancyBar_TML(SpriteBatch spriteBatch, BossBarDrawParams drawParams)
+	{
 		//DrawFancyBar without shieldPercent gets redirected to DrawFancyBar with shieldPercent as 0f
 		//DrawFancyBar with shieldPercent gets redirected to this
 

@@ -1,4 +1,4 @@
-﻿using Ionic.Zip;
+using Ionic.Zip;
 using Ionic.Zlib;
 using System;
 using System.IO;
@@ -25,7 +25,8 @@ internal static class BackupIO
 	/// Run a given archiving task, which will archive to a backup .zip file
 	/// Zip entries added will be compressed
 	/// </summary>
-	private static void RunArchiving(Action<ZipFile, bool, string> saveAction, bool isCloudSave, string dir, string name, string path) {
+	private static void RunArchiving(Action<ZipFile, bool, string> saveAction, bool isCloudSave, string dir, string name, string path)
+	{
 		try {
 			Directory.CreateDirectory(dir);
 			DeleteOldArchives(dir, isCloudSave, name);
@@ -48,7 +49,8 @@ internal static class BackupIO
 	/// Will use the best compression level using Deflate
 	/// Some files are already compressed and will not be compressed further
 	/// </summary>
-	private static void AddZipEntry(this ZipFile zip, string path, bool isCloud = false) {
+	private static void AddZipEntry(this ZipFile zip, string path, bool isCloud = false)
+	{
 		zip.CompressionMethod = CompressionMethod.Deflate;
 		zip.CompressionLevel = CompressionLevel.BestCompression;
 		zip.Comment = $"Archived on ${DateTime.Now} by tModLoader";
@@ -69,7 +71,8 @@ internal static class BackupIO
 	/// - One backup per week for the last month
 	/// - One backup per month for all time
 	/// </summary>
-	private static void DeleteOldArchives(string dir, bool isCloudSave, string name) {
+	private static void DeleteOldArchives(string dir, bool isCloudSave, string name)
+	{
 		var path = Path.Combine(dir, TodaysBackup(name, isCloudSave));
 		if (File.Exists(path)) {
 			DeleteArchive(path);
@@ -100,7 +103,8 @@ internal static class BackupIO
 		}
 	}
 
-	private static void DeleteArchive(string path) {
+	private static void DeleteArchive(string path)
+	{
 		try {
 			File.Delete(path);
 		}
@@ -120,7 +124,8 @@ internal static class BackupIO
 		internal static void ArchiveWorld(string path, bool isCloudSave)
 			=> RunArchiving(WriteArchive, isCloudSave, WorldBackupDir, Path.GetFileNameWithoutExtension(path), path);
 
-		private static void WriteArchive(ZipFile zip, bool isCloudSave, string path) {
+		private static void WriteArchive(ZipFile zip, bool isCloudSave, string path)
+		{
 			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
 			path = Path.ChangeExtension(path, ".twld");
 			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
@@ -141,7 +146,8 @@ internal static class BackupIO
 		/// <summary>
 		/// Write the archive. Writes the .plr and .tplr files, then writes the player directory
 		/// </summary>
-		private static void WriteArchive(ZipFile zip, bool isCloudSave, string path) {
+		private static void WriteArchive(ZipFile zip, bool isCloudSave, string path)
+		{
 			// Write .plr and .tplr files
 			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
 			path = Path.ChangeExtension(path, ".tplr");
@@ -155,7 +161,8 @@ internal static class BackupIO
 		/// <summary>
 		/// Write cloud files, which will get the relevant part of the path and write map &amp; tmap files
 		/// </summary>
-		private static void WriteCloudFiles(ZipFile zip, string path) {
+		private static void WriteCloudFiles(ZipFile zip, string path)
+		{
 			// Path is still equal to local path
 			var name = Path.GetFileNameWithoutExtension(path);
 			path = Path.ChangeExtension(path, "");
@@ -171,7 +178,8 @@ internal static class BackupIO
 		/// <summary>
 		/// Write local files, which simply writes the entire player dir
 		/// </summary>
-		private static void WriteLocalFiles(ZipFile zip, string path) {
+		private static void WriteLocalFiles(ZipFile zip, string path)
+		{
 			// Write map files from plr dir
 			var plrDir = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
 			if (Directory.Exists(plrDir)) zip.AddZipEntry(plrDir);

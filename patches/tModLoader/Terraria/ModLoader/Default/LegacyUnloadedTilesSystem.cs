@@ -14,12 +14,14 @@ internal partial class LegacyUnloadedTilesSystem : ModSystem
 	private static readonly List<TileInfo> infos = new List<TileInfo>();
 	private static readonly Dictionary<int, ushort> converted = new Dictionary<int, ushort>();
 
-	public override void OnWorldLoad() {
+	public override void OnWorldLoad()
+	{
 		infos.Clear();
 		converted.Clear();
 	}
 
-	public override void LoadWorldData(TagCompound tag) {
+	public override void LoadWorldData(TagCompound tag)
+	{
 		foreach (var infoTag in tag.GetList<TagCompound>("list")) {
 			if (!infoTag.ContainsKey("mod")) {
 				infos.Add(TileInfo.Invalid);
@@ -42,7 +44,8 @@ internal partial class LegacyUnloadedTilesSystem : ModSystem
 		}
 	}
 
-	internal void ConvertTiles() {
+	internal void ConvertTiles()
+	{
 		var legacyEntries = TileIO.Tiles.entries.ToList();
 
 		var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
@@ -74,7 +77,8 @@ internal partial class LegacyUnloadedTilesSystem : ModSystem
 		TileIO.Tiles.unloadedEntryLookup = builder.Build();
 	}
 
-	internal void ConvertTile(Tile tile, List<TileEntry> entries, out ushort type) {
+	internal void ConvertTile(Tile tile, List<TileEntry> entries, out ushort type)
+	{
 		var frame = new TileFrame(tile.frameX, tile.frameY);
 		int frameID = frame.FrameID;
 

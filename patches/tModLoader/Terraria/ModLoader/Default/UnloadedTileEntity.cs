@@ -1,4 +1,4 @@
-﻿using Terraria.ModLoader.IO;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default;
 
@@ -8,7 +8,8 @@ public class UnloadedTileEntity : ModTileEntity
 	private string tileEntityName;
 	private TagCompound data;
 
-	internal void SetData(TagCompound tag) {
+	internal void SetData(TagCompound tag)
+	{
 		modName = tag.GetString("mod");
 		tileEntityName = tag.GetString("name");
 
@@ -17,12 +18,14 @@ public class UnloadedTileEntity : ModTileEntity
 		}
 	}
 
-	public override bool IsTileValidForEntity(int i, int j) {
+	public override bool IsTileValidForEntity(int i, int j)
+	{
 		Tile tile = Main.tile[i, j];
 		return tile.HasTile && TileLoader.GetTile(tile.TileType) is UnloadedTile;
 	}
 
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		tag["mod"] = modName;
 		tag["name"] = tileEntityName;
 
@@ -31,11 +34,13 @@ public class UnloadedTileEntity : ModTileEntity
 		}
 	}
 
-	public override void LoadData(TagCompound tag) {
+	public override void LoadData(TagCompound tag)
+	{
 		SetData(tag);
 	}
 
-	internal bool TryRestore(out ModTileEntity newEntity) {
+	internal bool TryRestore(out ModTileEntity newEntity)
+	{
 		newEntity = null;
 
 		if (ModContent.TryFind(modName, tileEntityName, out ModTileEntity tileEntity)) {

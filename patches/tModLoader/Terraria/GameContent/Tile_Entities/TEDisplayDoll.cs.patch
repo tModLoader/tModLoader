@@ -15,7 +15,7 @@
  {
  	private static byte _myEntityID;
  	private const int MyTileID = 470;
-@@ -110,8 +_,8 @@
+@@ -118,8 +_,8 @@
  		for (int i = 0; i < 8; i++) {
  			Item item = _items[i];
  			if (!item.IsAir) {
@@ -26,7 +26,7 @@
  				writer.Write((short)item.stack);
  			}
  		}
-@@ -119,8 +_,8 @@
+@@ -127,8 +_,8 @@
  		for (int j = 0; j < 8; j++) {
  			Item item2 = _dyes[j];
  			if (!item2.IsAir) {
@@ -37,7 +37,7 @@
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -436,18 +_,27 @@
+@@ -459,6 +_,11 @@
  		if (dye)
  			item = _dyes[itemIndex];
  
@@ -49,9 +49,10 @@
  		writer.Write((ushort)item.netID);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
- 	}
+@@ -466,12 +_,16 @@
  
- 	public void ReadItem(int itemIndex, BinaryReader reader, bool dye) {
+ 	public void ReadItem(int itemIndex, BinaryReader reader, bool dye)
+ 	{
 +		Item item = (dye ? _dyes : _items)[itemIndex];
 +
 +		if (!ModNet.AllowVanillaClients) {

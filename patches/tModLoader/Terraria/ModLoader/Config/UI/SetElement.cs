@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,8 @@ internal class SetElementWrapper<V> : ISetElementWrapper
 
 	object ISetElementWrapper.Value => Value;
 
-	public SetElementWrapper(V value, object set) {
+	public SetElementWrapper(V value, object set)
+	{
 		this.set = set;
 		_value = value;
 	}
@@ -60,27 +61,32 @@ internal class SetElement : CollectionElement
 
 	public List<ISetElementWrapper> DataWrapperList { get; set; }
 
-	protected override void PrepareTypes() {
+	protected override void PrepareTypes()
+	{
 		setType = MemberInfo.Type.GetGenericArguments()[0];
 		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, setType);
 	}
 
-	protected override void AddItem() {
+	protected override void AddItem()
+	{
 		var addMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
 		addMethod.Invoke(Data, new object[] { CreateCollectionElementInstance(setType) });
 	}
 
-	protected override void InitializeCollection() {
+	protected override void InitializeCollection()
+	{
 		Data = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(setType));
 		SetObject(Data);
 	}
 
-	protected override void ClearCollection() {
+	protected override void ClearCollection()
+	{
 		var clearMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Clear");
 		clearMethod.Invoke(Data, new object[] { });
 	}
 
-	protected override void SetupList() {
+	protected override void SetupList()
+	{
 		DataList.Clear();
 
 		int top = 0;

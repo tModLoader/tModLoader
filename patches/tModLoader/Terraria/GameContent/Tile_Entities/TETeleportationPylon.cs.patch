@@ -11,7 +11,7 @@
  {
  	private static byte _myEntityID;
  	private const int MyTileID = 597;
-@@ -21,7 +_,8 @@
+@@ -23,7 +_,8 @@
  			return;
  		}
  
@@ -21,10 +21,10 @@
  			RejectPlacementFromNet(x, y);
  			return;
  		}
-@@ -147,6 +_,8 @@
- 	}
+@@ -157,6 +_,8 @@
  
- 	public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0) {
+ 	public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0)
+ 	{
 +		if (PylonLoader.PreCanPlacePylon(x, y, type, GetPylonTypeFromPylonTileStyle(style)) is bool value)
 +			return value ? 0 : 1;
  		TeleportPylonType pylonTypeFromPylonTileStyle = GetPylonTypeFromPylonTileStyle(style);

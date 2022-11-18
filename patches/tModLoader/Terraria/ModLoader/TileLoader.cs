@@ -89,7 +89,8 @@ public static class TileLoader
 	private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
-	internal static int ReserveTileID() {
+	internal static int ReserveTileID()
+	{
 		if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
 
 		int reserveID = nextTile;
@@ -104,11 +105,13 @@ public static class TileLoader
 	/// </summary>
 	/// <param name="type">The type of the ModTile</param>
 	/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
-	public static ModTile GetTile(int type) {
+	public static ModTile GetTile(int type)
+	{
 		return type >= TileID.Count && type < TileCount ? tiles[type - TileID.Count] : null;
 	}
 
-	private static void Resize2DArray<T>(ref T[,] array, int newSize) {
+	private static void Resize2DArray<T>(ref T[,] array, int newSize)
+	{
 		int dim1 = array.GetLength(0);
 		int dim2 = array.GetLength(1);
 		T[,] newArray = new T[newSize, dim2];
@@ -120,7 +123,8 @@ public static class TileLoader
 		array = newArray;
 	}
 
-	internal static void ResizeArrays(bool unloading = false) {
+	internal static void ResizeArrays(bool unloading = false)
+	{
 		//Textures
 		Array.Resize(ref TextureAssets.Tile, nextTile);
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
@@ -234,7 +238,8 @@ public static class TileLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		loaded = false;
 		nextTile = TileID.Count;
 
@@ -259,7 +264,8 @@ public static class TileLoader
 	//  else { TileLoader.CheckModTile(i, j, num); }
 	//in Terraria.TileObject.CanPlace add optional checkStay parameter as false to end
 	//  and add && !checkStay to if statement that sets flag4
-	public static void CheckModTile(int i, int j, int type) {
+	public static void CheckModTile(int i, int j, int type)
+	{
 		if (WorldGen.destroyObject) {
 			return;
 		}
@@ -333,7 +339,8 @@ public static class TileLoader
 	//in Terraria.WorldGen.OpenDoor replace bad type check with TileLoader.OpenDoorID(Main.tile[i, j]) < 0
 	//in Terraria.WorldGen.OpenDoor replace 11 with (ushort)TileLoader.OpenDoorID
 	//replace all type checks before WorldGen.OpenDoor
-	public static int OpenDoorID(Tile tile) {
+	public static int OpenDoorID(Tile tile)
+	{
 		ModTile modTile = GetTile(tile.type);
 		if (modTile != null) {
 			return modTile.OpenDoorID;
@@ -347,7 +354,8 @@ public static class TileLoader
 	//in Terraria.WorldGen.CloseDoor replace 10 with (ushort)TileLoader.CloseDoorID
 	//replace all type checks before WorldGen.CloseDoor
 	//replace type check in WorldGen.CheckRoom
-	public static int CloseDoorID(Tile tile) {
+	public static int CloseDoorID(Tile tile)
+	{
 		ModTile modTile = GetTile(tile.type);
 
 		if (modTile != null) {
@@ -361,7 +369,8 @@ public static class TileLoader
 		return -1;
 	}
 
-	public static bool IsClosedDoor(Tile tile) {
+	public static bool IsClosedDoor(Tile tile)
+	{
 		ModTile modTile = GetTile(tile.type);
 
 		if (modTile != null) {
@@ -373,16 +382,19 @@ public static class TileLoader
 
 	public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
-	public static bool IsModMusicBox(Tile tile) {
+	public static bool IsModMusicBox(Tile tile)
+	{
 		return MusicLoader.tileToMusic.ContainsKey(tile.type)
 		&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 	}
 
-	public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings) {
+	public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings)
+	{
 		return GetTile(type)?.HasSmartInteract(i, j, settings) ?? false;
 	}
 
-	public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+	public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY)
+	{
 		ModTile modTile = GetTile(type);
 		if (modTile == null)
 			return;
@@ -400,7 +412,8 @@ public static class TileLoader
 		modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
 	}
 
-	public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
+	public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info)
+	{
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			modTile.ModifySittingTargetInfo(i, j, ref info);
@@ -410,7 +423,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void ModifySleepingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
+	public static void ModifySleepingTargetInfo(int i, int j, int type, ref TileRestingInfo info)
+	{
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
@@ -419,7 +433,8 @@ public static class TileLoader
 		}
 	}
 
-	public static bool KillSound(int i, int j, int type, bool fail) {
+	public static bool KillSound(int i, int j, int type, bool fail)
+	{
 		foreach (var hook in HookKillSound) {
 			if (!hook(i, j, type, fail))
 				return false;
@@ -439,7 +454,8 @@ public static class TileLoader
 		return true;
 	}
 	
-	public static void NumDust(int i, int j, int type, bool fail, ref int numDust) {
+	public static void NumDust(int i, int j, int type, bool fail, ref int numDust)
+	{
 		GetTile(type)?.NumDust(i, j, fail, ref numDust);
 
 		foreach (var hook in HookNumDust) {
@@ -447,7 +463,8 @@ public static class TileLoader
 		}
 	}
 	
-	public static bool CreateDust(int i, int j, int type, ref int dustType) {
+	public static bool CreateDust(int i, int j, int type, ref int dustType)
+	{
 		foreach (var hook in HookCreateDust) {
 			if (!hook(i, j, type, ref dustType)) {
 				return false;
@@ -456,7 +473,8 @@ public static class TileLoader
 		return GetTile(type)?.CreateDust(i, j, ref dustType) ?? true;
 	}
 	
-	public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+	public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+	{
 		GetTile(type)?.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
 
 		foreach (var hook in HookDropCritterChance) {
@@ -464,7 +482,8 @@ public static class TileLoader
 		}
 	}
 	
-	public static bool Drop(int i, int j, int type) {
+	public static bool Drop(int i, int j, int type)
+	{
 		foreach (var hook in HookDrop) {
 			if (!hook(i, j, type)) {
 				return false;
@@ -488,7 +507,8 @@ public static class TileLoader
 		return true;
 	}
 	
-	public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged) {
+	public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+	{
 		foreach (var hook in HookCanKillTile) {
 			if (!hook(i, j, type, ref blockDamaged)) {
 				return false;
@@ -497,7 +517,8 @@ public static class TileLoader
 		return GetTile(type)?.CanKillTile(i, j, ref blockDamaged) ?? true;
 	}
 	
-	public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
+	public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
+	{
 		GetTile(type)?.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
 
 		foreach (var hook in HookKillTile) {
@@ -505,11 +526,13 @@ public static class TileLoader
 		}
 	}
 
-	public static void KillMultiTile(int i, int j, int frameX, int frameY, int type) {
+	public static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
+	{
 		GetTile(type)?.KillMultiTile(i, j, frameX, frameY);
 	}
 
-	public static bool CanExplode(int i, int j) {
+	public static bool CanExplode(int i, int j)
+	{
 		int type = Main.tile[i, j].type;
 		ModTile modTile = GetTile(type);
 		if (modTile != null && !modTile.CanExplode(i, j)) {
@@ -523,7 +546,8 @@ public static class TileLoader
 		return true;
 	}
 
-	public static void NearbyEffects(int i, int j, int type, bool closer) {
+	public static void NearbyEffects(int i, int j, int type, bool closer)
+	{
 		GetTile(type)?.NearbyEffects(i, j, closer);
 
 		foreach (var hook in HookNearbyEffects) {
@@ -531,7 +555,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck) {
+	public static void ModifyTorchLuck(Player player, ref float positiveLuck, ref float negativeLuck)
+	{
 		foreach (int type in player.NearbyModTorch) {
 			float f = GetTile(type).GetTorchLuck(player);
 			if (f > 0)
@@ -541,7 +566,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
+	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+	{
 		if (!Main.tileLighted[type]) {
 			return;
 		}
@@ -552,7 +578,8 @@ public static class TileLoader
 		}
 	}
 
-	public static bool? IsTileDangerous(int i, int j, int type, Player player) {
+	public static bool? IsTileDangerous(int i, int j, int type, Player player)
+	{
 		bool? retVal = null;
 
 		ModTile modTile = GetTile(type);
@@ -576,7 +603,8 @@ public static class TileLoader
 		return retVal;
 	}
 
-	public static bool? IsTileSpelunkable(int i, int j, int type) {
+	public static bool? IsTileSpelunkable(int i, int j, int type)
+	{
 		bool? retVal = null;
 
 		ModTile modTile = GetTile(type);
@@ -600,7 +628,8 @@ public static class TileLoader
 		return retVal;
 	}
 
-	public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
+	public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)
+	{
 		GetTile(type)?.SetSpriteEffects(i, j, ref spriteEffects);
 
 		foreach (var hook in HookSetSpriteEffects) {
@@ -608,7 +637,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+	public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+	{
 		Tile tile = Main.tile[i, j];
 		if (tile.type >= TileID.Count) {
 			TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
@@ -627,7 +657,8 @@ public static class TileLoader
 		}
 	}
 	
-	public static void AnimateTiles() {
+	public static void AnimateTiles()
+	{
 		if (loaded) {
 			for (int i = 0; i < tiles.Count; i++) {
 				ModTile modTile = tiles[i];
@@ -647,7 +678,8 @@ public static class TileLoader
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="frameXOffset">The offset to frameX.</param>
 	/// <param name="frameYOffset">The offset to frameY.</param>
-	public static void SetAnimationFrame(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
+	public static void SetAnimationFrame(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
+	{
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];
@@ -655,7 +687,8 @@ public static class TileLoader
 		}
 	}
 
-	public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 		foreach (var hook in HookPreDraw) {
 			if (!hook(i, j, type, spriteBatch)) {
 				return false;
@@ -664,14 +697,16 @@ public static class TileLoader
 		return GetTile(type)?.PreDraw(i, j, spriteBatch) ?? true;
 	}
 
-	public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+	public static void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
 		GetTile(type)?.DrawEffects(i, j, spriteBatch, ref drawData);
 		foreach (var hook in HookDrawEffects) {
 			hook(i, j, type, spriteBatch, ref drawData);
 		}
 	}
 
-	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 		GetTile(type)?.PostDraw(i, j, spriteBatch);
 
 		foreach (var hook in HookPostDraw) {
@@ -682,7 +717,8 @@ public static class TileLoader
 	/// <summary>
 	/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw.
 	/// </summary>
-	public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch) {
+	public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch)
+	{
 		GetTile(type)?.SpecialDraw(specialTileX, specialTileY, spriteBatch);
 
 		foreach (var hook in HookSpecialDraw) {
@@ -690,7 +726,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void RandomUpdate(int i, int j, int type) {
+	public static void RandomUpdate(int i, int j, int type)
+	{
 		if (!Main.tile[i, j].active()) {
 			return;
 		}
@@ -701,7 +738,8 @@ public static class TileLoader
 		}
 	}
 
-	public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
+	public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
+	{
 		ModTile modTile = GetTile(type);
 		bool flag = true;
 
@@ -716,14 +754,16 @@ public static class TileLoader
 		return flag;
 	}
 
-	public static void PickPowerCheck(Tile target, int pickPower, ref int damage) {
+	public static void PickPowerCheck(Tile target, int pickPower, ref int damage)
+	{
 		ModTile modTile = GetTile(target.type);
 		if (modTile != null && pickPower < modTile.MinPick) {
 			damage = 0;
 		}
 	}
 
-	public static bool CanPlace(int i, int j, int type) {
+	public static bool CanPlace(int i, int j, int type)
+	{
 		foreach (var hook in HookCanPlace) {
 			if (!hook(i, j, type)) {
 				return false;
@@ -732,7 +772,8 @@ public static class TileLoader
 		return GetTile(type)?.CanPlace(i, j) ?? true;
 	}
 
-	public static void AdjTiles(Player player, int type) {
+	public static void AdjTiles(Player player, int type)
+	{
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			foreach (int k in modTile.AdjTiles) {
@@ -747,7 +788,8 @@ public static class TileLoader
 		}
 	}
 
-	public static bool RightClick(int i, int j) {
+	public static bool RightClick(int i, int j)
+	{
 		bool returnValue = false;
 		int type = Main.tile[i, j].type;
 
@@ -760,7 +802,8 @@ public static class TileLoader
 		return returnValue;
 	}
 
-	public static void MouseOver(int i, int j) {
+	public static void MouseOver(int i, int j)
+	{
 		int type = Main.tile[i, j].type;
 		GetTile(type)?.MouseOver(i, j);
 
@@ -769,7 +812,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void MouseOverFar(int i, int j) {
+	public static void MouseOverFar(int i, int j)
+	{
 		int type = Main.tile[i, j].type;
 		GetTile(type)?.MouseOverFar(i, j);
 
@@ -778,7 +822,8 @@ public static class TileLoader
 		}
 	}
 
-	public static int AutoSelect(int i, int j, Player player) {
+	public static int AutoSelect(int i, int j, Player player)
+	{
 		if (!Main.tile[i, j].active()) {
 			return -1;
 		}
@@ -801,7 +846,8 @@ public static class TileLoader
 		return -1;
 	}
 
-	public static bool PreHitWire(int i, int j, int type) {
+	public static bool PreHitWire(int i, int j, int type)
+	{
 		foreach (var hook in HookPreHitWire) {
 			if (!hook(i, j, type)) {
 				return false;
@@ -810,7 +856,8 @@ public static class TileLoader
 		return true;
 	}
 
-	public static void HitWire(int i, int j, int type) {
+	public static void HitWire(int i, int j, int type)
+	{
 		GetTile(type)?.HitWire(i, j);
 
 		foreach (var hook in HookHitWire) {
@@ -818,7 +865,8 @@ public static class TileLoader
 		}
 	}
 
-	public static void FloorVisuals(int type, Player player) {
+	public static void FloorVisuals(int type, Player player)
+	{
 		GetTile(type)?.FloorVisuals(player);
 
 		foreach (var hook in HookFloorVisuals) {
@@ -826,7 +874,8 @@ public static class TileLoader
 		}
 	}
 
-	public static bool Slope(int i, int j, int type) {
+	public static bool Slope(int i, int j, int type)
+	{
 		foreach (var hook in HookSlope) {
 			if (!hook(i, j, type)) {
 				return true;
@@ -835,22 +884,26 @@ public static class TileLoader
 		return !GetTile(type)?.Slope(i, j) ?? false;
 	}
 
-	public static bool HasWalkDust(int type) {
+	public static bool HasWalkDust(int type)
+	{
 		return GetTile(type)?.HasWalkDust() ?? false;
 	}
 
-	public static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color) {
+	public static void WalkDust(int type, ref int dustType, ref bool makeDust, ref Color color)
+	{
 		GetTile(type)?.WalkDust(ref dustType, ref makeDust, ref color);
 	}
 
-	public static void ChangeWaterfallStyle(int type, ref int style) {
+	public static void ChangeWaterfallStyle(int type, ref int style)
+	{
 		GetTile(type)?.ChangeWaterfallStyle(ref style);
 		foreach (var hook in HookChangeWaterfallStyle) {
 			hook(type, ref style);
 		}
 	}
 
-	public static bool SaplingGrowthType(int soilType, ref int saplingType, ref int style) {
+	public static bool SaplingGrowthType(int soilType, ref int saplingType, ref int style)
+	{
 		int originalType = saplingType;
 		int originalStyle = style;
 
@@ -875,11 +928,13 @@ public static class TileLoader
 		return false;
 	}
 
-	public static bool CanGrowModTree(int type) {
+	public static bool CanGrowModTree(int type)
+	{
 		return PlantLoader.Exists(TileID.Trees, type);
 	}
 
-	public static void TreeDust(Tile tile, ref int dust) {
+	public static void TreeDust(Tile tile, ref int dust)
+	{
 		if (!tile.active())
 			return;
 
@@ -888,7 +943,8 @@ public static class TileLoader
 			dust = tree.CreateDust();
 	}
 
-	public static bool CanDropAcorn(int type) {
+	public static bool CanDropAcorn(int type)
+	{
 		var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 		if (tree == null)
 			return false;
@@ -896,17 +952,20 @@ public static class TileLoader
 		return tree.CanDropAcorn();
 	}
 
-	public static void DropTreeWood(int type, ref int wood) {
+	public static void DropTreeWood(int type, ref int wood)
+	{
 		var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 		if (tree != null)
 			wood = tree.DropWood();
 	}
 
-	public static bool CanGrowModPalmTree(int type) {
+	public static bool CanGrowModPalmTree(int type)
+	{
 		return PlantLoader.Exists(TileID.PalmTree, type);
 	}
 
-	public static void PalmTreeDust(Tile tile, ref int dust) {
+	public static void PalmTreeDust(Tile tile, ref int dust)
+	{
 		if (!tile.active())
 			return;
 
@@ -915,17 +974,20 @@ public static class TileLoader
 			dust = tree.CreateDust();
 	}
 
-	public static void DropPalmTreeWood(int type, ref int wood) {
+	public static void DropPalmTreeWood(int type, ref int wood)
+	{
 		var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
 		if (tree != null)
 			wood = tree.DropWood();
 	}
 
-	public static bool CanGrowModCactus(int type) {
+	public static bool CanGrowModCactus(int type)
+	{
 		return PlantLoader.Exists(TileID.Cactus, type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
 	}
 
-	public static Texture2D GetCactusTexture(int type) {
+	public static Texture2D GetCactusTexture(int type)
+	{
 		var tree = PlantLoader.Get<ModCactus>(TileID.Cactus, type);
 		if (tree == null)
 			return null;
@@ -933,7 +995,8 @@ public static class TileLoader
 		return tree.GetTexture().Value;
 	}
 
-	public static void PlaceInWorld(int i, int j, Item item) {
+	public static void PlaceInWorld(int i, int j, Item item)
+	{
 		int type = item.createTile;
 		if (type < 0)
 			return;
@@ -945,11 +1008,13 @@ public static class TileLoader
 		GetTile(type)?.PlaceInWorld(i, j, item);
 	}
 
-	public static bool IsLockedChest(int i, int j, int type) {
+	public static bool IsLockedChest(int i, int j, int type)
+	{
 		return GetTile(type)?.IsLockedChest(i, j) ?? false;
 	}
 
-	public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual) {
+	public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual)
+	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 	}
 }

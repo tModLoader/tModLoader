@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
@@ -9,7 +9,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden;
 //TODO: Glowmasks should be simplified for everyone.
 internal abstract class JofairdenArmorGlowLayer : JofairdenArmorDrawLayer
 {
-	protected override void Draw(ref PlayerDrawSet drawInfo) {
+	protected override void Draw(ref PlayerDrawSet drawInfo)
+	{
 		var drawDataInfo = GetData(drawInfo);
 		var drawPlayer = drawInfo.drawPlayer;
 		var modPlayer = drawPlayer.GetModPlayer<JofairdenArmorEffectPlayer>();

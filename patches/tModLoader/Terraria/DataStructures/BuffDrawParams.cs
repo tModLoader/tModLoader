@@ -39,7 +39,8 @@ public struct BuffDrawParams
 	/// </summary>
 	public Color DrawColor;
 
-	public BuffDrawParams(Texture2D texture, Vector2 position, Vector2 textPosition, Rectangle sourceRectangle, Rectangle mouseRectangle, Color drawColor) {
+	public BuffDrawParams(Texture2D texture, Vector2 position, Vector2 textPosition, Rectangle sourceRectangle, Rectangle mouseRectangle, Color drawColor)
+	{
 		Texture = texture;
 		Position = position;
 		TextPosition = textPosition;
@@ -48,7 +49,8 @@ public struct BuffDrawParams
 		DrawColor = drawColor;
 	}
 
-	public void Deconstruct(out Texture2D texture, out Vector2 position, out Vector2 textPosition, out Rectangle sourceRectangle, out Rectangle mouseRectangle, out Color drawColor) {
+	public void Deconstruct(out Texture2D texture, out Vector2 position, out Vector2 textPosition, out Rectangle sourceRectangle, out Rectangle mouseRectangle, out Color drawColor)
+	{
 		texture = Texture;
 		position = Position;
 		textPosition = TextPosition;

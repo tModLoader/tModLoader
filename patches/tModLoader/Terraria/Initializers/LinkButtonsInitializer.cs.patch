@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LinkButtonsInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LinkButtonsInitializer.cs
-@@ -17,12 +_,17 @@
+@@ -18,13 +_,18 @@
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Forums", "https://forums.terraria.org/index.php", 4));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Merch", "https://terraria.org/store", 5));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Wiki", "https://terraria.wiki.gg/", 6));
@@ -11,7 +11,8 @@
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://www.patreon.com/tmodloader", 7));
  	}
  
- 	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex) {
+ 	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex)
+ 	{
 -		Asset<Texture2D> asset = Main.Assets.Request<Texture2D>("Images/UI/TitleLinkButtons");
 +		Asset<Texture2D> asset = Terraria.ModLoader.UI.UICommon.tModLoaderTitleLinkButtonsTexture;
 -		Rectangle value = asset.Frame(7, 2, horizontalFrameIndex);

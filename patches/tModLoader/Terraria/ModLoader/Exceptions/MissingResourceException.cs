@@ -9,21 +9,26 @@ public class MissingResourceException : Exception
 {
 	public override string HelpLink => "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#terrariamodloadermodgettexturestring-name-error";
 
-	public MissingResourceException() {
+	public MissingResourceException()
+	{
 	}
 
 	public MissingResourceException(string message)
-		: base(message) {
+		: base(message)
+	{
 	}
 
 	public MissingResourceException(string message, Exception inner)
-		: base(message, inner) {
+		: base(message, inner)
+	{
 	}
 
-	public MissingResourceException(string message, ICollection<string> keys) : this(ProcessMessage(message, keys)) {
+	public MissingResourceException(string message, ICollection<string> keys) : this(ProcessMessage(message, keys))
+	{
 	}
 
-	public static string ProcessMessage(string message, ICollection<string> keys) {
+	public static string ProcessMessage(string message, ICollection<string> keys)
+	{
 		string closestMatch = LevenshteinDistance.FolderAwareEditDistance(message, keys.ToArray());
 		if (closestMatch != null && closestMatch != "") {
 			// TODO: UIMessageBox still doesn't display long sequences of colored text correct.
@@ -36,7 +41,8 @@ public class MissingResourceException : Exception
 
 static class LevenshteinDistance
 {
-	internal static string FolderAwareEditDistance(string source, string[] targets) {
+	internal static string FolderAwareEditDistance(string source, string[] targets)
+	{
 		if (targets.Length == 0) return null;
 		var separator = '/';
 		var sourceParts = source.Split(separator);
@@ -91,7 +97,8 @@ static class LevenshteinDistance
 		return scores.OrderBy(x => x.Score).First().Target;
 	}
 
-	public static int Compute(string s, string t) {
+	public static int Compute(string s, string t)
+	{
 		int n = s.Length;
 		int m = t.Length;
 		int[,] d = new int[n + 1, m + 1];
@@ -129,7 +136,8 @@ static class LevenshteinDistance
 		return d[n, m];
 	}
 
-	public static (string, string) ComputeColorTaggedString(string s, string t) {
+	public static (string, string) ComputeColorTaggedString(string s, string t)
+	{
 		//s = "HYUENDAI";
 		//t = "HYUANDAI";
 

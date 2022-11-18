@@ -15,18 +15,19 @@
  	public List<int> Dust;
  	public List<int> Gore;
  	public Player drawPlayer;
-@@ -49,30 +_,39 @@
+@@ -49,31 +_,40 @@
  			result.Height--;
  			return result;
  		}
-+	}*/
-+
-+	public void HeadOnlySetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale) {
-+		projectileDrawPosition = -1;
 -	}
-+		headOnlyRender = true;
++	}*/
  
--	public void BoringSetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale) {
+-	public void BoringSetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale)
++	public void HeadOnlySetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale)
+ 	{
++		projectileDrawPosition = -1;
++		headOnlyRender = true;
++
 -		DrawData = drawData;
 +		DrawDataCache = drawData;
 -		Dust = dust;
@@ -62,7 +63,7 @@
  		cHead = drawPlayer.cHead;
  		cFace = drawPlayer.cFace;
  		cFaceHead = drawPlayer.cFaceHead;
-@@ -80,10 +_,12 @@
+@@ -81,10 +_,12 @@
  		cUnicornHorn = drawPlayer.cUnicornHorn;
  		cAngelHalo = drawPlayer.cAngelHalo;
  		cBeard = drawPlayer.cBeard;
@@ -76,7 +77,7 @@
  		colorEyeWhites = Main.quickAlpha(Color.White, Alpha);
  		colorEyes = Main.quickAlpha(drawPlayer.eyeColor, Alpha);
  		colorHair = Main.quickAlpha(drawPlayer.GetHairColor(useLighting: false), Alpha);
-@@ -99,14 +_,23 @@
+@@ -100,14 +_,23 @@
  			playerEffect = SpriteEffects.FlipHorizontally;
  
  		headVect = new Vector2((float)drawPlayer.legFrame.Width * 0.5f, (float)drawPlayer.legFrame.Height * 0.4f);
@@ -100,7 +101,7 @@
  		if (drawPlayer.head > 0 && drawPlayer.head < 282) {
  			Main.instance.LoadArmorHead(drawPlayer.head);
  			int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
-@@ -126,12 +_,14 @@
+@@ -127,12 +_,14 @@
  		if (drawPlayer.beard > 0 && drawPlayer.beard < 5)
  			Main.instance.LoadAccBeard(drawPlayer.beard);
  

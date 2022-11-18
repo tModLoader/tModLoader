@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent.Events;
 using Terraria.ID;
@@ -9,13 +9,15 @@ internal static class NPCSpawnHelper
 {
 	internal static List<SpawnCondition> conditions = new List<SpawnCondition>();
 
-	internal static void Reset() {
+	internal static void Reset()
+	{
 		foreach (SpawnCondition cond in conditions) {
 			cond.Reset();
 		}
 	}
 
-	internal static void DoChecks(NPCSpawnInfo info) {
+	internal static void DoChecks(NPCSpawnInfo info)
+	{
 		float weight = 1f;
 		foreach (SpawnCondition cond in conditions) {
 			cond.Check(info, ref weight);
@@ -46,21 +48,24 @@ public class SpawnCondition
 	public float Chance => chance;
 	public bool Active => active;
 
-	internal SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f) {
+	internal SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
+	{
 		this.condition = condition;
 		this.children = new List<SpawnCondition>();
 		this.blockWeight = blockWeight;
 		NPCSpawnHelper.conditions.Add(this);
 	}
 
-	internal SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f) {
+	internal SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
+	{
 		this.condition = condition;
 		this.children = new List<SpawnCondition>();
 		this.blockWeight = blockWeight;
 		parent.children.Add(this);
 	}
 
-	internal void Reset() {
+	internal void Reset()
+	{
 		chance = 0f;
 		active = false;
 		foreach (SpawnCondition child in children) {
@@ -68,7 +73,8 @@ public class SpawnCondition
 		}
 	}
 
-	internal void Check(NPCSpawnInfo info, ref float remainingWeight) {
+	internal void Check(NPCSpawnInfo info, ref float remainingWeight)
+	{
 		if (WeightFunc != null) {
 			blockWeight = WeightFunc();
 		}
@@ -181,7 +187,8 @@ public class SpawnCondition
 	public static readonly SpawnCondition Underworld;
 	public static readonly SpawnCondition Cavern;
 
-	static SpawnCondition() {
+	static SpawnCondition()
+	{
 		NebulaTower = new SpawnCondition((info) => info.Player.ZoneTowerNebula);
 		VortexTower = new SpawnCondition((info) => info.Player.ZoneTowerVortex);
 		StardustTower = new SpawnCondition((info) => info.Player.ZoneTowerStardust);
@@ -351,11 +358,13 @@ public class SpawnCondition
 		Cavern = new SpawnCondition((info) => true);
 	}
 
-	private static Tile GetTile(NPCSpawnInfo info) {
+	private static Tile GetTile(NPCSpawnInfo info)
+	{
 		return Main.tile[info.SpawnTileX, info.SpawnTileY];
 	}
 
-	private static bool WaterSurface(NPCSpawnInfo info) {
+	private static bool WaterSurface(NPCSpawnInfo info)
+	{
 		if (info.SafeRangeX) {
 			return false;
 		}
@@ -368,16 +377,19 @@ public class SpawnCondition
 		return false;
 	}
 
-	private static bool MartianProbeHelper(NPCSpawnInfo info) {
+	private static bool MartianProbeHelper(NPCSpawnInfo info)
+	{
 		return (float)Math.Abs(info.SpawnTileX - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f
 			&& !NPC.AnyDanger();
 	}
 
-	private static bool InnerThird(NPCSpawnInfo info) {
+	private static bool InnerThird(NPCSpawnInfo info)
+	{
 		return Math.Abs(info.SpawnTileX - Main.spawnTileX) < Main.maxTilesX / 3;
 	}
 
-	private static bool OuterThird(NPCSpawnInfo info) {
+	private static bool OuterThird(NPCSpawnInfo info)
+	{
 		return Math.Abs(info.SpawnTileX - Main.spawnTileX) > Main.maxTilesX / 3;
 	}
 }

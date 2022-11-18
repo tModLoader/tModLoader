@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -38,15 +_,29 @@
+@@ -38,16 +_,30 @@
  	private UICharacterNameButton _previewImagePathPlate;
  	private Texture2D _previewImageTransientTexture;
  	private UIImage _previewImageUIElement;
@@ -31,7 +31,8 @@
 +	}
 +	// ]
 +
- 	public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject) {
+ 	public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject)
+ 	{
  		_previousUIState = stateToGoBackTo;
  		_dataObject = dataObject;
 +		if (dataObject is TmodFile) {
@@ -39,11 +40,11 @@
 +		}
  	}
  
- 	public override void OnInitialize() {
-@@ -77,13 +_,12 @@
- 	}
+ 	public override void OnInitialize()
+@@ -80,13 +_,12 @@
  
- 	private void SetDefaultOptions() {
+ 	private void SetDefaultOptions()
+ 	{
 -		_optionPublicity = WorkshopItemPublicSettingId.Public;
 -		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
 -		for (int i = 0; i < publicityOptions.Length; i++) {
@@ -59,7 +60,7 @@
  		UpdateImagePreview();
  	}
  
-@@ -96,6 +_,11 @@
+@@ -100,6 +_,11 @@
  		uIElement.SetPadding(0f);
  		uiList.Add(uIElement);
  		uiList.Add(CreateSteamDisclaimer("disclaimer"));
@@ -71,7 +72,7 @@
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));
  		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  		uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
-@@ -163,10 +_,7 @@
+@@ -169,10 +_,7 @@
  			}
  		}
  
@@ -83,7 +84,7 @@
  	}
  
  	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
-@@ -514,14 +_,14 @@
+@@ -538,14 +_,14 @@
  		container.Append(uISlicedImage);
  		UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
  			HAlign = 0f,
@@ -100,7 +101,7 @@
  		uIText.IsWrapped = true;
  		uISlicedImage.Append(uIText);
  		_descriptionText = uIText;
-@@ -610,7 +_,8 @@
+@@ -643,7 +_,8 @@
  			UsedTags = (from x in _tagOptions
  						where x.IsSelected
  						select x.OptionValue).ToArray(),
@@ -110,7 +111,7 @@
  		};
  	}
  
-@@ -619,6 +_,7 @@
+@@ -653,6 +_,7 @@
  			new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  		};
  

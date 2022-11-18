@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -43,22 +43,26 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// Returns the number of modded tile entities that exist in the world currently being played.
 	/// </summary>
-	public static int CountInWorld() {
+	public static int CountInWorld()
+	{
 		return ByID.Count(pair => pair.Value.type >= NumVanilla);
 	}
 
-	internal static void Initialize() {
+	internal static void Initialize()
+	{
 		_UpdateStart += UpdateStartInternal;
 		_UpdateEnd += UpdateEndInternal;
 	}
 
-	private static void UpdateStartInternal() {
+	private static void UpdateStartInternal()
+	{
 		foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 			tileEntity.PreGlobalUpdate();
 		}
 	}
 
-	private static void UpdateEndInternal() {
+	private static void UpdateEndInternal()
+	{
 		foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 			tileEntity.PostGlobalUpdate();
 		}
@@ -67,7 +71,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// You should never use this. It is only included here for completion's sake.
 	/// </summary>
-	public override void NetPlaceEntityAttempt(int i, int j) {
+	public override void NetPlaceEntityAttempt(int i, int j)
+	{
 		if (!manager.TryGetTileEntity(Type, out ModTileEntity modTileEntity)) {
 			return;
 		}
@@ -81,7 +86,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// Returns a new ModTileEntity with the same class, mod, name, and type as the ModTileEntity with the given type. It is very rare that you should have to use this.
 	/// </summary>
-	public static ModTileEntity ConstructFromType(int type) {
+	public static ModTileEntity ConstructFromType(int type)
+	{
 		if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity)) {
 			return null;
 		}
@@ -92,7 +98,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// Returns a new ModTileEntity with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this.
 	/// </summary>
-	public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity) {
+	public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity)
+	{
 		ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType(), true)!;
 		newEntity.Mod = tileEntity.Mod;
 		newEntity.Type = tileEntity.Type;
@@ -102,7 +109,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// A helper method that places this kind of tile entity in the given coordinates for you.
 	/// </summary>
-	public int Place(int i, int j) {
+	public int Place(int i, int j)
+	{
 		ModTileEntity newEntity = ConstructFromBase(this);
 		newEntity.Position = new Point16(i, j);
 		newEntity.ID = AssignNewID();
@@ -118,7 +126,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// A helper method that removes this kind of tile entity from the given coordinates for you.
 	/// </summary>
-	public void Kill(int i, int j) {
+	public void Kill(int i, int j)
+	{
 		Point16 pos = new Point16(i, j);
 		if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 			if (tileEntity.type == Type) {
@@ -132,7 +141,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// Returns the entity ID of this kind of tile entity at the given coordinates for you.
 	/// </summary>
-	public int Find(int i, int j) {
+	public int Find(int i, int j)
+	{
 		Point16 pos = new Point16(i, j);
 		if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 			if (tileEntity.type == Type) {
@@ -146,7 +156,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// Should never be called on ModTileEntity. Replaced by NetSend and Save.
 	/// Would make the base method internal if not for patch size
 	/// </summary>
-	public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend) {
+	public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
+	{
 		throw new NotImplementedException();
 	}
 
@@ -154,7 +165,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// Should never be called on ModTileEntity. Replaced by NetReceive and Load
 	/// Would make the base method internal if not for patch size
 	/// </summary>
-	public sealed override void ReadExtraData(BinaryReader reader, bool networkSend) {
+	public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
+	{
 		throw new NotImplementedException();
 	}
 
@@ -165,7 +177,8 @@ public abstract class ModTileEntity : TileEntity, IModType
 	public sealed override TileEntity GenerateInstance() => ConstructFromBase(this);
 	public sealed override void RegisterTileEntityID(int assignedID) => Type = assignedID;
 
-	void ILoadable.Load(Mod mod) {
+	void ILoadable.Load(Mod mod)
+	{
 		Mod = mod;
 
 		if (!Mod.loading)
@@ -194,32 +207,37 @@ public abstract class ModTileEntity : TileEntity, IModType
 	/// <summary>
 	/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
 	/// </summary>
-	public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
+	public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
+	{
 		return -1;
 	}
 
 	/// <summary>
 	/// Code that should be run when this tile entity is placed by means of server-syncing. Called on Server only.
 	/// </summary>
-	public virtual void OnNetPlace() {
+	public virtual void OnNetPlace()
+	{
 	}
 
 	/// <summary>
 	/// Code that should be run before all tile entities in the world update.
 	/// </summary>
-	public virtual void PreGlobalUpdate() {
+	public virtual void PreGlobalUpdate()
+	{
 	}
 
 	/// <summary>
 	/// Code that should be run after all tile entities in the world update.
 	/// </summary>
-	public virtual void PostGlobalUpdate() {
+	public virtual void PostGlobalUpdate()
+	{
 	}
 
 	/// <summary>
 	/// This method only gets called in the Kill method. If you plan to use that, you can put code here to make things happen when it is called.
 	/// </summary>
-	public virtual void OnKill() {
+	public virtual void OnKill()
+	{
 	}
 
 	/// <summary>

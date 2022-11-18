@@ -26,7 +26,8 @@ internal class ModLoaderMod : Mod
 	public override string Name => "ModLoader";
 	public override Version Version => BuildInfo.tMLVersion;
 
-	internal ModLoaderMod() {
+	internal ModLoaderMod()
+	{
 		Side = ModSide.NoSync;
 		DisplayName = "tModLoader";
 		Code = Assembly.GetExecutingAssembly();
@@ -34,17 +35,20 @@ internal class ModLoaderMod : Mod
 
 	public override IContentSource CreateDefaultContentSource() => new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default.");
 
-	public override void Load() {
+	public override void Load()
+	{
 		PatronSets = GetContent<PatreonItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 		DeveloperSets = GetContent<DeveloperItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 	}
 
-	public override void Unload() {
+	public override void Unload()
+	{
 		PatronSets = null;
 		DeveloperSets = null;
 	}
 
-	internal static bool TryGettingPatreonOrDevArmor(IEntitySource source, Player player) {
+	internal static bool TryGettingPatreonOrDevArmor(IEntitySource source, Player player)
+	{
 		if (Main.rand.NextBool(ChanceToGetPatreonArmor)) {
 			int randomIndex = Main.rand.Next(PatronSets.Length);
 
@@ -67,7 +71,8 @@ internal class ModLoaderMod : Mod
 		return false;
 	}
 
-	public override void HandlePacket(BinaryReader reader, int whoAmI) {
+	public override void HandlePacket(BinaryReader reader, int whoAmI)
+	{
 		byte packetType = reader.ReadByte();
 
 		switch (packetType) {
@@ -80,7 +85,8 @@ internal class ModLoaderMod : Mod
 		}
 	}
 
-	internal static ModPacket GetPacket(byte packetType) {
+	internal static ModPacket GetPacket(byte packetType)
+	{
 		ModPacket packet = ModContent.GetInstance<ModLoaderMod>().GetPacket();
 		packet.Write(packetType);
 		return packet;

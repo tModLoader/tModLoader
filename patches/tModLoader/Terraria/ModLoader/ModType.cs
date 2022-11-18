@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
@@ -23,7 +23,8 @@ public abstract class ModType : IModType
 	/// </summary>
 	public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
-	void ILoadable.Load(Mod mod) {
+	void ILoadable.Load(Mod mod)
+	{
 		if (!LoaderUtils.IsValidated(GetType()))
 			ValidateType();
 
@@ -80,7 +81,8 @@ public abstract class ModType<TEntity> : ModType
 {
 	public TEntity Entity { get; internal set; }
 
-	protected override void InitTemplateInstance() {
+	protected override void InitTemplateInstance()
+	{
 		Entity = CreateTemplateEntity();
 	}
 
@@ -107,7 +109,8 @@ public abstract class ModType<TEntity, TModType> : ModType<TEntity> where TModTy
 	/// </summary>
 	/// <param name="newEntity">The new clone of the entity</param>
 	/// <returns>A clone of this mod type</returns>
-	public virtual TModType Clone(TEntity newEntity) {
+	public virtual TModType Clone(TEntity newEntity)
+	{
 		if (!IsCloneable)
 			Cloning.WarnNotCloneable(GetType());
 
@@ -121,7 +124,8 @@ public abstract class ModType<TEntity, TModType> : ModType<TEntity> where TModTy
 	/// </summary>
 	/// <param name="entity">The entity instance the mod type is being instantiated for</param>
 	/// <returns></returns>
-	public virtual TModType NewInstance(TEntity entity) {
+	public virtual TModType NewInstance(TEntity entity)
+	{
 		if (CloneNewInstances)
 			return Clone(entity);
 

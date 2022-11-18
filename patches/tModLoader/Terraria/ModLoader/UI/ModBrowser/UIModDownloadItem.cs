@@ -54,7 +54,8 @@ internal class UIModDownloadItem : UIPanel
 			: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 		: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
-	public UIModDownloadItem(ModDownloadItem modDownloadItem) {
+	public UIModDownloadItem(ModDownloadItem modDownloadItem)
+	{
 		ModDownload = modDownloadItem;
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
@@ -125,7 +126,8 @@ internal class UIModDownloadItem : UIPanel
 		OnDoubleClick += ViewModInfo;
 	}
 
-	private void ShowModDependencies(UIMouseEvent evt, UIElement element) {
+	private void ShowModDependencies(UIMouseEvent evt, UIElement element)
+	{
 		var modListItem = (UIModDownloadItem)element.Parent;
 		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferences.Split(',').Select(x => x.Trim()).ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
@@ -134,10 +136,12 @@ internal class UIModDownloadItem : UIPanel
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}
 
-	private void ShowGameNeedsRestart(UIMouseEvent evt, UIElement element) {
+	private void ShowGameNeedsRestart(UIMouseEvent evt, UIElement element)
+	{
 		Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", ModDownload.DisplayName), Interface.modBrowserID);
 	}
-	public override int CompareTo(object obj) {
+	public override int CompareTo(object obj)
+	{
 		var item = obj as UIModDownloadItem;
 		switch (Interface.modBrowser.SortMode) {
 			default:
@@ -157,7 +161,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	public bool PassFilters() {
+	public bool PassFilters()
+	{
 		if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(ModDownload.ModName))
 			return false;
 
@@ -188,7 +193,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 
 		if (HasModIcon && ModDownload.ModIconStatus == ModIconStatus.UNKNOWN) {
@@ -216,7 +222,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(tooltip)) {
@@ -226,7 +233,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	protected override void DrawChildren(SpriteBatch spriteBatch) {
+	protected override void DrawChildren(SpriteBatch spriteBatch)
+	{
 		base.DrawChildren(spriteBatch);
 		if (tMLUpdateRequired?.IsMouseHovering == true) {
 			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MBClickToUpdate"), GetInnerDimensions().ToRectangle());
@@ -236,7 +244,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		switch (ModDownload.ModIconStatus) {
@@ -249,7 +258,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	private void RequestModIcon() {
+	private void RequestModIcon()
+	{
 		ModDownload.ModIconStatus = ModIconStatus.REQUESTED;
 		using (var client = new WebClient()) {
 			client.DownloadDataCompleted += IconDownloadComplete;
@@ -257,12 +267,14 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	private void AppendModIcon() {
+	private void AppendModIcon()
+	{
 		ModDownload.ModIconStatus = ModIconStatus.APPENDED;
 		Append(_modIcon);
 	}
 
-	private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e) {
+	private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e)
+	{
 		bool success = false;
 
 		try {
@@ -296,7 +308,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	private void AdjustPositioningFailedIcon() {
+	private void AdjustPositioningFailedIcon()
+	{
 		ModDownload.ModIconStatus = ModIconStatus.APPENDED;
 		_modName.Left.Pixels -= ModIconAdjust;
 		_moreInfoButton.Left.Pixels -= ModIconAdjust;
@@ -306,7 +319,8 @@ internal class UIModDownloadItem : UIPanel
 			_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
 	}
 
-	private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos) {
+	private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos)
+	{
 		if (ModDownload.TimeStamp == DateTime.MinValue) {
 			return;
 		}
@@ -330,26 +344,30 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 		BackgroundColor = UICommon.DefaultUIBlue;
 		BorderColor = new Color(89, 116, 213);
 	}
 
-	public override void MouseOut(UIMouseEvent evt) {
+	public override void MouseOut(UIMouseEvent evt)
+	{
 		base.MouseOut(evt);
 		BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 	}
 
-	private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement) {
+	private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		ModDownload.InnerDownloadWithDeps();
 
 		//TODO: Some code to add the 'Installed' item to the UIModDownloaditem and redraw?
 	}
 
-	private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement) {
+	private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Interface.modInfo.Show(ModDownload.ModName, ModDownload.DisplayName, Interface.modBrowserID, ModDownload.Installed, url: ModDownload.Homepage, loadFromWeb: true, publishedFileId: ModDownload.PublishId);
 	}

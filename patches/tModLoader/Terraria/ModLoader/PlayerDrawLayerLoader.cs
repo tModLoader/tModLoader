@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
@@ -16,14 +16,16 @@ public static class PlayerDrawLayerLoader
 
 	internal static void Add(PlayerDrawLayer layer) => _layers.Add(layer);
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		_layers = new List<PlayerDrawLayer>(PlayerDrawLayers.VanillaLayers);
 		foreach (var layer in _layers) {
 			layer.ClearChildren();
 		}
 	}
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		var positions = Layers.ToDictionary(l => l, l => l.GetDefaultPosition());
 
 		PlayerLoader.ModifyDrawLayerOrdering(positions);
@@ -63,7 +65,8 @@ public static class PlayerDrawLayerLoader
 	/// <summary>
 	/// Note, not threadsafe
 	/// </summary>
-	public static PlayerDrawLayer[] GetDrawLayers(PlayerDrawSet drawInfo) {
+	public static PlayerDrawLayer[] GetDrawLayers(PlayerDrawSet drawInfo)
+	{
 		foreach (var layer in _drawOrder) {
 			layer.ResetVisibility(drawInfo);
 		}

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Terraria.ID;
 
 namespace Terraria.GameContent.ItemDropRules;
@@ -8,7 +8,8 @@ public class CoinsRule : IItemDropRule
 	public long value; // in copper coins
 	public bool withRandomBonus = false;
 
-	public CoinsRule(long value, bool withRandomBonus = false) {
+	public CoinsRule(long value, bool withRandomBonus = false)
+	{
 		this.value = value;
 		this.withRandomBonus = withRandomBonus;
 	}
@@ -16,7 +17,8 @@ public class CoinsRule : IItemDropRule
 	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; } = new();
 	public bool CanDrop(DropAttemptInfo info) => true;
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	{
 		double scale = 1f;
 		if (withRandomBonus) {
 			scale += info.rng.Next(-20, 21) * .01f;
@@ -34,7 +36,8 @@ public class CoinsRule : IItemDropRule
 		return new() { State = ItemDropAttemptResultState.Success };
 	}
 
-	public static IEnumerable<(int itemId, int count)> ToCoins(long money) {
+	public static IEnumerable<(int itemId, int count)> ToCoins(long money)
+	{
 		int copper = (int)(money % 100);
 		money /= 100;
 		int silver = (int)(money % 100);
@@ -49,7 +52,8 @@ public class CoinsRule : IItemDropRule
 		if (plat > 0) yield return (ItemID.PlatinumCoin, plat);
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	{
 		// TODO: is there a sensible way to report variance here? probably not
 
 		foreach ((int itemId, int count) in ToCoins(value)) {

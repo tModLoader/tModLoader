@@ -41,9 +41,9 @@
 +		set => numManaStars = Utils.Clamp(value, int.MinValue, 20);
 +	}
  
- 	public PlayerStatsSnapshot(Player player) {
- 		Life = player.statLife;
-@@ -17,7 +_,10 @@
+ 	public PlayerStatsSnapshot(Player player)
+ 	{
+@@ -18,7 +_,10 @@
  		ManaMax = player.statManaMax2;
  		float num = 20f;
  		int num2 = player.statLifeMax / 20;
@@ -54,7 +54,7 @@
  		if (num3 < 0)
  			num3 = 0;
  
-@@ -29,7 +_,11 @@
+@@ -30,7 +_,11 @@
  		int num4 = player.statLifeMax2 - player.statLifeMax;
  		num += (float)(num4 / num2);
  		LifeFruitCount = num3;

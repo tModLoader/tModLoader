@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/SupportedWorkshopTags.cs
 +++ src/tModLoader/Terraria/Social/Steam/SupportedWorkshopTags.cs
-@@ -29,5 +_,23 @@
+@@ -30,5 +_,23 @@
  		AddResourcePackTag("WorkshopTags.Overhaul", "Overhaul");
  		AddResourcePackTag("WorkshopTags.Tweaks", "Tweaks");
  		AddResourcePackTag("WorkshopTags.OtherResourcePacks", "Other Packs");

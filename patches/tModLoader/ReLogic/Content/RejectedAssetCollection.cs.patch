@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/ReLogic/Content/RejectedAssetCollection.cs
 +++ src/tModLoader/ReLogic/Content/RejectedAssetCollection.cs
-@@ -7,18 +_,28 @@
- 	private Dictionary<string, IRejectionReason> _rejectedAssetsAndReasons = new Dictionary<string, IRejectionReason>();
+@@ -8,20 +_,31 @@
  
- 	public void Reject(string assetPath, IRejectionReason reason) {
+ 	public void Reject(string assetPath, IRejectionReason reason)
+ 	{
 +		lock (_rejectedAssetsAndReasons) {
 -		_rejectedAssetsAndReasons.Add(assetPath, reason);
 +			_rejectedAssetsAndReasons.Add(assetPath, reason);
@@ -11,20 +11,23 @@
  	}
  
 -	public bool IsRejected(string assetPath) => _rejectedAssetsAndReasons.ContainsKey(assetPath);
-+	public bool IsRejected(string assetPath) {
++	public bool IsRejected(string assetPath)
++	{
 +		lock (_rejectedAssetsAndReasons) {
 +			return _rejectedAssetsAndReasons.ContainsKey(assetPath);
 +		}
 +	}
  
- 	public void Clear() {
+ 	public void Clear()
+ 	{
 +		lock (_rejectedAssetsAndReasons) {
 -		_rejectedAssetsAndReasons.Clear();
 +			_rejectedAssetsAndReasons.Clear();
 +		}
  	}
  
- 	public bool TryGetRejections(List<string> rejectionReasons) {
+ 	public bool TryGetRejections(List<string> rejectionReasons)
+ 	{
 +		lock (_rejectedAssetsAndReasons) {
 -		foreach (KeyValuePair<string, IRejectionReason> rejectedAssetsAndReason in _rejectedAssetsAndReasons) {
 +			foreach (KeyValuePair<string, IRejectionReason> rejectedAssetsAndReason in _rejectedAssetsAndReasons) {

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.ResourceSets;
@@ -46,7 +46,8 @@ public struct ResourceOverlayDrawContext
 	/// <param name="displaySet">The display set that this context is for</param>
 	/// <param name="resourceNumber">The resource number within the resource set</param>
 	/// <param name="texture">The texture being drawn</param>
-	public ResourceOverlayDrawContext(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, int resourceNumber, Asset<Texture2D> texture) {
+	public ResourceOverlayDrawContext(PlayerStatsSnapshot snapshot, IPlayerResourcesDisplaySet displaySet, int resourceNumber, Asset<Texture2D> texture)
+	{
 		this.snapshot = snapshot;
 		DisplaySet = displaySet;
 		this.resourceNumber = resourceNumber;
@@ -61,7 +62,8 @@ public struct ResourceOverlayDrawContext
 		SpriteBatch = Main.spriteBatch;
 	}
 
-	public void Draw() {
+	public void Draw()
+	{
 		SpriteBatch.Draw(texture.Value, position, source, color, rotation, origin, scale, effects, 0);
 	}
 }

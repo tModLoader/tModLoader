@@ -22,25 +22,26 @@
 +
  	public static int AssignNewID() => TileEntitiesNextID++;
  
- 	public static void Clear() {
-@@ -43,6 +_,7 @@
- 	public static void InitializeAll() {
+ 	public static void Clear()
+@@ -47,6 +_,7 @@
+ 	{
  		manager = new TileEntitiesManager();
  		manager.RegisterAll();
 +		ModTileEntity.Initialize();
  	}
  
- 	public static void PlaceEntityNet(int x, int y, int type) {
-@@ -53,34 +_,58 @@
- 	public virtual void Update() {
+ 	public static void PlaceEntityNet(int x, int y, int type)
+@@ -59,38 +_,62 @@
+ 	{
  	}
  
+-	public static void Write(BinaryWriter writer, TileEntity ent, bool networkSend = false)
 +	// Vanilla's 'networkSend' actually meant that this isn't the TE's first synchronization.
 +	// So I added lightSend parameters to have 'networkSend' in this method be true on initial syncs.
 +	// - Mirsario
 +
--	public static void Write(BinaryWriter writer, TileEntity ent, bool networkSend = false) {
-+	public static void Write(BinaryWriter writer, TileEntity ent, bool networkSend = false, bool lightSend = false) {
++	public static void Write(BinaryWriter writer, TileEntity ent, bool networkSend = false, bool lightSend = false)
+ 	{
 +		lightSend &= networkSend;
 +
  		writer.Write(ent.type);
@@ -48,8 +49,9 @@
 +		ent.WriteInner(writer, networkSend, lightSend);
  	}
  
--	public static TileEntity Read(BinaryReader reader, bool networkSend = false) {
-+	public static TileEntity Read(BinaryReader reader, bool networkSend = false, bool lightSend = false) {
+-	public static TileEntity Read(BinaryReader reader, bool networkSend = false)
++	public static TileEntity Read(BinaryReader reader, bool networkSend = false, bool lightSend = false)
+ 	{
 +		lightSend &= networkSend;
 +
  		byte id = reader.ReadByte();
@@ -60,8 +62,9 @@
  		return tileEntity;
  	}
  
--	private void WriteInner(BinaryWriter writer, bool networkSend) {
-+	private void WriteInner(BinaryWriter writer, bool networkSend, bool lightSend) {
+-	private void WriteInner(BinaryWriter writer, bool networkSend)
++	private void WriteInner(BinaryWriter writer, bool networkSend, bool lightSend)
+ 	{
 -		if (!networkSend)
 +		if (!lightSend)
  			writer.Write(ID);
@@ -80,8 +83,9 @@
 +		WriteExtraData(writer, lightSend);
  	}
  
--	private void ReadInner(BinaryReader reader, bool networkSend) {
-+	private void ReadInner(BinaryReader reader, bool networkSend, bool lightSend) {
+-	private void ReadInner(BinaryReader reader, bool networkSend)
++	private void ReadInner(BinaryReader reader, bool networkSend, bool lightSend)
+ 	{
 -		if (!networkSend)
 +		if (!lightSend)
  			ID = reader.ReadInt32();
@@ -99,4 +103,4 @@
 +		ReadExtraData(reader, lightSend);
  	}
  
- 	public virtual void WriteExtraData(BinaryWriter writer, bool networkSend) {
+ 	public virtual void WriteExtraData(BinaryWriter writer, bool networkSend)

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -15,11 +15,13 @@ public class UIGrid : UIElement
 
 	private class UIInnerList : UIElement
 	{
-		public override bool ContainsPoint(Vector2 point) {
+		public override bool ContainsPoint(Vector2 point)
+		{
 			return true;
 		}
 
-		protected override void DrawChildren(SpriteBatch spriteBatch) {
+		protected override void DrawChildren(SpriteBatch spriteBatch)
+		{
 			Vector2 position = this.Parent.GetDimensions().Position();
 			Vector2 dimensions = new Vector2(this.Parent.GetDimensions().Width, this.Parent.GetDimensions().Height);
 			foreach (UIElement current in this.Elements) {
@@ -45,7 +47,8 @@ public class UIGrid : UIElement
 	}
 
 	// todo, vertical/horizontal orientation, left to right, etc?
-	public UIGrid() {
+	public UIGrid()
+	{
 		this._innerList.OverflowHidden = false;
 		this._innerList.Width.Set(0f, 1f);
 		this._innerList.Height.Set(0f, 1f);
@@ -53,11 +56,13 @@ public class UIGrid : UIElement
 		base.Append(this._innerList);
 	}
 
-	public float GetTotalHeight() {
+	public float GetTotalHeight()
+	{
 		return this._innerListHeight;
 	}
 
-	public void Goto(UIGrid.ElementSearchMethod searchMethod, bool center = false) {
+	public void Goto(UIGrid.ElementSearchMethod searchMethod, bool center = false)
+	{
 		for (int i = 0; i < this._items.Count; i++) {
 			if (searchMethod(this._items[i])) {
 				this._scrollbar.ViewPosition = this._items[i].Top.Pixels;
@@ -69,14 +74,16 @@ public class UIGrid : UIElement
 		}
 	}
 
-	public virtual void Add(UIElement item) {
+	public virtual void Add(UIElement item)
+	{
 		this._items.Add(item);
 		this._innerList.Append(item);
 		this.UpdateOrder();
 		this._innerList.Recalculate();
 	}
 
-	public virtual void AddRange(IEnumerable<UIElement> items) {
+	public virtual void AddRange(IEnumerable<UIElement> items)
+	{
 		this._items.AddRange(items);
 		foreach (var item in items) {
 			this._innerList.Append(item);
@@ -86,35 +93,41 @@ public class UIGrid : UIElement
 		this._innerList.Recalculate();
 	}
 
-	public virtual bool Remove(UIElement item) {
+	public virtual bool Remove(UIElement item)
+	{
 		this._innerList.RemoveChild(item);
 		this.UpdateOrder();
 		return this._items.Remove(item);
 	}
 
-	public virtual void Clear() {
+	public virtual void Clear()
+	{
 		this._innerList.RemoveAllChildren();
 		this._items.Clear();
 	}
 
-	public override void Recalculate() {
+	public override void Recalculate()
+	{
 		base.Recalculate();
 		this.UpdateScrollbar();
 	}
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 		PlayerInput.LockVanillaMouseScroll("ModLoader/UIGrid");
 	}
 
-	public override void ScrollWheel(UIScrollWheelEvent evt) {
+	public override void ScrollWheel(UIScrollWheelEvent evt)
+	{
 		base.ScrollWheel(evt);
 		if (this._scrollbar != null) {
 			this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
 		}
 	}
 
-	public override void RecalculateChildren() {
+	public override void RecalculateChildren()
+	{
 		float availableWidth = GetInnerDimensions().Width;
 		base.RecalculateChildren();
 		float top = 0f;
@@ -136,28 +149,33 @@ public class UIGrid : UIElement
 		this._innerListHeight = top + maxRowHeight;
 	}
 
-	private void UpdateScrollbar() {
+	private void UpdateScrollbar()
+	{
 		if (this._scrollbar == null) {
 			return;
 		}
 		this._scrollbar.SetView(base.GetInnerDimensions().Height, this._innerListHeight);
 	}
 
-	public void SetScrollbar(UIScrollbar scrollbar) {
+	public void SetScrollbar(UIScrollbar scrollbar)
+	{
 		this._scrollbar = scrollbar;
 		this.UpdateScrollbar();
 	}
 
-	public void UpdateOrder() {
+	public void UpdateOrder()
+	{
 		this._items.Sort(new Comparison<UIElement>(this.SortMethod));
 		this.UpdateScrollbar();
 	}
 
-	public int SortMethod(UIElement item1, UIElement item2) {
+	public int SortMethod(UIElement item1, UIElement item2)
+	{
 		return item1.CompareTo(item2);
 	}
 
-	public override List<SnapPoint> GetSnapPoints() {
+	public override List<SnapPoint> GetSnapPoints()
+	{
 		List<SnapPoint> list = new List<SnapPoint>();
 		if (base.GetSnapPoint(out SnapPoint item)) {
 			list.Add(item);
@@ -168,7 +186,8 @@ public class UIGrid : UIElement
 		return list;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		if (this._scrollbar != null) {
 			this._innerList.Top.Set(-this._scrollbar.GetValue(), 0f);
 		}

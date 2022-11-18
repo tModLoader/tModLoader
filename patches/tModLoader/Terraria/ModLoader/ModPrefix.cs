@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 namespace Terraria.ModLoader;
 
@@ -35,7 +35,8 @@ public abstract class ModPrefix : ModType
 	/// </summary>
 	public virtual PrefixCategory Category => PrefixCategory.Custom;
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModPrefix>.Register(this);
 
 		Type = PrefixLoader.ReservePrefixID();
@@ -44,12 +45,14 @@ public abstract class ModPrefix : ModType
 		PrefixLoader.RegisterPrefix(this);
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		AutoStaticDefaults();
 		SetStaticDefaults();
 	}
 
-	public virtual void AutoStaticDefaults() {
+	public virtual void AutoStaticDefaults()
+	{
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}

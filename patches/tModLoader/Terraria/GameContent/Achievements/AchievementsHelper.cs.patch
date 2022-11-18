@@ -6,7 +6,7 @@
  namespace Terraria.GameContent.Achievements;
  
  public class AchievementsHelper
-@@ -108,10 +_,10 @@
+@@ -114,10 +_,10 @@
  			}
  		}
  
@@ -19,7 +19,7 @@
  			Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
  
  		if (player.miscEquips[4].type > 0)
-@@ -181,7 +_,7 @@
+@@ -191,7 +_,7 @@
  		if (context == 17)
  			Main.Achievements.GetCondition("THE_CAVALRY", "Equip").Complete();
  
@@ -28,7 +28,7 @@
  			Main.Achievements.GetCondition("HEAD_IN_THE_CLOUDS", "Equip").Complete();
  
  		if (context == 8 && player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
-@@ -213,12 +_,12 @@
+@@ -224,12 +_,12 @@
  		switch (eventID) {
  			case 1:
  				Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -16,14 +16,16 @@ public class HerbBagDropsItemDropRule : IItemDropRule
 		private set;
 	}
 
-	public HerbBagDropsItemDropRule(params int[] options) {
+	public HerbBagDropsItemDropRule(params int[] options)
+	{
 		dropIds = options;
 		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
 	public bool CanDrop(DropAttemptInfo info) => true;
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	{
 		ItemDropAttemptResult result;
 
 		int amount = Main.rand.Next(2, 5);
@@ -43,7 +45,8 @@ public class HerbBagDropsItemDropRule : IItemDropRule
 		return result;
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	{
 		float num = (float)1f / (float)1f;
 		float num2 = num * ratesInfo.parentDroprateChance;
 		float dropRate = 1f / (float)(dropIds.Length + 3.83f) * num2;

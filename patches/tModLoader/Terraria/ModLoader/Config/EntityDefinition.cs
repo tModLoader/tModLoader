@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -25,17 +25,20 @@ public abstract class EntityDefinition : TagSerializable
 	[JsonIgnore]
 	public abstract int Type { get; }
 
-	public EntityDefinition() {
+	public EntityDefinition()
+	{
 		Mod = "Terraria";
 		Name = "None";
 	}
 
-	public EntityDefinition(string mod, string name) {
+	public EntityDefinition(string mod, string name)
+	{
 		Mod = mod;
 		Name = name;
 	}
 
-	public EntityDefinition(string key) {
+	public EntityDefinition(string key)
+	{
 		Mod = "Terraria";
 		Name = key;
 
@@ -47,7 +50,8 @@ public abstract class EntityDefinition : TagSerializable
 		}
 	}
 
-	public override bool Equals(object obj) {
+	public override bool Equals(object obj)
+	{
 		if (obj is not EntityDefinition p) {
 			return false;
 		}
@@ -61,7 +65,8 @@ public abstract class EntityDefinition : TagSerializable
 	public override int GetHashCode()
 		=> new { Mod, Name }.GetHashCode();
 
-	public TagCompound SerializeData() {
+	public TagCompound SerializeData()
+	{
 		return new TagCompound {
 			["mod"] = Mod,
 			["name"] = Name,
@@ -157,11 +162,13 @@ public class PrefixDefinition : EntityDefinition
 /// <typeparam name="T">The Type that implementes the static FromString method that returns Type T.</typeparam>
 public class ToFromStringConverter<T> : TypeConverter
 {
-	public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+	public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+	{
 		return destinationType != typeof(string); // Critical for populating from json string. Does prevent compact json values though.
 	}
 
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
+	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+	{
 		if (sourceType == typeof(string)) {
 			return true;
 		}
@@ -169,7 +176,8 @@ public class ToFromStringConverter<T> : TypeConverter
 		return base.CanConvertFrom(context, sourceType);
 	}
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+	{
 		if (value is string) {
 			MethodInfo parse = typeof(T).GetMethod("FromString", new Type[] { typeof(string) });
 

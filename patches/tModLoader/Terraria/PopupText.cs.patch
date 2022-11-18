@@ -18,7 +18,7 @@
  	public bool sonar;
  	public PopupTextContext context;
  	public int npcNetID;
-@@ -251,10 +_,14 @@
+@@ -256,10 +_,14 @@
  				popupText2.color = new Color(5, 200, 255);
  			else if (newItem.rare == 10)
  				popupText2.color = new Color(255, 40, 100);
@@ -34,7 +34,7 @@
  			popupText2.name = newItem.AffixName();
  			popupText2.stack = stack;
  			popupText2.velocity.Y = -7f;
-@@ -449,6 +_,9 @@
+@@ -460,6 +_,9 @@
  			color = new Color((byte)Main.DiscoR, (byte)Main.DiscoG, (byte)Main.DiscoB, Main.mouseTextColor);
  		else if (master)
  			color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);

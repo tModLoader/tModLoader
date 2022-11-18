@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.IO;
+namespace Terraria.ModLoader.IO;
 
 public abstract class ModEntry : TagSerializable
 {
@@ -9,7 +9,8 @@ public abstract class ModEntry : TagSerializable
 	public string unloadedType;
 	public ushort loadedType;
 
-	protected ModEntry(ModBlockType block) {
+	protected ModEntry(ModBlockType block)
+	{
 		type = loadedType = block.Type;
 		modName = block.Mod.Name;
 		name = block.Name;
@@ -19,7 +20,8 @@ public abstract class ModEntry : TagSerializable
 
 	protected abstract string GetUnloadedType(ushort type);
 
-	protected ModEntry(TagCompound tag) {
+	protected ModEntry(TagCompound tag)
+	{
 		type = tag.Get<ushort>("value");
 		modName = tag.Get<string>("mod");
 		name = tag.Get<string>("name");
@@ -31,7 +33,8 @@ public abstract class ModEntry : TagSerializable
 
 	public abstract string DefaultUnloadedType { get; }
 
-	public virtual TagCompound SerializeData() {
+	public virtual TagCompound SerializeData()
+	{
 		return new TagCompound {
 			["value"] = type,
 			["mod"] = modName,

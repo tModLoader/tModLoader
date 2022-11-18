@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria.GameContent;
@@ -24,20 +24,24 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 	private string[] textStrings;
 	private Vector2[] drawOffsets;
 
-	public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false) : base() {
+	public UIAutoScaleTextTextPanel(T text, float textScaleMax = 1f, bool large = false) : base()
+	{
 		SetText(text, textScaleMax, large);
 	}
 
-	public override void Recalculate() {
+	public override void Recalculate()
+	{
 		base.Recalculate();
 		SetText(_text, TextScaleMax, IsLarge);
 	}
 
-	public void SetText(T text) {
+	public void SetText(T text)
+	{
 		SetText(text, TextScaleMax, IsLarge);
 	}
 
-	public virtual void SetText(T text, float textScaleMax, bool large) {
+	public virtual void SetText(T text, float textScaleMax, bool large)
+	{
 		var innerDimensionsRectangle = GetDimensions().ToRectangle();
 
 		if (text.ToString() != _text?.ToString() || oldInnerDimensions != innerDimensionsRectangle) {
@@ -80,7 +84,8 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		if (float.IsNaN(TextScale))
 			Recalculate();
 

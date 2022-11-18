@@ -1,9 +1,9 @@
 --- src/Terraria/Terraria/Social/WeGame/CoreSocialModule.cs
 +++ src/TerrariaNetCore/Terraria/Social/WeGame/CoreSocialModule.cs
-@@ -58,12 +_,15 @@
- 	}
+@@ -62,12 +_,15 @@
  
- 	public void Shutdown() {
+ 	public void Shutdown()
+ 	{
 +#if !NETCORE
  		if (Platform.IsWindows) {
  			Application.ApplicationExit += delegate {

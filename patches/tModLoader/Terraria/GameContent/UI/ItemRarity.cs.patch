@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.UI;
  
-@@ -21,6 +_,11 @@
+@@ -22,6 +_,11 @@
  		_rarities.Add(7, Colors.RarityLime);
  		_rarities.Add(8, Colors.RarityYellow);
  		_rarities.Add(9, Colors.RarityCyan);
@@ -19,4 +19,4 @@
 +			_rarities.Add(i, RarityLoader.GetRarity(i).RarityColor);
  	}
  
- 	public static Color GetColor(int rarity) {
+ 	public static Color GetColor(int rarity)

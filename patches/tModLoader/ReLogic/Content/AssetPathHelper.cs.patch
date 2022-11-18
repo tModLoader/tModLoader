@@ -6,10 +6,10 @@
  using System.IO;
  
  namespace ReLogic.Content;
-@@ -6,24 +_,24 @@
- public static class AssetPathHelper
+@@ -7,24 +_,24 @@
  {
- 	public static string CleanPath(string path) {
+ 	public static string CleanPath(string path)
+ 	{
 -		path = path.Replace('/', '\\');
 -		path = path.Replace("\\.\\", "\\");
 -		while (path.StartsWith(".\\")) {
@@ -37,7 +37,7 @@
  			int num2 = path.Length - "\\..".Length;
  			if (num2 > 0)
  				CollapseParentDirectory(ref path, num2, "\\..".Length);
-@@ -33,13 +_,12 @@
+@@ -34,14 +_,13 @@
  			path = string.Empty;
  
  		if (Path.DirectorySeparatorChar != '\\')
@@ -47,7 +47,8 @@
  		return path;
  	}
  
- 	private static int CollapseParentDirectory(ref string path, int position, int removeLength) {
+ 	private static int CollapseParentDirectory(ref string path, int position, int removeLength)
+ 	{
 -		int num = path.LastIndexOf('\\', position - 1) + 1;
 +		int num = path.LastIndexOf("\\", position - 1, StringComparison.Ordinal) + 1;
  		path = path.Remove(num, position - num + removeLength);

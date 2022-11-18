@@ -7,12 +7,13 @@
  
  namespace Terraria.GameContent;
  
-@@ -84,12 +_,24 @@
+@@ -84,13 +_,28 @@
  	};
  	public static TownNPCProfiles Instance = new TownNPCProfiles();
  
 -	public bool GetProfile(int npcId, out ITownNPCProfile profile) => _townNPCProfiles.TryGetValue(npcId, out profile);
-+	public bool GetProfile(NPC npc, out ITownNPCProfile profile) {
++	public bool GetProfile(NPC npc, out ITownNPCProfile profile)
++	{
 +		_townNPCProfiles.TryGetValue(npc.type, out profile);
 +		NPCLoader.ModifyTownNPCProfile(npc, ref profile);
 +		if (!Main.dedServ)
@@ -20,15 +21,18 @@
 +		return profile != null;
 +	}
 +
-+	internal void ResetTexturesAccordingToVanillaProfiles() {
++	internal void ResetTexturesAccordingToVanillaProfiles()
++	{
 +		foreach (KeyValuePair<int, ITownNPCProfile> pair in _townNPCProfiles) {
 +			TextureAssets.Npc[pair.Key] = pair.Value.GetTextureNPCShouldUse(ContentSamples.NpcsByNetId[pair.Key]);
 +		}
 +	}
++
  	public static ITownNPCProfile LegacyWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniquePartyTexture = true, bool uniquePartyTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.LegacyNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, includeDefault: true, uniquePartyTexture), new Profiles.LegacyNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, includeDefault: true, uniquePartyTextureShimmered));
  	public static ITownNPCProfile TransformableWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniqueCreditTexture = true, bool uniqueCreditTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.TransformableNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, uniqueCreditTexture), new Profiles.TransformableNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, uniqueCreditTextureShimmered));
  
- 	public static int GetHeadIndexSafe(NPC npc) {
+ 	public static int GetHeadIndexSafe(NPC npc)
+ 	{
 -		if (Instance.GetProfile(npc.type, out var profile))
 +		if (Instance.GetProfile(npc, out var profile))
  			return profile.GetHeadTextureIndex(npc);

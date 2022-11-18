@@ -9,7 +9,7 @@
  using ReLogic.OS.Base;
  
  namespace ReLogic.OS.Windows;
-@@ -15,7 +_,11 @@
+@@ -16,7 +_,11 @@
  
  		try {
  			InvokeInStaThread(delegate {
@@ -21,9 +21,9 @@
  			});
  		}
  		catch {
-@@ -25,7 +_,11 @@
- 
- 	private string TryToGetClipboardText() {
+@@ -27,7 +_,11 @@
+ 	private string TryToGetClipboardText()
+ 	{
  		try {
 +#if NETCORE
 +			return InvokeInStaThread(() => NativeClipboard.TryGetText(out var text) ? text : "");

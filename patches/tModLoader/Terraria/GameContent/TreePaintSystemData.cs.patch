@@ -7,7 +7,7 @@
  namespace Terraria.GameContent;
  
  public static class TreePaintSystemData
-@@ -213,6 +_,11 @@
+@@ -214,6 +_,11 @@
  			case 5:
  				switch (tileStyle) {
  					default:
@@ -19,7 +19,7 @@
  						return WoodPurity;
  					case 0:
  						return WoodCorruption;
-@@ -232,6 +_,11 @@
+@@ -233,6 +_,11 @@
  			case 323:
  				switch (tileStyle) {
  					default:
@@ -31,8 +31,8 @@
  						return WoodPurity;
  					case 0:
  					case 4:
-@@ -274,6 +_,27 @@
- 	public static TreePaintingSettings GetTreeFoliageSettings(int foliageIndex, int foliageStyle) {
+@@ -276,6 +_,27 @@
+ 	{
  		switch (foliageIndex) {
  			default:
 +				if (foliageIndex >= ModTree.VanillaTopTextureCount) {

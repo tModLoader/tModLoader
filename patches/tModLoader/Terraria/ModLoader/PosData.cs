@@ -25,7 +25,8 @@ public struct PosData<T>
 		/// <param name="capacity">Defaults to 1M entries to reduce reallocations. Final built collection will be smaller. </param>
 		/// <param name="compressEqualValues">Reduces the size of the map, but gives unspecified positions a value.</param>
 		/// <param name="insertDefaultEntries">Ensures unspecified positions are assigned a default value when used with <paramref name="compressEqualValues"/></param>
-		public OrderedSparseLookupBuilder(int capacity = 1048576, bool compressEqualValues = true, bool insertDefaultEntries = false) {
+		public OrderedSparseLookupBuilder(int capacity = 1048576, bool compressEqualValues = true, bool insertDefaultEntries = false)
+		{
 			list = new List<PosData<T>>(capacity);
 			last = nullPosData;
 			this.compressEqualValues = compressEqualValues;
@@ -34,7 +35,8 @@ public struct PosData<T>
 
 		public void Add(int x, int y, T value) => Add(PosData.CoordsToPos(x, y), value);
 
-		public void Add(int pos, T value) {
+		public void Add(int pos, T value)
+		{
 			if (pos <= last.pos)
 				throw new ArgumentException($"Must build in ascending index order. Prev: {last.pos}, pos: {pos}");
 
@@ -63,7 +65,8 @@ public struct PosData<T>
 		private PosData<T> current;
 		private int nextIdx;
 
-		public OrderedSparseLookupReader(PosData<T>[] data, bool hasEqualValueCompression = true) {
+		public OrderedSparseLookupReader(PosData<T>[] data, bool hasEqualValueCompression = true)
+		{
 			this.data = data;
 			this.hasEqualValueCompression = hasEqualValueCompression;
 			current = nullPosData;
@@ -72,7 +75,8 @@ public struct PosData<T>
 
 		public T Get(int x, int y) => Get(PosData.CoordsToPos(x, y));
 
-		public T Get(int pos) {
+		public T Get(int pos)
+		{
 			if (pos <= current.pos)
 				throw new ArgumentException($"Must read in ascending index order. Prev: {current.pos}, pos: {pos}");
 
@@ -92,7 +96,8 @@ public struct PosData<T>
 	public int X => pos / Main.maxTilesY;
 	public int Y => pos % Main.maxTilesY;
 
-	public PosData(int pos, T value) {
+	public PosData(int pos, T value)
+	{
 		this.pos = pos;
 		this.value = value;
 	}
@@ -118,7 +123,8 @@ public static class PosData
 	/// Searches for the value i for which <code>posMap[i].pos &lt; pos &lt; posMap[i + 1].pos</code>
 	/// </summary>
 	/// <returns>The index of the nearest entry with <see cref="PosData{T}.pos"/> &lt;= <paramref name="pos"/> or -1 if <paramref name="pos"/> &lt; <paramref name="posMap"/>[0].pos</returns>
-	public static int FindIndex<T>(this PosData<T>[] posMap, int pos) {
+	public static int FindIndex<T>(this PosData<T>[] posMap, int pos)
+	{
 		int minimum = -1, maximum = posMap.Length;
 		while (maximum - minimum > 1) {
 			int split = (minimum + maximum) / 2;
@@ -162,7 +168,8 @@ public static class PosData
 	/// <summary>
 	/// For use with uncompressed sparse data lookups. Checks that the exact position exists in the lookup table.
 	/// </summary>
-	public static bool LookupExact<T>(this PosData<T>[] posMap, int pos, out T data) {
+	public static bool LookupExact<T>(this PosData<T>[] posMap, int pos, out T data)
+	{
 		var posData = posMap.Find(pos);
 		if (posData.pos != pos) {
 			data = default;
@@ -181,7 +188,8 @@ public static class PosData
 	/// <param name="pt"></param>
 	/// <param name="distance"> The distance between the provided Point and nearby entry </param>
 	/// <returns> True if successfully found an entry nearby </returns>
-	public static bool NearbySearchOrderedPosMap<T>(PosData<T>[] posMap, Point pt, int distance, out PosData<T> entry) {
+	public static bool NearbySearchOrderedPosMap<T>(PosData<T>[] posMap, Point pt, int distance, out PosData<T> entry)
+	{
 		entry = new PosData<T>(-1, default);
 
 		// Check if posMap.Length is zero (typically due to modder building map themeselves), before executing everything else needlessly.

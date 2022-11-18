@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Utilities/PlatformUtilities.cs
 +++ src/Terraria/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,11 +_,49 @@
+@@ -1,12 +_,52 @@
  using System;
  using System.IO;
 +#if FNA
@@ -13,7 +13,8 @@
  public static class PlatformUtilities
  {
 +#if FNA
-+	private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH) {
++	private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH)
++	{
 +		IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);
 +		SDL.SDL_LockSurface(intPtr);
 +		SDL.SDL_Surface* ptr = (SDL.SDL_Surface*)intPtr;
@@ -29,7 +30,8 @@
 +		return intPtr;
 +	}
 +
-+	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
++	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
++	{
 +		IntPtr intPtr = INTERNAL_getScaledSurface(data, width, height, imgWidth, imgHeight);
 +		byte[] array = new byte[width * height * 4 + 41 + 57 + 256];
 +		IntPtr intPtr2 = Marshal.AllocHGlobal(array.Length);
@@ -45,7 +47,8 @@
 +		stream.Write(array, 0, array.Length);
 +	}
 +#else
- 	public static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
+ 	public static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
+ 	{
  		throw new NotSupportedException("Use Bitmap to save png images on windows");
  	}
 +#endif

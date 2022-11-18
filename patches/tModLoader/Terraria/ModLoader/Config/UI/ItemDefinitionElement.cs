@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,8 @@ internal class ItemDefinitionElement : DefinitionElement<ItemDefinition>
 {
 	protected override DefinitionOptionElement<ItemDefinition> CreateDefinitionOptionElement() => new ItemDefinitionOptionElement(Value, 0.5f);
 
-	protected override List<DefinitionOptionElement<ItemDefinition>> CreateDefinitionOptionElementList() {
+	protected override List<DefinitionOptionElement<ItemDefinition>> CreateDefinitionOptionElementList()
+	{
 		var options = new List<DefinitionOptionElement<ItemDefinition>>();
 
 		for (int i = 0; i < ItemLoader.ItemCount; i++) {
@@ -28,7 +29,8 @@ internal class ItemDefinitionElement : DefinitionElement<ItemDefinition>
 		return options;
 	}
 
-	protected override List<DefinitionOptionElement<ItemDefinition>> GetPassedOptionElements() {
+	protected override List<DefinitionOptionElement<ItemDefinition>> GetPassedOptionElements()
+	{
 		var passed = new List<DefinitionOptionElement<ItemDefinition>>();
 
 		foreach (var option in Options) {
@@ -58,17 +60,20 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 {
 	public Item Item { get; set; }
 
-	public ItemDefinitionOptionElement(ItemDefinition definition, float scale = .75f) : base(definition, scale) {
+	public ItemDefinitionOptionElement(ItemDefinition definition, float scale = .75f) : base(definition, scale)
+	{
 	}
 
-	public override void SetItem(ItemDefinition definition) {
+	public override void SetItem(ItemDefinition definition)
+	{
 		base.SetItem(definition);
 
 		Item = new Item();
 		Item.SetDefaults(Type);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		if (Item != null) {
 			CalculatedStyle dimensions = base.GetInnerDimensions();
 			spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);

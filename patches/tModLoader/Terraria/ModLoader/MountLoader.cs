@@ -22,21 +22,24 @@ public static class MountLoader
 	/// </summary>
 	/// <param name="type">The type of the mount.</param>
 	/// <returns>Null if not found, otherwise the ModMount associated with the mount.</returns>
-	public static ModMount GetMount(int type) {
+	public static ModMount GetMount(int type)
+	{
 		if (mountDatas.ContainsKey(type)) {
 			return mountDatas[type];
 		}
 		return null;
 	}
 
-	internal static int ReserveMountID() {
+	internal static int ReserveMountID()
+	{
 		if (ModNet.AllowVanillaClients)
 			throw new Exception("Adding mounts breaks vanilla client compatibility");
 
 		return MountCount++;
 	}
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(MountID), true);
 
@@ -44,34 +47,40 @@ public static class MountLoader
 		Array.Resize(ref Mount.mounts, MountCount);
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		mountDatas.Clear();
 		MountCount = MountID.Count;
 	}
 
-	internal static bool IsModMount(Mount.MountData mountData) {
+	internal static bool IsModMount(Mount.MountData mountData)
+	{
 		return mountData.ModMount != null;
 	}
 
-	public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity) {
+	public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity)
+	{
 		if (IsModMount(mount)) {
 			mount.ModMount.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);
 		}
 	}
 
-	public static void JumpSpeed(Player mountedPlayer, Mount.MountData mount, ref float jumpSpeed, float xVelocity) {
+	public static void JumpSpeed(Player mountedPlayer, Mount.MountData mount, ref float jumpSpeed, float xVelocity)
+	{
 		if (IsModMount(mount)) {
 			mount.ModMount.JumpSpeed(mountedPlayer, ref jumpSpeed, xVelocity);
 		}
 	}
 
-	internal static void UpdateEffects(Player mountedPlayer) {
+	internal static void UpdateEffects(Player mountedPlayer)
+	{
 		if (IsModMount(Mount.mounts[mountedPlayer.mount.Type])) {
 			GetMount(mountedPlayer.mount.Type).UpdateEffects(mountedPlayer);
 		}
 	}
 
-	internal static bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
+	internal static bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
+	{
 		if (IsModMount(Mount.mounts[mountedPlayer.mount.Type])) {
 			return GetMount(mountedPlayer.mount.Type).UpdateFrame(mountedPlayer, state, velocity);
 		}
@@ -79,7 +88,8 @@ public static class MountLoader
 	}
 
 	//todo: this is never called, why is this in here?
-	internal static bool CustomBodyFrame(Mount.MountData mount) {
+	internal static bool CustomBodyFrame(Mount.MountData mount)
+	{
 		if (IsModMount(mount) && mount.ModMount.CustomBodyFrame()) {
 			return true;
 		}
@@ -91,7 +101,8 @@ public static class MountLoader
 	/// <param name="player"></param>
 	/// <param name="mousePosition"></param>
 	/// <param name="toggleOn">Does nothing yet</param>
-	public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn) {
+	public static void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
+	{
 		if (IsModMount(player.mount._data)) {
 			player.mount._data.ModMount.UseAbility(player, mousePosition, toggleOn);
 		}
@@ -102,7 +113,8 @@ public static class MountLoader
 	/// <param name="mount"></param>
 	/// <param name="player"></param>
 	/// <param name="mousePosition"></param>
-	public static void AimAbility(Mount mount, Player player, Vector2 mousePosition) {
+	public static void AimAbility(Mount mount, Player player, Vector2 mousePosition)
+	{
 		if (IsModMount(mount._data)) {
 			mount._data.ModMount.AimAbility(player, mousePosition);
 		}
@@ -115,7 +127,8 @@ public static class MountLoader
 	/// <param name="mount"></param>
 	/// <param name="player"></param>
 	/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
-	public static void SetMount(Mount mount, Player player, ref bool skipDust) {
+	public static void SetMount(Mount mount, Player player, ref bool skipDust)
+	{
 		if (IsModMount(mount._data)) {
 			mount._data.ModMount.SetMount(player, ref skipDust);
 		}
@@ -128,7 +141,8 @@ public static class MountLoader
 	/// <param name="mount"></param>
 	/// <param name="player"></param>
 	/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
-	public static void Dismount(Mount mount, Player player, ref bool skipDust) {
+	public static void Dismount(Mount mount, Player player, ref bool skipDust)
+	{
 		if (IsModMount(mount._data)) {
 			mount._data.ModMount.Dismount(player, ref skipDust);
 		}
@@ -137,7 +151,8 @@ public static class MountLoader
 	/// <summary>
 	/// See <see cref="ModMount.Draw(List{DrawData}, int, Player, ref Texture2D, ref Texture2D, ref Vector2, ref Rectangle, ref Color, ref Color, ref float, ref SpriteEffects, ref Vector2, ref float, float)"/>
 	/// </summary>
-	public static bool Draw(Mount mount, List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
+	public static bool Draw(Mount mount, List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
+	{
 		if (IsModMount(mount._data)) {
 			return mount._data.ModMount.Draw(playerDrawData, drawType, drawPlayer, ref texture, ref glowTexture, ref drawPosition, ref frame, ref drawColor, ref glowColor, ref rotation, ref spriteEffects, ref drawOrigin, ref drawScale, shadow);
 		}

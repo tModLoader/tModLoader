@@ -37,7 +37,8 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 		public string mapBackground;
 		public CaptureBiome.TileColorStyle tileColorStyle;
 
-		public SceneEffectInstance() {
+		public SceneEffectInstance()
+		{
 			waterStyle = undergroundBackground = surfaceBackground = music = PrioritizedPair.Default;
 			tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			mapBackground = null;
@@ -49,7 +50,8 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 		public float weight;
 		public ModSceneEffect type;
 
-		public AtmosWeight(float weight, ModSceneEffect type) {
+		public AtmosWeight(float weight, ModSceneEffect type)
+		{
 			this.weight = weight;
 			this.type = type;
 		}
@@ -57,7 +59,8 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 		public static int InvertedCompare(AtmosWeight a, AtmosWeight b) => -a.weight.CompareTo(b.weight);
 	}
 
-	public void UpdateSceneEffect(Player player) {
+	public void UpdateSceneEffect(Player player)
+	{
 		var result = new SceneEffectInstance();
 		List<AtmosWeight> shortList = new List<AtmosWeight>();
 
@@ -127,7 +130,8 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 	}
 
 	// Ref or out? MusicLoader?
-	public void UpdateMusic(ref int music, ref SceneEffectPriority priority) {
+	public void UpdateMusic(ref int music, ref SceneEffectPriority priority)
+	{
 		var currentMusic = Main.LocalPlayer.CurrentSceneEffect.music;
 
 		if (currentMusic.value > -1 && currentMusic.priority > priority) {

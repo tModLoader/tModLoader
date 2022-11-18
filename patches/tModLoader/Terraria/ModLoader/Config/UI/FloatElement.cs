@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -12,7 +12,8 @@ public class FloatElement : PrimitiveRangeElement<float>
 		set => SetValue((float)Math.Round((value * (Max - Min) + Min) * (1 / Increment)) * Increment);
 	}
 
-	public FloatElement() {
+	public FloatElement()
+	{
 		Min = 0;
 		Max = 1;
 		Increment = 0.01f;

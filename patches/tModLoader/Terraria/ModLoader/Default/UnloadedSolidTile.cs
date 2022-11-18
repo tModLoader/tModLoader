@@ -10,7 +10,8 @@ public class UnloadedSolidTile : UnloadedTile
 {
 	public override string Texture => "ModLoader/UnloadedSolidTile";
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		TileIO.Tiles.unloadedTypes.Add(Type);
 
 		Main.tileFrameImportant[Type] = true;

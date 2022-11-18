@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -14,22 +14,26 @@ public class PropertyFieldWrapper
 	public string Name => fieldInfo?.Name ?? propertyInfo.Name;
 	public Type Type => fieldInfo?.FieldType ?? propertyInfo.PropertyType;
 
-	public PropertyFieldWrapper(FieldInfo fieldInfo) {
+	public PropertyFieldWrapper(FieldInfo fieldInfo)
+	{
 		this.fieldInfo = fieldInfo;
 	}
 
-	public PropertyFieldWrapper(PropertyInfo propertyInfo) {
+	public PropertyFieldWrapper(PropertyInfo propertyInfo)
+	{
 		this.propertyInfo = propertyInfo;
 	}
 
-	public object GetValue(object obj) {
+	public object GetValue(object obj)
+	{
 		if (fieldInfo != null)
 			return fieldInfo.GetValue(obj);
 		else
 			return propertyInfo.GetValue(obj, null);
 	}
 
-	public void SetValue(object obj, object value) {
+	public void SetValue(object obj, object value)
+	{
 		if (fieldInfo != null)
 			fieldInfo.SetValue(obj, value);
 		else {

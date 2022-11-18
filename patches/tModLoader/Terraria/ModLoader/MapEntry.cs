@@ -11,7 +11,8 @@ internal struct MapEntry
 	internal ModTranslation translation;
 	internal Func<string, int, int, string> getName;
 
-	internal MapEntry(Color color, LocalizedText name = null) {
+	internal MapEntry(Color color, LocalizedText name = null)
+	{
 		if (name == null) {
 			name = LocalizedText.Empty;
 		}
@@ -21,28 +22,32 @@ internal struct MapEntry
 		this.getName = sameName;
 	}
 
-	internal MapEntry(Color color, ModTranslation name) {
+	internal MapEntry(Color color, ModTranslation name)
+	{
 		this.color = color;
 		this.name = null;
 		this.translation = name;
 		this.getName = sameName;
 	}
 
-	internal MapEntry(Color color, LocalizedText name, Func<string, int, int, string> getName) {
+	internal MapEntry(Color color, LocalizedText name, Func<string, int, int, string> getName)
+	{
 		this.color = color;
 		this.name = name;
 		this.translation = null;
 		this.getName = getName;
 	}
 
-	internal MapEntry(Color color, ModTranslation name, Func<string, int, int, string> getName) {
+	internal MapEntry(Color color, ModTranslation name, Func<string, int, int, string> getName)
+	{
 		this.color = color;
 		this.name = null;
 		this.translation = name;
 		this.getName = getName;
 	}
 
-	private static string sameName(string name, int x, int y) {
+	private static string sameName(string name, int x, int y)
+	{
 		return name;
 	}
 }

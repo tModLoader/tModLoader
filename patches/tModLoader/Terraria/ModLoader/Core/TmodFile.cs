@@ -27,7 +27,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		// intended to be readonly, but unfortunately no ReadOnlySpan on .NET 4.5
 		internal byte[] cachedBytes;
 
-		internal FileEntry(string name, int offset, int length, int compressedLength, byte[] cachedBytes = null) {
+		internal FileEntry(string name, int offset, int length, int compressedLength, byte[] cachedBytes = null)
+		{
 			Name = name;
 			Offset = offset;
 			Length = length;
@@ -74,7 +75,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		}
 	}
 
-	internal TmodFile(string path, string name = null, Version version = null) {
+	internal TmodFile(string path, string name = null, Version version = null)
+	{
 		this.path = path;
 		this.Name = name;
 		this.Version = version;
@@ -82,7 +84,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 
 	public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
 
-	public byte[] GetBytes(FileEntry entry) {
+	public byte[] GetBytes(FileEntry entry)
+	{
 		if (entry.cachedBytes != null && !entry.IsCompressed)
 			return entry.cachedBytes;
 
@@ -94,7 +97,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 
 	public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
-	public Stream GetStream(FileEntry entry, bool newFileStream = false) {
+	public Stream GetStream(FileEntry entry, bool newFileStream = false)
+	{
 		Stream stream;
 		if (entry.cachedBytes != null) {
 			stream = new MemoryStream(entry.cachedBytes);
@@ -122,7 +126,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		return stream;
 	}
 
-	internal void OnStreamClosed(EntryReadStream stream) {
+	internal void OnStreamClosed(EntryReadStream stream)
+	{
 		if (stream == sharedEntryReadStream) {
 			sharedEntryReadStream = null;
 		}
@@ -134,7 +139,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		}
 	}
 
-	public Stream GetStream(string fileName, bool newFileStream = false) {
+	public Stream GetStream(string fileName, bool newFileStream = false)
+	{
 		if (!files.TryGetValue(Sanitize(fileName), out var entry))
 			throw new KeyNotFoundException(fileName);
 
@@ -147,7 +153,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	/// </summary>
 	/// <param name="fileName">The internal filepath, will be slash sanitised automatically</param>
 	/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
-	internal void AddFile(string fileName, byte[] data) {
+	internal void AddFile(string fileName, byte[] data)
+	{
 		fileName = Sanitize(fileName);
 		int size = data.Length;
 
@@ -168,7 +175,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		fileTable = null;
 	}
 
-	internal void RemoveFile(string fileName) {
+	internal void RemoveFile(string fileName)
+	{
 		files.Remove(Sanitize(fileName));
 		fileTable = null;
 	}
@@ -176,12 +184,14 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	public int Count => fileTable.Length;
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	public IEnumerator<FileEntry> GetEnumerator() {
+	public IEnumerator<FileEntry> GetEnumerator()
+	{
 		foreach (var entry in fileTable)
 			yield return entry;
 	}
 
-	internal void Save() {
+	internal void Save()
+	{
 		if (fileStream != null)
 			throw new IOException($"File already open: {path}");
 
@@ -251,14 +261,16 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	private class DisposeWrapper : IDisposable
 	{
 		private readonly Action dispose;
-		public DisposeWrapper(Action dispose) {
+		public DisposeWrapper(Action dispose)
+		{
 			this.dispose = dispose;
 		}
 
 		public void Dispose() => dispose?.Invoke();
 	}
 
-	public IDisposable Open() {
+	public IDisposable Open()
+	{
 		if (openCounter++ == 0) {
 			if (fileStream != null)
 				throw new Exception($"File already opened? {path}");
@@ -278,7 +290,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		return new DisposeWrapper(Close);
 	}
 
-	private void Close() {
+	private void Close()
+	{
 		if (openCounter == 0)
 			return;
 
@@ -301,7 +314,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		!fileName.EndsWith(".mp3") &&
 		!fileName.EndsWith(".ogg");
 
-	private void Read() {
+	private void Read()
+	{
 		fileStream = File.OpenRead(path);
 		var reader = new BinaryReader(fileStream); //intentionally not disposed to leave the stream open. In .NET 4.5+ the 3-arg constructor could be used
 
@@ -352,7 +366,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 			f.Offset += fileStartPos;
 	}
 
-	private void Reopen() {
+	private void Reopen()
+	{
 		fileStream = File.OpenRead(path);
 		var reader = new BinaryReader(fileStream); //intentionally not disposed to leave the stream open. In .NET 4.5+ the 3-arg constructor could be used
 
@@ -367,7 +382,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		// could also check name and version but hash should suffice
 	}
 
-	public void CacheFiles(ISet<string> skip = null) {
+	public void CacheFiles(ISet<string> skip = null)
+	{
 		fileStream.Seek(fileTable[0].Offset, SeekOrigin.Begin);
 		foreach (var f in fileTable) {
 			if (f.CompressedLength > MAX_CACHE_SIZE || (skip?.Contains(f.Name) ?? false)) {
@@ -380,17 +396,20 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	}
 
 	// TODO never used
-	public void RemoveFromCache(IEnumerable<string> fileNames) {
+	public void RemoveFromCache(IEnumerable<string> fileNames)
+	{
 		foreach (var fileName in fileNames)
 			files[fileName].cachedBytes = null;
 	}
 
-	public void ResetCache() {
+	public void ResetCache()
+	{
 		foreach (var f in fileTable)
 			f.cachedBytes = null;
 	}
 
-	private void Upgrade() {
+	private void Upgrade()
+	{
 		Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
 		Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));
 

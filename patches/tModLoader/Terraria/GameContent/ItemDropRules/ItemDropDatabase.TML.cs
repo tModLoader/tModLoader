@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Terraria.ID;
 
 namespace Terraria.GameContent.ItemDropRules;
@@ -8,7 +8,8 @@ partial class ItemDropDatabase
 	private Dictionary<int, List<IItemDropRule>> _entriesByItemId = new Dictionary<int, List<IItemDropRule>>();
 	private Dictionary<int, List<int>> _itemIdsByType = new Dictionary<int, List<int>>();
 
-	public List<IItemDropRule> GetRulesForItemID(int itemID) {
+	public List<IItemDropRule> GetRulesForItemID(int itemID)
+	{
 		List<IItemDropRule> list = new List<IItemDropRule>();
 
 		if (_entriesByItemId.TryGetValue(itemID, out List<IItemDropRule> value))
@@ -17,7 +18,8 @@ partial class ItemDropDatabase
 		return list;
 	}
 
-	public IItemDropRule RegisterToItem(int type, IItemDropRule entry) {
+	public IItemDropRule RegisterToItem(int type, IItemDropRule entry)
+	{
 		RegisterToItemId(type, entry);
 		if (type > 0 && _itemIdsByType.TryGetValue(type, out List<int> value)) {
 			for (int i = 0; i < value.Count; i++) {
@@ -28,7 +30,8 @@ partial class ItemDropDatabase
 		return entry;
 	}
 
-	public IItemDropRule RegisterToMultipleItems(IItemDropRule entry, params int[] itemIds) {
+	public IItemDropRule RegisterToMultipleItems(IItemDropRule entry, params int[] itemIds)
+	{
 		for (int i = 0; i < itemIds.Length; i++) {
 			RegisterToItem(itemIds[i], entry);
 		}
@@ -36,19 +39,22 @@ partial class ItemDropDatabase
 		return entry;
 	}
 
-	public void RegisterToItemId(int itemId, IItemDropRule entry) {
+	public void RegisterToItemId(int itemId, IItemDropRule entry)
+	{
 		if (!_entriesByItemId.ContainsKey(itemId))
 			_entriesByItemId[itemId] = new List<IItemDropRule>();
 
 		_entriesByItemId[itemId].Add(entry);
 	}
 
-	private void RemoveFromItemId(int itemId, IItemDropRule entry) {
+	private void RemoveFromItemId(int itemId, IItemDropRule entry)
+	{
 		if (_entriesByItemId.ContainsKey(itemId))
 			_entriesByItemId[itemId].Remove(entry);
 	}
 
-	public IItemDropRule RemoveFromItem(int type, IItemDropRule entry) {
+	public IItemDropRule RemoveFromItem(int type, IItemDropRule entry)
+	{
 		RemoveFromItemId(type, entry);
 		if (type > 0 && _itemIdsByType.TryGetValue(type, out List<int> value)) {
 			for (int i = 0; i < value.Count; i++) {
@@ -59,7 +65,8 @@ partial class ItemDropDatabase
 		return entry;
 	}
 
-	private void RegisterBossBags() {
+	private void RegisterBossBags()
+	{
 		short item = ItemID.QueenSlimeBossBag;
 		RegisterToItem(item, ItemDropRule.Common(ItemID.VolatileGelatin));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4986, 1, 25, 75));
@@ -852,20 +859,24 @@ partial class ItemDropDatabase
 		#endregion
 	}
 
-	private void RegisterObsidianLockbox() {
+	private void RegisterObsidianLockbox()
+	{
 		RegisterToItem(ItemID.ObsidianLockbox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.DarkLance, ItemID.Sunfury, ItemID.FlowerofFire, ItemID.Flamelash, ItemID.HellwingBow, ItemID.TreasureMagnet));
 	}
 
-	private void RegisterLockbox() {
+	private void RegisterLockbox()
+	{
 		RegisterToItem(ItemID.LockBox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Valor, ItemID.Muramasa, ItemID.CobaltShield, ItemID.AquaScepter, ItemID.BlueMoon, ItemID.MagicMissile, ItemID.Handgun));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 	}
 
-	private void RegisterHerbBag() {
+	private void RegisterHerbBag()
+	{
 		RegisterToItem(ItemID.HerbBag, new HerbBagDropsItemDropRule(ItemID.Daybloom, ItemID.Moonglow, ItemID.Blinkroot, ItemID.Waterleaf, ItemID.Deathweed, ItemID.Fireblossom, ItemID.Shiverthorn, ItemID.DaybloomSeeds, ItemID.MoonglowSeeds, ItemID.BlinkrootSeeds, ItemID.WaterleafSeeds, ItemID.DeathweedSeeds, ItemID.FireblossomSeeds, ItemID.ShiverthornSeeds));
 	}
 
-	private void RegisterGoodieBag() {
+	private void RegisterGoodieBag()
+	{
 		IItemDropRule[] paintings = new IItemDropRule[] {
 			ItemDropRule.NotScalingWithLuck(ItemID.JackingSkeletron),
 			ItemDropRule.NotScalingWithLuck(ItemID.BitterHarvest),
@@ -974,7 +985,8 @@ partial class ItemDropDatabase
 	}
 
 	// code by Snek
-	private void RegisterPresent() {
+	private void RegisterPresent()
+	{
 		IItemDropRule snowGlobeRule = ItemDropRule.ByCondition(new Conditions.IsHardmode(), ItemID.SnowGlobe, chanceDenominator: 15);
 
 		IItemDropRule redRyderRule = ItemDropRule.NotScalingWithLuck(ItemID.RedRyder, chanceDenominator: 150);
@@ -1031,13 +1043,15 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.Present, new SequentialRulesNotScalingWithLuckRule(chanceDenominator: 1, rules));
 	}
 
-	private void RegisterCanOfWorms() {
+	private void RegisterCanOfWorms()
+	{
 		RegisterToItem(ItemID.CanOfWorms, ItemDropRule.Common(ItemID.Worm, 1, 5, 8));
 		RegisterToItem(ItemID.CanOfWorms, new CommonDrop(3191, 10, 1, 3, 3));
 		RegisterToItem(ItemID.CanOfWorms, ItemDropRule.Common(2895, 20));
 	}
 
-	private void RegisterOyster() {
+	private void RegisterOyster()
+	{
 		IItemDropRule[] rules = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(4414, 15),
@@ -1049,7 +1063,8 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.Oyster, ItemDropRule.Common(4411));
 	}
 
-	private void RegisterCapricorns() {
+	private void RegisterCapricorns()
+	{
 		RegisterToItem(ItemID.CapricornLegs, ItemDropRule.Common(ItemID.CapricornTail));
 		RegisterToItem(ItemID.CapricornTail, ItemDropRule.Common(ItemID.CapricornLegs));
 	}

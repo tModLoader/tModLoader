@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIText.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIText.cs
-@@ -139,7 +_,7 @@
+@@ -149,7 +_,7 @@
  		else
  			_visibleText = _lastTextReference;
  

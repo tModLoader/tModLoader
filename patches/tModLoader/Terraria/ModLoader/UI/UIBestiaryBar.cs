@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.UI;
 using Terraria.GameContent.Bestiary;
@@ -17,7 +17,8 @@ class UIBestiaryBar : UIElement
 		internal readonly int CompletedCount;
 		internal readonly Color DrawColor;
 
-		public BestiaryBarItem(string tooltop, int entryCount, int completedCount, Color drawColor) {
+		public BestiaryBarItem(string tooltop, int entryCount, int completedCount, Color drawColor)
+		{
 			Tooltop = tooltop;
 			EntryCount = entryCount;
 			CompletedCount = completedCount;
@@ -28,7 +29,8 @@ class UIBestiaryBar : UIElement
 	private BestiaryDatabase _db;
 	private List<BestiaryBarItem> _bestiaryBarItems;
 
-	public UIBestiaryBar(BestiaryDatabase db) {
+	public UIBestiaryBar(BestiaryDatabase db)
+	{
 		_db = db;
 		_bestiaryBarItems = new List<BestiaryBarItem>();
 
@@ -44,7 +46,8 @@ class UIBestiaryBar : UIElement
 		new Color(241, 196, 15),//yellow
 	};
 
-	public void RecalculateBars() {
+	public void RecalculateBars()
+	{
 		_bestiaryBarItems.Clear();
 
 		//Add the bestiary total to the bar
@@ -67,7 +70,8 @@ class UIBestiaryBar : UIElement
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch sb) {
+	protected override void DrawSelf(SpriteBatch sb)
+	{
 		int xOffset = 0;
 		var rectangle = GetDimensions().ToRectangle();
 		const int bottomHeight = 3; //The height of the total completion bar

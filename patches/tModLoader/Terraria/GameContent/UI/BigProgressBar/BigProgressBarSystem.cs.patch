@@ -13,10 +13,10 @@
  {
  	private IBigProgressBar _currentBar;
  	private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
-@@ -60,16 +_,30 @@
- 	}
+@@ -62,17 +_,31 @@
  
- 	public void Update() {
+ 	public void Update()
+ 	{
 +		if (BossBarLoader.CurrentStyle.PreventUpdate)
 +			goto endUpdate;
 +
@@ -30,7 +30,8 @@
 +		BossBarLoader.CurrentStyle.Update(_currentBar, ref _info);
  	}
  
- 	public void Draw(SpriteBatch spriteBatch) {
+ 	public void Draw(SpriteBatch spriteBatch)
+ 	{
 +		if (BossBarLoader.CurrentStyle.PreventDraw)
 +			goto endDraw;
 +
@@ -44,8 +45,8 @@
 +		BossBarLoader.CurrentStyle.Draw(spriteBatch, _currentBar, _info);
  	}
  
- 	private void TryFindingNPCToTrack() {
-@@ -98,7 +_,12 @@
+ 	private void TryFindingNPCToTrack()
+@@ -103,7 +_,12 @@
  		bigProgressBarInfo.npcIndexToAimAt = npcIndex;
  		BigProgressBarInfo info = bigProgressBarInfo;
  		IBigProgressBar bigProgressBar = _bossBar;

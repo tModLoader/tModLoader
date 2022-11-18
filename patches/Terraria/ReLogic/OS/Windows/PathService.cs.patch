@@ -7,5 +7,5 @@
 -	public override string GetStoragePath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games");
 +	public override string GetStoragePath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
  
- 	public override void OpenURL(string url) {
- 		Process.Start("explorer.exe", "\"" + url + "\"");
+ 	public override void OpenURL(string url)
+ 	{

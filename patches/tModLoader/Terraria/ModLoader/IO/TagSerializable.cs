@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Terraria.ModLoader.IO;
 
@@ -14,7 +14,8 @@ internal class TagSerializableSerializer<T> : TagSerializer<T, TagCompound> wher
 {
 	private Func<TagCompound, T> deserializer;
 
-	public TagSerializableSerializer() {
+	public TagSerializableSerializer()
+	{
 		var type = typeof(T);
 		var field = type.GetField("DESERIALIZER");
 		if (field != null) {
@@ -26,13 +27,15 @@ internal class TagSerializableSerializer<T> : TagSerializer<T, TagCompound> wher
 		}
 	}
 
-	public override TagCompound Serialize(T value) {
+	public override TagCompound Serialize(T value)
+	{
 		var tag = value.SerializeData();
 		tag["<type>"] = value.GetType().FullName;
 		return tag;
 	}
 
-	public override T Deserialize(TagCompound tag) {
+	public override T Deserialize(TagCompound tag)
+	{
 		if (tag.ContainsKey("<type>") && tag.GetString("<type>") != Type.FullName) {
 			var instType = GetType(tag.GetString("<type>"));
 			if (instType != null && Type.IsAssignableFrom(instType) && TryGetSerializer(instType, out TagSerializer instSerializer))

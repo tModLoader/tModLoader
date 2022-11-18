@@ -7,11 +7,12 @@
  
  namespace Terraria.Achievements;
  
-@@ -30,6 +_,8 @@
- 	}
+@@ -34,6 +_,9 @@
  
- 	public virtual void Complete() {
-+		if (SocialAPI.Mode == SocialMode.Steam) return;
+ 	public virtual void Complete()
+ 	{
++		if (SocialAPI.Mode == SocialMode.Steam)
++			return;
 +
  		if (!_isCompleted) {
  			_isCompleted = true;

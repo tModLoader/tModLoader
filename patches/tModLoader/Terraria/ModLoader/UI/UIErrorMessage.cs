@@ -28,7 +28,8 @@ internal class UIErrorMessage : UIState
 	private bool showSkip;
 	private Action retryAction;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		area = new UIElement {
 			Width = { Percent = 0.8f },
 			Top = { Pixels = 200 },
@@ -97,7 +98,8 @@ internal class UIErrorMessage : UIState
 		Append(area);
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		Netplay.Disconnect = true;
 
 		messageBox.SetText(message);
@@ -112,11 +114,13 @@ internal class UIErrorMessage : UIState
 		area.AddOrRemoveChild(retryButton, retryAction != null);
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		retryAction = null; //release references for the GC
 	}
 
-	internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null) {
+	internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null)
+	{
 		this.message = message;
 		this.gotoMenu = gotoMenu;
 		this.webHelpURL = webHelpURL;
@@ -127,7 +131,8 @@ internal class UIErrorMessage : UIState
 		Main.menuMode = Interface.errorMessageID;
 	}
 
-	private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		if (gotoMenu < 0)
 			Main.instance.Exit();
@@ -135,22 +140,26 @@ internal class UIErrorMessage : UIState
 		Main.menuMode = gotoMenu;
 	}
 
-	private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement) {
+	private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
 		ModLoader.DisableAllMods();
 		Main.instance.Exit();
 	}
 
-	private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
+	private void OpenFile(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Utils.OpenFolder(Logging.LogDir);
 	}
 
-	private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
+	private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Utils.OpenToURL(webHelpURL);
 	}
 
-	private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {
+	private void SkipLoad(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		ModLoader.skipLoad = true;
 		Main.menuMode = gotoMenu;

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -51,7 +51,8 @@ public static class ConfigManager
 	public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "ModConfigs");
 	public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "ModConfigs", "Server");
 
-	internal static void Add(ModConfig config) {
+	internal static void Add(ModConfig config)
+	{
 		Load(config);
 
 		if (!Configs.TryGetValue(config.Mod, out List<ModConfig> configList))
@@ -72,7 +73,8 @@ public static class ConfigManager
 	}
 
 	// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
-	internal static void LoadAll() {
+	internal static void LoadAll()
+	{
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var activeConfig in activeConfigs.Value) {
 				Load(activeConfig);
@@ -80,7 +82,8 @@ public static class ConfigManager
 		}
 	}
 
-	internal static void OnChangedAll() {
+	internal static void OnChangedAll()
+	{
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var activeConfig in activeConfigs.Value) {
 				activeConfig.OnChanged();
@@ -88,7 +91,8 @@ public static class ConfigManager
 		}
 	}
 
-	internal static void Load(ModConfig config) {
+	internal static void Load(ModConfig config)
+	{
 		string filename = config.Mod.Name + "_" + config.Name + ".json";
 		string path = Path.Combine(ModConfigPath, filename);
 
@@ -111,12 +115,14 @@ public static class ConfigManager
 		}
 	}
 
-	internal static void Reset(ModConfig pendingConfig) {
+	internal static void Reset(ModConfig pendingConfig)
+	{
 		string json = "{}";
 		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 	}
 
-	internal static void Save(ModConfig config) {
+	internal static void Save(ModConfig config)
+	{
 		Directory.CreateDirectory(ModConfigPath);
 		string filename = config.Mod.Name + "_" + config.Name + ".json";
 		string path = Path.Combine(ModConfigPath, filename);
@@ -124,7 +130,8 @@ public static class ConfigManager
 		File.WriteAllText(path, json);
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		serializerSettings.ContractResolver = new ReferenceDefaultsPreservingResolver();
 		serializerSettingsCompact.ContractResolver = serializerSettings.ContractResolver;
 
@@ -143,7 +150,8 @@ public static class ConfigManager
 
 	internal static bool AnyModNeedsReload() => ModLoader.Mods.Any(ModNeedsReload);
 
-	internal static bool ModNeedsReload(Mod mod) {
+	internal static bool ModNeedsReload(Mod mod)
+	{
 		if (Configs.ContainsKey(mod)) {
 			var configs = Configs[mod];
 			var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
@@ -158,21 +166,24 @@ public static class ConfigManager
 
 	// GetConfig...returns the config instance
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
-	internal static ModConfig GetConfig(Mod mod, string config) {
+	internal static ModConfig GetConfig(Mod mod, string config)
+	{
 		if (Configs.TryGetValue(mod, out List<ModConfig> configs)) {
 			return configs.Single(x => x.Name == config);
 		}
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
 	}
 
-	internal static ModConfig GetLoadTimeConfig(Mod mod, string config) {
+	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
+	{
 		if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig> configs)) {
 			return configs.Single(x => x.Name == config);
 		}
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
 	}
 
-	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI) {
+	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
+	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
 			string message = reader.ReadString();
@@ -249,7 +260,8 @@ public static class ConfigManager
 		return;
 	}
 
-	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item) {
+	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item)
+	{
 		PropertyInfo[] properties = item.GetType().GetProperties(
 			//BindingFlags.DeclaredOnly |
 			BindingFlags.Public |
@@ -263,14 +275,16 @@ public static class ConfigManager
 		return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 	}
 
-	public static ModConfig GeneratePopulatedClone(ModConfig original) {
+	public static ModConfig GeneratePopulatedClone(ModConfig original)
+	{
 		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
 		ModConfig properClone = original.Clone();
 		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
 		return properClone;
 	}
 
-	public static object AlternateCreateInstance(Type type) {
+	public static object AlternateCreateInstance(Type type)
+	{
 		if (type == typeof(string))
 			return "";
 		return Activator.CreateInstance(type, true);
@@ -278,7 +292,8 @@ public static class ConfigManager
 
 	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority,
 	// followed by the containing data structure, followed by attribute defined on the Class.
-	public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object item, object array) where T : Attribute {
+	public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object item, object array) where T : Attribute
+	{
 		// Class
 		T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 		if (array != null) {
@@ -291,7 +306,8 @@ public static class ConfigManager
 		// TODO: allow for inheriting from parent's parent? (could get attribute from parent ConfigElement)
 	}
 
-	public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute {
+	public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute
+	{
 		// Class
 		T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 
@@ -302,18 +318,21 @@ public static class ConfigManager
 		return attribute;
 	}
 
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) {
+	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	{
 		// public api for modders.
 		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
 	}
 
-	public static void SetPendingChanges(bool changes = true) {
+	public static void SetPendingChanges(bool changes = true)
+	{
 		// public api for modders.
 		Interface.modConfig.SetPendingChanges(changes);
 	}
 
 	// TODO: better home?
-	public static bool ObjectEquals(object a, object b) {
+	public static bool ObjectEquals(object a, object b)
+	{
 		if (ReferenceEquals(a, b))
 			return true;
 		if (a == null || b == null)
@@ -323,7 +342,8 @@ public static class ConfigManager
 		return a.Equals(b);
 	}
 
-	public static bool EnumerableEquals(IEnumerable a, IEnumerable b) {
+	public static bool EnumerableEquals(IEnumerable a, IEnumerable b)
+	{
 		IEnumerator enumeratorA = a.GetEnumerator();
 		IEnumerator enumeratorB = b.GetEnumerator();
 		bool hasNextA = enumeratorA.MoveNext();
@@ -350,7 +370,8 @@ internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 	{
 		readonly IValueProvider baseProvider;
 
-		public ValueProviderDecorator(IValueProvider baseProvider) {
+		public ValueProviderDecorator(IValueProvider baseProvider)
+		{
 			this.baseProvider = baseProvider ?? throw new ArgumentNullException();
 		}
 
@@ -370,17 +391,20 @@ internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 		//	this.defaultValue = defaultValue;
 		//}
 
-		public NullToDefaultValueProvider(IValueProvider baseProvider, Func<object> defaultValueGenerator) : base(baseProvider) {
+		public NullToDefaultValueProvider(IValueProvider baseProvider, Func<object> defaultValueGenerator) : base(baseProvider)
+		{
 			this.defaultValueGenerator = defaultValueGenerator;
 		}
 
-		public override void SetValue(object target, object value) {
+		public override void SetValue(object target, object value)
+		{
 			base.SetValue(target, value ?? defaultValueGenerator.Invoke());
 			//base.SetValue(target, value ?? defaultValue);
 		}
 	}
 
-	protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
+	protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+	{
 		IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
 
 		if (!type.IsClass) {

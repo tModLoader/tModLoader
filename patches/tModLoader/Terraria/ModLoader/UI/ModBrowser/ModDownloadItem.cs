@@ -35,7 +35,8 @@ internal class ModDownloadItem
 
 	private bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, bool needsRestart) {
+	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, bool needsRestart)
+	{
 		ModName = name;
 		DisplayName = displayName;
 		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
@@ -57,27 +58,31 @@ internal class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 	}
 
-	internal ModDownloadItem(string displayName, string publishId, LocalMod installed) {
+	internal ModDownloadItem(string displayName, string publishId, LocalMod installed)
+	{
 		DisplayName = displayName;
 		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
 		PublishId = publishId;
 		Installed = installed;
 	}
 
-	internal Task InnerDownloadWithDeps() {
+	internal Task InnerDownloadWithDeps()
+	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
 		downloads.Add(this);
 		GetDependenciesRecursive(this, ref downloads);
 		return WorkshopHelper.SetupDownload(downloads.ToList(), Interface.modBrowserID);
 	}
 
-	private IEnumerable<ModDownloadItem> GetDependencies() {
+	private IEnumerable<ModDownloadItem> GetDependencies()
+	{
 		return ModReferences.Split(',')
 			.Select(WorkshopHelper.QueryHelper.FindModDownloadItem)
 			.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)));
 	}
 
-	private void GetDependenciesRecursive(ModDownloadItem item, ref HashSet<ModDownloadItem> set) {
+	private void GetDependenciesRecursive(ModDownloadItem item, ref HashSet<ModDownloadItem> set)
+	{
 		var deps = item.GetDependencies();
 		set.UnionWith(deps);
 

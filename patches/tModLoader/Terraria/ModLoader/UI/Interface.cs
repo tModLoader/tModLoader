@@ -67,7 +67,8 @@ internal static class Interface
 
 	// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 	//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
-	internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
+	internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
+	{
 		/*
 		 * string legacyInfoButton = Language.GetTextValue("tModLoader.13InfoButton");
 		buttonNames[buttonIndex] = legacyInfoButton;
@@ -79,7 +80,8 @@ internal static class Interface
 		*/
 	}
 
-	internal static void ResetData() {
+	internal static void ResetData()
+	{
 		modBrowser.Reset();
 		GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 	}
@@ -104,7 +106,8 @@ internal static class Interface
 
 	//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 	//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
-	internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
+	internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown)
+	{
 		if (Main.menuMode == loadModsID) {
 			if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 				ModLoader.ShowFirstLaunchWelcomeMessage = false;
@@ -355,7 +358,8 @@ internal static class Interface
 		}
 	}
 
-	internal static void ServerModMenu(out bool reloadMods) {
+	internal static void ServerModMenu(out bool reloadMods)
+	{
 		bool exit = false;
 
 		reloadMods = false;
@@ -406,7 +410,8 @@ internal static class Interface
 		}
 	}
 
-	internal static void ServerModBrowserMenu() {
+	internal static void ServerModBrowserMenu()
+	{
 		bool exit = false;
 		Console.Clear();
 		while (!exit) {

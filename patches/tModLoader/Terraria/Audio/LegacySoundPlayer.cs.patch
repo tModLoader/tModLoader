@@ -19,23 +19,23 @@
  	public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  	public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
  	public SoundEffectInstance SoundInstanceMoonlordCry;
-@@ -96,6 +_,7 @@
- 	}
+@@ -99,6 +_,7 @@
  
- 	private void LoadAll() {
+ 	private void LoadAll()
+ 	{
 +		/*
  		SoundMech[0] = Load("Sounds/Mech_0");
  		SoundGrab = Load("Sounds/Grab");
  		SoundPixie = Load("Sounds/Pixie");
-@@ -179,6 +_,7 @@
+@@ -182,6 +_,7 @@
  		for (int num4 = 0; num4 < TrackableSounds.Length; num4++) {
  			TrackableSounds[num4] = Load("Sounds/Custom" + Path.DirectorySeparatorChar + SoundID.GetTrackableLegacySoundPath(num4));
  		}
 +		*/
  	}
  
- 	public void CreateAllSoundInstances() {
-@@ -187,6 +_,8 @@
+ 	public void CreateAllSoundInstances()
+@@ -191,6 +_,8 @@
  		}
  
  		_trackedInstances.Clear();
@@ -44,15 +44,15 @@
  		SoundInstanceMech[0] = CreateInstance(SoundMech[0]);
  		SoundInstanceGrab = CreateInstance(SoundGrab);
  		SoundInstancePixie = CreateInstance(SoundGrab);
-@@ -264,6 +_,7 @@
+@@ -268,6 +_,7 @@
  		for (int num5 = 0; num5 < TrackableSounds.Length; num5++) {
  			TrackableSoundInstances[num5] = CreateInstance(TrackableSounds[num5]);
  		}
 +		*/
  	}
  
- 	private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset) {
-@@ -849,6 +_,7 @@
+ 	private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset)
+@@ -855,6 +_,7 @@
  						break;
  					default:
  						switch (type) {

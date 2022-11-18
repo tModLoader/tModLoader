@@ -56,14 +56,16 @@ public abstract class ModItem : ModType<Item, ModItem>
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
 
-	protected override void ValidateType() {
+	protected override void ValidateType()
+	{
 		base.ValidateType();
 
 		if (!IsCloneable)
 			Cloning.WarnNotCloneable(GetType());
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModItem>.Register(this);
 
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
@@ -84,7 +86,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 		OnCreated(new InitializationItemCreationContext());
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		ItemLoader.SetDefaults(Item, false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
@@ -95,29 +98,34 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc.
 	/// For those that are familiar with tAPI, this has the same function as .json files.
 	/// </summary>
-	public virtual void SetDefaults() {
+	public virtual void SetDefaults()
+	{
 	}
 
 	/// <summary>
 	/// Gets called when your item spawns in world
 	/// </summary>
-	public virtual void OnSpawn(IEntitySource source) {
+	public virtual void OnSpawn(IEntitySource source)
+	{
 	}
 
-	public virtual void OnCreated(ItemCreationContext context) {
+	public virtual void OnCreated(ItemCreationContext context)
+	{
 	}
 
 	/// <summary>
 	/// Automatically sets certain defaults. Override this if you do not want the properties to be set for you.
 	/// </summary>
-	public virtual void AutoDefaults() {
+	public virtual void AutoDefaults()
+	{
 		EquipLoader.SetSlot(Item);
 	}
 
 	/// <summary>
 	/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 	/// </summary>
-	public virtual void AutoStaticDefaults() {
+	public virtual void AutoStaticDefaults()
+	{
 		TextureAssets.Item[Item.type] = ModContent.Request<Texture2D>(Texture);
 
 		if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
@@ -187,7 +195,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Returns whether or not this item can be used. By default returns true.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
-	public virtual bool CanUseItem(Player player) {
+	public virtual bool CanUseItem(Player player)
+	{
 		return true;
 	}
 
@@ -217,7 +226,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to make things happen when the player is holding this item (for example, torches make light and water candles increase spawn rate).
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void HoldItem(Player player) {
+	public virtual void HoldItem(Player player)
+	{
 	}
 
 	/// <summary>
@@ -247,7 +257,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue) {
+	public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue)
+	{
 	}
 
 	/// <summary>
@@ -256,7 +267,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Player player, bool quickHeal, ref int healValue) {
+	public virtual void GetHealMana(Player player, bool quickHeal, ref int healValue)
+	{
 	}
 
 	/// <summary>
@@ -265,7 +277,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
 	/// <param name="mult">Use to directly multiply the item's effective mana cost. Good for debuffs, or things which should stack separately (eg meteor armor set bonus).</param>
-	public virtual void ModifyManaCost(Player player, ref float reduce, ref float mult) {
+	public virtual void ModifyManaCost(Player player, ref float reduce, ref float mult)
+	{
 	}
 
 	/// <summary>
@@ -275,7 +288,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="neededMana">The mana needed to use the item.</param>
-	public virtual void OnMissingMana(Player player, int neededMana) {
+	public virtual void OnMissingMana(Player player, int neededMana)
+	{
 	}
 
 	/// <summary>
@@ -283,7 +297,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="manaConsumed">The mana consumed from the player.</param>
-	public virtual void OnConsumeMana(Player player, int manaConsumed) {
+	public virtual void OnConsumeMana(Player player, int manaConsumed)
+	{
 	}
 
 	/// <summary>
@@ -292,28 +307,32 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
-	public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+	public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.
 	/// </summary>
 	/// <param name="itemGroup">The item group this item is being assigned to</param>
-	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
+	{
 	}
 
 	/// <summary>
 	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
 	/// </summary>
 	/// <param name="player">The Player that owns the bait</param>
-	public virtual bool? CanConsumeBait(Player player) {
+	public virtual bool? CanConsumeBait(Player player)
+	{
 		return null;
 	}
 
 	/// <summary>
 	/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
 	/// </summary>
-	public virtual bool CanResearch() {
+	public virtual bool CanResearch()
+	{
 		return true;
 	}
 
@@ -321,7 +340,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to create custom behaviour when an item is accepted by the Research function
 	/// </summary>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
-	public virtual void OnResearched(bool fullyResearched) {
+	public virtual void OnResearched(bool fullyResearched)
+	{
 	}
 
 	/// <summary>
@@ -330,7 +350,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
-	public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback) {
+	public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback)
+	{
 	}
 
 	/// <summary>
@@ -339,7 +360,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
-	public virtual void ModifyWeaponCrit(Player player, ref float crit) {
+	public virtual void ModifyWeaponCrit(Player player, ref float crit)
+	{
 	}
 
 	/// <summary>
@@ -347,7 +369,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Return false to allow shooting with no ammo in the inventory, in which case this item will act as if the default ammo for it is being used.
 	/// Returns true by default.
 	/// </summary>
-	public virtual bool NeedsAmmo(Player player) {
+	public virtual bool NeedsAmmo(Player player)
+	{
 		return true;
 	}
 
@@ -364,7 +387,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
 	/// </param>
 	/// <param name="knockback">The knockback of the fired projectile.</param>
-	public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+	public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+	{
 	}
 
 	/// <summary>
@@ -375,7 +399,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="ammo">The ammo that the weapon is attempting to select.</param>
 	/// <param name="player">The player which this weapon and the potential ammo belong to.</param>
 	/// <returns></returns>
-	public virtual bool? CanChooseAmmo(Item ammo, Player player) {
+	public virtual bool? CanChooseAmmo(Item ammo, Player player)
+	{
 		return null;
 	}
 
@@ -387,7 +412,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="weapon">The weapon attempting to select the ammo.</param>
 	/// <param name="player">The player which the weapon and this potential ammo belong to.</param>
 	/// <returns></returns>
-	public virtual bool? CanBeChosenAsAmmo(Item weapon, Player player) {
+	public virtual bool? CanBeChosenAsAmmo(Item weapon, Player player)
+	{
 		return null;
 	}
 
@@ -399,7 +425,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="ammo">The ammo that the weapon is attempting to consume.</param>
 	/// <param name="player">The player which this weapon and the ammo belong to.</param>
 	/// <returns></returns>
-	public virtual bool CanConsumeAmmo(Item ammo, Player player) {
+	public virtual bool CanConsumeAmmo(Item ammo, Player player)
+	{
 		return true;
 	}
 
@@ -411,7 +438,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="weapon">The weapon attempting to consume the ammo.</param>
 	/// <param name="player">The player which the weapon and this ammo belong to.</param>
 	/// <returns></returns>
-	public virtual bool CanBeConsumedAsAmmo(Item weapon, Player player) {
+	public virtual bool CanBeConsumedAsAmmo(Item weapon, Player player)
+	{
 		return true;
 	}
 
@@ -421,7 +449,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="ammo">The ammo that this weapon is currently using.</param>
 	/// <param name="player">The player which this weapon and the ammo belong to.</param>
-	public virtual void OnConsumeAmmo(Item ammo, Player player) {
+	public virtual void OnConsumeAmmo(Item ammo, Player player)
+	{
 	}
 
 	/// <summary>
@@ -430,7 +459,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="weapon">The weapon that is currently using this ammo.</param>
 	/// <param name="player">The player which the weapon and this ammo belong to.</param>
-	public virtual void OnConsumedAsAmmo(Item weapon, Player player) {
+	public virtual void OnConsumedAsAmmo(Item weapon, Player player)
+	{
 	}
 
 	/// <summary>
@@ -438,7 +468,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player"> The player using the item. </param>
 	/// <returns></returns>
-	public virtual bool CanShoot(Player player) {
+	public virtual bool CanShoot(Player player)
+	{
 		return true;
 	}
 
@@ -452,7 +483,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="type"> The ID of the projectile. </param>
 	/// <param name="damage"> The damage of the projectile. </param>
 	/// <param name="knockback"> The knockback of the projectile. </param>
-	public virtual void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+	public virtual void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+	{
 	}
 
 	/// <summary>
@@ -467,7 +499,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="damage"> The damage of the projectile. </param>
 	/// <param name="knockback"> The knockback of the projectile. </param>
 	/// <returns></returns>
-	public virtual bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	public virtual bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+	{
 		return true;
 	}
 
@@ -477,7 +510,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="player">The player.</param>
 	/// <param name="hitbox">The hitbox.</param>
 	/// <param name="noHitbox">if set to <c>true</c> [no hitbox].</param>
-	public virtual void UseItemHitbox(Player player, ref Rectangle hitbox, ref bool noHitbox) {
+	public virtual void UseItemHitbox(Player player, ref Rectangle hitbox, ref bool noHitbox)
+	{
 	}
 
 	/// <summary>
@@ -485,7 +519,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="hitbox">The hitbox.</param>
-	public virtual void MeleeEffects(Player player, Rectangle hitbox) {
+	public virtual void MeleeEffects(Player player, Rectangle hitbox)
+	{
 	}
 
 	/// <summary>
@@ -499,7 +534,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="target">The NPC the player is trying to catch.</param>
 	/// <param name="player">The player attempting to catch the NPC.</param>
 	/// <returns></returns>
-	public virtual bool? CanCatchNPC(NPC target, Player player) {
+	public virtual bool? CanCatchNPC(NPC target, Player player)
+	{
 		return null;
 	}
 
@@ -509,7 +545,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
 	/// <param name="player">The player attempting to catch the given NPC.</param>
 	/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
-	public virtual void OnCatchNPC(NPC npc, Player player, bool failed) {
+	public virtual void OnCatchNPC(NPC npc, Player player, bool failed)
+	{
 	}
 
 	/// <summary>
@@ -520,7 +557,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// The scale multiplier to be applied to this item.<br></br>
 	/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
 	/// </param>
-	public virtual void ModifyItemScale(Player player, ref float scale) {
+	public virtual void ModifyItemScale(Player player, ref float scale)
+	{
 	}
 
 	/// <summary>
@@ -529,7 +567,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(Player player, NPC target) {
+	public virtual bool? CanHitNPC(Player player, NPC target)
+	{
 		return null;
 	}
 
@@ -541,7 +580,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="damage">The damage.</param>
 	/// <param name="knockBack">The knock back.</param>
 	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) {
+	public virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -552,7 +592,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="damage">The damage.</param>
 	/// <param name="knockBack">The knock back.</param>
 	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) {
+	public virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -563,7 +604,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <returns>
 	///   <c>true</c> if this instance [can hit PVP] the specified player; otherwise, <c>false</c>.
 	/// </returns>
-	public virtual bool CanHitPvp(Player player, Player target) {
+	public virtual bool CanHitPvp(Player player, Player target)
+	{
 		return true;
 	}
 
@@ -574,7 +616,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="target">The target.</param>
 	/// <param name="damage">The damage.</param>
 	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -584,7 +627,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="target">The target.</param>
 	/// <param name="damage">The damage.</param>
 	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitPvp(Player player, Player target, int damage, bool crit) {
+	public virtual void OnHitPvp(Player player, Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -611,7 +655,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool ConsumeItem(Player player) {
+	public virtual bool ConsumeItem(Player player)
+	{
 		return true;
 	}
 
@@ -620,7 +665,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Called before the item stack is reduced.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void OnConsumeItem(Player player) {
+	public virtual void OnConsumeItem(Player player)
+	{
 	}
 
 	/// <summary>
@@ -640,7 +686,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool AltFunctionUse(Player player) {
+	public virtual bool AltFunctionUse(Player player)
+	{
 		return false;
 	}
 
@@ -648,14 +695,16 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display).
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateInventory(Player player) {
+	public virtual void UpdateInventory(Player player)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to give effects to this armor or accessory, such as increased damage.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateEquip(Player player) {
+	public virtual void UpdateEquip(Player player)
+	{
 	}
 
 	/// <summary>
@@ -663,14 +712,16 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="hideVisual">if set to <c>true</c> the accessory is hidden.</param>
-	public virtual void UpdateAccessory(Player player, bool hideVisual) {
+	public virtual void UpdateAccessory(Player player, bool hideVisual)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateVanity(Player player) {
+	public virtual void UpdateVanity(Player player)
+	{
 	}
 
 	/// <summary>
@@ -678,7 +729,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="type">The type.</param>
-	public virtual void EquipFrameEffects(Player player, EquipType type) {
+	public virtual void EquipFrameEffects(Player player, EquipType type)
+	{
 	}
 
 	/// <summary>
@@ -687,7 +739,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="head">The head.</param>
 	/// <param name="body">The body.</param>
 	/// <param name="legs">The legs.</param>
-	public virtual bool IsArmorSet(Item head, Item body, Item legs) {
+	public virtual bool IsArmorSet(Item head, Item body, Item legs)
+	{
 		return false;
 	}
 
@@ -695,7 +748,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to give set bonuses to the armor set that this armor is in. Set player.setBonus to a string for the bonus description.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateArmorSet(Player player) {
+	public virtual void UpdateArmorSet(Player player)
+	{
 	}
 
 	/// <summary>
@@ -704,7 +758,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="head">The head.</param>
 	/// <param name="body">The body.</param>
 	/// <param name="legs">The legs.</param>
-	public virtual bool IsVanitySet(int head, int body, int legs) {
+	public virtual bool IsVanitySet(int head, int body, int legs)
+	{
 		int headItemType = 0;
 		if (head >= 0)
 			headItemType = Item.headType[head];
@@ -730,14 +785,16 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to create special effects (such as the necro armor's hurt noise) when the player wears this item's vanity set. This hook is called regardless of whether the player is frozen in any way. Note that this hook is only ever called through this item's associated equipment texture.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void PreUpdateVanitySet(Player player) {
+	public virtual void PreUpdateVanitySet(Player player)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects (such as dust) when the player wears this item's vanity set. This hook will only be called if the player is not frozen in any way. Note that this hook is only ever called through this item's associated equipment texture.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateVanitySet(Player player) {
+	public virtual void UpdateVanitySet(Player player)
+	{
 	}
 
 	/// <summary>
@@ -745,7 +802,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
 	/// <param name="player">The player.</param>
-	public virtual void ArmorSetShadows(Player player) {
+	public virtual void ArmorSetShadows(Player player)
+	{
 	}
 
 	/// <summary>
@@ -756,13 +814,15 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="male">if set to <c>true</c> [male].</param>
 	/// <param name="equipSlot">The equip slot.</param>
 	/// <param name="robes">if set to <c>true</c> [robes].</param>
-	public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes) {
+	public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes)
+	{
 	}
 
 	/// <summary>
 	/// Returns whether or not this item does something when it is right-clicked in the inventory. Returns false by default.
 	/// </summary>
-	public virtual bool CanRightClick() {
+	public virtual bool CanRightClick()
+	{
 		return false;
 	}
 
@@ -770,7 +830,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to make things happen when this item is right-clicked in the inventory.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void RightClick(Player player) {
+	public virtual void RightClick(Player player)
+	{
 	}
 
 	/// <summary>
@@ -778,7 +839,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
 	/// </summary>
 	/// <param name="itemLoot"></param>
-	public virtual void ModifyItemLoot(ItemLoot itemLoot) {
+	public virtual void ModifyItemLoot(ItemLoot itemLoot)
+	{
 	}
 
 	/// <summary>
@@ -788,7 +850,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStack(Item decrease) {
+	public virtual bool CanStack(Item decrease)
+	{
 		return true;
 	}
 
@@ -797,7 +860,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <br/>This is only called when attempting to stack with an item of the same type.
 	/// </summary>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item decrease) {
+	public virtual bool CanStackInWorld(Item decrease)
+	{
 		return true;
 	}
 
@@ -807,7 +871,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
 	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
-	public virtual void OnStack(Item decrease, int numberToBeTransfered) {
+	public virtual void OnStack(Item decrease, int numberToBeTransfered)
+	{
 
 	}
 
@@ -817,7 +882,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	/// <param name="decrease">The original item that will have it's stack reduced.</param>
 	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
-	public virtual void SplitStack(Item decrease, int numberToBeTransfered) {
+	public virtual void SplitStack(Item decrease, int numberToBeTransfered)
+	{
 
 	}
 
@@ -826,7 +892,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// If true or false is returned and the price is altered, the price will equal the altered price.
 	/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 	/// </summary>
-	public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount) {
+	public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
+	{
 		return true;
 	}
 
@@ -835,7 +902,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool PreReforge() {
+	public virtual bool PreReforge()
+	{
 		return true;
 	}
 
@@ -843,7 +911,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
 	/// Useful for modifying modded data based on the reforge result.
 	/// </summary>
-	public virtual void PostReforge() {
+	public virtual void PostReforge()
+	{
 	}
 
 	/// <summary>
@@ -854,7 +923,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="color">The color.</param>
 	/// <param name="glowMask">The glow mask.</param>
 	/// <param name="glowMaskColor">Color of the glow mask.</param>
-	public virtual void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor) {
+	public virtual void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor)
+	{
 	}
 
 	/// <summary>
@@ -864,7 +934,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="shadow">The shadow.</param>
 	/// <param name="glowMask">The glow mask.</param>
 	/// <param name="color">The color.</param>
-	public virtual void ArmorArmGlowMask(Player drawPlayer, float shadow, ref int glowMask, ref Color color) {
+	public virtual void ArmorArmGlowMask(Player drawPlayer, float shadow, ref int glowMask, ref Color color)
+	{
 	}
 
 	/// <summary>
@@ -877,7 +948,8 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <param name="maxAscentMultiplier">The maximum ascent multiplier.</param>
 	/// <param name="constantAscend">The constant ascend.</param>
 	public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
-ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
+ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+	{
 	}
 
 	/// <summary>
@@ -886,7 +958,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="player">The player.</param>
 	/// <param name="speed">The speed.</param>
 	/// <param name="acceleration">The acceleration.</param>
-	public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration) {
+	public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
+	{
 	}
 
 	/// <summary>
@@ -895,7 +968,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="player">The player.</param>
 	/// <param name="inUse">if set to <c>true</c> [in use].</param>
 	/// <returns></returns>
-	public virtual bool WingUpdate(Player player, bool inUse) {
+	public virtual bool WingUpdate(Player player, bool inUse)
+	{
 		return false;
 	}
 
@@ -904,20 +978,23 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="gravity">The gravity.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed.</param>
-	public virtual void Update(ref float gravity, ref float maxFallSpeed) {
+	public virtual void Update(ref float gravity, ref float maxFallSpeed)
+	{
 	}
 
 	/// <summary>
 	/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
 	/// </summary>
-	public virtual bool? CanBurnInLava() {
+	public virtual bool? CanBurnInLava()
+	{
 		return null;
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 	/// </summary>
-	public virtual void PostUpdate() {
+	public virtual void PostUpdate()
+	{
 	}
 
 	/// <summary>
@@ -925,7 +1002,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="grabRange">The grab range.</param>
-	public virtual void GrabRange(Player player, ref int grabRange) {
+	public virtual void GrabRange(Player player, ref int grabRange)
+	{
 	}
 
 	/// <summary>
@@ -933,7 +1011,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool GrabStyle(Player player) {
+	public virtual bool GrabStyle(Player player)
+	{
 		return false;
 	}
 
@@ -941,7 +1020,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine whether or not the item can be picked up
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual bool CanPickup(Player player) {
+	public virtual bool CanPickup(Player player)
+	{
 		return true;
 	}
 
@@ -950,7 +1030,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool OnPickup(Player player) {
+	public virtual bool OnPickup(Player player)
+	{
 		return true;
 	}
 
@@ -959,7 +1040,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool ItemSpace(Player player) {
+	public virtual bool ItemSpace(Player player)
+	{
 		return false;
 	}
 
@@ -968,7 +1050,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="lightColor">Color of the light.</param>
 	/// <returns></returns>
-	public virtual Color? GetAlpha(Color lightColor) {
+	public virtual Color? GetAlpha(Color lightColor)
+	{
 		return null;
 	}
 
@@ -982,7 +1065,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="scale">The scale.</param>
 	/// <param name="whoAmI">The who am i.</param>
 	/// <returns></returns>
-	public virtual bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
+	public virtual bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+	{
 		return true;
 	}
 
@@ -995,7 +1079,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="rotation">The rotation.</param>
 	/// <param name="scale">The scale.</param>
 	/// <param name="whoAmI">The who am i.</param>
-	public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
+	public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+	{
 	}
 
 	/// <summary>
@@ -1010,7 +1095,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="scale">The scale.</param>
 	/// <returns></returns>
 	public virtual bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
-		Color itemColor, Vector2 origin, float scale) {
+		Color itemColor, Vector2 origin, float scale)
+	{
 		return true;
 	}
 
@@ -1025,14 +1111,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="origin">The origin.</param>
 	/// <param name="scale">The scale.</param>
 	public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
-		Color itemColor, Vector2 origin, float scale) {
+		Color itemColor, Vector2 origin, float scale)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine the offset of this item's sprite when used by the player. This is only used for items with a useStyle of 5 that aren't staves. Return null to use the vanilla holdout offset; returns null by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual Vector2? HoldoutOffset() {
+	public virtual Vector2? HoldoutOffset()
+	{
 		return null;
 	}
 
@@ -1040,7 +1128,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine the point on this item's sprite that the player holds onto when using this item. The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5. Return null to use the vanilla holdout origin (zero); returns null by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual Vector2? HoldoutOrigin() {
+	public virtual Vector2? HoldoutOrigin()
+	{
 		return null;
 	}
 
@@ -1050,7 +1139,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="player">The player.</param>
 	/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
 	/// <param name="modded">If the inventory slot index is for modded slots.</param>
-	public virtual bool CanEquipAccessory(Player player, int slot, bool modded) {
+	public virtual bool CanEquipAccessory(Player player, int slot, bool modded)
+	{
 		return true;
 	}
 
@@ -1058,7 +1148,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
 	/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
 	/// </summary>
-	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
+	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+	{
 		return true;
 	}
 
@@ -1074,7 +1165,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="extractinatorBlockType">Which Extractinator tile is being used, <see cref="TileID.Extractinator"/> or <see cref="TileID.ChlorophyteExtractinator"/>.</param>
 	/// <param name="resultType">Type of the result.</param>
 	/// <param name="resultStack">The result stack.</param>
-	public virtual void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack) {
+	public virtual void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack)
+	{
 	}
 
 	/// <summary>
@@ -1083,27 +1175,31 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
 	/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>
 	/// <param name="glowstick">if set to <c>true</c> [glowstick].</param>
-	public virtual void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
+	public virtual void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine how many of this item a player obtains when the player fishes this item.
 	/// </summary>
 	/// <param name="stack">The stack.</param>
-	public virtual void CaughtFishStack(ref int stack) {
+	public virtual void CaughtFishStack(ref int stack)
+	{
 	}
 
 	/// <summary>
 	/// Whether or not the Angler can ever randomly request this type of item for his daily quest. Returns false by default.
 	/// </summary>
-	public virtual bool IsQuestFish() {
+	public virtual bool IsQuestFish()
+	{
 		return false;
 	}
 
 	/// <summary>
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request this item. (For example, Hardmode.) Returns true by default.
 	/// </summary>
-	public virtual bool IsAnglerQuestAvailable() {
+	public virtual bool IsAnglerQuestAvailable()
+	{
 		return true;
 	}
 
@@ -1112,7 +1208,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="description">The description.</param>
 	/// <param name="catchLocation">The catch location.</param>
-	public virtual void AnglerQuestChat(ref string description, ref string catchLocation) {
+	public virtual void AnglerQuestChat(ref string description, ref string catchLocation)
+	{
 	}
 
 	/// <summary>
@@ -1138,7 +1235,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
-	public virtual void NetSend(BinaryWriter writer) {
+	public virtual void NetSend(BinaryWriter writer)
+	{
 	}
 
 	//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
@@ -1148,13 +1246,15 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
-	public virtual void NetReceive(BinaryReader reader) {
+	public virtual void NetReceive(BinaryReader reader)
+	{
 	}
 
 	/// <summary>
 	/// This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance of the overriding ModItem class that is added to the game. This allows you to avoid clutter in your overriding Mod class by adding recipes for which this item is the result.
 	/// </summary>
-	public virtual void AddRecipes() {
+	public virtual void AddRecipes()
+	{
 	}
 
 	/// <summary>
@@ -1162,7 +1262,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="recipe">The recipe that was used to craft this item.</param>
 	[Obsolete("Use OnCreate and check if context is RecipeCreationContext", true)]
-	public virtual void OnCraft(Recipe recipe) {
+	public virtual void OnCraft(Recipe recipe)
+	{
 	}
 
 	/// <summary>
@@ -1172,7 +1273,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
 	/// <param name="y">The top Y position for this tooltip. It is where the first line starts drawing</param>
 	/// <returns>Whether or not to draw this tooltip</returns>
-	public virtual bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
+	public virtual bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+	{
 		return true;
 	}
 
@@ -1180,7 +1282,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
 	/// </summary>
 	/// <param name="lines">The tooltip lines for this item</param>
-	public virtual void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines) {
+	public virtual void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines)
+	{
 	}
 
 	/// <summary>
@@ -1189,7 +1292,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="line">The line that would be drawn</param>
 	/// <param name="yOffset">The Y offset added for next tooltip lines</param>
 	/// <returns>Whether or not to draw this tooltip line</returns>
-	public virtual bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) {
+	public virtual bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
+	{
 		return true;
 	}
 
@@ -1197,14 +1301,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
 	/// </summary>
 	/// <param name="line">The line that was drawn</param>
-	public virtual void PostDrawTooltipLine(DrawableTooltipLine line) {
+	public virtual void PostDrawTooltipLine(DrawableTooltipLine line)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify all the tooltips that display for this item. See here for information about TooltipLine.
 	/// </summary>
 	/// <param name="tooltips">The tooltips.</param>
-	public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
+	public virtual void ModifyTooltips(List<TooltipLine> tooltips)
+	{
 	}
 
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);

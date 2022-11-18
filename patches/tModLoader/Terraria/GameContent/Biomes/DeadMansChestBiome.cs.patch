@@ -8,10 +8,10 @@
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
  
-@@ -192,7 +_,7 @@
- 	}
+@@ -203,7 +_,7 @@
  
- 	private void PlaceBoulderTrapSpot(Point position, int yPush) {
+ 	private void PlaceBoulderTrapSpot(Point position, int yPush)
+ 	{
 -		int[] array = new int[693];
 +		int[] array = new int[TileLoader.TileCount];
  		for (int i = position.X; i < position.X + 2; i++) {

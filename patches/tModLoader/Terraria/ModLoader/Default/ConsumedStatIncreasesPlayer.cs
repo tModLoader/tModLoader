@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Terraria.ID;
 
 namespace Terraria.ModLoader.Default;
@@ -6,11 +6,13 @@ namespace Terraria.ModLoader.Default;
 //Only purpose is for syncing ConsumedLifeCrystals, ConsumedLifeFruit and ConsumedManaCrystals
 internal class ConsumedStatIncreasesPlayer : ModPlayer
 {
-	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+	{
 		NetHandler.SendConsumedState(toWho, Player);
 	}
 
-	public override void clientClone(ModPlayer clientClone) {
+	public override void clientClone(ModPlayer clientClone)
+	{
 		Player source = Player, target = clientClone.Player;
 
 		target.ConsumedLifeCrystals = source.ConsumedLifeCrystals;
@@ -18,7 +20,8 @@ internal class ConsumedStatIncreasesPlayer : ModPlayer
 		target.ConsumedManaCrystals = source.ConsumedManaCrystals;
 	}
 
-	public override void SendClientChanges(ModPlayer clientPlayer) {
+	public override void SendClientChanges(ModPlayer clientPlayer)
+	{
 		Player player = Player, client = clientPlayer.Player;
 
 		if (player.ConsumedLifeCrystals != client.ConsumedLifeCrystals || player.ConsumedLifeFruit != client.ConsumedLifeFruit || player.ConsumedManaCrystals != client.ConsumedManaCrystals)
@@ -29,7 +32,8 @@ internal class ConsumedStatIncreasesPlayer : ModPlayer
 	{
 		public const byte SyncConsumedProperties = 1;
 
-		public static void SendConsumedState(int toClient, Player player) {
+		public static void SendConsumedState(int toClient, Player player)
+		{
 			var packet = ModLoaderMod.GetPacket(ModLoaderMod.StatResourcesPacket);
 
 			packet.Write(SyncConsumedProperties);
@@ -44,7 +48,8 @@ internal class ConsumedStatIncreasesPlayer : ModPlayer
 			packet.Send(toClient, player.whoAmI);
 		}
 
-		private static void HandleConsumedState(BinaryReader reader, int sender) {
+		private static void HandleConsumedState(BinaryReader reader, int sender)
+		{
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 				sender = reader.ReadByte();
 
@@ -58,7 +63,8 @@ internal class ConsumedStatIncreasesPlayer : ModPlayer
 				SendConsumedState(-1, player);
 		}
 
-		public static void HandlePacket(BinaryReader reader, int sender) {
+		public static void HandlePacket(BinaryReader reader, int sender)
+		{
 			switch (reader.ReadByte()) {
 				case SyncConsumedProperties:
 					HandleConsumedState(reader, sender);

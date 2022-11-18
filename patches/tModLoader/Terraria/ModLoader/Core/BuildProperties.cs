@@ -16,14 +16,16 @@ internal class BuildProperties
 		public string mod;
 		public Version target;
 
-		public ModReference(string mod, Version target) {
+		public ModReference(string mod, Version target)
+		{
 			this.mod = mod;
 			this.target = target;
 		}
 
 		public override string ToString() => target == null ? mod : mod + '@' + target;
 
-		public static ModReference Parse(string spec) {
+		public static ModReference Parse(string spec)
+		{
 			var split = spec.Split('@');
 			if (split.Length == 1)
 				return new ModReference(split[0], null);
@@ -73,7 +75,8 @@ internal class BuildProperties
 	private static IEnumerable<string> ReadList(string value)
 		=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
 
-	private static IEnumerable<string> ReadList(BinaryReader reader) {
+	private static IEnumerable<string> ReadList(BinaryReader reader)
+	{
 		var list = new List<string>();
 		for (string item = reader.ReadString(); item.Length > 0; item = reader.ReadString())
 			list.Add(item);
@@ -81,14 +84,16 @@ internal class BuildProperties
 		return list;
 	}
 
-	private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
+	private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer)
+	{
 		foreach (var item in list)
 			writer.Write(item.ToString());
 
 		writer.Write("");
 	}
 
-	internal static BuildProperties ReadBuildFile(string modDir) {
+	internal static BuildProperties ReadBuildFile(string modDir)
+	{
 		string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
 		string descriptionfile = modDir + Path.DirectorySeparatorChar + "description.txt";
 		BuildProperties properties = new BuildProperties();
@@ -172,7 +177,8 @@ internal class BuildProperties
 		return properties;
 	}
 
-	internal byte[] ToBytes() {
+	internal byte[] ToBytes()
+	{
 		byte[] data;
 		using (MemoryStream memoryStream = new MemoryStream()) {
 			using (BinaryWriter writer = new BinaryWriter(memoryStream)) {
@@ -248,11 +254,13 @@ internal class BuildProperties
 		return data;
 	}
 
-	internal static BuildProperties ReadModFile(TmodFile modFile) {
+	internal static BuildProperties ReadModFile(TmodFile modFile)
+	{
 		return ReadFromStream(modFile.GetStream("Info"));
 	}
 
-	internal static BuildProperties ReadFromStream(Stream stream) {
+	internal static BuildProperties ReadFromStream(Stream stream)
+	{
 		BuildProperties properties = new BuildProperties();
 		// While the intended defaults for these are false, Info will only have !hideCode and !hideResources entries, so this is necessary.
 		properties.hideCode = true;
@@ -318,7 +326,8 @@ internal class BuildProperties
 		return properties;
 	}
 
-	internal static void InfoToBuildTxt(Stream src, Stream dst) {
+	internal static void InfoToBuildTxt(Stream src, Stream dst)
+	{
 		BuildProperties properties = ReadFromStream(src);
 		var sb = new StringBuilder();
 		if (properties.displayName.Length > 0)
@@ -359,7 +368,8 @@ internal class BuildProperties
 
 	internal bool ignoreFile(string resource) => buildIgnores.Any(fileMask => FitsMask(resource, fileMask));
 
-	private bool FitsMask(string fileName, string fileMask) {
+	private bool FitsMask(string fileName, string fileMask)
+	{
 		string pattern =
 			'^' +
 			Regex.Escape(fileMask.Replace(".", "__DOT__")

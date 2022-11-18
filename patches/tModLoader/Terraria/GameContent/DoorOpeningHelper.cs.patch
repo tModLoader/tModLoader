@@ -9,7 +9,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -84,13 +_,13 @@
+@@ -86,13 +_,13 @@
  
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
  			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
@@ -25,8 +25,8 @@
  				return true;
  			}
  
-@@ -100,8 +_,7 @@
- 		public DoorCloseAttemptResult TryCloseDoor(DoorOpenCloseTogglingInfo info, PlayerInfoForClosingDoors playerInfo) {
+@@ -103,8 +_,7 @@
+ 		{
  			Point tileCoordsForToggling = info.tileCoordsForToggling;
  			Tile tile = Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y];
 -			if (!tile.active() || tile.type != 11)
@@ -35,7 +35,7 @@
  
  			int num = tile.frameX % 72 / 18;
  			Rectangle value = new Rectangle(tileCoordsForToggling.X * 16, tileCoordsForToggling.Y * 16, 16, 48);
-@@ -316,10 +_,11 @@
+@@ -332,10 +_,11 @@
  		Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
  		if (tile == null)
  			return false;

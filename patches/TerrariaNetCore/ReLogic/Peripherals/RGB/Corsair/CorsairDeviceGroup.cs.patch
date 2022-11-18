@@ -8,10 +8,10 @@
 +	private bool _initializationFailed;
 +#endif
  
- 	public CorsairDeviceGroup(VendorColorProfile colorProfiles) {
- 		_colorProfiles = colorProfiles;
-@@ -25,6 +_,17 @@
- 	protected override void Initialize() {
+ 	public CorsairDeviceGroup(VendorColorProfile colorProfiles)
+ 	{
+@@ -27,6 +_,17 @@
+ 	{
  		if (_state == State.AnyDevicesAdded)
  			return;
 +

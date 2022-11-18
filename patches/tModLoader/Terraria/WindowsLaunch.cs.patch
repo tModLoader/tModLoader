@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WindowsLaunch.cs
 +++ src/tModLoader/Terraria/WindowsLaunch.cs
-@@ -62,7 +_,8 @@
+@@ -64,7 +_,8 @@
  			stream.Read(array, 0, array.Length);
  			return Assembly.Load(array);
  		};

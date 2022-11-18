@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/BitsByte.cs
 +++ src/tModLoader/Terraria/BitsByte.cs
-@@ -80,6 +_,17 @@
+@@ -91,6 +_,18 @@
  		b7 = this[7];
  	}
  
 +	// Added by TML to ease debugging
-+	public override string ToString() {
++	public override string ToString()
++	{
 +		char[] characters = new char[8];
 +
 +		for (int i = 0; i < 8; i++) {
@@ -15,6 +16,6 @@
 +		return new string(characters);
 +	}
 +
- 	public static implicit operator byte(BitsByte bb) {
+ 	public static implicit operator byte(BitsByte bb)
+ 	{
  		return bb.value;
- 	}

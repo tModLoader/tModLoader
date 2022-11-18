@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
 
@@ -10,7 +10,8 @@ internal class JofairdenHeadShader : JofairdenArmorShaderLayer
 
 	public override bool IsHeadLayer => true;
 
-	public override DrawDataInfo GetData(PlayerDrawSet info) {
+	public override DrawDataInfo GetData(PlayerDrawSet info)
+	{
 		_shaderTexture ??= ModContent.Request<Texture2D>("ModLoader/Developer.Jofairden.Jofairden_Head_Head_Shader");
 
 		return GetHeadDrawDataInfo(info, _shaderTexture.Value);

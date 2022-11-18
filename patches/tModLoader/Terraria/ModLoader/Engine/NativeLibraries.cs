@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -6,7 +6,8 @@ namespace Terraria.ModLoader.Engine;
 
 internal class NativeLibraries
 {
-	internal static void CheckNativeFAudioDependencies() {
+	internal static void CheckNativeFAudioDependencies()
+	{
 		if (!OperatingSystem.IsWindows())
 			return;
 
@@ -27,7 +28,8 @@ internal class NativeLibraries
 		}
 	}
 
-	internal static void SetNativeLibraryPath(string nativesDir) {
+	internal static void SetNativeLibraryPath(string nativesDir)
+	{
 		if (!OperatingSystem.IsWindows())
 			return;
 

@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,8 @@ internal class TerrariaSteamClient
 		Ok
 	}
 
-	internal static LaunchResult Launch() {
+	internal static LaunchResult Launch()
+	{
 		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
 			Logger.Debug("Disabled. Launched outside steam client.");
 			return LaunchResult.Ok;
@@ -91,7 +92,8 @@ internal class TerrariaSteamClient
 		return LaunchResult.Ok;
 	}
 
-	private static void SendCmd(string cmd) {
+	private static void SendCmd(string cmd)
+	{
 		if (serverPipe == null)
 			return;
 
@@ -100,7 +102,8 @@ internal class TerrariaSteamClient
 		sw.WriteLine(cmd);
 	}
 
-	internal static void Run() {
+	internal static void Run()
+	{
 		Logging.Init(Logging.LogFile.TerrariaSteamClient);
 		Logger.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 		Logger.InfoFormat("Args: {0}", string.Join(' ', Environment.GetCommandLineArgs()));
@@ -179,7 +182,8 @@ internal class TerrariaSteamClient
 			SteamShutdown();
 	}
 
-	private static void SteamShutdown() {
+	private static void SteamShutdown()
+	{
 		try {
 			Logger.Info("SteamAPI.Shutdown()");
 			SteamAPI.Shutdown();
@@ -189,7 +193,8 @@ internal class TerrariaSteamClient
 		}
 	}
 
-	internal static void Shutdown() {
+	internal static void Shutdown()
+	{
 		try {
 			SendCmd(MsgShutdown);
 		} catch { }

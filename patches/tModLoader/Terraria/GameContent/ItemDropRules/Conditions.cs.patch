@@ -9,7 +9,7 @@
  {
  	public class NeverTrue : IItemDropRuleCondition, IProvideItemConditionDescription
  	{
-@@ -765,14 +_,18 @@
+@@ -807,14 +_,18 @@
  			return false;
  
  		switch (info.npc.type) {

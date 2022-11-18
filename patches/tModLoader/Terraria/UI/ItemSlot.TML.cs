@@ -6,7 +6,8 @@ namespace Terraria.UI;
 
 public partial class ItemSlot
 {
-	private static bool AccessorySwap(Player player, Item item, ref Item result) {
+	private static bool AccessorySwap(Player player, Item item, ref Item result)
+	{
 		//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
 		accSlotToSwapTo = -1;
 		var accLoader = LoaderManager.Get<AccessorySlotLoader>();
@@ -90,7 +91,8 @@ public partial class ItemSlot
 	/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
 	/// Here in case someone proves my statement wrong later.
 	/// </summary>
-	private static Item ModSlotDyeSwap(Item item, out bool success) {
+	private static Item ModSlotDyeSwap(Item item, out bool success)
+	{
 		Item item2 = item;
 		var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
 		int dyeSlotCount = 0;
@@ -120,7 +122,8 @@ public partial class ItemSlot
 	/// <summary>
 	/// Returns true to disallow putting an item in to a given slot, typically invoked by mouse placement
 	/// </summary>
-	internal static bool AccCheck_Inner(Item[] itemCollection, Item item, int slot) {
+	internal static bool AccCheck_Inner(Item[] itemCollection, Item item, int slot)
+	{
 		if (isEquipLocked(item.type))
 			return true;
 

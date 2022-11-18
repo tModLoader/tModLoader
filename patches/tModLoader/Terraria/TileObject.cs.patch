@@ -1,16 +1,16 @@
 --- src/TerrariaNetCore/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
-@@ -138,7 +_,8 @@
+@@ -139,7 +_,8 @@
  		return true;
  	}
  
 +	//TML: Added 'checkStay' parameter.
--	public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null) {
-+	public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null, bool checkStay = false) {
+-	public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null)
++	public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null, bool checkStay = false)
+ 	{
  		TileObjectData tileData = TileObjectData.GetTileData(type, style);
  		objectData = Empty;
- 		if (tileData == null)
-@@ -281,7 +_,7 @@
+@@ -283,7 +_,7 @@
  			for (int i = 0; i < tileData2.Width; i++) {
  				for (int j = 0; j < tileData2.Height; j++) {
  					Tile tileSafely = Framing.GetTileSafely(num8 + i, num9 + j);
@@ -19,7 +19,7 @@
  					bool flag3 = false;
  					if (tileData2.AnchorWall) {
  						num25 += 1f;
-@@ -292,7 +_,7 @@
+@@ -294,7 +_,7 @@
  					}
  
  					bool flag4 = false;

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -25,7 +25,8 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 	protected List<DefinitionOptionElement<T>> Options { get; set; }
 	protected DefinitionOptionElement<T> OptionChoice { get; set; }
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 		Height.Set(30f, 0f);
 
@@ -111,7 +112,8 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		ChooserPanel.Append(upDownButton);
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		if (!UpdateNeeded)
@@ -165,7 +167,8 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 
 	protected bool Unloaded { get; set; }
 
-	public DefinitionOptionElement(T definition, float scale = .75f) {
+	public DefinitionOptionElement(T definition, float scale = .75f)
+	{
 		SetItem(definition);
 
 		Scale = scale;
@@ -173,7 +176,8 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 		Height.Set(DefaultBackgroundTexture.Height() * scale, 0f);
 	}
 
-	public virtual void SetItem(T item) {
+	public virtual void SetItem(T item)
+	{
 		Definition = item;
 		Type = Definition?.Type ?? 0;
 		Unloaded = Definition?.IsUnloaded ?? false;
@@ -185,13 +189,15 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 		}
 	}
 
-	public virtual void SetScale(float scale) {
+	public virtual void SetScale(float scale)
+	{
 		Scale = scale;
 		Width.Set(DefaultBackgroundTexture.Width() * scale, 0f);
 		Height.Set(DefaultBackgroundTexture.Height() * scale, 0f);
 	}
 
-	public override int CompareTo(object obj) {
+	public override int CompareTo(object obj)
+	{
 		var other = obj as DefinitionOptionElement<T>;
 
 		return Type.CompareTo(other.Type);

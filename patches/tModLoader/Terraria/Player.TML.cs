@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -93,7 +93,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified ModPlayer instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetModPlayer<T>(T baseInstance, out T result) where T : ModPlayer {
+	public bool TryGetModPlayer<T>(T baseInstance, out T result) where T : ModPlayer
+	{
 		if (baseInstance == null || baseInstance.Index < 0 || baseInstance.Index >= modPlayers.Length) {
 			result = default;
 
@@ -105,7 +106,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return result != null;
 	}
 
-	public void DropFromItem(int itemType) {
+	public void DropFromItem(int itemType)
+	{
 		DropAttemptInfo info = new() {
 			player = this,
 			item = itemType,
@@ -123,7 +125,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <param name="source">The spawn context</param>
 	/// <param name="item">The item you want to be cloned</param>
 	/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-	public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1) {
+	public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1)
+	{
 		int index = Item.NewItem(source, getRect(), item.type, stack, false, -1, false, false);
 		Item clone = Main.item[index] = item.Clone();
 		clone.whoAmI = index;
@@ -163,7 +166,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	private DamageClassData[] damageData;
 
-	internal void ResetDamageClassData() {
+	internal void ResetDamageClassData()
+	{
 		damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 		for (int i = 0; i < damageData.Length; i++) {
@@ -237,7 +241,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public StatModifier GetTotalDamage<T>() where T : DamageClass => GetTotalDamage(ModContent.GetInstance<T>());
 
-	public StatModifier GetTotalDamage(DamageClass damageClass) {
+	public StatModifier GetTotalDamage(DamageClass damageClass)
+	{
 		StatModifier stat = damageData[damageClass.Type].damage;
 
 		for (int i = 0; i < damageData.Length; i++) {
@@ -252,7 +257,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public float GetTotalCritChance<T>() where T : DamageClass => GetTotalCritChance(ModContent.GetInstance<T>());
 
-	public float GetTotalCritChance(DamageClass damageClass) {
+	public float GetTotalCritChance(DamageClass damageClass)
+	{
 		float stat = damageData[damageClass.Type].critChance;
 
 		for (int i = 0; i < damageData.Length; i++) {
@@ -267,7 +273,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public float GetTotalAttackSpeed<T>() where T : DamageClass => GetTotalAttackSpeed(ModContent.GetInstance<T>());
 
-	public float GetTotalAttackSpeed(DamageClass damageClass) {
+	public float GetTotalAttackSpeed(DamageClass damageClass)
+	{
 		float stat = damageData[damageClass.Type].attackSpeed;
 
 		for (int i = 0; i < damageData.Length; i++) {
@@ -282,7 +289,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public float GetTotalArmorPenetration<T>() where T : DamageClass => GetTotalArmorPenetration(ModContent.GetInstance<T>());
 
-	public float GetTotalArmorPenetration(DamageClass damageClass) {
+	public float GetTotalArmorPenetration(DamageClass damageClass)
+	{
 		float stat = damageData[damageClass.Type].armorPen;
 
 		for (int i = 0; i < damageData.Length; i++) {
@@ -297,7 +305,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public StatModifier GetTotalKnockback<T>() where T : DamageClass => GetTotalKnockback(ModContent.GetInstance<T>());
 
-	public StatModifier GetTotalKnockback(DamageClass damageClass) {
+	public StatModifier GetTotalKnockback(DamageClass damageClass)
+	{
 		StatModifier stat = damageData[damageClass.Type].knockback;
 
 		for (int i = 0; i < damageData.Length; i++) {
@@ -310,13 +319,15 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return stat;
 	}
 
-	public int GetWeaponArmorPenetration(Item sItem) {
+	public int GetWeaponArmorPenetration(Item sItem)
+	{
 		int armorPen = (int)(sItem.ArmorPenetration + GetTotalArmorPenetration(sItem.DamageType));
 		// TODO: CombinedHooks.ModifyWeaponArmorPenetration(this, sItem, ref armorPen);
 		return armorPen;
 	}
 
-	public float GetWeaponAttackSpeed(Item sItem) {
+	public float GetWeaponAttackSpeed(Item sItem)
+	{
 		float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
 		// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
 		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type]);
@@ -381,7 +392,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Calculates whether or not the player is in the purity/forest biome.
 	/// </summary>
-	public bool InZonePurity() {
+	public bool InZonePurity()
+	{
 		bool one = ZoneBeach || ZoneCorrupt || ZoneCrimson || ZoneDesert || ZoneDungeon || ZoneGemCave;
 		bool two = ZoneGlowshroom || ZoneGranite || ZoneGraveyard || ZoneHallow || ZoneHive || ZoneJungle;
 		bool three = ZoneLihzhardTemple || ZoneMarble || ZoneMeteor || ZoneSnow || ZoneUnderworldHeight;
@@ -406,7 +418,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Invoked in UpdateVisibleAccessories. Runs common code for both modded slots and vanilla slots based on provided Items.
 	/// </summary>
-	public void UpdateVisibleAccessories(Item item, bool invisible, int slot = -1, bool modded = false) {
+	public void UpdateVisibleAccessories(Item item, bool invisible, int slot = -1, bool modded = false)
+	{
 		if (eocDash > 0 && shield == -1 && item.shieldSlot != -1) {
 			shield = item.shieldSlot;
 			if (cShieldFallback != -1)
@@ -436,7 +449,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Drops the ref'd item from the player at the position, and than turns the ref'd Item to air.
 	/// </summary>
-	public void DropItem(IEntitySource source, Vector2 position, ref Item item) {
+	public void DropItem(IEntitySource source, Vector2 position, ref Item item)
+	{
 		if (item.stack > 0) {
 			int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item.type);
 			var itemDrop = Main.item[itemDropId];
@@ -458,21 +472,24 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		item.TurnToAir();
 	}
 
-	public int GetHealLife(Item item, bool quickHeal = false) {
+	public int GetHealLife(Item item, bool quickHeal = false)
+	{
 		int healValue = item.healLife;
 		ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
 		PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public int GetHealMana(Item item, bool quickHeal = false) {
+	public int GetHealMana(Item item, bool quickHeal = false)
+	{
 		int healValue = item.healMana;
 		ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
 		PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public bool CanBuyItem(int price, int customCurrency = -1) {
+	public bool CanBuyItem(int price, int customCurrency = -1)
+	{
 		if (customCurrency != -1)
 			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
 
@@ -486,7 +503,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return num5 >= price;
 	}
 
-	public int GetManaCost(Item item) {
+	public int GetManaCost(Item item)
+	{
 		float reduce = manaCost;
 		float mult = 1;
 		// TODO: Make a space gun set
@@ -501,7 +519,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return mana >= 0 ? mana : 0;
 	}
 
-	public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false) {
+	public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false)
+	{
 		if (amount <= -1)
 			amount = GetManaCost(item);
 
@@ -557,7 +576,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	/// <param name="cooldownCounterId">See <see cref="ImmunityCooldownID"/> for valid ids.</param>
 	/// <param name="immuneTime">Extra immunity time to add</param>
-	public void AddImmuneTime(int cooldownCounterId, int immuneTime) {
+	public void AddImmuneTime(int cooldownCounterId, int immuneTime)
+	{
 		if (cooldownCounterId < 0) {
 			this.immuneTime += immuneTime;
 		}

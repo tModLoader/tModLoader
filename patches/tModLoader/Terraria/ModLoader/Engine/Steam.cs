@@ -1,4 +1,4 @@
-﻿using ReLogic.OS;
+using ReLogic.OS;
 using System.IO;
 using Steamworks;
 using Terraria.Social;
@@ -17,24 +17,28 @@ internal class Steam
 
 	public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;
 
-	public static bool CheckSteamCloudStorageSufficient(ulong input) {
+	public static bool CheckSteamCloudStorageSufficient(ulong input)
+	{
 		if (SocialAPI.Cloud != null)
 			return input < lastAvailableSteamCloudStorage;
 
 		return true;
 	}
 
-	public static void RecalculateAvailableSteamCloudStorage() {
+	public static void RecalculateAvailableSteamCloudStorage()
+	{
 		if (SocialAPI.Cloud != null)
 			SteamRemoteStorage.GetQuota(out _, out lastAvailableSteamCloudStorage);
 	}
 
-	internal static void PostInit() {
+	internal static void PostInit()
+	{
 		RecalculateAvailableSteamCloudStorage();
 		Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)lastAvailableSteamCloudStorage)} available");
 	}
 
-	public static string GetSteamTerrariaInstallDir() {
+	public static string GetSteamTerrariaInstallDir()
+	{
 		SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
 		if (terrariaInstallLocation == null) {
 			terrariaInstallLocation = "../Terraria"; // fallback for #2491
@@ -48,7 +52,8 @@ internal class Steam
 		return terrariaInstallLocation;
 	}
 
-	internal static void SetAppId(AppId_t appId) {
+	internal static void SetAppId(AppId_t appId)
+	{
 		var steam_appid_path = "steam_appid.txt";
 
 		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {

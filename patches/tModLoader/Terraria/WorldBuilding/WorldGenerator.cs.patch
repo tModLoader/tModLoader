@@ -22,7 +22,7 @@
  	private readonly WorldGenConfiguration _configuration;
  	public static GenerationProgress CurrentGenerationProgress;
  
-@@ -39,7 +_,22 @@
+@@ -42,7 +_,22 @@
  			Main.rand = new UnifiedRandom(_seed);
  			stopwatch.Start();
  			progress.Start(pass2.Weight);

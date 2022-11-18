@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -19,7 +19,8 @@ public static class UICommon
 
 	public static StyleDimension MaxPanelWidth = new StyleDimension(600, 0);
 
-	public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default) where T : UIPanel {
+	public static T WithFadedMouseOver<T>(this T elem, Color overColor = default, Color outColor = default) where T : UIPanel
+	{
 		if (overColor == default)
 			overColor = DefaultUIBlue;
 
@@ -36,29 +37,34 @@ public static class UICommon
 		return elem;
 	}
 
-	public static T WithPadding<T>(this T elem, float pixels) where T : UIElement {
+	public static T WithPadding<T>(this T elem, float pixels) where T : UIElement
+	{
 		elem.SetPadding(pixels);
 		return elem;
 	}
 
-	public static T WithPadding<T>(this T elem, string name, int id, Vector2? anchor = null, Vector2? offset = null) where T : UIElement {
+	public static T WithPadding<T>(this T elem, string name, int id, Vector2? anchor = null, Vector2? offset = null) where T : UIElement
+	{
 		elem.SetSnapPoint(name, id, anchor, offset);
 		return elem;
 	}
 
-	public static T WithView<T>(this T elem, float viewSize, float maxViewSize) where T : UIScrollbar {
+	public static T WithView<T>(this T elem, float viewSize, float maxViewSize) where T : UIScrollbar
+	{
 		elem.SetView(viewSize, maxViewSize);
 		return elem;
 	}
 
-	public static void AddOrRemoveChild(this UIElement elem, UIElement child, bool add) {
+	public static void AddOrRemoveChild(this UIElement elem, UIElement child, bool add)
+	{
 		if (!add)
 			elem.RemoveChild(child);
 		else if (!elem.HasChild(child))
 			elem.Append(child);
 	}
 
-	public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null) {
+	public static void DrawHoverStringInBounds(SpriteBatch spriteBatch, string text, Rectangle? bounds = null)
+	{
 		if (bounds == null)
 			bounds = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
 		Vector2 stringSize = FontAssets.MouseText.Value.MeasureString(text);
@@ -89,7 +95,8 @@ public static class UICommon
 	public static Asset<Texture2D> tModLoaderTitleLinkButtonsTexture { get; internal set; }
 	public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
 
-	internal static void LoadTextures() {
+	internal static void LoadTextures()
+	{
 		Asset<Texture2D> LoadEmbeddedTexture(string name)
 			=> ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.{name}");
 

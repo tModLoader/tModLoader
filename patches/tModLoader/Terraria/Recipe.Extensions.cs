@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Exceptions;
 
@@ -9,7 +9,8 @@ public partial class Recipe
 	#region HasX
 	public bool HasResult(int itemID) => createItem.type == itemID;
 
-	public bool HasResult(Mod mod, string itemName) {
+	public bool HasResult(Mod mod, string itemName)
+	{
 		mod ??= Mod;
 
 		if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
@@ -24,7 +25,8 @@ public partial class Recipe
 
 	public bool HasIngredient(int itemID) => requiredItem.Any(item => item.type == itemID);
 
-	public bool HasIngredient(Mod mod, string itemName) {
+	public bool HasIngredient(Mod mod, string itemName)
+	{
 		mod ??= Mod;
 
 		if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
@@ -39,7 +41,8 @@ public partial class Recipe
 
 	public bool HasRecipeGroup(int id) => acceptedGroups.Contains(id);
 
-	public bool HasRecipeGroup(string name) {
+	public bool HasRecipeGroup(string name)
+	{
 		if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
 			throw new RecipeException($"A recipe group with the name {name} does not exist.");
 
@@ -51,7 +54,8 @@ public partial class Recipe
 
 	public bool HasTile(int tileID) => requiredTile.Contains(tileID);
 
-	public bool HasTile(Mod mod, string tileName) {
+	public bool HasTile(Mod mod, string tileName)
+	{
 		mod ??= Mod;
 
 		if (!ModContent.TryFind(mod.Name, tileName, out ModTile item))
@@ -68,7 +72,8 @@ public partial class Recipe
 	#endregion
 
 	#region TryGetX
-	public bool TryGetResult(int itemID, out Item result) {
+	public bool TryGetResult(int itemID, out Item result)
+	{
 		if (createItem.type == itemID) {
 			result = createItem;
 			return true;
@@ -78,7 +83,8 @@ public partial class Recipe
 		return false;
 	}
 
-	public bool TryGetResult(Mod mod, string itemName, out Item result) {
+	public bool TryGetResult(Mod mod, string itemName, out Item result)
+	{
 		mod ??= Mod;
 
 		if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
@@ -91,7 +97,8 @@ public partial class Recipe
 
 	public bool TryGetResult<T>(out Item result) where T : ModItem => TryGetResult(ModContent.ItemType<T>(), out result);
 
-	public bool TryGetIngredient(int itemID, out Item ingredient) {
+	public bool TryGetIngredient(int itemID, out Item ingredient)
+	{
 		foreach (Item item in requiredItem) {
 			if (item.type == itemID) {
 				ingredient = item;
@@ -103,7 +110,8 @@ public partial class Recipe
 		return false;
 	}
 
-	public bool TryGetIngredient(Mod mod, string itemName, out Item ingredient) {
+	public bool TryGetIngredient(Mod mod, string itemName, out Item ingredient)
+	{
 		mod ??= Mod;
 
 		if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
@@ -128,7 +136,8 @@ public partial class Recipe
 
 	public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
-	public void DisableRecipe() {
+	public void DisableRecipe()
+	{
 		if (!RecipeLoader.setupRecipes)
 			throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
 		Disabled = true;
@@ -138,7 +147,8 @@ public partial class Recipe
 	#region ReplaceX
 	public void ReplaceResult(int itemID, int stack = 1) => createItem = new Item(itemID) { stack = stack };
 
-	public void ReplaceResult(Mod mod, string itemName, int stack = 1) {
+	public void ReplaceResult(Mod mod, string itemName, int stack = 1)
+	{
 		mod ??= Mod;
 
 		if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))

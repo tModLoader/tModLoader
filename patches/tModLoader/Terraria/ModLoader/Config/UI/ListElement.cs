@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
@@ -12,25 +12,30 @@ internal class ListElement : CollectionElement
 {
 	private Type listType;
 
-	protected override void PrepareTypes() {
+	protected override void PrepareTypes()
+	{
 		listType = MemberInfo.Type.GetGenericArguments()[0];
 		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, listType);
 	}
 
-	protected override void AddItem() {
+	protected override void AddItem()
+	{
 		((IList)Data).Add(CreateCollectionElementInstance(listType));
 	}
 
-	protected override void InitializeCollection() {
+	protected override void InitializeCollection()
+	{
 		Data = Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
 		SetObject(Data);
 	}
 
-	protected override void ClearCollection() {
+	protected override void ClearCollection()
+	{
 		((IList)Data).Clear();
 	}
 
-	protected override void SetupList() {
+	protected override void SetupList()
+	{
 		DataList.Clear();
 
 		int top = 0;
@@ -61,13 +66,15 @@ internal class NestedUIList : UIList
 	}
 	*/
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 
 		PlayerInput.LockVanillaMouseScroll("ModLoader/ListElement");
 	}
 
-	public override void ScrollWheel(UIScrollWheelEvent evt) {
+	public override void ScrollWheel(UIScrollWheelEvent evt)
+	{
 		if (_scrollbar != null) {
 			float oldpos = _scrollbar.ViewPosition;
 

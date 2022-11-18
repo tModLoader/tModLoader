@@ -1,4 +1,4 @@
-﻿using Terraria.ModLoader;
+using Terraria.ModLoader;
 
 namespace Terraria.DataStructures;
 
@@ -25,7 +25,8 @@ internal sealed class VanillaPlayerDrawLayer : PlayerDrawLayer
 	private readonly Position position;
 
 	/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, and drawing action. </summary>
-	public VanillaPlayerDrawLayer(string name, DrawFunc drawFunc, Transformation transform = null, bool isHeadLayer = false, Condition condition = null, Position position = null) {
+	public VanillaPlayerDrawLayer(string name, DrawFunc drawFunc, Transformation transform = null, bool isHeadLayer = false, Condition condition = null, Position position = null)
+	{
 		_name = name;
 		this.drawFunc = drawFunc;
 		this.condition = condition;
@@ -36,7 +37,8 @@ internal sealed class VanillaPlayerDrawLayer : PlayerDrawLayer
 
 	public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) => condition?.Invoke(drawInfo) ?? true;
 
-	public override Position GetDefaultPosition() {
+	public override Position GetDefaultPosition()
+	{
 		if (position != null)
 			return position;
 

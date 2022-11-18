@@ -16,10 +16,10 @@
 +	private bool _initializationFailed;
 +#endif
  
- 	public RazerDeviceGroup(VendorColorProfile colorProfiles) {
- 		_colorProfiles = colorProfiles;
-@@ -16,6 +_,19 @@
- 	protected override void Initialize() {
+ 	public RazerDeviceGroup(VendorColorProfile colorProfiles)
+ 	{
+@@ -18,6 +_,19 @@
+ 	{
  		if (_isInitialized)
  			return;
 +

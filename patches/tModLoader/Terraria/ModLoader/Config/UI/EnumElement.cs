@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Terraria.ModLoader.UI;
 
@@ -21,7 +21,8 @@ internal class EnumElement : RangeElement
 		set => _setValue((int)(Math.Round(value * (max - 1))));
 	}
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 		valueStrings = Enum.GetNames(MemberInfo.Type);
 
@@ -56,7 +57,8 @@ internal class EnumElement : RangeElement
 		}
 	}
 
-	private void DefaultSetValue(int index) {
+	private void DefaultSetValue(int index)
+	{
 		if (!MemberInfo.CanWrite)
 			return;
 
@@ -64,15 +66,18 @@ internal class EnumElement : RangeElement
 		Interface.modConfig.SetPendingChanges();
 	}
 
-	private object DefaultGetValue() {
+	private object DefaultGetValue()
+	{
 		return MemberInfo.GetValue(Item);
 	}
 
-	private int DefaultGetIndex() {
+	private int DefaultGetIndex()
+	{
 		return Array.IndexOf(Enum.GetValues(MemberInfo.Type), _getValue());
 	}
 
-	private string DefaultGetStringValue() {
+	private string DefaultGetStringValue()
+	{
 		return valueStrings[_getIndex()];
 	}
 }

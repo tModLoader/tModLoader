@@ -5,7 +5,7 @@
  namespace Terraria.Graphics.Capture;
  
  public class CaptureBiome
-@@ -132,6 +_,13 @@
+@@ -135,6 +_,13 @@
  				return captureBiome;
  		}
  
@@ -19,7 +19,7 @@
  		return null;
  	}
  
-@@ -164,6 +_,12 @@
+@@ -168,6 +_,12 @@
  			case 9:
  				return Styles.Mushroom;
  			default:

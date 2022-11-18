@@ -53,7 +53,8 @@ internal class UIModItem : UIPanel
 	public string ModName => _mod.Name;
 	public bool NeedsReload => _mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload);
 
-	public UIModItem(LocalMod mod) {
+	public UIModItem(LocalMod mod)
+	{
 		_mod = mod;
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 		Height.Pixels = 90;
@@ -62,7 +63,8 @@ internal class UIModItem : UIPanel
 		DisplayNameClean = string.Join("", ChatManager.ParseMessage(_mod.DisplayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
 	}
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
@@ -252,7 +254,8 @@ internal class UIModItem : UIPanel
 		// TODO: ITranslatable or something?
 	}*/
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
@@ -262,7 +265,8 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle innerDimensions = GetInnerDimensions();
 		var drawPos = new Vector2(innerDimensions.X + 5f + _modIconAdjust, innerDimensions.Y + 30f);
@@ -309,7 +313,8 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 		BackgroundColor = UICommon.DefaultUIBlue;
 		BorderColor = new Color(89, 116, 213);
@@ -317,7 +322,8 @@ internal class UIModItem : UIPanel
 			BackgroundColor = Color.MediumPurple;
 	}
 
-	public override void MouseOut(UIMouseEvent evt) {
+	public override void MouseOut(UIMouseEvent evt)
+	{
 		base.MouseOut(evt);
 		BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		BorderColor = new Color(89, 116, 213) * 0.7f;
@@ -325,26 +331,30 @@ internal class UIModItem : UIPanel
 			BackgroundColor = Color.MediumPurple * 0.7f;
 	}
 
-	private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
+	private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = !_mod.Enabled;
 	}
 
-	internal void Enable() {
+	internal void Enable()
+	{
 		if(_mod.Enabled){return;}
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = true;
 		_uiModStateText.SetEnabled();
 	}
 
-	internal void Disable() {
+	internal void Disable()
+	{
 		if(!_mod.Enabled){return;}
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = false;
 		_uiModStateText.SetDisabled();
 	}
 
-	internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement) {
+	internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement)
+	{
 		var missingRefs = new List<string>();
 		EnableDepsRecursive(missingRefs);
 
@@ -353,7 +363,8 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	private void EnableDepsRecursive(List<string> missingRefs) {
+	private void EnableDepsRecursive(List<string> missingRefs)
+	{
 		foreach (var name in _modReferences) {
 			var dep = Interface.modsMenu.FindUIModItem(name);
 			if (dep == null) {
@@ -365,18 +376,21 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
+	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
 	}
 
-	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement) {
+	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Interface.modConfig.SetMod(ModLoader.GetMod(ModName));
 		Main.menuMode = Interface.modConfigID;
 	}
 
-	public override int CompareTo(object obj) {
+	public override int CompareTo(object obj)
+	{
 		var item = obj as UIModItem;
 		if (item == null)
 			return 1;
@@ -394,7 +408,8 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	public bool PassFilters(UIModsFilterResults filterResults) {
+	public bool PassFilters(UIModsFilterResults filterResults)
+	{
 		if (Interface.modsMenu.filter.Length > 0) {
 			if (Interface.modsMenu.searchFilterMode == SearchFilter.Author) {
 				if (_mod.properties.author.IndexOf(Interface.modsMenu.filter, StringComparison.OrdinalIgnoreCase) == -1) {
@@ -430,7 +445,8 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	private void QuickModDelete(UIMouseEvent evt, UIElement listeningElement) {
+	private void QuickModDelete(UIMouseEvent evt, UIElement listeningElement)
+	{
 		bool shiftPressed = Main.keyState.PressingShift();
 
 		if (!shiftPressed) {
@@ -488,13 +504,15 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	private void CloseDialog(UIMouseEvent evt, UIElement listeningElement) {
+	private void CloseDialog(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		_blockInput?.Remove();
 		_deleteModDialog?.Remove();
 	}
 
-	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
+	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)
+	{
 		ModOrganizer.DeleteMod(_mod);
 
 		Interface.modsMenu.needsMBRefresh = true;

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.ID;
@@ -10,12 +10,14 @@ internal class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 {
 	protected override DefinitionOptionElement<PrefixDefinition> CreateDefinitionOptionElement() => new PrefixDefinitionOptionElement(Value, .8f);
 
-	protected override void TweakDefinitionOptionElement(DefinitionOptionElement<PrefixDefinition> optionElement) {
+	protected override void TweakDefinitionOptionElement(DefinitionOptionElement<PrefixDefinition> optionElement)
+	{
 		optionElement.Top.Set(0f, 0f);
 		optionElement.Left.Set(-124, 1f);
 	}
 
-	protected override List<DefinitionOptionElement<PrefixDefinition>> CreateDefinitionOptionElementList() {
+	protected override List<DefinitionOptionElement<PrefixDefinition>> CreateDefinitionOptionElementList()
+	{
 		OptionScale = 0.8f;
 
 		var options = new List<DefinitionOptionElement<PrefixDefinition>>();
@@ -40,7 +42,8 @@ internal class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 		return options;
 	}
 
-	protected override List<DefinitionOptionElement<PrefixDefinition>> GetPassedOptionElements() {
+	protected override List<DefinitionOptionElement<PrefixDefinition>> GetPassedOptionElements()
+	{
 		var passed = new List<DefinitionOptionElement<PrefixDefinition>>();
 
 		foreach (var option in Options) {
@@ -67,7 +70,8 @@ internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDef
 {
 	private readonly UIAutoScaleTextTextPanel<string> text;
 
-	public PrefixDefinitionOptionElement(PrefixDefinition definition, float scale = .75f) : base(definition, scale) {
+	public PrefixDefinitionOptionElement(PrefixDefinition definition, float scale = .75f) : base(definition, scale)
+	{
 		Width.Set(150 * scale, 0f);
 		Height.Set(40 * scale, 0f);
 
@@ -78,20 +82,23 @@ internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDef
 		Append(text);
 	}
 
-	public override void SetItem(PrefixDefinition item) {
+	public override void SetItem(PrefixDefinition item)
+	{
 		base.SetItem(item);
 
 		text?.SetText(Type == 0 ? "None" : Lang.prefix[Type].Value);
 	}
 
-	public override void SetScale(float scale) {
+	public override void SetScale(float scale)
+	{
 		base.SetScale(scale);
 
 		Width.Set(150 * scale, 0f);
 		Height.Set(40 * scale, 0f);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		if (IsMouseHovering)
 			UIModConfig.Tooltip = Tooltip;
 	}

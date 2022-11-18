@@ -1,4 +1,4 @@
-﻿using MonoMod.RuntimeDetour;
+using MonoMod.RuntimeDetour;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
@@ -10,7 +10,8 @@ namespace Terraria.ModLoader.Engine;
 
 internal static class LoggingHooks
 {
-	internal static void Init() {
+	internal static void Init()
+	{
 		FixBrokenConsolePipeError();
 		PrettifyStackTraceSources();
 		HookWebRequests();
@@ -20,7 +21,8 @@ internal static class LoggingHooks
 	private static Hook writeFileNativeHook;
 	private delegate int orig_WriteFileNative(IntPtr hFile, ReadOnlySpan<byte> bytes, bool useFileAPIs);
 	private delegate int hook_WriteFileNative(orig_WriteFileNative orig, IntPtr hFile, ReadOnlySpan<byte> bytes, bool useFileAPIs);
-	private static void FixBrokenConsolePipeError() { // #2925
+	private static void FixBrokenConsolePipeError()
+	{ // #2925
 		if (!OperatingSystem.IsWindows())
 			return;
 
@@ -39,7 +41,8 @@ internal static class LoggingHooks
 	}
 
 	private static Hook processStartHook;
-	private static void HookProcessStart() {
+	private static void HookProcessStart()
+	{
 		processStartHook = new Hook(typeof(Process).GetMethod("Start", BindingFlags.Public | BindingFlags.Instance), new Func<Func<Process, bool>, Process, bool>((orig, self) => {
 			Logging.tML.Debug($"Process.Start (UseShellExecute = {self.StartInfo.UseShellExecute}): \"{self.StartInfo.FileName}\" {self.StartInfo.Arguments}");
 			return orig(self);
@@ -49,14 +52,16 @@ internal static class LoggingHooks
 	// On .NET, hook the StackTrace constructor
 	private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
 	private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
-	private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo) {
+	private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo)
+	{
 		orig(self, e, fNeedFileInfo);
 		if (fNeedFileInfo)
 			Logging.PrettifyStackTraceSources(self.GetFrames());
 	}
 
 	private static Hook stackTraceCtorHook;
-	private static void PrettifyStackTraceSources() {
+	private static void PrettifyStackTraceSources()
+	{
 		if (Logging.f_fileName == null)
 			return;
 
@@ -72,7 +77,8 @@ internal static class LoggingHooks
 	/// Attempt to hook the .NET internal methods to log when requests are sent to web addresses.
 	/// Use the right internal methods to capture redirects
 	/// </summary>
-	private static void HookWebRequests() {
+	private static void HookWebRequests()
+	{
 		try {
 			// .NET 6
 			var sendAsyncCoreMethodInfo = typeof(HttpClient).Assembly
@@ -95,7 +101,8 @@ internal static class LoggingHooks
 		Logging.tML.Warn("HttpWebRequest send/submit method not found");
 	}
 
-	private static bool IncludeURIInRequestLogging(Uri uri) {
+	private static bool IncludeURIInRequestLogging(Uri uri)
+	{
 		if (uri.IsLoopback && uri.LocalPath.Contains("game_")) // SteelSeries SDK
 			return false;
 

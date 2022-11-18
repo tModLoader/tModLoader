@@ -10,7 +10,8 @@ public class UnloadedSupremeFurniture : UnloadedTile
 {
 	public override string Texture => "ModLoader/UnloadedSupremeFurniture";
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		TileIO.Tiles.unloadedTypes.Add(Type);
 		//common
 		Main.tileFrameImportant[Type] = true;

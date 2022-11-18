@@ -40,7 +40,8 @@ internal class UIModInfo : UIState
 
 	private CancellationTokenSource _cts;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_uIElement = new UIElement {
 			Width = {Percent = 0.8f},
 			MaxWidth = UICommon.MaxPanelWidth,
@@ -134,7 +135,8 @@ internal class UIModInfo : UIState
 		Append(_uIElement);
 	}
 
-	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, string publishedFileId = "") {
+	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, string publishedFileId = "")
+	{
 		_modName = modName;
 		_modDisplayName = displayName;
 		_gotoMenu = gotoMenu;
@@ -154,7 +156,8 @@ internal class UIModInfo : UIState
 		Main.menuMode = Interface.modInfoID;
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		base.OnDeactivate();
 
 		_info = string.Empty;
@@ -170,17 +173,20 @@ internal class UIModInfo : UIState
 		_extractButton.Remove();
 	}
 
-	private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.menuMode = _gotoMenu;
 	}
 
-	private void ExtractMod(UIMouseEvent evt, UIElement listeningElement) {
+	private void ExtractMod(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Interface.extractMod.Show(_localMod, _gotoMenu);
 	}
 
-	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
+	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 
 		ModOrganizer.DeleteMod(_localMod);
@@ -190,17 +196,20 @@ internal class UIModInfo : UIState
 		Main.menuMode = _gotoMenu;
 	}
 
-	private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
+	private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		Utils.OpenToURL(_url);
 	}
 
-	private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement) {
+	private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		VisitModSteamPageInner();
 	}
 
-	private void VisitModSteamPageInner() {
+	private void VisitModSteamPageInner()
+	{
 		string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
 
 		if (SteamedWraps.SteamClient && Steamworks.SteamUtils.IsOverlayEnabled())
@@ -209,7 +218,8 @@ internal class UIModInfo : UIState
 			Utils.OpenToURL(url);
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		base.Draw(spriteBatch);
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
@@ -223,7 +233,8 @@ internal class UIModInfo : UIState
 		}
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		_modInfo.SetText(_info);
 		_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
 
@@ -247,7 +258,8 @@ internal class UIModInfo : UIState
 		}
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		if (!_loading && _ready) {
 			_modInfo.SetText(_info);
 

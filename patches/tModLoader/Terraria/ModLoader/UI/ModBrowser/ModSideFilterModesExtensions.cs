@@ -1,10 +1,11 @@
-﻿using Terraria.Localization;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
 public static class ModSideFilterModesExtensions
 {
-	public static string ToFriendlyString(this ModSideFilter modSideFilterMode) {
+	public static string ToFriendlyString(this ModSideFilter modSideFilterMode)
+	{
 		switch (modSideFilterMode) {
 			case ModSideFilter.All:
 				return Language.GetTextValue("tModLoader.MBShowMSAll");

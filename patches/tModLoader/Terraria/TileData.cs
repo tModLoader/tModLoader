@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
@@ -14,7 +14,8 @@ internal static class TileData
 	internal static Action<uint, uint> OnCopySingle;
 
 	internal static uint Length { get; private set; }
-	internal static void SetLength(uint len) {
+	internal static void SetLength(uint len)
+	{
 		Length = len;
 		OnSetLength?.Invoke(len);
 	}
@@ -31,7 +32,8 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 
 	private static GCHandle handle;
 
-	static TileData() {
+	static TileData()
+	{
 		TileData.OnSetLength += SetLength;
 		TileData.OnClearEverything += ClearEverything;
 		TileData.OnCopySingle += CopySingle;
@@ -41,7 +43,8 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 		SetLength(TileData.Length);
 	}
 
-	private static void Unload() {
+	private static void Unload()
+	{
 		TileData.OnSetLength -= SetLength;
 		TileData.OnClearEverything -= ClearEverything;
 		TileData.OnCopySingle -= CopySingle;
@@ -52,11 +55,13 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 		}
 	}
 
-	public static void ClearEverything() {
+	public static void ClearEverything()
+	{
 		Array.Clear(data);
 	}
 
-	private static unsafe void SetLength(uint len) {
+	private static unsafe void SetLength(uint len)
+	{
 		if (data != null)
 			handle.Free();
 
@@ -65,11 +70,13 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 		ptr = (T*)handle.AddrOfPinnedObject().ToPointer();
 	}
 
-	private static unsafe void ClearSingle(uint index) {
+	private static unsafe void ClearSingle(uint index)
+	{
 		ptr[index] = default;
 	}
 
-	private static unsafe void CopySingle(uint sourceIndex, uint destinationIndex) {
+	private static unsafe void CopySingle(uint sourceIndex, uint destinationIndex)
+	{
 		ptr[destinationIndex] = ptr[sourceIndex];
 	}
 }

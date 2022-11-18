@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
 using System;
@@ -9,7 +9,8 @@ namespace Terraria.ModLoader.Assets;
 
 public class MP3Reader : IAssetReader
 {
-	T IAssetReader.FromStream<T>(Stream stream) where T : class {
+	T IAssetReader.FromStream<T>(Stream stream) where T : class
+	{
 		if (typeof(T) != typeof(SoundEffect))
 			throw AssetLoadException.FromInvalidReader<MP3Reader, T>();
 

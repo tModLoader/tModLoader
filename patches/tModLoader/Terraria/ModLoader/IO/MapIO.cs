@@ -10,7 +10,8 @@ namespace Terraria.ModLoader.IO;
 internal static class MapIO
 {
 	//in Terraria.Map.MapHelper.SaveMap at end of try block call MapIO.WriteModFile(text, isCloudSave);
-	internal static void WriteModFile(string path, bool isCloudSave) {
+	internal static void WriteModFile(string path, bool isCloudSave)
+	{
 		path = Path.ChangeExtension(path, ".tmap");
 		bool hasModData;
 		byte[] data;
@@ -35,7 +36,8 @@ internal static class MapIO
 	}
 	//in Terraria.Map.WorldMap.Load after calling MapHelper.load methods
 	//  call MapIO.ReadModFile(text2, isCloudSave);
-	internal static void ReadModFile(string path, bool isCloudSave) {
+	internal static void ReadModFile(string path, bool isCloudSave)
+	{
 		path = Path.ChangeExtension(path, ".tmap");
 		if (!FileUtilities.Exists(path, isCloudSave)) {
 			return;
@@ -48,7 +50,8 @@ internal static class MapIO
 		}
 	}
 
-	internal static bool WriteModMap(BinaryWriter writer) {
+	internal static bool WriteModMap(BinaryWriter writer)
+	{
 		ISet<ushort> types = new HashSet<ushort>();
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
@@ -89,7 +92,8 @@ internal static class MapIO
 		return true;
 	}
 
-	internal static void ReadModMap(BinaryReader reader) {
+	internal static void ReadModMap(BinaryReader reader)
+	{
 		IDictionary<ushort, ushort> table = new Dictionary<ushort, ushort>();
 		ushort count = reader.ReadUInt16();
 		for (ushort k = 0; k < count; k++) {
@@ -120,7 +124,8 @@ internal static class MapIO
 		ReadMapData(reader, table);
 	}
 
-	internal static void WriteMapData(BinaryWriter writer) {
+	internal static void WriteMapData(BinaryWriter writer)
+	{
 		byte skip = 0;
 		bool nextModTile = false;
 		int i = 0;
@@ -151,7 +156,8 @@ internal static class MapIO
 		}
 	}
 
-	internal static void ReadMapData(BinaryReader reader, IDictionary<ushort, ushort> table) {
+	internal static void ReadMapData(BinaryReader reader, IDictionary<ushort, ushort> table)
+	{
 		int i = 0;
 		int j = 0;
 		bool nextModTile = false;
@@ -180,7 +186,8 @@ internal static class MapIO
 		while (NextTile(ref i, ref j));
 	}
 
-	internal static void WriteMapTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile) {
+	internal static void WriteMapTile(ref int i, ref int j, BinaryWriter writer, ref bool nextModTile)
+	{
 		MapTile tile = Main.Map[i, j];
 		byte flags = 0;
 		byte[] data = new byte[9];
@@ -240,7 +247,8 @@ internal static class MapIO
 	}
 
 	internal static void ReadMapTile(ref int i, ref int j, IDictionary<ushort, ushort> table,
-		BinaryReader reader, ref bool nextModTile) {
+		BinaryReader reader, ref bool nextModTile)
+	{
 		byte flags = reader.ReadByte();
 		ushort type = table[reader.ReadUInt16()];
 		byte light = (flags & 1) == 1 ? reader.ReadByte() : (byte)255;
@@ -269,7 +277,8 @@ internal static class MapIO
 		}
 	}
 
-	private static bool NextTile(ref int i, ref int j) {
+	private static bool NextTile(ref int i, ref int j)
+	{
 		j++;
 		if (j >= Main.maxTilesY) {
 			j = 0;

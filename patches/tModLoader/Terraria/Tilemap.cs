@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
@@ -31,7 +31,8 @@ public readonly struct Tilemap
 	
 	public Tile this[Point pos] => this[pos.X, pos.Y];
 
-	internal Tilemap(ushort width, ushort height) {
+	internal Tilemap(ushort width, ushort height)
+	{
 		Width = width;
 		Height = height;
 		TileData.SetLength((uint)width * height);

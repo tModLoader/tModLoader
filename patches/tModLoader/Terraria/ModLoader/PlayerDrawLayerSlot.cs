@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
@@ -13,7 +13,8 @@ public class PlayerDrawLayerSlot : PlayerDrawLayer
 
 	public override string Name => $"{Layer.Name}_slot{_slot}";
 
-	internal PlayerDrawLayerSlot(PlayerDrawLayer layer, Multiple.Condition cond, int slot) {
+	internal PlayerDrawLayerSlot(PlayerDrawLayer layer, Multiple.Condition cond, int slot)
+	{
 		Layer = layer;
 		Condition = cond;
 		_slot = slot;

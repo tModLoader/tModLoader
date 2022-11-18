@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -9,7 +9,8 @@ namespace Terraria.ModLoader.Engine;
 
 internal class FolderShortcutSupport
 {
-	internal static void UpdateFolderShortcuts() {
+	internal static void UpdateFolderShortcuts()
+	{
 		if (OperatingSystem.IsWindows()) {
 			try {
 				// This is the first file system writing we attempt in the usual documents folder.
@@ -29,7 +30,8 @@ internal class FolderShortcutSupport
 
 	// Implementation below adapted from https://stackoverflow.com/a/14632782
 	[SupportedOSPlatform("windows")]
-	private static void CreateLogsFolderShortcut() {
+	private static void CreateLogsFolderShortcut()
+	{
 		IShellLink link = (IShellLink)new ShellLink();
 
 		// setup shortcut information

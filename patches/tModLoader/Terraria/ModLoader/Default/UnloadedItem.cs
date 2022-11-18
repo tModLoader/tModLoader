@@ -14,24 +14,28 @@ public sealed class UnloadedItem : ModLoaderModItem
 	public string ModName { get; private set; }
 	public string ItemName { get; private set; }
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
 		Tooltip.SetDefault("\n");
 	}
 
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		Item.width = 20;
 		Item.height = 20;
 		Item.rare = 1;
 	}
 
-	internal void Setup(TagCompound tag) {
+	internal void Setup(TagCompound tag)
+	{
 		ModName = tag.GetString("mod");
 		ItemName = tag.GetString("name");
 		data = tag;
 	}
 
-	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+	public override void ModifyTooltips(List<TooltipLine> tooltips)
+	{
 		for (int k = 0; k < tooltips.Count; k++) {
 			if (tooltips[k].Name == "Tooltip0") {
 				tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
@@ -42,13 +46,15 @@ public sealed class UnloadedItem : ModLoaderModItem
 		}
 	}
 
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		foreach ((string key, object value) in data) {
 			tag[key] = value;
 		}
 	}
 
-	public override void LoadData(TagCompound tag) {
+	public override void LoadData(TagCompound tag)
+	{
 		Setup(tag);
 
 		if (!ModContent.TryFind(ModName, ItemName, out ModItem modItem))
@@ -72,11 +78,13 @@ public sealed class UnloadedItem : ModLoaderModItem
 		}
 	}
 
-	public override void NetSend(BinaryWriter writer) {
+	public override void NetSend(BinaryWriter writer)
+	{
 		TagIO.Write(data ?? new TagCompound(), writer);
 	}
 
-	public override void NetReceive(BinaryReader reader) {
+	public override void NetReceive(BinaryReader reader)
+	{
 		Setup(TagIO.Read(reader));
 	}
 }

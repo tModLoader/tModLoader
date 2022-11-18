@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
@@ -19,14 +19,16 @@ public readonly struct NPCHappiness
 
 	public readonly int NpcType;
 
-	private NPCHappiness(int npcType) {
+	private NPCHappiness(int npcType)
+	{
 		NpcType = npcType;
 	}
 
 	public NPCHappiness SetNPCAffection<T>(AffectionLevel affectionLevel) where T : ModNPC
 		=> SetNPCAffection(ModContent.GetInstance<T>().Type, affectionLevel);
 
-	public NPCHappiness SetNPCAffection(int npcId, AffectionLevel affectionLevel) {
+	public NPCHappiness SetNPCAffection(int npcId, AffectionLevel affectionLevel)
+	{
 		var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
 		var shopModifiers = profile.ShopModifiers;
 
@@ -53,7 +55,8 @@ public readonly struct NPCHappiness
 	public NPCHappiness SetBiomeAffection<T>(AffectionLevel affectionLevel) where T : class, ILoadable, IShoppingBiome
 		=> SetBiomeAffection(ModContent.GetInstance<T>(), affectionLevel);
 
-	public NPCHappiness SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel) {
+	public NPCHappiness SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel)
+	{
 		var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
 		var shopModifiers = profile.ShopModifiers;
 		bool removal = affectionLevel == 0;
@@ -87,7 +90,8 @@ public readonly struct NPCHappiness
 
 	public static NPCHappiness Get(int npcType) => new(npcType);
 
-	internal static void RegisterVanillaNpcRelationships() {
+	internal static void RegisterVanillaNpcRelationships()
+	{
 		for (int i = 0; i < NPCID.Count; i++) {
 			var npc = ContentSamples.NpcsByNetId[i];
 

@@ -44,7 +44,8 @@ internal static class ModOrganizer
 	/// <summary>Mods from any location, using the default internal priority logic</summary>
 	internal static LocalMod[] FindMods(bool logDuplicates = false) => _FindMods(logDuplicates: logDuplicates);
 
-	internal static LocalMod[] _FindMods(bool ignoreModsFolder = false, bool ignoreWorkshop = false, bool logDuplicates = false) {
+	internal static LocalMod[] _FindMods(bool ignoreModsFolder = false, bool ignoreWorkshop = false, bool logDuplicates = false)
+	{
 		Directory.CreateDirectory(ModLoader.ModPath);
 		var mods = new List<LocalMod>();
 		var names = new HashSet<string>();
@@ -84,7 +85,8 @@ internal static class ModOrganizer
 		return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 	}
 
-	private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates, bool devLocation) {
+	private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates, bool devLocation)
+	{
 		var lastModified = File.GetLastWriteTime(fileName);
 
 		if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
@@ -126,7 +128,8 @@ internal static class ModOrganizer
 		return true;
 	}
 
-	internal static IEnumerable<ulong> IdentifyWorkshopDependencies() {
+	internal static IEnumerable<ulong> IdentifyWorkshopDependencies()
+	{
 		HashSet<ulong> dependencies = new HashSet<ulong>();
 
 		foreach (LocalMod mod in FindWorkshopMods()) {
@@ -145,7 +148,8 @@ internal static class ModOrganizer
 		return dependencies.Where(x => !SteamedWraps.IsWorkshopItemInstalled(new Steamworks.PublishedFileId_t(x))).ToList();
 	}
 
-	internal static string ListDependenciesToDownload(List<ulong> deps) {
+	internal static string ListDependenciesToDownload(List<ulong> deps)
+	{
 		if (deps.Count == 0) return null;
 
 		var message = new StringBuilder();
@@ -163,7 +167,8 @@ internal static class ModOrganizer
 	/// <summary>
 	/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
 	/// </summary>
-	internal static string DetectModChangesForInfoMessage() {
+	internal static string DetectModChangesForInfoMessage()
+	{
 		// Only display if enabled and file exists
 		if (!ModLoader.showNewUpdatedModsInfo || !File.Exists(lastLaunchedModsFilePath)) {
 			return null;
@@ -238,7 +243,8 @@ internal static class ModOrganizer
 	/// <summary>
 	/// Collects local mod status and saves it to a file.
 	/// </summary>
-	internal static void SaveLastLaunchedMods() {
+	internal static void SaveLastLaunchedMods()
+	{
 		if (Main.dedServ) // Not relevant for the server yet, all features using this data are clientside
 			return;
 
@@ -253,7 +259,8 @@ internal static class ModOrganizer
 		File.WriteAllText(lastLaunchedModsFilePath, fileText.ToString());
 	}
 
-	private static void DeleteTemporaryFiles() {
+	private static void DeleteTemporaryFiles()
+	{
 		foreach (string path in GetTemporaryFiles()) {
 			Logging.tML.Info($"Cleaning up leftover temporary file {Path.GetFileName(path)}");
 			try {
@@ -265,14 +272,16 @@ internal static class ModOrganizer
 		}
 	}
 
-	private static IEnumerable<string> GetTemporaryFiles() {
+	private static IEnumerable<string> GetTemporaryFiles()
+	{
 		return Directory.GetFiles(modPath, $"*{DownloadFile.TEMP_EXTENSION}", SearchOption.TopDirectoryOnly)
 			.Union(Directory.GetFiles(modPath, "temporaryDownload.tmod", SearchOption.TopDirectoryOnly)); // Old tML remnant
 	}
 
 	internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
-	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> mods, CancellationToken token) {
+	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> mods, CancellationToken token)
+	{
 		var missing = ModLoader.EnabledMods.Except(mods.Select(mod => mod.Name)).ToList();
 		if (missing.Any()) {
 			Logging.tML.Info("Missing previously enabled mods: " + string.Join(", ", missing));
@@ -313,7 +322,8 @@ internal static class ModOrganizer
 		}
 	}
 
-	private static void CommandLineModPackOverride(IEnumerable<LocalMod> mods) {
+	private static void CommandLineModPackOverride(IEnumerable<LocalMod> mods)
+	{
 		if (string.IsNullOrWhiteSpace(commandLineModPack))
 			return;
 
@@ -339,7 +349,8 @@ internal static class ModOrganizer
 		}
 	}
 
-	private static void VerifyNames(List<LocalMod> mods) {
+	private static void VerifyNames(List<LocalMod> mods)
+	{
 		var names = new HashSet<string>();
 		var errors = new List<string>();
 		var erroredMods = new List<LocalMod>();
@@ -365,7 +376,8 @@ internal static class ModOrganizer
 		}
 	}
 
-	internal static void EnsureDependenciesExist(ICollection<LocalMod> mods, bool includeWeak) {
+	internal static void EnsureDependenciesExist(ICollection<LocalMod> mods, bool includeWeak)
+	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
 		var errored = new HashSet<LocalMod>();
 		var errorLog = new StringBuilder();
@@ -381,7 +393,8 @@ internal static class ModOrganizer
 			throw new ModSortingException(errored, errorLog.ToString());
 	}
 
-	internal static void EnsureTargetVersionsMet(ICollection<LocalMod> mods) {
+	internal static void EnsureTargetVersionsMet(ICollection<LocalMod> mods)
+	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
 		var errored = new HashSet<LocalMod>();
 		var errorLog = new StringBuilder();
@@ -405,7 +418,8 @@ internal static class ModOrganizer
 			throw new ModSortingException(errored, errorLog.ToString());
 	}
 
-	internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full) {
+	internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full)
+	{
 		var errored = new HashSet<LocalMod>();
 		var errorLog = new StringBuilder();
 
@@ -446,14 +460,16 @@ internal static class ModOrganizer
 		}
 	}
 
-	private static TopoSort<LocalMod> BuildSort(ICollection<LocalMod> mods) {
+	private static TopoSort<LocalMod> BuildSort(ICollection<LocalMod> mods)
+	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
 		return new TopoSort<LocalMod>(mods,
 			mod => mod.properties.sortAfter.Where(nameMap.ContainsKey).Select(name => nameMap[name]),
 			mod => mod.properties.sortBefore.Where(nameMap.ContainsKey).Select(name => nameMap[name]));
 	}
 
-	internal static List<LocalMod> Sort(ICollection<LocalMod> mods) {
+	internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
+	{
 		var preSorted = mods.OrderBy(mod => mod.Name).ToList();
 		var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
 		var fullSort = BuildSort(preSorted);
@@ -473,14 +489,16 @@ internal static class ModOrganizer
 		}
 	}
 
-	internal static void SaveEnabledMods() {
+	internal static void SaveEnabledMods()
+	{
 		Directory.CreateDirectory(ModLoader.ModPath);
 		string json = JsonConvert.SerializeObject(ModLoader.EnabledMods, Formatting.Indented);
 		var path = Path.Combine(modPath, "enabled.json");
 		File.WriteAllText(path, json);
 	}
 
-	internal static HashSet<string> LoadEnabledMods() {
+	internal static HashSet<string> LoadEnabledMods()
+	{
 		try {
 			var path = Path.Combine(modPath, "enabled.json");
 			if (!File.Exists(path)) {
@@ -497,7 +515,8 @@ internal static class ModOrganizer
 
 	private static readonly Regex PublishFolderMetadata = new Regex(@"[/|\\]([0-9]{4}[.][0-9]{1,2})[/|\\]");
 
-	internal static string GetActiveTmodInRepo(string repo) {
+	internal static string GetActiveTmodInRepo(string repo)
+	{
 		Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 		if (tmods.Length == 1)
@@ -530,7 +549,8 @@ internal static class ModOrganizer
 		return val;
 	}
 
-	internal static void CleanupOldPublish(string repo) {
+	internal static void CleanupOldPublish(string repo)
+	{
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 		if (tmods.Length <= 3)
 			return;
@@ -542,7 +562,8 @@ internal static class ModOrganizer
 			Directory.Delete(location, true);
 	}
 
-	internal static string FindOldest(string repo) {
+	internal static string FindOldest(string repo)
+	{
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 		if (tmods.Length == 1)
 			return tmods[0];
@@ -571,7 +592,8 @@ internal static class ModOrganizer
 		return val;
 	}
 
-	internal static void DeleteMod(LocalMod tmod) {
+	internal static void DeleteMod(LocalMod tmod)
+	{
 		string tmodPath = tmod.modFile.path;
 		string parentDir = GetParentDir(tmodPath);
 
@@ -585,7 +607,8 @@ internal static class ModOrganizer
 		}
 	}
 
-	internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info) {
+	internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info)
+	{
 		info = null;
 		if (!parentDir.Contains(Path.Combine("steamapps", "workshop")))
 			return false;
@@ -595,7 +618,8 @@ internal static class ModOrganizer
 		return AWorkshopEntry.TryReadingManifest(manifest, out info);
 	}
 
-	internal static string GetParentDir(string tmodPath) {
+	internal static string GetParentDir(string tmodPath)
+	{
 		string parentDir = Directory.GetParent(tmodPath).ToString();
 		if (!tmodPath.Contains("workshop", StringComparison.InvariantCultureIgnoreCase))
 			return parentDir;

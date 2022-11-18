@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using ReLogic.Content.Sources;
@@ -11,7 +11,8 @@ public class TModContentSource : ContentSource
 {
 	private readonly TmodFile file;
 
-	public TModContentSource(TmodFile file) {
+	public TModContentSource(TmodFile file)
+	{
 		this.file = file ?? throw new ArgumentNullException(nameof(file));
 
 		// Skip loading assets if this is a dedicated server

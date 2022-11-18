@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -29,7 +29,8 @@ public class HookList<T> where T : class
 		//private int j;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public InstanceEnumerator(Instanced<T>[] instances, int[] hookIndices) {
+		public InstanceEnumerator(Instanced<T>[] instances, int[] hookIndices)
+		{
 			this.instances = instances;
 			this.hookIndices = hookIndices;
 			current = default;
@@ -41,7 +42,8 @@ public class HookList<T> where T : class
 		public T Current => current;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool MoveNext() {
+		public bool MoveNext()
+		{
 			int ii = -1;
 
 			while ((int)(ij >> 32) < hookIndices.Length) {
@@ -73,7 +75,8 @@ public class HookList<T> where T : class
 
 	private int[] indices = Array.Empty<int>();
 
-	public HookList(MethodInfo method) {
+	public HookList(MethodInfo method)
+	{
 		this.method = method;
 	}
 	
@@ -89,7 +92,8 @@ public class HookList<T> where T : class
 	public FilteredSpanEnumerator<T> Enumerate(List<T> instances) =>
 		Enumerate(CollectionsMarshal.AsSpan(instances));
 
-	public void Update<U>(IList<U> instances) where U : IIndexed {
+	public void Update<U>(IList<U> instances) where U : IIndexed
+	{
 		indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
 	}
 

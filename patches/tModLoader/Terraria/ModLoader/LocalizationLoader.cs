@@ -1,4 +1,4 @@
-﻿using Hjson;
+using Hjson;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -32,14 +32,16 @@ public static class LocalizationLoader
 	/// <summary>
 	/// Adds a <see cref="ModTranslation"/> to the game so that you can use <see cref="Language.GetText"/> to get a <see cref="LocalizedText"/>.
 	/// </summary>
-	public static void AddTranslation(ModTranslation translation) {
+	public static void AddTranslation(ModTranslation translation)
+	{
 		translations[translation.Key] = translation;
 	}
 
 	public static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
 		=> GetOrCreateTranslation($"Mods.{mod.Name}.{key}", defaultEmpty);
 
-	public static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
+	public static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false)
+	{
 		key = key.Replace(" ", "_");
 
 		if (translations.TryGetValue(key, out var translation))
@@ -50,7 +52,8 @@ public static class LocalizationLoader
 		return newTranslation;
 	}
 
-	internal static void Autoload(Mod mod) {
+	internal static void Autoload(Mod mod)
+	{
 		if (mod.File == null)
 			return;
 
@@ -68,12 +71,14 @@ public static class LocalizationLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		translations.Clear();
 	}
 
 	//TODO: Unhardcode ALL of this.
-	public static void RefreshModLanguage(GameCulture culture) {
+	public static void RefreshModLanguage(GameCulture culture)
+	{
 		Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 
 		foreach (ModItem item in ItemLoader.items) {
@@ -143,7 +148,8 @@ public static class LocalizationLoader
 		LanguageManager.Instance.ProcessCopyCommandsInTexts();
 	}
 
-	internal static void UpgradeLangFile(string langFile, string modName) {
+	internal static void UpgradeLangFile(string langFile, string modName)
+	{
 		string[] contents = File.ReadAllLines(langFile, Encoding.UTF8);
 
 		// Legacy .lang files had 'Mods.ModName.' prefixed to every key.
@@ -215,7 +221,8 @@ public static class LocalizationLoader
 		File.Move(langFile, $"{langFile}.legacy", true);
 	}
 
-	private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
+	private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary)
+	{
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 			using var stream = mod.File.GetStream(translationFile);
 			using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
@@ -266,7 +273,8 @@ public static class LocalizationLoader
 		}
 	}
 
-	private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {
+	private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value)
+	{
 		if (dict.TryGetValue(value.Key, out var localizedText)) {
 			localizedText.SetValue(value.Value);
 		}

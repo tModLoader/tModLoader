@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.Bestiary;
  
-@@ -58,7 +_,7 @@
+@@ -60,7 +_,7 @@
  				positionOffsetCache.Y = value.PortraitPositionYOverride.Value;
  
  			if (value.CustomTexturePath != null)
@@ -17,7 +17,7 @@
  
  			if (asset != null && asset.IsLoaded)
  				_customTexture = asset;
-@@ -165,7 +_,7 @@
+@@ -171,7 +_,7 @@
  			return;
  		}
  

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -26,14 +26,16 @@ partial class SystemLoader
 
 		public ModSystem[] arr = new ModSystem[0];
 
-		public HookList(MethodInfo method) {
+		public HookList(MethodInfo method)
+		{
 			this.method = method;
 		}
 	}
 
 	private static readonly List<HookList> hooks = new List<HookList>();
 
-	private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate {
+	private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate
+	{
 		var hook = new HookList(func.ToMethodInfo());
 
 		hooks.Add(hook);
@@ -41,7 +43,8 @@ partial class SystemLoader
 		return hook;
 	}
 
-	private static void RebuildHooks() {
+	private static void RebuildHooks()
+	{
 		foreach (var hook in hooks) {
 			hook.arr = Systems.WhereMethodIsOverridden(hook.method).ToArray();
 		}

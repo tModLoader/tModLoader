@@ -18,10 +18,10 @@
  
  	public int LastEditId { get; private set; }
  
-@@ -69,7 +_,11 @@
- 	}
+@@ -76,7 +_,11 @@
  
- 	public void Save(BinaryWriter writer) {
+ 	public void Save(BinaryWriter writer)
+ 	{
 -		Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
 +		//Only include vanilla items in the dictionary.
 +		Dictionary<string, int> dictionary = _sacrificeCountByItemPersistentId

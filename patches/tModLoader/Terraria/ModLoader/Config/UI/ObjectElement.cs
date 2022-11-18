@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using ReLogic.Content;
@@ -30,11 +30,13 @@ internal class ObjectElement : ConfigElement<object>
 	// Label:
 	//  Members
 	//  Members
-	public ObjectElement(bool ignoreSeparatePage = false) {
+	public ObjectElement(bool ignoreSeparatePage = false)
+	{
 		this.ignoreSeparatePage = ignoreSeparatePage;
 	}
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		if (List != null) {
@@ -184,7 +186,8 @@ internal class ObjectElement : ConfigElement<object>
 		Recalculate();
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		if (!pendingChanges)
@@ -226,7 +229,8 @@ internal class ObjectElement : ConfigElement<object>
 		}
 	}
 
-	private void SetupList() {
+	private void SetupList()
+	{
 		dataList.Clear();
 
 		object data = Value;
@@ -264,7 +268,8 @@ internal class ObjectElement : ConfigElement<object>
 		}
 	}
 
-	public override void Recalculate() {
+	public override void Recalculate()
+	{
 		base.Recalculate();
 
 		float defaultHeight = separatePage ? 40 : 30;
@@ -282,11 +287,13 @@ internal class UIModConfigHoverImage : UIImage
 {
 	internal string HoverText;
 
-	public UIModConfigHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture) {
+	public UIModConfigHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture)
+	{
 		HoverText = hoverText;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 
 		if (IsMouseHovering) {
@@ -300,12 +307,14 @@ internal class UIModConfigHoverImageSplit : UIImage
 	internal string HoverTextUp;
 	internal string HoverTextDown;
 
-	public UIModConfigHoverImageSplit(Asset<Texture2D> texture, string hoverTextUp, string hoverTextDown) : base(texture) {
+	public UIModConfigHoverImageSplit(Asset<Texture2D> texture, string hoverTextUp, string hoverTextDown) : base(texture)
+	{
 		HoverTextUp = hoverTextUp;
 		HoverTextDown = hoverTextDown;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 
 		Rectangle r = GetDimensions().ToRectangle();
@@ -325,11 +334,13 @@ internal class FuncStringWrapper
 {
 	public Func<string> Func { get; }
 
-	public FuncStringWrapper(Func<string> func) {
+	public FuncStringWrapper(Func<string> func)
+	{
 		Func = func;
 	}
 
-	public override string ToString() {
+	public override string ToString()
+	{
 		return Func();
 	}
 }

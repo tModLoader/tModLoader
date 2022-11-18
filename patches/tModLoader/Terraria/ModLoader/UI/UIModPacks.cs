@@ -1,4 +1,4 @@
-﻿using Ionic.Zip;
+using Ionic.Zip;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -34,7 +34,8 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	public static string ModPackModsPath(string packName) => Path.Combine(ModPacksDirectory, packName, "Mods");
 	public static string ModPackConfigPath(string packName) => Path.Combine(ModPacksDirectory, packName, "ModConfigs");
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		var uIElement = new UIElement {
 			Width = { Percent = 0.8f },
 			MaxWidth = UICommon.MaxPanelWidth,
@@ -110,14 +111,16 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		_virtualKeyboard ?? (_virtualKeyboard = new UIVirtualKeyboard(
 			Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModPack, () => Main.menuMode = Interface.modPacksMenuID));
 
-	private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
+	private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(11);
 		VirtualKeyboard.Text = "";
 		Main.MenuUI.SetState(VirtualKeyboard);
 		Main.menuMode = 888;
 	}
 
-	public static void SaveModPack(string filename) {
+	public static void SaveModPack(string filename)
+	{
 		// Sanitize input if not valid
 		if (!IsValidModpackName(filename)) {
 			VirtualKeyboard.Text = SanitizeModpackName(filename);
@@ -134,16 +137,19 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		Main.menuMode = Interface.modPacksMenuID;
 	}
 
-	private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(11);
 		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 	}
 
-	private void OpenFolder(UIMouseEvent evt, UIElement listeningElement) {
+	private void OpenFolder(UIMouseEvent evt, UIElement listeningElement)
+	{
 		Utils.OpenFolder(ModPacksDirectory);
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		base.Draw(spriteBatch);
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}
@@ -154,13 +160,15 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	internal static bool IsValidModpackName(string name)
 		=> !Regex.Match(name, MODPACK_REGEX, RegexOptions.Compiled).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		_cts?.Cancel(false);
 		_cts?.Dispose();
 		_cts = null;
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		_cts = new CancellationTokenSource();
 		_scrollPanel.Append(_uiLoader);
 		_modPacks.Clear();
@@ -196,7 +204,8 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	public UIModPackItem LoadModernModPack(string folderPath) {
+	public UIModPackItem LoadModernModPack(string folderPath)
+	{
 		string enabledJson = Path.Combine(folderPath, "Mods", "enabled.json");
 
 		string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
@@ -210,14 +219,16 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		return new UIModPackItem(folderPath, modPackMods, false, localMods);
 	}
 
-	public UIModPackItem LoadLegacyModPack(string jsonPath) {
+	public UIModPackItem LoadLegacyModPack(string jsonPath)
+	{
 		string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(jsonPath));
 
 		var localMods = ModOrganizer.FindMods();
 		return new UIModPackItem(Path.GetFileNameWithoutExtension(jsonPath), modPackMods, true, localMods);
 	}
 
-	public static void SaveSnapshot(string configsPath, string modsPath) {
+	public static void SaveSnapshot(string configsPath, string modsPath)
+	{
 		if (!Directory.Exists(Config.ConfigManager.ModConfigPath))
 			Directory.CreateDirectory(Config.ConfigManager.ModConfigPath);
 
@@ -259,7 +270,8 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		File.WriteAllLines(Path.Combine(modsPath, "install.txt"), workshopIds);
 	}
 
-	public static void ExportSnapshot(string modPackName) {
+	public static void ExportSnapshot(string modPackName)
+	{
 		string instancePath = Path.Combine(Directory.GetCurrentDirectory(), modPackName);
 
 		Directory.CreateDirectory(instancePath);
@@ -290,7 +302,8 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		Utils.OpenFolder(instancePath);
 	}
 
-	public static void ExtractTmlInstall(string instancePath) {
+	public static void ExtractTmlInstall(string instancePath)
+	{
 		string zipFilePath = Path.Combine(instancePath, "tModLoader.zip");
 
 		using (var zip = ZipFile.Read(zipFilePath))

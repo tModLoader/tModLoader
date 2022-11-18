@@ -40,7 +40,8 @@ public static class NPCLoader
 	private static readonly List<HookList> hooks = new List<HookList>();
 	private static readonly List<HookList> modHooks = new List<HookList>();
 
-	private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) where F : Delegate {
+	private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) where F : Delegate
+	{
 		var hook = HookList.Create(func);
 
 		hooks.Add(hook);
@@ -48,13 +49,15 @@ public static class NPCLoader
 		return hook;
 	}
 
-	public static T AddModHook<T>(T hook) where T : HookList {
+	public static T AddModHook<T>(T hook) where T : HookList
+	{
 		modHooks.Add(hook);
 
 		return hook;
 	}
 
-	static NPCLoader() {
+	static NPCLoader()
+	{
 		shopToNPC[1] = NPCID.Merchant;
 		shopToNPC[2] = NPCID.ArmsDealer;
 		shopToNPC[3] = NPCID.Dryad;
@@ -81,7 +84,8 @@ public static class NPCLoader
 		shopToNPC[24] = NPCID.Princess;
 	}
 
-	internal static int ReserveNPCID() {
+	internal static int ReserveNPCID()
+	{
 		if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");
 
 		int reserveID = nextNPC;
@@ -96,11 +100,13 @@ public static class NPCLoader
 	/// </summary>
 	/// <param name="type">The type of the npc</param>
 	/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
-	public static ModNPC GetNPC(int type) {
+	public static ModNPC GetNPC(int type)
+	{
 		return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
 	}
 
-	internal static void ResizeArrays(bool unloading) {
+	internal static void ResizeArrays(bool unloading)
+	{
 		// Textures
 		Array.Resize(ref TextureAssets.Npc, nextNPC);
 
@@ -140,7 +146,8 @@ public static class NPCLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		loaded = false;
 		npcs.Clear();
 		nextNPC = NPCID.Count;
@@ -149,13 +156,15 @@ public static class NPCLoader
 		modHooks.Clear();
 	}
 
-	internal static bool IsModNPC(NPC npc) {
+	internal static bool IsModNPC(NPC npc)
+	{
 		return npc.type >= NPCID.Count;
 	}
 
 	private static HookList HookSetDefaults = AddHook<Action<NPC>>(g => g.SetDefaults);
 
-	internal static void SetDefaults(NPC npc, bool createModNPC = true) {
+	internal static void SetDefaults(NPC npc, bool createModNPC = true)
+	{
 		if (IsModNPC(npc)) {
 			if (createModNPC) {
 				npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
@@ -177,7 +186,8 @@ public static class NPCLoader
 
 	private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
 
-	internal static void OnSpawn(NPC npc, IEntitySource source) {
+	internal static void OnSpawn(NPC npc, IEntitySource source)
+	{
 		npc.ModNPC?.OnSpawn(source);
 
 		foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
@@ -187,7 +197,8 @@ public static class NPCLoader
 
 	private static HookList HookScaleExpertStats = AddHook<Action<NPC, int, float>>(g => g.ScaleExpertStats);
 
-	public static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale) {
+	public static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	{
 		npc.ModNPC?.ScaleExpertStats(numPlayers, bossLifeScale);
 
 		foreach (GlobalNPC g in HookScaleExpertStats.Enumerate(npc.globalNPCs)) {
@@ -197,7 +208,8 @@ public static class NPCLoader
 
 	private delegate void DelegateSetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry);
 	private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
-	public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+	public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+	{
 		if(IsModNPC(npc)) {
 			bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
 			foreach (var type in npc.ModNPC.SpawnModBiomes) {
@@ -214,7 +226,8 @@ public static class NPCLoader
 
 	private delegate ITownNPCProfile DelegateModifyTownNPCProfile(NPC npc);
 	private static HookList HookModifyTownNPCProfile = AddHook<DelegateModifyTownNPCProfile>(g => g.ModifyTownNPCProfile);
-	public static void ModifyTownNPCProfile(NPC npc, ref ITownNPCProfile profile) {
+	public static void ModifyTownNPCProfile(NPC npc, ref ITownNPCProfile profile)
+	{
 		profile = npc.ModNPC?.TownNPCProfile() ?? profile;
 
 		foreach (GlobalNPC g in HookModifyTownNPCProfile.Enumerate(npc.globalNPCs)) {
@@ -224,7 +237,8 @@ public static class NPCLoader
 
 	private static HookList HookResetEffects = AddHook<Action<NPC>>(g => g.ResetEffects);
 
-	public static void ResetEffects(NPC npc) {
+	public static void ResetEffects(NPC npc)
+	{
 		npc.ModNPC?.ResetEffects();
 
 		foreach (GlobalNPC g in HookResetEffects.Enumerate(npc.globalNPCs)) {
@@ -232,7 +246,8 @@ public static class NPCLoader
 		}
 	}
 
-	public static void NPCAI(NPC npc) {
+	public static void NPCAI(NPC npc)
+	{
 		if (PreAI(npc)) {
 			int type = npc.type;
 			bool useAiType = npc.ModNPC != null && npc.ModNPC.AIType > 0;
@@ -250,7 +265,8 @@ public static class NPCLoader
 
 	private static HookList HookPreAI = AddHook<Func<NPC, bool>>(g => g.PreAI);
 
-	public static bool PreAI(NPC npc) {
+	public static bool PreAI(NPC npc)
+	{
 		bool result = true;
 		foreach (GlobalNPC g in HookPreAI.Enumerate(npc.globalNPCs)) {
 			result &= g.PreAI(npc);
@@ -263,7 +279,8 @@ public static class NPCLoader
 
 	private static HookList HookAI = AddHook<Action<NPC>>(g => g.AI);
 
-	public static void AI(NPC npc) {
+	public static void AI(NPC npc)
+	{
 		npc.ModNPC?.AI();
 
 		foreach (GlobalNPC g in HookAI.Enumerate(npc.globalNPCs)) {
@@ -273,7 +290,8 @@ public static class NPCLoader
 
 	private static HookList HookPostAI = AddHook<Action<NPC>>(g => g.PostAI);
 
-	public static void PostAI(NPC npc) {
+	public static void PostAI(NPC npc)
+	{
 		npc.ModNPC?.PostAI();
 
 		foreach (GlobalNPC g in HookPostAI.Enumerate(npc.globalNPCs)) {
@@ -281,7 +299,8 @@ public static class NPCLoader
 		}
 	}
 
-	public static void SendExtraAI(BinaryWriter writer, byte[] extraAI) {
+	public static void SendExtraAI(BinaryWriter writer, byte[] extraAI)
+	{
 		writer.Write7BitEncodedInt(extraAI.Length);
 
 		if (extraAI.Length > 0) {
@@ -291,7 +310,8 @@ public static class NPCLoader
 
 	private static HookList HookWriteExtraAI = AddHook<Action<NPC, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
-	public static byte[] WriteExtraAI(NPC npc) {
+	public static byte[] WriteExtraAI(NPC npc)
+	{
 		using var stream = new MemoryStream();
 		using var modWriter = new BinaryWriter(stream);
 
@@ -317,13 +337,15 @@ public static class NPCLoader
 		return stream.ToArray();
 	}
 
-	public static byte[] ReadExtraAI(BinaryReader reader) {
+	public static byte[] ReadExtraAI(BinaryReader reader)
+	{
 		return reader.ReadBytes(reader.Read7BitEncodedInt());
 	}
 
 	private static HookList HookReceiveExtraAI = AddHook<Action<NPC, BitReader, BinaryReader>>(g => g.ReceiveExtraAI);
 
-	public static void ReceiveExtraAI(NPC npc, byte[] extraAI) {
+	public static void ReceiveExtraAI(NPC npc, byte[] extraAI)
+	{
 		using var stream = new MemoryStream(extraAI);
 		using var modReader = new BinaryReader(stream);
 
@@ -357,7 +379,8 @@ public static class NPCLoader
 
 	private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);
 
-	public static void FindFrame(NPC npc, int frameHeight) {
+	public static void FindFrame(NPC npc, int frameHeight)
+	{
 		npc.VanillaFindFrame(frameHeight, npc.isLikeATownNPC, npc.ModNPC?.AnimationType is > 0 ? npc.ModNPC.AnimationType : npc.type);
 		npc.ModNPC?.FindFrame(frameHeight);
 
@@ -368,7 +391,8 @@ public static class NPCLoader
 
 	private static HookList HookHitEffect = AddHook<Action<NPC, int, double>>(g => g.HitEffect);
 
-	public static void HitEffect(NPC npc, int hitDirection, double damage) {
+	public static void HitEffect(NPC npc, int hitDirection, double damage)
+	{
 		npc.VanillaHitEffect(hitDirection, damage);
 		npc.ModNPC?.HitEffect(hitDirection, damage);
 
@@ -380,7 +404,8 @@ public static class NPCLoader
 	private delegate void DelegateUpdateLifeRegen(NPC npc, ref int damage);
 	private static HookList HookUpdateLifeRegen = AddHook<DelegateUpdateLifeRegen>(g => g.UpdateLifeRegen);
 
-	public static void UpdateLifeRegen(NPC npc, ref int damage) {
+	public static void UpdateLifeRegen(NPC npc, ref int damage)
+	{
 		npc.ModNPC?.UpdateLifeRegen(ref damage);
 
 		foreach (GlobalNPC g in HookUpdateLifeRegen.Enumerate(npc.globalNPCs)) {
@@ -390,7 +415,8 @@ public static class NPCLoader
 
 	private static HookList HookCheckActive = AddHook<Func<NPC, bool>>(g => g.CheckActive);
 
-	public static bool CheckActive(NPC npc) {
+	public static bool CheckActive(NPC npc)
+	{
 		if (npc.ModNPC != null && !npc.ModNPC.CheckActive()) {
 			return false;
 		}
@@ -404,7 +430,8 @@ public static class NPCLoader
 
 	private static HookList HookCheckDead = AddHook<Func<NPC, bool>>(g => g.CheckDead);
 
-	public static bool CheckDead(NPC npc) {
+	public static bool CheckDead(NPC npc)
+	{
 		bool result = true;
 
 		if (npc.ModNPC != null) {
@@ -420,7 +447,8 @@ public static class NPCLoader
 
 	private static HookList HookSpecialOnKill = AddHook<Func<NPC, bool>>(g => g.SpecialOnKill);
 
-	public static bool SpecialOnKill(NPC npc) {
+	public static bool SpecialOnKill(NPC npc)
+	{
 		foreach (GlobalNPC g in HookSpecialOnKill.Enumerate(npc.globalNPCs)) {
 			if (g.SpecialOnKill(npc)) {
 				return true;
@@ -434,7 +462,8 @@ public static class NPCLoader
 
 	private static HookList HookPreKill = AddHook<Func<NPC, bool>>(g => g.PreKill);
 
-	public static bool PreKill(NPC npc) {
+	public static bool PreKill(NPC npc)
+	{
 		bool result = true;
 		foreach (GlobalNPC g in HookPreKill.Enumerate(npc.globalNPCs)) {
 			result &= g.PreKill(npc);
@@ -454,7 +483,8 @@ public static class NPCLoader
 
 	private static HookList HookOnKill = AddHook<Action<NPC>>(g => g.OnKill);
 
-	public static void OnKill(NPC npc) {
+	public static void OnKill(NPC npc)
+	{
 		npc.ModNPC?.OnKill();
 
 		foreach (GlobalNPC g in HookOnKill.Enumerate(npc.globalNPCs)) {
@@ -465,7 +495,8 @@ public static class NPCLoader
 	}
 
 	private static HookList HookModifyNPCLoot = AddHook<Action<NPC, NPCLoot>>(g => g.ModifyNPCLoot);
-	public static void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+	public static void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+	{
 		npc.ModNPC?.ModifyNPCLoot(npcLoot);
 
 		foreach (GlobalNPC g in HookModifyNPCLoot.Enumerate(npc.globalNPCs)) {
@@ -474,19 +505,22 @@ public static class NPCLoader
 	}
 
 	private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalLoot>>(g => g.ModifyGlobalLoot);
-	public static void ModifyGlobalLoot(GlobalLoot globalLoot) {
+	public static void ModifyGlobalLoot(GlobalLoot globalLoot)
+	{
 		foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCs)) {
 			g.ModifyGlobalLoot(globalLoot);
 		}
 	}
 
-	public static void BossLoot(NPC npc, ref string name, ref int potionType) {
+	public static void BossLoot(NPC npc, ref string name, ref int potionType)
+	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
 
-	public static bool? CanFallThroughPlatforms(NPC npc) {
+	public static bool? CanFallThroughPlatforms(NPC npc)
+	{
 		bool? ret = npc.ModNPC?.CanFallThroughPlatforms() ?? null;
 		if (ret.HasValue) {
 			if (!ret.Value) {
@@ -510,7 +544,8 @@ public static class NPCLoader
 
 	private static HookList HookCanBeCaughtBy = AddHook<Func<NPC, Item, Player, bool?>>(g => g.CanBeCaughtBy);
 
-	public static bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+	public static bool? CanBeCaughtBy(NPC npc, Item item, Player player)
+	{
 		bool? canBeCaughtOverall = null;
 		foreach (GlobalNPC g in HookCanBeCaughtBy.Enumerate(npc.globalNPCs)) {
 			bool? canBeCaughtFromGlobalNPC = g.CanBeCaughtBy(npc, item, player);
@@ -535,7 +570,8 @@ public static class NPCLoader
 
 	private static HookList HookOnCaughtBy = AddHook<Action<NPC, Player, Item, bool>>(g => g.OnCaughtBy);
 
-	public static void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+	public static void OnCaughtBy(NPC npc, Player player, Item item, bool failed)
+	{
 		npc.ModNPC?.OnCaughtBy(player, item, failed);
 
 		foreach (GlobalNPC g in HookOnCaughtBy.Enumerate(npc.globalNPCs)) {
@@ -546,7 +582,8 @@ public static class NPCLoader
 	private delegate bool DelegateCanHitPlayer(NPC npc, Player target, ref int cooldownSlot);
 	private static HookList HookCanHitPlayer = AddHook<DelegateCanHitPlayer>(g => g.CanHitPlayer);
 
-	public static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) {
+	public static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
+	{
 		foreach (GlobalNPC g in HookCanHitPlayer.Enumerate(npc.globalNPCs)) {
 			if (!g.CanHitPlayer(npc, target, ref cooldownSlot)) {
 				return false;
@@ -561,7 +598,8 @@ public static class NPCLoader
 	private delegate void DelegateModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit);
 	private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
 
-	public static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit) {
+	public static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+	{
 		npc.ModNPC?.ModifyHitPlayer(target, ref damage, ref crit);
 
 		foreach (GlobalNPC g in HookModifyHitPlayer.Enumerate(npc.globalNPCs)) {
@@ -571,7 +609,8 @@ public static class NPCLoader
 
 	private static HookList HookOnHitPlayer = AddHook<Action<NPC, Player, int, bool>>(g => g.OnHitPlayer);
 
-	public static void OnHitPlayer(NPC npc, Player target, int damage, bool crit) {
+	public static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+	{
 		npc.ModNPC?.OnHitPlayer(target, damage, crit);
 
 		foreach (GlobalNPC g in HookOnHitPlayer.Enumerate(npc.globalNPCs)) {
@@ -581,7 +620,8 @@ public static class NPCLoader
 
 	private static HookList HookCanHitNPC = AddHook<Func<NPC, NPC, bool?>>(g => g.CanHitNPC);
 
-	public static bool? CanHitNPC(NPC npc, NPC target) {
+	public static bool? CanHitNPC(NPC npc, NPC target)
+	{
 		bool? flag = null;
 		foreach (GlobalNPC g in HookCanHitNPC.Enumerate(npc.globalNPCs)) {
 			bool? canHit = g.CanHitNPC(npc, target);
@@ -607,7 +647,8 @@ public static class NPCLoader
 	private delegate void DelegateModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
-	public static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit) {
+	public static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+	{
 		npc.ModNPC?.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
 
 		foreach (GlobalNPC g in HookModifyHitNPC.Enumerate(npc.globalNPCs)) {
@@ -617,7 +658,8 @@ public static class NPCLoader
 
 	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC, int, float, bool>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
+	public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+	{
 		npc.ModNPC?.OnHitNPC(target, damage, knockback, crit);
 
 		foreach (GlobalNPC g in HookOnHitNPC.Enumerate(npc.globalNPCs)) {
@@ -627,7 +669,8 @@ public static class NPCLoader
 
 	private static HookList HookCanBeHitByItem = AddHook<Func<NPC, Player, Item, bool?>>(g => g.CanBeHitByItem);
 
-	public static bool? CanBeHitByItem(NPC npc, Player player, Item item) {
+	public static bool? CanBeHitByItem(NPC npc, Player player, Item item)
+	{
 		bool? flag = null;
 
 		foreach (GlobalNPC g in HookCanBeHitByItem.Enumerate(npc.globalNPCs)) {
@@ -660,7 +703,8 @@ public static class NPCLoader
 	private delegate void DelegateModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit);
 	private static HookList HookModifyHitByItem = AddHook<DelegateModifyHitByItem>(g => g.ModifyHitByItem);
 
-	public static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit) {
+	public static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	{
 		npc.ModNPC?.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
 
 		foreach (GlobalNPC g in HookModifyHitByItem.Enumerate(npc.globalNPCs)) {
@@ -670,7 +714,8 @@ public static class NPCLoader
 
 	private static HookList HookOnHitByItem = AddHook<Action<NPC, Player, Item, int, float, bool>>(g => g.OnHitByItem);
 
-	public static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
+	public static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+	{
 		npc.ModNPC?.OnHitByItem(player, item, damage, knockback, crit);
 
 		foreach (GlobalNPC g in HookOnHitByItem.Enumerate(npc.globalNPCs)) {
@@ -680,7 +725,8 @@ public static class NPCLoader
 
 	private static HookList HookCanBeHitByProjectile = AddHook<Func<NPC, Projectile, bool?>>(g => g.CanBeHitByProjectile);
 
-	public static bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
+	public static bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+	{
 		bool? flag = null;
 		foreach (GlobalNPC g in HookCanBeHitByProjectile.Enumerate(npc.globalNPCs)) {
 			bool? canHit = g.CanBeHitByProjectile(npc, projectile);
@@ -706,7 +752,8 @@ public static class NPCLoader
 	private delegate void DelegateModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
 	private static HookList HookModifyHitByProjectile = AddHook<DelegateModifyHitByProjectile>(g => g.ModifyHitByProjectile);
 
-	public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+	public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	{
 		npc.ModNPC?.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
 
 		foreach (GlobalNPC g in HookModifyHitByProjectile.Enumerate(npc.globalNPCs)) {
@@ -716,7 +763,8 @@ public static class NPCLoader
 
 	private static HookList HookOnHitByProjectile = AddHook<Action<NPC, Projectile, int, float, bool>>(g => g.OnHitByProjectile);
 
-	public static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
+	public static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+	{
 		npc.ModNPC?.OnHitByProjectile(projectile, damage, knockback, crit);
 
 		foreach (GlobalNPC g in HookOnHitByProjectile.Enumerate(npc.globalNPCs)) {
@@ -727,7 +775,8 @@ public static class NPCLoader
 	private delegate bool DelegateStrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit);
 	private static HookList HookStrikeNPC = AddHook<DelegateStrikeNPC>(g => g.StrikeNPC);
 
-	public static bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
+	public static bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	{
 		bool flag = true;
 		if (npc.ModNPC != null) {
 			flag = npc.ModNPC.StrikeNPC(ref damage, defense, ref knockback, hitDirection, ref crit);
@@ -743,7 +792,8 @@ public static class NPCLoader
 	private delegate void DelegateBossHeadSlot(NPC npc, ref int index);
 	private static HookList HookBossHeadSlot = AddHook<DelegateBossHeadSlot>(g => g.BossHeadSlot);
 
-	public static void BossHeadSlot(NPC npc, ref int index) {
+	public static void BossHeadSlot(NPC npc, ref int index)
+	{
 		npc.ModNPC?.BossHeadSlot(ref index);
 
 		foreach (GlobalNPC g in HookBossHeadSlot.Enumerate(npc.globalNPCs)) {
@@ -754,7 +804,8 @@ public static class NPCLoader
 	private delegate void DelegateBossHeadRotation(NPC npc, ref float rotation);
 	private static HookList HookBossHeadRotation = AddHook<DelegateBossHeadRotation>(g => g.BossHeadRotation);
 
-	public static void BossHeadRotation(NPC npc, ref float rotation) {
+	public static void BossHeadRotation(NPC npc, ref float rotation)
+	{
 		npc.ModNPC?.BossHeadRotation(ref rotation);
 
 		foreach (GlobalNPC g in HookBossHeadRotation.Enumerate(npc.globalNPCs)) {
@@ -765,7 +816,8 @@ public static class NPCLoader
 	private delegate void DelegateBossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects);
 	private static HookList HookBossHeadSpriteEffects = AddHook<DelegateBossHeadSpriteEffects>(g => g.BossHeadSpriteEffects);
 
-	public static void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects) {
+	public static void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
+	{
 		npc.ModNPC?.BossHeadSpriteEffects(ref spriteEffects);
 
 		foreach (GlobalNPC g in HookBossHeadSpriteEffects.Enumerate(npc.globalNPCs)) {
@@ -775,7 +827,8 @@ public static class NPCLoader
 
 	private static HookList HookGetAlpha = AddHook<Func<NPC, Color, Color?>>(g => g.GetAlpha);
 
-	public static Color? GetAlpha(NPC npc, Color lightColor) {
+	public static Color? GetAlpha(NPC npc, Color lightColor)
+	{
 		foreach (GlobalNPC g in HookGetAlpha.Enumerate(npc.globalNPCs)) {
 			Color? color = g.GetAlpha(npc, lightColor);
 			if (color.HasValue) {
@@ -788,7 +841,8 @@ public static class NPCLoader
 	private delegate void DelegateDrawEffects(NPC npc, ref Color drawColor);
 	private static HookList HookDrawEffects = AddHook<DelegateDrawEffects>(g => g.DrawEffects);
 
-	public static void DrawEffects(NPC npc, ref Color drawColor) {
+	public static void DrawEffects(NPC npc, ref Color drawColor)
+	{
 		npc.ModNPC?.DrawEffects(ref drawColor);
 
 		foreach (GlobalNPC g in HookDrawEffects.Enumerate(npc.globalNPCs)) {
@@ -799,7 +853,8 @@ public static class NPCLoader
 	private delegate bool DelegatePreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
 	private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-	public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+	public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+	{
 		bool result = true;
 		foreach (GlobalNPC g in HookPreDraw.Enumerate(npc.globalNPCs)) {
 			result &= g.PreDraw(npc, spriteBatch, screenPos, drawColor);
@@ -813,7 +868,8 @@ public static class NPCLoader
 	private delegate void DelegatePostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
 	private static HookList HookPostDraw = AddHook<DelegatePostDraw>(g => g.PostDraw);
 
-	public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+	public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+	{
 		npc.ModNPC?.PostDraw(spriteBatch, screenPos, drawColor);
 
 		foreach (GlobalNPC g in HookPostDraw.Enumerate(npc.globalNPCs)) {
@@ -835,7 +891,8 @@ public static class NPCLoader
 	private delegate bool? DelegateDrawHealthBar(NPC npc, byte bhPosition, ref float scale, ref Vector2 position);
 	private static HookList HookDrawHealthBar = AddHook<DelegateDrawHealthBar>(g => g.DrawHealthBar);
 
-	public static bool DrawHealthBar(NPC npc, ref float scale) {
+	public static bool DrawHealthBar(NPC npc, ref float scale)
+	{
 		Vector2 position = new Vector2(npc.position.X + npc.width / 2, npc.position.Y + npc.gfxOffY);
 		if (Main.HealthBarDrawSettings == 1) {
 			position.Y += npc.height + 10f + Main.NPCAddHeight(npc);
@@ -864,7 +921,8 @@ public static class NPCLoader
 		return true;
 	}
 
-	private static void DrawHealthBar(NPC npc, Vector2 position, float scale) {
+	private static void DrawHealthBar(NPC npc, Vector2 position, float scale)
+	{
 		float alpha = Lighting.Brightness((int)(npc.Center.X / 16f), (int)(npc.Center.Y / 16f));
 		Main.instance.DrawHealthBar(position.X, position.Y, npc.life, npc.lifeMax, alpha, scale);
 	}
@@ -872,7 +930,8 @@ public static class NPCLoader
 	private delegate void DelegateEditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns);
 	private static HookList HookEditSpawnRate = AddHook<DelegateEditSpawnRate>(g => g.EditSpawnRate);
 
-	public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
+	public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+	{
 		foreach (GlobalNPC g in HookEditSpawnRate.Enumerate(globalNPCs)) {
 			g.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
 		}
@@ -883,7 +942,8 @@ public static class NPCLoader
 	private static HookList HookEditSpawnRange = AddHook<DelegateEditSpawnRange>(g => g.EditSpawnRange);
 
 	public static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
-		ref int safeRangeX, ref int safeRangeY) {
+		ref int safeRangeX, ref int safeRangeY)
+	{
 		foreach (GlobalNPC g in HookEditSpawnRange.Enumerate(globalNPCs)) {
 			g.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
 		}
@@ -891,7 +951,8 @@ public static class NPCLoader
 
 	private static HookList HookEditSpawnPool = AddHook<Action<Dictionary<int, float>, NPCSpawnInfo>>(g => g.EditSpawnPool);
 
-	public static int? ChooseSpawn(NPCSpawnInfo spawnInfo) {
+	public static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
+	{
 		NPCSpawnHelper.Reset();
 		NPCSpawnHelper.DoChecks(spawnInfo);
 
@@ -926,7 +987,8 @@ public static class NPCLoader
 
 	private static HookList HookSpawnNPC = AddHook<Action<int, int, int>>(g => g.SpawnNPC);
 
-	public static int SpawnNPC(int type, int tileX, int tileY) {
+	public static int SpawnNPC(int type, int tileX, int tileY)
+	{
 		var npc = type >= NPCID.Count
 			? GetNPC(type).SpawnNPC(tileX, tileY)
 			: NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), tileX * 16 + 8, tileY * 16, type);
@@ -938,7 +1000,8 @@ public static class NPCLoader
 		return npc;
 	}
 
-	public static void CanTownNPCSpawn(int numTownNPCs) {
+	public static void CanTownNPCSpawn(int numTownNPCs)
+	{
 		foreach (ModNPC modNPC in npcs) {
 			var npc = modNPC.NPC;
 
@@ -965,13 +1028,15 @@ public static class NPCLoader
 	}
 	*/
 
-	public static bool CheckConditions(int type) {
+	public static bool CheckConditions(int type)
+	{
 		return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 	}
 
 	private delegate void DelegateModifyTypeName(NPC npc, ref string typeName);
 	private static HookList HookModifyTypeName = AddHook<DelegateModifyTypeName>(g => g.ModifyTypeName);
-	public static string ModifyTypeName(NPC npc, string typeName) {
+	public static string ModifyTypeName(NPC npc, string typeName)
+	{
 		if (npc.ModNPC != null)
 			npc.ModNPC.ModifyTypeName(ref typeName);
 
@@ -984,7 +1049,8 @@ public static class NPCLoader
 
 	private delegate void DelegateModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox);
 	private static HookList HookModifyHoverBoundingBox = AddHook<DelegateModifyHoverBoundingBox>(g => g.ModifyHoverBoundingBox);
-	public static void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+	public static void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
+	{
 		if (npc.ModNPC != null)
 			npc.ModNPC.ModifyHoverBoundingBox(ref boundingBox);
 
@@ -994,7 +1060,8 @@ public static class NPCLoader
 	}
 
 	private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
-	public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList) {
+	public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList)
+	{
 		if (npc.ModNPC != null)
 			nameList = npc.ModNPC.SetNPCNameList();
 
@@ -1005,13 +1072,15 @@ public static class NPCLoader
 		return nameList;
 	}
 
-	public static bool UsesPartyHat(NPC npc) {
+	public static bool UsesPartyHat(NPC npc)
+	{
 		return npc.ModNPC?.UsesPartyHat() ?? true;
 	}
 
 	private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
-	public static bool? CanChat(NPC npc) {
+	public static bool? CanChat(NPC npc)
+	{
 		bool? ret = npc.ModNPC?.CanChat();
 
 		foreach (GlobalNPC g in HookCanChat.Enumerate(npc.globalNPCs)) {
@@ -1029,7 +1098,8 @@ public static class NPCLoader
 	private delegate void DelegateGetChat(NPC npc, ref string chat);
 	private static HookList HookGetChat = AddHook<DelegateGetChat>(g => g.GetChat);
 
-	public static void GetChat(NPC npc, ref string chat) {
+	public static void GetChat(NPC npc, ref string chat)
+	{
 		if (npc.ModNPC != null) {
 			chat = npc.ModNPC.GetChat();
 		}
@@ -1041,7 +1111,8 @@ public static class NPCLoader
 		}
 	}
 
-	public static void SetChatButtons(ref string button, ref string button2) {
+	public static void SetChatButtons(ref string button, ref string button2)
+	{
 		if (Main.player[Main.myPlayer].talkNPC >= 0) {
 			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
 			npc.ModNPC?.SetChatButtons(ref button, ref button2);
@@ -1050,7 +1121,8 @@ public static class NPCLoader
 
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
 
-	public static bool PreChatButtonClicked(bool firstButton) {
+	public static bool PreChatButtonClicked(bool firstButton)
+	{
 		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
 
 		bool result = true;
@@ -1069,7 +1141,8 @@ public static class NPCLoader
 	private delegate void DelegateOnChatButtonClicked(NPC npc, bool firstButton);
 	private static HookList HookOnChatButtonClicked = AddHook<DelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
 
-	public static void OnChatButtonClicked(bool firstButton) {
+	public static void OnChatButtonClicked(bool firstButton)
+	{
 		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
 		bool shop = false;
 
@@ -1093,7 +1166,8 @@ public static class NPCLoader
 	private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
 	private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
 
-	public static void SetupShop(int type, Chest shop, ref int nextSlot) {
+	public static void SetupShop(int type, Chest shop, ref int nextSlot)
+	{
 		if (type < shopToNPC.Length) {
 			type = shopToNPC[type];
 		}
@@ -1108,7 +1182,8 @@ public static class NPCLoader
 	private delegate void DelegateSetupTravelShop(int[] shop, ref int nextSlot);
 	private static HookList HookSetupTravelShop = AddHook<DelegateSetupTravelShop>(g => g.SetupTravelShop);
 
-	public static void SetupTravelShop(int[] shop, ref int nextSlot) {
+	public static void SetupTravelShop(int[] shop, ref int nextSlot)
+	{
 		foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCs)) {
 			g.SetupTravelShop(shop, ref nextSlot);
 		}
@@ -1116,7 +1191,8 @@ public static class NPCLoader
 
 	private static HookList HookCanGoToStatue = AddHook<Func<NPC, bool, bool?>>(g => g.CanGoToStatue);
 
-	public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo) {
+	public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo)
+	{
 		bool defaultCanGo = npc.ModNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
 
 		foreach (GlobalNPC g in HookCanGoToStatue.Enumerate(npc.globalNPCs)) {
@@ -1134,7 +1210,8 @@ public static class NPCLoader
 
 	private static HookList HookOnGoToStatue = AddHook<Action<NPC, bool>>(g => g.OnGoToStatue);
 
-	public static void OnGoToStatue(NPC npc, bool toKingStatue) {
+	public static void OnGoToStatue(NPC npc, bool toKingStatue)
+	{
 		npc.ModNPC?.OnGoToStatue(toKingStatue);
 
 		foreach (GlobalNPC g in HookOnGoToStatue.Enumerate(npc.globalNPCs)) {
@@ -1145,7 +1222,8 @@ public static class NPCLoader
 	private delegate void DelegateBuffTownNPC(ref float damageMult, ref int defense);
 	private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
-	public static void BuffTownNPC(ref float damageMult, ref int defense) {
+	public static void BuffTownNPC(ref float damageMult, ref int defense)
+	{
 		foreach (GlobalNPC g in HookBuffTownNPC.Enumerate(globalNPCs)) {
 			g.BuffTownNPC(ref damageMult, ref defense);
 		}
@@ -1169,7 +1247,8 @@ public static class NPCLoader
 	private delegate void DelegateTownNPCAttackStrength(NPC npc, ref int damage, ref float knockback);
 	private static HookList HookTownNPCAttackStrength = AddHook<DelegateTownNPCAttackStrength>(g => g.TownNPCAttackStrength);
 
-	public static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback) {
+	public static void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
+	{
 		npc.ModNPC?.TownNPCAttackStrength(ref damage, ref knockback);
 
 		foreach (GlobalNPC g in HookTownNPCAttackStrength.Enumerate(npc.globalNPCs)) {
@@ -1180,7 +1259,8 @@ public static class NPCLoader
 	private delegate void DelegateTownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown);
 	private static HookList HookTownNPCAttackCooldown = AddHook<DelegateTownNPCAttackCooldown>(g => g.TownNPCAttackCooldown);
 
-	public static void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown) {
+	public static void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
+	{
 		npc.ModNPC?.TownNPCAttackCooldown(ref cooldown, ref randExtraCooldown);
 
 		foreach (GlobalNPC g in HookTownNPCAttackCooldown.Enumerate(npc.globalNPCs)) {
@@ -1191,7 +1271,8 @@ public static class NPCLoader
 	private delegate void DelegateTownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay);
 	private static HookList HookTownNPCAttackProj = AddHook<DelegateTownNPCAttackProj>(g => g.TownNPCAttackProj);
 
-	public static void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay) {
+	public static void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
+	{
 		npc.ModNPC?.TownNPCAttackProj(ref projType, ref attackDelay);
 
 		foreach (GlobalNPC g in HookTownNPCAttackProj.Enumerate(npc.globalNPCs)) {
@@ -1204,7 +1285,8 @@ public static class NPCLoader
 	private static HookList HookTownNPCAttackProjSpeed = AddHook<DelegateTownNPCAttackProjSpeed>(g => g.TownNPCAttackProjSpeed);
 
 	public static void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
-		ref float randomOffset) {
+		ref float randomOffset)
+	{
 		npc.ModNPC?.TownNPCAttackProjSpeed(ref multiplier, ref gravityCorrection, ref randomOffset);
 
 		foreach (GlobalNPC g in HookTownNPCAttackProjSpeed.Enumerate(npc.globalNPCs)) {
@@ -1215,7 +1297,8 @@ public static class NPCLoader
 	private delegate void DelegateTownNPCAttackShoot(NPC npc, ref bool inBetweenShots);
 	private static HookList HookTownNPCAttackShoot = AddHook<DelegateTownNPCAttackShoot>(g => g.TownNPCAttackShoot);
 
-	public static void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots) {
+	public static void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
+	{
 		npc.ModNPC?.TownNPCAttackShoot(ref inBetweenShots);
 
 		foreach (GlobalNPC g in HookTownNPCAttackShoot.Enumerate(npc.globalNPCs)) {
@@ -1226,7 +1309,8 @@ public static class NPCLoader
 	private delegate void DelegateTownNPCAttackMagic(NPC npc, ref float auraLightMultiplier);
 	private static HookList HookTownNPCAttackMagic = AddHook<DelegateTownNPCAttackMagic>(g => g.TownNPCAttackMagic);
 
-	public static void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier) {
+	public static void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
+	{
 		npc.ModNPC?.TownNPCAttackMagic(ref auraLightMultiplier);
 
 		foreach (GlobalNPC g in HookTownNPCAttackMagic.Enumerate(npc.globalNPCs)) {
@@ -1237,7 +1321,8 @@ public static class NPCLoader
 	private delegate void DelegateTownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight);
 	private static HookList HookTownNPCAttackSwing = AddHook<DelegateTownNPCAttackSwing>(g => g.TownNPCAttackSwing);
 
-	public static void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight) {
+	public static void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
+	{
 		npc.ModNPC?.TownNPCAttackSwing(ref itemWidth, ref itemHeight);
 
 		foreach (GlobalNPC g in HookTownNPCAttackSwing.Enumerate(npc.globalNPCs)) {
@@ -1248,7 +1333,8 @@ public static class NPCLoader
 	private delegate void DelegateDrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness);
 	private static HookList HookDrawTownAttackGun = AddHook<DelegateDrawTownAttackGun>(g => g.DrawTownAttackGun);
 
-	public static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness) {
+	public static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	{
 		npc.ModNPC?.DrawTownAttackGun(ref scale, ref item, ref closeness);
 
 		foreach (GlobalNPC g in HookDrawTownAttackGun.Enumerate(npc.globalNPCs)) {
@@ -1259,7 +1345,8 @@ public static class NPCLoader
 	private delegate void DelegateDrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset);
 	private static HookList HookDrawTownAttackSwing = AddHook<DelegateDrawTownAttackSwing>(g => g.DrawTownAttackSwing);
 
-	public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+	public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	{
 		npc.ModNPC?.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
 
 		foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
@@ -1267,7 +1354,8 @@ public static class NPCLoader
 		}
 	}
 
-	internal static void VerifyGlobalNPC(GlobalNPC npc) {
+	internal static void VerifyGlobalNPC(GlobalNPC npc)
+	{
 		var type = npc.GetType();
 
 		bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
@@ -1283,7 +1371,8 @@ public static class NPCLoader
 	private delegate bool DelegateNeedSaving(NPC npc);
 	private static HookList HookNeedSaving = AddHook<DelegateNeedSaving>(g => g.NeedSaving);
 
-	public static bool SavesAndLoads(NPC npc) {
+	public static bool SavesAndLoads(NPC npc)
+	{
 		if (npc.townNPC && npc.type != NPCID.TravellingMerchant)
 			return true;
 

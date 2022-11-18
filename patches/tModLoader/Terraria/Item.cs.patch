@@ -327,13 +327,14 @@
  	public bool sentry;
  	public int reuseDelay;
  	public bool newAndShiny;
-@@ -172,6 +_,18 @@
+@@ -172,6 +_,19 @@
  	public bool shimmered;
  	public float shimmerTime;
  
 +	public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +
-+	public Item(int setDefaultsToType, int stack = 1, int prefix = 0) {
++	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
++	{
 +		SetDefaults(setDefaultsToType);
 +
 +		if (setDefaultsToType > 0)
@@ -363,7 +364,7 @@
  
  	public ItemVariant Variant { get; private set; }
  
-@@ -276,10 +_,17 @@
+@@ -278,11 +_,18 @@
  		}
  	}
  
@@ -376,13 +377,14 @@
 +
  	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
  
--	private bool CanHavePrefixes() {
-+	public bool CanHavePrefixes() {
+-	private bool CanHavePrefixes()
++	public bool CanHavePrefixes()
+ 	{
 +		/*
  		if (type != 0 && maxStack == 1) {
  			if (damage <= 0)
  				return accessory;
-@@ -288,6 +_,13 @@
+@@ -291,6 +_,13 @@
  		}
  
  		return false;
@@ -395,8 +397,8 @@
 +			&& (damage > 0 || IsAPrefixableAccessory());
  	}
  
- 	public bool Prefix(int prefixWeWant) {
-@@ -300,7 +_,17 @@
+ 	public bool Prefix(int prefixWeWant)
+@@ -304,7 +_,17 @@
  		if (!CanHavePrefixes())
  			return false;
  
@@ -414,7 +416,7 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -312,12 +_,16 @@
+@@ -316,12 +_,16 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
@@ -433,7 +435,7 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -325,8 +_,9 @@
+@@ -329,8 +_,9 @@
  				case -3:
  					return true;
  				case -1:
@@ -444,7 +446,7 @@
  					break;
  			}
  
-@@ -341,6 +_,8 @@
+@@ -345,6 +_,8 @@
  			}
  		}
  
@@ -453,7 +455,7 @@
  		damage = (int)Math.Round((float)damage * dmg);
  		useAnimation = (int)Math.Round((float)useAnimation * spd);
  		useTime = (int)Math.Round((float)useTime * spd);
-@@ -350,6 +_,12 @@
+@@ -354,6 +_,12 @@
  		scale *= size;
  		shootSpeed *= shtspd;
  		crit += crt;
@@ -466,7 +468,7 @@
  		float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
  		if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
  			num *= 1.05f;
-@@ -363,6 +_,10 @@
+@@ -367,6 +_,10 @@
  		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
  			num *= 1.2f;
  
@@ -477,7 +479,7 @@
  		if ((double)num >= 1.2)
  			rare += 2;
  		else if ((double)num >= 1.05)
-@@ -372,17 +_,22 @@
+@@ -376,17 +_,22 @@
  		else if ((double)num <= 0.95)
  			rare--;
  
@@ -503,7 +505,7 @@
  		return true;
  	}
  
-@@ -390,6 +_,7 @@
+@@ -395,6 +_,7 @@
  		if (!CanHavePrefixes())
  			return false;
  
@@ -511,7 +513,7 @@
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -400,6 +_,9 @@
+@@ -405,6 +_,9 @@
  		}
  
  		return false;
@@ -520,8 +522,8 @@
 +		return PrefixLoader.CanRoll(this, prefix);
  	}
  
- 	public bool CanApplyPrefix(int prefix) {
-@@ -697,6 +_,12 @@
+ 	public bool CanApplyPrefix(int prefix)
+@@ -704,6 +_,12 @@
  				dmg = 1.05f;
  				crt = 2;
  				break;
@@ -534,21 +536,22 @@
  		}
  
  		if (dmg != 1f && Math.Round((float)damage * dmg) == (double)damage)
-@@ -714,7 +_,7 @@
+@@ -721,7 +_,7 @@
  		return true;
  	}
  
--	public int[] GetRollablePrefixes() {
-+	internal int[] GetRollablePrefixes() {
+-	public int[] GetRollablePrefixes()
++	internal int[] GetRollablePrefixes()
+ 	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
- 			return PrefixLegacy.Prefixes.PrefixesForSwords;
-@@ -740,13 +_,48 @@
+@@ -748,14 +_,50 @@
  		return null;
  	}
  
 +	// Added by tML
-+	public PrefixCategory? GetPrefixCategory() {
++	public PrefixCategory? GetPrefixCategory()
++	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 +			return PrefixCategory.Melee;
 +		
@@ -577,7 +580,8 @@
 +		_ => Array.Empty<int>(),
 +	};
 +
- 	private bool RollAPrefix(UnifiedRandom random, ref int rolledPrefix) {
+ 	private bool RollAPrefix(UnifiedRandom random, ref int rolledPrefix)
+ 	{
 +		/*
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
@@ -591,27 +595,27 @@
 +		return PrefixLoader.Roll(this, random, out rolledPrefix, justCheck: false);
  	}
  
- 	public bool IsAPrefixableAccessory() {
-@@ -778,6 +_,8 @@
- 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+ 	public bool IsAPrefixableAccessory()
+@@ -791,6 +_,8 @@
  
- 	public bool checkMat() {
+ 	public bool checkMat()
+ 	{
 +		material = ItemID.Sets.IsAMaterial[type];
 +		return material; // bypass performance issue.
  		if (type >= 71 && type <= 74) {
  			material = false;
  			return false;
-@@ -983,6 +_,9 @@
- 	}
+@@ -998,6 +_,9 @@
  
- 	public static int BannerToItem(int banner) {
+ 	public static int BannerToItem(int banner)
+ 	{
 +		if (NPCLoader.bannerToItem.ContainsKey(banner))
 +			return NPCLoader.bannerToItem[banner];
 +
  		int num = 0;
  		if (banner == 289)
  			return 5352;
-@@ -1754,9 +_,10 @@
+@@ -1770,9 +_,10 @@
  				return 288;
  			case 676:
  				return 289;
@@ -623,8 +627,8 @@
 +		return 0;
  	}
  
- 	public static int BannerToNPC(int i) {
-@@ -2329,9 +_,10 @@
+ 	public static int BannerToNPC(int i)
+@@ -2346,9 +_,10 @@
  				return 133;
  			case 289:
  				return 676;
@@ -636,8 +640,8 @@
 +		return 0;
  	}
  
- 	public bool FitsAmmoSlot() {
-@@ -7653,6 +_,7 @@
+ 	public bool FitsAmmoSlot()
+@@ -7673,6 +_,7 @@
  				value = 300;
  				break;
  			case 434:
@@ -645,7 +649,7 @@
  				autoReuse = true;
  				useStyle = 5;
  				useAnimation = 12;
-@@ -8625,6 +_,7 @@
+@@ -8645,6 +_,7 @@
  				rare = 2;
  				break;
  			case 506:
@@ -653,7 +657,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -12051,6 +_,7 @@
+@@ -12071,6 +_,7 @@
  				scale = 1.15f;
  				break;
  			case 779:
@@ -661,7 +665,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -22737,6 +_,7 @@
+@@ -22758,6 +_,7 @@
  				melee = true;
  				return;
  			case 1910:
@@ -669,7 +673,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -36853,6 +_,7 @@
+@@ -36877,6 +_,7 @@
  				shootSpeed = 17f;
  				return;
  			case 3852:
@@ -677,7 +681,7 @@
  				useStyle = 5;
  				useAnimation = 25;
  				useTime = 3;
-@@ -43046,6 +_,7 @@
+@@ -43072,6 +_,7 @@
  				expert = true;
  				break;
  			case 4952:
@@ -685,7 +689,7 @@
  				autoReuse = true;
  				useStyle = 14;
  				holdStyle = 6;
-@@ -43067,6 +_,8 @@
+@@ -43093,6 +_,8 @@
  				flame = true;
  				break;
  			case 4953:
@@ -694,7 +698,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -46330,7 +_,8 @@
+@@ -46358,7 +_,8 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
@@ -704,26 +708,26 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46380,7 +_,7 @@
+@@ -46412,7 +_,7 @@
  		return false;
  	}
  
--	private void DefaultToSeaShelll() {
-+	public void DefaultToSeaShelll() {
+-	private void DefaultToSeaShelll()
++	public void DefaultToSeaShelll()
+ 	{
  		useStyle = 1;
  		autoReuse = true;
- 		useAnimation = 15;
-@@ -46413,7 +_,8 @@
+@@ -46446,7 +_,8 @@
  		}
  	}
  
 +	// tML: changed to take an int instead of a short for convenience and consistency purposes
--	public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
-+	public void DefaultToCapturedCritter(int npcIdToSpawnOnUse) {
+-	public void DefaultToCapturedCritter(short npcIdToSpawnOnUse)
++	public void DefaultToCapturedCritter(int npcIdToSpawnOnUse)
+ 	{
  		useStyle = 1;
  		autoReuse = true;
- 		useTurn = true;
-@@ -46804,6 +_,11 @@
+@@ -46842,6 +_,11 @@
  		mountType = mount;
  	}
  
@@ -732,10 +736,10 @@
 +	/// Specifically: useStyle = 1;useTurn = true;useAnimation = 15; useTime = 7; autoReuse = true; maxStack = CommonMaxStack; consumable = true; createWall = wallToPlace; width = 12; height = 12;<br/>
 +	/// </summary>
 +	/// <param name="wallToPlace"></param>
- 	public void DefaultToPlaceableWall(ushort wallToPlace) {
+ 	public void DefaultToPlaceableWall(ushort wallToPlace)
+ 	{
  		useStyle = 1;
- 		useTurn = true;
-@@ -46823,6 +_,14 @@
+@@ -46863,6 +_,14 @@
  		crit = bonusCritChance;
  	}
  
@@ -747,10 +751,10 @@
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
 +	/// <param name="hasAutoReuse"></param>
- 	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
+ 	{
  		DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
- 		width = 14;
-@@ -46841,6 +_,15 @@
+@@ -46883,6 +_,15 @@
  		magic = true;
  	}
  
@@ -763,19 +767,19 @@
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
 +	/// <param name="hasAutoReuse"></param>
- 	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
+ 	{
  		autoReuse = hasAutoReuse;
- 		useStyle = 5;
-@@ -46866,7 +_,7 @@
+@@ -46910,7 +_,7 @@
  		maxStack = CommonMaxStack;
  	}
  
--	private void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
-+	public void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false) {
+-	private void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false)
++	public void DefaultToTorch(int tileStyleToPlace, bool allowWaterPlacement = false)
+ 	{
  		flame = true;
  		noWet = !allowWaterPlacement;
- 		holdStyle = 1;
-@@ -46926,6 +_,18 @@
+@@ -46975,6 +_,18 @@
  		autoReuse = true;
  	}
  
@@ -791,14 +795,15 @@
 +	/// <param name="foodbuffduration"></param>
 +	/// <param name="useGulpSound">If true, the gulp sound is set, otherwise the crunch sound is set</param>
 +	/// <param name="animationTime"></param>
- 	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
+ 	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
+ 	{
  		if (useGulpSound)
- 			UseSound = SoundID.Item3;
-@@ -47011,6 +_,18 @@
+@@ -47068,6 +_,19 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
-+	public void CloneDefaults(int TypeToClone) {
++	public void CloneDefaults(int TypeToClone)
++	{
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModItem = ModItem;
@@ -810,10 +815,10 @@
 +		globalItems = originalGlobals;
 +	}
 +
- 	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) {
+ 	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
+ 	{
  		if (Type < 0) {
- 			netDefaults(Type);
-@@ -47023,8 +_,10 @@
+@@ -47081,8 +_,10 @@
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  		ResetStats(Type);
@@ -824,7 +829,7 @@
  
  		if (variant == null)
  			variant = ItemVariants.SelectVariant(Type);
-@@ -47055,7 +_,18 @@
+@@ -47113,7 +_,18 @@
  			SetDefaults5(type);
  		}
  
@@ -844,7 +849,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47219,11 +_,12 @@
+@@ -47277,11 +_,12 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
@@ -858,16 +863,16 @@
  			netID = 0;
  			type = 0;
  			stack = 0;
-@@ -47231,6 +_,7 @@
- 	}
+@@ -47290,6 +_,7 @@
  
- 	public void OnCreated(ItemCreationContext context) {
+ 	public void OnCreated(ItemCreationContext context)
+ 	{
 +		ItemLoader.OnCreated(this, context);
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47238,14 +_,27 @@
- 	public void ResetStats(int Type) {
+@@ -47298,14 +_,27 @@
+ 	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
 +		ModItem = null;
@@ -894,7 +899,7 @@
  		instanced = false;
  		questItem = false;
  		fishingPole = 0;
-@@ -47263,10 +_,12 @@
+@@ -47323,10 +_,12 @@
  		mech = false;
  		flame = false;
  		reuseDelay = 0;
@@ -907,10 +912,10 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
-@@ -47344,6 +_,10 @@
- 	}
+@@ -47405,6 +_,10 @@
  
- 	public Color GetAlpha(Color newColor) {
+ 	public Color GetAlpha(Color newColor)
+ 	{
 +		Color? modColor = ItemLoader.GetAlpha(this, newColor);
 +		if (modColor.HasValue)
 +			return modColor.Value;
@@ -918,7 +923,7 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
-@@ -47995,6 +_,7 @@
+@@ -48066,6 +_,7 @@
  			timeSinceItemSpawned += num7;
  		}
  
@@ -926,15 +931,15 @@
  		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  			timeSinceTheItemHasBeenReservedForSomeone++;
  			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -48088,6 +_,7 @@
- 	}
+@@ -48163,6 +_,7 @@
  
- 	private void CheckLavaDeath(int i) {
+ 	private void CheckLavaDeath(int i)
+ 	{
 +		bool? canBurnInLava = ItemLoader.CanBurnInLava(this);
  		if (type == 267) {
  			if (Main.netMode == 1)
  				return;
-@@ -48141,7 +_,7 @@
+@@ -48216,7 +_,7 @@
  
  			NetMessage.SendData(21, -1, -1, null, i);
  		}
@@ -943,15 +948,15 @@
  			active = false;
  			type = 0;
  			stack = 0;
-@@ -48151,6 +_,7 @@
- 	}
+@@ -48227,6 +_,7 @@
  
- 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i) {
+ 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
+ 	{
 +		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
-@@ -48532,14 +_,25 @@
+@@ -48611,14 +_,25 @@
  				num2 *= 2;
  
  			if (num < (float)num2) {
@@ -977,7 +982,7 @@
  				if (item.stack <= 0) {
  					item.SetDefaults();
  					item.active = false;
-@@ -48937,13 +_,46 @@
+@@ -49019,13 +_,46 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);
  			default:
@@ -1022,10 +1027,10 @@
 +	/// <param name="noGrabDelay"></param>
 +	/// <param name="reverseLookup"></param>
 +	/// <returns></returns>
- 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
+ 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
+ 	{
  		if (WorldGen.gen)
- 			return 0;
-@@ -48951,6 +_,9 @@
+@@ -49034,6 +_,9 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
@@ -1035,7 +1040,7 @@
  		if (Main.tenthAnniversaryWorld) {
  			if (Type == 58) {
  				Type = Main.rand.NextFromList(new short[3] {
-@@ -49020,6 +_,8 @@
+@@ -49103,6 +_,8 @@
  		if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
  			item.newAndShiny = true;
  
@@ -1044,7 +1049,7 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -49097,14 +_,17 @@
+@@ -49182,14 +_,17 @@
  					continue;
  
  				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -1065,15 +1070,16 @@
  					if (type == 4143)
  						num3 -= (float)manaGrabRange;
  
-@@ -49123,17 +_,30 @@
+@@ -49208,10 +_,22 @@
  		}
  	}
  
 -	public Item Clone() => (Item)MemberwiseClone();
 -	public Item DeepClone() => (Item)MemberwiseClone();
 -
--	public bool IsTheSameAs(Item compareItem) {
-+	public Item Clone() {
+-	public bool IsTheSameAs(Item compareItem)
++	public Item Clone()
++	{
 +		Item newItem = (Item)MemberwiseClone();
 +
 +		newItem.ModItem = ModItem?.Clone(newItem);
@@ -1087,21 +1093,22 @@
 +	internal Item DeepClone() => Clone();
 +
 +	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
-+	internal bool IsTheSameAs(Item compareItem) {
++	internal bool IsTheSameAs(Item compareItem)
+ 	{
  		if (netID == compareItem.netID)
  			return type == compareItem.type;
- 
+@@ -49219,7 +_,9 @@
  		return false;
  	}
  
 +	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
 +	//TODO change to !IsNetSyncEquivalent ?
--	public bool IsNotTheSameAs(Item compareItem) {
-+	internal bool IsNotTheSameAs(Item compareItem) {
+-	public bool IsNotTheSameAs(Item compareItem)
++	internal bool IsNotTheSameAs(Item compareItem)
+ 	{
  		if (netID == compareItem.netID && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
- 
-@@ -49161,6 +_,8 @@
+@@ -49251,6 +_,8 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
@@ -1109,8 +1116,8 @@
 +		globalItems = new Instanced<GlobalItem>[0];
  	}
  
- 	public void OnPurchase(Item item) {
-@@ -49181,7 +_,7 @@
+ 	public void OnPurchase(Item item)
+@@ -49274,7 +_,7 @@
  		if (context == ItemSerializationContext.SavingAndLoading) {
  			writer.Write(netID);
  			writer.Write(stack);
@@ -1119,7 +1126,7 @@
  		}
  	}
  
-@@ -49192,7 +_,7 @@
+@@ -49286,7 +_,7 @@
  			Prefix(reader.ReadByte());
  		}
  
@@ -1128,15 +1135,15 @@
  			TurnToAir();
  	}
  
-@@ -49205,6 +_,7 @@
- 
- 	public void Refresh(bool onlyIfVariantChanged = true) {
+@@ -49301,6 +_,7 @@
+ 	public void Refresh(bool onlyIfVariantChanged = true)
+ 	{
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
 +			/*
  			bool flag = favorited;
  			int num = stack;
  			int num2 = netID;
-@@ -49213,6 +_,13 @@
+@@ -49309,6 +_,13 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;

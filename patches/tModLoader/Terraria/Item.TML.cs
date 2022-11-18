@@ -125,14 +125,16 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <summary>
 	/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
 	/// </summary>
-	public bool IsNotSameTypePrefixAndStack(Item compareItem) {
+	public bool IsNotSameTypePrefixAndStack(Item compareItem)
+	{
 		if (netID == compareItem.netID && stack == compareItem.stack)
 			return prefix != compareItem.prefix;
 
 		return true;
 	}
 
-	internal static void PopulateMaterialCache() {
+	internal static void PopulateMaterialCache()
+	{
 		for (int i = 0; i < Recipe.numRecipes; i++) {
 			foreach (Item item in Main.recipe[i].requiredItem) {
 				ItemID.Sets.IsAMaterial[item.type] = true;
@@ -165,7 +167,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-	private void ApplyItemAnimationCompensationsToVanillaItems() {
+	private void ApplyItemAnimationCompensationsToVanillaItems()
+	{
 		// #2351
 		// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 		// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
@@ -179,12 +182,14 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		}
 	}
 
-	private void UndoItemAnimationCompensations() {
+	private void UndoItemAnimationCompensations()
+	{
 		useAnimation -= currentUseAnimationCompensation;
 		currentUseAnimationCompensation = 0;
 	}
 
-	private void RestoreMeleeSpeedBehaviorOnVanillaItems() {
+	private void RestoreMeleeSpeedBehaviorOnVanillaItems()
+	{
 		if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type]) {
 			if (noMelee)
 				DamageType = DamageClass.MeleeNoSpeed;
@@ -194,7 +199,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	}
 
 	// Internal utility method. Move somewhere, if there's a better place.
-	internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle) {
+	internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle)
+	{
 		int droppedItemId = NewItem(source, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
 		var droppedItem = Main.item[droppedItemId];
 

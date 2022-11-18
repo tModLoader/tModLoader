@@ -15,7 +15,7 @@
  [ComImport]
  [CompilerGenerated]
  [Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
-@@ -12,4 +_,51 @@
+@@ -12,4 +_,53 @@
  public interface UPnPNAT : IUPnPNAT
  {
  }
@@ -35,7 +35,8 @@
 +
 +	private class MappingCollection : IStaticPortMappingCollection
 +	{
-+		public IStaticPortMapping Add(int lExternalPort, string bstrProtocol, int lInternalPort, string bstrInternalClient, bool bEnabled, string bstrDescription) {
++		public IStaticPortMapping Add(int lExternalPort, string bstrProtocol, int lInternalPort, string bstrInternalClient, bool bEnabled, string bstrDescription)
++		{
 +			UPnP.Open(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort, (ushort)lInternalPort, bstrDescription);
 +			return new StaticPortMapping
 +			(
@@ -47,7 +48,8 @@
 +
 +		public void Remove(int lExternalPort, string bstrProtocol) => UPnP.Close(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort);
 +
-+		public IEnumerator GetEnumerator() {
++		public IEnumerator GetEnumerator()
++		{
 +			for (int i = 0; ; i++) {
 +				Dictionary<string, string> args;
 +				try {

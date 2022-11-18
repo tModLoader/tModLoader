@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -312,7 +_,7 @@
+@@ -321,7 +_,7 @@
  		if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
  			return;
  
@@ -17,7 +17,7 @@
  			Main.tile[i, j].wall = 0;
  
  		WorldGen.UpdateMapTile(i, j);
-@@ -327,43 +_,39 @@
+@@ -336,43 +_,39 @@
  		bool flag = Main.ShouldShowInvisibleWalls();
  		if (j - 1 >= 0) {
  			Tile tile2 = Main.tile[i, j - 1];
@@ -65,7 +65,7 @@
  		}
  		else {
  			num2 = tile.wallFrameNumber();
-@@ -372,6 +_,10 @@
+@@ -381,6 +_,10 @@
  		if (num == 15)
  			num += centerWallFrameLookup[i % 3][j % 3];
  

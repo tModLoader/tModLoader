@@ -6,10 +6,10 @@
  using System.Collections.Generic;
  using System.IO;
  using Microsoft.Xna.Framework.Audio;
-@@ -51,15 +_,33 @@
- 	}
+@@ -57,16 +_,34 @@
  
- 	private void FindLoops() {
+ 	private void FindLoops()
+ 	{
 +		// Vanilla: Code is faulty, tries to parse the whole comment as one integer.
 +		/*
  		IDictionary<string, IList<string>> all = _vorbisReader.Tags.All;
@@ -32,11 +32,12 @@
  
 +	// See the above.
 +	/*
- 	private void TryReadingTag(IDictionary<string, IList<string>> tags, string entryName, ref int result) {
+ 	private void TryReadingTag(IDictionary<string, IList<string>> tags, string entryName, ref int result)
+ 	{
  		if (tags.TryGetValue(entryName, out var value) && value.Count > 0 && int.TryParse(value[0], out var result2))
  			result = result2;
  	}
 +	*/
  
- 	public override void Dispose() {
- 		_soundEffectInstance.Dispose();
+ 	public override void Dispose()
+ 	{

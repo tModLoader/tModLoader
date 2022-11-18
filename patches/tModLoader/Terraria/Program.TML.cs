@@ -15,7 +15,8 @@ public static partial class Program
 {
 	public static string SavePathShared { get; private set; } // Points to the Stable tModLoader save folder, used for Mod Sources only currently
 
-	private static IEnumerable<MethodInfo> GetAllMethods(Type type) {
+	private static IEnumerable<MethodInfo> GetAllMethods(Type type)
+	{
 		return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 	}
 
@@ -25,20 +26,23 @@ public static partial class Program
 		where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
 		select method;
 
-	private static void ForceJITOnMethod(MethodInfo method) {
+	private static void ForceJITOnMethod(MethodInfo method)
+	{
 		RuntimeHelpers.PrepareMethod(method.MethodHandle);
 
 		Interlocked.Increment(ref ThingsLoaded);
 	}
 
-	private static void ForceStaticInitializers(Type[] types) {
+	private static void ForceStaticInitializers(Type[] types)
+	{
 		foreach (Type type in types) {
 			if (!type.IsGenericType)
 				RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 		}
 	}
 
-	private static void PortOldSaveDirectories() {
+	private static void PortOldSaveDirectories()
+	{
 		// PortOldSaveDirectories should only run once no matter which branch is run first.
 
 		// Port old file format users
@@ -70,7 +74,8 @@ public static partial class Program
 		Logging.tML.Info($"Folder Renames Success");
 	}
 
-	private static void PortCommonFiles() {
+	private static void PortCommonFiles()
+	{
 		// Only create and port config files from stable if needed.
 		if(BuildInfo.IsDev || BuildInfo.IsPreview) {
 			var releasePath = Path.Combine(SavePath, ReleaseFolder);
@@ -85,7 +90,8 @@ public static partial class Program
 		}
 	}
 
-	private static void SetSavePath() {
+	private static void SetSavePath()
+	{
 		bool saveHere = File.Exists("savehere.txt");
 		bool tmlSaveDirectoryParameterSet = LaunchParameters.ContainsKey("-tmlsavedirectory");
 
@@ -124,7 +130,8 @@ public static partial class Program
 	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
 
 	// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.
-	private static void AttemptSupportHighDPI(bool isServer) {
+	private static void AttemptSupportHighDPI(bool isServer)
+	{
 		if (isServer)
 			return;
 

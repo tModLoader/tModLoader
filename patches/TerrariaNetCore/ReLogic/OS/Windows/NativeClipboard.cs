@@ -34,7 +34,8 @@ class NativeClipboard
 	[DllImport("Kernel32.dll", SetLastError = true)]
 	private static extern int GlobalSize(IntPtr hMem);
 
-	public static void SetText(string text) {
+	public static void SetText(string text)
+	{
 		OpenClipboard(IntPtr.Zero);
 
 		var ptr = Marshal.StringToHGlobalUni(text);
@@ -44,7 +45,9 @@ class NativeClipboard
 
 		//Marshal.FreeHGlobal(ptr);
 	}
-	public static bool TryGetText(out string text) {
+
+	public static bool TryGetText(out string text)
+	{
 		text = null;
 
 		if (!IsClipboardFormatAvailable(CF_UNICODETEXT)) {

@@ -29,20 +29,20 @@
 +	internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
  	private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
  
- 	public static string GetMapObjectName(int id) {
-@@ -117,7 +_,7 @@
- 	public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
+ 	public static string GetMapObjectName(int id)
+@@ -120,7 +_,7 @@
  
- 	public static LocalizedText GetNPCName(int netID) {
+ 	public static LocalizedText GetNPCName(int netID)
+ 	{
 -		if (netID > 0 && netID < 688)
 +		if (netID > 0 && netID < _npcNameCache.Length)
  			return _npcNameCache[netID];
  
  		if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -129,8 +_,10 @@
- 	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
+@@ -133,8 +_,10 @@
  
- 	public static LocalizedText GetItemName(int id) {
+ 	public static LocalizedText GetItemName(int id)
+ 	{
 +		if (id < 0)
 -		id = ItemID.FromNetId((short)id);
 +			id = ItemID.FromNetId((short)id);
@@ -52,7 +52,7 @@
  			return _itemNameCache[id];
  
  		return LocalizedText.Empty;
-@@ -320,6 +_,10 @@
+@@ -339,6 +_,10 @@
  			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
  		int id = (Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest]);
@@ -63,7 +63,7 @@
  		return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  	}
  
-@@ -459,7 +_,7 @@
+@@ -482,7 +_,7 @@
  		if (Main.dedServ)
  			return;
  

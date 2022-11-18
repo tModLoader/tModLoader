@@ -35,7 +35,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private CancellationTokenSource _cts;
 	private bool dotnetSDKFound;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_uIElement = new UIElement {
 			Width = { Percent = 0.8f },
 			MaxWidth = UICommon.MaxPanelWidth,
@@ -145,16 +146,19 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		Append(_uIElement);
 	}
 
-	private void ButtonCreateMod_OnClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void ButtonCreateMod_OnClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(11);
 		Main.menuMode = Interface.createModID;
 	}
 
-	private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 	}
 
-	private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {
+	private void OpenSources(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		try {
 			Directory.CreateDirectory(ModCompile.ModSourcePath);
@@ -164,26 +168,30 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void BuildMods(UIMouseEvent evt, UIElement listeningElement) {
+	private void BuildMods(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		if (_modList.Count > 0)
 			Interface.buildMod.BuildAll(false);
 	}
 
-	private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
+	private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		if (_modList.Count > 0)
 			Interface.buildMod.BuildAll(true);
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
 		DrawMigrationGuideLink();
 	}
 
 	//TODO: simplify this method
-	private void DrawMigrationGuideLink() {
+	private void DrawMigrationGuideLink()
+	{
 		string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
 		float scale = 1f;
 
@@ -212,7 +220,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		_cts = new CancellationTokenSource();
 		ModCompile.UpdateReferencesFolder();
 		_uIPanel.Append(_uiLoader);
@@ -223,14 +232,16 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		Populate();
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		_cts?.Cancel(false);
 		_cts?.Dispose();
 		_cts = null;
 		modListViewPosition = _modList.ViewPosition;
 	}
 
-	private bool ShowInfoMessages() {
+	private bool ShowInfoMessages()
+	{
 		if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
 			ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 			ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
@@ -246,7 +257,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return false;
 	}
 
-	private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null) {
+	private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
+	{
 		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey),
 		() => {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -254,7 +266,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	private bool CheckDotnet() {
+	private bool CheckDotnet()
+	{
 		if (dotnetSDKFound)
 			return true;
 
@@ -282,7 +295,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return dotnetSDKFound;
 	}
 
-	internal void Populate() {
+	internal void Populate()
+	{
 		Task.Run(() => {
 			var modSources = ModCompile.FindModSources();
 			var modFiles = ModOrganizer.FindDevFolderMods();
@@ -294,7 +308,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 		if (!_updateNeeded) return;
 		_updateNeeded = false;

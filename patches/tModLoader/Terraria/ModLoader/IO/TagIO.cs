@@ -1,4 +1,4 @@
-﻿using Ionic.Zlib;
+using Ionic.Zlib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +30,8 @@ public static class TagIO
 		internal Func<BinaryReader, T> reader;
 		internal Action<BinaryWriter, T> writer;
 
-		public PayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer) {
+		public PayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer)
+		{
 			this.reader = reader;
 			this.writer = writer;
 		}
@@ -39,7 +40,8 @@ public static class TagIO
 		public override object Read(BinaryReader r) => reader(r);
 		public override void Write(BinaryWriter w, object v) => writer(w, (T)v);
 
-		public override IList ReadList(BinaryReader r, int size) {
+		public override IList ReadList(BinaryReader r, int size)
+		{
 			var list = new List<T>(size);
 			for (int i = 0; i < size; i++)
 				list.Add(reader(r));
@@ -47,7 +49,8 @@ public static class TagIO
 			return list;
 		}
 
-		public override void WriteList(BinaryWriter w, IList list) {
+		public override void WriteList(BinaryWriter w, IList list)
+		{
 			foreach (T t in list)
 				writer(w, t);
 		}
@@ -66,7 +69,8 @@ public static class TagIO
 
 		public ClassPayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer,
 				Func<T, T> clone, Func<T>? makeDefault = null) :
-				base(reader, writer) {
+				base(reader, writer)
+		{
 			this.clone = clone;
 			this.makeDefault = makeDefault;
 		}
@@ -162,14 +166,16 @@ public static class TagIO
 
 	private static readonly PayloadHandler<string> StringHandler = (PayloadHandler<string>)PayloadHandlers[8];
 
-	private static PayloadHandler GetHandler(int id) {
+	private static PayloadHandler GetHandler(int id)
+	{
 		if (id < 1 || id >= PayloadHandlers.Length)
 			throw new IOException("Invalid NBT payload id: " + id);
 
 		return PayloadHandlers[id];
 	}
 
-	private static int GetPayloadId(Type t) {
+	private static int GetPayloadId(Type t)
+	{
 		if (PayloadIDs.TryGetValue(t, out int id))
 			return id;
 
@@ -179,7 +185,8 @@ public static class TagIO
 		throw new IOException($"Invalid NBT payload type '{t}'");
 	}
 
-	public static object Serialize(object value) {
+	public static object Serialize(object value)
+	{
 		ArgumentNullException.ThrowIfNull(value);
 
 		var type = value.GetType();
@@ -207,12 +214,14 @@ public static class TagIO
 		return serializedList;
 	}
 
-	public static T Deserialize<T>(object? tag) {
+	public static T Deserialize<T>(object? tag)
+	{
 		if (tag is T t) return t;
 		return (T)Deserialize(typeof(T), tag);
 	}
 
-	public static object Deserialize(Type type, object? tag) {
+	public static object Deserialize(Type type, object? tag)
+	{
 		ArgumentNullException.ThrowIfNull(type);
 
 		if (type.IsInstanceOfType(tag))
@@ -290,7 +299,8 @@ public static class TagIO
 
 	public static T Clone<T>(T o) where T : notnull => (T)GetHandler(GetPayloadId(o.GetType())).Clone(o);
 
-	public static object? ReadTag(BinaryReader r, out string? name) {
+	public static object? ReadTag(BinaryReader r, out string? name)
+	{
 		int id = r.ReadByte();
 		if (id == 0) {
 			name = null;
@@ -301,14 +311,16 @@ public static class TagIO
 		return PayloadHandlers[id].Read(r);
 	}
 
-	public static void WriteTag(string name, object tag, BinaryWriter w) {
+	public static void WriteTag(string name, object tag, BinaryWriter w)
+	{
 		int id = GetPayloadId(tag.GetType());
 		w.Write((byte)id);
 		StringHandler.writer(w, name);
 		PayloadHandlers[id].Write(w, tag);
 	}
 
-	public static TagCompound FromFile(string path, bool compressed = true) {
+	public static TagCompound FromFile(string path, bool compressed = true)
+	{
 		try {
 			using (Stream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
 				return FromStream(fs, compressed);
@@ -318,12 +330,14 @@ public static class TagIO
 		}
 	}
 
-	public static TagCompound FromStream(Stream stream, bool compressed = true) {
+	public static TagCompound FromStream(Stream stream, bool compressed = true)
+	{
 		if (compressed) stream = new GZipStream(stream, CompressionMode.Decompress);
 		return Read(new BigEndianReader(stream));
 	}
 
-	public static TagCompound Read(BinaryReader reader) {
+	public static TagCompound Read(BinaryReader reader)
+	{
 		var tag = ReadTag(reader, out string? name);
 		if (tag is not TagCompound compound)
 			throw new IOException("Root tag not a TagCompound");
@@ -331,7 +345,8 @@ public static class TagIO
 		return compound;
 	}
 
-	public static void ToFile(TagCompound root, string path, bool compress = true) {
+	public static void ToFile(TagCompound root, string path, bool compress = true)
+	{
 		try {
 			using (Stream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
 				ToStream(root, fs, compress);
@@ -341,7 +356,8 @@ public static class TagIO
 		}
 	}
 
-	public static void ToStream(TagCompound root, Stream stream, bool compress = true) {
+	public static void ToStream(TagCompound root, Stream stream, bool compress = true)
+	{
 		if (compress) stream = new GZipStream(stream, CompressionMode.Compress, true);
 		Write(root, new BigEndianWriter(stream));
 		if (compress) stream.Close();

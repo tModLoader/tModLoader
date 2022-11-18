@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.Default;
+namespace Terraria.ModLoader.Default;
 
 internal partial class LegacyUnloadedTilesSystem
 {
@@ -18,13 +18,15 @@ internal partial class LegacyUnloadedTilesSystem
 			}
 		}
 
-		public TileFrame(int value) {
+		public TileFrame(int value)
+		{
 			frameX = 0;
 			frameY = 0;
 			FrameID = value;
 		}
 
-		public TileFrame(short frameX, short frameY) {
+		public TileFrame(short frameX, short frameY)
+		{
 			this.frameX = frameX;
 			this.frameY = frameY;
 		}

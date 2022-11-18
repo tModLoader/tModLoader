@@ -37,7 +37,8 @@ public class EquipTexture
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="type"></param>
-	public virtual void FrameEffects(Player player, EquipType type) {
+	public virtual void FrameEffects(Player player, EquipType type)
+	{
 		if (Item != null) {
 			Item.EquipFrameEffects(player, type);
 		}
@@ -50,7 +51,8 @@ public class EquipTexture
 	/// <param name="body"></param>
 	/// <param name="legs"></param>
 	/// <returns></returns>
-	public virtual bool IsVanitySet(int head, int body, int legs) {
+	public virtual bool IsVanitySet(int head, int body, int legs)
+	{
 		if (Item == null) {
 			return false;
 		}
@@ -61,7 +63,8 @@ public class EquipTexture
 	/// Allows you to create special effects (such as the necro armor's hurt noise) when the player wears this equipment texture's vanity set. This hook is called regardless of whether the player is frozen in any way. By default this will call the associated ModItem's PreUpdateVanitySet if there is an associated ModItem.
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void PreUpdateVanitySet(Player player) {
+	public virtual void PreUpdateVanitySet(Player player)
+	{
 		if (Item != null) {
 			Item.PreUpdateVanitySet(player);
 		}
@@ -71,7 +74,8 @@ public class EquipTexture
 	/// Allows you to create special effects (such as dust) when the player wears this equipment texture's vanity set. This hook will only be called if the player is not frozen in any way. By default this will call the associated ModItem's UpdateVanitySet if there is an associated ModItem.
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void UpdateVanitySet(Player player) {
+	public virtual void UpdateVanitySet(Player player)
+	{
 		if (Item != null) {
 			Item.UpdateVanitySet(player);
 		}
@@ -81,7 +85,8 @@ public class EquipTexture
 	/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. By default this will call the associated ModItem's ArmorSetShadows if there is an associated ModItem.
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void ArmorSetShadows(Player player) {
+	public virtual void ArmorSetShadows(Player player)
+	{
 		if (Item != null) {
 			Item.ArmorSetShadows(player);
 		}
@@ -95,7 +100,8 @@ public class EquipTexture
 	/// <param name="male"></param>
 	/// <param name="equipSlot"></param>
 	/// <param name="robes"></param>
-	public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes) {
+	public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes)
+	{
 		if (Item != null) {
 			Item.SetMatch(male, ref equipSlot, ref robes);
 		}
@@ -109,7 +115,8 @@ public class EquipTexture
 	/// <param name="color"></param>
 	/// <param name="glowMask"></param>
 	/// <param name="glowMaskColor"></param>
-	public virtual void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor) {
+	public virtual void DrawArmorColor(Player drawPlayer, float shadow, ref Color color, ref int glowMask, ref Color glowMaskColor)
+	{
 		if (Item != null) {
 			Item.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 		}
@@ -122,7 +129,8 @@ public class EquipTexture
 	/// <param name="shadow"></param>
 	/// <param name="glowMask"></param>
 	/// <param name="color"></param>
-	public virtual void ArmorArmGlowMask(Player drawPlayer, float shadow, ref int glowMask, ref Color color) {
+	public virtual void ArmorArmGlowMask(Player drawPlayer, float shadow, ref int glowMask, ref Color color)
+	{
 		if (Item != null) {
 			Item.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 		}
@@ -138,7 +146,8 @@ public class EquipTexture
 	/// <param name="maxAscentMultiplier"></param>
 	/// <param name="constantAscend"></param>
 	public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
-ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
+ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+	{
 		if (Item != null) {
 			Item.VerticalWingSpeeds(player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier,
 				ref maxAscentMultiplier, ref constantAscend);
@@ -151,7 +160,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="player"></param>
 	/// <param name="speed"></param>
 	/// <param name="acceleration"></param>
-	public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration) {
+	public virtual void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
+	{
 		if (Item != null) {
 			Item.HorizontalWingSpeeds(player, ref speed, ref acceleration);
 		}
@@ -163,7 +173,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="player"></param>
 	/// <param name="inUse"></param>
 	/// <returns></returns>
-	public virtual bool WingUpdate(Player player, bool inUse) {
+	public virtual bool WingUpdate(Player player, bool inUse)
+	{
 		return Item?.WingUpdate(player, inUse) ?? false;
 	}
 }

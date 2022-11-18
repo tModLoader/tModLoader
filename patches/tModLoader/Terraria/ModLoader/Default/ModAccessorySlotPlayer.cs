@@ -26,7 +26,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
 	public int UnloadedSlotCount { get; private set; } = 0;
 
-	public ModAccessorySlotPlayer() {
+	public ModAccessorySlotPlayer()
+	{
 		foreach (var slot in Loader.list) {
 			if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase)) {
 				slots.Add(slot.FullName, slot.Type);
@@ -40,7 +41,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 		ResizeAccesoryArrays(slots.Count);
 	}
 
-	internal void ResizeAccesoryArrays(int newSize) {
+	internal void ResizeAccesoryArrays(int newSize)
+	{
 		if (newSize < slots.Count) {
 			return;
 		}
@@ -58,14 +60,16 @@ public class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		tag["order"] = slots.Keys.ToList();
 		tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
 		tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
 		tag["visible"] = exHideAccessory.ToList();
 	}
 
-	public override void LoadData(TagCompound tag) {
+	public override void LoadData(TagCompound tag)
+	{
 		var order = tag.GetList<string>("order").ToList();
 		var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
 		var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
@@ -96,7 +100,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	/// <summary>
 	/// Updates functional slot visibility information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
 	/// </summary>
-	public override void UpdateVisibleAccessories() {
+	public override void UpdateVisibleAccessories()
+	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
@@ -109,7 +114,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	/// <summary>
 	/// Updates vanity slot information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
 	/// </summary>
-	public override void UpdateVisibleVanityAccessories() {
+	public override void UpdateVisibleVanityAccessories()
+	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
@@ -125,7 +131,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	/// Mirrors Player.UpdateDyes() for modded slots
 	/// Runs On Player Select, so is Player instance sensitive!!!
 	/// </summary>
-	public override void UpdateDyes() {
+	public override void UpdateDyes()
+	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int i = 0; i < SlotCount * 2; i++) {
@@ -139,7 +146,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	/// <summary>
 	/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
 	/// </summary>
-	public override void UpdateEquips() {
+	public override void UpdateEquips()
+	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
@@ -150,7 +158,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	}
 
 	// Death drops code, should run prior to dropping other items in case conditions are used based on player's current equips
-	public void DropItems(IEntitySource itemSource) {
+	public void DropItems(IEntitySource itemSource)
+	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 		var pos = Player.position + Player.Size / 2;
 		for (int i = 0; i < SlotCount; i++) {
@@ -163,7 +172,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 	}
 
 	// The following netcode is adapted from ChickenBone's UtilitySlots:
-	public override void clientClone(ModPlayer clientClone) {
+	public override void clientClone(ModPlayer clientClone)
+	{
 		var defaultInv = (ModAccessorySlotPlayer)clientClone;
 		for (int i = 0; i < LoadedSlotCount; i++) {
 			defaultInv.exAccessorySlot[i] = exAccessorySlot[i].Clone();
@@ -173,7 +183,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+	{
 		for (int i = 0; i < LoadedSlotCount; i++) {
 			NetHandler.SendSlot(toWho, Player.whoAmI, i, exAccessorySlot[i]);
 			NetHandler.SendSlot(toWho, Player.whoAmI, i + LoadedSlotCount, exAccessorySlot[i + SlotCount]);
@@ -182,7 +193,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	public override void SendClientChanges(ModPlayer clientPlayer) {
+	public override void SendClientChanges(ModPlayer clientPlayer)
+	{
 		var clientInv = (ModAccessorySlotPlayer)clientPlayer;
 		for (int i = 0; i < LoadedSlotCount; i++) {
 			if (exAccessorySlot[i].IsNotTheSameAs(clientInv.exAccessorySlot[i]))
@@ -208,7 +220,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 		public const byte Client = 1;
 		public const byte SP = 0;
 
-		public static void SendSlot(int toWho, int plr, int slot, Item item) {
+		public static void SendSlot(int toWho, int plr, int slot, Item item)
+		{
 			var p = ModLoaderMod.GetPacket(ModLoaderMod.AccessorySlotPacket);
 
 			p.Write(InventorySlot);
@@ -222,7 +235,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 			p.Send(toWho, plr);
 		}
 
-		private static void HandleSlot(BinaryReader r, int fromWho) {
+		private static void HandleSlot(BinaryReader r, int fromWho)
+		{
 			if (Main.netMode == Client)
 				fromWho = r.ReadByte();
 
@@ -237,7 +251,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 				SendSlot(-1, fromWho, slot, item);
 		}
 
-		public static void SendVisualState(int toWho, int plr, int slot, bool hideVisual) {
+		public static void SendVisualState(int toWho, int plr, int slot, bool hideVisual)
+		{
 			var p = ModLoaderMod.GetPacket(ModLoaderMod.AccessorySlotPacket);
 
 			p.Write(VisualState);
@@ -251,7 +266,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 			p.Send(toWho, plr);
 		}
 
-		private static void HandleVisualState(BinaryReader r, int fromWho) {
+		private static void HandleVisualState(BinaryReader r, int fromWho)
+		{
 			if (Main.netMode == Client)
 				fromWho = r.ReadByte();
 
@@ -265,7 +281,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 				SendVisualState(-1, fromWho, slot, dPlayer.exHideAccessory[slot]);
 		}
 
-		public static void HandlePacket(BinaryReader r, int fromWho) {
+		public static void HandlePacket(BinaryReader r, int fromWho)
+		{
 			switch (r.ReadByte()) {
 				case InventorySlot:
 					HandleSlot(r, fromWho);
@@ -276,7 +293,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 			}
 		}
 
-		public static void SetSlot(sbyte slot, Item item, ModAccessorySlotPlayer dPlayer) {
+		public static void SetSlot(sbyte slot, Item item, ModAccessorySlotPlayer dPlayer)
+		{
 			if (slot < 0)
 				dPlayer.exDyesAccessory[-(slot + 1)] = item;
 			else

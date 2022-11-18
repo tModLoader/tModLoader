@@ -22,4 +22,4 @@
 +		set => _sourceProjectileType = value??-1;
  	}
  
- 	public bool TryGetCausingEntity(out Entity entity) {
+ 	public bool TryGetCausingEntity(out Entity entity)

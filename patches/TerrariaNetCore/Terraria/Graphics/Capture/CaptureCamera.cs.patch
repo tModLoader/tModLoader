@@ -19,7 +19,7 @@
  	private class CaptureChunk
  	{
  		public readonly Microsoft.Xna.Framework.Rectangle Area;
-@@ -206,9 +_,12 @@
+@@ -212,9 +_,12 @@
  			return false;
  
  		try {
@@ -32,7 +32,7 @@
  			}
  			else {
  				using Bitmap bitmap = new Bitmap(width, height);
-@@ -220,6 +_,7 @@
+@@ -226,6 +_,7 @@
  				bitmap.Save(filename, imageFormat);
  				bitmap.Dispose();
  			}
@@ -40,7 +40,7 @@
  
  			return true;
  		}
-@@ -235,7 +_,9 @@
+@@ -242,7 +_,9 @@
  		if (!Utils.TryCreatingDirectory(text))
  			return;
  
@@ -50,7 +50,7 @@
  			int elementCount = texture.Width * texture.Height * 4;
  			texture.GetData(_outputData, 0, elementCount);
  			int num = 0;
-@@ -255,6 +_,7 @@
+@@ -262,6 +_,7 @@
  
  			using FileStream stream = File.Create(text2);
  			PlatformUtilities.SavePng(stream, width, height, width, height, _outputData);
@@ -58,11 +58,11 @@
  			return;
  		}
  
-@@ -283,6 +_,7 @@
+@@ -290,6 +_,7 @@
  		Marshal.Copy(_outputData, 0, scan, width * height * 4);
  		bitmap.UnlockBits(bitmapData);
  		bitmap.Save(text2, imageFormat);
 +#endif
  	}
  
- 	private void FinishCapture() {
+ 	private void FinishCapture()

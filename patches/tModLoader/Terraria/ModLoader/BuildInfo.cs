@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 
 namespace Terraria.ModLoader;
@@ -34,7 +34,8 @@ public static class BuildInfo
 	public static readonly string versionTag;
 	public static readonly string versionedNameDevFriendly;
 
-	static BuildInfo() {
+	static BuildInfo()
+	{
 		var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('|');
 		tMLVersion = new Version(parts[0]);
 		if (parts.Length>=2) {

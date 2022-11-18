@@ -1,4 +1,4 @@
-﻿using Ionic.Zip;
+using Ionic.Zip;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
@@ -14,7 +14,8 @@ internal static class ZipExtractFix
 	/// <summary>
 	/// When Ionic.Zip extracts an entry it uses \\ for all separators when it should use Path.DirectorySeparatorChar for platform compatibility
 	/// </summary>
-	public static void Init() {
+	public static void Init()
+	{
 		if (Path.DirectorySeparatorChar == '\\')
 			return;
 

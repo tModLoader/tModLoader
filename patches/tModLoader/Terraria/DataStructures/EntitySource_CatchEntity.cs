@@ -21,7 +21,8 @@ public class EntitySource_CatchEntity : IEntitySource
 
 	public string? Context { get; }
 
-	public EntitySource_CatchEntity(Entity entity, Entity caughtEntity, string? context = null) {
+	public EntitySource_CatchEntity(Entity entity, Entity caughtEntity, string? context = null)
+	{
 		Entity = entity;
 		CaughtEntity = caughtEntity;
 		Context = context;

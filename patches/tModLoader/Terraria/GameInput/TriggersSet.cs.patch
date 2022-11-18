@@ -42,7 +42,7 @@
  	public bool Up {
  		get {
  			return KeyStatus["Up"];
-@@ -542,6 +_,10 @@
+@@ -545,6 +_,10 @@
  		foreach (string knownTrigger in PlayerInput.KnownTriggers) {
  			KeyStatus.Add(knownTrigger, value: false);
  		}
@@ -52,8 +52,8 @@
 +		}
  	}
  
- 	public Vector2 GetNavigatorDirections() {
-@@ -616,6 +_,8 @@
+ 	public Vector2 GetNavigatorDirections()
+@@ -621,6 +_,8 @@
  
  		if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
  			HotbarScrollCD--;
@@ -61,4 +61,4 @@
 +		PlayerLoader.ProcessTriggers(p, this);
  	}
  
- 	public void CopyIntoDuringChat(Player p) {
+ 	public void CopyIntoDuringChat(Player p)

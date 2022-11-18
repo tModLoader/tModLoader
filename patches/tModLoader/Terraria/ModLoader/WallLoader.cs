@@ -41,7 +41,8 @@ public static class WallLoader
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
-	internal static int ReserveWallID() {
+	internal static int ReserveWallID()
+	{
 		if (ModNet.AllowVanillaClients) throw new Exception("Adding walls breaks vanilla client compatibility");
 
 		int reserveID = nextWall;
@@ -54,11 +55,13 @@ public static class WallLoader
 	/// <summary>
 	/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
 	/// </summary>
-	public static ModWall GetWall(int type) {
+	public static ModWall GetWall(int type)
+	{
 		return type >= WallID.Count && type < WallCount ? walls[type - WallID.Count] : null;
 	}
 
-	private static void Resize2DArray<T>(ref T[,] array, int newSize) {
+	private static void Resize2DArray<T>(ref T[,] array, int newSize)
+	{
 		int dim1 = array.GetLength(0);
 		int dim2 = array.GetLength(1);
 		T[,] newArray = new T[newSize, dim2];
@@ -70,7 +73,8 @@ public static class WallLoader
 		array = newArray;
 	}
 
-	internal static void ResizeArrays(bool unloading = false) {
+	internal static void ResizeArrays(bool unloading = false)
+	{
 		//Textures
 		Array.Resize(ref TextureAssets.Wall, nextWall);
 
@@ -107,7 +111,8 @@ public static class WallLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		loaded = false;
 		walls.Clear();
 		nextWall = WallID.Count;
@@ -118,7 +123,8 @@ public static class WallLoader
 	//in Terraria.IO.WorldFile.SaveWorldTiles increase length of array by 1 from 13 to 14
 	//in Terraria.IO.WorldFile.SaveWorldTiles inside block if (tile.wall != 0) after incrementing num2
 	//  call WallLoader.WriteType(tile.wall, array, ref num2, ref b3);
-	internal static void WriteType(ushort wall, byte[] data, ref int index, ref byte flags) {
+	internal static void WriteType(ushort wall, byte[] data, ref int index, ref byte flags)
+	{
 		if (wall > 255) {
 			data[index] = (byte)(wall >> 8);
 			index++;
@@ -130,7 +136,8 @@ public static class WallLoader
 	//in Terraria.IO.WorldFile.ValidateWorld before if ((b2 & 16) == 16)
 	//  replace fileIO.ReadByte(); with ushort wall = fileIO.ReadByte();
 	//  ushort _ = 0; WallLoader.ReadType(ref wall, fileIO, b2, new Dictionary<int, int>());
-	internal static void ReadType(ref ushort wall, BinaryReader reader, byte flags, IDictionary<int, int> wallTable) {
+	internal static void ReadType(ref ushort wall, BinaryReader reader, byte flags, IDictionary<int, int> wallTable)
+	{
 		if ((flags & 32) == 32) {
 			wall |= (ushort)(reader.ReadByte() << 8);
 		}
@@ -139,7 +146,8 @@ public static class WallLoader
 		}
 	}
 
-	public static bool KillSound(int i, int j, int type, bool fail) {
+	public static bool KillSound(int i, int j, int type, bool fail)
+	{
 		foreach (var hook in HookKillSound) {
 			if (!hook(i, j, type, fail))
 				return false;
@@ -160,7 +168,8 @@ public static class WallLoader
 	}
 	//in Terraria.WorldGen.KillWall after if statement setting num to 3 add
 	//  WallLoader.NumDust(i, j, tile.wall, fail, ref num);
-	public static void NumDust(int i, int j, int type, bool fail, ref int numDust) {
+	public static void NumDust(int i, int j, int type, bool fail, ref int numDust)
+	{
 		GetWall(type)?.NumDust(i, j, fail, ref numDust);
 
 		foreach (var hook in HookNumDust) {
@@ -169,7 +178,8 @@ public static class WallLoader
 	}
 	//in Terraria.WorldGen.KillWall before if statements creating dust add
 	//  if(!WallLoader.CreateDust(i, j, tile.wall, ref int num2)) { continue; }
-	public static bool CreateDust(int i, int j, int type, ref int dustType) {
+	public static bool CreateDust(int i, int j, int type, ref int dustType)
+	{
 		foreach (var hook in HookCreateDust) {
 			if (!hook(i, j, type, ref dustType)) {
 				return false;
@@ -179,7 +189,8 @@ public static class WallLoader
 	}
 	//in Terraria.WorldGen.KillWall replace if (num4 > 0) with
 	//  if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
-	public static bool Drop(int i, int j, int type, ref int dropType) {
+	public static bool Drop(int i, int j, int type, ref int dropType)
+	{
 		foreach (var hook in HookDrop) {
 			if (!hook(i, j, type, ref dropType)) {
 				return false;
@@ -189,7 +200,8 @@ public static class WallLoader
 	}
 	//in Terraria.WorldGen.KillWall after if statements setting fail to true call
 	//  WallLoader.KillWall(i, j, tile.wall, ref fail);
-	public static void KillWall(int i, int j, int type, ref bool fail) {
+	public static void KillWall(int i, int j, int type, ref bool fail)
+	{
 		GetWall(type)?.KillWall(i, j, ref fail);
 
 		foreach (var hook in HookKillWall) {
@@ -199,7 +211,8 @@ public static class WallLoader
 
 	//in Terraria.Player.PlaceThing_Walls after bool flag = true;, before PlaceThing_TryReplacingWalls
 	//  flag &= WallLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
-	public static bool CanPlace(int i, int j, int type) {
+	public static bool CanPlace(int i, int j, int type)
+	{
 		foreach (var hook in HookCanPlace) {
 			if (!hook(i, j, type)) {
 				return false;
@@ -208,7 +221,8 @@ public static class WallLoader
 		return GetWall(type)?.CanPlace(i, j) ?? true;
 	}
 
-	public static bool CanExplode(int i, int j, int type) {
+	public static bool CanExplode(int i, int j, int type)
+	{
 		foreach (var hook in HookCanExplode) {
 			if (!hook(i, j, type)) {
 				return false;
@@ -218,7 +232,8 @@ public static class WallLoader
 	}
 	//in Terraria.Lighting.PreRenderPhase after wall modifies light call
 	//  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
-	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
+	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+	{
 		GetWall(type)?.ModifyLight(i, j, ref r, ref g, ref b);
 
 		foreach (var hook in HookModifyLight) {
@@ -228,7 +243,8 @@ public static class WallLoader
 	//in Terraria.WorldGen.UpdateWorld after each call to TileLoader.RandomUpdate call
 	//  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
 	//  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
-	public static void RandomUpdate(int i, int j, int type) {
+	public static void RandomUpdate(int i, int j, int type)
+	{
 		GetWall(type)?.RandomUpdate(i, j);
 
 		foreach (var hook in HookRandomUpdate) {
@@ -239,7 +255,8 @@ public static class WallLoader
 	//in Terraria.Framing.WallFrame after the 'if (num == 15)' block
 	//	if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
 	//		return;
-	public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
+	public static bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber)
+	{
 		ModWall modWall = GetWall(type);
 
 		if (modWall != null) {
@@ -256,7 +273,8 @@ public static class WallLoader
 	}
 
 	//in Terraria.Main.Update after vanilla wall animations call WallLoader.AnimateWalls();
-	public static void AnimateWalls() {
+	public static void AnimateWalls()
+	{
 		if (loaded) {
 			for (int i = 0; i < walls.Count; i++) {
 				ModWall modWall = walls[i];
@@ -267,7 +285,8 @@ public static class WallLoader
 	//in Terraria.Main.DrawWalls before if statements that do the drawing add
 	//  if(!WallLoader.PreDraw(j, i, wall, Main.spriteBatch))
 	//  { WallLoader.PostDraw(j, i, wall, Main.spriteBatch); continue; }
-	public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public static bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 		foreach (var hook in HookPreDraw) {
 			if (!hook(i, j, type, spriteBatch)) {
 				return false;
@@ -277,7 +296,8 @@ public static class WallLoader
 	}
 	//in Terraria.Main.DrawWalls after wall outlines are drawn call
 	//  WallLoader.PostDraw(j, i, wall, Main.spriteBatch);
-	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 		GetWall(type)?.PostDraw(i, j, spriteBatch);
 
 		foreach (var hook in HookPostDraw) {
@@ -285,7 +305,8 @@ public static class WallLoader
 		}
 	}
 
-	public static void PlaceInWorld(int i, int j, Item item) {
+	public static void PlaceInWorld(int i, int j, Item item)
+	{
 		int type = item.createWall;
 		if (type < 0)
 			return;

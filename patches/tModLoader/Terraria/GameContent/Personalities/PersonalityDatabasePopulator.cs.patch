@@ -6,15 +6,15 @@
  namespace Terraria.GameContent.Personalities;
  
  public class PersonalityDatabasePopulator
-@@ -10,6 +_,7 @@
- 	}
+@@ -12,6 +_,7 @@
  
- 	private void Populate_BiomePreferences(PersonalityDatabase database) {
+ 	private void Populate_BiomePreferences(PersonalityDatabase database)
+ 	{
 +		/*
  		OceanBiome biome = new OceanBiome();
  		ForestBiome biome2 = new ForestBiome();
  		SnowBiome biome3 = new SnowBiome();
-@@ -18,6 +_,16 @@
+@@ -20,6 +_,16 @@
  		UndergroundBiome biome6 = new UndergroundBiome();
  		HallowBiome biome7 = new HallowBiome();
  		MushroomBiome biome8 = new MushroomBiome();

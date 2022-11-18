@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +10,8 @@ public sealed class KeybindLoader : Loader
 
 	internal static IEnumerable<ModKeybind> Keybinds => modKeybinds.Values;
 
-	internal override void Unload() {
+	internal override void Unload()
+	{
 		modKeybinds.Clear();
 	}
 
@@ -29,7 +30,8 @@ public sealed class KeybindLoader : Loader
 	/// <param name="mod"> The mod that this keybind will belong to. Usually, this would be your mod instance. </param>
 	/// <param name="name"> The internal name of the keybind. The localization key "Mods.{ModName}.Keybind.{KeybindName}" will be used for the display name. </param>
 	/// <param name="defaultBinding"> The default binding. </param>
-	public static ModKeybind RegisterKeybind(Mod mod, string name, string defaultBinding) {
+	public static ModKeybind RegisterKeybind(Mod mod, string name, string defaultBinding)
+	{
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
 
@@ -42,13 +44,15 @@ public sealed class KeybindLoader : Loader
 		return RegisterKeybind(new ModKeybind(mod, name, defaultBinding));
 	}
 
-	private static ModKeybind RegisterKeybind(ModKeybind keybind) {
+	private static ModKeybind RegisterKeybind(ModKeybind keybind)
+	{
 		modKeybinds[keybind.FullName] = keybind;
 
 		return keybind;
 	}
 
-	internal static void SetupContent() {
+	internal static void SetupContent()
+	{
 		foreach (var modKebind in modKeybinds.Values) {
 			modKebind.SetupContent();
 		}

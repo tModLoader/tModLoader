@@ -9,21 +9,21 @@
  {
  	public class StackedNPCProfile : ITownNPCProfile
  	{
-@@ -62,7 +_,7 @@
+@@ -67,7 +_,7 @@
  		}
  
  		public int RollVariation() => 0;
 -		public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
 +		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
  
- 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
- 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-@@ -97,7 +_,7 @@
+ 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+ 		{
+@@ -104,7 +_,7 @@
  		}
  
  		public int RollVariation() => 0;
 -		public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
 +		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
  
- 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
- 			if (npc.altTexture == 3 && _defaultCredits != null)
+ 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+ 		{

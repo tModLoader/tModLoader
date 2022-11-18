@@ -19,7 +19,8 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	internal string changeNotes;
 
 	public WorkshopPublishInfoStateForMods(UIState stateToGoBackTo, TmodFile modFile, NameValueCollection buildData)
-		: base(stateToGoBackTo, modFile) {
+		: base(stateToGoBackTo, modFile)
+	{
 		_instructionsTextKey = "Workshop.ModPublishDescription";
 		_publishedObjectNameDescriptorTexKey = "Workshop.ModName";
 		_buildData = buildData;
@@ -27,11 +28,13 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		changeNotes = buildData["changelog"];
 	}
 
-	protected override string GetPublishedObjectDisplayName() {
+	protected override string GetPublishedObjectDisplayName()
+	{
 		return _dataObject.Name;
 	}
 
-	protected override void GoToPublishConfirmation() {
+	protected override void GoToPublishConfirmation()
+	{
 		/* if ( SocialAPI.Workshop != null) */
 		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
@@ -45,7 +48,8 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 	protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject, out info);
 
-	internal UIElement CreateTmlDisclaimer(string tagGroup) {
+	internal UIElement CreateTmlDisclaimer(string tagGroup)
+	{
 		float num = 60f;
 		float num2 = 0f + num;
 
@@ -99,12 +103,14 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		return groupOptionButton;
 	}
 
-	private void TmlDisclaimerText_OnMouseOut(UIMouseEvent evt, UIElement listeningElement) {
+	private void TmlDisclaimerText_OnMouseOut(UIMouseEvent evt, UIElement listeningElement)
+	{
 		_tMLDisclaimerText.TextColor = Color.Cyan;
 		ClearOptionDescription(evt, listeningElement);
 	}
 
-	private void TmlDisclaimerText_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+	private void TmlDisclaimerText_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(12);
 		_tMLDisclaimerText.TextColor = Color.LightCyan;
 		ShowOptionDescription(evt, listeningElement);

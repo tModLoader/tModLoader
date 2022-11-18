@@ -9,9 +9,9 @@
  	public static bool dayCheck = false;
  	public static float starfallBoost = 1f;
  	public static int starFallCount = 0;
-@@ -128,8 +_,8 @@
- 
- 	public void Update() {
+@@ -133,8 +_,8 @@
+ 	public void Update()
+ 	{
  		if (falling && !hidden) {
 -			fallTime += Main.dayRate;
 +			fallTime += Main.desiredWorldEventsUpdateRate;
@@ -20,7 +20,7 @@
  			if (position.Y > 1500f)
  				hidden = true;
  
-@@ -157,7 +_,8 @@
+@@ -162,7 +_,8 @@
  		}
  
  		if (fadeIn > 0f) {

@@ -8,7 +8,7 @@
  
  namespace Terraria.Initializers;
  
-@@ -334,6 +_,8 @@
+@@ -340,6 +_,8 @@
  			Color color2 = default(Color);
  			if (!player.ZoneShimmer) {
  				color2 = ((Main.waterStyle == 2) ? new Color(124, 118, 242) : ((Main.waterStyle == 3) ? new Color(143, 215, 29) : ((Main.waterStyle == 4) ? new Color(78, 193, 227) : ((Main.waterStyle == 5) ? new Color(189, 231, 255) : ((Main.waterStyle == 6) ? new Color(230, 219, 100) : ((Main.waterStyle == 7) ? new Color(151, 107, 75) : ((Main.waterStyle == 8) ? new Color(128, 128, 128) : ((Main.waterStyle == 9) ? new Color(200, 0, 0) : ((Main.waterStyle == 10) ? new Color(208, 80, 80) : ((Main.waterStyle == 12) ? new Color(230, 219, 100) : ((Main.waterStyle != 13) ? new Color(28, 216, 94) : new Color(28, 216, 94))))))))))));
@@ -17,9 +17,9 @@
  			}
  			else {
  				TorchID.TorchColor(23, out var R, out var G, out var B);
-@@ -466,7 +_,7 @@
- 
- 	private static void FixRecipes() {
+@@ -476,7 +_,7 @@
+ 	private static void FixRecipes()
+ 	{
  		for (int i = 0; i < Recipe.maxRecipes; i++) {
 -			Main.recipe[i].createItem.dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);
 +			Main.recipe[i].createItem.dye = GameShaders.Armor.GetShaderIdFromItemId(Main.recipe[i].createItem.type);

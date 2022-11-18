@@ -10,7 +10,8 @@ public partial class TileEntitiesManager
 		=> _types[id] as T;
 
 	/// <summary> Attempts to get the base ModTileEntity object with the given id. </summary>
-	public bool TryGetTileEntity<T>(int id, out T tileEntity) where T : TileEntity {
+	public bool TryGetTileEntity<T>(int id, out T tileEntity) where T : TileEntity
+	{
 		if (!_types.TryGetValue(id, out var entity)) {
 			tileEntity = default;
 
@@ -22,7 +23,8 @@ public partial class TileEntitiesManager
 
 	public IReadOnlyDictionary<int, TileEntity> EnumerateEntities() => _types;
 
-	internal void Reset() {
+	internal void Reset()
+	{
 		_types.Clear();
 
 		_nextEntityID = 0;

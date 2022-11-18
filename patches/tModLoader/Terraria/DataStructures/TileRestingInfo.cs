@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.DataStructures;
 
@@ -37,7 +37,8 @@ public struct TileRestingInfo
 	/// </summary>
 	public Vector2 FinalOffset;
 
-	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default) {
+	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default)
+	{
 		RestingEntity = restingEntity;
 		AnchorTilePosition = anchorTilePosition;
 		VisualOffset = visualOffset;
@@ -46,7 +47,8 @@ public struct TileRestingInfo
 		FinalOffset = finalOffset;
 	}
 
-	public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset) {
+	public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset)
+	{
 		restingEntity = RestingEntity;
 		anchorTilePosition = AnchorTilePosition;
 		visualOffset = VisualOffset;

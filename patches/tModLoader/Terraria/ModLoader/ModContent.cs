@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -61,7 +61,8 @@ public static class ModContent
 	public static bool TryFind<T>(string modName, string name, out T value) where T : IModType => ModTypeLookup<T>.TryGetValue(modName, name, out value);
 
 	private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
-	public static void SplitName(string name, out string domain, out string subName) {
+	public static void SplitName(string name, out string domain, out string subName)
+	{
 		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
 		if (slash < 0)
 			throw new MissingResourceException("Missing mod qualifier: " + name);
@@ -74,7 +75,8 @@ public static class ModContent
 	/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
 	/// </summary>
 	/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-	public static byte[] GetFileBytes(string name) {
+	public static byte[] GetFileBytes(string name)
+	{
 		SplitName(name, out string modName, out string subName);
 
 		if (!ModLoader.TryGetMod(modName, out var mod))
@@ -86,7 +88,8 @@ public static class ModContent
 	/// <summary>
 	/// Returns whether or not a file with the specified name exists.
 	/// </summary>
-	public static bool FileExists(string name) {
+	public static bool FileExists(string name)
+	{
 		if (!name.Contains('/'))
 			return false;
 
@@ -100,7 +103,8 @@ public static class ModContent
 	/// </summary>
 	/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
 	/// <param name="mode">The desired timing for when the asset actually loads. Use ImmediateLoad if you need correct dimensions immediately, such as with UI initialization</param>
-	public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
+	public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class
+	{
 		SplitName(name, out string modName, out string subName);
 
 		// Initialize Main.Assets on server in case it hasn't been initialized. This prevents later crashes when checking Terraria assets
@@ -120,7 +124,8 @@ public static class ModContent
 	/// Returns whether or not a asset with the specified name exists.
 	/// Includes the mod name prefix like Request
 	/// </summary>
-	public static bool HasAsset(string name) {
+	public static bool HasAsset(string name)
+	{
 		if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
 			return false;
 
@@ -132,7 +137,8 @@ public static class ModContent
 		return ModLoader.TryGetMod(modName, out var mod) && mod.RootContentSource.HasAsset(subName);
 	}
 
-	public static bool RequestIfExists<T>(string name, out Asset<T> asset, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
+	public static bool RequestIfExists<T>(string name, out Asset<T> asset, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class
+	{
 		if (!HasAsset(name)) {
 			asset = default;
 			return false;
@@ -303,7 +309,8 @@ public static class ModContent
 	/// </summary>
 	public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
-	internal static void Load(CancellationToken token) {
+	internal static void Load(CancellationToken token)
+	{
 		CacheVanillaState();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
@@ -373,13 +380,15 @@ public static class ModContent
 		ModOrganizer.SaveLastLaunchedMods();
 	}
 
-	private static void CacheVanillaState() {
+	private static void CacheVanillaState()
+	{
 		EffectsTracker.CacheVanillaState();
 		DamageClassLoader.RegisterDefaultClasses();
 		InfoDisplayLoader.RegisterDefaultDisplays();
 	}
 
-	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction) {
+	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction)
+	{
 		MemoryTracking.Checkpoint();
 		int num = 0;
 		foreach (var mod in ModLoader.Mods) {
@@ -398,7 +407,8 @@ public static class ModContent
 		}
 	}
 
-	private static void SetupBestiary() {
+	private static void SetupBestiary()
+	{
 		//Beastiary DB
 		var bestiaryDatabase = new BestiaryDatabase();
 		new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
@@ -422,7 +432,8 @@ public static class ModContent
 		Main.BestiaryTracker = new BestiaryUnlocksTracker();
 	}
 
-	private static void SetupRecipes(CancellationToken token) {
+	private static void SetupRecipes(CancellationToken token)
+	{
 		Interface.loadMods.SetLoadStage("tModLoader.MSAddingRecipes");
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
 			token.ThrowIfCancellationRequested();
@@ -438,7 +449,8 @@ public static class ModContent
 		RecipeLoader.PostSetupRecipes();
 	}
 
-	internal static void UnloadModContent() {
+	internal static void UnloadModContent()
+	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
 
 		int i = 0;
@@ -458,7 +470,8 @@ public static class ModContent
 	}
 
 	//TODO: Unhardcode ALL of this.
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		TypeCaching.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
@@ -530,7 +543,8 @@ public static class ModContent
 	}
 
 	//TODO: Unhardcode ALL of this.
-	private static void ResizeArrays(bool unloading = false) {
+	private static void ResizeArrays(bool unloading = false)
+	{
 		DamageClassLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
 		EquipLoader.ResizeAndFillArrays();
@@ -590,7 +604,8 @@ public static class ModContent
 		WorldGen.ClearGenerationPasses(); // Clean up modded generation passes
 	}
 
-	public static Stream OpenRead(string assetName, bool newFileStream = false) {
+	public static Stream OpenRead(string assetName, bool newFileStream = false)
+	{
 		if (!assetName.StartsWith("tmod:"))
 			return File.OpenRead(assetName);
 
@@ -598,7 +613,8 @@ public static class ModContent
 		return ModLoader.GetMod(modName).GetFileStream(entryPath, newFileStream);
 	}
 
-	internal static void TransferCompletedAssets() {
+	internal static void TransferCompletedAssets()
+	{
 		foreach (var mod in ModLoader.Mods)
 			if (mod.Assets is AssetRepository assetRepo && !assetRepo.IsDisposed)
 				assetRepo.TransferCompletedAssets();

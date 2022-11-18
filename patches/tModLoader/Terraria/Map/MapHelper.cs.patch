@@ -9,7 +9,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -126,7 +_,8 @@
+@@ -133,7 +_,8 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
  	private static ushort hellPosition;
@@ -19,7 +19,7 @@
  	private static ushort[] snowTypes;
  	private static ushort wallRangeStart;
  	private static ushort wallRangeEnd;
-@@ -1593,6 +_,7 @@
+@@ -1601,6 +_,7 @@
  
  		hellPosition = num20;
  		colorLookup[num20] = color10;
@@ -27,7 +27,7 @@
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1734,7 +_,7 @@
+@@ -1746,7 +_,7 @@
  				int num5 = tile.liquidType();
  				num3 = liquidPosition + num5;
  			}
@@ -36,7 +36,7 @@
  				int wall = tile.wall;
  				num3 = wallLookup[wall];
  				num = tile.wallColor();
-@@ -1763,6 +_,7 @@
+@@ -1775,6 +_,7 @@
  		if (num3 == 0) {
  			if ((double)j < Main.worldSurface) {
  				if (Main.remixWorld) {
@@ -44,7 +44,7 @@
  					num2 = 5;
  					num3 = 100;
  				}
-@@ -1806,12 +_,15 @@
+@@ -1818,12 +_,15 @@
  
  				num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
  			}
@@ -60,8 +60,8 @@
 +		return MapTile.Create(mapType, (byte)num2, (byte)num);
  	}
  
- 	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption) {
-@@ -2570,7 +_,10 @@
+ 	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption)
+@@ -2585,7 +_,10 @@
  					byte b6 = 0;
  					int num7;
  					ushort num8;
@@ -72,7 +72,7 @@
  						flag2 = false;
  						flag = false;
  						num7 = 0;
-@@ -2728,6 +_,7 @@
+@@ -2743,6 +_,7 @@
  
  			deflateStream.Dispose();
  			FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);

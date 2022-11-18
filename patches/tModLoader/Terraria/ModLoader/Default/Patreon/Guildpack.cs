@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -12,7 +12,8 @@ internal class GuildpackSetEffectPlayer : ModPlayer
 {
 	public bool IsActive;
 
-	public override void ResetEffects() {
+	public override void ResetEffects()
+	{
 		IsActive = false;
 	}
 }
@@ -27,7 +28,8 @@ internal class GuildpackMiscEffectsDrawLayer : PlayerDrawLayer
 	public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
 		=> drawInfo.drawPlayer.TryGetModPlayer(out GuildpackSetEffectPlayer modPlayer) && modPlayer.IsActive;
 
-	protected override void Draw(ref PlayerDrawSet drawInfo) {
+	protected override void Draw(ref PlayerDrawSet drawInfo)
+	{
 		if (drawInfo.shadow != 0f) {
 			return;
 		}
@@ -58,7 +60,8 @@ internal class GuildpackEyeGlowDrawLayer : PlayerDrawLayer
 	public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
 		=> drawInfo.drawPlayer.TryGetModPlayer(out GuildpackSetEffectPlayer modPlayer) && modPlayer.IsActive;
 
-	protected override void Draw(ref PlayerDrawSet drawInfo) {
+	protected override void Draw(ref PlayerDrawSet drawInfo)
+	{
 		textureAsset ??= ModContent.Request<Texture2D>("ModLoader/Patreon.Guildpack_Head_Glow");
 
 		if (!textureAsset.IsLoaded || textureAsset.Value is not Texture2D texture) {
@@ -84,7 +87,8 @@ internal class Guildpack_Head : PatreonItem
 {
 	private static int[]? equipSlots;
 
-	public override bool IsVanitySet(int head, int body, int legs) {
+	public override bool IsVanitySet(int head, int body, int legs)
+	{
 		equipSlots ??= new int[] {
 			EquipLoader.GetEquipSlot(Mod, $"{InternalSetName}_{EquipType.Head}", EquipType.Head),
 			EquipLoader.GetEquipSlot(Mod, $"{InternalSetName}_{EquipType.Body}", EquipType.Body),
@@ -96,13 +100,15 @@ internal class Guildpack_Head : PatreonItem
 			&& legs == equipSlots[2];
 	}
 
-	public override void UpdateVanitySet(Player player) {
+	public override void UpdateVanitySet(Player player)
+	{
 		if (player.TryGetModPlayer(out GuildpackSetEffectPlayer modPlayer)) {
 			modPlayer.IsActive = true;
 		}
 	}
 
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 34;
@@ -113,7 +119,8 @@ internal class Guildpack_Head : PatreonItem
 [AutoloadEquip(EquipType.Body)]
 internal class Guildpack_Body : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 42;
@@ -124,7 +131,8 @@ internal class Guildpack_Body : PatreonItem
 [AutoloadEquip(EquipType.Legs)]
 internal class Guildpack_Legs : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 22;

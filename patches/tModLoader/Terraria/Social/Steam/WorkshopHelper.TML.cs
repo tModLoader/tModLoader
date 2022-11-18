@@ -34,7 +34,8 @@ public partial class WorkshopHelper
 		protected override void PrepareContentForUpdate() { }
 	}
 
-	public static string GetWorkshopFolder(AppId_t app) {
+	public static string GetWorkshopFolder(AppId_t app)
+	{
 		if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
 			if (Directory.Exists(workshopLocCustom))
 				return workshopLocCustom;
@@ -56,7 +57,8 @@ public partial class WorkshopHelper
 		return Path.Combine("steamapps", "workshop");
 	}
 
-	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
+	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId)
+	{
 		publishId = 0;
 		if (modFile == null || !ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(modFile.path), out var info))
 			return false;
@@ -65,7 +67,8 @@ public partial class WorkshopHelper
 		return true;
 	}
 
-	internal static void PublishMod(LocalMod mod, string iconPath) {
+	internal static void PublishMod(LocalMod mod, string iconPath)
+	{
 		var modFile = mod.modFile;
 		var bp = mod.properties;
 
@@ -128,7 +131,8 @@ public partial class WorkshopHelper
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal static Task SetupDownload(List<ModDownloadItem> items, int previousMenuId) {
+	internal static Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
+	{
 		//Set UIWorkshopDownload
 		UIWorkshopDownload uiProgress = null;
 
@@ -145,7 +149,8 @@ public partial class WorkshopHelper
 		return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
 	}
 
-	private static void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone) {
+	private static void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
+	{
 		foreach (var item in items) {
 			var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
 			bool forceUpdate = item.HasUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
@@ -161,7 +166,8 @@ public partial class WorkshopHelper
 			ModLoader.ModLoader.Reload();
 	}
 
-	internal static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t id, LocalMod installed, System.Version mbVersion) {
+	internal static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t id, LocalMod installed, System.Version mbVersion)
+	{
 		if (installed.properties.version < mbVersion)
 			return true;
 
@@ -180,7 +186,8 @@ public partial class WorkshopHelper
 
 		internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
 
-		internal static bool FetchDownloadItems() {
+		internal static bool FetchDownloadItems()
+		{
 			if (!QueryWorkshop())
 				return false;
 
@@ -190,7 +197,8 @@ public partial class WorkshopHelper
 		internal static ModDownloadItem FindModDownloadItem(string modName)
 		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-		internal static bool QueryWorkshop() {
+		internal static bool QueryWorkshop()
+		{
 			HiddenModCount = IncompleteModCount = 0;
 			TotalItemsQueried = 0;
 			Items.Clear();
@@ -216,7 +224,8 @@ public partial class WorkshopHelper
 			return true;
 		}
 
-		internal static bool HandleError(EResult eResult) {
+		internal static bool HandleError(EResult eResult)
+		{
 			if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
 				return true;
 
@@ -233,23 +242,27 @@ public partial class WorkshopHelper
 			return false;
 		}
 
-		internal static string GetDescription(ulong publishedId) {
+		internal static string GetDescription(ulong publishedId)
+		{
 			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
 			return pDetails.m_rgchDescription;
 		}
 
-		internal static ulong GetSteamOwner(ulong publishedId) {
+		internal static ulong GetSteamOwner(ulong publishedId)
+		{
 			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
 			return pDetails.m_ulSteamIDOwner;
 		}
 
-		private static List<ulong> GetDependencies(ulong publishedId) {
+		private static List<ulong> GetDependencies(ulong publishedId)
+		{
 			var query = new AQueryInstance();
 			query.FastQueryItem(publishedId, queryChildren: true);
 			return query.ugcChildren;
 		}
 
-		internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set) {
+		internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set)
+		{
 			var deps = GetDependencies(publishedId);
 			set.UnionWith(deps);
 
@@ -257,7 +270,8 @@ public partial class WorkshopHelper
 				GetDependenciesRecursive(dep, ref set);
 		}
 
-		internal static bool CheckWorkshopConnection() {
+		internal static bool CheckWorkshopConnection()
+		{
 			// If populating fails during query, than no connection. Attempt connection if not yet attempted.
 			if (!FetchDownloadItems())
 				return false;
@@ -270,7 +284,8 @@ public partial class WorkshopHelper
 			return Items.Count + IncompleteModCount != 0;
 		}
 
-		private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata) {
+		private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
+		{
 			(System.Version modV, string tmlV) selectVersion = new (new System.Version(metadata["version"].Replace("v", "")), metadata["modloaderversion"]);
 			// Backwards compat after metadata version change
 			if (!metadata["versionsummary"].Contains(':'))
@@ -289,7 +304,8 @@ public partial class WorkshopHelper
 		}
 
 		// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
-		private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary) {
+		private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary)
+		{
 			foreach (var item in VersionSummaryToArray(versionSummary)) {
 				if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
 					selectVersion.modV = item.modVersion;
@@ -298,7 +314,8 @@ public partial class WorkshopHelper
 			}
 		}
 
-		private static (System.Version tmlVersion, System.Version modVersion)[] VersionSummaryToArray(string versionSummary) {
+		private static (System.Version tmlVersion, System.Version modVersion)[] VersionSummaryToArray(string versionSummary)
+		{
 			return versionSummary.Split(";").Select(s => (new System.Version(s.Split(":")[0]), new System.Version(s.Split(":")[1]))).ToArray();
 		}
 
@@ -313,11 +330,13 @@ public partial class WorkshopHelper
 
 			internal static IReadOnlyList<LocalMod> InstalledMods;
 
-			internal AQueryInstance() {
+			internal AQueryInstance()
+			{
 				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryInitialized);
 			}
 
-			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure) {
+			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure)
+			{
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
@@ -330,14 +349,16 @@ public partial class WorkshopHelper
 			/// <summary>
 			/// Ought be called to release the existing query when we are done with it. Frees memory associated with the handle.
 			/// </summary>
-			private void ReleaseWorkshopQuery() {
+			private void ReleaseWorkshopQuery()
+			{
 				SteamedWraps.ReleaseWorkshopHandle(_primaryUGCHandle);
 			}
 
 			/// <summary>
 			/// For direct information gathering of a particular mod/workshop item
 			/// </summary>
-			internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false) {
+			internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false)
+			{
 				TryRunQuery(SteamedWraps.GenerateSingleItemQuery(publishedId));
 
 				var pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
@@ -350,7 +371,8 @@ public partial class WorkshopHelper
 				return pDetails;
 			}
 
-			internal bool QueryAllWorkshopItems() {
+			internal bool QueryAllWorkshopItems()
+			{
 				do {
 					// Appx. 0.5 seconds per page of 50 items during testing. No way to parallelize.
 					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
@@ -375,7 +397,8 @@ public partial class WorkshopHelper
 				return true;
 			}
 
-			internal bool TryRunQuery(SteamAPICall_t query) {
+			internal bool TryRunQuery(SteamAPICall_t query)
+			{
 				_primaryQueryResult = EResult.k_EResultNone;
 				_queryHook.Set(query);
 
@@ -391,7 +414,8 @@ public partial class WorkshopHelper
 				return HandleError(_primaryQueryResult);
 			}
 
-			private void ProcessPageResult() {
+			private void ProcessPageResult()
+			{
 				for (uint i = 0; i < _queryReturnCount; i++) {
 					// Item Result call data
 					SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);

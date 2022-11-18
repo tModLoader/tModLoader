@@ -1,13 +1,14 @@
 --- src/decompiled/Terraria/Main.cs
 +++ src/Terraria/Terraria/Main.cs
-@@ -74,7 +_,20 @@
+@@ -74,7 +_,21 @@
  
  namespace Terraria;
  
 +#if !WINDOWS
 +class Control
 +{
-+	internal static Form FromHandle(IntPtr handle) {
++	internal static Form FromHandle(IntPtr handle)
++	{
 +		throw new NotImplementedException();
 +	}
 +}
@@ -21,7 +22,7 @@
  {
  	public delegate void OnPlayerSelected(PlayerFileData player);
  
-@@ -4922,7 +_,7 @@
+@@ -4984,7 +_,7 @@
  		if (!dedServ) {
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
@@ -30,7 +31,7 @@
  			base.Content.RootDirectory = "Content";
  		}
  	}
-@@ -38604,6 +_,9 @@
+@@ -39004,6 +_,9 @@
  
  		Assets.TransferCompletedAssets();
  		Exit();
@@ -39,4 +40,4 @@
 +#endif
  	}
  
- 	private void Main_Exiting(object sender, EventArgs e) {
+ 	private void Main_Exiting(object sender, EventArgs e)

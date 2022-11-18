@@ -28,7 +28,8 @@ public static class EquipLoader
 
 	public static readonly EquipType[] EquipTypes = (EquipType[])Enum.GetValues(typeof(EquipType));
 
-	static EquipLoader() {
+	static EquipLoader()
+	{
 		foreach (EquipType type in EquipTypes) {
 			nextEquip[type] = GetNumVanilla(type);
 			equipTextures[type] = new Dictionary<int, EquipTexture>();
@@ -48,11 +49,13 @@ public static class EquipLoader
 	/// <param name="type"></param>
 	/// <param name="slot"></param>
 	/// <returns></returns>
-	public static EquipTexture GetEquipTexture(EquipType type, int slot) {
+	public static EquipTexture GetEquipTexture(EquipType type, int slot)
+	{
 		return equipTextures[type].TryGetValue(slot, out EquipTexture texture) ? texture : null;
 	}
 
-	internal static void ResizeAndFillArrays() {
+	internal static void ResizeAndFillArrays()
+	{
 		//Textures
 		Array.Resize(ref TextureAssets.ArmorHead, nextEquip[EquipType.Head]);
 		Array.Resize(ref TextureAssets.ArmorBody, nextEquip[EquipType.Body]);
@@ -112,7 +115,8 @@ public static class EquipLoader
 		ResizeAndRegisterType(EquipType.Legs, ref Item.legType);
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		foreach (EquipType type in EquipTypes) {
 			nextEquip[type] = GetNumVanilla(type);
 			equipTextures[type].Clear();
@@ -164,7 +168,8 @@ public static class EquipLoader
 			_ => null,
 		};
 
-	internal static void SetSlot(Item item) {
+	internal static void SetSlot(Item item)
+	{
 		if (!idToSlot.TryGetValue(item.type, out var slots))
 			return;
 
@@ -258,7 +263,8 @@ public static class EquipLoader
 	/// <param name="type">The type.</param>
 	/// <param name="texture">The texture.</param>
 	/// <returns>the ID / slot that is assigned to the equipment texture.</returns>
-	public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null) {
+	public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null)
+	{
 		if (!mod.loading)
 			throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
 
@@ -315,7 +321,8 @@ public static class EquipLoader
 	/// Hook Player.PlayerFrame
 	/// Calls each of the item's equipment texture's FrameEffects hook.
 	/// </summary>
-	public static void EquipFrameEffects(Player player) {
+	public static void EquipFrameEffects(Player player)
+	{
 		foreach (EquipType type in EquipTypes) {
 			int slot = GetPlayerEquip(player, type);
 			EquipTexture texture = GetEquipTexture(type, slot);

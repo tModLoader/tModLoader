@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
@@ -9,7 +9,8 @@ namespace Terraria.GameContent.Bestiary;
 
 public class ModBiomeBestiaryInfoElement : ModBestiaryInfoElement, IBestiaryBackgroundImagePathAndColorProvider
 {
-	public ModBiomeBestiaryInfoElement(ModLoader.Mod mod, string displayName, string iconPath, string backgroundPath, Color? backgroundColor) {
+	public ModBiomeBestiaryInfoElement(ModLoader.Mod mod, string displayName, string iconPath, string backgroundPath, Color? backgroundColor)
+	{
 		_mod = mod;
 		_displayName = displayName;
 		_iconPath = iconPath;
@@ -17,7 +18,8 @@ public class ModBiomeBestiaryInfoElement : ModBestiaryInfoElement, IBestiaryBack
 		_backgroundColor = backgroundColor;
 	}
 
-	public override UIElement GetFilterImage() {
+	public override UIElement GetFilterImage()
+	{
 		Asset<Texture2D> asset;
 		if (_iconPath != null && ModContent.RequestIfExists<Texture2D>(_iconPath, out asset, AssetRequestMode.ImmediateLoad)) {
 			if (asset.Size() == new Vector2(30)) {
@@ -35,7 +37,8 @@ public class ModBiomeBestiaryInfoElement : ModBestiaryInfoElement, IBestiaryBack
 		};
 	}
 
-	public Asset<Texture2D> GetBackgroundImage() {
+	public Asset<Texture2D> GetBackgroundImage()
+	{
 		if (_backgroundPath == null || !ModContent.RequestIfExists<Texture2D>(_backgroundPath, out Asset<Texture2D> asset, AssetRequestMode.ImmediateLoad))
 			return null;
 

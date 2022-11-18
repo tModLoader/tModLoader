@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -73,7 +73,8 @@ public abstract class ModPylon : ModTile
 	/// <br>If the server disagrees with the client that the given pylon CANNOT be placed for any given reason, the server will reject the placement
 	/// and subsequently break the associated tile.</br>
 	/// </remarks>
-	public virtual bool CanPlacePylon() {
+	public virtual bool CanPlacePylon()
+	{
 		return !Main.PylonSystem.HasPylonOfType(PylonType);
 	}
 
@@ -92,7 +93,8 @@ public abstract class ModPylon : ModTile
 	/// For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
 	/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code> 
 	/// </param>
-	public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+	public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough)
+	{
 		return null;
 	}
 
@@ -111,7 +113,8 @@ public abstract class ModPylon : ModTile
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
 	/// <param name="defaultNecessaryNPCCount"> The default amount of NPCs nearby required to satisfy a VANILLA pylon. </param>
-	public virtual bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
+	public virtual bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount)
+	{
 		return TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(defaultNecessaryNPCCount, pylonInfo.PositionInTiles);
 	}
 
@@ -131,7 +134,8 @@ public abstract class ModPylon : ModTile
 	/// on the ModPylon class.</b>
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
-	public virtual bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo) {
+	public virtual bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo)
+	{
 		return !NPC.AnyDanger(false, true);
 	}
 
@@ -150,7 +154,8 @@ public abstract class ModPylon : ModTile
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
 	/// <param name="sceneData"> The scene metrics data AT THE LOCATION of the destination pylon, NOT the player. </param>
-	public virtual bool ValidTeleportCheck_BiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
+	public virtual bool ValidTeleportCheck_BiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData)
+	{
 		return true;
 	}
 
@@ -209,7 +214,8 @@ public abstract class ModPylon : ModTile
 	/// <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
 	public virtual void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) { }
 
-	public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
+	public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+	{
 		// Adapted vanilla code from TETeleportationPylon in order to line up with vanilla's functionality.
 		if (WorldGen.destroyObject)
 			return false;
@@ -262,18 +268,21 @@ public abstract class ModPylon : ModTile
 		return true;
 	}
 
-	public override bool RightClick(int i, int j) {
+	public override bool RightClick(int i, int j)
+	{
 		// Vanilla has a very handy function we can use that automatically opens the map, closes the inventory, plays a sound, etc:
 		Main.LocalPlayer.TryOpeningFullscreenMap();
 		return true;
 	}
 
 	// Must be true in order for our highlight texture to work.
-	public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
+	public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
+	{
 		return true;
 	}
 
-	public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+	public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
 		// Basically, we only want the crystal to be drawn once, based off the top left corner, which is what this check is.
 		// The top left corner of a Pylon will have its FrameX divisible by its full pixel width,
 		// and its FrameY will be 0, since it's at the top of the tile sheet.
@@ -285,7 +294,8 @@ public abstract class ModPylon : ModTile
 
 
 	[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 5 new parameters: crystalHighlightTexture, crystalOffset, pylonShadowColor, dustColor, and dustChanceDenominator.", true)]
-	public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
+	public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount)
+	{
 		DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 4, crystalVerticalFrameCount);
 	}
 
@@ -306,7 +316,8 @@ public abstract class ModPylon : ModTile
 	/// <param name="dustColor"> The color of the dust that emanates from the crystal. </param>
 	/// <param name="dustChanceDenominator"> Every draw call, this is this the denominator value of a Main.rand.NextBool() (1/denominator chance) check for whether or not a dust particle will spawn. 4 is the value vanilla uses. </param>
 	/// <param name="crystalVerticalFrameCount"> How many vertical frames the crystal texture has. </param>
-	public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Asset<Texture2D> crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustChanceDenominator, int crystalVerticalFrameCount) {
+	public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Asset<Texture2D> crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustChanceDenominator, int crystalVerticalFrameCount)
+	{
 		// Gets offscreen vector for different lighting modes
 		Vector2 offscreenVector = new Vector2(Main.offScreenRange);
 		if (Main.drawToScreen) {
@@ -397,7 +408,8 @@ public abstract class ModPylon : ModTile
 	/// <param name="drawColor"> The color to draw the icon as. </param>
 	/// <param name="deselectedScale"> The scale to draw the map icon when it is not selected (not being hovered over). </param>
 	/// <param name="selectedScale"> The scale to draw the map icon when it IS selected (being hovered over). </param>
-	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context, Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale) {
+	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context, Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale)
+	{
 		return context.Draw(
 						  mapIcon.Value,
 						  drawCenter,
@@ -420,7 +432,8 @@ public abstract class ModPylon : ModTile
 	/// The localization key that will be used to display text on the mouse, granted the mouse is currently hovering over the map icon.
 	/// </param>
 	/// <param name="mouseOverText"> The reference to the string value that actually changes the mouse text value. </param>
-	public void DefaultMapClickHandle(bool mouseIsHovering, TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText) {
+	public void DefaultMapClickHandle(bool mouseIsHovering, TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
+	{
 		// We only want these things to happen if the mouse is hovering, thus the check:
 		if (!mouseIsHovering) {
 			return;

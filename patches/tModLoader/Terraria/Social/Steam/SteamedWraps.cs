@@ -20,7 +20,8 @@ public static class SteamedWraps
 	internal static bool SteamAvailable { get; set; }
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
-	internal static string GetCurrentSteamLangKey() {
+	internal static string GetCurrentSteamLangKey()
+	{
 		//TODO: Unhardcode this whenever the language roster is unhardcoded for modding.
 		return (GameCulture.CultureName)LanguageManager.Instance.ActiveCulture.LegacyId switch {
 			GameCulture.CultureName.German => "german",
@@ -35,7 +36,8 @@ public static class SteamedWraps
 		};
 	}
 
-	internal static void ReportCheckSteamLogs() {
+	internal static void ReportCheckSteamLogs()
+	{
 		string workshopLogLoc = "";
 		if (Platform.IsWindows)
 			workshopLogLoc = "C:/Program Files (x86)/Steam/logs/workshop_log.txt";
@@ -47,7 +49,8 @@ public static class SteamedWraps
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 	}
 
-	internal static void Initialize() {
+	internal static void Initialize()
+	{
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
@@ -62,7 +65,8 @@ public static class SteamedWraps
 			Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
 	}
 
-	public static bool TryInitViaGameServer() {
+	public static bool TryInitViaGameServer()
+	{
 		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
 		try {
 			if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
@@ -81,14 +85,16 @@ public static class SteamedWraps
 		return true;
 	}
 
-	public static void ReleaseWorkshopHandle(UGCQueryHandle_t handle) {
+	public static void ReleaseWorkshopHandle(UGCQueryHandle_t handle)
+	{
 		if (SteamClient)
 			SteamUGC.ReleaseQueryUGCRequest(handle);
 		else if (SteamAvailable)
 			SteamGameServerUGC.ReleaseQueryUGCRequest(handle);
 	}
 
-	public static SteamUGCDetails_t FetchItemDetails(UGCQueryHandle_t handle, uint index) {
+	public static SteamUGCDetails_t FetchItemDetails(UGCQueryHandle_t handle, uint index)
+	{
 		SteamUGCDetails_t pDetails = new();
 		if (SteamClient)
 			SteamUGC.GetQueryUGCResult(handle, index, out pDetails);
@@ -97,7 +103,8 @@ public static class SteamedWraps
 		return pDetails;
 	}
 
-	public static PublishedFileId_t[] FetchItemDependencies(UGCQueryHandle_t handle, uint index, uint numChildren) {
+	public static PublishedFileId_t[] FetchItemDependencies(UGCQueryHandle_t handle, uint index, uint numChildren)
+	{
 		var deps = new PublishedFileId_t[numChildren];
 		if (SteamClient)
 			SteamUGC.GetQueryUGCChildren(handle, index, deps, numChildren);
@@ -106,7 +113,8 @@ public static class SteamedWraps
 		return deps;
 	}
 
-	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, bool returnChildInfo = false, bool returnLongDesc = false, bool returnKeyValueTags = false, bool returnPlaytimeStats = false) {
+	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, bool returnChildInfo = false, bool returnLongDesc = false, bool returnKeyValueTags = false, bool returnPlaytimeStats = false)
+	{
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
@@ -129,7 +137,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static SteamAPICall_t GenerateSingleItemQuery(ulong publishId) {
+	public static SteamAPICall_t GenerateSingleItemQuery(ulong publishId)
+	{
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
 			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
@@ -143,7 +152,8 @@ public static class SteamedWraps
 		return new();
 	}
 
-	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor) {
+	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor)
+	{
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
@@ -158,7 +168,8 @@ public static class SteamedWraps
 		return new();
 	}
 
-	public static void FetchPlayTimeStats(UGCQueryHandle_t handle, uint index, out ulong hot, out ulong downloads) {
+	public static void FetchPlayTimeStats(UGCQueryHandle_t handle, uint index, out ulong hot, out ulong downloads)
+	{
 		if (SteamClient) {
 			SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 			SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
@@ -173,7 +184,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static void FetchPreviewImageUrl(UGCQueryHandle_t handle, uint index, out string modIconUrl) {
+	public static void FetchPreviewImageUrl(UGCQueryHandle_t handle, uint index, out string modIconUrl)
+	{
 		if (SteamClient)
 			SteamUGC.GetQueryUGCPreviewURL(handle, index, out modIconUrl, 1000);
 		else if (SteamAvailable)
@@ -182,7 +194,8 @@ public static class SteamedWraps
 			modIconUrl = null;
 	}
 
-	public static void FetchMetadata(UGCQueryHandle_t handle, uint index, out NameValueCollection metadata) {
+	public static void FetchMetadata(UGCQueryHandle_t handle, uint index, out NameValueCollection metadata)
+	{
 		uint keyCount;
 		metadata = new NameValueCollection();
 
@@ -205,7 +218,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static void ForceCallbacks() {
+	public static void ForceCallbacks()
+	{
 		Thread.Sleep(5);
 
 		if (SteamClient)
@@ -214,7 +228,8 @@ public static class SteamedWraps
 			GameServer.RunCallbacks();
 	}
 
-	public static void StopPlaytimeTracking() {
+	public static void StopPlaytimeTracking()
+	{
 		// Call the appropriate variant
 		if (SteamClient)
 			SteamUGC.StopPlaytimeTrackingForAllItems();
@@ -224,7 +239,8 @@ public static class SteamedWraps
 
 	private const int PlaytimePagingConst = 100; //https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking
 
-	public static void BeginPlaytimeTracking() {
+	public static void BeginPlaytimeTracking()
+	{
 		if (!SteamAvailable)
 			return;
 
@@ -252,7 +268,8 @@ public static class SteamedWraps
 		}
 	}
 
-	internal static void OnGameExitCleanup() {
+	internal static void OnGameExitCleanup()
+	{
 		if (!SteamAvailable)
 			return;
 
@@ -264,7 +281,8 @@ public static class SteamedWraps
 		GameServer.Shutdown();
 	}
 
-	public static uint GetWorkshopItemState(PublishedFileId_t publishId) {
+	public static uint GetWorkshopItemState(PublishedFileId_t publishId)
+	{
 		if (SteamClient)
 			return SteamUGC.GetItemState(publishId);
 		else if (SteamAvailable)
@@ -278,7 +296,8 @@ public static class SteamedWraps
 		public uint lastUpdatedTime;
 	}
 
-	public static ItemInstallInfo GetInstallInfo(PublishedFileId_t publishId) {
+	public static ItemInstallInfo GetInstallInfo(PublishedFileId_t publishId)
+	{
 		string installPath = null;
 		uint lastUpdatedTime = 0;
 
@@ -290,7 +309,8 @@ public static class SteamedWraps
 		return new ItemInstallInfo() { installPath = installPath, lastUpdatedTime = lastUpdatedTime };
 	}
 
-	public static void UninstallWorkshopItem(PublishedFileId_t publishId, string installPath = null) {
+	public static void UninstallWorkshopItem(PublishedFileId_t publishId, string installPath = null)
+	{
 		if (string.IsNullOrEmpty(installPath))
 			installPath = GetInstallInfo(publishId).installPath;
 
@@ -308,7 +328,8 @@ public static class SteamedWraps
 			UninstallACF(publishId);
 	}
 
-	private static void UninstallACF(PublishedFileId_t publishId) {
+	private static void UninstallACF(PublishedFileId_t publishId)
+	{
 		// Cleanup acf file by removing info on this itemID
 		string acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
 
@@ -332,7 +353,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static bool IsWorkshopItemInstalled(PublishedFileId_t publishId) {
+	public static bool IsWorkshopItemInstalled(PublishedFileId_t publishId)
+	{
 		var currState = GetWorkshopItemState(publishId);
 
 		bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
@@ -340,7 +362,8 @@ public static class SteamedWraps
 		return installed && !downloading;
 	}
 
-	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId) {
+	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId)
+	{
 		var currState = SteamedWraps.GetWorkshopItemState(publishId);
 
 		return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
@@ -351,7 +374,8 @@ public static class SteamedWraps
 	/// <summary>
 	/// Updates and/or Downloads the Item specified by publishId
 	/// </summary>
-	internal static void Download(PublishedFileId_t publishId, UIWorkshopDownload uiProgress = null, bool forceUpdate = false) {
+	internal static void Download(PublishedFileId_t publishId, UIWorkshopDownload uiProgress = null, bool forceUpdate = false)
+	{
 		if (!SteamAvailable)
 			return;
 
@@ -382,7 +406,8 @@ public static class SteamedWraps
 		}
 	}
 
-	private static void InnerDownloadHandler(UIWorkshopDownload uiProgress, PublishedFileId_t publishId) {
+	private static void InnerDownloadHandler(UIWorkshopDownload uiProgress, PublishedFileId_t publishId)
+	{
 		ulong dlBytes, totalBytes;
 
 		const int LogEveryXPercent = 10;

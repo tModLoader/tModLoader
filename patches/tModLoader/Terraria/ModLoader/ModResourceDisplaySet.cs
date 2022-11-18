@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Text.RegularExpressions;
@@ -44,7 +44,8 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// </summary>
 	public static PlayerStatsSnapshot PlayerStats => new PlayerStatsSnapshot(Main.LocalPlayer);
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModResourceDisplaySet>.Register(this);
 
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{Name}");
@@ -52,7 +53,8 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 		Type = ResourceDisplaySetLoader.Add(this);
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		AutoStaticDefaults();
 		SetStaticDefaults();
 	}
@@ -60,12 +62,14 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// <summary>
 	/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 	/// </summary>
-	public virtual void AutoStaticDefaults() {
+	public virtual void AutoStaticDefaults()
+	{
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Regex.Replace(DisplayedName, "([A-Z])", " $1").Trim());
 	}
 
-	public void Draw() {
+	public void Draw()
+	{
 		var stats = PlayerStats;
 		PreDrawResources(stats);
 
@@ -98,7 +102,8 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// <param name="spriteBatch"></param>
 	public virtual void DrawMana(SpriteBatch spriteBatch) { }
 
-	public void TryToHover() {
+	public void TryToHover()
+	{
 		if (PreHover(out bool hoveringLife)) {
 			if (hoveringLife)
 				CommonResourceBarMethods.DrawLifeMouseOver();
@@ -111,7 +116,8 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// Allows you to specify if the vanilla life/mana hover text should display
 	/// </summary>
 	/// <param name="hoveringLife">Whether the hover text should be for life (<see langword="true"/>) or mana (<see langword="false"/>)</param>
-	public virtual bool PreHover(out bool hoveringLife) {
+	public virtual bool PreHover(out bool hoveringLife)
+	{
 		hoveringLife = false;
 		return false;
 	}

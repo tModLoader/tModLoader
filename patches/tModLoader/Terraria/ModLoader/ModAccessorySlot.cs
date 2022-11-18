@@ -65,7 +65,8 @@ public abstract class ModAccessorySlot : ModType
 	/// <summary>
 	/// Allows drawing prior to vanilla ItemSlot.Draw code. Return false to NOT call ItemSlot.Draw
 	/// </summary>
-	public virtual bool PreDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered) {
+	public virtual bool PreDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered)
+	{
 		return true;
 	}
 
@@ -76,7 +77,8 @@ public abstract class ModAccessorySlot : ModType
 	/// By default calls:
 	/// Player.VanillaUpdateEquips(FunctionalItem), Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals), Player.ApplyEquipVanity(VanityItem)
 	/// </summary>
-	public virtual void ApplyEquipEffects() {
+	public virtual void ApplyEquipEffects()
+	{
 		if (FunctionalItem.accessory)
 			Player.GrantPrefixBenefits(FunctionalItem);
 
@@ -90,7 +92,8 @@ public abstract class ModAccessorySlot : ModType
 	/// Receives data:
 	/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
 	/// </summary>
-	public virtual bool CanAcceptItem(Item checkItem, AccessorySlotType context) {
+	public virtual bool CanAcceptItem(Item checkItem, AccessorySlotType context)
+	{
 		if (context == AccessorySlotType.VanitySlot) {
 			return checkItem.FitsAccessoryVanitySlot;
 		}

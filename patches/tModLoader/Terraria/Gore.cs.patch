@@ -13,7 +13,7 @@
  {
  	public static int goreTime = 600;
  	public Vector2 position;
-@@ -255,6 +_,11 @@
+@@ -262,6 +_,11 @@
  		if (Main.netMode == 2 || !active)
  			return;
  
@@ -25,7 +25,7 @@
  		if (sticky) {
  			if (DeactivateIfOutsideOfWorld())
  				return;
-@@ -850,11 +_,14 @@
+@@ -857,11 +_,14 @@
  				num38 *= 0.3f;
  			}
  
@@ -39,12 +39,13 @@
 +		GoreLoader.TakeDownUpdateType(this);
  	}
  
- 	private void Gore_UpdateLeaf() {
-@@ -1014,16 +_,28 @@
+ 	private void Gore_UpdateLeaf()
+@@ -1023,17 +_,29 @@
  			alpha++;
  	}
  
 +	// Source-less overloads for vanilla
+-	public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +	internal static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +		=> NewGorePerfect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
 +
@@ -55,8 +56,8 @@
 +		=> NewGore(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
 +
 +	// Actual API methods
--	public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-+	public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
++	public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
+ 	{
 -		Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
 +		Gore gore = NewGoreDirect(source, Position, Velocity, Type, Scale);
  		gore.position = Position;
@@ -68,12 +69,12 @@
 +	public static Gore NewGoreDirect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +		=> Main.gore[NewGore(source, Position, Velocity, Type, Scale)];
  
--	public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-+	public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
+-	public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++	public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
+ 	{
  		if (Main.netMode == 2)
  			return 600;
- 
-@@ -1063,6 +_,13 @@
+@@ -1074,6 +_,13 @@
  		Main.gore[num].alpha = 0;
  		Main.gore[num].rotation = 0f;
  		Main.gore[num].scale = Scale;
@@ -87,10 +88,10 @@
  		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  			Main.gore[num].type = Main.rand.Next(11, 14);
  			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
-@@ -1182,6 +_,12 @@
- 	}
+@@ -1194,6 +_,12 @@
  
- 	public Color GetAlpha(Color newColor) {
+ 	public Color GetAlpha(Color newColor)
+ 	{
 +		if (ModGore != null) {
 +			Color? modColor = ModGore.GetAlpha(this, newColor);
 +			if (modColor.HasValue)

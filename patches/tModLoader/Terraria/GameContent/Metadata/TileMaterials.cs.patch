@@ -9,5 +9,5 @@
 +	public static Dictionary<string, TileMaterial> _materialsByName; // TML: Changed to public so modders can access vanilla TileMaterials
 +	internal static TileMaterial[] MaterialsByTileId; // TML: Changed to internal and removed readonly so the array can be resized for modded tiles
  
- 	static TileMaterials() {
- 		MaterialsByTileId = new TileMaterial[693];
+ 	static TileMaterials()
+ 	{

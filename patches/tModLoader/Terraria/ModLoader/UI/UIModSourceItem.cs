@@ -29,7 +29,8 @@ internal class UIModSourceItem : UIPanel
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
 
-	public UIModSourceItem(string mod, LocalMod builtMod) {
+	public UIModSourceItem(string mod, LocalMod builtMod)
+	{
 		_mod = mod;
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
@@ -103,7 +104,8 @@ internal class UIModSourceItem : UIPanel
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle innerDimensions = GetInnerDimensions();
 		Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
@@ -213,19 +215,22 @@ internal class UIModSourceItem : UIPanel
 		}
 	}
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 		BackgroundColor = UICommon.DefaultUIBlue;
 		BorderColor = new Color(89, 116, 213);
 	}
 
-	public override void MouseOut(UIMouseEvent evt) {
+	public override void MouseOut(UIMouseEvent evt)
+	{
 		base.MouseOut(evt);
 		BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 	}
 
-	public override int CompareTo(object obj) {
+	public override int CompareTo(object obj)
+	{
 		UIModSourceItem uIModSourceItem = obj as UIModSourceItem;
 		if (uIModSourceItem == null) {
 			return base.CompareTo(obj);
@@ -239,17 +244,20 @@ internal class UIModSourceItem : UIPanel
 		return uIModSourceItem._builtMod.lastModified.CompareTo(_builtMod.lastModified);
 	}
 
-	private void BuildMod(UIMouseEvent evt, UIElement listeningElement) {
+	private void BuildMod(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		Interface.buildMod.Build(_mod, false);
 	}
 
-	private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
+	private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		Interface.buildMod.Build(_mod, true);
 	}
 
-	private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
+	private void PublishMod(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		try {
 			if (!SteamedWraps.SteamClient) {
@@ -280,7 +288,8 @@ internal class UIModSourceItem : UIPanel
 		}
 	}
 
-	private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement) {
+	private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		try {
 			if (!SteamedWraps.SteamClient) {
@@ -301,7 +310,8 @@ internal class UIModSourceItem : UIPanel
 		}
 	}
 
-	internal static void PublishModCommandLine(string modName) {
+	internal static void PublishModCommandLine(string modName)
+	{
 		try {
 			LocalMod localMod;
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");

@@ -10,13 +10,15 @@ public class UnloadedGlobalItem : GlobalItem
 
 	public override bool InstancePerEntity => true;
 
-	public override void SaveData(Item item, TagCompound tag) {
+	public override void SaveData(Item item, TagCompound tag)
+	{
 		if (data.Count > 0) {
 			tag["modData"] = data;
 		}
 	}
 
-	public override void LoadData(Item item, TagCompound tag) {
+	public override void LoadData(Item item, TagCompound tag)
+	{
 		if (tag.ContainsKey("modData")) {
 			ItemIO.LoadGlobals(item, tag.GetList<TagCompound>("modData"));
 		}

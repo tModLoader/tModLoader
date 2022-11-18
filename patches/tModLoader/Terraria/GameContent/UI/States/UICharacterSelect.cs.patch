@@ -25,9 +25,9 @@
  	private bool skipDraw;
 +	private static bool _currentlyMigratingFiles;
  
- 	public override void OnInitialize() {
- 		UIElement uIElement = new UIElement();
-@@ -141,6 +_,217 @@
+ 	public override void OnInitialize()
+ 	{
+@@ -149,6 +_,218 @@
  		int num = 0;
  		foreach (PlayerFileData item in list) {
  			_playerList.Add(new UICharacterListItem(item, num++));
@@ -97,7 +97,8 @@
 +		}
 +	}
 +
-+	private void AddIndividualPlayerMigrationButtons() {
++	private void AddIndividualPlayerMigrationButtons()
++	{
 +		UIExpandablePanel playerMigrationPanel = new UIExpandablePanel();
 +		_playerList.Add(playerMigrationPanel);
 +

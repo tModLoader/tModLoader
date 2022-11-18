@@ -18,18 +18,21 @@ internal static class MapLoader
 	internal static readonly IDictionary<ushort, ushort> entryToTile = new Dictionary<ushort, ushort>();
 	internal static readonly IDictionary<ushort, ushort> entryToWall = new Dictionary<ushort, ushort>();
 
-	internal static int modTileOptions(ushort type) {
+	internal static int modTileOptions(ushort type)
+	{
 		return tileEntries[type].Count;
 	}
 
-	internal static int modWallOptions(ushort type) {
+	internal static int modWallOptions(ushort type)
+	{
 		return wallEntries[type].Count;
 	}
 	//make Terraria.Map.MapHelper.colorLookup internal
 	//add internal modPosition field to Terraria.Map.MapHelper
 	//near end of Terraria.Map.MapHelper.Initialize set modPosition to num11 + 1
 	//in Terraria.Map.MapHelper.SaveMap add mod-type-check to darkness check
-	internal static void SetupModMap() {
+	internal static void SetupModMap()
+	{
 		if (Main.dedServ) {
 			return;
 		}
@@ -76,7 +79,8 @@ internal static class MapLoader
 		initialized = true;
 	}
 
-	internal static void UnloadModMap() {
+	internal static void UnloadModMap()
+	{
 		tileEntries.Clear();
 		wallEntries.Clear();
 		if (Main.dedServ) {
@@ -93,7 +97,8 @@ internal static class MapLoader
 	}
 	//at end of Terraria.Map.MapHelper.CreateMapTile before returning call
 	//  MapLoader.ModMapOption(ref num16, i, j);
-	internal static void ModMapOption(ref ushort mapType, int i, int j) {
+	internal static void ModMapOption(ref ushort mapType, int i, int j)
+	{
 		if (entryToTile.ContainsKey(mapType)) {
 			ModTile tile = TileLoader.GetTile(entryToTile[mapType]);
 			ushort option = tile.GetMapOption(i, j);

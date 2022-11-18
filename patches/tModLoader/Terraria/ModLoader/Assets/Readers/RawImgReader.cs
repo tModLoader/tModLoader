@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,11 +13,13 @@ public class RawImgReader : IAssetReader
 {
 	private readonly GraphicsDevice _graphicsDevice;
 
-	public RawImgReader(GraphicsDevice graphicsDevice) {
+	public RawImgReader(GraphicsDevice graphicsDevice)
+	{
 		_graphicsDevice = graphicsDevice;
 	}
 
-	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
+	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
+	{
 		if (typeof(T) != typeof(Texture2D))
 			throw AssetLoadException.FromInvalidReader<RawImgReader, T>();
 
