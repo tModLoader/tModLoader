@@ -1,11 +1,12 @@
-﻿using SDL2;
+using SDL2;
 using System;
 
 namespace Terraria.ModLoader.Engine;
 
 internal static class FNAFixes
 {
-	internal static void Init() {
+	internal static void Init()
+	{
 		if (OperatingSystem.IsWindows()) {
 			// FNA sets this to "1" on Windows. Terraria does not want this. See #2020
 			SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");

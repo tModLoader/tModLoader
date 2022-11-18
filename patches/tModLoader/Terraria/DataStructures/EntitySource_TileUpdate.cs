@@ -8,6 +8,7 @@ namespace Terraria.DataStructures;
 public class EntitySource_TileUpdate : AEntitySource_Tile
 {
 	public EntitySource_TileUpdate(int tileCoordsX, int tileCoordsY, string? context = null)
-		: base(tileCoordsX, tileCoordsY, context) {
+		: base(tileCoordsX, tileCoordsY, context)
+	{
 	}
 }

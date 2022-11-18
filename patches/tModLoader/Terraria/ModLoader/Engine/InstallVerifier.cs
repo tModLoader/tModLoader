@@ -1,4 +1,4 @@
-﻿using ReLogic.OS;
+using ReLogic.OS;
 using System;
 using System.IO;
 using System.Linq;
@@ -29,7 +29,8 @@ internal static class InstallVerifier
 	private static byte[] gogHash;
 	private static byte[] steamHash;
 
-	static InstallVerifier() {
+	static InstallVerifier()
+	{
 		if (Platform.IsWindows) {
 			if (IntPtr.Size == 4) {
 				steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
@@ -63,13 +64,15 @@ internal static class InstallVerifier
 		}
 	}
 
-	private static bool HashMatchesFile(string path, byte[] hash) {
+	private static bool HashMatchesFile(string path, byte[] hash)
+	{
 		using (var md5 = MD5.Create())
 		using (var stream = File.OpenRead(path))
 			return hash.SequenceEqual(md5.ComputeHash(stream));
 	}
 
-	private static byte[] ToByteArray(string hexString, bool forceLowerCase = true) {
+	private static byte[] ToByteArray(string hexString, bool forceLowerCase = true)
+	{
 		if (forceLowerCase) {
 			hexString = hexString.ToLower();
 		}
@@ -82,7 +85,8 @@ internal static class InstallVerifier
 		return retval;
 	}
 
-	internal static void Startup() {
+	internal static void Startup()
+	{
 		DistributionPlatform = DetectPlatform(out string detectionDetails);
 		Logging.tML.Info($"Distribution Platform: {DistributionPlatform}. Detection method: {detectionDetails}");
 
@@ -94,7 +98,8 @@ internal static class InstallVerifier
 		}
 	}
 
-	private static DistributionPlatform DetectPlatform(out string detectionDetails) {
+	private static DistributionPlatform DetectPlatform(out string detectionDetails)
+	{
 		if (Program.LaunchParameters.ContainsKey("-steam")) {
 			detectionDetails = "-steam launch parameter";
 			return DistributionPlatform.Steam;
@@ -125,7 +130,8 @@ internal static class InstallVerifier
 		return DistributionPlatform.GoG;
 	}
 
-	private static bool ObtainVanillaExePath(out string vanillaPath, out string exePath) {
+	private static bool ObtainVanillaExePath(out string vanillaPath, out string exePath)
+	{
 		// Check if in the same folder somehow.
 		vanillaPath = Directory.GetCurrentDirectory();
 		if (CheckForExe(vanillaPath, out exePath))
@@ -152,7 +158,8 @@ internal static class InstallVerifier
 		return CheckForExe(vanillaPath, out exePath);
 	}
 
-	private static bool CheckForExe(string vanillaPath, out string exePath) {
+	private static bool CheckForExe(string vanillaPath, out string exePath)
+	{
 		exePath = Path.Combine(vanillaPath, CheckExe);
 		if (File.Exists(exePath))
 			return true;
@@ -164,7 +171,8 @@ internal static class InstallVerifier
 		return false;
 	}
 
-	private static void CheckSteam() {
+	private static void CheckSteam()
+	{
 		if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 			Utils.OpenToURL("https://terraria.org");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
@@ -195,7 +203,8 @@ internal static class InstallVerifier
 	}
 
 	// Check if GOG install is correct
-	private static void CheckGoG() {
+	private static void CheckGoG()
+	{
 		if (!File.Exists(vanillaExePath)) {
 			if (Main.dedServ)
 				return;

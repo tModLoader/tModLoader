@@ -76,7 +76,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 
 	protected override NPC CreateTemplateEntity() => new() { ModNPC = this };
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModNPC>.Register(this);
 
 		NPC.type = NPCLoader.ReserveNPCID();
@@ -95,7 +96,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 		}
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		NPCLoader.SetDefaults(NPC, false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
@@ -116,7 +118,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <summary>
 	/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 	/// </summary>
-	public virtual void AutoStaticDefaults() {
+	public virtual void AutoStaticDefaults()
+	{
 		TextureAssets.Npc[NPC.type] = ModContent.Request<Texture2D>(Texture);
 
 		if (Banner != 0 && BannerItem != 0) {
@@ -145,7 +148,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="numPlayers"></param>
 	/// <param name="bossLifeScale"></param>
-	public virtual void ScaleExpertStats(int numPlayers, float bossLifeScale) {
+	public virtual void ScaleExpertStats(int numPlayers, float bossLifeScale)
+	{
 	}
 
 	/// <summary>
@@ -153,20 +157,23 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="database"></param>
 	/// <param name="bestiaryEntry"></param>
-	public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+	public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the type name of this NPC dynamically.
 	/// </summary>
-	public virtual void ModifyTypeName(ref string typeName) {
+	public virtual void ModifyTypeName(ref string typeName)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not its name is displayed).
 	/// </summary>
 	/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
-	public virtual void ModifyHoverBoundingBox(ref Rectangle boundingBox) {
+	public virtual void ModifyHoverBoundingBox(ref Rectangle boundingBox)
+	{
 	}
 
 	/// <summary>
@@ -174,7 +181,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
 	/// </summary>
 	/// <returns></returns>
-	public virtual List<string> SetNPCNameList() {
+	public virtual List<string> SetNPCNameList()
+	{
 		return new List<string>();
 	}
 
@@ -182,32 +190,37 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to set the town NPC profile that this NPC uses.<br></br>
 	/// By default, returns null, meaning that the NPC doesn't use one.
 	/// </summary>
-	public virtual ITownNPCProfile TownNPCProfile() {
+	public virtual ITownNPCProfile TownNPCProfile()
+	{
 		return null;
 	}
 
 	/// <summary>
 	/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied. (Note: This hook is only really useful for GlobalNPC, but is included in ModNPC for completion.)
 	/// </summary>
-	public virtual void ResetEffects() {
+	public virtual void ResetEffects()
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool PreAI() {
+	public virtual bool PreAI()
+	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. This will only be called if PreAI returns true.
 	/// </summary>
-	public virtual void AI() {
+	public virtual void AI()
+	{
 	}
 
 	//Allows you to determine how this NPC behaves. This will be called regardless of what PreAI returns.
-	public virtual void PostAI() {
+	public virtual void PostAI()
+	{
 	}
 
 	/// <summary>
@@ -216,7 +229,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <br/>Only called on the server.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
-	public virtual void SendExtraAI(BinaryWriter writer) {
+	public virtual void SendExtraAI(BinaryWriter writer)
+	{
 	}
 
 	/// <summary>
@@ -225,35 +239,40 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <br/>Only called on the client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
-	public virtual void ReceiveExtraAI(BinaryReader reader) {
+	public virtual void ReceiveExtraAI(BinaryReader reader)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the frame from this NPC's texture that is drawn, which is necessary in order to animate NPCs.
 	/// </summary>
 	/// <param name="frameHeight"></param>
-	public virtual void FindFrame(int frameHeight) {
+	public virtual void FindFrame(int frameHeight)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(int hitDirection, double damage) {
+	public virtual void HitEffect(int hitDirection, double damage)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to make the NPC either regenerate health or take damage over time by setting NPC.lifeRegen. Regeneration or damage will occur at a rate of half of NPC.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
 	/// </summary>
 	/// <param name="damage"></param>
-	public virtual void UpdateLifeRegen(ref int damage) {
+	public virtual void UpdateLifeRegen(ref int damage)
+	{
 	}
 
 	/// <summary>
 	/// Whether or not to run the code for checking whether this NPC will remain active. Return false to stop this NPC from being despawned and to stop this NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool CheckActive() {
+	public virtual bool CheckActive()
+	{
 		return true;
 	}
 
@@ -261,7 +280,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Whether or not this NPC should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop this NPC from being killed. Returns true by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool CheckDead() {
+	public virtual bool CheckDead()
+	{
 		return true;
 	}
 
@@ -269,7 +289,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
 	/// </summary>
 	/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
-	public virtual bool SpecialOnKill() {
+	public virtual bool SpecialOnKill()
+	{
 		return false;
 	}
 
@@ -277,21 +298,24 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). Returns true by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool PreKill() {
+	public virtual bool PreKill()
+	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 	/// </summary>
-	public virtual void OnKill() {
+	public virtual void OnKill()
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine how and when this NPC can fall through platforms and similar tiles.
 	/// <br/>Return true to allow this NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
 	/// </summary>
-	public virtual bool? CanFallThroughPlatforms() {
+	public virtual bool? CanFallThroughPlatforms()
+	{
 		return null;
 	}
 
@@ -306,7 +330,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="item">The item with which the player is trying to catch this NPC.</param>
 	/// <param name="player">The player attempting to catch this NPC.</param>
 	/// <returns></returns>
-	public virtual bool? CanBeCaughtBy(Item item, Player player) {
+	public virtual bool? CanBeCaughtBy(Item item, Player player)
+	{
 		return null;
 	}
 
@@ -316,7 +341,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="player">The player attempting to catch this NPC.</param>
 	/// <param name="item">The item used to catch this NPC.</param>
 	/// <param name="failed">Whether or not this NPC has been successfully caught.</param>
-	public virtual void OnCaughtBy(Player player, Item item, bool failed) {
+	public virtual void OnCaughtBy(Player player, Item item, bool failed)
+	{
 	}
 
 	/// <summary>
@@ -324,7 +350,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify NPC loot.
 	/// </summary>
 	/// <param name="npcLoot"></param>
-	public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
+	public virtual void ModifyNPCLoot(NPCLoot npcLoot)
+	{
 	}
 
 	/// <summary>
@@ -332,7 +359,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="name"></param>
 	/// <param name="potionType"></param>
-	public virtual void BossLoot(ref string name, ref int potionType) {
+	public virtual void BossLoot(ref string name, ref int potionType)
+	{
 	}
 
 	/// <summary>
@@ -341,7 +369,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="target"></param>
 	/// <param name="cooldownSlot"></param>
 	/// <returns></returns>
-	public virtual bool CanHitPlayer(Player target, ref int cooldownSlot) {
+	public virtual bool CanHitPlayer(Player target, ref int cooldownSlot)
+	{
 		return true;
 	}
 
@@ -351,7 +380,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -360,7 +390,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit) {
+	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -368,7 +399,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(NPC target) {
+	public virtual bool? CanHitNPC(NPC target)
+	{
 		return null;
 	}
 
@@ -379,7 +411,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit) {
+	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -389,7 +422,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -398,7 +432,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
 	/// <returns></returns>
-	public virtual bool? CanBeHitByItem(Player player, Item item) {
+	public virtual bool? CanBeHitByItem(Player player, Item item)
+	{
 		return null;
 	}
 
@@ -410,7 +445,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit) {
+	public virtual void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -421,7 +457,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit) {
+	public virtual void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -429,7 +466,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool? CanBeHitByProjectile(Projectile projectile) {
+	public virtual bool? CanBeHitByProjectile(Projectile projectile)
+	{
 		return null;
 	}
 
@@ -441,7 +479,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
 	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+	public virtual void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	{
 	}
 
 	/// <summary>
@@ -451,7 +490,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit) {
+	public virtual void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -463,7 +503,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="hitDirection"></param>
 	/// <param name="crit"></param>
 	/// <returns></returns>
-	public virtual bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
+	public virtual bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	{
 		return true;
 	}
 
@@ -471,21 +512,24 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
 	/// </summary>
 	/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
-	public virtual void BossHeadSlot(ref int index) {
+	public virtual void BossHeadSlot(ref int index)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to customize the rotation of this NPC's boss head icon on the map.
 	/// </summary>
 	/// <param name="rotation"></param>
-	public virtual void BossHeadRotation(ref float rotation) {
+	public virtual void BossHeadRotation(ref float rotation)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to flip this NPC's boss head icon on the map.
 	/// </summary>
 	/// <param name="spriteEffects"></param>
-	public virtual void BossHeadSpriteEffects(ref SpriteEffects spriteEffects) {
+	public virtual void BossHeadSpriteEffects(ref SpriteEffects spriteEffects)
+	{
 	}
 
 	/// <summary>
@@ -493,7 +537,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="drawColor"></param>
 	/// <returns></returns>
-	public virtual Color? GetAlpha(Color drawColor) {
+	public virtual Color? GetAlpha(Color drawColor)
+	{
 		return null;
 	}
 
@@ -501,7 +546,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to add special visual effects to this NPC (such as creating dust), and modify the color in which the NPC is drawn.
 	/// </summary>
 	/// <param name="drawColor"></param>
-	public virtual void DrawEffects(ref Color drawColor) {
+	public virtual void DrawEffects(ref Color drawColor)
+	{
 	}
 
 	/// <summary>
@@ -511,7 +557,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="screenPos">The screen position used to translate world position into screen position</param>
 	/// <param name="drawColor">The color the NPC is drawn in</param>
 	/// <returns></returns>
-	public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+	public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+	{
 		return true;
 	}
 
@@ -521,7 +568,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
 	/// <param name="screenPos">The screen position used to translate world position into screen position</param>
 	/// <param name="drawColor">The color the NPC is drawn in</param>
-	public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+	public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+	{
 	}
 
 	/// <summary>
@@ -539,7 +587,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="scale"></param>
 	/// <param name="position"></param>
 	/// <returns></returns>
-	public virtual bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) {
+	public virtual bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+	{
 		return null;
 	}
 
@@ -548,7 +597,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="spawnInfo"></param>
 	/// <returns></returns>
-	public virtual float SpawnChance(NPCSpawnInfo spawnInfo) {
+	public virtual float SpawnChance(NPCSpawnInfo spawnInfo)
+	{
 		return 0f;
 	}
 
@@ -558,7 +608,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="tileX"></param>
 	/// <param name="tileY"></param>
 	/// <returns></returns>
-	public virtual int SpawnNPC(int tileX, int tileY) {
+	public virtual int SpawnNPC(int tileX, int tileY)
+	{
 		//TODO: Add IEntitySource in '1.4_onspawn'.
 		return NPC.NewNPC(null, tileX * 16 + 8, tileY * 16, NPC.type);
 	}
@@ -568,7 +619,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="numTownNPCs"></param>
 	/// <returns></returns>
-	public virtual bool CanTownNPCSpawn(int numTownNPCs) {
+	public virtual bool CanTownNPCSpawn(int numTownNPCs)
+	{
 		return false;
 	}
 
@@ -591,7 +643,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="top"></param>
 	/// <param name="bottom"></param>
 	/// <returns></returns>
-	public virtual bool CheckConditions(int left, int right, int top, int bottom) {
+	public virtual bool CheckConditions(int left, int right, int top, int bottom)
+	{
 		return true;
 	}
 
@@ -599,7 +652,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to determine whether this town NPC wears a party hat during a party. Returns true by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool UsesPartyHat() {
+	public virtual bool UsesPartyHat()
+	{
 		return true;
 	}
 
@@ -611,7 +665,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// able to be chatted with no matter what else you do the NPC instance itself.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool CanChat() {
+	public virtual bool CanChat()
+	{
 		return NPC.townNPC;
 	}
 
@@ -619,7 +674,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// Allows you to give this NPC a chat message when a player talks to it. By default returns something embarrassing.
 	/// </summary>
 	/// <returns></returns>
-	public virtual string GetChat() {
+	public virtual string GetChat()
+	{
 		return Language.GetTextValue("tModLoader.DefaultTownNPCChat");
 	}
 
@@ -628,7 +684,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="button"></param>
 	/// <param name="button2"></param>
-	public virtual void SetChatButtons(ref string button, ref string button2) {
+	public virtual void SetChatButtons(ref string button, ref string button2)
+	{
 	}
 
 	/// <summary>
@@ -636,7 +693,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="firstButton"></param>
 	/// <param name="shop"></param>
-	public virtual void OnChatButtonClicked(bool firstButton, ref bool shop) {
+	public virtual void OnChatButtonClicked(bool firstButton, ref bool shop)
+	{
 	}
 
 	/// <summary>
@@ -644,14 +702,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="shop"></param>
 	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(Chest shop, ref int nextSlot) {
+	public virtual void SetupShop(Chest shop, ref int nextSlot)
+	{
 	}
 
 	/// <summary>
 	/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
 	/// </summary>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
-	public virtual bool CanGoToStatue(bool toKingStatue) {
+	public virtual bool CanGoToStatue(bool toKingStatue)
+	{
 		return false;
 	}
 
@@ -660,7 +720,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// This method is only called server side.
 	/// </summary>
 	/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
-	public virtual void OnGoToStatue(bool toKingStatue) {
+	public virtual void OnGoToStatue(bool toKingStatue)
+	{
 	}
 
 	/// <summary>
@@ -668,7 +729,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
-	public virtual void TownNPCAttackStrength(ref int damage, ref float knockback) {
+	public virtual void TownNPCAttackStrength(ref int damage, ref float knockback)
+	{
 	}
 
 	/// <summary>
@@ -676,7 +738,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="cooldown"></param>
 	/// <param name="randExtraCooldown"></param>
-	public virtual void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown) {
+	public virtual void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
+	{
 	}
 
 	/// <summary>
@@ -684,7 +747,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="projType"></param>
 	/// <param name="attackDelay"></param>
-	public virtual void TownNPCAttackProj(ref int projType, ref int attackDelay) {
+	public virtual void TownNPCAttackProj(ref int projType, ref int attackDelay)
+	{
 	}
 
 	/// <summary>
@@ -693,21 +757,24 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="multiplier"></param>
 	/// <param name="gravityCorrection"></param>
 	/// <param name="randomOffset"></param>
-	public virtual void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
+	public virtual void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to tell the game that this town NPC has already created a projectile and will still create more projectiles as part of a single attack so that the game can animate the NPC's attack properly. Only used when the town NPC has an attack type of 1 (shooting).
 	/// </summary>
 	/// <param name="inBetweenShots"></param>
-	public virtual void TownNPCAttackShoot(ref bool inBetweenShots) {
+	public virtual void TownNPCAttackShoot(ref bool inBetweenShots)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to control the brightness of the light emitted by this town NPC's aura when it performs a magic attack. Only used when the town NPC has an attack type of 2 (magic)
 	/// </summary>
 	/// <param name="auraLightMultiplier"></param>
-	public virtual void TownNPCAttackMagic(ref float auraLightMultiplier) {
+	public virtual void TownNPCAttackMagic(ref float auraLightMultiplier)
+	{
 	}
 
 	/// <summary>
@@ -715,7 +782,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="itemWidth"></param>
 	/// <param name="itemHeight"></param>
-	public virtual void TownNPCAttackSwing(ref int itemWidth, ref int itemHeight) {
+	public virtual void TownNPCAttackSwing(ref int itemWidth, ref int itemHeight)
+	{
 	}
 
 	/// <summary>
@@ -724,7 +792,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="scale"></param>
 	/// <param name="item"></param>
 	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(ref float scale, ref int item, ref int closeness) {
+	public virtual void DrawTownAttackGun(ref float scale, ref int item, ref int closeness)
+	{
 	}
 
 	/// <summary>
@@ -734,7 +803,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <param name="itemSize"></param>
 	/// <param name="scale"></param>
 	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+	public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	{
 	}
 
 	/// <summary>
@@ -742,7 +812,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <br/><b>NOTE:</b> A town NPC will always be saved.
 	/// <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
 	/// </summary>
-	public virtual bool NeedSaving() {
+	public virtual bool NeedSaving()
+	{
 		return false;
 	}
 
@@ -755,13 +826,15 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and this is not a townNPC, if another mod returns true on NeedSaving.
 	/// </summary>
 	/// <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
-	public virtual void SaveData(TagCompound tag) {
+	public virtual void SaveData(TagCompound tag)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to load custom data that you have saved for this npc.
 	/// </summary>
 	/// <param name="tag">The tag.</param>
-	public virtual void LoadData(TagCompound tag) {
+	public virtual void LoadData(TagCompound tag)
+	{
 	}
 }

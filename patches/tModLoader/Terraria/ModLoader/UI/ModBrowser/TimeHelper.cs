@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -12,7 +12,8 @@ internal class TimeHelper
 	private const int MONTH = 30 * DAY;
 
 	// Note: Polish has different plural for numbers ending in 2,3,4. Too complicated to do though.
-	public static string HumanTimeSpanString(DateTime yourDate) {
+	public static string HumanTimeSpanString(DateTime yourDate)
+	{
 		var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);
 		double delta = Math.Abs(ts.TotalSeconds);
 

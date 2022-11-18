@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
 
@@ -13,7 +13,8 @@ partial class PlayerResourceSetsManager
 
 	private string _activeSetConfigKeyOriginal;  // Used to store the original key value, since PlayerResourceSetsManager is loaded way before mods
 
-	internal void AddModdedDisplaySets() {
+	internal void AddModdedDisplaySets()
+	{
 		foreach (ModResourceDisplaySet display in ResourceDisplaySetLoader.moddedDisplaySets) {
 			string key = display.ConfigKey;
 			_sets[key] = display;
@@ -22,18 +23,21 @@ partial class PlayerResourceSetsManager
 	}
 
 	// Called by tML after mods have loaded to set the actual display set
-	internal void SetActiveFromOriginalConfigKey() {
+	internal void SetActiveFromOriginalConfigKey()
+	{
 		SetActive(_activeSetConfigKeyOriginal);
 		// In case the display set didn't exist, force the original key back to Fancy
 		_activeSetConfigKeyOriginal = _activeSetConfigKey;
 	}
 
-	private void SetActiveFrameFromIndex(int index) {
+	private void SetActiveFrameFromIndex(int index)
+	{
 		selectedSet = index;
 		SetActiveFrame(_sets[accessKeys[selectedSet]]);
 	}
 
-	internal void ResetToVanilla() {
+	internal void ResetToVanilla()
+	{
 		_activeSetConfigKey = _activeSetConfigKeyOriginal;
 
 		foreach (string key in accessKeys.Skip(vanillaSets.Length))

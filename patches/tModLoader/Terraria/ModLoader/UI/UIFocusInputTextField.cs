@@ -23,11 +23,13 @@ internal class UIFocusInputTextField : UIElement
 	public event EventHandler OnUnfocus;
 	public event EventHandler OnTab;
 
-	public UIFocusInputTextField(string hintText) {
+	public UIFocusInputTextField(string hintText)
+	{
 		_hintText = hintText;
 	}
 
-	public void SetText(string text) {
+	public void SetText(string text)
+	{
 		if (text == null)
 			text = "";
 
@@ -37,12 +39,14 @@ internal class UIFocusInputTextField : UIElement
 		}
 	}
 
-	public override void Click(UIMouseEvent evt) {
+	public override void Click(UIMouseEvent evt)
+	{
 		Main.clrInput();
 		Focused = true;
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		Vector2 MousePosition = new Vector2((float)Main.mouseX, (float)Main.mouseY);
 		if (!ContainsPoint(MousePosition) && Main.mouseLeft) // TODO: && focused maybe?
 		{
@@ -51,11 +55,13 @@ internal class UIFocusInputTextField : UIElement
 		}
 		base.Update(gameTime);
 	}
-	private static bool JustPressed(Keys key) {
+	private static bool JustPressed(Keys key)
+	{
 		return Main.inputText.IsKeyDown(key) && !Main.oldInputText.IsKeyDown(key);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		//Rectangle hitbox = GetInnerDimensions().ToRectangle();
 		//Main.spriteBatch.Draw(TextureAssets.MagicPixel, hitbox, Color.Red * 0.6f);
 

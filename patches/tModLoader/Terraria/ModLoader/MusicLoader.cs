@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +25,8 @@ public sealed class MusicLoader : ILoader
 		=> GetMusicSlot($"{mod.Name}/{musicPath}");
 
 	/// <summary> Gets the music id of the track with the specified full path. The path must be prefixed with a mod name and must not have a file extension. </summary>
-	public static int GetMusicSlot(string musicPath) {
+	public static int GetMusicSlot(string musicPath)
+	{
 		if (musicByPath.ContainsKey(musicPath)) {
 			return musicByPath[musicPath];
 		}
@@ -46,7 +47,8 @@ public sealed class MusicLoader : ILoader
 		=> GetMusic($"{mod.Name}/{musicPath}");
 
 	/// <summary> Gets the music track with the specified full path. The path must be prefixed with a mod name and must not have a file extension. </summary>
-	public static IAudioTrack GetMusic(string musicPath) {
+	public static IAudioTrack GetMusic(string musicPath)
+	{
 		if (Main.dedServ)
 			return null;
 
@@ -65,7 +67,8 @@ public sealed class MusicLoader : ILoader
 	/// </summary>
 	/// <param name="mod"> The mod that owns the music track. </param>
 	/// <param name="musicPath"> The provided mod's local path to the music track file, case-sensitive and without extensions. </param>
-	public static void AddMusic(Mod mod, string musicPath) {
+	public static void AddMusic(Mod mod, string musicPath)
+	{
 		if (!mod.loading)
 			throw new Exception($"{nameof(AddMusic)} can only be called during mod loading.");
 
@@ -117,7 +120,8 @@ public sealed class MusicLoader : ILoader
 	/// or
 	/// Y-frame must be divisible by 36
 	/// </exception>
-	public static void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0) {
+	public static void AddMusicBox(Mod mod, int musicSlot, int itemType, int tileType, int tileFrameY = 0)
+	{
 		//if (!mod.loading)
 		//	throw new Exception($"{nameof(AddMusicBox)} can only be called during mod loading.");
 
@@ -162,7 +166,8 @@ public sealed class MusicLoader : ILoader
 		tileToMusic[tileType][tileFrameY] = musicSlot;
 	}
 
-	internal static void AutoloadMusic(Mod mod) {
+	internal static void AutoloadMusic(Mod mod)
+	{
 		if (mod.File is null)
 			return;
 
@@ -173,7 +178,8 @@ public sealed class MusicLoader : ILoader
 
 	internal static int ReserveMusicID() => MusicCount++;
 
-	internal static IAudioTrack LoadMusic(string path, string extension) {
+	internal static IAudioTrack LoadMusic(string path, string extension)
+	{
 		path = $"tmod:{path}{extension}";
 
 		Stream stream = ModContent.OpenRead(path, true);
@@ -186,7 +192,8 @@ public sealed class MusicLoader : ILoader
 		};
 	}
 
-	internal static void CloseModStreams(Mod mod) {
+	internal static void CloseModStreams(Mod mod)
+	{
 		if (!Program.IsMainThread) {
 			Main.RunOnMainThread(() => CloseModStreams(mod)).GetAwaiter().GetResult();
 			return;
@@ -198,7 +205,8 @@ public sealed class MusicLoader : ILoader
 			CloseStream(musicPath);
 	}
 
-	internal static void CloseStream(string musicPath) {
+	internal static void CloseStream(string musicPath)
+	{
 		if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
 			return;
 
@@ -207,7 +215,8 @@ public sealed class MusicLoader : ILoader
 			legacyAudioSystem.AudioTracks[slot]?.Dispose();
 	}
 
-	void ILoader.ResizeArrays() {
+	void ILoader.ResizeArrays()
+	{
 		if (Main.audioSystem is not LegacyAudioSystem legacyAudioSystem)
 			return;
 
@@ -227,7 +236,8 @@ public sealed class MusicLoader : ILoader
 		Main.audioSystem = legacyAudioSystem;
 	}
 
-	void ILoader.Unload() {
+	void ILoader.Unload()
+	{
 		musicToItem.Clear();
 		itemToMusic.Clear();
 		tileToMusic.Clear();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -10,7 +10,8 @@ public static class ModTypeLookup<T> where T : IModType
 	private static readonly Dictionary<string, T> dict = new Dictionary<string, T>();
 	private static readonly Dictionary<string, Dictionary<string, T>> tieredDict = new Dictionary<string, Dictionary<string, T>>();
 
-	static ModTypeLookup() {
+	static ModTypeLookup()
+	{
 		if (typeof(T).Assembly == typeof(ModTypeLookup<>).Assembly) {
 			TypeCaching.OnClear += () => {
 				dict.Clear();
@@ -19,7 +20,8 @@ public static class ModTypeLookup<T> where T : IModType
 		}
 	}
 
-	public static void Register(T instance) {
+	public static void Register(T instance)
+	{
 		RegisterWithName(instance, instance.Name, instance.FullName);
 
 		//Add legacy aliases, if the type has any.
@@ -28,7 +30,8 @@ public static class ModTypeLookup<T> where T : IModType
 		}
 	}
 
-	private static void RegisterWithName(T instance, string name, string fullName) {
+	private static void RegisterWithName(T instance, string name, string fullName)
+	{
 		if (dict.ContainsKey(fullName))
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", typeof(T).Name, fullName));
 
@@ -48,7 +51,8 @@ public static class ModTypeLookup<T> where T : IModType
 
 	internal static bool TryGetValue(string fullName, out T value) => dict.TryGetValue(fullName, out value);
 
-	internal static bool TryGetValue(string modName, string contentName, out T value) {
+	internal static bool TryGetValue(string modName, string contentName, out T value)
+	{
 		if (!tieredDict.TryGetValue(modName, out var subDictionary)) {
 			value = default;
 

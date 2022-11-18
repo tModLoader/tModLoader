@@ -24,7 +24,8 @@ public abstract class ModDust : ModTexturedType
 	/// <summary> The ID of this type of dust. </summary>
 	public int Type { get; internal set; }
 
-	protected override sealed void Register() {
+	protected override sealed void Register()
+	{
 		ModTypeLookup<ModDust>.Register(this);
 
 		DustLoader.dusts.Add(this);
@@ -34,7 +35,8 @@ public abstract class ModDust : ModTexturedType
 		Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.Request<Texture2D>(Texture) : TextureAssets.Dust;
 	}
 
-	internal void Draw(Dust dust, Color alpha, float scale) {
+	internal void Draw(Dust dust, Color alpha, float scale)
+	{
 		Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, alpha, dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
 
 		if (dust.color != default) {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -50,24 +50,29 @@ public static partial class Logging
 	
 	private static Exception previousException;
 
-	public static void IgnoreExceptionSource(string source) {
+	public static void IgnoreExceptionSource(string source)
+	{
 		ignoreSources.Add(source);
 	}
 
-	public static void IgnoreExceptionContents(string source) {
+	public static void IgnoreExceptionContents(string source)
+	{
 		if (!ignoreContents.Contains(source))
 			ignoreContents.Add(source);
 	}
 
-	internal static void ResetPastExceptions() {
+	internal static void ResetPastExceptions()
+	{
 		pastExceptions.Clear();
 	}
 
-	private static void LogFirstChanceExceptions() {
+	private static void LogFirstChanceExceptions()
+	{
 		AppDomain.CurrentDomain.FirstChanceException += FirstChanceExceptionHandler;
 	}
 
-	private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args) {
+	private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
+	{
 		if (handlerActive.Value)
 			return;
 
@@ -133,7 +138,8 @@ public static partial class Logging
 		}
 	}
 
-	private static bool MatchContents(ReadOnlySpan<char> traceString, ReadOnlySpan<char> contentPattern) {
+	private static bool MatchContents(ReadOnlySpan<char> traceString, ReadOnlySpan<char> contentPattern)
+	{
 		while (true) {
 			int sep = contentPattern.IndexOf("..");
 			var m = sep >= 0 ? contentPattern[..sep] : contentPattern;

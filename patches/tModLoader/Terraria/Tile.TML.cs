@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using Terraria.ID;
 
@@ -100,7 +100,8 @@ public readonly partial struct Tile
 		TileId = tileId;
 	}
 #else
-	internal Tile(uint tileId) {
+	internal Tile(uint tileId)
+	{
 		TileId = tileId;
 	}
 #endif

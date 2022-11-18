@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 
@@ -9,7 +9,8 @@ public readonly struct GlobalLoot : ILoot
 {
 	private readonly ItemDropDatabase itemDropDatabase;
 
-	public GlobalLoot(ItemDropDatabase itemDropDatabase) {
+	public GlobalLoot(ItemDropDatabase itemDropDatabase)
+	{
 		this.itemDropDatabase = itemDropDatabase;
 	}
 
@@ -17,13 +18,15 @@ public readonly struct GlobalLoot : ILoot
 
 	public IItemDropRule Add(IItemDropRule entry) => itemDropDatabase.RegisterToGlobal(entry);
 
-	public IItemDropRule Remove(IItemDropRule entry) {
+	public IItemDropRule Remove(IItemDropRule entry)
+	{
 		itemDropDatabase._globalEntries.Remove(entry);
 
 		return entry;
 	}
 
-	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool unusedParam = true) {
+	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool unusedParam = true)
+	{
 		var list = itemDropDatabase._globalEntries;
 
 		for (int i = 0; i < list.Count; i++) {

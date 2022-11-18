@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -8,7 +8,8 @@ public class BigEndianWriter : BinaryWriter
 {
 	public BigEndianWriter(Stream output) : base(output) { }
 
-	private void WriteBigEndian(byte[] bytes) {
+	private void WriteBigEndian(byte[] bytes)
+	{
 		if (BitConverter.IsLittleEndian)
 			bytes = bytes.Reverse().ToArray();
 

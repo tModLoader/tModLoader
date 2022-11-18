@@ -89,24 +89,28 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void UpdateAllMods(UIMouseEvent @event, UIElement element) {
+	private void UpdateAllMods(UIMouseEvent @event, UIElement element)
+	{
 		if (Loading) return;
 		var relevantMods = _items.Where(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade).Select(x => x.ModDownload.ModName).ToList();
 		DownloadMods(relevantMods);
 	}
 
-	private void ClearFilters(UIMouseEvent @event, UIElement element) {
+	private void ClearFilters(UIMouseEvent @event, UIElement element)
+	{
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
 		UpdateNeeded = true;
 		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
 
-	private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element) {
+	private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element)
+	{
 		DownloadMods(SpecialModPackFilter);
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
 		base.Draw(spriteBatch);
 		for (int i = 0; i < CategoryButtons.Count; i++)
@@ -145,7 +149,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	}
 
-	public void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	public void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		bool reloadModsNeeded = aNewModDownloaded && ModLoader.autoReloadAndEnableModsLeavingModBrowser || anEnabledModUpdated;
 		bool enableModsReminder = aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable;
 		bool reloadModsReminder = aDisabledModUpdated && !ModLoader.dontRemindModBrowserUpdateReload;
@@ -177,14 +182,16 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 	}
 
-	private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
+	private void ReloadList(UIMouseEvent evt, UIElement listeningElement)
+	{
 		if (Loading) return;
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		PopulateModBrowser();
 	}
 
 	// TODO if we store a browser 'state' we can probably refactor this
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 		if (!UpdateNeeded || Loading) return;
 		UpdateNeeded = false;
@@ -200,14 +207,16 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (SpecialModPackFilter == null && _items.Count(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade) > 0) _rootElement.Append(_updateAllButton);
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		Main.clrInput();
 		if (!Loading && _items.Count <= 0) {
 			PopulateModBrowser();
 		}
 	}
 
-	internal void PopulateModBrowser() {
+	internal void PopulateModBrowser()
+	{
 		// Initialize
 		Loading = true;
 		SpecialModPackFilter = null;
@@ -229,7 +238,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	internal bool InnerPopulateModBrowser() {
+	internal bool InnerPopulateModBrowser()
+	{
 		if (!WorkshopHelper.QueryHelper.FetchDownloadItems())
 			return false;
 
@@ -243,7 +253,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// <summary>
 	///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 	/// </summary>
-	internal void DownloadMods(IEnumerable<string> modNames) {
+	internal void DownloadMods(IEnumerable<string> modNames)
+	{
 		var downloads = new List<ModDownloadItem>();
 
 		foreach (string desiredMod in modNames) {
@@ -269,12 +280,14 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void SetHeading(string heading) {
+	private void SetHeading(string heading)
+	{
 		HeaderTextPanel.SetText(heading, 0.8f, true);
 		HeaderTextPanel.Recalculate();
 	}
 
-	internal static void LogModBrowserException(Exception e) {
+	internal static void LogModBrowserException(Exception e)
+	{
 		Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
 	}
 }

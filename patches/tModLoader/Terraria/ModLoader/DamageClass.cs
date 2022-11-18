@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Terraria.Localization;
 
@@ -101,7 +101,8 @@ public abstract class DamageClass : ModType
 	/// </summary>
 	public virtual bool ShowStatTooltipLine(Player player, string lineName) => true;
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
 
 		ModTypeLookup<DamageClass>.Register(this);

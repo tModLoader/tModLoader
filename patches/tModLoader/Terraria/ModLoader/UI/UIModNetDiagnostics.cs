@@ -30,19 +30,22 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 		public int BytesReceived;
 		public int BytesSent;
 
-		public void Reset() {
+		public void Reset()
+		{
 			TimesReceived = 0;
 			TimesSent = 0;
 			BytesReceived = 0;
 			BytesSent = 0;
 		}
 
-		public void CountReadMessage(int messageLength) {
+		public void CountReadMessage(int messageLength)
+		{
 			TimesReceived++;
 			BytesReceived += messageLength;
 		}
 
-		public void CountSentMessage(int messageLength) {
+		public void CountSentMessage(int messageLength)
+		{
 			TimesSent++;
 			BytesSent += messageLength;
 		}
@@ -62,12 +65,14 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 	private int HighestFoundReadBytes = 1;
 	private float FirstColumnWidth;
 
-	public UIModNetDiagnostics(IEnumerable<Mod> mods) {
+	public UIModNetDiagnostics(IEnumerable<Mod> mods)
+	{
 		Mods = mods.Where(mod => mod != ModContent.GetInstance<ModLoaderMod>()).ToArray(); // Need to exclude ModLoaderMod
 		Reset();
 	}
 
-	public void Reset() {
+	public void Reset()
+	{
 		CounterByModNetId = new CounterForMessage[Mods.Length];
 
 		var font = FontAsset.Value;
@@ -83,19 +88,22 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 		FirstColumnWidth *= TextScale;
 	}
 
-	public void CountReadMessage(int messageId, int messageLength) {
+	public void CountReadMessage(int messageId, int messageLength)
+	{
 		int index = Array.FindIndex(Mods, mod => mod.netID == messageId);
 		if (index > -1)
 			CounterByModNetId[index].CountReadMessage(messageLength);
 	}
 
-	public void CountSentMessage(int messageId, int messageLength) {
+	public void CountSentMessage(int messageId, int messageLength)
+	{
 		int index = Array.FindIndex(Mods, mod => mod.netID == messageId);
 		if (index > -1)
 			CounterByModNetId[index].CountSentMessage(messageLength);
 	}
 
-	public void Draw(SpriteBatch spriteBatch) {
+	public void Draw(SpriteBatch spriteBatch)
+	{
 		int count = CounterByModNetId.Length;
 		const int maxLinesPerCol = 50;
 		int numCols = (count - 1) / maxLinesPerCol;
@@ -134,7 +142,8 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 	}
 
 	// Copied from vanilla, adjusted
-	private void DrawCounter(SpriteBatch spriteBatch, CounterForMessage counter, string title, Vector2 position) {
+	private void DrawCounter(SpriteBatch spriteBatch, CounterForMessage counter, string title, Vector2 position)
+	{
 		if (HighestFoundSentBytes < counter.BytesSent)
 			HighestFoundSentBytes = counter.BytesSent;
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.GameInput;
 using Terraria.Localization;
@@ -18,14 +18,16 @@ public class ModKeybind // We could make this a ModType later
 	internal string DefaultBinding { get; set; } // from mod.Load
 	internal ModTranslation DisplayName { get; set; }
 
-	internal ModKeybind(Mod mod, string name, string defaultBinding) {
+	internal ModKeybind(Mod mod, string name, string defaultBinding)
+	{
 		Mod = mod;
 		Name = name;
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Keybind.{Name}");
 		DefaultBinding = defaultBinding;
 	}
 
-	internal void SetupContent() {
+	internal void SetupContent()
+	{
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Name);
 	}
@@ -34,7 +36,8 @@ public class ModKeybind // We could make this a ModType later
 	/// Gets the currently assigned keybindings. Useful for prompts, tooltips, informing users.
 	/// </summary>
 	/// <param name="mode"> The InputMode. Choose between InputMode.Keyboard and InputMode.XBoxGamepad </param>
-	public List<string> GetAssignedKeys(InputMode mode = InputMode.Keyboard) {
+	public List<string> GetAssignedKeys(InputMode mode = InputMode.Keyboard)
+	{
 		return PlayerInput.CurrentProfile.InputModes[mode].KeyStatus[FullName];
 	}
 

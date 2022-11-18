@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 /// <summary>A ModSide enum defines how mods are synced between clients and servers. You can set your mod's ModSide from its build.txt file.</summary>
 public enum ModSide
@@ -15,7 +15,8 @@ public enum ModSide
 
 public static class ModSideExtensions
 {
-	public static string ToFriendlyString(this ModSide sortmode) {
+	public static string ToFriendlyString(this ModSide sortmode)
+	{
 		switch (sortmode) {
 			case ModSide.Both:
 				return "Both";

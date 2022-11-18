@@ -46,7 +46,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 	internal bool needsMBRefresh = false;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		uIElement = new UIElement {
 			Width = { Percent = 0.8f },
 			MaxWidth = UICommon.MaxPanelWidth,
@@ -253,7 +254,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	// Adjusts sizing and placement of top row buttons according to whether or not
 	// the Force Reload button is being shown.
-	private void UpdateTopRowButtons() {
+	private void UpdateTopRowButtons()
+	{
 		var buttonWidth = new StyleDimension(-10f, 1f / (forceReloadHidden ? 2f : 3f));
 
 		buttonEA.Width = buttonWidth;
@@ -264,7 +266,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 	}
 
-	internal void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	internal void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
 			Main.menuMode = Interface.reloadModsID;
@@ -287,13 +290,15 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 	}
 
-	private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
+	private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		if (items.Count > 0)
 			ModLoader.Reload();
 	}
 
-	private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement) {
+	private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		Directory.CreateDirectory(ModLoader.ModPath);
 		Utils.OpenFolder(ModLoader.ModPath);
@@ -304,25 +309,29 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
+	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(12, -1, -1, 1);
 		foreach (UIModItem modItem in items) {
 			modItem.Enable();
 		}
 	}
 
-	private void DisableAll(UIMouseEvent evt, UIElement listeningElement) {
+	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(12, -1, -1, 1);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
 	}
 
-	public UIModItem FindUIModItem(string modName) {
+	public UIModItem FindUIModItem(string modName)
+	{
 		return items.SingleOrDefault(m => m.ModName == modName);
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 		if (needToRemoveLoading) {
 			needToRemoveLoading = false;
@@ -360,7 +369,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		modList.ViewPosition = modListViewPosition;
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
 		base.Draw(spriteBatch);
 		for (int i = 0; i < _categoryButtons.Count; i++) {
@@ -391,7 +401,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		_cts = new CancellationTokenSource();
 		Main.clrInput();
 		modList.Clear();
@@ -403,14 +414,16 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		UpdateTopRowButtons();
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		_cts?.Cancel(false);
 		_cts?.Dispose();
 		_cts = null;
 		modListViewPosition = modList.ViewPosition;
 	}
 
-	internal void Populate() {
+	internal void Populate()
+	{
 		Task.Run(() => {
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			foreach (var mod in mods) {
@@ -435,7 +448,8 @@ public class UIModsFilterResults
 
 public static class ModsMenuSortModesExtensions
 {
-	public static string ToFriendlyString(this ModsMenuSortMode sortmode) {
+	public static string ToFriendlyString(this ModsMenuSortMode sortmode)
+	{
 		switch (sortmode) {
 			case ModsMenuSortMode.RecentlyUpdated:
 				return Language.GetTextValue("tModLoader.ModsSortRecently");
@@ -450,7 +464,8 @@ public static class ModsMenuSortModesExtensions
 
 public static class EnabledFilterModesExtensions
 {
-	public static string ToFriendlyString(this EnabledFilter updateFilterMode) {
+	public static string ToFriendlyString(this EnabledFilter updateFilterMode)
+	{
 		switch (updateFilterMode) {
 			case EnabledFilter.All:
 				return Language.GetTextValue("tModLoader.ModsShowAllMods");

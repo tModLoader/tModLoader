@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,8 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract partial class ModSystem : ModType
 {
-	protected override void Register() {
+	protected override void Register()
+	{
 		SystemLoader.Add(this);
 		ModTypeLookup<ModSystem>.Register(this);
 	}
@@ -62,7 +63,8 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
 	/// </summary>
-	public virtual void PostSetupRecipes() {
+	public virtual void PostSetupRecipes()
+	{
 	}
 
 	/// <summary>
@@ -284,11 +286,13 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
 	/// </summary>
-	public virtual bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData) {
+	public virtual bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData)
+	{
 		return true;
 	}
 
-	public virtual string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData) {
+	public virtual string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData)
+	{
 		return $"The selected character {playerData.Name} can not be used with the selected world {worldData.Name}.\n" +
 						$"This could be due to mismatched Journey Mode or other mod specific changes.";
 	}

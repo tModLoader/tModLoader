@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
 using System;
@@ -23,7 +23,8 @@ internal class UIMemoryBar : UIElement
 		internal readonly long Memory;
 		internal readonly Color DrawColor;
 
-		public MemoryBarItem(string tooltip, long memory, Color drawColor) {
+		public MemoryBarItem(string tooltip, long memory, Color drawColor)
+		{
 			Tooltip = tooltip;
 			Memory = memory;
 			DrawColor = drawColor;
@@ -36,19 +37,22 @@ internal class UIMemoryBar : UIElement
 	private UIPanel _hoverPanel;
 	private long _maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		Width.Set(0f, 1f);
 		Height.Set(20f, 0f);
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 		// moved from constructor to avoid texture loading on JIT thread
 		RecalculateMemoryNeeded = true;
 		Task.Run(RecalculateMemory);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		if (RecalculateMemoryNeeded) return;
 
 		var rectangle = GetInnerDimensions().ToRectangle();
@@ -104,7 +108,8 @@ internal class UIMemoryBar : UIElement
 		new Color(241, 196, 15),//yellow
 	};
 
-	private void RecalculateMemory() {
+	private void RecalculateMemory()
+	{
 		_memoryBarItems.Clear();
 		_hoverPanel = new UIPanel();
 		_hoverPanel.Activate();
@@ -159,7 +164,8 @@ internal class UIMemoryBar : UIElement
 
 	private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
-	internal static string SizeSuffix(long value, int decimalPlaces = 1) {
+	internal static string SizeSuffix(long value, int decimalPlaces = 1)
+	{
 		if (value < 0) { return "-" + SizeSuffix(-value); }
 		if (value == 0) { return "0.0 bytes"; }
 
@@ -192,7 +198,8 @@ internal class UIMemoryBar : UIElement
 	}
 	*/
 
-	public static long GetTotalMemory() {
+	public static long GetTotalMemory()
+	{
 		var gcMemInfo = GC.GetGCMemoryInfo();
 		return gcMemInfo.TotalAvailableMemoryBytes;
 	}

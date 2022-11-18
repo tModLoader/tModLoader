@@ -1,11 +1,12 @@
-﻿using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
 internal class StringInputElement : ConfigElement<string>
 {
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		UIPanel textBoxBackground = new UIPanel();

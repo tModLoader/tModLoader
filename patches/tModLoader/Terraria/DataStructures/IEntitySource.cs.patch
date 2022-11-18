@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
 +++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
-@@ -1,5 +_,34 @@
+@@ -1,5 +_,35 @@
 +using System.Collections.Generic;
 +
 +#nullable enable
@@ -18,7 +18,8 @@
 +
 +	string? Context { get; }
 +
-+	internal static IEntitySource? GetFallback() {
++	internal static IEntitySource? GetFallback()
++	{
 +		if (fallbacks.TryPeek(out var result)) {
 +			return result;
 +		}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Terraria.Localization;
 using Terraria.UI;
@@ -17,7 +17,8 @@ public sealed class ModPacket : BinaryWriter
 	private ushort len;
 	internal short netID = -1;
 
-	internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity)) {
+	internal ModPacket(byte messageID, int capacity = 256) : base(new MemoryStream(capacity))
+	{
 		Write((ushort)0);
 		Write(messageID);
 	}
@@ -25,7 +26,8 @@ public sealed class ModPacket : BinaryWriter
 	/// <summary>
 	/// Sends all the information you've written between client and server. If the toClient parameter is non-negative, this packet will only be sent to the specified client. If the ignoreClient parameter is non-negative, this packet will not be sent to the specified client.
 	/// </summary>
-	public void Send(int toClient = -1, int ignoreClient = -1) {
+	public void Send(int toClient = -1, int ignoreClient = -1)
+	{
 		Finish();
 
 		if (ModNet.DetailedLogging)
@@ -49,7 +51,8 @@ public sealed class ModPacket : BinaryWriter
 
 	private void SendCallback(object state) { }
 
-	private void Finish() {
+	private void Finish()
+	{
 		if (buf != null)
 			return;
 

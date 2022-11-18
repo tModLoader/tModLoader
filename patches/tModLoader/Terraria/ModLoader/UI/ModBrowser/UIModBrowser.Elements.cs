@@ -32,7 +32,8 @@ internal partial class UIModBrowser
 	public UIBrowserFilterToggle<SearchFilter> SearchFilterToggle;
 	public UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle;
 
-	internal void Reset() {
+	internal void Reset()
+	{
 		ModList?.Clear();
 		_items?.Clear();
 		_missingMods?.Clear();
@@ -44,7 +45,8 @@ internal partial class UIModBrowser
 		UpdateNeeded = true;
 	}
 
-	private void InitializeInteractions() {
+	private void InitializeInteractions()
+	{
 		_reloadButton.OnClick += ReloadList;
 		_backButton.OnClick += BackClick;
 		_clearButton.OnClick += ClearFilters;
@@ -57,7 +59,8 @@ internal partial class UIModBrowser
 		};
 	}
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_rootElement = new UIElement {
 			Width = { Percent = 0.8f },
 			MaxWidth = UICommon.MaxPanelWidth,

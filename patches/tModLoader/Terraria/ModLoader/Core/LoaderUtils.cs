@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,8 @@ namespace Terraria.ModLoader.Core;
 public static class LoaderUtils
 {
 	/// <summary> Calls static constructors on the provided type and, optionally, its nested types. </summary>
-	public static void ResetStaticMembers(Type type, bool recursive) {
+	public static void ResetStaticMembers(Type type, bool recursive)
+	{
 #if NETCORE
 		var typeInitializer = type.TypeInitializer;
 
@@ -42,7 +43,8 @@ public static class LoaderUtils
 		}
 	}
 
-	public static void ForEachAndAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action) {
+	public static void ForEachAndAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action)
+	{
 		var exceptions = new List<Exception>();
 		foreach (var t in enumerable) {
 			try {
@@ -67,7 +69,8 @@ public static class LoaderUtils
 	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, List<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
 		=> InstantiateGlobals(entity, CollectionsMarshal.AsSpan(globals), ref entityGlobals, midInstantiationAction);
 
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> {
+	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
+	{
 		var mem = GlobalInstantiationArrayPool<TGlobal>.Pool.Rent(globals.Length);
 		try {
 			var set = mem.AsSpan(0, globals.Length);
@@ -81,7 +84,8 @@ public static class LoaderUtils
 		}
 	}
 
-	private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Span<TGlobal> set, bool late) where TGlobal : GlobalType<TEntity, TGlobal> {
+	private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Span<TGlobal> set, bool late) where TGlobal : GlobalType<TEntity, TGlobal>
+	{
 		int n = 0;
 		for (int i = 0; i < globals.Length; i++) {
 			var g = globals[i];
@@ -104,7 +108,8 @@ public static class LoaderUtils
 		}
 	}
 
-	public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args) {
+	public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args)
+	{
 		var methodInfo = type.GetMethod(method, args);
 
 		if (methodInfo == null)
@@ -113,7 +118,8 @@ public static class LoaderUtils
 		return methodInfo.DeclaringType != declaringType;
 	}
 
-	public static MethodInfo ToMethodInfo<T, F>(this Expression<Func<T, F>> expr) where F : Delegate {
+	public static MethodInfo ToMethodInfo<T, F>(this Expression<Func<T, F>> expr) where F : Delegate
+	{
 		MethodInfo method;
 
 		try {
@@ -141,7 +147,8 @@ public static class LoaderUtils
 	public static bool HasOverride<T, F>(Type t, Expression<Func<T, F>> expr) where F : Delegate =>
 		HasOverride(t, expr.ToMethodInfo());
 
-	public static IEnumerable<T> WhereMethodIsOverridden<T>(this IEnumerable<T> providers, MethodInfo method) {
+	public static IEnumerable<T> WhereMethodIsOverridden<T>(this IEnumerable<T> providers, MethodInfo method)
+	{
 		if (!method.IsVirtual)
 			throw new ArgumentException("Non-virtual method: " + method);
 
@@ -154,7 +161,8 @@ public static class LoaderUtils
 	public static void MustOverrideTogether<T>(T t, params Expression<Func<T, Delegate>>[] methods) =>
 		MustOverrideTogether(t.GetType(), methods.Select(m => m.ToMethodInfo()).ToArray());
 
-	private static void MustOverrideTogether(Type type, params MethodInfo[] methods) {
+	private static void MustOverrideTogether(Type type, params MethodInfo[] methods)
+	{
 		int c = methods.Count(m => HasOverride(type, m));
 		
 		if (c > 0 && c < methods.Length)
@@ -165,7 +173,8 @@ public static class LoaderUtils
 
 	internal static bool IsValidated(Type type) => !validatedTypes.Add(type);
 
-	static LoaderUtils() {
+	static LoaderUtils()
+	{
 		TypeCaching.OnClear += validatedTypes.Clear;
 	}
 }
@@ -173,7 +182,8 @@ public static class LoaderUtils
 internal class GlobalInstantiationArrayPool<T> {
 	public static ArrayPool<T> Pool = ArrayPool<T>.Create();
 
-	static GlobalInstantiationArrayPool() {
+	static GlobalInstantiationArrayPool()
+	{
 		// honestly, this should go in 'OnResizeArrays'
 		TypeCaching.OnClear += () => LoaderUtils.ResetStaticMembers(typeof(GlobalInstantiationArrayPool<T>), false);
 	}

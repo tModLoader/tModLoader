@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
@@ -22,11 +22,13 @@ internal static class MemoryTracking
 	internal static Dictionary<string, ModMemoryUsage> modMemoryUsageEstimates = new Dictionary<string, ModMemoryUsage>();
 	private static long previousMemory;
 
-	internal static void Clear() {
+	internal static void Clear()
+	{
 		modMemoryUsageEstimates.Clear();
 	}
 
-	internal static ModMemoryUsage Update(string modName) {
+	internal static ModMemoryUsage Update(string modName)
+	{
 		if (!modMemoryUsageEstimates.TryGetValue(modName, out var usage))
 			modMemoryUsageEstimates[modName] = usage = new ModMemoryUsage();
 
@@ -39,12 +41,14 @@ internal static class MemoryTracking
 		return usage;
 	}
 
-	internal static void Checkpoint() {
+	internal static void Checkpoint()
+	{
 		if (ModLoader.showMemoryEstimates)
 			previousMemory = GC.GetTotalMemory(true);
 	}
 
-	internal static void Finish() {
+	internal static void Finish()
+	{
 		foreach (var mod in ModLoader.Mods) {
 			var usage = modMemoryUsageEstimates[mod.Name];
 

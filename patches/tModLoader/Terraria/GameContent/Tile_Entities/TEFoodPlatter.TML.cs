@@ -5,7 +5,8 @@ namespace Terraria.GameContent.Tile_Entities;
 
 public partial class TEFoodPlatter
 {
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		tag["item"] = ItemIO.Save(item);
 	}
 

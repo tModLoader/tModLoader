@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
@@ -44,7 +44,8 @@ public static partial class Logging
 	internal static ILog tML { get; } = LogManager.GetLogger("tML");
 	internal static ILog FNA { get; } = LogManager.GetLogger("FNA");
 
-	internal static void Init(LogFile logFile) {
+	internal static void Init(LogFile logFile)
+	{
 		if (Program.LaunchParameters.ContainsKey("-build"))
 			return;
 
@@ -53,7 +54,8 @@ public static partial class Logging
 		ConfigureAppenders(logFile);
 	}
 
-	internal static void LogStartup(bool dedServ) {
+	internal static void LogStartup(bool dedServ)
+	{
 		tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
@@ -90,7 +92,8 @@ public static partial class Logging
 			FNALogging.RedirectLogs();
 	}
 
-	private static void ConfigureAppenders(LogFile logFile) {
+	private static void ConfigureAppenders(LogFile logFile)
+	{
 		var layout = new PatternLayout {
 			ConversionPattern = "[%d{HH:mm:ss.fff}] [%t/%level] [%logger]: %m%n"
 		};
@@ -124,7 +127,8 @@ public static partial class Logging
 		BasicConfigurator.Configure(appenders.ToArray());
 	}
 
-	private static string GetNewLogFile(string baseName) {
+	private static string GetNewLogFile(string baseName)
+	{
 		var pattern = new Regex($"{baseName}(\\d*)\\.log$");
 		var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
 
@@ -157,7 +161,8 @@ public static partial class Logging
 		return $"{baseName}.log";
 	}
 
-	private static bool CanOpen(string fileName) {
+	private static bool CanOpen(string fileName)
+	{
 		try {
 			using (new FileStream(fileName, FileMode.Append)) { };
 			
@@ -169,11 +174,13 @@ public static partial class Logging
 	}
 
 	// Separated method to avoid triggering Main's static constructor
-	private static void AddChatMessage(string msg) {
+	private static void AddChatMessage(string msg)
+	{
 		AddChatMessage(msg, Color.OrangeRed);
 	}
 
-	private static void AddChatMessage(string msg, Color color) {
+	private static void AddChatMessage(string msg, Color color)
+	{
 		if (Main.gameMenu)
 			return;
 
@@ -183,7 +190,8 @@ public static partial class Logging
 		Main.soundVolume = soundVolume;
 	}
 	
-	internal static void LogStatusChange(string oldStatusText, string newStatusText) {
+	internal static void LogStatusChange(string oldStatusText, string newStatusText)
+	{
 		// Trim numbers and percentage to reduce log spam
 		string oldBase = statusRegex.Match(oldStatusText).Groups[1].Value;
 		string newBase = statusRegex.Match(newStatusText).Groups[1].Value;
@@ -195,7 +203,8 @@ public static partial class Logging
 	internal static void ServerConsoleLine(string msg)
 		=> ServerConsoleLine(msg, Level.Info);
 	
-	internal static void ServerConsoleLine(string msg, Level level, Exception ex = null, ILog log = null) {
+	internal static void ServerConsoleLine(string msg, Level level, Exception ex = null, ILog log = null)
+	{
 		if (level == Level.Warn)
 			Console.ForegroundColor = ConsoleColor.Yellow;
 		else if (level == Level.Error)
@@ -207,7 +216,8 @@ public static partial class Logging
 		(log ?? Terraria).Logger.Log(null, level, msg, ex);
 	}
 
-	private static void DumpEnvVars() {
+	private static void DumpEnvVars()
+	{
 		try {
 			using var f = File.OpenWrite(Path.Combine(LogDir, "environment.log"));
 			using var w = new StreamWriter(f);

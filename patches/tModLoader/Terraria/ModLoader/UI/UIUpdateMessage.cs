@@ -24,7 +24,8 @@ internal class UIUpdateMessage : UIState
 	private string _url;
 	private string _autoUpdateUrl;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_area = new UIElement {
 			Width = { Percent = 0.8f },
 			Top = { Pixels = 200 },
@@ -65,42 +66,50 @@ internal class UIUpdateMessage : UIState
 		Append(_area);
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 
 		if (Platform.IsWindows && SocialAPI.Mode != SocialMode.Steam && ModBrowser.UIModBrowser.PlatformSupportsTls12)
 			_area.AddOrRemoveChild(_autoUpdateButton, !string.IsNullOrEmpty(_autoUpdateUrl));
 	}
 
-	internal void SetMessage(string text) {
+	internal void SetMessage(string text)
+	{
 		_message.SetText(text);
 	}
 
-	internal void SetGotoMenu(int gotoMenu) {
+	internal void SetGotoMenu(int gotoMenu)
+	{
 		_gotoMenu = gotoMenu;
 	}
 
-	internal void SetURL(string url) {
+	internal void SetURL(string url)
+	{
 		_url = url;
 	}
 
-	internal void SetAutoUpdateURL(string autoUpdateURL) {
+	internal void SetAutoUpdateURL(string autoUpdateURL)
+	{
 		_autoUpdateUrl = autoUpdateURL;
 	}
 
-	private void IgnoreClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void IgnoreClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		Main.menuMode = _gotoMenu;
 	}
 
-	private void OpenURL(UIMouseEvent evt, UIElement listeningElement) {
+	private void OpenURL(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		Process.Start(_url);
 	}
 
 	// Windows GOG only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
 	// The script then replaces this exe and then launches tModLoader again.
-	private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement) {
+	private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
 		string installDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -117,7 +126,8 @@ internal class UIUpdateMessage : UIState
 		Interface.downloadProgress.HandleDownloads(downloadFile);
 	}
 
-	private static void OnAutoUpdateDownloadComplete(string installDirectory, string zipFilePath) {
+	private static void OnAutoUpdateDownloadComplete(string installDirectory, string zipFilePath)
+	{
 		try {
 			string updateScriptName = Platform.IsWindows ? "update.bat" : "update.sh";
 			string updateScript = Path.Combine(installDirectory, updateScriptName);

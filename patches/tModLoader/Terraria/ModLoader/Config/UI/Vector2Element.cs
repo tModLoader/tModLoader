@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
@@ -38,7 +38,8 @@ internal class Vector2Element : ConfigElement
 			}
 		}
 
-		private void Update() {
+		private void Update()
+		{
 			if (array == null)
 				memberInfo.SetValue(item, current);
 			else
@@ -47,13 +48,15 @@ internal class Vector2Element : ConfigElement
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		public Vector2Object(PropertyFieldWrapper memberInfo, object item) {
+		public Vector2Object(PropertyFieldWrapper memberInfo, object item)
+		{
 			this.item = item;
 			this.memberInfo = memberInfo;
 			current = (Vector2)memberInfo.GetValue(item);
 		}
 
-		public Vector2Object(IList<Vector2> array, int index) {
+		public Vector2Object(IList<Vector2> array, int index)
+		{
 			current = array[index];
 			this.array = array;
 			this.index = index;
@@ -68,7 +71,8 @@ internal class Vector2Element : ConfigElement
 
 	public IList<Vector2> Vector2List { get; set; }
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		Vector2List = (IList<Vector2>)List;
@@ -112,7 +116,8 @@ internal class Vector2Element : ConfigElement
 	}
 
 	// Draw axis? ticks?
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		base.Draw(spriteBatch);
 
 		CalculatedStyle dimensions = base.GetInnerDimensions();
@@ -142,7 +147,8 @@ internal class Vector2Element : ConfigElement
 		}
 	}
 
-	internal float GetHeight() {
+	internal float GetHeight()
+	{
 		return height;
 	}
 }

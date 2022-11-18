@@ -8,7 +8,8 @@ public class UnloadedDresser : UnloadedTile
 {
 	public override string Texture => "ModLoader/UnloadedDresser";
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		TileIO.Tiles.unloadedTypes.Add(Type);
 
 		//common

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
@@ -17,7 +17,8 @@ public abstract class ModMenu : ModType
 
 	public bool IsNew { get; internal set; }
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		MenuLoader.Add(this);
 	}
 
@@ -64,19 +65,22 @@ public abstract class ModMenu : ModType
 	/// <summary>
 	/// Called when this ModMenu is selected. Set the state of the UserInterface to a given UIState to make that UIState appear on the main menu.
 	/// </summary>
-	public virtual void OnSelected() {
+	public virtual void OnSelected()
+	{
 	}
 
 	/// <summary>
 	/// Called when this ModMenu is deselected.
 	/// </summary>
-	public virtual void OnDeselected() {
+	public virtual void OnDeselected()
+	{
 	}
 
 	/// <summary>
 	/// Called when this ModMenu's logic is updated.
 	/// </summary>
-	public virtual void Update(bool isOnTitleScreen) {
+	public virtual void Update(bool isOnTitleScreen)
+	{
 	}
 
 	/// <summary>
@@ -87,6 +91,7 @@ public abstract class ModMenu : ModType
 	/// <summary>
 	/// Called just after the logo is drawn, and gives the values of some of the parameters of the logo draw code.
 	/// </summary>
-	public virtual void PostDrawLogo(SpriteBatch spriteBatch, Vector2 logoDrawCenter, float logoRotation, float logoScale, Color drawColor) {
+	public virtual void PostDrawLogo(SpriteBatch spriteBatch, Vector2 logoDrawCenter, float logoRotation, float logoScale, Color drawColor)
+	{
 	}
 }

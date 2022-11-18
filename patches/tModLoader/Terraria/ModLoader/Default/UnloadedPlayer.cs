@@ -9,22 +9,26 @@ public class UnloadedPlayer : ModPlayer
 	internal IList<TagCompound> data;
 	internal IList<TagCompound> unloadedResearch;
 
-	public override void Initialize() {
+	public override void Initialize()
+	{
 		data = new List<TagCompound>();
 		unloadedResearch = new List<TagCompound>();
 	}
 
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		tag["list"] = data;
 		tag["unloadedResearch"] = unloadedResearch;
 	}
 
-	public override void LoadData(TagCompound tag) {
+	public override void LoadData(TagCompound tag)
+	{
 		PlayerIO.LoadModData(Player, tag.GetList<TagCompound>("list"));
 		PlayerIO.LoadResearch(Player, tag.GetList<TagCompound>("unloadedResearch"));
 	}
 
-	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
+	{
 		if (AprilFools.CheckAprilFools()) {
 			return new List<Item> { new Item(ModContent.ItemType<AprilFools>()) };
 		}

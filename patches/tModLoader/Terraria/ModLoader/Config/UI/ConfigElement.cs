@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -52,7 +52,8 @@ public abstract class ConfigElement : UIElement
 	protected Func<string> TooltipFunction { get; set; }
 	protected bool DrawLabel { get; set; } = true;
 
-	public ConfigElement() {
+	public ConfigElement()
+	{
 		Width.Set(0f, 1f);
 		Height.Set(30f, 0f);
 	}
@@ -60,7 +61,8 @@ public abstract class ConfigElement : UIElement
 	/// <summary>
 	/// Bind must always be called after the ctor and serves to facilitate a convenient inheritance workflow for custom ConfigElemets from mods.
 	/// </summary>
-	public void Bind(PropertyFieldWrapper memberInfo, object item, IList array, int index) {
+	public void Bind(PropertyFieldWrapper memberInfo, object item, IList array, int index)
+	{
 		MemberInfo = memberInfo;
 		Item = item;
 		List = array;
@@ -68,7 +70,8 @@ public abstract class ConfigElement : UIElement
 		backgroundColor = UICommon.DefaultUIBlue;
 	}
 
-	public virtual void OnBind() {
+	public virtual void OnBind()
+	{
 		TextDisplayFunction = () => MemberInfo.Name;
 		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
 
@@ -94,7 +97,8 @@ public abstract class ConfigElement : UIElement
 		JsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(MemberInfo, Item, List);
 	}
 
-	protected virtual void SetObject(object value) {
+	protected virtual void SetObject(object value)
+	{
 		if (List != null) {
 			List[Index] = value;
 			Interface.modConfig.SetPendingChanges();
@@ -108,14 +112,16 @@ public abstract class ConfigElement : UIElement
 		Interface.modConfig.SetPendingChanges();
 	}
 
-	protected virtual object GetObject() {
+	protected virtual object GetObject()
+	{
 		if (List != null)
 			return List[Index];
 
 		return MemberInfo.GetValue(Item);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle dimensions = base.GetDimensions();
 		float settingsWidth = dimensions.Width + 1f;
@@ -162,7 +168,8 @@ public abstract class ConfigElement : UIElement
 		*/
 	}
 
-	public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color) {
+	public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color)
+	{
 		// left edge
 		//	spriteBatch.Draw(texture, position, new Rectangle(0, 0, 2, texture.Height), color);
 		//	spriteBatch.Draw(texture, new Vector2(position.X + 2, position.Y), new Rectangle(2, 0, texture.Width - 4, texture.Height), color, 0f, Vector2.Zero, new Vector2((width - 4) / (texture.Width - 4), (height - 4) / (texture.Height - 4)), SpriteEffects.None, 0f);
@@ -183,14 +190,16 @@ internal class HeaderElement : UIElement
 {
 	private readonly string header;
 
-	public HeaderElement(string header) {
+	public HeaderElement(string header)
+	{
 		this.header = header;
 		Vector2 size = ChatManager.GetStringSize(FontAssets.ItemStack.Value, this.header, Vector2.One, 532); // TODO: Max Width can't be known at this time.
 		Width.Set(0f, 1f);
 		Height.Set(size.Y + 6, 0f);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 
 		CalculatedStyle dimensions = base.GetDimensions();

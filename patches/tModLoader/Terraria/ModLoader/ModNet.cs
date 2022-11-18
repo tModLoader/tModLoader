@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,8 @@ public static class ModNet
 		public bool signed;
 		public string path;
 
-		public ModHeader(string name, Version version, byte[] hash, bool signed) {
+		public ModHeader(string name, Version version, byte[] hash, bool signed)
+		{
 			this.name = name;
 			this.version = version;
 			this.hash = hash;
@@ -42,7 +43,8 @@ public static class ModNet
 		public string configname;
 		public string json;
 
-		public NetConfig(string modname, string configname, string json) {
+		public NetConfig(string modname, string configname, string json)
+		{
 			this.modname = modname;
 			this.configname = configname;
 			this.json = json;
@@ -81,12 +83,14 @@ public static class ModNet
 	private static Version IncompatiblePatchVersion = new(2022, 1, 1, 1);
 	private static Version? StableNetVersion { get; } = !BuildInfo.IsStable ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
 	internal static string NetVersionString { get; } = BuildInfo.versionedName + (StableNetVersion != null ? "!" + StableNetVersion : "");
-	static ModNet() {
+	static ModNet()
+	{
 		if (Main.dedServ && StableNetVersion != null)
 			Logging.tML.Debug($"Network compatibility version is {StableNetVersion}");
 	}
 
-	internal static bool IsClientCompatible(string clientVersion, out bool isModded, out string kickMsg) {
+	internal static bool IsClientCompatible(string clientVersion, out bool isModded, out string kickMsg)
+	{
 		kickMsg = null;
 		isModded = clientVersion.StartsWith("tModLoader");
 		if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
@@ -111,20 +115,23 @@ public static class ModNet
 		return false;
 	}
 
-	internal static void AssignNetIDs() {
+	internal static void AssignNetIDs()
+	{
 		netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 		for (short i = 0; i < netMods.Length; i++)
 			netMods[i].netID = i;
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		netMods = null;
 		if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
 			AllowVanillaClients = false;
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 	}
 
-	internal static void SyncMods(int clientIndex) {
+	internal static void SyncMods(int clientIndex)
+	{
 		var p = new ModPacket(MessageID.SyncMods);
 		p.Write(AllowVanillaClients);
 
@@ -143,7 +150,8 @@ public static class ModNet
 		p.Send(clientIndex);
 	}
 
-	private static void AddNoSyncDeps(List<Mod> syncMods) {
+	private static void AddNoSyncDeps(List<Mod> syncMods)
+	{
 		var queue = new Queue<Mod>(syncMods.Where(m => m.Side == ModSide.Both));
 		while (queue.Count > 0) {
 			foreach (Mod dep in AssemblyManager.GetDependencies(queue.Dequeue())) {
@@ -155,7 +163,8 @@ public static class ModNet
 		}
 	}
 
-	private static void SendServerConfigs(ModPacket p, Mod mod) {
+	private static void SendServerConfigs(ModPacket p, Mod mod)
+	{
 		if (!ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs)) {
 			p.Write(0);
 			return;
@@ -172,7 +181,8 @@ public static class ModNet
 		}
 	}
 
-	internal static void SyncClientMods(BinaryReader reader) {
+	internal static void SyncClientMods(BinaryReader reader)
+	{
 		if (!SyncClientMods(reader, out bool needsReload))
 			return; //error syncing can't connect to server
 
@@ -183,7 +193,8 @@ public static class ModNet
 	}
 
 	// This method is split so that the local variables aren't held by the GC when reloading
-	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload) {
+	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload)
+	{
 		AllowVanillaClients = reader.ReadBoolean();
 		Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
@@ -273,7 +284,8 @@ public static class ModNet
 		return true;
 	}
 
-	private static void DownloadNextMod() {
+	private static void DownloadNextMod()
+	{
 		downloadingMod = downloadQueue.Dequeue();
 		downloadingFile = null;
 		var p = new ModPacket(MessageID.ModFile);
@@ -285,7 +297,8 @@ public static class ModNet
 	// First, send the initial mod name and length of the file stream
 	// so the client knows what to expect
 	internal const int CHUNK_SIZE = 16384;
-	internal static void SendMod(string modName, int toClient) {
+	internal static void SendMod(string modName, int toClient)
+	{
 		Mod mod = ModLoader.GetMod(modName);
 		if (mod.Side == ModSide.Server) // Prevent exposing server side mods to malicious clients
 			return;
@@ -313,7 +326,8 @@ public static class ModNet
 	}
 
 	// Receive a mod when connecting to server
-	internal static void ReceiveMod(BinaryReader reader) {
+	internal static void ReceiveMod(BinaryReader reader)
+	{
 		if (downloadingMod == null)
 			return;
 
@@ -373,7 +387,8 @@ public static class ModNet
 		}
 	}
 
-	private static void CancelDownload() {
+	private static void CancelDownload()
+	{
 		try {
 			downloadingFile?.Close();
 			File.Delete(downloadingMod.path);
@@ -384,7 +399,8 @@ public static class ModNet
 		Netplay.Disconnect = true;
 	}
 
-	private static void OnModsDownloaded(bool needsReload) {
+	private static void OnModsDownloaded(bool needsReload)
+	{
 		if (needsReload) {
 			Main.netMode = 0;
 			ModLoader.OnSuccessfulLoad = NetReload();
@@ -402,7 +418,8 @@ public static class ModNet
 	}
 
 	internal static bool NetReloadActive;
-	internal static Action NetReload() {
+	internal static Action NetReload()
+	{
 		// Main.ActivePlayerFileData gets cleared during reload
 		string path = Main.ActivePlayerFileData.Path;
 		bool isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
@@ -428,7 +445,8 @@ public static class ModNet
 		};
 	}
 
-	internal static void SendNetIDs(int toClient) {
+	internal static void SendNetIDs(int toClient)
+	{
 		var p = new ModPacket(MessageID.ModPacket);
 		p.Write(netMods.Length);
 		foreach (Mod mod in netMods)
@@ -441,7 +459,8 @@ public static class ModNet
 		p.Send(toClient);
 	}
 
-	private static void ReadNetIDs(BinaryReader reader) {
+	private static void ReadNetIDs(BinaryReader reader)
+	{
 		Mod[] mods = ModLoader.Mods;
 		var list = new List<Mod>();
 		int n = reader.ReadInt32();
@@ -472,7 +491,8 @@ public static class ModNet
 
 	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a bandaid until they fix their code.
 	internal static bool ReadUnderflowBypass = false; // Remove by 0.11.7
-	internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length) {
+	internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
+	{
 		if (netMods == null) {
 			ReadNetIDs(reader);
 			return;
@@ -494,12 +514,14 @@ public static class ModNet
 			ModNetDiagnosticsUI.CountReadMessage(id, length);
 	}
 
-	internal static void SetModNetDiagnosticsUI(IEnumerable<Mod> mods) {
+	internal static void SetModNetDiagnosticsUI(IEnumerable<Mod> mods)
+	{
 		// If called in ModContent.Load, just displays all loaded mods (similar to vanilla). It gets set to netMods in ModNet.ReadNetIDs
 		ModNetDiagnosticsUI = Main.dedServ ? new EmptyDiagnosticsUI() : new UIModNetDiagnostics(mods);
 	}
 
-	internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber) {
+	internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
+	{
 		if (netMods == null) {
 			return false;
 		}
@@ -514,7 +536,8 @@ public static class ModNet
 	public static bool DetailedLogging = Program.LaunchParameters.ContainsKey("-detailednetlog");
 	private static ILog NetLog { get; } = LogManager.GetLogger("Network");
 
-	private static string Identifier(int whoAmI) {
+	private static string Identifier(int whoAmI)
+	{
 		if (!Main.dedServ) return "";
 
 		if (whoAmI >= 0 && whoAmI < 256) {
@@ -528,7 +551,8 @@ public static class ModNet
 		return $"[{whoAmI}] ";
 	}
 
-	private static string Identifier(RemoteAddress addr) {
+	private static string Identifier(RemoteAddress addr)
+	{
 		if (!Main.dedServ || addr == null) return "";
 
 		if (Netplay.Clients.SingleOrDefault(c => c.Socket?.GetRemoteAddress() == addr) is RemoteClient client)
@@ -547,7 +571,8 @@ public static class ModNet
 
 	public static void Debug(int whoAmI, string s) => Debug(Identifier(whoAmI) + s);
 	public static void Debug(RemoteAddress addr, string s) => Debug(Identifier(addr) + s);
-	public static void Debug(string s) {
+	public static void Debug(string s)
+	{
 		if (DetailedLogging)
 			NetLog.Info(s);
 	}
@@ -556,7 +581,8 @@ public static class ModNet
 	public static void Error(RemoteAddress addr, string s, Exception e = null) => Error(Identifier(addr) + s, e);
 	public static void Error(string s, Exception e = null) => NetLog.Error(s, e);
 
-	public static void LogSend(int toClient, int ignoreClient, string s, int len) {
+	public static void LogSend(int toClient, int ignoreClient, string s, int len)
+	{
 		if (!DetailedLogging)
 			return;
 

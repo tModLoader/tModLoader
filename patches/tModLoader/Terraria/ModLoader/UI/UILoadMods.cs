@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Threading;
 using Terraria.Localization;
@@ -14,7 +14,8 @@ internal class UILoadMods : UIProgress
 
 	private CancellationTokenSource _cts;
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 		_cts = new CancellationTokenSource();
 		OnCancel += () => {
@@ -25,13 +26,15 @@ internal class UILoadMods : UIProgress
 		ModLoader.BeginLoad(_cts.Token);
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		base.OnDeactivate();
 		_cts?.Dispose();
 		_cts = null;
 	}
 
-	public void SetLoadStage(string stageText, int modCount = -1) {
+	public void SetLoadStage(string stageText, int modCount = -1)
+	{
 		this.stageText = stageText;
 		this.modCount = modCount;
 		if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
@@ -39,13 +42,15 @@ internal class UILoadMods : UIProgress
 		SubProgressText = "";
 	}
 
-	private void SetProgressText(string text, string logText = null) {
+	private void SetProgressText(string text, string logText = null)
+	{
 		Logging.tML.Info(logText ?? text);
 		if (Main.dedServ) Console.WriteLine(text);
 		else DisplayText = text;
 	}
 
-	public void SetCurrentMod(int i, string modName, string displayName, Version version) {
+	public void SetCurrentMod(int i, string modName, string displayName, Version version)
+	{
 		var display = $"{displayName} v{version}";
 		var log = $"{modName} ({displayName}) v{version}";
 		SetProgressText(Language.GetTextValue(stageText, display), Language.GetTextValue(stageText, log));

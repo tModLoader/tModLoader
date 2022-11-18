@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,8 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 {
 	protected override DefinitionOptionElement<ProjectileDefinition> CreateDefinitionOptionElement() => new ProjectileDefinitionOptionElement(Value, 0.5f);
 
-	protected override List<DefinitionOptionElement<ProjectileDefinition>> CreateDefinitionOptionElementList() {
+	protected override List<DefinitionOptionElement<ProjectileDefinition>> CreateDefinitionOptionElementList()
+	{
 		var options = new List<DefinitionOptionElement<ProjectileDefinition>>();
 
 		for (int i = 0; i < ProjectileLoader.ProjectileCount; i++) {
@@ -30,7 +31,8 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 		return options;
 	}
 
-	protected override List<DefinitionOptionElement<ProjectileDefinition>> GetPassedOptionElements() {
+	protected override List<DefinitionOptionElement<ProjectileDefinition>> GetPassedOptionElements()
+	{
 		var passed = new List<DefinitionOptionElement<ProjectileDefinition>>();
 
 		foreach (var option in Options) {
@@ -56,10 +58,12 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 
 internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<ProjectileDefinition>
 {
-	public ProjectileDefinitionOptionElement(ProjectileDefinition definition, float scale = .75f) : base(definition, scale) {
+	public ProjectileDefinitionOptionElement(ProjectileDefinition definition, float scale = .75f) : base(definition, scale)
+	{
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		CalculatedStyle dimensions = GetInnerDimensions();
 
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);

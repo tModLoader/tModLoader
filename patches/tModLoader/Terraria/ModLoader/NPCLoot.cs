@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 
@@ -10,7 +10,8 @@ public readonly struct NPCLoot : ILoot
 	private readonly int npcNetId;
 	private readonly ItemDropDatabase itemDropDatabase;
 
-	public NPCLoot(int npcNetId, ItemDropDatabase itemDropDatabase) {
+	public NPCLoot(int npcNetId, ItemDropDatabase itemDropDatabase)
+	{
 		this.npcNetId = npcNetId;
 		this.itemDropDatabase = itemDropDatabase;
 	}
@@ -18,19 +19,22 @@ public readonly struct NPCLoot : ILoot
 	public List<IItemDropRule> Get(bool includeGlobalDrops = true)
 		=> itemDropDatabase.GetRulesForNPCID(npcNetId, includeGlobalDrops);
 
-	public IItemDropRule Add(IItemDropRule entry) {
+	public IItemDropRule Add(IItemDropRule entry)
+	{
 		itemDropDatabase.RegisterToNPCNetId(npcNetId, entry);
 
 		return entry;
 	}
 
-	public IItemDropRule Remove(IItemDropRule entry) {
+	public IItemDropRule Remove(IItemDropRule entry)
+	{
 		itemDropDatabase.RemoveFromNPCNetId(npcNetId, entry);
 
 		return entry;
 	}
 
-	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
+	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true)
+	{
 		foreach (var entry in Get(includeGlobalDrops)) {
 			if (predicate(entry)) {
 				Remove(entry);

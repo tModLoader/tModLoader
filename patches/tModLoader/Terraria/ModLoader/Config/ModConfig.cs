@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -58,7 +58,8 @@ public abstract class ModConfig
 	/// </summary>
 	/// <param name="pendingConfig">The other instance of ModConfig to compare against, it contains the values that are pending to take effect</param>
 	/// <returns></returns>
-	public virtual bool NeedsReload(ModConfig pendingConfig) {
+	public virtual bool NeedsReload(ModConfig pendingConfig)
+	{
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this)) {
 			var reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
 

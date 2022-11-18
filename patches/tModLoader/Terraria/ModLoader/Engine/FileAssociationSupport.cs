@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Runtime.Versioning;
@@ -7,7 +7,8 @@ namespace Terraria.ModLoader.Engine;
 
 internal class FileAssociationSupport
 {
-	internal static void HandleFileAssociation(string file) {
+	internal static void HandleFileAssociation(string file)
+	{
 		Console.WriteLine($"Attempting to install {file}");
 		if (File.Exists(file)) {
 			string modName = Path.GetFileNameWithoutExtension(file);
@@ -24,7 +25,8 @@ internal class FileAssociationSupport
 		Environment.Exit(0);
 	}
 
-	internal static void UpdateFileAssociation() {
+	internal static void UpdateFileAssociation()
+	{
 		if (OperatingSystem.IsWindows() && Environment.OSVersion.Version.Major >= 6) { // Approached used apparently only applicable to Vista and later
 			try {
 				// For some reason this has been reported as failing occasionally.
@@ -51,7 +53,8 @@ internal class FileAssociationSupport
 	private const int SHCNF_FLUSH = 0x1000;
 
 	[SupportedOSPlatform("windows")]
-	private static void EnsureAssociationsSet() {
+	private static void EnsureAssociationsSet()
+	{
 		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "tModLoader.dll");
 		EnsureAssociationsSet(
 			new FileAssociation {
@@ -63,7 +66,8 @@ internal class FileAssociationSupport
 	}
 
 	[SupportedOSPlatform("windows")]
-	private static void EnsureAssociationsSet(params FileAssociation[] associations) {
+	private static void EnsureAssociationsSet(params FileAssociation[] associations)
+	{
 		bool madeChanges = false;
 		foreach (var association in associations) {
 			madeChanges |= SetAssociation(
@@ -78,7 +82,8 @@ internal class FileAssociationSupport
 	}
 
 	[SupportedOSPlatform("windows")]
-	private static bool SetAssociation(string extension, string progId, string fileTypeDescription, string applicationFilePath) {
+	private static bool SetAssociation(string extension, string progId, string fileTypeDescription, string applicationFilePath)
+	{
 		bool madeChanges = false;
 		madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + extension, progId);
 		madeChanges |= SetKeyDefaultValue(@"Software\Classes\" + progId, fileTypeDescription);
@@ -88,7 +93,8 @@ internal class FileAssociationSupport
 	}
 
 	[SupportedOSPlatform("windows")]
-	private static bool SetKeyDefaultValue(string keyPath, string value) {
+	private static bool SetKeyDefaultValue(string keyPath, string value)
+	{
 		using (var key = Registry.CurrentUser.CreateSubKey(keyPath)) {
 			if (key.GetValue(null) as string != value) {
 				key.SetValue(null, value);

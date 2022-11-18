@@ -1,4 +1,4 @@
-﻿using Terraria.ModLoader.IO;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default;
 
@@ -14,7 +14,8 @@ internal partial class LegacyUnloadedTilesSystem
 		public readonly short frameX;
 		public readonly short frameY;
 
-		public TileInfo(string modName, string name) {
+		public TileInfo(string modName, string name)
+		{
 			this.modName = modName;
 			this.name = name;
 
@@ -23,7 +24,8 @@ internal partial class LegacyUnloadedTilesSystem
 			frameY = -1;
 		}
 
-		public TileInfo(string modName, string name, short frameX, short frameY) {
+		public TileInfo(string modName, string name, short frameX, short frameY)
+		{
 			this.modName = modName;
 			this.name = name;
 			this.frameX = frameX;
@@ -32,7 +34,8 @@ internal partial class LegacyUnloadedTilesSystem
 			frameImportant = true;
 		}
 
-		public override bool Equals(object obj) {
+		public override bool Equals(object obj)
+		{
 			if (!(obj is TileInfo other)) {
 				return false;
 			}
@@ -44,7 +47,8 @@ internal partial class LegacyUnloadedTilesSystem
 			return !frameImportant || (frameX == other.frameX && frameY == other.frameY);
 		}
 
-		public override int GetHashCode() {
+		public override int GetHashCode()
+		{
 			int hash = name.GetHashCode() + modName.GetHashCode();
 
 			if (frameImportant) {
@@ -54,7 +58,8 @@ internal partial class LegacyUnloadedTilesSystem
 			return hash;
 		}
 
-		public TagCompound Save() {
+		public TagCompound Save()
+		{
 			var tag = new TagCompound {
 				["mod"] = modName,
 				["name"] = name,

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 
@@ -8,7 +8,8 @@ public class ImageIO
 {
 	public const int VERSION = 1;
 
-	public static unsafe bool ToRaw(Stream src, Stream dst) {
+	public static unsafe bool ToRaw(Stream src, Stream dst)
+	{
 		IntPtr img = FNA3D.ReadImageStream(src, out int width, out int height, out int len);
 		if (img == IntPtr.Zero)
 			return false; // throw exception?
@@ -39,13 +40,15 @@ public class ImageIO
 		return true;
 	}
 
-	public static unsafe void RawToPng(Stream src, Stream dst) {
+	public static unsafe void RawToPng(Stream src, Stream dst)
+	{
 		byte[] data = ReadRaw(src, out int width, out int height);
 		fixed (byte* pixels = data)
 			FNA3D.WritePNGStream(dst, width, height, width, height, (IntPtr)pixels);
 	}
 
-	public static byte[] ReadRaw(Stream stream, out int width, out int height) {
+	public static byte[] ReadRaw(Stream stream, out int width, out int height)
+	{
 		using var r = new BinaryReader(stream);
 
 		int v = r.ReadInt32();

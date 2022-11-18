@@ -6,7 +6,8 @@ public class UnloadedWall : ModWall
 {
 	public override string Texture => "ModLoader/UnloadedWall";
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		TileIO.Walls.unloadedTypes.Add(Type);
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -15,7 +15,8 @@ public static class ContentInstance
 		private List<object> instances;
 		private Action<object, IEnumerable> staticUpdate;
 
-		public void Register(object obj) {
+		public void Register(object obj)
+		{
 			lock (this) {
 				if (instances != null) {
 					instances.Add(obj);
@@ -32,14 +33,16 @@ public static class ContentInstance
 			}
 		}
 
-		public void Link(Action<object, IEnumerable> update) {
+		public void Link(Action<object, IEnumerable> update)
+		{
 			lock (this) {
 				staticUpdate = update;
 				update(instance, instances);
 			}
 		}
 
-		public void Clear() {
+		public void Clear()
+		{
 			lock (this) {
 				instance = null;
 				instances = null;
@@ -48,7 +51,8 @@ public static class ContentInstance
 		}
 	}
 
-	static ContentInstance() {
+	static ContentInstance()
+	{
 		TypeCaching.OnClear += Clear;
 	}
 
@@ -60,7 +64,8 @@ public static class ContentInstance
 
 	public static void Register(object obj) => contentByType.GetOrAdd(obj.GetType(), Factory).Register(obj);
 
-	private static void Clear() {
+	private static void Clear()
+	{
 		foreach (var entry in contentByType) {
 			entry.Value.Clear();
 			if (entry.Key.Assembly != typeof(ContentEntry).Assembly)
@@ -74,11 +79,13 @@ public static class ContentInstance<T> where T : class
 	public static T Instance { get; private set; }
 	public static IReadOnlyList<T> Instances { get; private set; }
 
-	static ContentInstance() {
+	static ContentInstance()
+	{
 		ContentInstance.Link(typeof(T), Update);
 	}
 
-	private static void Update(object instance, IEnumerable instances) {
+	private static void Update(object instance, IEnumerable instances)
+	{
 		Instance = (T)instance;
 		Instances = instances?.Cast<T>()?.ToArray();
 	}

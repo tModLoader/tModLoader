@@ -38,7 +38,8 @@ public static class BuffLoader
 	private delegate bool DelegateRightClick(int type, int buffIndex);
 	private static DelegateRightClick[] HookRightClick;
 
-	internal static int ReserveBuffID() {
+	internal static int ReserveBuffID()
+	{
 		if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
 
 		int reserveID = nextBuff;
@@ -53,7 +54,8 @@ public static class BuffLoader
 	/// </summary>
 	public static ModBuff GetBuff(int type) => type >= BuffID.Count && type < BuffCount ? buffs[type - BuffID.Count] : null;
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		//Textures
 		Array.Resize(ref TextureAssets.Buff, nextBuff);
 
@@ -97,7 +99,8 @@ public static class BuffLoader
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegateRightClick>(ref HookRightClick, globalBuffs, g => g.RightClick);
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		buffs.Clear();
 		nextBuff = BuffID.Count;
 		globalBuffs.Clear();
@@ -105,7 +108,8 @@ public static class BuffLoader
 
 	internal static bool IsModBuff(int type) => type >= BuffID.Count;
 	//in Terraria.Player.UpdateBuffs at end of if else chain add BuffLoader.Update(this.buffType[k], this, ref k);
-	public static void Update(int buff, Player player, ref int buffIndex) {
+	public static void Update(int buff, Player player, ref int buffIndex)
+	{
 		int originalIndex = buffIndex;
 		if (IsModBuff(buff)) {
 			GetBuff(buff).Update(player, ref buffIndex);
@@ -118,7 +122,8 @@ public static class BuffLoader
 		}
 	}
 
-	public static void Update(int buff, NPC npc, ref int buffIndex) {
+	public static void Update(int buff, NPC npc, ref int buffIndex)
+	{
 		if (IsModBuff(buff)) {
 			GetBuff(buff).Update(npc, ref buffIndex);
 		}
@@ -127,7 +132,8 @@ public static class BuffLoader
 		}
 	}
 
-	public static bool ReApply(int buff, Player player, int time, int buffIndex) {
+	public static bool ReApply(int buff, Player player, int time, int buffIndex)
+	{
 		foreach (var hook in HookReApplyPlayer) {
 			if (hook(buff, player, time, buffIndex)) {
 				return true;
@@ -139,7 +145,8 @@ public static class BuffLoader
 		return false;
 	}
 
-	public static bool ReApply(int buff, NPC npc, int time, int buffIndex) {
+	public static bool ReApply(int buff, NPC npc, int time, int buffIndex)
+	{
 		foreach (var hook in HookReApplyNPC) {
 			if (hook(buff, npc, time, buffIndex)) {
 				return true;
@@ -151,7 +158,8 @@ public static class BuffLoader
 		return false;
 	}
 
-	public static void ModifyBuffTip(int buff, ref string tip, ref int rare) {
+	public static void ModifyBuffTip(int buff, ref string tip, ref int rare)
+	{
 		if (IsModBuff(buff)) {
 			GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
 		}
@@ -160,19 +168,22 @@ public static class BuffLoader
 		}
 	}
 
-	public static void CustomBuffTipSize(string buffTip, List<Vector2> sizes) {
+	public static void CustomBuffTipSize(string buffTip, List<Vector2> sizes)
+	{
 		foreach (var hook in HookCustomBuffTipSize) {
 			hook(buffTip, sizes);
 		}
 	}
 
-	public static void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY) {
+	public static void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY)
+	{
 		foreach (var hook in HookDrawCustomBuffTip) {
 			hook(buffTip, spriteBatch, originX, originY);
 		}
 	}
 
-	public static bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
+	public static bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams)
+	{
 		bool result = true;
 		foreach (var hook in HookPreDraw) {
 			result &= hook(spriteBatch, type, buffIndex, ref drawParams);
@@ -183,7 +194,8 @@ public static class BuffLoader
 		return result;
 	}
 
-	public static void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+	public static void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams)
+	{
 		if (IsModBuff(type)) {
 			GetBuff(type).PostDraw(spriteBatch, buffIndex, drawParams);
 		}
@@ -192,7 +204,8 @@ public static class BuffLoader
 		}
 	}
 
-	public static bool RightClick(int type, int buffIndex) {
+	public static bool RightClick(int type, int buffIndex)
+	{
 		bool result = true;
 		foreach (var hook in HookRightClick) {
 			result &= hook(type, buffIndex);

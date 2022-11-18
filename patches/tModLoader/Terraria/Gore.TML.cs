@@ -11,7 +11,8 @@ public partial class Gore
 
 	public ModGore ModGore { get; private set; }
 
-	private void ResetNewFields() {
+	private void ResetNewFields()
+	{
 		drawOffset = Vector2.Zero;
 		realType = 0;
 	}

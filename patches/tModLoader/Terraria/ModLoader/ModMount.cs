@@ -31,7 +31,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	protected override Mount.MountData CreateTemplateEntity() => new() { ModMount = this };
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
 			Mount.Initialize();
 
@@ -76,14 +77,16 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 		}
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		Mount.mounts[Type] = MountData;
 		SetStaticDefaults();
 	}
 
 	protected virtual string GetExtraTexture(MountTextureType textureType) => Texture + "_" + textureType;
 
-	public override ModMount NewInstance(Mount.MountData entity) {
+	public override ModMount NewInstance(Mount.MountData entity)
+	{
 		ModMount inst = base.NewInstance(entity);
 		inst.Type = Type;
 		return inst;
@@ -101,7 +104,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="mountedPlayer"></param>
 	/// <param name="jumpHeight"></param>
 	/// <param name="xVelocity"></param>
-	public virtual void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity) {
+	public virtual void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity)
+	{
 	}
 
 	/// <summary>
@@ -110,14 +114,16 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="mountedPlayer"></param>
 	/// <param name="jumpSeed"></param>
 	/// <param name="xVelocity"></param>
-	public virtual void JumpSpeed(Player mountedPlayer, ref float jumpSeed, float xVelocity) {
+	public virtual void JumpSpeed(Player mountedPlayer, ref float jumpSeed, float xVelocity)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when mount is used (creating dust etc.) Can also be used for mount special abilities.
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void UpdateEffects(Player player) {
+	public virtual void UpdateEffects(Player player)
+	{
 	}
 
 	/// <summary>
@@ -127,12 +133,14 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="state"></param>
 	/// <param name="velocity"></param>
 	/// <returns></returns>
-	public virtual bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
+	public virtual bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
+	{
 		return true;
 	}
 
 	//todo: MountLoader is never called for this, why is this in here? Made it internal for now
-	internal virtual bool CustomBodyFrame() {
+	internal virtual bool CustomBodyFrame()
+	{
 		return false;
 	}
 
@@ -142,7 +150,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="player"></param>
 	/// <param name="mousePosition"></param>
 	/// <param name="toggleOn">Does nothing yet</param>
-	public virtual void UseAbility(Player player, Vector2 mousePosition, bool toggleOn) {
+	public virtual void UseAbility(Player player, Vector2 mousePosition, bool toggleOn)
+	{
 	}
 
 	/// <summary>
@@ -150,7 +159,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="mousePosition"></param>
-	public virtual void AimAbility(Player player, Vector2 mousePosition) {
+	public virtual void AimAbility(Player player, Vector2 mousePosition)
+	{
 	}
 
 	/// <summary>
@@ -159,7 +169,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
-	public virtual void SetMount(Player player, ref bool skipDust) {
+	public virtual void SetMount(Player player, ref bool skipDust)
+	{
 	}
 
 	/// <summary>
@@ -168,7 +179,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>
-	public virtual void Dismount(Player player, ref bool skipDust) {
+	public virtual void Dismount(Player player, ref bool skipDust)
+	{
 	}
 
 	/// <summary>
@@ -192,7 +204,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="drawScale"></param>
 	/// <param name="shadow"></param>
 	/// <returns></returns>
-	public virtual bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
+	public virtual bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
+	{
 		return true;
 	}
 }

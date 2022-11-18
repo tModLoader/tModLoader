@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria.DataStructures;
 
@@ -6,52 +6,62 @@ namespace Terraria.ModLoader;
 
 public static class CombinedHooks
 {
-	public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+	public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage)
+	{
 		ItemLoader.ModifyWeaponDamage(item, player, ref damage);
 		PlayerLoader.ModifyWeaponDamage(player, item, ref damage);
 	}
 
-	public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
+	public static void ModifyWeaponCrit(Player player, Item item, ref float crit)
+	{
 		ItemLoader.ModifyWeaponCrit(item, player, ref crit);
 		PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 	}
 
-	public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
+	public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback)
+	{
 		ItemLoader.ModifyWeaponKnockback(item, player, ref knockback);
 		PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback);
 	}
 
-	public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
+	public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult)
+	{
 		ItemLoader.ModifyManaCost(item, player, ref reduce, ref mult);
 		PlayerLoader.ModifyManaCost(player, item, ref reduce, ref mult);
 	}
 
-	public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
+	public static void OnConsumeMana(Player player, Item item, int manaConsumed)
+	{
 		ItemLoader.OnConsumeMana(item, player, manaConsumed);
 		PlayerLoader.OnConsumeMana(player, item, manaConsumed);
 	}
 
-	public static void OnMissingMana(Player player, Item item, int neededMana) {
+	public static void OnMissingMana(Player player, Item item, int neededMana)
+	{
 		ItemLoader.OnMissingMana(item, player, neededMana);
 		PlayerLoader.OnMissingMana(player, item, neededMana);
 	}
 
-	public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+	public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo)
+	{
 		return PlayerLoader.CanConsumeAmmo(player, weapon, ammo) && ItemLoader.CanConsumeAmmo(weapon, ammo, player);
 	}
 
-	public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {
+	public static void OnConsumeAmmo(Player player, Item weapon, Item ammo)
+	{
 		PlayerLoader.OnConsumeAmmo(player, weapon, ammo);
 		ItemLoader.OnConsumeAmmo(weapon, ammo, player);
 	}
 
 	//TODO: Fix various inconsistencies with calls of UseItem
-	public static bool CanUseItem(Player player, Item item) {
+	public static bool CanUseItem(Player player, Item item)
+	{
 		return PlayerLoader.CanUseItem(player, item) && ItemLoader.CanUseItem(item, player);
 	}
 
 	// In Player.TryAllowingItemReuse_Inner
-	public static bool? CanAutoReuseItem(Player player, Item item) {
+	public static bool? CanAutoReuseItem(Player player, Item item)
+	{
 		bool? result = null;
 
 		bool ModifyResult(bool? nbool) {
@@ -73,21 +83,25 @@ public static class CombinedHooks
 		return result;
 	}
 
-	public static bool CanShoot(Player player, Item item) {
+	public static bool CanShoot(Player player, Item item)
+	{
 		return PlayerLoader.CanShoot(player, item) && ItemLoader.CanShoot(item, player);
 	}
 
-	public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+	public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+	{
 		ItemLoader.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
 		PlayerLoader.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
 	}
 
-	public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+	{
 		bool defaultResult = PlayerLoader.Shoot(player, item, source, position, velocity, type, damage, knockback);
 		return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult);
 	}
 
-	public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {
+	public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc)
+	{
 		bool? result = null;
 
 		bool ModifyResult(bool? nbool) {
@@ -113,16 +127,19 @@ public static class CombinedHooks
 		return result;
 	}
 
-	public static void ModifyItemScale(Player player, Item item, ref float scale) {
+	public static void ModifyItemScale(Player player, Item item, ref float scale)
+	{
 		ItemLoader.ModifyItemScale(item, player, ref scale);
 		PlayerLoader.ModifyItemScale(player, item, ref scale);
 	}
 
-	public static float TotalUseSpeedMultiplier(Player player, Item item) {
+	public static float TotalUseSpeedMultiplier(Player player, Item item)
+	{
 		return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 	}
 
-	public static float TotalUseTimeMultiplier(Player player, Item item) {
+	public static float TotalUseTimeMultiplier(Player player, Item item)
+	{
 		float useTimeMult = PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
 		if (!item.attackSpeedOnlyAffectsWeaponAnimation)
 			useTimeMult /= TotalUseSpeedMultiplier(player, item);
@@ -130,14 +147,16 @@ public static class CombinedHooks
 		return useTimeMult;
 	}
 
-	public static int TotalUseTime(float useTime, Player player, Item item) {
+	public static int TotalUseTime(float useTime, Player player, Item item)
+	{
 		int result = Math.Max(1, (int)(useTime * TotalUseTimeMultiplier(player, item)));
 
 		return result;
 	}
 
 	// TO-DO: should this be affected by item.attackSpeedOnlyAffectsWeaponAnimation?
-	public static float TotalUseAnimationMultiplier(Player player, Item item) {
+	public static float TotalUseAnimationMultiplier(Player player, Item item)
+	{
 		float result = PlayerLoader.UseAnimationMultiplier(player, item) * ItemLoader.UseAnimationMultiplier(item, player);
 
 		// UseSpeedMultiplier tries to affect both useTime and useAnimation in a way that doesn't break their relativity.
@@ -151,13 +170,15 @@ public static class CombinedHooks
 		return result;
 	}
 
-	public static int TotalAnimationTime(float useAnimation, Player player, Item item) {
+	public static int TotalAnimationTime(float useAnimation, Player player, Item item)
+	{
 		int result = Math.Max(1, (int)(useAnimation * TotalUseAnimationMultiplier(player, item)));
 
 		return result;
 	}
 
-	public static bool? CanConsumeBait(Player player, Item item) {
+	public static bool? CanConsumeBait(Player player, Item item)
+	{
 		bool? ret = PlayerLoader.CanConsumeBait(player, item);
 		if (ItemLoader.CanConsumeBait(player, item) is bool b) {
 			ret = (ret ?? true) && b;
@@ -165,7 +186,8 @@ public static class CombinedHooks
 		return ret;
 	}
 
-	public static bool? CanCatchNPC(Player player, NPC npc, Item item) {
+	public static bool? CanCatchNPC(Player player, NPC npc, Item item)
+	{
 		bool? canCatchOverall = null;
 		bool? canCatchOnPlayer = PlayerLoader.CanCatchNPC(player, npc, item);
 		if (canCatchOnPlayer.HasValue) {
@@ -191,7 +213,8 @@ public static class CombinedHooks
 		return canCatchOverall;
 	}
 
-	public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed) {
+	public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed)
+	{
 		PlayerLoader.OnCatchNPC(player, npc, item, failed);
 		ItemLoader.OnCatchNPC(item, npc, player, failed);
 		NPCLoader.OnCaughtBy(npc, player, item, failed);

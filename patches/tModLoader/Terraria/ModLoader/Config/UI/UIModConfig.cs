@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System;
@@ -48,7 +48,8 @@ internal class UIModConfig : UIState
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		uIElement = new UIElement();
 		uIElement.Width.Set(0f, 0.8f);
 		uIElement.MaxWidth.Set(600f, 0f);
@@ -179,7 +180,8 @@ internal class UIModConfig : UIState
 		Append(uIElement);
 	}
 
-	private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.menuMode = Interface.modsMenuID;
 
@@ -197,7 +199,8 @@ internal class UIModConfig : UIState
 		*/
 	}
 
-	internal void Unload() {
+	internal void Unload()
+	{
 		mainConfigList?.Clear();
 		mainConfigItems?.Clear();
 		mod = null;
@@ -210,7 +213,8 @@ internal class UIModConfig : UIState
 	}
 
 	// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
-	private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement) {
+	private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		//DiscardChanges();
 
@@ -222,7 +226,8 @@ internal class UIModConfig : UIState
 		DoMenuModeState();
 	}
 
-	private void NextConfig(UIMouseEvent evt, UIElement listeningElement) {
+	private void NextConfig(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		//DiscardChanges();
 
@@ -235,7 +240,8 @@ internal class UIModConfig : UIState
 	}
 
 	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
-	private void DoMenuModeState() {
+	private void DoMenuModeState()
+	{
 		if (Main.gameMenu) {
 			Main.MenuUI.SetState(null);
 			Main.menuMode = Interface.modConfigID;
@@ -246,7 +252,8 @@ internal class UIModConfig : UIState
 		}
 	}
 
-	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement) {
+	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
+	{
 		// Main Menu: Save, leave reload for later
 		// MP with ServerSide: Send request to server
 		// SP or MP with ClientSide: Apply immediately if !NeedsReload
@@ -303,30 +310,35 @@ internal class UIModConfig : UIState
 		DoMenuModeState();
 	}
 
-	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement) {
+	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		pendingRevertDefaults = true;
 		DoMenuModeState();
 	}
 
-	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement) {
+	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		DiscardChanges();
 	}
 
-	private void DiscardChanges() {
+	private void DiscardChanges()
+	{
 		DoMenuModeState();
 	}
 
 	private bool pendingChanges;
 	private bool pendingChangesUIUpdate;
 
-	public void SetPendingChanges(bool changes = true) {
+	public void SetPendingChanges(bool changes = true)
+	{
 		pendingChangesUIUpdate |= changes;
 		pendingChanges |= changes;
 	}
 
-	public void SetMessage(string text, Color color) {
+	public void SetMessage(string text, Color color)
+	{
 		message.TextScale = 1f;
 		message.SetText(Language.GetText("tModLoader.ModConfigNotification") + text);
 		float width = FontAssets.MouseText.Value.MeasureString(text).X;
@@ -339,7 +351,8 @@ internal class UIModConfig : UIState
 
 	private bool netUpdate;
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		UpdateCount++;
@@ -375,7 +388,8 @@ internal class UIModConfig : UIState
 
 	public static string Tooltip { get; set; }
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		Tooltip = null;
 
 		base.Draw(spriteBatch);
@@ -393,7 +407,8 @@ internal class UIModConfig : UIState
 	// when we get new server configs from server...replace, don't save?
 	// reload manually, reload fresh server config?
 	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null) {
+	internal void SetMod(Mod mod, ModConfig config = null)
+	{
 		this.mod = mod;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
 			modConfigs = ConfigManager.Configs[mod];
@@ -414,7 +429,8 @@ internal class UIModConfig : UIState
 
 	private static bool pendingRevertDefaults;
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		filterTextField.SetText("");
 
 		updateNeeded = false;
@@ -490,7 +506,8 @@ internal class UIModConfig : UIState
 		}
 	}
 
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) {
+	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	{
 		int elementHeight;
 		Type type = memberInfo.Type;
 
@@ -643,7 +660,8 @@ internal class UIModConfig : UIState
 		return null;
 	}
 
-	internal static UIElement GetContainer(UIElement containee, int sortid) {
+	internal static UIElement GetContainer(UIElement containee, int sortid)
+	{
 		UIElement container = new UISortableElement(sortid);
 		container.Width.Set(0f, 1f);
 		container.Height.Set(30f, 0f);
@@ -652,7 +670,8 @@ internal class UIModConfig : UIState
 		return container;
 	}
 
-	internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction) {
+	internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction)
+	{
 		UIPanel uIPanel = new UIPanel();
 		uIPanel.CopyStyle(Interface.modConfig.uIPanel);
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
@@ -780,7 +799,8 @@ internal class UIModConfig : UIState
 		return uIPanel;
 	}
 
-	internal static void SwitchToSubConfig(UIPanel separateListPanel) {
+	internal static void SwitchToSubConfig(UIPanel separateListPanel)
+	{
 		Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 		Interface.modConfig.uIElement.Append(separateListPanel);
 		Interface.modConfig.configPanelStack.Push(separateListPanel);

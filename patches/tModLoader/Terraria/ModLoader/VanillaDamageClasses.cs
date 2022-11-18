@@ -1,4 +1,4 @@
-﻿using Terraria.Localization;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -23,7 +23,8 @@ public class GenericDamageClass : VanillaDamageClass
 
 	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) => StatInheritanceData.None;
 
-	public override void SetDefaultStats(Player player) {
+	public override void SetDefaultStats(Player player)
+	{
 		player.GetCritChance(this) = 4;
 	}
 }
@@ -37,7 +38,8 @@ public class MeleeNoSpeedDamageClass : VanillaDamageClass
 {
 	protected override string LangKey => "LegacyTooltip.2";
 
-	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass)
+	{
 		if (damageClass == Generic || damageClass == Melee)
 			return StatInheritanceData.Full with { attackSpeedInheritance = 0 };
 
@@ -70,7 +72,8 @@ public class SummonMeleeSpeedDamageClass : VanillaDamageClass
 {
 	protected override string LangKey => "LegacyTooltip.53";
 
-	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass)
+	{
 		if (damageClass == Melee)
 			return new StatInheritanceData(attackSpeedInheritance: 1f);
 
@@ -91,7 +94,8 @@ public class MagicSummonHybridDamageClass : VanillaDamageClass
 {
 	protected override string LangKey => "magic or summon damage";
 
-	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass)
+	{
 		if (damageClass == Generic || damageClass == Magic || damageClass == Summon)
 			return StatInheritanceData.Full;
 

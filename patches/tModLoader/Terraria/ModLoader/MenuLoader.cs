@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +39,8 @@ public static class MenuLoader
 
 	private static string[] KnownMenus => KnownMenuSaveString.Split(',');
 
-	private static void AddKnownMenu(string name) {
+	private static void AddKnownMenu(string name)
+	{
 		var newSaveString = string.Join(",", KnownMenus.Concat(new [] { name }).Distinct());
 		if (newSaveString != KnownMenuSaveString) {
 			KnownMenuSaveString = newSaveString;
@@ -47,14 +48,16 @@ public static class MenuLoader
 		}
 	}
 
-	internal static void Add(ModMenu modMenu) {
+	internal static void Add(ModMenu modMenu)
+	{
 		lock (menus) {
 			menus.Add(modMenu);
 			ModTypeLookup<ModMenu>.Register(modMenu);
 		}
 	}
 
-	private static void OffsetModMenu(int offset) {
+	private static void OffsetModMenu(int offset)
+	{
 		lock (menus) {
 			switchToMenu = currentMenu;
 			do {
@@ -63,7 +66,8 @@ public static class MenuLoader
 		}
 	}
 
-	internal static void GotoSavedModMenu() {
+	internal static void GotoSavedModMenu()
+	{
 		if (LastSelectedModMenu == MenuOldVanilla.FullName) {
 			Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 		}
@@ -75,11 +79,13 @@ public static class MenuLoader
 		loading = false;
 	}
 
-	public static void ActivateOldVanillaMenu() {
+	public static void ActivateOldVanillaMenu()
+	{
 		switchToMenu = MenuOldVanilla;
 	}
 
-	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale) {
+	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)
+	{
 		if (switchToMenu != null && switchToMenu != currentMenu) {
 			currentMenu.OnDeselected();
 			currentMenu = switchToMenu;
@@ -144,7 +150,8 @@ public static class MenuLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		loading = true;
 		// Prevent asset disposed exceptions by disallowing modded menus during the unload process.
 		if (menus.IndexOf(currentMenu, 0, DefaultMenuCount) == -1) {

@@ -21,7 +21,8 @@ public class FewFromOptionsNotScaledWithLuckDropRule : IItemDropRule
 		private set;
 	}
 
-	public FewFromOptionsNotScaledWithLuckDropRule(int amount, int chanceDenominator, int chanceNumerator, params int[] options) {
+	public FewFromOptionsNotScaledWithLuckDropRule(int amount, int chanceDenominator, int chanceNumerator, params int[] options)
+	{
 		if (amount > options.Length) {
 			throw new ArgumentOutOfRangeException(nameof(amount), $"{nameof(amount)} must be less than the number of {nameof(options)}");
 		}
@@ -35,7 +36,8 @@ public class FewFromOptionsNotScaledWithLuckDropRule : IItemDropRule
 
 	public bool CanDrop(DropAttemptInfo info) => true;
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	{
 		if (info.rng.Next(chanceDenominator) < chanceNumerator) {
 			List<int> savedDropIds = dropIds.ToList();
 			int count = 0;
@@ -56,7 +58,8 @@ public class FewFromOptionsNotScaledWithLuckDropRule : IItemDropRule
 		return new() { State = ItemDropAttemptResultState.FailedRandomRoll };
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	{
 		float pesonalDroprate = (float)chanceNumerator / (float)chanceDenominator;
 		float num2 = pesonalDroprate * ratesInfo.parentDroprateChance;
 		float dropRate = 1f / (float)(dropIds.Length - amount) * num2;

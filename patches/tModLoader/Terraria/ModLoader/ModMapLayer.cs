@@ -1,4 +1,4 @@
-﻿using Terraria.Map;
+using Terraria.Map;
 
 namespace Terraria.ModLoader;
 
@@ -16,7 +16,8 @@ public abstract class ModMapLayer : ModType, IMapLayer
 	/// <param name="text">The mouse hover text. Assign a value typically if the user is hovering over something you draw</param>
 	public abstract void Draw(ref MapOverlayDrawContext context, ref string text);
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModMapLayer>.Register(this);
 		Main.MapIcons.AddLayer(this);
 	}

@@ -11,7 +11,8 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 {
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ProjectileLoader.VerifyGlobalProjectile(this);
 
 		ModTypeLookup<GlobalProjectile>.Register(this);
@@ -29,13 +30,15 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// Allows you to set the properties of any and every projectile that gets created.
 	/// </summary>
 	/// <param name="projectile"></param>
-	public virtual void SetDefaults(Projectile projectile) {
+	public virtual void SetDefaults(Projectile projectile)
+	{
 	}
 
 	/// <summary>
 	/// Gets called when any projectiles spawns in world
 	/// </summary>
-	public virtual void OnSpawn(Projectile projectile, IEntitySource source) {
+	public virtual void OnSpawn(Projectile projectile, IEntitySource source)
+	{
 	}
 	
 	/// <summary>
@@ -43,7 +46,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool PreAI(Projectile projectile) {
+	public virtual bool PreAI(Projectile projectile)
+	{
 		return true;
 	}
 
@@ -51,14 +55,16 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.
 	/// </summary>
 	/// <param name="projectile"></param>
-	public virtual void AI(Projectile projectile) {
+	public virtual void AI(Projectile projectile)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.
 	/// </summary>
 	/// <param name="projectile"></param>
-	public virtual void PostAI(Projectile projectile) {
+	public virtual void PostAI(Projectile projectile)
+	{
 	}
 
 	/// <summary>
@@ -70,7 +76,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile">The projectile.</param>
 	/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
 	/// <param name="binaryWriter">The writer.</param>
-	public virtual void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter) {
+	public virtual void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter)
+	{
 	}
 
 	/// <summary>
@@ -81,7 +88,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile">The projectile.</param>
 	/// <param name="bitReader">The compressible bit reader.</param>
 	/// <param name="binaryReader">The reader.</param>
-	public virtual void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader) {
+	public virtual void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader)
+	{
 	}
 
 	/// <summary>
@@ -89,7 +97,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool ShouldUpdatePosition(Projectile projectile) {
+	public virtual bool ShouldUpdatePosition(Projectile projectile)
+	{
 		return true;
 	}
 
@@ -102,7 +111,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
 	/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from the projectile's real center. If vanilla or a mod don't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
 	/// <returns></returns>
-	public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+	public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
+	{
 		return true;
 	}
 
@@ -112,7 +122,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile"></param>
 	/// <param name="oldVelocity"></param>
 	/// <returns></returns>
-	public virtual bool OnTileCollide(Projectile projectile, Vector2 oldVelocity) {
+	public virtual bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
+	{
 		return true;
 	}
 
@@ -122,7 +133,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile"></param>
 	/// <param name="timeLeft"></param>
 	/// <returns></returns>
-	public virtual bool PreKill(Projectile projectile, int timeLeft) {
+	public virtual bool PreKill(Projectile projectile, int timeLeft)
+	{
 		return true;
 	}
 
@@ -131,7 +143,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="timeLeft"></param>
-	public virtual void Kill(Projectile projectile, int timeLeft) {
+	public virtual void Kill(Projectile projectile, int timeLeft)
+	{
 	}
 
 	/// <summary>
@@ -139,7 +152,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool? CanCutTiles(Projectile projectile) {
+	public virtual bool? CanCutTiles(Projectile projectile)
+	{
 		return null;
 	}
 
@@ -147,7 +161,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// Code ran when the projectile cuts tiles. Only runs if CanCutTiles() returns true. Useful when programming lasers and such.
 	/// </summary>
 	/// <param name="projectile"></param>
-	public virtual void CutTiles(Projectile projectile) {
+	public virtual void CutTiles(Projectile projectile)
+	{
 	}
 
 	/// <summary>
@@ -158,7 +173,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool? CanDamage(Projectile projectile) {
+	public virtual bool? CanDamage(Projectile projectile)
+	{
 		return null;
 	}
 
@@ -167,7 +183,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool MinionContactDamage(Projectile projectile) {
+	public virtual bool MinionContactDamage(Projectile projectile)
+	{
 		return false;
 	}
 
@@ -176,7 +193,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="hitbox"></param>
-	public virtual void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox) {
+	public virtual void ModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox)
+	{
 	}
 
 	/// <summary>
@@ -184,7 +202,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="damageScale">The damage scaling</param>
-	public virtual void ModifyDamageScaling(Projectile projectile, ref float damageScale) {
+	public virtual void ModifyDamageScaling(Projectile projectile, ref float damageScale)
+	{
 	}
 
 	/// <summary>
@@ -193,7 +212,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(Projectile projectile, NPC target) {
+	public virtual bool? CanHitNPC(Projectile projectile, NPC target)
+	{
 		return null;
 	}
 
@@ -206,7 +226,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
 	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	{
 	}
 
 	/// <summary>
@@ -217,7 +238,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit) {
+	public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -226,7 +248,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool CanHitPvp(Projectile projectile, Player target) {
+	public virtual bool CanHitPvp(Projectile projectile, Player target)
+	{
 		return true;
 	}
 
@@ -237,7 +260,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -247,7 +271,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit) {
+	public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -256,7 +281,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool CanHitPlayer(Projectile projectile, Player target) {
+	public virtual bool CanHitPlayer(Projectile projectile, Player target)
+	{
 		return true;
 	}
 
@@ -267,7 +293,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -277,7 +304,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit) {
+	public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -287,7 +315,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projHitbox"></param>
 	/// <param name="targetHitbox"></param>
 	/// <returns></returns>
-	public virtual bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox) {
+	public virtual bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
+	{
 		return null;
 	}
 
@@ -297,7 +326,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="projectile"></param>
 	/// <param name="lightColor"></param>
 	/// <returns></returns>
-	public virtual Color? GetAlpha(Projectile projectile, Color lightColor) {
+	public virtual Color? GetAlpha(Projectile projectile, Color lightColor)
+	{
 		return null;
 	}
 
@@ -305,7 +335,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// Allows you to draw things behind a projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
-	public virtual bool PreDrawExtras(Projectile projectile) {
+	public virtual bool PreDrawExtras(Projectile projectile)
+	{
 		return true;
 	}
 
@@ -314,7 +345,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-	public virtual bool PreDraw(Projectile projectile, ref Color lightColor) {
+	public virtual bool PreDraw(Projectile projectile, ref Color lightColor)
+	{
 		return true;
 	}
 
@@ -323,7 +355,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-	public virtual void PostDraw(Projectile projectile, Color lightColor) {
+	public virtual void PostDraw(Projectile projectile, Color lightColor)
+	{
 	}
 
 	/// <summary>
@@ -336,50 +369,58 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="behindProjectiles"></param>
 	/// <param name="overPlayers"></param>
 	/// <param name="overWiresUI"></param>
-	public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+	public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+	{
 	}
 
 	/// <summary>
 	/// Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default.
 	/// </summary>
-	public virtual bool? CanUseGrapple(int type, Player player) {
+	public virtual bool? CanUseGrapple(int type, Player player)
+	{
 		return null;
 	}
 
 	/// <summary>
 	/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
 	/// </summary>
-	public virtual bool? SingleGrappleHook(int type, Player player) {
+	public virtual bool? SingleGrappleHook(int type, Player player)
+	{
 		return null;
 	}
 
 	/// <summary>
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 	/// </summary>
-	public virtual void UseGrapple(Player player, ref int type) {
+	public virtual void UseGrapple(Player player, ref int type)
+	{
 	}
 
 	/// <summary>
 	/// How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.
 	/// </summary>
-	public virtual void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks) {
+	public virtual void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks)
+	{
 	}
 
 	/// <summary>
 	/// The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24.
 	/// </summary>
-	public virtual void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed) {
+	public virtual void GrappleRetreatSpeed(Projectile projectile, Player player, ref float speed)
+	{
 	}
 
 	/// <summary>
 	/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
 	/// </summary>
-	public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed) {
+	public virtual void GrapplePullSpeed(Projectile projectile, Player player, ref float speed)
+	{
 	}
 
 	/// <summary>
 	/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
 	/// </summary>
-	public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY) {
+	public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY)
+	{
 	}
 }

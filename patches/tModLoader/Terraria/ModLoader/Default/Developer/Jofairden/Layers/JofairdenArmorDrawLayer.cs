@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 
@@ -10,13 +10,15 @@ internal abstract class JofairdenArmorDrawLayer : PlayerDrawLayer
 
 	public abstract DrawDataInfo GetData(PlayerDrawSet info);
 
-	public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+	public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+	{
 		var player = drawInfo.drawPlayer;
 
 		return drawInfo.shadow == 0f && !player.invis && player.GetModPlayer<JofairdenArmorEffectPlayer>().LayerStrength > 0f;
 	}
 
-	public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {
+	public static DrawDataInfo GetHeadDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture)
+	{
 		Player drawPlayer = drawInfo.drawPlayer;
 		Vector2 pos = drawPlayer.headPosition + drawInfo.headVect + new Vector2(
 			(int)(drawInfo.Position.X + drawPlayer.width / 2f - drawPlayer.bodyFrame.Width / 2f - Main.screenPosition.X),
@@ -32,7 +34,8 @@ internal abstract class JofairdenArmorDrawLayer : PlayerDrawLayer
 		};
 	}
 
-	public static DrawDataInfo GetBodyDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {
+	public static DrawDataInfo GetBodyDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture)
+	{
 		Player drawPlayer = drawInfo.drawPlayer;
 		Vector2 pos = drawPlayer.bodyPosition + drawInfo.bodyVect + new Vector2(
 			 (int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.bodyFrame.Width / 2f + drawPlayer.width / 2f),
@@ -48,7 +51,8 @@ internal abstract class JofairdenArmorDrawLayer : PlayerDrawLayer
 		};
 	}
 
-	public static DrawDataInfo GetLegDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture) {
+	public static DrawDataInfo GetLegDrawDataInfo(PlayerDrawSet drawInfo, Texture2D texture)
+	{
 		Player drawPlayer = drawInfo.drawPlayer;
 		Vector2 pos = drawPlayer.legPosition + drawInfo.legVect + new Vector2(
 			(int)(drawInfo.Position.X - Main.screenPosition.X - drawPlayer.legFrame.Width / 2f + drawPlayer.width / 2f),

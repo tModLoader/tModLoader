@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
@@ -10,7 +10,8 @@ public class WaterFallStylesLoader : SceneEffectLoader<ModWaterfallStyle>
 {
 	public WaterFallStylesLoader() => Initialize(WaterfallManager.maxTypes);
 
-	internal override void ResizeArrays() {
+	internal override void ResizeArrays()
+	{
 		//Textures
 		Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, TotalCount);
 	}
@@ -21,7 +22,8 @@ public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 {
 	public WaterStylesLoader() => Initialize(Main.maxLiquidTypes);
 
-	internal override void ResizeArrays() {
+	internal override void ResizeArrays()
+	{
 		//Textures
 		Array.Resize(ref TextureAssets.Liquid, TotalCount);
 		Array.Resize(ref TextureAssets.LiquidSlope, TotalCount);
@@ -31,7 +33,8 @@ public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 		Array.Resize(ref Main.liquidAlpha, TotalCount);
 	}
 
-	public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+	public override void ChooseStyle(out int style, out SceneEffectPriority priority)
+	{
 		int tst = Main.LocalPlayer.CurrentSceneEffect.waterStyle.value;
 		style = -1; priority = SceneEffectPriority.None;
 
@@ -41,7 +44,8 @@ public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 		}
 	}
 
-	public void UpdateLiquidAlphas() {
+	public void UpdateLiquidAlphas()
+	{
 		if (Main.waterStyle >= VanillaCount) {
 			for (int k = 0; k < VanillaCount; k++) {
 				if (k == 1 || k == 11) {
@@ -70,7 +74,8 @@ public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 		}
 	}
 
-	public void DrawWaterfall(WaterfallManager waterfallManager) {
+	public void DrawWaterfall(WaterfallManager waterfallManager)
+	{
 		foreach (ModWaterStyle waterStyle in list) {
 			if (Main.liquidAlpha[waterStyle.Slot] > 0f) {
 				waterfallManager.DrawWaterfall(waterStyle.ChooseWaterfallStyle(), Main.liquidAlpha[waterStyle.Slot]);
@@ -78,7 +83,8 @@ public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 		}
 	}
 
-	public void LightColorMultiplier(int style, float factor, ref float r, ref float g, ref float b) {
+	public void LightColorMultiplier(int style, float factor, ref float r, ref float g, ref float b)
+	{
 		ModWaterStyle waterStyle = Get(style);
 
 		if (waterStyle != null) {

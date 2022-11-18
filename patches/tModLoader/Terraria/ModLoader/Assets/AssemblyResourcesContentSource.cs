@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +13,8 @@ public sealed class AssemblyResourcesContentSource : ContentSource
 	private readonly string rootPath;
 	private readonly Assembly assembly;
 
-	public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null) {
+	public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null)
+	{
 		this.assembly = assembly;
 
 		IEnumerable<string> resourceNames = assembly.GetManifestResourceNames();

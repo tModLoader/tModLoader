@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +13,8 @@ public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRul
 	{
 		private readonly Action<float> report;
 
-		public PersonalDropRateReportingRule(Action<float> report) {
+		public PersonalDropRateReportingRule(Action<float> report)
+		{
 			this.report = report;
 		}
 
@@ -29,18 +30,21 @@ public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRul
 		private set;
 	}
 
-	public AlwaysAtleastOneSuccessDropRule(params IItemDropRule[] rules) {
+	public AlwaysAtleastOneSuccessDropRule(params IItemDropRule[] rules)
+	{
 		this.rules = rules;
 		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
 	public bool CanDrop(DropAttemptInfo info) => true;
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	{
 		return new() { State = ItemDropAttemptResultState.DidNotRunCode };
 	}
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
+	{
 		while (true) {
 			bool anyDropped = false;
 			foreach (var rule in rules) {
@@ -53,7 +57,8 @@ public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRul
 		}
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	{
 		float reroll = 1f;
 		foreach (var rule in rules) {
 			reroll *= 1f - GetPersonalDropRate(rule);
@@ -79,7 +84,8 @@ public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRul
 		Chains.ReportDroprates(ChainedRules, 1f, drops, ratesInfo);
 	}
 
-	public static float GetPersonalDropRate(IItemDropRule rule) {
+	public static float GetPersonalDropRate(IItemDropRule rule)
+	{
 		var chained = rule.ChainedRules.ToArray();
 		rule.ChainedRules.Clear();
 

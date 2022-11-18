@@ -1,4 +1,4 @@
-﻿using MonoMod.RuntimeDetour;
+using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,8 @@ public static class MonoModHooks
 	public static void RequestNativeAccess() { }
 
 	private static bool isInitialized;
-	internal static void Initialize() {
+	internal static void Initialize()
+	{
 		if (isInitialized)
 			return;
 
@@ -70,7 +71,8 @@ public static class MonoModHooks
 		isInitialized = true;
 	}
 
-	private static string StringRep(MethodBase m) {
+	private static string StringRep(MethodBase m)
+	{
 		var paramString = string.Join(", ", m.GetParameters().Select(p => {
 			var t = p.ParameterType;
 			var s = "";
@@ -88,7 +90,8 @@ public static class MonoModHooks
 		return $"{owner}::{m.Name}({paramString})";
 	}
 
-	internal static void RemoveAll(Mod mod) {
+	internal static void RemoveAll(Mod mod)
+	{
 		if (mod is ModLoaderMod)
 			return;
 

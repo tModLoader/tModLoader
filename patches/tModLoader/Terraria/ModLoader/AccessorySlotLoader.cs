@@ -31,7 +31,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public const int MaxVanillaSlotCount = 2 + 5;
 
 	// DRAWING CODE ///////////////////////////////////////////////////////////////////
-	internal int GetAccessorySlotPerColumn() {
+	internal int GetAccessorySlotPerColumn()
+	{
 		float minimumClearance = DrawVerticalAlignment + 2 * 56 * Main.inventoryScale + 4;
 		return (int)((Main.screenHeight - minimumClearance) / (56 * Main.inventoryScale) - 1.8f);
 	}
@@ -47,7 +48,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// </summary>
 	static public Vector2 DefenseIconPosition { get; private set; }
 
-	public void DrawAccSlots(int num20) {
+	public void DrawAccSlots(int num20)
+	{
 		int skip = 0;
 		DrawVerticalAlignment = num20;
 		Color color = Main.inventoryBack;
@@ -93,7 +95,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	public static string[] scrollStackLang = { Language.GetTextValue("tModLoader.slotStack"), Language.GetTextValue("tModLoader.slotScroll") };
 
-	internal void DrawScrollSwitch() {
+	internal void DrawScrollSwitch()
+	{
 		Texture2D value4 = TextureAssets.InventoryTickOn.Value;
 		if (ModSlotPlayer(Player).scrollSlots)
 			value4 = TextureAssets.InventoryTickOff.Value;
@@ -121,7 +124,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	}
 
 	// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper.
-	internal void DrawScrollbar(int accessoryPerColumn, int slotsToRender, int scrollIncrement) {
+	internal void DrawScrollbar(int accessoryPerColumn, int slotsToRender, int scrollIncrement)
+	{
 		int xLoc = Main.screenWidth - 64 - 28;
 
 		int chkMax = (int)((float)(DrawVerticalAlignment) + (float)(((accessoryPerColumn) + 3) * 56) * Main.inventoryScale) + 4;
@@ -156,7 +160,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// <summary>
 	/// Draws Vanilla and Modded Accessory Slots
 	/// </summary>
-	public bool Draw(int skip, bool modded, int slot, Color color) {
+	public bool Draw(int skip, bool modded, int slot, Color color)
+	{
 		bool flag3;
 		bool flag4 = false;
 
@@ -228,7 +233,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// <summary>
 	/// Applies Xloc and Yloc data for the slot, based on ModAccessorySlotPlayer.scrollSlots
 	/// </summary>
-	internal bool SetDrawLocation(int trueSlot, int skip, ref int xLoc, ref int yLoc) {
+	internal bool SetDrawLocation(int trueSlot, int skip, ref int xLoc, ref int yLoc)
+	{
 		int accessoryPerColumn = GetAccessorySlotPerColumn();
 		int xColumn = (int)(trueSlot / accessoryPerColumn);
 		int yRow = trueSlot % accessoryPerColumn;
@@ -271,7 +277,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Is run in AccessorySlotLoader.Draw.
 	/// Creates &amp; sets up Hide Visibility Button.
 	/// </summary>
-	internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4) {
+	internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4)
+	{
 		yLoc2 = yLoc - 2;
 		xLoc2 = xLoc - 58 + 64 + 28;
 
@@ -310,7 +317,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 	/// At the end, calls this.DrawRedirect to enable custom drawing
 	/// </summary>
-	internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false) {
+	internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
+	{
 		bool flag = flag3 && !Main.mouseItem.IsAir;
 		int xLoc1 = xLoc - 47 * (slotDrawLoopCounter++);
 		bool isHovered = false;
@@ -347,7 +355,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc), isHovered);
 	}
 
-	internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location, bool isHovered) {
+	internal void DrawRedirect(Item[] inv, int context, int slot, Vector2 location, bool isHovered)
+	{
 		if (context < 0) {
 			if (Get(slot).PreDraw(ContextToEnum(context), inv[slot], location, isHovered))
 				ItemSlot.Draw(Main.spriteBatch, inv, context, slot, location);
@@ -363,7 +372,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Provides the Texture for a Modded Accessory Slot
 	/// This probably will need optimization down the road.
 	/// </summary>
-	internal Texture2D GetBackgroundTexture(int slot, int context) {
+	internal Texture2D GetBackgroundTexture(int slot, int context)
+	{
 		var thisSlot = Get(slot);
 		switch (context) {
 			case -10:
@@ -384,7 +394,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		return TextureAssets.InventoryBack3.Value;
 	}
 
-	internal void DrawSlotTexture(Texture2D value6, Vector2 position, Rectangle rectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, int slot, int context) {
+	internal void DrawSlotTexture(Texture2D value6, Vector2 position, Rectangle rectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, int slot, int context)
+	{
 		var thisSlot = Get(slot);
 		Texture2D texture = null;
 		switch (context) {
@@ -441,7 +452,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.
 	/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
 	/// </summary>
-	public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo) {
+	public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo)
+	{
 		for (int num = ModSlotPlayer(Player).SlotCount - 1; num >= 0; num--) {
 			if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
 				if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
@@ -456,7 +468,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Mirrors Player.GetPreferredGolfBallToUse.
 	/// Provides the golf ball projectile from an accessory slot.
 	/// </summary>
-	public bool PreferredGolfBall(ref int projType) {
+	public bool PreferredGolfBall(ref int projType)
+	{
 		for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
 			if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
 				Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];

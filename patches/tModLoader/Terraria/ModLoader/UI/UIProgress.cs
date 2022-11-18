@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -31,7 +31,8 @@ internal class UIProgress : UIState
 		set => subProgress?.SetText(value);
 	}
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_progressBar = new UIProgressBar {
 			Width = { Percent = 0.8f },
 			MaxWidth = UICommon.MaxPanelWidth,
@@ -57,13 +58,15 @@ internal class UIProgress : UIState
 		Append(subProgress);
 	}
 
-	private void CancelClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void CancelClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(ID.SoundID.MenuOpen);
 		Main.menuMode = gotoMenu;
 		OnCancel?.Invoke();
 	}
 
-	public void Show(string displayText = "", int gotoMenu = 0, Action cancel = null) {
+	public void Show(string displayText = "", int gotoMenu = 0, Action cancel = null)
+	{
 		if (Main.MenuUI.CurrentState == this)
 			Main.MenuUI.RefreshState();
 		else
@@ -76,12 +79,14 @@ internal class UIProgress : UIState
 			OnCancel += cancel;
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 		_progressBar.DisplayText = DisplayText;
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		DisplayText = null;
 		OnCancel = null;
 		gotoMenu = 0;

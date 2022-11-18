@@ -46,12 +46,14 @@ public abstract class InfoDisplay : ModTexturedType
 	/// </summary>
 	public abstract string DisplayValue();
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		ModContent.Request<Texture2D>(Texture);
 		SetStaticDefaults();
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		InfoName = LocalizationLoader.GetOrCreateTranslation(Mod, $"InfoDisplayName.{Name}");
 
 		ModTypeLookup<InfoDisplay>.Register(this);

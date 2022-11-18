@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.ComponentModel;
 
@@ -12,7 +12,8 @@ public class BackgroundColorAttribute : Attribute
 {
 	public Color Color { get; }
 
-	public BackgroundColorAttribute(int r, int g, int b, int a = 255) {
+	public BackgroundColorAttribute(int r, int g, int b, int a = 255)
+	{
 		Color = new Color(r, g, b, a);
 	}
 }
@@ -25,7 +26,8 @@ public class SliderColorAttribute : Attribute
 {
 	public Color Color { get; }
 
-	public SliderColorAttribute(int r, int g, int b, int a = 255) {
+	public SliderColorAttribute(int r, int g, int b, int a = 255)
+	{
 		Color = new Color(r, g, b, a);
 	}
 }
@@ -49,7 +51,8 @@ public class LabelAttribute : Attribute
 
 	public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
 
-	public LabelAttribute(string label) {
+	public LabelAttribute(string label)
+	{
 		this.label = label;
 	}
 }
@@ -65,7 +68,8 @@ public class TooltipAttribute : Attribute
 
 	public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
 
-	public TooltipAttribute(string tooltip) {
+	public TooltipAttribute(string tooltip)
+	{
 		this.tooltip = tooltip;
 	}
 }
@@ -81,7 +85,8 @@ public class HeaderAttribute : Attribute
 
 	public string Header => header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
 
-	public HeaderAttribute(string header) {
+	public HeaderAttribute(string header)
+	{
 		this.header = header;
 	}
 }
@@ -94,7 +99,8 @@ public class CustomModConfigItemAttribute : Attribute
 {
 	public Type Type { get; }
 
-	public CustomModConfigItemAttribute(Type type) {
+	public CustomModConfigItemAttribute(Type type)
+	{
 		Type = type;
 	}
 }
@@ -106,7 +112,8 @@ public class JsonDefaultValueAttribute : Attribute
 {
 	public string Json { get; }
 
-	public JsonDefaultValueAttribute(string json) {
+	public JsonDefaultValueAttribute(string json)
+	{
 		Json = json;
 	}
 }
@@ -121,7 +128,8 @@ public class DefaultListValueAttribute : Attribute
 
 	public virtual object Value => value;
 
-	public DefaultListValueAttribute(Type type, string value) {
+	public DefaultListValueAttribute(Type type, string value)
+	{
 		try {
 			this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
 		}
@@ -141,7 +149,8 @@ public class DefaultListValueAttribute : Attribute
 	public DefaultListValueAttribute(string value) => this.value = value;
 	public DefaultListValueAttribute(object value) => this.value = value;
 
-	public override bool Equals(object obj) {
+	public override bool Equals(object obj)
+	{
 		if (obj == this) {
 			return true;
 		}
@@ -159,7 +168,8 @@ public class DefaultListValueAttribute : Attribute
 
 	public override int GetHashCode() => base.GetHashCode();
 
-	protected void SetValue(object value) {
+	protected void SetValue(object value)
+	{
 		this.value = value;
 	}
 }
@@ -174,7 +184,8 @@ public class DefaultDictionaryKeyValueAttribute : Attribute
 
 	public virtual object Value => value;
 
-	public DefaultDictionaryKeyValueAttribute(Type type, string value) {
+	public DefaultDictionaryKeyValueAttribute(Type type, string value)
+	{
 		try {
 			this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
 		}
@@ -194,7 +205,8 @@ public class DefaultDictionaryKeyValueAttribute : Attribute
 	public DefaultDictionaryKeyValueAttribute(string value) => this.value = value;
 	public DefaultDictionaryKeyValueAttribute(object value) => this.value = value;
 
-	public override bool Equals(object obj) {
+	public override bool Equals(object obj)
+	{
 		if (obj == this) {
 			return true;
 		}
@@ -212,7 +224,8 @@ public class DefaultDictionaryKeyValueAttribute : Attribute
 
 	public override int GetHashCode() => base.GetHashCode();
 
-	protected void SetValue(object value) {
+	protected void SetValue(object value)
+	{
 		this.value = value;
 	}
 }
@@ -225,7 +238,8 @@ public class JsonDefaultListValueAttribute : Attribute
 {
 	public string Json { get; }
 
-	public JsonDefaultListValueAttribute(string json) {
+	public JsonDefaultListValueAttribute(string json)
+	{
 		Json = json;
 	}
 }
@@ -249,7 +263,8 @@ public class JsonDefaultDictionaryKeyValueAttribute : Attribute
 {
 	public string Json { get; }
 
-	public JsonDefaultDictionaryKeyValueAttribute(string json) {
+	public JsonDefaultDictionaryKeyValueAttribute(string json)
+	{
 		Json = json;
 	}
 }
@@ -262,7 +277,8 @@ public class OptionStringsAttribute : Attribute
 {
 	public string[] OptionLabels { get; set; }
 
-	public OptionStringsAttribute(string[] optionLabels) {
+	public OptionStringsAttribute(string[] optionLabels)
+	{
 		OptionLabels = optionLabels;
 	}
 }
@@ -276,19 +292,23 @@ public class IncrementAttribute : Attribute
 {
 	public object Increment { get; }
 
-	public IncrementAttribute(int increment) {
+	public IncrementAttribute(int increment)
+	{
 		Increment = increment;
 	}
 
-	public IncrementAttribute(float increment) {
+	public IncrementAttribute(float increment)
+	{
 		Increment = increment;
 	}
 
-	public IncrementAttribute(uint increment) {
+	public IncrementAttribute(uint increment)
+	{
 		Increment = increment;
 	}
 
-	public IncrementAttribute(byte increment) {
+	public IncrementAttribute(byte increment)
+	{
 		Increment = increment;
 	}
 }
@@ -302,22 +322,26 @@ public class RangeAttribute : Attribute
 	public object Min { get; }
 	public object Max { get; }
 
-	public RangeAttribute(int min, int max) {
+	public RangeAttribute(int min, int max)
+	{
 		Min = min;
 		Max = max;
 	}
 
-	public RangeAttribute(float min, float max) {
+	public RangeAttribute(float min, float max)
+	{
 		Min = min;
 		Max = max;
 	}
 
-	public RangeAttribute(uint min, uint max) {
+	public RangeAttribute(uint min, uint max)
+	{
 		Min = min;
 		Max = max;
 	}
 
-	public RangeAttribute(byte min, byte max) {
+	public RangeAttribute(byte min, byte max)
+	{
 		Min = min;
 		Max = max;
 	}
@@ -358,7 +382,8 @@ public class ColorHSLSliderAttribute : Attribute
 {
 	public bool ShowSaturationAndLightness { get; }
 
-	public ColorHSLSliderAttribute(bool showSaturationAndLightness = true) {
+	public ColorHSLSliderAttribute(bool showSaturationAndLightness = true)
+	{
 		ShowSaturationAndLightness = showSaturationAndLightness;
 	}
 }

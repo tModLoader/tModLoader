@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -62,7 +62,8 @@ internal class DictionaryElementWrapper<K, V> : IDictionaryElementWrapper
 
 	//internal UIModConfigDictionaryItem parent;
 
-	public DictionaryElementWrapper(K key, V value, IDictionary dictionary) { //, UIModConfigDictionaryItem parent)
+	public DictionaryElementWrapper(K key, V value, IDictionary dictionary)
+	{ //, UIModConfigDictionaryItem parent)
 		this.dictionary = dictionary;
 		_key = key;
 		_value = value;
@@ -91,7 +92,8 @@ internal class DictionaryElement : CollectionElement
 	protected DefaultDictionaryKeyValueAttribute defaultDictionaryKeyValueAttribute;
 	protected JsonDefaultDictionaryKeyValueAttribute jsonDefaultDictionaryKeyValueAttribute;
 
-	protected override void PrepareTypes() {
+	protected override void PrepareTypes()
+	{
 		keyType = MemberInfo.Type.GetGenericArguments()[0];
 		valueType = MemberInfo.Type.GetGenericArguments()[1];
 		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, valueType);
@@ -99,7 +101,8 @@ internal class DictionaryElement : CollectionElement
 		jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
 	}
 
-	protected override void AddItem() {
+	protected override void AddItem()
+	{
 		try {
 			object keyValue;
 
@@ -123,16 +126,19 @@ internal class DictionaryElement : CollectionElement
 		}
 	}
 
-	protected override void InitializeCollection() {
+	protected override void InitializeCollection()
+	{
 		Data = Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
 		SetObject(Data);
 	}
 
-	protected override void ClearCollection() {
+	protected override void ClearCollection()
+	{
 		((IDictionary)Data).Clear();
 	}
 
-	protected override void SetupList() {
+	protected override void SetupList()
+	{
 		DataList.Clear();
 		int top = 0;
 		dataWrapperList = new List<IDictionaryElementWrapper>();

@@ -13,7 +13,8 @@ public class UnloadedSystem : ModSystem
 	internal IList<TagCompound> unloadedBestiarySights;
 	internal IList<TagCompound> unloadedBestiaryChats;
 
-	public override void OnWorldLoad() {
+	public override void OnWorldLoad()
+	{
 		data = new List<TagCompound>();
 		unloadedNPCs = new List<TagCompound>();
 		unloadedKillCounts = new List<TagCompound>();
@@ -22,7 +23,8 @@ public class UnloadedSystem : ModSystem
 		unloadedBestiaryChats = new List<TagCompound>();
 	}
 
-	public override void SaveWorldData(TagCompound tag) {
+	public override void SaveWorldData(TagCompound tag)
+	{
 		tag["list"] = data;
 		tag["unloadedNPCs"] = unloadedNPCs;
 		tag["unloadedKillCounts"] = unloadedKillCounts;
@@ -31,7 +33,8 @@ public class UnloadedSystem : ModSystem
 		tag["unloadedBestiaryChats"] = unloadedBestiaryChats;
 	}
 
-	public override void LoadWorldData(TagCompound tag) {
+	public override void LoadWorldData(TagCompound tag)
+	{
 		WorldIO.LoadModData(tag.GetList<TagCompound>("list"));
 		WorldIO.LoadNPCs(tag.GetList<TagCompound>("unloadedNPCs"));
 		WorldIO.LoadNPCKillCounts(tag.GetList<TagCompound>("unloadedKillCounts"));

@@ -24,7 +24,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	protected override Player CreateTemplateEntity() => null;
 
-	public override ModPlayer NewInstance(Player entity) {
+	public override ModPlayer NewInstance(Player entity)
+	{
 		var inst = base.NewInstance(entity);
 		
 		inst.Index = Index;
@@ -32,18 +33,21 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 		return inst;
 	}
 
-	public bool TypeEquals(ModPlayer other) {
+	public bool TypeEquals(ModPlayer other)
+	{
 		return Mod == other.Mod && Name == other.Name;
 	}
 
-	protected override void ValidateType() {
+	protected override void ValidateType()
+	{
 		base.ValidateType();
 		
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<ModPlayer>.Register(this);
 		PlayerLoader.Add(this);
 	}
@@ -53,13 +57,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.
 	/// </summary>
-	public virtual void Initialize() {
+	public virtual void Initialize()
+	{
 	}
 
 	/// <summary>
 	/// This is where you reset any fields you add to your ModPlayer subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 	/// </summary>
-	public virtual void ResetEffects() {
+	public virtual void ResetEffects()
+	{
 	}
 
 	/// <summary>
@@ -68,7 +74,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="health">The modifier to the player's maximum health</param>
 	/// <param name="mana">The modifier to the player's maximum mana</param>
-	public virtual void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
+	public virtual void ModifyMaxStats(out StatModifier health, out StatModifier mana)
+	{
 		health = StatModifier.Default;
 		mana = StatModifier.Default;
 	}
@@ -76,13 +83,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Similar to UpdateDead, except this is only called when the player is dead. If this is called, then ResetEffects will not be called.
 	/// </summary>
-	public virtual void UpdateDead() {
+	public virtual void UpdateDead()
+	{
 	}
 
 	/// <summary>
 	/// Currently never gets called, so this is useless.
 	/// </summary>
-	public virtual void PreSaveCustomData() {
+	public virtual void PreSaveCustomData()
+	{
 	}
 
 	/// <summary>
@@ -104,20 +113,23 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 	/// </summary>
-	public virtual void PreSavePlayer() {
+	public virtual void PreSavePlayer()
+	{
 	}
 
 	/// <summary>
 	/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
 	/// </summary>
-	public virtual void PostSavePlayer() {
+	public virtual void PostSavePlayer()
+	{
 	}
 
 	/// <summary>
 	/// Allows you to copy information about this player to the clientClone parameter. You should copy information that you intend to sync between server and client. This hook is called in the Player.clientClone method. See SendClientChanges for more info.
 	/// </summary>
 	/// <param name="clientClone"></param>
-	public virtual void clientClone(ModPlayer clientClone) {
+	public virtual void clientClone(ModPlayer clientClone)
+	{
 	}
 
 	/// <summary>
@@ -126,131 +138,152 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="toWho"></param>
 	/// <param name="fromWho"></param>
 	/// <param name="newPlayer"></param>
-	public virtual void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+	public virtual void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or ModPacket.Send.
 	/// </summary>
 	/// <param name="clientPlayer"></param>
-	public virtual void SendClientChanges(ModPlayer clientPlayer) {
+	public virtual void SendClientChanges(ModPlayer clientPlayer)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 	/// </summary>
-	public virtual void UpdateBadLifeRegen() {
+	public virtual void UpdateBadLifeRegen()
+	{
 	}
 
 	/// <summary>
 	/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing Player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment Player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
 	/// </summary>
-	public virtual void UpdateLifeRegen() {
+	public virtual void UpdateLifeRegen()
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the power of the player's natural life regeneration. This can be done by multiplying the regen parameter by any number. For example, campfires multiply it by 1.1, while walking multiplies it by 0.5.
 	/// </summary>
 	/// <param name="regen"></param>
-	public virtual void NaturalLifeRegen(ref float regen) {
+	public virtual void NaturalLifeRegen(ref float regen)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the player's stats while the game is paused due to the autopause setting being on.
 	/// This is called in single player only, some time before the player's tick update would happen when the game isn't paused.
 	/// </summary>
-	public virtual void UpdateAutopause() {
+	public virtual void UpdateAutopause()
+	{
 	}
 
 	/// <summary>
 	/// This is called at the beginning of every tick update for this player, after checking whether the player exists.
 	/// </summary>
-	public virtual void PreUpdate() {
+	public virtual void PreUpdate()
+	{
 	}
 
 	/// <summary>
 	/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
 	/// </summary>
 	/// <param name="triggersSet"></param>
-	public virtual void ProcessTriggers(TriggersSet triggersSet) {
+	public virtual void ProcessTriggers(TriggersSet triggersSet)
+	{
 	}
 
 	/// <summary>
 	/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
 	/// </summary>
-	public virtual void SetControls() {
+	public virtual void SetControls()
+	{
 	}
 
 	/// <summary>
 	/// This is called sometime after SetControls is called, and right before all the buffs update on this player. This hook can be used to add buffs to the player based on the player's state (for example, the Campfire buff is added if the player is near a Campfire).
 	/// </summary>
-	public virtual void PreUpdateBuffs() {
+	public virtual void PreUpdateBuffs()
+	{
 	}
 
 	/// <summary>
 	/// This is called right after all of this player's buffs update on the player. This can be used to modify the effects that the buff updates had on this player, and can also be used for general update tasks.
 	/// </summary>
-	public virtual void PostUpdateBuffs() {
+	public virtual void PostUpdateBuffs()
+	{
 	}
 
 	/// <summary>
 	/// Called after Update Accessories.
 	/// </summary>
-	public virtual void UpdateEquips() {
+	public virtual void UpdateEquips()
+	{
 	}
 
 	/// <summary>
 	/// This is called right after all of this player's equipment and armor sets update on the player, which is sometime after PostUpdateBuffs is called. This can be used to modify the effects that the equipment had on this player, and can also be used for general update tasks.
 	/// </summary>
-	public virtual void PostUpdateEquips() {
+	public virtual void PostUpdateEquips()
+	{
 	}
 
 	/// <summary>
 	/// Is called in Player.Frame() after vanilla functional slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
 	/// </summary>
-	public virtual void UpdateVisibleAccessories() {
+	public virtual void UpdateVisibleAccessories()
+	{
 	}
 
 	/// <summary>
 	/// Is called in Player.Frame() after vanilla vanity slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
 	/// </summary>
-	public virtual void UpdateVisibleVanityAccessories() {
+	public virtual void UpdateVisibleVanityAccessories()
+	{
 	}
 
 	/// <summary>
 	/// Is called in Player.UpdateDyes(), including selection screen. Player Instance sensitive.
 	/// </summary>
-	public virtual void UpdateDyes() {
+	public virtual void UpdateDyes()
+	{
 	}
 
 	/// <summary>
 	/// This is called after miscellaneous update code is called in Player.Update, which is sometime after PostUpdateEquips is called. This can be used for general update tasks.
 	/// </summary>
-	public virtual void PostUpdateMiscEffects() {
+	public virtual void PostUpdateMiscEffects()
+	{
 	}
 
 	/// <summary>
 	/// This is called after the player's horizontal speeds are modified, which is sometime after PostUpdateMiscEffects is called, and right before the player's horizontal position is updated. Use this to modify maxRunSpeed, accRunSpeed, runAcceleration, and similar variables before the player moves forwards/backwards.
 	/// </summary>
-	public virtual void PostUpdateRunSpeeds() {
+	public virtual void PostUpdateRunSpeeds()
+	{
 	}
 
 	/// <summary>
 	/// This is called right before modifying the player's position based on velocity. Use this to make direct changes to the velocity.
 	/// </summary>
-	public virtual void PreUpdateMovement() {
+	public virtual void PreUpdateMovement()
+	{
 	}
 
 	/// <summary>
 	/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
 	/// </summary>
-	public virtual void PostUpdate() {
+	public virtual void PostUpdate()
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
 	/// </summary>
-	public virtual void FrameEffects() {
+	public virtual void FrameEffects()
+	{
 	}
 
 	/// <summary>
@@ -268,7 +301,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="cooldownCounter"></param>
 	/// <returns></returns>
 	public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-		ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
+		ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+	{
 		return true;
 	}
 
@@ -284,7 +318,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="hitDirection"></param>
 	/// <param name="crit"></param>
 	/// <param name="cooldownCounter"></param>
-	public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+	public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	{
 	}
 
 	[Obsolete("Parameters changed, run tModPorter", true)]
@@ -299,7 +334,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="hitDirection"></param>
 	/// <param name="crit"></param>
 	/// <param name="cooldownCounter"></param>
-	public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+	public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	{
 	}
 
 	[Obsolete("Parameters changed, run tModPorter", true)]
@@ -316,7 +352,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="damageSource"></param>
 	/// <returns></returns>
 	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore,
-		ref PlayerDeathReason damageSource) {
+		ref PlayerDeathReason damageSource)
+	{
 		return true;
 	}
 
@@ -327,14 +364,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="hitDirection"></param>
 	/// <param name="pvp"></param>
 	/// <param name="damageSource"></param>
-	public virtual void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
+	public virtual void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
+	{
 	}
 
 	/// <summary>
 	/// Called before vanilla makes any luck calculations. Return false to prevent vanilla from making their luck calculations. Returns true by default.
 	/// </summary>
 	/// <param name="luck"></param>
-	public virtual bool PreModifyLuck(ref float luck) {
+	public virtual bool PreModifyLuck(ref float luck)
+	{
 		return true;
 	}
 
@@ -342,21 +381,24 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Allows you to modify a player's luck amount.
 	/// </summary>
 	/// <param name="luck"></param>
-	public virtual void ModifyLuck(ref float luck) {
+	public virtual void ModifyLuck(ref float luck)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.
 	/// </summary>
 	/// <returns></returns>
-	public virtual bool PreItemCheck() {
+	public virtual bool PreItemCheck()
+	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to do anything after the update code for the player's held item is run. Hooks for the middle of the held item update code have more specific names in ModItem and ModPlayer.
 	/// </summary>
-	public virtual void PostItemCheck() {
+	public virtual void PostItemCheck()
+	{
 	}
 
 	/// <summary>
@@ -386,7 +428,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue) {
+	public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue)
+	{
 	}
 
 	/// <summary>
@@ -395,7 +438,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue) {
+	public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue)
+	{
 	}
 
 	/// <summary>
@@ -404,7 +448,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="item">The item being used.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
 	/// <param name="mult">Use to directly multiply the item's effective mana cost. Good for debuffs, or things which should stack separately (eg meteor armor set bonus).</param>
-	public virtual void ModifyManaCost(Item item, ref float reduce, ref float mult) {
+	public virtual void ModifyManaCost(Item item, ref float reduce, ref float mult)
+	{
 	}
 
 	/// <summary>
@@ -414,7 +459,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="neededMana">The mana needed to use the item.</param>
-	public virtual void OnMissingMana(Item item, int neededMana) {
+	public virtual void OnMissingMana(Item item, int neededMana)
+	{
 	}
 
 	/// <summary>
@@ -422,7 +468,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="manaConsumed">The mana consumed from the player.</param>
-	public virtual void OnConsumeMana(Item item, int manaConsumed) {
+	public virtual void OnConsumeMana(Item item, int manaConsumed)
+	{
 	}
 
 	/// <summary>
@@ -431,7 +478,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
-	public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+	public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage)
+	{
 	}
 
 	/// <summary>
@@ -440,7 +488,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
-	public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
+	public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback)
+	{
 	}
 
 	/// <summary>
@@ -449,7 +498,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
-	public virtual void ModifyWeaponCrit(Item item, ref float crit) {
+	public virtual void ModifyWeaponCrit(Item item, ref float crit)
+	{
 	}
 
 	/// <summary>
@@ -460,7 +510,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
 	/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
 	/// <returns></returns>
-	public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
+	public virtual bool CanConsumeAmmo(Item weapon, Item ammo)
+	{
 		return true;
 	}
 
@@ -470,7 +521,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="weapon">The weapon that is currently using the given ammo.</param>
 	/// <param name="ammo">The ammo that the given weapon is currently using.</param>
-	public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
+	public virtual void OnConsumeAmmo(Item weapon, Item ammo)
+	{
 	}
 
 	/// <summary>
@@ -478,7 +530,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <returns></returns>
-	public virtual bool CanShoot(Item item) {
+	public virtual bool CanShoot(Item item)
+	{
 		return true;
 	}
 
@@ -491,7 +544,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="type"> The ID of the projectile. </param>
 	/// <param name="damage"> The damage of the projectile. </param>
 	/// <param name="knockback"> The knockback of the projectile. </param>
-	public virtual void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+	public virtual void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+	{
 	}
 
 	/// <summary>
@@ -504,7 +558,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="type"> The ID of the projectile. </param>
 	/// <param name="damage"> The damage of the projectile. </param>
 	/// <param name="knockback"> The knockback of the projectile. </param>
-	public virtual bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	public virtual bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+	{
 		return true;
 	}
 
@@ -513,7 +568,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="hitbox"></param>
-	public virtual void MeleeEffects(Item item, Rectangle hitbox) {
+	public virtual void MeleeEffects(Item item, Rectangle hitbox)
+	{
 	}
 
 	/// <summary>
@@ -526,7 +582,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="target">The NPC the player is trying to catch.</param>
 	/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
-	public virtual bool? CanCatchNPC(NPC target, Item item) {
+	public virtual bool? CanCatchNPC(NPC target, Item item)
+	{
 		return null;
 	}
 
@@ -536,7 +593,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
 	/// <param name="item">The item used to catch the given NPC.</param>
 	/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
-	public virtual void OnCatchNPC(NPC npc, Item item, bool failed) {
+	public virtual void OnCatchNPC(NPC npc, Item item, bool failed)
+	{
 	}
 
 	/// <summary>
@@ -547,7 +605,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// The scale multiplier to be applied to the given item.<br></br>
 	/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
 	/// </param>
-	public virtual void ModifyItemScale(Item item, ref float scale) {
+	public virtual void ModifyItemScale(Item item, ref float scale)
+	{
 	}
 
 	/// <summary>
@@ -556,7 +615,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="x"></param>
 	/// <param name="y"></param>
 	/// <param name="victim"></param>
-	public virtual void OnHitAnything(float x, float y, Entity victim) {
+	public virtual void OnHitAnything(float x, float y, Entity victim)
+	{
 	}
 
 	/// <summary>
@@ -565,7 +625,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="item"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(Item item, NPC target) {
+	public virtual bool? CanHitNPC(Item item, NPC target)
+	{
 		return null;
 	}
 
@@ -577,7 +638,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit) {
+	public virtual void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -588,7 +650,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit) {
+	public virtual void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -597,7 +660,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPCWithProj(Projectile proj, NPC target) {
+	public virtual bool? CanHitNPCWithProj(Projectile proj, NPC target)
+	{
 		return null;
 	}
 
@@ -610,7 +674,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
 	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	{
 	}
 
 	/// <summary>
@@ -621,7 +686,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit) {
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -630,7 +696,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="item"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool CanHitPvp(Item item, Player target) {
+	public virtual bool CanHitPvp(Item item, Player target)
+	{
 		return true;
 	}
 
@@ -641,7 +708,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Item item, Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPvp(Item item, Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -651,7 +719,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Item item, Player target, int damage, bool crit) {
+	public virtual void OnHitPvp(Item item, Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -660,7 +729,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool CanHitPvpWithProj(Projectile proj, Player target) {
+	public virtual bool CanHitPvpWithProj(Projectile proj, Player target)
+	{
 		return true;
 	}
 
@@ -671,7 +741,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -681,7 +752,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit) {
+	public virtual void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -690,7 +762,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="npc"></param>
 	/// <param name="cooldownSlot"></param>
 	/// <returns></returns>
-	public virtual bool CanBeHitByNPC(NPC npc, ref int cooldownSlot) {
+	public virtual bool CanBeHitByNPC(NPC npc, ref int cooldownSlot)
+	{
 		return true;
 	}
 
@@ -700,7 +773,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit) {
+	public virtual void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -709,7 +783,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitByNPC(NPC npc, int damage, bool crit) {
+	public virtual void OnHitByNPC(NPC npc, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -717,7 +792,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <returns></returns>
-	public virtual bool CanBeHitByProjectile(Projectile proj) {
+	public virtual bool CanBeHitByProjectile(Projectile proj)
+	{
 		return true;
 	}
 
@@ -727,7 +803,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="proj"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit) {
+	public virtual void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -736,7 +813,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="proj"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(Projectile proj, int damage, bool crit) {
+	public virtual void OnHitByProjectile(Projectile proj, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -745,7 +823,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
-	public virtual void ModifyFishingAttempt(ref FishingAttempt attempt) {
+	public virtual void ModifyFishingAttempt(ref FishingAttempt attempt)
+	{
 	}
 
 	/// <summary>
@@ -757,14 +836,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave &lt;0 for no NPC spawn</param>
 	/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
 	/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
-	public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
+	public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the item caught by the fishing player, including stack
 	/// </summary>
 	/// <param name="fish">The item (Fish) to modify</param>
-	public virtual void ModifyCaughtFish(Item fish) {
+	public virtual void ModifyCaughtFish(Item fish)
+	{
 	}
 
 	/// <summary>
@@ -772,7 +853,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Not consuming will always take priority over forced consumption
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>
-	public virtual bool? CanConsumeBait(Item bait) {
+	public virtual bool? CanConsumeBait(Item bait)
+	{
 		return null;
 	}
 
@@ -782,7 +864,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="fishingRod"></param>
 	/// <param name="bait"></param>
 	/// <param name="fishingLevel"></param>
-	public virtual void GetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel) {
+	public virtual void GetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel)
+	{
 	}
 
 	/// <summary>
@@ -790,14 +873,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="rareMultiplier"></param>
 	/// <param name="rewardItems"></param>
-	public virtual void AnglerQuestReward(float rareMultiplier, List<Item> rewardItems) {
+	public virtual void AnglerQuestReward(float rareMultiplier, List<Item> rewardItems)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify what items are possible for the player to earn when giving a Strange Plant to the Dye Trader.
 	/// </summary>
 	/// <param name="rewardPool"></param>
-	public virtual void GetDyeTraderReward(List<int> rewardPool) {
+	public virtual void GetDyeTraderReward(List<int> rewardPool)
+	{
 	}
 
 	/// <summary>
@@ -810,14 +895,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="b"></param>
 	/// <param name="a"></param>
 	/// <param name="fullBright"></param>
-	public virtual void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+	public virtual void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the drawing parameters of the player before drawing begins.
 	/// </summary>
 	/// <param name="drawInfo"></param>
-	public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
+	public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
+	{
 	}
 
 	/// <summary>
@@ -826,55 +913,63 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Use with extreme caution, or risk breaking other mods.
 	/// </summary>
 	/// <param name="positions">Add/remove/change the positions applied to each layer here</param>
-	public virtual void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
+	public virtual void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the visibility of layers about to be drawn
 	/// </summary>
 	/// <param name="drawInfo"></param>
-	public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
+	public virtual void HideDrawLayers(PlayerDrawSet drawInfo)
+	{
 	}
 
 	/// <summary>
 	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
 	/// </summary>
-	public virtual void ModifyScreenPosition() {
+	public virtual void ModifyScreenPosition()
+	{
 	}
 
 	/// <summary>
 	/// Use this to modify the zoom factor for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.
 	/// </summary>
 	/// <param name="zoom"></param>
-	public virtual void ModifyZoom(ref float zoom) {
+	public virtual void ModifyZoom(ref float zoom)
+	{
 	}
 
 	/// <summary>
 	/// Called on clients when a player connects.
 	/// </summary>
 	/// <param name="player">The player that connected.</param>
-	public virtual void PlayerConnect(Player player) {
+	public virtual void PlayerConnect(Player player)
+	{
 	}
 
 	/// <summary>
 	/// Called when a player disconnects.
 	/// </summary>
 	/// <param name="player">The player that disconnected.</param>
-	public virtual void PlayerDisconnect(Player player) {
+	public virtual void PlayerDisconnect(Player player)
+	{
 	}
 
 	/// <summary>
 	/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
 	/// </summary>
 	/// <param name="player">The player that entered the world.</param>
-	public virtual void OnEnterWorld(Player player) {
+	public virtual void OnEnterWorld(Player player)
+	{
 	}
 
 	/// <summary>
 	/// Called when a player respawns in the world.
 	/// </summary>
 	/// <param name="player">The player that respawns</param>
-	public virtual void OnRespawn(Player player) {
+	public virtual void OnRespawn(Player player)
+	{
 	}
 
 	/// <summary>
@@ -884,7 +979,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
 	/// <param name="slot">The index in the inventory of the clicked slot.</param>
 	/// <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
-	public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
+	public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot)
+	{
 		return false;
 	}
 
@@ -896,7 +992,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
 	/// <param name="slot">The index in the inventory of the hover slot.</param>
 	/// <returns>Whether or not to block the default code that modifies <see cref="Main.cursorOverride"/> from running. Returns false by default.</returns>
-	public virtual bool HoverSlot(Item[] inventory, int context, int slot) {
+	public virtual bool HoverSlot(Item[] inventory, int context, int slot)
+	{
 		return false;
 	}
 
@@ -906,7 +1003,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="vendor">The NPC vendor.</param>
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
 	/// <param name="item">The item the player just sold.</param>
-	public virtual void PostSellItem(NPC vendor, Item[] shopInventory, Item item) {
+	public virtual void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
+	{
 	}
 
 	/// <summary>
@@ -916,7 +1014,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
 	/// <param name="item">The item the player is attempting to sell.</param>
 	/// <returns></returns>
-	public virtual bool CanSellItem(NPC vendor, Item[] shopInventory, Item item) {
+	public virtual bool CanSellItem(NPC vendor, Item[] shopInventory, Item item)
+	{
 		return true;
 	}
 
@@ -926,7 +1025,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="vendor">The NPC vendor.</param>
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
 	/// <param name="item">The item the player just purchased.</param>
-	public virtual void PostBuyItem(NPC vendor, Item[] shopInventory, Item item) {
+	public virtual void PostBuyItem(NPC vendor, Item[] shopInventory, Item item)
+	{
 	}
 
 	/// <summary>
@@ -936,7 +1036,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
 	/// <param name="item">The item the player is attempting to buy.</param>
 	/// <returns></returns>
-	public virtual bool CanBuyItem(NPC vendor, Item[] shopInventory, Item item) {
+	public virtual bool CanBuyItem(NPC vendor, Item[] shopInventory, Item item)
+	{
 		return true;
 	}
 
@@ -944,7 +1045,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Return false to prevent an item from being used. By default returns true.
 	/// </summary>
 	/// <param name="item">The item the player is attempting to use.</param>
-	public virtual bool CanUseItem(Item item) {
+	public virtual bool CanUseItem(Item item)
+	{
 		return true;
 	}
 
@@ -964,7 +1066,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="removeDebuffs">If set to false, debuffs will not be healed.</param>
 	/// <param name="chatText">Set this to the Nurse chat text that will display if healing is prevented.</param>
 	/// <returns>True by default. False to prevent nurse services.</returns>
-	public virtual bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText) {
+	public virtual bool ModifyNurseHeal(NPC nurse, ref int health, ref bool removeDebuffs, ref string chatText)
+	{
 		return true;
 	}
 
@@ -975,7 +1078,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="health">How much health the player gains.</param>
 	/// <param name="removeDebuffs">Whether or not debuffs will be healed.</param>
 	/// <param name="price"></param>
-	public virtual void ModifyNursePrice(NPC nurse, int health, bool removeDebuffs, ref int price) {
+	public virtual void ModifyNursePrice(NPC nurse, int health, bool removeDebuffs, ref int price)
+	{
 	}
 
 	/// <summary>
@@ -985,7 +1089,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="health">How much health the player gained.</param>
 	/// /// <param name="removeDebuffs">Whether or not debuffs were healed.</param>
 	/// <param name="price">The price the player paid in copper coins.</param>
-	public virtual void PostNurseHeal(NPC nurse, int health, bool removeDebuffs, int price) {
+	public virtual void PostNurseHeal(NPC nurse, int health, bool removeDebuffs, int price)
+	{
 	}
 
 	/// <summary>
@@ -994,7 +1099,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 	/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
-	public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+	public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
+	{
 		return Enumerable.Empty<Item>();
 	}
 
@@ -1004,6 +1110,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="itemsByMod">The items that will be added. Each key is the internal mod name of the mod adding the items. Vanilla items use the "Terraria" key.</param>
 	/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-	public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
+	public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath)
+	{
 	}
 }

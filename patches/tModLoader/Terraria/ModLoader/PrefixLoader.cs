@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ID;
@@ -14,7 +14,8 @@ public static class PrefixLoader
 
 	public static int PrefixCount { get; private set; } = PrefixID.Count;
 
-	static PrefixLoader() {
+	static PrefixLoader()
+	{
 		categoryPrefixes = new Dictionary<PrefixCategory, List<ModPrefix>>();
 
 		foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
@@ -22,12 +23,14 @@ public static class PrefixLoader
 		}
 	}
 
-	internal static void RegisterPrefix(ModPrefix prefix) {
+	internal static void RegisterPrefix(ModPrefix prefix)
+	{
 		prefixes.Add(prefix);
 		categoryPrefixes[prefix.Category].Add(prefix);
 	}
 
-	internal static int ReservePrefixID() {
+	internal static int ReservePrefixID()
+	{
 		if (ModNet.AllowVanillaClients)
 			throw new Exception("Adding items breaks vanilla client compatibility");
 
@@ -50,7 +53,8 @@ public static class PrefixLoader
 	internal static void ResizeArrays()
 		=> Array.Resize(ref Lang.prefix, PrefixCount);
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		prefixes.Clear();
 
 		PrefixCount = PrefixID.Count;
@@ -60,7 +64,8 @@ public static class PrefixLoader
 		}
 	}
 
-	public static bool CanRoll(Item item, int prefix) {
+	public static bool CanRoll(Item item, int prefix)
+	{
 		if (!ItemLoader.AllowPrefix(item, prefix))
 			return false;
 
@@ -82,7 +87,8 @@ public static class PrefixLoader
 		return false;
 	}
 
-	public static bool Roll(Item item, UnifiedRandom unifiedRandom, out int prefix, bool justCheck) {
+	public static bool Roll(Item item, UnifiedRandom unifiedRandom, out int prefix, bool justCheck)
+	{
 		if (ItemLoader.ChoosePrefix(item, unifiedRandom) is int forcedPrefix && forcedPrefix > 0 && CanRoll(item, forcedPrefix)) {
 			prefix = forcedPrefix;
 			return true;

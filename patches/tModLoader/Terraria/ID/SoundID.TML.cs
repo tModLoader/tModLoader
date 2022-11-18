@@ -556,11 +556,13 @@ partial class SoundID
 
 	private static SoundStyle[][] legacyArrayedStylesMapping = new SoundStyle[LegacySoundIDs.Count][];
 
-	static SoundID() {
+	static SoundID()
+	{
 		FillLegacyArrayedStylesMap();
 	}
 
-	internal static bool TryGetLegacyStyle(int type, int style, out SoundStyle result) {
+	internal static bool TryGetLegacyStyle(int type, int style, out SoundStyle result)
+	{
 		var tempResult = GetLegacyStyle(type, style);
 
 		if (tempResult.HasValue) {
@@ -572,7 +574,8 @@ partial class SoundID
 		return false;
 	}
 
-	private static void FillLegacyArrayedStylesMap() {
+	private static void FillLegacyArrayedStylesMap()
+	{
 		const BindingFlags Flags = BindingFlags.Public | BindingFlags.Static;
 
 		static void AddNumberedStyles(int type, string baseName, int start, int numStyles) {

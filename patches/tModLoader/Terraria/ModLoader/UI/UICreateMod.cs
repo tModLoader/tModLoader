@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.CodeDom.Compiler;
@@ -155,12 +155,14 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 		HandleBackButtonUsage();
 	}
 
-	public void HandleBackButtonUsage() {
+	public void HandleBackButtonUsage()
+	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.menuMode = Interface.modSourcesID;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}

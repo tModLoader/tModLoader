@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.Graphics.Capture;
 
 namespace Terraria.ModLoader;
@@ -29,7 +29,8 @@ public abstract partial class ModSceneEffect : ModType
 	public virtual CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
 	// Methods
-	protected override void Register() {
+	protected override void Register()
+	{
 		Type = LoaderManager.Get<SceneEffectLoader>().Register(this);
 	}
 
@@ -38,7 +39,8 @@ public abstract partial class ModSceneEffect : ModType
 	/// ModBiome and direct implementations call this.
 	/// Does NOT cache the return type.
 	/// </summary>
-	internal void RegisterSceneEffect(ModSceneEffect modSceneEffect) {
+	internal void RegisterSceneEffect(ModSceneEffect modSceneEffect)
+	{
 		LoaderManager.Get<SceneEffectLoader>().Register(this);
 	}
 
@@ -56,7 +58,8 @@ public abstract partial class ModSceneEffect : ModType
 	/// Priority is used to do primary sorting with respect to vanilla SceneEffect.
 	/// Weight will be used if multiple SceneEffect have the same SceneEffectPriority so as to attempt to distinguish them based on their needs.
 	/// </summary>
-	internal float GetCorrWeight(Player player) {
+	internal float GetCorrWeight(Player player)
+	{
 		return Math.Max(Math.Min(GetWeight(player), 1), 0) + (float)Priority;
 	}
 

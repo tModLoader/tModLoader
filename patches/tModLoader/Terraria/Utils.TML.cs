@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,7 +34,8 @@ partial class Utils
 	public static Point16 ToPoint16(this Vector2 v)
 		=> new Point16((short)v.X, (short)v.Y);
 
-	public static DateTime UnixTimeStampToDateTime(long unixTimeStamp) {
+	public static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
+	{
 		// Unix timestamp is seconds past epoch
 		return DateTimeOffset.FromUnixTimeSeconds(unixTimeStamp).UtcDateTime;
 	}
@@ -139,7 +140,8 @@ partial class Utils
 	/// <summary>
 	/// Bit packs a BitArray in to a Byte Array and then sends the byte array
 	/// </summary>
-	public static void SendBitArray(BitArray arr, BinaryWriter writer) {
+	public static void SendBitArray(BitArray arr, BinaryWriter writer)
+	{
 		byte[] result = new byte[(arr.Length - 1) / 8 + 1];
 		arr.CopyTo(result, 0);
 		writer.Write(result);
@@ -148,7 +150,8 @@ partial class Utils
 	/// <summary>
 	/// Receives the result of SendBitArray, and returns the corresponding BitArray
 	/// </summary>
-	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader) {
+	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader)
+	{
 		byte[] receive = new byte[(BitArrLength - 1) / 8 + 1];
 		receive = reader.ReadBytes(receive.Length);
 		return new BitArray(receive);
@@ -156,7 +159,8 @@ partial class Utils
 
 	// Common Blocks
 
-	public static void OpenToURL(string url) {
+	public static void OpenToURL(string url)
+	{
 		// Do not attempt to shorten this, no universal works-everywhere call exists.
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 			// Windows
@@ -172,7 +176,8 @@ partial class Utils
 		}
 	}
 
-	public static void ShowFancyErrorMessage(string message, int returnToMenu) {
+	public static void ShowFancyErrorMessage(string message, int returnToMenu)
+	{
 		if (!Main.dedServ) {
 			Logging.tML.Error(message);
 			Interface.errorMessage.Show(message, returnToMenu);
@@ -181,7 +186,8 @@ partial class Utils
 			LogAndConsoleErrorMessage(message);
 	}
 
-	public static void LogAndConsoleInfoMessage(string message) {
+	public static void LogAndConsoleInfoMessage(string message)
+	{
 		Logging.tML.Info(message);
 
 		if (Main.dedServ) {
@@ -189,7 +195,8 @@ partial class Utils
 		}
 	}
 
-	public static void LogAndConsoleErrorMessage(string message) {
+	public static void LogAndConsoleErrorMessage(string message)
+	{
 		Logging.tML.Error(message);
 
 		if (Main.dedServ) {

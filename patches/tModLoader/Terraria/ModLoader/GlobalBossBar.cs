@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
@@ -27,6 +27,7 @@ public abstract class GlobalBossBar : ModType
 	/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
 	/// <param name="npc">The NPC this bar is focused on</param>
 	/// <param name="drawParams">The draw parameters for the boss bar</param>
-	public virtual void PostDraw(SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams) {
+	public virtual void PostDraw(SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams)
+	{
 	}
 }

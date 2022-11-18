@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -57,12 +57,14 @@ public partial class Main
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.
 	/// </summary>
-	public static bool IsTileSpelunkable(int tileX, int tileY) {
+	public static bool IsTileSpelunkable(int tileX, int tileY)
+	{
 		Tile tile = Main.tile[tileX, tileY];
 		return IsTileSpelunkable(tileX, tileY, tile.type, tile.frameX, tile.frameY);
 	}
 
-	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay) {
+	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay)
+	{
 		startingDisplay = 0;
 		endingDisplay = InfoDisplayLoader.InfoDisplayCount;
 
@@ -146,7 +148,8 @@ public partial class Main
 	/// Syncs rain state if <see cref="StartRain"/> or <see cref="StopRain"/> were called in the same tick and caused a change to <seealso cref="maxRaining"/>.
 	/// <br>Can be called on any side, but only the server will actually sync it.</br>
 	/// </summary>
-	public static void SyncRain() {
+	public static void SyncRain()
+	{
 		if (maxRaining != oldMaxRaining) {
 			if (netMode == 2)
 				NetMessage.SendData(7);
@@ -159,17 +162,20 @@ public partial class Main
 	{
 		private Player _prevPlayer;
 
-		public CurrentPlayerOverride(Player player) {
+		public CurrentPlayerOverride(Player player)
+		{
 			_prevPlayer = _currentPlayerOverride;
 			_currentPlayerOverride = player;
 		}
 
-		public void Dispose() {
+		public void Dispose()
+		{
 			_currentPlayerOverride = _prevPlayer;
 		}
 	}
 
-	internal void InitTMLContentManager() {
+	internal void InitTMLContentManager()
+	{
 		if (dedServ) {
 			return;
 		}
@@ -196,7 +202,8 @@ public partial class Main
 		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
 	}
 	
-	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump) {
+	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
+	{
 		List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
 		Vector2 anchorPosition = new Vector2(18f, (float)(screenHeight - 26 - 22) - upBump);
 		for (int i = 0; i < titleLinks.Count; i++) {
@@ -209,7 +216,8 @@ public partial class Main
 	/// Wait for an action to be performed on the main thread.
 	/// </summary>
 	/// <param name="action"></param>
-	public static Task RunOnMainThread(Action action) {
+	public static Task RunOnMainThread(Action action)
+	{
 		var tcs = new TaskCompletionSource();
 
 		QueueMainThreadAction(() => {
@@ -224,13 +232,15 @@ public partial class Main
 	/// Wait for an action to be performed on the main thread.
 	/// </summary>
 	/// <param name="func"></param>
-	public static Task<T> RunOnMainThread<T>(Func<T> func) {
+	public static Task<T> RunOnMainThread<T>(Func<T> func)
+	{
 		var tcs = new TaskCompletionSource<T>();
 		QueueMainThreadAction(() => tcs.SetResult(func()));
 		return tcs.Task;
 	}
 
-	public static void AddSignalTraps() {
+	public static void AddSignalTraps()
+	{
 		static void Handle(PosixSignalContext ctx) {
 			ctx.Cancel = true;
 			Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");

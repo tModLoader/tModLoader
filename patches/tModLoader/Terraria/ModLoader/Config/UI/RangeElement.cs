@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,8 @@ public abstract class PrimitiveRangeElement<T> : RangeElement where T : ICompara
 	public T Increment { get; set; }
 	public IList<T> TList { get; set; }
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		TList = (IList<T>)List;
@@ -40,7 +41,8 @@ public abstract class PrimitiveRangeElement<T> : RangeElement where T : ICompara
 
 	protected virtual T GetValue() => (T)GetObject();
 
-	protected virtual void SetValue(object value) {
+	protected virtual void SetValue(object value)
+	{
 		if (value is T t)
 			SetObject(Utils.Clamp(t, Min, Max));
 	}
@@ -61,18 +63,21 @@ public abstract class RangeElement : ConfigElement
 
 	protected abstract float Proportion { get; set; }
 
-	public RangeElement() {
+	public RangeElement()
+	{
 		ColorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.Black, SliderColor, percent));
 	}
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		DrawTicks = Attribute.IsDefined(MemberInfo.MemberInfo, typeof(DrawTicksAttribute));
 		SliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(MemberInfo, Item, List)?.Color ?? Color.White;
 	}
 
-	public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null) {
+	public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
+	{
 		perc = Utils.Clamp(perc, -.05f, 1.05f);
 
 		if (colorMethod == null)
@@ -139,7 +144,8 @@ public abstract class RangeElement : ConfigElement
 		return 1f;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 
 		float num = 6f;

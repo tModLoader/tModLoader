@@ -9,11 +9,13 @@ internal class OrianSetEffectPlayer : ModPlayer
 {
 	public bool IsActive;
 
-	public override void ResetEffects() {
+	public override void ResetEffects()
+	{
 		IsActive = false;
 	}
 
-	public override void PostUpdate() {
+	public override void PostUpdate()
+	{
 		if (!IsActive) {
 			return;
 		}
@@ -52,17 +54,20 @@ internal class OrianSetEffectPlayer : ModPlayer
 [AutoloadEquip(EquipType.Head)]
 internal class Orian_Head : PatreonItem
 {
-	public override bool IsVanitySet(int head, int body, int legs) {
+	public override bool IsVanitySet(int head, int body, int legs)
+	{
 		return head == EquipLoader.GetEquipSlot(Mod, nameof(Orian_Head), EquipType.Head)
 			&& body == EquipLoader.GetEquipSlot(Mod, nameof(Orian_Body), EquipType.Body)
 			&& legs == EquipLoader.GetEquipSlot(Mod, nameof(Orian_Legs), EquipType.Legs);
 	}
 
-	public override void UpdateVanitySet(Player player) {
+	public override void UpdateVanitySet(Player player)
+	{
 		player.GetModPlayer<OrianSetEffectPlayer>().IsActive = true;
 	}
 
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 24;
@@ -73,7 +78,8 @@ internal class Orian_Head : PatreonItem
 [AutoloadEquip(EquipType.Body)]
 internal class Orian_Body : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 30;
@@ -84,7 +90,8 @@ internal class Orian_Body : PatreonItem
 [AutoloadEquip(EquipType.Legs)]
 internal class Orian_Legs : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 22;

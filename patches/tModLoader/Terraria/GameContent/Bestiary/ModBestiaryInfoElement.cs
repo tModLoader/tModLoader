@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
@@ -16,7 +16,8 @@ public abstract class ModBestiaryInfoElement : IFilterInfoProvider, IProvideSear
 	internal string _backgroundPath;
 	internal Color? _backgroundColor;
 
-	public virtual UIElement GetFilterImage() {
+	public virtual UIElement GetFilterImage()
+	{
 		Asset<Texture2D> asset;
 		if (_iconPath != null && ModContent.RequestIfExists<Texture2D>(_iconPath, out asset)) {
 			if (asset.Size() == new Vector2(30)) {
@@ -34,7 +35,8 @@ public abstract class ModBestiaryInfoElement : IFilterInfoProvider, IProvideSear
 		};
 	}
 
-	public UIElement ProvideUIElement(BestiaryUICollectionInfo info) {
+	public UIElement ProvideUIElement(BestiaryUICollectionInfo info)
+	{
 		if (info.UnlockState == BestiaryEntryUnlockState.NotKnownAtAll_0)
 			return null;
 
@@ -67,13 +69,15 @@ public abstract class ModBestiaryInfoElement : IFilterInfoProvider, IProvideSear
 		return uIElement;
 	}
 
-	private void AddOnHover(UIElement button) {
+	private void AddOnHover(UIElement button)
+	{
 		button.OnUpdate += delegate (UIElement e) {
 			ShowButtonName(e);
 		};
 	}
 
-	private void ShowButtonName(UIElement element) {
+	private void ShowButtonName(UIElement element)
+	{
 		if (element.IsMouseHovering) {
 			string textValue = Language.GetTextValue(GetDisplayNameKey());
 			Main.instance.MouseText(textValue, 0, 0);
@@ -82,7 +86,8 @@ public abstract class ModBestiaryInfoElement : IFilterInfoProvider, IProvideSear
 
 	public string GetDisplayNameKey() => _displayName;
 
-	public string GetSearchString(ref BestiaryUICollectionInfo info) {
+	public string GetSearchString(ref BestiaryUICollectionInfo info)
+	{
 		if (info.UnlockState == BestiaryEntryUnlockState.NotKnownAtAll_0)
 			return null;
 

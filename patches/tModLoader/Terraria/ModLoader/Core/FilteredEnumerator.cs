@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -17,7 +17,8 @@ public ref struct FilteredArrayEnumerator<T>
 	private int i;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public FilteredArrayEnumerator(T[] arr, int[] inds) {
+	public FilteredArrayEnumerator(T[] arr, int[] inds)
+	{
 		this.arr = arr;
 		this.inds = inds;
 		current = default;
@@ -27,7 +28,8 @@ public ref struct FilteredArrayEnumerator<T>
 	public T Current => current;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool MoveNext() {
+	public bool MoveNext()
+	{
 		if (i >= inds.Length)
 			return false;
 
@@ -47,7 +49,8 @@ public ref struct FilteredSpanEnumerator<T>
 	private int i;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public FilteredSpanEnumerator(ReadOnlySpan<T> arr, int[] inds) {
+	public FilteredSpanEnumerator(ReadOnlySpan<T> arr, int[] inds)
+	{
 		this.arr = arr;
 		this.inds = inds;
 		current = default;
@@ -57,7 +60,8 @@ public ref struct FilteredSpanEnumerator<T>
 	public T Current => current;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool MoveNext() {
+	public bool MoveNext()
+	{
 		if (i >= inds.Length)
 			return false;
 

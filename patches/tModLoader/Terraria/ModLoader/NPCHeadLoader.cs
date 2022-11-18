@@ -36,7 +36,8 @@ public static class NPCHeadLoader
 
 	public static int NPCHeadCount => nextHead;
 
-	internal static int ReserveBossHeadSlot(string texture) {
+	internal static int ReserveBossHeadSlot(string texture)
+	{
 		if (bossHeads.TryGetValue(texture, out int existing)) {
 			return existing;
 		}
@@ -58,7 +59,8 @@ public static class NPCHeadLoader
 	/// <returns></returns>
 	public static int GetBossHeadSlot(string texture) => bossHeads.TryGetValue(texture, out int slot) ? slot : -1;
 
-	internal static void ResizeAndFillArrays() {
+	internal static void ResizeAndFillArrays()
+	{
 		static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures) {
 			Main.ContentThatNeedsRenderTargets.Remove(renderer);
 			Main.ContentThatNeedsRenderTargets.Add(renderer = new NPCHeadRenderer(textures));
@@ -89,7 +91,8 @@ public static class NPCHeadLoader
 		Array.Resize(ref Main.instance._npcIndexWhoHoldsHeadIndex, nextHead);
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		nextHead = VanillaHeadCount;
 		nextBossHead = VanillaBossHeadCount;
 		heads.Clear();

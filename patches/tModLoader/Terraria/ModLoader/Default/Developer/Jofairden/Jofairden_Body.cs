@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden;
 
@@ -6,7 +6,8 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden;
 [AutoloadEquip(EquipType.Body)]
 internal class Jofairden_Body : JofairdenArmorItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.Size = new Vector2(34, 22);

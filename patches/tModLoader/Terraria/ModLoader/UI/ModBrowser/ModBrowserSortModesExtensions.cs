@@ -1,10 +1,11 @@
-﻿using Terraria.Localization;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
 public static class ModBrowserSortModesExtensions
 {
-	public static string ToFriendlyString(this ModBrowserSortMode sortmode) {
+	public static string ToFriendlyString(this ModBrowserSortMode sortmode)
+	{
 		switch (sortmode) {
 			case ModBrowserSortMode.DisplayNameAtoZ:
 				return Language.GetTextValue("tModLoader.ModsSortNamesAlph");

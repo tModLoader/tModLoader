@@ -15,12 +15,14 @@ public abstract class GlobalTile : GlobalBlockType
 	/// </summary>
 	/// <param name="array"></param>
 	/// <param name="type"></param>
-	public void AddToArray(ref int[] array, int type) {
+	public void AddToArray(ref int[] array, int type)
+	{
 		Array.Resize(ref array, array.Length + 1);
 		array[array.Length - 1] = type;
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<GlobalTile>.Register(this);
 		TileLoader.globalTiles.Add(this);
 	}
@@ -36,13 +38,15 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="wormChance">Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</param>
 	/// <param name="grassHopperChance">Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</param>
 	/// <param name="jungleGrubChance">Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</param>
-	public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+	public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default.
 	/// </summary>
-	public virtual bool Drop(int i, int j, int type) {
+	public virtual bool Drop(int i, int j, int type)
+	{
 		return true;
 	}
 
@@ -54,7 +58,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type">The tile type</param>
 	/// <param name="blockDamaged"></param>
 	/// <returns></returns>
-	public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged) {
+	public virtual bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+	{
 		return true;
 	}
 
@@ -67,7 +72,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="fail">If true, the tile won't be mined</param>
 	/// <param name="effectOnly">If true, only the dust visuals will happen</param>
 	/// <param name="noItem">If true, the corrsponding item won't drop</param>
-	public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
+	public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
+	{
 	}
 
 	/// <summary>
@@ -77,7 +83,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
 	/// <param name="closer"></param>
-	public virtual void NearbyEffects(int i, int j, int type, bool closer) {
+	public virtual void NearbyEffects(int i, int j, int type, bool closer)
+	{
 	}
 
 	/// <summary>
@@ -89,7 +96,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
 	/// <param name="player">Main.LocalPlayer</param>
-	public virtual bool? IsTileDangerous(int i, int j, int type, Player player) {
+	public virtual bool? IsTileDangerous(int i, int j, int type, Player player)
+	{
 		return null;
 	}
 
@@ -100,7 +108,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
-	public virtual bool? IsTileSpelunkable(int i, int j, int type) {
+	public virtual bool? IsTileSpelunkable(int i, int j, int type)
+	{
 		return null;
 	}
 
@@ -111,13 +120,15 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
 	/// <param name="spriteEffects"></param>
-	public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
+	public virtual void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects)
+	{
 	}
 
 	/// <summary>
 	/// Allows animating tiles that were previously static. Loading a new texture for the tile is required first. Use Main.tileFrameCounter to count game frames and Main.tileFrame to change animation frames.
 	/// </summary>
-	public virtual void AnimateTile() {
+	public virtual void AnimateTile()
+	{
 	}
 
 	/// <summary>
@@ -129,7 +140,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type">The Tile type of the tile being drawn</param>
 	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
 	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
-	public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+	public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
 	}
 
 	/// <summary>
@@ -139,7 +151,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The Tile type of the tile being drawn</param>
 	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
-	public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 	}
 
 	/// <summary>
@@ -151,7 +164,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="resetFrame"></param>
 	/// <param name="noBreak"></param>
 	/// <returns></returns>
-	public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
+	public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
+	{
 		return true;
 	}
 
@@ -160,7 +174,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// </summary>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual int[] AdjTiles(int type) {
+	public virtual int[] AdjTiles(int type)
+	{
 		return new int[0];
 	}
 
@@ -170,7 +185,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
-	public virtual void RightClick(int i, int j, int type) {
+	public virtual void RightClick(int i, int j, int type)
+	{
 	}
 
 	/// <summary>
@@ -179,7 +195,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
-	public virtual void MouseOver(int i, int j, int type) {
+	public virtual void MouseOver(int i, int j, int type)
+	{
 	}
 
 	/// <summary>
@@ -188,7 +205,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
-	public virtual void MouseOverFar(int i, int j, int type) {
+	public virtual void MouseOverFar(int i, int j, int type)
+	{
 	}
 
 	/// <summary>
@@ -199,7 +217,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type"></param>
 	/// <param name="item"></param>
 	/// <returns></returns>
-	public virtual bool AutoSelect(int i, int j, int type, Item item) {
+	public virtual bool AutoSelect(int i, int j, int type, Item item)
+	{
 		return false;
 	}
 
@@ -210,7 +229,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual bool PreHitWire(int i, int j, int type) {
+	public virtual bool PreHitWire(int i, int j, int type)
+	{
 		return true;
 	}
 
@@ -220,7 +240,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
-	public virtual void HitWire(int i, int j, int type) {
+	public virtual void HitWire(int i, int j, int type)
+	{
 	}
 
 	/// <summary>
@@ -230,7 +251,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual bool Slope(int i, int j, int type) {
+	public virtual bool Slope(int i, int j, int type)
+	{
 		return true;
 	}
 
@@ -239,7 +261,8 @@ public abstract class GlobalTile : GlobalBlockType
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="player"></param>
-	public virtual void FloorVisuals(int type, Player player) {
+	public virtual void FloorVisuals(int type, Player player)
+	{
 	}
 
 	/// <summary>
@@ -247,6 +270,7 @@ public abstract class GlobalTile : GlobalBlockType
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="style"></param>
-	public virtual void ChangeWaterfallStyle(int type, ref int style) {
+	public virtual void ChangeWaterfallStyle(int type, ref int style)
+	{
 	}
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
@@ -21,7 +21,8 @@ public static class DustLoader
 
 	internal static int ReserveDustID() => DustCount++;
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		Array.Resize(ref ChildSafety.SafeDust, DustCount);
 
 		for (int k = DustID.Count; k < DustCount; k++) {
@@ -29,13 +30,15 @@ public static class DustLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		dusts.Clear();
 
 		DustCount = DustID.Count;
 	}
 
-	internal static void SetupDust(Dust dust) {
+	internal static void SetupDust(Dust dust)
+	{
 		ModDust modDust = GetDust(dust.type);
 
 		if (modDust != null) {
@@ -45,7 +48,8 @@ public static class DustLoader
 		}
 	}
 
-	internal static void SetupUpdateType(Dust dust) {
+	internal static void SetupUpdateType(Dust dust)
+	{
 		ModDust modDust = GetDust(dust.type);
 
 		if (modDust != null && modDust.UpdateType >= 0) {
@@ -54,7 +58,8 @@ public static class DustLoader
 		}
 	}
 
-	internal static void TakeDownUpdateType(Dust dust) {
+	internal static void TakeDownUpdateType(Dust dust)
+	{
 		if (dust.realType >= 0) {
 			dust.type = dust.realType;
 			dust.realType = -1;

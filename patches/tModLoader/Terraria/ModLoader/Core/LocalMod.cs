@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("tModLoaderTests")]
@@ -21,11 +21,13 @@ internal class LocalMod
 
 	public override string ToString() => Name;
 
-	public LocalMod(TmodFile modFile, BuildProperties properties) {
+	public LocalMod(TmodFile modFile, BuildProperties properties)
+	{
 		this.modFile = modFile;
 		this.properties = properties;
 	}
 
-	public LocalMod(TmodFile modFile) : this(modFile, BuildProperties.ReadModFile(modFile)) {
+	public LocalMod(TmodFile modFile) : this(modFile, BuildProperties.ReadModFile(modFile))
+	{
 	}
 }

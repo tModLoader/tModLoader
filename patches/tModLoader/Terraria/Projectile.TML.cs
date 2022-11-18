@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -67,7 +67,8 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 
 	- thomas
 	*/
-	private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
+	private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile)
+	{
 		// to-do: make this less ugly and more easily extensible to modded sources
 		// (requires substantial changes, at minimum, to how entity sources are handled)
 		if (spawnSource is EntitySource_ItemUse { Entity: Player player, Item: Item item }) {

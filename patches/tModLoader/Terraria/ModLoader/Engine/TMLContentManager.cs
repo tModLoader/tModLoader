@@ -14,7 +14,8 @@ internal class TMLContentManager : ContentManager
 
 	private int loadedAssets = 0;
 
-	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager alternateContentManager) : base(serviceProvider, rootDirectory) {
+	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager alternateContentManager) : base(serviceProvider, rootDirectory)
+	{
 		TryFixFileCasings(rootDirectory);
 
 		this.alternateContentManager = alternateContentManager;
@@ -34,7 +35,8 @@ internal class TMLContentManager : ContentManager
 			CacheImagePaths(alternateContentManager.RootDirectory);
 	}
 
-	protected override Stream OpenStream(string assetName) {
+	protected override Stream OpenStream(string assetName)
+	{
 		if (!assetName.StartsWith("tmod:")) {
 			if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb"))) {
 				try {
@@ -51,7 +53,8 @@ internal class TMLContentManager : ContentManager
 		return ModContent.OpenRead(assetName);
 	}
 
-	public override T Load<T>(string assetName) {
+	public override T Load<T>(string assetName)
+	{
 
 		// default Load implementation is just ReadAsset with a cache. Don't cache tML assets, because then we'd have to clear the cache on mod loading.
 		// Mods use Mod.GetFont/GetEffect rather than ContentManager.Load directly anyway, so Load should only be called once per mod load by tML.
@@ -68,7 +71,8 @@ internal class TMLContentManager : ContentManager
 	/// <summary> Returns a path to the provided relative asset path, prioritizing overrides in the alternate content manager. Throws exceptions on failure. </summary>
 	public string GetPath(string asset) => TryGetPath(asset, out string result) ? result : throw new FileNotFoundException($"Unable to find asset '{asset}'.");
 	/// <summary> Safely attempts to get a path to the provided relative asset path, prioritizing overrides in the alternate content manager. </summary>
-	public bool TryGetPath(string asset, out string result) {
+	public bool TryGetPath(string asset, out string result)
+	{
 		if (alternateContentManager != null && alternateContentManager.TryGetPath(asset, out result)) {
 			return true;
 		}
@@ -82,7 +86,8 @@ internal class TMLContentManager : ContentManager
 
 	public bool ImageExists(string assetName) => ExistingImages.Contains(assetName);
 
-	private static void TryFixFileCasings(string rootDirectory) {
+	private static void TryFixFileCasings(string rootDirectory)
+	{
 		// Windows stale resource file case workaround
 		if (!Platform.IsWindows) {
 			return;

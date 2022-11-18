@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
 
@@ -8,11 +8,13 @@ internal class UIHoverImage : UIImage
 {
 	internal string HoverText;
 
-	public UIHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture) {
+	public UIHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture)
+	{
 		HoverText = hoverText;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 
 		if (IsMouseHovering) {

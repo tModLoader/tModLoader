@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -31,20 +31,23 @@ internal class DownloadFile
 
 	public delegate void ProgressUpdated(float progress, long bytesReceived, long totalBytesNeeded);
 
-	public DownloadFile(string url, string filePath, string displayText) {
+	public DownloadFile(string url, string filePath, string displayText)
+	{
 		Url = url;
 		FilePath = filePath;
 		DisplayText = displayText;
 	}
 
-	public bool Verify() {
+	public bool Verify()
+	{
 		if (string.IsNullOrWhiteSpace(Url)) return false;
 		if (string.IsNullOrWhiteSpace(FilePath)) return false;
 		//if (File.Exists(FilePath)) return false;
 		return true;
 	}
 
-	public Task<DownloadFile> Download(CancellationToken token, ProgressUpdated updateProgressAction = null) {
+	public Task<DownloadFile> Download(CancellationToken token, ProgressUpdated updateProgressAction = null)
+	{
 		SetupDownloadRequest();
 		if (updateProgressAction != null) OnUpdateProgress = updateProgressAction;
 		return Task.Factory.FromAsync(
@@ -55,7 +58,8 @@ internal class DownloadFile
 	}
 
 	private bool _aborted;
-	private void AbortDownload(string filePath) {
+	private void AbortDownload(string filePath)
+	{
 		_aborted = true;
 		Request?.Abort();
 		_fileStream?.Flush();
@@ -65,7 +69,8 @@ internal class DownloadFile
 		}
 	}
 
-	private DownloadFile HandleResponse(WebResponse response, CancellationToken token) {
+	private DownloadFile HandleResponse(WebResponse response, CancellationToken token)
+	{
 		var contentLength = response.ContentLength;
 		if (contentLength < 0) {
 			var txt = $"Could not get a proper content length for DownloadFile[{DisplayText}]";
@@ -110,7 +115,8 @@ internal class DownloadFile
 		return this;
 	}
 
-	private void SetupDownloadRequest() {
+	private void SetupDownloadRequest()
+	{
 		ServicePointManager.SecurityProtocol = SecurityProtocol;
 		ServicePointManager.ServerCertificateValidationCallback = ServerCertificateValidation;
 		Request = WebRequest.CreateHttp(Url);
@@ -123,10 +129,12 @@ internal class DownloadFile
 	}
 
 	// TODO Jof: HPKP / Expect-CT Manager
-	private bool ServerCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) {
+	private bool ServerCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+	{
 		return errors == SslPolicyErrors.None;
 	}
 
-	internal virtual void PreCopy() {
+	internal virtual void PreCopy()
+	{
 	}
 }

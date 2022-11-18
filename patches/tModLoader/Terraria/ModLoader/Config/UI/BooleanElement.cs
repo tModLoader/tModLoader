@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
@@ -11,14 +11,16 @@ internal class BooleanElement : ConfigElement<bool>
 	private Asset<Texture2D> _toggleTexture;
 
 	// TODO. Display status string? (right now only on/off texture, but True/False, Yes/No, Enabled/Disabled options)
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 		_toggleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
 
 		OnClick += (ev, v) => Value = !Value;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle dimensions = base.GetDimensions();
 		// "Yes" and "No" since no "True" and "False" translation available

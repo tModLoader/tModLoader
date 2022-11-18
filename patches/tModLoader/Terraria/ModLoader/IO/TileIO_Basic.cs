@@ -17,7 +17,8 @@ internal static partial class TileIO
 
 		public List<ushort> unloadedTypes = new List<ushort>();
 
-		protected IOImpl(string entriesKey, string dataKey) {
+		protected IOImpl(string entriesKey, string dataKey)
+		{
 			this.entriesKey = entriesKey;
 			this.dataKey = dataKey;
 		}
@@ -28,7 +29,8 @@ internal static partial class TileIO
 
 		protected abstract TEntry ConvertBlockToEntry(TBlock block);
 
-		private List<TEntry> CreateEntries() {
+		private List<TEntry> CreateEntries()
+		{
 			var entries = Enumerable.Repeat<TEntry>(null, LoadedBlockCount).ToList();
 			// Create entries for all loaded tiles (vanilla included?), and store in entries list.
 			foreach (var block in LoadedBlocks) {
@@ -40,7 +42,8 @@ internal static partial class TileIO
 			return entries;
 		}
 
-		public void LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup) {
+		public void LoadEntries(TagCompound tag, out TEntry[] savedEntryLookup)
+		{
 			var savedEntryList = tag.GetList<TEntry>(entriesKey);
 			var entries = CreateEntries();
 
@@ -72,7 +75,8 @@ internal static partial class TileIO
 
 		protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
 
-		public void LoadData(TagCompound tag, TEntry[] savedEntryLookup) {
+		public void LoadData(TagCompound tag, TEntry[] savedEntryLookup)
+		{
 			if (!tag.ContainsKey(dataKey)) {
 				return;
 			}
@@ -101,7 +105,8 @@ internal static partial class TileIO
 			unloadedEntryLookup = builder.Build();
 		}
 
-		public void Save(TagCompound tag) {
+		public void Save(TagCompound tag)
+		{
 			if (entries == null) {
 				entries = CreateEntries().ToArray();
 			}
@@ -110,7 +115,8 @@ internal static partial class TileIO
 			tag[entriesKey] = SelectEntries(hasBlocks, entries).ToList();
 		}
 
-		private IEnumerable<TEntry> SelectEntries(bool[] select, TEntry[] entries) {
+		private IEnumerable<TEntry> SelectEntries(bool[] select, TEntry[] entries)
+		{
 			for (int i = 0; i < select.Length; i++)
 				if (select[i])
 					yield return entries[i];
@@ -120,7 +126,8 @@ internal static partial class TileIO
 
 		protected abstract void WriteData(BinaryWriter writer, Tile tile, TEntry entry);
 
-		public byte[] SaveData(out bool[] hasObj) {
+		public byte[] SaveData(out bool[] hasObj)
+		{
 			using var ms = new MemoryStream();
 			var writer = new BinaryWriter(ms);
 
@@ -151,7 +158,8 @@ internal static partial class TileIO
 			return ms.ToArray();
 		}
 
-		public void Clear() {
+		public void Clear()
+		{
 			// make sure data from the last loaded world doesn't carry over into the next one
 			entries = null;
 			unloadedEntryLookup = null;
@@ -170,7 +178,8 @@ internal static partial class TileIO
 
 		protected override ushort GetModBlockType(Tile tile) => tile.active() && tile.type >= TileID.Count ? tile.type : (ushort)0;
 
-		protected override void ReadData(Tile tile, TileEntry entry, BinaryReader reader) {
+		protected override void ReadData(Tile tile, TileEntry entry, BinaryReader reader)
+		{
 			tile.type = entry.loadedType;
 			tile.color(reader.ReadByte());
 
@@ -182,7 +191,8 @@ internal static partial class TileIO
 			}
 		}
 
-		protected override void WriteData(BinaryWriter writer, Tile tile, TileEntry entry) {
+		protected override void WriteData(BinaryWriter writer, Tile tile, TileEntry entry)
+		{
 			writer.Write(entry.type);
 			writer.Write(tile.color());
 
@@ -204,12 +214,14 @@ internal static partial class TileIO
 		protected override WallEntry ConvertBlockToEntry(ModWall wall) => new WallEntry(wall);
 		protected override ushort GetModBlockType(Tile tile) => tile.wall >= WallID.Count ? tile.wall : (ushort)0;
 
-		protected override void ReadData(Tile tile, WallEntry entry, BinaryReader reader) {
+		protected override void ReadData(Tile tile, WallEntry entry, BinaryReader reader)
+		{
 			tile.wall = entry.loadedType;
 			tile.wallColor(reader.ReadByte());
 		}
 
-		protected override void WriteData(BinaryWriter writer, Tile tile, WallEntry entry) {
+		protected override void WriteData(BinaryWriter writer, Tile tile, WallEntry entry)
+		{
 			writer.Write(entry.type);
 			writer.Write(tile.wallColor());
 		}
@@ -219,7 +231,8 @@ internal static partial class TileIO
 	internal static WallIOImpl Walls = new WallIOImpl();
 
 	//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
-	internal static void LoadBasics(TagCompound tag) {
+	internal static void LoadBasics(TagCompound tag)
+	{
 		Tiles.LoadEntries(tag, out var tileEntriesLookup);
 		Walls.LoadEntries(tag, out var wallEntriesLookup);
 
@@ -235,7 +248,8 @@ internal static partial class TileIO
 	}
 
 	//TODO: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
-	internal static TagCompound SaveBasics() {
+	internal static TagCompound SaveBasics()
+	{
 		var tag = new TagCompound();
 		Tiles.Save(tag);
 		Walls.Save(tag);
@@ -245,12 +259,14 @@ internal static partial class TileIO
 	internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
 	// Called to ensure proper loading/unloaded behaviour with respect to Unloaded Placeholders
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		Tiles.unloadedTypes.Clear();
 		Walls.unloadedTypes.Clear();
 	}
 
-	internal static void ClearWorld() {
+	internal static void ClearWorld()
+	{
 		Tiles.Clear();
 		Walls.Clear();
 	}

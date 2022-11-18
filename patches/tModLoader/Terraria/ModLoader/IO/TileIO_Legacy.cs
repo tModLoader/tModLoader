@@ -21,7 +21,8 @@ internal static partial class TileIO
 		internal const byte NextModTile = 128;
 	}
 
-	internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
+	internal static void LoadLegacy(TagCompound tag, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup)
+	{
 		if (!tag.ContainsKey("data")) {
 			return;
 		}
@@ -35,7 +36,8 @@ internal static partial class TileIO
 		}
 	}
 
-	internal static void ReadTileData(BinaryReader reader, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup, out List<PosData<ushort>> wallPosMapList, out List<PosData<ushort>> tilePosMapList) {
+	internal static void ReadTileData(BinaryReader reader, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup, out List<PosData<ushort>> wallPosMapList, out List<PosData<ushort>> tilePosMapList)
+	{
 		int i = 0;
 		int j = 0;
 		byte skip;
@@ -75,7 +77,8 @@ internal static partial class TileIO
 		while (NextLocation(ref i, ref j));
 	}
 
-	internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosData<ushort>> wallPosMapList, List<PosData<ushort>> tilePosMapList, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup) {
+	internal static void ReadModTile(ref int i, ref int j, BinaryReader reader, ref bool nextModTile, List<PosData<ushort>> wallPosMapList, List<PosData<ushort>> tilePosMapList, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup)
+	{
 		// Access Stored 8bit Flags
 		byte flags;
 		ushort saveType;
@@ -162,7 +165,8 @@ internal static partial class TileIO
 	/// <param name="x"></param>
 	/// <param name="y"></param>
 	/// <returns> False if x and y cannot be increased further (end of the world)  </returns>
-	private static bool NextLocation(ref int x, ref int y) {
+	private static bool NextLocation(ref int x, ref int y)
+	{
 		y++;
 		if (y >= Main.maxTilesY) {
 			y = 0;

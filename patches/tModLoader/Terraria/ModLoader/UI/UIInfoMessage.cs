@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -22,7 +22,8 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	private string _okText;
 	public UIState PreviousUIState { get; set; }
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		_area = new UIElement {
 			Width = { Percent = 0.8f },
 			Top = { Pixels = 200 },
@@ -75,7 +76,8 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		Append(_area);
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		_messageBox.SetText(_message);
 		_buttonAlt.SetText(_altText);
 		if (_okText != null)
@@ -85,7 +87,8 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		_area.AddOrRemoveChild(_buttonAlt, showAlt);
 	}
 
-	internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null) {
+	internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
+	{
 		_message = message;
 		_gotoMenu = gotoMenu;
 		_gotoState = state;
@@ -96,24 +99,28 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 	}
 
-	private void OKClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void OKClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		HandleBackButtonUsage();
 	}
 
-	public void HandleBackButtonUsage() {
+	public void HandleBackButtonUsage()
+	{
 		SoundEngine.PlaySound(10);
 		Main.menuMode = _gotoMenu;
 		if (_gotoState != null)
 			Main.MenuUI.SetState(_gotoState);
 	}
 
-	private void AltClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void AltClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(10);
 		_altAction?.Invoke();
 		Main.menuMode = _gotoMenu;
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
 using Terraria.GameContent.Personalities;
 
@@ -39,14 +39,16 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 
 	string IShoppingBiome.NameKey => Name;
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		Type = LoaderManager.Get<BiomeLoader>().Register(this);
 		RegisterSceneEffect(this);
 
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");
 	}
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 
@@ -64,7 +66,8 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	/// <summary>
 	/// This is where you can set values for DisplayName.
 	/// </summary>
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 	}
 
 	/// <summary>
@@ -76,7 +79,8 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	/// <summary>
 	/// Override this hook to make things happen when the player enters the biome.
 	/// </summary>
-	public virtual void OnEnter(Player player) {
+	public virtual void OnEnter(Player player)
+	{
 	}
 
 	/// <summary>
@@ -87,7 +91,8 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	/// <summary>
 	/// Override this hook to make things happen when the player leaves the biome.
 	/// </summary>
-	public virtual void OnLeave(Player player) {
+	public virtual void OnLeave(Player player)
+	{
 	}
 
 	bool IShoppingBiome.IsInBiome(Player player) => IsBiomeActive(player);

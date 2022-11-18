@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
@@ -11,7 +11,8 @@ internal abstract class JofairdenArmorShaderLayer : JofairdenArmorDrawLayer
 	public const int ShaderNumSegments = 8;
 	public const int ShaderDrawOffset = 2;
 
-	protected override void Draw(ref PlayerDrawSet drawInfo) {
+	protected override void Draw(ref PlayerDrawSet drawInfo)
+	{
 		DrawDataInfo drawDataInfo = GetData(drawInfo);
 		Player drawPlayer = drawInfo.drawPlayer;
 		var modPlayer = drawPlayer.GetModPlayer<JofairdenArmorEffectPlayer>();
@@ -54,7 +55,8 @@ internal abstract class JofairdenArmorShaderLayer : JofairdenArmorDrawLayer
 
 	protected static Vector2 GetDrawOffset(int i) => new Vector2(0, ShaderDrawOffset).RotatedBy((float)i / ShaderNumSegments * MathHelper.TwoPi);
 
-	private static void BeginShaderBatch(SpriteBatch batch) {
+	private static void BeginShaderBatch(SpriteBatch batch)
+	{
 		batch.End();
 		RasterizerState rasterizerState = Main.LocalPlayer.gravDir == 1f ? RasterizerState.CullCounterClockwise : RasterizerState.CullClockwise;
 		batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, rasterizerState, null, Main.GameViewMatrix.TransformationMatrix);

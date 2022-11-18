@@ -1,4 +1,4 @@
-﻿using log4net.Core;
+using log4net.Core;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -10,7 +10,8 @@ internal static class ServerHangWatchdog
 	public static readonly TimeSpan TIMEOUT = TimeSpan.FromSeconds(10);
 
 	private static volatile Ref<DateTime> lastCheckin;
-	internal static void Checkin() {
+	internal static void Checkin()
+	{
 		if (Debugger.IsAttached) return;
 		bool started = lastCheckin != null;
 		lastCheckin = new Ref<DateTime>(DateTime.Now);
@@ -18,7 +19,8 @@ internal static class ServerHangWatchdog
 			Start();
 	}
 
-	private static void Start() {
+	private static void Start()
+	{
 		var mainThread = Thread.CurrentThread;
 		new Thread(() => Run(mainThread)) {
 			Name = "Server Hang Watchdog",
@@ -26,7 +28,8 @@ internal static class ServerHangWatchdog
 		}.Start();
 	}
 
-	private static void Run(Thread mainThread) {
+	private static void Run(Thread mainThread)
+	{
 		while (true) {
 			Thread.Sleep(1000);
 			if (DateTime.Now - lastCheckin.Value > TIMEOUT) {
@@ -55,7 +58,8 @@ internal static class ServerHangWatchdog
 	//https://stackoverflow.com/questions/285031/how-to-get-non-current-threads-stacktrace
 
 #pragma warning disable CS0618 // Type or member is obsolete
-	private static StackTrace GetStackTrace(Thread targetThread) {
+	private static StackTrace GetStackTrace(Thread targetThread)
+	{
 		using (ManualResetEvent fallbackThreadReady = new ManualResetEvent(false), exitedSafely = new ManualResetEvent(false)) {
 			Thread fallbackThread = new Thread(delegate () {
 				fallbackThreadReady.Set();

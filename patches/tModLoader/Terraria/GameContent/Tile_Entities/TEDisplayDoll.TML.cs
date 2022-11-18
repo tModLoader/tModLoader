@@ -6,17 +6,20 @@ namespace Terraria.GameContent.Tile_Entities;
 
 public partial class TEDisplayDoll
 {
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		tag["items"] = PlayerIO.SaveInventory(_items);
 		tag["dyes"] = PlayerIO.SaveInventory(_dyes);
 	}
 
-	public override void LoadData(TagCompound tag) {
+	public override void LoadData(TagCompound tag)
+	{
 		PlayerIO.LoadInventory(_items, tag.GetList<TagCompound>("items"));
 		PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 	}
 
-	public override void NetSend(BinaryWriter writer) {
+	public override void NetSend(BinaryWriter writer)
+	{
 		BitsByte itemsBits = default;
 		BitsByte dyesBits = default;
 
@@ -45,7 +48,8 @@ public partial class TEDisplayDoll
 		}
 	}
 
-	public override void NetReceive(BinaryReader reader) {
+	public override void NetReceive(BinaryReader reader)
+	{
 		BitsByte presentItems = reader.ReadByte();
 		BitsByte presentDyes = reader.ReadByte();
 

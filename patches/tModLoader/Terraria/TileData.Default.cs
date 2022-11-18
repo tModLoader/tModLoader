@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.ID;
 using static Terraria.TileDataPacking;
 
@@ -103,7 +103,8 @@ public struct TileWallWireStateData : ITileData
 	/// <summary>
 	/// Intended to be used to set all the persistent data about a tile. For example, when loading a schematic from serialized NonFrameBits.
 	/// </summary>
-	public void SetAllBitsClearFrame(int nonFrameBits) {
+	public void SetAllBitsClearFrame(int nonFrameBits)
+	{
 		bitpack = (int)(nonFrameBits & 0xFF001FFF);
 	}
 

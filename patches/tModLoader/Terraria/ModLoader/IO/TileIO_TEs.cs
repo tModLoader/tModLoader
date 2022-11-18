@@ -9,7 +9,8 @@ namespace Terraria.ModLoader.IO;
 internal static partial class TileIO
 {
 	//*********** Tile Entities Save, Load, and Placeholder Implementations ***********************************//
-	internal static List<TagCompound> SaveTileEntities() {
+	internal static List<TagCompound> SaveTileEntities()
+	{
 		var list = new List<TagCompound>();
 
 		var saveData = new TagCompound();
@@ -38,7 +39,8 @@ internal static partial class TileIO
 		return list;
 	}
 
-	internal static void LoadTileEntities(IList<TagCompound> list) {
+	internal static void LoadTileEntities(IList<TagCompound> list)
+	{
 		foreach (TagCompound tag in list) {
 			string modName = tag.GetString("mod");
 			string name = tag.GetString("name");

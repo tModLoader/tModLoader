@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +18,8 @@ internal class UIDownloadProgress : UIProgress
 
 	private Stopwatch downloadTimer;
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 
 		downloadTimer = new Stopwatch();
@@ -37,7 +38,8 @@ internal class UIDownloadProgress : UIProgress
 		DownloadMods();
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		base.OnDeactivate();
 
 		foreach (DownloadFile download in _downloads) {
@@ -51,7 +53,8 @@ internal class UIDownloadProgress : UIProgress
 		_progressBar.UpdateProgress(0f);
 	}
 
-	public void HandleDownloads(params DownloadFile[] downloads) {
+	public void HandleDownloads(params DownloadFile[] downloads)
+	{
 		foreach (var download in downloads) {
 			if (download.Verify()) {
 				_downloads.Add(download);
@@ -61,11 +64,13 @@ internal class UIDownloadProgress : UIProgress
 		Show();
 	}
 
-	public void Show() {
+	public void Show()
+	{
 		Main.menuMode = Interface.downloadProgressID;
 	}
 
-	private void DownloadMods() {
+	private void DownloadMods()
+	{
 		downloadTimer.Start();
 		_downloadFile = _downloads.First();
 		if (_downloadFile == null) return;
@@ -75,7 +80,8 @@ internal class UIDownloadProgress : UIProgress
 			.ContinueWith(HandleNextDownload, _cts.Token);
 	}
 
-	private void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded) {
+	private void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded)
+	{
 		_progressBar.UpdateProgress(progress);
 
 		double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
@@ -84,7 +90,8 @@ internal class UIDownloadProgress : UIProgress
 		SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 	}
 
-	private void HandleNextDownload(Task<DownloadFile> task) {
+	private void HandleNextDownload(Task<DownloadFile> task)
+	{
 		bool hasError = task.Exception != null;
 		_downloads.Remove(_downloadFile);
 		if (_downloads.Count <= 0 || hasError) {

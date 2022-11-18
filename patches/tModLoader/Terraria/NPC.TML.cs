@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
@@ -30,7 +30,8 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// </summary>
 	public IBigProgressBar BossBar { get; set; }
 
-	public NPC() {
+	public NPC()
+	{
 		thisEntitySourceCache = new EntitySource_Parent(this);
 	}
 
@@ -83,7 +84,8 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <summary>
 	/// Helper method for getting the parameters for seating a town NPC. Assumes the tile at <paramref name="anchorTilePosition"/> is a valid tile for sitting
 	/// </summary>
-	public void SitDown(Point anchorTilePosition, out int direction, out Vector2 bottom) {
+	public void SitDown(Point anchorTilePosition, out int direction, out Vector2 bottom)
+	{
 		Tile tile = Main.tile[anchorTilePosition.X, anchorTilePosition.Y];
 		if (tile.type < TileID.Count)
 			anchorTilePosition.Y -= 1; // Vanilla compatibility with new hook
@@ -113,7 +115,8 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <param name="player">The player that owns the referenced item.</param>
 	/// <param name="lavaProofTool">Whether or not the tool is lavaproof for the purposes of catching vanilla's Underworld critters. Defaults to false.</param>
 	/// <returns>Whether or not the NPC was successfully caught.</returns>
-	public static bool CheckCatchNPC(NPC npc, Rectangle catchToolRectangle, Item item, Player player, bool lavaProofTool = false) {
+	public static bool CheckCatchNPC(NPC npc, Rectangle catchToolRectangle, Item item, Player player, bool lavaProofTool = false)
+	{
 		Rectangle value = new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 		if (!catchToolRectangle.Intersects(value))
 			return false;

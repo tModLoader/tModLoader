@@ -236,7 +236,8 @@ public static class ModLoader
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
-	private static void WarnModsStillLoaded(IReadOnlyList<WeakReference<Mod>> weakModRefs) {
+	private static void WarnModsStillLoaded(IReadOnlyList<WeakReference<Mod>> weakModRefs)
+	{
 		foreach (var alcName in AssemblyManager.OldLoadContexts().Distinct()) {
 			if (weakModRefs.Any(modRef => modRef.TryGetTarget(out var mod) && mod.Name == alcName)) {
 				Logging.tML.WarnFormat($"{alcName} mod class still using memory. Some content references have probably not been cleared. Use a heap dump to figure out why.");
@@ -292,7 +293,8 @@ public static class ModLoader
 	internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
 	internal static void EnableMod(string modName) => SetModEnabled(modName, true);
 	internal static void DisableMod(string modName) => SetModEnabled(modName, false);
-	internal static void SetModEnabled(string modName, bool active) {
+	internal static void SetModEnabled(string modName, bool active)
+	{
 		if (active == IsEnabled(modName))
 			return;
 
@@ -305,7 +307,8 @@ public static class ModLoader
 		ModOrganizer.SaveEnabledMods();
 	}
 
-	internal static void DisableAllMods() {
+	internal static void DisableAllMods()
+	{
 		Logging.tML.InfoFormat($"Disabling All Mods: {string.Join(", ", EnabledMods)}");
 		EnabledMods.Clear();
 		ModOrganizer.SaveEnabledMods();
@@ -387,11 +390,13 @@ public static class ModLoader
 	/// <summary>
 	/// Allows type inference on T and F
 	/// </summary>
-	internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
+	internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
+	{
 		list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 	}
 
-	internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
+	internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
+	{
 		return providers.WhereMethodIsOverridden(expr).ToArray();
 	}
 }

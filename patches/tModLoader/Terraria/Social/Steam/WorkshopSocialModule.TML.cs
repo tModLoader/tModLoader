@@ -16,7 +16,8 @@ public partial class WorkshopSocialModule
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 
 	//TODO: Revisit this. It feels wrong.
-	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info) {
+	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
+	{
 		info = null;
 		if(!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
 			base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
@@ -32,7 +33,8 @@ public partial class WorkshopSocialModule
 		return ModOrganizer.TryReadManifest(searchFolder, out info);
 	}
 
-	private ModDownloadItem CheckIfUploaded(TmodFile modFile) {
+	private ModDownloadItem CheckIfUploaded(TmodFile modFile)
+	{
 		// TODO: Test that this obeys the StringComparison limitations previously enforced. ExampleMod vs Examplemod need to not be allowed
 		// -> Haven't tested fix. Not sure if this same restriction applies from a ModOrganizer code perspective.
 		// -> If workshop folder exists, it will overwrite existing mod, allowing lowering of version number. <- I do not follow, this line doesn't make sense. Lowering the version is checked against the Mod Browser, not the local item.
@@ -40,7 +42,8 @@ public partial class WorkshopSocialModule
 		return WorkshopHelper.QueryHelper.FindModDownloadItem(modFile.Name);
 	}
 
-	public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
+	public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
+	{
 		if (!SteamedWraps.SteamClient) {
 			base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
 			return false;
@@ -126,7 +129,8 @@ public partial class WorkshopSocialModule
 	// Output version string: "2022.05:0.2.0;2022.06;0.2.1;2022.07:0.2.2"
 	// Return False if the mod version did not increase for the particular tml version
 	// This will have up to 1 more version than is actually relevant, but that won't break anything
-	public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData) {
+	public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData)
+	{
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 			var mod = OpenModFile(tmod);
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor())
@@ -139,13 +143,15 @@ public partial class WorkshopSocialModule
 		return true;
 	}
 
-	internal static LocalMod OpenModFile(string path) {
+	internal static LocalMod OpenModFile(string path)
+	{
 		var sModFile = new TmodFile(path);
 		using (sModFile.Open())
 			return new LocalMod(sModFile);
 	}
 
-	private static void CalculateWorkshopDeps(ref NameValueCollection buildData) {
+	private static void CalculateWorkshopDeps(ref NameValueCollection buildData)
+	{
 		string workshopDeps = "";
 
 		if (buildData["modreferences"].Length > 0) {
@@ -160,7 +166,8 @@ public partial class WorkshopSocialModule
 		buildData["workshopdeps"] = workshopDeps;
 	}
 
-	public static void FixErrorsInWorkshopFolder(string workshopFolderPath) {
+	public static void FixErrorsInWorkshopFolder(string workshopFolderPath)
+	{
 		// This eliminates uploaded mod source files that occured prior to the fix of #2263
 		if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
 			foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
@@ -179,7 +186,8 @@ public partial class WorkshopSocialModule
 		}
 	}
 
-	public static void SteamCMDPublishPreparer(string modFolder) {
+	public static void SteamCMDPublishPreparer(string modFolder)
+	{
 		if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
 			return;
 

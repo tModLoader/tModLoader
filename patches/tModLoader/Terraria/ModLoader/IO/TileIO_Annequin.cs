@@ -14,7 +14,8 @@ internal static partial class TileIO
 	//in Terraria.IO.WorldFile.SaveWorldTiles for saving tile frames add
 	//  short frameX = tile.frameX; TileIO.VanillaSaveFrames(tile, ref frameX);
 	//  and replace references to tile.frameX with frameX
-	internal static void VanillaSaveFrames(Tile tile, ref short frameX) {
+	internal static void VanillaSaveFrames(Tile tile, ref short frameX)
+	{
 		if (tile.type == TileID.Mannequin || tile.type == TileID.Womannequin) {
 			int slot = tile.frameX / 100;
 			int position = tile.frameY / 18;
@@ -30,7 +31,8 @@ internal static partial class TileIO
 		internal IDictionary<int, int> bodySlots;
 		internal IDictionary<int, int> legSlots;
 
-		internal static ContainerTables Create() {
+		internal static ContainerTables Create()
+		{
 			ContainerTables tables = new ContainerTables {
 				headSlots = new Dictionary<int, int>(),
 				bodySlots = new Dictionary<int, int>(),
@@ -41,7 +43,8 @@ internal static partial class TileIO
 	}
 	//in Terraria.GameContent.Tile_Entities.TEItemFrame.WriteExtraData
 	//  if item is a mod item write 0 as the ID
-	internal static TagCompound SaveContainers() {
+	internal static TagCompound SaveContainers()
+	{
 		var ms = new MemoryStream();
 		var writer = new BinaryWriter(ms);
 		byte[] flags = new byte[1];
@@ -128,7 +131,8 @@ internal static partial class TileIO
 		return tag;
 	}
 
-	internal static void LoadContainers(TagCompound tag) {
+	internal static void LoadContainers(TagCompound tag)
+	{
 		if (tag.ContainsKey("data"))
 			ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
 
@@ -140,7 +144,8 @@ internal static partial class TileIO
 		}
 	}
 
-	internal static void ReadContainers(BinaryReader reader) {
+	internal static void ReadContainers(BinaryReader reader)
+	{
 		byte[] flags = new byte[1];
 
 		reader.Read(flags, 0, reader.ReadByte());
@@ -179,7 +184,8 @@ internal static partial class TileIO
 		}*/
 	}
 
-	internal static void WriteContainerData(BinaryWriter writer) {
+	internal static void WriteContainerData(BinaryWriter writer)
+	{
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				Tile tile = Main.tile[i, j];
@@ -199,7 +205,8 @@ internal static partial class TileIO
 		writer.Write(-1);
 	}
 
-	internal static void ReadContainerData(BinaryReader reader, ContainerTables tables) {
+	internal static void ReadContainerData(BinaryReader reader, ContainerTables tables)
+	{
 		int i = reader.ReadInt32();
 		while (i > 0) {
 			int j = reader.ReadInt32();
@@ -225,7 +232,8 @@ internal static partial class TileIO
 		}
 	}
 
-	private static bool HasModArmor(int slot, int position) {
+	private static bool HasModArmor(int slot, int position)
+	{
 		if (position == 0) {
 			return slot >= Main.numArmorHead;
 		}

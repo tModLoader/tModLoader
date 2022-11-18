@@ -23,12 +23,14 @@ public abstract partial class PlayerDrawLayer : ModType
 		/// </summary>
 		protected abstract void PostDraw(ref PlayerDrawSet drawInfo);
 
-		public void PreDrawRecursive(ref PlayerDrawSet drawInfo) {
+		public void PreDrawRecursive(ref PlayerDrawSet drawInfo)
+		{
 			Parent?.PreDrawRecursive(ref drawInfo);
 			PreDraw(ref drawInfo);
 		}
 
-		public void PostDrawRecursive(ref PlayerDrawSet drawInfo) {
+		public void PostDrawRecursive(ref PlayerDrawSet drawInfo)
+		{
 			PostDraw(ref drawInfo);
 			Parent?.PostDrawRecursive(ref drawInfo);
 		}
@@ -52,7 +54,8 @@ public abstract partial class PlayerDrawLayer : ModType
 	internal void AddChildBefore(PlayerDrawLayer child) => _childrenBefore.Add(child);
 	internal void AddChildAfter(PlayerDrawLayer child) => _childrenAfter.Add(child);
 
-	internal void ClearChildren() {
+	internal void ClearChildren()
+	{
 		_childrenBefore.Clear();
 		_childrenAfter.Clear();
 	}
@@ -64,7 +67,8 @@ public abstract partial class PlayerDrawLayer : ModType
 	/// <summary> Returns the layer's default position in regards to other layers. Make use of e.g <see cref="BeforeParent"/>/<see cref="AfterParent"/>, and provide a layer (usually a vanilla one from <see cref="PlayerDrawLayers"/>). </summary>
 	public abstract Position GetDefaultPosition();
 
-	internal void ResetVisibility(PlayerDrawSet drawInfo) {
+	internal void ResetVisibility(PlayerDrawSet drawInfo)
+	{
 		foreach (var child in ChildrenBefore)
 			child.ResetVisibility(drawInfo);
 
@@ -77,7 +81,8 @@ public abstract partial class PlayerDrawLayer : ModType
 	/// <summary> Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check <code>if(drawinfo.shadow == 0f)</code> to only draw for the original player image.</summary>
 	protected abstract void Draw(ref PlayerDrawSet drawInfo);
 
-	public void DrawWithTransformationAndChildren(ref PlayerDrawSet drawInfo) {
+	public void DrawWithTransformationAndChildren(ref PlayerDrawSet drawInfo)
+	{
 		if (!Visible)
 			return;
 
@@ -94,7 +99,8 @@ public abstract partial class PlayerDrawLayer : ModType
 		Transform?.PostDrawRecursive(ref drawInfo);
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		ModTypeLookup<PlayerDrawLayer>.Register(this);
 		PlayerDrawLayerLoader.Add(this);
 	}

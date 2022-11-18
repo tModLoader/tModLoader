@@ -15,7 +15,8 @@ public abstract class Loader : ILoader
 	/// <summary>
 	/// Initilizes the loader based on the vanilla count of the ModType.
 	/// </summary>
-	internal void Initialize(int vanillaCount) {
+	internal void Initialize(int vanillaCount)
+	{
 		VanillaCount = vanillaCount;
 		TotalCount = vanillaCount;
 	}
@@ -24,7 +25,8 @@ public abstract class Loader : ILoader
 
 	internal virtual void ResizeArrays() { }
 
-	internal virtual void Unload() {
+	internal virtual void Unload()
+	{
 		TotalCount = VanillaCount;
 	}
 
@@ -40,7 +42,8 @@ public abstract class Loader<T> : Loader
 	internal List<T> list = new List<T>();
 
 	//TODO: Possibly convert all ModTypes to have 'int Type' as their indexing field.
-	public int Register(T obj) {
+	public int Register(T obj)
+	{
 		int type = Reserve();
 
 		ModTypeLookup<T>.Register(obj);
@@ -49,7 +52,8 @@ public abstract class Loader<T> : Loader
 		return type;
 	}
 
-	public T Get(int id) {
+	public T Get(int id)
+	{
 		if (id < VanillaCount || id >= TotalCount) {
 			return default;
 		}
@@ -57,7 +61,8 @@ public abstract class Loader<T> : Loader
 		return list[id - VanillaCount];
 	}
 
-	internal override void Unload() {
+	internal override void Unload()
+	{
 		base.Unload();
 
 		list.Clear();
@@ -75,7 +80,8 @@ public static class LoaderManager
 {
 	private static readonly Dictionary<Type, ILoader> loadersByType = new Dictionary<Type, ILoader>();
 
-	internal static void AutoLoad() {
+	internal static void AutoLoad()
+	{
 		foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
 			if (!typeof(ILoader).IsAssignableFrom(type) || type.IsAbstract || !type.IsClass) {
 				continue;
@@ -90,20 +96,23 @@ public static class LoaderManager
 	}
 
 	// TODO: Constrain to ILoader?
-	public static T Get<T>() {
+	public static T Get<T>()
+	{
 		if (!loadersByType.TryGetValue(typeof(T), out var result))
 			return (T)Activator.CreateInstance(typeof(T), true)!; // Return empty instance in case of static Player constructor or similar
 
 		return (T)result;
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		foreach (var loader in loadersByType.Values) {
 			loader.Unload();
 		}
 	}
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		foreach (var loader in loadersByType.Values) {
 			loader.ResizeArrays();
 		}

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -17,7 +17,8 @@ public class SequentialRulesRule : IItemDropRule, INestedItemDropRule
 		private set;
 	}
 
-	public SequentialRulesRule(int chanceDenominator, params IItemDropRule[] rules) {
+	public SequentialRulesRule(int chanceDenominator, params IItemDropRule[] rules)
+	{
 		this.chanceDenominator = chanceDenominator;
 		this.rules = rules;
 		ChainedRules = new List<IItemDropRuleChainAttempt>();
@@ -25,13 +26,15 @@ public class SequentialRulesRule : IItemDropRule, INestedItemDropRule
 
 	public bool CanDrop(DropAttemptInfo info) => true;
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	{
 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
 		result.State = ItemDropAttemptResultState.DidNotRunCode;
 		return result;
 	}
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction) {
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
+	{
 		ItemDropAttemptResult result = default;
 		if (info.player.RollLuck(chanceDenominator) == 0) {
 			for (int i = 0; i < rules.Length; i++) {
@@ -47,7 +50,8 @@ public class SequentialRulesRule : IItemDropRule, INestedItemDropRule
 		return result;
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	{
 		for (int i = rules.Length - 1; i >= 1; i--) {
 			rules[i - 1].OnFailedRoll(rules[i]);
 		}

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -85,20 +85,23 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		private void Update() {
+		private void Update()
+		{
 			if (array == null)
 				memberInfo.SetValue(item, current);
 			else
 				array[index] = current;
 		}
 
-		public ColorObject(PropertyFieldWrapper memberInfo, object item) {
+		public ColorObject(PropertyFieldWrapper memberInfo, object item)
+		{
 			this.item = item;
 			this.memberInfo = memberInfo;
 			current = (Color)memberInfo.GetValue(item);
 		}
 
-		public ColorObject(IList<Color> array, int index) {
+		public ColorObject(IList<Color> array, int index)
+		{
 			current = array[index];
 			this.array = array;
 			this.index = index;
@@ -110,7 +113,8 @@ internal class ColorElement : ConfigElement
 
 	public IList<Color> ColorList { get; set; }
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		ColorList = (IList<Color>)List;
@@ -158,14 +162,16 @@ internal class ColorElement : ConfigElement
 		}
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		base.Draw(spriteBatch);
 		Rectangle hitbox = GetInnerDimensions().ToRectangle();
 		hitbox = new Rectangle(hitbox.X + hitbox.Width / 2, hitbox.Y, hitbox.Width / 2, 30);
 		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, hitbox, c.current);
 	}
 
-	internal float GetHeight() {
+	internal float GetHeight()
+	{
 		return height;
 	}
 }

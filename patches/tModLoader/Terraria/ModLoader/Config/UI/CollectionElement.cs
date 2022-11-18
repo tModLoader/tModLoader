@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System;
 using Terraria.Audio;
@@ -29,7 +29,8 @@ internal abstract class CollectionElement : ConfigElement
 
 	protected virtual bool CanAdd => true;
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		Data = MemberInfo.GetValue(Item);
@@ -155,7 +156,8 @@ internal abstract class CollectionElement : ConfigElement
 		Recalculate(); // Needed?
 	}
 
-	protected object CreateCollectionElementInstance(Type type) {
+	protected object CreateCollectionElementInstance(Type type)
+	{
 		object toAdd;
 
 		if (DefaultListValueAttribute != null) {
@@ -181,7 +183,8 @@ internal abstract class CollectionElement : ConfigElement
 
 	protected abstract void InitializeCollection();
 
-	protected virtual void NullCollection() {
+	protected virtual void NullCollection()
+	{
 		Data = null;
 		SetObject(Data);
 	}
@@ -189,7 +192,8 @@ internal abstract class CollectionElement : ConfigElement
 
 	protected abstract void SetupList();
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		if (!pendingChanges)
@@ -227,7 +231,8 @@ internal abstract class CollectionElement : ConfigElement
 		}
 	}
 
-	public override void Recalculate() {
+	public override void Recalculate()
+	{
 		base.Recalculate();
 
 		float defaultHeight = 30;

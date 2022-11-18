@@ -10,7 +10,8 @@ namespace Terraria.GameInput;
 
 partial class PlayerInputProfile
 {
-	public void CopyModKeybindSettingsFrom(PlayerInputProfile profile, InputMode mode) {
+	public void CopyModKeybindSettingsFrom(PlayerInputProfile profile, InputMode mode)
+	{
 		foreach (var modKeybind in KeybindLoader.Keybinds) {
 			InputModes[mode].KeyStatus[modKeybind.FullName].Clear();
 
@@ -19,7 +20,8 @@ partial class PlayerInputProfile
 		}
 	}
 
-	public void CopyIndividualModKeybindSettingsFrom(PlayerInputProfile profile, InputMode mode, string uniqueName) {
+	public void CopyIndividualModKeybindSettingsFrom(PlayerInputProfile profile, InputMode mode, string uniqueName)
+	{
 		var modKeybind = KeybindLoader.modKeybinds[uniqueName];
 
 		InputModes[mode].KeyStatus[uniqueName].Clear();

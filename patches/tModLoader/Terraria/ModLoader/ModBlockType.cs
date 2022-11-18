@@ -32,7 +32,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// </summary>
 	/// <param name="key">The key for the ModTranslation. The full key will be MapObject.ModName.key</param>
 	/// <returns></returns>
-	public ModTranslation CreateMapEntryName(string key = null) {
+	public ModTranslation CreateMapEntryName(string key = null)
+	{
 		if (string.IsNullOrEmpty(key)) {
 			key = Name;
 		}
@@ -57,7 +58,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual ushort GetMapOption(int i, int j) {
+	public virtual ushort GetMapOption(int i, int j)
+	{
 		return 0;
 	}
 
@@ -67,7 +69,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="fail">If true, the tile/wall is only partially damaged. If false, the tile/wall is fully destroyed.</param>
-	public virtual bool KillSound(int i, int j, bool fail) {
+	public virtual bool KillSound(int i, int j, bool fail)
+	{
 		return true;
 	}
 
@@ -78,7 +81,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="fail">If true, the tile is spawning dust for reasons other than the tile actually being destroyed. Worms, projectiles, and other effects cause dust to spawn aside from the usual case of the tile breaking.</param>
 	/// <param name="num">The number of dust that will be spawned by the calling code</param>
-	public virtual void NumDust(int i, int j, bool fail, ref int num) {
+	public virtual void NumDust(int i, int j, bool fail, ref int num)
+	{
 	}
 
 	/// <summary>
@@ -87,7 +91,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The dust type that will be spawned by the calling code</param>
-	public virtual bool CreateDust(int i, int j, ref int type) {
+	public virtual bool CreateDust(int i, int j, ref int type)
+	{
 		type = DustType; // TODO: this is strange
 		return true;
 	}
@@ -97,7 +102,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool CanPlace(int i, int j) {
+	public virtual bool CanPlace(int i, int j)
+	{
 		return true;
 	}
 
@@ -106,7 +112,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool CanExplode(int i, int j) {
+	public virtual bool CanExplode(int i, int j)
+	{
 		return true;
 	}
 
@@ -116,7 +123,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="spriteBatch"></param>
-	public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
+	public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+	{
 		return true;
 	}
 
@@ -126,7 +134,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="spriteBatch"></param>
-	public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) {
+	public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
+	{
 	}
 
 	/// <summary>
@@ -134,7 +143,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual void RandomUpdate(int i, int j) {
+	public virtual void RandomUpdate(int i, int j)
+	{
 	}
 
 	/// <summary>
@@ -143,7 +153,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
 	/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
 	/// <param name="item">The item used to place this tile/wall.</param>
-	public virtual void PlaceInWorld(int i, int j, Item item) {
+	public virtual void PlaceInWorld(int i, int j, Item item)
+	{
 	}
 
 	/// <summary>
@@ -157,6 +168,7 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="r">The red component of light, usually a value between 0 and 1</param>
 	/// <param name="g">The green component of light, usually a value between 0 and 1</param>
 	/// <param name="b">The blue component of light, usually a value between 0 and 1</param>
-	public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
+	public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+	{
 	}
 }

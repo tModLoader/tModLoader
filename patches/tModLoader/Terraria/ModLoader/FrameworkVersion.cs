@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using ReLogic.OS;
 using System;
 using System.Reflection;
@@ -23,7 +23,8 @@ public static class FrameworkVersion
 
 	public static readonly Version Version = GetVersion();
 
-	private static Version GetVersion() {
+	private static Version GetVersion()
+	{
 #if !NETCORE
 		const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 		using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
@@ -34,7 +35,8 @@ public static class FrameworkVersion
 	}
 
 	// Checking the version using >= will enable forward compatibility.
-	private static Version CheckFor45PlusVersion(int releaseKey) {
+	private static Version CheckFor45PlusVersion(int releaseKey)
+	{
 		if (releaseKey >= 528040)
 			return new Version("4.8");
 		if (releaseKey >= 461808)

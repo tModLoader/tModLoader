@@ -14,13 +14,15 @@ namespace Terraria.ModLoader.IO;
 
 internal static class PlayerIO
 {
-	internal static void WriteByteVanillaHairDye(int hairDye, BinaryWriter writer) {
+	internal static void WriteByteVanillaHairDye(int hairDye, BinaryWriter writer)
+	{
 		writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
 	}
 
 	//make Terraria.Player.ENCRYPTION_KEY internal
 	//add to end of Terraria.Player.SavePlayer
-	internal static void Save(TagCompound tag, string path, bool isCloudSave) {
+	internal static void Save(TagCompound tag, string path, bool isCloudSave)
+	{
 		path = Path.ChangeExtension(path, ".tplr");
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
@@ -32,7 +34,8 @@ internal static class PlayerIO
 		}
 	}
 
-	internal static TagCompound SaveData(Player player) {
+	internal static TagCompound SaveData(Player player)
+	{
 		return new TagCompound {
 			["armor"] = SaveInventory(player.armor),
 			["dye"] = SaveInventory(player.dye),
@@ -54,7 +57,8 @@ internal static class PlayerIO
 	}
 
 	//add near end of Terraria.Player.LoadPlayer before accessory check
-	internal static void Load(Player player, TagCompound tag) {
+	internal static void Load(Player player, TagCompound tag)
+	{
 		LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 		LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
 		LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
@@ -73,7 +77,8 @@ internal static class PlayerIO
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
 	}
 
-	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag) {
+	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
+	{
 		path = Path.ChangeExtension(path, ".tplr");
 		tag = new TagCompound();
 
@@ -91,7 +96,8 @@ internal static class PlayerIO
 		return true;
 	}
 
-	public static List<TagCompound> SaveInventory(Item[] inv) {
+	public static List<TagCompound> SaveInventory(Item[] inv)
+	{
 		var list = new List<TagCompound>();
 		for (int k = 0; k < inv.Length; k++) {
 			var globalData = ItemIO.SaveGlobals(inv[k]);
@@ -106,12 +112,14 @@ internal static class PlayerIO
 		return list.Count > 0 ? list : null;
 	}
 
-	public static void LoadInventory(Item[] inv, IList<TagCompound> list) {
+	public static void LoadInventory(Item[] inv, IList<TagCompound> list)
+	{
 		foreach (var tag in list)
 			inv[tag.GetShort("slot")] = ItemIO.Load(tag);
 	}
 
-	public static List<TagCompound> SaveResearch(Player player) {
+	public static List<TagCompound> SaveResearch(Player player)
+	{
 		var list = new List<TagCompound>();
 		var dictionary = new Dictionary<int, int>(player.creativeTracker.ItemSacrifices._sacrificesCountByItemIdCache);
 
@@ -132,7 +140,8 @@ internal static class PlayerIO
 		return list.Count > 0 ? list : null;
 	}
 
-	public static void LoadResearch(Player player, IList<TagCompound> list) {
+	public static void LoadResearch(Player player, IList<TagCompound> list)
+	{
 		foreach (var tag in list) {
 			if (!tag.ContainsKey("mod") || !tag.ContainsKey("name"))
 				continue; // Discard tags from previous insufficient implementation pre-alpha so they are not carried over to unloadedResearch
@@ -155,7 +164,8 @@ internal static class PlayerIO
 		}
 	}
 
-	public static string SaveHairDye(int hairDye) {
+	public static string SaveHairDye(int hairDye)
+	{
 		if (hairDye <= EffectsTracker.vanillaHairShaderCount)
 			return "";
 
@@ -165,7 +175,8 @@ internal static class PlayerIO
 		return modItem.FullName;
 	}
 
-	public static void LoadHairDye(Player player, string hairDyeItemName) {
+	public static void LoadHairDye(Player player, string hairDyeItemName)
+	{
 		if (hairDyeItemName == "")
 			return;
 
@@ -174,7 +185,8 @@ internal static class PlayerIO
 			player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.Type);
 	}
 
-	internal static List<TagCompound> SaveModData(Player player) {
+	internal static List<TagCompound> SaveModData(Player player)
+	{
 		var list = new List<TagCompound>();
 
 		var saveData = new TagCompound();
@@ -196,7 +208,8 @@ internal static class PlayerIO
 		return list;
 	}
 
-	internal static void LoadModData(Player player, IList<TagCompound> list) {
+	internal static void LoadModData(Player player, IList<TagCompound> list)
+	{
 		foreach (var tag in list) {
 			string modName = tag.GetString("mod");
 			string modPlayerName = tag.GetString("name");
@@ -220,7 +233,8 @@ internal static class PlayerIO
 		}
 	}
 
-	internal static List<TagCompound> SaveModBuffs(Player player) {
+	internal static List<TagCompound> SaveModBuffs(Player player)
+	{
 		var list = new List<TagCompound>();
 		for (int k = 0; k < Player.MaxBuffs; k++) {
 			int buff = player.buffType[k];
@@ -246,7 +260,8 @@ internal static class PlayerIO
 		return list;
 	}
 
-	internal static void LoadModBuffs(Player player, IList<TagCompound> list) {
+	internal static void LoadModBuffs(Player player, IList<TagCompound> list)
+	{
 		//buffs list is guaranteed to be compacted
 		int buffCount = Player.MaxBuffs;
 		while (buffCount > 0 && player.buffType[buffCount - 1] == 0)
@@ -283,7 +298,8 @@ internal static class PlayerIO
 		}
 	}
 
-	internal static List<string> SaveInfoDisplays(Player player) {
+	internal static List<string> SaveInfoDisplays(Player player)
+	{
 		var hidden = new List<string>();
 		for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
 			if(!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
@@ -294,7 +310,8 @@ internal static class PlayerIO
 		return hidden;
 	}
 
-	internal static void LoadInfoDisplays(Player player, IList<string> hidden) {
+	internal static void LoadInfoDisplays(Player player, IList<string> hidden)
+	{
 		for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
 			if (!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
 				if (hidden.Contains(InfoDisplayLoader.InfoDisplays[i].FullName))
@@ -303,24 +320,29 @@ internal static class PlayerIO
 		}
 	}
 
-	internal static void LoadUsedMods(Player player, IList<string> usedMods) {
+	internal static void LoadUsedMods(Player player, IList<string> usedMods)
+	{
 		player.usedMods = usedMods;
 	}
 
-	internal static List<string> SaveUsedMods(Player player) {
+	internal static List<string> SaveUsedMods(Player player)
+	{
 		return ModLoader.Mods.Select(m => m.Name).Except(new[] { "ModLoader" }).ToList();
 	}
 
-	internal static void LoadUsedModPack(Player player, string modpack) {
+	internal static void LoadUsedModPack(Player player, string modpack)
+	{
 		player.modPack = modpack;
 	}
 
-	internal static string SaveUsedModPack(Player player) {
+	internal static string SaveUsedModPack(Player player)
+	{
 		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
 	}
 
 	//add to end of Terraria.IO.PlayerFileData.MoveToCloud
-	internal static void MoveToCloud(string localPath, string cloudPath) {
+	internal static void MoveToCloud(string localPath, string cloudPath)
+	{
 		localPath = Path.ChangeExtension(localPath, ".tplr");
 		cloudPath = Path.ChangeExtension(cloudPath, ".tplr");
 		if (File.Exists(localPath)) {
@@ -331,7 +353,8 @@ internal static class PlayerIO
 	//in Terraria.IO.PlayerFileData.MoveToLocal before iterating through map files add
 	//  matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.tmap";
 	//  files.AddRange(SocialAPI.Cloud.GetFiles(matchPattern));
-	internal static void MoveToLocal(string cloudPath, string localPath) {
+	internal static void MoveToLocal(string cloudPath, string localPath)
+	{
 		cloudPath = Path.ChangeExtension(cloudPath, ".tplr");
 		localPath = Path.ChangeExtension(localPath, ".tplr");
 		if (FileUtilities.Exists(cloudPath, true)) {
@@ -339,7 +362,8 @@ internal static class PlayerIO
 		}
 	}
 	//add to Terraria.Player.GetFileData after moving vanilla .bak file
-	internal static void LoadBackup(string path, bool cloudSave) {
+	internal static void LoadBackup(string path, bool cloudSave)
+	{
 		path = Path.ChangeExtension(path, ".tplr");
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
 			FileUtilities.Move(path + ".bak", path, cloudSave, true);
@@ -347,7 +371,8 @@ internal static class PlayerIO
 	}
 	//in Terraria.Main.ErasePlayer between the two try catches add
 	//  PlayerIO.ErasePlayer(Main.PlayerList[i].Path, Main.PlayerList[i].IsCloudSave);
-	internal static void ErasePlayer(string path, bool cloudSave) {
+	internal static void ErasePlayer(string path, bool cloudSave)
+	{
 		path = Path.ChangeExtension(path, ".tplr");
 		try {
 			FileUtilities.Delete(path, cloudSave);

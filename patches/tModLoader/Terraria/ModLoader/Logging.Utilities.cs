@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using Terraria.ModLoader.Core;
@@ -13,7 +13,8 @@ public static partial class Logging
 
 	private static readonly Assembly terrariaAssembly = Assembly.GetExecutingAssembly();
 
-	public static void PrettifyStackTraceSources(StackFrame[] frames) {
+	public static void PrettifyStackTraceSources(StackFrame[] frames)
+	{
 		if (frames == null)
 			return;
 
@@ -42,7 +43,8 @@ public static partial class Logging
 		}
 	}
 
-	private static void TryFreeingMemory() {
+	private static void TryFreeingMemory()
+	{
 		// In case of OOM, unload the Main.tile array and do immediate garbage collection.
 		// If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
 

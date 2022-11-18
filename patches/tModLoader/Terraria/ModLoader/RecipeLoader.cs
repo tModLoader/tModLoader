@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
@@ -30,12 +30,14 @@ public static class RecipeLoader
 	/// </summary>
 	internal static Mod CurrentMod { get; private set; }
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		setupRecipes = false;
 		FirstRecipeForItem = new Recipe[Recipe.maxRecipes];
 	}
 
-	internal static void AddRecipes() {
+	internal static void AddRecipes()
+	{
 		var addRecipesMethod = typeof(Mod).GetMethod(nameof(Mod.AddRecipes), BindingFlags.Instance | BindingFlags.Public)!;
 		foreach (Mod mod in ModLoader.Mods) {
 			CurrentMod = mod;
@@ -55,7 +57,8 @@ public static class RecipeLoader
 		}
 	}
 
-	internal static void PostAddRecipes() {
+	internal static void PostAddRecipes()
+	{
 		var postAddRecipesMethod = typeof(Mod).GetMethod(nameof(Mod.PostAddRecipes), BindingFlags.Instance | BindingFlags.Public)!;
 		foreach (Mod mod in ModLoader.Mods) {
 			CurrentMod = mod;
@@ -73,7 +76,8 @@ public static class RecipeLoader
 		}
 	}
 
-	internal static void PostSetupRecipes() {
+	internal static void PostSetupRecipes()
+	{
 		foreach (Mod mod in ModLoader.Mods) {
 			CurrentMod = mod;
 			try {
@@ -92,7 +96,8 @@ public static class RecipeLoader
 	/// <summary>
 	/// Orders everything in the recipe according to their Ordering.
 	/// </summary>
-	internal static void OrderRecipes() {
+	internal static void OrderRecipes()
+	{
 		// first-pass, collect sortBefore and sortAfter
 		Dictionary<Recipe, List<Recipe>> sortBefore = new();
 		Dictionary<Recipe, List<Recipe>> sortAfter = new();
@@ -149,7 +154,8 @@ public static class RecipeLoader
 	/// </summary>
 	/// <param name="recipe">The recipe to check.</param>
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
-	public static bool RecipeAvailable(Recipe recipe) {
+	public static bool RecipeAvailable(Recipe recipe)
+	{
 		return recipe.Conditions.All(c => c.RecipeAvailable(recipe));
 	}
 
@@ -160,7 +166,8 @@ public static class RecipeLoader
 	/// <param name="recipe">The recipe used to craft the item.</param>
 	/// <param name="consumedItems">Materials used to craft the item.</param>
 	/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
-	public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems, Item destinationStack) {
+	public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems, Item destinationStack)
+	{
 		recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems, destinationStack);
 		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems, destinationStack));
 	}
@@ -169,7 +176,8 @@ public static class RecipeLoader
 	/// Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list
 	/// <param name="destinationStack">The stack that the crafted item will be combined with</param>
 	/// </summary>
-	public static void OnCraft(Item item, Recipe recipe, Item destinationStack) {
+	public static void OnCraft(Item item, Recipe recipe, Item destinationStack)
+	{
 		OnCraft(item, recipe, ConsumedItems, destinationStack);
 		ConsumedItems.Clear();
 	}
@@ -180,7 +188,8 @@ public static class RecipeLoader
 	/// <param name="recipe">The recipe used for the craft.</param>
 	/// <param name="type">Type of the ingredient.</param>
 	/// <param name="amount">Modifiable amount of the item consumed.</param>
-	public static void ConsumeItem(Recipe recipe, int type, ref int amount) {
+	public static void ConsumeItem(Recipe recipe, int type, ref int amount)
+	{
 		recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
 	}
 }

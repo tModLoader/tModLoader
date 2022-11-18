@@ -1,4 +1,4 @@
-﻿namespace Terraria.GameContent.ItemDropRules;
+namespace Terraria.GameContent.ItemDropRules;
 
 partial class ItemDropRule
 {
@@ -9,7 +9,8 @@ partial class ItemDropRule
 	public static IItemDropRule SequentialRules(int chanceDenominator, params IItemDropRule[] rules) => new SequentialRulesRule(chanceDenominator, rules);
 	public static IItemDropRule SequentialRulesNotScalingWithLuck(int chanceDenominator, params IItemDropRule[] rules) => new SequentialRulesNotScalingWithLuckRule(chanceDenominator, rules);
 	public static IItemDropRule Coins(long value, bool withRandomBonus) => new CoinsRule(value, withRandomBonus);
-	public static IItemDropRule CoinsBasedOnNPCValue(int npcId) {
+	public static IItemDropRule CoinsBasedOnNPCValue(int npcId)
+	{
 		var npc = new NPC();
 		npc.SetDefaults(npcId);
 		// TODO, support dynamic NPC value, expert/master scaling etc. Not sure the best way to display/handle it.

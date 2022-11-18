@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -22,7 +22,8 @@ internal class UIModConfigList : UIState
 	//private bool updateNeeded;
 	//private UITextPanel<string> buttonOMF;
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		uIElement = new UIElement();
 		uIElement.Width.Set(0f, 0.8f);
 		uIElement.MaxWidth.Set(600f, 0f);
@@ -83,7 +84,8 @@ internal class UIModConfigList : UIState
 		Append(uIElement);
 	}
 
-	private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+	private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		SoundEngine.PlaySound(11, -1, -1, 1);
 		//Main.menuMode = 0;
 
@@ -106,18 +108,21 @@ internal class UIModConfigList : UIState
 	}
 	*/
 
-	internal void Unload() {
+	internal void Unload()
+	{
 		modList?.Clear();
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		Main.clrInput();
 		modList.Clear();
 		//	items.Clear();
 		Populate();
 	}
 
-	internal void Populate() {
+	internal void Populate()
+	{
 		int i = 0;
 
 		foreach (var item in ConfigManager.Configs) {

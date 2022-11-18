@@ -10,7 +10,8 @@ public class UnloadedChest : UnloadedTile
 {
 	public override string Texture => "ModLoader/UnloadedChest";
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		TileIO.Tiles.unloadedTypes.Add(Type);
 
 		//common
@@ -46,7 +47,8 @@ public class UnloadedChest : UnloadedTile
 		AddMapEntry(new Color(0, 141, 63), name, MapChestName);
 	}
 
-	public static string MapChestName(string name, int i, int j) {
+	public static string MapChestName(string name, int i, int j)
+	{
 		int left = i;
 		int top = j;
 		Tile tile = Main.tile[i, j];

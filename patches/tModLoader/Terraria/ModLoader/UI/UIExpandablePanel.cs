@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -23,7 +23,8 @@ internal class UIExpandablePanel : UIPanel
 	public event Action OnExpanded;
 	public event Action OnCollapsed;
 
-	public UIExpandablePanel() {
+	public UIExpandablePanel()
+	{
 		Width.Set(0f, 1f);
 		Height.Set(defaultHeight, 0f);
 
@@ -39,7 +40,8 @@ internal class UIExpandablePanel : UIPanel
 		Append(expandButton);
 	}
 
-	public override void Update(GameTime gameTime) {
+	public override void Update(GameTime gameTime)
+	{
 		base.Update(gameTime);
 
 		if (!pendingChanges)

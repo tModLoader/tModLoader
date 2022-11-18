@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 public struct StatModifier
 {
@@ -24,21 +24,24 @@ public struct StatModifier
 	/// </summary>
 	public float Flat;
 
-	public StatModifier(float additive, float multiplicative, float flat = 0f, float @base = 0f) {
+	public StatModifier(float additive, float multiplicative, float flat = 0f, float @base = 0f)
+	{
 		Additive = additive;
 		Multiplicative = multiplicative;
 		Flat = flat;
 		Base = @base;
 	}
 
-	public override bool Equals(object obj) {
+	public override bool Equals(object obj)
+	{
 		if (obj is not StatModifier m)
 			return false;
 
 		return this == m;
 	}
 
-	public override int GetHashCode() {
+	public override int GetHashCode()
+	{
 		int hashCode = 1713062080;
 		hashCode = hashCode * -1521134295 + Additive.GetHashCode();
 		hashCode = hashCode * -1521134295 + Multiplicative.GetHashCode();

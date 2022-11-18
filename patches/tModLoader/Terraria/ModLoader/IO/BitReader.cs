@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,7 +10,8 @@ public class BitReader
 	public int MaxBits { get; private set; }
 	public int BitsRead { get; private set; }
 
-	public BitReader(BinaryReader reader) {
+	public BitReader(BinaryReader reader)
+	{
 		MaxBits = reader.Read7BitEncodedInt();
 
 		int byteCount = MaxBits / 8;
@@ -20,7 +21,8 @@ public class BitReader
 		bytes = reader.ReadBytes(byteCount);
 	}
 
-	public bool ReadBit() {
+	public bool ReadBit()
+	{
 		if (BitsRead >= MaxBits) {
 			throw new IOException("Read overflow while reading compressed bits, more info below");
 		}

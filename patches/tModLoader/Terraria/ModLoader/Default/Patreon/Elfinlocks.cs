@@ -1,9 +1,10 @@
-﻿namespace Terraria.ModLoader.Default.Patreon;
+namespace Terraria.ModLoader.Default.Patreon;
 
 [AutoloadEquip(EquipType.Head)]
 internal class Elfinlocks_Head : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 34;
@@ -14,7 +15,8 @@ internal class Elfinlocks_Head : PatreonItem
 [AutoloadEquip(EquipType.Body)]
 internal class Elfinlocks_Body : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 42;
@@ -25,7 +27,8 @@ internal class Elfinlocks_Body : PatreonItem
 [AutoloadEquip(EquipType.Legs)]
 internal class Elfinlocks_Legs : PatreonItem
 {
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		base.SetDefaults();
 
 		Item.width = 22;

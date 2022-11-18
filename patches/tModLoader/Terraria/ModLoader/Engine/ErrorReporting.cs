@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using Terraria.Localization;
@@ -10,7 +10,8 @@ namespace Terraria.ModLoader.Engine;
 /// </summary>
 internal class ErrorReporting
 {
-	internal static void MessageBoxShow(string message, bool fatal = false) {
+	internal static void MessageBoxShow(string message, bool fatal = false)
+	{
 		var title = ModLoader.versionedName + (fatal ? " Error" : " Fatal Error");
 
 		string logDir = Path.GetFullPath(Logging.LogDir);
@@ -31,7 +32,8 @@ internal class ErrorReporting
 		catch { }
 	}
 
-	public static void FatalExit(string message) {
+	public static void FatalExit(string message)
+	{
 		if (Logging.LogPath == null)
 			Console.Error.WriteLine(message); // Writes to Natives.log
 		else
@@ -42,7 +44,8 @@ internal class ErrorReporting
 		Environment.Exit(1);
 	}
 
-	public static void FatalExit(string message, Exception e) {
+	public static void FatalExit(string message, Exception e)
+	{
 		if (e.HelpLink != null) {
 			try {
 				Utils.OpenToURL(e.HelpLink);

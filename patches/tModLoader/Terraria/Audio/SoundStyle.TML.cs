@@ -173,29 +173,34 @@ public record struct SoundStyle
 		}
 	}
 
-	public SoundStyle(string soundPath, SoundType type = SoundType.Sound) {
+	public SoundStyle(string soundPath, SoundType type = SoundType.Sound)
+	{
 		SoundPath = soundPath;
 		Type = type;
 		variants = null;
 	}
 
-	public SoundStyle(string soundPath, int numVariants, SoundType type = SoundType.Sound) : this(soundPath, type) {
+	public SoundStyle(string soundPath, int numVariants, SoundType type = SoundType.Sound) : this(soundPath, type)
+	{
 		if (numVariants > 1) {
 			variants = CreateVariants(1, numVariants);
 		}
 	}
 
-	public SoundStyle(string soundPath, int variantSuffixesStart, int numVariants, SoundType type = SoundType.Sound) : this(soundPath, type) {
+	public SoundStyle(string soundPath, int variantSuffixesStart, int numVariants, SoundType type = SoundType.Sound) : this(soundPath, type)
+	{
 		if (numVariants > 1) {
 			variants = CreateVariants(variantSuffixesStart, numVariants);
 		}
 	}
 
-	public SoundStyle(string soundPath, ReadOnlySpan<int> variants, SoundType type = SoundType.Sound) : this(soundPath, type) {
+	public SoundStyle(string soundPath, ReadOnlySpan<int> variants, SoundType type = SoundType.Sound) : this(soundPath, type)
+	{
 		this.variants = variants.IsEmpty ? null : variants.ToArray();
 	}
 
-	public SoundStyle(string soundPath, ReadOnlySpan<(int variant, float weight)> weightedVariants, SoundType type = SoundType.Sound) : this(soundPath, type) {
+	public SoundStyle(string soundPath, ReadOnlySpan<(int variant, float weight)> weightedVariants, SoundType type = SoundType.Sound) : this(soundPath, type)
+	{
 		if (weightedVariants.IsEmpty) {
 			variants = null;
 			return;
@@ -213,7 +218,8 @@ public record struct SoundStyle
 	}
 
 	// To be optimized, improved.
-	public bool IsTheSameAs(SoundStyle style) {
+	public bool IsTheSameAs(SoundStyle style)
+	{
 		if (Identifier != null && Identifier == style.Identifier)
 			return true;
 
@@ -223,7 +229,8 @@ public record struct SoundStyle
 		return false;
 	}
 
-	public SoundEffect GetRandomSound() {
+	public SoundEffect GetRandomSound()
+	{
 		Asset<SoundEffect> asset;
 
 		if (variants == null || variants.Length == 0) {
@@ -256,7 +263,8 @@ public record struct SoundStyle
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };
 
-	private int GetRandomVariantIndex() {
+	private int GetRandomVariantIndex()
+	{
 		if (variantsWeights == null) {
 			// Simple random.
 			return Random.Next(variants!.Length);
@@ -279,7 +287,8 @@ public record struct SoundStyle
 		return 0; // Unreachable.
 	}
 
-	private static int[] CreateVariants(int start, int count) {
+	private static int[] CreateVariants(int start, int count)
+	{
 		if (count <= 1)
 			return Array.Empty<int>();
 

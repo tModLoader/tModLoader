@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -7,7 +7,8 @@ namespace Terraria.ModLoader.Core;
 internal static class AssemblyResolving
 {
 	private static bool init;
-	public static void Init() {
+	public static void Init()
+	{
 		if (init)
 			return;
 		init = true;
@@ -34,7 +35,8 @@ internal static class AssemblyResolving
 		});
 	}
 
-	internal static void AssemblyResolveEarly(ResolveEventHandler handler) {
+	internal static void AssemblyResolveEarly(ResolveEventHandler handler)
+	{
 		// in newer .NET frameworks, the AssemblyResolve event is actually backed by an _AssemblyResolve field
 		var backingField = typeof(AppDomain)
 			.GetFields((BindingFlags)(-1))

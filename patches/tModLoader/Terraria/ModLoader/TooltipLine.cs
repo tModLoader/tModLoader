@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
 
@@ -98,19 +98,22 @@ public class TooltipLine
 	/// <param name="mod">The mod instance</param>
 	/// <param name="name">The name of the tooltip</param>
 	/// <param name="text">The content of the tooltip</param>
-	public TooltipLine(Mod mod, string name, string text) {
+	public TooltipLine(Mod mod, string name, string text)
+	{
 		Mod = mod.Name;
 		Name = name;
 		Text = text;
 	}
 
-	internal TooltipLine(string mod, string name, string text) {
+	internal TooltipLine(string mod, string name, string text)
+	{
 		Mod = mod;
 		Name = name;
 		Text = text;
 	}
 
-	internal TooltipLine(string name, string text) {
+	internal TooltipLine(string name, string text)
+	{
 		Mod = "Terraria";
 		Name = name;
 		Text = text;

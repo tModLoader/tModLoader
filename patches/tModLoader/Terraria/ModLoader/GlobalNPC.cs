@@ -14,7 +14,8 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 {
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		NPCLoader.VerifyGlobalNPC(this);
 
 		ModTypeLookup<GlobalNPC>.Register(this);
@@ -31,13 +32,15 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to set the properties of any and every NPC that gets created.
 	/// </summary>
-	public virtual void SetDefaults(NPC npc) {
+	public virtual void SetDefaults(NPC npc)
+	{
 	}
 
 	/// <summary>
 	/// Gets called when any NPC spawns in world
 	/// </summary>
-	public virtual void OnSpawn(NPC npc, IEntitySource source) {
+	public virtual void OnSpawn(NPC npc, IEntitySource source)
+	{
 	}
 
 	/// <summary>
@@ -46,7 +49,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="numPlayers"></param>
 	/// <param name="bossLifeScale"></param>
-	public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale) {
+	public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	{
 	}
 
 	/// <summary>
@@ -55,13 +59,15 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="database"></param>
 	/// <param name="bestiaryEntry"></param>
-	public virtual void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+	public virtual void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to modify the type name of this NPC dynamically.
 	/// </summary>
-	public virtual void ModifyTypeName(NPC npc, ref string typeName) {
+	public virtual void ModifyTypeName(NPC npc, ref string typeName)
+	{
 	}
 
 	/// <summary>
@@ -69,7 +75,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
 	/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
-	public virtual void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+	public virtual void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox)
+	{
 	}
 
 	/// <summary>
@@ -79,21 +86,24 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <returns>The profile that you want the given NPC to use.<br></br>
 	/// This will only influence their choice of profile if you do not return null.<br></br>
 	/// By default, returns null, which causes no change.</returns>
-	public virtual ITownNPCProfile ModifyTownNPCProfile(NPC npc) {
+	public virtual ITownNPCProfile ModifyTownNPCProfile(NPC npc)
+	{
 		return null;
 	}
 
 	/// <summary>
 	/// Allows you to modify the list of names available to the given town NPC.
 	/// </summary>
-	public virtual void ModifyNPCNameList(NPC npc, List<string> nameList) {
+	public virtual void ModifyNPCNameList(NPC npc, List<string> nameList)
+	{
 	}
 
 	/// <summary>
 	/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 	/// </summary>
 	/// <param name="npc"></param>
-	public virtual void ResetEffects(NPC npc) {
+	public virtual void ResetEffects(NPC npc)
+	{
 	}
 
 	/// <summary>
@@ -101,7 +111,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
-	public virtual bool PreAI(NPC npc) {
+	public virtual bool PreAI(NPC npc)
+	{
 		return true;
 	}
 
@@ -109,14 +120,16 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to determine how any NPC behaves. This will only be called if PreAI returns true.
 	/// </summary>
 	/// <param name="npc"></param>
-	public virtual void AI(NPC npc) {
+	public virtual void AI(NPC npc)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
 	/// </summary>
 	/// <param name="npc"></param>
-	public virtual void PostAI(NPC npc) {
+	public virtual void PostAI(NPC npc)
+	{
 	}
 
 	/// <summary>
@@ -128,7 +141,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc">The NPC.</param>
 	/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
 	/// <param name="binaryWriter">The writer.</param>
-	public virtual void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter) {
+	public virtual void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+	{
 	}
 
 	/// <summary>
@@ -139,7 +153,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc">The NPC.</param>
 	/// <param name="bitReader">The compressible bit reader.</param>
 	/// <param name="binaryReader">The reader.</param>
-	public virtual void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader) {
+	public virtual void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+	{
 	}
 
 	/// <summary>
@@ -147,14 +162,16 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="frameHeight"></param>
-	public virtual void FindFrame(NPC npc, int frameHeight) {
+	public virtual void FindFrame(NPC npc, int frameHeight)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(NPC npc, int hitDirection, double damage) {
+	public virtual void HitEffect(NPC npc, int hitDirection, double damage)
+	{
 	}
 
 	/// <summary>
@@ -162,7 +179,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
-	public virtual void UpdateLifeRegen(NPC npc, ref int damage) {
+	public virtual void UpdateLifeRegen(NPC npc, ref int damage)
+	{
 	}
 
 	/// <summary>
@@ -170,7 +188,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
-	public virtual bool CheckActive(NPC npc) {
+	public virtual bool CheckActive(NPC npc)
+	{
 		return true;
 	}
 
@@ -179,7 +198,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
-	public virtual bool CheckDead(NPC npc) {
+	public virtual bool CheckDead(NPC npc)
+	{
 		return true;
 	}
 
@@ -187,7 +207,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
 	/// </summary>
 	/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
-	public virtual bool SpecialOnKill(NPC npc) {
+	public virtual bool SpecialOnKill(NPC npc)
+	{
 		return false;
 	}
 
@@ -196,7 +217,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
-	public virtual bool PreKill(NPC npc) {
+	public virtual bool PreKill(NPC npc)
+	{
 		return true;
 	}
 
@@ -204,14 +226,16 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
 	/// </summary>
 	/// <param name="npc"></param>
-	public virtual void OnKill(NPC npc) {
+	public virtual void OnKill(NPC npc)
+	{
 	}
 
 	/// <summary>
 	/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
 	/// <br/>Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
 	/// </summary>
-	public virtual bool? CanFallThroughPlatforms(NPC npc) {
+	public virtual bool? CanFallThroughPlatforms(NPC npc)
+	{
 		return null;
 	}
 
@@ -227,7 +251,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="item">The item with which the player is trying to catch the given NPC.</param>
 	/// <param name="player">The player attempting to catch the given NPC.</param>
 	/// <returns></returns>
-	public virtual bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+	public virtual bool? CanBeCaughtBy(NPC npc, Item item, Player player)
+	{
 		return null;
 	}
 
@@ -238,7 +263,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="player">The player attempting to catch the given NPC.</param>
 	/// <param name="item">The item used to catch the given NPC.</param>
 	/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
-	public virtual void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+	public virtual void OnCaughtBy(NPC npc, Player player, Item item, bool failed)
+	{
 	}
 
 	/// <summary>
@@ -247,7 +273,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="npcLoot"></param>
-	public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+	public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+	{
 	}
 
 	/// <summary>
@@ -255,7 +282,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 	/// </summary>
 	/// <param name="globalLoot"></param>
-	public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
+	public virtual void ModifyGlobalLoot(GlobalLoot globalLoot)
+	{
 	}
 
 	/// <summary>
@@ -265,7 +293,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="target"></param>
 	/// <param name="cooldownSlot"></param>
 	/// <returns></returns>
-	public virtual bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) {
+	public virtual bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
+	{
 		return true;
 	}
 
@@ -276,7 +305,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit) {
+	public virtual void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -286,7 +316,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="target"></param>
 	/// <param name="damage"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(NPC npc, Player target, int damage, bool crit) {
+	public virtual void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -295,7 +326,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(NPC npc, NPC target) {
+	public virtual bool? CanHitNPC(NPC npc, NPC target)
+	{
 		return null;
 	}
 
@@ -307,7 +339,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit) {
+	public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -318,7 +351,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
+	public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -328,7 +362,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
 	/// <returns></returns>
-	public virtual bool? CanBeHitByItem(NPC npc, Player player, Item item) {
+	public virtual bool? CanBeHitByItem(NPC npc, Player player, Item item)
+	{
 		return null;
 	}
 
@@ -341,7 +376,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit) {
+	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	{
 	}
 
 	/// <summary>
@@ -353,7 +389,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
+	public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -362,7 +399,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
-	public virtual bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
+	public virtual bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+	{
 		return null;
 	}
 
@@ -375,7 +413,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
 	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	{
 	}
 
 	/// <summary>
@@ -386,7 +425,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
 	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
+	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+	{
 	}
 
 	/// <summary>
@@ -399,7 +439,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="hitDirection"></param>
 	/// <param name="crit"></param>
 	/// <returns></returns>
-	public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
+	public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	{
 		return true;
 	}
 
@@ -408,7 +449,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
-	public virtual void BossHeadSlot(NPC npc, ref int index) {
+	public virtual void BossHeadSlot(NPC npc, ref int index)
+	{
 	}
 
 	/// <summary>
@@ -416,7 +458,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="rotation"></param>
-	public virtual void BossHeadRotation(NPC npc, ref float rotation) {
+	public virtual void BossHeadRotation(NPC npc, ref float rotation)
+	{
 	}
 
 	/// <summary>
@@ -424,7 +467,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="spriteEffects"></param>
-	public virtual void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects) {
+	public virtual void BossHeadSpriteEffects(NPC npc, ref SpriteEffects spriteEffects)
+	{
 	}
 
 	/// <summary>
@@ -433,7 +477,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="drawColor"></param>
 	/// <returns></returns>
-	public virtual Color? GetAlpha(NPC npc, Color drawColor) {
+	public virtual Color? GetAlpha(NPC npc, Color drawColor)
+	{
 		return null;
 	}
 
@@ -442,7 +487,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="drawColor"></param>
-	public virtual void DrawEffects(NPC npc, ref Color drawColor) {
+	public virtual void DrawEffects(NPC npc, ref Color drawColor)
+	{
 	}
 
 	/// <summary>
@@ -453,7 +499,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="screenPos">The screen position used to translate world position into screen position</param>
 	/// <param name="drawColor">The color the NPC is drawn in</param>
 	/// <returns></returns>
-	public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+	public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+	{
 		return true;
 	}
 
@@ -464,7 +511,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
 	/// <param name="screenPos">The screen position used to translate world position into screen position</param>
 	/// <param name="drawColor">The color the NPC is drawn in</param>
-	public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+	public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+	{
 	}
 
 	/// <summary>
@@ -484,7 +532,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="scale"></param>
 	/// <param name="position"></param>
 	/// <returns></returns>
-	public virtual bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position) {
+	public virtual bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
+	{
 		return null;
 	}
 
@@ -494,7 +543,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="player"></param>
 	/// <param name="spawnRate"></param>
 	/// <param name="maxSpawns"></param>
-	public virtual void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
+	public virtual void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+	{
 	}
 
 	/// <summary>
@@ -506,7 +556,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="safeRangeX"></param>
 	/// <param name="safeRangeY"></param>
 	public virtual void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
-		ref int safeRangeX, ref int safeRangeY) {
+		ref int safeRangeX, ref int safeRangeY)
+	{
 	}
 
 	/// <summary>
@@ -514,7 +565,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="pool"></param>
 	/// <param name="spawnInfo"></param>
-	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
+	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+	{
 	}
 
 	/// <summary>
@@ -523,7 +575,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="tileX"></param>
 	/// <param name="tileY"></param>
-	public virtual void SpawnNPC(int npc, int tileX, int tileY) {
+	public virtual void SpawnNPC(int npc, int tileX, int tileY)
+	{
 	}
 
 	/// <summary>
@@ -531,7 +584,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
-	public virtual bool? CanChat(NPC npc) {
+	public virtual bool? CanChat(NPC npc)
+	{
 		return null;
 	}
 
@@ -540,7 +594,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="chat"></param>
-	public virtual void GetChat(NPC npc, ref string chat) {
+	public virtual void GetChat(NPC npc, ref string chat)
+	{
 	}
 
 	/// <summary>
@@ -549,7 +604,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="firstButton"></param>
 	/// <returns></returns>
-	public virtual bool PreChatButtonClicked(NPC npc, bool firstButton) {
+	public virtual bool PreChatButtonClicked(NPC npc, bool firstButton)
+	{
 		return true;
 	}
 
@@ -558,7 +614,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="firstButton"></param>
-	public virtual void OnChatButtonClicked(NPC npc, bool firstButton) {
+	public virtual void OnChatButtonClicked(NPC npc, bool firstButton)
+	{
 	}
 
 	/// <summary>
@@ -567,7 +624,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="type"></param>
 	/// <param name="shop"></param>
 	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(int type, Chest shop, ref int nextSlot) {
+	public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
+	{
 	}
 
 	/// <summary>
@@ -575,7 +633,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="shop"></param>
 	/// <param name="nextSlot"></param>
-	public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
+	public virtual void SetupTravelShop(int[] shop, ref int nextSlot)
+	{
 	}
 
 	/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
@@ -595,7 +654,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc">The NPC</param>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
-	public virtual bool? CanGoToStatue(NPC npc, bool toKingStatue) {
+	public virtual bool? CanGoToStatue(NPC npc, bool toKingStatue)
+	{
 		return null;
 	}
 
@@ -605,7 +665,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc">The NPC</param>
 	/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
-	public virtual void OnGoToStatue(NPC npc, bool toKingStatue) {
+	public virtual void OnGoToStatue(NPC npc, bool toKingStatue)
+	{
 	}
 
 	/// <summary>
@@ -613,7 +674,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="damageMult"></param>
 	/// <param name="defense"></param>
-	public virtual void BuffTownNPC(ref float damageMult, ref int defense) {
+	public virtual void BuffTownNPC(ref float damageMult, ref int defense)
+	{
 	}
 
 	/// <summary>
@@ -622,7 +684,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
 	/// <param name="knockback"></param>
-	public virtual void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback) {
+	public virtual void TownNPCAttackStrength(NPC npc, ref int damage, ref float knockback)
+	{
 	}
 
 	/// <summary>
@@ -631,7 +694,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="cooldown"></param>
 	/// <param name="randExtraCooldown"></param>
-	public virtual void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown) {
+	public virtual void TownNPCAttackCooldown(NPC npc, ref int cooldown, ref int randExtraCooldown)
+	{
 	}
 
 	/// <summary>
@@ -640,7 +704,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="projType"></param>
 	/// <param name="attackDelay"></param>
-	public virtual void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay) {
+	public virtual void TownNPCAttackProj(NPC npc, ref int projType, ref int attackDelay)
+	{
 	}
 
 	/// <summary>
@@ -651,7 +716,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="gravityCorrection"></param>
 	/// <param name="randomOffset"></param>
 	public virtual void TownNPCAttackProjSpeed(NPC npc, ref float multiplier, ref float gravityCorrection,
-		ref float randomOffset) {
+		ref float randomOffset)
+	{
 	}
 
 	/// <summary>
@@ -659,7 +725,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="inBetweenShots"></param>
-	public virtual void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots) {
+	public virtual void TownNPCAttackShoot(NPC npc, ref bool inBetweenShots)
+	{
 	}
 
 	/// <summary>
@@ -667,7 +734,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="auraLightMultiplier"></param>
-	public virtual void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier) {
+	public virtual void TownNPCAttackMagic(NPC npc, ref float auraLightMultiplier)
+	{
 	}
 
 	/// <summary>
@@ -676,7 +744,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="itemWidth"></param>
 	/// <param name="itemHeight"></param>
-	public virtual void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight) {
+	public virtual void TownNPCAttackSwing(NPC npc, ref int itemWidth, ref int itemHeight)
+	{
 	}
 
 	/// <summary>
@@ -686,7 +755,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="scale"></param>
 	/// <param name="item"></param>
 	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness) {
+	public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	{
 	}
 
 	/// <summary>
@@ -697,7 +767,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="itemSize"></param>
 	/// <param name="scale"></param>
 	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	{
 	}
 
 	/// <summary>
@@ -707,7 +778,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
-	public virtual bool NeedSaving(NPC npc) {
+	public virtual bool NeedSaving(NPC npc)
+	{
 		return false;
 	}
 
@@ -720,7 +792,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
-	public virtual void SaveData(NPC npc, TagCompound tag) {
+	public virtual void SaveData(NPC npc, TagCompound tag)
+	{
 	}
 
 	/// <summary>
@@ -728,6 +801,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="tag"></param>
-	public virtual void LoadData(NPC npc, TagCompound tag) {
+	public virtual void LoadData(NPC npc, TagCompound tag)
+	{
 	}
 }

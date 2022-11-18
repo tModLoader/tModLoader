@@ -34,7 +34,8 @@ public static class ItemIO
 
 	public static TagCompound Save(Item item) => Save(item, SaveGlobals(item));
 
-	public static TagCompound Save(Item item, List<TagCompound> globalData) {
+	public static TagCompound Save(Item item, List<TagCompound> globalData)
+	{
 		var tag = new TagCompound();
 
 		if (item.type <= 0)
@@ -116,13 +117,15 @@ public static class ItemIO
 			LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 	}
 
-	public static Item Load(TagCompound tag) {
+	public static Item Load(TagCompound tag)
+	{
 		var item = new Item();
 		Load(item, tag);
 		return item;
 	}
 
-	internal static List<TagCompound> SaveGlobals(Item item) {
+	internal static List<TagCompound> SaveGlobals(Item item)
+	{
 		if (item.ModItem is UnloadedItem)
 			return null; // UnloadedItems cannot have global data
 
@@ -149,7 +152,8 @@ public static class ItemIO
 		return list.Count > 0 ? list : null;
 	}
 
-	internal static void LoadGlobals(Item item, IList<TagCompound> list) {
+	internal static void LoadGlobals(Item item, IList<TagCompound> list)
+	{
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItemBase) && item.TryGetGlobalItem(globalItemBase, out var globalItem)) {
 				try {
@@ -166,7 +170,8 @@ public static class ItemIO
 		}
 	}
 
-	public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false) {
+	public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
+	{
 		writer.Write7BitEncodedInt(item.netID);
 		writer.Write7BitEncodedInt(item.prefix);
 
@@ -179,7 +184,8 @@ public static class ItemIO
 		SendModData(item, writer);
 	}
 
-	public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
+	public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
+	{
 		item.netDefaults(reader.Read7BitEncodedInt());
 		item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt());
 
@@ -192,7 +198,8 @@ public static class ItemIO
 		ReceiveModData(item, reader);
 	}
 
-	public static Item Receive(BinaryReader reader, bool readStack = false, bool readFavorite = false) {
+	public static Item Receive(BinaryReader reader, bool readStack = false, bool readFavorite = false)
+	{
 		var item = new Item();
 
 		Receive(item, reader, readStack, readFavorite);
@@ -200,7 +207,8 @@ public static class ItemIO
 		return item;
 	}
 
-	public static void SendModData(Item item, BinaryWriter writer) {
+	public static void SendModData(Item item, BinaryWriter writer)
+	{
 		if (item.IsAir)
 			return;
 
@@ -212,7 +220,8 @@ public static class ItemIO
 		}
 	}
 
-	public static void ReceiveModData(Item item, BinaryReader reader) {
+	public static void ReceiveModData(Item item, BinaryReader reader)
+	{
 		if (item.IsAir)
 			return;
 
@@ -238,7 +247,8 @@ public static class ItemIO
 		}
 	}
 
-	internal static byte[] LegacyModData(int type, BinaryReader reader, bool hasGlobalSaving = true) {
+	internal static byte[] LegacyModData(int type, BinaryReader reader, bool hasGlobalSaving = true)
+	{
 		using (MemoryStream memoryStream = new MemoryStream()) {
 			using (BinaryWriter writer = new BinaryWriter(memoryStream)) {
 				if (type >= ItemID.Count) {
@@ -262,13 +272,15 @@ public static class ItemIO
 		}
 	}
 
-	public static string ToBase64(Item item) {
+	public static string ToBase64(Item item)
+	{
 		MemoryStream ms = new MemoryStream();
 		TagIO.ToStream(ItemIO.Save(item), ms, true);
 		return Convert.ToBase64String(ms.ToArray());
 	}
 
-	public static Item FromBase64(string base64) {
+	public static Item FromBase64(string base64)
+	{
 		MemoryStream ms = new MemoryStream(Convert.FromBase64String(base64));
 		return ItemIO.Load(TagIO.FromStream(ms, true));
 	}

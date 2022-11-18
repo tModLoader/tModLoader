@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Terraria.ModLoader.IO;
@@ -9,7 +9,8 @@ public class BitWriter
 	private byte cur;
 	private int i;
 
-	public void WriteBit(bool b) {
+	public void WriteBit(bool b)
+	{
 		if (b) {
 			cur |= (byte)(1 << i);
 		}
@@ -21,7 +22,8 @@ public class BitWriter
 		}
 	}
 
-	public void Flush(BinaryWriter w) {
+	public void Flush(BinaryWriter w)
+	{
 		w.Write7BitEncodedInt(bytes.Count * 8 + i);
 
 		if (i > 0) {

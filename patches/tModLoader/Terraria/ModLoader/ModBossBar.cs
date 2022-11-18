@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -68,10 +68,12 @@ public abstract class ModBossBar : ModTexturedType, IBigProgressBar
 	/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
 	/// <param name="npc">The NPC this ModBossBar is focused on</param>
 	/// <param name="drawParams">The draw parameters for the boss bar</param>
-	public virtual void PostDraw(SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams) {
+	public virtual void PostDraw(SpriteBatch spriteBatch, NPC npc, BossBarDrawParams drawParams)
+	{
 	}
 
-	public bool ValidateAndCollectNecessaryInfo(ref BigProgressBarInfo info) {
+	public bool ValidateAndCollectNecessaryInfo(ref BigProgressBarInfo info)
+	{
 		if (info.npcIndexToAimAt < 0 || info.npcIndexToAimAt > Main.maxNPCs)
 			return false;
 
@@ -91,7 +93,8 @@ public abstract class ModBossBar : ModTexturedType, IBigProgressBar
 		return modify.Value;
 	}
 
-	public void Draw(ref BigProgressBarInfo info, SpriteBatch spriteBatch) {
+	public void Draw(ref BigProgressBarInfo info, SpriteBatch spriteBatch)
+	{
 		//Questionmark icon as fallback
 		Rectangle? iconFrame = null;
 		Texture2D iconTexture = (GetIconTexture(ref iconFrame) ?? TextureAssets.NpcHead[0]).Value;

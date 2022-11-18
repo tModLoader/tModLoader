@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader;
@@ -12,7 +12,8 @@ public ref struct RefReadOnlyArray<T>
 
 	public T this[int index] => array[index];
 
-	public RefReadOnlyArray(T[] array) {
+	public RefReadOnlyArray(T[] array)
+	{
 		this.array = array;
 	}
 

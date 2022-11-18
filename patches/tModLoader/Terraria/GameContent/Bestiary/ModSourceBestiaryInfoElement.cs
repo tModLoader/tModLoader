@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
@@ -8,12 +8,14 @@ namespace Terraria.GameContent.Bestiary;
 
 public class ModSourceBestiaryInfoElement : ModBestiaryInfoElement
 {
-	public ModSourceBestiaryInfoElement(ModLoader.Mod mod, string displayName) {
+	public ModSourceBestiaryInfoElement(ModLoader.Mod mod, string displayName)
+	{
 		_mod = mod;
 		_displayName = displayName;
 	}
 
-	public override UIElement GetFilterImage() {
+	public override UIElement GetFilterImage()
+	{
 		Asset<Texture2D> asset;
 		if (_mod.HasAsset("icon_small")) {
 			asset = _mod.Assets.Request<Texture2D>("icon_small");

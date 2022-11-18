@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Threading;
 
@@ -13,7 +13,8 @@ internal static class FallbackSyncContext
 	{
 		private static ConcurrentQueue<Action> actions = new ConcurrentQueue<Action>();
 
-		public override void Send(SendOrPostCallback d, object state) {
+		public override void Send(SendOrPostCallback d, object state)
+		{
 			var handle = new ManualResetEvent(false);
 			Exception e = null;
 			actions.Enqueue(() => {
@@ -33,7 +34,8 @@ internal static class FallbackSyncContext
 				throw e;
 		}
 
-		public override void Post(SendOrPostCallback d, object state) {
+		public override void Post(SendOrPostCallback d, object state)
+		{
 			actions.Enqueue(() => {
 				try {
 					d.Invoke(state);
@@ -44,18 +46,21 @@ internal static class FallbackSyncContext
 			});
 		}
 
-		public override SynchronizationContext CreateCopy() {
+		public override SynchronizationContext CreateCopy()
+		{
 			return this;
 		}
 
-		internal void Update() {
+		internal void Update()
+		{
 			while (actions.TryDequeue(out var action))
 				action.Invoke();
 		}
 	}
 
 	private static SyncContext ctx;
-	public static void Update() {
+	public static void Update()
+	{
 		if (SynchronizationContext.Current == null) {
 			SynchronizationContext.SetSynchronizationContext(ctx = new SyncContext());
 			Logging.tML.Debug("Fallback synchronization context assigned");

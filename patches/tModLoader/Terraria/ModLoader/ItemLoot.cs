@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 
@@ -10,7 +10,8 @@ public readonly struct ItemLoot : ILoot
 	private readonly int itemType;
 	private readonly ItemDropDatabase itemDropDatabase;
 
-	public ItemLoot(int itemType, ItemDropDatabase itemDropDatabase) {
+	public ItemLoot(int itemType, ItemDropDatabase itemDropDatabase)
+	{
 		this.itemType = itemType;
 		this.itemDropDatabase = itemDropDatabase;
 	}
@@ -21,7 +22,8 @@ public readonly struct ItemLoot : ILoot
 
 	public IItemDropRule Remove(IItemDropRule entry) => itemDropDatabase.RemoveFromItem(itemType, entry);
 
-	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
+	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true)
+	{
 		foreach (var entry in Get()) {
 			if (predicate(entry)) {
 				Remove(entry);

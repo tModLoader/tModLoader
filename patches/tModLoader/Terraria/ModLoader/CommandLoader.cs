@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,8 @@ public static class CommandLoader
 {
 	internal static readonly IDictionary<string, List<ModCommand>> Commands = new Dictionary<string, List<ModCommand>>(StringComparer.OrdinalIgnoreCase);
 
-	public static bool Matches(CommandType commandType, CommandType callerType) {
+	public static bool Matches(CommandType commandType, CommandType callerType)
+	{
 		if ((commandType & CommandType.World) != 0)
 			if (Main.netMode == 2)
 				commandType |= CommandType.Server;
@@ -23,14 +24,16 @@ public static class CommandLoader
 		return (callerType & commandType) != 0;
 	}
 
-	internal static void Add(ModCommand cmd) {
+	internal static void Add(ModCommand cmd)
+	{
 		if (!Commands.TryGetValue(cmd.Command, out List<ModCommand> cmdList))
 			Commands.Add(cmd.Command, cmdList = new List<ModCommand>());
 
 		cmdList.Add(cmd);
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		Commands.Clear();
 	}
 	/// <summary>
@@ -40,7 +43,8 @@ public static class CommandLoader
 	/// <param name="name">The name of the command to retrieve</param>
 	/// <param name="mc">The found command, or null if an error was encountered.</param>
 	/// <returns>True if a ModCommand was found, or an error message was replied. False if the command is unrecognized.</returns>
-	internal static bool GetCommand(CommandCaller caller, string name, out ModCommand mc) {
+	internal static bool GetCommand(CommandCaller caller, string name, out ModCommand mc)
+	{
 		string modName = null;
 		if (name.Contains(':')) {
 			var split = name.Split(':');
@@ -78,7 +82,8 @@ public static class CommandLoader
 		return true;
 	}
 
-	internal static bool HandleCommand(string input, CommandCaller caller) {
+	internal static bool HandleCommand(string input, CommandCaller caller)
+	{
 		var args = input.TrimEnd().Split(' ');
 		var name = args[0];
 		args = args.Skip(1).ToArray();
@@ -109,7 +114,8 @@ public static class CommandLoader
 		return true;
 	}
 
-	public static List<Tuple<string, string>> GetHelp(CommandType type) {
+	public static List<Tuple<string, string>> GetHelp(CommandType type)
+	{
 		var list = new List<Tuple<string, string>>();
 		foreach (var entry in Commands) {
 			var cmdList = entry.Value.Where(mc => Matches(mc.Type, type)).ToList();

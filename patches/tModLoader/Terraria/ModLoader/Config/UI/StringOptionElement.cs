@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Terraria.ModLoader.UI;
 
@@ -21,7 +21,8 @@ internal class StringOptionElement : RangeElement
 		set => setValue((int)(Math.Round(value * (options.Length - 1))));
 	}
 
-	public override void OnBind() {
+	public override void OnBind()
+	{
 		base.OnBind();
 
 		StringList = (IList<string>)List;
@@ -46,7 +47,8 @@ internal class StringOptionElement : RangeElement
 		}
 	}
 
-	private void DefaultSetValue(int index) {
+	private void DefaultSetValue(int index)
+	{
 		if (!MemberInfo.CanWrite)
 			return;
 
@@ -54,11 +56,13 @@ internal class StringOptionElement : RangeElement
 		Interface.modConfig.SetPendingChanges();
 	}
 
-	private string DefaultGetValue() {
+	private string DefaultGetValue()
+	{
 		return (string)MemberInfo.GetValue(Item);
 	}
 
-	private int DefaultGetIndex() {
+	private int DefaultGetIndex()
+	{
 		return Array.IndexOf(options, getValue());
 	}
 }

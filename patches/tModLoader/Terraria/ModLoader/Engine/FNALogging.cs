@@ -16,7 +16,8 @@ internal static class FNALogging
 	{
 		public readonly string name;
 
-		public DeviceParam(string name) {
+		public DeviceParam(string name)
+		{
 			this.name = name;
 		}
 
@@ -31,12 +32,14 @@ internal static class FNALogging
 
 		private string Desc => getDescription?.Invoke(value) ?? value.ToString();
 
-		public DeviceParam(string name, Func<GraphicsDevice, T> getter, Func<T, string> getDescription = null) : base(name) {
+		public DeviceParam(string name, Func<GraphicsDevice, T> getter, Func<T, string> getDescription = null) : base(name)
+		{
 			this.getter = getter;
 			this.getDescription = getDescription;
 		}
 
-		public override void LogChange(GraphicsDevice g, StringBuilder changes, bool creating) {
+		public override void LogChange(GraphicsDevice g, StringBuilder changes, bool creating)
+		{
 			if (creating)
 				value = getter(g);
 
@@ -61,7 +64,8 @@ internal static class FNALogging
 	};
 	public static string DriverIdentifier { get; internal set; } // note, Metal will be "Metal\nDevice Name: %s"
 
-	internal static void RedirectLogs() {
+	internal static void RedirectLogs()
+	{
 		FNALoggerEXT.LogInfo = (s) => {
 			if (DriverIdentifier == null && s.StartsWith("FNA3D Driver: "))
 				DriverIdentifier = s.Substring("FNA3D Driver: ".Length);
@@ -88,7 +92,8 @@ internal static class FNALogging
 		Logging.FNA.Debug($"FAudio v{faudio_version / 10000}.{faudio_version / 100 % 100}.{faudio_version % 100}");
 	}
 
-	public static void GraphicsInit(GraphicsDeviceManager graphics) {
+	public static void GraphicsInit(GraphicsDeviceManager graphics)
+	{
 		graphics.DeviceReset += LogDeviceReset;
 		//Main.graphics.DeviceReset += UpdateBackbufferSizes;
 		graphics.DeviceCreated += (s, e) => creating = true;
@@ -99,7 +104,8 @@ internal static class FNALogging
 
 	private static bool creating;
 
-	private static void LogDeviceReset(object sender, EventArgs e) {
+	private static void LogDeviceReset(object sender, EventArgs e)
+	{
 		var graphicsDeviceManager = (GraphicsDeviceManager)sender;
 		var graphicsDevice = graphicsDeviceManager.GraphicsDevice;
 

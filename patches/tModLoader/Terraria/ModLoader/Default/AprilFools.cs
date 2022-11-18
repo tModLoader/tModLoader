@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.ID;
 
 namespace Terraria.ModLoader.Default;
@@ -7,16 +7,19 @@ public class AprilFools : ModLoaderModItem
 {
 	public override string Texture => "Terraria/Images/Item_3389";
 
-	public static bool CheckAprilFools() {
+	public static bool CheckAprilFools()
+	{
 		DateTime now = DateTime.Now;
 		return now.Month == 4 && now.Day <= 2;
 	}
 
-	public override void SetStaticDefaults() {
+	public override void SetStaticDefaults()
+	{
 		DisplayName.SetDefault("{$tModLoader.AprilFoolsJoke}");
 	}
 
-	public override void SetDefaults() {
+	public override void SetDefaults()
+	{
 		if (CheckAprilFools()) {
 			Item.SetNameOverride(Lang.GetItemNameValue(ItemID.Terrarian) + "...?");
 		}
@@ -33,7 +36,8 @@ public class AprilFools : ModLoaderModItem
 		Item.rare = 10;
 	}
 
-	public override bool? UseItem(Player player) {
+	public override bool? UseItem(Player player)
+	{
 		const int Time = 3600 * 60;
 
 		player.AddBuff(BuffID.Wet, Time);
@@ -44,7 +48,8 @@ public class AprilFools : ModLoaderModItem
 		return true;
 	}
 
-	public override void AddRecipes() {
+	public override void AddRecipes()
+	{
 		if (CheckAprilFools()) {
 			CreateRecipe()
 				.AddIngredient(ItemID.DirtBlock)

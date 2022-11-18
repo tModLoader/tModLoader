@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader;
@@ -29,21 +29,25 @@ public static class InfoDisplayLoader
 
 	internal static readonly IList<GlobalInfoDisplay> globalInfoDisplays = new List<GlobalInfoDisplay>();
 
-	static InfoDisplayLoader() {
+	static InfoDisplayLoader()
+	{
 		RegisterDefaultDisplays();
 	}
 
-	internal static int Add(InfoDisplay infoDisplay) {
+	internal static int Add(InfoDisplay infoDisplay)
+	{
 		InfoDisplays.Add(infoDisplay);
 		return InfoDisplays.Count - 1;
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		InfoDisplays.RemoveRange(DefaultDisplayCount, InfoDisplays.Count - DefaultDisplayCount);
 		globalInfoDisplays.Clear();
 	}
 
-	internal static void RegisterDefaultDisplays() {
+	internal static void RegisterDefaultDisplays()
+	{
 		int i = 0;
 		foreach (var infoDisplay in InfoDisplays) {
 			infoDisplay.Type = i++;
@@ -52,7 +56,8 @@ public static class InfoDisplayLoader
 		}
 	}
 
-	public static int ActiveDisplays() {
+	public static int ActiveDisplays()
+	{
 		int activeDisplays = 0;
 		for (int i = 0; i < InfoDisplays.Count; i++) {
 			if (InfoDisplays[i].Active())
@@ -67,7 +72,8 @@ public static class InfoDisplayLoader
 		ModTypeLookup<GlobalInfoDisplay>.Register(globalInfoDisplay);
 	}
 
-	public static int ActivePages() {
+	public static int ActivePages()
+	{
 		int activePages = 1;
 		int activeDisplays = ActiveDisplays();
 
@@ -79,7 +85,8 @@ public static class InfoDisplayLoader
 	}
 
 
-	public static bool Active(InfoDisplay info) {
+	public static bool Active(InfoDisplay info)
+	{
 		bool active = info.Active();
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
 			bool? val = global.Active(info);
@@ -89,13 +96,15 @@ public static class InfoDisplayLoader
 		return active;
 	}
 
-	public static void ModifyDisplayName(InfoDisplay info, ref string displayName) {
+	public static void ModifyDisplayName(InfoDisplay info, ref string displayName)
+	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
 			global.ModifyDisplayName(info, ref displayName);
 		}
 	}
 
-	public static void ModifyDisplayValue(InfoDisplay info, ref string displayName) {
+	public static void ModifyDisplayValue(InfoDisplay info, ref string displayName)
+	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
 			global.ModifyDisplayValue(info, ref displayName);
 		}

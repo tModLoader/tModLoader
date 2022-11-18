@@ -6,7 +6,8 @@ public abstract partial class AWorkshopTagsCollection
 {
 	public readonly List<WorkshopTagOption> ModTags = new List<WorkshopTagOption>();
 
-	protected void AddModTag(string tagNameKey, string tagInternalName) {
+	protected void AddModTag(string tagNameKey, string tagInternalName)
+	{
 		ModTags.Add(new WorkshopTagOption(tagNameKey, tagInternalName));
 	}
 }

@@ -19,28 +19,33 @@ internal class UIMessageBox : UIPanel
 	private bool _heightNeedsRecalculating;
 	private readonly List<Tuple<string, float>> _drawTexts = new List<Tuple<string, float>>();
 
-	public UIMessageBox(string text) {
+	public UIMessageBox(string text)
+	{
 		SetText(text);
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 		_heightNeedsRecalculating = true;
 	}
 
-	internal void SetText(string text) {
+	internal void SetText(string text)
+	{
 		_text = text;
 		ResetScrollbar();
 	}
 
-	private void ResetScrollbar() {
+	private void ResetScrollbar()
+	{
 		if (Scrollbar != null) {
 			Scrollbar.ViewPosition = 0;
 			_heightNeedsRecalculating = true;
 		}
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle space = GetInnerDimensions();
 		DynamicSpriteFont font = FontAssets.MouseText.Value;
@@ -58,7 +63,8 @@ internal class UIMessageBox : UIPanel
 		Recalculate();
 	}
 
-	public override void RecalculateChildren() {
+	public override void RecalculateChildren()
+	{
 		base.RecalculateChildren();
 		if (!_heightNeedsRecalculating) {
 			return;
@@ -96,30 +102,35 @@ internal class UIMessageBox : UIPanel
 		_heightNeedsRecalculating = false;
 	}
 
-	public override void Recalculate() {
+	public override void Recalculate()
+	{
 		base.Recalculate();
 		UpdateScrollbar();
 	}
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 		PlayerInput.LockVanillaMouseScroll("ModLoader/UIMessageBox");
 	}
 
-	public override void ScrollWheel(UIScrollWheelEvent evt) {
+	public override void ScrollWheel(UIScrollWheelEvent evt)
+	{
 		base.ScrollWheel(evt);
 		if (Scrollbar != null) {
 			Scrollbar.ViewPosition -= evt.ScrollWheelValue;
 		}
 	}
 
-	public void SetScrollbar(UIScrollbar scrollbar) {
+	public void SetScrollbar(UIScrollbar scrollbar)
+	{
 		Scrollbar = scrollbar;
 		UpdateScrollbar();
 		_heightNeedsRecalculating = true;
 	}
 
-	private void UpdateScrollbar() {
+	private void UpdateScrollbar()
+	{
 		Scrollbar?.SetView(GetInnerDimensions().Height, _height);
 	}
 }

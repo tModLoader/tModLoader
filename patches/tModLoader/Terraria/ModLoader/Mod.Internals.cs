@@ -1,4 +1,4 @@
-﻿using ReLogic.Content;
+using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -22,11 +22,13 @@ partial class Mod
 	internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 	internal readonly IList<ILoadable> content = new List<ILoadable>();
 
-	internal void SetupContent() {
+	internal void SetupContent()
+	{
 		LoaderUtils.ForEachAndAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
 	}
 
-	internal void UnloadContent() {
+	internal void UnloadContent()
+	{
 		SystemLoader.OnModUnload(this);
 
 		Unload();
@@ -41,7 +43,8 @@ partial class Mod
 		Assets?.Dispose();
 	}
 
-	internal void Autoload() {
+	internal void Autoload()
+	{
 		if (Code == null)
 			return;
 
@@ -86,7 +89,8 @@ partial class Mod
 		};
 	}
 
-	internal void TransferAllAssets() {
+	internal void TransferAllAssets()
+	{
 		initialTransferComplete = false;
 		Assets.TransferAllAssets();
 		initialTransferComplete = true;
@@ -101,7 +105,8 @@ partial class Mod
 
 	internal bool initialTransferComplete;
 	internal List<Exception> AssetExceptions = new List<Exception>();
-	internal void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
+	internal void OnceFailedLoadingAnAsset(string assetPath, Exception e)
+	{
 		if (initialTransferComplete) {
 			// TODO: Add a user friendly indicator/inbox for viewing these errors that happen in-game
 			Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);

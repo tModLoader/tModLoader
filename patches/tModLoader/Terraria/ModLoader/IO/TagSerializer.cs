@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,16 +23,19 @@ public abstract class TagSerializer : ModType
 	private static IDictionary<Type, TagSerializer> serializers = new Dictionary<Type, TagSerializer>();
 	private static IDictionary<string, Type> typeNameCache = new Dictionary<string, Type>();
 
-	static TagSerializer() {
+	static TagSerializer()
+	{
 		Reload();
 	}
 
-	internal static void Reload() {
+	internal static void Reload()
+	{
 		serializers.Clear();
 		typeNameCache.Clear();
 	}
 
-	public static bool TryGetSerializer(Type type, [NotNullWhen(true)] out TagSerializer? serializer) {
+	public static bool TryGetSerializer(Type type, [NotNullWhen(true)] out TagSerializer? serializer)
+	{
 		if (serializers.TryGetValue(type, out serializer))
 			return true;
 
@@ -50,11 +53,13 @@ public abstract class TagSerializer : ModType
 		return false;
 	}
 
-	internal static void AddSerializer(TagSerializer serializer) {
+	internal static void AddSerializer(TagSerializer serializer)
+	{
 		serializers.Add(serializer.Type, serializer);
 	}
 
-	public static Type? GetType(string name) {
+	public static Type? GetType(string name)
+	{
 		if (typeNameCache.TryGetValue(name, out Type? type))
 			return type;
 
@@ -71,7 +76,8 @@ public abstract class TagSerializer : ModType
 		return null;
 	}
 
-	protected sealed override void Register() {
+	protected sealed override void Register()
+	{
 		AddSerializer(this);
 	}
 
@@ -88,19 +94,23 @@ public abstract class TagSerializer<T, S> : TagSerializer
 	public abstract S Serialize(T value);
 	public abstract T Deserialize(S tag);
 
-	public override object Serialize(object value) {
+	public override object Serialize(object value)
+	{
 		return Serialize((T)value);
 	}
 
-	public override object Deserialize(object tag) {
+	public override object Deserialize(object tag)
+	{
 		return Deserialize((S)tag);
 	}
 
-	public override IList SerializeList(IList value) {
+	public override IList SerializeList(IList value)
+	{
 		return ((IList<T>)value).Select(Serialize).ToList();
 	}
 
-	public override IList DeserializeList(IList value) {
+	public override IList DeserializeList(IList value)
+	{
 		return ((IList<S>)value).Select(Deserialize).ToList();
 	}
 }
@@ -152,11 +162,13 @@ public class Vector3TagSerializer : TagSerializer<Vector3, TagCompound>
 
 public class ColorSerializer : TagSerializer<Color, int>
 {
-	public override int Serialize(Color value) {
+	public override int Serialize(Color value)
+	{
 		return (int)value.PackedValue;
 	}
 
-	public override Color Deserialize(int tag) {
+	public override Color Deserialize(int tag)
+	{
 		return new Color(tag & 0xFF, tag >> 8 & 0xFF, tag >> 16 & 0xFF, tag >> 24 & 0xFF);
 	}
 }

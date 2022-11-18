@@ -1,4 +1,4 @@
-﻿using Terraria.ModLoader;
+using Terraria.ModLoader;
 
 namespace Terraria.DataStructures;
 
@@ -14,7 +14,8 @@ internal sealed class VanillaPlayerDrawTransform : PlayerDrawLayer.Transformatio
 	public override PlayerDrawLayer.Transformation Parent => _parent;
 
 	/// <summary> Creates a LegacyPlayerLayer with the given mod name, identifier name, and drawing action. </summary>
-	public VanillaPlayerDrawTransform(LayerFunction preDraw, LayerFunction postDraw, PlayerDrawLayer.Transformation parent = null) {
+	public VanillaPlayerDrawTransform(LayerFunction preDraw, LayerFunction postDraw, PlayerDrawLayer.Transformation parent = null)
+	{
 		PreDrawFunc = preDraw;
 		PostDrawFunc = postDraw;
 		_parent = parent;

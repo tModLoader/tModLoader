@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Terraria.ModLoader.Default.Developer.Jofairden;
 
@@ -13,16 +13,19 @@ internal sealed class JofairdenArmorEffectPlayer : ModPlayer
 
 	public bool HasAura => _auraTime > 0;
 
-	public override void ResetEffects() {
+	public override void ResetEffects()
+	{
 		HasSetBonus = false;
 	}
 
-	public override void UpdateDead() {
+	public override void UpdateDead()
+	{
 		HasSetBonus = false;
 		_auraTime = 0;
 	}
 
-	public override void PostUpdate() {
+	public override void PostUpdate()
+	{
 		if (!HasAura) {
 			if (ShaderStrength > 0f) {
 				ShaderStrength -= 0.02f;
@@ -56,7 +59,8 @@ internal sealed class JofairdenArmorEffectPlayer : ModPlayer
 		}
 	}
 
-	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	{
 		if (_lastLife <= -1) {
 			_lastLife = Player.statLife;
 		}

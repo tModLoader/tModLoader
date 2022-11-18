@@ -5545,13 +5545,14 @@
  			}
  
  			inventory[i].TurnToAir();
-@@ -41655,12 +_,27 @@
+@@ -41655,12 +_,28 @@
  			loadouts[type].TryDroppingItems(this, itemSource_Death);
  		}
  
 +		DropItems_End(startInventory);
 +	}
-+	private IEnumerable<Item> DropItems_GetDefaults() { //Split by tML.
++	private IEnumerable<Item> DropItems_GetDefaults()
++	{ //Split by tML.
 +		var inventory = new Item[this.inventory.Length];
 +
 +		for (int i = 0; i < inventory.Length; i++) {

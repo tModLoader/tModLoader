@@ -6,18 +6,21 @@ namespace Terraria.GameContent.Tile_Entities;
 
 public partial class TEHatRack
 {
-	public override void SaveData(TagCompound tag) {
+	public override void SaveData(TagCompound tag)
+	{
 		tag["items"] = PlayerIO.SaveInventory(_items);
 		tag["dyes"] = PlayerIO.SaveInventory(_dyes);
 	}
 
-	public override void LoadData(TagCompound tag) {
+	public override void LoadData(TagCompound tag)
+	{
 		PlayerIO.LoadInventory(_items, tag.GetList<TagCompound>("items"));
 		PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 	}
 
 	//NOTE: _items length is 2, so we can compress it to one bitsbyte
-	public override void NetSend(BinaryWriter writer) {
+	public override void NetSend(BinaryWriter writer)
+	{
 		BitsByte itemsBits = default;
 
 		for (int i = 0; i < _items.Length; i++) {
@@ -44,7 +47,8 @@ public partial class TEHatRack
 		}
 	}
 
-	public override void NetReceive(BinaryReader reader) {
+	public override void NetReceive(BinaryReader reader)
+	{
 		BitsByte presentItems = reader.ReadByte();
 
 		for (int i = 0; i < _items.Length; i++) {

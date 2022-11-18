@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,8 @@ public partial class LanguageManager
 {
 	public List<string> GetKeysInCategory(string categoryName) => _categoryGroupedKeys[categoryName];
 
-	public List<string> GetLocalizedEntriesInCategory(string categoryName) {
+	public List<string> GetLocalizedEntriesInCategory(string categoryName)
+	{
 		List<string> list = GetKeysInCategory(categoryName);
 		List<string> localizedList = new List<string>();
 		foreach (string key in list) {

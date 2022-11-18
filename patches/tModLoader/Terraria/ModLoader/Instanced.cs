@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader;
 
@@ -9,7 +9,8 @@ public readonly struct Instanced<T>
 	public readonly ushort Index;
 	public readonly T Instance;
 
-	public Instanced(ushort index, T instance) {
+	public Instanced(ushort index, T instance)
+	{
 		Index = index;
 		Instance = instance;
 	}

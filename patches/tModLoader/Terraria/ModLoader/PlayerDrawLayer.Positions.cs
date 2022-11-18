@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 
@@ -13,12 +13,14 @@ public abstract partial class PlayerDrawLayer
 		public PlayerDrawLayer Layer1 { get; }
 		public PlayerDrawLayer Layer2 { get; }
 
-		public Between(PlayerDrawLayer layer1, PlayerDrawLayer layer2) {
+		public Between(PlayerDrawLayer layer1, PlayerDrawLayer layer2)
+		{
 			Layer1 = layer1;
 			Layer2 = layer2;
 		}
 
-		public Between() {
+		public Between()
+		{
 		}
 	}
 
@@ -36,7 +38,8 @@ public abstract partial class PlayerDrawLayer
 	{
 		public PlayerDrawLayer Parent { get; }
 
-		public BeforeParent(PlayerDrawLayer parent) {
+		public BeforeParent(PlayerDrawLayer parent)
+		{
 			Parent = parent;
 		}
 	}
@@ -45,7 +48,8 @@ public abstract partial class PlayerDrawLayer
 	{
 		public PlayerDrawLayer Parent { get; }
 
-		public AfterParent(PlayerDrawLayer parent) {
+		public AfterParent(PlayerDrawLayer parent)
+		{
 			Parent = parent;
 		}
 	}

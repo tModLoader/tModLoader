@@ -5,7 +5,8 @@ public class UnloadedAccessorySlot : ModAccessorySlot
 {
 	public override string Name { get; }
 
-	internal UnloadedAccessorySlot(int slot, string oldName) {
+	internal UnloadedAccessorySlot(int slot, string oldName)
+	{
 		Type = slot;
 		Name = oldName;
 	}

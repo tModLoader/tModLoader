@@ -17,7 +17,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="type"></param>
 	/// <param name="fail">If true, the tile/wall is only partially damaged. If false, the tile/wall is fully destroyed.</param>
 	/// <returns></returns>
-	public virtual bool KillSound(int i, int j, int type, bool fail) {
+	public virtual bool KillSound(int i, int j, int type, bool fail)
+	{
 		return true;
 	}
 
@@ -29,7 +30,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="type"></param>
 	/// <param name="fail"></param>
 	/// <param name="num"></param>
-	public virtual void NumDust(int i, int j, int type, bool fail, ref int num) {
+	public virtual void NumDust(int i, int j, int type, bool fail, ref int num)
+	{
 	}
 
 	/// <summary>
@@ -40,7 +42,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="type"></param>
 	/// <param name="dustType"></param>
 	/// <returns></returns>
-	public virtual bool CreateDust(int i, int j, int type, ref int dustType) {
+	public virtual bool CreateDust(int i, int j, int type, ref int dustType)
+	{
 		return true;
 	}
 
@@ -51,7 +54,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="j"></param>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual bool CanPlace(int i, int j, int type) {
+	public virtual bool CanPlace(int i, int j, int type)
+	{
 		return true;
 	}
 
@@ -62,7 +66,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="j"></param>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual bool CanExplode(int i, int j, int type) {
+	public virtual bool CanExplode(int i, int j, int type)
+	{
 		return true;
 	}
 
@@ -74,7 +79,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="type"></param>
 	/// <param name="spriteBatch"></param>
 	/// <returns></returns>
-	public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public virtual bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 		return true;
 	}
 
@@ -85,7 +91,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="j"></param>
 	/// <param name="type"></param>
 	/// <param name="spriteBatch"></param>
-	public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch) {
+	public virtual void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
 	}
 
 	/// <summary>
@@ -94,7 +101,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="i"></param>
 	/// <param name="j"></param>
 	/// <param name="type"></param>
-	public virtual void RandomUpdate(int i, int j, int type) {
+	public virtual void RandomUpdate(int i, int j, int type)
+	{
 	}
 
 	/// <summary>
@@ -104,7 +112,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
 	/// <param name="type"></param>
 	/// <param name="item">The item used to place this tile/wall.</param>
-	public virtual void PlaceInWorld(int i, int j, int type, Item item) {
+	public virtual void PlaceInWorld(int i, int j, int type, Item item)
+	{
 	}
 
 	/// <summary>
@@ -118,6 +127,7 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="r"></param>
 	/// <param name="g"></param>
 	/// <param name="b"></param>
-	public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b) {
+	public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+	{
 	}
 }

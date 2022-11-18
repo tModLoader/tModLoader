@@ -20,7 +20,8 @@ public abstract class ModGore : ModTexturedType
 	public override string Name => nameOverride ?? base.Name;
 	public override string Texture => textureOverride ?? base.Texture;
 
-	protected override void Register() {
+	protected override void Register()
+	{
 		ModTypeLookup<ModGore>.Register(this);
 		GoreLoader.RegisterModGore(this);
 	}

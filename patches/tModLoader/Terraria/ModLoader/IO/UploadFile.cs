@@ -10,7 +10,8 @@ namespace Terraria.ModLoader.IO;
 
 public class UploadFile
 {
-	public UploadFile() {
+	public UploadFile()
+	{
 		ContentType = "application/octet-stream";
 	}
 
@@ -22,7 +23,8 @@ public class UploadFile
 
 	public byte[] Content { get; set; }
 
-	public static byte[] UploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values) {
+	public static byte[] UploadFiles(string address, IEnumerable<UploadFile> files, NameValueCollection values)
+	{
 		var request = WebRequest.Create(address);
 		request.Method = "POST";
 		var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x", NumberFormatInfo.InvariantInfo);
@@ -42,7 +44,8 @@ public class UploadFile
 		}
 	}
 
-	public static byte[] GetUploadFilesRequestData(IEnumerable<UploadFile> files, NameValueCollection values, string boundary) {
+	public static byte[] GetUploadFilesRequestData(IEnumerable<UploadFile> files, NameValueCollection values, string boundary)
+	{
 		boundary = "--" + boundary;
 		using (var requestStream = new MemoryStream()) {
 			WriteValues(requestStream, values, boundary);
@@ -53,7 +56,8 @@ public class UploadFile
 		}
 	}
 
-	private static void WriteValues(Stream requestStream, NameValueCollection values, string boundary) {
+	private static void WriteValues(Stream requestStream, NameValueCollection values, string boundary)
+	{
 		if (values == null)
 			return;
 
@@ -68,7 +72,8 @@ public class UploadFile
 		}
 	}
 
-	private static void WriteFiles(Stream requestStream, IEnumerable<UploadFile> files, string boundary) {
+	private static void WriteFiles(Stream requestStream, IEnumerable<UploadFile> files, string boundary)
+	{
 		if (files == null)
 			return;
 

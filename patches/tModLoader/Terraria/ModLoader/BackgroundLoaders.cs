@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,8 @@ public sealed class BackgroundTextureLoader : Loader
 
 	internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
 
-	public BackgroundTextureLoader() {
+	public BackgroundTextureLoader()
+	{
 		Initialize(VanillaBackgroundTextureCount);
 	}
 
@@ -44,7 +45,8 @@ public sealed class BackgroundTextureLoader : Loader
 	/// </summary>
 	/// <param name="mod">The mod that owns this background.</param>
 	/// <param name="texture">The texture.</param>
-	public static void AddBackgroundTexture(Mod mod, string texture) {
+	public static void AddBackgroundTexture(Mod mod, string texture)
+	{
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
 
@@ -59,7 +61,8 @@ public sealed class BackgroundTextureLoader : Loader
 		backgrounds[texture] = Instance.Reserve();
 	}
 
-	internal override void ResizeArrays() {
+	internal override void ResizeArrays()
+	{
 		Array.Resize(ref TextureAssets.Background, TotalCount);
 		Array.Resize(ref Main.backgroundHeight, TotalCount);
 		Array.Resize(ref Main.backgroundWidth, TotalCount);
@@ -74,13 +77,15 @@ public sealed class BackgroundTextureLoader : Loader
 		}
 	}
 
-	internal override void Unload() {
+	internal override void Unload()
+	{
 		base.Unload();
 
 		backgrounds.Clear();
 	}
 
-	internal static void AutoloadBackgrounds(Mod mod) {
+	internal static void AutoloadBackgrounds(Mod mod)
+	{
 		foreach (string fullTexturePath in mod.RootContentSource.EnumerateAssets().Where(t => t.Contains("Backgrounds/"))) {
 			string texturePath = Path.ChangeExtension(fullTexturePath, null);
 			string textureKey = $"{mod.Name}/{texturePath}";
@@ -98,11 +103,13 @@ public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroun
 {
 	public const int VanillaUndergroundBackgroundStylesCount = 22;
 
-	public UndergroundBackgroundStylesLoader() {
+	public UndergroundBackgroundStylesLoader()
+	{
 		Initialize(VanillaUndergroundBackgroundStylesCount);
 	}
 
-	public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+	public override void ChooseStyle(out int style, out SceneEffectPriority priority)
+	{
 		priority = SceneEffectPriority.None; style = -1;
 
 		if (!GlobalBackgroundStyleLoader.loaded) {
@@ -117,7 +124,8 @@ public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroun
 		}
 	}
 
-	public void FillTextureArray(int style, int[] textureSlots) {
+	public void FillTextureArray(int style, int[] textureSlots)
+	{
 		if (!GlobalBackgroundStyleLoader.loaded) {
 			return;
 		}
@@ -135,22 +143,26 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 {
 	internal static bool loaded = false;
 
-	public SurfaceBackgroundStylesLoader() {
+	public SurfaceBackgroundStylesLoader()
+	{
 		Initialize(Main.BG_STYLES_COUNT);
 	}
 
-	internal override void ResizeArrays() {
+	internal override void ResizeArrays()
+	{
 		Array.Resize(ref Main.bgAlphaFrontLayer, TotalCount);
 		Array.Resize(ref Main.bgAlphaFarBackLayer, TotalCount);
 		loaded = true;
 	}
 
-	internal override void Unload() {
+	internal override void Unload()
+	{
 		base.Unload();
 		loaded = false;
 	}
 
-	public override void ChooseStyle(out int style, out SceneEffectPriority priority) {
+	public override void ChooseStyle(out int style, out SceneEffectPriority priority)
+	{
 		priority = SceneEffectPriority.None; style = -1;
 
 		if (!loaded || !GlobalBackgroundStyleLoader.loaded) {
@@ -165,7 +177,8 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void ModifyFarFades(int style, float[] fades, float transitionSpeed) {
+	public void ModifyFarFades(int style, float[] fades, float transitionSpeed)
+	{
 		if (!GlobalBackgroundStyleLoader.loaded) {
 			return;
 		}
@@ -177,7 +190,8 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawFarTexture() {
+	public void DrawFarTexture()
+	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
 		}
@@ -222,7 +236,8 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawMiddleTexture() {
+	public void DrawMiddleTexture()
+	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
 		}
@@ -261,7 +276,8 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawCloseBackground(int style) {
+	public void DrawCloseBackground(int style)
+	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
 		}
@@ -338,7 +354,8 @@ internal static class GlobalBackgroundStyleLoader
 	internal static Action<int, int[]>[] HookFillUndergroundTextureArray;
 	internal static Action<int, float[], float>[] HookModifyFarSurfaceFades;
 
-	internal static void ResizeAndFillArrays(bool unloading = false) {
+	internal static void ResizeAndFillArrays(bool unloading = false)
+	{
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
 		// Remove generic arguments once fixed.
 		ModLoader.BuildGlobalHook<GlobalBackgroundStyle, DelegateChooseUndergroundBackgroundStyle>(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
@@ -351,7 +368,8 @@ internal static class GlobalBackgroundStyleLoader
 		}
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		loaded = false;
 		globalBackgroundStyles.Clear();
 	}

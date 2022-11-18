@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Audio;
 using NVorbis;
 using ReLogic.Content;
 using ReLogic.Content.Readers;
@@ -8,7 +8,8 @@ namespace Terraria.ModLoader.Assets;
 
 public class OggReader : IAssetReader
 {
-	T IAssetReader.FromStream<T>(Stream stream) where T : class {
+	T IAssetReader.FromStream<T>(Stream stream) where T : class
+	{
 		if (typeof(T) != typeof(SoundEffect))
 			throw AssetLoadException.FromInvalidReader<OggReader, T>();
 
@@ -23,7 +24,8 @@ public class OggReader : IAssetReader
 		return new SoundEffect(buffer, reader.SampleRate, (AudioChannels)reader.Channels) as T;
 	}
 
-	public static void Convert(float[] floatBuf, byte[] buffer) {
+	public static void Convert(float[] floatBuf, byte[] buffer)
+	{
 		for (int i = 0; i < floatBuf.Length; i++) {
 			short val = (short)(floatBuf[i] * short.MaxValue);
 			buffer[i * 2] = (byte)val;

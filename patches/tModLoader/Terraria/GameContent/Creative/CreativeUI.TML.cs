@@ -2,7 +2,8 @@ namespace Terraria.GameContent.Creative;
 
 public partial class CreativeUI
 {
-	public static ItemSacrificeResult ResearchItem(int type) {
+	public static ItemSacrificeResult ResearchItem(int type)
+	{
 		if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))
 			return ItemSacrificeResult.CannotSacrifice;
 
@@ -15,7 +16,8 @@ public partial class CreativeUI
 	/// <param name="type">The item type to check.</param>
 	/// <param name="fullyResearched">True if it is fully researched.</param>
 	/// <returns></returns>
-	public static int GetSacrificeCount(int type, out bool fullyResearched) {
+	public static int GetSacrificeCount(int type, out bool fullyResearched)
+	{
 		fullyResearched = false;
 
 		if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))
@@ -33,7 +35,8 @@ public partial class CreativeUI
 	/// </summary>
 	/// <param name="type">The item type to check.</param>
 	/// <returns>The number of sacrifices remaining , or null if the item can never be unlocked.</returns>
-	public static int? GetSacrificesRemaining(int type) {
+	public static int? GetSacrificesRemaining(int type)
+	{
 		if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))
 			return null;
 

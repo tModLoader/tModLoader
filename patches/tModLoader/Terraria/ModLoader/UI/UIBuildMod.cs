@@ -13,17 +13,20 @@ internal class UIBuildMod : UIProgress, ModCompile.IBuildStatus
 	private CancellationTokenSource _cts;
 	private int numProgressItems;
 
-	public void SetProgress(int i, int n = -1) {
+	public void SetProgress(int i, int n = -1)
+	{
 		if (n >= 0) numProgressItems = n;
 		Progress = i / (float)numProgressItems;
 	}
 
-	public void SetStatus(string msg) {
+	public void SetStatus(string msg)
+	{
 		Logging.tML.Info(msg);
 		DisplayText = msg;
 	}
 
-	public void LogCompilerLine(string msg, Level level) {
+	public void LogCompilerLine(string msg, Level level)
+	{
 		Logging.tML.Logger.Log(null, level, msg, null);
 	}
 
@@ -33,17 +36,20 @@ internal class UIBuildMod : UIProgress, ModCompile.IBuildStatus
 	internal void BuildAll(bool reload)
 		=> Build(mc => mc.BuildAll(), reload);
 
-	internal void Build(Action<ModCompile> buildAction, bool reload) {
+	internal void Build(Action<ModCompile> buildAction, bool reload)
+	{
 		Main.menuMode = Interface.buildModID;
 		Task.Run(() => BuildMod(buildAction, reload));
 	}
 
-	public override void OnInitialize() {
+	public override void OnInitialize()
+	{
 		base.OnInitialize();
 		_cancelButton.Remove();
 	}
 
-	public override void OnActivate() {
+	public override void OnActivate()
+	{
 		base.OnActivate();
 		_cts = new CancellationTokenSource();
 		OnCancel += () => {
@@ -51,13 +57,15 @@ internal class UIBuildMod : UIProgress, ModCompile.IBuildStatus
 		};
 	}
 
-	public override void OnDeactivate() {
+	public override void OnDeactivate()
+	{
 		base.OnDeactivate();
 		_cts?.Dispose();
 		_cts = null;
 	}
 
-	private Task BuildMod(Action<ModCompile> buildAction, bool reload) {
+	private Task BuildMod(Action<ModCompile> buildAction, bool reload)
+	{
 		while (_progressBar == null || _cts == null)
 			Task.Delay(1); // wait for the UI to init
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ID;
@@ -70,7 +70,8 @@ public partial class Recipe
 
 		public string Description => DescriptionText.ToString();
 
-		public Condition(NetworkText description, Predicate<Recipe> predicate) {
+		public Condition(NetworkText description, Predicate<Recipe> predicate)
+		{
 			DescriptionText = description ?? throw new ArgumentNullException(nameof(description));
 			Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 		}
@@ -104,7 +105,8 @@ public partial class Recipe
 	internal OnCraftCallback OnCraftHooks { get; private set; }
 	internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
-	private void AddGroup(int id) {
+	private void AddGroup(int id)
+	{
 		acceptedGroups.Add(id);
 	}
 
@@ -125,7 +127,8 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="itemID">The item identifier.</param>
 	/// <param name="stack">The stack.</param>
-	public Recipe AddIngredient(int itemID, int stack = 1) {
+	public Recipe AddIngredient(int itemID, int stack = 1)
+	{
 		requiredItem.Add(new Item(itemID) { stack = stack });
 
 		return this;
@@ -138,7 +141,8 @@ public partial class Recipe
 	/// <param name="itemName">Name of the item.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">The item " + itemName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla item, try removing the first argument.</exception>
-	public Recipe AddIngredient(Mod mod, string itemName, int stack = 1) {
+	public Recipe AddIngredient(Mod mod, string itemName, int stack = 1)
+	{
 		mod ??= this.Mod;
 
 		if (!ModContent.TryFind(mod.Name, itemName, out ModItem item))
@@ -167,7 +171,8 @@ public partial class Recipe
 	/// <param name="name">The name.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the name " + name + " does not exist.</exception>
-	public Recipe AddRecipeGroup(string name, int stack = 1) {
+	public Recipe AddRecipeGroup(string name, int stack = 1)
+	{
 		if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
 			throw new RecipeException($"A recipe group with the name {name} does not exist.");
 
@@ -186,7 +191,8 @@ public partial class Recipe
 	/// <param name="recipeGroupId">The RecipeGroupID.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
-	public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
+	public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1)
+	{
 		if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 			throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
 
@@ -203,7 +209,8 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="recipeGroup">The RecipeGroup.</param>
 	/// <param name="stack"></param>
-	public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
+	public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1)
+	{
 		AddIngredient(recipeGroup.IconicItemId, stack);
 		AddGroup(recipeGroup.RegisteredId);
 
@@ -215,7 +222,8 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="tileID">The tile identifier.</param>
 	/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
-	public Recipe AddTile(int tileID) {
+	public Recipe AddTile(int tileID)
+	{
 		if (tileID < 0 || tileID >= TileLoader.TileCount)
 			throw new RecipeException($"No tile has ID '{tileID}'.");
 
@@ -230,7 +238,8 @@ public partial class Recipe
 	/// <param name="mod">The mod.</param>
 	/// <param name="tileName">Name of the tile.</param>
 	/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).</exception>
-	public Recipe AddTile(Mod mod, string tileName) {
+	public Recipe AddTile(Mod mod, string tileName)
+	{
 		mod ??= this.Mod;
 
 		if (!ModContent.TryFind(mod.Name, tileName, out ModTile tile))
@@ -264,7 +273,8 @@ public partial class Recipe
 	/// <param name="conditions">An array of conditions.</param>
 	public Recipe AddCondition(params Condition[] conditions) => AddCondition((IEnumerable<Condition>)conditions);
 
-	public Recipe AddCondition(Condition condition) {
+	public Recipe AddCondition(Condition condition)
+	{
 		Conditions.Add(condition);
 
 		return this;
@@ -274,7 +284,8 @@ public partial class Recipe
 	/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">A collection of conditions.</param>
-	public Recipe AddCondition(IEnumerable<Condition> conditions) {
+	public Recipe AddCondition(IEnumerable<Condition> conditions)
+	{
 		Conditions.AddRange(conditions);
 
 		return this;
@@ -283,7 +294,8 @@ public partial class Recipe
 	/// <summary>
 	/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 	/// </summary>
-	public Recipe AddOnCraftCallback(OnCraftCallback callback) {
+	public Recipe AddOnCraftCallback(OnCraftCallback callback)
+	{
 		OnCraftHooks += callback;
 
 		return this;
@@ -292,7 +304,8 @@ public partial class Recipe
 	/// <summary>
 	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 	/// </summary>
-	public Recipe AddConsumeItemCallback(ConsumeItemCallback callback) {
+	public Recipe AddConsumeItemCallback(ConsumeItemCallback callback)
+	{
 		ConsumeItemHooks += callback;
 
 		return this;
@@ -303,7 +316,8 @@ public partial class Recipe
 	/// <summary>
 	/// Sets the Ordering of this recipe. This recipe can't already have one.
 	/// </summary>
-	private Recipe SetOrdering(Recipe recipe, bool after) {
+	private Recipe SetOrdering(Recipe recipe, bool after)
+	{
 		if (!RecipeLoader.setupRecipes)
 			throw new RecipeException("You can only move recipes during setup");
 		if (Main.recipe[recipe.RecipeIndex] != recipe)
@@ -327,7 +341,8 @@ public partial class Recipe
 	/// <summary>
 	/// Sorts the recipe before the first one creating the item of the ID given as parameter.
 	/// </summary>
-	public Recipe SortBeforeFirstRecipesOf(int itemId) {
+	public Recipe SortBeforeFirstRecipesOf(int itemId)
+	{
 		Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
 		if (target != null) {
 			return SortBefore(target);
@@ -344,7 +359,8 @@ public partial class Recipe
 	/// <summary>
 	/// Sorts the recipe after the first one creating the item of the ID given as parameter.
 	/// </summary>
-	public Recipe SortAfterFirstRecipesOf(int itemId) {
+	public Recipe SortAfterFirstRecipesOf(int itemId)
+	{
 		Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
 		if (target != null) {
 			return SortAfter(target);
@@ -364,7 +380,8 @@ public partial class Recipe
 	/// Returns a clone of this recipe except the source mod of the Recipe will the currently loading mod.
 	/// <br/> The clone will have to be registered after being tweaked.
 	/// </summary>
-	public Recipe Clone() {
+	public Recipe Clone()
+	{
 		if (!RecipeLoader.setupRecipes)
 			throw new RecipeException("A Recipe can only be cloned inside recipe related methods");
 
@@ -408,7 +425,8 @@ public partial class Recipe
 	/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 	/// </summary>
 	/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-	public Recipe Register() {
+	public Recipe Register()
+	{
 		if (createItem == null || createItem.type == 0)
 			throw new RecipeException("A recipe without any result has been added.");
 
@@ -441,7 +459,8 @@ public partial class Recipe
 		return this;
 	}
 
-	public static Recipe Create(int result, int amount = 1) {
+	public static Recipe Create(int result, int amount = 1)
+	{
 		if (!RecipeLoader.setupRecipes)
 			throw new RecipeException("A Recipe can only be created inside recipe related methods");
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
@@ -53,7 +53,8 @@ internal class UIModPackItem : UIPanel
 	private readonly bool _legacy;
 	private string _tooltip;
 
-	public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods) {
+	public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods)
+	{
 		_legacy = legacy;
 		_filename = _legacy ? name : Path.GetFileNameWithoutExtension(name);
 		_filepath = name;
@@ -233,7 +234,8 @@ internal class UIModPackItem : UIPanel
 		}
 	}
 
-	public override void Draw(SpriteBatch spriteBatch) {
+	public override void Draw(SpriteBatch spriteBatch)
+	{
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
@@ -246,20 +248,23 @@ internal class UIModPackItem : UIPanel
 		}
 	}
 
-	private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
+	private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
+	{
 		spriteBatch.Draw(_innerPanelTexture.Value, position, new Rectangle(0, 0, 8, _innerPanelTexture.Height()), Color.White);
 		spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
 		spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height()), Color.White);
 	}
 
-	private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos) {
+	private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos)
+	{
 		string text = Language.GetTextValue("tModLoader.ModPackModsAvailableStatus", _numMods, _numModsEnabled, _numModsDisabled, _missing.Count);
 		Color color = (_missing.Count > 0 ? Color.Red : (_numModsDisabled > 0 ? Color.Yellow : Color.Green));
 
 		Utils.DrawBorderString(spriteBatch, text, drawPos, color);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
 		base.DrawSelf(spriteBatch);
 		CalculatedStyle innerDimensions = GetInnerDimensions();
 		Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
@@ -306,7 +311,8 @@ internal class UIModPackItem : UIPanel
 		}
 	}
 
-	public override void MouseOver(UIMouseEvent evt) {
+	public override void MouseOver(UIMouseEvent evt)
+	{
 		base.MouseOver(evt);
 		if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
 			BackgroundColor = Color.MediumPurple * 0.4f;
@@ -316,7 +322,8 @@ internal class UIModPackItem : UIPanel
 		BorderColor = new Color(89, 116, 213);
 	}
 
-	public override void MouseOut(UIMouseEvent evt) {
+	public override void MouseOut(UIMouseEvent evt)
+	{
 		base.MouseOut(evt);
 		if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
 			BackgroundColor = Color.MediumPurple * 0.7f;
@@ -326,7 +333,8 @@ internal class UIModPackItem : UIPanel
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 	}
 
-	private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
+	private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
 
 		if (_legacy) {
@@ -346,7 +354,8 @@ internal class UIModPackItem : UIPanel
 		Interface.modPacksMenu.OnActivate(); // should reload
 	}
 
-	private static void EnableList(UIMouseEvent evt, UIElement listeningElement) {
+	private static void EnableList(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
 		foreach (var mod in ModOrganizer.FindMods()) {
 			mod.Enabled = modListItem._mods.Contains(mod.Name);
@@ -361,7 +370,8 @@ internal class UIModPackItem : UIPanel
 		ModLoader.Reload();
 	}
 
-	private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement) {
+	private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		Interface.modBrowser.Activate();
 		Interface.modBrowser.FilterTextBox.Text = "";
@@ -378,7 +388,8 @@ internal class UIModPackItem : UIPanel
 		Main.menuMode = Interface.modBrowserID;
 	}
 
-	private static void EnabledListOnly(UIMouseEvent evt, UIElement listeningElement) {
+	private static void EnabledListOnly(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModLoader.DisableAllMods();
 		EnableList(evt, listeningElement);
@@ -386,7 +397,8 @@ internal class UIModPackItem : UIPanel
 		Logging.tML.Info($"Enabled only mods defined in Collection {modpack._filename}");
 	}
 
-	private static void UpdateModPack(UIMouseEvent evt, UIElement listeningElement) {
+	private static void UpdateModPack(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		UIModPacks.SaveModPack(modpack._filename);
 
@@ -412,7 +424,8 @@ internal class UIModPackItem : UIPanel
 		Interface.modPacksMenu.OnActivate(); // should reload
 	}
 
-	private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
+	private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = modpack._filepath;
 
@@ -422,7 +435,8 @@ internal class UIModPackItem : UIPanel
 		EnabledListOnly(evt, listeningElement);
 	}
 
-	private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
+	private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement)
+	{
 		// Clear active Mod Pack 
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
@@ -435,7 +449,8 @@ internal class UIModPackItem : UIPanel
 		ModLoader.Reload();
 	}
 
-	private static void ExportInstance(UIMouseEvent evt, UIElement listeningElement) {
+	private static void ExportInstance(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 
 		UIModPacks.ExportSnapshot(modpack._filename);
@@ -443,7 +458,8 @@ internal class UIModPackItem : UIPanel
 		Interface.modPacksMenu.OnActivate(); // should reload
 	}
 
-	private static void PlayInstance(UIMouseEvent evt, UIElement listeningElement) {
+	private static void PlayInstance(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 
 		string instancePath = Path.Combine(Directory.GetCurrentDirectory(), modpack._filename);
@@ -456,7 +472,8 @@ internal class UIModPackItem : UIPanel
 		});
 	}
 
-	private static void DeleteInstance(UIMouseEvent evt, UIElement listeningElement) {
+	private static void DeleteInstance(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		string instancePath = Path.Combine(Directory.GetCurrentDirectory(),modpack._filename);
 
@@ -465,7 +482,8 @@ internal class UIModPackItem : UIPanel
 		Interface.modPacksMenu.OnActivate(); // should reload
 	}
 
-	private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement) {
+	private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement)
+	{
 		UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 		SoundEngine.PlaySound(10);
 		string message = "";
@@ -476,7 +494,8 @@ internal class UIModPackItem : UIPanel
 		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsContained", message), Interface.modPacksMenuID);
 	}
 
-	public override int CompareTo(object obj) {
+	public override int CompareTo(object obj)
+	{
 		if (!(obj is UIModPackItem item)) {
 			return base.CompareTo(obj);
 		}
