@@ -1,0 +1,14 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
+@@ -33,7 +_,11 @@
+ 			if (_initializationFailed)
+ 				return;
+ 
++			// TML: Added additional parameters to make the dll actually load. See changes in NativeMethods.
++			/*
+ 			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++			*/
++			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, System.Reflection.Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
+ 				_initializationFailed = true;
+ 
+ 				return;
