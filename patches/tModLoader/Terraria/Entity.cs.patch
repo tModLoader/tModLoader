@@ -1,34 +1,262 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,9 +_,19 @@
+@@ -1,137 +_,150 @@
+-using Microsoft.Xna.Framework;
+ using System;
++using Microsoft.Xna.Framework;
  
- namespace Terraria
+-namespace Terraria
++namespace Terraria;
++
++public abstract partial class Entity
  {
++	/// <summary>
++	/// The index of this Entity within its specific array. These arrays track the entities in the world.
++	/// <br/> Item: unused
++	/// <br/> Projectile: <see cref="Main.projectile"/>
++	/// <br/> NPC: <see cref="Main.npc"/>
++	/// <br/> Player: <see cref="Main.player"/>
++	/// </summary>
++	public int whoAmI;
 -	public abstract class Entity
-+	public abstract partial class Entity
- 	{
-+		/// <summary>
-+		/// The index of this Entity within its specific array. These arrays track the entities in the world.
-+		/// <br/> Item: unused
-+		/// <br/> Projectile: <see cref="Main.projectile"/>
-+		/// <br/> NPC: <see cref="Main.npc"/>
-+		/// <br/> Player: <see cref="Main.player"/>
-+		/// </summary>
- 		public int whoAmI;
-+		/// <summary>
-+		/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array.
-+		/// </summary>
- 		public bool active;
- 		internal long entityId;
- 		public Vector2 position;
-@@ -16,6 +_,10 @@
- 		public int direction = 1;
- 		public int width;
- 		public int height;
-+		/// <summary>
-+		/// The Entity is currently in water.
-+		/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
-+		/// </summary>
- 		public bool wet;
- 		public bool shimmerWet;
- 		public bool honeyWet;
++	/// <summary>
+-	{
++	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array.
+-		public int whoAmI;
++	/// </summary>
+-		public bool active;
++	public bool active;
+-		internal long entityId;
++	internal long entityId;
+-		public Vector2 position;
++	public Vector2 position;
+-		public Vector2 velocity;
++	public Vector2 velocity;
+-		public Vector2 oldPosition;
++	public Vector2 oldPosition;
+-		public Vector2 oldVelocity;
++	public Vector2 oldVelocity;
+-		public int oldDirection;
++	public int oldDirection;
+-		public int direction = 1;
++	public int direction = 1;
+-		public int width;
++	public int width;
+-		public int height;
++	public int height;
++	/// <summary>
++	/// The Entity is currently in water.
++	/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
++	/// </summary>
+-		public bool wet;
++	public bool wet;
+-		public bool shimmerWet;
++	public bool shimmerWet;
+-		public bool honeyWet;
++	public bool honeyWet;
+-		public byte wetCount;
++	public byte wetCount;
+-		public bool lavaWet;
++	public bool lavaWet;
+ 
+-		public virtual Vector2 VisualPosition => position;
++	public virtual Vector2 VisualPosition => position;
+ 
+-		public Vector2 Center {
++	public Vector2 Center {
+-			get {
++		get {
+-				return new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2));
++			return new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2));
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X - (float)(width / 2), value.Y - (float)(height / 2));
++			position = new Vector2(value.X - (float)(width / 2), value.Y - (float)(height / 2));
+-			}
+ 		}
++	}
+ 
+-		public Vector2 Left {
++	public Vector2 Left {
+-			get {
++		get {
+-				return new Vector2(position.X, position.Y + (float)(height / 2));
++			return new Vector2(position.X, position.Y + (float)(height / 2));
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X, value.Y - (float)(height / 2));
++			position = new Vector2(value.X, value.Y - (float)(height / 2));
+-			}
+ 		}
++	}
+ 
+-		public Vector2 Right {
++	public Vector2 Right {
+-			get {
++		get {
+-				return new Vector2(position.X + (float)width, position.Y + (float)(height / 2));
++			return new Vector2(position.X + (float)width, position.Y + (float)(height / 2));
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X - (float)width, value.Y - (float)(height / 2));
++			position = new Vector2(value.X - (float)width, value.Y - (float)(height / 2));
+-			}
+ 		}
++	}
+ 
+-		public Vector2 Top {
++	public Vector2 Top {
+-			get {
++		get {
+-				return new Vector2(position.X + (float)(width / 2), position.Y);
++			return new Vector2(position.X + (float)(width / 2), position.Y);
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X - (float)(width / 2), value.Y);
++			position = new Vector2(value.X - (float)(width / 2), value.Y);
+-			}
+ 		}
++	}
+ 
+-		public Vector2 TopLeft {
++	public Vector2 TopLeft {
+-			get {
++		get {
+-				return position;
++			return position;
+-			}
++		}
+-			set {
++		set {
+-				position = value;
++			position = value;
+-			}
+ 		}
++	}
+ 
+-		public Vector2 TopRight {
++	public Vector2 TopRight {
+-			get {
++		get {
+-				return new Vector2(position.X + (float)width, position.Y);
++			return new Vector2(position.X + (float)width, position.Y);
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X - (float)width, value.Y);
++			position = new Vector2(value.X - (float)width, value.Y);
+-			}
+ 		}
++	}
+ 
+-		public Vector2 Bottom {
++	public Vector2 Bottom {
+-			get {
++		get {
+-				return new Vector2(position.X + (float)(width / 2), position.Y + (float)height);
++			return new Vector2(position.X + (float)(width / 2), position.Y + (float)height);
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X - (float)(width / 2), value.Y - (float)height);
++			position = new Vector2(value.X - (float)(width / 2), value.Y - (float)height);
+-			}
+ 		}
++	}
+ 
+-		public Vector2 BottomLeft {
++	public Vector2 BottomLeft {
+-			get {
++		get {
+-				return new Vector2(position.X, position.Y + (float)height);
++			return new Vector2(position.X, position.Y + (float)height);
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X, value.Y - (float)height);
++			position = new Vector2(value.X, value.Y - (float)height);
+-			}
+ 		}
++	}
+ 
+-		public Vector2 BottomRight {
++	public Vector2 BottomRight {
+-			get {
++		get {
+-				return new Vector2(position.X + (float)width, position.Y + (float)height);
++			return new Vector2(position.X + (float)width, position.Y + (float)height);
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X - (float)width, value.Y - (float)height);
++			position = new Vector2(value.X - (float)width, value.Y - (float)height);
+-			}
+ 		}
++	}
+ 
+-		public Vector2 Size {
++	public Vector2 Size {
+-			get {
++		get {
+-				return new Vector2(width, height);
++			return new Vector2(width, height);
+-			}
++		}
+-			set {
++		set {
+-				width = (int)value.X;
++			width = (int)value.X;
+-				height = (int)value.Y;
++			height = (int)value.Y;
+-			}
+ 		}
++	}
+ 
+-		public Rectangle Hitbox {
++	public Rectangle Hitbox {
+-			get {
++		get {
+-				return new Rectangle((int)position.X, (int)position.Y, width, height);
++			return new Rectangle((int)position.X, (int)position.Y, width, height);
+-			}
++		}
+-			set {
++		set {
+-				position = new Vector2(value.X, value.Y);
++			position = new Vector2(value.X, value.Y);
+-				width = value.Width;
++			width = value.Width;
+-				height = value.Height;
++			height = value.Height;
+-			}
+ 		}
++	}
+ 
+-		public float AngleTo(Vector2 Destination) => (float)Math.Atan2(Destination.Y - Center.Y, Destination.X - Center.X);
++	public float AngleTo(Vector2 Destination) => (float)Math.Atan2(Destination.Y - Center.Y, Destination.X - Center.X);
+-		public float AngleFrom(Vector2 Source) => (float)Math.Atan2(Center.Y - Source.Y, Center.X - Source.X);
++	public float AngleFrom(Vector2 Source) => (float)Math.Atan2(Center.Y - Source.Y, Center.X - Source.X);
+-		public float Distance(Vector2 Other) => Vector2.Distance(Center, Other);
++	public float Distance(Vector2 Other) => Vector2.Distance(Center, Other);
+-		public float DistanceSQ(Vector2 Other) => Vector2.DistanceSquared(Center, Other);
++	public float DistanceSQ(Vector2 Other) => Vector2.DistanceSquared(Center, Other);
+-		public Vector2 DirectionTo(Vector2 Destination) => Vector2.Normalize(Destination - Center);
++	public Vector2 DirectionTo(Vector2 Destination) => Vector2.Normalize(Destination - Center);
+-		public Vector2 DirectionFrom(Vector2 Source) => Vector2.Normalize(Center - Source);
++	public Vector2 DirectionFrom(Vector2 Source) => Vector2.Normalize(Center - Source);
+-		public bool WithinRange(Vector2 Target, float MaxRange) => Vector2.DistanceSquared(Center, Target) <= MaxRange * MaxRange;
++	public bool WithinRange(Vector2 Target, float MaxRange) => Vector2.DistanceSquared(Center, Target) <= MaxRange * MaxRange;
+-	}
+ }
