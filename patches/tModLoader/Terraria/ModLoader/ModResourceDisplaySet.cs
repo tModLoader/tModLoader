@@ -1,9 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.Text.RegularExpressions;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.ResourceSets;
 using Terraria.Localization;
 
@@ -13,6 +11,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to define your own logic for drawing the player's life and mana resources.<br/>
 /// For modifying parts of the vanilla display sets, use <see cref="ModResourceOverlay"/>.
 /// </summary>
+[Autoload(true, Side = ModSide.Client)]
 public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySet, IConfigKeyHolder
 {
 	public int Type { get; internal set; }

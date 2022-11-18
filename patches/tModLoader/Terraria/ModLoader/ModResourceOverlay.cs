@@ -7,6 +7,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to customize how the vanilla resource displays (Classic, Fancy and Bars) are drawn.<br/>
 /// For implementing your own resource displays, use <see cref="ModResourceDisplaySet"/>.
 /// </summary>
+[Autoload(true, Side = ModSide.Client)]
 public abstract class ModResourceOverlay : ModType
 {
 	public int Type { get; internal set; }

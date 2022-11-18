@@ -15,6 +15,9 @@ partial class PlayerResourceSetsManager
 
 	internal void AddModdedDisplaySets()
 	{
+		if (Main.dedServ)
+			return;
+
 		foreach (ModResourceDisplaySet display in ResourceDisplaySetLoader.moddedDisplaySets) {
 			string key = display.ConfigKey;
 			_sets[key] = display;
@@ -25,6 +28,9 @@ partial class PlayerResourceSetsManager
 	// Called by tML after mods have loaded to set the actual display set
 	internal void SetActiveFromOriginalConfigKey()
 	{
+		if (Main.dedServ)
+			return;
+
 		SetActive(_activeSetConfigKeyOriginal);
 		// In case the display set didn't exist, force the original key back to Fancy
 		_activeSetConfigKeyOriginal = _activeSetConfigKey;
@@ -38,6 +44,9 @@ partial class PlayerResourceSetsManager
 
 	internal void ResetToVanilla()
 	{
+		if (Main.dedServ)
+			return;
+
 		_activeSetConfigKey = _activeSetConfigKeyOriginal;
 
 		foreach (string key in accessKeys.Skip(vanillaSets.Length))

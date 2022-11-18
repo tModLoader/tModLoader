@@ -33,6 +33,10 @@ internal abstract class CollectionElement : ConfigElement
 	{
 		base.OnBind();
 
+		var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+		if (expandAttribute != null)
+			expanded = expandAttribute.Expand;
+
 		Data = MemberInfo.GetValue(Item);
 		DefaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(MemberInfo, null, null);
 
@@ -47,7 +51,7 @@ internal abstract class CollectionElement : ConfigElement
 		//panel.BackgroundColor = Microsoft.Xna.Framework.Color.Transparent;
 		//panel.BorderColor =  Microsoft.Xna.Framework.Color.Transparent;
 
-		if (Data != null)
+		if (Data != null && expanded)
 			Append(DataListElement);
 
 		DataListElement.OverflowHidden = true;
@@ -116,7 +120,7 @@ internal abstract class CollectionElement : ConfigElement
 			};
 		}
 
-		expandButton = new UIModConfigHoverImage(CollapsedTexture, "Expand");
+		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-79, 1f);
 		expandButton.OnClick += (a, b) => {

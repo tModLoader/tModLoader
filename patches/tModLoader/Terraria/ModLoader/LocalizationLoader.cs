@@ -1,9 +1,10 @@
-using Hjson;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Hjson;
+using Newtonsoft.Json.Linq;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
@@ -91,6 +92,7 @@ public static class LocalizationLoader
 			if (text.Value != null) {
 				text = SetLocalizedText(dict, text);
 				Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
+				ContentSamples.ItemsByType[item.Item.type].RebuildTooltip();
 			}
 		}
 

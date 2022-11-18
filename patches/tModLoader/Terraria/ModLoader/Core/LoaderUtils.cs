@@ -8,6 +8,8 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using Terraria.ModLoader.Exceptions;
 
+#nullable enable
+
 namespace Terraria.ModLoader.Core;
 
 public static class LoaderUtils
@@ -21,9 +23,9 @@ public static class LoaderUtils
 		if (typeInitializer != null) {
 			var field = typeInitializer
 				.GetType()
-				.GetField("m_invocationFlags", BindingFlags.NonPublic | BindingFlags.Instance);
+				.GetField("m_invocationFlags", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-			object previousValue = field.GetValue(typeInitializer);
+			object? previousValue = field.GetValue(typeInitializer);
 
 			//.NET Core uses invocation flags on static constructor to ensure that they're never called twice. We'll have to ignore the law, and remove these flags temporarily.
 			field.SetValue(typeInitializer, (uint)0x00000001); //INVOCATION_FLAGS_INITIALIZED
@@ -46,6 +48,7 @@ public static class LoaderUtils
 	public static void ForEachAndAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action)
 	{
 		var exceptions = new List<Exception>();
+
 		foreach (var t in enumerable) {
 			try {
 				action(t);
@@ -63,18 +66,21 @@ public static class LoaderUtils
 	}
 
 	[Obsolete("Use ReadOnlySpan or List variant", true)]
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
+	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
 		=> InstantiateGlobals(entity, globals.ToArray().AsSpan(), ref entityGlobals, midInstantiationAction);
 
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, List<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
+	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, List<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
 		=> InstantiateGlobals(entity, CollectionsMarshal.AsSpan(globals), ref entityGlobals, midInstantiationAction);
 
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
+	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
 	{
 		var mem = GlobalInstantiationArrayPool<TGlobal>.Pool.Rent(globals.Length);
+
 		try {
 			var set = mem.AsSpan(0, globals.Length);
+
 			entityGlobals = null;
+
 			InstantiateGlobals(entity, globals, ref entityGlobals, set, late: false);
 			midInstantiationAction();
 			InstantiateGlobals(entity, globals, ref entityGlobals, set, late: true);
@@ -84,11 +90,13 @@ public static class LoaderUtils
 		}
 	}
 
-	private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Span<TGlobal> set, bool late) where TGlobal : GlobalType<TEntity, TGlobal>
+	private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Span<TGlobal> set, bool late) where TGlobal : GlobalType<TEntity, TGlobal>
 	{
 		int n = 0;
+
 		for (int i = 0; i < globals.Length; i++) {
 			var g = globals[i];
+
 			if (set[i] == null && g.AppliesToEntity(entity, late)) {
 				set[i] = g.InstancePerEntity ? g.NewInstance(entity) : g;
 				n++;
@@ -97,7 +105,9 @@ public static class LoaderUtils
 
 		if (n > 0) {
 			entityGlobals = new Instanced<TGlobal>[(entityGlobals?.Length ?? 0) + n];
+
 			int j = 0;
+
 			foreach (var g in set) {
 				if (g != null)
 					entityGlobals[j++] = new(g.Index, g);
@@ -120,13 +130,15 @@ public static class LoaderUtils
 
 	public static MethodInfo ToMethodInfo<T, F>(this Expression<Func<T, F>> expr) where F : Delegate
 	{
-		MethodInfo method;
+		MethodInfo? method;
 
 		try {
 			var convert = expr.Body as UnaryExpression;
-			var makeDelegate = convert.Operand as MethodCallExpression;
-			var methodArg = makeDelegate.Object as ConstantExpression;
-			method = methodArg.Value as MethodInfo;
+			var makeDelegate = convert?.Operand as MethodCallExpression;
+			var methodArg = makeDelegate?.Object as ConstantExpression;
+
+			method = methodArg?.Value as MethodInfo;
+
 			if (method == null)
 				throw new NullReferenceException();
 		}
@@ -137,15 +149,14 @@ public static class LoaderUtils
 		return method;
 	}
 
-	public static MethodInfo GetDerivedDefinition(Type t, MethodInfo baseMethod) =>
-		t.GetMethods().Single(m => m.GetBaseDefinition() == baseMethod);
+	public static MethodInfo GetDerivedDefinition(Type t, MethodInfo baseMethod)
+		=> t.GetMethods().Single(m => m.GetBaseDefinition() == baseMethod);
 
-	public static bool HasOverride(Type t, MethodInfo baseMethod) =>
-		baseMethod.DeclaringType.IsInterface ? t.IsAssignableTo(baseMethod.DeclaringType) :
-		GetDerivedDefinition(t, baseMethod).DeclaringType != baseMethod.DeclaringType;
+	public static bool HasOverride(Type t, MethodInfo baseMethod)
+		=> baseMethod.DeclaringType!.IsInterface ? t.IsAssignableTo(baseMethod.DeclaringType) : GetDerivedDefinition(t, baseMethod).DeclaringType != baseMethod.DeclaringType;
 
-	public static bool HasOverride<T, F>(Type t, Expression<Func<T, F>> expr) where F : Delegate =>
-		HasOverride(t, expr.ToMethodInfo());
+	public static bool HasOverride<T, F>(Type t, Expression<Func<T, F>> expr) where F : Delegate
+		=> HasOverride(t, expr.ToMethodInfo());
 
 	public static IEnumerable<T> WhereMethodIsOverridden<T>(this IEnumerable<T> providers, MethodInfo method)
 	{
@@ -155,11 +166,11 @@ public static class LoaderUtils
 		return providers.Where(p => HasOverride(p.GetType(), method));
 	}
 
-	public static IEnumerable<T> WhereMethodIsOverridden<T, F>(this IEnumerable<T> providers, Expression<Func<T, F>> expr) where F : Delegate =>
-		WhereMethodIsOverridden(providers, expr.ToMethodInfo());
+	public static IEnumerable<T> WhereMethodIsOverridden<T, F>(this IEnumerable<T> providers, Expression<Func<T, F>> expr) where F : Delegate
+		=> WhereMethodIsOverridden(providers, expr.ToMethodInfo());
 
-	public static void MustOverrideTogether<T>(T t, params Expression<Func<T, Delegate>>[] methods) =>
-		MustOverrideTogether(t.GetType(), methods.Select(m => m.ToMethodInfo()).ToArray());
+	public static void MustOverrideTogether<T>(T t, params Expression<Func<T, Delegate>>[] methods)
+		=> MustOverrideTogether(t!.GetType(), methods.Select(m => m.ToMethodInfo()).ToArray());
 
 	private static void MustOverrideTogether(Type type, params MethodInfo[] methods)
 	{
@@ -169,9 +180,10 @@ public static class LoaderUtils
 			throw new Exception($"{type} must override all of ({string.Join('/', methods.Select(m => m.Name))}) or none");
 	}
 
-	private static HashSet<Type> validatedTypes = new();
+	private static readonly HashSet<Type> validatedTypes = new();
 
-	internal static bool IsValidated(Type type) => !validatedTypes.Add(type);
+	internal static bool IsValidated(Type type)
+		=> !validatedTypes.Add(type);
 
 	static LoaderUtils()
 	{
@@ -179,7 +191,8 @@ public static class LoaderUtils
 	}
 }
 
-internal class GlobalInstantiationArrayPool<T> {
+internal class GlobalInstantiationArrayPool<T>
+{
 	public static ArrayPool<T> Pool = ArrayPool<T>.Create();
 
 	static GlobalInstantiationArrayPool()

@@ -1,10 +1,11 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -134,9 +135,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Use this judiciously to avoid straining the network.
-	/// <br/>Checks and methods such as <see cref="AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+	/// <br/>Checks and methods such as <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
 	/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
-	/// <br/>Can be called on both server and client, depending on who owns the projectile.
+	/// <br/>Can be called on the server.
 	/// </summary>
 	/// <param name="npc">The NPC.</param>
 	/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
@@ -148,7 +149,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
 	/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
-	/// <br/>Can be called on both server and client, depending on who owns the projectile.
+	/// <br/>Can be called on multiplayer clients.
 	/// </summary>
 	/// <param name="npc">The NPC.</param>
 	/// <param name="bitReader">The compressible bit reader.</param>
@@ -270,9 +271,10 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
+	/// <br/> This hook only runs once per npc type during mod loading, any dynamic behavior must be contained in the rules themselves.
 	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="npcLoot"></param>
+	/// <param name="npc">A default npc of the type being opened, not the actual npc instance.</param>
+	/// <param name="npcLoot">A reference to the item drop database for this npc type.</param>
 	public virtual void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 	{
 	}
@@ -769,6 +771,20 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="offset"></param>
 	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the npc's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="victimHitbox"></param>
+	/// <param name="immunityCooldownSlot"></param>
+	/// <param name="damageMultiplier"></param>
+	/// <param name="npcHitbox"></param>
+	/// <returns></returns>
+	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
+	{
+		return true;
 	}
 
 	/// <summary>

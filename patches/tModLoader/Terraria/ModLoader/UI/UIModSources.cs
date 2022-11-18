@@ -281,7 +281,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			Logging.tML.Info("\n" + output);
 
 			foreach (var line in output.Split('\n')) {
-				var dotnetVersion = new Version(new Regex("(.+?) ").Match(line).Groups[1].Value);
+				var dotnetVersion = new Version(new Regex("([0-9.]+).*").Match(line).Groups[1].Value);
 				if (dotnetVersion >= new Version(6, 0)) {
 					dotnetSDKFound = true;
 					break;

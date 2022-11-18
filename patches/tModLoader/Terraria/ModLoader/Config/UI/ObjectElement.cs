@@ -110,13 +110,32 @@ internal class ObjectElement : ConfigElement<object>
 		//data = _GetValue();// memberInfo.GetValue(this.item);
 		//drawLabel = false;
 
+		if (List == null) {
+			// Member > Class
+			var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+			if (expandAttribute != null)
+				expanded = expandAttribute.Expand;
+		}
+		else {
+			// ListMember's ExpandListElements > Class
+			var listType = MemberInfo.Type.GetGenericArguments()[0];
+			var expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(listType, typeof(ExpandAttribute), true);
+			if (expandAttribute != null)
+				expanded = expandAttribute.Expand;
+			expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(MemberInfo.MemberInfo, typeof(ExpandAttribute), true);
+			if (expandAttribute != null && expandAttribute.ExpandListElements.HasValue)
+				expanded = expandAttribute.ExpandListElements.Value;
+		}
+
 		dataList = new NestedUIList();
 		dataList.Width.Set(-14, 1f);
 		dataList.Left.Set(14, 0f);
 		dataList.Height.Set(-30, 1f);
 		dataList.Top.Set(30, 0);
 		dataList.ListPadding = 5f;
-		Append(dataList);
+
+		if (expanded)
+			Append(dataList);
 
 		//string name = memberInfo.Name;
 		//if (labelAttribute != null) {
@@ -152,7 +171,7 @@ internal class ObjectElement : ConfigElement<object>
 			Interface.modConfig.SetPendingChanges();
 		};
 
-		expandButton = new UIModConfigHoverImage(ExpandedTexture, "Expand");
+		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-52, 1f);
 		expandButton.OnClick += (a, b) => {

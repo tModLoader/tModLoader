@@ -1,5 +1,21 @@
 --- src/TerrariaNetCore/Terraria/UI/Chat/ChatManager.cs
 +++ src/tModLoader/Terraria/UI/Chat/ChatManager.cs
+@@ -121,8 +_,15 @@
+ 		foreach (TextSnippet textSnippet in snippets) {
+ 			textSnippet.Update();
+ 			num = textSnippet.Scale;
++			/*
+ 			if (textSnippet.UniqueDraw(justCheckingString: true, out var size, null)) {
++			*/
++			if (textSnippet.UniqueDraw(justCheckingString: true, out Vector2 size, null, scale: baseScale.X * num)) {
++				/*
+ 				vector.X += size.X * baseScale.X * num;
++				*/
++				vector.X += size.X;
++
+ 				result.X = Math.Max(result.X, vector.X);
+ 				result.Y = Math.Max(result.Y, vector.Y + size.Y);
+ 				continue;
 @@ -156,7 +_,9 @@
  					result.Y = Math.Max(result.Y, vector.Y + vector2.Y);
  				}
@@ -11,6 +27,26 @@
  					vector.X = zero.X;
  					vector.Y += (float)font.LineSpacing * num2 * baseScale.Y;
  					result.Y = Math.Max(result.Y, vector.Y);
+@@ -192,11 +_,19 @@
+ 				color = textSnippet.GetVisibleColor();
+ 
+ 			num2 = textSnippet.Scale;
++
++			/*
+ 			if (textSnippet.UniqueDraw(justCheckingString: false, out var size, spriteBatch, vector, color, num2)) {
++			*/
++			if (textSnippet.UniqueDraw(justCheckingString: false, out Vector2 size, spriteBatch, vector, color, baseScale.X * num2)) {
+ 				if (vec.Between(vector, vector + size))
+ 					num = i;
+ 
++				/*
+ 				vector.X += size.X * baseScale.X * num2;
++				*/
++				vector.X += size.X;
++
+ 				result.X = Math.Max(result.X, vector.X);
+ 				continue;
+ 			}
 @@ -266,7 +_,14 @@
  	public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, float rotation, Color color, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f)
  	{

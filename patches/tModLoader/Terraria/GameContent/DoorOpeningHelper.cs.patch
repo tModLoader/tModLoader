@@ -9,17 +9,26 @@
  
  namespace Terraria.GameContent;
  
-@@ -86,13 +_,13 @@
+@@ -84,15 +_,20 @@
+ 			if (playerInfo.hitboxToOpenDoor.Top < rectangle.Top || playerInfo.hitboxToOpenDoor.Bottom > rectangle.Bottom)
+ 				return false;
  
++			int originalClosedDoorType = TileID.ClosedDoor;
++			ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
++			if (modTile != null && modTile.OpenDoorID > 0)
++				originalClosedDoorType = modTile.Type;
++
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
- 			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
+-			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
++			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
 -				NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
 +				NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
  				return true;
  			}
  
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
- 			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
+-			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
++			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
 -				NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
 +				NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
  				return true;
@@ -35,6 +44,14 @@
  
  			int num = tile.frameX % 72 / 18;
  			Rectangle value = new Rectangle(tileCoordsForToggling.X * 16, tileCoordsForToggling.Y * 16, 16, 48);
+@@ -202,6 +_,7 @@
+ 	public static DoorAutoOpeningPreference PreferenceSettings = DoorAutoOpeningPreference.EnabledForEverything;
+ 	private Dictionary<int, DoorAutoHandler> _handlerByTileType = new Dictionary<int, DoorAutoHandler> {
+ 		{ 10, new CommonDoorOpeningInfoProvider() },
++		// TODO: Support other door types?
+ 		{ 388, new TallGateOpeningInfoProvider() }
+ 	};
+ 	private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
 @@ -332,10 +_,11 @@
  		Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
  		if (tile == null)

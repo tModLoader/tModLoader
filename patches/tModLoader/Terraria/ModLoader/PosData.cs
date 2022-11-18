@@ -187,6 +187,7 @@ public static class PosData
 	/// <param name="posMap"></param>
 	/// <param name="pt"></param>
 	/// <param name="distance"> The distance between the provided Point and nearby entry </param>
+	/// <param name="entry"></param>
 	/// <returns> True if successfully found an entry nearby </returns>
 	public static bool NearbySearchOrderedPosMap<T>(PosData<T>[] posMap, Point pt, int distance, out PosData<T> entry)
 	{

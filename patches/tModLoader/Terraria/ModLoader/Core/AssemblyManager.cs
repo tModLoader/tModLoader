@@ -31,14 +31,16 @@ public static class AssemblyManager
 		public IDictionary<Assembly, Type[]> loadableTypes = new Dictionary<Assembly, Type[]>();
 		public long bytesLoaded = 0;
 
-		public ModLoadContext(LocalMod mod) : base(mod.Name, true) {
+		public ModLoadContext(LocalMod mod) : base(mod.Name, true)
+		{
 			modFile = mod.modFile;
 			properties = mod.properties;
 
 			Unloading += ModLoadContext_Unloading;
 		}
 
-		private void ModLoadContext_Unloading(AssemblyLoadContext obj) {
+		private void ModLoadContext_Unloading(AssemblyLoadContext obj)
+		{
 			// required for this to actually unload
 			dependencies = null;
 			assembly = null;
@@ -46,11 +48,13 @@ public static class AssemblyManager
 			loadableTypes = null;
 		}
 
-		public void AddDependency(ModLoadContext dep) {
+		public void AddDependency(ModLoadContext dep)
+		{
 			dependencies.Add(dep);
 		}
 
-		public void LoadAssemblies() {
+		public void LoadAssemblies()
+		{
 			try {
 				using (modFile.Open()) {
 					foreach (var dll in properties.dllReferences) {
@@ -71,7 +75,8 @@ public static class AssemblyManager
 			}
 		}
 
-		private Assembly LoadAssembly(byte[] code, byte[] pdb = null) {
+		private Assembly LoadAssembly(byte[] code, byte[] pdb = null)
+		{
 			using var codeStrm = new MemoryStream(code, false);
 			using var pdbStrm = pdb == null ? null : new MemoryStream(pdb, false);
 			var asm = LoadFromStream(codeStrm, pdbStrm);
@@ -94,7 +99,8 @@ public static class AssemblyManager
 			return asm;
 		}
 
-		protected override Assembly Load(AssemblyName assemblyName) {
+		protected override Assembly Load(AssemblyName assemblyName)
+		{
 			if (assemblies.TryGetValue(assemblyName.Name, out var asm))
 				return asm;
 
@@ -108,11 +114,13 @@ public static class AssemblyManager
 		{
 			private readonly ModLoadContext mod;
 
-			public MetadataResolver(ModLoadContext mod) {
+			public MetadataResolver(ModLoadContext mod)
+			{
 				this.mod = mod;
 			}
 
-			public override Assembly Resolve(MetadataLoadContext context, AssemblyName assemblyName) {
+			public override Assembly Resolve(MetadataLoadContext context, AssemblyName assemblyName)
+			{
 				var existing = context.GetAssemblies().SingleOrDefault(a => a.GetName().FullName == assemblyName.FullName);
 				if (existing != null)
 					return existing;
@@ -126,7 +134,8 @@ public static class AssemblyManager
 			}
 		}
 
-		internal void ClearAssemblyBytes() {
+		internal void ClearAssemblyBytes()
+		{
 			assemblyBytes.Clear();
 		}
 	}
@@ -147,7 +156,8 @@ public static class AssemblyManager
 		}
 	}
 
-	internal static IEnumerable<string> OldLoadContexts() {
+	internal static IEnumerable<string> OldLoadContexts()
+	{
 		foreach (var alcRef in oldLoadContexts)
 			if (alcRef.TryGetTarget(out var alc))
 				yield return alc.Name;
@@ -161,7 +171,8 @@ public static class AssemblyManager
 	//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
 	private static bool assemblyResolverAdded;
-	private static void AddAssemblyResolver() {
+	private static void AddAssemblyResolver()
+	{
 		if (assemblyResolverAdded)
 			return;
 		assemblyResolverAdded = true;
@@ -169,7 +180,8 @@ public static class AssemblyManager
 		AppDomain.CurrentDomain.AssemblyResolve += TmlCustomResolver;
 	}
 
-	private static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
+	private static Assembly TmlCustomResolver(object sender, ResolveEventArgs args)
+	{
 		//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
 		// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan
 		var name = new AssemblyName(args.Name).Name;
@@ -182,7 +194,8 @@ public static class AssemblyManager
 		return null;
 	}
 
-	private static Mod Instantiate(ModLoadContext mod) {
+	private static Mod Instantiate(ModLoadContext mod)
+	{
 		try {
 			VerifyMod(mod.Name, mod.assembly, out var modType);
 			var m = (Mod)Activator.CreateInstance(modType, true)!;
@@ -203,7 +216,8 @@ public static class AssemblyManager
 		}
 	}
 
-	private static void VerifyMod(string modName, Assembly assembly, out Type modType) {
+	private static void VerifyMod(string modName, Assembly assembly, out Type modType)
+	{
 		string asmName = new AssemblyName(assembly.FullName).Name;
 
 		if (asmName != modName)
@@ -221,7 +235,8 @@ public static class AssemblyManager
 		modType = modTypes.SingleOrDefault() ?? typeof(Mod); // Mods don't really need a class extending Mod, we can always just make one for them
 	}
 
-	internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad, CancellationToken token) {
+	internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad, CancellationToken token)
+	{
 		AddAssemblyResolver();
 
 		var modList = modsToLoad.Select(m => new ModLoadContext(m)).ToList();
@@ -276,7 +291,8 @@ public static class AssemblyManager
 
 	public static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
 
-	public static bool GetAssemblyOwner(Assembly assembly, out string modName) {
+	public static bool GetAssemblyOwner(Assembly assembly, out string modName)
+	{
 		if (hostContextForAssembly.TryGetValue(assembly, out var mod)) {
 			modName = mod.Name;
 			return true;
@@ -286,7 +302,8 @@ public static class AssemblyManager
 		return false;
 	}
 
-	internal static bool FirstModInStackTrace(StackTrace stack, out string modName) {
+	internal static bool FirstModInStackTrace(StackTrace stack, out string modName)
+	{
 		for (int i = 0; i < stack.FrameCount; i++) {
 			StackFrame frame = stack.GetFrame(i);
 			var assembly = frame.GetMethod()?.DeclaringType?.Assembly;
@@ -302,7 +319,8 @@ public static class AssemblyManager
 
 	public static Type[] GetLoadableTypes(Assembly assembly) => hostContextForAssembly.TryGetValue(assembly, out var mlc) ? mlc.loadableTypes[assembly] : assembly.GetTypes();
 
-	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc) {
+	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
+	{
 		try {
 			return mod.Assemblies.ToDictionary(a => a, asm =>
 		mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
@@ -318,7 +336,8 @@ public static class AssemblyManager
 		}
 	}
 
-	private static bool IsLoadable(ModLoadContext mod, Type type) {
+	private static bool IsLoadable(ModLoadContext mod, Type type)
+	{
 		foreach (var attr in type.GetCustomAttributesData()) {
 			if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
 				var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
@@ -335,7 +354,8 @@ public static class AssemblyManager
 
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
 
-	public static void JITAssemblies(IEnumerable<Assembly> assemblies, PreJITFilter filter) {
+	public static void JITAssemblies(IEnumerable<Assembly> assemblies, PreJITFilter filter)
+	{
 		var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodBase method)>();
 		foreach (var assembly in assemblies) {
 			const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
@@ -347,7 +367,7 @@ public static class AssemblyManager
 						.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
 						.Concat<MethodBase>(type.GetConstructors(ALL))
 						.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-						.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null && m.DeclaringType == type)
+						.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type)
 						.Where(filter.ShouldJIT)
 				)
 				.ToArray();
@@ -379,8 +399,10 @@ public static class AssemblyManager
 		}
 	}
 
-	private static void ForceJITOnMethod(MethodBase method) {
-		RuntimeHelpers.PrepareMethod(method.MethodHandle);
+	private static void ForceJITOnMethod(MethodBase method)
+	{
+		if (method.GetMethodBody() != null)
+			RuntimeHelpers.PrepareMethod(method.MethodHandle);
 
 		// Here we check for overrides that override methods that no longer exist.
 		// tModLoader contributors should consult https://github.com/tModLoader/tModLoader/wiki/tModLoader-Style-Guide#be-aware-of-breaking-changes to properly handle breaking changes, especially once 1.4 is stable.

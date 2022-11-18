@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.GameContent.Creative;
 using Terraria.Localization;
 
 #pragma warning disable IDE0057 // Use range operator
@@ -31,6 +32,8 @@ internal abstract class PatreonItem : ModLoaderModItem
 		displayName = displayName.Insert(Name.IndexOf('_'), SetSuffix);
 
 		DisplayName.SetDefault(displayName);
+
+		CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 	}
 
 	public override void SetDefaults()

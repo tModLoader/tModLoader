@@ -295,8 +295,20 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
-@@ -4896,13 +_,16 @@
+@@ -4891,18 +_,28 @@
+ 		if (solidLayer) {
+ 			_displayDollTileEntityPositions.Clear();
+ 			_hatRackTileEntityPositions.Clear();
++			/*
+ 			_vineRootsPositions.Clear();
+ 			_reverseVineRootsPositions.Clear();
++			*/
++			return;
  		}
++
++		//TML: Moved so positions get cleared and added in the same frame.
++		_vineRootsPositions.Clear();
++		_reverseVineRootsPositions.Clear();
  	}
  
 -	private void AddSpecialLegacyPoint(Point p)

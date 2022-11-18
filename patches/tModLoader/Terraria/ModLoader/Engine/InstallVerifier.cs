@@ -18,7 +18,8 @@ public enum DistributionPlatform
 internal static class InstallVerifier
 {
 	private static string VanillaExe = "Terraria.exe";
-	private static string CheckExe = $"Terraria_1.4.3.6_B.exe"; // This should match the hashes. {Main.versionNumber}
+	private const string CheckExeVersion = "1.4.4.8.1";
+	private static string CheckExe = $"Terraria_{CheckExeVersion}.exe"; // This should match the hashes. {Main.versionNumber}
 	private static string vanillaExePath;
 
 	public static DistributionPlatform DistributionPlatform;
@@ -42,22 +43,22 @@ internal static class InstallVerifier
 			}
 
 			vanillaSteamAPI = "steam_api.dll";
-			gogHash = ToByteArray("0d4005c39a12a334d9bfd42dd5b656cc"); // Don't forget to update CheckExe above
-			steamHash = ToByteArray("5f321196521790a18a19d44fd066044e");
+			gogHash = ToByteArray("3ae51b8f9630d003d60abe1bbc15bb23"); // Don't forget to update CheckExe above
+			steamHash = ToByteArray("a6a47348d9b3b7f51011ead02bcf850a");
 		}
 		else if (Platform.IsOSX) {
 			steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
 			steamAPIHash = ToByteArray("801e9bf5e5899a41c5999811d870b1ca");
 			vanillaSteamAPI = "libsteam_api.dylib";
-			gogHash = ToByteArray("f483f6f795e5c045b73c330015e852a6");
-			steamHash = ToByteArray("c3b967ddc50f400dc1575de05979ee47");
+			gogHash = ToByteArray("154067f8b808232f8ac251a68bec292d");
+			steamHash = ToByteArray("91b2db88c0f9f007ab1fb691e1de4bfb");
 		}
 		else if (Platform.IsLinux) {
 			steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
 			steamAPIHash = ToByteArray("ccdf20f0b2f9abbe1fea8314b9fab096");
 			vanillaSteamAPI = "libsteam_api.so";
-			gogHash = ToByteArray("56794421993db33b7607d1be233b586d");
-			steamHash = ToByteArray("b08ed3b4fe5417e7cd56e06ad99f2ab7");
+			gogHash = ToByteArray("80e29bb715598995bab8c80a1a300762");
+			steamHash = ToByteArray("747a44dea82725ea229ed7a1e64ca766");
 		}
 		else {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
@@ -197,6 +198,9 @@ internal static class InstallVerifier
 			case TerrariaSteamClient.LaunchResult.ErrNotInstalled:
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
 				break;
+			case TerrariaSteamClient.LaunchResult.ErrInstallOutOfDate:
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
+				break;
 			default:
 				throw new Exception("Unsupported result type: " + result);
 		}
@@ -213,7 +217,7 @@ internal static class InstallVerifier
 		}
 
 		if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
-			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
+			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath) + "\n\n" + Language.GetTextValue("tModLoader.GOGVersionHint", CheckExeVersion));
 		}
 
 		if (Path.GetFileName(vanillaExePath) != CheckExe) {

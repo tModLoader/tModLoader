@@ -1,7 +1,8 @@
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -69,7 +70,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Use this judiciously to avoid straining the network.
-	/// <br/>Checks and methods such as <see cref="AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+	/// <br/>Checks and methods such as <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
 	/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
 	/// <br/>Can be called on both server and client, depending on who owns the projectile.
 	/// </summary>

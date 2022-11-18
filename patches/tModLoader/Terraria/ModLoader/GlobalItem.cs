@@ -712,10 +712,13 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// This hook is not instanced. Use this to setup a loot table for an item.
+	/// Allows you to add and modify the loot items that spawn from bag items when opened.
+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+	/// <br/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
+	/// <br/> This hook is not instanced.
 	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="itemLoot"></param>
+	/// <param name="item">A default item of the type being opened, not the actual item instance</param>
+	/// <param name="itemLoot">A reference to the item drop database for this item type</param>
 	public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot)
 	{
 	}

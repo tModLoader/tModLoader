@@ -3,10 +3,10 @@ name: Monthly Update tModLoader
 # Controls when the action will run. 
 on:
   # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
-  schedule:
-    - cron: '0 0 1 * *'
+  #schedule:
+  #  - cron: '0 0 1 * *'
   # Allows you to manually run the workflow
-  #workflow_dispatch:
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

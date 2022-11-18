@@ -265,6 +265,15 @@
  	public float luck;
  	public float luckMinimumCap = -0.7f;
  	public float luckMaximumCap = 1f;
+@@ -1569,7 +_,7 @@
+ 	private const int SaveSlotIndex_GuideItem = 2;
+ 	private const int SaveSlotIndex_TinkererItem = 3;
+ 	private const int SaveSlotIndexCount = 4;
+-	private Item[] _temporaryItemSlots = new Item[4];
++	internal Item[] _temporaryItemSlots = new Item[4];
+ 	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
+ 	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
+ 	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
 @@ -2108,11 +_,13 @@
  		}
  	}
@@ -779,7 +788,7 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  		int num = Main.rand.Next(14);
  		if (num == 0 && Main.hardMode) {
-@@ -4396,20 +_,33 @@
+@@ -4396,20 +_,41 @@
  		}
  		else {
  			int number3 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
@@ -791,6 +800,14 @@
  	}
  
 +	// Return value added by TML.
++	/// <summary>
++	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
++	/// <br/> Use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> if a specific instance of an Item needs to be spawned into the world to preserve modded data.
++	/// </summary>
++	/// <param name="source"></param>
++	/// <param name="item"></param>
++	/// <param name="stack"></param>
++	/// <returns>The index of the item within <see cref="Main.item"/></returns>
 -	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
 +	public int QuickSpawnItem(IEntitySource source, int item, int stack = 1)
  	{
@@ -3241,7 +3258,22 @@
  						}
  					}
  
-@@ -24823,7 +_,7 @@
+@@ -24812,18 +_,20 @@
+ 					}
+ 				}
+ 				else {
++					int originalClosedDoorType = Main.tile[myX, myY].type;
++
+ 					WorldGen.OpenDoor(myX, myY, direction);
+-					if (Main.tile[myX, myY].type != 10) {
++					if (Main.tile[myX, myY].type != originalClosedDoorType) {
+ 						NetMessage.SendData(19, -1, -1, null, 0, myX, myY, direction);
+ 					}
+ 					else {
+ 						WorldGen.OpenDoor(myX, myY, -direction);
+-						if (Main.tile[myX, myY].type != 10)
++						if (Main.tile[myX, myY].type != originalClosedDoorType)
+ 							NetMessage.SendData(19, -1, -1, null, 0, myX, myY, -direction);
  					}
  				}
  			}
@@ -3363,14 +3395,13 @@
  					if (flag)
  						PullItem_Pickup(item, 7f, 1);
  					else if (manaMagnet && (item.type == 184 || item.type == 1735 || item.type == 1868))
-@@ -27096,6 +_,11 @@
+@@ -27096,6 +_,10 @@
  		return itemToPickUp;
  	}
  
 +	/// <summary>
 +	/// Heals the player for a certain amount.
 +	/// </summary>
-+	/// <param name="player">The player to heal.</param>
 +	/// <param name="amount">The amount to heal the player by.</param>
  	public void Heal(int amount)
  	{
@@ -5545,7 +5576,7 @@
  			}
  
  			inventory[i].TurnToAir();
-@@ -41655,12 +_,28 @@
+@@ -41655,27 +_,49 @@
  			loadouts[type].TryDroppingItems(this, itemSource_Death);
  		}
  
@@ -5574,12 +5605,24 @@
  		Main.mouseItem.TurnToAir();
  	}
  
-@@ -41676,6 +_,8 @@
+ 	public void TryDroppingSingleItem(IEntitySource source, Item theItem)
+ 	{
+ 		if (theItem.stack > 0) {
++			/*
+ 			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem.type);
++			*/
++			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem);
+ 			Item obj = Main.item[num];
++			/*
+ 			obj.netDefaults(theItem.netID);
+ 			obj.Prefix(theItem.prefix);
+ 			obj.stack = theItem.stack;
++			*/
+ 			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  			obj.noGrabDelay = 100;
  			obj.newAndShiny = false;
-+			obj.ModItem = theItem.ModItem;
-+			obj.globalItems = theItem.globalItems;
++
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, num);
  		}

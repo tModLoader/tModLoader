@@ -15,12 +15,14 @@ internal class TerrariaSteamClient
 {
 	private static ILog Logger { get; } = LogManager.GetLogger("TerrariaSteamClient");
 
+	private const int LatestTerrariaBuildID = 9653812; // Currently v1.4.4.4. Update this when any Terraria update changes any asset. Also update InitTMLContentManager with a newly added file
 	private static AnonymousPipeServerStream serverPipe;
 
 	private static string MsgInitFailed = "init_failed";
 	private static string MsgInitSuccess = "init_success";
 	private static string MsgFamilyShared = "family_shared";
 	private static string MsgNotInstalled = "not_installed";
+	private static string MsgInstallOutOfDate = "install_out_of_date";
 	private static string MsgGrant = "grant:";
 	private static string MsgAck = "acknowledged";
 	private static string MsgShutdown = "shutdown";
@@ -30,6 +32,7 @@ internal class TerrariaSteamClient
 		ErrClientProcDied,
 		ErrSteamInitFailed,
 		ErrNotInstalled,
+		ErrInstallOutOfDate,
 		Ok
 	}
 
@@ -76,6 +79,9 @@ internal class TerrariaSteamClient
 
 			if (line == MsgNotInstalled)
 				return LaunchResult.ErrNotInstalled;
+
+			if (line == MsgInstallOutOfDate)
+				return LaunchResult.ErrInstallOutOfDate;
 
 			if (line == MsgInitSuccess)
 				break;
@@ -139,6 +145,15 @@ internal class TerrariaSteamClient
 			if (!SteamApps.BIsAppInstalled(Steam.TerrariaAppId_t)) {
 				Logger.Fatal($"SteamApps.BIsAppInstalled({Steam.TerrariaAppId_t}): false");
 				Send(MsgNotInstalled);
+				SteamShutdown();
+				return;
+			}
+
+			int TerrariaBuildID = SteamApps.GetAppBuildId();
+			Logger.Info("Terraria BuildID: " + TerrariaBuildID);
+			if (TerrariaBuildID < LatestTerrariaBuildID) { 
+				Logger.Fatal("Terraria is out of date, you need to update Terraria in Steam.");
+				Send(MsgInstallOutOfDate);
 				SteamShutdown();
 				return;
 			}

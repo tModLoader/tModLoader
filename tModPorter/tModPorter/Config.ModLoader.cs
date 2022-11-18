@@ -108,6 +108,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModPalmTree",	from: "GrowthFXGore",		to: "TreeLeaf");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "OnCreate",			to: "OnCreated");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "OnCreate",			to: "OnCreated");
+		RenameMethod("Terraria.Player",					from: "QuickSpawnClonedItem",to: "QuickSpawnItem");
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"HoldStyle");
