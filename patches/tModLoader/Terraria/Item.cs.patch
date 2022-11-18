@@ -1360,7 +1360,7 @@
  	public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID)
  	{
  		width = newwidth;
-@@ -47045,8 +_,36 @@
+@@ -47045,7 +_,34 @@
  		useAnimation = (useTime = 12);
  	}
  
@@ -1394,10 +1394,8 @@
 -	public void DefaultToMusicBox(int style)
 +	internal void DefaultToMusicBox(int style)
  	{
-+		{
  		useStyle = 1;
  		useTurn = true;
- 		useAnimation = 15;
 @@ -47068,6 +_,19 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}

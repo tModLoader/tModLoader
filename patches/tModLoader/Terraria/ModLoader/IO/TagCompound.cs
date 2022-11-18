@@ -5,12 +5,15 @@ using System.IO;
 
 namespace Terraria.ModLoader.IO;
 
-//Tag compounds contained named values, serialisable as per the NBT spec http://minecraft.gamepedia.com/NBT_format
-//All primitive data types are supported as well as byte[], int[] and Lists of other supported data types
-//Lists of Lists are internally stored as IList<IList>
-//Modification of lists stored in a TagCompound will only work if there were no type conversions involved and is not advised
-//bool is supported using TagConverter, serialised as a byte. IList<bool> will serialise as IList<byte> (quite inefficient)
-//Additional conversions can be added using TagConverter
+
+/// <summary>
+/// Tag compounds contained named values, serialisable as per the NBT spec: <see href="https://minecraft.fandom.com/wiki/NBT_format">NBT spec wiki page</see> <br/>
+/// All primitive data types are supported as well as byte[], int[] and Lists of other supported data types <br/>
+/// Lists of Lists are internally stored as IList&lt;IList&gt; <br/>
+/// Modification of lists stored in a TagCompound will only work if there were no type conversions involved and is not advised <br/>
+/// bool is supported using TagConverter, serialised as a byte. IList&lt;bool&gt; will serialise as IList&lt;byte&gt; (quite inefficient) <br/>
+/// Additional conversions can be added using TagConverter <br/>
+/// </summary>
 public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 {
 	private Dictionary<string, object> dict = new Dictionary<string, object>();

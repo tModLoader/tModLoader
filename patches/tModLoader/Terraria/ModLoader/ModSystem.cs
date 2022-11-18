@@ -208,7 +208,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void PostUpdateEverything() { }
 
 	/// <summary>
-	/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check https://github.com/tModLoader/tModLoader/wiki/Vanilla-Interface-layers-values for vanilla interface layer names
+	/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Interface-layers-values">Vanilla Interface layers values wiki page</see> for vanilla interface layer names
 	/// </summary>
 	/// <param name="layers">The layers.</param>
 	public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
