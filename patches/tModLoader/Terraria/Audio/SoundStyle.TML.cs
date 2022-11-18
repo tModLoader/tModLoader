@@ -19,11 +19,11 @@ namespace Terraria.Audio
 		ReplaceOldest,
 	}
 
-	/// <summary>
-	/// This data type describes in detail how a sound should be played.
-	/// <br/> Passable to the <see cref="SoundEngine.PlaySound(in SoundStyle, Vector2?, SoundUpdateCallback?)"/> method.
-	/// </summary>
-	public record struct SoundStyle
+/// <summary>
+/// This data type describes in detail how a sound should be played.
+/// <br/> Passable to the <see cref="SoundEngine.PlaySound(in SoundStyle, Vector2?, SoundUpdateCallback?)"/> method.
+/// </summary>
+public record struct SoundStyle
 	{
 		private const float MinPitchValue = -1f;
 		private const float MaxPitchValue = 1f;
