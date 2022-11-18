@@ -6,35 +6,35 @@
 +using System.Reflection;
 +using System.Runtime.InteropServices;
  
- namespace ReLogic.Peripherals.RGB.Razer
- {
+ namespace ReLogic.Peripherals.RGB.Razer;
+ 
 @@ -8,6 +_,9 @@
- 		private readonly List<RgbDevice> _devices = new List<RgbDevice>();
- 		private bool _isInitialized;
- 		private readonly VendorColorProfile _colorProfiles;
+ 	private readonly List<RgbDevice> _devices = new List<RgbDevice>();
+ 	private bool _isInitialized;
+ 	private readonly VendorColorProfile _colorProfiles;
 +#if NETCORE
-+		private bool _initializationFailed;
++	private bool _initializationFailed;
 +#endif
  
- 		public RazerDeviceGroup(VendorColorProfile colorProfiles) {
- 			_colorProfiles = colorProfiles;
-@@ -16,6 +_,19 @@
- 		protected override void Initialize() {
- 			if (_isInitialized)
- 				return;
+ 	public RazerDeviceGroup(VendorColorProfile colorProfiles)
+ 	{
+@@ -18,6 +_,19 @@
+ 	{
+ 		if (_isInitialized)
+ 			return;
 +
 +#if NETCORE
-+			if (_initializationFailed)
-+				return;
++		if (_initializationFailed)
++			return;
 +
-+			// Part of Razer Chroma SDK Windows x64 fix in NativeMethods.cs
-+			// Try to find dll in SafeDirectories
-+			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
-+				_initializationFailed = true;
++		// Part of Razer Chroma SDK Windows x64 fix in NativeMethods.cs
++		// Try to find dll in SafeDirectories
++		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
++			_initializationFailed = true;
 +
-+				return;
-+			}
++			return;
++		}
 +#endif
  
- 			try {
- 				RzResult rzResult = NativeMethods.Init();
+ 		try {
+ 			RzResult rzResult = NativeMethods.Init();

@@ -3,13 +3,12 @@
 @@ -1,3 +_,5 @@
 +using ReLogic.Reflection;
 +
- namespace Terraria.ID
- {
- 	public class PrefixID
-@@ -87,5 +_,6 @@
- 		public const int Mythical = 83;
- 		public const int Legendary2 = 84;
- 		public const int Count = 85;
-+		public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();
- 	}
+ namespace Terraria.ID;
+ 
+ public class PrefixID
+@@ -87,4 +_,5 @@
+ 	public const int Mythical = 83;
+ 	public const int Legendary2 = 84;
+ 	public const int Count = 85;
++	public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();
  }

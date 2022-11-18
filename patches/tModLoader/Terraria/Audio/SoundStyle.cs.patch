@@ -7,8 +7,8 @@
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
  
-@@ -36,3 +_,4 @@
- 		public abstract SoundEffect GetRandomSound();
- 	}
+@@ -35,3 +_,4 @@
+ 	public float GetRandomPitch() => _random.NextFloat() * PitchVariance - PitchVariance * 0.5f;
+ 	public abstract SoundEffect GetRandomSound();
  }
 +*/

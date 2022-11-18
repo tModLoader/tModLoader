@@ -1,18 +1,18 @@
 --- src/decompiled/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
-@@ -62,6 +_,7 @@
- 				if (!contentSource.HasAsset(assetPath))
- 					continue;
+@@ -66,6 +_,7 @@
+ 			if (!contentSource.HasAsset(assetPath))
+ 				continue;
  
 +#if !SERVER
- 				string extension = contentSource.GetExtension(assetPath);
- 				try {
- 					IAudioTrack audioTrack2 = null;
-@@ -87,6 +_,7 @@
- 					Main.IssueReporter.AddReport(textToShow);
- 					Main.IssueReporterIndicator.AttemptLettingPlayerKnow();
- 				}
-+#endif
+ 			string extension = contentSource.GetExtension(assetPath);
+ 			try {
+ 				IAudioTrack audioTrack2 = null;
+@@ -91,6 +_,7 @@
+ 				Main.IssueReporter.AddReport(textToShow);
+ 				Main.IssueReporterIndicator.AttemptLettingPlayerKnow();
  			}
++#endif
+ 		}
  
- 			return audioTrack;
+ 		return audioTrack;

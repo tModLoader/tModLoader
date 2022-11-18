@@ -4,100 +4,102 @@
 -#if SERVER && WINDOWS
  using NATUPNPLib;
 -#endif
- using ReLogic.OS;
  using System;
  using System.IO;
+ using System.Linq;
 @@ -44,10 +_,8 @@
- 		public static bool SpamCheck = false;
- 		public static bool HasClients;
- 		private static Thread _serverThread;
+ 	public static bool SpamCheck = false;
+ 	public static bool HasClients;
+ 	private static Thread _serverThread;
 -#if SERVER && WINDOWS
--		private static UPnPNAT _upnpnat;
-+		public static UPnPNAT _upnpnat;
--		private static IStaticPortMappingCollection _mappings;
-+		public static IStaticPortMappingCollection _mappings;
+-	private static UPnPNAT _upnpnat;
++	public static UPnPNAT _upnpnat;
+-	private static IStaticPortMappingCollection _mappings;
++	public static IStaticPortMappingCollection _mappings;
 -#endif
- 		public static MessageBuffer fullBuffer = new MessageBuffer();
- 		private static int _currentRequestId;
- 		private static UdpClient BroadcastClient = null;
-@@ -117,10 +_,12 @@
- 		}
+ 	public static MessageBuffer fullBuffer = new MessageBuffer();
+ 	private static int _currentRequestId;
+ 	private static UdpClient BroadcastClient = null;
+@@ -122,10 +_,12 @@
  
- 		private static void OpenPort(int port) {
+ 	private static void OpenPort(int port)
+ 	{
 -#if SERVER && WINDOWS
-+			if (!Main.dedServ)
-+				return;
++		if (!Main.dedServ)
++			return;
 +
- 			string localIPAddress = GetLocalIPAddress();
- 			if (_upnpnat == null) {
--				_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
-+				_upnpnat = new UPnPNAT();//(UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
- 				_mappings = _upnpnat.StaticPortMappingCollection;
- 			}
- 
-@@ -135,11 +_,12 @@
- 
- 			if (!flag)
- 				_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
--#endif
+ 		string localIPAddress = GetLocalIPAddress();
+ 		if (_upnpnat == null) {
+-			_upnpnat = (UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
++			_upnpnat = new UPnPNAT();//(UPnPNAT)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("AE1E00AA-3FD5-403C-8A27-2BBDC30CD0E1")));
+ 			_mappings = _upnpnat.StaticPortMappingCollection;
  		}
  
- 		private static void ClosePort(int port) {
+@@ -140,12 +_,13 @@
+ 
+ 		if (!flag)
+ 			_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
+-#endif
+ 	}
+ 
+ 	private static void ClosePort(int port)
+ 	{
 -#if SERVER && WINDOWS
-+			if (!Main.dedServ)
-+				return;
++		if (!Main.dedServ)
++			return;
 +
- 			string localIPAddress = GetLocalIPAddress();
- 			bool flag = false;
- 			if (_mappings == null)
-@@ -152,7 +_,6 @@
+ 		string localIPAddress = GetLocalIPAddress();
+ 		bool flag = false;
+ 		if (_mappings == null)
+@@ -158,7 +_,6 @@
  
- 			if (!flag)
- 				_mappings.Remove(port, "TCP");
+ 		if (!flag)
+ 			_mappings.Remove(port, "TCP");
 -#endif
+ 	}
+ 
+ 	private static void ServerFullWriteCallBack(object state)
+@@ -703,6 +_,7 @@
+ 	public static int GetSectionX(int x) => x / 200;
+ 	public static int GetSectionY(int y) => y / 150;
+ 
++	private static bool abortBroadcastThread = false;
+ 	private static void BroadcastThread()
+ 	{
+ 		BroadcastClient = new UdpClient();
+@@ -733,7 +_,11 @@
+ 			array = memoryStream.ToArray();
  		}
- 
- 		private static void ServerFullWriteCallBack(object state) {
-@@ -670,6 +_,7 @@
- 		public static int GetSectionX(int x) => x / 200;
- 		public static int GetSectionY(int y) => y / 150;
- 
-+		private static bool abortBroadcastThread = false;
- 		private static void BroadcastThread() {
- 			BroadcastClient = new UdpClient();
- 			new IPEndPoint(IPAddress.Any, 0);
-@@ -700,7 +_,11 @@
- 				}
- 			}
  
 +#if NETCORE
-+			while (!abortBroadcastThread) {
++		while (!abortBroadcastThread) {
 +#else
- 			while (true) {
+ 		while (true) {
 +#endif
- 				int num2 = 0;
- 				for (int i = 0; i < 255; i++) {
- 					if (Main.player[i].active)
-@@ -722,13 +_,22 @@
- 			if (broadcastThread != null)
- 				StopBroadCasting();
+ 			int num2 = 0;
+ 			for (int i = 0; i < 255; i++) {
+ 				if (Main.player[i].active)
+@@ -756,6 +_,7 @@
+ 		if (broadcastThread != null)
+ 			StopBroadCasting();
  
-+			abortBroadcastThread = false;
- 			broadcastThread = new Thread(BroadcastThread);
- 			broadcastThread.Start();
- 		}
- 
- 		public static void StopBroadCasting() {
- 			if (broadcastThread != null) {
++		abortBroadcastThread = false;
+ 		broadcastThread = new Thread(BroadcastThread);
+ 		broadcastThread.Start();
+ 	}
+@@ -763,7 +_,15 @@
+ 	public static void StopBroadCasting()
+ 	{
+ 		if (broadcastThread != null) {
 +#if NETCORE
-+				// Thread.Abort() is not supported as of .NET 5
-+				abortBroadcastThread = true;
-+				while(broadcastThread.IsAlive) {
-+					Thread.Sleep(1);
-+				}
++			// Thread.Abort() is not supported as of .NET 5
++			abortBroadcastThread = true;
++			while(broadcastThread.IsAlive) {
++				Thread.Sleep(1);
++			}
 +#else
- 				broadcastThread.Abort();
+ 			broadcastThread.Abort();
 +#endif
- 				broadcastThread = null;
- 			}
+ 			broadcastThread = null;
+ 		}
  

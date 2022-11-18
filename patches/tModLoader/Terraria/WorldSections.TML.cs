@@ -1,12 +1,14 @@
-﻿namespace Terraria;
+namespace Terraria;
 
 public partial class WorldSections
 {
-	public bool TileLoaded(int tileX, int tileY) {
+	public bool TileLoaded(int tileX, int tileY)
+	{
 		return SectionLoaded(Netplay.GetSectionX(tileX), Netplay.GetSectionY(tileY));
 	}
 
-	public bool TilesLoaded(int startX, int startY, int endXInclusive, int endYInclusive) {
+	public bool TilesLoaded(int startX, int startY, int endXInclusive, int endYInclusive)
+	{
 		int sX, sY, eX, eY;
 
 		sX = Netplay.GetSectionX(startX);

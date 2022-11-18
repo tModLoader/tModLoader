@@ -1,99 +1,102 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
 @@ -2,10 +_,11 @@
+ using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
- using System.Collections.Generic;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
- namespace Terraria.ID
- {
--	public class ItemID
-+	public partial class ItemID
- 	{
- 		public struct BannerEffect
- 		{
-@@ -34,9 +_,9 @@
- 			}
- 		}
+ namespace Terraria.ID;
  
--		public class Sets
-+		public partial class Sets
- 		{
--			public static SetFactory Factory = new SetFactory(5456);
-+			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
- 			public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
- 				1533,
- 				1534,
-@@ -299,7 +_,9 @@
- 					}
- 				}
- 			});
-+			/// <summary>Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe, but some items such as coins and void bag hide the tooltip for aesthetic reasons.</summary>
- 			public static bool[] IsAMaterial = Factory.CreateBoolSet();
-+			/// <summary>Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the Recipe that results in this item in <see cref="Main.recipe"/> array. If multiple recipes craft the same item, the recipe added last will be returned.</summary>
- 			public static int[] IsCrafted = Factory.CreateIntSet();
- 			public static int[] IsCraftedCrimson = Factory.CreateIntSet();
- 			public static int[] IsCraftedCorruption = Factory.CreateIntSet();
-@@ -309,7 +_,7 @@
- 			public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
- 			public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);
- 			public static bool[] IsPaintScraper = Factory.CreateBoolSet(1100, 1545);
--			public static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
-+			private static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
- 			public static bool[] IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278);
- 			public static Color[][] FoodParticleColors = Factory.CreateCustomSet(new Color[0], (short)357, new Color[2] {
- 				new Color(253, 209, 77),
-@@ -942,7 +_,11 @@
- 			public static bool[] IsLavaBait = Factory.CreateBoolSet(4849, 4845, 4847);
- 			private const int healingItemsDecayRate = 4;
- 			public static int[] ItemSpawnDecaySpeed = Factory.CreateIntSet(1, 58, 4, 184, 4, 1867, 4, 1868, 4, 1734, 4, 1735, 4);
-+			/// <summary>
-+			/// Only checked for vanilla IDs, but encouraged to set it on your modded crates for potential cross-mod support
-+			/// </summary>
- 			public static bool[] IsFishingCrate = Factory.CreateBoolSet(2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
-+			/// <inheritdoc cref="IsFishingCrate"/>
- 			public static bool[] IsFishingCrateHardmode = Factory.CreateBoolSet(3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
- 			public static bool[] CanBePlacedOnWeaponRacks = Factory.CreateBoolSet(3196, 166, 235, 3115, 167, 2896, 3547, 580, 937, 4423, 4824, 4825, 4826, 4827, 4908, 4909, 4094, 4039, 4092, 4093, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598, 905, 1326, 5335, 3225, 2303, 2299, 2290, 2317, 2305, 2304, 2313, 2318, 2312, 2306, 2308, 2319, 2314, 2302, 2315, 2307, 2310, 2301, 2298, 2316, 2309, 2321, 2297, 2300, 2311, 2420, 2438, 2437, 2436, 4401, 4402, 2475, 2476, 2450, 2477, 2478, 2451, 2479, 2480, 2452, 2453, 2481, 2454, 2482, 2483, 2455, 2456, 2457, 2458, 2459, 2460, 2484, 2472, 2461, 2462, 2463, 2485, 2464, 2465, 2486, 2466, 2467, 2468, 2487, 2469, 2488, 2470, 2471, 2473, 2474, 4393, 4394);
- 			public static int[] TextureCopyLoad = Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 3665, 3706, 3665, 4713, 4712, 5167, 5156, 5188, 5177, 5209, 5198);
-@@ -952,10 +_,18 @@
- 			public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
- 			public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
- 			public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581, 4143);
-+			// Paired with a change in Player.ExtractinatorUse, non default extractType goes by iconic ItemID:
-+			// DesertFossil is 3347 rather than 1, 2339/2338/2337 are 2337 rather than 2, 4354/4389/4377/4378/5127/5128 are now 4354 rather than 3.
-+			/// <summary>
-+			/// Indicates which extractinator type an item belongs to. An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info. Use this in conjunction with <see cref="ModItem.ExtractinatorUse(int, ref int, ref int)"/> or <see cref="GlobalItem.ExtractinatorUse(int, int, ref int, ref int)"/>. 
-+			/// </summary>
--			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
-+			public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss);
- 			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
- 			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
- 			public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
-+			/// <summary>
-+			/// Use in conjunction with Main.RegisterItemAnimation to enable its animation in the world
-+			/// </summary>
- 			public static bool[] AnimatesAsSoul = Factory.CreateBoolSet(575, 547, 520, 548, 521, 549, 3580, 3581);
- 			public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
- 			public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, 2495, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32);
-@@ -967,7 +_,7 @@
- 			public static int[] SortingPriorityTerraforming = Factory.CreateIntSet(-1, 5134, 100, 779, 99, 780, 98, 783, 97, 781, 96, 782, 95, 784, 94, 5392, 93, 5393, 92, 5394, 91, 422, 90, 423, 89, 3477, 88, 66, 67, 67, 86, 2886, 85);
- 			public static int[] GamepadExtraRange = Factory.CreateIntSet(0, 2797, 20, 3278, 4, 3285, 6, 3279, 8, 3280, 8, 3281, 9, 3262, 10, 3317, 10, 5294, 10, 3282, 10, 3315, 10, 3316, 11, 3283, 12, 3290, 13, 3289, 11, 3284, 13, 3286, 13, 3287, 18, 3288, 18, 3291, 17, 3292, 18, 3389, 21);
- 			public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254);
--			public static float[] BonusMeleeSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f);
-+			public static float[] BonusAttackSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f);
- 			public static bool[] GamepadSmartQuickReach = Factory.CreateBoolSet(2798, 2797, 3030, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 5294, 3389, 2798, 65, 1931, 3570, 2750, 3065, 3029, 4956, 5065, 1256, 1244, 3014, 113, 218, 495);
- 			public static bool[] Yoyo = Factory.CreateBoolSet(3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 3389, 5294);
- 			public static bool[] AlsoABuildingItem = Factory.CreateBoolSet(3031, 205, 1128, 207, 206, 3032, 849, 3620, 509, 851, 850, 3625, 510, 1071, 1543, 1072, 1544, 1100, 1545, 4820, 4872, 5303, 5304, 5302, 5364);
-@@ -1031,6 +_,11 @@
- 				4315,
- 				4584
- 			};
-+
-+			/// <summary>
-+			/// Set for all boss bags. Causes bags to drop dev armor.
-+			/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjuction with this one.
-+			/// </summary>
- 			public static bool[] BossBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
- 			public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
+-public class ItemID
++public partial class ItemID
+ {
+ 	public struct BannerEffect
+ 	{
+@@ -36,9 +_,9 @@
  		}
+ 	}
+ 
+-	public class Sets
++	public partial class Sets
+ 	{
+-		public static SetFactory Factory = new SetFactory(5456);
++		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
+ 		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
+ 			1533,
+ 			1534,
+@@ -301,8 +_,12 @@
+ 				}
+ 			}
+ 		});
++
++		/// <summary> Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe, but some items such as coins and void bag hide the tooltip for aesthetic reasons. </summary>
+ 		public static bool[] IsAMaterial = Factory.CreateBoolSet();
++		/// <summary> Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the Recipe that results in this item in <see cref="Main.recipe"/> array. If multiple recipes craft the same item, the recipe added last will be returned. </summary>
+ 		public static int[] IsCrafted = Factory.CreateIntSet();
++
+ 		public static int[] IsCraftedCrimson = Factory.CreateIntSet();
+ 		public static int[] IsCraftedCorruption = Factory.CreateIntSet();
+ 		public static bool[] IgnoresEncumberingStone = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
+@@ -311,7 +_,7 @@
+ 		public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
+ 		public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);
+ 		public static bool[] IsPaintScraper = Factory.CreateBoolSet(1100, 1545);
+-		public static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
++		private static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
+ 		public static bool[] IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278);
+ 		public static Color[][] FoodParticleColors = Factory.CreateCustomSet(new Color[0], (short)357, new Color[2] {
+ 			new Color(253, 209, 77),
+@@ -944,7 +_,11 @@
+ 		public static bool[] IsLavaBait = Factory.CreateBoolSet(4849, 4845, 4847);
+ 		private const int healingItemsDecayRate = 4;
+ 		public static int[] ItemSpawnDecaySpeed = Factory.CreateIntSet(1, 58, 4, 184, 4, 1867, 4, 1868, 4, 1734, 4, 1735, 4);
++		/// <summary>
++		/// Only checked for vanilla IDs, but encouraged to set it on your modded crates for potential cross-mod support
++		/// </summary>
+ 		public static bool[] IsFishingCrate = Factory.CreateBoolSet(2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
++		/// <inheritdoc cref="IsFishingCrate"/>
+ 		public static bool[] IsFishingCrateHardmode = Factory.CreateBoolSet(3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
+ 		public static bool[] CanBePlacedOnWeaponRacks = Factory.CreateBoolSet(3196, 166, 235, 3115, 167, 2896, 3547, 580, 937, 4423, 4824, 4825, 4826, 4827, 4908, 4909, 4094, 4039, 4092, 4093, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598, 905, 1326, 5335, 3225, 2303, 2299, 2290, 2317, 2305, 2304, 2313, 2318, 2312, 2306, 2308, 2319, 2314, 2302, 2315, 2307, 2310, 2301, 2298, 2316, 2309, 2321, 2297, 2300, 2311, 2420, 2438, 2437, 2436, 4401, 4402, 2475, 2476, 2450, 2477, 2478, 2451, 2479, 2480, 2452, 2453, 2481, 2454, 2482, 2483, 2455, 2456, 2457, 2458, 2459, 2460, 2484, 2472, 2461, 2462, 2463, 2485, 2464, 2465, 2486, 2466, 2467, 2468, 2487, 2469, 2488, 2470, 2471, 2473, 2474, 4393, 4394);
+ 		public static int[] TextureCopyLoad = Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 3665, 3706, 3665, 4713, 4712, 5167, 5156, 5188, 5177, 5209, 5198);
+@@ -954,10 +_,18 @@
+ 		public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
+ 		public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
+ 		public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581, 4143);
++		// Paired with a change in Player.ExtractinatorUse, non default extractType goes by iconic ItemID:
++		// DesertFossil is 3347 rather than 1, 2339/2338/2337 are 2337 rather than 2, 4354/4389/4377/4378/5127/5128 are now 4354 rather than 3.
++		/// <summary>
++		/// Indicates which extractinator type an item belongs to. An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info. Use this in conjunction with <see cref="ModItem.ExtractinatorUse(int, ref int, ref int)"/> or <see cref="GlobalItem.ExtractinatorUse(int, int, ref int, ref int)"/>. 
++		/// </summary>
+-		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
++		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss);
+ 		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
+ 		public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
+ 		public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
++		/// <summary>
++		/// Use in conjunction with Main.RegisterItemAnimation to enable its animation in the world
++		/// </summary>
+ 		public static bool[] AnimatesAsSoul = Factory.CreateBoolSet(575, 547, 520, 548, 521, 549, 3580, 3581);
+ 		public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
+ 		public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, 2495, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32);
+@@ -969,7 +_,7 @@
+ 		public static int[] SortingPriorityTerraforming = Factory.CreateIntSet(-1, 5134, 100, 779, 99, 780, 98, 783, 97, 781, 96, 782, 95, 784, 94, 5392, 93, 5393, 92, 5394, 91, 422, 90, 423, 89, 3477, 88, 66, 67, 67, 86, 2886, 85);
+ 		public static int[] GamepadExtraRange = Factory.CreateIntSet(0, 2797, 20, 3278, 4, 3285, 6, 3279, 8, 3280, 8, 3281, 9, 3262, 10, 3317, 10, 5294, 10, 3282, 10, 3315, 10, 3316, 11, 3283, 12, 3290, 13, 3289, 11, 3284, 13, 3286, 13, 3287, 18, 3288, 18, 3291, 17, 3292, 18, 3389, 21);
+ 		public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254);
+-		public static float[] BonusMeleeSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f);
++		public static float[] BonusAttackSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f);
+ 		public static bool[] GamepadSmartQuickReach = Factory.CreateBoolSet(2798, 2797, 3030, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 5294, 3389, 2798, 65, 1931, 3570, 2750, 3065, 3029, 4956, 5065, 1256, 1244, 3014, 113, 218, 495);
+ 		public static bool[] Yoyo = Factory.CreateBoolSet(3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 3389, 5294);
+ 		public static bool[] AlsoABuildingItem = Factory.CreateBoolSet(3031, 205, 1128, 207, 206, 3032, 849, 3620, 509, 851, 850, 3625, 510, 1071, 1543, 1072, 1544, 1100, 1545, 4820, 4872, 5303, 5304, 5302, 5364);
+@@ -1033,6 +_,11 @@
+ 			4315,
+ 			4584
+ 		};
++
++		/// <summary>
++		/// Set for all boss bags. Causes bags to drop dev armor.
++		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjuction with this one.
++		/// </summary>
+ 		public static bool[] BossBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
+ 		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
+ 	}

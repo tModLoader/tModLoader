@@ -80,4 +80,9 @@ public class ModPlayerTest : ModPlayer
 #endif
 		// ref int junkLocal = ref junk; // Can't really be transformed, unless you check for fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
 	}
+
+	public void UseQuickSpawnItem() {
+		Item item = new Item(22);
+		Player.QuickSpawnItem(null, item);
+	}
 }

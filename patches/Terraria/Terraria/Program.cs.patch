@@ -1,29 +1,29 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
 @@ -18,10 +_,15 @@
- {
- 	public static class Program
- 	{
-+#if XNA
- 		public static bool IsXna = true;
- 		public static bool IsFna = false;
-+#else
-+		public static bool IsXna = false;
-+		public static bool IsFna = true;
-+#endif
- 		public static bool IsMono = Type.GetType("Mono.Runtime") != null;
--		public const bool IsDebug = false;
-+		// public const bool IsDebug = false;
- 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
- 		public static string SavePath;
- 		public const string TerrariaSaveFolderPath = "Terraria";
-@@ -144,6 +_,9 @@
  
- 			LaunchParameters = Utils.ParseArguements(args);
- 			SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
-+#if SERVER
-+			Main.dedServ = true;
+ public static class Program
+ {
++#if XNA
+ 	public static bool IsXna = true;
+ 	public static bool IsFna = false;
++#else
++	public static bool IsXna = false;
++	public static bool IsFna = true;
 +#endif
- 			ThreadPool.SetMinThreads(8, 8);
- 			InitializeConsoleOutput();
- 			SetupLogging();
+ 	public static bool IsMono = Type.GetType("Mono.Runtime") != null;
+-	public const bool IsDebug = false;
++	// public const bool IsDebug = false;
+ 	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
+ 	public static string SavePath;
+ 	public const string TerrariaSaveFolderPath = "Terraria";
+@@ -153,6 +_,9 @@
+ 
+ 		LaunchParameters = Utils.ParseArguements(args);
+ 		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
++#if SERVER
++		Main.dedServ = true;
++#endif
+ 		ThreadPool.SetMinThreads(8, 8);
+ 		InitializeConsoleOutput();
+ 		SetupLogging();
