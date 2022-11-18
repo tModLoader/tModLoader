@@ -21,7 +21,7 @@ public enum SoundLimitBehavior
 
 /// <summary>
 /// This data type describes in detail how a sound should be played.
-/// <br/> Passable to the <see cref="SoundEngine.PlaySound(in SoundStyle, Vector2?)"/> method.
+/// <br/> Passable to the <see cref="SoundEngine.PlaySound(in SoundStyle, Vector2?, SoundUpdateCallback?)"/> method.
 /// </summary>
 public record struct SoundStyle
 {

@@ -4,7 +4,7 @@ namespace Terraria.ID;
 
 public static class MusicID
 {
-	// Names derived from the music box that plays each: http://terraria.gamepedia.com/Music_Box
+	// Names derived from the music box that plays each: https://terraria.wiki.gg/wiki/Music_Box
 	public const short OverworldDay = 1;
 	public const short Eerie = 2;
 	public const short Night = 3;

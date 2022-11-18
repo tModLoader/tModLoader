@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Items
 			Item.value = Item.buyPrice(gold: 5);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item3;
-			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.useTurn = true;
 			Item.useAnimation = 17;
 			Item.useTime = 17;

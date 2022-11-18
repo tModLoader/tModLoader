@@ -113,6 +113,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 
 	/// <summary>
 	/// Allows you to determine how this projectile behaves. This will only be called if PreAI returns true.
+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#custom-ai">Basic Projectile Guide</see> teaches the basics of writing a custom AI, such as timers, gravity, rotation, etc.
 	/// </summary>
 	public virtual void AI()
 	{
