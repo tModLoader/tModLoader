@@ -1,10 +1,12 @@
 ﻿using Hjson;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
 
@@ -237,6 +239,10 @@ namespace Terraria.ModLoader
 						continue;
 					}
 
+					// Due to comments, some objects can by empty
+					if (t is JObject obj && obj.Count == 0)
+						continue;
+
 					// Custom implementation of Path to allow "x.y" keys
 					string path = "";
 					JToken current = t;
@@ -275,6 +281,259 @@ namespace Terraria.ModLoader
 			}
 
 			return dict[value.Key];
+		}
+
+		// Classes facilitating UpdateLocalizationFiles()
+		public record LocalizationFileEntry(string path, List<LocalizationEntry> LocalizationEntries);
+		public record LocalizationEntry(string key, string value, string comment, JsonType type = JsonType.String);
+		public class CommentedWscJsonObject : WscJsonObject
+		{
+			public List<string> CommentedOut { get; private set; }
+
+			public CommentedWscJsonObject() {
+				CommentedOut = new List<string>();
+			}
+		}
+
+		internal static void UpdateLocalizationFiles() {
+			// For each mod with mod sources
+			foreach (var mod in ModLoader.Mods) {
+				string sourceFolder = Path.Combine(ModCompile.ModSourcePath, mod.Name);
+				if (!Directory.Exists(sourceFolder))
+					continue;
+
+				// TODO: Maybe optimize to only recently built?
+
+				var localizationFileEntries = new List<LocalizationFileEntry>();
+
+				// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
+				List<string> allLocalizationFilesAllLanguages = new();
+				HashSet<GameCulture> allLanguages = new();
+				foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+					using var stream = mod.File.GetStream(translationFile);
+					using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+
+					string translationFileContents = streamReader.ReadToEnd();
+
+					var culture = GameCulture.FromPath(translationFile.Name);
+
+					allLocalizationFilesAllLanguages.Add(translationFile.Name);
+					allLanguages.Add(culture);
+
+					// TODO: Support arbitrary default language?
+					// Default language hjson files loaded into memory to gather comments and modder intended ordering.
+					if (culture == GameCulture.FromCultureName(GameCulture.CultureName.English)) {
+						JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+						JsonObject jsonObjectEng = jsonValueEng.Qo();
+						// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
+						List<LocalizationEntry> existingEntries = FlattenJsonObject(jsonObjectEng as WscJsonObject);
+						localizationFileEntries.Add(new(translationFile.Name, existingEntries));
+					}
+				}
+
+				// Abort if no default localization files found
+				if (!localizationFileEntries.Any())
+					return;
+
+				var existingKeys = new List<LocalizationEntry>();
+				// Collect known keys. These are potentially missing from the localization files
+				foreach (var translation in translations) {
+					if (translation.Key.StartsWith($"Mods.{mod.Name}.")) {
+						existingKeys.Add(new(translation.Key, translation.Value.GetDefault(), null));
+					}
+				}
+
+				// Merge collected keys into flattened in-memory model
+				foreach (var existingKey in existingKeys) {
+					LocalizationFileEntry suitableHJSONFile = FindHJSONFileForKey(localizationFileEntries, existingKey.key);
+
+					if (!KeyExistsInHJSON(suitableHJSONFile, existingKey.key)) {
+						AddEntryToHJSON(suitableHJSONFile, existingKey.key, existingKey.value, null);
+					}
+					// What do we do if the hjson and loaded translations are different, will that be possible? Check Override here once implemented
+				}
+
+				// Update all languages that have been found in the mod
+				foreach (var culture in allLanguages) {
+					// Save all localization files
+					foreach (var localizationFileEntry in localizationFileEntries) {
+						// TODO: Don't save to disk if unchange optimization
+
+						var rootObject = new CommentedWscJsonObject();
+						// Convert back to JsonObject and write to disk
+						for (int i = 0; i < localizationFileEntry.LocalizationEntries.Count; i++) {
+							var entry = localizationFileEntry.LocalizationEntries[i];
+
+							CommentedWscJsonObject parent = rootObject;
+
+							// Find/Populate the parents of this translation entry 
+							string[] splitKey = entry.key.Split(".");
+							for (int j = 0; j < splitKey.Length - 1; j++) {
+								string k = splitKey[j];
+								if (parent.ContainsKey(k))
+									parent = (CommentedWscJsonObject)parent[k];
+								else {
+									var newParent = new CommentedWscJsonObject();
+									parent.Add(k, newParent);
+									parent = newParent;
+								}
+							}
+
+							// TODO: "$parentVal" support?
+							// Populate parent object with this translation, manipulating comments to appear above the entry.
+
+							if (entry.value == null && entry.type == JsonType.Object) {
+								if (parent.Count == 0) {
+									parent.Comments[""] = entry.comment;
+								}
+								else {
+									string actualCommentKey = parent.Keys.Last();
+									parent.Comments[actualCommentKey] = entry.comment;
+								}
+								parent.Add(entry.key.Split(".").Last(), new CommentedWscJsonObject());
+							}
+							else {
+								// Add values
+
+								string value = translations[entry.key].GetTranslation(culture);
+								if (culture.Name != "en-US" && value == translations[entry.key].GetDefault()) {
+									// This might be messing up Russian: OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
+									//key = "# " + key; // doesn't work, escaped by escapeName
+									parent.CommentedOut.Add(key);
+								}
+
+								if (parent.Count == 0) {
+									parent.Comments[""] = entry.comment;
+								}
+								else {
+									string actualCommentKey = parent.Keys.Last();
+									parent.Comments[actualCommentKey] = entry.comment;
+								}
+								parent.Add(entry.key.Split(".").Last(), value);
+							}
+						}
+
+						string outputFileName = localizationFileEntry.path;
+						outputFileName = outputFileName.Replace("en-US", culture.CultureInfo.Name);
+						string outputFilePath = Path.Combine(sourceFolder, outputFileName);
+						outputFilePath += ".new"; // Save to new file, until working completely
+
+						string hjsonContents = rootObject.ToFancyHjsonString();
+						File.WriteAllText(outputFilePath, hjsonContents);
+
+						allLocalizationFilesAllLanguages.Remove(outputFileName);
+
+						// TODO: Indicate on Mods/Mod Sources that localizations have updated maybe?
+					}
+				}
+
+				// Clean up orphaned non-default language files, if any.
+				foreach (var remainingLocalizationFiles in allLocalizationFilesAllLanguages) {
+					string originalPath = Path.Combine(sourceFolder, remainingLocalizationFiles);
+					string newPath = originalPath + ".legacy";
+
+					File.Move(originalPath, newPath);
+				}
+			}
+		}
+
+		private static List<LocalizationEntry> FlattenJsonObject(WscJsonObject jsonObjectEng) {
+			// TODO: How should "$parentVal" be handled?
+
+			var newJsonObject = new WscJsonObject();
+			var existingKeys = new List<LocalizationEntry>();
+			RecurseThrough(jsonObjectEng, "");
+			return existingKeys;
+
+			void RecurseThrough(WscJsonObject original, string prefix) {
+				int index = 0;
+				foreach (var item in original) {
+					if (item.Value.JsonType == JsonType.Object) {
+						var entry = item.Value as WscJsonObject;
+						string newPrefix = string.IsNullOrWhiteSpace(prefix) ? item.Key : prefix + "." + item.Key;
+
+						int actualOrderIndex = index - 1;
+						string actualCommentKey = actualOrderIndex == -1 ? "" : original.Order[actualOrderIndex];
+						string comment = original.Comments[actualCommentKey];
+						existingKeys.Add(new(newPrefix, null, comment, JsonType.Object));
+
+						RecurseThrough(entry.Qo() as WscJsonObject, newPrefix);
+					}
+					else if(item.Value.JsonType == JsonType.String) {
+						var localizationValue = item.Value.Qs();
+						string key = prefix + "." + item.Key;
+						int actualOrderIndex = index - 1;
+						string actualCommentKey = actualOrderIndex == -1 ? "" : original.Order[actualOrderIndex];
+						string comment = original.Comments[actualCommentKey];
+						existingKeys.Add(new(key, localizationValue, comment));
+					}
+
+					index++;
+				}
+			}
+		}
+
+		private static LocalizationFileEntry FindHJSONFileForKey(List<LocalizationFileEntry> localizationFileEntries, string key) {
+			// This method searches through all existing files (for default language) and finds the most suitable file
+			// The most suitable file has existing entries that match as much of the "prefix" as possible.
+			// If there are multiple files with the prefix, the first is chosen
+			// If there are no files, use the default file, create if missing.
+			// For non-English, missing files will need to be added to the List.
+
+			int levelFound = -1;
+			LocalizationFileEntry mostSuitableLocalizationFile = null;
+
+			foreach (var localizationFileEntry in localizationFileEntries) {
+				int level = CheckPrefixExistsLevel(localizationFileEntry.LocalizationEntries, key);
+				if(level > levelFound) {
+					levelFound = level;
+					mostSuitableLocalizationFile = localizationFileEntry;
+				}
+			}
+
+			if(mostSuitableLocalizationFile == null) {
+				throw new Exception("Somehow there are no files for this key");
+			}
+
+			return mostSuitableLocalizationFile;
+		}
+
+		internal static int CheckPrefixExistsLevel(List<LocalizationEntry> localizationEntries, string key) {
+			// Returns 0 if no prefix matches, and up to the Key parts length depending on how much is found.
+
+			string[] splitKey = key.Split(".");
+			for (int i = 0; i < splitKey.Length; i++) {
+				string k = splitKey[i];
+				string partialKey = string.Join(".", splitKey.Take(i + 1));
+
+				if (localizationEntries.Any(x => x.key.StartsWith(partialKey)))
+					continue;
+				else
+					return i;
+			}
+			return splitKey.Length;
+		}
+
+		internal static bool KeyExistsInHJSON(LocalizationFileEntry localizationFileEntry, string key) {
+			return localizationFileEntry.LocalizationEntries.Any(x => x.key.Equals(key));
+		}
+
+		internal static void AddEntryToHJSON(LocalizationFileEntry localizationFileEntry, string key, string value, string comment = null) {
+			var localizationEntries = localizationFileEntry.LocalizationEntries;
+
+			// If prefix exists, add to List after most specific prefix
+			int index = 0;
+
+			string[] splitKey = key.Split(".");
+			for (int i = 0; i < splitKey.Length - 1; i++) {
+				string k = splitKey[i];
+				string partialKey = string.Join(".", splitKey.Take(i + 1));
+
+				int newIndex = localizationEntries.FindLastIndex(x => x.key.StartsWith(partialKey));
+				if (newIndex != -1)
+					index = newIndex;
+			}
+			localizationFileEntry.LocalizationEntries.Insert(index + 1, new(key, value, comment));
 		}
 	}
 }

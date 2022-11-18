@@ -353,6 +353,7 @@ namespace Terraria.ModLoader
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+			LocalizationLoader.UpdateLocalizationFiles();
 			SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 			PylonLoader.Setup();
