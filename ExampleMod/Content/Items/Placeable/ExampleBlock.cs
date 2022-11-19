@@ -35,16 +35,9 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleBlock>());
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.useTurn = true;
-			Item.autoReuse = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleBlock>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

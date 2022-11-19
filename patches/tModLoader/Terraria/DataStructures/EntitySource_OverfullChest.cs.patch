@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_OverfullChest.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_OverfullChest.cs
 @@ -4,8 +_,8 @@
- 	{
- 		public readonly Chest Chest;
+ {
+ 	public readonly Chest Chest;
  
--		public EntitySource_OverfullChest(int tileCoordsX, int tileCoordsY, Chest chest)
-+		public EntitySource_OverfullChest(int tileCoordsX, int tileCoordsY, Chest chest, string? context)
--			: base(tileCoordsX, tileCoordsY) {
-+			: base(tileCoordsX, tileCoordsY, context) {
- 			Chest = chest;
- 		}
+-	public EntitySource_OverfullChest(int tileCoordsX, int tileCoordsY, Chest chest)
++	public EntitySource_OverfullChest(int tileCoordsX, int tileCoordsY, Chest chest, string? context)
+-		: base(tileCoordsX, tileCoordsY)
++		: base(tileCoordsX, tileCoordsY, context)
+ 	{
+ 		Chest = chest;
  	}

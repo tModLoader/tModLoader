@@ -12,4 +12,4 @@ ln -s /home/tml/.local/share/Terraria/dotnet/ /home/tml/tModLoader/dotnet
 echo "Launching tModLoader..."
 cd ~/tModLoader
 # Maybe eventually steamcmd will allow for an actual steamserver. For now -nosteam is required.
-exec ./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/serverconfig.txt -nosteam -steamworkshopfolder $HOME/.local/share/Terraria/wsmods
+exec ./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/serverconfig.txt -nosteam -steamworkshopfolder $HOME/.local/share/Terraria/wsmods/steamapps/workshop

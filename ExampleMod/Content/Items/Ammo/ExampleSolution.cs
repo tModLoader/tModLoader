@@ -23,14 +23,9 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			Item.shoot = ModContent.ProjectileType<ExampleSolutionProjectile>() - ProjectileID.PureSpray;
-			Item.ammo = AmmoID.Solution;
-			Item.width = 10;
-			Item.height = 12;
+			Item.DefaultToSolution(ModContent.ProjectileType<ExampleSolutionProjectile>());
 			Item.value = Item.buyPrice(0, 0, 25);
 			Item.rare = ItemRarityID.Orange;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -53,14 +48,9 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			Projectile.width = 6;
-			Projectile.height = 6;
-			Projectile.friendly = true;
-			Projectile.alpha = 255;
-			Projectile.penetrate = -1;
-			Projectile.extraUpdates = 2;
-			Projectile.tileCollide = false;
-			Projectile.ignoreWater = true;
+			// This method quickly sets the projectile properties to match other sprays.
+			Projectile.DefaultToSpray();
+			Projectile.aiStyle = 0; // Here we set aiStyle back to 0 because we have custom AI code
 		}
 
 		public override void AI() {

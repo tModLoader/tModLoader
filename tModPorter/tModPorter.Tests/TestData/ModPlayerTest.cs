@@ -58,4 +58,9 @@ public class ModPlayerTest : ModPlayer
 		ref int caughtTypeLocal = ref caughtType;
 		// ref int junkLocal = ref junk; // Can't really be transformed, unless you check for fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
 	}
+
+	public void UseQuickSpawnItem() {
+		Item item = new Item(22);
+		Player.QuickSpawnClonedItem(null, item);
+	}
 }

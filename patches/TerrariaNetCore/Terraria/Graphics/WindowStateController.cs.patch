@@ -1,21 +1,21 @@
 --- src/Terraria/Terraria/Graphics/WindowStateController.cs
 +++ src/TerrariaNetCore/Terraria/Graphics/WindowStateController.cs
-@@ -6,6 +_,11 @@
+@@ -6,6 +_,12 @@
+ 
+ public class WindowStateController
  {
- 	public class WindowStateController
- 	{
 +#if NETCORE
-+		public bool CanMoveWindowAcrossScreens => false;
-+		public string ScreenDeviceName => "";
-+		public void TryMovingToScreen(string screenDeviceName) {}
++	public bool CanMoveWindowAcrossScreens => false;
++	public string ScreenDeviceName => "";
++
++	public void TryMovingToScreen(string screenDeviceName) { }
 +#else
- 		public bool CanMoveWindowAcrossScreens => Platform.IsWindows;
+ 	public bool CanMoveWindowAcrossScreens => Platform.IsWindows;
  
- 		public string ScreenDeviceName {
-@@ -54,5 +_,6 @@
+ 	public string ScreenDeviceName {
+@@ -58,4 +_,5 @@
  
- 			return false;
- 		}
-+#endif
+ 		return false;
  	}
++#endif
  }

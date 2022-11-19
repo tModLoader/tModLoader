@@ -6,33 +6,33 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
- namespace Terraria.Graphics.Light
- {
-@@ -247,9 +_,12 @@
+ namespace Terraria.Graphics.Light;
+ 
+@@ -255,9 +_,12 @@
+ 				break;
+ 		}
+ 
++		WallLoader.ModifyLight(x, y, tile.wall, ref num, ref num2, ref num3);
++
+ 		if (lightColor.X < num)
+ 			lightColor.X = num;
+ 
++		// Extra patch context.
+ 		if (lightColor.Y < num2)
+ 			lightColor.Y = num2;
+ 
+@@ -2214,11 +_,14 @@
+ 					B = 0.15f;
  					break;
  			}
- 
-+			WallLoader.ModifyLight(x, y, tile.wall, ref num, ref num2, ref num3);
 +
- 			if (lightColor.X < num)
- 				lightColor.X = num;
++			TileLoader.ModifyLight(x, y, tile.type, ref R, ref G, ref B);
+ 		}
  
-+			// Extra patch context.
- 			if (lightColor.Y < num2)
- 				lightColor.Y = num2;
+ 		if (lightColor.X < R)
+ 			lightColor.X = R;
  
-@@ -2205,11 +_,14 @@
- 						B = 0.15f;
- 						break;
- 				}
-+
-+				TileLoader.ModifyLight(x, y, tile.type, ref R, ref G, ref B);
- 			}
- 
- 			if (lightColor.X < R)
- 				lightColor.X = R;
- 
-+			// Extra patch context.
- 			if (lightColor.Y < G)
- 				lightColor.Y = G;
++		// Extra patch context.
+ 		if (lightColor.Y < G)
+ 			lightColor.Y = G;
  

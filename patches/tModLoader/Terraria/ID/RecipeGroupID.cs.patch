@@ -1,12 +1,12 @@
 --- src/TerrariaNetCore/Terraria/ID/RecipeGroupID.cs
 +++ src/tModLoader/Terraria/ID/RecipeGroupID.cs
 @@ -10,7 +_,9 @@
- 		public static int Butterflies = 5;
- 		public static int Fireflies = 6;
- 		public static int Snails = 7;
-+		// Unused.
- 		public static int FishForDinner = 8;
-+		// Unused.
- 		public static int GoldenCritter = 9;
- 		public static int Dragonflies = 10;
- 		public static int Turtles = 11;
+ 	public static int Butterflies = 5;
+ 	public static int Fireflies = 6;
+ 	public static int Snails = 7;
++	// Unused.
+ 	public static int FishForDinner = 8;
++	// Unused.
+ 	public static int GoldenCritter = 9;
+ 	public static int Dragonflies = 10;
+ 	public static int Turtles = 11;

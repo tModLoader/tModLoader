@@ -5,7 +5,8 @@ namespace Terraria.Localization;
 
 public partial class GameCulture
 {
-	public static GameCulture FromPath(string path) {
+	public static GameCulture FromPath(string path)
+	{
 		path = Path.ChangeExtension(path, null);
 
 		string[] split = path.Split("/");

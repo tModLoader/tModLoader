@@ -1,8 +1,7 @@
-﻿namespace Terraria.ModLoader.UI.ModBrowser
+﻿namespace Terraria.ModLoader.UI.ModBrowser;
+
+public enum SearchFilter
 {
-	public enum SearchFilter
-	{
-		Name,
-		Author
-	}
+	Name,
+	Author
 }

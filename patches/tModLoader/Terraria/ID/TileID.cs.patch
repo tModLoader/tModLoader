@@ -1,26 +1,26 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
 @@ -1,11 +_,12 @@
- using ReLogic.Reflection;
  using System.Collections.Generic;
+ using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
- namespace Terraria.ID
- {
--	public class TileID
-+	public partial class TileID
- 	{
--		public static class Sets
-+		public static partial class Sets
- 		{
- 			public static class Conversion
- 			{
-@@ -106,7 +_,7 @@
- 				};
- 			}
+ namespace Terraria.ID;
  
--			public static SetFactory Factory = new SetFactory(693);
-+			public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
- 			public static bool[] IceSkateSlippery = Factory.CreateBoolSet(161, 162, 127, 163, 164, 200, 659);
- 			public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);
- 			public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
+-public class TileID
++public partial class TileID
+ {
+-	public static class Sets
++	public static partial class Sets
+ 	{
+ 		public static class Conversion
+ 		{
+@@ -106,7 +_,7 @@
+ 			};
+ 		}
+ 
+-		public static SetFactory Factory = new SetFactory(693);
++		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
+ 		public static bool[] IceSkateSlippery = Factory.CreateBoolSet(161, 162, 127, 163, 164, 200, 659);
+ 		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);
+ 		public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);

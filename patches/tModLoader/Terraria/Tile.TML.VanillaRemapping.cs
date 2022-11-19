@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using Terraria.ID;
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -114,7 +114,8 @@ public readonly partial struct Tile
 	// Utilities
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private void SetIsLiquidType(int liquidId, bool value) {
+	private void SetIsLiquidType(int liquidId, bool value)
+	{
 		if (value)
 			LiquidType = liquidId;
 		else if (LiquidType == liquidId)

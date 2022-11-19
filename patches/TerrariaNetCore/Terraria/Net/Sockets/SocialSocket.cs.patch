@@ -5,28 +5,28 @@
 +using System.Threading.Tasks;
  using Terraria.Social;
  
- namespace Terraria.Net.Sockets
-@@ -32,7 +_,11 @@
- 
- 		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
- 			SocialAPI.Network.Send(_remoteAddress, data, size);
+ namespace Terraria.Net.Sockets;
+@@ -37,7 +_,11 @@
+ 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
+ 	{
+ 		SocialAPI.Network.Send(_remoteAddress, data, size);
 +#if NETCORE
-+			Task.Run(() => callback.Invoke(state));
++		Task.Run(() => callback.Invoke(state));
 +#else
- 			callback.BeginInvoke(state, null, null);
+ 		callback.BeginInvoke(state, null, null);
 +#endif
- 		}
+ 	}
  
- 		private void ReadCallback(byte[] data, int offset, int size, SocketReceiveCallback callback, object state) {
-@@ -45,7 +_,11 @@
- 		}
+ 	private void ReadCallback(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
+@@ -52,7 +_,11 @@
  
- 		void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state) {
+ 	void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
+ 	{
 +#if NETCORE
-+			Task.Run(() => new InternalReadCallback(ReadCallback).Invoke(data, offset, size, callback, state));
++		Task.Run(() => new InternalReadCallback(ReadCallback).Invoke(data, offset, size, callback, state));
 +#else
- 			new InternalReadCallback(ReadCallback).BeginInvoke(data, offset, size, callback, state, null, null);
+ 		new InternalReadCallback(ReadCallback).BeginInvoke(data, offset, size, callback, state, null, null);
 +#endif
- 		}
+ 	}
  
- 		void ISocket.SendQueuedPackets() {
+ 	void ISocket.SendQueuedPackets()

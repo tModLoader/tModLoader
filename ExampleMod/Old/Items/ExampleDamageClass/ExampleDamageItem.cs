@@ -10,7 +10,6 @@ namespace ExampleMod.Items.ExampleDamageClass
 	public abstract class ExampleDamageItem : ModItem
 	{
 		public override bool CloneNewInstances => true;
-		public int exampleResourceCost = 0;
 
 		// Custom items should override this to set their defaults
 		public virtual void SafeSetDefaults() {
@@ -57,21 +56,6 @@ namespace ExampleMod.Items.ExampleDamageClass
 				// Change the tooltip text
 				tt.text = damageValue + " example " + damageWord;
 			}
-
-			if (exampleResourceCost > 0) {
-				tooltips.Add(new TooltipLine(mod, "Example Resource Cost", $"Uses {exampleResourceCost} example resource"));
-			}
-		}
-
-		// Make sure you can't use the item if you don't have enough resource and then use 10 resource otherwise.
-		public override bool CanUseItem(Player player) {
-			var exampleDamagePlayer = player.GetModPlayer<ExampleDamagePlayer>();
-
-			if (exampleDamagePlayer.exampleResourceCurrent >= exampleResourceCost) {
-				exampleDamagePlayer.exampleResourceCurrent -= exampleResourceCost;
-				return true;
-			}
-			return false;
 		}
 	}
 }

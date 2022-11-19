@@ -1,245 +1,247 @@
 --- src/TerrariaNetCore/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -1,16 +_,17 @@
+@@ -4,13 +_,17 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
--#if MONO
--using System.Runtime.InteropServices;
--#endif
-+
+ 
 +#pragma warning disable IDE1006 // Naming Styles
++
+ namespace Terraria;
  
- namespace Terraria
- {
 -#if MONO
--	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+-[StructLayout(LayoutKind.Sequential, Pack = 1)]
 -#endif
--	public class Tile
-+	// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere.
-+	// Alike Entities in the ECS game architecture design.
+-public class Tile
++// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere.
++// Alike Entities in the ECS game architecture design.
 +
-+	// See Tile.TML.cs for the actual implementation.
-+	public readonly partial struct Tile
- 	{
-+		/*
- 		public ushort type;
- 		public ushort wall;
- 		public byte liquid;
++// See Tile.TML.cs for the actual implementation.
++public readonly partial struct Tile
+ {
++	/*
+ 	public ushort type;
+ 	public ushort wall;
+ 	public byte liquid;
 @@ -59,7 +_,9 @@
- 				return -1;
- 			}
+ 			return -1;
  		}
-+		*/
+ 	}
++	*/
  
-+		/*
- 		public Tile() {
- 			type = 0;
- 			wall = 0;
-@@ -71,7 +_,9 @@
- 			frameX = 0;
- 			frameY = 0;
++	/*
+ 	public Tile()
+ 	{
+ 		type = 0;
+@@ -72,7 +_,9 @@
+ 		frameX = 0;
+ 		frameY = 0;
+ 	}
++	*/
+ 
++	/*
+ 	public Tile(Tile copy)
+ 	{
+ 		if (copy == null) {
+@@ -98,11 +_,15 @@
+ 			frameY = copy.frameY;
  		}
-+		*/
+ 	}
++	*/
  
-+		/*
- 		public Tile(Tile copy) {
- 			if (copy == null) {
- 				type = 0;
-@@ -96,10 +_,14 @@
- 				frameY = copy.frameY;
- 			}
- 		}
-+		*/
+ 	public object Clone() => MemberwiseClone();
  
- 		public object Clone() => MemberwiseClone();
- 
- 		public void ClearEverything() {
-+			TileData.ClearSingle(TileId);
+ 	public void ClearEverything()
+ 	{
++		TileData.ClearSingle(TileId);
 +
-+			/*
- 			type = 0;
- 			wall = 0;
- 			liquid = 0;
-@@ -109,6 +_,7 @@
- 			bTileHeader3 = 0;
- 			frameX = 0;
- 			frameY = 0;
-+			*/
- 		}
++		/*
+ 		type = 0;
+ 		wall = 0;
+ 		liquid = 0;
+@@ -112,6 +_,7 @@
+ 		bTileHeader3 = 0;
+ 		frameX = 0;
+ 		frameY = 0;
++		*/
+ 	}
  
- 		public void ClearTile() {
-@@ -119,6 +_,9 @@
- 		}
+ 	public void ClearTile()
+@@ -124,6 +_,9 @@
  
- 		public void CopyFrom(Tile from) {
-+			TileData.CopySingle(from.TileId, TileId);
+ 	public void CopyFrom(Tile from)
+ 	{
++		TileData.CopySingle(from.TileId, TileId);
 +
-+			/*
- 			type = from.type;
- 			wall = from.wall;
- 			liquid = from.liquid;
-@@ -128,9 +_,30 @@
- 			bTileHeader3 = from.bTileHeader3;
- 			frameX = from.frameX;
- 			frameY = from.frameY;
-+			*/
- 		}
++		/*
+ 		type = from.type;
+ 		wall = from.wall;
+ 		liquid = from.liquid;
+@@ -133,10 +_,31 @@
+ 		bTileHeader3 = from.bTileHeader3;
+ 		frameX = from.frameX;
+ 		frameY = from.frameY;
++		*/
+ 	}
  
--		public bool isTheSameAs(Tile compTile) {
-+		internal bool isTheSameAs(Tile compTile) {
-+			if (Get<TileWallWireStateData>().NonFrameBits != compTile.Get<TileWallWireStateData>().NonFrameBits)
+-	public bool isTheSameAs(Tile compTile)
++	internal bool isTheSameAs(Tile compTile)
+ 	{
++		if (Get<TileWallWireStateData>().NonFrameBits != compTile.Get<TileWallWireStateData>().NonFrameBits)
++			return false;
++
++		if (wall != compTile.wall || liquid != compTile.liquid)
++			return false;
++
++		if (liquid > 0 && LiquidType != compTile.LiquidType)
++			return false;
++
++		if (HasTile) {
++			if (type != compTile.type)
 +				return false;
 +
-+			if (wall != compTile.wall || liquid != compTile.liquid)
++			if (Main.tileFrameImportant[type] && (frameX != compTile.frameX || frameY != compTile.frameY))
 +				return false;
++		}
 +
-+			if (liquid > 0 && LiquidType != compTile.LiquidType)
-+				return false;
++		return true;
 +
-+			if (HasTile) {
-+				if (type != compTile.type)
-+					return false;
-+
-+				if (Main.tileFrameImportant[type] && (frameX != compTile.frameX || frameY != compTile.frameY))
-+					return false;
-+			}
-+
-+			return true;
-+
-+			/*
- 			if (compTile == null)
- 				return false;
- 
-@@ -159,13 +_,15 @@
- 				return false;
- 			}
- 
-+			// Extra patch context.
- 			if (invisibleBlock() != compTile.invisibleBlock() || invisibleWall() != compTile.invisibleWall() || fullbrightBlock() != compTile.fullbrightBlock() || fullbrightWall() != compTile.fullbrightWall())
- 				return false;
- 
- 			return true;
-+			*/
- 		}
- 
--		public int blockType() {
-+		internal int blockType() {
- 			if (halfBrick())
- 				return 1;
- 
-@@ -176,6 +_,7 @@
- 			return num;
- 		}
- 
 +		/*
- 		public void liquidType(int liquidType) {
- 			switch (liquidType) {
- 				case 0:
-@@ -201,8 +_,15 @@
+ 		if (compTile == null)
+ 			return false;
  
+@@ -165,13 +_,15 @@
  			return false;
  		}
+ 
++		// Extra patch context.
+ 		if (invisibleBlock() != compTile.invisibleBlock() || invisibleWall() != compTile.invisibleWall() || fullbrightBlock() != compTile.fullbrightBlock() || fullbrightWall() != compTile.fullbrightWall())
+ 			return false;
+ 
+ 		return true;
 +		*/
- 
- 		public void ResetToType(ushort type) {
-+			ClearMetadata();
-+
-+			HasTile = true;
-+			TileType = type;
-+
-+			/*
- 			liquid = 0;
- 			sTileHeader = 32;
- 			bTileHeader = 0;
-@@ -211,9 +_,14 @@
- 			frameX = 0;
- 			frameY = 0;
- 			this.type = type;
-+			*/
- 		}
- 
- 		internal void ClearMetadata() {
-+			Get<LiquidData>() = default;
-+			Get<TileWallWireStateData>() = default;
-+
-+			/*
- 			liquid = 0;
- 			sTileHeader = 0;
- 			bTileHeader = 0;
-@@ -221,9 +_,10 @@
- 			bTileHeader3 = 0;
- 			frameX = 0;
- 			frameY = 0;
-+			*/
- 		}
- 
--		public Color actColor(Color oldColor) {
-+		internal Color actColor(Color oldColor) {
- 			if (!inActive())
- 				return oldColor;
- 
-@@ -231,12 +_,12 @@
- 			return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
- 		}
- 
--		public void actColor(ref Vector3 oldColor) {
-+		internal void actColor(ref Vector3 oldColor) {
- 			if (inActive())
- 				oldColor *= 0.4f;
- 		}
- 
--		public bool topSlope() {
-+		internal bool topSlope() {
- 			byte b = slope();
- 			if (b != 1)
- 				return b == 2;
-@@ -244,7 +_,7 @@
- 			return true;
- 		}
- 
--		public bool bottomSlope() {
-+		internal bool bottomSlope() {
- 			byte b = slope();
- 			if (b != 3)
- 				return b == 4;
-@@ -252,7 +_,7 @@
- 			return true;
- 		}
- 
--		public bool leftSlope() {
-+		internal bool leftSlope() {
- 			byte b = slope();
- 			if (b != 2)
- 				return b == 4;
-@@ -260,7 +_,7 @@
- 			return true;
- 		}
- 
--		public bool rightSlope() {
-+		internal bool rightSlope() {
- 			byte b = slope();
- 			if (b != 1)
- 				return b == 3;
-@@ -268,7 +_,9 @@
- 			return true;
- 		}
- 
-+		/*
- 		public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
-+
- 		public byte wallColor() => (byte)(bTileHeader & 0x1F);
- 
- 		public void wallColor(byte wallColor) {
-@@ -463,6 +_,7 @@
- 			else
- 				sTileHeader = (ushort)(sTileHeader & -32769);
- 		}
-+		*/
- 
- 		public void Clear(TileDataType types) {
- 			if ((types & TileDataType.Tile) != 0) {
-@@ -617,3 +_,4 @@
- 		public override string ToString() => "Tile Type:" + type + " Active:" + active().ToString() + " Wall:" + wall + " Slope:" + slope() + " fX:" + frameX + " fY:" + frameY;
  	}
+ 
+-	public int blockType()
++	internal int blockType()
+ 	{
+ 		if (halfBrick())
+ 			return 1;
+@@ -183,6 +_,7 @@
+ 		return num;
+ 	}
+ 
++	/*
+ 	public void liquidType(int liquidType)
+ 	{
+ 		switch (liquidType) {
+@@ -210,9 +_,16 @@
+ 
+ 		return false;
+ 	}
++	*/
+ 
+ 	public void ResetToType(ushort type)
+ 	{
++		ClearMetadata();
++
++		HasTile = true;
++		TileType = type;
++
++		/*
+ 		liquid = 0;
+ 		sTileHeader = 32;
+ 		bTileHeader = 0;
+@@ -221,10 +_,15 @@
+ 		frameX = 0;
+ 		frameY = 0;
+ 		this.type = type;
++		*/
+ 	}
+ 
+ 	internal void ClearMetadata()
+ 	{
++		Get<LiquidData>() = default;
++		Get<TileWallWireStateData>() = default;
++
++		/*
+ 		liquid = 0;
+ 		sTileHeader = 0;
+ 		bTileHeader = 0;
+@@ -232,9 +_,10 @@
+ 		bTileHeader3 = 0;
+ 		frameX = 0;
+ 		frameY = 0;
++		*/
+ 	}
+ 
+-	public Color actColor(Color oldColor)
++	internal Color actColor(Color oldColor)
+ 	{
+ 		if (!inActive())
+ 			return oldColor;
+@@ -243,13 +_,13 @@
+ 		return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
+ 	}
+ 
+-	public void actColor(ref Vector3 oldColor)
++	internal void actColor(ref Vector3 oldColor)
+ 	{
+ 		if (inActive())
+ 			oldColor *= 0.4f;
+ 	}
+ 
+-	public bool topSlope()
++	internal bool topSlope()
+ 	{
+ 		byte b = slope();
+ 		if (b != 1)
+@@ -258,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public bool bottomSlope()
++	internal bool bottomSlope()
+ 	{
+ 		byte b = slope();
+ 		if (b != 3)
+@@ -267,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public bool leftSlope()
++	internal bool leftSlope()
+ 	{
+ 		byte b = slope();
+ 		if (b != 2)
+@@ -276,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public bool rightSlope()
++	internal bool rightSlope()
+ 	{
+ 		byte b = slope();
+ 		if (b != 1)
+@@ -285,7 +_,9 @@
+ 		return true;
+ 	}
+ 
++	/*
+ 	public bool HasSameSlope(Tile tile) => (sTileHeader & 0x7400) == (tile.sTileHeader & 0x7400);
++
+ 	public byte wallColor() => (byte)(bTileHeader & 0x1Fu);
+ 
+ 	public void wallColor(byte wallColor)
+@@ -504,6 +_,7 @@
+ 		else
+ 			sTileHeader = (ushort)(sTileHeader & 0xFFFF7FFFu);
+ 	}
++	*/
+ 
+ 	public void Clear(TileDataType types)
+ 	{
+@@ -666,3 +_,4 @@
+ 
+ 	public override string ToString() => "Tile Type:" + type + " Active:" + active().ToString() + " Wall:" + wall + " Slope:" + slope() + " fX:" + frameX + " fY:" + frameY;
  }
 +

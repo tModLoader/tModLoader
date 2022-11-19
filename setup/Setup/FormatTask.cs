@@ -14,13 +14,17 @@ namespace Terraria.ModLoader.Setup
 {
 	public partial class FormatTask : SetupOperation
 	{
-		private static AdhocWorkspace workspace = new AdhocWorkspace();
-		static FormatTask() {
-			FixRoslynFormatter.Apply();
+		private static readonly AdhocWorkspace workspace = new();
 
-			workspace.Options = workspace.Options
-				.WithChangedOption(new OptionKey(FormattingOptions.UseTabs, LanguageNames.CSharp), true)
-				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, false)
+		static FormatTask() {
+			var optionSet = workspace.CurrentSolution.Options;
+
+			// Essentials
+			optionSet = optionSet
+				.WithChangedOption(FormattingOptions.UseTabs, LanguageNames.CSharp, true);
+
+			// K&R
+			optionSet = optionSet
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAccessors, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, false)
@@ -28,6 +32,13 @@ namespace Terraria.ModLoader.Setup
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousTypes, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
 				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+
+			// Fix switch indentation
+			optionSet = optionSet
+				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSection, true)
+				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSectionWhenBlock, false);
+
+			workspace.TryApplyChanges(workspace.CurrentSolution.WithOptions(optionSet));
 		}
 
 		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) { }
@@ -71,13 +82,14 @@ namespace Terraria.ModLoader.Setup
 			}
 
 			node = new AddVisualNewlinesRewriter().Visit(node);
+			node = new FileScopedNamespaceRewriter().Visit(node);
 			node = Formatter.Format(node, workspace, cancellationToken: cancellationToken);
 			node = new CollectionInitializerFormatter().Visit(node);
 			return node;
 		}
 
 		public static string Format(string source, CancellationToken cancellationToken, bool aggressive) {
-			var tree = CSharpSyntaxTree.ParseText(source);
+			var tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
 			return Format(tree.GetRoot(), cancellationToken, aggressive).ToFullString();
 		}
 	}
