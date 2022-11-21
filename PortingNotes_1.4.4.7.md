@@ -24,7 +24,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## NPC
 - Rename `NPCLoader.ScaleExpertStats`
-- NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
 - The pile of NPCLoader.TownNPCAttack... hooks hurts me
 - Maintainability pass? Check for `NPCLoader`, `CombinedHooks`, `BuffLoader`, `PlayerLoader`
 

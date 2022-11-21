@@ -55,5 +55,9 @@ public class ModNPCTest : ModNPC
 	public override string[] AltTextures => new string[0];
 
 	public override List<string> SetNPCNameList()/* tModPorter Suggestion: Return a list of names */ { return "Name"; }
+
+	public override bool CanHitNPC(NPC target)/* tModPorter Suggestion: Return true instead of null */ {
+		return null;
+	}
 #endif
 }

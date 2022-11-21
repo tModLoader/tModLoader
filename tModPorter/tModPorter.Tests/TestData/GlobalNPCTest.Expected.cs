@@ -25,4 +25,10 @@ public class GlobalNPCTest : GlobalNPC
 		// instead-expect
 		spriteBatch.Draw(null, npc.Center - Main.screenPosition, drawColor);
 	}
+
+#if COMPILE_ERROR
+	public override bool CanHitNPC(NPC npc, NPC target)/* tModPorter Suggestion: Return true instead of null */ {
+		return null;
+	}
+#endif
 }

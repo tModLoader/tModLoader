@@ -396,13 +396,13 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this NPC can hit the given friendly NPC. Return true to allow hitting the target, return false to block this NPC from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// Allows you to determine whether this NPC can hit the given friendly NPC. Return false to block the NPC from hitting the target, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(NPC target)
+	public virtual bool CanHitNPC(NPC target)
 	{
-		return null;
+		return true;
 	}
 
 	/// <summary>

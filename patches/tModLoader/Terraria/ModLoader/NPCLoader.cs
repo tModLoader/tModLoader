@@ -618,30 +618,16 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookCanHitNPC = AddHook<Func<NPC, NPC, bool?>>(g => g.CanHitNPC);
+	private static HookList HookCanHitNPC = AddHook<Func<NPC, NPC, bool>>(g => g.CanHitNPC);
 
-	public static bool? CanHitNPC(NPC npc, NPC target)
+	public static bool CanHitNPC(NPC npc, NPC target)
 	{
-		bool? flag = null;
 		foreach (GlobalNPC g in HookCanHitNPC.Enumerate(npc.globalNPCs)) {
-			bool? canHit = g.CanHitNPC(npc, target);
-			if (canHit.HasValue && !canHit.Value) {
+			if (!g.CanHitNPC(npc, target))
 				return false;
-			}
-			if (canHit.HasValue) {
-				flag = canHit.Value;
-			}
 		}
-		if (npc.ModNPC != null) {
-			bool? canHit = npc.ModNPC.CanHitNPC(target);
-			if (canHit.HasValue && !canHit.Value) {
-				return false;
-			}
-			if (canHit.HasValue) {
-				flag = canHit.Value;
-			}
-		}
-		return flag;
+
+		return npc.ModNPC?.CanHitNPC(target) ?? true;
 	}
 
 	private delegate void DelegateModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit);

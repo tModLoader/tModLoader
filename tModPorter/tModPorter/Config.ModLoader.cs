@@ -140,6 +140,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
