@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using Hjson;
 using Newtonsoft.Json.Linq;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
 
@@ -310,142 +312,157 @@ public static class LocalizationLoader
 	{
 		// For each mod with mod sources
 		foreach (var mod in ModLoader.Mods) {
-			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, mod.Name);
-			if (!Directory.Exists(sourceFolder))
-				continue;
+			UpdateLocalizationFilesForMod(mod);
+		}
+	}
 
-			// TODO: Maybe optimize to only recently built?
+	private static void UpdateLocalizationFilesForMod(Mod mod, string outputPath = null, GameCulture specificCulture = null)
+	{
+		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
+		if (!Directory.Exists(sourceFolder))
+			return;
 
-			var localizationFileEntries = new List<LocalizationFileEntry>();
+		// TODO: Maybe optimize to only recently built?
 
-			// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
-			List<string> allLocalizationFilesAllLanguages = new();
-			HashSet<GameCulture> allLanguages = new();
-			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-				using var stream = mod.File.GetStream(translationFile);
-				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+		var localizationFileEntries = new List<LocalizationFileEntry>();
 
-				string translationFileContents = streamReader.ReadToEnd();
+		// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
+		List<string> allLocalizationFilesAllLanguages = new();
+		HashSet<GameCulture> allLanguages = new();
+		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+			using var stream = mod.File.GetStream(translationFile);
+			using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
-				var culture = GameCulture.FromPath(translationFile.Name);
+			string translationFileContents = streamReader.ReadToEnd();
 
-				allLocalizationFilesAllLanguages.Add(translationFile.Name);
-				allLanguages.Add(culture);
+			var culture = GameCulture.FromPath(translationFile.Name);
 
-				// TODO: Support arbitrary default language?
-				// Default language hjson files loaded into memory to gather comments and modder intended ordering.
-				if (culture == GameCulture.FromCultureName(GameCulture.CultureName.English)) {
-					JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
-					JsonObject jsonObjectEng = jsonValueEng.Qo();
-					// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
-					List<LocalizationEntry> existingEntries = FlattenJsonObject(jsonObjectEng as WscJsonObject);
-					localizationFileEntries.Add(new(translationFile.Name, existingEntries));
-				}
+			allLocalizationFilesAllLanguages.Add(translationFile.Name);
+			allLanguages.Add(culture);
+
+			// TODO: Support arbitrary default language?
+			// Default language hjson files loaded into memory to gather comments and modder intended ordering.
+			if (culture == GameCulture.FromCultureName(GameCulture.CultureName.English)) {
+				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+				JsonObject jsonObjectEng = jsonValueEng.Qo();
+				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
+				List<LocalizationEntry> existingEntries = FlattenJsonObject(jsonObjectEng as WscJsonObject);
+				localizationFileEntries.Add(new(translationFile.Name, existingEntries));
 			}
+		}
 
-			// Abort if no default localization files found
-			if (!localizationFileEntries.Any())
-				return;
+		// Abort if no default localization files found
+		if (!localizationFileEntries.Any())
+			return;
 
-			var existingKeys = new List<LocalizationEntry>();
-			// Collect known keys. These are potentially missing from the localization files
-			foreach (var translation in translations) {
-				if (translation.Key.StartsWith($"Mods.{mod.Name}.")) {
-					existingKeys.Add(new(translation.Key, translation.Value.GetDefault(), null));
-				}
+		var existingKeys = new List<LocalizationEntry>();
+		// Collect known keys. These are potentially missing from the localization files
+		foreach (var translation in translations) {
+			if (translation.Key.StartsWith($"Mods.{mod.Name}.")) {
+				existingKeys.Add(new(translation.Key, translation.Value.GetDefault(), null));
 			}
+		}
 
-			// Merge collected keys into flattened in-memory model
-			foreach (var existingKey in existingKeys) {
-				LocalizationFileEntry suitableHJSONFile = FindHJSONFileForKey(localizationFileEntries, existingKey.key);
+		// Merge collected keys into flattened in-memory model
+		foreach (var existingKey in existingKeys) {
+			LocalizationFileEntry suitableHJSONFile = FindHJSONFileForKey(localizationFileEntries, existingKey.key);
 
-				if (!KeyExistsInHJSON(suitableHJSONFile, existingKey.key)) {
-					AddEntryToHJSON(suitableHJSONFile, existingKey.key, existingKey.value, null);
-				}
-				// What do we do if the hjson and loaded translations are different, will that be possible? Check Override here once implemented
+			if (!KeyExistsInHJSON(suitableHJSONFile, existingKey.key)) {
+				AddEntryToHJSON(suitableHJSONFile, existingKey.key, existingKey.value, null);
 			}
+			// What do we do if the hjson and loaded translations are different, will that be possible? Check Override here once implemented
+		}
 
-			// Update all languages that have been found in the mod
-			foreach (var culture in allLanguages) {
-				// Save all localization files
-				foreach (var localizationFileEntry in localizationFileEntries) {
-					// TODO: Don't save to disk if unchange optimization
+		if(specificCulture != null) {
+			allLanguages.Clear();
+			allLanguages.Add(specificCulture);
+		}
 
-					var rootObject = new CommentedWscJsonObject();
-					// Convert back to JsonObject and write to disk
-					for (int i = 0; i < localizationFileEntry.LocalizationEntries.Count; i++) {
-						var entry = localizationFileEntry.LocalizationEntries[i];
+		// Update all languages that have been found in the mod
+		foreach (var culture in allLanguages) {
+			// Save all localization files
+			foreach (var localizationFileEntry in localizationFileEntries) {
+				// TODO: Don't save to disk if unchange optimization
 
-						CommentedWscJsonObject parent = rootObject;
+				var rootObject = new CommentedWscJsonObject();
+				// Convert back to JsonObject and write to disk
+				for (int i = 0; i < localizationFileEntry.LocalizationEntries.Count; i++) {
+					var entry = localizationFileEntry.LocalizationEntries[i];
 
-						// Find/Populate the parents of this translation entry 
-						string[] splitKey = entry.key.Split(".");
-						for (int j = 0; j < splitKey.Length - 1; j++) {
-							string k = splitKey[j];
-							if (parent.ContainsKey(k))
-								parent = (CommentedWscJsonObject)parent[k];
-							else {
-								var newParent = new CommentedWscJsonObject();
-								parent.Add(k, newParent);
-								parent = newParent;
-							}
-						}
+					CommentedWscJsonObject parent = rootObject;
 
-						// TODO: "$parentVal" support?
-						// Populate parent object with this translation, manipulating comments to appear above the entry.
-
-						if (entry.value == null && entry.type == JsonType.Object) {
-							if (parent.Count == 0) {
-								parent.Comments[""] = entry.comment;
-							}
-							else {
-								string actualCommentKey = parent.Keys.Last();
-								parent.Comments[actualCommentKey] = entry.comment;
-							}
-							parent.Add(entry.key.Split(".").Last(), new CommentedWscJsonObject());
-						}
+					// Find/Populate the parents of this translation entry 
+					string[] splitKey = entry.key.Split(".");
+					for (int j = 0; j < splitKey.Length - 1; j++) {
+						string k = splitKey[j];
+						if (parent.ContainsKey(k))
+							parent = (CommentedWscJsonObject)parent[k];
 						else {
-							// Add values
-
-							string value = translations[entry.key].GetTranslation(culture);
-							if (culture.Name != "en-US" && value == translations[entry.key].GetDefault()) {
-								// This might be messing up Russian: OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
-								//key = "# " + key; // doesn't work, escaped by escapeName
-								parent.CommentedOut.Add(key);
-							}
-
-							if (parent.Count == 0) {
-								parent.Comments[""] = entry.comment;
-							}
-							else {
-								string actualCommentKey = parent.Keys.Last();
-								parent.Comments[actualCommentKey] = entry.comment;
-							}
-							parent.Add(entry.key.Split(".").Last(), value);
+							var newParent = new CommentedWscJsonObject();
+							parent.Add(k, newParent);
+							parent = newParent;
 						}
 					}
 
-					string outputFileName = localizationFileEntry.path;
-					outputFileName = outputFileName.Replace("en-US", culture.CultureInfo.Name);
-					string outputFilePath = Path.Combine(sourceFolder, outputFileName);
-					outputFilePath += ".new"; // Save to new file, until working completely
+					// TODO: "$parentVal" support?
+					// Populate parent object with this translation, manipulating comments to appear above the entry.
 
-					string hjsonContents = rootObject.ToFancyHjsonString();
-					File.WriteAllText(outputFilePath, hjsonContents);
+					if (entry.value == null && entry.type == JsonType.Object) {
+						if (parent.Count == 0) {
+							parent.Comments[""] = entry.comment;
+						}
+						else {
+							string actualCommentKey = parent.Keys.Last();
+							parent.Comments[actualCommentKey] = entry.comment;
+						}
+						parent.Add(entry.key.Split(".").Last(), new CommentedWscJsonObject());
+					}
+					else {
+						// Add values
 
-					allLocalizationFilesAllLanguages.Remove(outputFileName);
+						string value = translations[entry.key].GetTranslation(culture);
+						string key = entry.key.Split(".").Last();
+						if (culture.Name != "en-US" && value == translations[entry.key].GetDefault()) {
+							// This might be messing up Russian: OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
+							//key = "# " + key; // doesn't work, escaped by escapeName
+							parent.CommentedOut.Add(key);
+						}
 
-					// TODO: Indicate on Mods/Mod Sources that localizations have updated maybe?
+						if (parent.Count == 0) {
+							parent.Comments[""] = entry.comment;
+						}
+						else {
+							string actualCommentKey = parent.Keys.Last();
+							parent.Comments[actualCommentKey] = entry.comment;
+						}
+						parent.Add(key, value);
+					}
 				}
-			}
 
-			// Clean up orphaned non-default language files, if any.
-			foreach (var remainingLocalizationFiles in allLocalizationFilesAllLanguages) {
-				string originalPath = Path.Combine(sourceFolder, remainingLocalizationFiles);
-				string newPath = originalPath + ".legacy";
+				string outputFileName = localizationFileEntry.path;
+				outputFileName = outputFileName.Replace("en-US", culture.CultureInfo.Name);
+				string outputFilePath = Path.Combine(sourceFolder, outputFileName);
+				outputFilePath += ".new"; // Save to new file, until working completely
 
-				File.Move(originalPath, newPath);
+				string hjsonContents = rootObject.ToFancyHjsonString();
+				Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
+				File.WriteAllText(outputFilePath, hjsonContents);
+
+				allLocalizationFilesAllLanguages.Remove(outputFileName);
+
+				// TODO: Indicate on Mods/Mod Sources that localizations have updated maybe?
 			}
+		}
+
+		if (specificCulture != null)
+			return;
+
+		// Clean up orphaned non-default language files, if any.
+		foreach (var remainingLocalizationFiles in allLocalizationFilesAllLanguages) {
+			string originalPath = Path.Combine(sourceFolder, remainingLocalizationFiles);
+			string newPath = originalPath + ".legacy";
+
+			File.Move(originalPath, newPath);
 		}
 	}
 
@@ -552,5 +569,24 @@ public static class LocalizationLoader
 		}
 
 		localizationFileEntry.LocalizationEntries.Insert(index + 1, new(key, value, comment));
+	}
+
+	// Generates hjson files for the current culture in 
+	internal static bool ExtractLocalizationFiles(string modName)
+	{
+		var dir = Path.Combine(Main.SavePath, "ModLocalization", modName);
+		if (Directory.Exists(dir))
+			Directory.Delete(dir, true);
+		Directory.CreateDirectory(dir);
+
+		ModLoader.TryGetMod(modName, out Mod mod);
+		if (mod == null) {
+			Logging.tML.Error($"Somehow {modName} was not loaded");
+			return false;
+		}
+
+		UpdateLocalizationFilesForMod(mod, dir, Language.ActiveCulture);
+		Utils.OpenFolder(dir);
+		return true;
 	}
 }

@@ -179,6 +179,9 @@
 		"ModInfoProblemTryAgain": "出现问题,请重试",
 		"ModInfoDisableModToDelete": "禁用模组以删除",
 		"ModInfoVisitSteampage": "访问Steam创意工坊主页",
+		// "ModInfoExtractLocalization": "Extract Localization",
+		// "ModInfoExtracted": "Extracted",
+		// "ModInfoEnableModToExtractLocalizationFiles": "Enable Mod to Extract Localization Files",
 
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",

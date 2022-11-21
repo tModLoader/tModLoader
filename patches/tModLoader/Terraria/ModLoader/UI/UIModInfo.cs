@@ -22,6 +22,8 @@ internal class UIModInfo : UIState
 	private UITextPanel<string> _uITextPanel;
 	private UIAutoScaleTextTextPanel<string> _modHomepageButton;
 	private UIAutoScaleTextTextPanel<string> _modSteamButton;
+	private UIAutoScaleTextTextPanel<string> extractLocalizationButton;
+	private UIAutoScaleTextTextPanel<string> fakeExtractLocalizationButton;
 	private UIAutoScaleTextTextPanel<string> _extractButton;
 	private UIAutoScaleTextTextPanel<string> _deleteButton;
 	private UIAutoScaleTextTextPanel<string> _fakeDeleteButton; // easier than making new OnMouseOver code.
@@ -79,22 +81,40 @@ internal class UIModInfo : UIState
 		_uIElement.Append(_uITextPanel);
 
 		_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
-			Width = { Percent = 0.49f },
+			Width = { Pixels = -10, Percent = 0.333f },
 			Height = {Pixels = 40},
-			HAlign = 1f,
+			HAlign = 0.5f,
 			VAlign = 1f,
 			Top = {Pixels = -65}
 		}.WithFadedMouseOver();
 		_modHomepageButton.OnClick += VisitModHomePage;
 
 		_modSteamButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitSteampage")) {
-			Width = { Percent = 0.49f },
+			Width = { Pixels = -10, Percent = 0.333f },
 			Height = { Pixels = 40 },
 			HAlign = 0f,
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 		_modSteamButton.OnClick += VisitModSteamPage;
+
+		extractLocalizationButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtractLocalization")) {
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
+			HAlign = 1f,
+			VAlign = 1f,
+			Top = { Pixels = -65 }
+		}.WithFadedMouseOver();
+		extractLocalizationButton.OnClick += ExtractLocalization;
+
+		fakeExtractLocalizationButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtractLocalization")) {
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
+			HAlign = 1f,
+			VAlign = 1f,
+			Top = { Pixels = -65 }
+		};
+		fakeExtractLocalizationButton.BackgroundColor = Color.Gray;
 
 		var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
 			Width = {Pixels = -10, Percent = 0.333f},
@@ -135,6 +155,15 @@ internal class UIModInfo : UIState
 		Append(_uIElement);
 	}
 
+	private void ExtractLocalization(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		// No need for a separate UIState, the process should be quick.
+		bool success = LocalizationLoader.ExtractLocalizationFiles(_modName);
+		if(success)
+			extractLocalizationButton.SetText(Language.GetTextValue("tModLoader.ModInfoExtracted"));
+	}
+
 	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, string publishedFileId = "")
 	{
 		_modName = modName;
@@ -168,6 +197,8 @@ internal class UIModInfo : UIState
 		_url = string.Empty;
 		_modHomepageButton.Remove();
 		_modSteamButton.Remove();
+		extractLocalizationButton.Remove();
+		fakeExtractLocalizationButton.Remove();
 		_deleteButton.Remove();
 		_fakeDeleteButton.Remove();
 		_extractButton.Remove();
@@ -231,6 +262,9 @@ internal class UIModInfo : UIState
 		if (_fakeDeleteButton.IsMouseHovering) {
 			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModInfoDisableModToDelete"));
 		}
+		if (fakeExtractLocalizationButton.IsMouseHovering) {
+			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModInfoEnableModToExtractLocalizationFiles"));
+		}
 	}
 
 	public override void OnActivate()
@@ -275,6 +309,9 @@ internal class UIModInfo : UIState
 				bool realDeleteButton = ModLoader.Mods.All(x => x.Name != _localMod.Name);
 				_uIElement.AddOrRemoveChild(_deleteButton, realDeleteButton);
 				_uIElement.AddOrRemoveChild(_fakeDeleteButton, !realDeleteButton);
+				_uIElement.AddOrRemoveChild(extractLocalizationButton, !realDeleteButton); // show real only if mod enabled
+				_uIElement.AddOrRemoveChild(fakeExtractLocalizationButton, realDeleteButton);
+				extractLocalizationButton.SetText(Language.GetTextValue("tModLoader.ModInfoExtractLocalization"));
 				_uIElement.Append(_extractButton);
 			}
 			Recalculate();

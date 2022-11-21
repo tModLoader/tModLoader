@@ -178,6 +178,9 @@
 		"ModInfoProblemTryAgain": "Произошла ошибка, попробуйте ещё раз",
 		"ModInfoDisableModToDelete": "Выключите мод перед его удалением",
 		"ModInfoVisitSteampage": "Перейти на страницу мода в Мастерской",
+		// "ModInfoExtractLocalization": "Extract Localization",
+		// "ModInfoExtracted": "Extracted",
+		// "ModInfoEnableModToExtractLocalizationFiles": "Enable Mod to Extract Localization Files",
 
 		// Mod Packs
 		"ModPacksHeader": "Сборки модов",

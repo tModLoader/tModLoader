@@ -178,6 +178,9 @@
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
 		"ModInfoDisableModToDelete": "Desactiva el mod para borrarlo",
 		"ModInfoVisitSteampage": "Visitar mod en Steam Workshop",
+		// "ModInfoExtractLocalization": "Extract Localization",
+		// "ModInfoExtracted": "Extracted",
+		// "ModInfoEnableModToExtractLocalizationFiles": "Enable Mod to Extract Localization Files",
 
 		// Mod Packs
 		"ModPacksHeader": "Paquetes de mods",
