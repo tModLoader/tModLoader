@@ -273,7 +273,7 @@
 		"XSecondsAgo": "Il y a {0} {^0:seconde;secondes}",
 		"XMinutesAgo": "Il y a {0} {^0:minute;minutes}",
 		"XHoursAgo": "Il y a {0} {^0:heur;heures}",
-		"XDaysAgo": "Il y a {0} {^0:jour;jours",
+		"XDaysAgo": "Il y a {0} {^0:jour;jours}",
 		"XMonthsAgo": "Il y a {0} {^0:mois;mois}",
 		"XYearsAgo": "Il y a {0} {^0:an;ans}",
 		"MBServerReturnToMenu": "Retour au menu du monde",
