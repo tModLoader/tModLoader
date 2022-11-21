@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,27 +_,28 @@
+@@ -15,40 +_,41 @@
  		public int stack;
  	}
  
@@ -61,10 +61,14 @@
 +	internal bool needSnowBiome;
 -	public bool needGraveyardBiome;
 +	internal bool needGraveyardBiome;
- 	public bool needEverythingSeed;
- 	public bool notDecraftable;
- 	public bool crimson;
-@@ -43,12 +_,12 @@
+-	public bool needEverythingSeed;
++	internal bool needEverythingSeed;
+-	public bool notDecraftable;
++	internal bool notDecraftable;
+-	public bool crimson;
++	internal bool crimson;
+-	public bool corruption;
++	internal bool corruption;
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
  
