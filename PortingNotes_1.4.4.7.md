@@ -65,4 +65,3 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## WorldGen.cs:
 - TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`
-- Comment on Convert needs to be updated for new biome types, `BiomeConversionID` now exists
