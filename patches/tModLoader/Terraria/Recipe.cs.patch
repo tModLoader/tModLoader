@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,27 +_,28 @@
+@@ -15,40 +_,41 @@
  		public int stack;
  	}
  
@@ -61,10 +61,14 @@
 +	internal bool needSnowBiome;
 -	public bool needGraveyardBiome;
 +	internal bool needGraveyardBiome;
- 	public bool needEverythingSeed;
- 	public bool notDecraftable;
- 	public bool crimson;
-@@ -43,12 +_,12 @@
+-	public bool needEverythingSeed;
++	internal bool needEverythingSeed;
+-	public bool notDecraftable;
++	internal bool notDecraftable;
+-	public bool crimson;
++	internal bool crimson;
+-	public bool corruption;
++	internal bool corruption;
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
  
@@ -112,7 +116,7 @@
  			int num = acceptedGroups[i];
  			if (num == -1)
  				break;
-@@ -99,12 +_,8 @@
+@@ -99,19 +_,15 @@
  
  	public bool AcceptedByItemGroups(int invType, int reqType)
  	{
@@ -127,10 +131,21 @@
  				return true;
  		}
  
-@@ -123,25 +_,29 @@
- 		return item;
+ 		return false;
  	}
  
+-	public Item AddCustomShimmerResult(int itemType, int itemStack = 1)
++	public Recipe AddCustomShimmerResult(int itemType, int itemStack = 1)
+ 	{
+ 		if (customShimmerResults == null)
+ 			customShimmerResults = new List<Item>();
+@@ -120,28 +_,32 @@
+ 		item.SetDefaults(itemType);
+ 		item.stack = itemStack;
+ 		customShimmerResults.Add(item);
+-		return item;
+-	}
+-
 -	public Recipe()
 -	{
 -		for (int i = 0; i < maxRequirements; i++) {
@@ -138,6 +153,9 @@
 -			requiredTile[i] = -1;
 -			acceptedGroups[i] = -1;
 -		}
++		return this;
++	}
++
 +	static Recipe()
 +	{
 +		currentRecipe = new Recipe {
@@ -333,7 +351,7 @@
  				array[j].Refresh();
  			}
  		}
-@@ -14518,12 +_,17 @@
+@@ -14518,10 +_,14 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
  		CreateReversePlatformRecipes();
@@ -347,10 +365,7 @@
 +		FixRecipeGroups();
  		CreateRequiredItemQuickLookups();
  		ShimmerTransforms.UpdateRecipeSets();
-+		Item.PopulateMaterialCache(); // is this needed anymore?
  	}
- 
- 	private static void ReplaceItemUseFlagsWithRecipeGroups()
 @@ -14546,21 +_,17 @@
  
  	private static void CreateRequiredItemQuickLookups()
@@ -410,15 +425,54 @@
  			}
  
  			Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -14585,7 +_,7 @@
+@@ -14585,17 +_,47 @@
  
  	public static void UpdateWhichItemsAreMaterials()
  	{
--		for (int i = 0; i < 5456; i++) {
-+		for (int i = 0; i < ItemLoader.ItemCount; i++) {
++		for (int i = 0; i < Recipe.numRecipes; i++) {
++			if (Main.recipe[i].Disabled)
++				continue;
++
++			foreach (Item item in Main.recipe[i].requiredItem) {
++				ItemID.Sets.IsAMaterial[item.type] = true;
++			}
++		}
++
++		// TODO: Check that each group is used at least once?
++		foreach (RecipeGroup recipeGroup in RecipeGroup.recipeGroups.Values) {
++			foreach (var item in recipeGroup.ValidItems) {
++				ItemID.Sets.IsAMaterial[item] = true;
++			}
++		}
++
++		// These come from the removed Item.checkMat. Coins and Void Bag. Void Bag is removed since it would be odd to have the Material tooltip appear on the open bag and not be present on the closed bag
++		ItemID.Sets.IsAMaterial[71] = false;
++		ItemID.Sets.IsAMaterial[72] = false;
++		ItemID.Sets.IsAMaterial[73] = false;
++		ItemID.Sets.IsAMaterial[74] = false;
++		ItemID.Sets.IsAMaterial[4076] = false;
++		ItemID.Sets.IsAMaterial[4131] = false;
++		ItemID.Sets.IsAMaterial[5325] = false;
++
++		/*
+ 		for (int i = 0; i < 5456; i++) {
  			Item item = new Item();
  			item.SetDefaults(i, noMatCheck: true);
  			item.checkMat();
+ 			ItemID.Sets.IsAMaterial[i] = item.material;
+ 		}
++		*/
+ 	}
+ 
+ 	public static void UpdateWhichItemsAreCrafted()
+ 	{
+ 		for (int i = 0; i < numRecipes; i++) {
++			if (Main.recipe[i].Disabled)
++				continue;
++
+ 			if (!Main.recipe[i].notDecraftable)
+ 				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
+ 
 @@ -15747,23 +_,24 @@
  	{
  		int num = numRecipes;
@@ -494,7 +548,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,11 +_,43 @@
+@@ -15821,11 +_,44 @@
  
  	private static void AddRecipe()
  	{
@@ -515,6 +569,7 @@
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
 +
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);

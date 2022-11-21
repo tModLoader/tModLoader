@@ -852,15 +852,27 @@
  	}
  
  	public bool IsAPrefixableAccessory()
-@@ -791,6 +_,8 @@
+@@ -789,6 +_,8 @@
  
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+ 
++	// Removed in favor of UpdateWhichItemsAreMaterials logic
++	/*
  	public bool checkMat()
  	{
-+		material = ItemID.Sets.IsAMaterial[type];
-+		return material; // bypass performance issue.
  		if (type >= 71 && type <= 74) {
- 			material = false;
- 			return false;
+@@ -837,9 +_,11 @@
+ 
+ 				material = false;
+ 				return false;
++				// Extra patch context.
+ 			}
+ 		}
+ 	}
++	*/
+ 
+ 	public void netDefaults(int type)
+ 	{
 @@ -998,6 +_,9 @@
  
  	public static int BannerToItem(int banner)
@@ -1521,6 +1533,15 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
+@@ -47799,7 +_,7 @@
+ 			int num11 = FindDecraftAmount();
+ 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
+ 			int num12 = 0;
+-			bool flag = recipe.requiredItem[1].stack > 0;
++			bool flag = recipe.requiredItem.Count > 1;
+ 			IEnumerable<Item> enumerable = recipe.requiredItem;
+ 			if (recipe.customShimmerResults != null)
+ 				enumerable = recipe.customShimmerResults;
 @@ -48066,6 +_,7 @@
  			timeSinceItemSpawned += num7;
  		}

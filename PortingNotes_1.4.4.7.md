@@ -55,10 +55,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 - No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles
 	
 
-## Recipe.cs
-- `Item.PopulateMaterialCache()` do we need this anymore?
-- do we need to clone `notDecraftable`
-
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.
 - Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets

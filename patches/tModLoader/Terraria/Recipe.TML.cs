@@ -62,6 +62,7 @@ public partial class Recipe
 		public static readonly Condition InGemCave = new Condition(NetworkText.FromKey("RecipeConditions.InGemCave"), _ => Main.LocalPlayer.ZoneGemCave);
 		public static readonly Condition InLihzhardTemple = new Condition(NetworkText.FromKey("RecipeConditions.InLihzardTemple"), _ => Main.LocalPlayer.ZoneLihzhardTemple);
 		public static readonly Condition InGraveyardBiome = new Condition(NetworkText.FromKey("RecipeConditions.InGraveyardBiome"), _ => Main.LocalPlayer.ZoneGraveyard);
+		public static readonly Condition EverythingSeed = new Condition(NetworkText.FromKey("RecipeConditions.EverythingSeed"), _ => Main.remixWorld && Main.getGoodWorld);
 
 		#endregion
 
@@ -291,6 +292,24 @@ public partial class Recipe
 		return this;
 	}
 
+	public Recipe DisableShimmer()
+	{
+		notDecraftable = true;
+		return this;
+	}
+
+	public Recipe CrimsonOnly()
+	{
+		crimson = true;
+		return this;
+	}
+
+	public Recipe CorruptionOnly()
+	{
+		corruption = true;
+		return this;
+	}
+
 	/// <summary>
 	/// Sets a callback that will allow you to make anything happen when the recipe is used to create an item.
 	/// </summary>
@@ -393,6 +412,9 @@ public partial class Recipe
 		clone.requiredItem = new List<Item>(requiredItem.Select(x => x.Clone()).ToArray());
 		clone.requiredTile = new List<int>(requiredTile.ToArray());
 		clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
+		clone.notDecraftable = notDecraftable;
+		clone.crimson = crimson;
+		clone.corruption = corruption;
 
 		// These fields shouldn't be true, but are here just in case.
 		clone.needHoney = needHoney;
@@ -406,6 +428,7 @@ public partial class Recipe
 		clone.alchemy = alchemy;
 		clone.needSnowBiome = needSnowBiome;
 		clone.needGraveyardBiome = needGraveyardBiome;
+		clone.needEverythingSeed = needEverythingSeed;
 
 		clone.OnCraftHooks = OnCraftHooks;
 		clone.ConsumeItemHooks = ConsumeItemHooks;

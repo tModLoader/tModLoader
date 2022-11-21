@@ -25,6 +25,19 @@
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
+@@ -301,8 +_,12 @@
+ 				}
+ 			}
+ 		});
++
++		/// <summary> Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe, but some items such as coins and void bag hide the tooltip for aesthetic reasons. </summary>
+ 		public static bool[] IsAMaterial = Factory.CreateBoolSet();
++		/// <summary> Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the Recipe that results in this item in <see cref="Main.recipe"/> array. If multiple recipes craft the same item, the recipe added last will be returned. </summary>
+ 		public static int[] IsCrafted = Factory.CreateIntSet();
++
+ 		public static int[] IsCraftedCrimson = Factory.CreateIntSet();
+ 		public static int[] IsCraftedCorruption = Factory.CreateIntSet();
+ 		public static bool[] IgnoresEncumberingStone = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
 @@ -311,7 +_,7 @@
  		public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
  		public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);
