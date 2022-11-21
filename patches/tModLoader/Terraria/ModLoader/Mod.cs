@@ -176,7 +176,6 @@ public partial class Mod
 		}*/
 
 		NPCHeadLoader.npcToHead[npcType] = slot;
-		NPCHeadLoader.headToNPC[slot] = npcType;
 		return slot;
 	}
 

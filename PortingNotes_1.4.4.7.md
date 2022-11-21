@@ -23,7 +23,6 @@
 Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
 
 ## NPC
-- Remove `NPCHeadLoader.GetNPCFromHeadSlot`
 - Rename `NPCLoader.ScaleExpertStats`
 - NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
 - The pile of NPCLoader.TownNPCAttack... hooks hurts me
@@ -52,8 +51,9 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## TownNPCProfiles
 - Investigate with the new shimmer profiles. 
-- No need for `AlternateLegacyNPCProfile` since all vanilla NPCs now have profiles
-	
+	- Give ExampleNPC and ExampleTravellingMerchant a shimmer variant/texture
+	- Involves adding modded IO for NPC.ShimmeredTownNPCs
+	- Might be a good time to get rid of NPCHeadLoader? At least for town NPCs?
 
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.

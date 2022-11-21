@@ -29,7 +29,6 @@ public static class NPCHeadLoader
 	internal static IDictionary<string, int> heads = new Dictionary<string, int>();
 	internal static IDictionary<string, int> bossHeads = new Dictionary<string, int>();
 	internal static IDictionary<int, int> npcToHead = new Dictionary<int, int>();
-	internal static IDictionary<int, int> headToNPC = new Dictionary<int, int>();
 	internal static IDictionary<int, int> npcToBossHead = new Dictionary<int, int>();
 
 	internal static int ReserveHeadSlot() => nextHead++;
@@ -98,12 +97,8 @@ public static class NPCHeadLoader
 		heads.Clear();
 		bossHeads.Clear();
 		npcToHead.Clear();
-		headToNPC.Clear();
 		npcToBossHead.Clear();
 	}
 	//in Terraria.NPC.TypeToNum replace final return with this
 	internal static int GetNPCHeadSlot(int type) => npcToHead.TryGetValue(type, out int slot) ? slot : -1;
-
-	//in Terraria.NPC.NumToType replace final return with this
-	internal static int GetNPCFromHeadSlot(int slot) => headToNPC.TryGetValue(slot, out int type) ? type : -1;
 }

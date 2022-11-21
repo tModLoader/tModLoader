@@ -184,7 +184,14 @@
  				}
  			}
  		}
-@@ -1383,7 +_,7 @@
+@@ -1377,13 +_,13 @@
+ 		bool[] array = (bool[])NPC.ShimmeredTownNPCs.Clone();
+ 		writer.Write(array.Count(value: true));
+ 		for (int i = 0; i < array.Length; i++) {
+-			if (array[i])
++			if (array[i] && i < NPCID.Count)
+ 				writer.Write(i);
+ 		}
  
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
