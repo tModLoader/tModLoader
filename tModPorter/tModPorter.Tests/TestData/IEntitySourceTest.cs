@@ -19,7 +19,6 @@ public class IEntitySourceTest
 		Player player = new Player();
 		player.QuickSpawnItem(1, 2);
 		player.QuickSpawnItem(new Item(), 2);
-		player.QuickSpawnClonedItem(new Item(), 2);
 
 		Projectile.NewProjectile(new Vector2(), new Vector2(), 3, 4, 5, 6, 7, 8); // vec2 both
 		Projectile.NewProjectile(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // full coords
