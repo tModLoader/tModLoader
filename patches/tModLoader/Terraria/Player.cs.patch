@@ -3128,24 +3128,23 @@
  					break;
  			}
  
-+			if (!NPCLoader.CanHitPlayer(Main.npc[i], this, ref specialHitSetter) || !PlayerLoader.CanBeHitByNPC(this, Main.npc[i], ref specialHitSetter))
++			if (!CombinedHooks.CanNPCHitPlayer(Main.npc[i], this, ref specialHitSetter))
 +				continue;
 +
  			if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
  				continue;
  
-@@ -23582,6 +_,10 @@
+@@ -23582,6 +_,9 @@
  				if (specialHitSetter >= 0)
  					flag3 = hurtCooldowns[specialHitSetter] == 0;
  
 +				bool crit = false;
-+				NPCLoader.ModifyHitPlayer(Main.npc[i], this, ref num4, ref crit);
-+				PlayerLoader.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
++				CombinedHooks.ModifyNPCHitPlayer(Main.npc[i], this, ref num4, ref crit);
 +
  				if (whoAmI == Main.myPlayer && num2 > 0f && flag3 && !Main.npc[i].dontTakeDamage) {
  					int num6 = (int)((float)num4 * num2);
  					if (num6 > 1000)
-@@ -23603,8 +_,15 @@
+@@ -23603,8 +_,14 @@
  				if (resistCold && Main.npc[i].coldDamage)
  					num4 = (int)((float)num4 * 0.7f);
  
@@ -3157,8 +3156,7 @@
 +					if (realDamage > 0 && !dead && !flag2)
 +						StatusFromNPC(Main.npc[i]);
 +
-+					NPCLoader.OnHitPlayer(Main.npc[i], this, realDamage, crit);
-+					PlayerLoader.OnHitByNPC(this, Main.npc[i], realDamage, crit);
++					CombinedHooks.OnNPCHitPlayer(Main.npc[i], this, realDamage, crit);
 +				}
  
  				if (num) {
@@ -3513,13 +3511,12 @@
  		if (head > 0 && face > 0) {
  			if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
  				head = -1;
-@@ -27896,6 +_,9 @@
+@@ -27896,6 +_,8 @@
  			obj.shader = GameShaders.Armor.GetSecondaryShader(cBody, this);
  		}
  
 +		//TODO: Do these hooks go inside or outside the conditional?
-+		PlayerLoader.FrameEffects(this);
-+		EquipLoader.EquipFrameEffects(this);
++		CombinedHooks.PlayerFrameEffects(this);
  		if (!isDisplayDollOrInanimate) {
  			if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  				int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
@@ -4515,12 +4512,12 @@
  
  			bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  			ItemCheck_CutTiles(sItem, itemRectangle, shouldIgnore2);
-@@ -34195,11 +_,18 @@
+@@ -34195,11 +_,17 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;
  
-+			if (!ItemLoader.CanHitPvp(sItem, this, player) || !PlayerLoader.CanHitPvp(this, sItem, player))
-+				continue; //TODO: PvP crit hook?
++			if (!CombinedHooks.CanHitPvp(this, sItem, player))
++				continue;
 +
  			bool flag = false;
  			if (Main.rand.Next(1, 101) <= 10)
@@ -4528,13 +4525,12 @@
  
  			int num = Main.DamageVar(damage, luck);
 +
-+			ItemLoader.ModifyHitPvp(sItem, this, player, ref num, ref flag);
-+			PlayerLoader.ModifyHitPvp(this, sItem, player, ref num, ref flag);
++			CombinedHooks.ModifyHitPvp(this, sItem, player, ref num, ref flag);
 +
  			StatusToPlayerPvP(sItem.type, i);
  			OnHit(player.Center.X, player.Center.Y, player);
  			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
-@@ -34238,12 +_,17 @@
+@@ -34238,12 +_,16 @@
  				}
  			}
  
@@ -4546,8 +4542,7 @@
  					NetMessage.SendData(84, -1, -1, null, whoAmI);
  			}
  
-+			ItemLoader.OnHitPvp(sItem, this, Main.player[i], num2, flag);
-+			PlayerLoader.OnHitPvp(this, sItem, Main.player[i], num2, flag);
++			CombinedHooks.OnHitPvp(this, sItem, player, num2, flag);
 +
  			if (Main.netMode != 0)
  				NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
@@ -4576,14 +4571,11 @@
  			int num = originalDamage;
  			bool flag3 = false;
  			int weaponCrit = GetWeaponCrit(sItem);
-@@ -34444,13 +_,23 @@
+@@ -34444,13 +_,18 @@
  				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.FlyMeal, settings3, whoAmI);
  			}
  
-+
-+			ItemLoader.ModifyHitNPC(sItem, this, nPC, ref num6, ref knockBack, ref flag3);
-+			NPCLoader.ModifyHitByItem(nPC, this, sItem, ref num6, ref knockBack, ref flag3);
-+			PlayerLoader.ModifyHitNPC(this, sItem, nPC, ref num6, ref knockBack, ref flag3);
++			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref num6, ref knockBack, ref flag3);
 +
  			StatusToNPC(sItem.type, npcIndex);
  			if (nPC.life > 5)
@@ -4594,9 +4586,7 @@
  			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
  			int dmgDone = (int)nPC.StrikeNPC(num6, knockBack, direction, flag3);
 +
-+			ItemLoader.OnHitNPC(sItem, this, nPC, dmgDone, knockBack, flag3);
-+			NPCLoader.OnHitByItem(nPC, this, sItem, dmgDone, knockBack, flag3);
-+			PlayerLoader.OnHitNPC(this, sItem, nPC, dmgDone, knockBack, flag3);
++			CombinedHooks.OnPlayerHitNPCWithItem(this, sItem, nPC, dmgDone, knockBack, flag3);
 +
  			ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, npcIndex, num6, dmgDone);
  			int num7 = Item.NPCtoBanner(nPC.BannerID());
@@ -4624,12 +4614,11 @@
  		}
  
  		return itemRectangle;
-@@ -35051,6 +_,9 @@
+@@ -35051,6 +_,8 @@
  			Main.dust[num29].velocity.Y *= 2f;
  		}
  
-+		ItemLoader.MeleeEffects(sItem, this, itemRectangle);
-+		PlayerLoader.MeleeEffects(this, sItem, itemRectangle);
++		CombinedHooks.MeleeEffects(this, sItem, itemRectangle);
 +
  		return itemRectangle;
  	}

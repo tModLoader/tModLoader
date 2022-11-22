@@ -19,18 +19,12 @@
 - Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
 Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
 
-## NPC
-- The pile of NPCLoader.TownNPCAttack... hooks hurts me
-- Maintainability pass? Check for `NPCLoader`, `CombinedHooks`, `BuffLoader`, `PlayerLoader`
-
-## Projectile 
-- Move `NPCLoader.CanBeHitByProjectile`, `ProjectileLoader.CanHitNPC` and `PlayerLoader.CanHitNPCWithProj` into `CombinedHooks`
+## Projectile
 - Update `ArmorPenetration` vanilla values to match switch case after `int num6 = (int)Main.player[owner].armorPenetration`
 
 ## Player
 - Add hook for `RefreshInfoAccsFromItemType`
 - Add `ItemLoader.ConsumeItem` check to `QuickHeal` and `QuickMana`
-- Move `OnHit` and `ModifyHit` into `CombinedHooks`
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
 - Make sure loadout serialization doesn't save modded data to the vanilla .plr

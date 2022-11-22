@@ -573,23 +573,17 @@
  
  			bool flag = !npcProj && !trap;
  			bool flag2 = usesOwnerMeleeHitCD && flag && owner < 255;
-@@ -9848,6 +_,20 @@
+@@ -9848,6 +_,14 @@
  					if (!((!Main.npc[i].dontTakeDamage || NPCID.Sets.ZappingJellyfish[Main.npc[i].type]) && flag5) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
  						continue;
  
-+					bool? modCanHit = ProjectileLoader.CanHitNPC(this, Main.npc[i]);
-+					if (modCanHit == false)
-+						continue;
++					bool canHitFlag = false;
++					if (CombinedHooks.CanHitNPCWithProj(this, Main.npc[i]) is bool b) {
++						if (!b)
++							continue;
 +
-+					bool? modCanBeHit = NPCLoader.CanBeHitByProjectile(Main.npc[i], this);
-+					if (modCanBeHit == false)
-+						continue;
-+
-+					bool? modCanHit2 = PlayerLoader.CanHitNPCWithProj(this, Main.npc[i]);
-+					if (modCanHit2 == false)
-+						continue;
-+
-+					bool canHitFlag = modCanBeHit == true || modCanHit == true || modCanHit2 == true; //If any hook forces damage: ignore vanilla conditions
++						canHitFlag = true;
++					}
 +
  					Main.npc[i].position += Main.npc[i].netOffset;
  					bool flag6 = !Main.npc[i].friendly;
@@ -701,20 +695,16 @@
  									int num34 = direction;
  									switch (type) {
  										case 697:
-@@ -10626,10 +_,21 @@
+@@ -10626,10 +_,17 @@
  											num3 *= 0.5f;
  									}
  
 -									if (flag && !hostile)
 +									// Patching, locals which change here also change in the next patch
-+									ProjectileLoader.ModifyHitNPC(this, nPC, ref num19, ref num3, ref flag12, ref num34);
-+									NPCLoader.ModifyHitByProjectile(nPC, this, ref num19, ref num3, ref flag12, ref num34);
-+									PlayerLoader.ModifyHitNPCWithProj(this, nPC, ref num19, ref num3, ref flag12, ref num34);
-+
++									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref num19, ref num3, ref flag12, ref num34);
 +									goto VanillaOnHitEffectsStart;
 +
-+									PostModifyHit:
-+									
++									PostModifyHit:									
 +									num6 = ArmorPenetration; // tML amor pen, override vanilla calcs, values moved onto projectile defaults
 +									if (flag && !hostile && num6 > 0)
  										num19 += nPC.checkArmorPenetration(num4, armorPenetrationPercent);
@@ -724,7 +714,7 @@
  									int num35 = ((!flag) ? ((int)nPC.StrikeNPCNoInteraction(num19, num3, num34, flag12)) : ((int)nPC.StrikeNPC(num19, num3, num34, flag12)));
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
-@@ -10899,9 +_,16 @@
+@@ -10899,9 +_,14 @@
  										}
  									}
  
@@ -734,9 +724,7 @@
  										BetsySharpnel(i);
  
 +									// Patching: See ModifyHitX above for locals
-+									ProjectileLoader.OnHitNPC(this, Main.npc[i], num19, num3, flag12);
-+									NPCLoader.OnHitByProjectile(Main.npc[i], this, num19, num3, flag12);
-+									PlayerLoader.OnHitNPCWithProj(this, Main.npc[i], num19, num3, flag12);
++									CombinedHooks.OnHitNPCWithProj(this, nPC, num19, num3, flag12);
 +
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
@@ -745,13 +733,13 @@
  					if (!flag26 || !Colliding(rectangle, player3.getRect()))
  						continue;
  
-+					if (!ProjectileLoader.CanHitPvp(this, player3) || !PlayerLoader.CanHitPvpWithProj(this, player3))
++					if (!CombinedHooks.CanHitPvpWithProj(this, player3))
 +						continue;
 +
  					if (aiStyle == 3) {
  						if (ai[0] == 0f) {
  							velocity.X = 0f - velocity.X;
-@@ -11089,15 +_,21 @@
+@@ -11089,15 +_,20 @@
  						timeLeft = 1;
  
  					bool flag27 = false;
@@ -763,8 +751,7 @@
  					int num45 = Main.DamageVar((int)((float)damage * num), Main.player[owner].luck);
  					bool dodgeable = IsDamageDodgable();
 +
-+					ProjectileLoader.ModifyHitPvp(this, player3, ref num45, ref flag27);
-+					PlayerLoader.ModifyHitPvpWithProj(this, player3, ref num45, ref flag27);
++					CombinedHooks.ModifyHitPvpWithProj(this, player3, ref num45, ref flag27);
 +
  					if (!player3.immune)
  						StatusPvP(m);
@@ -774,12 +761,11 @@
  					int num46 = (int)player3.Hurt(playerDeathReason, num45, direction, pvp: true, quiet: false, flag27, -1, dodgeable);
  					if (num46 > 0 && Main.player[owner].ghostHeal && friendly && !hostile)
  						ghostHeal(num46, new Vector2(player3.Center.X, player3.Center.Y), player3);
-@@ -11108,6 +_,9 @@
+@@ -11108,6 +_,8 @@
  					if ((melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 7)
  						NewProjectile(GetProjectileSource_FromThis(), player3.Center.X, player3.Center.Y, player3.velocity.X, player3.velocity.Y, 289, 0, 0f, owner);
  
-+					ProjectileLoader.OnHitPvp(this, player3, num46, flag27);
-+					PlayerLoader.OnHitPvpWithProj(this, player3, num46, flag27);
++					CombinedHooks.OnHitPvpWithProj(this, player3, num46, flag27);
 +
  					if (Main.netMode != 0)
  						NetMessage.SendPlayerHurt(m, playerDeathReason, num45, direction, flag27, pvp: true, -1);
@@ -807,20 +793,19 @@
  		if (!flag28 || !Colliding(rectangle, Main.player[myPlayer].getRect()))
  			return;
  
-+		if (!ProjectileLoader.CanHitPlayer(this, Main.player[myPlayer]) || !PlayerLoader.CanBeHitByProjectile(Main.player[myPlayer], this))
++		if (!CombinedHooks.CanBeHitByProjectile(Main.player[myPlayer], this))
 +			return;
 +
  		int num49 = direction;
  		num49 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		if (!Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity)) {
-@@ -11248,7 +_,13 @@
+@@ -11248,7 +_,12 @@
  			if (ProjectileID.Sets.IsAGravestone[type])
  				playerIndex2 = (int)ai[0];
  
 -			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num53, num49, pvp: false, quiet: false, Crit: false, num48, dodgeable2) > 0.0 && !Main.player[myPlayer].dead)
 +			bool crit = false;
-+			ProjectileLoader.ModifyHitPlayer(this, Main.player[myPlayer], ref num53, ref crit);
-+			PlayerLoader.ModifyHitByProjectile(Main.player[myPlayer], this, ref num53, ref crit);
++			CombinedHooks.ModifyHitByProjectile(Main.player[myPlayer], this, ref num53, ref crit);
 +
 +			int realDamage = (int)Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num53, num49, pvp: false, quiet: false, Crit: crit, num48, dodgeable2);
 +
@@ -828,13 +813,12 @@
  				StatusPlayer(myPlayer);
  
  			if (trap) {
-@@ -11256,6 +_,9 @@
+@@ -11256,6 +_,8 @@
  				if (Main.player[myPlayer].dead)
  					AchievementsHelper.HandleSpecialEvent(Main.player[myPlayer], 4);
  			}
 +
-+			ProjectileLoader.OnHitPlayer(this, Main.player[myPlayer], realDamage, crit);
-+			PlayerLoader.OnHitByProjectile(Main.player[myPlayer], this, realDamage, crit);
++			CombinedHooks.OnHitByProjectile(Main.player[myPlayer], this, realDamage, crit);
  		}
  
  		if (true) {
