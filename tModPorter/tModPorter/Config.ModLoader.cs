@@ -144,8 +144,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
-		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling");
-		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
