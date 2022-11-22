@@ -15,9 +15,6 @@
 ## Main
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
 
-## Item
-- Remove `CanBurnInLava` hook
-
 ## ItemSlot
 - Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
 Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
@@ -26,7 +23,7 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 - The pile of NPCLoader.TownNPCAttack... hooks hurts me
 - Maintainability pass? Check for `NPCLoader`, `CombinedHooks`, `BuffLoader`, `PlayerLoader`
 
-## Projectile
+## Projectile 
 - Move `NPCLoader.CanBeHitByProjectile`, `ProjectileLoader.CanHitNPC` and `PlayerLoader.CanHitNPCWithProj` into `CombinedHooks`
 - Update `ArmorPenetration` vanilla values to match switch case after `int num6 = (int)Main.player[owner].armorPenetration`
 

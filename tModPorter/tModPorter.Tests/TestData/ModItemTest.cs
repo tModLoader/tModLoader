@@ -63,6 +63,8 @@ public class ModItemTest : ModItem
 
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
 
+	public override bool? CanBurnInLava() => null;
+
 	public override void Load(TagCompound tag) { /* Empty */ }
 
 	public override TagCompound Save() => new TagCompound();

@@ -38,6 +38,8 @@ public class GlobalItemTest : GlobalItem
 
 	public override void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
 
+	public override bool? CanBurnInLava(Item item) => null;
+
 	public override void Load(Item item, TagCompound tag) { /* Empty */ }
 
 	public override TagCompound Save(Item item) => new TagCompound();

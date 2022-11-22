@@ -406,7 +406,7 @@
  	public int playerIndexTheItemIsReservedFor = 255;
 +	/// <summary>
 +	/// Indicates the rarity of an item. Assign to a <see cref="ItemRarityID"/> value. Vanilla values range from -1 to 13.
-+	/// <br/> Items with <see cref="ItemRarityID.White"/> rarity will burn in lava unless <see cref="ModItem.CanBurnInLava"/> or <see cref="ItemID.Sets.IsLavaImmuneRegardlessOfRarity"/> are used.
++	/// <br/> Items with <see cref="ItemRarityID.White"/> rarity will burn in lava unless <see cref="ItemID.Sets.IsLavaImmuneRegardlessOfRarity"/> is used.
 +	/// <br/> Modded rarities can be assigned by: <c>Item.rare = ModContent.RarityType&lt;ExampleModRarity&gt;();</c>
 +	/// <br/> The <see href="https://terraria.wiki.gg/wiki/Rarity">Rarity wiki page</see> has guidelines for deciding on a suitable rarity.
 +	/// <br/> Defaults to <see cref="ItemRarityID.White"/>
@@ -1550,20 +1550,12 @@
  		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  			timeSinceTheItemHasBeenReservedForSomeone++;
  			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -48163,6 +_,7 @@
- 
- 	private void CheckLavaDeath(int i)
- 	{
-+		bool? canBurnInLava = ItemLoader.CanBurnInLava(this);
- 		if (type == 267) {
- 			if (Main.netMode == 1)
- 				return;
 @@ -48216,7 +_,7 @@
  
  			NetMessage.SendData(21, -1, -1, null, i);
  		}
 -		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < 5456 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
-+		else if (canBurnInLava ?? (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type])) {
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
  			active = false;
  			type = 0;
  			stack = 0;

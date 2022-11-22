@@ -850,14 +850,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
-	/// </summary>
-	public virtual bool? CanBurnInLava(Item item)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// Allows you to make things happen when an item is lying in the world. This will always be called, even when the item is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 	/// </summary>
 	public virtual void PostUpdate(Item item)
