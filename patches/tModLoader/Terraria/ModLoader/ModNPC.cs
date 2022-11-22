@@ -144,11 +144,17 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	}
 
 	/// <summary>
-	/// Allows you to customize this NPC's stats in expert mode. This is useful because expert mode's doubling of damage and life might be too much sometimes (for example, with bosses). Also useful for scaling life with the number of players in the world.
+	/// Allows you to customize this NPC's stats when the difficulty is expert or higher.<br/>
+	/// This runs after <see cref="NPC.value"/>,  <see cref="NPC.lifeMax"/>,  <see cref="NPC.damage"/>,  <see cref="NPC.knockBackResist"/> have been adjusted for the current difficulty, (expert/master/FTW)<br/>
+	/// It is common to multiply lifeMax by the balance factor, and sometimes adjust knockbackResist.<br/>
+	/// <br/>
+	/// Eg:<br/>
+	/// <code>lifeMax = (int)(lifeMax * balance * bossAdjustment)</code>
 	/// </summary>
-	/// <param name="numPlayers"></param>
-	/// <param name="bossLifeScale"></param>
-	public virtual void ScaleExpertStats(int numPlayers, float bossLifeScale)
+	/// <param name="numPlayers">The number of active players</param>
+	/// <param name="balance">Scaling factor that increases by a fraction for each player</param>
+	/// <param name="bossAdjustment">An extra reduction factor to be applied to boss life in high difficulty modes</param>
+	public virtual void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
 	{
 	}
 

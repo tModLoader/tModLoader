@@ -23,7 +23,6 @@
 Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
 
 ## NPC
-- Rename `NPCLoader.ScaleExpertStats`
 - The pile of NPCLoader.TownNPCAttack... hooks hurts me
 - Maintainability pass? Check for `NPCLoader`, `CombinedHooks`, `BuffLoader`, `PlayerLoader`
 

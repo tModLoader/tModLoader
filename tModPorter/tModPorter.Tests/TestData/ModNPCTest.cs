@@ -42,4 +42,8 @@ public class ModNPCTest : ModNPC
 	public override bool? CanHitNPC(NPC target) {
 		return null;
 	}
+
+	public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+	{
+	}
 }

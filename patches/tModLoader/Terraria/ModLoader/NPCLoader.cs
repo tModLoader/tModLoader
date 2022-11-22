@@ -195,14 +195,14 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookScaleExpertStats = AddHook<Action<NPC, int, float>>(g => g.ScaleExpertStats);
+	private static HookList HookApplyDifficultyAndPlayerScaling = AddHook<Action<NPC, int, float, float>>(g => g.ApplyDifficultyAndPlayerScaling);
 
-	public static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	public static void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
 	{
-		npc.ModNPC?.ScaleExpertStats(numPlayers, bossLifeScale);
+		npc.ModNPC?.ApplyDifficultyAndPlayerScaling(numPlayers, balance, bossAdjustment);
 
-		foreach (GlobalNPC g in HookScaleExpertStats.Enumerate(npc.globalNPCs)) {
-			g.ScaleExpertStats(npc, numPlayers, bossLifeScale);
+		foreach (GlobalNPC g in HookApplyDifficultyAndPlayerScaling.Enumerate(npc.globalNPCs)) {
+			g.ApplyDifficultyAndPlayerScaling(npc, numPlayers, balance, bossAdjustment);
 		}
 	}
 

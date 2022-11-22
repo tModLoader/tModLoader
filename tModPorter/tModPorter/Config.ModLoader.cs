@@ -95,6 +95,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "PreNPCLoot",			to: "PreKill");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SpecialNPCLoot",		to: "SpecialOnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SpecialNPCLoot",		to: "SpecialOnKill");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "ScaleExpertStats",	to: "ApplyDifficultyAndPlayerScaling");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "ScaleExpertStats",	to: "ApplyDifficultyAndPlayerScaling");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "TownNPCName",		to: "SetNPCNameList");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
@@ -142,6 +144,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
@@ -253,6 +257,7 @@ public static partial class Config
 
 		RenameMethod("Terraria.ModLoader.ModPrefix", from: "ValidateItem", to: "AllStatChangesHaveEffectOn");
 		ChangeHookSignature("Terraria.ModLoader.ModPrefix", "AllStatChangesHaveEffectOn");
+
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");

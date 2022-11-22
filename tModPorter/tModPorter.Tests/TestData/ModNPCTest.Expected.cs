@@ -60,4 +60,8 @@ public class ModNPCTest : ModNPC
 		return null;
 	}
 #endif
+
+	public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+	{
+	}
 }

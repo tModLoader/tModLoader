@@ -31,4 +31,8 @@ public class GlobalNPCTest : GlobalNPC
 		return null;
 	}
 #endif
+
+	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
+	{
+	}
 }

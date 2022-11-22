@@ -23,4 +23,8 @@ public class GlobalNPCTest : GlobalNPC
 	public override bool? CanHitNPC(NPC npc, NPC target) {
 		return null;
 	}
+
+	public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	{
+	}
 }

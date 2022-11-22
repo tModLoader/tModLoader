@@ -686,7 +686,7 @@
  			}
  		}
  
-+		NPCLoader.ScaleExpertStats(this, numPlayers, balance);
++		NPCLoader.ApplyDifficultyAndPlayerScaling(this, numPlayers, balance, bossAdjustment);
  		defDefense = defense;
  		defDamage = damage;
  		life = lifeMax;
