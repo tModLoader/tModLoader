@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Hjson;
+using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json.Linq;
 using Terraria.ID;
 using Terraria.Localization;
@@ -233,7 +234,7 @@ public static class LocalizationLoader
 
 			string translationFileContents = streamReader.ReadToEnd();
 
-			var culture = GameCulture.FromPath(translationFile.Name);
+			(var culture, string prefix) = GameCulture.FromPath(translationFile.Name);
 
 			// Parse HJSON and convert to standard JSON
 			string jsonString = HjsonValue.Parse(translationFileContents).ToString();
@@ -270,6 +271,8 @@ public static class LocalizationLoader
 
 			foreach (var (key, value) in flattened) {
 				string effectiveKey = key.Replace(".$parentVal", "");
+				if(!string.IsNullOrWhiteSpace(prefix))
+					effectiveKey = prefix + "." + effectiveKey;
 				if (!modTranslationDictionary.TryGetValue(effectiveKey, out ModTranslation mt)) {
 					// removing instances of .$parentVal is an easy way to make this special key assign its value
 					//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
@@ -294,7 +297,7 @@ public static class LocalizationLoader
 	}
 
 	// Classes facilitating UpdateLocalizationFiles()
-	public record LocalizationFileEntry(string path, List<LocalizationEntry> LocalizationEntries);
+	public record LocalizationFileEntry(string path, string prefix, List<LocalizationEntry> LocalizationEntries);
 
 	public record LocalizationEntry(string key, string value, string comment, JsonType type = JsonType.String);
 
@@ -335,7 +338,7 @@ public static class LocalizationLoader
 
 			string translationFileContents = streamReader.ReadToEnd();
 
-			var culture = GameCulture.FromPath(translationFile.Name);
+			(var culture, string prefix) = GameCulture.FromPath(translationFile.Name);
 
 			allLocalizationFilesAllLanguages.Add(translationFile.Name);
 			allLanguages.Add(culture);
@@ -346,8 +349,8 @@ public static class LocalizationLoader
 				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
 				JsonObject jsonObjectEng = jsonValueEng.Qo();
 				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
-				List<LocalizationEntry> existingEntries = FlattenJsonObject(jsonObjectEng as WscJsonObject);
-				localizationFileEntries.Add(new(translationFile.Name, existingEntries));
+				List<LocalizationEntry> existingEntries = FlattenJsonObject(jsonObjectEng as WscJsonObject, prefix);
+				localizationFileEntries.Add(new(translationFile.Name, prefix, existingEntries));
 			}
 		}
 
@@ -391,8 +394,13 @@ public static class LocalizationLoader
 
 					CommentedWscJsonObject parent = rootObject;
 
+					string key = entry.key;
+					if (!string.IsNullOrWhiteSpace(localizationFileEntry.prefix)) {
+						key = key.Substring(localizationFileEntry.prefix.Length + 1);
+					}
+
 					// Find/Populate the parents of this translation entry 
-					string[] splitKey = entry.key.Split(".");
+					string[] splitKey = key.Split(".");
 					for (int j = 0; j < splitKey.Length - 1; j++) {
 						string k = splitKey[j];
 						if (parent.ContainsKey(k))
@@ -415,13 +423,13 @@ public static class LocalizationLoader
 							string actualCommentKey = parent.Keys.Last();
 							parent.Comments[actualCommentKey] = entry.comment;
 						}
-						parent.Add(entry.key.Split(".").Last(), new CommentedWscJsonObject());
+						parent.Add(key.Split(".").Last(), new CommentedWscJsonObject());
 					}
 					else {
 						// Add values
 
 						string value = translations[entry.key].GetTranslation(culture);
-						string key = entry.key.Split(".").Last();
+						key = key.Split(".").Last();
 						if (culture.Name != "en-US" && value == translations[entry.key].GetDefault()) {
 							// This might be messing up Russian: OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 							//key = "# " + key; // doesn't work, escaped by escapeName
@@ -466,13 +474,16 @@ public static class LocalizationLoader
 		}
 	}
 
-	private static List<LocalizationEntry> FlattenJsonObject(WscJsonObject jsonObjectEng)
+	private static List<LocalizationEntry> FlattenJsonObject(WscJsonObject jsonObjectEng, string prefix)
 	{
 		// TODO: How should "$parentVal" be handled?
+		// TODO: Which entry should this comment attach to in the result, if it ends up being expanded?
+		//       # Some Comment on ExampleMod.Common
+		//       ExampleMod.Common: {...}
 
 		var newJsonObject = new WscJsonObject();
 		var existingKeys = new List<LocalizationEntry>();
-		RecurseThrough(jsonObjectEng, "");
+		RecurseThrough(jsonObjectEng, prefix);
 		return existingKeys;
 
 		void RecurseThrough(WscJsonObject original, string prefix) {
@@ -491,7 +502,7 @@ public static class LocalizationLoader
 				}
 				else if (item.Value.JsonType == JsonType.String) {
 					var localizationValue = item.Value.Qs();
-					string key = prefix + "." + item.Key;
+					string key = string.IsNullOrWhiteSpace(prefix) ? item.Key : prefix + "." + item.Key;
 					int actualOrderIndex = index - 1;
 					string actualCommentKey = actualOrderIndex == -1 ? "" : original.Order[actualOrderIndex];
 					string comment = original.Comments[actualCommentKey];
@@ -515,6 +526,9 @@ public static class LocalizationLoader
 		LocalizationFileEntry mostSuitableLocalizationFile = null;
 
 		foreach (var localizationFileEntry in localizationFileEntries) {
+			if (!string.IsNullOrWhiteSpace(localizationFileEntry.prefix) && !key.StartsWith(localizationFileEntry.prefix))
+				continue;
+
 			int level = CheckPrefixExistsLevel(localizationFileEntry.LocalizationEntries, key);
 			if (level > levelFound) {
 				levelFound = level;
@@ -523,7 +537,11 @@ public static class LocalizationLoader
 		}
 
 		if (mostSuitableLocalizationFile == null) {
-			throw new Exception("Somehow there are no files for this key");
+			// Add a "en-US.hjson" if missing. (or "en-US_Mods.Modname.hjson" instead?)
+			// TODO: detect common folder path and use that?
+			mostSuitableLocalizationFile = new("en-US.hjson", "", new List<LocalizationEntry>());
+			localizationFileEntries.Add(mostSuitableLocalizationFile);
+			//throw new Exception("Somehow there are no files for this key");
 		}
 
 		return mostSuitableLocalizationFile;
@@ -568,7 +586,8 @@ public static class LocalizationLoader
 				index = newIndex;
 		}
 
-		localizationFileEntry.LocalizationEntries.Insert(index + 1, new(key, value, comment));
+		int placementIndex = localizationFileEntry.LocalizationEntries.Count > 0 ? index + 1 : 0;
+		localizationFileEntry.LocalizationEntries.Insert(placementIndex, new(key, value, comment));
 	}
 
 	// Generates hjson files for the current culture in 
