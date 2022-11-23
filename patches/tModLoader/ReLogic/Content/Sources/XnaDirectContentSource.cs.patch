@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/XnaDirectContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/XnaDirectContentSource.cs
-@@ -1,75 +_,40 @@
+@@ -1,23 +_,39 @@
  using System;
 -using System.Collections.Generic;
  using System.IO;
@@ -8,71 +8,54 @@
  
  namespace ReLogic.Content.Sources;
  
++//TML: Now derives from ContentSource instead of IContentSource
 -public class XnaDirectContentSource : IContentSource
 +public class XnaDirectContentSource : ContentSource
  {
  	private readonly string _rootDirectory;
--	private readonly HashSet<string> _files = new HashSet<string>();
--	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
--
--	public IContentValidator ContentValidator { get; set; }
--
--	public XnaDirectContentSource(string rootDirectory)
 +	private readonly string _alternateRootDirectory;
 +
++	/*
+ 	private readonly HashSet<string> _files = new HashSet<string>();
+ 	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
+ 
+ 	public IContentValidator ContentValidator { get; set; }
++	*/
+ 
+-	public XnaDirectContentSource(string rootDirectory)
 +	public XnaDirectContentSource(string rootDirectory, string alternateRootDirectory)
  	{
  		_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
--		BuildFileMap();
--	}
--
--	private void BuildFileMap()
--	{
--		_files.Clear();
--		string[] files = Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories);
--		foreach (string text in files) {
--			_files.Add(text.ToLower());
--		}
--	}
--
--	public bool HasAsset(string assetName)
--	{
--		string text = Path.Combine(_rootDirectory, assetName) + ".xnb";
--		if (_rejections.IsRejected(assetName))
--			return false;
--
--		return _files.Contains(text.ToLower());
--	}
--
--	public List<string> GetAllAssetsStartingWith(string assetNameStart)
--	{
--		string value = Path.Combine(_rootDirectory, assetNameStart).ToLower();
--		List<string> list = new List<string>();
--		foreach (string file in _files) {
--			if (file.StartsWith(value))
--				list.Add(file);
--		}
--
--		return list;
--	}
--
--	public string GetExtension(string assetName) => ".xnb";
--
--	public Stream OpenStream(string assetName)
--	{
--		string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
 +		_alternateRootDirectory = AssetPathHelper.CleanPath(alternateRootDirectory);
 +
++		/*
+ 		BuildFileMap();
++		*/
 +		SetAssetNames(
 +			Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
 +			.Select(path => path.Substring(_rootDirectory.Length+1))
 +			.Concat(Directory.GetFiles(_alternateRootDirectory, "*.xnb", SearchOption.AllDirectories)
 +			.Select(path => path.Substring(_alternateRootDirectory.Length + 1))).ToHashSet()
 +		);
-+	}
-+
+ 	}
+ 
++	/*
+ 	private void BuildFileMap()
+ 	{
+ 		_files.Clear();
+@@ -49,11 +_,21 @@
+ 	}
+ 
+ 	public string GetExtension(string assetName) => ".xnb";
++	*/
+ 
++	//TML: Made this an override.
+-	public Stream OpenStream(string assetName)
 +	public override Stream OpenStream(string assetName)
-+	{
+ 	{
++		/*
+ 		string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
++		*/
 +		string path = Path.Combine(_rootDirectory, assetName);
 +		string altPath = Path.Combine(_alternateRootDirectory, assetName);
 +
@@ -83,19 +66,17 @@
  			return File.OpenRead(path);
  		}
  		catch (Exception innerException) {
- 			throw AssetLoadException.FromMissingAsset(assetName, innerException);
+@@ -61,6 +_,7 @@
  		}
  	}
--
--	public void RejectAsset(string assetName, IRejectionReason reason)
--	{
--		_rejections.Reject(assetName, reason);
--	}
--
--	public void ClearRejections()
--	{
--		_rejections.Clear();
--	}
--
--	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
+ 
++	/*
+ 	public void RejectAsset(string assetName, IRejectionReason reason)
+ 	{
+ 		_rejections.Reject(assetName, reason);
+@@ -72,4 +_,5 @@
+ 	}
+ 
+ 	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
++	*/
  }

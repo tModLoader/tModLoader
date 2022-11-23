@@ -22,12 +22,15 @@
  	private readonly WorldGenConfiguration _configuration;
  	public static GenerationProgress CurrentGenerationProgress;
  
-@@ -42,7 +_,22 @@
+@@ -42,7 +_,27 @@
  			Main.rand = new UnifiedRandom(_seed);
  			stopwatch.Start();
  			progress.Start(pass2.Weight);
++
++			/*
+ 			pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
++			*/
 +			try {
--			pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
 +				pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
 +			}
 +			catch(Exception e) {
@@ -39,10 +42,11 @@
 +				);
 +				Utils.ShowFancyErrorMessage(message, 0);
 +
-+				//We need to shutdown the thread without it saving.
++				// We need to shutdown the thread without it saving.
 +				//TODO: Allow returning a bool to signify if it should save or not.
 +				throw e;
 +			}
++
  			progress.End();
  			stopwatch.Reset();
  		}

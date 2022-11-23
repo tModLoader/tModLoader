@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -38,16 +_,30 @@
+@@ -38,16 +_,32 @@
  	private UICharacterNameButton _previewImagePathPlate;
  	private Texture2D _previewImageTransientTexture;
  	private UIImage _previewImageUIElement;
@@ -20,42 +20,49 @@
 +	protected UIText _disclaimerText;
  	private UIGamepadHelper _helper;
  
-+	// Added by TML [
++	// Added by TML [[
 +	protected UIText _tMLDisclaimerText;
 +	protected UIElement _tMLDisclaimerButton;
-+	private bool _isMod = false;
++
++	private bool _isMod;
 +
 +	public UIState PreviousUIState {
 +		get => _previousUIState;
 +		set => _previousUIState = value;
 +	}
-+	// ]
++	// ]]
 +
  	public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject)
  	{
  		_previousUIState = stateToGoBackTo;
  		_dataObject = dataObject;
++
 +		if (dataObject is TmodFile) {
 +			_isMod = true;
 +		}
  	}
  
  	public override void OnInitialize()
-@@ -80,13 +_,12 @@
+@@ -80,13 +_,23 @@
  
  	private void SetDefaultOptions()
  	{
--		_optionPublicity = WorkshopItemPublicSettingId.Public;
--		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
--		for (int i = 0; i < publicityOptions.Length; i++) {
--			publicityOptions[i].SetCurrentOption(_optionPublicity);
--		}
--
++		// Moved from below.
++		SetTagsFromFoundEntry();
++
++		// Seemingly moved to SetTagsFromFoundEntry
++		/*
+ 		_optionPublicity = WorkshopItemPublicSettingId.Public;
++		*/
++
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+ 		for (int i = 0; i < publicityOptions.Length; i++) {
+ 			publicityOptions[i].SetCurrentOption(_optionPublicity);
+ 		}
+ 
++		/*
  		SetTagsFromFoundEntry();
-+		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
-+		for (int i = 0; i < publicityOptions.Length; i++) {
-+			publicityOptions[i].SetCurrentOption(_optionPublicity);
-+		}
++		*/
 +
  		UpdateImagePreview();
  	}
@@ -72,14 +79,17 @@
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));
  		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  		uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
-@@ -169,10 +_,7 @@
+@@ -169,10 +_,14 @@
  			}
  		}
  
--		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
--		for (int i = 0; i < publicityOptions.Length; i++) {
--			publicityOptions[i].SetCurrentOption(info.publicity);
--		}
++		/*
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+ 		for (int i = 0; i < publicityOptions.Length; i++) {
+ 			publicityOptions[i].SetCurrentOption(info.publicity);
+ 		}
++		*/
++
 +		_optionPublicity = info.publicity;
  	}
  
@@ -101,12 +111,13 @@
  		uIText.IsWrapped = true;
  		uISlicedImage.Append(uIText);
  		_descriptionText = uIText;
-@@ -643,7 +_,8 @@
+@@ -643,7 +_,9 @@
  			UsedTags = (from x in _tagOptions
  						where x.IsSelected
  						select x.OptionValue).ToArray(),
 -			PreviewImagePath = _previewImagePath
 +			PreviewImagePath = _previewImagePath,
++			// Introduced by TML:
 +			ChangeNotes = (this as WorkshopPublishInfoStateForMods).changeNotes,
  		};
  	}
@@ -115,7 +126,7 @@
  			new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  		};
  
-+		// TODO: support default folder, set default folder to mod source folder for mods.
++		// TODO: Support default folder, set default folder to mod source folder for mods.
  		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
  		if (text != null) {
  			_previewImagePath = text;

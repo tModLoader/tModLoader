@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,13 +_,23 @@
+@@ -1,13 +_,24 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -17,6 +17,7 @@
 +		_DropItemFromNPC(npc, itemId, stack, scattered);
 +	}
 +
++	// Split from the above method.
 +	private static void _DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false)
 +	{
 -		if (itemId > 0 && itemId < 5456) {
@@ -25,7 +26,7 @@
  			int x = (int)npc.position.X + npc.width / 2;
  			int y = (int)npc.position.Y + npc.height / 2;
  			if (scattered) {
-@@ -16,13 +_,44 @@
+@@ -16,13 +_,47 @@
  			}
  
  			int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
@@ -35,6 +36,7 @@
  		}
  	}
  
++	// Added by TML.
 +	public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false)
 +	{
 +		if (info.npc != null) {
@@ -45,6 +47,7 @@
 +		}
 +	}
 +
++	// Added by TML.
 +	public static int DropItem(Rectangle rectangle, IEntitySource entitySource, int itemId, int stack, bool scattered)
 +	{
 +		Vector2 pos = scattered ?
@@ -54,6 +57,7 @@
 +		return DropItem(pos, entitySource, itemId, stack);
 +	}
 +
++	// Added by TML.
 +	public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack)
 +	{
 +		int number = Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReLogic.OS.Windows;
 
-class NativeClipboard
+internal static class NativeClipboard
 {
 	private const uint CF_UNICODETEXT = 13U;
 

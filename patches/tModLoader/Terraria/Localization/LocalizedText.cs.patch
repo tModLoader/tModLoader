@@ -5,15 +5,17 @@
  using System.ComponentModel;
  using System.Text.RegularExpressions;
  
-@@ -8,8 +_,20 @@
- 	public static readonly LocalizedText Empty = new LocalizedText("", "");
+@@ -9,7 +_,24 @@
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
  	public readonly string Key;
--
--	public string Value { get; private set; }
+ 
++	// Added by TML.
 +	public LocalizedText Override;
++	
 +	private string value;
-+
++	/*
+ 	public string Value { get; private set; }
++	*/
 +	public string Value {
 +		get {
 +			if (Override != null)
@@ -28,7 +30,7 @@
  
  	internal LocalizedText(string key, string text)
  	{
-@@ -64,9 +_,73 @@
+@@ -64,9 +_,79 @@
  		return text.Value;
  	}
  
@@ -36,20 +38,25 @@
  	public string Format(object arg0) => string.Format(Value, arg0);
  	public string Format(object arg0, object arg1) => string.Format(Value, arg0, arg1);
  	public string Format(object arg0, object arg1, object arg2) => string.Format(Value, arg0, arg1, arg2);
--	public string Format(params object[] args) => string.Format(Value, args);
 +	*/
 +	
 +	private static readonly Regex PluralizationPatternRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // "{0} {^0:item,items}"
 +
++	/*
+ 	public string Format(params object[] args) => string.Format(Value, args);
++	*/
++
 +	public string Format(params object[] args)
 +	{
++		//TML: The entirety of this method has been changed to support extra features like plural switching.
++
 +		string value = Value;
 +
 +		value = PluralizationPatternRegex.Replace(value, delegate (Match match) {
 +			int argIndex = Convert.ToInt32(match.Groups[1].Value);
 +			string[] options = match.Groups[2].Value.Split(';');
 +
-+			if(args[argIndex] is int count) {
++			if (args[argIndex] is int count) {
 +				int pluralNumber = 0;
 +
 +				switch (Language.ActiveCulture.LegacyId) {

@@ -9,11 +9,14 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -133,7 +_,8 @@
+@@ -133,7 +_,11 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
  	private static ushort hellPosition;
++	
++	// Added by TML.
 +	internal static ushort modPosition;
++
 -	private static Color[] colorLookup;
 +	internal static Color[] colorLookup;
  	private static ushort[] snowTypes;
@@ -44,7 +47,7 @@
  					num2 = 5;
  					num3 = 100;
  				}
-@@ -1818,12 +_,15 @@
+@@ -1818,12 +_,20 @@
  
  				num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
  			}
@@ -54,10 +57,14 @@
  			}
  		}
  
--		return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
 +		ushort mapType = (ushort)(num3 + baseOption);
++
 +		MapLoader.ModMapOption(ref mapType, i, j);
++
 +		return MapTile.Create(mapType, (byte)num2, (byte)num);
++		/*
+ 		return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
++		*/
  	}
  
  	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption)
@@ -72,10 +79,11 @@
  						flag2 = false;
  						flag = false;
  						num7 = 0;
-@@ -2743,6 +_,7 @@
+@@ -2743,6 +_,8 @@
  
  			deflateStream.Dispose();
  			FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
++
 +			MapIO.WriteModFile(text, isCloudSave);
  		}
  

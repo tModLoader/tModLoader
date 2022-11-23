@@ -92,19 +92,21 @@
  			if (drawinfo.isSitting) {
  				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs);
  				return;
-@@ -927,7 +_,7 @@
+@@ -927,7 +_,8 @@
  		}
  	}
  
++	//TML: Internalized.
 -	public static bool IsBottomOverridden(ref PlayerDrawSet drawinfo)
 +	internal static bool IsBottomOverridden(ref PlayerDrawSet drawinfo)
  	{
  		if (ShouldOverrideLegs_CheckPants(ref drawinfo))
  			return true;
-@@ -938,8 +_,11 @@
+@@ -938,8 +_,12 @@
  		return false;
  	}
  
++	//TML: Made private
 -	public static bool ShouldOverrideLegs_CheckPants(ref PlayerDrawSet drawinfo)
 +	private static bool ShouldOverrideLegs_CheckPants(ref PlayerDrawSet drawinfo)
  	{
@@ -114,13 +116,14 @@
  		switch (drawinfo.drawPlayer.legs) {
  			case 67:
  			case 106:
-@@ -954,15 +_,21 @@
+@@ -954,15 +_,22 @@
  			default:
  				return false;
  		}
 +		*/
  	}
  
++	//TML: Made private
 -	public static bool ShouldOverrideLegs_CheckShoes(ref PlayerDrawSet drawinfo)
 +	private static bool ShouldOverrideLegs_CheckShoes(ref PlayerDrawSet drawinfo)
  	{

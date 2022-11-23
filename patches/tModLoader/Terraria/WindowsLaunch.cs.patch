@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/Terraria/WindowsLaunch.cs
 +++ src/tModLoader/Terraria/WindowsLaunch.cs
-@@ -64,7 +_,8 @@
- 			stream.Read(array, 0, array.Length);
+@@ -65,6 +_,11 @@
  			return Assembly.Load(array);
  		};
--
+ 
++		// Added by TML.
++		//TODO: Is there still a reason for this?
 +		if (File.Exists("ReLogic.dll"))
 +			File.Delete("ReLogic.dll");
++
  #if SERVER
  		WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
- 		WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);
+ 

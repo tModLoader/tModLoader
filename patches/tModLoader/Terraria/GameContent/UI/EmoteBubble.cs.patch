@@ -1,13 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/EmoteBubble.cs
 +++ src/tModLoader/Terraria/GameContent/UI/EmoteBubble.cs
-@@ -1,5 +_,6 @@
- using System;
- using System.Collections.Generic;
-+using Terraria.ModLoader;
- using Microsoft.Xna.Framework;
+@@ -4,12 +_,13 @@
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.GameContent.Events;
-@@ -9,7 +_,7 @@
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI;
  
  public class EmoteBubble
  {
@@ -16,7 +15,7 @@
  	public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  	private static List<int> toClean = new List<int>();
  	public static int NextID;
-@@ -64,7 +_,22 @@
+@@ -64,7 +_,24 @@
  			else if (anch.entity is Projectile)
  				item = 2;
  
@@ -29,12 +28,14 @@
 +			// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile.
 +			// tl;dr: byte type -> ushort packedOwnerType [owner << 8 | type] (only if it's a projectile)
 +			int whoAmI = anch.entity.whoAmI;
++
 +			if (!ModNet.AllowVanillaClients) {
 +				if (anch.entity is Projectile projectile) {
 +					whoAmI = projectile.identity; // This is the meta parameter in DeserializeNetAnchor
 +					item = projectile.owner << 8 | item;
 +				}
 +			}
++
 -			return Tuple.Create(item, anch.entity.whoAmI);
 +			return Tuple.Create(item, whoAmI);
  		}

@@ -23,13 +23,13 @@
 +		return SacrificeItem(ref _itemSlotsForUI[0], out amountWeSacrificed);
 +	}
 +
-+	// allows to sacrifice any item without needing to go through the ui
++	// TML-added overload, allows to sacrifice any item without needing to go through the UI
 +	public static ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed)
 +	{
 +		return SacrificeItem(ref toSacrifice, out amountWeSacrificed);
 +	}
 +
-+	// allows to sacrifice any item without needing to go through the ui
++	// TML-added overload, allows to sacrifice any item without needing to go through the UI
 +	public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false)
 +	{
  		int amountNeededTotal = 0;
@@ -42,11 +42,13 @@
  		if (!Main.LocalPlayerCreativeTracker.ItemSacrifices.TryGetSacrificeNumbers(item.type, out amountWeHave, out amountNeededTotal))
  			return ItemSacrificeResult.CannotSacrifice;
  
-@@ -241,16 +_,17 @@
+@@ -241,16 +_,21 @@
  		}
  
  		bool num3 = num2 == num;
++
 +		ItemLoader.OnResearched(item, num3);
++
  		item.stack -= num2;
  		if (item.stack <= 0)
  			item.TurnToAir();
@@ -54,7 +56,9 @@
  		amountWeSacrificed = num2;
 -		RefreshAvailableInfiniteItemsList();
 -		if (item.stack > 0) {
++
 +		Main.CreativeMenu.RefreshAvailableInfiniteItemsList();
++
 +		if (item.stack > 0 && returnRemainderToPlayer) {
  			item.position.X = Main.player[Main.myPlayer].Center.X - (float)(item.width / 2);
  			item.position.Y = Main.player[Main.myPlayer].Center.Y - (float)(item.height / 2);

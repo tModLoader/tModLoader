@@ -174,12 +174,13 @@
  				break;
  			case SoundType.Music:
  				num *= Main.musicVolume;
-@@ -128,4 +_,8 @@
+@@ -128,4 +_,9 @@
  		Sound.Volume = num;
  		Sound.Pitch = Pitch;
  	}
 +
 +	// Added by TML.
 +	// As the name states, runs code on the main thread and waits for it to finish.
-+	private static void RunOnMainThreadAndWait(Action action) => Main.RunOnMainThread(action).GetAwaiter().GetResult();
++	private static void RunOnMainThreadAndWait(Action action)
++		=> Main.RunOnMainThread(action).GetAwaiter().GetResult();
  }

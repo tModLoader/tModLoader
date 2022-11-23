@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -4,13 +_,17 @@
+@@ -4,13 +_,23 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  
@@ -8,14 +8,16 @@
 +
  namespace Terraria;
  
--#if MONO
--[StructLayout(LayoutKind.Sequential, Pack = 1)]
--#endif
--public class Tile
 +// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere.
 +// Alike Entities in the ECS game architecture design.
 +
 +// See Tile.TML.cs for the actual implementation.
++/*
+ #if MONO
+ [StructLayout(LayoutKind.Sequential, Pack = 1)]
+ #endif
+ public class Tile
++*/
 +public readonly partial struct Tile
  {
 +	/*
@@ -76,13 +78,14 @@
  		type = from.type;
  		wall = from.wall;
  		liquid = from.liquid;
-@@ -133,10 +_,31 @@
+@@ -133,10 +_,32 @@
  		bTileHeader3 = from.bTileHeader3;
  		frameX = from.frameX;
  		frameY = from.frameY;
 +		*/
  	}
  
++	//TML: Internalized, rewritten.
 -	public bool isTheSameAs(Tile compTile)
 +	internal bool isTheSameAs(Tile compTile)
  	{
@@ -109,7 +112,7 @@
  		if (compTile == null)
  			return false;
  
-@@ -165,13 +_,15 @@
+@@ -165,13 +_,16 @@
  			return false;
  		}
  
@@ -121,6 +124,7 @@
 +		*/
  	}
  
++	//TML: Internalized.
 -	public int blockType()
 +	internal int blockType()
  	{
@@ -167,22 +171,24 @@
  		liquid = 0;
  		sTileHeader = 0;
  		bTileHeader = 0;
-@@ -232,9 +_,10 @@
+@@ -232,9 +_,11 @@
  		bTileHeader3 = 0;
  		frameX = 0;
  		frameY = 0;
 +		*/
  	}
  
++	//TML: Internalized.
 -	public Color actColor(Color oldColor)
 +	internal Color actColor(Color oldColor)
  	{
  		if (!inActive())
  			return oldColor;
-@@ -243,13 +_,13 @@
+@@ -243,13 +_,15 @@
  		return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
  	}
  
++	//TML: Internalized.
 -	public void actColor(ref Vector3 oldColor)
 +	internal void actColor(ref Vector3 oldColor)
  	{
@@ -190,33 +196,37 @@
  			oldColor *= 0.4f;
  	}
  
++	//TML: Internalized.
 -	public bool topSlope()
 +	internal bool topSlope()
  	{
  		byte b = slope();
  		if (b != 1)
-@@ -258,7 +_,7 @@
+@@ -258,7 +_,8 @@
  		return true;
  	}
  
++	//TML: Internalized.
 -	public bool bottomSlope()
 +	internal bool bottomSlope()
  	{
  		byte b = slope();
  		if (b != 3)
-@@ -267,7 +_,7 @@
+@@ -267,7 +_,8 @@
  		return true;
  	}
  
++	//TML: Internalized.
 -	public bool leftSlope()
 +	internal bool leftSlope()
  	{
  		byte b = slope();
  		if (b != 2)
-@@ -276,7 +_,7 @@
+@@ -276,7 +_,8 @@
  		return true;
  	}
  
++	//TML: Internalized.
 -	public bool rightSlope()
 +	internal bool rightSlope()
  	{
@@ -240,8 +250,3 @@
  
  	public void Clear(TileDataType types)
  	{
-@@ -666,3 +_,4 @@
- 
- 	public override string ToString() => "Tile Type:" + type + " Active:" + active().ToString() + " Wall:" + wall + " Slope:" + slope() + " fX:" + frameX + " fY:" + frameY;
- }
-+

@@ -6,7 +6,8 @@ internal class ContentRejectionAssetReaderException : IRejectionReason
 {
 	private readonly Exception e;
 
-	public ContentRejectionAssetReaderException(Exception e) {
+	public ContentRejectionAssetReaderException(Exception e)
+	{
 		this.e = e;
 	}
 

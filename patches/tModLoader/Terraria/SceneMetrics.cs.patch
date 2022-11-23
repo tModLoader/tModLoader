@@ -8,7 +8,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
-@@ -29,13 +_,14 @@
+@@ -29,12 +_,14 @@
  	public bool CanPlayCreditsRoll;
  	public bool[] NPCBannerBuff = new bool[290];
  	public bool hasBanner;
@@ -18,13 +18,13 @@
  	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  	public int bestOre;
  
--	public Point? ClosestOrePosition { get; private set; }
 +	//TML: The following pile of properties has had its setters publicized
- 
++
+-	public Point? ClosestOrePosition { get; private set; }
 +	public Point? ClosestOrePosition { get; set; }
+ 
  	public int ShimmerTileCount { get; set; }
  
- 	public int EvilTileCount { get; set; }
 @@ -46,55 +_,55 @@
  
  	public int ActiveMusicBox { get; set; }
@@ -167,11 +167,12 @@
  	}
  
  	private void ExportTileCountsToMain()
-@@ -388,6 +_,8 @@
+@@ -388,6 +_,9 @@
  		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  		hasBanner = false;
  		CanPlayCreditsRoll = false;
-+		if(NPCBannerBuff.Length<ModLoader.NPCLoader.NPCCount)
++
++		if (NPCBannerBuff.Length < ModLoader.NPCLoader.NPCCount)
 +			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
  	}
  

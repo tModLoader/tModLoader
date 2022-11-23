@@ -7,10 +7,11 @@
  
  namespace Terraria.Achievements;
  
-@@ -34,6 +_,9 @@
+@@ -34,6 +_,10 @@
  
  	public virtual void Complete()
  	{
++		// Check added by TML.
 +		if (SocialAPI.Mode == SocialMode.Steam)
 +			return;
 +

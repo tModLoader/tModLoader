@@ -21,7 +21,7 @@
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -25,9 +_,45 @@
+@@ -25,9 +_,47 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -33,8 +33,9 @@
 +
 +#if NETCORE
 +	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);
-+	private static string NativePlatformDir =>
-+		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
++
++	private static string NativePlatformDir
++		=> RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
 +		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
 +		RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "OSX" :
 +		throw new InvalidOperationException("Unknown OS.");
@@ -43,7 +44,8 @@
 +
 +	// Note: AssemblyLoadContext.Default.ResolvingUnmanagedDll is only called if the dll is not found on PATH
 +	// In a production environment, you need to prepend to PATH prioritise your shipped libraries, making this logging mostly useless.
-+	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name) {
++	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
++	{
 +		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario.
 +		lock (resolverLock) {
 +			if (assemblies.TryGetValue(name, out var handle))

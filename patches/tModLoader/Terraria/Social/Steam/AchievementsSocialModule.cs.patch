@@ -1,11 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/AchievementsSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/AchievementsSocialModule.cs
-@@ -105,7 +_,7 @@
+@@ -105,7 +_,10 @@
  
  	private void OnUserStatsReceived(UserStatsReceived_t results)
  	{
--		if (results.m_nGameID == 105600 && results.m_steamIDUser == SteamUser.GetSteamID())
-+		if (results.m_nGameID == 1281930 && results.m_steamIDUser == SteamUser.GetSteamID())
++		/*
+ 		if (results.m_nGameID == 105600 && results.m_steamIDUser == SteamUser.GetSteamID())
++		*/
++		if (results.m_nGameID == ModLoader.Engine.Steam.TMLAppID && results.m_steamIDUser == SteamUser.GetSteamID())
  			_areStatsReceived = true;
  	}
  }

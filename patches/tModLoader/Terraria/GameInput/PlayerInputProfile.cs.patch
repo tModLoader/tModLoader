@@ -16,7 +16,7 @@
  {
  	public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
  		{ InputMode.Keyboard, new KeyConfiguration() },
-@@ -206,9 +_,12 @@
+@@ -206,9 +_,13 @@
  
  	public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode)
  	{
@@ -24,9 +24,10 @@
 +		string[] keysToCopy = new string[] {
  			"MouseLeft",
  			"MouseRight",
-+			"MouseMiddle",
-+			"MouseXButton1",
-+			"MouseXButton2",
++			// Extra mouse buttons support
++			TriggerNames.MouseMiddle,
++			TriggerNames.MouseXButton1,
++			TriggerNames.MouseXButton2,
  			"Up",
  			"Down",
  			"Left",

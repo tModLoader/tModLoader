@@ -37,10 +37,11 @@
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -734,11 +_,13 @@
+@@ -734,11 +_,14 @@
  
  	public static void Initialize()
  	{
++		// Make sure that random was initialized.
 +		Main.rand ??= new UnifiedRandom((int)DateTime.Now.Ticks);
 +
  		NpcsByNetId.Clear();

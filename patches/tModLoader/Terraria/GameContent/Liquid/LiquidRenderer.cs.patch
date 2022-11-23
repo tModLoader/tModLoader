@@ -5,25 +5,27 @@
  	public const float MIN_LIQUID_SIZE = 0.25f;
  	public static LiquidRenderer Instance;
 -	private readonly Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
-+	public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
++	public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15]; //TML: Publicized, made writeable.
  	private LiquidCache[] _cache = new LiquidCache[1];
  	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
  	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
-@@ -96,7 +_,7 @@
+@@ -96,7 +_,9 @@
  	private Color[] _waveMask = new Color[1];
  	private float _frameState;
  
--	private static Tile[,] Tiles => Main.tile;
-+	//private static Tile[,] Tiles => Main.tile;
++	/*
+ 	private static Tile[,] Tiles => Main.tile;
++	*/
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,14 +_,14 @@
+@@ -131,14 +_,15 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
 -		Tile tile = null;
 +		Tile tile = default;
++
  		fixed (LiquidCache* ptr = &_cache[1]) {
  			LiquidCache* ptr2 = ptr;
  			int num = rectangle.Height * 2 + 2;

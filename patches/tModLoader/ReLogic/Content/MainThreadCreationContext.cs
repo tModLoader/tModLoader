@@ -11,7 +11,8 @@ public struct MainThreadCreationContext : INotifyCompletion
 
 	public MainThreadCreationContext GetAwaiter() => this;
 
-	public void OnCompleted(Action action) {
+	public void OnCompleted(Action action)
+	{
 		ContinuationScheduler.OnCompleted(action);
 	}
 

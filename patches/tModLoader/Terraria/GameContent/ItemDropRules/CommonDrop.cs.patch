@@ -16,10 +16,11 @@
  		this.itemId = itemId;
  		this.chanceDenominator = chanceDenominator;
  		this.amountDroppedMinimum = amountDroppedMinimum;
-@@ -28,7 +_,7 @@
+@@ -28,7 +_,8 @@
  	{
  		ItemDropAttemptResult result;
  		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
++			//TML: Changed call from DropItemFromNPC to just DropItem
 -			CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
 +			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
  			result = default(ItemDropAttemptResult);

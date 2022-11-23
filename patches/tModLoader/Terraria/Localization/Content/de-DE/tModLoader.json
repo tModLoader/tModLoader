@@ -476,7 +476,6 @@
 		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
 		"VanillaGOGNotFound": "{0} konnte nicht gefunden werden.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren. Diese Version von tModLoader erwartet die {1}-Version von Terraria, du musst vielleicht über GOG Galaxy auf eine ältere oder neuere Terraria-Version wechseln, oder warten bis tModLoader aktualisiert wird.",
 		"GOGHashMismatch": "{0} ist nicht die unveränderte Terraria-Programmdatei.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren\r\n\r\nFalls du die .exe gepatcht hast kannst du eine Kopie der originalen exe machen und sie \"Terraria_v<VERSION>.exe\" nennen.",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
 		"DefaultExtraMessage": "Stelle bitte deine Terraria-Installation wieder her und installiere dann tModLoader über Steam oder folge der README.txt-Anleitung zur manuellen Installation.",
 		"LogPathHint": "Eine {0}-Datei die Fehlerinformationen enthält wurde im folgenden Ordner generiert:\n{1}\n(Du musst diese Datei teilen, wenn du nach Hilfe fragst)",
 		"OutOfMemoryHint": "Tipp: Versuche mit weniger Mods auf einmal zu spielen, oder stelle fest, ob ein Mod zu viel Speicher verbraucht. Wahlweise könntest du den 64-bit tModLoader installieren.",
@@ -484,8 +483,6 @@
 		"OneDriveHint": "Tipp: Versuche OneDrive zu installieren/anzuschalten. Drücke die rechte Maustaste auf deinen Dokumente-Ordner und aktiviere \"Immer auf diesem Gerät speichern\"",
 		"AntivirusHint": "Tipp: Falls du einen Antivirenprogramm hast, versuche Terraria zu dessen Whitelist/Ausschließungsliste hinzuzufügen.",
 		"TypeInitializationHint": "Tipp: Starte das Spiel neu. Wenn das Problem bestehen bleibt, versuche Terraria vollständig zu deinstallieren, es über Steam neu zu installieren und dann tModLoader erneut zu installieren.",
-		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
-
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Neue Inhalte",
 		"TagsContentDescription": "Fügt neue Inhalte (z.B. Gegenstände, Waffen, NPCs, usw.) zum Spiel hinzu",

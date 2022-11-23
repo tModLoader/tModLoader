@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Gore.cs
 +++ src/tModLoader/Terraria/Gore.cs
-@@ -7,10 +_,11 @@
+@@ -6,11 +_,12 @@
+ using Terraria.GameContent.Shaders;
  using Terraria.Graphics.Effects;
  using Terraria.ID;
- using Terraria.Utilities;
 +using Terraria.ModLoader;
+ using Terraria.Utilities;
  
  namespace Terraria;
  
@@ -40,11 +41,14 @@
  	}
  
  	private void Gore_UpdateLeaf()
-@@ -1023,17 +_,29 @@
+@@ -1023,17 +_,33 @@
  			alpha++;
  	}
  
++	// TML introduces 'IEntitySource' parameters to gore creation.
++
 +	// Source-less overloads for vanilla
++
 -	public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +	internal static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +		=> NewGorePerfect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
@@ -56,6 +60,7 @@
 +		=> NewGore(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
 +
 +	// Actual API methods
++
 +	public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
  	{
 -		Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
@@ -74,29 +79,29 @@
  	{
  		if (Main.netMode == 2)
  			return 600;
-@@ -1074,6 +_,13 @@
+@@ -1074,6 +_,16 @@
  		Main.gore[num].alpha = 0;
  		Main.gore[num].rotation = 0f;
  		Main.gore[num].scale = Scale;
 +
 +		var gore = Main.gore[num];
++
++		// Reset TML's added fields to reuse the gore instance.
 +		gore.ResetNewFields();
 +
++		// Initialize ModGore objects.
 +		gore.ModGore = GoreLoader.GetModGore(gore.type);
 +		gore.ModGore?.OnSpawn(gore, source);
 +
  		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  			Main.gore[num].type = Main.rand.Next(11, 14);
  			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
-@@ -1194,6 +_,12 @@
+@@ -1194,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
  	{
-+		if (ModGore != null) {
-+			Color? modColor = ModGore.GetAlpha(this, newColor);
-+			if (modColor.HasValue)
-+				return modColor.Value;
-+		}
++		if (ModGore != null && ModGore.GetAlpha(this, newColor) is Color modColor)
++			return modColor;
 +
  		float num = (float)(255 - alpha) / 255f;
  		int r;

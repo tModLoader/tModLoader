@@ -1,4 +1,4 @@
-namespace Terraria;
+﻿namespace Terraria;
 
 public partial class WorldSections
 {

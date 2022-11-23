@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
-@@ -2,7 +_,7 @@
+@@ -2,7 +_,8 @@
  
  namespace Terraria.GameContent.UI.BigProgressBar;
  
++//TML: Made public.
 -internal interface IBigProgressBar
 +public interface IBigProgressBar
  {

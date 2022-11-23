@@ -5,7 +5,7 @@
  {
  	private bool _canSpawnFairies;
 -	private int _delayUntilNextAttempt;
-+	private double _delayUntilNextAttempt;
++	private double _delayUntilNextAttempt; //TML: Changed from int to double.
  	private const int DELAY_BETWEEN_ATTEMPTS = 60;
  	private List<Point> _stumpCoords = new List<Point>();
 +	private double _timePass; // Added by TML; used to account for more precise time rates.
@@ -36,11 +36,13 @@
  			if (_delayUntilNextAttempt == 0) {
  				_delayUntilNextAttempt = 60;
  				TrySpawningFairies();
-@@ -69,12 +_,14 @@
+@@ -69,12 +_,17 @@
  
  		int oneOverSpawnChance = GetOneOverSpawnChance();
  		bool flag = false;
++
 +		_timePass += Main.desiredWorldEventsUpdateRate;
++
 -		for (int i = 0; i < Main.dayRate; i++) {
 +		for (int i = 1; i <= (int)_timePass; i++) {
  			if (Main.rand.Next(oneOverSpawnChance) == 0) {
@@ -48,6 +50,7 @@
  				break;
  			}
  		}
++
 +		_timePass %= 1.0;
  
  		if (!flag)

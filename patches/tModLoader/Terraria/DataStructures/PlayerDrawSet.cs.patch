@@ -133,19 +133,22 @@
  		float alphaReduction = shadow;
  		headGlowColor = drawPlayer.GetImmuneAlphaPure(headGlowColor, alphaReduction);
  		bodyGlowColor = drawPlayer.GetImmuneAlphaPure(bodyGlowColor, alphaReduction);
-@@ -1067,8 +_,10 @@
+@@ -1067,8 +_,13 @@
  		}
  
  		_ = drawPlayer.shimmering;
++
 +		bool fullBright = false;
++
 +		PlayerLoader.DrawEffects(this, ref num12, ref num13, ref num14, ref num15, ref fullBright);
++
  		if (num12 != 1f || num13 != 1f || num14 != 1f || num15 != 1f) {
 -			if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
 +			if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2 || fullBright) {
  				colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  				colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
  				colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
-@@ -1341,8 +_,14 @@
+@@ -1341,8 +_,19 @@
  			drawPlayer.headRotation = 0f;
  		}
  
@@ -157,7 +160,11 @@
 +	private void SetupHairFrames()
 +	{
  		Rectangle bodyFrame = drawPlayer.bodyFrame;
--		bodyFrame = drawPlayer.bodyFrame;
++
++		// what
++		/*
+ 		bodyFrame = drawPlayer.bodyFrame;
++		*/
  		bodyFrame.Y -= 336;
  		if (bodyFrame.Y < 0)
  			bodyFrame.Y = 0;

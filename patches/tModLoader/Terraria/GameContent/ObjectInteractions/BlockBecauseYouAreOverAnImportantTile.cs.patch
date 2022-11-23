@@ -14,7 +14,7 @@
  		if (!WorldGen.InWorld(tileTargetX, tileTargetY, 10))
  			return true;
  
-@@ -15,19 +_,23 @@
+@@ -15,12 +_,14 @@
  
  		if (tile.active()) {
  			switch (tile.type) {
@@ -29,11 +29,11 @@
  				case 471:
  				case 480:
  				case 509:
- 				case 520:
+@@ -28,6 +_,9 @@
  				case 657:
  				case 658:
--					return true;
-+				*/
+ 					return true;
++				*/		
 +				default:
 +					return TileID.Sets.DisableSmartInteract[tile.type];
  			}

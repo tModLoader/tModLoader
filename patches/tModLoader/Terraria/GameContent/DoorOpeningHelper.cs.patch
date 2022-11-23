@@ -34,16 +34,19 @@
  				return true;
  			}
  
-@@ -103,8 +_,7 @@
+@@ -101,9 +_,11 @@
+ 
+ 		public DoorCloseAttemptResult TryCloseDoor(DoorOpenCloseTogglingInfo info, PlayerInfoForClosingDoors playerInfo)
  		{
++			// Extra patch comtext.
  			Point tileCoordsForToggling = info.tileCoordsForToggling;
  			Tile tile = Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y];
 -			if (!tile.active() || tile.type != 11)
--				return DoorCloseAttemptResult.DoorIsInvalidated;
-+			if (!tile.active() || TileLoader.IsClosedDoor(tile)) return DoorCloseAttemptResult.DoorIsInvalidated;
++
++			if (!tile.active() || TileLoader.IsClosedDoor(tile))
+ 				return DoorCloseAttemptResult.DoorIsInvalidated;
  
  			int num = tile.frameX % 72 / 18;
- 			Rectangle value = new Rectangle(tileCoordsForToggling.X * 16, tileCoordsForToggling.Y * 16, 16, 48);
 @@ -202,6 +_,7 @@
  	public static DoorAutoOpeningPreference PreferenceSettings = DoorAutoOpeningPreference.EnabledForEverything;
  	private Dictionary<int, DoorAutoHandler> _handlerByTileType = new Dictionary<int, DoorAutoHandler> {
@@ -52,19 +55,19 @@
  		{ 388, new TallGateOpeningInfoProvider() }
  	};
  	private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
-@@ -332,10 +_,11 @@
- 		Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
+@@ -333,9 +_,12 @@
  		if (tile == null)
  			return false;
--
+ 
 -		if (!_handlerByTileType.TryGetValue(tile.type, out infoProvider))
 -			return false;
 -
 -		return true;
 +		int type = tile.type;
-+
 +		ModTile modTile = ModContent.GetModTile(type);
-+		if (modTile != null && modTile.OpenDoorID > 0) type = TileID.ClosedDoor;
++
++		if (modTile != null && modTile.OpenDoorID > 0)
++			type = TileID.ClosedDoor;
 +
 +		return _handlerByTileType.TryGetValue(type, out infoProvider);
  	}

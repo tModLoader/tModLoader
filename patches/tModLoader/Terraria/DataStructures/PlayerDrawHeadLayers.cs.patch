@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDrawHeadLayers.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadLayers.cs
-@@ -8,6 +_,11 @@
+@@ -8,6 +_,12 @@
  
  namespace Terraria.DataStructures;
  
 +// 'Head-only' draw layers are no longer used, even internally.
-+// At first this class was just marked internal, but now it's completely gone, due to the shenanigans that had to happen in PlayerDrawHeadSet.cs (basicaly the type is removed)
-+// --Mirsario.
++// At first this class was just marked internal, but now it's completely gone, due to the shenanigans that had to happen in PlayerDrawHeadSet.cs
++// (that type was basically removed, with some of its methods kept to serve another type.)
++// - Mirsario.
 +
 +/*
  public static class PlayerDrawHeadLayers

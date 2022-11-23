@@ -18,7 +18,7 @@
  			}
  		}
  		else if (player.chest == -2) {
-@@ -410,12 +_,17 @@
+@@ -410,12 +_,18 @@
  							if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  								continue;
  
@@ -33,14 +33,13 @@
  							player.inventory[num].stack -= num2;
  							chest.item[i].stack += num2;
 +							*/
++
  							SoundEngine.PlaySound(7);
  							if (player.inventory[num].stack <= 0) {
  								player.inventory[num].SetDefaults();
-@@ -434,13 +_,19 @@
- 								NetMessage.SendData(32, -1, -1, null, player.chest, i);
+@@ -435,12 +_,18 @@
  						}
  						else if (player.chest == -3) {
-+							//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
  							if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
 +								if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out _))
 +									continue;
@@ -53,10 +52,11 @@
  								player.inventory[num].stack -= num3;
  								player.bank2.item[i].stack += num3;
 +								*/
++
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -454,13 +_,19 @@
+@@ -454,13 +_,20 @@
  							}
  						}
  						else if (player.chest == -4) {
@@ -73,10 +73,11 @@
  								player.inventory[num].stack -= num4;
  								player.bank3.item[i].stack += num4;
 +								*/
++
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -474,13 +_,19 @@
+@@ -474,13 +_,20 @@
  							}
  						}
  						else if (player.chest == -5) {
@@ -93,14 +94,13 @@
  								player.inventory[num].stack -= num5;
  								player.bank4.item[i].stack += num5;
 +								*/
++
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -493,13 +_,19 @@
- 								}
+@@ -494,12 +_,18 @@
  							}
  						}
-+						//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
  						else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
 +							if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out _))
 +								continue;
@@ -113,15 +113,18 @@
  							player.inventory[num].stack -= num6;
  							player.bank.item[i].stack += num6;
 +							*/
++
  							SoundEngine.PlaySound(7);
  							if (player.inventory[num].stack <= 0) {
  								player.inventory[num].SetDefaults();
-@@ -661,13 +_,16 @@
+@@ -661,13 +_,18 @@
  						num4 = num5;
  
  					SoundEngine.PlaySound(7);
 -					if (canVisualizeTransfers)
++
 +					ItemLoader.TryStackItems(item[num3], array[item2.Key], out num4);
++
 +					if (canVisualizeTransfers && num4 > 0)
  						Chest.VisualizeChestTransfer(center, containerWorldPosition, item[num3], num4);
  

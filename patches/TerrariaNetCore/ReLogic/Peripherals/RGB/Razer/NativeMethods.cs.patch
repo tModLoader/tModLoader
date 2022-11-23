@@ -1,22 +1,13 @@
 --- src/Terraria/ReLogic/Peripherals/RGB/Razer/NativeMethods.cs
 +++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Razer/NativeMethods.cs
-@@ -167,35 +_,47 @@
+@@ -167,35 +_,39 @@
  		}
  	}
  
++	// Razer Chroma SDK Windows x64 fix
 +	/*
-+	 *Razer Chroma SDK Windows x64 fix
-+	 *The Razer Chroma SDK has different names for the x86 and x64 Dlls (RzChromaSDK.dll and RzChromaSDK64.dll)
-+	 *Change: Load the correct x64 version of the Dll
-+	 *Originally:
-+	 *
-+	 *public const string DLL_NAME = "RzChromaSDK.dll";
-+	 *
-+	 *[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-+	 *public static extern RzResult Init();
-+	 *...
+ 	public const string DLL_NAME = "RzChromaSDK.dll";
 +	*/
--	public const string DLL_NAME = "RzChromaSDK.dll";
 +	public const string DLL_NAME = "RzChromaSDK64.dll";
  
 -	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]

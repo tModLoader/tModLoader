@@ -70,7 +70,7 @@
  		bool useLogitech = Main.Configuration.Get("UseLogitechRGB", defaultValue: true);
  		bool useSteelSeries = Main.Configuration.Get("UseSteelSeriesRGB", defaultValue: true);
  		float rgbUpdateRate = Main.Configuration.Get("RGBUpdatesPerSecond", 45f);
-+		
++
  		if (rgbUpdateRate <= 1E-07f)
  			rgbUpdateRate = 45f;
  

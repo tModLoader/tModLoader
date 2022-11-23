@@ -1,9 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LinkButtonsInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LinkButtonsInitializer.cs
-@@ -18,13 +_,18 @@
+@@ -18,13 +_,26 @@
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Forums", "https://forums.terraria.org/index.php", 4));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Merch", "https://terraria.org/store", 5));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Wiki", "https://terraria.wiki.gg/", 6));
++		
++		// Add TML links.
 +		titleLinks = Main.tModLoaderTitleLinks;
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Discord", "https://tmodloader.net/discord", 0));
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Twitter", "https://twitter.com/tModLoader", 3));
@@ -13,12 +15,15 @@
  
  	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex)
  	{
--		Asset<Texture2D> asset = Main.Assets.Request<Texture2D>("Images/UI/TitleLinkButtons");
 +		Asset<Texture2D> asset = Terraria.ModLoader.UI.UICommon.tModLoaderTitleLinkButtonsTexture;
--		Rectangle value = asset.Frame(7, 2, horizontalFrameIndex);
 +		Rectangle value = asset.Frame(8, 2, horizontalFrameIndex);
--		Rectangle value2 = asset.Frame(7, 2, horizontalFrameIndex, 1);
 +		Rectangle value2 = asset.Frame(8, 2, horizontalFrameIndex, 1);
++		/*
+ 		Asset<Texture2D> asset = Main.Assets.Request<Texture2D>("Images/UI/TitleLinkButtons");
+ 		Rectangle value = asset.Frame(7, 2, horizontalFrameIndex);
+ 		Rectangle value2 = asset.Frame(7, 2, horizontalFrameIndex, 1);
++		*/
++
  		value.Width--;
  		value.Height--;
  		value2.Width--;

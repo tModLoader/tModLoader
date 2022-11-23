@@ -5,33 +5,44 @@
  	private BestiaryUnlockProgressReport _progressReport;
  	private UIText _progressPercentText;
 -	private UIColoredSliderSimple _unlocksProgressBar;
-+	private ModLoader.UI.UIBestiaryBar _unlocksProgressBar;
++	private ModLoader.UI.UIBestiaryBar _unlocksProgressBar; //TML: Type changed from 'UIColoredSliderSimple'.
  	private bool _didClickSomething;
  	private bool _didClickSearchBar;
  
-@@ -145,16 +_,12 @@
+@@ -145,16 +_,25 @@
  		};
  
  		_progressPercentText = progressPercentText;
--		UIColoredSliderSimple uIColoredSliderSimple = new UIColoredSliderSimple {
++		/*
+ 		UIColoredSliderSimple uIColoredSliderSimple = new UIColoredSliderSimple {
++		*/
++
 +		ModLoader.UI.UIBestiaryBar uIColoredSliderSimple = new ModLoader.UI.UIBestiaryBar(Main.BestiaryDB) {
  			Width = new StyleDimension(0f, 1f),
  			Height = new StyleDimension(15f, 0f),
  			VAlign = 1f,
--			FilledColor = new Color(51, 137, 255),
--			EmptyColor = new Color(35, 43, 81),
--			FillPercent = 0f
++			/*
+ 			FilledColor = new Color(51, 137, 255),
+ 			EmptyColor = new Color(35, 43, 81),
+ 			FillPercent = 0f
++			*/
  		};
  
--		uIColoredSliderSimple.OnUpdate += ShowStats_Completion;
++		/*
+ 		uIColoredSliderSimple.OnUpdate += ShowStats_Completion;
++		*/
++
  		_unlocksProgressBar = uIColoredSliderSimple;
  		container.Append(uIColoredSliderSimple);
  	}
-@@ -527,7 +_,7 @@
+@@ -527,7 +_,11 @@
  		_progressReport = GetUnlockProgress();
  		string completionPercentText = GetCompletionPercentText();
  		_progressPercentText.SetText(completionPercentText);
--		_unlocksProgressBar.FillPercent = GetProgressPercent();
++
++		/*
+ 		_unlocksProgressBar.FillPercent = GetProgressPercent();
++		*/
 +		_unlocksProgressBar.RecalculateBars();
  	}
  

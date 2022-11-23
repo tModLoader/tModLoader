@@ -407,7 +407,6 @@
 		"LoadingPrecompiled": "从 {1} 加载预编译的 {0} ",
 		"EnabledEAC": "编辑并继续路径: {0}",
 		"Packaging": "合包中: {0}",
-		// There should be ModName after ':'
 		"MSFinding": "查找模组...",
 		"MSInstantiating": "初始化...",
 		"MSSandboxing": "加载程序集: {0}",
@@ -477,7 +476,6 @@
 		"TerrariaNotInstalled": "tModLoader运行时需要安装原版Terraria。 请打开你的Steam客户端以安装原版Terraria，并启动至少一次以确认所有内容都安装成功且可用。",
 		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。此版本的tModLoader需要安装Terraria {1}, 请使用GOG Galaxy升级或降级你的Terraria, 或等待tModLoader更新。",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
 		"LogPathHint": "你可以在{1}中找到一个名为{0}的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
 		"OutOfMemoryHint": "提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。",
@@ -485,8 +483,6 @@
 		"OneDriveHint": "提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
 		"AntivirusHint": "提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
 		"TypeInitializationHint": "提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
-		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
-
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容, 例如物品、武器、NPC等",

@@ -1,18 +1,20 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
-@@ -63,6 +_,8 @@
+@@ -63,6 +_,9 @@
  
  	public override void Update(GameTime gameTime)
  	{
++		// Override the current player reference until the end of this method.
 +		using var _currentPlr = new Main.CurrentPlayerOverride(_player);
 +
  		_player.ResetEffects();
  		_player.ResetVisibleAccessories();
  		_player.UpdateMiscCounter();
-@@ -88,6 +_,8 @@
+@@ -88,6 +_,9 @@
  
  	protected override void DrawSelf(SpriteBatch spriteBatch)
  	{
++		// Override the current player reference until the end of this method.
 +		using var _currentPlr = new Main.CurrentPlayerOverride(_player);
 +
  		CalculatedStyle dimensions = GetDimensions();

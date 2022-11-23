@@ -9,14 +9,17 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  
-@@ -17,8 +_,10 @@
+@@ -17,8 +_,14 @@
  		_graphicsDevice = graphicsDevice;
  		_colorProcessingCache = new ThreadLocal<Color[]>();
  	}
 +	
++	// Implemented by TML.
 +	public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
  
--	public T FromStream<T>(Stream stream) where T : class
++	/*
+ 	public T FromStream<T>(Stream stream) where T : class
++	*/
 +	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
  	{
  		if (typeof(T) != typeof(Texture2D))

@@ -8,15 +8,23 @@
  
  namespace Terraria.GameContent.Bestiary;
  
-@@ -213,7 +_,11 @@
+@@ -213,7 +_,19 @@
  				SpawnConditions.Biomes.SolarPillar,
  				SpawnConditions.Biomes.VortexPillar,
  				SpawnConditions.Biomes.StardustPillar
 -			};
-+
 +			}
-+			.Concat(ModLoader.ModLoader.Mods.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod)).Select(mod => mod.ModSourceBestiaryInfoElement))
-+			.Concat(LoaderManager.Get<BiomeLoader>().list.Where(biome => NPCLoader.npcs.Any(npc => npc.SpawnModBiomes.Contains(biome.Type))).Select(biome => biome.ModBiomeBestiaryInfoElement))
++			// Modifications by TML:
++			.Concat(
++				ModLoader.ModLoader.Mods
++				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod))
++				.Select(mod => mod.ModSourceBestiaryInfoElement)
++			)
++			.Concat(
++				LoaderManager.Get<BiomeLoader>().list
++				.Where(biome => NPCLoader.npcs.Any(npc => npc.SpawnModBiomes.Contains(biome.Type)))
++				.Select(biome => biome.ModBiomeBestiaryInfoElement)
++			)
 +			.ToList();
  		}
  	}
@@ -34,20 +42,32 @@
  	private BestiaryEntry Register(BestiaryEntry entry) => _currentDatabase.Register(entry);
  	private IBestiaryEntryFilter Register(IBestiaryEntryFilter filter) => _currentDatabase.Register(filter);
  
-@@ -580,6 +_,7 @@
+@@ -580,6 +_,10 @@
  
  	private void AddTownNPCs_Manual()
  	{
-+		return; //Town NPCs are loaded automatically now so it just returns.
++		// Town NPCs are loaded automatically now so it just returns.
++		return;
++		
++		/*
  		Register(BestiaryEntry.TownNPC(22));
  		Register(BestiaryEntry.TownNPC(17));
  		Register(BestiaryEntry.TownNPC(18));
-@@ -629,13 +_,18 @@
+@@ -620,6 +_,7 @@
+ 		Register(BestiaryEntry.TownNPC(682));
+ 		Register(BestiaryEntry.TownNPC(683));
+ 		Register(BestiaryEntry.TownNPC(684));
++		*/
+ 	}
+ 
+ 	private void AddMultiEntryNPCS_Manual()
+@@ -629,13 +_,19 @@
  
  	private void AddEmptyEntries_CrittersAndEnemies_Automated()
  	{
 +		BestiaryEntry bestiaryEntry;
  		HashSet<int> exclusions = GetExclusions();
++
  		foreach (KeyValuePair<int, NPC> item in ContentSamples.NpcsByNetId) {
 -			if (!exclusions.Contains(item.Key) && !item.Value.isLikeATownNPC) {
 +			if (!exclusions.Contains(item.Key)) {

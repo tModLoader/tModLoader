@@ -363,7 +363,7 @@ public partial class WorkshopHelper
 
 				var pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
 
-				// Some weired mod will have a super big m_unNumChildren and will cause game crash.
+				// Some weird mod will have a super big m_unNumChildren and will cause game crash.
 				if (pDetails.m_unNumChildren > 1000) {
 					throw new OverflowException("Numbers of dependencies exceeds 1000. Dependencies from Steam Workshop: " + pDetails.m_unNumChildren);
 				}

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Exceptions;
 
