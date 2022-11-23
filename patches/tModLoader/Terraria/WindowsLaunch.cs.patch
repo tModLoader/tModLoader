@@ -11,4 +11,4 @@
 +
  #if SERVER
  		WindowsLaunch._handleRoutine = new WindowsLaunch.HandlerRoutine(WindowsLaunch.ConsoleCtrlCheck);
- 
+ 		WindowsLaunch.SetConsoleCtrlHandler(WindowsLaunch._handleRoutine, true);
