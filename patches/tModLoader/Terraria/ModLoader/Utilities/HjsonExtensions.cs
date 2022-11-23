@@ -86,14 +86,14 @@ internal static class HjsonExtensions
 							NewLine(tw, 0);
 						}
 
-						lastJsonType = val.JsonType;
+						if (!string.IsNullOrWhiteSpace(kwl))
+							kwl = (isRootObject ? "" : "\n") + new string('\t', level + (showBraces ? 1 : 0)) + kwl.TrimStart();
 
+						lastJsonType = val.JsonType;
+						
 						tw.Write(kwl);
 
-						if (!skipFirst)
-							NewLine(tw, level + 1);
-						else
-							skipFirst = false;
+						NewLine(tw, level + (showBraces ? 1 : 0));
 
 						kwl = GetComments(commentedObject.Comments, key);
 
