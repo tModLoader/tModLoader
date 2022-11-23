@@ -249,6 +249,11 @@ partial class AssetRepository
 			if (!loadTask.IsCompleted)
 				throw new Exception($"Load task not completed after running continuations on main thread?");
 		}
+
+		loadTask.GetAwaiter().GetResult(); // throw any exceptions (and wait for completion if this is not the worker thread)
+
+		if (asset.State != AssetState.Loaded)
+			throw new Exception("How did you get here?");
 	}
 
 	private void Invoke(Action action)
