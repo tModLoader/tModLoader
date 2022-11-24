@@ -4,7 +4,7 @@
  
  namespace ReLogic.Content;
  
-+//TML: Added locks to about every method here.
++//TML: Added locks to every method here.
  public class RejectedAssetCollection
  {
  	private Dictionary<string, IRejectionReason> _rejectedAssetsAndReasons = new Dictionary<string, IRejectionReason>();

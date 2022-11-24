@@ -50,10 +50,10 @@
 +	/// </summary>
 +	/// <param name="assetName"></param>
 +	/// <returns></returns>
-+	public bool HasAsset(string assetName)
-+		=> !Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
++	public bool HasAsset(string assetName) =>
++		!Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
 +
 +	// Added by TML.
-+	IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart)
-+		=> EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
++	IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart) =>
++		EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
  }

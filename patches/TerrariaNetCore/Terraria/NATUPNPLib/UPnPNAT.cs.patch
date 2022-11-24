@@ -47,8 +47,8 @@
 +			);
 +		}
 +
-+		public void Remove(int lExternalPort, string bstrProtocol)
-+			=> UPnP.Close(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort);
++		public void Remove(int lExternalPort, string bstrProtocol) =>
++			UPnP.Close(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort);
 +
 +		public IEnumerator GetEnumerator()
 +		{

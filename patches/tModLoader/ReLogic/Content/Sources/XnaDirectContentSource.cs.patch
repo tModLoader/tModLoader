@@ -43,13 +43,12 @@
  	private void BuildFileMap()
  	{
  		_files.Clear();
-@@ -49,11 +_,21 @@
+@@ -49,11 +_,20 @@
  	}
  
  	public string GetExtension(string assetName) => ".xnb";
 +	*/
  
-+	//TML: Made this an override.
 -	public Stream OpenStream(string assetName)
 +	public override Stream OpenStream(string assetName)
  	{

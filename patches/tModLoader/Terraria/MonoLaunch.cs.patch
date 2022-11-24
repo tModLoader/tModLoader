@@ -60,10 +60,8 @@
  #if NETCORE
  	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);
  
--	private static string NativePlatformDir
-+	private static string NativePlatformDir =>
--		=> RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
-+		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
+ 	private static string NativePlatformDir =>
+ 		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
  		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
  		RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "OSX" :
  		throw new InvalidOperationException("Unknown OS.");

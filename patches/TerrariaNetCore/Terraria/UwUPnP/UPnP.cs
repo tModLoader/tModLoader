@@ -49,17 +49,17 @@ public static class UPnP
 	public static IPAddress ExternalIP => Gateway?.ExternalIPAddress;
 	public static IPAddress LocalIP => Gateway?.InternalClient;
 
-	public static void Open(Protocol protocol, ushort externalPort, ushort? internalPort = null, string description = null)
-		=> Gateway?.AddPortMapping(externalPort, protocol, internalPort, description);
+	public static void Open(Protocol protocol, ushort externalPort, ushort? internalPort = null, string description = null) =>
+		Gateway?.AddPortMapping(externalPort, protocol, internalPort, description);
 
-	public static void Close(Protocol protocol, ushort externalPort)
-		=> Gateway?.DeletePortMapping(externalPort, protocol);
+	public static void Close(Protocol protocol, ushort externalPort) =>
+		Gateway?.DeletePortMapping(externalPort, protocol);
 
-	public static bool IsOpen(Protocol protocol, ushort externalPort)
-		=> Gateway?.SpecificPortMappingExists(externalPort, protocol) ?? false;
+	public static bool IsOpen(Protocol protocol, ushort externalPort) =>
+		Gateway?.SpecificPortMappingExists(externalPort, protocol) ?? false;
 
-	public static Dictionary<string, string> GetGenericPortMappingEntry(int portMappingIndex)
-		=> Gateway?.GetGenericPortMappingEntry(portMappingIndex);
+	public static Dictionary<string, string> GetGenericPortMappingEntry(int portMappingIndex) =>
+		Gateway?.GetGenericPortMappingEntry(portMappingIndex);
 
 	private static void FindGateway()
 	{
@@ -81,17 +81,17 @@ public static class UPnP
 		}
 	}
 
-	private static IEnumerable<IPAddress> GetLocalIPs()
-		=> NetworkInterface.GetAllNetworkInterfaces().Where(IsValidInterface).SelectMany(GetValidNetworkIPs);
+	private static IEnumerable<IPAddress> GetLocalIPs() =>
+		NetworkInterface.GetAllNetworkInterfaces().Where(IsValidInterface).SelectMany(GetValidNetworkIPs);
 
 	// TODO: Filter out virtual/sub-interfaces (like for VMs).
-	private static bool IsValidInterface(NetworkInterface network)
-		=> network.OperationalStatus == OperationalStatus.Up
+	private static bool IsValidInterface(NetworkInterface network) =>
+		network.OperationalStatus == OperationalStatus.Up
 		&& network.NetworkInterfaceType != NetworkInterfaceType.Loopback
 		&& network.NetworkInterfaceType != NetworkInterfaceType.Ppp;
 
-	private static IEnumerable<IPAddress> GetValidNetworkIPs(NetworkInterface network)
-		=> network.GetIPProperties().UnicastAddresses
+	private static IEnumerable<IPAddress> GetValidNetworkIPs(NetworkInterface network) =>
+		network.GetIPProperties().UnicastAddresses
 		.Select(a => a.Address)
 		.Where(a => a.AddressFamily == AddressFamily.InterNetwork || a.AddressFamily == AddressFamily.InterNetworkV6);
 }

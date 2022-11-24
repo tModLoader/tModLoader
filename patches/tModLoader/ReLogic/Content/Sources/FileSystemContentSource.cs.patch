@@ -24,7 +24,7 @@
  
  		BuildNameToAbsolutePathDictionary();
 +
-+		// Line added by TML.
++		// Added by TML.
 +		SetAssetNames(_nameToAbsolutePath.Keys);
  	}
  
@@ -32,13 +32,12 @@
  	public bool HasAsset(string assetName)
  	{
  		if (_rejections.IsRejected(assetName))
-@@ -49,8 +_,10 @@
+@@ -49,8 +_,9 @@
  
  		return Path.GetExtension(value) ?? "";
  	}
 +	*/
  
-+	//TML: Changed to override.
 -	public Stream OpenStream(string assetName)
 +	public override Stream OpenStream(string assetName)
  	{
