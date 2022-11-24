@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 public interface IEntityWithInstances<T> where T : IIndexed
 {

@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using Terraria.ID;
 
 #pragma warning disable IDE1006 // Naming Styles

@@ -1,4 +1,4 @@
-﻿namespace Terraria.Enums;
+namespace Terraria.Enums;
 
 public enum Team : byte
 {

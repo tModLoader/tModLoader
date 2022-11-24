@@ -1,4 +1,4 @@
-﻿using ReLogic.Reflection;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.PlayerDrawLayer;

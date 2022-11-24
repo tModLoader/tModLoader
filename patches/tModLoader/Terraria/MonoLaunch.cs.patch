@@ -28,7 +28,7 @@
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,14 +_,36 @@
+@@ -34,6 +_,28 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -57,14 +57,6 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
- #if NETCORE
- 	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);
- 
- 	private static string NativePlatformDir =>
- 		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
- 		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
- 		RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "OSX" :
- 		throw new InvalidOperationException("Unknown OS.");
 @@ -57,17 +_,20 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;

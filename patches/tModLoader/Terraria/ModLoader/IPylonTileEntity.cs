@@ -1,4 +1,4 @@
-﻿using Terraria.GameContent;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader;
 

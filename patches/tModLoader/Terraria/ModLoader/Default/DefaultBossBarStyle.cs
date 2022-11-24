@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.Default;
+namespace Terraria.ModLoader.Default;
 
 /// <summary>
 /// This is the default boss bar style - the way vanilla draws boss bars.

@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.UI.ModBrowser;
+namespace Terraria.ModLoader.UI.ModBrowser;
 
 public enum UpdateFilter
 {

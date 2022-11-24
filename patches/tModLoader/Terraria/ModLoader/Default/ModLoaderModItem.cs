@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.Default;
+namespace Terraria.ModLoader.Default;
 
 public abstract class ModLoaderModItem : ModItem
 {

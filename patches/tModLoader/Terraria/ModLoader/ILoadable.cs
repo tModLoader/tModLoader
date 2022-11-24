@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 /// <summary>
 /// Allows for implementing types to be loaded and unloaded.
