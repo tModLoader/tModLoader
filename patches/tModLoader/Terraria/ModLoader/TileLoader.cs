@@ -295,10 +295,8 @@ public static class TileLoader
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
 		int partY = 0;
-		int remainingFrameY = partFrameY;
-		while (remainingFrameY > 0) {
+		for (int remainingFrameY = partFrameY; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
 			remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
-			partY++;
 		}
 		i -= partX;
 		j -= partY;
@@ -646,11 +644,9 @@ public static class TileLoader
 		if (tile.type >= TileID.Count) {
 			TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
 			if (tileData != null) {
-				int partFrameY = tile.frameY % tileData.CoordinateFullHeight;
 				int partY = 0;
-				while (partFrameY > 0) {
-					partFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
-					partY++;
+				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
+						remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 				}
 				width = tileData.CoordinateWidth;
 				offsetY = tileData.DrawYOffset;
