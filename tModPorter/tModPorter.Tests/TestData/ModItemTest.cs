@@ -13,13 +13,14 @@ public class ModItemTest : ModItem
 		item.accessory = true;
 		Console.Write(item.accessory);
 		item.useTime += 2;
+
+		Console.WriteLine(item.IsCandidateForReforge);
+		item.CloneWithModdedDataFrom(item);
 	}
 
-#if COMPILE_ERROR
 	public override bool IgnoreDamageModifiers => false;
 
 	public override bool OnlyShootOnSwing => false;
-#endif
 
 	public override bool CloneNewInstances => false;
 
@@ -47,7 +48,11 @@ public class ModItemTest : ModItem
 		flat += 4;
 	}
 
-#if COMPILE_ERROR
+	public override void OnCreate(ItemCreationContext context) {
+		if (context is RecipeCreationContext) { }
+		else if (context is InitializationContext) { }
+	}
+
 	public override bool DrawHead() { return true; /* Empty */ }
 
 	public override bool DrawBody() { return true; /* Empty */ }
@@ -57,11 +62,12 @@ public class ModItemTest : ModItem
 	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
 
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
-#endif
+
+	public override bool? CanBurnInLava() => null;
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 
-#if COMPILE_ERROR
 	public override TagCompound Save() => new TagCompound();
-#endif
+
+	public override void ExtractinatorUse(ref int resultType, ref int resultStack) { /* Empty */ }
 }

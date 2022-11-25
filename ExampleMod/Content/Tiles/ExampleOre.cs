@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			TileID.Sets.Ore[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
-			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
+			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.wiki.gg/wiki/Metal_Detector
 			Main.tileShine2[Type] = true; // Modifies the draw color slightly.
 			Main.tileShine[Type] = 975; // How often tiny dust appear off this tile. Larger is less frequently
 			Main.tileMergeDirt[Type] = true;
@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Tiles
 
 	public class ExampleOreSystem : ModSystem
 	{
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.
 
 			// The first step is an Ore. Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Tiles
 				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 
 				// WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
-				int y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY);
+				int y = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, Main.maxTilesY);
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
 				// Feel free to experiment with strength and step to see the shape they generate.

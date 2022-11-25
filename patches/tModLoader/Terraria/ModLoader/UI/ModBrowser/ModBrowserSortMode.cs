@@ -1,12 +1,11 @@
-﻿namespace Terraria.ModLoader.UI.ModBrowser
+﻿namespace Terraria.ModLoader.UI.ModBrowser;
+
+public enum ModBrowserSortMode
 {
-	public enum ModBrowserSortMode
-	{
-		DisplayNameAtoZ,
-		DisplayNameZtoA,
-		DownloadsDescending,
-		DownloadsAscending,
-		RecentlyUpdated,
-		Hot,
-	}
+	DisplayNameAtoZ,
+	DisplayNameZtoA,
+	DownloadsDescending,
+	DownloadsAscending,
+	RecentlyUpdated,
+	Hot,
 }

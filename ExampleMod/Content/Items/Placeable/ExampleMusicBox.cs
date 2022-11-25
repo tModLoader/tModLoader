@@ -10,6 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Music Box (Marble Gallery)");
 
+			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			// The following code links the music box's item and tile with a music track:
@@ -21,18 +22,7 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTurn = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.autoReuse = true;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<ExampleMusicBoxTile>();
-			Item.width = 24;
-			Item.height = 24;
-			Item.rare = ItemRarityID.LightRed;
-			Item.value = 100000;
-			Item.accessory = true;
+			Item.DefaultToMusicBox(ModContent.TileType<ExampleMusicBoxTile>(), 0);
 		}
 	}
 }

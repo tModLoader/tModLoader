@@ -1,19 +1,19 @@
 --- src/TerrariaNetCore/Terraria/HitTile.cs
 +++ src/tModLoader/Terraria/HitTile.cs
 @@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
- using System;
  using Terraria.GameContent;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
- namespace Terraria
-@@ -291,7 +_,7 @@
+ namespace Terraria;
+@@ -307,7 +_,7 @@
  
- 				bool flag2 = false;
- 				bool flag3 = false;
--				if (Main.tile[x, y].type == 10) {
-+				if (TileLoader.IsClosedDoor(Main.tile[x, y])) {
- 					flag2 = false;
- 				}
- 				else if (Main.tileSolid[Main.tile[x, y].type] && !Main.tileSolidTop[Main.tile[x, y].type]) {
+ 			bool flag3 = false;
+ 			bool flag4 = false;
+-			if (tile.type == 10) {
++			if (TileLoader.IsClosedDoor(tile)) {
+ 				flag3 = false;
+ 			}
+ 			else if (Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) {

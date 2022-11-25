@@ -10,7 +10,5 @@ public class ModGoreTest : ModGore
 
 	public override void OnSpawn(Gore gore) { /* Empty */ }
 
-#if COMPILE_ERROR
 	public override bool DrawBehind(Gore gore) { return false; }
-#endif
 }

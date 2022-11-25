@@ -1,10 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropRule.cs
 @@ -1,6 +_,6 @@
- namespace Terraria.GameContent.ItemDropRules
+ namespace Terraria.GameContent.ItemDropRules;
+ 
+-public class ItemDropRule
++public partial class ItemDropRule
  {
--	public class ItemDropRule
-+	public partial class ItemDropRule
- 	{
- 		public static IItemDropRule Common(int itemId, int chanceDenominator = 1, int minimumDropped = 1, int maximumDropped = 1) => new CommonDrop(itemId, chanceDenominator, minimumDropped, maximumDropped);
- 		public static IItemDropRule BossBag(int itemId) => new DropBasedOnExpertMode(DropNothing(), new DropLocalPerClientAndResetsNPCMoneyTo0(itemId, 1, 1, 1, null));
+ 	public static IItemDropRule Common(int itemId, int chanceDenominator = 1, int minimumDropped = 1, int maximumDropped = 1) => new CommonDrop(itemId, chanceDenominator, minimumDropped, maximumDropped);
+ 	public static IItemDropRule BossBag(int itemId) => new DropBasedOnExpertMode(DropNothing(), new DropLocalPerClientAndResetsNPCMoneyTo0(itemId, 1, 1, 1, null));

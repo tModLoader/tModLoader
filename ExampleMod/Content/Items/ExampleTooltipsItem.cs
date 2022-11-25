@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items
 	public class ExampleTooltipsItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
+			// See here for help on using Tags: https://terraria.wiki.gg/wiki/Chat#Tags
 			Tooltip.SetDefault("How are you feeling today?"
 				+ $"\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{Item.type}][i:{ModContent.ItemType<ExampleMountItem>()}][i/s123:{ItemID.Ectoplasm}]");
 

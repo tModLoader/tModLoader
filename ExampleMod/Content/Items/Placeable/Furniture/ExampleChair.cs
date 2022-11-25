@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
@@ -13,10 +14,9 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleChair>());
-			Item.value = 150;
-			Item.maxStack = 99;
 			Item.width = 12;
 			Item.height = 30;
+			Item.value = 150;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -28,9 +28,7 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.rangedCrit *= 5;
 		player.magicCrit *= 5;
 		player.thrownCrit *= 5;
-#if COMPILE_ERROR
 		player.minionDamage = 8;
-#endif
 	}
 
 	public void MethodB(Player player) {

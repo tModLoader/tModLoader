@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class AutoloadEquip : Attribute
 {
-	[AttributeUsage(AttributeTargets.Class)]
-	public class AutoloadEquip : Attribute
-	{
-		public readonly EquipType[] equipTypes;
+	public readonly EquipType[] equipTypes;
 
-		public AutoloadEquip(params EquipType[] equipTypes) {
-			this.equipTypes = equipTypes;
-		}
+	public AutoloadEquip(params EquipType[] equipTypes)
+	{
+		this.equipTypes = equipTypes;
 	}
 }

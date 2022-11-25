@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Biomes/CaveHouse/HouseUtils.cs
 +++ src/tModLoader/Terraria/GameContent/Biomes/CaveHouse/HouseUtils.cs
 @@ -8,8 +_,8 @@
- {
- 	public static class HouseUtils
- 	{
--		private static readonly bool[] BlacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 225, 41, 43, 44, 226, 203, 112, 25, 151);
-+		internal static bool[] BlacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 225, 41, 43, 44, 226, 203, 112, 25, 151);
--		private static readonly bool[] BeelistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 41, 43, 44, 226, 203, 112, 25, 151);
-+		internal static bool[] BeelistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 41, 43, 44, 226, 203, 112, 25, 151);
  
- 		public static HouseBuilder CreateBuilder(Point origin, StructureMap structures) {
- 			List<Rectangle> list = CreateRooms(origin);
+ public static class HouseUtils
+ {
+-	private static readonly bool[] BlacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 225, 41, 43, 44, 226, 203, 112, 25, 151, 21, 467);
++	internal static bool[] BlacklistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 225, 41, 43, 44, 226, 203, 112, 25, 151, 21, 467);
+-	private static readonly bool[] BeelistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 41, 43, 44, 226, 203, 112, 25, 151, 21, 467);
++	internal static bool[] BeelistedTiles = TileID.Sets.Factory.CreateBoolSet(true, 41, 43, 44, 226, 203, 112, 25, 151, 21, 467);
+ 
+ 	public static HouseBuilder CreateBuilder(Point origin, StructureMap structures)
+ 	{

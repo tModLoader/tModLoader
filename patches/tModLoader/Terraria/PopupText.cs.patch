@@ -1,60 +1,46 @@
 --- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -1,6 +_,8 @@
+@@ -1,7 +_,9 @@
+ using System;
  using Microsoft.Xna.Framework;
  using Terraria.GameContent;
 +using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  
- namespace Terraria
- {
-@@ -25,6 +_,7 @@
- 		public static int sonarText = -1;
- 		public bool expert;
- 		public bool master;
-+		public int rarity;
- 		public bool sonar;
- 		public PopupTextContext context;
- 		public int npcNetID;
-@@ -250,10 +_,14 @@
- 					popupText2.color = new Color(5, 200, 255);
- 				else if (newItem.rare == 10)
- 					popupText2.color = new Color(255, 40, 100);
--				else if (newItem.rare >= 11)
-+				else if (newItem.rare == 11)
- 					popupText2.color = new Color(180, 40, 255);
-+				else if (newItem.rare >= ItemRarityID.Count)
-+					popupText2.color = RarityLoader.GetRarity(newItem.rare).RarityColor;
+ namespace Terraria;
  
-+				popupText2.rarity = newItem.rare;
- 				popupText2.expert = newItem.expert;
-+				popupText2.master = newItem.master;
- 				popupText2.name = newItem.AffixName();
- 				popupText2.stack = stack;
- 				popupText2.velocity.Y = -7f;
-@@ -442,6 +_,9 @@
- 			else if (master)
- 				color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
+@@ -26,6 +_,7 @@
+ 	public static int sonarText = -1;
+ 	public bool expert;
+ 	public bool master;
++	public int rarity;
+ 	public bool sonar;
+ 	public PopupTextContext context;
+ 	public int npcNetID;
+@@ -256,10 +_,14 @@
+ 				popupText2.color = new Color(5, 200, 255);
+ 			else if (newItem.rare == 10)
+ 				popupText2.color = new Color(255, 40, 100);
+-			else if (newItem.rare >= 11)
++			else if (newItem.rare == 11)
+ 				popupText2.color = new Color(180, 40, 255);
++			else if (newItem.rare >= ItemRarityID.Count)
++				popupText2.color = RarityLoader.GetRarity(newItem.rare).RarityColor;
  
-+			if (rarity > ItemRarityID.Purple)
-+				color = RarityLoader.GetRarity(rarity).RarityColor;
++			popupText2.rarity = newItem.rare;
+ 			popupText2.expert = newItem.expert;
++			popupText2.master = newItem.master;
+ 			popupText2.name = newItem.AffixName();
+ 			popupText2.stack = stack;
+ 			popupText2.velocity.Y = -7f;
+@@ -460,6 +_,9 @@
+ 			color = new Color((byte)Main.DiscoR, (byte)Main.DiscoG, (byte)Main.DiscoB, Main.mouseTextColor);
+ 		else if (master)
+ 			color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
 +
- 			bool flag = false;
- 			Vector2 textHitbox = GetTextHitbox();
- 			Rectangle rectangle = new Rectangle((int)(position.X - textHitbox.X / 2f), (int)(position.Y - textHitbox.Y / 2f), (int)textHitbox.X, (int)textHitbox.Y);
-@@ -518,6 +_,14 @@
- 			}
++		if (rarity > ItemRarityID.Purple)
++			color = RarityLoader.GetRarity(rarity).RarityColor;
  
- 			numActive = num;
-+		}
-+
-+		public static void ClearAll() {
-+			for (int i = 0; i < Main.maxItemText; i++) {
-+				Main.popupText[i] = new PopupText();
-+			}
-+
-+			numActive = 0;
- 		}
- 	}
- }
+ 		bool flag = false;
+ 		Vector2 textHitbox = GetTextHitbox();

@@ -27,9 +27,17 @@ public class ModProjectileTest : ModProjectile
 	public override void PostDraw(Color lightColor) { /* Empty */ }
 
 	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+		// not-yet-implemented
 		behindNPCsAndTiles.Add(index);
 		behindNPCs.Add(index);
 		behindProjectiles.Add(index);
 		overWiresUI.Add(index);
+		// instead-expect
+#if COMPILE_ERROR
+		drawCacheProjsBehindNPCsAndTiles.Add(index);
+		drawCacheProjsBehindNPCs.Add(index);
+		drawCacheProjsBehindProjectiles.Add(index);
+		drawCacheProjsOverWiresUI.Add(index);
+#endif
 	}
 }

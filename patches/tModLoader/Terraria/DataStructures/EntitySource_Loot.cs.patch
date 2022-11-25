@@ -3,18 +3,18 @@
 @@ -1,11 +_,16 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_Loot : IEntitySource
- 	{
- 		public readonly Entity Entity;
-+		
-+		public string? Context { get; }
+ namespace Terraria.DataStructures;
  
--		public EntitySource_Loot(Entity entity) {
-+		public EntitySource_Loot(Entity entity, string? context = null) {
- 			Entity = entity;
-+			Context = context;
- 		}
+ public class EntitySource_Loot : IEntitySource
+ {
+ 	public readonly Entity Entity;
++	
++	public string? Context { get; }
+ 
+-	public EntitySource_Loot(Entity entity)
++	public EntitySource_Loot(Entity entity, string? context = null)
+ 	{
+ 		Entity = entity;
++		Context = context;
  	}
  }
