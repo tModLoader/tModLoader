@@ -120,7 +120,12 @@ namespace Terraria.ModLoader
 
 			string text = $"{Language.GetTextValue("tModLoader.ModMenuSwap")}: {currentMenu.DisplayName}{(newMenus == 0 ? "" : ModLoader.notifyNewMainMenuThemes ? $" ({newMenus} New)" : "")}";
 
-			Vector2 size = FontAssets.MouseText.Value.MeasureString(text);
+			string parsedText = "";
+			foreach (TextSnippet snippet in ChatManager.ParseMessage(text, color)) {
+				parsedText += snippet.Text;
+			}
+
+			Vector2 size = FontAssets.MouseText.Value.MeasureString(parsedText);
 
 			Rectangle switchTextRect = Main.menuMode == 0 ? new Rectangle((int)(Main.screenWidth / 2 - (size.X / 2)), (int)(Main.screenHeight - 2 - size.Y), (int)size.X, (int)size.Y) : Rectangle.Empty;
 			//Rectangle logoRect = new Rectangle((int)logoDrawPos.X - (logo.Width / 2), (int)logoDrawPos.Y - (logo.Height / 2), logo.Width, logo.Height);
