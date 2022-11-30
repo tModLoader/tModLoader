@@ -19,8 +19,7 @@ partial class UIElement
 	public event MouseEvent OnXButton2Click;
 	public event MouseEvent OnXButton2DoubleClick;
 
-	public bool HasChild(UIElement child)
-		=> Elements.Contains(child);
+	public bool HasChild(UIElement child) => Elements.Contains(child);
 
 	public virtual void RightMouseDown(UIMouseEvent evt)
 	{

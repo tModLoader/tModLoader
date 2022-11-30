@@ -136,7 +136,7 @@
  	}
 +	*/
  
-+	//TML: Internalized.
++	//TML: Made internal.
 -	public void LoveNPCByTypeName(int npcType)
 +	internal void LoveNPCByTypeName(int npcType)
  	{
@@ -148,7 +148,7 @@
 +		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
  	}
  
-+	//TML: Internalized.
++	//TML: Made internal.
 -	public void LikePrincess()
 +	internal void LikePrincess()
  	{

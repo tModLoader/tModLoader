@@ -29,7 +29,7 @@
  			public string Title;
  			public ERemoteStoragePublishedFileVisibility? Visibility;
 +
-+			// Both fields added by TML.
++			// Fields added by TML.
 +			public NameValueCollection BuildData;
 +			public string ChangeNotes;
  		}
@@ -96,7 +96,7 @@
  			protected SteamWorkshopItem _entryData;
  			protected PublishedFileId_t _publishedFileID;
 +
-+			// Both fields added by TML:
++			// Fields added by TML:
 +			protected EResult _createCallback;
 +			protected EResult _updateCallback;
 +
@@ -122,13 +122,12 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -175,9 +_,22 @@
+@@ -175,9 +_,21 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
 -					Visibility = visibility
 +					Visibility = visibility,
-+					// TML fields:
 +					BuildData = buildData,
 +					ChangeNotes = changeNotes
  				};
@@ -271,7 +270,7 @@
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
  				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,81 @@
+@@ -262,22 +_,76 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -315,12 +314,8 @@
 +
 +				Logging.tML.Info("Submitting workshop update handle to Steam");
  				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
-+
+-				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
 +				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
-+				/*
- 				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
-+				*/
-+
  				_updateHandle = uGCUpdateHandle_t;
  				_updateItemHook.Set(hAPICall, UpdateItemResult);
  				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);

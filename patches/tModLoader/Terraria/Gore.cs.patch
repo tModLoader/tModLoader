@@ -100,7 +100,7 @@
  
  	public Color GetAlpha(Color newColor)
  	{
-+		if (ModGore != null && ModGore.GetAlpha(this, newColor) is Color modColor)
++		if (ModGore?.GetAlpha(this, newColor) is Color modColor)
 +			return modColor;
 +
  		float num = (float)(255 - alpha) / 255f;

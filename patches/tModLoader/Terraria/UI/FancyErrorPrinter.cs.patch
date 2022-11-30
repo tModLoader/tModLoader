@@ -8,41 +8,32 @@
  
  namespace Terraria.UI;
  
-@@ -38,8 +_,12 @@
+@@ -38,8 +_,7 @@
  			AppendSuggestions(stringBuilder, suggestions);
  			stringBuilder.AppendLine();
  			IncludeOriginalMessage(stringBuilder, exception);
-+
-+			/*
- 			ShowTheBox(stringBuilder.ToString());
- 			Console.WriteLine(stringBuilder.ToString());
-+			*/
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(stringBuilder.ToString());
 +			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
  		}
  	}
  
-@@ -72,8 +_,12 @@
+@@ -72,8 +_,7 @@
  			AppendSuggestions(stringBuilder, list);
  			stringBuilder.AppendLine();
  			IncludeOriginalMessage(stringBuilder, exception);
-+
-+			/*
- 			ShowTheBox(stringBuilder.ToString());
- 			Console.WriteLine(stringBuilder.ToString());
-+			*/
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(stringBuilder.ToString());
 +			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
  		}
  	}
  
-@@ -106,8 +_,12 @@
+@@ -106,8 +_,7 @@
  			AppendSuggestions(stringBuilder, list);
  			stringBuilder.AppendLine();
  			IncludeOriginalMessage(stringBuilder, exception);
-+
-+			/*
- 			ShowTheBox(stringBuilder.ToString());
- 			Console.WriteLine(exception);
-+			*/
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(exception);
 +			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
  		}
  	}

@@ -39,7 +39,7 @@
  
  	public PlayerStatsSnapshot(Player player)
  	{
-@@ -18,7 +_,12 @@
+@@ -18,7 +_,11 @@
  		ManaMax = player.statManaMax2;
  		float num = 20f;
  		int num2 = player.statLifeMax / 20;
@@ -48,7 +48,6 @@
  		int num3 = (player.statLifeMax - 400) / 5;
 +		*/
 +		int num3 = player.ConsumedLifeFruit;
-+
  		if (num3 < 0)
  			num3 = 0;
  

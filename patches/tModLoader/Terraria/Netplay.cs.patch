@@ -26,12 +26,11 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -413,6 +_,13 @@
+@@ -413,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
  	{
 +		string friendlyName = address.GetFriendlyName();
-+
 +		if (string.IsNullOrEmpty(friendlyName))
 +			Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
 +
@@ -40,7 +39,7 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -429,11 +_,15 @@
+@@ -429,11 +_,11 @@
  		Main.netMode = 1;
  		Main.menuMode = 14;
  		if (!Main.autoPass)
@@ -49,11 +48,8 @@
  
  		Disconnect = false;
  		Connection = new RemoteServer();
-+
-+		Connection.ReadBuffer = new byte[ushort.MaxValue];
-+		/*
- 		Connection.ReadBuffer = new byte[1024];
-+		*/
+-		Connection.ReadBuffer = new byte[1024];
++		Connection.ReadBuffer = new byte[ushort.MaxValue]; // TML: 1024 -> ushort.MaxValue
  	}
  
  	private static void InnerClientLoop()

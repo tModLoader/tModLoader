@@ -13,8 +13,9 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
-+			// TML code: [[
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
++			*/
 +			Asset<Texture2D> asset;
 +
 +			if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
@@ -44,8 +45,6 @@
 +				asset = TextureAssets.TreeTop[0];
 +
 +			asset.Wait?.Invoke();
-+			// ]]
-+
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
@@ -53,8 +52,9 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
-+			// TML code: [[
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
++			*/
 +			Asset<Texture2D> asset;
 +
 +			if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
@@ -70,8 +70,6 @@
 +				asset = TextureAssets.TreeBranch[0];
 +
 +			asset.Wait?.Invoke();
-+			// ]]
-+
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
@@ -79,8 +77,9 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
-+			// TML code: [[
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
++			*/
 +			Asset<Texture2D> asset;
 +
 +			if (PlantLoader.plantIdToStyleLimit.TryGetValue(Key.TileType, out int val)
@@ -94,8 +93,6 @@
 +			}
 +
 +			asset.Wait?.Invoke();
-+			// ]]
-+
  			PrepareTextureIfNecessary(asset.Value);
  		}
  

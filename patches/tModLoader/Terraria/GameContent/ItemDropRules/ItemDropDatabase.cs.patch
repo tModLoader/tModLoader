@@ -16,21 +16,19 @@
  	private Dictionary<int, List<IItemDropRule>> _entriesByNpcNetId = new Dictionary<int, List<IItemDropRule>>();
  	private Dictionary<int, List<int>> _npcNetIdsByType = new Dictionary<int, List<int>>();
  	private int _masterModeDropRng = 4;
-@@ -60,7 +_,8 @@
+@@ -60,7 +_,7 @@
  		return entry;
  	}
  
-+	//TML: Made public.
 -	private void RegisterToNPCNetId(int npcNetId, IItemDropRule entry)
 +	public void RegisterToNPCNetId(int npcNetId, IItemDropRule entry)
  	{
  		if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  			_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
-@@ -95,7 +_,8 @@
+@@ -95,7 +_,7 @@
  		return entry;
  	}
  
-+	//TML: Made public.
 -	private void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry)
 +	public void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry)
  	{

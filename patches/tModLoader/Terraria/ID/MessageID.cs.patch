@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,85 +_,466 @@
+@@ -1,84 +_,426 @@
  using Terraria.Utilities;
 +using System;
 +using System.Collections.Generic;
@@ -296,6 +296,8 @@
 +	// Player.itemRotation, itemAnimation and channel
 +	// Forwarded to other clients
  	public const byte ShotAnimationAndSound = 41;
+-	public const byte Unknown42 = 42;
+-	public const byte Unknown43 = 43;
 +	
 +	[Obsolete($"Use {nameof(ShotAnimationAndSound)} instead")]
 +	public const byte ItemAnimation = ShotAnimationAndSound;
@@ -303,46 +305,31 @@
 +	// Player's current and maximum mana
 +	// Sent on change, and the major client and server sync
 +	public const byte PlayerMana = 42;
-+	/*
- 	public const byte Unknown42 = 42;
-+	*/
 +
 +	// Restores mana
 +	// Forwarded to other clients
 +	public const byte ManaEffect = 43;
-+	/*
- 	public const byte Unknown43 = 43;
-+	*/
 +
 +	// Player.KillMe
 +	// Forwarded to other clients
-+	// Deprecated.
-+	/*
-+	public const byte KillPlayer = 44;
-+	*/
  	[Old("Deprecated.")]
- 	public const byte Unknown44 = 44;
+-	public const byte Unknown44 = 44;
+-	public const byte Unknown45 = 45;
+-	public const byte Unknown46 = 46;
+-	public const byte Unknown47 = 47;
++	public const byte KillPlayer = 44;
 +
 +	// Forwarded to clients
 +	// Forwarding includes the chat message "{player} has joined the {team} party"
 +	public const byte PlayerTeam = 45;
-+	/*
- 	public const byte Unknown45 = 45;
-+	*/
 +
 +	// If the server finds a sign at the location, it replies with ReadSign
 +	public const byte RequestReadSign = 46;
-+	/*
- 	public const byte Unknown46 = 46;
-+	*/
 +
 +	// SignIndex, x, y, text, player
 +	// If the text changes on the server, the packet is forwarded to other clients
 +	// Opens the sign gui and plays the sound on the client
 +	public const byte ReadSign = 47;
-+	/*
- 	public const byte Unknown47 = 47;
-+	*/
 +
 +	// X, y, liquid, liquidType
 +	// If NetPlayer.spamCheck will kick the player if the placement position is more than 10 tiles from the player
@@ -395,10 +382,8 @@
  	public const byte UniqueTownNPCInfoSyncRequest = 56;
 +
 +	// Hallowed/corrupted/crimson tile counts (out of 100)
+-	public const byte Unknown57 = 57;
 +	public const byte TileCounts = 57;
-+	/*
- 	public const byte Unknown57 = 57;
-+	*/
 +
 +	// Main.harpNote = pitch
 +	// Plays harp or bell sound based on held item at player position
@@ -412,10 +397,8 @@
 +	// NpcID, homeX, homeY, changeType
 +	// ChangeType WorldGen.{ kickOut = 0, moveRoom = 1 }
 +	// Sent by client on WorldGen.kickOut/moveRoom, propogated by server in UpdateNPC
+-	public const byte Unknown60 = 60;
 +	public const byte NPCHome = 60;
-+	/*
- 	public const byte Unknown60 = 60;
-+	*/
 +
 +	// Player, npcID
 +	// Only sent by client, accepted by server
@@ -427,27 +410,21 @@
 +	//    MoonLordTimer = -8 if (NPC.downedGolemBoss && Main.HardMode && !NPC.AnyDanger && !NPC.AnyoneNearCultists)
 +	// }
  	public const byte SpawnBossUseLicenseStartEvent = 61;
+-	public const byte Unknown62 = 62;
+-	public const byte Unknown63 = 63;
+-	public const byte Unknown64 = 64;
 +
 +	// Player, dodgeType { NinjaDodge = 1, ShadowDodge = 2 }
 +	// Forwarded to other clients
 +	public const byte Dodge = 62;
-+	/*
- 	public const byte Unknown62 = 62;
-+	*/
 +
 +	// WorldGen.paintTile(x, y, color)
 +	// Forwarded to other clients
 +	public const byte PaintTile = 63;
-+	/*
- 	public const byte Unknown63 = 63;
-+	*/
 +
 +	// WorldGen.paintWall(x, y, color)
 +	// Forwarded to other clients
 +	public const byte PaintWall = 64;
-+	/*
- 	public const byte Unknown64 = 64;
-+	*/
 +
 +	// TeleportType, index, position
 +	// First 2 bits of teleportType { Player = 0, NPC = 1, PlayerToPlayer = 2 }
@@ -456,23 +433,19 @@
 +	// Index is set to whoAmI on server, so NPC teleports cannot be sent from client
 +	// Player teleports are forwarded to other clients
  	public const byte TeleportEntity = 65;
-+
- 	public const byte Unknown66 = 66;
+-	public const byte Unknown66 = 66;
++	public const byte SpiritHeal = 66;
  	public const byte Unknown67 = 67;
 +	// Client sends this in response to LoadPlayer, server ignores it
+-	public const byte Unknown68 = 68;
 +	public const byte ClientUUID = 68;
-+	/*
- 	public const byte Unknown68 = 68;
-+	*/
 +
 +	// ChestIndex, x, y, name
 +	// Forwarded to other clients
  	public const byte ChestName = 69;
-+
  	public const byte BugCatching = 70;
  	public const byte BugReleasing = 71;
- 	public const byte TravelMerchantItems = 72;
-@@ -92,20 +_,43 @@
+@@ -92,20 +_,39 @@
  	public const byte PlaceObject = 79;
  	public const byte SyncPlayerChestIndex = 80;
  	public const byte CombatTextInt = 81;
@@ -487,14 +460,12 @@
 +	// Supports modded banners now that check for bannerID > 267 removed
 +	// Sent to all clients whenever an npc with a banner is killed
  	public const byte NPCKillCountDeathTally = 83;
-+
  	public const byte PlayerStealth = 84;
 +
 +	// Requests chest quick-stacking of a single item
 +	// The client Player.inventoryChestStack flag is set
 +	// The server performs the quickstack and sends a SyncEquipment packet to all players
  	public const byte QuickStackChests = 85;
-+
  	public const byte TileEntitySharing = 86;
  	public const byte TileEntityPlacement = 87;
  	public const byte ItemTweaker = 88;
@@ -503,7 +474,6 @@
 +	// Exactly the same as SyncItem, but sets the instanced flag and is only sent server -> client
 +	// Currently only used for boss bags
  	public const byte InstancedItem = 90;
-+
  	public const byte SyncEmoteBubble = 91;
  	public const byte SyncExtraValue = 92;
  	public const byte SocialHandshake = 93;
@@ -512,7 +482,6 @@
 +
 +	[Obsolete("Use MessageID.MurderSomeoneElsesPortal")]
 +	public const byte MurderSomeoneElsesProjectile = MurderSomeoneElsesPortal;
-+
  	public const byte TeleportPlayerThroughPortal = 96;
  	public const byte AchievementMessageNPCKilled = 97;
  	public const byte AchievementMessageEventHappened = 98;

@@ -39,7 +39,7 @@
  		if (drawPlayer.ShouldNotDraw)
  			return;
  
-@@ -121,8 +_,31 @@
+@@ -121,8 +_,30 @@
  		_drawData.Clear();
  		_dust.Clear();
  		_gore.Clear();
@@ -50,7 +50,6 @@
 +		}
 +		
  		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
-+
 +		SkipBoringSetup:
 +
 +		/*

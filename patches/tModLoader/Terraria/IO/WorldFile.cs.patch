@@ -73,11 +73,10 @@
  				if (num3 != 0)
  					WorldGen.loadFailed = true;
  				else
-@@ -652,6 +_,10 @@
+@@ -652,6 +_,9 @@
  		if (Main.worldPathName == null)
  			return;
  
-+		// Added by TML.
 +		if (!BackupIO.archiveLock)
 +			BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
 +
@@ -124,25 +123,21 @@
  		_tempMaxRain = Main.maxRaining;
  		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
  		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
-@@ -864,7 +_,10 @@
+@@ -864,7 +_,7 @@
  			}
  
  			if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
-+				/*
- 				TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
-+				*/
+-				TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
 +				TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
  		}
  	}
  
-@@ -1041,7 +_,12 @@
+@@ -1041,7 +_,9 @@
  		}
  
  		writer.Write(NPC.savedAngler);
+-		writer.Write(Main.anglerQuest);
 +
-+		/*
- 		writer.Write(Main.anglerQuest);
-+		*/
 +		writer.Write(Main.anglerQuest < ItemLoader.vanillaQuestFishCount ? Main.anglerQuest : 0);
 +		
  		writer.Write(NPC.savedStylist);
@@ -157,24 +152,16 @@
  					flag = true;
  
  				if (flag) {
-@@ -1160,9 +_,21 @@
+@@ -1160,9 +_,11 @@
  					}
  
  					if (Main.tileFrameImportant[tile.type]) {
 +						short frameX = tile.frameX;
-+
 +						TileIO.VanillaSaveFrames(tile, ref frameX);
-+
-+						/*
- 						array[num3] = (byte)((uint)tile.frameX & 0xFFu);
-+						*/
+-						array[num3] = (byte)((uint)tile.frameX & 0xFFu);
 +						array[num3] = (byte)((uint)frameX & 0xFFu);
-+
  						num3++;
-+
-+						/*
- 						array[num3] = (byte)((tile.frameX & 0xFF00) >> 8);
-+						*/
+-						array[num3] = (byte)((tile.frameX & 0xFF00) >> 8);
 +						array[num3] = (byte)((frameX & 0xFF00) >> 8);
  						num3++;
  						array[num3] = (byte)((uint)tile.frameY & 0xFFu);
@@ -206,7 +193,15 @@
  				}
  			}
  		}
-@@ -1384,6 +_,9 @@
+@@ -1377,13 +_,16 @@
+ 		bool[] array = (bool[])NPC.ShimmeredTownNPCs.Clone();
+ 		writer.Write(array.Count(value: true));
+ 		for (int i = 0; i < array.Length; i++) {
+-			if (array[i])
++			if (array[i] && i < NPCID.Count)
+ 				writer.Write(i);
+ 		}
+ 
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
  			if (nPC.active && nPC.townNPC && nPC.type != 368) {
@@ -226,11 +221,13 @@
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2147,8 +_,17 @@
+@@ -2147,8 +_,20 @@
  
  				while (num3 > 0) {
  					j++;
--					Main.tile[i, j].CopyFrom(tile);
++					/*
+ 					Main.tile[i, j].CopyFrom(tile);
++					*/
  					num3--;
 +
 +					// TML:

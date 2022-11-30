@@ -18,42 +18,31 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,63 @@
+@@ -15,40 +_,52 @@
  		public int stack;
  	}
  
-+	/*
- 	public static int maxRequirements = 15;
-+	*/
+-	public static int maxRequirements = 15;
 +	private static int maxVanillaRequirements = 15;
-+
  	public static int maxRecipes = 3000;
  	public static int numRecipes;
-+
-+	/*
- 	private static Recipe currentRecipe = new Recipe();
-+	*/
+-	private static Recipe currentRecipe = new Recipe();
 +	private static Recipe currentRecipe;
-+
  	public Item createItem = new Item();
+-	public Item[] requiredItem = new Item[maxRequirements];
+-	public int[] requiredTile = new int[maxRequirements];
+-	public int[] acceptedGroups = new int[maxRequirements];
+-	private RequiredItemEntry[] requiredItemQuickLookup = new RequiredItemEntry[maxRequirements];
 +
-+	/*
- 	public Item[] requiredItem = new Item[maxRequirements];
- 	public int[] requiredTile = new int[maxRequirements];
- 	public int[] acceptedGroups = new int[maxRequirements];
-+	*/
++	// required... changed from [maxRequirements] to List
 +	public List<Item> requiredItem = new();
 +	public List<int> requiredTile = new();
 +	public List<int> acceptedGroups = new();
 +
-+	/*
- 	private RequiredItemEntry[] requiredItemQuickLookup = new RequiredItemEntry[maxRequirements];
-+	*/
 +	private RequiredItemEntry[] requiredItemQuickLookup;
-+
  	public List<Item> customShimmerResults;
 +
-+	//TML: Following fields made internal:
++	// Following fields made internal, automatically replaced with corresponding Conditions
 -	public bool needHoney;
 +	internal bool needHoney;
 -	public bool needWater;
@@ -84,10 +73,16 @@
 +	internal bool crimson;
 -	public bool corruption;
 +	internal bool corruption;
++
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
  
-+	//TML: Made private.
++	// Added by TML.
++	static Recipe()
++	{
++		ResetCurrentRecipe();
++	}
++
 -	public void RequireGroup(string name)
 +	private void RequireGroup(string name)
  	{
@@ -108,21 +103,17 @@
  			if (acceptedGroups[i] == -1) {
  				acceptedGroups[i] = id;
  				break;
-@@ -68,12 +_,17 @@
+@@ -68,12 +_,8 @@
  
  	public bool ProcessGroupsForText(int type, out string theText)
  	{
-+		/*
- 		for (int i = 0; i < maxRequirements; i++) {
- 			int num = acceptedGroups[i];
- 			if (num == -1)
- 				break;
+-		for (int i = 0; i < maxRequirements; i++) {
+-			int num = acceptedGroups[i];
+-			if (num == -1)
+-				break;
 -
-+		*/
+-			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
 +		foreach (int num in acceptedGroups) {
-+			/*
- 			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
-+			*/
 +			if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
  				theText = RecipeGroup.recipeGroups[num].GetText();
  				return true;
@@ -136,21 +127,17 @@
  			int num = acceptedGroups[i];
  			if (num == -1)
  				break;
-@@ -99,19 +_,24 @@
+@@ -99,19 +_,15 @@
  
  	public bool AcceptedByItemGroups(int invType, int reqType)
  	{
-+		/*
- 		for (int i = 0; i < maxRequirements; i++) {
- 			int num = acceptedGroups[i];
- 			if (num == -1)
- 				break;
+-		for (int i = 0; i < maxRequirements; i++) {
+-			int num = acceptedGroups[i];
+-			if (num == -1)
+-				break;
 -
-+		*/
+-			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
 +		foreach (int num in acceptedGroups) {
-+			/*
- 			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
-+			*/
 +			if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
  				return true;
  		}
@@ -175,25 +162,11 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -131,17 +_,45 @@
+@@ -131,17 +_,23 @@
  			acceptedGroups[i] = -1;
  		}
  	}
 +	*/
-+
-+	// Added by TML.
-+	static Recipe()
-+	{
-+		currentRecipe = new Recipe {
-+			requiredItem = new List<Item>(),
-+			requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
-+			acceptedGroups = Enumerable.Repeat(-1, maxVanillaRequirements).ToList()
-+		};
-+
-+		for (int i = 0; i < maxVanillaRequirements; i++) {
-+			currentRecipe.requiredItem.Add(new Item());
-+		}
-+	}
 +
 +	// Added by TML, replaces the removed public constructor.
 +	internal Recipe(Mod mod = null)
@@ -209,15 +182,12 @@
 +
  		Item[] array = null;
  		Item item = null;
-+
-+		/*
- 		Item item2 = null;
- 		for (int i = 0; i < maxRequirements; i++) {
- 			item2 = requiredItem[i];
- 			if (item2.type == 0)
- 				break;
+-		Item item2 = null;
+-		for (int i = 0; i < maxRequirements; i++) {
+-			item2 = requiredItem[i];
+-			if (item2.type == 0)
+-				break;
 -
-+		*/
 +		foreach (Item item2 in requiredItem) {
  			int num = item2.stack;
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
@@ -270,66 +240,61 @@
  					num -= item.stack;
  					array[m] = new Item();
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
-@@ -248,7 +_,8 @@
+@@ -248,7 +_,7 @@
  		FindRecipes();
  	}
  
-+	//TML: Made private.
 -	public bool useWood(int invType, int reqType)
 +	private bool useWood(int invType, int reqType)
  	{
  		if (!anyWood)
  			return false;
-@@ -282,7 +_,8 @@
+@@ -282,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made private.
 -	public bool useIronBar(int invType, int reqType)
 +	private bool useIronBar(int invType, int reqType)
  	{
  		if (!anyIronBar)
  			return false;
-@@ -296,7 +_,8 @@
+@@ -296,7 +_,7 @@
  		return true;
  	}
  
-+	//TML: Made private.
 -	public bool useSand(int invType, int reqType)
 +	private bool useSand(int invType, int reqType)
  	{
  		if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
  			return false;
-@@ -307,7 +_,8 @@
+@@ -307,7 +_,7 @@
  		return false;
  	}
  
-+	//TML: Made private.
 -	public bool useFragment(int invType, int reqType)
 +	private bool useFragment(int invType, int reqType)
  	{
  		if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
  			return false;
-@@ -318,7 +_,8 @@
+@@ -318,7 +_,7 @@
  		return false;
  	}
  
-+	//TML: Made private.
 -	public bool usePressurePlate(int invType, int reqType)
 +	private bool usePressurePlate(int invType, int reqType)
  	{
  		if (!anyPressurePlate)
  			return false;
-@@ -381,8 +_,16 @@
+@@ -381,8 +_,15 @@
  			Recipe recipe = Main.recipe[i];
  			if (recipe.createItem.type == 0)
  				break;
+-
 +				
 +			if (recipe.Disabled)
 +				continue;
 +			
 +			bool requirementsMet = false;
- 
  			if (PlayerMeetsTileRequirements(localPlayer, recipe) && PlayerMeetsEnvironmentConditions(localPlayer, recipe) && CollectedEnoughItemsToCraftRecipeNew(recipe))
 +				requirementsMet = true;
 +			
@@ -425,24 +390,19 @@
  		CreateRequiredItemQuickLookups();
  		ShimmerTransforms.UpdateRecipeSets();
  	}
-@@ -14546,21 +_,28 @@
+@@ -14546,22 +_,17 @@
  
  	private static void CreateRequiredItemQuickLookups()
  	{
 -		for (int i = 0; i < numRecipes; i++) {
 +		for (int i = 0; i < Main.recipe.Length; i++) {
  			Recipe recipe = Main.recipe[i];
-+
 +			recipe.requiredItemQuickLookup = new RequiredItemEntry[recipe.requiredItem.Count];
-+
 -			for (int j = 0; j < maxRequirements; j++) {
 +			for (int j = 0; j < recipe.requiredItem.Count; j++) {
  				Item item = recipe.requiredItem[j];
-+
-+				/*
- 				if (item.IsAir)
- 					break;
-+				*/
+-				if (item.IsAir)
+-					break;
  
  				RequiredItemEntry requiredItemEntry = default(RequiredItemEntry);
  				requiredItemEntry.itemIdOrRecipeGroup = item.type;
@@ -451,28 +411,23 @@
 -				int[] array = recipe.acceptedGroups;
 -				foreach (int num in array) {
 +				foreach (int num in recipe.acceptedGroups) {
-+					/*
- 					if (num < 0)
- 						break;
-+					*/
- 
+-					if (num < 0)
+-						break;
+-
  					RecipeGroup recipeGroup = RecipeGroup.recipeGroups[num];
  					if (recipeGroup.ValidItems.Contains(item.type))
-@@ -14575,9 +_,14 @@
+ 						requiredItemEntry2.itemIdOrRecipeGroup = recipeGroup.GetGroupFakeItemId();
+@@ -14575,8 +_,8 @@
  	private static void UpdateMaterialFieldForAllRecipes()
  	{
  		for (int i = 0; i < numRecipes; i++) {
-+			/*
- 			for (int j = 0; Main.recipe[i].requiredItem[j].type > 0; j++) {
- 				Main.recipe[i].requiredItem[j].material = ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[j].type];
- 			}
-+			*/
+-			for (int j = 0; Main.recipe[i].requiredItem[j].type > 0; j++) {
+-				Main.recipe[i].requiredItem[j].material = ItemID.Sets.IsAMaterial[Main.recipe[i].requiredItem[j].type];
 +			foreach (Item item in Main.recipe[i].requiredItem) {
 +				item.material = ItemID.Sets.IsAMaterial[item.type];
-+			}
+ 			}
  
  			Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
- 		}
 @@ -14585,17 +_,47 @@
  
  	public static void UpdateWhichItemsAreMaterials()
@@ -521,107 +476,91 @@
  			if (!Main.recipe[i].notDecraftable)
  				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
  
-@@ -15747,23 +_,36 @@
+@@ -15747,23 +_,23 @@
  	{
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
-+			/*
- 			if (Main.recipe[i].createItem.createTile >= 0 && TileID.Sets.Platforms[Main.recipe[i].createItem.createTile] && Main.recipe[i].requiredItem[1].type == 0) {
-+			*/
+-			if (Main.recipe[i].createItem.createTile >= 0 && TileID.Sets.Platforms[Main.recipe[i].createItem.createTile] && Main.recipe[i].requiredItem[1].type == 0) {
 +			if (Main.recipe[i].createItem.createTile >= 0 && TileID.Sets.Platforms[Main.recipe[i].createItem.createTile] && Main.recipe[i].requiredItem.Count == 1) {
  				currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
  				currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
  				currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
-+
-+				/*
- 				for (int j = 0; j < currentRecipe.requiredTile.Length; j++) {
- 					currentRecipe.requiredTile[j] = Main.recipe[i].requiredTile[j];
- 				}
-+				*/
+-				for (int j = 0; j < currentRecipe.requiredTile.Length; j++) {
+-					currentRecipe.requiredTile[j] = Main.recipe[i].requiredTile[j];
+-				}
 +				currentRecipe.requiredTile = new List<int>(Main.recipe[i].requiredTile);
  
  				AddRecipe();
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
  					Main.recipe[num2 + 1] = Main.recipe[num2];
-+
-+					// Added by TML.
-+					Main.recipe[num2].RecipeIndex = num2 + 1;
++					Main.recipe[num2].RecipeIndex = num2 + 1; // Added by TML.
  				}
  
  				Main.recipe[i + 1] = recipe;
  				Main.recipe[i + 1].notDecraftable = true;
-+
-+				// Added by TML.
-+				recipe.RecipeIndex = i + 1;
++				recipe.RecipeIndex = i + 1; // Added by TML.
  			}
  		}
  	}
-@@ -15772,28 +_,42 @@
+@@ -15772,28 +_,28 @@
  	{
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
-+			/*
- 			if (Main.recipe[i].createItem.createWall > 0 && Main.recipe[i].requiredItem[1].type == 0 && Main.recipe[i].requiredItem[0].createWall == -1) {
-+			*/
+-			if (Main.recipe[i].createItem.createWall > 0 && Main.recipe[i].requiredItem[1].type == 0 && Main.recipe[i].requiredItem[0].createWall == -1) {
 +			if (Main.recipe[i].createItem.createWall > 0 && Main.recipe[i].requiredItem.Count == 1 && Main.recipe[i].requiredItem[0].createWall == -1) {
  				currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
  				currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
  				currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
-+
-+				/*
- 				for (int j = 0; j < currentRecipe.requiredTile.Length; j++) {
- 					currentRecipe.requiredTile[j] = Main.recipe[i].requiredTile[j];
- 				}
-+				*/
+-				for (int j = 0; j < currentRecipe.requiredTile.Length; j++) {
+-					currentRecipe.requiredTile[j] = Main.recipe[i].requiredTile[j];
+-				}
 +				currentRecipe.requiredTile = new List<int>(Main.recipe[i].requiredTile);
  
  				AddRecipe();
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
  					Main.recipe[num2 + 1] = Main.recipe[num2];
-+
-+					// Added by TML.
-+					Main.recipe[num2].RecipeIndex = num2 + 1;
++					Main.recipe[num2].RecipeIndex = num2 + 1; // Added by TML.
  				}
  
  				Main.recipe[i + 1] = recipe;
  				Main.recipe[i + 1].notDecraftable = true;
-+
-+				// Added by TML.
-+				recipe.RecipeIndex = i + 1;
++				recipe.RecipeIndex = i + 1; // Added by TML.
  			}
  		}
  	}
  
-+	//TML: Made private.
 -	public void SetIngredients(params int[] ingredients)
 +	private void SetIngredients(params int[] ingredients)
  	{
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
-@@ -15812,7 +_,8 @@
+@@ -15812,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made private.
 -	public void SetCraftingStation(params int[] tileIDs)
 +	private void SetCraftingStation(params int[] tileIDs)
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,11 +_,53 @@
+@@ -15821,12 +_,60 @@
  
  	private static void AddRecipe()
  	{
-+		//TML: The whole method is rewritten.
-+
 +		/*
  		if (currentRecipe.requiredTile[0] == 13)
  			currentRecipe.alchemy = true;
+ 
+-		Main.recipe[numRecipes] = currentRecipe;
+ 		currentRecipe = new Recipe();
+ 		numRecipes++;
 +		*/
++
++		//TML: The whole method is rewritten.
 +		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
 +			currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
 +
@@ -643,17 +582,21 @@
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);
 +		currentRecipe.acceptedGroups.RemoveAll(group => group == -1);
- 
- 		Main.recipe[numRecipes] = currentRecipe;
--		currentRecipe = new Recipe();
 +
++		Main.recipe[numRecipes] = currentRecipe;
 +		currentRecipe.RecipeIndex = numRecipes;
 +
 +		if (RecipeLoader.FirstRecipeForItem[currentRecipe.createItem.type] == null) {
 +			RecipeLoader.FirstRecipeForItem[currentRecipe.createItem.type] = currentRecipe;
 +		}
 +
-+		// The following resets the currentRecipe field
++		ResetCurrentRecipe();
++		numRecipes++;
++	}
++
++	// Added by TML.
++	private static void ResetCurrentRecipe()
++	{
 +		currentRecipe = new Recipe {
 +			requiredItem = new List<Item>(),
 +			requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
@@ -663,7 +606,6 @@
 +		for (int i = 0; i < maxVanillaRequirements; i++) {
 +			currentRecipe.requiredItem.Add(new Item());
 +		}
-+
- 		numRecipes++;
  	}
  
+ 	public static int GetRequiredTileStyle(int tileID)

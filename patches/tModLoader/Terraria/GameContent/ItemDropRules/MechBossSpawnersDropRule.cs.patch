@@ -1,10 +1,9 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
-@@ -25,21 +_,24 @@
+@@ -25,21 +_,21 @@
  	{
  		ItemDropAttemptResult result;
  		if (!NPC.downedMechBoss1 && info.player.RollLuck(2500) == 0) {
-+			//TML: Changed call from DropItemFromNPC to just DropItem
 -			CommonCode.DropItemFromNPC(info.npc, 556, 1);
 +			CommonCode.DropItem(info, 556, 1);
  			result = default(ItemDropAttemptResult);
@@ -13,7 +12,6 @@
  		}
  
  		if (!NPC.downedMechBoss2 && info.player.RollLuck(2500) == 0) {
-+			//TML: Changed call from DropItemFromNPC to just DropItem
 -			CommonCode.DropItemFromNPC(info.npc, 544, 1);
 +			CommonCode.DropItem(info, 544, 1);
  			result = default(ItemDropAttemptResult);
@@ -22,7 +20,6 @@
  		}
  
  		if (!NPC.downedMechBoss3 && info.player.RollLuck(2500) == 0) {
-+			//TML: Changed call from DropItemFromNPC to just DropItem
 -			CommonCode.DropItemFromNPC(info.npc, 557, 1);
 +			CommonCode.DropItem(info, 557, 1);
  			result = default(ItemDropAttemptResult);

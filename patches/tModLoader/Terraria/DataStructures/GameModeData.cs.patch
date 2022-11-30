@@ -4,7 +4,7 @@
  namespace Terraria.DataStructures;
  
 -public class GameModeData
-+//TML: Turned into a record struct, setters publicized or made init-only.
++//TML: Turned into a record struct, setters made public or made init-only.
 +public record struct GameModeData
  {
  	public static readonly GameModeData NormalMode = new GameModeData {

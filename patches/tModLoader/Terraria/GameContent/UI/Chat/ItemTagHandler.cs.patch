@@ -51,7 +51,7 @@
  	{
  		Item item = new Item();
 -		if (int.TryParse(text, out var result))
-+		if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
++		if (int.TryParse(text, out var result) && result < ItemLoader.ItemCount)
 +			item.netDefaults(result);
 +
 +		// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])

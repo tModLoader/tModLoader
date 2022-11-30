@@ -24,6 +24,8 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## Player
 - Add hook for `RefreshInfoAccsFromItemType`
+- Replace `ProjectileLoader.SingleGrappleHook` with a `ProjectileID.Sets`
+- `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.
 - Add `ItemLoader.ConsumeItem` check to `QuickHeal` and `QuickMana`
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
@@ -48,6 +50,12 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 - Patches have been reimplemented, check that again.
 - Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets
 
+## TileID.tML.cs
+- `CanBeSatOnForNPCs` -> `CanNPCsSitOn`
+
+## NPC
+- Remove `NPCSpawnInfo.PlanteraDefeated`, replacement is `NPC.downedPlantBoss && Main.hardMode`
+
 ## Porting Notes:
 - `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
 - `ModWaterStyle` now requires an additional texture, `_Slope`. See `ExampleWaterStyle` for details.
@@ -55,3 +63,17 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## WorldGen.cs:
 - TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`
+- Revert some of the public field changes. A lot of them aren't meant to be public and were just blanket changed in the past. We have WorldGenVars now
+
+## MysticLogFairies, SandStorm, SkyManager, WorldGen, Main and Deerclops AI
+- Could benefit from a Main variable which counts number of full ticks of dayRate which have progressed this tick.
+- No need for _timePass variables
+
+## MessageID.cs
+- Convert all `Obsolete` (not `Old`) entries to tModPorter refactors and remove.
+
+## Item.cs
+- Make FindOwner code use Player.GetItemGrabRange
+
+## Formatter
+- Not visiting into switch case blocks properly? See `ItemSlot.LeftClick`

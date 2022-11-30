@@ -1,13 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
-@@ -24,7 +_,9 @@
+@@ -24,7 +_,7 @@
  	{
  		ItemDropAttemptResult result;
  		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
-+			//TML: Changed call from DropItemFromNPC to just DropItem
 -			CommonCode.DropItemFromNPC(info.npc, dropIds[info.rng.Next(dropIds.Length)], 1);
 +			CommonCode.DropItem(info, dropIds[info.rng.Next(dropIds.Length)], 1);
-+
  			result = default(ItemDropAttemptResult);
  			result.State = ItemDropAttemptResultState.Success;
  			return result;

@@ -5,12 +5,11 @@
  namespace Terraria.Graphics.Capture;
  
  public class CaptureBiome
-@@ -135,6 +_,14 @@
+@@ -135,6 +_,13 @@
  				return captureBiome;
  		}
  
 +		var sceneEffect = Main.LocalPlayer.CurrentSceneEffect;
-+
 +		if (sceneEffect.waterStyle.value >= Main.maxLiquidTypes) {
 +			// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
 +			//TODO: Future improvement should be using the SceneEffect layer associated to background.
@@ -20,12 +19,11 @@
  		return null;
  	}
  
-@@ -168,6 +_,14 @@
+@@ -168,6 +_,13 @@
  			case 9:
  				return Styles.Mushroom;
  			default:
 +				var sceneEffect = Main.LocalPlayer.CurrentSceneEffect;
-+
 +				if (sceneEffect.surfaceBackground.value >= Main.BG_STYLES_COUNT) {
 +					// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
 +					//TODO: Future improvement should be using the SceneEffect layer associated to background.

@@ -57,7 +57,7 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,17 +_,20 @@
+@@ -57,17 +_,17 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
@@ -73,12 +73,9 @@
  
 -			Console.WriteLine($"\tattempting load {path}");
 +			Logging.tML.Debug($"\tattempting load {path}");
-+
  			handle = NativeLibrary.Load(path);
 -			Console.WriteLine("\tsuccess");
-+
 +			Logging.tML.Debug("\tsuccess");
-+
  			return assemblies[name] = handle;
  		}
  	}

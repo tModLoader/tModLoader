@@ -39,7 +39,7 @@
  			if (!KeyStatus.ContainsKey(item.Key))
  				continue;
  
-@@ -55,16 +_,34 @@
+@@ -55,15 +_,32 @@
  			foreach (string item2 in item.Value) {
  				KeyStatus[item.Key].Add(item2);
  			}
@@ -55,6 +55,12 @@
  	public Dictionary<string, List<string>> WritePreferences()
  	{
  		Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
++		/*
+ 		foreach (KeyValuePair<string, List<string>> item in KeyStatus) {
+ 			if (item.Value.Count > 0)
+ 				dictionary.Add(item.Key, item.Value.ToList());
++		}
++		*/
 +
 +		// Make sure to use indexer and not dict.Add, as some keys are sometimes already added (Vanilla bug, problem for modded)
 +		foreach (KeyValuePair<string, List<string>> item in KeyStatus.Where(x => x.Value.Count > 0)) {
@@ -63,14 +69,6 @@
 +
 +		foreach (KeyValuePair<string, List<string>> item in UnloadedModKeyStatus.Where(x => x.Value.Count > 0)) {
 +			dictionary[item.Key] = item.Value.ToList();
-+		}
-+
-+		/*
- 		foreach (KeyValuePair<string, List<string>> item in KeyStatus) {
- 			if (item.Value.Count > 0)
- 				dictionary.Add(item.Key, item.Value.ToList());
  		}
-+		*/
  
  		if (!dictionary.ContainsKey("MouseLeft") || dictionary["MouseLeft"].Count == 0) {
- 			dictionary["MouseLeft"] = new List<string> {

@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,71 +_,297 @@
+@@ -66,70 +_,271 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -36,7 +36,6 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noDropItem;
-+
  	public static int maxAI = 3;
  	public bool counterweight;
 +
@@ -65,7 +64,6 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
-+
  	public bool sentry;
  	public short glowMask;
 +
@@ -88,7 +86,6 @@
 +	/// <br/> Defaults to [0, 0, 0]
 +	/// </summary>
  	public float[] localAI = new float[maxAI];
-+
  	public float gfxOffY;
  	public float stepSpeed = 1f;
 +
@@ -106,14 +103,12 @@
 +	/// <br/> Defaults to 3600.
 +	/// </summary>
  	public int timeLeft;
-+
  	public int soundDelay;
 +
 +	/// <summary>
 +	/// This will always be set in Projectile.NewProjectile based on the weapons damage and player stat modifiers. Modders should not set this in <see cref="ModProjectile.SetDefaults"/> as it will be overwritten.
 +	/// </summary>
  	public int damage;
-+
  	public int originalDamage;
  	public int spriteDirection = 1;
 +
@@ -122,7 +117,6 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hostile;
-+
  	public bool reflected;
 +
 +	/// <summary>
@@ -141,11 +135,8 @@
 +	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
-+
-+	//TML: Made public.
 -	private int[] localNPCImmunity = new int[200];
 +	public int[] localNPCImmunity = new int[200];
-+
  	public bool usesLocalNPCImmunity;
  	public bool usesIDStaticNPCImmunity;
  	public bool appliesImmunityTimeOnSingleHits;
@@ -178,7 +169,6 @@
 +	/// Used internally to check for projectiles that spam <see cref="netUpdate"/>. Don't use it yourself manually
 +	/// </summary>
  	public bool netUpdate2;
-+
  	public int netSpam;
 +
 +	/// <summary>
@@ -207,7 +197,6 @@
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;
-+
  	public int minionPos;
  	public int restrikeDelay;
 +
@@ -222,7 +211,6 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int extraUpdates;
-+
  	public bool stopsDealingDamageAfterPenetrateHits;
  	public int numUpdates;
 +
@@ -231,22 +219,20 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool ignoreWater;
-+
  	public bool isAPreviewDummy;
 +
 +	/// <summary>
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
 +	/// </summary>
  	public bool hide;
-+
  	public bool ownerHitCheck;
  	public bool usesOwnerMeleeHitCD;
  	public int[] playerImmune = new int[255];
  	public string miscText = "";
+-	public bool melee;
+-	public bool ranged;
+-	public bool magic;
 +
-+	/*
- 	public bool melee;
-+	*/
 +	internal bool melee {
 +		get => CountsAsClass(DamageClass.Melee);
 +		set {
@@ -257,28 +243,22 @@
 +		}
 +	}
 +
-+	/*
- 	public bool ranged;
-+	*/
-+	internal bool magic {
-+		get => CountsAsClass(DamageClass.Magic);
-+		set {
-+			if (value)
-+				DamageType = DamageClass.Magic;
-+			else if (DamageType == DamageClass.Magic)
-+				DamageType = DamageClass.Default;
-+		}
-+	}
-+
-+	/*
- 	public bool magic;
-+	*/
 +	internal bool ranged {
 +		get => CountsAsClass(DamageClass.Ranged);
 +		set {
 +			if (value)
 +				DamageType = DamageClass.Ranged;
 +			else if (DamageType == DamageClass.Ranged)
++				DamageType = DamageClass.Default;
++		}
++	}
++
++	internal bool magic {
++		get => CountsAsClass(DamageClass.Magic);
++		set {
++			if (value)
++				DamageType = DamageClass.Magic;
++			else if (DamageType == DamageClass.Magic)
 +				DamageType = DamageClass.Default;
 +		}
 +	}
@@ -296,7 +276,6 @@
 +	/// If true, this projectile was spawned by a friendly Town NPC.
 +	/// </summary>
  	public bool npcProj;
-+
  	public bool originatedFromActivableTile;
 +
 +	/// <summary>
@@ -313,20 +292,16 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int frame;
-+
  	public bool manualDirectionChange;
  	public int projUUID = -1;
- 	public bool decidesManualFallThrough;
-@@ -152,7 +_,16 @@
+@@ -152,7 +_,14 @@
  	private static List<int> _ai156_blacklistedTargets = new List<int>();
  	private static float[] _CompanionCubeScreamCooldown = new float[255];
  
-+	private string nameOverride = null;
-+
-+	//TML: Setter and the above backing field added.
 +	/*
  	public string Name => Lang.GetProjectileName(type).Value;
 +	*/
++	private string nameOverride = null;
 +	public string Name {
 +		get => nameOverride ?? Lang.GetProjectileName(type).Value;
 +		set => nameOverride = value;
@@ -343,7 +318,7 @@
  			for (int j = 0; j < 200; j++) {
  				perIDStaticNPCImmunity[i][j] = 0u;
  			}
-@@ -232,8 +_,48 @@
+@@ -232,8 +_,46 @@
  		}
  	}
  
@@ -361,7 +336,6 @@
 +		globalProjectiles = originalGlobals;
 +
 +		int num = ProjectileID.Sets.TrailCacheLength[type];
-+
 +		if (num != oldPos.Length) {
 +			Array.Resize(ref oldPos, num);
 +			Array.Resize(ref oldRot, num);
@@ -378,7 +352,7 @@
 +
  	public void SetDefaults(int Type)
  	{
-+		// TML fields: [[
++		// TML fields:
 +		ModProjectile = null;
 +		globalProjectiles = new Instanced<GlobalProjectile>[0];
 +		DamageType = DamageClass.Default;
@@ -387,22 +361,19 @@
 +		WhipSettings = default;
 +		ContinuouslyUpdateDamage = false;
 +		nameOverride = null;
-+		// ]]
 +
  		ownerHitCheckDistance = 1000f;
  		counterweight = false;
  		sentry = false;
-@@ -284,9 +_,13 @@
+@@ -284,9 +_,11 @@
  		minionSlots = 0f;
  		soundDelay = 0;
  		spriteDirection = 1;
-+
 +		/*
  		melee = false;
  		ranged = false;
  		magic = false;
 +		*/
-+
  		ownerHitCheck = false;
  		hide = false;
  		lavaWet = false;
@@ -505,7 +476,7 @@
  			width = 56;
  			height = 64;
  			aiStyle = 177;
-@@ -8637,9 +_,18 @@
+@@ -8637,9 +_,17 @@
  			friendly = true;
  			penetrate = -1;
  		}
@@ -515,8 +486,7 @@
  		}
 +		*/
 +
-+		// TML:
-+		// This tells all vanilla summon class projectiles THAT AREN'T WHIPS to actually use the corresponding DamageClass
++		// TML: This tells all vanilla summon class projectiles THAT AREN'T WHIPS to actually use the corresponding DamageClass
 +		if (type < ProjectileID.Count && (minion || sentry || ProjectileID.Sets.MinionShot[type] || ProjectileID.Sets.SentryShot[type]))
 +			DamageType = DamageClass.Summon;
 +
@@ -524,21 +494,12 @@
  
  		width = (int)((float)width * scale);
  		height = (int)((float)height * scale);
-@@ -8665,6 +_,9 @@
- 		height = 18;
- 		aiStyle = 165;
- 		friendly = true;
-+
-+		DamageType = DamageClass.SummonMeleeSpeed;
-+
- 		penetrate = -1;
- 		tileCollide = false;
- 		scale = 1f;
-@@ -8672,6 +_,8 @@
+@@ -8672,6 +_,9 @@
  		extraUpdates = 1;
  		usesLocalNPCImmunity = true;
  		localNPCHitCooldown = -1;
 +
++		DamageType = DamageClass.SummonMeleeSpeed;
 +		VanillaWhipSettings(this, out WhipSettings.Segments, out WhipSettings.RangeMultiplier);
  	}
  
@@ -611,7 +572,7 @@
  
  		if (Owner == Main.myPlayer) {
  			if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
-@@ -8896,6 +_,14 @@
+@@ -8896,6 +_,13 @@
  
  			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
  				projectile.timeLeft = 180;
@@ -619,7 +580,6 @@
 +			// Copied from 1.3, adjusted to check for actual player (servers never shoot thrower projectiles)
 +			if (Main.netMode != NetmodeID.Server) {
 +				Player throwingPlayer = Main.player[Owner];
-+
 +				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing))
 +					projectile.noDropItem = true;
 +			}
@@ -638,12 +598,11 @@
  		return num;
  	}
  
-@@ -9712,7 +_,15 @@
+@@ -9712,7 +_,14 @@
  
  	public void Damage()
  	{
 +		bool vanillaCanDamage = true;
-+
  		if (type == 18 || type == 72 || type == 86 || type == 87 || aiStyle == 31 || aiStyle == 32 || type == 226 || type == 378 || type == 613 || type == 650 || type == 882 || type == 888 || type == 895 || type == 896 || (type == 434 && localAI[0] != 0f) || type == 439 || type == 444 || (type == 451 && ((int)(ai[0] - 1f) / penetrate == 0 || ai[1] < 5f) && ai[0] != 0f) || type == 500 || type == 653 || type == 1018 || type == 460 || type == 633 || type == 600 || type == 601 || type == 602 || type == 535 || (type == 631 && localAI[1] == 0f) || (type == 537 && localAI[0] <= 30f) || type == 651 || (type == 188 && localAI[0] < 5f) || (aiStyle == 137 && ai[0] != 0f) || aiStyle == 138 || (type == 261 && velocity.Length() < 1.5f) || (type == 818 && ai[0] < 1f) || type == 831 || type == 970 || (type == 833 && ai[0] == 4f) || (type == 834 && ai[0] == 4f) || (type == 835 && ai[0] == 4f) || (type == 281 && ai[0] == -3f) || ((type == 598 || type == 636 || type == 614 || type == 971 || type == 975) && ai[0] == 1f) || (type == 923 && localAI[0] <= 60f) || (type == 919 && localAI[0] <= 60f) || (aiStyle == 15 && ai[0] == 0f && localAI[1] <= 12f) || type == 861 || (type >= 511 && type <= 513 && ai[1] >= 1f) || type == 1007 || (aiStyle == 93 && ai[0] != 0f && ai[0] != 2f) || (aiStyle == 10 && localAI[1] == -1f) || (type == 85 && localAI[0] >= 54f) || (Main.projPet[type] && type != 266 && type != 407 && type != 317 && (type != 388 || ai[0] != 2f) && (type < 390 || type > 392) && (type < 393 || type > 395) && (type != 533 || !(ai[0] >= 6f) || !(ai[0] <= 8f)) && (type < 625 || type > 628) && (type != 755 || ai[0] == 0f) && (type != 946 || ai[0] == 0f) && type != 758 && type != 951 && type != 963 && (type != 759 || frame == Main.projFrames[type] - 1) && type != 833 && type != 834 && type != 835 && type != 864 && (type != 623 || ai[0] != 2f)))
 +			vanillaCanDamage = false;
 +			
@@ -744,7 +703,7 @@
  										float value = (scale - 1f) * 100f;
  										value = Utils.Clamp(value, 0f, 50f);
  										num5 = (int)((float)num5 * (1f + value * 0.23f));
-@@ -10096,14 +_,27 @@
+@@ -10096,14 +_,25 @@
  										num5 += 5;
  
  									if (flag) {
@@ -760,13 +719,11 @@
  											flag12 = true;
 +										*/
 +
-+										// TML:
 +										// The above code only accounts for the "three" vanilla classes that are capable of crits, and doesn't account for throwing.
 +										// It also doesn't account for any modded damage types, and so a change was needed in order to allow it to work with new classes.
 +										// On top of this, the change from using the player's class crit to using the projectile's crit chance is important.
 +										// It's a part of the fix for the infamous "crit swap" exploit, as well as of a larger overall fix to crit chance.
 +										// - Thomas
-+
 +										if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance)
 +											flag12 = true;
  
@@ -781,7 +738,7 @@
  										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10594,6 +_,11 @@
+@@ -10594,6 +_,10 @@
  										Main.player[owner].ClearBuff(198);
  									}
  
@@ -789,11 +746,10 @@
 +									goto VanillaOnHitEffectsEnd;
 +
 +									VanillaOnHitEffectsStart:
-+
  									StatusNPC(i);
  									if (flag && nPC.life > 5)
  										TryDoingOnHitEffects(nPC);
-@@ -10601,11 +_,16 @@
+@@ -10601,11 +_,14 @@
  									if (ProjectileID.Sets.ImmediatelyUpdatesNPCBuffFlags[type])
  										nPC.UpdateNPC_BuffSetFlags(lowerBuffTime: false);
  
@@ -802,11 +758,9 @@
  										ai[1] = -1f;
  										netUpdate = true;
  									}
- 
 +									goto PostModifyHit;
-+
+ 
 +									VanillaOnHitEffectsEnd:
-+
  									int num34 = direction;
  									switch (type) {
  										case 697:
@@ -860,18 +814,15 @@
  					if (aiStyle == 3) {
  						if (ai[0] == 0f) {
  							velocity.X = 0f - velocity.X;
-@@ -11089,16 +_,27 @@
+@@ -11089,15 +_,21 @@
  						timeLeft = 1;
  
  					bool flag27 = false;
-+
-+					/*
- 					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
-+					*/
+-					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
 +					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].GetTotalCritChance(DamageClass.Melee))
  						flag27 = true;
  
-+					// Patch note: ^ flag27 and num45 v, to be used below multiple times.
++					// Patch note: ^ flag27 and num45, to be used below multiple times.
  					int num45 = Main.DamageVar((int)((float)damage * num), Main.player[owner].luck);
  					bool dodgeable = IsDamageDodgable();
 +
@@ -884,10 +835,8 @@
 +
 +					// Patch note: num46, to be used below.
  					int num46 = (int)player3.Hurt(playerDeathReason, num45, direction, pvp: true, quiet: false, flag27, -1, dodgeable);
-+
  					if (num46 > 0 && Main.player[owner].ghostHeal && friendly && !hostile)
  						ghostHeal(num46, new Vector2(player3.Center.X, player3.Center.Y), player3);
- 
 @@ -11108,6 +_,8 @@
  					if ((melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 7)
  						NewProjectile(GetProjectileSource_FromThis(), player3.Center.X, player3.Center.Y, player3.velocity.X, player3.velocity.Y, 289, 0, 0f, owner);
@@ -926,7 +875,7 @@
  		int num49 = direction;
  		num49 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		if (!Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity)) {
-@@ -11248,7 +_,15 @@
+@@ -11248,7 +_,14 @@
  			if (ProjectileID.Sets.IsAGravestone[type])
  				playerIndex2 = (int)ai[0];
  
@@ -937,7 +886,6 @@
  			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num53, num49, pvp: false, quiet: false, Crit: false, num48, dodgeable2) > 0.0 && !Main.player[myPlayer].dead)
 +			*/
 +			int realDamage = (int)Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num53, num49, pvp: false, quiet: false, Crit: crit, num48, dodgeable2);
-+
 +			if (realDamage > 0 && !Main.player[myPlayer].dead)
  				StatusPlayer(myPlayer);
  
@@ -951,20 +899,18 @@
  		}
  
  		if (true) {
-@@ -11290,6 +_,8 @@
+@@ -11290,6 +_,7 @@
  		if (aiStyle == 29)
  			result.Inflate(4, 4);
  
 +		ProjectileLoader.ModifyDamageHitbox(this, ref result);
-+
  		return result;
  	}
  
-@@ -11376,7 +_,8 @@
+@@ -11376,7 +_,7 @@
  		return num;
  	}
  
-+	//TML: Made public.
 -	private static void EmitBlackLightningParticles(NPC targetNPC)
 +	public static void EmitBlackLightningParticles(NPC targetNPC)
  	{
@@ -990,14 +936,12 @@
  		if (aiStyle != 45 && aiStyle != 137 && aiStyle != 92 && aiStyle != 105 && aiStyle != 106 && !ProjectileID.Sets.IsAGolfBall[type] && type != 463 && type != 69 && type != 70 && type != 621 && type != 10 && type != 11 && type != 379 && type != 407 && type != 476 && type != 623 && (type < 625 || type > 628) && type != 833 && type != 834 && type != 835 && type != 818 && type != 831 && type != 820 && type != 864 && type != 970 && type != 995 && type != 908)
  			return type != 1020;
  
-@@ -11796,6 +_,11 @@
+@@ -11796,6 +_,9 @@
  			}
  		}
  
-+		bool? modColliding = ProjectileLoader.Colliding(this, myRect, targetRect);
-+
-+		if (modColliding.HasValue)
-+			return modColliding.Value;
++		if (ProjectileLoader.Colliding(this, myRect, targetRect) is bool modColliding)
++			return modColliding;
 +
  		if (myRect.Intersects(targetRect))
  			return true;
@@ -1019,18 +963,15 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
-@@ -13214,8 +_,27 @@
+@@ -13214,8 +_,24 @@
  				overrideHeight = 4;
  			}
  
 +			Vector2 hitboxCenterFrac = vector ?? new Vector2(0.5f);
-+			int num2 = (overrideWidth != -1) ? overrideWidth : base.width;
-+			int num3 = (overrideHeight != -1) ? overrideHeight : base.height;
++			int num2 = (overrideWidth != -1) ? overrideWidth : width;
++			int num3 = (overrideHeight != -1) ? overrideHeight : height;
 +
-+			if (!ProjectileLoader.TileCollideStyle(this, ref num2, ref num3, ref flag6, ref hitboxCenterFrac)) {
-+				// Nothing!
-+			}
-+			else // A comment to prevent formatting.
++			if (!ProjectileLoader.TileCollideStyle(this, ref num2, ref num3, ref flag6, ref hitboxCenterFrac)) { } else 
  			if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				//TML: base.Center isn't correct due to snapping, we have to calculate it without that.
 +				Vector2 center = base.position + new Vector2(base.width, base.height) * 0.5f;
@@ -1065,14 +1006,11 @@
  
  					if (wet) {
  						if (shimmerWet) {
-@@ -13528,6 +_,10 @@
+@@ -13528,6 +_,7 @@
  					}
  				}
  
-+				if (!ProjectileLoader.OnTileCollide(this, lastVelocity)) {
-+					// Nothing!
-+				}
-+				else // A comment to prevent reformatting.
++				if (!ProjectileLoader.OnTileCollide(this, lastVelocity)) { } else
  				if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
  					position += velocity;
  					velocity = Vector2.Zero;
@@ -1086,7 +1024,7 @@
  		if (wet)
  			position += wetVelocity;
  		else
-@@ -14715,12 +_,27 @@
+@@ -14715,12 +_,24 @@
  		}
  
  		FishingCheck_RollDropLevels(fisher.fishingLevel, out fisher.common, out fisher.uncommon, out fisher.rare, out fisher.veryrare, out fisher.legendary, out fisher.crate);
@@ -1099,14 +1037,11 @@
  		bool flag = false;
 +
 +		var sonar = new AdvancedPopupRequest();
-+
-+		// Bobber position as default
-+		Vector2 sonarPosition = new Vector2(position.X, position.Y);
-+
++		Vector2 sonarPosition = new Vector2(position.X, position.Y); // Bobber position as default
 +		PlayerLoader.CatchFish(Main.player[owner], fisher, ref fisher.rolledItemDrop, ref fisher.rolledEnemySpawn, ref sonar, ref sonarPosition);
 +
 +		if (sonar.Text != null && Main.player[owner].sonarPotion) {
-+			PopupText.AssignAsSonarText(PopupText.NewText(sonar,sonarPosition));
++			PopupText.AssignAsSonarText(PopupText.NewText(sonar, sonarPosition));
 +		}
 +
  		if (fisher.rolledItemDrop > 0) {
@@ -1166,26 +1101,23 @@
  
  	private void AI_152_SuperStarSlash()
  	{
-@@ -16003,6 +_,12 @@
+@@ -16003,6 +_,11 @@
  
  	public void AI()
  	{
 +		ProjectileLoader.ProjectileAI(this);
 +	}
 +
-+	// Split from AI()
 +	public void VanillaAI()
 +	{
  		if (aiStyle == 1) {
  			AI_001();
  		}
-@@ -24134,7 +_,10 @@
+@@ -24134,7 +_,7 @@
  					int num799 = (int)base.Center.Y / 16;
  					for (int num800 = num798 - num797; num800 <= num798 + num797; num800++) {
  						for (int num801 = num799 - num797; num801 <= num799 + num797; num801++) {
-+							/*
- 							if (Main.rand.Next(4) == 0 && new Vector2(num798 - num800, num799 - num801).Length() < (float)num797 && num800 > 0 && num800 < Main.maxTilesX - 1 && num801 > 0 && num801 < Main.maxTilesY - 1 && Main.tile[num800, num801] != null && Main.tile[num800, num801].active() && Main.IsTileSpelunkable(Main.tile[num800, num801])) {
-+							*/
+-							if (Main.rand.Next(4) == 0 && new Vector2(num798 - num800, num799 - num801).Length() < (float)num797 && num800 > 0 && num800 < Main.maxTilesX - 1 && num801 > 0 && num801 < Main.maxTilesY - 1 && Main.tile[num800, num801] != null && Main.tile[num800, num801].active() && Main.IsTileSpelunkable(Main.tile[num800, num801])) {
 +							if (Main.rand.Next(4) == 0 && new Vector2(num798 - num800, num799 - num801).Length() < (float)num797 && num800 > 0 && num800 < Main.maxTilesX - 1 && num801 > 0 && num801 < Main.maxTilesY - 1 && Main.tile[num800, num801] != null && Main.tile[num800, num801].active() && Main.IsTileSpelunkable(num800, num801)) {
  								int num802 = Dust.NewDust(new Vector2(num800 * 16, num801 * 16), 16, 16, 204, 0f, 0f, 150, default(Color), 0.3f);
  								Main.dust[num802].fadeIn = 0.75f;
@@ -1217,7 +1149,7 @@
  	{
  		if (localAI[0] == 0f && type == 984) {
 -			SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound(SoundID.Item60, position);
-+			SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound((SoundStyle?)SoundID.Item60, base.position);
++			SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound((SoundStyle?)SoundID.Item60, position);
  			if (soundEffectInstance != null)
  				soundEffectInstance.Volume *= 0.65f;
  		}
@@ -1239,30 +1171,28 @@
  			localAI[0] = 1f;
  		}
  	}
-@@ -30239,7 +_,8 @@
+@@ -30239,7 +_,7 @@
  			wetVelocity = velocity;
  	}
  
-+	//TML: Made public.
 -	private void ResetLocalNPCHitImmunity()
 +	public void ResetLocalNPCHitImmunity()
  	{
  		for (int i = 0; i < 200; i++) {
  			localNPCImmunity[i] = 0;
-@@ -30335,8 +_,12 @@
+@@ -30335,8 +_,11 @@
  				break;
  		}
  
-+		float num15 = 1f / player.inverseMeleeSpeed;
 +		/*
  		float meleeSpeed = player.meleeSpeed;
  		float num15 = 1f / meleeSpeed;
 +		*/
-+
++		float num15 = 1f / player.inverseMeleeSpeed;
  		num2 *= num15;
  		num8 *= num15;
  		num9 *= num15;
-@@ -30652,7 +_,11 @@
+@@ -30652,7 +_,10 @@
  			}
  		}
  		else if (ai[0] == 1f) {
@@ -1270,7 +1200,6 @@
  			float meleeSpeed = Main.player[owner].meleeSpeed;
 +			*/
 +			float meleeSpeed = Main.player[owner].inverseMeleeSpeed;
-+
  			float num5 = 14f / meleeSpeed;
  			float num6 = 0.9f / meleeSpeed;
  			float num7 = 300f / meleeSpeed;
@@ -1298,7 +1227,7 @@
  	public int FindTargetWithLineOfSight(float maxRange = 800f)
  	{
  		float num = maxRange;
-@@ -32284,7 +_,11 @@
+@@ -32284,7 +_,10 @@
  				break;
  		}
  
@@ -1306,7 +1235,6 @@
  		num4 *= 1f / player.meleeSpeed;
 +		*/
 +		num4 *= 1f / player.inverseMeleeSpeed;
-+
  		float num7 = num3 + num4 * num2;
  		float num8 = num5 + num6 * num2;
  		float f = velocity.ToRotation();
@@ -1327,7 +1255,7 @@
 +		rangeMultiplier = proj.WhipSettings.RangeMultiplier;
 +	}
 +
-+	//TML: Method split, called at instantiation time now.
++	//TML: Method split, called from DefaultToWhip now.
 +	private static void VanillaWhipSettings(Projectile proj, out int segments, out float rangeMultiplier)
 +	{
  		segments = 20;
@@ -1361,23 +1289,21 @@
  			if (num3 < 24f)
  				Kill();
  
-@@ -36623,7 +_,8 @@
+@@ -36623,7 +_,7 @@
  			return;
  		}
  
 -		ai[0] += Main.dayRate;
 +		ai[0] += (float)Main.desiredWorldEventsUpdateRate;
-+
  		if (localAI[0] == 0f && Main.netMode != 2) {
  			localAI[0] = 1f;
  			if ((double)Main.LocalPlayer.position.Y < Main.worldSurface * 16.0)
-@@ -36931,7 +_,8 @@
+@@ -36931,7 +_,7 @@
  					if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
  						continue;
  
 -					int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
 +					int num4 = WorldGen.KillTile_GetTileDustAmount(true, tileSafely, j, k);
-+
  					for (int l = 0; l < num4; l++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
@@ -1421,18 +1347,16 @@
  			ai[0] += 1f;
  			ai[1] += 1f;
  			bool flag8 = false;
-@@ -46987,7 +_,9 @@
+@@ -46987,7 +_,7 @@
  
  			if (flag9 && Main.myPlayer == owner) {
  				bool flag10 = false;
-+
 -				flag10 = !flag8 || player.CheckMana(player.inventory[player.selectedItem].mana, pay: true);
 +				flag10 = !flag8 || player.CheckMana(player.inventory[player.selectedItem], pay: true);
-+
  				if (player.channel && flag10 && !player.noItems && !player.CCed) {
  					if (ai[0] == 1f) {
  						Vector2 center2 = base.Center;
-@@ -47908,7 +_,12 @@
+@@ -47908,7 +_,11 @@
  				localAI[0] += (float)Main.rand.Next(10, 31) * 0.1f;
  
  			float num = localAI[0] / 60f;
@@ -1441,11 +1365,10 @@
  			num /= (1f + Main.player[owner].meleeSpeed) / 2f;
 +			*/
 +			num /= (1f + Main.player[owner].inverseMeleeSpeed) / 2f;
-+
  			float num2 = ProjectileID.Sets.YoyosLifeTimeMultiplier[type];
  			if (num2 != -1f && num > num2)
  				ai[0] = -1f;
-@@ -47996,12 +_,25 @@
+@@ -47996,12 +_,23 @@
  		if (Main.player[owner].yoyoString)
  			num10 = num10 * 1.25f + 30f;
  
@@ -1455,12 +1378,10 @@
 +		*/
 +		num10 /= (1f + Main.player[owner].inverseMeleeSpeed * 3f) / 4f;
 +		num8 /= (1f + Main.player[owner].inverseMeleeSpeed * 3f) / 4f;
-+
  		num7 = 14f - num8 / 2f;
  		if (num7 < 1f)
  			num7 = 1f;
  
-+		// TML:
 +		// Yoyos with effective top speed (boosted by melee speed) num8 > 26 will set num11 to be less than 1.
 +		// This breaks the AI's acceleration vector math and stops the velocity from being correctly capped every frame.
 +		// Providing a minimum value of 1.01 to num11 fixes this, allowing for very fast modded yoyos.
@@ -1480,11 +1401,10 @@
  				for (int k = 0; k < num5; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num4 * 1.5f;
-@@ -49124,7 +_,8 @@
+@@ -49124,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made public.
 -	private void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves)
 +	public void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves)
  	{
@@ -1499,11 +1419,10 @@
  				for (int k = 0; k < num2; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num * 1.5f;
-@@ -49198,7 +_,8 @@
+@@ -49198,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made public.
 -	private void CreateImpactExplosion2_FlailTileCollision(Vector2 explosionOrigin, bool causedShockwaves, Vector2 velocityBeforeCollision)
 +	public void CreateImpactExplosion2_FlailTileCollision(Vector2 explosionOrigin, bool causedShockwaves, Vector2 velocityBeforeCollision)
  	{

@@ -117,7 +117,6 @@ public static class ItemLoader
 		//Which is why the following 2 lines have to run without any interruptions.
 		lock (Main.itemAnimationsRegistered) {
 			Array.Resize(ref Main.itemAnimations, nextItem);
-
 			Main.InitializeItemAnimations();
 		}
 
@@ -1380,7 +1379,7 @@ public static class ItemLoader
 	/// </summary>
 	public static bool CanStack(Item increase, Item decrease)
 	{
-		if (increase.prefix != decrease.prefix) // TML: #StackablePrefixWeapons
+		if (increase.prefix != decrease.prefix) // #StackablePrefixWeapons
 			return false;
 
 		foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {

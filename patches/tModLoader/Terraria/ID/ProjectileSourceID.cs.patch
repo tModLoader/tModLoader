@@ -7,7 +7,7 @@
 +
  namespace Terraria.ID;
  
-+//TML: Internalized in favor of string contexts on every entity source.
++//TML: Made internal in favor of string contexts on every entity source.
 -public static class ProjectileSourceID
 +internal static class ProjectileSourceID
  {

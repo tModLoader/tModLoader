@@ -5,7 +5,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -6,12 +_,16 @@
+@@ -6,12 +_,15 @@
  using Terraria.GameContent.UI.States;
  using Terraria.IO;
  using Terraria.Localization;
@@ -17,7 +17,6 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
-+// Also see UIWorldListItem.TML.cs
 -public class UIWorldListItem : AWorldListItem
 +public partial class UIWorldListItem : AWorldListItem
  {
@@ -66,14 +65,13 @@
  	}
  
  	private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement)
-@@ -231,8 +_,16 @@
+@@ -231,8 +_,15 @@
  	{
  		if (_data.IsCloudSave)
  			_data.MoveToLocal();
 -		else
 +		else {
 +			// Only recalculate when about to put the file to cloud
-+
 +			ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
 +
 +			if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient(_fileSize))

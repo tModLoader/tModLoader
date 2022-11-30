@@ -49,11 +49,10 @@
  				}
  			}
  
-@@ -85,14 +_,22 @@
+@@ -85,14 +_,20 @@
  			Severity = IntendedSeverity;
  	}
  
-+	//TML: Made public, documented.
 +	/// <summary>
 +	/// Starts sandstorm for a random amount of time. Should be called on the server (netMode != client) - the method syncs it automatically.
 +	/// </summary>
@@ -65,7 +64,6 @@
  		ChangeSeverityIntentions();
  	}
  
-+	//TML: Made public, documented.
 +	/// <summary>
 +	/// Stops sandstorm. Should be called on the server (netMode != client) - the method syncs it automatically.
 +	/// </summary>

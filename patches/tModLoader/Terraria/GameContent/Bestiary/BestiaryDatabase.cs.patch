@@ -12,12 +12,11 @@
  {
  	public delegate void BestiaryEntriesPass(BestiaryEntry entry);
  
-@@ -27,6 +_,15 @@
+@@ -27,6 +_,14 @@
  				_byNpcId[nPCNetIdBestiaryInfoElement.NetId] = entry;
  		}
  
 +		Mod mod = ID.ContentSamples.NpcsByNetId[((NPCNetIdBestiaryInfoElement)entry.Info[0]).NetId].ModNPC?.Mod;
-+
 +		if (mod == null)
 +			_vanillaEntries.Add(entry);
 +		else if (_byMod.ContainsKey(mod))

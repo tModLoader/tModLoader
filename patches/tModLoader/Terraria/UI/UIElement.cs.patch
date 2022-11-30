@@ -26,7 +26,7 @@
  
  		DrawChildren(spriteBatch);
  		if (overflowHidden) {
-+			// Added by TML.
++			// TML: save a new rasterizer state snapshot to restore
 +			rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 +
  			spriteBatch.End();

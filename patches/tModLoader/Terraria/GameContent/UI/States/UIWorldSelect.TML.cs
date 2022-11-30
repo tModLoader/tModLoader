@@ -212,7 +212,7 @@ partial class UIWorldSelect
 
 		_worldList.Add(autoMigrateButton);
 
-		var noWorldsMessage = new UIText(Language.GetTextValue("tModLoader.MigrateWorldsMessage", BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder));
+		var noWorldsMessage = new UIText(Language.GetTextValue("tModLoader.MigrateWorldsMessage", Program.SaveFolderName));
 		noWorldsMessage.Width.Set(0, 1);
 		noWorldsMessage.Height.Set(300, 0);
 		noWorldsMessage.MarginTop = 20f;

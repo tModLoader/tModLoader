@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria/ObjectData/TileObjectData.cs
-@@ -3,13 +_,15 @@
+@@ -3,13 +_,14 @@
  using Terraria.DataStructures;
  using Terraria.Enums;
  using Terraria.GameContent.Tile_Entities;
@@ -10,7 +10,6 @@
  namespace Terraria.ObjectData;
  
 -public class TileObjectData
-+// See TileObjectData.TML.cs too.
 +public partial class TileObjectData
  {
 -	private TileObjectData _parent;
@@ -148,11 +147,10 @@
  					if (WaterPlacement == LiquidPlacement.NotAllowed)
  						return false;
  					if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1509,14 +_,16 @@
+@@ -1509,14 +_,14 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
-+	//TML: Made public.
 -	private static void addTile(int tileType)
 +	public static void addTile(int tileType)
  	{
@@ -161,17 +159,15 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
-+	//TML: Made public.
 -	private static void addSubTile(params int[] styles)
 +	public static void addSubTile(params int[] styles)
  	{
  		newSubTile.Calculate();
  		foreach (int num in styles) {
-@@ -1565,7 +_,8 @@
+@@ -1565,7 +_,7 @@
  		newSubTile = new TileObjectData(_baseObject);
  	}
  
-+	//TML: Made public.
 -	private static void addAlternate(int baseStyle)
 +	public static void addAlternate(int baseStyle)
  	{

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Wiring.cs
 +++ src/tModLoader/Terraria/Wiring.cs
-@@ -7,36 +_,39 @@
+@@ -7,36 +_,38 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Localization;
@@ -10,8 +10,7 @@
  
  public static class Wiring
  {
-+	//TML: Many many fields below were publicized.
-+	
++	//TML: Many many fields below were made public.	
  	public static bool blockPlayerTeleportationForOneIteration;
  	public static bool running;
  	private static Dictionary<Point16, bool> _wireSkip;
@@ -53,21 +52,19 @@
  	private static int CurrentUser = 255;
  
  	public static void SetCurrentUser(int plr = -1)
-@@ -349,7 +_,8 @@
+@@ -349,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made public.
 -	private static bool CheckMech(int i, int j, int time)
 +	public static bool CheckMech(int i, int j, int time)
  	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
-@@ -410,7 +_,8 @@
+@@ -410,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made public.
 -	private static void TripWire(int left, int top, int width, int height)
 +	public static void TripWire(int left, int top, int width, int height)
  	{
@@ -117,7 +114,7 @@
  				WorldGen.SwitchMB(i, j);
  				break;
  			case 207:
-@@ -2083,14 +_,32 @@
+@@ -2083,14 +_,30 @@
  								break;
  
  							int num120 = 50;
@@ -125,22 +122,20 @@
 +							/*
  							int[] array2 = new int[num120];
 +							*/
-+							var array2 = new List<int>();
++							var array2 = new List<int>(num120);
 +
  							int num121 = 0;
  							for (int num122 = 0; num122 < 200; num122++) {
 +								bool vanillaCanGo = false;
-+
  								if (Main.npc[num122].active && (Main.npc[num122].type == 17 || Main.npc[num122].type == 19 || Main.npc[num122].type == 22 || Main.npc[num122].type == 38 || Main.npc[num122].type == 54 || Main.npc[num122].type == 107 || Main.npc[num122].type == 108 || Main.npc[num122].type == 142 || Main.npc[num122].type == 160 || Main.npc[num122].type == 207 || Main.npc[num122].type == 209 || Main.npc[num122].type == 227 || Main.npc[num122].type == 228 || Main.npc[num122].type == 229 || Main.npc[num122].type == 368 || Main.npc[num122].type == 369 || Main.npc[num122].type == 550 || Main.npc[num122].type == 441 || Main.npc[num122].type == 588)) {
-+									/*
- 									array2[num121] = num122;
-+									*/
 +									vanillaCanGo = true;
 +								}
 +
-+								if (Main.npc[num122].active && NPCLoader.CanGoToStatue(Main.npc[num122], true, vanillaCanGo)) {
++								if (Main.npc[num122].active && (NPCLoader.CanGoToStatue(Main.npc[num122], toKingStatue: true) ?? vanillaCanGo)) {
++									/*
+ 									array2[num121] = num122;
++									*/
 +									array2.Add(num122);
-+
  									num121++;
 +
 +									/*
@@ -155,11 +150,11 @@
  								Main.npc[num123].position.Y = num113 - Main.npc[num123].height - 1;
  								NetMessage.SendData(23, -1, -1, null, num123);
 +
-+								NPCLoader.OnGoToStatue(Main.npc[num123], true);
++								NPCLoader.OnGoToStatue(Main.npc[num123], toKingStatue: true);
  							}
  
  							break;
-@@ -2108,14 +_,32 @@
+@@ -2108,14 +_,30 @@
  								break;
  
  							int num116 = 50;
@@ -167,22 +162,20 @@
 +							/*
  							int[] array = new int[num116];
 +							*/
-+							var array = new List<int>();
++							var array = new List<int>(num116);
 +
  							int num117 = 0;
  							for (int num118 = 0; num118 < 200; num118++) {
 +								bool vanillaCanGo = false;
-+
  								if (Main.npc[num118].active && (Main.npc[num118].type == 18 || Main.npc[num118].type == 20 || Main.npc[num118].type == 124 || Main.npc[num118].type == 178 || Main.npc[num118].type == 208 || Main.npc[num118].type == 353 || Main.npc[num118].type == 633 || Main.npc[num118].type == 663)) {
-+									/*
- 									array[num117] = num118;
-+									*/
 +									vanillaCanGo = true;
 +								}
 +
-+								if (Main.npc[num118].active && NPCLoader.CanGoToStatue(Main.npc[num118], false, vanillaCanGo)) {
++								if (Main.npc[num118].active && (NPCLoader.CanGoToStatue(Main.npc[num118], toKingStatue: false) ?? vanillaCanGo)) {
++									/*
+ 									array[num117] = num118;
++									*/
 +									array.Add(num118);
-+
  									num117++;
 +
 +									/*
@@ -197,7 +190,7 @@
  								Main.npc[num119].position.Y = num113 - Main.npc[num119].height - 1;
  								NetMessage.SendData(23, -1, -1, null, num119);
 +
-+								NPCLoader.OnGoToStatue(Main.npc[num119], false);
++								NPCLoader.OnGoToStatue(Main.npc[num119], toKingStatue: false);
  							}
  
  							break;
@@ -216,21 +209,19 @@
  	}
  
  	public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn)
-@@ -2523,7 +_,8 @@
+@@ -2523,7 +_,7 @@
  		return false;
  	}
  
-+	//TML: Made public.
 -	private static void DeActive(int i, int j)
 +	public static void DeActive(int i, int j)
  	{
  		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  			return;
-@@ -2541,7 +_,8 @@
+@@ -2541,7 +_,7 @@
  		}
  	}
  
-+	//TML: Made public.
 -	private static void ReActive(int i, int j)
 +	public static void ReActive(int i, int j)
  	{

@@ -7,28 +7,24 @@
  namespace Terraria.GameContent;
  
  public static class TreePaintSystemData
-@@ -214,6 +_,13 @@
+@@ -214,6 +_,11 @@
  			case 5:
  				switch (tileStyle) {
  					default:
 +						int lookup = Math.Abs(tileStyle) - ModTree.VanillaStyleCount;
 +						var tree = PlantLoader.Get<ModTree>(tileType, lookup);
-+
-+						// If this is a mod tree.
 +						if (tree != null)
 +							return tree.TreeShaderSettings;
-+					
++
  						return WoodPurity;
  					case 0:
  						return WoodCorruption;
-@@ -233,6 +_,13 @@
+@@ -233,6 +_,11 @@
  			case 323:
  				switch (tileStyle) {
  					default:
 +						int lookup = Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount;
 +						var palm = PlantLoader.Get<ModPalmTree>(tileType, lookup);
-+
-+						// If this is a mod palm
 +						if (palm != null)
 +							return palm.TreeShaderSettings;
 +

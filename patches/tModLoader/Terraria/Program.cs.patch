@@ -26,14 +26,12 @@
  {
  #if XNA
  	public static bool IsXna = true;
-@@ -35,6 +_,12 @@
+@@ -35,6 +_,10 @@
  	public static bool LoadedEverything;
  	public static IntPtr JitForcedMethodCache;
  
 +	// Added by TML.
 +	public static Thread MainThread { get; private set; }
-+
-+	// Added by TML.
 +	public static bool IsMainThread => Thread.CurrentThread == MainThread;
 +
  	public static float LoadedPercentage {
@@ -47,10 +45,10 @@
  	private static void ForceJITOnAssembly(Assembly assembly)
  	{
  		Type[] types = assembly.GetTypes();
-@@ -74,6 +_,17 @@
- 					else
- 						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
- 				}
+@@ -79,6 +_,20 @@
+ 			ThingsLoaded++;
+ 		}
+ 	}
 +	*/
 +	private static void ForceJITOnAssembly(IEnumerable<Type> types)
 +	{
@@ -62,10 +60,13 @@
 +		else {
 +			foreach (var method in methodsToJIT) {
 +				ForceJITOnMethod(method);
- 			}
++			}
++		}
++	}
  
- 			ThingsLoaded++;
-@@ -91,8 +_,16 @@
+ 	private static void ForceStaticInitializers(Assembly assembly)
+ 	{
+@@ -91,8 +_,14 @@
  
  	private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
  	{
@@ -73,10 +74,8 @@
  		ThingsToLoad = assembly.GetTypes().Length;
  		ForceJITOnAssembly(assembly);
 + 		*/
-+ 
 +		var types = assembly.GetTypes();
 +		ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
-+
 +		ForceJITOnAssembly(types);
 +
  		if (initializeStaticMembers)
@@ -93,13 +92,14 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,73 @@
+@@ -147,23 +_,74 @@
  		}
  	}
  
 +	public const string PreviewFolder = "tModLoader-preview";
 +	public const string ReleaseFolder = "tModLoader";
 +	public const string DevFolder = "tModLoader-dev";
++	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
 +
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
@@ -183,21 +183,18 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,17 @@
+@@ -184,9 +_,14 @@
  				Main.instance.IsMouseVisible = false;
  			};
  		}
--
-+		/*
- 		using Main main = new Main();
-+		*/
 +		
 +		InstallVerifier.Startup();
-+
+ 
+-		using Main main = new Main();
  		try {
 +			ModLoader.ModLoader.EngineInit();
 +
-+			using var main = new Main();
++			using Main main = new Main();
 +
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();

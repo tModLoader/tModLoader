@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -4,13 +_,23 @@
+@@ -4,13 +_,17 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  
@@ -8,16 +8,14 @@
 +
  namespace Terraria;
  
+-#if MONO
+-[StructLayout(LayoutKind.Sequential, Pack = 1)]
+-#endif
+-public class Tile
 +// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere.
 +// Alike Entities in the ECS game architecture design.
 +
 +// See Tile.TML.cs for the actual implementation.
-+/*
- #if MONO
- [StructLayout(LayoutKind.Sequential, Pack = 1)]
- #endif
- public class Tile
-+*/
 +public readonly partial struct Tile
  {
 +	/*
@@ -85,7 +83,7 @@
 +		*/
  	}
  
-+	//TML: Internalized, rewritten.
++	//TML: Made internal, rewritten. Only relevant for vanilla net/world compression. Modders should consider the data they want to compare directly
 -	public bool isTheSameAs(Tile compTile)
 +	internal bool isTheSameAs(Tile compTile)
  	{
@@ -112,7 +110,7 @@
  		if (compTile == null)
  			return false;
  
-@@ -165,13 +_,16 @@
+@@ -165,13 +_,15 @@
  			return false;
  		}
  
@@ -124,7 +122,6 @@
 +		*/
  	}
  
-+	//TML: Internalized.
 -	public int blockType()
 +	internal int blockType()
  	{
@@ -171,24 +168,22 @@
  		liquid = 0;
  		sTileHeader = 0;
  		bTileHeader = 0;
-@@ -232,9 +_,11 @@
+@@ -232,9 +_,10 @@
  		bTileHeader3 = 0;
  		frameX = 0;
  		frameY = 0;
 +		*/
  	}
  
-+	//TML: Internalized.
 -	public Color actColor(Color oldColor)
 +	internal Color actColor(Color oldColor)
  	{
  		if (!inActive())
  			return oldColor;
-@@ -243,13 +_,15 @@
+@@ -243,13 +_,13 @@
  		return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
  	}
  
-+	//TML: Internalized.
 -	public void actColor(ref Vector3 oldColor)
 +	internal void actColor(ref Vector3 oldColor)
  	{
@@ -196,37 +191,33 @@
  			oldColor *= 0.4f;
  	}
  
-+	//TML: Internalized.
 -	public bool topSlope()
 +	internal bool topSlope()
  	{
  		byte b = slope();
  		if (b != 1)
-@@ -258,7 +_,8 @@
+@@ -258,7 +_,7 @@
  		return true;
  	}
  
-+	//TML: Internalized.
 -	public bool bottomSlope()
 +	internal bool bottomSlope()
  	{
  		byte b = slope();
  		if (b != 3)
-@@ -267,7 +_,8 @@
+@@ -267,7 +_,7 @@
  		return true;
  	}
  
-+	//TML: Internalized.
 -	public bool leftSlope()
 +	internal bool leftSlope()
  	{
  		byte b = slope();
  		if (b != 2)
-@@ -276,7 +_,8 @@
+@@ -276,7 +_,7 @@
  		return true;
  	}
  
-+	//TML: Internalized.
 -	public bool rightSlope()
 +	internal bool rightSlope()
  	{

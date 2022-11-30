@@ -8,7 +8,7 @@
 +public static partial class SoundEngine
  {
 -	public static LegacySoundPlayer LegacySoundPlayer;
-+	internal static LegacySoundPlayer LegacySoundPlayer; //TML: Internalized.
++	internal static LegacySoundPlayer LegacySoundPlayer; //TML: Made internal.
  	public static SoundPlayer SoundPlayer;
  	public static bool AreSoundsPaused;
  

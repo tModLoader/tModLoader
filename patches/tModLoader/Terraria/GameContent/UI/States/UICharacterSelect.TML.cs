@@ -232,9 +232,7 @@ public partial class UICharacterSelect : UIState
 
 		_playerList.Add(autoMigrateButton);
 
-		string usedFolder = BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder;
-		var noPlayersMessage = new UIText(Language.GetTextValue("tModLoader.MigratePlayersMessage", usedFolder));
-
+		var noPlayersMessage = new UIText(Language.GetTextValue("tModLoader.MigratePlayersMessage", Program.SaveFolderName));
 		noPlayersMessage.Width.Set(0, 1);
 		noPlayersMessage.Height.Set(300, 0);
 		noPlayersMessage.MarginTop = 20f;

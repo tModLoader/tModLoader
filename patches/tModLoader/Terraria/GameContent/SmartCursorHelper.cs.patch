@@ -20,7 +20,7 @@
  				case 621:
  				case 642:
  					result = true;
-+				*/		
++				*/
 +				default:
 +					result = TileID.Sets.DisableSmartCursor[Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type];
  					break;

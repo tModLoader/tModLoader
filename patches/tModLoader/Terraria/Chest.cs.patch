@@ -41,7 +41,7 @@
 +						return item;
 +					}
 +
-+					/* TML: #OnStackHook
++					/* #OnStackHook
  					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  					if (num > 0) {
  						if (num > item.stack)

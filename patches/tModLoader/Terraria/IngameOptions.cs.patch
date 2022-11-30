@@ -65,24 +65,22 @@
  		if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
  			if (flag4) {
-@@ -270,6 +_,9 @@
+@@ -270,6 +_,8 @@
  		}
  
  		num10++;
-+		
 +		SkipAchievementsButton:
 +
  		if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
  			if (flag4)
-@@ -280,6 +_,10 @@
+@@ -280,6 +_,9 @@
  		if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
  			if (flag4) {
 +				Social.Steam.SteamedWraps.StopPlaytimeTracking();
 +				SystemLoader.PreSaveAndQuit();
 +
-+				// Calls before anything else is done.
  				Close();
  				Main.menuMode = 10;
  				Main.gameMenu = true;
@@ -111,7 +109,7 @@
  			string textValue3 = Language.GetTextValue("UI.MinimapFrame_" + Main.MinimapFrameManagerInstance.ActiveSelectionKeyName);
  			if (DrawRightSide(sb, Language.GetTextValue("UI.SelectMapBorder", textValue3), num16, vector6, vector7, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
  				rightHover = num16;
-@@ -708,8 +_,13 @@
+@@ -708,8 +_,12 @@
  
  			num16++;
  			vector6.X += num;
@@ -121,7 +119,6 @@
  			string textValue4 = Language.GetTextValue("UI.HealthManaStyle_" + activeSetKeyName);
 +			*/
 +			string textValue4 = Main.ResourceSetsManager.ActiveSet.DisplayedName;
-+
  			if (DrawRightSide(sb, Language.GetTextValue("UI.SelectHealthStyle", textValue4), num16, vector6, vector7, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
  				rightHover = num16;
  				if (flag4)

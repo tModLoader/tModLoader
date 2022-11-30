@@ -50,7 +50,7 @@
  		Point p = new Point(456, 22);
  		Point p2 = new Point(32, 24);
  		int verticalFrames = 6;
-@@ -111,8 +_,15 @@
+@@ -111,8 +_,14 @@
  		spriteBatch.Draw(value, vector, value2, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  		spriteBatch.Draw(value, rectangle.TopLeft(), value3, Color.White, 0f, Vector2.Zero, new Vector2(num2 / value3.Width, 1f), SpriteEffects.None, 0f);
  		spriteBatch.Draw(value, rectangle.TopLeft() + new Vector2(num2 - 2, 0f), value4, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
@@ -60,7 +60,6 @@
 +
  		spriteBatch.Draw(value, rectangle.TopLeft(), value5, Color.White, 0f, Vector2.Zero, new Vector2(num4 / value5.Width, 1f), SpriteEffects.None, 0f);
  		spriteBatch.Draw(value, rectangle.TopLeft() + new Vector2(num4 - 2, 0f), value6, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-+
 +		skipShield:
 +
  		Rectangle value7 = value.Frame(1, verticalFrames);

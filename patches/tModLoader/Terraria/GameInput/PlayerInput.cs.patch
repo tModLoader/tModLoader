@@ -48,14 +48,13 @@
  		PlayerInputProfile playerInputProfile = new PlayerInputProfile("Redigit's Pick");
  		playerInputProfile.Initialize(PresetProfiles.Redigit);
  		Profiles.Add(playerInputProfile.Name, playerInputProfile);
-@@ -518,7 +_,10 @@
+@@ -518,7 +_,9 @@
  
  	public static void Load()
  	{
 -		Main.InputProfiles.Load();
 +		if (!Main.InputProfiles.Load())
-+			// This added return fixes a strange bug caused by deleting 'input profiles.json' in-game and reloading mods.
-+			return;
++			return; // fixes strange bug caused by deleting input profiles.json in game and reloading mods.
 +
  		Dictionary<string, PlayerInputProfile> dictionary = new Dictionary<string, PlayerInputProfile>();
  		string currentValue = null;

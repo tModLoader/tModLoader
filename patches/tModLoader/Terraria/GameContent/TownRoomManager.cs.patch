@@ -18,7 +18,7 @@
  
  	public void AddOccupantsToList(int x, int y, List<int> occupantsList)
  	{
-@@ -82,8 +_,23 @@
+@@ -82,8 +_,22 @@
  	public void Save(BinaryWriter writer)
  	{
  		lock (EntityCreationLock) {
@@ -27,7 +27,6 @@
 +			*/
 +
 +			int count = 0;
-+
 +			foreach (Tuple<int, Point> current in _roomLocationPairs) {
 +				if (current.Item1 < Main.maxNPCTypes)
 +					count++;

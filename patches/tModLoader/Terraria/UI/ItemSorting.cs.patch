@@ -45,7 +45,7 @@
 +					if (!ItemLoader.TryStackItems(item2, item3, out _))
 +						continue;
 +
-+					/* TML: #OnStackHook
++					/* #OnStackHook
  					int num2 = item3.stack;
  					if (num < num2)
  						num2 = num;

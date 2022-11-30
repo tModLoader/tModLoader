@@ -34,7 +34,7 @@
  				return true;
  			}
  
-@@ -101,9 +_,11 @@
+@@ -101,9 +_,10 @@
  
  		public DoorCloseAttemptResult TryCloseDoor(DoorOpenCloseTogglingInfo info, PlayerInfoForClosingDoors playerInfo)
  		{
@@ -42,7 +42,6 @@
  			Point tileCoordsForToggling = info.tileCoordsForToggling;
  			Tile tile = Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y];
 -			if (!tile.active() || tile.type != 11)
-+
 +			if (!tile.active() || TileLoader.IsClosedDoor(tile))
  				return DoorCloseAttemptResult.DoorIsInvalidated;
  
@@ -55,20 +54,18 @@
  		{ 388, new TallGateOpeningInfoProvider() }
  	};
  	private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
-@@ -333,9 +_,12 @@
+@@ -333,9 +_,11 @@
  		if (tile == null)
  			return false;
  
 -		if (!_handlerByTileType.TryGetValue(tile.type, out infoProvider))
 -			return false;
--
--		return true;
 +		int type = tile.type;
 +		ModTile modTile = ModContent.GetModTile(type);
-+
 +		if (modTile != null && modTile.OpenDoorID > 0)
 +			type = TileID.ClosedDoor;
-+
+ 
+-		return true;
 +		return _handlerByTileType.TryGetValue(type, out infoProvider);
  	}
  }

@@ -20,30 +20,30 @@
  		_remoteAddress = null;
  		_connection.Close();
  	}
-@@ -75,7 +_,18 @@
+@@ -75,7 +_,17 @@
  			tuple = (Tuple<SocketSendCallback, object>)obj[0];
  		}
  
++		// Extract size from state for logging. Recreate packed tuple
 +		(var state, var size) = ((object, int))tuple.Item2;
-+
 +		tuple = Tuple.Create(tuple.Item1, state);
-+
 +		if (ModNet.DetailedLogging)
 +			ModNet.Debug(_remoteAddress, $"sent {size}");
 +
  		try {
++			// Reduce exception spam, because `GetStream` is invalid on a closed/disposed connection
 +			if (!_connection.Connected)
-+				//TML: Reduce exception spam, because `GetStream` is invalid on a closed/disposed connection
 +				return;
 +
  			_connection.GetStream().EndWrite(result);
  			tuple.Item1(tuple.Item2);
  		}
-@@ -90,6 +_,17 @@
+@@ -90,6 +_,18 @@
  
  	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
  	{
-+		if (!_connection.Connected) { // replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
++		// Replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
++		if (!_connection.Connected) {
 +			ModNet.Warn("TcpSocket, AsyncSend after connection closed.");
 +			return;
 +		}
@@ -51,7 +51,7 @@
 +		if (ModNet.DetailedLogging)
 +			ModNet.Debug(_remoteAddress, $"send {size}");
 +
-+		//TML: For debugging.
++		// Repack state in a ValueTuple with size for debugging
 +		state = (state, size);
 +
  		if (!Platform.IsWindows) {

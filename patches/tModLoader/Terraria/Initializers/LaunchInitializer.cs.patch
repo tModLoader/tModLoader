@@ -105,11 +105,10 @@
  		string banFilePath;
  		if ((banFilePath = TryParameter("-banlist")) != null)
  			Netplay.BanFilePath = banFilePath;
-@@ -160,7 +_,8 @@
+@@ -160,7 +_,7 @@
  		return false;
  	}
  
-+	//TML: Made public.
 -	private static string TryParameter(params string[] keys)
 +	public static string TryParameter(params string[] keys)
  	{

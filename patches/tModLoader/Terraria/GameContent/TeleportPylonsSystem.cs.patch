@@ -50,14 +50,13 @@
  				TeleportPylonInfo item = teleportPylonInfo;
  				_pylons.Add(item);
  			}
-@@ -99,6 +_,11 @@
+@@ -99,6 +_,10 @@
  
  		if (flag) {
  			flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillarsAndMoonlordCountdown: true);
 +
 +			flag = PylonLoader.ValidTeleportCheck_PreAnyDanger(info) is bool value
-+				? value : info.ModPylon?.ValidTeleportCheck_AnyDanger(info)
-+				?? flag;
++				? value : info.ModPylon?.ValidTeleportCheck_AnyDanger(info) ?? flag;
 +	
  			if (!flag)
  				key = "Net.CannotTeleportToPylonBecauseThereIsDanger";

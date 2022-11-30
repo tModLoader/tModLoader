@@ -30,7 +30,7 @@
  		public static bool[] NeedsExpertScaling = Factory.CreateBoolSet(25, 30, 665, 33, 112, 666, 261, 265, 371, 516, 519, 397, 396, 398, 491);
  		public static bool[] ProjectileNPC = Factory.CreateBoolSet(25, 30, 665, 33, 112, 666, 261, 265, 371, 516, 519);
 +
-+		//TML: Turned internal, modders should use hooks instead.
++		//TML: Made internal, modders should use hooks instead.
 -		public static bool[] SavesAndLoads = Factory.CreateBoolSet(422, 507, 517, 493);
 +		internal static bool[] SavesAndLoads = Factory.CreateBoolSet(422, 507, 517, 493);
 +

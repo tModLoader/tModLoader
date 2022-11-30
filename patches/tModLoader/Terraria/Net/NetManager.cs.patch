@@ -9,41 +9,35 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria.Net;
-@@ -45,6 +_,9 @@
+@@ -45,6 +_,8 @@
  
  	public void Broadcast(NetPacket packet, int ignoreClient = -1)
  	{
-+		// Call added by TML.
 +		LogSend(packet, ignoreClient: ignoreClient);
 +
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected())
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -53,6 +_,9 @@
+@@ -53,6 +_,8 @@
  
  	public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1)
  	{
-+		// Call added by TML.
 +		LogSend(packet, ignoreClient: ignoreClient);
 +
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -96,11 +_,17 @@
+@@ -96,11 +_,13 @@
  
  	public void SendToServer(NetPacket packet)
  	{
-+		// Call added by TML.
 +		LogSend(packet);
-+
  		SendData(Netplay.Connection.Socket, packet);
  	}
  
  	public void SendToClient(NetPacket packet, int playerId)
  	{
-+		// Call added by TML.
 +		LogSend(packet, toClient: playerId);
-+
  		SendData(Netplay.Clients[playerId].Socket, packet);
  	}
  

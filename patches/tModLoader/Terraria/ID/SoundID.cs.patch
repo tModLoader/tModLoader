@@ -91,16 +91,6 @@
  	private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
  	private static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
  	private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
-@@ -521,7 +_,9 @@
- 		if (_trackableLegacySoundPathList == null)
- 			_trackableLegacySoundPathList = new List<string>();
- 
-+		/*
- 		int count = _trackableLegacySoundPathList.Count;
-+		*/
- 		if (variations == 1) {
- 			_trackableLegacySoundPathList.Add(name);
- 		}
 @@ -531,7 +_,10 @@
  			}
  		}

@@ -96,7 +96,7 @@
  		}
  	}
  
-+	//TML: Internalized.
++	//TML: Made internal.
 -	public static bool IsBottomOverridden(ref PlayerDrawSet drawinfo)
 +	internal static bool IsBottomOverridden(ref PlayerDrawSet drawinfo)
  	{

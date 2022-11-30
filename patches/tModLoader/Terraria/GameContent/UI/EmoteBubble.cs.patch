@@ -15,11 +15,11 @@
  	public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  	private static List<int> toClean = new List<int>();
  	public static int NextID;
-@@ -64,7 +_,24 @@
+@@ -64,7 +_,23 @@
  			else if (anch.entity is Projectile)
  				item = 2;
  
-+			// TML: #WorldUIAnchorProjectileSyncFix: Explanation below
++			// #WorldUIAnchorProjectileSyncFix: Explanation below
 +			// Vanilla never uses Projectile as a WorldUIAnchor, but if mods do, it is very likely to desync.
 +			// As whoAmI is not enough to match a projectile between sides, TML rewrites it to use identity + owner instead.
 +			// It does so by packing the anchor entity type together with the owner if it's a projectile.
@@ -28,7 +28,6 @@
 +			// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile.
 +			// tl;dr: byte type -> ushort packedOwnerType [owner << 8 | type] (only if it's a projectile)
 +			int whoAmI = anch.entity.whoAmI;
-+
 +			if (!ModNet.AllowVanillaClients) {
 +				if (anch.entity is Projectile projectile) {
 +					whoAmI = projectile.identity; // This is the meta parameter in DeserializeNetAnchor
@@ -45,7 +44,7 @@
  
  	public static WorldUIAnchor DeserializeNetAnchor(int type, int meta)
  	{
-+		// TML: #WorldUIAnchorProjectileSyncFix
++		// #WorldUIAnchorProjectileSyncFix
 +		// Unpack type for the switch case evaluation, use the owner in the Projectile case
 +		int packedOwnerType = type;
 +		type = packedOwnerType & 0xFF; // Masking has no effect on vanilla value

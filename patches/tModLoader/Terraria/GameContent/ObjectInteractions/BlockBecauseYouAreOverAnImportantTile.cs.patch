@@ -33,7 +33,7 @@
  				case 657:
  				case 658:
  					return true;
-+				*/		
++				*/
 +				default:
 +					return TileID.Sets.DisableSmartInteract[tile.type];
  			}

@@ -8,38 +8,31 @@
  
  namespace Terraria;
  
-@@ -89,8 +_,12 @@
+@@ -89,8 +_,10 @@
  		}
  	}
  
-+	//TML: Made public.
 -	private class MountData
 +	public class MountData
  	{
-+		// Added by TML.
 +		public ModMount ModMount { get; set; }
 +
  		public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureExtra = Asset<Texture2D>.Empty;
-@@ -168,7 +_,10 @@
+@@ -168,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
  	public const int DrawFrontExtra = 3;
-+
-+	//TML: Made public.
 -	private static MountData[] mounts;
 +	public static MountData[] mounts;
-+
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -182,29 +_,32 @@
+@@ -182,29 +_,29 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
-+
-+	//TML: Many fields publicized.
 -	private MountData _data;
 +	public MountData _data;
 -	private int _type;
@@ -85,7 +78,6 @@
 +	public object _mountSpecificData;
 -	private bool _active;
 +	public bool _active;
-+
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
@@ -238,19 +230,18 @@
  			if (texture2D2 != null) {
  				item = new DrawData(texture2D2, Position, value, color * ((float)(int)drawColor.A / 255f), num9, origin, scale, spriteEffects);
  				item.shader = currentShader;
-@@ -4612,6 +_,11 @@
+@@ -4612,6 +_,10 @@
  			bool cart = Cart;
  			_active = false;
  			mountedPlayer.ClearBuff(_data.buff);
 +
 +			bool skipDust = false;
-+
 +			MountLoader.Dismount(this, mountedPlayer, ref skipDust);
 +
  			_mountSpecificData = null;
  			_ = _type;
  			if (cart) {
-@@ -4622,7 +_,14 @@
+@@ -4622,7 +_,13 @@
  
  			mountedPlayer.fullRotation = 0f;
  			mountedPlayer.fullRotationOrigin = Vector2.Zero;
@@ -259,7 +250,6 @@
 +				goto PostDustSpawn;
 +			
  			DoSpawnDust(mountedPlayer, isDismounting: true);
-+
 +			PostDustSpawn:
 +
  			Reset();
@@ -274,19 +264,17 @@
  			return;
  
  		if (_active) {
-@@ -4701,7 +_,17 @@
+@@ -4701,7 +_,15 @@
  		if (_type == 35)
  			_mountSpecificData = new ExtraFrameMountData();
  
 +		bool skipDust = false;
-+
 +		MountLoader.SetMount(this, mountedPlayer, ref skipDust);
 +
 +		if (skipDust)
 +			goto PostDustSpawn;
 +		
  		DoSpawnDust(mountedPlayer, isDismounting: false);
-+
 +		PostDustSpawn:
 +
  		if (mountedPlayer.whoAmI == Main.myPlayer)

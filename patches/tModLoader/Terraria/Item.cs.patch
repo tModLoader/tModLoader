@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,75 +_,443 @@
+@@ -37,74 +_,437 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -244,7 +244,6 @@
 +	/// </summary>
  	public bool isAShopItem;
 -	public short hairDye = -1;
-+
 +	public int hairDye = -1; //TML: Changed from short to int.
 +
 +	/// <summary>
@@ -254,7 +253,6 @@
 +	/// Defaults to 0.<br/>
 +	/// </summary>
  	public byte paint;
-+
  	public byte paintCoating;
 +
 +	/// <summary>
@@ -269,7 +267,6 @@
 +	/// Defaults to false.<br/>
 +	/// </summary>
  	public bool instanced;
-+
  	public int ownIgnore = -1;
  	public int ownTime;
  	public int keepTime;
@@ -445,7 +442,6 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
-+
  	public short glowMask;
 +
 +	/// <summary>
@@ -468,11 +464,9 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int defense;
-+
  	public int headSlot = -1;
  	public int bodySlot = -1;
- 	public int legSlot = -1;
-@@ -125,43 +_,223 @@
+@@ -125,42 +_,203 @@
  	public ItemTooltip ToolTip;
  	public string BestiaryNotes;
  	public int playerIndexTheItemIsReservedFor = 255;
@@ -516,7 +510,6 @@
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
 +	/// </summary>
  	public int useAmmo = AmmoID.None;
-+
  	public int lifeRegen;
  	public int manaIncrease;
  	public bool buyOnce;
@@ -538,7 +531,6 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noMelee;
-+
  	public int timeSinceTheItemHasBeenReservedForSomeone;
 +
 +	/// <summary>
@@ -546,7 +538,6 @@
 +	/// <br/> For convenience, you can also use the <see cref="Item.buyPrice(int, int, int, int)"/> method for setting values: <c>Item.value = Item.buyPrice(0, 1, 4, 62);</c> You can also use the <see cref="Item.sellPrice(int, int, int, int)"/> method if you would rather think about an item's value the other way. Both <c>Item.buyPrice(0, 0, 10, 55)</c> and <c>Item.sellPrice(0, 0, 2, 11)</c> would set the value to <c>1055</c>.
 +	/// </summary>
  	public int value;
-+
  	public bool buy;
  	public bool social;
  	public bool vanity;
@@ -581,7 +572,6 @@
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int mountType = -1;
-+
  	public bool cartTrack;
 +
 +	/// <summary>
@@ -608,7 +598,6 @@
 +	/// Defaults to <see langword="null"/>.<br/>
 +	/// </summary>
  	public int? shopCustomPrice;
-+
  	public bool shootsEveryUse;
 +
 +	/// <summary>
@@ -618,7 +607,6 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool DD2Summon;
-+
  	public int netID;
 +
 +	/// <summary>
@@ -627,6 +615,10 @@
 +	/// </summary>
  	public int crit;
 -	public byte prefix;
+-	public bool melee;
+-	public bool magic;
+-	public bool ranged;
+-	public bool summon;
 +
 +	/// <summary>
 +	/// The current prefix applied to this item. Either a <see cref="PrefixID"/> entry or <see cref="ModContent.PrefixType{T}"/>. Prefixes are assigned by calling the <see cref="Item.Prefix(int)"/> method.
@@ -634,9 +626,6 @@
 +	/// </summary>
 +	public int prefix; //TML: Changed from byte to int.
 +
-+	/*
- 	public bool melee;
-+	*/
 +	internal bool melee {
 +		get => CountsAsClass(DamageClass.Melee);
 +		set {
@@ -647,9 +636,6 @@
 +		}
 +	}
 +
-+	/*
- 	public bool magic;
-+	*/
 +	internal bool magic {
 +		get => CountsAsClass(DamageClass.Magic);
 +		set {
@@ -660,9 +646,6 @@
 +		}
 +	}
 +
-+	/*
- 	public bool ranged;
-+	*/
 +	internal bool ranged {
 +		get => CountsAsClass(DamageClass.Ranged);
 +		set {
@@ -673,9 +656,6 @@
 +		}
 +	}
 +
-+	/*
- 	public bool summon;
-+	*/
 +	internal bool summon {
 +		get => CountsAsClass(DamageClass.Summon);
 +		set {
@@ -693,11 +673,9 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
-+
  	public bool newAndShiny;
  	[Old("This is used to allow items to be discerned as vanity even if they didn't have visual slots to poll against")]
- 	public bool hasVanityEffects;
-@@ -172,6 +_,20 @@
+@@ -172,6 +_,21 @@
  	public bool shimmered;
  	public float shimmerTime;
  
@@ -705,7 +683,8 @@
 +	public Item() { }
 +
 +	// Added by TML.
-+	public Item(int setDefaultsToType, int stack = 1, int prefix = 0) {
++	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
++	{
 +		SetDefaults(setDefaultsToType);
 +
 +		if (setDefaultsToType > 0)
@@ -738,7 +717,7 @@
  
  	public ItemVariant Variant { get; private set; }
  
-@@ -278,11 +_,19 @@
+@@ -278,11 +_,18 @@
  		}
  	}
  
@@ -751,7 +730,6 @@
 +
  	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
  
-+	//TML: Made public.
 -	private bool CanHavePrefixes()
 +	public bool CanHavePrefixes()
  	{
@@ -780,33 +758,28 @@
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
 +
-+		//TML: #StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
++		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
 +		if (prefixWeWant == -1 && maxStack > 1)
 +			return false;
 +
  		UnifiedRandom unifiedRandom = (WorldGen.gen ? WorldGen.genRand : Main.rand);
 +
 +		bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
-+		if (applyPrefixOverride == false)
++		if (applyPrefixOverride is false)
 +			return false;
 +
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -316,12 +_,24 @@
+@@ -316,12 +_,18 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
 +
-+			if (applyPrefixOverride == true) {
-+				
-+			}
-+			else // A comment to avoid reformatting.
++			if (applyPrefixOverride is true) { } else
  			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
-+				/*
- 				rolledPrefix = 0;
-+				*/
-+				return true;
+-				rolledPrefix = 0;
++				return true; //rolledPrefix = 0;
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;
@@ -818,19 +791,14 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -329,8 +_,15 @@
+@@ -329,8 +_,9 @@
  				case -3:
  					return true;
  				case -1:
-+					if (applyPrefixOverride is true) {
-+						
-+					}
-+					else // A comment to avoid reformatting.
++					if (applyPrefixOverride is true) { } else
  					if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && unifiedRandom.Next(3) != 0)
-+						/*
- 						rolledPrefix = 0;
-+						*/
-+						return true;
+-						rolledPrefix = 0;
++						return true; //rolledPrefix = 0;
  					break;
  			}
  
@@ -930,7 +898,7 @@
  		return true;
  	}
  
-+	//TML: Internalized.
++	//TML: Made internal.
 -	public int[] GetRollablePrefixes()
 +	internal int[] GetRollablePrefixes()
  	{
@@ -1018,7 +986,7 @@
  		int num = 0;
  		if (banner == 289)
  			return 5352;
-@@ -1766,13 +_,17 @@
+@@ -1766,11 +_,15 @@
  				return 286;
  			case 176:
  				return 287;
@@ -1027,18 +995,14 @@
  				return 288;
  			case 676:
  				return 289;
--			default:
--				return 0;
+ 			default:
++				if (i >= NPCID.Count) // in NPCtoBanner method
++					return NPCLoader.GetNPC(i).Banner;
++
+ 				return 0;
  		}
-+
-+		if (i >= NPCID.Count) // in NPCtoBanner method
-+			return NPCLoader.GetNPC(i).Banner;
-+
-+		return 0;
  	}
- 
- 	public static int BannerToNPC(int i)
-@@ -2342,13 +_,17 @@
+@@ -2342,11 +_,15 @@
  				return 475;
  			case 287:
  				return 176;
@@ -1047,17 +1011,13 @@
  				return 133;
  			case 289:
  				return 676;
--			default:
--				return 0;
+ 			default:
++				if (i >= NPCID.Count) // in BannerToNPC method
++					return i;
++
+ 				return 0;
  		}
-+
-+		if (i >= NPCID.Count) // in BannerToNPC method
-+			return i;
-+
-+		return 0;
  	}
- 
- 	public bool FitsAmmoSlot()
 @@ -7673,6 +_,8 @@
  				value = 300;
  				break;
@@ -1219,24 +1179,21 @@
  	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46358,7 +_,12 @@
+@@ -46358,7 +_,10 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
-+
-+		DamageType = DamageClass.SummonMeleeSpeed;
 +		/*
  		summon = true;
 +		*/
-+
++		DamageType = DamageClass.SummonMeleeSpeed;
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46412,7 +_,8 @@
+@@ -46412,7 +_,7 @@
  		return false;
  	}
  
-+	//TML: Made public.
 -	private void DefaultToSeaShelll()
 +	public void DefaultToSeaShelll()
  	{
@@ -1755,7 +1712,7 @@
 +
 +				ItemLoader.StackItems(this, item, out _);
 +
-+				/* TML: #OnStackHook
++				/* #OnStackHook
  				int num3 = item.stack;
  				if (num3 > maxStack - stack)
  					num3 = maxStack - stack;
@@ -1845,7 +1802,7 @@
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}
-@@ -49081,9 +_,20 @@
+@@ -49081,9 +_,19 @@
  		Main.timeItemSlotCannotBeReusedFor[num] = 0;
  		Main.item[num] = new Item();
  		Item item = Main.item[num];
@@ -1860,7 +1817,6 @@
  		item.SetDefaults(Type);
  		item.Prefix(pfix);
  		item.stack = Stack;
-+
 +		skipItemCreation:
 +
  		item.position.X = X + Width / 2 - item.width / 2;
@@ -1875,35 +1831,32 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -49182,13 +_,27 @@
+@@ -49182,16 +_,21 @@
  					continue;
  
  				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
 -				if (player.CanPullItem(Main.item[whoAmI], status)) {
-+
 +				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
  					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
 +
 +					int grabRange = Player.defaultItemGrabRange;
-+
  					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
-+						/*
- 						num3 -= (float)manaGrabRange;
-+						*/
+-						num3 -= (float)manaGrabRange;
 +						grabRange += manaGrabRange;
  
  					if (player.lifeMagnet && (type == 58 || type == 1734 || type == 1867))
-+						/*
- 						num3 -= (float)lifeGrabRange;
-+						*/
+-						num3 -= (float)lifeGrabRange;
 +						grabRange += lifeGrabRange;
-+
-+					ItemLoader.GrabRange(Main.item[whoAmI], player, ref grabRange);
-+
-+					num3 -= grabRange;
  
  					if (type == 4143)
- 						num3 -= (float)manaGrabRange;
+-						num3 -= (float)manaGrabRange;
++						grabRange += manaGrabRange;
++
++					ItemLoader.GrabRange(Main.item[whoAmI], player, ref grabRange);
++					num3 -= grabRange;
+ 
+ 					if (num2 > num3) {
+ 						num2 = num3;
 @@ -49208,10 +_,29 @@
  		}
  	}
@@ -1982,7 +1935,7 @@
  			bool flag = favorited;
  			int num = stack;
  			int num2 = netID;
-@@ -49309,6 +_,16 @@
+@@ -49309,6 +_,13 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;
@@ -1990,11 +1943,8 @@
 +
 +			//TODO: Could speed this up by reusing the memory stream, reader and writer, perhaps with a `ThreadLocalCache`?
 +			using var ms = new MemoryStream(64);
-+
 +			ItemIO.Send(this, new BinaryWriter(ms), writeStack: true, writeFavorite: true);
-+
 +			ms.Position = 0;
-+
 +			ItemIO.Receive(this, new BinaryReader(ms), readStack: true, readFavorite: true);
  		}
  	}
