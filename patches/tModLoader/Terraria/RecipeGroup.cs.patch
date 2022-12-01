@@ -9,12 +9,12 @@
  	public RecipeGroup(Func<string> getName, params int[] validItems)
  	{
  		GetText = getName;
-@@ -22,11 +_,19 @@
+@@ -22,11 +_,20 @@
  
  	public static int RegisterGroup(string name, RecipeGroup rec)
  	{
-+		// tModLoader: Handle registering to an existing group by merging items and keeping the original group
-+		if(recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
++		// TML: Handle registering to an existing group by merging items and keeping the original group.
++		if (recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
 +			recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
 +			return existingRecipeGroup;
 +		}
@@ -25,6 +25,7 @@
  		return num;
  	}
 +
++	// Added by TML.
 +	public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
  
  	public int CountUsableItems(Dictionary<int, int> itemStacksAvailable)

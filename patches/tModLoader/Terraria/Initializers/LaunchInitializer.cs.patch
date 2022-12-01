@@ -16,8 +16,8 @@
  		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out var result))
  			Netplay.ListenPort = result;
 +
-+		string modPack;
-+		if ((modPack = TryParameter("-modpack")) != null)
++		// Added by TML.
++		if (TryParameter("-modpack") is string modPack)
 +			ModOrganizer.commandLineModPack = modPack;
  	}
  
@@ -30,18 +30,20 @@
  
  		string arg;
  		if ((arg = TryParameter("-pass", "-password")) != null) {
-@@ -41,6 +_,34 @@
+@@ -41,6 +_,42 @@
  
  		if (HasParameter("-host"))
  			game.AutoHost();
 +
++		// Added by TML.
 +		if (HasParameter("-skipselect")) {
-+			string skipSelectArgs = TryParameter(new string[] { "-skipselect" });
 +			string playerName = null;
 +			string worldName = null;
-+			if (skipSelectArgs != null) {
++
++			if (TryParameter("-skipselect") is string skipSelectArgs) {
 +				Regex cmdRegEx = new Regex(@"(?<name>.*?):(?<val>.*)");
 +				Match m = cmdRegEx.Match(skipSelectArgs);
++
 +				if (m.Success) {
 +					playerName = m.Groups["name"].Value;
 +					worldName = m.Groups["val"].Value;
@@ -50,14 +52,20 @@
 +
 +			ModLoader.ModLoader.OnSuccessfulLoad += () => {
 +				WorldGen.clearWorld();
++
 +				Main.LoadPlayers();
 +				(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
++
 +				Main.LoadWorlds();
 +				(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
-+				if (!GameContent.UI.States.UIWorldSelect.CanWorldBePlayed(Main.ActiveWorldFileData))
-+					throw new Exception($"The selected character {playerName} can not be used with the selected world {worldName}.\n" +
++
++				if (!GameContent.UI.States.UIWorldSelect.CanWorldBePlayed(Main.ActiveWorldFileData)) {
++					throw new Exception(
++						$"The selected character {playerName} can not be used with the selected world {worldName}.\n" +
 +						$"This could be due to mismatched Journey Mode or other mod specific changes." +
-+						$"Check in Game Menus for more information.");
++						$"Check in Game Menus for more information."
++					);
++				}
 +
 +				WorldGen.playWorld();
 +			};
@@ -65,28 +73,32 @@
  	}
  
  	private static void LoadServerParameters(Main game)
-@@ -103,6 +_,14 @@
+@@ -103,6 +_,16 @@
  		if ((s2 = TryParameter("-language")) != null)
  			LanguageManager.Instance.SetLanguage(s2);
  
++		// Added by TML.
 +		if (TryParameter("-publish") is string publish) {
 +			ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +			// Application Exits
 +		}
 +
++		// Added by TML.
 +		if (TryParameter("-install") is string install)
 +			FileAssociationSupport.HandleFileAssociation(install);
 +
  		string worldName;
  		if ((worldName = TryParameter("-worldname")) != null)
  			game.SetWorldName(worldName);
-@@ -111,6 +_,12 @@
+@@ -111,6 +_,14 @@
  		if ((newMOTD = TryParameter("-motd")) != null)
  			game.NewMOTD(newMOTD);
  
++		// Added by TML.
 +		if (TryParameter("-modpath") is string modPath)
 +			ModOrganizer.modPath = modPath;
 +
++		// Added by TML.
 +		if (HasParameter("-showserverconsole"))
 +			Main.showServerConsole = true;
 +

@@ -1,27 +1,14 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
-@@ -1,4 +_,5 @@
- using System.Collections.Generic;
-+using Terraria.ModLoader;
+@@ -2,9 +_,9 @@
  
  namespace Terraria.ID;
  
-@@ -6,6 +_,7 @@
+-public static class AmmoID
++public static partial class AmmoID
  {
- 	public class Sets
+-	public class Sets
++	public partial class Sets
  	{
-+		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
- 				759,
-@@ -93,6 +_,10 @@
- 				}
- 			}
- 		};
-+
-+		public static bool[] IsArrow = Factory.CreateBoolSet(false, Arrow, Stake);
-+		public static bool[] IsBullet = Factory.CreateBoolSet(false, Bullet, CandyCorn);
-+		public static bool[] IsRocket = Factory.CreateBoolSet(false, Rocket, StyngerBolt, JackOLantern, NailFriendly);
- 	}
- 
- 	public static int None = 0;

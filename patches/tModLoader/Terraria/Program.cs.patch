@@ -30,8 +30,8 @@
  	public static bool LoadedEverything;
  	public static IntPtr JitForcedMethodCache;
  
++	// Added by TML.
 +	public static Thread MainThread { get; private set; }
-+
 +	public static bool IsMainThread => Thread.CurrentThread == MainThread;
 +
  	public static float LoadedPercentage {
@@ -45,11 +45,11 @@
  	private static void ForceJITOnAssembly(Assembly assembly)
  	{
  		Type[] types = assembly.GetTypes();
-@@ -74,6 +_,17 @@
- 					else
- 						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
- 				}
-+				*/
+@@ -79,6 +_,20 @@
+ 			ThingsLoaded++;
+ 		}
+ 	}
++	*/
 +	private static void ForceJITOnAssembly(IEnumerable<Type> types)
 +	{
 +		var methodsToJIT = CollectMethodsToJIT(types);
@@ -60,9 +60,12 @@
 +		else {
 +			foreach (var method in methodsToJIT) {
 +				ForceJITOnMethod(method);
- 			}
++			}
++		}
++	}
  
- 			ThingsLoaded++;
+ 	private static void ForceStaticInitializers(Assembly assembly)
+ 	{
 @@ -91,8 +_,14 @@
  
  	private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
@@ -73,28 +76,30 @@
 + 		*/
 +		var types = assembly.GetTypes();
 +		ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
-+
 +		ForceJITOnAssembly(types);
++
  		if (initializeStaticMembers)
  			ForceStaticInitializers(assembly);
  	}
-@@ -136,6 +_,9 @@
+@@ -136,6 +_,10 @@
  		if (Debugger.IsAttached)
  			return;
  
++		// Hide the console on clients unless a special parameter was passed down.
 +		if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
 +			Platform.Get<IWindowService>().HideConsole();
 +
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,69 @@
+@@ -147,23 +_,74 @@
  		}
  	}
  
 +	public const string PreviewFolder = "tModLoader-preview";
 +	public const string ReleaseFolder = "tModLoader";
 +	public const string DevFolder = "tModLoader-dev";
++	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
 +
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
@@ -114,7 +119,9 @@
 +		*/
  
  		LaunchParameters = Utils.ParseArguements(args);
++
 +		if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
++			// Launch the Terraria playtime tracker and quit.
 +			TerrariaSteamClient.Run();
 +			Environment.Exit(1);
 +		}
@@ -123,6 +130,7 @@
 -#if SERVER
 -		Main.dedServ = true;
 -#else
++
  		// Unify server and client dll via launch param
 -		Main.dedServ = LaunchParameters.ContainsKey("-server");
 -#endif
@@ -131,6 +139,7 @@
 +		try {
 +			ControlledFolderAccessSupport.CheckFileSystemAccess();
 +			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
++
 +			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
 +				throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 +		}
@@ -150,7 +159,7 @@
 +		LaunchGame_(isServer);
 +	}
 +
-+	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++	// IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
 +	public static void LaunchGame_(bool isServer)
 +	{
@@ -164,37 +173,40 @@
  
  		if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
  			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
-@@ -171,7 +_,7 @@
+@@ -171,7 +_,9 @@
  
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
--		SetupLogging();
-+		//SetupLogging();
++		/*
+ 		SetupLogging();
++		*/
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,11 @@
+@@ -184,9 +_,14 @@
  				Main.instance.IsMouseVisible = false;
  			};
  		}
--
--		using Main main = new Main();
 +		
 +		InstallVerifier.Startup();
+ 
+-		using Main main = new Main();
  		try {
 +			ModLoader.ModLoader.EngineInit();
-+			using (Main main = new Main()) {
++
++			using Main main = new Main();
++
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -196,11 +_,13 @@
- 
+@@ -197,10 +_,14 @@
  			main.Run();
  		}
-+		}
  		catch (Exception e) {
--			DisplayException(e);
 +			ErrorReporting.FatalExit("Main engine crash", e);
++			/*
+ 			DisplayException(e);
++			*/
  		}
  	}
  

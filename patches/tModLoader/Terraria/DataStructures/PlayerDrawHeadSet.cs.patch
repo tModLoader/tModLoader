@@ -1,13 +1,14 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDrawHeadSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadSet.cs
-@@ -5,9 +_,12 @@
+@@ -5,9 +_,14 @@
  
  namespace Terraria.DataStructures;
  
--public struct PlayerDrawHeadSet
 +// This struct is basically deleted, and its BoringSetup() is moved into PlayerDrawSet under the name HeadOnlySetup()
 +
-+//public struct PlayerDrawHeadSet
++/*
+ public struct PlayerDrawHeadSet
++*/
 +public partial struct PlayerDrawSet
  {
 -	public List<DrawData> DrawData;
@@ -15,12 +16,11 @@
  	public List<int> Dust;
  	public List<int> Gore;
  	public Player drawPlayer;
-@@ -49,31 +_,40 @@
- 			result.Height--;
+@@ -50,30 +_,46 @@
  			return result;
  		}
--	}
-+	}*/
+ 	}
++	*/
  
 -	public void BoringSetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale)
 +	public void HeadOnlySetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale)
@@ -28,12 +28,15 @@
 +		projectileDrawPosition = -1;
 +		headOnlyRender = true;
 +
--		DrawData = drawData;
++		/*
+ 		DrawData = drawData;
+ 		Dust = dust;
+ 		Gore = gore;
++		*/
 +		DrawDataCache = drawData;
--		Dust = dust;
 +		DustCache = dust;
--		Gore = gore;
 +		GoreCache = gore;
++
  		drawPlayer = drawPlayer2;
  		Position = drawPlayer.position;
 +		/*

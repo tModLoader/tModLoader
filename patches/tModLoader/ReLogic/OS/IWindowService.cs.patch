@@ -1,19 +1,21 @@
 --- src/TerrariaNetCore/ReLogic/OS/IWindowService.cs
 +++ src/tModLoader/ReLogic/OS/IWindowService.cs
-@@ -1,4 +_,5 @@
- using Microsoft.Xna.Framework;
+@@ -1,3 +_,4 @@
 +using System;
+ using Microsoft.Xna.Framework;
  
  namespace ReLogic.OS;
- 
-@@ -13,4 +_,11 @@
+@@ -13,4 +_,14 @@
  	float GetScaling();
  
  	void SetQuickEditEnabled(bool enabled);
 +
++	// Added by TML.
 +	void HideConsole();
 +
-+	void SetIcon(GameWindow window) {
++	// Added by TML.
++	void SetIcon(GameWindow window)
++	{
 +		IntPtr surface = SDL2.SDL.SDL_LoadBMP("Libraries/Native/tModLoader.bmp");
 +		SDL2.SDL.SDL_SetWindowIcon(window.Handle, surface);
 +	}

@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 /// <summary>
 /// This enum dictates from low to high which SceneEffect selections take priority.

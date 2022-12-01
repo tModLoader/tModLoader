@@ -12,7 +12,7 @@
  				switch (tileStyle) {
  					default:
 +						int lookup = Math.Abs(tileStyle) - ModTree.VanillaStyleCount;
-+						var tree = PlantLoader.Get<ModTree>(5, lookup);
++						var tree = PlantLoader.Get<ModTree>(tileType, lookup);
 +						if (tree != null)
 +							return tree.TreeShaderSettings;
 +
@@ -24,10 +24,10 @@
  				switch (tileStyle) {
  					default:
 +						int lookup = Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount;
-+						var palm = PlantLoader.Get<ModPalmTree>(323, lookup);
++						var palm = PlantLoader.Get<ModPalmTree>(tileType, lookup);
 +						if (palm != null)
 +							return palm.TreeShaderSettings;
-+							
++
  						return WoodPurity;
  					case 0:
  					case 4:

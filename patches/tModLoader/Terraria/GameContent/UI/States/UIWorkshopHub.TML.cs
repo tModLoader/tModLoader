@@ -1,20 +1,57 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
-using Terraria.Social.Steam;
 using Terraria.UI;
 
 namespace Terraria.GameContent.UI.States;
 
-partial class UIWorkshopHub
+partial class UIWorkshopHub : IHaveBackButtonCommand
 {
 	private UIElement _buttonMods;
 	private UIElement _buttonModSources;
 	private UIElement _buttonModBrowser;
 	private UIElement _buttonModPack;
+
+	public UIState PreviousUIState { get; set; }
+
+	private void AppendTmlElements(UIElement uiElement)
+	{
+		var modsMenu = MakeButton_OpenModsMenu();
+		modsMenu.HAlign = 0f;
+		modsMenu.VAlign = 0f;
+		uiElement.Append(modsMenu);
+
+		var modSources = MakeButton_OpenModSourcesMenu();
+		modSources.HAlign = 1f;
+		modSources.VAlign = 0f;
+		uiElement.Append(modSources);
+
+		var modBrowser = MakeButton_OpenModBrowserMenu();
+		modBrowser.HAlign = 0f;
+		modBrowser.VAlign = 0.5f;
+		uiElement.Append(modBrowser);
+
+		var tbd = MakeButton_ModPackMenu();
+		tbd.HAlign = 1f;
+		tbd.VAlign = 0.5f;
+		uiElement.Append(tbd);
+	}
+
+	private void OnChooseOptionDescription(UIElement listeningElement, ref LocalizedText localizedText)
+	{
+		if (listeningElement == _buttonMods)
+			localizedText = Language.GetText("tModLoader.MenuManageModsDescription");
+
+		if (listeningElement == _buttonModSources)
+			localizedText = Language.GetText("tModLoader.MenuDevelopModsDescription");
+
+		if (listeningElement == _buttonModBrowser)
+			localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
+
+		if (listeningElement == _buttonModPack)
+			localizedText = Language.GetText("tModLoader.MenuModPackDescription");
+	}
 
 	private UIElement MakeButton_OpenModsMenu()
 	{
@@ -78,6 +115,6 @@ partial class UIWorkshopHub
 
 	private UIElement MakeFancyButtonMod(string path, string textKey)
 	{
-		return MakeFancyButtonInner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
+		return MakeFancyButton_Inner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
 	}
 }

@@ -7,20 +7,25 @@
  
  namespace Terraria.GameContent;
  
-@@ -84,13 +_,28 @@
+@@ -84,13 +_,34 @@
  	};
  	public static TownNPCProfiles Instance = new TownNPCProfiles();
  
--	public bool GetProfile(int npcId, out ITownNPCProfile profile) => _townNPCProfiles.TryGetValue(npcId, out profile);
++	/*
+ 	public bool GetProfile(int npcId, out ITownNPCProfile profile) => _townNPCProfiles.TryGetValue(npcId, out profile);
++	*/
 +	public bool GetProfile(NPC npc, out ITownNPCProfile profile)
 +	{
 +		_townNPCProfiles.TryGetValue(npc.type, out profile);
 +		NPCLoader.ModifyTownNPCProfile(npc, ref profile);
++
 +		if (!Main.dedServ)
 +			profile?.GetTextureNPCShouldUse(npc).Wait?.Invoke();
++
 +		return profile != null;
 +	}
 +
++	// Added by TML.
 +	internal void ResetTexturesAccordingToVanillaProfiles()
 +	{
 +		foreach (KeyValuePair<int, ITownNPCProfile> pair in _townNPCProfiles) {

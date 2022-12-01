@@ -9,18 +9,19 @@
  
  namespace Terraria.GameContent;
  
-@@ -80,7 +_,36 @@
+@@ -80,7 +_,38 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
++			*/
 +			Asset<Texture2D> asset;
 +
 +			if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
 +				int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
 +
 +				asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetTopTextures();
-+				
 +			}
 +			else if (Key.TextureIndex < 0) {
 +				int lookup = -1 * Key.TextureIndex;
@@ -47,11 +48,13 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -96,7 +_,21 @@
+@@ -96,7 +_,24 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
++			*/
 +			Asset<Texture2D> asset;
 +
 +			if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
@@ -70,11 +73,13 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -112,7 +_,19 @@
+@@ -112,7 +_,22 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
++			*/
 +			Asset<Texture2D> asset;
 +
 +			if (PlantLoader.plantIdToStyleLimit.TryGetValue(Key.TileType, out int val)
@@ -91,11 +96,13 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -128,7 +_,7 @@
+@@ -128,7 +_,10 @@
  
  		public override void Prepare()
  		{
--			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Wall[Key.WallType].Name);
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Wall[Key.WallType].Name);
++			*/
 +			Asset<Texture2D> asset = TextureAssets.Wall[Key.WallType];
  			PrepareTextureIfNecessary(asset.Value);
  		}

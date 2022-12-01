@@ -13,10 +13,12 @@
  
  namespace Terraria;
  
-@@ -29,6 +_,7 @@
+@@ -29,6 +_,9 @@
  	public ArmorShaderData shader;
  	public object customData;
  	public bool firstFrame;
++	
++	// Added by TML.
 +	internal int realType = -1;
  
  	public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)

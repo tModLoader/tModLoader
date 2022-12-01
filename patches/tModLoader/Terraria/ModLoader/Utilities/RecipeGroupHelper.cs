@@ -76,10 +76,10 @@ internal static class RecipeGroupHelper
 				throw;
 			}
 		}
-		FixRecipeGroupLookups();
+		CreateRecipeGroupLookups();
 	}
 
-	internal static void FixRecipeGroupLookups()
+	internal static void CreateRecipeGroupLookups()
 	{
 		for (int k = 0; k < RecipeGroup.nextRecipeGroupIndex; k++) {
 			RecipeGroup rec = RecipeGroup.recipeGroups[k];

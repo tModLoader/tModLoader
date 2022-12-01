@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class contains a more human-readable name for every single Game Tip created by Vanilla.

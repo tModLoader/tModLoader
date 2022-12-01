@@ -6,9 +6,11 @@
  namespace Terraria.ID;
  
  public class PrefixID
-@@ -87,4 +_,5 @@
+@@ -87,4 +_,7 @@
  	public const int Mythical = 83;
  	public const int Legendary2 = 84;
  	public const int Count = 85;
++
++	// Added by TML.
 +	public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();
  }

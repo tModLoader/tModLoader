@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Readers/XnbReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/XnbReader.cs
-@@ -1,12 +_,20 @@
+@@ -1,12 +_,21 @@
  using System;
 +using System.Diagnostics;
  using System.IO;
@@ -13,6 +13,7 @@
  
  public class XnbReader : IAssetReader, IDisposable
  {
++	// Added by TML.
 +	public static class LoadOnMainThread<T>
 +	{
 +		public static bool Value;
@@ -21,11 +22,13 @@
  	private class InternalContentManager : ContentManager
  	{
  		private Stream _stream;
-@@ -33,9 +_,15 @@
+@@ -33,9 +_,18 @@
  		_contentLoader = new ThreadLocal<InternalContentManager>(() => new InternalContentManager(services));
  	}
  
--	public T FromStream<T>(Stream stream) where T : class
++	/*
+ 	public T FromStream<T>(Stream stream) where T : class
++	*/
 +	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
  	{
  		InternalContentManager value = _contentLoader.Value;

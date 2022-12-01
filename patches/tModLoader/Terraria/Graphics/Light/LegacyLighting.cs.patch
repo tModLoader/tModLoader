@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -5,6 +_,7 @@
+@@ -4,6 +_,7 @@
+ using Microsoft.Xna.Framework;
  using ReLogic.Threading;
  using Terraria.DataStructures;
- using Terraria.Utilities;
 +using Terraria.ModLoader;
+ using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
- 
 @@ -584,6 +_,7 @@
  			ScanOreFinderData = Main.LocalPlayer.accOreFinder
  		});
@@ -42,11 +42,12 @@
  		}
  		else {
  			_negLight = 0.04f;
-@@ -810,6 +_,7 @@
+@@ -809,6 +_,8 @@
+ 				_negLight += 0.09f;
  				_negLight2 += 0.18f;
  			}
- 
++
 +			SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
+ 
  			_wetLightR = _negLight * 1.2f;
  			_wetLightG = _negLight * 1.1f;
- 		}

@@ -1,10 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 @@ -1,6 +_,9 @@
++using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
-+using System.Linq;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
@@ -14,7 +14,7 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
-+		//TODO possibly allow modders to custom draw here
++		//TODO: Possibly allow modders to custom draw here
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
  			float num = 1f;
@@ -55,17 +55,17 @@
 +			item.netDefaults(result);
 +
 +		// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
-+		if(ID.ItemID.Search.TryGetId(text, out result))
++		if (ID.ItemID.Search.TryGetId(text, out result))
  			item.netDefaults(result);
  
  		if (item.type <= 0)
  			return new TextSnippet(text);
  
  		item.stack = 1;
-+		// options happen here, we add MID (=ModItemData) options
++		// Options happen here, we add MID (=ModItemData) options
  		if (options != null) {
-+			// don't know why all these options here in vanilla,
-+			// since it only assumed one option (stack OR prefix, since prefixed items don't stack)
++			// Don't know why all these options are here in vanilla,
++			// Since it only assumed one option (stack OR prefix, since prefixed items don't stack)
  			string[] array = options.Split(',');
  			for (int i = 0; i < array.Length; i++) {
  				if (array[i].Length == 0)
@@ -91,13 +91,13 @@
  		};
  	}
  
-+	// we do not alter vanilla ways of doing things
-+	// this can lead to trouble in future patches
++	// We do not alter vanilla ways of doing things
++	// This can lead to trouble in future patches
  	public static string GenerateTag(Item I)
  	{
  		string text = "[i";
-+		// assuming we have modded data, simply write the item as base64
-+		// do not write other option, base64 holds all the info.
++		// Assuming we have modded data, simply write the item as base64.
++		// Do not write the other option, base64 holds all the info.
 +		if (I.ModItem != null || I.globalItems.Any()) {
 +			text = text + "/d" + ItemIO.ToBase64(I);
 +

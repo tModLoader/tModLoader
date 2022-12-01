@@ -5,7 +5,7 @@
  	public float? sizeScaleOverride;
  	public int? playerCountForMultiplayerDifficultyOverride;
 -	public GameModeData gameModeData;
-+	public GameModeData? gameModeData;
++	public GameModeData? gameModeData; //TML: Made nullable, since GameModeData was turned into a struct.
  	public float? strengthMultiplierOverride;
  
  	public NPCSpawnParams WithScale(float scaleOverride)

@@ -25,21 +25,21 @@
  	{
  		if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  			_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
-@@ -95,7 +_,8 @@
+@@ -95,7 +_,7 @@
  		return entry;
  	}
  
-+	//TML: Made public
 -	private void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry)
 +	public void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry)
  	{
  		if (_entriesByNpcNetId.ContainsKey(npcNetId))
  			_entriesByNpcNetId[npcNetId].Remove(entry);
-@@ -143,6 +_,27 @@
+@@ -143,6 +_,30 @@
  		RegisterMimic();
  		RegisterEclipse();
  		RegisterBloodMoonFishing();
 +
++		// TML code: [[
 +		RegisterBossBags();
 +		RegisterCrateDrops();
 +		RegisterObsidianLockbox();
@@ -56,9 +56,11 @@
 +		foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 +			NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
 +		}
++
 +		foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
 +			ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
 +		}
++		// ]]
 +
  		TrimDuplicateRulesForNegativeIDs();
  	}

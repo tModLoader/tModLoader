@@ -9,13 +9,15 @@
  {
  	public delegate bool ElementSearchMethod(UIElement element);
  
-@@ -30,9 +_,9 @@
+@@ -30,9 +_,11 @@
  		public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
  	}
  
++	//TML: Made public instead of protected.
 -	protected List<UIElement> _items = new List<UIElement>();
 +	public List<UIElement> _items = new List<UIElement>();
  	protected UIScrollbar _scrollbar;
++	//TML: Made internal instead of private.
 -	private UIElement _innerList = new UIInnerList();
 +	internal UIElement _innerList = new UIInnerList();
  	private float _innerListHeight;

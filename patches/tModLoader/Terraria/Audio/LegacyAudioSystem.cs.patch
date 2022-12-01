@@ -47,21 +47,24 @@
  		Engine.Update();
  		AudioTracks = new IAudioTrack[92];
  		TrackNamesByIndex = new Dictionary<int, string>();
-@@ -118,6 +_,8 @@
+@@ -118,6 +_,10 @@
  		}
  	}
  
-+	internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
++	// Added by TML.
++	internal Cue GetCueInternal(string cueName)
++		=> SoundBank.GetCue(cueName);
 +
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -256,7 +_,7 @@
+@@ -256,7 +_,8 @@
  
  	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
  	{
 -		if (!WaveBank.IsPrepared)
-+		if (!WaveBank.IsPrepared || AudioTracks[i] is null) // should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
++		// Track should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
++		if (!WaveBank.IsPrepared || AudioTracks[i] is null)
  			return;
  
  		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {

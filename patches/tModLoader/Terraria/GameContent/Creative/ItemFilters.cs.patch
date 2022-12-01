@@ -8,14 +8,16 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -19,6 +_,7 @@
- 		private bool[] _unusedBadPrefixLines = new bool[30];
+@@ -20,6 +_,9 @@
  		private int _unusedYoyoLogo;
  		private int _unusedResearchLine;
-+		private string[] _toolTipNames = new string[30];
  		private string _search;
++		
++		// Added by TML.
++		private string[] _toolTipNames = new string[30];
  
  		public bool FitsFilter(Item entry)
+ 		{
 @@ -28,7 +_,7 @@
  
  			int numLines = 1;

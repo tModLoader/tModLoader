@@ -1128,7 +1128,7 @@ public static class PlayerLoader
 
 	public static void ModifyZoom(Player player, ref float zoom)
 	{
-		foreach (var modPlayer in HookModifyZoom.Enumerate(player.modPlayers.ToList())) {
+		foreach (var modPlayer in HookModifyZoom.Enumerate(player.modPlayers)) {
 			modPlayer.ModifyZoom(ref zoom);
 		}
 	}

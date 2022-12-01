@@ -1071,9 +1071,9 @@ public static class NPCLoader
 
 		foreach (GlobalNPC g in HookCanChat.Enumerate(npc.globalNPCs)) {
 			if (g.CanChat(npc) is bool canChat) {
-				if (!canChat) {
+				if (!canChat)
 					return false;
-				}
+				
 				ret = true;
 			}
 		}
@@ -1177,21 +1177,20 @@ public static class NPCLoader
 
 	private static HookList HookCanGoToStatue = AddHook<Func<NPC, bool, bool?>>(g => g.CanGoToStatue);
 
-	public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo)
+	public static bool? CanGoToStatue(NPC npc, bool toKingStatue)
 	{
-		bool defaultCanGo = npc.ModNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
+		bool? ret = npc.ModNPC?.CanGoToStatue(toKingStatue);
 
 		foreach (GlobalNPC g in HookCanGoToStatue.Enumerate(npc.globalNPCs)) {
-			bool? canGo = g.CanGoToStatue(npc, toKingStatue);
-			if (canGo.HasValue) {
-				if (!canGo.Value) {
+			if (g.CanGoToStatue(npc, toKingStatue) is bool canGo) {
+				if (!canGo)
 					return false;
-				}
-				defaultCanGo = true;
+				
+				ret = true;
 			}
 		}
 
-		return defaultCanGo;
+		return ret;
 	}
 
 	private static HookList HookOnGoToStatue = AddHook<Action<NPC, bool>>(g => g.OnGoToStatue);

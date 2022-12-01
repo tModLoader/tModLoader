@@ -32,26 +32,32 @@
  	{
  		Main.tileSolid[546] = false;
  		float num = 0f;
-@@ -478,6 +_,9 @@
+@@ -476,8 +_,12 @@
+ 					case 267:
+ 					case 268:
  						num12 = 15 + num34 - 262;
++						// Patch note: ^ Both are used below.
  						break;
  				}
-+				if(num34 != -1) {
++
++				if (num34 != -1)
 +					TileLoader.ChangeWaterfallStyle(num34, ref num12);
-+				}
  
  				Color color5 = Lighting.GetColor(num13, num14);
  				if (k > 50)
-@@ -737,6 +_,9 @@
+@@ -734,8 +_,12 @@
+ 				num = 255f * alpha;
+ 				num2 = 255f * alpha;
+ 				num3 = 255f * alpha;
++				// Patch note: ^ All 3 are used below.
  				break;
  		}
- 
++
 +		if (waterfallType >= maxTypes)
 +			LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).ColorMultiplier(ref num, ref num2, ref num3, alpha);
-+
+ 
  		aColor = new Color((int)num, (int)num2, (int)num3, (int)num4);
  		return aColor;
- 	}
 @@ -784,6 +_,9 @@
  
  	private static void AddLight(int waterfallType, int x, int y)

@@ -18,11 +18,10 @@
  		if (!isSitting)
  			return false;
  
-@@ -263,7 +_,18 @@
+@@ -263,7 +_,19 @@
  			}
  		}
  
--		playerSittingPosition = new Point(num, num2 + 1).ToWorldCoordinates(8f, 16f);
 +		// At this point, vanilla tile num/num2 represent the bottom-most tile coordinate of the tile (no vanilla tile for sitting is higher than 2),
 +		// Modded ones are arbitrary, modder responsibility to find the bottom-post tile
 +		TileRestingInfo info = new TileRestingInfo(player, new Point(num, num2), seatDownOffset, targetDirection, num3, zero);
@@ -34,7 +33,9 @@
 +		seatDownOffset = info.VisualOffset;
 +		zero = info.FinalOffset;
 +
-+		playerSittingPosition = new Point(num, num2).ToWorldCoordinates(8f, 16f); // Moved +1 hardcode into ModifySittingTargetInfo
++		//TML: 'num2 + 1' hardcode moved into ModifySittingTargetInfo
+-		playerSittingPosition = new Point(num, num2 + 1).ToWorldCoordinates(8f, 16f);
++		playerSittingPosition = new Point(num, num2).ToWorldCoordinates(8f, 16f);
  		playerSittingPosition.X += targetDirection * num3;
  		playerSittingPosition += zero;
  		return true;

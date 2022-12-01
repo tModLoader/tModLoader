@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Net/NetManager.cs
 +++ src/tModLoader/Terraria/Net/NetManager.cs
 @@ -1,5 +_,8 @@
-+using log4net.Core;
  using System.Collections.Generic;
  using System.IO;
++using log4net.Core;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
@@ -49,12 +49,13 @@
  			}
  
  			Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);
-@@ -121,5 +_,11 @@
+@@ -121,5 +_,12 @@
  	public static void SendCallback(object state)
  	{
  		((NetPacket)state).Recycle();
 +	}
 +
++	// Added by TML.
 +	private void LogSend(NetPacket packet, int toClient = -1, int ignoreClient = -1)
 +	{
 +		if (ModNet.DetailedLogging)

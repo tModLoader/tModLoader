@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Events/CultistRitual.cs
 +++ src/tModLoader/Terraria/GameContent/Events/CultistRitual.cs
-@@ -10,19 +_,19 @@
+@@ -10,19 +_,20 @@
  	public const int respawnDelay = 43200;
  	private const int timePerCultist = 3600;
  	private const int recheckStart = 600;
++	//TML: Changed from int to double.
 -	public static int delay;
 +	public static double delay;
 -	public static int recheck;

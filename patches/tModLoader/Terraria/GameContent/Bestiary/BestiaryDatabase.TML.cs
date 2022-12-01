@@ -19,7 +19,7 @@ public partial class BestiaryDatabase
 	/// <returns>A list of the entries created by the mod specified or null if it created none</returns>
 	public List<BestiaryEntry> GetBestiaryEntriesByMod(Mod mod)
 	{
-		if(mod == null)
+		if (mod == null)
 			return _vanillaEntries;
 
 		_byMod.TryGetValue(mod, out var value);

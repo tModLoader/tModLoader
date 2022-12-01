@@ -7,55 +7,64 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -7,6 +_,10 @@
+@@ -7,6 +_,12 @@
  {
  	public static readonly Asset<T> Empty = new Asset<T>("");
  
++	// Added by TML: [[
 +	public static T DefaultValue { get; set; }
 +
 +	private T ownValue;
++	// ]]
 +
  	public string Name { get; private set; }
  
  	public bool IsLoaded => State == AssetState.Loaded;
-@@ -17,7 +_,12 @@
+@@ -17,7 +_,18 @@
  
  	public IContentSource Source { get; private set; }
  
++	/*
+ 	public T Value { get; private set; }
++	*/
 +	public T Value => IsLoaded ? ownValue : DefaultValue;
 +
++	// Added by TML: [[
 +	internal Action Continuation { get; set; }
++	
 +	Action IAsset.Continuation { set => Continuation = value; }
 +
--	public T Value { get; private set; }
 +	public Action Wait { get; internal set; }
++	// ]]
  
  	internal Asset(string name)
  	{
-@@ -32,11 +_,9 @@
+@@ -32,11 +_,10 @@
  
  	internal void Unload()
  	{
 -		if (Value is IDisposable disposable)
 -			disposable.Dispose();
--
 +		(ownValue as IDisposable)?.Dispose();
+ 
  		State = AssetState.NotLoaded;
 -		Value = null;
 +		ownValue = null;
  		Source = null;
  	}
  
-@@ -45,15 +_,11 @@
+@@ -45,15 +_,19 @@
  		if (value == null)
  			throw new ArgumentNullException("value");
  
--		if (source == null)
--			throw new ArgumentNullException("source");
--
--		if (Value is IDisposable disposable)
--			disposable.Dispose();
--
++		/*
+ 		if (source == null)
+ 			throw new ArgumentNullException("source");
+ 
+ 		if (Value is IDisposable disposable)
+ 			disposable.Dispose();
++		*/
+ 
 -		State = AssetState.Loaded;
 -		Value = value;
 +		(ownValue as IDisposable)?.Dispose();
@@ -66,10 +75,11 @@
  	}
  
  	internal void SetToLoadingState()
-@@ -66,12 +_,12 @@
+@@ -66,12 +_,13 @@
  		if (IsDisposed)
  			return;
  
++		//TML: 'Value' changed to 'ownValue'.
 -		if (disposing && Value != null) {
 +		if (disposing && ownValue != null) {
 -			IDisposable disposable = Value as IDisposable;

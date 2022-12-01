@@ -23,7 +23,7 @@ public static class InfoDisplayLoader
 		InfoDisplay.DepthMeter
 	};
 
-	private static readonly int DefaultDisplayCount = InfoDisplays.Count;
+	internal static readonly int DefaultDisplayCount = InfoDisplays.Count;
 
 	public static int InfoDisplayPage = 0;
 

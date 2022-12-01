@@ -77,46 +77,39 @@ public static partial class Program
 	private static void PortCommonFiles()
 	{
 		// Only create and port config files from stable if needed.
-		if(BuildInfo.IsDev || BuildInfo.IsPreview) {
-			var releasePath = Path.Combine(SavePath, ReleaseFolder);
-			var newPath = Path.Combine(SavePath, BuildInfo.IsPreview ? PreviewFolder : DevFolder);
-			if (Directory.Exists(releasePath) && !Directory.Exists(newPath)) {
-				Directory.CreateDirectory(newPath);
-				if (File.Exists(Path.Combine(releasePath, "config.json")))
-					File.Copy(Path.Combine(releasePath, "config.json"), Path.Combine(newPath, "config.json"));
-				if (File.Exists(Path.Combine(releasePath, "input profiles.json")))
-					File.Copy(Path.Combine(releasePath, "input profiles.json"), Path.Combine(newPath, "input profiles.json"));
-			}
+		if (BuildInfo.IsStable)
+			return;
+		
+		var releasePath = Path.Combine(SavePath, ReleaseFolder);
+		var newPath = Path.Combine(SavePath, SaveFolderName);
+		if (Directory.Exists(releasePath) && !Directory.Exists(newPath)) {
+			Directory.CreateDirectory(newPath);
+			if (File.Exists(Path.Combine(releasePath, "config.json")))
+				File.Copy(Path.Combine(releasePath, "config.json"), Path.Combine(newPath, "config.json"));
+			if (File.Exists(Path.Combine(releasePath, "input profiles.json")))
+				File.Copy(Path.Combine(releasePath, "input profiles.json"), Path.Combine(newPath, "input profiles.json"));
 		}
 	}
 
 	private static void SetSavePath()
 	{
-		bool saveHere = File.Exists("savehere.txt");
-		bool tmlSaveDirectoryParameterSet = LaunchParameters.ContainsKey("-tmlsavedirectory");
-
-		// File migration is only attempted for the default save folder
-		if (!saveHere && !tmlSaveDirectoryParameterSet) {
+		if (LaunchParameters.TryGetValue("-tmlsavedirectory", out var customSavePath)) {
+			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
+			SavePathShared = customSavePath;
+			SavePath = customSavePath;
+		}
+		else if (File.Exists("savehere.txt")) {
+			// Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
+			SavePathShared = ReleaseFolder;
+			SavePath = SaveFolderName;
+		}
+		else {
+			// File migration is only attempted for the default save folder
 			PortOldSaveDirectories();
 			PortCommonFiles();
-		}
 
-		var fileFolder =
-			BuildInfo.IsStable ? ReleaseFolder :
-			BuildInfo.IsPreview ? PreviewFolder :
-			DevFolder;
-
-		SavePath = Path.Combine(SavePath, fileFolder);
-
-		if (saveHere)
-			SavePath = fileFolder; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
-
-		SavePathShared = Path.Combine(SavePath, "..", ReleaseFolder);
-
-		// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
-		if (tmlSaveDirectoryParameterSet) {
-			SavePath = LaunchParameters["-tmlsavedirectory"];
-			SavePathShared = SavePath;
+			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
+			SavePath = Path.Combine(SavePath, SaveFolderName);
 		}
 		
 		Logging.tML.Info($"Save Are Located At: {Path.GetFullPath(SavePath)}");

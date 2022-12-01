@@ -5,11 +5,13 @@
  using System.Collections.Generic;
  
  namespace Terraria.GameContent.ItemDropRules;
-@@ -19,12 +_,22 @@
+@@ -19,12 +_,26 @@
  	}
  
  	public int itemId;
 -	public Parameters parameters;
++	
++	//TML: Turned from a field into an autoproperty.
 +	public Parameters parameters { get; private init; }
  
  	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
@@ -19,9 +21,11 @@
 +		if (parameters.MinimumItemDropsCount > parameters.MaximumItemDropsCount) {
 +			throw new ArgumentException($"{nameof(parameters.MinimumItemDropsCount)} must be lesser or equal to {nameof(parameters.MaximumItemDropsCount)}.", nameof(parameters));
 +		}
++
 +		if (parameters.MinimumStackPerChunkBase > parameters.MaximumStackPerChunkBase) {
 +			throw new ArgumentException($"{nameof(parameters.MinimumStackPerChunkBase)} must be lesser or equal to {nameof(parameters.MaximumStackPerChunkBase)}.", nameof(parameters));
 +		}
++
 +		if (parameters.BonusMinDropsPerChunkPerPlayer > parameters.BonusMaxDropsPerChunkPerPlayer) {
 +			throw new ArgumentException($"{nameof(parameters.BonusMinDropsPerChunkPerPlayer)} must be lesser or equal to {nameof(parameters.BonusMaxDropsPerChunkPerPlayer)}.", nameof(parameters));
 +		}

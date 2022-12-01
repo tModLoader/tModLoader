@@ -19,10 +19,12 @@
  				if (text != "") {
  					arrayList.Add(text);
  					text = "";
-@@ -375,6 +_,12 @@
+@@ -375,6 +_,14 @@
  							num2 -= 16;
  
  						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
++
++						// Loop added by TML. Explain what this is?
 +						for (int i = 0; i < list3[l].Text.Length; i++) {
 +							// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
 +							if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
@@ -44,21 +46,21 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1383,14 +_,17 @@
+@@ -1383,6 +_,8 @@
  			text.Substring(0, maxCharactersDisplayed);
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;
++
 +		/*
  		for (int i = -1; i < 2; i++) {
  			for (int j = -1; j < 2; j++) {
--				spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
-+				spriteBatch.DrawString(value, text, pos + new Vector2((float)i, (float)j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
- 			}
- 		}
--
+ 				spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
+@@ -1391,6 +_,11 @@
+ 
  		spriteBatch.DrawString(value, text, pos, color, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
--		return value.MeasureString(text) * scale;
+ 		return value.MeasureString(text) * scale;
 +		*/
++
 +		Vector2 vector = ChatManager.GetStringSize(value, text, Vector2.One);
 +		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
 +		return vector * scale;

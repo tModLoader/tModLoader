@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
-@@ -39,12 +_,21 @@
+@@ -39,12 +_,23 @@
  	public void ReportInstantUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
 +
++		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValue);
 +		if (Main.dedServ)
 +			return;
@@ -15,6 +16,7 @@
  
  	public void ReportInstantUploadProblemFromValue(string text)
  	{
++		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(text);
 +		if (Main.dedServ)
 +			return;
@@ -22,10 +24,12 @@
  		AddReport(text);
  		OpenReportsScreen();
  	}
-@@ -52,6 +_,10 @@
+@@ -52,6 +_,12 @@
  	public void ReportDelayedUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
++
++		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValue);
 +		if (Main.dedServ)
 +			return;
@@ -33,11 +37,12 @@
  		AddReport(textValue);
  		NotifyReportsScreen();
  	}
-@@ -63,6 +_,11 @@
+@@ -63,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);
 +
++		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValueWith);
 +		if (Main.dedServ)
 +			return;
@@ -45,11 +50,12 @@
  		AddReport(textValueWith);
  		NotifyReportsScreen();
  	}
-@@ -75,6 +_,11 @@
+@@ -75,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);
 +
++		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValueWith);
 +		if (Main.dedServ)
 +			return;
@@ -57,11 +63,12 @@
  		AddReport(textValueWith);
  		NotifyReportsScreen();
  	}
-@@ -86,6 +_,11 @@
+@@ -86,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);
 +
++		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValueWith);
 +		if (Main.dedServ)
 +			return;

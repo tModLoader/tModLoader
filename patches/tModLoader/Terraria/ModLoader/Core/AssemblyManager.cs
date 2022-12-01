@@ -1,4 +1,4 @@
-﻿#if NETCORE
+#if NETCORE
 using log4net;
 using System;
 using System.Collections.Generic;

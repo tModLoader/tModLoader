@@ -1,14 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -9,6 +_,7 @@
+@@ -8,6 +_,7 @@
+ using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
- using Terraria.ObjectData;
 +using Terraria.ModLoader;
+ using Terraria.ObjectData;
  
  namespace Terraria;
- 
-@@ -206,13 +_,16 @@
+@@ -206,13 +_,17 @@
  		return list;
  	}
  
@@ -16,6 +16,7 @@
 +	public static bool IsLocked(int x, int y) => IsLocked(x, y, Main.tile[x, y]);
  
 -	public static bool IsLocked(Tile t)
++	//TML: Added x & y parameters.
 +	public static bool IsLocked(int x, int y, Tile t)
  	{
  		if (t == null)
@@ -40,7 +41,7 @@
 +						return item;
 +					}
 +
-+					/* TML: #OnStackHook
++					/* #OnStackHook
  					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  					if (num > 0) {
  						if (num > item.stack)
@@ -58,72 +59,87 @@
  				}
  				else {
  					flag3 = true;
-@@ -333,6 +_,17 @@
+@@ -333,6 +_,24 @@
  		Tile tileSafely = Framing.GetTileSafely(X, Y);
  		int type2 = tileSafely.type;
  		int num2 = tileSafely.frameX / 36;
++
++		// Handle mod chests
 +		if (Main.tile[X, Y].type >= TileID.Count) {
 +			num = -36;
 +			type = 11;
 +			bool manual = false;
-+			if(!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num, ref type, ref manual))
++
++			if (!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num, ref type, ref manual))
 +				return false;
++
 +			if (manual)
 +				return true;
++
 +			num *= -1;
++
 +			goto PostVanillaChests;
 +		}
++
  		switch (type2) {
  			case 21:
  				switch (num2) {
-@@ -378,6 +_,7 @@
- 				}
+@@ -379,13 +_,19 @@
  				return false;
  		}
-+		PostVanillaChests:
  
++		PostVanillaChests:
++
  		SoundEngine.PlaySound(22, X * 16, Y * 16);
  		for (int i = X; i <= X + 1; i++) {
-@@ -385,7 +_,7 @@
+ 			for (int j = Y; j <= Y + 1; j++) {
  				Tile tileSafely2 = Framing.GetTileSafely(i, j);
  				if (tileSafely2.type == type2) {
  					tileSafely2.frameX -= num;
--					Main.tile[i, j] = tileSafely2;
-+					// Main.tile[i, j] = tileSafely2;
++
++					/*
+ 					Main.tile[i, j] = tileSafely2;
++					*/
++
  					for (int k = 0; k < 4; k++) {
  						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
-@@ -540,15 +_,21 @@
+@@ -540,15 +_,28 @@
  		}
  		else {
  			switch (type) {
--				case 21:
-+				case TileID.Containers:
++				// Containers
+ 				case 21:
  					NetMessage.SendData(34, -1, -1, null, 0, x, y, style);
  					break;
--				case 467:
-+				case TileID.Containers2:
++				// Containers2
+ 				case 467:
  					NetMessage.SendData(34, -1, -1, null, 4, x, y, style);
  					break;
--				default:
++				/*
+ 				default:
++				*/
 +				case TileID.Dressers:
  					NetMessage.SendData(34, -1, -1, null, 2, x, y, style);
  					break;
++				// Handle mod chests
 +				case int _ when TileID.Sets.BasicChest[type]:
 +					NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
 +					break;
++				// Handle mod dressers
 +				case int _ when TileID.Sets.BasicDresser[type]:
 +					NetMessage.SendData(34, -1, -1, null, 102, x, y, style, 0, type, 0);
 +					break;
  			}
  		}
  
-@@ -637,13 +_,15 @@
+@@ -637,13 +_,22 @@
  		}
  	}
  
++	//TML: Now returns the item's index.
 -	public void AddItemToShop(Item newItem)
-+	public int AddItemToShop(Item newItem) //tML: Now returns the item's index.
++	public int AddItemToShop(Item newItem)
  	{
  		int num = Main.shopSellbackHelper.Remove(newItem);
 +
@@ -131,17 +147,25 @@
 -			return;
 +			return 0;
  
-+		// tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
--		for (int i = 0; i < 39; i++) {
++		//TML:
++		// When selling to vendor with full inventory, replace 2nd to last
++		// item rather than have the item disappear to facilitate PostSellItem Item reference.
++
++		/*
+ 		for (int i = 0; i < 39; i++) {
++		*/
 +		for (int i = 0; i < 38; i++) {
  			if (item[i] == null || item[i].type == 0) {
  				item[i] = newItem.Clone();
  				item[i].favorited = false;
-@@ -651,9 +_,11 @@
+@@ -651,9 +_,15 @@
  				item[i].stack -= num;
  				_ = item[i].value;
  				_ = 0;
--				break;
++				
++				/*
+ 				break;
++				*/
 +				return i;
  			}
  		}
@@ -154,7 +178,7 @@
  					Main.travelShop[count++] = 3636;
  					Main.travelShop[count++] = 3641;
  					break;
-+					//patch file: num2
++					// Extra patch context.
  			}
  		}
 +
@@ -177,11 +201,16 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2985,6 +_,7 @@
+@@ -2981,9 +_,12 @@
+ 			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
+ 				array[num++].SetDefaults(4916);
+ 
++			// Extra patch context.
+ 			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
  				array[num++].SetDefaults(4921);
  		}
- 
++
 +		NPCLoader.SetupShop(type, this, ref num);
+ 
  		for (int num13 = 0; num13 < num; num13++) {
  			array[num13].isAShopItem = true;
- 		}

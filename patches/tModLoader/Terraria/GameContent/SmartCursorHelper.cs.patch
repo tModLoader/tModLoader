@@ -16,11 +16,10 @@
  				case 4:
  				case 10:
  				case 11:
-@@ -196,7 +_,9 @@
- 				case 573:
+@@ -197,6 +_,9 @@
  				case 621:
  				case 642:
--					result = true;
+ 					result = true;
 +				*/
 +				default:
 +					result = TileID.Sets.DisableSmartCursor[Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type];
@@ -42,7 +41,7 @@
  					case 2:
  					case 23:
  					case 53:
-@@ -1611,19 +_,31 @@
+@@ -1611,19 +_,30 @@
  					case 633:
  					case 661:
  					case 662:
@@ -57,7 +56,6 @@
 +
 +				if (tileTypeValid && tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
 +					_targets.Add(new Tuple<int, int>(i, j));
-+
  			}
  		}
  

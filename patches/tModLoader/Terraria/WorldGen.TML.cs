@@ -1,4 +1,4 @@
-﻿using Terraria.WorldBuilding;
+using Terraria.WorldBuilding;
 
 namespace Terraria;
 

@@ -1,22 +1,29 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/NetClientSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/NetClientSocialModule.cs
-@@ -29,13 +_,18 @@
+@@ -29,13 +_,27 @@
  		_gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnLobbyJoinRequest);
  		_p2pSessionRequest = Callback<P2PSessionRequest_t>.Create(OnP2PSessionRequest);
  		_p2pSessionConnectfail = Callback<P2PSessionConnectFail_t>.Create(OnSessionConnectFail);
--		Main.OnEngineLoad += CheckParameters;
++
++		/*
+ 		Main.OnEngineLoad += CheckParameters;
++		*/
++		// Main.OnEngineLoad is too early
 +		if (Program.LaunchParameters.ContainsKey("+connect_lobby"))
-+			ModLoader.ModLoader.OnSuccessfulLoad += CheckParameters; // Main.OnEngineLoad is too early, earlier than ModLoaderMod.
++			ModLoader.ModLoader.OnSuccessfulLoad += CheckParameters;
  	}
  
  	private void CheckParameters()
  	{
--		if (Program.LaunchParameters.ContainsKey("+connect_lobby") && ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out var result))
-+		if (ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out var result))
++		/*
+ 		if (Program.LaunchParameters.ContainsKey("+connect_lobby") && ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out var result))
++		*/
++		if (ulong.TryParse(Program.LaunchParameters["+connect_lobby"], out ulong result)) {
  			ConnectToLobby(result);
++		}
 +		else {
-+			Main.menuMode = 0;
 +			ModLoader.Logging.tML.Error("The provided lobby ID was invalid: " + result);
++			Main.menuMode = 0;
 +		}
  	}
  

@@ -49,7 +49,7 @@
  		writer.Write((ushort)item.netID);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
-@@ -466,12 +_,16 @@
+@@ -466,12 +_,21 @@
  
  	public void ReadItem(int itemIndex, BinaryReader reader, bool dye)
  	{
@@ -63,9 +63,11 @@
  		int defaults = reader.ReadUInt16();
  		int stack = reader.ReadUInt16();
  		int prefixWeWant = reader.ReadByte();
--		Item item = _items[itemIndex];
--		if (dye)
--			item = _dyes[itemIndex];
++		/*
+ 		Item item = _items[itemIndex];
+ 		if (dye)
+ 			item = _dyes[itemIndex];
++		*/
  
  		item.SetDefaults(defaults);
  		item.stack = stack;

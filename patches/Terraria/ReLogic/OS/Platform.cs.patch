@@ -1,14 +1,18 @@
 --- src/decompiled/ReLogic/OS/Platform.cs
 +++ src/Terraria/ReLogic/OS/Platform.cs
-@@ -1,4 +_,7 @@
+@@ -1,12 +_,25 @@
  using System;
 +using System.Runtime.InteropServices;
-+using ReLogic.OS.Linux;
-+using ReLogic.OS.OSX;
++#if WINDOWS
  using ReLogic.OS.Windows;
++#elif LINUX
++using ReLogic.OS.Linux;
++#elif MAC
++using ReLogic.OS.OSX;
++#endif
  using ReLogic.Utilities;
  
-@@ -6,7 +_,13 @@
+ namespace ReLogic.OS;
  
  public abstract class Platform : IDisposable
  {

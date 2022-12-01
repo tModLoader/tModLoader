@@ -1,11 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AShoppingBiome.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AShoppingBiome.cs
-@@ -1,8 +_,26 @@
+@@ -1,8 +_,28 @@
 +using Terraria.ModLoader;
 +
  namespace Terraria.GameContent.Personalities;
  
--public abstract class AShoppingBiome
 +// Interface added by TML.
 +public interface IShoppingBiome
 +{
@@ -14,7 +13,9 @@
 +	bool IsInBiome(Player player);
 +}
 +
-+//TML: Added ILoadable
++/*
+ public abstract class AShoppingBiome
++*/
 +public abstract class AShoppingBiome : IShoppingBiome, ILoadable
  {
  	public string NameKey { get; protected set; }

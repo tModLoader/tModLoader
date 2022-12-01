@@ -10,11 +10,12 @@
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI;
-@@ -93,6 +_,9 @@
+@@ -93,6 +_,10 @@
  					Main.defaultChestName = Lang.chestType2[tile.frameX / 36].Value;
  				else if (tile.type == 88)
  					Main.defaultChestName = Lang.dresserType[tile.frameX / 54].Value;
 +
++				// Handle mod container names.
 +				if (tile.type >= TileID.Count && (TileID.Sets.BasicChest[tile.type] || TileID.Sets.BasicDresser[tile.type]))
 +					Main.defaultChestName = TileLoader.ContainerName(Main.tile[player.chestX, player.chestY].type);
  

@@ -1,4 +1,4 @@
-﻿#if NETCORE
+#if NETCORE
 using SDL2;
 
 namespace System.Windows.Forms;

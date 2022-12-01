@@ -17,7 +17,7 @@
  			Item item = new Item();
  			item.netDefaults(i);
  			list2.Add(item);
-@@ -838,14 +_,14 @@
+@@ -838,14 +_,19 @@
  	{
  		Player player = Main.player[Main.myPlayer];
  		_layerList.Clear();
@@ -29,21 +29,23 @@
  			player.minionDamage
  		};
  
--		list.Sort((float x, float y) => y.CompareTo(x));
++
++		/*
+ 		list.Sort((float x, float y) => y.CompareTo(x));
++		*/
 +		list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
++
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-@@ -927,7 +_,12 @@
- 					continue;
+@@ -928,6 +_,10 @@
  
  				Item item3 = inv[list[k]];
-+				//if (item2.type == item3.type && item3.stack != item3.maxStack) {
  				if (item2.type == item3.type && item3.stack != item3.maxStack) {
 +					if (!ItemLoader.TryStackItems(item2, item3, out _))
 +						continue;
 +
-+					/* TML: #OnStackHook
++					/* #OnStackHook
  					int num2 = item3.stack;
  					if (num < num2)
  						num2 = num;
@@ -67,11 +69,12 @@
  				int num2 = item.stack;
  				if (num2 > num)
  					num2 = num;
-@@ -1221,6 +_,7 @@
+@@ -1221,6 +_,8 @@
  				num -= num2;
  				itemToRefill.stack += num2;
  				item.stack -= num2;
 +				*/
++
  				if (item.stack <= 0)
  					item.TurnToAir();
  

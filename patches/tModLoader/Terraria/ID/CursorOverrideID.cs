@@ -1,4 +1,4 @@
-﻿using Terraria.GameInput;
+using Terraria.GameInput;
 
 namespace Terraria.ID;
 

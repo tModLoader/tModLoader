@@ -9,14 +9,15 @@
  
  namespace Terraria.ObjectData;
  
- public class TileObjectData
+-public class TileObjectData
++public partial class TileObjectData
  {
 -	private TileObjectData _parent;
 +	internal TileObjectData _parent;
  	private bool _linkedAlternates;
  	private bool _usesCustomCanPlace;
  	private TileObjectAlternatesModule _alternates;
-@@ -34,34 +_,34 @@
+@@ -34,34 +_,36 @@
  	private bool _hasOwnTileObjectDraw;
  	private bool _hasOwnTileObjectStyle;
  	private bool _hasOwnTileObjectCoords;
@@ -24,6 +25,8 @@
 +	internal static List<TileObjectData> _data;
  	private static TileObjectData _baseObject;
  	private static bool readOnlyData;
++
++	//TML: Everything made public.
 -	private static TileObjectData newTile;
 +	public static TileObjectData newTile;
 -	private static TileObjectData newSubTile;
@@ -94,18 +97,19 @@
  		get {
  			if (_subTiles == null)
  				return _baseObject.SubTiles;
-@@ -1371,6 +_,18 @@
+@@ -1371,6 +_,19 @@
  			if (_liquidDeath.water)
  				WaterPlacement = LiquidPlacement.NotAllowed;
  		}
 +
 +		// Detect modder mistake: IndexOutOfRangeException
 +		if (Height != _tileObjectCoords.heights.Length) {
-+			// legacy compatibility, mismatch isn't a problem here
++			// Legacy compatibility, mismatch isn't a problem here
 +			if (Height < _tileObjectCoords.heights.Length)
 +				return;
 +
 +			FixNewTile();
++
 +			throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.") {
 +				HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-Tile"
 +			};
@@ -113,34 +117,37 @@
  	}
  
  	private void WriteCheck()
-@@ -1384,7 +_,7 @@
+@@ -1384,7 +_,8 @@
  		readOnlyData = true;
  	}
  
 -	public bool LiquidPlace(Tile checkTile)
++	//TML: Added 'checkStay' parameter.
 +	public bool LiquidPlace(Tile checkTile, bool checkStay = false)
  	{
  		if (checkTile == null)
  			return false;
-@@ -1392,6 +_,8 @@
+@@ -1392,6 +_,9 @@
  		if (checkTile.liquid > 0) {
  			switch (checkTile.liquidType()) {
  				case 1:
 +					if (checkStay && !LavaDeath)
 +						break;
++
  					if (LavaPlacement == LiquidPlacement.NotAllowed)
  						return false;
  					if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1400,6 +_,8 @@
+@@ -1400,6 +_,9 @@
  				case 0:
  				case 2:
  				case 3:
 +					if (checkStay && !WaterDeath)
 +						break;
++
  					if (WaterPlacement == LiquidPlacement.NotAllowed)
  						return false;
  					if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1509,14 +_,19 @@
+@@ -1509,14 +_,14 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
@@ -152,11 +159,6 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
-+	public static void FixNewTile()
-+	{
-+		newTile = new TileObjectData(_baseObject);
-+	}
-+
 -	private static void addSubTile(params int[] styles)
 +	public static void addSubTile(params int[] styles)
  	{
@@ -171,81 +173,14 @@
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
-@@ -4566,7 +_,6 @@
+@@ -4566,7 +_,10 @@
  		newTile.StyleMultiplier = 3;
  		newTile.StyleHorizontal = true;
  		addTile(615);
--		readOnlyData = true;
++
++		/*
+ 		readOnlyData = true;
++		*/
  	}
  
  	public static bool CustomPlace(int type, int style)
-@@ -4742,5 +_,69 @@
- 		TileObjectData tileData = GetTileData(type, style);
- 		if (tileData != null)
- 			baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);
-+	}
-+
-+	public static int GetTileStyle(Tile getTile)
-+	{
-+		if (getTile == null || !getTile.active())
-+			return -1;
-+
-+		int type = getTile.type;
-+		if (type < 0 || type >= _data.Count)
-+			throw new ArgumentOutOfRangeException("Function called with a bad tile type");
-+
-+		TileObjectData tileObjectData = _data[type];
-+		if (tileObjectData == null)
-+			return -1;
-+
-+		int num = getTile.frameX / tileObjectData.CoordinateFullWidth;
-+		int num2 = getTile.frameY / tileObjectData.CoordinateFullHeight;
-+		int num3 = tileObjectData.StyleWrapLimit;
-+		if (num3 == 0)
-+			num3 = 1;
-+
-+		int num4;
-+		if (tileObjectData.StyleHorizontal)
-+			num4 = num2 * num3 + num;
-+		else
-+			num4 = num * num3 + num2;
-+
-+		int num5 = num4 / tileObjectData.StyleMultiplier;
-+		int num6 = num4 % tileObjectData.StyleMultiplier;
-+		return num5;
-+	}
-+
-+	public static void GetTileInfo(Tile getTile, ref int style, ref int alternate)
-+	{
-+		if (getTile == null || !getTile.active())
-+			return;
-+
-+		int type = getTile.type;
-+		if (type < 0 || type >= _data.Count)
-+			throw new ArgumentOutOfRangeException("Function called with a bad tile type");
-+
-+		TileObjectData tileObjectData = _data[type];
-+		if (tileObjectData == null)
-+			return;
-+
-+		int num = getTile.frameX / tileObjectData.CoordinateFullWidth;
-+		int num2 = getTile.frameY / tileObjectData.CoordinateFullHeight;
-+		int num3 = tileObjectData.StyleWrapLimit;
-+		if (num3 == 0)
-+			num3 = 1;
-+
-+		int num4;
-+		if (tileObjectData.StyleHorizontal)
-+			num4 = num2 * num3 + num;
-+		else
-+			num4 = num * num3 + num2;
-+
-+		int num5 = num4 / tileObjectData.StyleMultiplier;
-+		int num6 = num4 % tileObjectData.StyleMultiplier;
-+		style = num5;
-+		if (tileObjectData._alternates != null)
-+			alternate = num6;
-+
-+		return;
- 	}
- }

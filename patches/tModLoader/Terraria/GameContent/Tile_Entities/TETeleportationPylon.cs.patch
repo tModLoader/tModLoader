@@ -21,12 +21,13 @@
  			RejectPlacementFromNet(x, y);
  			return;
  		}
-@@ -157,6 +_,8 @@
+@@ -157,6 +_,9 @@
  
  	public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0)
  	{
 +		if (PylonLoader.PreCanPlacePylon(x, y, type, GetPylonTypeFromPylonTileStyle(style)) is bool value)
 +			return value ? 0 : 1;
++
  		TeleportPylonType pylonTypeFromPylonTileStyle = GetPylonTypeFromPylonTileStyle(style);
  		if (Main.PylonSystem.HasPylonOfType(pylonTypeFromPylonTileStyle))
  			return 1;

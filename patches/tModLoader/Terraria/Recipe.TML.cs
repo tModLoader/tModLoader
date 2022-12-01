@@ -495,4 +495,26 @@ public partial class Recipe
 
 		return recipe;
 	}
+
+	private static void FixRecipeGroups()
+	{
+		// Remove recipe group assignments to recipes that don't actually have any items in the recipe groups anymore for one reason or another.
+		for (int i = 0; i < numRecipes; i++) {
+			Recipe recipe = Main.recipe[i];
+
+			if (recipe.acceptedGroups.Count > 0) {
+				var toRemove = new List<int>();
+
+				foreach (int num in recipe.acceptedGroups) {
+					if (!RecipeGroup.recipeGroups[num].ValidItems.Intersect(recipe.requiredItem.Select(x => x.type)).Any()) {
+						toRemove.Add(num);
+					}
+				}
+
+				foreach (int group in toRemove) {
+					recipe.acceptedGroups.Remove(group);
+				}
+			}
+		}
+	}
 }

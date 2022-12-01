@@ -10,14 +10,16 @@
  
  namespace Terraria;
  
-@@ -26,6 +_,7 @@
- 	public static int sonarText = -1;
- 	public bool expert;
- 	public bool master;
-+	public int rarity;
- 	public bool sonar;
- 	public PopupTextContext context;
+@@ -31,6 +_,9 @@
  	public int npcNetID;
+ 	public bool freeAdvanced;
+ 
++	// Added by TML.
++	public int rarity;
++
+ 	public bool notActuallyAnItem {
+ 		get {
+ 			if (npcNetID == 0)
 @@ -256,10 +_,14 @@
  				popupText2.color = new Color(5, 200, 255);
  			else if (newItem.rare == 10)
@@ -28,9 +30,9 @@
 +			else if (newItem.rare >= ItemRarityID.Count)
 +				popupText2.color = RarityLoader.GetRarity(newItem.rare).RarityColor;
  
-+			popupText2.rarity = newItem.rare;
++			popupText2.rarity = newItem.rare; // Added by TML
  			popupText2.expert = newItem.expert;
-+			popupText2.master = newItem.master;
++			popupText2.master = newItem.master; // Added by TML
  			popupText2.name = newItem.AffixName();
  			popupText2.stack = stack;
  			popupText2.velocity.Y = -7f;

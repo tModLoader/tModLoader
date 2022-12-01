@@ -1,4 +1,4 @@
-﻿namespace Terraria.ID;
+namespace Terraria.ID;
 
 partial class ItemID
 {

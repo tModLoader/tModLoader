@@ -8,16 +8,19 @@
  
  namespace Terraria.GameContent.UI.ResourceSets;
  
-@@ -16,6 +_,9 @@
- 	public Vector2 OffsetPerDrawByTexturePercentile;
+@@ -17,6 +_,12 @@
  	public Vector2 OffsetSpriteAnchor;
  	public Vector2 OffsetSpriteAnchorByTexturePercentile;
+ 
++	// Added by TML: [[
 +	public PlayerStatsSnapshot StatsSnapshot;
 +	public IPlayerResourcesDisplaySet DisplaySet;
 +	public int ResourceIndexOffset;
- 
++	// ]]
++
  	public void Draw(SpriteBatch spriteBatch, ref bool isHovered)
  	{
+ 		int elementCount = ElementCount;
 @@ -37,7 +_,19 @@
  			if (rectangle2.Contains(value))
  				isHovered = true;

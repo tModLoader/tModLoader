@@ -8,14 +8,15 @@
 +public static partial class SoundEngine
  {
 -	public static LegacySoundPlayer LegacySoundPlayer;
-+	internal static LegacySoundPlayer LegacySoundPlayer;
++	internal static LegacySoundPlayer LegacySoundPlayer; //TML: Made internal.
  	public static SoundPlayer SoundPlayer;
  	public static bool AreSoundsPaused;
  
-@@ -17,6 +_,8 @@
+@@ -17,6 +_,9 @@
  	public static void Initialize()
  	{
  		IsAudioSupported = TestAudioSupport();
++
 +		if (!IsAudioSupported)
 +			Utils.ShowFancyErrorMessage(Localization.Language.GetTextValue("tModLoader.AudioNotSupported"), ModLoader.UI.Interface.loadModsID);
  	}

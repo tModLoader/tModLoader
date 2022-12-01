@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -11,7 +11,8 @@ public struct MainThreadCreationContext : INotifyCompletion
 
 	public MainThreadCreationContext GetAwaiter() => this;
 
-	public void OnCompleted(Action action) {
+	public void OnCompleted(Action action)
+	{
 		ContinuationScheduler.OnCompleted(action);
 	}
 

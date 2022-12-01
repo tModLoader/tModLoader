@@ -76,13 +76,14 @@
  		type = from.type;
  		wall = from.wall;
  		liquid = from.liquid;
-@@ -133,10 +_,31 @@
+@@ -133,10 +_,32 @@
  		bTileHeader3 = from.bTileHeader3;
  		frameX = from.frameX;
  		frameY = from.frameY;
 +		*/
  	}
  
++	//TML: Made internal, rewritten. Only relevant for vanilla net/world compression. Modders should consider the data they want to compare directly
 -	public bool isTheSameAs(Tile compTile)
 +	internal bool isTheSameAs(Tile compTile)
  	{
@@ -240,8 +241,3 @@
  
  	public void Clear(TileDataType types)
  	{
-@@ -666,3 +_,4 @@
- 
- 	public override string ToString() => "Tile Type:" + type + " Active:" + active().ToString() + " Wall:" + wall + " Slope:" + slope() + " fX:" + frameX + " fY:" + frameY;
- }
-+

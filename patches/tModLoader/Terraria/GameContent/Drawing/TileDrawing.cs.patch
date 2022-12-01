@@ -29,7 +29,7 @@
  					switch (tile.type) {
  						case 5:
  							tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
-@@ -179,12 +_,12 @@
+@@ -179,12 +_,13 @@
  				}
  
  				if (!prepareLazily)
@@ -39,17 +39,21 @@
  		}
  	}
  
++	//TML: Added tileStyle parameter.
 -	private void MakeExtraPreparations(Tile tile, int x, int y)
 +	private void MakeExtraPreparations(Tile tile, int x, int y, int tileStyle)
  	{
  		switch (tile.type) {
  			case 5: {
-@@ -268,9 +_,19 @@
+@@ -268,9 +_,24 @@
  			}
  			case 323: {
  				int textureIndex = 15;
--				if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
-+				bool isOcean = x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance;
++				bool isOcean = false;
++
+ 				if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
++					isOcean = true;
++
 +				if (isOcean)
  					textureIndex = 21;
  
@@ -58,6 +62,7 @@
 +				if (Math.Abs(tileStyle) >= ModPalmTree.VanillaStyleCount) {
 +					textureIndex = (Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount);
 +					textureIndex *= -2;
++
 +					if (!isOcean)
 +						textureIndex -= 1;
 +				}
@@ -65,13 +70,14 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
-@@ -396,8 +_,9 @@
+@@ -396,8 +_,10 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
  		TileDrawInfo value = _currentTileDrawInfo.Value;
 -		for (int i = firstTileY; i < lastTileY + 4; i++) {
 -			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
-+		// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
++
++		//TML: Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
 +		for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
 +			for (int i = firstTileY; i < lastTileY + 4; i++) {
  				Tile tile = Main.tile[j, i];
@@ -167,11 +173,12 @@
  	{
  		Texture2D result = TextureAssets.Tile[tile.type].Value;
  		int tileStyle = 0;
-@@ -1005,6 +_,25 @@
+@@ -1005,6 +_,26 @@
  				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
  					num = 84;
  				Main.instance.LoadTiles(num);
 +				break;
++			// Whole case below is TML code.
 +			case 80:
 +			case 227:
 +				WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
@@ -232,13 +239,17 @@
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654;
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3095,6 +_,10 @@
+@@ -3091,10 +_,14 @@
+ 			if (!localPlayer.fireWalk)
+ 				flag = flag || typeCache == 37 || typeCache == 58 || typeCache == 76;
+ 
++			// Extra patch context.
+ 			if (!localPlayer.iceSkate)
  				flag = flag || typeCache == 162;
  		}
  
-+		bool? modded = TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
-+		if (modded.HasValue)
-+			return modded.Value;
++		if (TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer) is bool modded)
++			return modded;
 +
  		return flag;
  	}
@@ -261,41 +272,48 @@
  	{
  		tileTop = 0;
  		tileWidth = 16;
-@@ -3224,7 +_,9 @@
+@@ -3224,6 +_,10 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
 +
-+				if (treeBiome < ModTree.VanillaStyleCount)
--				tileFrameX += (short)(176 * (treeBiome + 1));
-+					tileFrameX += (short)(176 * (treeBiome + 1));
++				if (treeBiome >= ModTree.VanillaStyleCount)
++					break;
++
+ 				tileFrameX += (short)(176 * (treeBiome + 1));
  				break;
  			}
- 			case 583:
-@@ -3248,7 +_,10 @@
+@@ -3248,6 +_,12 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int palmTreeBiome = GetPalmTreeBiome(x, y);
-+				if (Math.Abs(palmTreeBiome) < ModPalmTree.VanillaStyleCount)
--				tileFrameY = (short)(22 * palmTreeBiome);
-+					tileFrameY = (short)(22 * palmTreeBiome);
-+				else
++
++				if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
 +					tileFrameY = (short)(22 * (palmTreeBiome < 0 ? 1 : 0));
++					break;
++				}
++
+ 				tileFrameY = (short)(22 * palmTreeBiome);
  				break;
  			}
- 			case 4:
-@@ -4820,6 +_,10 @@
+@@ -4817,9 +_,16 @@
+ 					glowColor = _meteorGlow;
+ 				}
+ 
++				// Extra patch context.
++
  				break;
  			}
  		}
 +
++		// End of GetTileDrawData
 +		TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
 +		TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
 +		TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
  	}
  
  	private bool IsWindBlocked(int x, int y)
-@@ -4891,18 +_,28 @@
+@@ -4891,18 +_,29 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
@@ -320,13 +338,14 @@
 -	private void AddSpecialLegacyPoint(int x, int y)
 +	public void AddSpecialLegacyPoint(int x, int y)
  	{
++		// Protection against too many special tiles
 +		if (_specialTilesCount >= _specialTileX.Length)
-+			return; //Protection against too many special tiles
++			return;
 +
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -5513,13 +_,27 @@
+@@ -5513,14 +_,28 @@
  		}
  	}
  
@@ -352,10 +371,12 @@
 +	/// <param name="x">The X coordinate of the target tile.</param>
 +	/// <param name="y">The Y coordinate of the target tile.</param>
 +	/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
- 	private void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType)
+-	private void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType)
++	public void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType)
  	{
  		Tile tile = Main.tile[x, y + 1];
-@@ -5530,6 +_,12 @@
+ 		if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
+@@ -5530,7 +_,13 @@
  		}
  	}
  
@@ -365,9 +386,11 @@
 +	/// <param name="x">The X coordinate of the target tile.</param>
 +	/// <param name="y">The Y coordinate of the target tile.</param>
 +	/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
- 	private void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType)
+-	private void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType)
++	public void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType)
  	{
  		int num = 0;
+ 		if (Main.WindForVisuals > 0.2f)
 @@ -5587,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
@@ -420,8 +443,11 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return false;
-@@ -5927,6 +_,8 @@
+@@ -5925,8 +_,11 @@
+ 					Main.spriteBatch.Draw(value6, position2, value7, color6, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				}
  
++				// Extra patch context.
  				Main.spriteBatch.Draw(value6, vector, value7, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  			}
 +
@@ -429,10 +455,11 @@
  		}
  	}
  
-@@ -6178,6 +_,24 @@
+@@ -6178,6 +_,26 @@
  						num20 = 2;
  					}
  
++					// Handle mod palms.
 +					if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
 +						y2 = 0;
 +
@@ -446,6 +473,7 @@
 +
 +						treeTextureIndex = (Math.Abs(palmTreeBiome) - ModPalmTree.VanillaStyleCount);
 +						treeTextureIndex *= -2;
++
 +						// Oasis tree
 +						if (palmTreeBiome < 0)
 +							treeTextureIndex -= 1;
@@ -454,7 +482,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6203,8 +_,12 @@
+@@ -6203,8 +_,13 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -462,13 +490,14 @@
 +		if (texture2D == null) {
 +			if (treeTextureIndex < 0 || treeTextureIndex >= ModTree.VanillaTopTextureCount)
 +				treeTextureIndex = 0;
++
  			texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
 +		}
 +			
  
  		return texture2D;
  	}
-@@ -6212,8 +_,11 @@
+@@ -6212,8 +_,12 @@
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -476,6 +505,7 @@
 +		if (texture2D == null) {
 +			if (treeTextureIndex < 0 || treeTextureIndex >= ModTree.VanillaTopTextureCount)
 +				treeTextureIndex = 0;
++
  			texture2D = TextureAssets.TreeBranch[treeTextureIndex].Value;
 +		}
  

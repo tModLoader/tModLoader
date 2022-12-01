@@ -17,16 +17,17 @@
  	public static event Action _UpdateStart;
  	public static event Action _UpdateEnd;
  
-+	//Force modders to use ModTileEntity, to prevent them from messing with vanilla saving/loading.
++	// Force modders to use ModTileEntity, to prevent them from messing with vanilla saving/loading.
 +	internal TileEntity() { }
 +
  	public static int AssignNewID() => TileEntitiesNextID++;
  
  	public static void Clear()
-@@ -47,6 +_,7 @@
+@@ -47,6 +_,8 @@
  	{
  		manager = new TileEntitiesManager();
  		manager.RegisterAll();
++
 +		ModTileEntity.Initialize();
  	}
  

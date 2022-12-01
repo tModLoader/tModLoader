@@ -1,13 +1,14 @@
 --- src/Terraria/Terraria/Utilities/PlatformUtilities.cs
 +++ src/TerrariaNetCore/Terraria/Utilities/PlatformUtilities.cs
-@@ -3,13 +_,24 @@
+@@ -2,6 +_,7 @@
+ using System.IO;
  #if FNA
  using System.Runtime.InteropServices;
- using SDL2;
 +using Microsoft.Xna.Framework.Graphics;
+ using SDL2;
  #endif
  
- namespace Terraria.Utilities;
+@@ -9,7 +_,17 @@
  
  public static class PlatformUtilities
  {

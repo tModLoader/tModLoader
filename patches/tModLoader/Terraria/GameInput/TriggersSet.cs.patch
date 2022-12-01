@@ -8,45 +8,36 @@
  
  namespace Terraria.GameInput;
  
-@@ -30,6 +_,33 @@
+@@ -30,6 +_,23 @@
  		}
  	}
  
++	// Extra mouse buttons: [[
 +	public bool MouseMiddle {
-+		get {
-+			return KeyStatus["MouseMiddle"];
-+		}
-+		set {
-+			KeyStatus["MouseMiddle"] = value;
-+		}
++		get => KeyStatus[TriggerNames.MouseMiddle];
++		set => KeyStatus[TriggerNames.MouseMiddle] = value;
 +	}
 +
 +	public bool MouseXButton1 {
-+		get {
-+			return KeyStatus["MouseXButton1"];
-+		}
-+		set {
-+			KeyStatus["MouseXButton1"] = value;
-+		}
++		get => KeyStatus[TriggerNames.MouseXButton1];
++		set => KeyStatus[TriggerNames.MouseXButton1] = value;
 +	}
 +
 +	public bool MouseXButton2 {
-+		get {
-+			return KeyStatus["MouseXButton2"];
-+		}
-+		set {
-+			KeyStatus["MouseXButton2"] = value;
-+		}
++		get => KeyStatus[TriggerNames.MouseXButton2];
++		set => KeyStatus[TriggerNames.MouseXButton2] = value;
 +	}
++	// ]]
 +
  	public bool Up {
  		get {
  			return KeyStatus["Up"];
-@@ -545,6 +_,10 @@
+@@ -545,6 +_,11 @@
  		foreach (string knownTrigger in PlayerInput.KnownTriggers) {
  			KeyStatus.Add(knownTrigger, value: false);
  		}
 +
++		// Add mod keys' status
 +		foreach (var keybind in KeybindLoader.Keybinds) {
 +			KeyStatus.Add(keybind.FullName, false);
 +		}
