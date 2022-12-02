@@ -29,13 +29,13 @@
  		Vector2 vector4 = new Vector2(vector3.X + vector2.X / 4f, vector3.Y + (float)(num3 * 5 / 2));
  		Vector2 vector5 = new Vector2(0f, vector2.Y - (float)(num3 * 5)) / (num8 + 1);
  		if (flag)
-@@ -250,6 +_,25 @@
+@@ -249,6 +_,24 @@
+ 			}
  		}
  
- 		num10++;
-+
 +		// Handle 'Mod Configuration' button.
-+		if (DrawLeftSide(sb, Language.GetTextValue("tModLoader.ModConfiguration"), num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
++		num10++;
++		if (DrawLeftSide(sb, Language.GetTextValue("tModLoader.ModConfiguration"), num10, vector4, vector5, leftScale, 0.7f, 0.8f, 0.01f)) {
 +			leftHover = num10;
 +
 +			if (flag4) {
@@ -51,10 +51,9 @@
 +			}
 +		}
 +
-+		num10++;
+ 		num10++;
  		if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
- 			if (flag4) {
 @@ -261,6 +_,9 @@
  		if (flag5)
  			num10++;
