@@ -91,7 +91,7 @@ namespace Terraria.ModLoader
 		public static int NPCCount => nextNPC;
 
 		/// <summary>
-		/// Gets the ModNPC instance corresponding to the specified type.
+		/// Gets the ModNPC template instance corresponding to the specified type (not the clone/new instance which gets added to NPCs as the game is played).
 		/// </summary>
 		/// <param name="type">The type of the npc</param>
 		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>

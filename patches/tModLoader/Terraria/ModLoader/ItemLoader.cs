@@ -73,7 +73,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
+		/// Gets the ModItem template instance corresponding to the specified type (not the clone/new instance which gets added to Items as the game is played). Returns null if no modded item has the given type.
 		/// </summary>
 		public static ModItem GetItem(int type) {
 			return type >= ItemID.Count && type < ItemCount ? items[type - ItemID.Count] : null;

@@ -54,7 +54,7 @@ namespace Terraria.ModLoader
 		public static int ProjectileCount => nextProjectile;
 
 		/// <summary>
-		/// Gets the ModProjectile instance corresponding to the specified type.
+		/// Gets the ModProjectile template instance corresponding to the specified type (not the clone/new instance which gets added to Projectiles as the game is played).
 		/// </summary>
 		/// <param name="type">The type of the projectile</param>
 		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
