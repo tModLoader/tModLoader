@@ -125,29 +125,45 @@ public partial class Mod
 		ContentInstance.Register(mc);
 	}
 
+	/// <summary> Call this to manually add a content instance of the specified type (with a parameterless constructor) to the game. </summary>
+	/// <returns> true if the instance was successfully added </returns>
 	public void AddContent<T>() where T:ILoadable, new() => AddContent(new T());
 
-	public void AddContent(ILoadable instance)
+	/// <summary> Call this to manually add the given content instance to the game. </summary>
+	/// <param name="instance"> The content instance to add </param>
+	/// <returns> true if the instance was successfully added </returns>
+	public bool AddContent(ILoadable instance)
 	{
 		if (!loading)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-		if (instance.IsLoadingEnabled(this)) {
-			instance.Load(this);
-			content.Add(instance);
-			ContentInstance.Register(instance);
-		}
+
+		if (!instance.IsLoadingEnabled(this))
+			return false;
+
+		instance.Load(this);
+		content.Add(instance);
+		ContentInstance.Register(instance);
+		return true;
 	}
 
+	/// <summary>
+	/// Returns all registered content instances that are added by this mod.
+	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
+	/// </summary>
 	public IEnumerable<ILoadable> GetContent() => content;
 
+	/// <summary>
+	/// Returns all registered content instances that derive from the provided type that are added by this mod.
+	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
+	/// </summary>
 	public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
-	/// <summary> Attempts to find the content instance from this mod with the specified name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
+	/// <summary> Attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	public T Find<T>(string name) where T : IModType => ModContent.Find<T>(Name, name);
 
-	/// <summary> Safely attempts to find the content instance from this mod with the specified name. Caching the result is recommended. </summary>
+	/// <summary> Safely attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
