@@ -145,74 +145,37 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		/// <summary>
-		/// Gets the ModNPC instance corresponding to the specified type.
-		/// </summary>
-		/// <param name="type">The type of the npc</param>
-		/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
+		/// <inheritdoc cref="NPCLoader.GetNPC"/>
 		public static ModNPC GetModNPC(int type) => NPCLoader.GetNPC(type);
 
-		/// <summary>
-		/// Gets the index of the boss head texture corresponding to the given texture path.
-		/// </summary>
-		/// <param name="texture"></param>
-		/// <returns></returns>
+		/// <inheritdoc cref="NPCHeadLoader.GetBossHeadSlot"/>
 		public static int GetModBossHeadSlot(string texture) => NPCHeadLoader.GetBossHeadSlot(texture);
 
-		/// <summary>
-		/// Gets the index of the head texture corresponding to the given texture path.
-		/// </summary>
-		/// <param name="texture">Relative texture path</param>
-		/// <returns>The index of the texture in the heads array, -1 if not found.</returns>
+		/// <inheritdoc cref="NPCHeadLoader.GetHeadSlot"/>
 		public static int GetModHeadSlot(string texture) => NPCHeadLoader.GetHeadSlot(texture);
 
-		/// <summary>
-		/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
-		/// </summary>
+		/// <inheritdoc cref="ItemLoader.GetItem"/>
 		public static ModItem GetModItem(int type) => ItemLoader.GetItem(type);
 
-		/// <summary>
-		/// Gets the ModDust instance with the given type. Returns null if no ModDust with the given type exists.
-		/// </summary>
+		/// <inheritdoc cref="DustLoader.GetDust"/>
 		public static ModDust GetModDust(int type) => DustLoader.GetDust(type);
 
-		/// <summary>
-		/// Gets the ModProjectile instance corresponding to the specified type.
-		/// </summary>
-		/// <param name="type">The type of the projectile</param>
-		/// <returns>The ModProjectile instance in the projectiles array, null if not found.</returns>
+		/// <inheritdoc cref="ProjectileLoader.GetProjectile"/>
 		public static ModProjectile GetModProjectile(int type) => ProjectileLoader.GetProjectile(type);
 
-		/// <summary>
-		/// Gets the ModBuff instance with the given type. If no ModBuff with the given type exists, returns null.
-		/// </summary>
+		/// <inheritdoc cref="BuffLoader.GetBuff"/>
 		public static ModBuff GetModBuff(int type) => BuffLoader.GetBuff(type);
 
-		/// <summary>
-		/// Gets the equipment texture for the specified equipment type and ID.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="slot"></param>
-		/// <returns></returns>
+		/// <inheritdoc cref="EquipLoader.GetEquipTexture(EquipType, int)"/>
 		public static EquipTexture GetEquipTexture(EquipType type, int slot) => EquipLoader.GetEquipTexture(type, slot);
 
-		/// <summary>
-		/// Gets the ModMount instance corresponding to the given type. Returns null if no ModMount has the given type.
-		/// </summary>
-		/// <param name="type">The type of the mount.</param>
-		/// <returns>Null if not found, otherwise the ModMount associated with the mount.</returns>
+		/// <inheritdoc cref="MountLoader.GetMount"/>
 		public static ModMount GetModMount(int type) => MountLoader.GetMount(type);
 
-		/// <summary>
-		/// Gets the ModTile instance with the given type. If no ModTile with the given type exists, returns null.
-		/// </summary>
-		/// <param name="type">The type of the ModTile</param>
-		/// <returns>The ModTile instance in the tiles array, null if not found.</returns>
+		/// <inheritdoc cref="TileLoader.GetTile"/>
 		public static ModTile GetModTile(int type) => TileLoader.GetTile(type);
 
-		/// <summary>
-		/// Gets the ModWall instance with the given type. If no ModWall with the given type exists, returns null.
-		/// </summary>
+		/// <inheritdoc cref="WallLoader.GetWall"/>
 		public static ModWall GetModWall(int type) => WallLoader.GetWall(type);
 
 		/// <summary>
@@ -225,9 +188,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
-		/// <summary>
-		/// Returns the slot/ID of the background texture with the given name.
-		/// </summary>
+		/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot"/>
 		public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 		/// <summary>
