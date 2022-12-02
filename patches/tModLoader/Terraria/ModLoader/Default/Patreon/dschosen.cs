@@ -1,4 +1,7 @@
-﻿namespace Terraria.ModLoader.Default.Patreon
+﻿using Terraria.DataStructures;
+using Terraria.ID;
+
+namespace Terraria.ModLoader.Default.Patreon
 {
 	[AutoloadEquip(EquipType.Head)]
 	internal class dschosen_Head : PatreonItem
@@ -36,6 +39,12 @@
 	[AutoloadEquip(EquipType.Wings)]
 	internal class dschosen_Wings : PatreonItem
 	{
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
+
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
+		}
+		
 		public override void SetDefaults() {
 			base.SetDefaults();
 
@@ -43,10 +52,6 @@
 			Item.width = 24;
 			Item.height = 8;
 			Item.accessory = true;
-		}
-
-		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.wingTimeMax = 150;
 		}
 	}
 }

@@ -12,9 +12,15 @@ namespace Terraria.ModLoader.Engine
 		//https://stackoverflow.com/questions/56703623/how-to-check-for-directory-write-permission-in-net-when-controlled-folder-acce
 
 		internal static bool ControlledFolderAccessDetected;
+		internal static bool ControlledFolderAccessDetectionPrevented;
 		internal static void CheckFileSystemAccess() {
-			if (OperatingSystem.IsWindows() && Environment.OSVersion.Version.Major >= 10)
-				CheckRegistryValues();
+			try {
+				if (OperatingSystem.IsWindows() && Environment.OSVersion.Version.Major >= 10)
+					CheckRegistryValues();
+			}
+			catch {
+				ControlledFolderAccessDetectionPrevented = true;
+			}
 		}
 
 		[SupportedOSPlatform("windows")]

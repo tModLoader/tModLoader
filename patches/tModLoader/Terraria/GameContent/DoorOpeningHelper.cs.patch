@@ -9,17 +9,26 @@
  
  namespace Terraria.GameContent
  {
-@@ -84,13 +_,13 @@
+@@ -82,15 +_,20 @@
+ 				if (playerInfo.hitboxToOpenDoor.Top < rectangle.Top || playerInfo.hitboxToOpenDoor.Bottom > rectangle.Bottom)
+ 					return false;
  
++				int originalClosedDoorType = TileID.ClosedDoor;
++				ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
++				if (modTile != null && modTile.OpenDoorID > 0)
++					originalClosedDoorType = modTile.Type;
++
  				WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
- 				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
+-				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
++				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
 -					NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
 +					NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
  					return true;
  				}
  
  				WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
- 				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
+-				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
++				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
 -					NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
 +					NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
  					return true;
@@ -40,7 +49,7 @@
  		private Dictionary<int, DoorAutoHandler> _handlerByTileType = new Dictionary<int, DoorAutoHandler> {
  			{ 10, new CommonDoorOpeningInfoProvider() },
 -			{ 388, new TallGateOpeningInfoProvider() }		};
-+			{ 388, new TallGateOpeningInfoProvider() } };
++			{ 388, new TallGateOpeningInfoProvider() } }; // TODO: Support other door types?
  		private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
  		private int _timeWeCanOpenDoorsUsingVelocityAlone;
  

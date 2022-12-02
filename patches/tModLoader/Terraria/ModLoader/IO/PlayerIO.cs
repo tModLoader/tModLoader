@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
@@ -21,12 +20,24 @@ namespace Terraria.ModLoader.IO
 
 		//make Terraria.Player.ENCRYPTION_KEY internal
 		//add to end of Terraria.Player.SavePlayer
-		internal static void Save(Player player, string path, bool isCloudSave) {
+		internal static void Save(TagCompound tag, string path, bool isCloudSave) {
 			path = Path.ChangeExtension(path, ".tplr");
 			if (FileUtilities.Exists(path, isCloudSave))
 				FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-			var tag = new TagCompound {
+			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
+				TagIO.ToStream(tag, stream);
+				if (isCloudSave && SocialAPI.Cloud != null)
+					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
+			}
+		}
+
+		internal static TagCompound SaveData(Player player) {
+			player._temporaryItemSlots[0] = Main.mouseItem;
+			player._temporaryItemSlots[1] = Main.CreativeMenu.GetItemByIndex(0);
+			player._temporaryItemSlots[2] = Main.guideItem;
+			player._temporaryItemSlots[3] = Main.reforgeItem;
+			return new TagCompound {
 				["armor"] = SaveInventory(player.armor),
 				["dye"] = SaveInventory(player.dye),
 				["inventory"] = SaveInventory(player.inventory),
@@ -36,6 +47,7 @@ namespace Terraria.ModLoader.IO
 				["bank2"] = SaveInventory(player.bank2.item),
 				["bank3"] = SaveInventory(player.bank3.item),
 				["bank4"] = SaveInventory(player.bank4.item),
+				["temporaryItemSlots"] = SaveInventory(player._temporaryItemSlots),
 				["hairDye"] = SaveHairDye(player.hairDye),
 				["research"] = SaveResearch(player),
 				["modData"] = SaveModData(player),
@@ -44,28 +56,10 @@ namespace Terraria.ModLoader.IO
 				["usedMods"] = SaveUsedMods(player),
 				["usedModPack"] = SaveUsedModPack(player)
 			};
-
-			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-				TagIO.ToStream(tag, stream);
-				if (isCloudSave && SocialAPI.Cloud != null)
-					SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-			}
 		}
+
 		//add near end of Terraria.Player.LoadPlayer before accessory check
-		internal static void Load(Player player, string path, bool isCloudSave) {
-			path = Path.ChangeExtension(path, ".tplr");
-
-			if (!FileUtilities.Exists(path, isCloudSave))
-				return;
-
-			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				//LoadLegacy(player, buf);
-				return;
-			}
-
-			var tag = TagIO.FromStream(new MemoryStream(buf));
+		internal static void Load(Player player, TagCompound tag) {
 			LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 			LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
 			LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
@@ -75,6 +69,7 @@ namespace Terraria.ModLoader.IO
 			LoadInventory(player.bank2.item, tag.GetList<TagCompound>("bank2"));
 			LoadInventory(player.bank3.item, tag.GetList<TagCompound>("bank3"));
 			LoadInventory(player.bank4.item, tag.GetList<TagCompound>("bank4"));
+			LoadInventory(player._temporaryItemSlots, tag.GetList<TagCompound>("temporaryItemSlots"));
 			LoadHairDye(player, tag.GetString("hairDye"));
 			LoadResearch(player, tag.GetList<TagCompound>("research"));
 			LoadModData(player, tag.GetList<TagCompound>("modData"));
@@ -82,6 +77,24 @@ namespace Terraria.ModLoader.IO
 			LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
 			LoadUsedModPack(player, tag.GetString("usedModPack"));
+		}
+
+		internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag) {
+			path = Path.ChangeExtension(path, ".tplr");
+			tag = new TagCompound();
+
+			if (!FileUtilities.Exists(path, isCloudSave))
+				return false;
+
+			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
+
+			if (buf[0] != 0x1F || buf[1] != 0x8B) {
+				//LoadLegacy(player, buf);
+				return false;
+			}
+
+			tag = TagIO.FromStream(new MemoryStream(buf));
+			return true;
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv) {

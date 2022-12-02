@@ -326,6 +326,9 @@ namespace Terraria.ModLoader
 			ResizeArrays();
 			RecipeGroupHelper.FixRecipeGroupLookups();
 
+			Main.ResourceSetsManager.AddModdedDisplaySets();
+			Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+
 			Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.SetupContent();
@@ -357,6 +360,7 @@ namespace Terraria.ModLoader
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
+			KeybindLoader.SetupContent();
 
 			PlayerInput.reinitialize = true;
 			SetupBestiary();
@@ -480,6 +484,8 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
+			ResourceOverlayLoader.Unload();
+			ResourceDisplaySetLoader.Unload();
 
 			LoaderManager.Unload();
 
@@ -577,6 +583,8 @@ namespace Terraria.ModLoader
 			if (ItemSlot.singleSlotArray[0] != null) {
 				ItemSlot.singleSlotArray[0] = new Item();
 			}
+
+			WorldGen.ClearGenerationPasses(); // Clean up modded generation passes
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {

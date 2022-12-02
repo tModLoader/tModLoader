@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 {
 	internal class JofairdenBodyShader : JofairdenArmorShaderLayer
 	{
-		private static Asset<Texture2D> _shaderTexture;
+		private Asset<Texture2D> _shaderTexture;
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
 			=> drawInfo.drawPlayer.body == ModContent.GetInstance<Jofairden_Body>().Item.bodySlot && base.GetDefaultVisibility(drawInfo);

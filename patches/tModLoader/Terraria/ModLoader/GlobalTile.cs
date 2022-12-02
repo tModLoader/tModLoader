@@ -215,7 +215,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make something happen when a wire current passes through any tile.
+		/// Allows you to make something happen when a wire current passes through any tile. Both <see cref="Wiring.SkipWire(int, int)"/> and <see cref="NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType)"/> are usually required in the logic used in this method to correctly work.
+		/// <br/>Only called on the server and single player. All wiring happens on the world, not multiplayer clients. 
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>

@@ -76,7 +76,44 @@ jobs:
         with:
            custom_tag: ${{ steps.version.outputs.new_version }}
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+      
+      - name: Check out stable branch
+        uses: actions/checkout@v2
+        with:
+          ref: "1.4-stable"
+          persist-credentials: false
+          fetch-depth: 0
+      
+      - name: stable Version Fetch
+        id: stable
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          echo "Fetching the stable version of tmodloader"
+          version=$(git describe --tags --abbrev=0)
+          
+          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          if [[ $version =~ $regex ]] ; then
+            year="${BASH_REMATCH[1]}"
+            month="${BASH_REMATCH[2]}"
+            feature="${BASH_REMATCH[3]}"
+            patch="${BASH_REMATCH[4]}"
+            stable="$year.$month"
+          else
+            echo "Previous version '$version' is not a valid version"
+            exit 1
+          fi
+          
+          echo "stable is '$stable'"
+          echo "::set-output name=stable_version::$stable"
+      
+      - name: Re:Check out base branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.ref}}
+          persist-credentials: false
+          fetch-depth: 0
+      
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
         if: github.event_name == 'pull_request_target'
@@ -192,6 +229,7 @@ jobs:
           
           mkdir -p artifacts/Release
           cp -r steam_build/. artifacts/Release
+          
           echo ::endgroup::
           
           echo Cleaning up output directory in-between builds...
@@ -220,6 +258,7 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TERRARIA_VERSION: 1436
           TMLVERSION: ${{ steps.version.outputs.new_version }}
+          STABLEVERSION: ${{ steps.stable.outputs.stable_version }}
                     
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
@@ -480,6 +519,11 @@ jobs:
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
+          echo "Downloading windows dotnet install zip"
+          dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <./artifacts/Build/tModLoader.runtimeconfig.json)
+          export dotnet_version=${dotnet_version%$'\r'}
+          wget https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip -O ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
+          
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
@@ -498,6 +542,8 @@ jobs:
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+          
+          rm ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
         env:
           version: ${{ steps.version2.outputs.new_version }}
           

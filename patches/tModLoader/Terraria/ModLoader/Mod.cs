@@ -102,7 +102,7 @@ namespace Terraria.ModLoader
 				}
 				if (type.IsSubclassOf(typeof(ModConfig)))
 				{
-					var mc = (ModConfig)Activator.CreateInstance(type);
+					var mc = (ModConfig)Activator.CreateInstance(type, true)!;
 					// Skip loading ClientSide on Main.dedServ?
 					if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");

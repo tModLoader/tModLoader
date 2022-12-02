@@ -52,5 +52,6 @@ namespace Terraria
 		public static int dungeonLocation;
 		#endregion
 
+		internal static void ClearGenerationPasses() => _generator?._passes.Clear();
 	}
 }

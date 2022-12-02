@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.UI
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
 				Width = {Percent = 0.8f},
-				MaxWidth = UICommon.MaxPanelWidth,
+				MaxWidth = new StyleDimension(800f, 0f), //UICommon.MaxPanelWidth,
 				Top = {Pixels = 220},
 				Height = {Pixels = -220, Percent = 1f},
 				HAlign = 0.5f
@@ -78,7 +78,7 @@ namespace Terraria.ModLoader.UI
 			_uIElement.Append(_uITextPanel);
 
 			_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
-				Width = {Percent = 0.5f},
+				Width = {Percent = 0.49f},
 				Height = {Pixels = 40},
 				HAlign = 1f,
 				VAlign = 1f,
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader.UI
 			_modHomepageButton.OnClick += VisitModHomePage;
 
 			_modSteamButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitSteampage")) {
-				Width = { Percent = 0.5f },
+				Width = { Percent = 0.49f },
 				Height = { Pixels = 40 },
 				HAlign = 0f,
 				VAlign = 1f,

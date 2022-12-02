@@ -261,6 +261,15 @@
  		public float luck;
  		public float luckMinimumCap = -0.7f;
  		public float luckMaximumCap = 1f;
+@@ -1417,7 +_,7 @@
+ 		private const int SaveSlotIndex_GuideItem = 2;
+ 		private const int SaveSlotIndex_TinkererItem = 3;
+ 		private const int SaveSlotIndexCount = 4;
+-		private Item[] _temporaryItemSlots = new Item[4];
++		internal Item[] _temporaryItemSlots = new Item[4];
+ 
+ 		public Vector2 BlehOldPositionFixer => -Vector2.UnitY;
+ 
 @@ -2084,6 +_,7 @@
  		public void SetTalkNPC(int npcIndex, bool fromNet = false) {
  			talkNPC = npcIndex;
@@ -847,7 +856,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
-@@ -4009,21 +_,42 @@
+@@ -4009,21 +_,50 @@
  					}
  				default: {
  						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
@@ -862,6 +871,14 @@
  		}
  
 +		// Return value added by TML.
++		/// <summary>
++		/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
++		/// <br/> Use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> if a specific instance of an Item needs to be spawned into the world to preserve modded data.
++		/// </summary>
++		/// <param name="source"></param>
++		/// <param name="item"></param>
++		/// <param name="stack"></param>
++		/// <returns>The index of the item within <see cref="Main.item"/></returns>
 -		public void QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
 +		public int QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
  			int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
@@ -2464,7 +2481,14 @@
  			hasFootball = false;
  			drawingFootball = false;
  			minionKB = 0f;
-@@ -13116,11 +_,19 @@
+@@ -13110,17 +_,26 @@
+ 			gravControl = false;
+ 			honeyCombItem = null;
+ 			gravControl2 = false;
++			PlayerLoader.ModifyMaxStats(this);
+ 			statLifeMax2 = statLifeMax;
+ 			statManaMax2 = statManaMax;
+ 			chloroAmmoCost80 = false;
  			huntressAmmoCost90 = false;
  			ammoCost80 = false;
  			ammoCost75 = false;
@@ -3021,6 +3045,18 @@
  			if (tileSpeed > 3f)
  				tileSpeed = 3f;
  
+@@ -18472,8 +_,11 @@
+ 				wallSpeed = 3f;
+ 
+ 			wallSpeed = 1f / wallSpeed;
++			// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++			/*
+ 			if (statManaMax2 > 400)
+ 				statManaMax2 = 400;
++			*/
+ 
+ 			if (statDefense < 0)
+ 				statDefense = 0;
 @@ -18507,7 +_,9 @@
  				}
  			}
@@ -3344,12 +3380,12 @@
  								if (inventory[n].stack <= 0)
  									inventory[n].SetDefaults();
  
-@@ -22758,19 +_,22 @@
+@@ -22758,35 +_,40 @@
  							NetMessage.SendData(61, -1, -1, null, whoAmI, 245f);
  					}
  				}
 -				else if (Main.tile[myX, myY].type == 10) {
-+				else if (Main.tile[myX, myY].type == TileID.ClosedDoor || TileLoader.OpenDoorID(Main.tile[myX, myY]) >= 0) {
++				else if (TileLoader.IsClosedDoor(Main.tile[myX, myY])) {
  					flag2 = true;
  					if (WorldGen.IsLockedDoor(myX, myY)) {
  						int num43 = 1141;
@@ -3369,7 +3405,19 @@
  							}
  						}
  					}
-@@ -22786,7 +_,7 @@
+ 					else {
++						int originalClosedDoorType = Main.tile[myX, myY].type;
++
+ 						WorldGen.OpenDoor(myX, myY, direction);
+-						if (Main.tile[myX, myY].type != 10) {
++						if (Main.tile[myX, myY].type != originalClosedDoorType) {
+ 							NetMessage.SendData(19, -1, -1, null, 0, myX, myY, direction);
+ 						}
+ 						else {
+ 							WorldGen.OpenDoor(myX, myY, -direction);
+-							if (Main.tile[myX, myY].type != 10)
++							if (Main.tile[myX, myY].type != originalClosedDoorType)
+ 								NetMessage.SendData(19, -1, -1, null, 0, myX, myY, -direction);
  						}
  					}
  				}
@@ -3494,14 +3542,13 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
-@@ -24905,7 +_,12 @@
+@@ -24905,7 +_,11 @@
  			return itemToPickUp;
  		}
  
 +		/// <summary>
 +		/// Heals the player for a certain amount.
 +		/// </summary>
-+		/// <param name="player">The player to heal.</param>
 +		/// <param name="amount">The amount to heal the player by.</param>
 -		private void Heal(int amount) {
 +		public void Heal(int amount) {
@@ -3953,26 +4000,110 @@
  				return true;
  
  			return false;
-@@ -27961,7 +_,8 @@
+@@ -27829,6 +_,22 @@
+ 				if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !newItem.IsTheSameAs(inventory[i]))
+ 					continue;
+ 
++				if (!ItemLoader.TryStackItems(inventory[i], newItem, out int numTransfered))
++					continue;
++
++				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, inventory[i], numTransfered);
++
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				settings.HandlePostAction(inventory[i]);
++				if (newItem.stack <= 0)
++					return newItem;
++
++				/* TML: #OnStackHook
+ 				SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 				if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
+ 					inventory[i].stack += newItem.stack;
+@@ -27848,6 +_,7 @@
+ 					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, inventory[i].maxStack - inventory[i].stack);
+ 
+ 				inventory[i].stack = inventory[i].maxStack;
++				*/
+ 				DoCoins(i);
+ 				if (plr == Main.myPlayer)
+ 					Recipe.FindRecipes();
+@@ -27961,12 +_,25 @@
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
 +			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
-+			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && ItemLoader.CanStack(inv[i], returnItem)) {
+ 			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++				if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
-@@ -27990,7 +_,8 @@
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inv[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inv[i].stack <= inv[i].maxStack) {
+ 					inv[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+@@ -27984,19 +_,38 @@
+ 
+ 				inv[i].stack = inv[i].maxStack;
+ 				settings.HandlePostAction(inv[i]);
++				*/
+ 			}
+ 
+ 			return false;
  		}
  
  		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
--			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
 +			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && ItemLoader.CanStack(inventory[i], newItem)) {
+ 			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++				if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
++					return false;
++
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
+ 					SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 
++				DoCoins(i);
++				if (plr == Main.myPlayer)
++					Recipe.FindRecipes();
++
++				if (!settings.NoText)
++					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered, noStack: false, settings.LongText);
++
++				AchievementsHelper.NotifyItemPickup(this, returnItem);
++				settings.HandlePostAction(inventory[i]);
++				if (returnItem.stack <= 0)
++					return true;
++
++				/* TML: #OnStackHook
+ 				if (returnItem.stack + inventory[i].stack <= inventory[i].maxStack) {
++
+ 					inventory[i].stack += returnItem.stack;
+ 					if (!settings.NoText)
+ 						PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, returnItem.stack, noStack: false, settings.LongText);
+@@ -28021,6 +_,7 @@
+ 					Recipe.FindRecipes();
+ 
+ 				settings.HandlePostAction(inventory[i]);
++				*/
+ 			}
+ 
+ 			return false;
 @@ -28098,6 +_,8 @@
  				return;
  
@@ -4703,6 +4834,88 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -31880,40 +_,78 @@
+ 			}
+ 		}
+ 
++		public void UseManaMaxIncreasingItem(int increase) {
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statManaMax += increase;
++			statManaMax2 += increase;
++			statMana += increase;
++
++			if (Main.myPlayer == whoAmI)
++				ManaEffect(increase);
++		}
++
+ 		private void ItemCheck_UseManaCrystal(Item sItem) {
+-			if (sItem.type == 109 && itemAnimation > 0 && statManaMax < 200 && ItemTimeIsZero) {
++			if (sItem.type == 109 && itemAnimation > 0 && ConsumedManaCrystals < ManaCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statManaMax += 20;
+ 				statManaMax2 += 20;
+ 				statMana += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					ManaEffect(20);
++				*/
++				UseManaMaxIncreasingItem(20);
++				ConsumedManaCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 1);
+ 			}
+ 		}
+ 
++		public void UseHealthMaxIncreasingItem(int increase) {
++			// Failsafe.  Might not be needed?
++			if (increase < 0)
++				increase = 0;
++
++			statLifeMax += increase;
++			statLifeMax2 += increase;
++			statLife += increase;
++
++			if (Main.myPlayer == whoAmI)
++				HealEffect(increase);
++		}
++
+ 		private void ItemCheck_UseLifeFruit(Item sItem) {
+-			if (sItem.type == 1291 && itemAnimation > 0 && statLifeMax >= 400 && statLifeMax < 500 && ItemTimeIsZero) {
++			if (sItem.type == 1291 && itemAnimation > 0 && ConsumedLifeCrystals == LifeCrystalMax && ConsumedLifeFruit < LifeFruitMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statLifeMax += 5;
+ 				statLifeMax2 += 5;
+ 				statLife += 5;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(5);
++				*/
++				UseHealthMaxIncreasingItem(5);
++				ConsumedLifeFruit++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 2);
+ 			}
+ 		}
+ 
+ 		private void ItemCheck_UseLifeCrystal(Item sItem) {
+-			if (sItem.type == 29 && itemAnimation > 0 && statLifeMax < 400 && ItemTimeIsZero) {
++			if (sItem.type == 29 && itemAnimation > 0 && ConsumedLifeCrystals < LifeCrystalMax && ItemTimeIsZero) {
+ 				ApplyItemTime(sItem);
++				/*
+ 				statLifeMax += 20;
+ 				statLifeMax2 += 20;
+ 				statLife += 20;
+ 				if (Main.myPlayer == whoAmI)
+ 					HealEffect(20);
++				*/
++				UseHealthMaxIncreasingItem(20);
++				ConsumedLifeCrystals++;
+ 
+ 				AchievementsHelper.HandleSpecialEvent(this, 0);
+ 			}
 @@ -32078,7 +_,7 @@
  
  			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -5527,7 +5740,7 @@
  
  			if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  				num += pickPower;
-@@ -37704,24 +_,54 @@
+@@ -37704,37 +_,69 @@
  
  		public void DropItems() {
  			IEntitySource itemSource_Death = GetItemSource_Death();
@@ -5562,18 +5775,18 @@
 +							startCounts[item.netID] = 0;
 +						}
 +
- 						int num = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, inventory[i].type);
+-						int num = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, inventory[i].type);
++						int num = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, inventory[i]);
++						/*
  						Main.item[num].netDefaults(inventory[i].netID);
  						Main.item[num].Prefix(inventory[i].prefix);
 -						Main.item[num].stack = inventory[i].stack;
++						*/
 +						Main.item[num].stack = stack; // inventory[i].stack
  						Main.item[num].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num].noGrabDelay = 100;
  						Main.item[num].newAndShiny = false;
-+
-+						Main.item[num].ModItem = item.ModItem;
-+						Main.item[num].globalItems = item.globalItems;
 +
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num);
@@ -5584,44 +5797,65 @@
  				}
  
  				inventory[i].TurnToAir();
-@@ -37735,6 +_,10 @@
+ 				if (i < armor.Length) {
+ 					if (armor[i].stack > 0) {
+-						int num2 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, armor[i].type);
++						int num2 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, armor[i]);
++						/*
+ 						Main.item[num2].netDefaults(armor[i].netID);
+ 						Main.item[num2].Prefix(armor[i].prefix);
+ 						Main.item[num2].stack = armor[i].stack;
++						*/
+ 						Main.item[num2].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num2].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num2].noGrabDelay = 100;
  						Main.item[num2].newAndShiny = false;
 +
-+						Main.item[num2].ModItem = armor[i].ModItem;
-+						Main.item[num2].globalItems = armor[i].globalItems;
-+
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, num2);
  					}
-@@ -37752,6 +_,8 @@
+@@ -37744,10 +_,12 @@
+ 
+ 				if (i < dye.Length) {
+ 					if (dye[i].stack > 0) {
+-						int num3 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, dye[i].type);
++						int num3 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, dye[i]);
++						/*
+ 						Main.item[num3].netDefaults(dye[i].netID);
+ 						Main.item[num3].Prefix(dye[i].prefix);
+ 						Main.item[num3].stack = dye[i].stack;
++						*/
+ 						Main.item[num3].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num3].noGrabDelay = 100;
- 						Main.item[num3].newAndShiny = false;
-+						Main.item[num3].ModItem = dye[i].ModItem;
-+						Main.item[num3].globalItems = dye[i].globalItems;
- 						if (Main.netMode == 1)
- 							NetMessage.SendData(21, -1, -1, null, num3);
- 					}
-@@ -37769,6 +_,8 @@
+@@ -37761,10 +_,12 @@
+ 
+ 				if (i < miscEquips.Length) {
+ 					if (miscEquips[i].stack > 0) {
+-						int num4 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscEquips[i].type);
++						int num4 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscEquips[i]);
++						/*
+ 						Main.item[num4].netDefaults(miscEquips[i].netID);
+ 						Main.item[num4].Prefix(miscEquips[i].prefix);
+ 						Main.item[num4].stack = miscEquips[i].stack;
++						*/
+ 						Main.item[num4].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  						Main.item[num4].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  						Main.item[num4].noGrabDelay = 100;
- 						Main.item[num4].newAndShiny = false;
-+						Main.item[num4].ModItem = miscEquips[i].ModItem;
-+						Main.item[num4].globalItems = miscEquips[i].globalItems;
- 						if (Main.netMode == 1)
- 							NetMessage.SendData(21, -1, -1, null, num4);
- 					}
-@@ -37788,6 +_,8 @@
+@@ -37780,10 +_,12 @@
+ 					continue;
+ 
+ 				if (miscDyes[i].stack > 0) {
+-					int num5 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscDyes[i].type);
++					int num5 = Item.NewItem(itemSource_Death, (int)position.X, (int)position.Y, width, height, miscDyes[i]);
++					/*
+ 					Main.item[num5].netDefaults(miscDyes[i].netID);
+ 					Main.item[num5].Prefix(miscDyes[i].prefix);
+ 					Main.item[num5].stack = miscDyes[i].stack;
++					*/
+ 					Main.item[num5].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  					Main.item[num5].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  					Main.item[num5].noGrabDelay = 100;
- 					Main.item[num5].newAndShiny = false;
-+					Main.item[num5].ModItem = miscDyes[i].ModItem;
-+					Main.item[num5].globalItems = miscDyes[i].globalItems;
- 					if (Main.netMode == 1)
- 						NetMessage.SendData(21, -1, -1, null, num5);
- 				}
 @@ -37795,12 +_,26 @@
  				miscDyes[i].TurnToAir();
  			}
@@ -5682,16 +5916,33 @@
  				return false;
  
  			for (int i = x - 1; i <= x + 1; i++) {
-@@ -38067,6 +_,7 @@
+@@ -38052,7 +_,12 @@
+ 				}
+ 			}
+ 			catch (Exception exception) {
+-				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path);
++				FancyErrorPrinter.ShowFileSavingFailError(exception, playerFile.Path); // IO Exception
++
++				if (!Main.gameMenu)
++					WorldGen.SaveAndQuit();
++
++				Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.PlayerSaveFail")}\n\n{exception}", Main.menuMode);
+ 				throw;
+ 			}
+ 		}
+@@ -38067,20 +_,30 @@
  			if (string.IsNullOrEmpty(path))
  				return;
  
-+			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
  			if (FileUtilities.Exists(path, isCloudSave))
  				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++			*/
  
-@@ -38074,13 +_,20 @@
- 			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			byte[] bytes;
+ 			RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-			using (Stream stream = isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create))) {
++			using (Stream stream = (Stream)new MemoryStream(2000)) {
  				using (CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write)) {
  					using (BinaryWriter binaryWriter = new BinaryWriter(cryptoStream)) {
 +						PlayerLoader.PreSavePlayer(player);
@@ -5711,6 +5962,20 @@
  						BitsByte bb = (byte)0;
  						for (int i = 0; i < 8; i++) {
  							bb[i] = player.hideVisibleAccessory[i];
+@@ -38096,9 +_,11 @@
+ 						binaryWriter.Write(player.hideMisc);
+ 						binaryWriter.Write((byte)player.skinVariant);
+ 						binaryWriter.Write(player.statLife);
+-						binaryWriter.Write(player.statLifeMax);
++						// Keep the player state valid with vanilla (#HealthManaAPI)
++						// Any modifications to statLifeMax/statManaMax by mods can just be done during runtime
++						binaryWriter.Write(100 + player.ConsumedLifeCrystals * 20 + player.ConsumedLifeFruit * 5);
+ 						binaryWriter.Write(player.statMana);
+-						binaryWriter.Write(player.statManaMax);
++						binaryWriter.Write(20 + player.ConsumedManaCrystals * 20);
+ 						binaryWriter.Write(player.extraAccessory);
+ 						binaryWriter.Write(player.unlockedBiomeTorches);
+ 						binaryWriter.Write(player.UsingBiomeTorches);
 @@ -38126,63 +_,57 @@
  						binaryWriter.Write(player.shoeColor.G);
  						binaryWriter.Write(player.shoeColor.B);
@@ -5804,17 +6069,32 @@
  							binaryWriter.Write(player.hideInfo[num7]);
  						}
  
-@@ -38227,9 +_,13 @@
+@@ -38225,11 +_,28 @@
+ 						binaryWriter.Flush();
+ 						cryptoStream.FlushFinalBlock();
  						stream.Flush();
++
++						/* tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
  						if (isCloudSave && SocialAPI.Cloud != null)
  							SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
++						*/
++						bytes = ((MemoryStream)stream).ToArray();
 +
-+						PlayerLoader.PostSavePlayer(player);
++						PlayerLoader.PostSavePlayer(player); // For native data only
  					}
  				}
  			}
 +
-+			PlayerIO.Save(player, path, isCloudSave);
++			// tML - Delay vanilla saving until modded data is serialized (in case of exceptions)
++			var tag = PlayerIO.SaveData(player);
++
++			BackupIO.Player.ArchivePlayer(path, isCloudSave);
++			if (FileUtilities.Exists(path, isCloudSave))
++				FileUtilities.Copy(path, path + ".bak", isCloudSave);
++
++			FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
++
++			PlayerIO.Save(tag, path, isCloudSave);
  		}
  
  		private void SaveTemporaryItemSlotContents(BinaryWriter writer) {
@@ -5827,6 +6107,27 @@
  			try {
  				RijndaelManaged rijndaelManaged = new RijndaelManaged();
  				rijndaelManaged.Padding = PaddingMode.None;
+@@ -38415,11 +_,20 @@
+ 
+ 							player.statMana = binaryReader.ReadInt32();
+ 							player.statManaMax = binaryReader.ReadInt32();
++							
+ 							if (player.statManaMax > 200)
+ 								player.statManaMax = 200;
+ 
++							// Allow mana stat to exceed vanilla bounds (#HealthManaAPI)
++							/*
+ 							if (player.statMana > 400)
+ 								player.statMana = 400;
++							*/
++
++							// Clamping of the values happens automatically
++							player.ConsumedLifeCrystals = (player.statLifeMax - 100) / 20;
++							player.ConsumedLifeFruit = (player.statLifeMax - 400) / 5;
++							player.ConsumedManaCrystals = (player.statManaMax - 20) / 20;
+ 
+ 							if (num >= 125)
+ 								player.extraAccessory = binaryReader.ReadBoolean();
 @@ -38673,7 +_,7 @@
  							if (num >= 11) {
  								int num28 = 22;
@@ -5855,14 +6156,15 @@
  			catch {
  			}
  
-@@ -38803,9 +_,12 @@
+@@ -38803,9 +_,13 @@
  			}
  		}
  
 -		private static void LoadPlayer_LastMinuteFixes(Player newPlayer) {
-+		public static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
++		private static void LoadPlayer_LastMinuteFixes(Player newPlayer, PlayerFileData playerFileData) {
  			newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, 11f);
-+			PlayerIO.Load(newPlayer, playerFileData.Path, playerFileData.IsCloudSave);
++			if(PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tag))
++				PlayerIO.Load(newPlayer, tag);
  			for (int i = 3; i < 10; i++) {
 +				LoadPlayer_LastMinuteFixes(newPlayer.armor[i], newPlayer);
 +				/*
@@ -5929,9 +6231,11 @@
  			width = 20;
  			height = 42;
  			name = string.Empty;
-@@ -38926,7 +_,7 @@
+@@ -38925,8 +_,9 @@
+ 			lastVisualizedSelectedItem = new Item();
  			grappling[0] = -1;
  			statManaMax = 20;
++			PlayerLoader.ModifyMaxStats(this);
  			extraAccessory = false;
 -			for (int n = 0; n < 625; n++) {
 +			for (int n = 0; n < adjTile.Length; n++) {

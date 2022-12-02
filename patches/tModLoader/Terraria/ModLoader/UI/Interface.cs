@@ -183,24 +183,13 @@ namespace Terraria.ModLoader.UI
 	                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 				}
 			}
-			if (Main.MenuUI.CurrentState == modSources) {
-				if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
-					ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
-					infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), modSourcesID, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
-						() => {
-							SoundEngine.PlaySound(SoundID.MenuOpen);
-							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
-						});
-					Main.SaveSettings();
-				}
-			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modSourcesID) {
-				Main.MenuUI.SetState(modSources);
 				Main.menuMode = 888;
+				Main.MenuUI.SetState(modSources);
 			}
 			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);

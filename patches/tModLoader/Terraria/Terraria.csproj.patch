@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,26 +_,27 @@
+@@ -7,26 +_,28 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2022 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -21,12 +21,13 @@
 -    <AssemblyName>$(AssemblyName)Release</AssemblyName>
 +  <PropertyGroup>
 +    <tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
++	<StableVersion Condition="'$(stableVersion)' == ''">0.0</StableVersion>
 +    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
 +    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
 +    <BranchName>$(BranchName.Replace("|","-"))</BranchName>
 +    <CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
-+    <SourceRevisionId>$(tMLVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
++    <SourceRevisionId>$(tMLVersion)|$(StableVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
@@ -66,7 +67,7 @@
    </ItemGroup>
    <ItemGroup>
 +    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.5.31.2" />
++    <PackageReference Include="MonoModReorg.RuntimeDetour" Version="22.11.9-prerelease.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />

@@ -1310,6 +1310,15 @@
  			if (Main.player[num7].ZoneTowerNebula) {
  				bool flag19 = true;
  				int num50 = 0;
+@@ -60086,7 +_,7 @@
+ 						int num105 = Main.rand.Next(7);
+ 						int num106 = 12;
+ 						int maxValue3 = 20;
+-						if (Main.player[num7].statLifeMax <= 100) {
++						if (Main.player[num7].ConsumedLifeCrystals == 0) {
+ 							num106 = 5;
+ 							num106 -= Main.CurrentFrameFlags.ActivePlayersCount / 2;
+ 							if (num106 < 2)
 @@ -60370,6 +_,11 @@
  				}
  			}
@@ -1593,6 +1602,15 @@
  			float num = (float)(255 - alpha) / 255f;
  			int num2 = (int)((float)(int)newColor.R * num);
  			int num3 = (int)((float)(int)newColor.G * num);
+@@ -71473,7 +_,7 @@
+ 							break;
+ 					}
+ 				}
+-				else if (Main.player[Main.myPlayer].statLifeMax < 300 || Main.player[Main.myPlayer].statDefense < 10) {
++				else if (Main.player[Main.myPlayer].ConsumedLifeCrystals < 10 || Main.player[Main.myPlayer].statDefense < 10) {
+ 					switch (Main.rand.Next(4)) {
+ 						case 0:
+ 							result = Lang.dialog(85);
 @@ -72350,6 +_,7 @@
  				result = ((!HasSpecialEventText("Bunny", out specialEventText)) ? Lang.BunnyChat(this) : specialEventText);
  			}
@@ -1601,3 +1619,13 @@
  			return result;
  		}
  
+@@ -72452,6 +_,9 @@
+ 
+ 		public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect) {
+ 			NPC nPC = Main.npc[enemyIndex];
++			if (!NPCLoader.ModifyCollisionData(nPC, victimHitbox, ref specialHitSetter, ref damageMultiplier, ref npcRect)) {
++				return;
++			}
+ 			if (((nPC.type >= 430 && nPC.type <= 436) || nPC.type == 591) && nPC.ai[2] > 5f) {
+ 				int num = 34;
+ 				if (nPC.spriteDirection < 0) {

@@ -11,7 +11,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -26,6 +_,10 @@
+@@ -26,12 +_,16 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -22,6 +22,13 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
+ 			string iP;
+ 			if ((iP = TryParameter("-j", "-join")) != null)
+-				game.AutoJoin(iP);
++				game.AutoJoin(iP, TryParameter("-plr", "-player"));
+ 
+ 			string arg;
+ 			if ((arg = TryParameter("-pass", "-password")) != null) {
 @@ -41,6 +_,34 @@
  
  			if (HasParameter("-host"))

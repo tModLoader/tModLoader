@@ -322,8 +322,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
 		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify NPC loot.
+		/// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
 		/// </summary>
-		/// <param name="npcLoot"></param>
+		/// <param name="npcLoot">A reference to the item drop database for this npc type</param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
 		}
 
@@ -736,6 +737,18 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the npc's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+		/// </summary>
+		/// <param name="victimHitbox"></param>
+		/// <param name="immunityCooldownSlot"></param>
+		/// <param name="damageMultiplier"></param>
+		/// <param name="npcHitbox"></param>
+		/// <returns></returns>
+		public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+			return true;
 		}
 
 		/// <summary>

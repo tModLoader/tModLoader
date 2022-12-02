@@ -11,6 +11,11 @@ namespace Terraria.ModLoader
 		public Recipe recipe;
 
 		/// <summary>
+		/// An item stack that the created item will be combined with (via OnStack). For normal crafting, this is Main.mouseItem
+		/// </summary>
+		public Item DestinationStack;
+
+		/// <summary>
 		/// Cloned list of Items consumed when crafting.
 		/// </summary>
 		public List<Item> ConsumedItems;

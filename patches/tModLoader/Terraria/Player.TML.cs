@@ -19,6 +19,51 @@ namespace Terraria
 
 		public Item equippedWings = null;
 
+		private int consumedLifeCrystals;
+
+		/// <summary>
+		/// How many Life Crystals this player has consumed
+		/// </summary>
+		public int ConsumedLifeCrystals {
+			get => consumedLifeCrystals;
+			set => consumedLifeCrystals = Utils.Clamp(value, 0, LifeCrystalMax);
+		}
+
+		/// <summary>
+		/// The maximum amount of Life Crystals this player is allowed to consume total
+		/// </summary>
+		public const int LifeCrystalMax = 15;
+
+		private int consumedLifeFruit;
+
+		/// <summary>
+		/// How many Life Fruit this player has consumed
+		/// </summary>
+		public int ConsumedLifeFruit {
+			get => consumedLifeFruit;
+			set => consumedLifeFruit = Utils.Clamp(value, 0, LifeFruitMax);
+		}
+
+		/// <summary>
+		/// The maximum amount of Life Fruit this player is allowed to consume total
+		/// </summary>
+		public const int LifeFruitMax = 20;
+
+		private int consumedManaCrystals;
+
+		/// <summary>
+		/// How many Mana Crystals this player has consumed
+		/// </summary>
+		public int ConsumedManaCrystals {
+			get => consumedManaCrystals;
+			set => consumedManaCrystals = Utils.Clamp(value, 0, ManaCrystalMax);
+		}
+
+		/// <summary>
+		/// The maximum amount of Mana Crystals this player is allowed to consume total
+		/// </summary>
+		public const int ManaCrystalMax = 9;
+
 		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);
@@ -73,17 +118,16 @@ namespace Terraria
 		}
 
 		/// <summary>
-		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
+		/// Will spawn an item like <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/>, but clones it (handy when you need to retain item infos)
 		/// </summary>
 		/// <param name="source">The spawn context</param>
 		/// <param name="item">The item you want to be cloned</param>
 		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
+		// TODO: 1.4.4, delete this and move code to Player.QuickSpawnItem(IEntitySource source, Item item, int stack).
+		[Obsolete("Use Player.QuickSpawnItem(IEntitySource source, Item item, int stack) instead.")]
 		public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1) {
-			int index = Item.NewItem(source, getRect(), item.type, stack, false, -1, false, false);
-			Item clone = Main.item[index] = item.Clone();
-			clone.whoAmI = index;
-			clone.position = position;
-			clone.stack = stack;
+			int index = Item.NewItem(source, getRect(), item, false, false, false);
+			Main.item[index].stack = stack;
 
 			// Sync the item for mp
 			if (Main.netMode == NetmodeID.MultiplayerClient)
@@ -92,18 +136,22 @@ namespace Terraria
 			return index;
 		}
 
-		public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
-			=> QuickSpawnItem(source, item.type, stack);
-
 		/// <inheritdoc cref="QuickSpawnClonedItem"/>
+		public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
+			=> QuickSpawnClonedItem(source, item, stack);
+
+		/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
+		/// <returns>Returns the Item instance</returns>
 		public Item QuickSpawnClonedItemDirect(IEntitySource source, Item item, int stack = 1)
 			=> Main.item[QuickSpawnClonedItem(source, item, stack)];
 
-		/// <inheritdoc cref="QuickSpawnClonedItem"/>
+		/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
+		/// <returns>Returns the Item instance</returns>
 		public Item QuickSpawnItemDirect(IEntitySource source, Item item, int stack = 1)
-			=> Main.item[QuickSpawnItem(source, item.type, stack)];
+			=> Main.item[QuickSpawnClonedItem(source, item, stack)];
 
-		/// <inheritdoc cref="QuickSpawnClonedItem"/>
+		/// <summary><inheritdoc cref="QuickSpawnItem(IEntitySource, int, int)"/></summary>
+		/// <returns>Returns the Item instance</returns>
 		public Item QuickSpawnItemDirect(IEntitySource source, int type, int stack = 1)
 			=> Main.item[QuickSpawnItem(source, type, stack)];
 
@@ -418,18 +466,13 @@ namespace Terraria
 		/// </summary>
 		public void DropItem(IEntitySource source, Vector2 position, ref Item item) {
 			if (item.stack > 0) {
-				int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item.type);
+				int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item);
 				var itemDrop = Main.item[itemDropId];
 
-				itemDrop.netDefaults(item.netID);
-				itemDrop.Prefix(item.prefix);
-				itemDrop.stack = item.stack;
 				itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
 				itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
 				itemDrop.noGrabDelay = 100;
 				itemDrop.newAndShiny = false;
-				itemDrop.ModItem = item.ModItem;
-				itemDrop.globalItems = item.globalItems;
 
 				if (Main.netMode == 1)
 					NetMessage.SendData(21, -1, -1, null, itemDropId);

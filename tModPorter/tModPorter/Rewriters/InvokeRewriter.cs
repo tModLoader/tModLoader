@@ -29,7 +29,7 @@ public partial class InvokeRewriter : BaseRewriter
 			return newNode;
 
 		IOperation op = model.GetOperation(node);
-		if (op is not IInvalidOperation && (op is not IInvocationOperation invocation|| !invocation.TargetMethod.IsObsolete()))
+		if (!IsInvalidOrObsolete(op))
 			return node;
 
 		return node.Expression switch {

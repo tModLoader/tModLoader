@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Config.UI
 			// Null values without AllowNullAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
 			if (Value == null && List != null) {
 				// This should never actually happen, but I guess a bad Json file could.
-				object data = Activator.CreateInstance(MemberInfo.Type);
+				object data = Activator.CreateInstance(MemberInfo.Type, true);
 				string json = JsonDefaultValueAttribute?.Json ?? "{}";
 
 				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
@@ -108,13 +108,31 @@ namespace Terraria.ModLoader.Config.UI
 			//data = _GetValue();// memberInfo.GetValue(this.item);
 			//drawLabel = false;
 
+			if (List == null) {
+				// Member > Class
+				var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+				if (expandAttribute != null)
+					expanded = expandAttribute.Expand;
+			}
+			else {
+				// ListMember's ExpandListElements > Class
+				var listType = MemberInfo.Type.GetGenericArguments()[0];
+				var expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(listType, typeof(ExpandAttribute), true);
+				if (expandAttribute != null)
+					expanded = expandAttribute.Expand;
+				expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(MemberInfo.MemberInfo, typeof(ExpandAttribute), true);
+				if (expandAttribute != null && expandAttribute.ExpandListElements.HasValue)
+					expanded = expandAttribute.ExpandListElements.Value;
+			}
+
 			dataList = new NestedUIList();
 			dataList.Width.Set(-14, 1f);
 			dataList.Left.Set(14, 0f);
 			dataList.Height.Set(-30, 1f);
 			dataList.Top.Set(30, 0);
 			dataList.ListPadding = 5f;
-			Append(dataList);
+			if(expanded)
+				Append(dataList);
 
 			//string name = memberInfo.Name;
 			//if (labelAttribute != null) {
@@ -131,7 +149,7 @@ namespace Terraria.ModLoader.Config.UI
 			initializeButton.OnClick += (a, b) => {
 				SoundEngine.PlaySound(21);
 
-				object data = Activator.CreateInstance(MemberInfo.Type);
+				object data = Activator.CreateInstance(MemberInfo.Type, true);
 				string json = JsonDefaultValueAttribute?.Json ?? "{}";
 
 				JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
@@ -150,7 +168,7 @@ namespace Terraria.ModLoader.Config.UI
 				Interface.modConfig.SetPendingChanges();
 			};
 
-			expandButton = new UIModConfigHoverImage(ExpandedTexture, "Expand");
+			expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
 			expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 			expandButton.Left.Set(-52, 1f);
 			expandButton.OnClick += (a, b) => {

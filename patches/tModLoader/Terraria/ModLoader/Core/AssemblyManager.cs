@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Core
 					var runtime = mod.LoadFromAssemblyName(assemblyName);
 					if (string.IsNullOrEmpty(runtime.Location))
 						return context.LoadFromByteArray(((ModLoadContext)GetLoadContext(runtime)).assemblyBytes[assemblyName.Name]);
-					
+
 
 					return context.LoadFromAssemblyPath(runtime.Location);
 				}
@@ -185,7 +185,7 @@ namespace Terraria.ModLoader.Core
 		private static Mod Instantiate(ModLoadContext mod) {
 			try {
 				VerifyMod(mod.Name, mod.assembly, out var modType);
-				var m = (Mod)Activator.CreateInstance(modType);
+				var m = (Mod)Activator.CreateInstance(modType, true)!;
 				m.File = mod.modFile;
 				m.Code = mod.assembly;
 				m.Logger = LogManager.GetLogger(m.Name);
@@ -347,7 +347,7 @@ namespace Terraria.ModLoader.Core
 							.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
 							.Concat<MethodBase>(type.GetConstructors(ALL))
 							.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null && m.DeclaringType == type)
+							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type)
 							.Where(filter.ShouldJIT)
 					)
 					.ToArray();
@@ -378,9 +378,10 @@ namespace Terraria.ModLoader.Core
 				throw new Exceptions.JITException(message);
 			}
 		}
-		
+
 		private static void ForceJITOnMethod(MethodBase method) {
-			RuntimeHelpers.PrepareMethod(method.MethodHandle);
+			if (method.GetMethodBody() != null)
+				RuntimeHelpers.PrepareMethod(method.MethodHandle);
 
 			// Here we check for overrides that override methods that no longer exist.
 			// tModLoader contributors should consult https://github.com/tModLoader/tModLoader/wiki/tModLoader-Style-Guide#be-aware-of-breaking-changes to properly handle breaking changes, especially once 1.4 is stable.

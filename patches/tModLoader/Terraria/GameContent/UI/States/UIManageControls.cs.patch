@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIManageControls.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIManageControls.cs
-@@ -11,6 +_,7 @@
+@@ -11,6 +_,8 @@
  using Terraria.ID;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Config.UI;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
@@ -19,7 +20,7 @@
  		public static int ForceMoveTo = -1;
  		private const float PanelTextureHeight = 30f;
  		private static List<string> _BindingsFullLine = new List<string> {
-@@ -39,15 +_,20 @@
+@@ -39,15 +_,21 @@
  			"sp10",
  			"sp11",
  			"sp12",
@@ -39,6 +40,7 @@
 +			ClearModKeybinds
  		};
 +		private static List<string> _ModBindings = new List<string>();
++		private static List<string> _ModNames = new List<string>();
  		private bool OnKeyboard = true;
  		private bool OnGameplay = true;
  		private List<UIElement> _bindsKeyboard = new List<UIElement>();
@@ -62,16 +64,23 @@
  				"Up",
  				"Down",
  				"Left",
-@@ -300,26 +_,41 @@
+@@ -300,26 +_,48 @@
  				"sp13"
  			};
  
-+			_BindingsFullLine.RemoveAll(x => x.Contains(":"));
++			_BindingsFullLine.RemoveAll(x => x.Contains('/'));
 +			_ModBindings.Clear();
++			_ModNames.Clear();
 +
++			Mod currentMod = null;
 +			foreach (var keybind in KeybindLoader.Keybinds) {
-+				_ModBindings.Add(keybind.uniqueName);
-+				_BindingsFullLine.Add(keybind.uniqueName);
++				if (currentMod != keybind.Mod) {
++					currentMod = keybind.Mod;
++					_ModBindings.Add(keybind.Mod.DisplayName);
++					_ModNames.Add(keybind.Mod.DisplayName);
++				}
++				_ModBindings.Add(keybind.FullName);
++				_BindingsFullLine.Add(keybind.FullName);
 +			}
 +
 +			_ModBindings.Add(ResetModKeybinds);
@@ -124,6 +133,22 @@
  			}
  
  			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
+@@ -420,6 +_,15 @@
+ 					continue;
+ 				}
+ 
++				if (_ModNames.Contains(bindings[i])) {
++					UIElement header = new HeaderElement(bindings[i]);
++					header.Width.Set(0f, 1f);
++					header.Height.Set(0f, 1f);
++					header.SetSnapPoint("Wide", SnapPointIndex++);
++					uISortableElement.Append(header);
++					continue;
++				}
++
+ 				UIElement uIElement3 = CreatePanel(bindings[i], currentInputMode, color);
+ 				uIElement3.Width.Set(-5f, 0.5f);
+ 				uIElement3.Height.Set(0f, 1f);
 @@ -530,6 +_,25 @@
  
  						return uIKeybindingSimpleListItem4;
@@ -141,7 +166,7 @@
 +						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
 +						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 +							foreach (var modKeybind in KeybindLoader.Keybinds) {
-+								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.uniqueName].Clear();
++								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.FullName].Clear();
 +							}
 +						};
 +
@@ -155,10 +180,10 @@
  					}, 1008, color);
  				default:
 +					if (_ModBindings.Contains(bind)) {
-+						string defaultKey = KeybindLoader.modKeybinds[bind].defaultBinding;
++						string defaultKey = KeybindLoader.modKeybinds[bind].DefaultBinding;
 +						UIElement container = new UIElement();
 +						var left = new UIKeybindingListItem(bind, currentInputMode, color);
-+						left.Width.Precent = 0.68f;
++						left.Width.Precent = 0.58f;
 +						left.Height.Precent = 1f;
 +						container.Append(left);
 +						// TODO: Clear instead of Reset to Defaults if no default specified.
@@ -168,8 +193,8 @@
 +							PlayerInput.CurrentProfile.CopyIndividualModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
 +						};
 +
-+						right.Left.Precent = 0.7f;
-+						right.Width.Precent = 0.3f;
++						right.Left.Precent = 0.6f;
++						right.Width.Precent = 0.4f;
 +						right.Height.Precent = 1f;
 +						container.Append(right);
 +						return container;

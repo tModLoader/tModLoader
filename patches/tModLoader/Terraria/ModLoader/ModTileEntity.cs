@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 		/// Returns a new ModTileEntity with the same class, mod, name, and type as the parameter. It is very rare that you should have to use this.
 		/// </summary>
 		public static ModTileEntity ConstructFromBase(ModTileEntity tileEntity) {
-			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType());
+			ModTileEntity newEntity = (ModTileEntity)Activator.CreateInstance(tileEntity.GetType(), true)!;
 			newEntity.Mod = tileEntity.Mod;
 			newEntity.Type = tileEntity.Type;
 			return newEntity;
@@ -165,15 +165,27 @@ namespace Terraria.ModLoader
 		public sealed override TileEntity GenerateInstance() => ConstructFromBase(this);
 		public sealed override void RegisterTileEntityID(int assignedID) => Type = assignedID;
 
-		public virtual void Load(Mod mod) {
+		void ILoadable.Load(Mod mod) {
 			Mod = mod;
 
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
+			Load();
+			Load_Obsolete(mod);
+
 			manager.Register(this);
 			ModTypeLookup<ModTileEntity>.Register(this);
 		}
+
+		[Obsolete]
+		private void Load_Obsolete(Mod mod)
+			=> Load(mod);
+
+		[Obsolete("Override the parameterless Load() overload instead.", true)]
+		public virtual void Load(Mod mod) { }
+
+		public virtual void Load() { }
 
 		public virtual bool IsLoadingEnabled(Mod mod) => true;
 

@@ -654,6 +654,13 @@ namespace Terraria.ModLoader
 		public virtual void RightClick(Item item, Player player) {
 		}
 
+		/// <summary>
+		/// Allows you to add and modify the loot items that spawn from bag items when opened.
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+		/// <br/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
+		/// </summary>
+		/// <param name="item">A default item of the type being opened, not the actual item instance</param>
+		/// <param name="itemLoot">A reference to the item drop database for this item type</param>
 		public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 		}
 		
@@ -673,7 +680,7 @@ namespace Terraria.ModLoader
 		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 		/// </summary>
 		/// <returns>Whether or not the items are allowed to stack</returns>
-		public virtual bool CanStack(Item item1, Item item2) {
+		public virtual bool CanStack(Item increase, Item decrease) {
 			return true;
 		}
 
@@ -682,8 +689,28 @@ namespace Terraria.ModLoader
 		/// <br/>This is only called when two items of the same type attempt to stack.
 		/// </summary>
 		/// <returns>Whether or not the items are allowed to stack</returns>
-		public virtual bool CanStackInWorld(Item item1, Item item2) {
+		public virtual bool CanStackInWorld(Item increase, Item decrease) {
 			return true;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when items stack together.
+		/// </summary>
+		/// <param name="increase">The item that will have its stack increased.</param>
+		/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to increase.</param>
+		public virtual void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
+			
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.
+		/// </summary>
+		/// <param name="increase">The new item which is a clone of decrease.  increase.stack will always be 0.  It is increased after SplitStack.</param>
+		/// <param name="decrease">The original item that will have it's stack reduced.</param>
+		/// <param name="numberToBeTransfered">The number that will be transfered from decrease to increase.</param>
+		public virtual void SplitStack(Item increase, Item decrease, int numberToBeTransfered) {
+
 		}
 
 		/// <summary>
