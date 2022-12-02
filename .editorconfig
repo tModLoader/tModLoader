@@ -35,9 +35,12 @@ dotnet_diagnostic.CA2211.severity = none
 
 #### .NET Coding Conventions ####
 
+# File-scoped namespaces
+	csharp_style_namespace_declarations = file_scoped:warning
+
 # Organize usings
 	dotnet_separate_import_directive_groups = false
-	dotnet_sort_system_directives_first = false
+	dotnet_sort_system_directives_first = true
 
 # this. and Me. preferences
 	dotnet_style_qualification_for_event = false:suggestion
@@ -138,15 +141,15 @@ dotnet_diagnostic.CA2211.severity = none
 	csharp_new_line_before_finally = true
 	csharp_new_line_before_members_in_anonymous_types = true
 	csharp_new_line_before_members_in_object_initializers = true
-	# Require braces to be on a new line for types (Allman). Everything else uses K&R.
-	csharp_new_line_before_open_brace = types
+	# Common K&R - require braces to be on a new line for types and methods, but not for anything else.
+	csharp_new_line_before_open_brace = types, methods
 	csharp_new_line_between_query_expression_clauses = true
 
 # Indentation preferences
 	csharp_indent_block_contents = true
 	csharp_indent_braces = false
 	csharp_indent_case_contents = true
-	csharp_indent_case_contents_when_block = true
+	csharp_indent_case_contents_when_block = false
 	csharp_indent_labels = one_less_than_current
 	csharp_indent_switch_labels = true
 

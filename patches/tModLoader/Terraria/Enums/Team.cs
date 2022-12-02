@@ -1,12 +1,11 @@
-﻿namespace Terraria.Enums
+namespace Terraria.Enums;
+
+public enum Team : byte
 {
-	public enum Team : byte
-	{
-		None,
-		Red,
-		Green,
-		Blue,
-		Yellow,
-		Pink
-	}
+	None,
+	Red,
+	Green,
+	Blue,
+	Yellow,
+	Pink
 }

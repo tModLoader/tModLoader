@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
 @@ -1,9 +_,12 @@
- using Microsoft.Xna.Framework;
  using System;
+ using Microsoft.Xna.Framework;
 +using Terraria.DataStructures;
  using Terraria.GameContent;
  using Terraria.GameContent.Events;
@@ -11,82 +11,84 @@
 +using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria
- {
-@@ -29,6 +_,7 @@
- 		public ArmorShaderData shader;
- 		public object customData;
- 		public bool firstFrame;
-+		internal int realType = -1;
+ namespace Terraria;
  
- 		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
- 			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-@@ -160,6 +_,8 @@
- 				if (dust.type == 80)
- 					dust.alpha = 50;
+@@ -29,6 +_,9 @@
+ 	public ArmorShaderData shader;
+ 	public object customData;
+ 	public bool firstFrame;
++	
++	// Added by TML.
++	internal int realType = -1;
  
-+				DustLoader.SetupDust(dust);
+ 	public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
+ 	{
+@@ -168,6 +_,8 @@
+ 			if (dust.type == 80)
+ 				dust.alpha = 50;
+ 
++			DustLoader.SetupDust(dust);
 +
- 				if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
- 					dust.velocity *= 0.1f;
- 					dust.velocity.Y = -0.5f;
-@@ -246,6 +_,9 @@
- 		}
+ 			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
+ 				dust.velocity *= 0.1f;
+ 				dust.velocity.Y = -0.5f;
+@@ -272,6 +_,9 @@
  
- 		public static int dustWater() {
-+			if (Main.waterStyle >= Main.maxLiquidTypes)
-+				return LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetSplashDust();
+ 	public static int dustWater()
+ 	{
++		if (Main.waterStyle >= Main.maxLiquidTypes)
++			return LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetSplashDust();
 +
- 			switch (Main.waterStyle) {
- 				case 2:
- 					return 98;
-@@ -285,6 +_,16 @@
- 						continue;
+ 		switch (Main.waterStyle) {
+ 			case 2:
+ 				return 98;
+@@ -312,6 +_,16 @@
+ 					continue;
  
- 					dCount += 1f;
+ 				dCount += 1f;
 +
-+					DustLoader.SetupUpdateType(dust);
++				DustLoader.SetupUpdateType(dust);
 +
-+					ModDust modDust = DustLoader.GetDust(dust.type);
++				ModDust modDust = DustLoader.GetDust(dust.type);
 +
-+					if (modDust != null && !modDust.Update(dust)) {
-+						DustLoader.TakeDownUpdateType(dust);
-+						continue;
-+					}
-+
- 					if (dust.scale > 10f)
- 						dust.active = false;
- 
-@@ -1563,7 +_,7 @@
- 
- 						Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num100 * 0.7f, num100, num100 * 0.8f);
- 					}
--					else if (dust.type != 304) {
-+					else if (dust.type != 304 && (modDust == null || !modDust.MidUpdate(dust))) {
- 						dust.velocity.X *= 0.99f;
- 					}
- 
-@@ -1785,6 +_,8 @@
- 
- 					if (dust.scale < num109)
- 						dust.active = false;
-+
++				if (modDust != null && !modDust.Update(dust)) {
 +					DustLoader.TakeDownUpdateType(dust);
- 				}
- 				else {
++					continue;
++				}
++
+ 				if (dust.scale > 10f)
  					dust.active = false;
-@@ -1807,6 +_,14 @@
- 		}
  
- 		public Color GetAlpha(Color newColor) {
-+			ModDust modDust = DustLoader.GetDust(type);
+@@ -1650,7 +_,7 @@
+ 
+ 					Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num104 * 0.7f, num104, num104 * 0.8f);
+ 				}
+-				else if (dust.type != 304) {
++				else if (dust.type != 304 && (modDust == null || !modDust.MidUpdate(dust))) {
+ 					dust.velocity.X *= 0.99f;
+ 				}
+ 
+@@ -1875,6 +_,8 @@
+ 
+ 				if (dust.scale < num113)
+ 					dust.active = false;
 +
-+			if (modDust != null) {
-+				Color? modColor = modDust.GetAlpha(this, newColor);
-+				if (modColor.HasValue)
-+					return modColor.Value;
-+			}
++				DustLoader.TakeDownUpdateType(dust);
+ 			}
+ 			else {
+ 				dust.active = false;
+@@ -1898,6 +_,14 @@
+ 
+ 	public Color GetAlpha(Color newColor)
+ 	{
++		ModDust modDust = DustLoader.GetDust(type);
 +
- 			float num = (float)(255 - alpha) / 255f;
- 			int num2 = type;
- 			if ((uint)(num2 - 299) <= 2u) {
++		if (modDust != null) {
++			Color? modColor = modDust.GetAlpha(this, newColor);
++			if (modColor.HasValue)
++				return modColor.Value;
++		}
++
+ 		float num = (float)(255 - alpha) / 255f;
+ 		switch (type) {
+ 			case 323:

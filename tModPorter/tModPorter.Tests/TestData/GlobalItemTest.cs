@@ -26,7 +26,8 @@ public class GlobalItemTest : GlobalItem
 		flat += 4;
 	}
 
-#if COMPILE_ERROR
+	public override void OnCreate(Item item, ItemCreationContext context) { }
+
 	public override bool DrawHead(int head) { return true; /* Empty */ }
 
 	public override bool DrawBody(int body) { return true; /* Empty */ }
@@ -36,11 +37,12 @@ public class GlobalItemTest : GlobalItem
 	public override void DrawHands(int body, ref bool drawHands, ref bool drawArms) { /* Empty */ }
 
 	public override void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
-#endif
+
+	public override bool? CanBurnInLava(Item item) => null;
 
 	public override void Load(Item item, TagCompound tag) { /* Empty */ }
 
-#if COMPILE_ERROR
 	public override TagCompound Save(Item item) => new TagCompound();
-#endif
+
+	public override void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack) { /* Empty */ }
 }

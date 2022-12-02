@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/ReLogic/OS/OSX/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/OSX/WindowService.cs
-@@ -18,5 +_,8 @@
- 
- 		public void StopFlashingIcon(GameWindow window) {
- 		}
-+
-+		public void HideConsole() {
-+		}
+@@ -22,4 +_,9 @@
+ 	public void StopFlashingIcon(GameWindow window)
+ 	{
  	}
++
++	// Added by TML.
++	public void HideConsole()
++	{
++	}
  }

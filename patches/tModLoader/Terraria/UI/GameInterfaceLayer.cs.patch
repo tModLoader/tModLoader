@@ -1,21 +1,24 @@
 --- src/TerrariaNetCore/Terraria/UI/GameInterfaceLayer.cs
 +++ src/tModLoader/Terraria/UI/GameInterfaceLayer.cs
-@@ -9,13 +_,18 @@
- 	{
- 		public readonly string Name;
- 		public InterfaceScaleType ScaleType;
-+		public bool Active;
+@@ -10,14 +_,21 @@
+ 	public readonly string Name;
+ 	public InterfaceScaleType ScaleType;
  
- 		public GameInterfaceLayer(string name, InterfaceScaleType scaleType) {
- 			Name = name;
- 			ScaleType = scaleType;
-+			Active = true;
- 		}
- 
- 		public bool Draw() {
-+			if (!Active)
-+				return true;
++	// Added by TML.
++	public bool Active;
 +
- 			Matrix transformMatrix;
- 			if (ScaleType == InterfaceScaleType.Game) {
- 				PlayerInput.SetZoom_World();
+ 	public GameInterfaceLayer(string name, InterfaceScaleType scaleType)
+ 	{
+ 		Name = name;
+ 		ScaleType = scaleType;
++		Active = true;
+ 	}
+ 
+ 	public bool Draw()
+ 	{
++		if (!Active)
++			return true;
++
+ 		Matrix transformMatrix;
+ 		if (ScaleType == InterfaceScaleType.Game) {
+ 			PlayerInput.SetZoom_World();

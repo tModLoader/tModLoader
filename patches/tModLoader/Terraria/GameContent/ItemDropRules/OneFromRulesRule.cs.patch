@@ -1,41 +1,43 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
-@@ -6,14 +_,18 @@
- 	{
- 		public IItemDropRule[] options;
- 		public int chanceDenominator;
-+		public int chanceNumerator;
+@@ -6,12 +_,18 @@
+ {
+ 	public IItemDropRule[] options;
+ 	public int chanceDenominator;
++	public int chanceNumerator; // Added by TML.
  
- 		public List<IItemDropRuleChainAttempt> ChainedRules {
- 			get;
- 			private set;
- 		}
+ 	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
  
--		public OneFromRulesRule(int chanceNumerator, params IItemDropRule[] options) {
--			chanceDenominator = chanceNumerator;
-+		public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options) : this(chanceDenominator, 1, options) { }
+ 	public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options)
++		: this(chanceDenominator, 1, options) { }
 +
-+		public OneFromRulesRule(int chanceDenominator, int chanceNumerator, params IItemDropRule[] options) {
-+			this.chanceDenominator = chanceDenominator;
-+			this.chanceNumerator = chanceNumerator;
- 			this.options = options;
- 			ChainedRules = new List<IItemDropRuleChainAttempt>();
- 		}
-@@ -29,7 +_,7 @@
- 		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction) {
- 			int num = -1;
- 			ItemDropAttemptResult result;
--			if (info.rng.Next(chanceDenominator) == 0) {
-+			if (info.rng.Next(chanceDenominator) < chanceNumerator) {
- 				num = info.rng.Next(options.Length);
- 				resolveAction(options[num], info);
- 				result = default(ItemDropAttemptResult);
-@@ -43,7 +_,7 @@
- 		}
++	// Overload added by TML, above turned into a redirect to this.
++	public OneFromRulesRule(int chanceDenominator, int chanceNumerator, params IItemDropRule[] options)
+ 	{
+ 		this.chanceDenominator = chanceDenominator;
++		this.chanceNumerator = chanceNumerator;
+ 		this.options = options;
+ 		ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+@@ -29,7 +_,11 @@
+ 	{
+ 		int num = -1;
+ 		ItemDropAttemptResult result;
++		/*
+ 		if (info.rng.Next(chanceDenominator) == 0) {
++		*/
++
++		if (info.rng.Next(chanceDenominator) < chanceNumerator) {
+ 			num = info.rng.Next(options.Length);
+ 			resolveAction(options[num], info);
+ 			result = default(ItemDropAttemptResult);
+@@ -44,7 +_,8 @@
  
- 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
--			float num = 1f / (float)chanceDenominator;
-+			float num = chanceNumerator / (float)chanceDenominator;
- 			float num2 = num * ratesInfo.parentDroprateChance;
- 			float multiplier = 1f / (float)options.Length * num2;
- 			for (int i = 0; i < options.Length; i++) {
+ 	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
++		//TML: chanceNumerator inserted in place of '1.0'.
+-		float num = 1f / (float)chanceDenominator;
++		float num = chanceNumerator / (float)chanceDenominator;
+ 		float num2 = num * ratesInfo.parentDroprateChance;
+ 		float multiplier = 1f / (float)options.Length * num2;
+ 		for (int i = 0; i < options.Length; i++) {

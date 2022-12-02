@@ -9,40 +9,42 @@
 +using Terraria.ModLoader.UI;
  using Terraria.Utilities;
  
- namespace Terraria.WorldBuilding
- {
- 	public class WorldGenerator
- 	{
--		private readonly List<GenPass> _passes = new List<GenPass>();
-+		internal readonly List<GenPass> _passes = new List<GenPass>();
--		private float _totalLoadWeight;
-+		internal float _totalLoadWeight;
--		private readonly int _seed;
-+		internal readonly int _seed;
- 		private readonly WorldGenConfiguration _configuration;
- 		public static GenerationProgress CurrentGenerationProgress;
+ namespace Terraria.WorldBuilding;
  
-@@ -39,7 +_,22 @@
- 				Main.rand = new UnifiedRandom(_seed);
- 				stopwatch.Start();
- 				progress.Start(pass2.Weight);
-+				try {
--				pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
-+					pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
-+				}
-+				catch(Exception e) {
-+					string message = string.Join(
-+						"\n",
-+						Language.GetTextValue("tModLoader.WorldGenError"),
-+						pass2.Name,
-+						e
-+					);
-+					Utils.ShowFancyErrorMessage(message, 0);
+ public class WorldGenerator
+ {
+-	private readonly List<GenPass> _passes = new List<GenPass>();
++	internal readonly List<GenPass> _passes = new List<GenPass>();
+-	private double _totalLoadWeight;
++	internal double _totalLoadWeight;
+-	private readonly int _seed;
++	internal readonly int _seed;
+ 	private readonly WorldGenConfiguration _configuration;
+ 	public static GenerationProgress CurrentGenerationProgress;
+ 
+@@ -42,7 +_,24 @@
+ 			Main.rand = new UnifiedRandom(_seed);
+ 			stopwatch.Start();
+ 			progress.Start(pass2.Weight);
 +
-+					//We need to shutdown the thread without it saving.
-+					//TODO: Allow returning a bool to signify if it should save or not.
-+					throw e;
-+				}
- 				progress.End();
- 				stopwatch.Reset();
- 			}
++			try {
+-			pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
++				pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
++			}
++			catch(Exception e) {
++				string message = string.Join(
++					"\n",
++					Language.GetTextValue("tModLoader.WorldGenError"),
++					pass2.Name,
++					e
++				);
++				Utils.ShowFancyErrorMessage(message, 0);
++
++				// We need to shutdown the thread without it saving.
++				//TODO: Allow returning a bool to signify if it should save or not.
++				throw;
++			}
++
+ 			progress.End();
+ 			stopwatch.Reset();
+ 		}

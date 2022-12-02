@@ -40,13 +40,13 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, "Reset Coins Per Minute Counter");
 			SetRectangle(playButton, left: 110f, top: 10f, width: 22f, height: 22f);
 			// UIHoverImageButton doesn't do anything when Clicked. Here we assign a method that we'd like to be called when the button is clicked.
-			playButton.OnClick += new MouseEvent(PlayButtonClicked);
+			playButton.OnLeftClick += new MouseEvent(PlayButtonClicked);
 			CoinCounterPanel.Append(playButton);
 
 			Asset<Texture2D> buttonDeleteTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonDelete");
 			ExampleUIHoverImageButton closeButton = new ExampleUIHoverImageButton(buttonDeleteTexture, Language.GetTextValue("LegacyInterface.52")); // Localized text for "Close"
 			SetRectangle(closeButton, left: 140f, top: 10f, width: 22f, height: 22f);
-			closeButton.OnClick += new MouseEvent(CloseButtonClicked);
+			closeButton.OnLeftClick += new MouseEvent(CloseButtonClicked);
 			CoinCounterPanel.Append(closeButton);
 
 			// UIMoneyDisplay is a fairly complicated custom UIElement. UIMoneyDisplay handles drawing some text and coin textures.

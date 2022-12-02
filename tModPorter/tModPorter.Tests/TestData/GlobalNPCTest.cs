@@ -19,4 +19,12 @@ public class GlobalNPCTest : GlobalNPC
 	public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
 		spriteBatch.Draw(null, npc.Center - Main.screenPosition, drawColor);
 	}
+
+	public override bool? CanHitNPC(NPC npc, NPC target) {
+		return null;
+	}
+
+	public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	{
+	}
 }

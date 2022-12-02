@@ -1,17 +1,17 @@
 --- src/TerrariaNetCore/ReLogic/Content/Readers/IAssetReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/IAssetReader.cs
-@@ -1,9 +_,13 @@
+@@ -1,8 +_,13 @@
 +using System;
  using System.IO;
 +using System.Threading.Tasks;
  
- namespace ReLogic.Content.Readers
+ namespace ReLogic.Content.Readers;
+ 
+ public interface IAssetReader
  {
- 	public interface IAssetReader
- 	{
--		T FromStream<T>(Stream stream) where T : class;
-+		ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class => ValueTask.FromResult(FromStream<T>(stream));
+-	T FromStream<T>(Stream stream) where T : class;
++	// FromStream split into async (ValueTask) and sychronous version.
++	ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class => ValueTask.FromResult(FromStream<T>(stream));
 +
-+		protected T FromStream<T>(Stream stream) where T : class => throw new NotImplementedException();
- 	}
++	protected T FromStream<T>(Stream stream) where T : class => throw new NotImplementedException();
  }

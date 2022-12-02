@@ -2,9 +2,7 @@ using Terraria.ModLoader;
 
 public class ModSurfaceBgStyleTest : ModSurfaceBgStyle
 {
-#if COMPILE_ERROR
 	public override bool ChooseBgStyle() { return true; }
-#endif
 
 	void Method() {
 		var a = mod;
@@ -17,9 +15,7 @@ public class ModSurfaceBgStyleTest : ModSurfaceBgStyle
 
 public class ModUgBgStyleTest : ModUgBgStyle
 {
-#if COMPILE_ERROR
 	public override bool ChooseBgStyle() { return true; }
-#endif
 
 	void Method() {
 		var a = mod;

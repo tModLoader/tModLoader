@@ -1,7 +1,6 @@
-﻿namespace Terraria.ModLoader
+namespace Terraria.ModLoader;
+
+public interface IEntityWithGlobals<T> where T : GlobalType
 {
-	public interface IEntityWithGlobals<T> where T : GlobalType
-	{
-		RefReadOnlyArray<Instanced<T>> Globals { get; }
-	}
+	RefReadOnlyArray<Instanced<T>> Globals { get; }
 }

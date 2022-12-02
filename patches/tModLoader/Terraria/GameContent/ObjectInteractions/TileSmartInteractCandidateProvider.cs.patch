@@ -1,28 +1,42 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
 +++ src/tModLoader/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
 @@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework;
  using System;
  using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.ObjectInteractions
- {
-@@ -219,6 +_,8 @@
+ namespace Terraria.GameContent.ObjectInteractions;
+ 
+@@ -221,12 +_,15 @@
+ 					num7 = 3;
+ 					num8 = 4;
+ 					break;
++				// Extra patch context.
+ 				case 464:
+ 					num7 = 5;
+ 					num8 = 4;
+ 					break;
+ 			}
+ 
++			TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
++
+ 			if (num7 == 0 || num8 == 0)
+ 				continue;
+ 
+@@ -363,11 +_,15 @@
+ 						if (!Main.fastForwardTimeToDawn && (Main.netMode == 1 || Main.sundialCooldown == 0))
+ 							targets.Add(new Tuple<int, int>(i, j));
+ 						break;
++					// Extra patch context.
+ 					case 663:
+ 						if (!Main.fastForwardTimeToDusk && (Main.netMode == 1 || Main.moondialCooldown == 0))
+ 							targets.Add(new Tuple<int, int>(i, j));
  						break;
  				}
- 
-+				TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
 +
- 				if (num7 == 0 || num8 == 0)
- 					continue;
- 
-@@ -352,6 +_,8 @@
- 								targets.Add(new Tuple<int, int>(i, j));
- 							break;
- 					}
-+					if (TileLoader.HasSmartInteract(i, j, tile.type, settings))
-+						targets.Add(new Tuple<int, int>(i, j));
- 				}
++				if (TileLoader.HasSmartInteract(i, j, tile.type, settings))
++					targets.Add(new Tuple<int, int>(i, j));
  			}
  		}
+ 	}

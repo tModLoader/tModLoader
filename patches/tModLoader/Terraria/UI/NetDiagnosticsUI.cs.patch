@@ -1,10 +1,13 @@
 --- src/TerrariaNetCore/Terraria/UI/NetDiagnosticsUI.cs
 +++ src/tModLoader/Terraria/UI/NetDiagnosticsUI.cs
-@@ -34,6 +_,7 @@
- 			}
- 		}
+@@ -56,6 +_,10 @@
  
-+		internal const int MaxMessages = 144; // Added by TML to check for parity when vanilla updates
- 		private CounterForMessage[] _counterByMessageId = new CounterForMessage[144];
- 		private Dictionary<int, CounterForMessage> _counterByModuleId = new Dictionary<int, CounterForMessage>();
- 		private int _highestFoundReadBytes = 1;
+ 	public void CountReadMessage(int messageId, int messageLength)
+ 	{
++		// Check added by TML. Ignores TML MessageIDs and ModPackets.
++		if (messageId >= _counterByMessageId.Length)
++			return;
++
+ 		_counterByMessageId[messageId].CountReadMessage(messageLength);
+ 	}
+ 

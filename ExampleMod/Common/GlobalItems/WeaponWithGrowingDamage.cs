@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
@@ -95,12 +96,12 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		public override void OnCreate(Item item, ItemCreationContext context) {
+		public override void OnCreated(Item item, ItemCreationContext context) {
 			if (item.type == ItemID.Snowball) {
 				GainExperience(item, item.stack); // snowballs come with 1xp, for testing :)
 			}
 
-			if (context is RecipeCreationContext rContext) {
+			if (context is RecipeItemCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {
 						//Transfer all experience from consumed items to the crafted item.

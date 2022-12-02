@@ -1,13 +1,13 @@
-﻿using Terraria.DataStructures;
+using Terraria.DataStructures;
 
-namespace Terraria
+namespace Terraria;
+
+public partial class NPC
 {
-	public partial class NPC
+	public IEntitySource GetSource_Buff(int buffIndex)
 	{
-		public IEntitySource GetSource_Buff(int buffIndex) {
-			int buffTypeId = buffType[buffIndex];
+		int buffTypeId = buffType[buffIndex];
 
-			return new EntitySource_Buff(this, buffTypeId, buffIndex);
-		}
+		return new EntitySource_Buff(this, buffTypeId, buffIndex);
 	}
 }

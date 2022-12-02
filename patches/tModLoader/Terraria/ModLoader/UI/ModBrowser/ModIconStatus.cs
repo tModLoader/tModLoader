@@ -1,11 +1,10 @@
-namespace Terraria.ModLoader.UI.ModBrowser
+namespace Terraria.ModLoader.UI.ModBrowser;
+
+internal enum ModIconStatus
 {
-	internal enum ModIconStatus
-	{
-		UNKNOWN,
-		WANTED,
-		REQUESTED,
-		READY,
-		APPENDED
-	}
+	UNKNOWN,
+	WANTED,
+	REQUESTED,
+	READY,
+	APPENDED
 }

@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Items
 			// Item.noMelee = true;
 			// Item.DamageType = DamageClass.Ranged;
 			// Item.consumable = true;
-			// Item.maxStack = 999;
+			// Item.maxStack = Item.CommonMaxStack;
 
 			Item.SetWeaponValues(4, 2f); // A special method that sets the damage, knockback, and bonus critical strike chance.
 

@@ -1,29 +1,29 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/DrawData.cs
 +++ src/tModLoader/Terraria/DataStructures/DrawData.cs
-@@ -91,7 +_,7 @@
- 			effect = SpriteEffects.None;
- 			shader = 0;
- 			ignorePlayerRotation = false;
--			useDestinationRectangle = false;
-+			useDestinationRectangle = true;
- 		}
+@@ -96,7 +_,7 @@
+ 		effect = SpriteEffects.None;
+ 		shader = 0;
+ 		ignorePlayerRotation = false;
+-		useDestinationRectangle = false;
++		useDestinationRectangle = true;
+ 	}
  
- 		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color) {
-@@ -106,7 +_,7 @@
- 			effect = SpriteEffects.None;
- 			shader = 0;
- 			ignorePlayerRotation = false;
--			useDestinationRectangle = false;
-+			useDestinationRectangle = true;
- 		}
+ 	public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color)
+@@ -112,7 +_,7 @@
+ 		effect = SpriteEffects.None;
+ 		shader = 0;
+ 		ignorePlayerRotation = false;
+-		useDestinationRectangle = false;
++		useDestinationRectangle = true;
+ 	}
  
- 		public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, SpriteEffects effect, int inactiveLayerDepth) {
-@@ -121,7 +_,7 @@
- 			scale = Vector2.One;
- 			shader = 0;
- 			ignorePlayerRotation = false;
--			useDestinationRectangle = false;
-+			useDestinationRectangle = true;
- 		}
+ 	public DrawData(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, SpriteEffects effect, float inactiveLayerDepth = 0f)
+@@ -128,7 +_,7 @@
+ 		scale = Vector2.One;
+ 		shader = 0;
+ 		ignorePlayerRotation = false;
+-		useDestinationRectangle = false;
++		useDestinationRectangle = true;
+ 	}
  
- 		public void Draw(SpriteBatch sb) {
+ 	public void Draw(SpriteBatch sb)

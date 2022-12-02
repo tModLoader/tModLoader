@@ -6,73 +6,81 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria
- {
-@@ -312,7 +_,7 @@
- 			if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
- 				return;
+ namespace Terraria;
  
--			if (Main.tile[i, j].wall >= 316)
-+			if (Main.tile[i, j].wall >= WallLoader.WallCount)
- 				Main.tile[i, j].wall = 0;
+@@ -321,7 +_,7 @@
+ 		if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
+ 			return;
  
- 			WorldGen.UpdateMapTile(i, j);
-@@ -325,43 +_,39 @@
- 			int num = 0;
- 			if (j - 1 >= 0) {
- 				Tile tile2 = Main.tile[i, j - 1];
--				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
-+				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
- 					num = 1;
- 			}
+-		if (Main.tile[i, j].wall >= WallID.Count)
++		if (Main.tile[i, j].wall >= WallLoader.WallCount)
+ 			Main.tile[i, j].wall = 0;
  
- 			if (i - 1 >= 0) {
- 				Tile tile2 = Main.tile[i - 1, j];
--				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
-+				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
- 					num |= 2;
- 			}
+ 		WorldGen.UpdateMapTile(i, j);
+@@ -336,43 +_,49 @@
+ 		bool flag = Main.ShouldShowInvisibleWalls();
+ 		if (j - 1 >= 0) {
+ 			Tile tile2 = Main.tile[i, j - 1];
+-			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)) && (flag || !tile2.invisibleWall()))
++			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])) && (flag || !tile2.invisibleWall()))
+ 				num = 1;
+ 		}
  
- 			if (i + 1 <= Main.maxTilesX - 1) {
- 				Tile tile2 = Main.tile[i + 1, j];
--				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
-+				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
- 					num |= 4;
- 			}
+ 		if (i - 1 >= 0) {
+ 			Tile tile2 = Main.tile[i - 1, j];
+-			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)) && (flag || !tile2.invisibleWall()))
++			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])) && (flag || !tile2.invisibleWall()))
+ 				num |= 2;
+ 		}
  
- 			if (j + 1 <= Main.maxTilesY - 1) {
- 				Tile tile2 = Main.tile[i, j + 1];
--				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)))
-+				if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])))
- 					num |= 8;
- 			}
+ 		if (i + 1 <= Main.maxTilesX - 1) {
+ 			Tile tile2 = Main.tile[i + 1, j];
+-			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)) && (flag || !tile2.invisibleWall()))
++			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])) && (flag || !tile2.invisibleWall()))
+ 				num |= 4;
+ 		}
  
- 			int num2 = 0;
- 			if (Main.wallLargeFrames[tile.wall] == 1) {
- 				num2 = phlebasTileFrameNumberLookup[j % 4][i % 3] - 1;
--				tile.wallFrameNumber((byte)num2);
- 			}
- 			else if (Main.wallLargeFrames[tile.wall] == 2) {
- 				num2 = lazureTileFrameNumberLookup[i % 2][j % 2] - 1;
--				tile.wallFrameNumber((byte)num2);
- 			}
- 			else if (resetFrame) {
- 				num2 = WorldGen.genRand.Next(0, 3);
- 				if (tile.wall == 21 && WorldGen.genRand.Next(2) == 0)
- 					num2 = 2;
--
--				tile.wallFrameNumber((byte)num2);
- 			}
- 			else {
- 				num2 = tile.wallFrameNumber();
-@@ -370,6 +_,10 @@
- 			if (num == 15)
- 				num += centerWallFrameLookup[i % 3][j % 3];
+ 		if (j + 1 <= Main.maxTilesY - 1) {
+ 			Tile tile2 = Main.tile[i, j + 1];
+-			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && tile2.type == 54)) && (flag || !tile2.invisibleWall()))
++			if (tile2 != null && (tile2.wall > 0 || (tile2.active() && TileID.Sets.WallsMergeWith[tile2.type])) && (flag || !tile2.invisibleWall()))
+ 				num |= 8;
+ 		}
  
-+			if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
-+				return;
+ 		int num2 = 0;
+ 		if (Main.wallLargeFrames[tile.wall] == 1) {
+ 			num2 = phlebasTileFrameNumberLookup[j % 4][i % 3] - 1;
++			/*
+ 			tile.wallFrameNumber((byte)num2);
++			*/
+ 		}
+ 		else if (Main.wallLargeFrames[tile.wall] == 2) {
+ 			num2 = lazureTileFrameNumberLookup[i % 2][j % 2] - 1;
++			/*
+ 			tile.wallFrameNumber((byte)num2);
++			*/
+ 		}
+ 		else if (resetFrame) {
+ 			num2 = WorldGen.genRand.Next(0, 3);
+ 			if (tile.wall == 21 && WorldGen.genRand.Next(2) == 0)
+ 				num2 = 2;
+ 
++			/*
+ 			tile.wallFrameNumber((byte)num2);
++			*/
+ 		}
+ 		else {
+ 			num2 = tile.wallFrameNumber();
+@@ -380,6 +_,12 @@
+ 
+ 		if (num == 15)
+ 			num += centerWallFrameLookup[i % 3][j % 3];
 +
-+			tile.wallFrameNumber((byte)num2);
- 			Point16 point = wallFrameLookup[num][num2];
- 			tile.wallFrameX(point.X);
- 			tile.wallFrameY(point.Y);
++		if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
++			return;
++
++		// Moved from if-block contents above.
++		tile.wallFrameNumber((byte)num2);
+ 
+ 		Point16 point = wallFrameLookup[num][num2];
+ 		tile.wallFrameX(point.X);

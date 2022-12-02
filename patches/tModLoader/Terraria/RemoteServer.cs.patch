@@ -7,12 +7,12 @@
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
  
- namespace Terraria
-@@ -55,6 +_,7 @@
- 			}
- 			catch (Exception value) {
- 				try {
-+					Logging.Terraria.Error("Client Read Thread", value);
- 					using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
- 						streamWriter.WriteLine(DateTime.Now);
- 						streamWriter.WriteLine(value);
+ namespace Terraria;
+@@ -58,6 +_,7 @@
+ 		}
+ 		catch (Exception value) {
+ 			try {
++				Logging.Terraria.Error("Client Read Thread", value);
+ 				using StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true);
+ 				streamWriter.WriteLine(DateTime.Now);
+ 				streamWriter.WriteLine(value);

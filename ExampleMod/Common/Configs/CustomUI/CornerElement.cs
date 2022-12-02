@@ -51,8 +51,8 @@ namespace ExampleMod.Common.Configs.CustomUI
 			return valueStrings[(int)GetValue()];
 		}
 
-		public override void Click(UIMouseEvent evt) {
-			base.Click(evt);
+		public override void LeftClick(UIMouseEvent evt) {
+			base.LeftClick(evt);
 			SetValue(GetValue().NextEnum());
 		}
 

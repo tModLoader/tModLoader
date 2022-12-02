@@ -9,151 +9,159 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.UI
+namespace Terraria.ModLoader.UI;
+
+internal class UIErrorMessage : UIState
 {
-	internal class UIErrorMessage : UIState
+	private UIMessageBox messageBox;
+	private UIElement area;
+	private UITextPanel<string> continueButton; // label changes to retry/exit
+	private UITextPanel<string> exitAndDisableAllButton;
+	private UITextPanel<string> webHelpButton;
+	private UITextPanel<string> skipLoadButton;
+	private UITextPanel<string> retryButton;
+
+	private string message;
+	private int gotoMenu;
+	private string webHelpURL;
+	private bool continueIsRetry;
+	private bool showSkip;
+	private Action retryAction;
+
+	public override void OnInitialize()
 	{
-		private UIMessageBox messageBox;
-		private UIElement area;
-		private UITextPanel<string> continueButton; // label changes to retry/exit
-		private UITextPanel<string> exitAndDisableAllButton;
-		private UITextPanel<string> webHelpButton;
-		private UITextPanel<string> skipLoadButton;
-		private UITextPanel<string> retryButton;
+		area = new UIElement {
+			Width = { Percent = 0.8f },
+			Top = { Pixels = 200 },
+			Height = { Pixels = -210, Percent = 1f },
+			HAlign = 0.5f
+		};
 
-		private string message;
-		private int gotoMenu;
-		private string webHelpURL;
-		private bool continueIsRetry;
-		private bool showSkip;
-		private Action retryAction;
+		messageBox = new UIMessageBox("") {
+			Width = { Percent = 1f },
+			Height = { Pixels = -110, Percent = 1f },
+			HAlign = 0.5f
+		};
+		area.Append(messageBox);
 
-		public override void OnInitialize() {
-			area = new UIElement {
-				Width = { Percent = 0.8f },
-				Top = { Pixels = 200 },
-				Height = { Pixels = -210, Percent = 1f },
-				HAlign = 0.5f
-			};
+		var uIScrollbar = new UIScrollbar {
+			Height = { Pixels = -115, Percent = 1f },
+			//VAlign = 0.5f,
+			HAlign = 1f
+		}.WithView(100f, 1000f);
+		area.Append(uIScrollbar);
 
-			messageBox = new UIMessageBox("") {
-				Width = { Percent = 1f },
-				Height = { Pixels = -110, Percent = 1f },
-				HAlign = 0.5f
-			};
-			area.Append(messageBox);
+		messageBox.SetScrollbar(uIScrollbar);
 
-			var uIScrollbar = new UIScrollbar {
-				Height = { Pixels = -115, Percent = 1f },
-				//VAlign = 0.5f,
-				HAlign = 1f
-			}.WithView(100f, 1000f);
-			area.Append(uIScrollbar);
+		continueButton = new UITextPanel<string>("", 0.7f, true) {
+			Width = { Pixels = -10, Percent = 0.5f },
+			Height = { Pixels = 50 },
+			Top = { Pixels = -108, Percent = 1f }
+		};
+		continueButton.WithFadedMouseOver();
+		continueButton.OnLeftClick += ContinueClick;
+		area.Append(continueButton);
 
-			messageBox.SetScrollbar(uIScrollbar);
+		var openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
+		openLogsButton.CopyStyle(continueButton);
+		openLogsButton.HAlign = 1f;
+		openLogsButton.WithFadedMouseOver();
+		openLogsButton.OnLeftClick += OpenFile;
+		area.Append(openLogsButton);
 
-			continueButton = new UITextPanel<string>("", 0.7f, true) {
-				Width = { Pixels = -10, Percent = 0.5f },
-				Height = { Pixels = 50 },
-				Top = { Pixels = -108, Percent = 1f }
-			};
-			continueButton.WithFadedMouseOver();
-			continueButton.OnClick += ContinueClick;
-			area.Append(continueButton);
+		webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
+		webHelpButton.CopyStyle(openLogsButton);
+		webHelpButton.Top.Set(-55f, 1f);
+		webHelpButton.WithFadedMouseOver();
+		webHelpButton.OnLeftClick += VisitRegisterWebpage;
+		area.Append(webHelpButton);
 
-			var openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
-			openLogsButton.CopyStyle(continueButton);
-			openLogsButton.HAlign = 1f;
-			openLogsButton.WithFadedMouseOver();
-			openLogsButton.OnClick += OpenFile;
-			area.Append(openLogsButton);
+		skipLoadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.SkipToMainMenu"), 0.7f, true);
+		skipLoadButton.CopyStyle(continueButton);
+		skipLoadButton.Top.Set(-55f, 1f);
+		skipLoadButton.WithFadedMouseOver();
+		skipLoadButton.OnLeftClick += SkipLoad;
+		area.Append(skipLoadButton);
 
-			webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
-			webHelpButton.CopyStyle(openLogsButton);
-			webHelpButton.Top.Set(-55f, 1f);
-			webHelpButton.WithFadedMouseOver();
-			webHelpButton.OnClick += VisitRegisterWebpage;
-			area.Append(webHelpButton);
+		exitAndDisableAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ExitAndDisableAll"), 0.7f, true);
+		exitAndDisableAllButton.CopyStyle(skipLoadButton);
+		exitAndDisableAllButton.TextColor = Color.Red;
+		exitAndDisableAllButton.WithFadedMouseOver();
+		exitAndDisableAllButton.OnLeftClick += ExitAndDisableAll;
 
-			skipLoadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.SkipToMainMenu"), 0.7f, true);
-			skipLoadButton.CopyStyle(continueButton);
-			skipLoadButton.Top.Set(-55f, 1f);
-			skipLoadButton.WithFadedMouseOver();
-			skipLoadButton.OnClick += SkipLoad;
-			area.Append(skipLoadButton);
+		retryButton = new UITextPanel<string>("Retry", 0.7f, true);
+		retryButton.CopyStyle(continueButton);
+		retryButton.Top.Set(-50f, 1f);
+		retryButton.WithFadedMouseOver();
+		retryButton.OnLeftClick += (evt, elem) => retryAction();
 
-			exitAndDisableAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ExitAndDisableAll"), 0.7f, true);
-			exitAndDisableAllButton.CopyStyle(skipLoadButton);
-			exitAndDisableAllButton.TextColor = Color.Red;
-			exitAndDisableAllButton.WithFadedMouseOver();
-			exitAndDisableAllButton.OnClick += ExitAndDisableAll;
+		Append(area);
+	}
 
-			retryButton = new UITextPanel<string>("Retry", 0.7f, true);
-			retryButton.CopyStyle(continueButton);
-			retryButton.Top.Set(-50f, 1f);
-			retryButton.WithFadedMouseOver();
-			retryButton.OnClick += (evt, elem) => retryAction();
+	public override void OnActivate()
+	{
+		Netplay.Disconnect = true;
 
-			Append(area);
-		}
+		messageBox.SetText(message);
 
-		public override void OnActivate() {
-			Netplay.Disconnect = true;
+		string continueKey = gotoMenu < 0 ? "Exit" : continueIsRetry ? "Retry" : "Continue";
+		continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
+		continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
 
-			messageBox.SetText(message);
+		area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
+		area.AddOrRemoveChild(skipLoadButton, showSkip);
+		area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
+		area.AddOrRemoveChild(retryButton, retryAction != null);
+	}
 
-			string continueKey = gotoMenu < 0 ? "Exit" : continueIsRetry ? "Retry" : "Continue";
-			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
-			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
+	public override void OnDeactivate()
+	{
+		retryAction = null; //release references for the GC
+	}
 
-			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
-			area.AddOrRemoveChild(skipLoadButton, showSkip);
-			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
-			area.AddOrRemoveChild(retryButton, retryAction != null);
-		}
+	internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null)
+	{
+		this.message = message;
+		this.gotoMenu = gotoMenu;
+		this.webHelpURL = webHelpURL;
+		this.continueIsRetry = continueIsRetry;
+		this.showSkip = showSkip;
+		this.retryAction = retryAction;
+		Main.gameMenu = true;
+		Main.menuMode = Interface.errorMessageID;
+	}
 
-		public override void OnDeactivate() {
-			retryAction = null; //release references for the GC
-		}
-
-		internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null) {
-			this.message = message;
-			this.gotoMenu = gotoMenu;
-			this.webHelpURL = webHelpURL;
-			this.continueIsRetry = continueIsRetry;
-			this.showSkip = showSkip;
-			this.retryAction = retryAction;
-			Main.gameMenu = true;
-			Main.menuMode = Interface.errorMessageID;
-		}
-
-		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
-			if (gotoMenu < 0)
-				Main.instance.Exit();
-
-			Main.menuMode = gotoMenu;
-		}
-
-		private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement) {
-			ModLoader.DisableAllMods();
+	private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10);
+		if (gotoMenu < 0)
 			Main.instance.Exit();
-		}
 
-		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Utils.OpenFolder(Logging.LogDir);
-		}
+		Main.menuMode = gotoMenu;
+	}
 
-		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Utils.OpenToURL(webHelpURL);
-		}
+	private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
+		ModLoader.DisableAllMods();
+		Main.instance.Exit();
+	}
 
-		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			ModLoader.skipLoad = true;
-			Main.menuMode = gotoMenu;
-		}
+	private void OpenFile(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Utils.OpenFolder(Logging.LogDir);
+	}
+
+	private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Utils.OpenToURL(webHelpURL);
+	}
+
+	private void SkipLoad(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		ModLoader.skipLoad = true;
+		Main.menuMode = gotoMenu;
 	}
 }

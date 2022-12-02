@@ -71,6 +71,9 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModCactus",			Removed("Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModPalmTree",		Removed("Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead"));
 
+		RefactorInstanceMember("Terraria.DataStructures.BossBarDrawParams", "LifePercentToShow",	Removed("Suggest: Life / LifeMax"));
+		RefactorInstanceMember("Terraria.DataStructures.BossBarDrawParams", "ShieldPercentToShow",	Removed("Suggest: Shield / ShieldMax"));
+
 		// TODO, assignment rewriter
 		// RefactorInstanceMember("Terraria.ModLoader.ModBlockType", "HitSound", Comment("Suggestion: Use a SoundStyle here"));
 
@@ -92,6 +95,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "PreNPCLoot",			to: "PreKill");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SpecialNPCLoot",		to: "SpecialOnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SpecialNPCLoot",		to: "SpecialOnKill");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "ScaleExpertStats",	to: "ApplyDifficultyAndPlayerScaling");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "ScaleExpertStats",	to: "ApplyDifficultyAndPlayerScaling");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "TownNPCName",		to: "SetNPCNameList");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
@@ -103,6 +108,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 		RenameMethod("Terraria.ModLoader.ModTree",		from: "GrowthFXGore",		to: "TreeLeaf");
 		RenameMethod("Terraria.ModLoader.ModPalmTree",	from: "GrowthFXGore",		to: "TreeLeaf");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "OnCreate",			to: "OnCreated");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "OnCreate",			to: "OnCreated");
 		RenameMethod("Terraria.Player",					from: "QuickSpawnClonedItem",to: "QuickSpawnItem");
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
@@ -129,10 +136,16 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"CanConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"OnConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"OnConsumeAmmo");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ExtractinatorUse");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ExtractinatorUse");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
@@ -157,10 +170,12 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"PlaceInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"SetNPCNameList", comment: "Suggestion: Return a list of names");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanTownNPCSpawn", comment: "Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick.");
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpHeight");
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpSpeed");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"IsLoadingEnabled");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"CloneNewInstances"); // public -> protected
+		ChangeHookSignature("Terraria.ModLoader.ModBossBar",		"ModifyInfo", comment: "Note: life and shield current and max values are now separate to allow for hp/shield number text draw");
 
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
@@ -178,6 +193,8 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
 
+		HookRemoved("Terraria.ModLoader.ModItem",		"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
 		HookRemoved("Terraria.ModLoader.ModItem",		"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
 		HookRemoved("Terraria.ModLoader.ModItem",		"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
 		HookRemoved("Terraria.ModLoader.ModGore",		"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
@@ -236,8 +253,13 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"TileCountsAvailable");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"ModifyWorldGenTasks");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
+
+		RenameMethod("Terraria.ModLoader.ModPrefix", from: "ValidateItem", to: "AllStatChangesHaveEffectOn");
+		ChangeHookSignature("Terraria.ModLoader.ModPrefix", "AllStatChangesHaveEffectOn");
+
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
@@ -322,6 +344,9 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.ModSurfaceBgStyle",	to: "Terraria.ModLoader.ModSurfaceBackgroundStyle");
 		RenameType(from: "Terraria.ModLoader.ModUgBgStyle",			to: "Terraria.ModLoader.ModUndergroundBackgroundStyle");
 		RenameType(from: "Terraria.ModLoader.PlayerDrawInfo",		to: "Terraria.DataStructures.PlayerDrawSet");
+		RenameType(from: "Terraria.ModLoader.ItemCreationContext",	to: "Terraria.DataStructures.ItemCreationContext");
+		RenameType(from: "Terraria.ModLoader.RecipeCreationContext",to: "Terraria.DataStructures.RecipeItemCreationContext");
+		RenameType(from: "Terraria.ModLoader.InitializationContext",to: "Terraria.ModLoader.InitializationItemCreationContext");
 
 		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "position", to: "Position");
 		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "itemLocation", to: "ItemLocation");
@@ -368,5 +393,8 @@ public static partial class Config
 
 		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
 		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
+
+		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
+		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
 	}
 }
