@@ -7,49 +7,45 @@
 -public class UserInterface
 +public partial class UserInterface
  {
- 	private const double DOUBLE_CLICK_TIME = 500.0;
- 	private const double STATE_CHANGE_CLICK_DISABLE_TIME = 200.0;
-@@ -36,6 +_,8 @@
- 		_lastElementHover = null;
- 		_lastElementDown = null;
- 		_lastElementClicked = null;
-+
-+		mouseRightData.ResetLasts();
- 	}
+ 	private delegate void MouseElementEvent(UIElement element, UIMouseEvent evt);
  
- 	public void EscapeElements()
-@@ -64,6 +_,12 @@
- 		if (!Main.dedServ) {
- 			GetMousePosition();
- 			_wasMouseDown = Main.mouseLeft;
-+
-+			mouseRightData.WasDown = Main.mouseRight;
-+			mouseMiddleData.WasDown = Main.mouseMiddle;
-+			mouseXButton1Data.WasDown = Main.mouseXButton1;
-+			mouseXButton2Data.WasDown = Main.mouseXButton2;
-+
- 			if (_lastElementHover != null)
- 				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
- 		}
-@@ -72,6 +_,12 @@
- 		_lastElementDown = null;
- 		_lastElementClicked = null;
- 		_lastMouseDownTime = 0.0;
+@@ -77,6 +_,11 @@
+ 	{
+ 		LeftMouse.Clear();
+ 		RightMouse.Clear();
 +		
 +		mouseRightData.ResetState();
 +		mouseMiddleData.ResetState();
 +		mouseXButton1Data.ResetState();
 +		mouseXButton2Data.ResetState();
-+
- 		_clickDisabledTimeRemaining = Math.Max(_clickDisabledTimeRemaining, 200.0);
  	}
  
-@@ -86,10 +_,32 @@
+ 	public void ResetLasts()
+@@ -86,6 +_,8 @@
+ 
+ 		ClearPointers();
+ 		_lastElementHover = null;
++
++		mouseRightData.ResetLasts();
+ 	}
+ 
+ 	public void EscapeElements()
+@@ -113,6 +_,11 @@
+ 	{
+ 		LeftMouse.WasDown = Main.mouseLeft;
+ 		RightMouse.WasDown = Main.mouseRight;
++
++		mouseRightData.WasDown = Main.mouseRight;
++		mouseMiddleData.WasDown = Main.mouseMiddle;
++		mouseXButton1Data.WasDown = Main.mouseXButton1;
++		mouseXButton2Data.WasDown = Main.mouseXButton2;
+ 	}
+ 
+ 	private void ResetState()
+@@ -140,9 +_,30 @@
  			return;
  
  		GetMousePosition();
-+
- 		bool flag = Main.mouseLeft && Main.hasFocus;
 +
 +		mouseRightData.IsDown = Main.mouseRight && Main.hasFocus;
 +		mouseMiddleData.IsDown = Main.mouseMiddle && Main.hasFocus;
@@ -58,34 +54,34 @@
 +
  		UIElement uIElement = (Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null);
  		_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
- 		bool flag2 = _clickDisabledTimeRemaining > 0.0;
+ 		bool num = _clickDisabledTimeRemaining > 0.0;
 +		
 +		try {
-+			Update_Inner(time, uIElement, ref flag, ref flag2);
++			Update_Inner(time, uIElement, ref num);
 +		}
 +		catch {
 +			throw;
 +		}
 +		finally {
-+			Update_End(time, flag);
++			Update_End(time);
 +		}
 +	}
 +
 +	// A split to add a try-catch-finally block without indentation issues.
-+	private void Update_Inner(GameTime time, UIElement uIElement, ref bool flag, ref bool flag2)
++	private void Update_Inner(GameTime time, UIElement uIElement, ref bool num)
 +	{
  		if (uIElement != _lastElementHover) {
  			if (_lastElementHover != null)
  				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
-@@ -119,12 +_,63 @@
- 			_lastElementDown = null;
+@@ -156,10 +_,61 @@
+ 			HandleClick(RightMouse, time, Main.mouseRight && Main.hasFocus, uIElement);
  		}
  
 +		// TML-introduced functionality - right, middle, extra button 1 & 2 click Events
 +
 +		// Right
 +		UpdateButtonState(
-+			time, uIElement, flag2,
++			time, uIElement, num,
 +			ref mouseRightData,
 +			e => e.Target.RightClick(e),
 +			e => e.Target.RightDoubleClick(e),
@@ -94,7 +90,7 @@
 +		);
 +		// Middle
 +		UpdateButtonState(
-+			time, uIElement, flag2,
++			time, uIElement, num,
 +			ref mouseMiddleData,
 +			e => e.Target.MiddleClick(e),
 +			e => e.Target.MiddleDoubleClick(e),
@@ -103,7 +99,7 @@
 +		);
 +		// XButton1
 +		UpdateButtonState(
-+			time, uIElement, flag2,
++			time, uIElement, num,
 +			ref mouseXButton1Data,
 +			e => e.Target.XButton1Click(e),
 +			e => e.Target.XButton1DoubleClick(e),
@@ -112,7 +108,7 @@
 +		);
 +		// XButton2
 +		UpdateButtonState(
-+			time, uIElement, flag2,
++			time, uIElement, num,
 +			ref mouseXButton2Data,
 +			e => e.Target.XButton2Click(e),
 +			e => e.Target.XButton2DoubleClick(e),
@@ -128,16 +124,14 @@
 +			*/
  		}
 +	}
- 
++
 +	// Another split, to be called in 'finally'.
-+	private void Update_End(GameTime time, bool flag)
++	private void Update_End(GameTime time)
 +	{
- 		_wasMouseDown = flag;
 +		mouseRightData.WasDown = mouseRightData.IsDown;
 +		mouseMiddleData.WasDown = mouseMiddleData.IsDown;
 +		mouseXButton1Data.WasDown = mouseXButton1Data.IsDown;
 +		mouseXButton2Data.WasDown = mouseXButton2Data.IsDown;
-+
+ 
  		if (_currentState != null)
  			_currentState.Update(time);
- 	}

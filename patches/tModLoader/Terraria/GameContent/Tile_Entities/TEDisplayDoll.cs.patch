@@ -37,7 +37,7 @@
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -459,6 +_,11 @@
+@@ -468,6 +_,11 @@
  		if (dye)
  			item = _dyes[itemIndex];
  
@@ -49,7 +49,7 @@
  		writer.Write((ushort)item.netID);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
-@@ -466,12 +_,21 @@
+@@ -475,12 +_,21 @@
  
  	public void ReadItem(int itemIndex, BinaryReader reader, bool dye)
  	{

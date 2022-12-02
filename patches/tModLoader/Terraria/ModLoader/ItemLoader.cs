@@ -29,7 +29,7 @@ public static class ItemLoader
 	internal static readonly List<GlobalItem> globalItems = new();
 	internal static GlobalItem[] NetGlobals;
 	internal static readonly int vanillaQuestFishCount = 41;
-	internal static readonly int[] vanillaWings = new int[Main.maxWings];
+	internal static readonly int[] vanillaWings = new int[ArmorIDs.Wing.Count];
 
 	private static int nextItem = ItemID.Count;
 

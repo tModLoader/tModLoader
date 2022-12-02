@@ -197,15 +197,6 @@
  				}
  				if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  					mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -3952,7 +_,7 @@
- 		if (_type == -1)
- 			return;
- 
--		for (int i = 0; i < 44; i++) {
-+		for (int i = 0; i < Player.MaxBuffs; i++) {
- 			if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
- 				return;
- 		}
 @@ -4009,6 +_,9 @@
  	public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  	{

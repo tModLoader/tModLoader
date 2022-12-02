@@ -458,7 +458,7 @@
 +		ItemID.Sets.IsAMaterial[5325] = false;
 +
 +		/*
- 		for (int i = 0; i < 5456; i++) {
+ 		for (int i = 0; i < ItemID.Count; i++) {
  			Item item = new Item();
  			item.SetDefaults(i, noMatCheck: true);
  			item.checkMat();

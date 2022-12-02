@@ -14,7 +14,7 @@
  {
  	private class GameTip
  	{
-@@ -70,6 +_,8 @@
+@@ -71,6 +_,8 @@
  		_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad."));
  		_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard."));
  		_lastTip = null;
@@ -23,7 +23,7 @@
  	}
  
  	public void Update()
-@@ -146,6 +_,7 @@
+@@ -147,6 +_,7 @@
  	private void AddNewTip(double currentTime)
  	{
  		string textKey = "UI.Back";
@@ -31,7 +31,7 @@
  		List<LocalizedText> list = new List<LocalizedText>();
  		list.AddRange(_tipsDefault);
  		if (PlayerInput.UsingGamepad)
-@@ -155,8 +_,21 @@
+@@ -156,8 +_,21 @@
  
  		if (_lastTip != null)
  			list.Remove(_lastTip);

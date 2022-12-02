@@ -78,8 +78,8 @@ namespace Terraria.ModLoader.Setup
 				=> base.IncludeTypeWhenDecompilingProject(module, type);
 		}
 
-		public static readonly Version clientVersion = new("1.4.4.7");
-		public static readonly Version serverVersion = new("1.4.4.7");
+		public static readonly Version clientVersion = new("1.4.4.9");
+		public static readonly Version serverVersion = new("1.4.4.9");
 
 		private readonly string srcDir;
 		private readonly bool serverOnly;

@@ -14,6 +14,7 @@
 	```
 ## Main
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
+- Investigate new `BindSettingsTo`
 
 ## ItemSlot
 - Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
@@ -30,6 +31,7 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
 - Make sure loadout serialization doesn't save modded data to the vanilla .plr
+- Rename `MaxBuffs` to `maxBuffs` to minimise vanilla patches
 - Reapply patch for `sItem.useStyle == 13` and `sItem.useStyle == 5`? Do we still want this now that `NetMessage.SendData(13` is sent as well?
 ```patch
 +				// Added by TML. #ItemTimeOnAllClients
@@ -77,3 +79,9 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## Formatter
 - Not visiting into switch case blocks properly? See `ItemSlot.LeftClick`
+
+## ChildSafety
+- Factories, do they need support for modded ids?
+
+## UserInterface
+- Rework patches for mouseright/middle/xbutton1/xbutton2 around new InputPointerCache system

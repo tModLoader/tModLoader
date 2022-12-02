@@ -1,16 +1,17 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
-@@ -1,6 +_,9 @@
+@@ -1,7 +_,10 @@
 +using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
+ using Terraria.ID;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -24,6 +_,7 @@
+@@ -25,6 +_,7 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
@@ -18,7 +19,7 @@
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
  			float num = 1f;
-@@ -37,19 +_,24 @@
+@@ -38,19 +_,24 @@
  					value.Frame();
  			}
  
@@ -46,7 +47,7 @@
  			return true;
  		}
  
-@@ -59,20 +_,30 @@
+@@ -60,20 +_,30 @@
  	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
  	{
  		Item item = new Item();
@@ -78,16 +79,16 @@
  					case 's':
  					case 'x': {
  						if (int.TryParse(array[i].Substring(1), out var result3))
-@@ -82,7 +_,7 @@
+@@ -83,7 +_,7 @@
  					}
  					case 'p': {
  						if (int.TryParse(array[i].Substring(1), out var result2))
--							item.Prefix((byte)Utils.Clamp(result2, 0, 85));
+-							item.Prefix((byte)Utils.Clamp(result2, 0, PrefixID.Count));
 +							item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
  
  						break;
  					}
-@@ -101,14 +_,26 @@
+@@ -102,14 +_,26 @@
  		};
  	}
  

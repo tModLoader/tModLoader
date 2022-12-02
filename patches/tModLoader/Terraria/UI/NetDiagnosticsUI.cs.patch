@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/NetDiagnosticsUI.cs
 +++ src/tModLoader/Terraria/UI/NetDiagnosticsUI.cs
-@@ -55,6 +_,10 @@
+@@ -56,6 +_,10 @@
  
  	public void CountReadMessage(int messageId, int messageLength)
  	{

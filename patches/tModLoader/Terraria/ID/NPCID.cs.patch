@@ -20,7 +20,7 @@
  			public const int BloodButcherer = 344;
  		}
  
--		public static SetFactory Factory = new SetFactory(688);
+-		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(NPCLoader.NPCCount);
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },

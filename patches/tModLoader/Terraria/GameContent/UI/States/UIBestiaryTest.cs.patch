@@ -35,7 +35,7 @@
  		_unlocksProgressBar = uIColoredSliderSimple;
  		container.Append(uIColoredSliderSimple);
  	}
-@@ -527,7 +_,11 @@
+@@ -533,7 +_,11 @@
  		_progressReport = GetUnlockProgress();
  		string completionPercentText = GetCompletionPercentText();
  		_progressPercentText.SetText(completionPercentText);

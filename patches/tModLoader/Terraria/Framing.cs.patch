@@ -12,7 +12,7 @@
  		if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
  			return;
  
--		if (Main.tile[i, j].wall >= 347)
+-		if (Main.tile[i, j].wall >= WallID.Count)
 +		if (Main.tile[i, j].wall >= WallLoader.WallCount)
  			Main.tile[i, j].wall = 0;
  

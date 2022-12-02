@@ -235,13 +235,13 @@ internal static partial class TileIO
 	private static bool HasModArmor(int slot, int position)
 	{
 		if (position == 0) {
-			return slot >= Main.numArmorHead;
+			return slot >= ArmorIDs.Head.Count;
 		}
 		else if (position == 1) {
-			return slot >= Main.numArmorBody;
+			return slot >= ArmorIDs.Body.Count;
 		}
 		else if (position == 2) {
-			return slot >= Main.numArmorLegs;
+			return slot >= ArmorIDs.Legs.Count;
 		}
 		return false;
 	}

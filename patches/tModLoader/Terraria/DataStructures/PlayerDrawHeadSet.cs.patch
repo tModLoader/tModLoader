@@ -59,7 +59,7 @@
 +			hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
  
  		skinDyePacked = drawPlayer.skinDyePacked;
- 		if (drawPlayer.face > 0 && drawPlayer.face < 22)
+ 		if (drawPlayer.face > 0 && drawPlayer.face < ArmorIDs.Face.Count)
  			Main.instance.LoadAccFace(drawPlayer.face);
  
 +		/*
@@ -101,11 +101,11 @@
 +		// Workaround for movement bobbing affecting head-only rendering.
 +		Position -= Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height];
 +
- 		if (drawPlayer.head > 0 && drawPlayer.head < 282) {
+ 		if (drawPlayer.head > 0 && drawPlayer.head < ArmorIDs.Head.Count) {
  			Main.instance.LoadArmorHead(drawPlayer.head);
  			int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
 @@ -127,12 +_,14 @@
- 		if (drawPlayer.beard > 0 && drawPlayer.beard < 5)
+ 		if (drawPlayer.beard > 0 && drawPlayer.beard < ArmorIDs.Beard.Count)
  			Main.instance.LoadAccBeard(drawPlayer.beard);
  
 -		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out var _, out helmetIsOverFullHair);
@@ -116,7 +116,7 @@
 +		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 +		/*
  		helmetIsTall = drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158;
- 		helmetIsNormal = !helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 282 && drawPlayer.head != 28;
+ 		helmetIsNormal = !helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < ArmorIDs.Head.Count && drawPlayer.head != 28;
 +		*/
  	}
  }

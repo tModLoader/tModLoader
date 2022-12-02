@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
@@ -34,11 +35,7 @@ partial class MessageID
 	// Once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods
 	public const byte ModFile = 252;
 
-	private static readonly IDictionary<int, string> Names = typeof(MessageID).GetFields(BindingFlags.Static | BindingFlags.Public)
-		.Where(f => f.GetCustomAttribute<ObsoleteAttribute>() == null && f.FieldType == typeof(byte) && f.GetRawConstantValue() is byte)
-		.ToDictionary(f => (int)(byte)f.GetRawConstantValue(), f => f.Name);
-
-	public static string GetName(int id)
-		=> Names.TryGetValue(id, out string name) ? name : "Unknown";
+	public static readonly IdDictionary Search = IdDictionary.Create<MessageID, byte>();
+	public static string GetName(int id) => Search.TryGetName(id, out string name) ? name : "Unknown";
 }
 

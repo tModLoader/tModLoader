@@ -2,10 +2,6 @@ namespace Terraria.UI;
 
 partial class UIElement
 {
-	public event MouseEvent OnRightMouseDown;
-	public event MouseEvent OnRightMouseUp;
-	public event MouseEvent OnRightClick;
-	public event MouseEvent OnRightDoubleClick;
 	public event MouseEvent OnMiddleMouseDown;
 	public event MouseEvent OnMiddleMouseUp;
 	public event MouseEvent OnMiddleClick;
@@ -20,30 +16,6 @@ partial class UIElement
 	public event MouseEvent OnXButton2DoubleClick;
 
 	public bool HasChild(UIElement child) => Elements.Contains(child);
-
-	public virtual void RightMouseDown(UIMouseEvent evt)
-	{
-		OnRightMouseDown?.Invoke(evt, this);
-		Parent?.RightMouseDown(evt);
-	}
-
-	public virtual void RightMouseUp(UIMouseEvent evt)
-	{
-		OnRightMouseUp?.Invoke(evt, this);
-		Parent?.RightMouseUp(evt);
-	}
-
-	public virtual void RightClick(UIMouseEvent evt)
-	{
-		OnRightClick?.Invoke(evt, this);
-		Parent?.RightClick(evt);
-	}
-
-	public virtual void RightDoubleClick(UIMouseEvent evt)
-	{
-		OnRightDoubleClick?.Invoke(evt, this);
-		Parent?.RightDoubleClick(evt);
-	}
 
 	public virtual void MiddleMouseDown(UIMouseEvent evt)
 	{

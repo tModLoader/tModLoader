@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
-@@ -63,6 +_,9 @@
+@@ -64,6 +_,9 @@
  
  	public override void Update(GameTime gameTime)
  	{
@@ -10,7 +10,7 @@
  		_player.ResetEffects();
  		_player.ResetVisibleAccessories();
  		_player.UpdateMiscCounter();
-@@ -88,6 +_,9 @@
+@@ -89,6 +_,9 @@
  
  	protected override void DrawSelf(SpriteBatch spriteBatch)
  	{

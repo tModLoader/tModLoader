@@ -9,7 +9,7 @@
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
-@@ -163,13 +_,22 @@
+@@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();
  			Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);

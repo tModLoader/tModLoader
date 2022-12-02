@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/FilterManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/FilterManager.cs
-@@ -189,4 +_,13 @@
+@@ -194,4 +_,13 @@
  
  		return true;
  	}

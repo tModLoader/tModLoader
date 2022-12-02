@@ -12,7 +12,7 @@
  		string text = "";
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();
--		for (int i = -65; i < 688; i++) {
+-		for (int i = -65; i < NPCID.Count; i++) {
 +		for (int i = -65; i < NPCLoader.NPCCount; i++) {
  			if (TryGettingLootFor(i, timesMultiplier, out var outputText))
  				text = text + outputText + "\n\n";

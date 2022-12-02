@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Animations/Segments.cs
 +++ src/tModLoader/Terraria/GameContent/Animations/Segments.cs
-@@ -231,7 +_,7 @@
+@@ -232,7 +_,7 @@
  			ProcessActions(_npc, localTimeForObject);
  			if (_npc.alpha < 255) {
  				_npc.FindFrame();

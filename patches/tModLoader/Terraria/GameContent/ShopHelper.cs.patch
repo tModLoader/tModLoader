@@ -45,7 +45,7 @@
  				_currentPriceAdjustment *= 0.95f;
  			}
  
--			bool[] array = new bool[688];
+-			bool[] array = new bool[NPCID.Count];
 +			bool[] array = new bool[NPCLoader.NPCCount];
  			foreach (NPC item in nearbyResidentNPCs) {
  				array[item.type] = true;

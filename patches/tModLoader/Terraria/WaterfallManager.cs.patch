@@ -17,13 +17,13 @@
  	public int maxWaterfallCount = 1000;
  	private int qualityMax;
  	private int currentMax;
- 	private WaterfallData[] waterfalls;
+ 	private WaterfallData[] waterfalls = new WaterfallData[1000];
 -	private Asset<Texture2D>[] waterfallTexture = new Asset<Texture2D>[26];
 +	internal Asset<Texture2D>[] waterfallTexture = new Asset<Texture2D>[26];
  	private int wFallFrCounter;
  	private int regularFrame;
  	private int wFallFrCounter2;
-@@ -216,7 +_,7 @@
+@@ -218,7 +_,7 @@
  		}
  	}
  
@@ -32,7 +32,7 @@
  	{
  		Main.tileSolid[546] = false;
  		float num = 0f;
-@@ -476,8 +_,12 @@
+@@ -480,8 +_,12 @@
  					case 267:
  					case 268:
  						num12 = 15 + num34 - 262;
@@ -45,7 +45,7 @@
  
  				Color color5 = Lighting.GetColor(num13, num14);
  				if (k > 50)
-@@ -734,8 +_,12 @@
+@@ -746,8 +_,12 @@
  				num = 255f * alpha;
  				num2 = 255f * alpha;
  				num3 = 255f * alpha;
@@ -58,7 +58,7 @@
  
  		aColor = new Color((int)num, (int)num2, (int)num3, (int)num4);
  		return aColor;
-@@ -784,6 +_,9 @@
+@@ -796,6 +_,9 @@
  
  	private static void AddLight(int waterfallType, int x, int y)
  	{
@@ -68,7 +68,7 @@
  		switch (waterfallType) {
  			case 1: {
  				float r;
-@@ -901,5 +_,7 @@
+@@ -913,5 +_,7 @@
  
  		if (Main.liquidAlpha[13] > 0f)
  			DrawWaterfall(24, Main.liquidAlpha[13]);

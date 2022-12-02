@@ -39,7 +39,7 @@
  			writer.Write((byte)msgType);
  			switch (msgType) {
  				case 1:
--					writer.Write("Terraria" + 276);
+-					writer.Write("Terraria" + 279);
 +					writer.Write(ModNet.NetVersionString);
  					break;
  				case 2:
@@ -64,30 +64,30 @@
 +					writer.Write((byte)player4.hairDye);
 +					SkipVanillaWrite:
 +
- 					BitsByte bitsByte16 = (byte)0;
- 					for (int num11 = 0; num11 < 8; num11++) {
- 						bitsByte16[num11] = player4.hideVisibleAccessory[num11];
-@@ -177,12 +_,19 @@
+ 					WriteAccessoryVisibility(writer, player4.hideVisibleAccessory);
+ 					writer.Write(player4.hideMisc);
+ 					writer.WriteRGB(player4.hairColor);
+@@ -166,12 +_,19 @@
  
- 					num13 = item6.stack;
- 					num14 = item6.netID;
+ 					num11 = item6.stack;
+ 					num12 = item6.netID;
 +					// Extra patch context.
- 					if (num13 < 0)
- 						num13 = 0;
+ 					if (num11 < 0)
+ 						num11 = 0;
  
 +					if (!ModNet.AllowVanillaClients) {
 +						ItemIO.Send(item6, writer, writeStack: true);
 +						goto SkipVanillaWrite;
 +					}
 +
- 					writer.Write((short)num13);
+ 					writer.Write((short)num11);
  					writer.Write((byte)number3);
- 					writer.Write((short)num14);
+ 					writer.Write((short)num12);
 +					SkipVanillaWrite:
  					break;
  				}
  				case 7: {
-@@ -350,8 +_,13 @@
+@@ -340,8 +_,13 @@
  						writer.Write(SocialAPI.Network.GetLobbyId());
  					else
  						writer.Write(0uL);
@@ -101,7 +101,7 @@
  					break;
  				}
  				case 8:
-@@ -560,8 +_,17 @@
+@@ -551,8 +_,17 @@
  					writer.Write((short)number);
  					writer.WriteVector2(item3.position);
  					writer.WriteVector2(item3.velocity);
@@ -120,7 +120,7 @@
  					writer.Write((byte)number2);
  					short value2 = 0;
  					if (item3.active && item3.stack > 0)
-@@ -576,6 +_,7 @@
+@@ -567,6 +_,7 @@
  					if (msgType == 148)
  						writer.Write((byte)MathHelper.Clamp(item3.timeLeftInWhichTheItemCannotBeTakenByEnemies, 0f, 255f));
  
@@ -128,11 +128,11 @@
  					break;
  				}
  				case 22:
-@@ -645,9 +_,12 @@
+@@ -636,9 +_,12 @@
  						}
  					}
  
--					if (nPC2.type >= 0 && nPC2.type < 688 && Main.npcCatchable[nPC2.type])
+-					if (nPC2.type >= 0 && nPC2.type < NPCID.Count && Main.npcCatchable[nPC2.type])
 +					if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  						writer.Write((byte)nPC2.releaseOwner);
  
@@ -142,27 +142,26 @@
  					break;
  				}
  				case 24:
-@@ -682,12 +_,17 @@
+@@ -673,12 +_,16 @@
  					if (projectile.knockBack != 0f)
- 						bitsByte24[5] = true;
+ 						bitsByte23[5] = true;
  
--					if (projectile.type > 0 && projectile.type < 1022 && ProjectileID.Sets.NeedsUUID[projectile.type])
+-					if (projectile.type > 0 && projectile.type < ProjectileID.Count && ProjectileID.Sets.NeedsUUID[projectile.type])
 +					if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
- 						bitsByte24[7] = true;
+ 						bitsByte23[7] = true;
  
  					if (projectile.originalDamage != 0)
- 						bitsByte24[6] = true;
+ 						bitsByte23[6] = true;
  
 +					byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
 +					bool hasExtraAI = extraAI?.Length > 0;
++					bitsByte23[2] = hasExtraAI; // This bit is unused by vanilla.
 +
-+					bitsByte24[2] = hasExtraAI; // This bit is unused by vanilla.
-+
- 					if ((byte)bitsByte25 != 0)
- 						bitsByte24[2] = true;
+ 					if ((byte)bitsByte24 != 0)
+ 						bitsByte23[2] = true;
  
-@@ -719,11 +_,20 @@
- 					if (bitsByte25[0])
+@@ -710,11 +_,20 @@
+ 					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
 +					if (hasExtraAI) {
@@ -183,7 +182,7 @@
  					writer.Write(number3);
  					writer.Write((byte)(number4 + 1f));
  					writer.Write((byte)number5);
-@@ -744,13 +_,21 @@
+@@ -735,13 +_,21 @@
  					Item item7 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
  					writer.Write((byte)number2);
@@ -206,7 +205,7 @@
  					break;
  				}
  				case 33: {
-@@ -794,6 +_,11 @@
+@@ -785,6 +_,11 @@
  					else {
  						writer.Write((short)0);
  					}
@@ -218,7 +217,7 @@
  					break;
  				case 35:
  					writer.Write((byte)number);
-@@ -807,6 +_,10 @@
+@@ -798,6 +_,10 @@
  					writer.Write(player3.zone3);
  					writer.Write(player3.zone4);
  					writer.Write(player3.zone5);
@@ -229,16 +228,7 @@
  					break;
  				}
  				case 38:
-@@ -859,7 +_,7 @@
- 				}
- 				case 50: {
- 					writer.Write((byte)number);
--					for (int l = 0; l < 44; l++) {
-+					for (int l = 0; l < Player.MaxBuffs; l++) {
- 						writer.Write((ushort)Main.player[number].buffType[l]);
- 					}
- 
-@@ -1067,7 +_,7 @@
+@@ -1058,7 +_,7 @@
  					bool flag3 = TileEntity.ByID.ContainsKey(number);
  					writer.Write(flag3);
  					if (flag3)
@@ -247,7 +237,7 @@
  
  					break;
  				}
-@@ -1130,14 +_,27 @@
+@@ -1121,14 +_,27 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item4 = Main.player[(int)number4].inventory[(int)number3];
@@ -276,7 +266,7 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
-@@ -1300,9 +_,16 @@
+@@ -1291,9 +_,16 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item2 = Main.player[(int)number4].inventory[(int)number3];
@@ -294,7 +284,7 @@
  					break;
  				}
  				case 124: {
-@@ -1365,9 +_,17 @@
+@@ -1356,9 +_,17 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item = Main.player[(int)number4].inventory[(int)number3];
@@ -313,24 +303,24 @@
  					break;
  				}
  				case 134: {
-@@ -1448,6 +_,16 @@
- 				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num23);
+@@ -1440,6 +_,16 @@
+ 				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
  
  			writer.BaseStream.Position = position;
 +
 +			// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile
 +			// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
 +			// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
-+			if (num23 > ushort.MaxValue) // An exception is better than silent packet drops.
-+				throw new IndexOutOfRangeException($"Maximum packet length exceeded {num23} > {ushort.MaxValue}");
++			if (num21 > ushort.MaxValue) // An exception is better than silent packet drops.
++				throw new IndexOutOfRangeException($"Maximum packet length exceeded {num21} > {ushort.MaxValue}");
 +
 +			if (ModNet.DetailedLogging)
-+				ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num23);
++				ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num21);
 +
- 			writer.Write((ushort)num23);
- 			writer.BaseStream.Position = num23;
+ 			writer.Write((ushort)num21);
+ 			writer.BaseStream.Position = num21;
  			if (Main.netMode == 1) {
-@@ -1660,7 +_,7 @@
+@@ -1652,7 +_,7 @@
  
  			buffer[num].writeLocked = false;
  			if (msgType == 2 && Main.netMode == 2) {
@@ -339,7 +329,7 @@
  				Netplay.Clients[num].PendingTerminationApproved = true;
  			}
  		}
-@@ -1687,11 +_,11 @@
+@@ -1690,11 +_,11 @@
  		int num6 = 0;
  		byte b = 0;
  		byte[] array = new byte[16];
@@ -353,7 +343,7 @@
  					num4 = (short)(num4 + 1);
  					continue;
  				}
-@@ -1738,7 +_,7 @@
+@@ -1741,7 +_,7 @@
  						}
  					}
  
@@ -362,7 +352,7 @@
  						short num8 = (short)Chest.FindChest(j, i);
  						if (num8 != -1) {
  							_compressChestList[num] = num8;
-@@ -1758,7 +_,7 @@
+@@ -1761,7 +_,7 @@
  							_compressSignList[num2++] = num10;
  					}
  
@@ -371,7 +361,7 @@
  						short num11 = (short)Sign.ReadSign(j, i);
  						if (num11 != -1)
  							_compressSignList[num2++] = num11;
-@@ -1948,9 +_,18 @@
+@@ -1951,9 +_,18 @@
  			writer.Write(sign.text);
  		}
  
@@ -391,7 +381,7 @@
  		}
  	}
  
-@@ -1963,16 +_,20 @@
+@@ -1966,16 +_,20 @@
  
  	public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height)
  	{
@@ -413,7 +403,7 @@
  
  					continue;
  				}
-@@ -2151,7 +_,7 @@
+@@ -2154,7 +_,7 @@
  
  		num3 = reader.ReadInt16();
  		for (int m = 0; m < num3; m++) {
@@ -422,7 +412,7 @@
  			TileEntity.ByID[tileEntity.ID] = tileEntity;
  			TileEntity.ByPosition[tileEntity.Position] = tileEntity;
  		}
-@@ -2161,20 +_,45 @@
+@@ -2164,20 +_,45 @@
  
  	public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256)
  	{
@@ -470,7 +460,7 @@
  				}
  			}
  		}
-@@ -2191,12 +_,16 @@
+@@ -2194,12 +_,16 @@
  
  			int num = 0;
  			int num2 = buffer[bufferIndex].totalData;
@@ -488,7 +478,7 @@
  						if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
  							Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
  							buffer[bufferIndex].checkBytes = false;
-@@ -2212,9 +_,12 @@
+@@ -2215,9 +_,12 @@
  					break;
  				}
  			}
@@ -502,7 +492,7 @@
  
  				num2 = 0;
  				num = 0;
-@@ -2226,6 +_,9 @@
+@@ -2229,6 +_,9 @@
  				}
  
  				buffer[bufferIndex].totalData = num2;
@@ -512,7 +502,7 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
-@@ -2452,7 +_,7 @@
+@@ -2455,7 +_,7 @@
  		}
  
  		if (!flag) {
@@ -521,7 +511,7 @@
  			Netplay.Disconnect = true;
  		}
  	}
-@@ -2506,11 +_,14 @@
+@@ -2509,11 +_,14 @@
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
@@ -537,7 +527,7 @@
  			}
  
  			return;
-@@ -2522,7 +_,7 @@
+@@ -2525,7 +_,7 @@
  			Netplay.Clients[plr].IsAnnouncementCompleted = false;
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  			if (Main.dedServ)

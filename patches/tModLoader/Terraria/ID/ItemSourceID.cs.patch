@@ -16,7 +16,7 @@
 @@ -13,4 +_,17 @@
  	public const int Shimmer = 8;
  	public const int Digesting = 9;
- 	public const int Count = 10;
+ 	public static readonly int Count = 10;
 +
 +	public static string? ToContextString(int itemSourceId) => itemSourceId switch {
 +		SetBonus_Nebula => nameof(SetBonus_Nebula),

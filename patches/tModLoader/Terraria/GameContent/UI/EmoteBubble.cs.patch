@@ -10,7 +10,7 @@
  
  public class EmoteBubble
  {
--	private static int[] CountNPCs = new int[688];
+-	private static int[] CountNPCs = new int[NPCID.Count];
 +	internal static int[] CountNPCs = new int[NPCID.Count];
  	public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
  	private static List<int> toClean = new List<int>();
@@ -78,7 +78,7 @@
  
  	private void ProbeTownNPCs(List<int> list)
  	{
--		for (int i = 0; i < 688; i++) {
+-		for (int i = 0; i < NPCID.Count; i++) {
 +		for (int i = 0; i < NPCLoader.NPCCount; i++) {
  			CountNPCs[i] = 0;
  		}
@@ -87,7 +87,7 @@
  		}
  
  		int type = ((NPC)anchor.entity).type;
--		for (int k = 0; k < 688; k++) {
+-		for (int k = 0; k < NPCID.Count; k++) {
 +		for (int k = 0; k < NPCLoader.NPCCount; k++) {
  			if (NPCID.Sets.FaceEmote[k] > 0 && CountNPCs[k] > 0 && k != type)
  				list.Add(NPCID.Sets.FaceEmote[k]);

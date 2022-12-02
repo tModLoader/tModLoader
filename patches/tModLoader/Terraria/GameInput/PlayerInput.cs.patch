@@ -92,9 +92,9 @@
 +			return false;
 +
  		bool flag5 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
- 		int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
- 		if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
-@@ -1202,6 +_,10 @@
+ 		Item item = player.inventory[player.selectedItem];
+ 		int num3 = item.tileBoost + ItemID.Sets.GamepadExtraRange[item.type];
+@@ -1206,6 +_,10 @@
  
  	private static void FixDerpedRebinds()
  	{
@@ -105,7 +105,7 @@
  		List<string> list = new List<string> {
  			"MouseLeft",
  			"MouseRight",
-@@ -1392,7 +_,10 @@
+@@ -1396,7 +_,10 @@
  				if (DpadSnapCooldown[i] == 0) {
  					int num = 6;
  					if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
@@ -116,7 +116,7 @@
  
  					DpadSnapCooldown[i] = num;
  					zero += vector;
-@@ -1645,6 +_,8 @@
+@@ -1649,6 +_,8 @@
  
  	public static void Reset(KeyConfiguration c, PresetProfiles style, InputMode mode)
  	{

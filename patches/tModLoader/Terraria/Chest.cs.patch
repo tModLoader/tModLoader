@@ -186,7 +186,7 @@
  	}
  
  	public static bool SetupTravelShop_CanAddItemToShop(int it)
-@@ -2314,12 +_,12 @@
+@@ -2313,12 +_,12 @@
  				num++;
  				array[num].SetDefaults(1979);
  				num++;
@@ -201,7 +201,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2981,9 +_,12 @@
+@@ -2987,9 +_,12 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -212,5 +212,5 @@
 +
 +		NPCLoader.SetupShop(type, this, ref num);
  
- 		for (int num13 = 0; num13 < num; num13++) {
- 			array[num13].isAShopItem = true;
+ 		for (int num15 = 0; num15 < num; num15++) {
+ 			array[num15].isAShopItem = true;
