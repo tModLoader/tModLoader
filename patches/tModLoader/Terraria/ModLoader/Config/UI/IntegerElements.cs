@@ -60,7 +60,7 @@ internal class IntInputElement : ConfigElement
 		upDownButton.Recalculate();
 		upDownButton.Top.Set(4f, 0f);
 		upDownButton.Left.Set(-30, 1f);
-		upDownButton.OnClick += (a, b) => {
+		upDownButton.OnLeftClick += (a, b) => {
 			Rectangle r = b.GetDimensions().ToRectangle();
 			if (a.MousePosition.Y < r.Y + r.Height / 2) {
 				SetValue(Utils.Clamp(GetValue() + Increment, Min, Max));

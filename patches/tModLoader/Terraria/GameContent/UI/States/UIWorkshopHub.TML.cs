@@ -56,7 +56,7 @@ partial class UIWorkshopHub : IHaveBackButtonCommand
 	private UIElement MakeButton_OpenModsMenu()
 	{
 		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubManageMods", "tModLoader.MenuManageMods");
-		uIElement.OnClick += Click_OpenModsMenu;
+		uIElement.OnLeftClick += Click_OpenModsMenu;
 		_buttonMods = uIElement;
 		return uIElement;
 	}
@@ -71,7 +71,7 @@ partial class UIWorkshopHub : IHaveBackButtonCommand
 	private UIElement MakeButton_OpenModSourcesMenu()
 	{
 		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDevelopMods", "tModLoader.MenuDevelopMods");
-		uIElement.OnClick += Click_OpenModSourcesMenu;
+		uIElement.OnLeftClick += Click_OpenModSourcesMenu;
 		_buttonModSources = uIElement;
 		return uIElement;
 	}
@@ -86,7 +86,7 @@ partial class UIWorkshopHub : IHaveBackButtonCommand
 	private UIElement MakeButton_OpenModBrowserMenu()
 	{
 		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDownloadMods", "tModLoader.MenuDownloadMods");
-		uIElement.OnClick += Click_OpenModBrowserMenu;
+		uIElement.OnLeftClick += Click_OpenModBrowserMenu;
 		_buttonModBrowser = uIElement;
 		return uIElement;
 	}
@@ -101,7 +101,7 @@ partial class UIWorkshopHub : IHaveBackButtonCommand
 	private UIElement MakeButton_ModPackMenu()
 	{
 		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubModPacks", "tModLoader.ModsModPacks");
-		uIElement.OnClick += Click_OpenModPackMenu;
+		uIElement.OnLeftClick += Click_OpenModPackMenu;
 		_buttonModPack = uIElement;
 		return uIElement;
 	}

@@ -102,7 +102,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		viewListButton.PaddingTop -= 2f;
 		viewListButton.PaddingBottom -= 2f;
-		viewListButton.OnClick += ViewListInfo;
+		viewListButton.OnLeftClick += ViewListInfo;
 		Append(viewListButton);
 
 		// Enable (1-L)
@@ -115,7 +115,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_enableListButton.PaddingTop -= 2f;
 		_enableListButton.PaddingBottom -= 2f;
-		_enableListButton.OnClick += EnableList;
+		_enableListButton.OnLeftClick += EnableList;
 		Append(_enableListButton);
 
 		// Enable List Only (2-L)
@@ -128,7 +128,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_enableListOnlyButton.PaddingTop -= 2f;
 		_enableListOnlyButton.PaddingBottom -= 2f;
-		_enableListOnlyButton.OnClick += EnabledListOnly;
+		_enableListOnlyButton.OnLeftClick += EnabledListOnly;
 		Append(_enableListOnlyButton);
 
 		// View on Browser (2-R)
@@ -141,7 +141,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_viewInModBrowserButton.PaddingTop -= 2f;
 		_viewInModBrowserButton.PaddingBottom -= 2f;
-		_viewInModBrowserButton.OnClick += DownloadMissingMods;
+		_viewInModBrowserButton.OnLeftClick += DownloadMissingMods;
 		Append(_viewInModBrowserButton);
 
 		// Update From Local (3-L)
@@ -153,14 +153,14 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_updateListWithEnabledButton.PaddingTop -= 2f;
 		_updateListWithEnabledButton.PaddingBottom -= 2f;
-		_updateListWithEnabledButton.OnClick += UpdateModPack;
+		_updateListWithEnabledButton.OnLeftClick += UpdateModPack;
 		Append(_updateListWithEnabledButton);
 
 		// Delete button
 		_deleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
 			Top = { Pixels = 40 }
 		};
-		_deleteButton.OnClick += DeleteButtonClick;
+		_deleteButton.OnLeftClick += DeleteButtonClick;
 		Append(_deleteButton);
 
 		if (_legacy)
@@ -177,7 +177,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_importFromPackLocalButton.PaddingTop -= 2f;
 		_importFromPackLocalButton.PaddingBottom -= 2f;
-		_importFromPackLocalButton.OnClick += ImportModPackLocal;
+		_importFromPackLocalButton.OnLeftClick += ImportModPackLocal;
 		Append(_importFromPackLocalButton);
 
 		// Remove Pack (Local) (3-R)
@@ -189,7 +189,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_removePackLocalButton.PaddingTop -= 2f;
 		_removePackLocalButton.PaddingBottom -= 2f;
-		_removePackLocalButton.OnClick += RemoveModPackLocal;
+		_removePackLocalButton.OnLeftClick += RemoveModPackLocal;
 		Append(_removePackLocalButton);
 
 		// Export Pack Instance (4-L)
@@ -201,7 +201,7 @@ internal class UIModPackItem : UIPanel
 		}.WithFadedMouseOver();
 		_exportPackInstanceButton.PaddingTop -= 2f;
 		_exportPackInstanceButton.PaddingBottom -= 2f;
-		_exportPackInstanceButton.OnClick += ExportInstance;
+		_exportPackInstanceButton.OnLeftClick += ExportInstance;
 		Append(_exportPackInstanceButton);
 
 		string instancePath = Path.Combine(Directory.GetCurrentDirectory(), _filename);
@@ -215,7 +215,7 @@ internal class UIModPackItem : UIPanel
 			}.WithFadedMouseOver();
 			_removePackInstanceButton.PaddingTop -= 2f;
 			_removePackInstanceButton.PaddingBottom -= 2f;
-			_removePackInstanceButton.OnClick += DeleteInstance;
+			_removePackInstanceButton.OnLeftClick += DeleteInstance;
 			Append(_removePackInstanceButton);
 
 			//TODO: Play Instance (4-M)
@@ -228,7 +228,7 @@ internal class UIModPackItem : UIPanel
 			}.WithFadedMouseOver();
 			_playInstanceButton.PaddingTop -= 2f;
 			_playInstanceButton.PaddingBottom -= 2f;
-			_playInstanceButton.OnClick += PlayInstance;
+			_playInstanceButton.OnLeftClick += PlayInstance;
 			Append(_playInstanceButton);
 			*/
 		}

@@ -91,7 +91,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 		_tMLDisclaimerText = uIText;
 
-		groupOptionButton.OnClick += TmlDisclaimerText_OnClick;
+		groupOptionButton.OnLeftClick += TmlDisclaimerText_OnClick;
 		groupOptionButton.OnMouseOver += TmlDisclaimerText_OnMouseOver;
 		groupOptionButton.OnMouseOut += TmlDisclaimerText_OnMouseOut;
 

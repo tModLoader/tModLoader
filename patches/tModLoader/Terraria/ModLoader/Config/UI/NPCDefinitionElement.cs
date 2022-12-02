@@ -21,7 +21,7 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 
 		for (int i = 0; i < NPCLoader.NPCCount; i++) {
 			var optionElement = new NPCDefinitionOptionElement(new NPCDefinition(i), OptionScale);
-			optionElement.OnClick += (a, b) => {
+			optionElement.OnLeftClick += (a, b) => {
 				Value = optionElement.Definition;
 				UpdateNeeded = true;
 				SelectionExpanded = false;

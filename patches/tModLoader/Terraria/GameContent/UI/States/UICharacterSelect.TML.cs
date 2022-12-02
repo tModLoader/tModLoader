@@ -133,7 +133,7 @@ public partial class UICharacterSelect : UIState
 				migrateIndividualPlayerText.Width.Set(-left, 1);
 				migrateIndividualPlayerText.Left.Set(left, 0);
 				migrateIndividualPlayerText.Height.Set(0, 1);
-				migrateIndividualPlayerText.OnClick += (a, b) => {
+				migrateIndividualPlayerText.OnLeftClick += (a, b) => {
 					if (_currentlyMigratingFiles) {
 						return;
 					}
@@ -214,7 +214,7 @@ public partial class UICharacterSelect : UIState
 			// Use of world text here is intentional.
 			: Language.GetText("tModLoader.MigratingWorldsText"));
 
-		autoMigrateButton.OnClick += (a, b) => {
+		autoMigrateButton.OnLeftClick += (a, b) => {
 			if (_currentlyMigratingFiles)
 				return;
 
@@ -236,7 +236,7 @@ public partial class UICharacterSelect : UIState
 		noPlayersMessage.Width.Set(0, 1);
 		noPlayersMessage.Height.Set(300, 0);
 		noPlayersMessage.MarginTop = 20f;
-		noPlayersMessage.OnClick += (a, b) => {
+		noPlayersMessage.OnLeftClick += (a, b) => {
 			Utils.OpenFolder(Main.PlayerPath);
 			Utils.OpenFolder(vanillaPlayersPath);
 		};

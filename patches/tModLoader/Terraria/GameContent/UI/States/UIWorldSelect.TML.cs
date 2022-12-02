@@ -131,7 +131,7 @@ partial class UIWorldSelect
 				migrateIndividualWorldText.Left.Set(left, 0);
 				migrateIndividualWorldText.Height.Set(0, 1);
 
-				migrateIndividualWorldText.OnClick += (a, b) => {
+				migrateIndividualWorldText.OnLeftClick += (a, b) => {
 					if (_currentlyMigratingFiles)
 						return;
 
@@ -195,7 +195,7 @@ partial class UIWorldSelect
 			? Language.GetText("tModLoader.MigrateWorldsText")
 			: Language.GetText("tModLoader.MigratingWorldsText"));
 
-		autoMigrateButton.OnClick += (a, b) => {
+		autoMigrateButton.OnLeftClick += (a, b) => {
 			if (_currentlyMigratingFiles)
 				return;
 
@@ -216,7 +216,7 @@ partial class UIWorldSelect
 		noWorldsMessage.Width.Set(0, 1);
 		noWorldsMessage.Height.Set(300, 0);
 		noWorldsMessage.MarginTop = 20f;
-		noWorldsMessage.OnClick += (a, b) => {
+		noWorldsMessage.OnLeftClick += (a, b) => {
 			Utils.OpenFolder(Main.WorldPath);
 			Utils.OpenFolder(vanillaWorldsPath);
 		};

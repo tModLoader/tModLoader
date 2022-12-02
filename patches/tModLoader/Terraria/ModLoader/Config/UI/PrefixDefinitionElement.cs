@@ -30,7 +30,7 @@ internal class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 			else
 				optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition(i), OptionScale);
 
-			optionElement.OnClick += (a, b) => {
+			optionElement.OnLeftClick += (a, b) => {
 				Value = optionElement.Definition;
 				UpdateNeeded = true;
 				SelectionExpanded = false;

@@ -85,7 +85,7 @@ internal class UIModInfo : UIState
 			VAlign = 1f,
 			Top = {Pixels = -65}
 		}.WithFadedMouseOver();
-		_modHomepageButton.OnClick += VisitModHomePage;
+		_modHomepageButton.OnLeftClick += VisitModHomePage;
 
 		_modSteamButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitSteampage")) {
 			Width = { Percent = 0.49f },
@@ -94,7 +94,7 @@ internal class UIModInfo : UIState
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
-		_modSteamButton.OnClick += VisitModSteamPage;
+		_modSteamButton.OnLeftClick += VisitModSteamPage;
 
 		var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
 			Width = {Pixels = -10, Percent = 0.333f},
@@ -102,7 +102,7 @@ internal class UIModInfo : UIState
 			VAlign = 1f,
 			Top = {Pixels = -20}
 		}.WithFadedMouseOver();
-		backButton.OnClick += BackClick;
+		backButton.OnLeftClick += BackClick;
 		_uIElement.Append(backButton);
 
 		_extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract")) {
@@ -112,7 +112,7 @@ internal class UIModInfo : UIState
 			HAlign = 0.5f,
 			Top = {Pixels = -20}
 		}.WithFadedMouseOver();
-		_extractButton.OnClick += ExtractMod;
+		_extractButton.OnLeftClick += ExtractMod;
 
 		_deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
 			Width = {Pixels = -10, Percent = 0.333f},
@@ -121,7 +121,7 @@ internal class UIModInfo : UIState
 			HAlign = 1f,
 			Top = {Pixels = -20}
 		}.WithFadedMouseOver();
-		_deleteButton.OnClick += DeleteMod;
+		_deleteButton.OnLeftClick += DeleteMod;
 
 		_fakeDeleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
 			Width = { Pixels = -10, Percent = 0.333f },

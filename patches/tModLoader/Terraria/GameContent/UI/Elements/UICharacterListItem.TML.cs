@@ -32,7 +32,7 @@ partial class UICharacterListItem
 			};
 
 			errorButton.Left.Set(-24f, 0f);
-			errorButton.OnClick += new MouseEvent(ErrorButtonClick);
+			errorButton.OnLeftClick += new MouseEvent(ErrorButtonClick);
 			errorButton.OnMouseOver += new MouseEvent(ErrorMouseOver);
 			errorButton.OnMouseOut += new MouseEvent(DeleteMouseOut);
 
@@ -90,7 +90,7 @@ partial class UICharacterListItem
 
 				modListWarning.OnMouseOver += (a, b) => warningLabel.SetText(warning);
 				modListWarning.OnMouseOut += (a, b) => warningLabel.SetText("");
-				modListWarning.OnClick += (a, b) => {
+				modListWarning.OnLeftClick += (a, b) => {
 					Interface.infoMessage.Show(fullWarning, 888, Main._characterSelectMenu);
 				};
 
@@ -105,7 +105,7 @@ partial class UICharacterListItem
 			UIImageButton configButton = new UIImageButton(this._configTexture);
 			configButton.VAlign = 1f;
 			configButton.Left.Set(76, 0f);
-			configButton.OnClick += new UIElement.MouseEvent(this.ConfigButtonClick);
+			configButton.OnLeftClick += new UIElement.MouseEvent(this.ConfigButtonClick);
 			configButton.OnMouseOver += new UIElement.MouseEvent(this.ConfigMouseOver);
 			configButton.OnMouseOut += new UIElement.MouseEvent(this.ButtonMouseOut);
 			base.Append(configButton);

@@ -68,7 +68,7 @@ public partial class UIManageControls : UIState
 			case ResetModKeybinds: {
 				var result = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
 
-				result.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+				result.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					string copyableProfileName = GetCopyableProfileName();
 					PlayerInput.CurrentProfile.CopyModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
 				};
@@ -78,7 +78,7 @@ public partial class UIManageControls : UIState
 			case ClearModKeybinds: {
 				var result = new UIKeybindingSimpleListItem(() => "Clear", color);
 
-				result.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+				result.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					foreach (var modKeybind in KeybindLoader.Keybinds) {
 						PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.FullName].Clear();
 					}
@@ -102,7 +102,7 @@ public partial class UIManageControls : UIState
 				// TODO: Clear instead of Reset to Defaults if no default specified.
 				var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
 
-				right.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+				right.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					string copyableProfileName = GetCopyableProfileName();
 					PlayerInput.CurrentProfile.CopyIndividualModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
 				};

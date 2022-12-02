@@ -45,14 +45,14 @@ internal class UIUpdateMessage : UIState
 			Top = { Pixels = -30 }
 		};
 		button.WithFadedMouseOver();
-		button.OnClick += IgnoreClick;
+		button.OnLeftClick += IgnoreClick;
 		_area.Append(button);
 
 		var button2 = new UITextPanel<string>("Download", 0.7f, true);
 		button2.CopyStyle(button);
 		button2.HAlign = 0.5f;
 		button2.WithFadedMouseOver();
-		button2.OnClick += OpenURL;
+		button2.OnLeftClick += OpenURL;
 		_area.Append(button2);
 
 		if (Platform.IsWindows && SocialAPI.Mode != SocialMode.Steam) {
@@ -60,7 +60,7 @@ internal class UIUpdateMessage : UIState
 			_autoUpdateButton.CopyStyle(button);
 			_autoUpdateButton.HAlign = 1f;
 			_autoUpdateButton.WithFadedMouseOver();
-			_autoUpdateButton.OnClick += AutoUpdate;
+			_autoUpdateButton.OnLeftClick += AutoUpdate;
 		}
 
 		Append(_area);

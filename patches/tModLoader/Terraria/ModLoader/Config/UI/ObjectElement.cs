@@ -86,7 +86,7 @@ internal class ObjectElement : ConfigElement<object>
 			separatePageButton.HAlign = 0.5f;
 			//e.Recalculate();
 			//elementHeight = (int)e.GetOuterDimensions().Height;
-			separatePageButton.OnClick += (a, c) => {
+			separatePageButton.OnLeftClick += (a, c) => {
 				UIModConfig.SwitchToSubConfig(this.separatePagePanel);
 				/*	Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 					Interface.modConfig.uIElement.Append(separateListPanel);
@@ -104,7 +104,7 @@ internal class ObjectElement : ConfigElement<object>
 				//Interface.modConfig.DoMenuModeState();
 			};
 			//e = new UIText($"{memberInfo.Name} click for more ({type.Name}).");
-			//e.OnClick += (a, b) => { };
+			//e.OnLeftClick += (a, b) => { };
 		}
 
 		//data = _GetValue();// memberInfo.GetValue(this.item);
@@ -149,7 +149,7 @@ internal class ObjectElement : ConfigElement<object>
 		initializeButton.Top.Pixels += 4;
 		initializeButton.Left.Pixels -= 3;
 		initializeButton.HAlign = 1f;
-		initializeButton.OnClick += (a, b) => {
+		initializeButton.OnLeftClick += (a, b) => {
 			SoundEngine.PlaySound(21);
 
 			object data = Activator.CreateInstance(MemberInfo.Type, true);
@@ -174,7 +174,7 @@ internal class ObjectElement : ConfigElement<object>
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-52, 1f);
-		expandButton.OnClick += (a, b) => {
+		expandButton.OnLeftClick += (a, b) => {
 			expanded = !expanded;
 			pendingChanges = true;
 		};
@@ -182,7 +182,7 @@ internal class ObjectElement : ConfigElement<object>
 		deleteButton = new UIModConfigHoverImage(DeleteTexture, "Clear");
 		deleteButton.Top.Set(4, 0f);
 		deleteButton.Left.Set(-25, 1f);
-		deleteButton.OnClick += (a, b) => {
+		deleteButton.OnLeftClick += (a, b) => {
 			Value = null;
 			pendingChanges = true;
 

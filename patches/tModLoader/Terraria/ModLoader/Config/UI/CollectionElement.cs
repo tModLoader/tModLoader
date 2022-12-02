@@ -81,7 +81,7 @@ internal abstract class CollectionElement : ConfigElement
 			initializeButton.Top.Pixels += 4;
 			initializeButton.Left.Pixels -= 3;
 			initializeButton.HAlign = 1f;
-			initializeButton.OnClick += (a, b) => {
+			initializeButton.OnLeftClick += (a, b) => {
 				SoundEngine.PlaySound(SoundID.Tink);
 				InitializeCollection();
 				SetupList();
@@ -94,7 +94,7 @@ internal abstract class CollectionElement : ConfigElement
 			addButton = new UIModConfigHoverImage(PlusTexture, "Add");
 			addButton.Top.Set(4, 0f);
 			addButton.Left.Set(-52, 1f);
-			addButton.OnClick += (a, b) => {
+			addButton.OnLeftClick += (a, b) => {
 				SoundEngine.PlaySound(SoundID.Tink);
 				AddItem();
 				SetupList();
@@ -107,7 +107,7 @@ internal abstract class CollectionElement : ConfigElement
 			deleteButton = new UIModConfigHoverImage(DeleteTexture, "Clear");
 			deleteButton.Top.Set(4, 0f);
 			deleteButton.Left.Set(-25, 1f);
-			deleteButton.OnClick += (a, b) => {
+			deleteButton.OnLeftClick += (a, b) => {
 				SoundEngine.PlaySound(SoundID.Tink);
 				if (NullAllowed)
 					NullCollection();
@@ -123,7 +123,7 @@ internal abstract class CollectionElement : ConfigElement
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-79, 1f);
-		expandButton.OnClick += (a, b) => {
+		expandButton.OnLeftClick += (a, b) => {
 			expanded = !expanded;
 			pendingChanges = true;
 		};
@@ -131,7 +131,7 @@ internal abstract class CollectionElement : ConfigElement
 		upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, "Scale Up", "Scale Down");
 		upDownButton.Top.Set(4, 0f);
 		upDownButton.Left.Set(-106, 1f);
-		upDownButton.OnClick += (a, b) => {
+		upDownButton.OnLeftClick += (a, b) => {
 			Rectangle r = b.GetDimensions().ToRectangle();
 
 			if (a.MousePosition.Y < r.Y + r.Height / 2) {

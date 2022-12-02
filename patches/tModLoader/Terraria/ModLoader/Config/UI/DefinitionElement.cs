@@ -33,7 +33,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		OptionChoice = CreateDefinitionOptionElement();
 		OptionChoice.Top.Set(2f, 0f);
 		OptionChoice.Left.Set(-30, 1f);
-		OptionChoice.OnClick += (a, b) => {
+		OptionChoice.OnLeftClick += (a, b) => {
 			SelectionExpanded = !SelectionExpanded;
 			UpdateNeeded = true;
 		};
@@ -97,7 +97,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		upDownButton.Recalculate();
 		upDownButton.Top.Set(-4f, 0f);
 		upDownButton.Left.Set(-18, 1f);
-		upDownButton.OnClick += (a, b) => {
+		upDownButton.OnLeftClick += (a, b) => {
 			Rectangle r = b.GetDimensions().ToRectangle();
 			if (a.MousePosition.Y < r.Y + r.Height / 2) {
 				OptionScale = Math.Min(1f, OptionScale + 0.1f);

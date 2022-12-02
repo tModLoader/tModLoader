@@ -20,7 +20,7 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 
 		for (int i = 0; i < ProjectileLoader.ProjectileCount; i++) {
 			var optionElement = new ProjectileDefinitionOptionElement(new ProjectileDefinition(i), OptionScale);
-			optionElement.OnClick += (a, b) => {
+			optionElement.OnLeftClick += (a, b) => {
 				Value = optionElement.Definition;
 				UpdateNeeded = true;
 				SelectionExpanded = false;

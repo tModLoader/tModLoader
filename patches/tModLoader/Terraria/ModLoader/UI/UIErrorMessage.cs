@@ -59,41 +59,41 @@ internal class UIErrorMessage : UIState
 			Top = { Pixels = -108, Percent = 1f }
 		};
 		continueButton.WithFadedMouseOver();
-		continueButton.OnClick += ContinueClick;
+		continueButton.OnLeftClick += ContinueClick;
 		area.Append(continueButton);
 
 		var openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
 		openLogsButton.CopyStyle(continueButton);
 		openLogsButton.HAlign = 1f;
 		openLogsButton.WithFadedMouseOver();
-		openLogsButton.OnClick += OpenFile;
+		openLogsButton.OnLeftClick += OpenFile;
 		area.Append(openLogsButton);
 
 		webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
 		webHelpButton.CopyStyle(openLogsButton);
 		webHelpButton.Top.Set(-55f, 1f);
 		webHelpButton.WithFadedMouseOver();
-		webHelpButton.OnClick += VisitRegisterWebpage;
+		webHelpButton.OnLeftClick += VisitRegisterWebpage;
 		area.Append(webHelpButton);
 
 		skipLoadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.SkipToMainMenu"), 0.7f, true);
 		skipLoadButton.CopyStyle(continueButton);
 		skipLoadButton.Top.Set(-55f, 1f);
 		skipLoadButton.WithFadedMouseOver();
-		skipLoadButton.OnClick += SkipLoad;
+		skipLoadButton.OnLeftClick += SkipLoad;
 		area.Append(skipLoadButton);
 
 		exitAndDisableAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ExitAndDisableAll"), 0.7f, true);
 		exitAndDisableAllButton.CopyStyle(skipLoadButton);
 		exitAndDisableAllButton.TextColor = Color.Red;
 		exitAndDisableAllButton.WithFadedMouseOver();
-		exitAndDisableAllButton.OnClick += ExitAndDisableAll;
+		exitAndDisableAllButton.OnLeftClick += ExitAndDisableAll;
 
 		retryButton = new UITextPanel<string>("Retry", 0.7f, true);
 		retryButton.CopyStyle(continueButton);
 		retryButton.Top.Set(-50f, 1f);
 		retryButton.WithFadedMouseOver();
-		retryButton.OnClick += (evt, elem) => retryAction();
+		retryButton.OnLeftClick += (evt, elem) => retryAction();
 
 		Append(area);
 	}

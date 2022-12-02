@@ -99,7 +99,7 @@ internal class UIModItem : UIPanel
 			Top = { Pixels = 40 },
 			Left = { Pixels = _modIconAdjust }
 		};
-		_uiModStateText.OnClick += ToggleEnabled;
+		_uiModStateText.OnLeftClick += ToggleEnabled;
 		Append(_uiModStateText);
 
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
@@ -108,7 +108,7 @@ internal class UIModItem : UIPanel
 			Left = { Pixels = -36, Precent = 1 },
 			Top = { Pixels = 40 }
 		};
-		_moreInfoButton.OnClick += ShowMoreInfo;
+		_moreInfoButton.OnLeftClick += ShowMoreInfo;
 		Append(_moreInfoButton);
 
 		if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
@@ -118,7 +118,7 @@ internal class UIModItem : UIPanel
 				Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1f },
 				Top = { Pixels = 40f }
 			};
-			_configButton.OnClick += OpenConfig;
+			_configButton.OnLeftClick += OpenConfig;
 			Append(_configButton);
 			if (ConfigManager.ModNeedsReload(loadedMod)) {
 				_configChangesRequireReload = true;
@@ -134,7 +134,7 @@ internal class UIModItem : UIPanel
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 				Top = { Pixels = 42.5f }
 			};
-			_modReferenceIcon.OnClick += EnableDependencies;
+			_modReferenceIcon.OnLeftClick += EnableDependencies;
 
 			Append(_modReferenceIcon);
 		}
@@ -202,10 +202,10 @@ internal class UIModItem : UIPanel
 			}
 		}
 
-		OnDoubleClick += (e, el) => {
+		OnLeftDoubleClick += (e, el) => {
 			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
 			if (e.Target.GetType() != typeof(UIModStateText))
-				_uiModStateText.Click(e);
+				_uiModStateText.LeftClick(e);
 		};
 
 		if (!_loaded) {
@@ -215,7 +215,7 @@ internal class UIModItem : UIPanel
 				Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1 },
 				Top = { Pixels = 42.5f }
 			};
-			_deleteModButton.OnClick += QuickModDelete;
+			_deleteModButton.OnLeftClick += QuickModDelete;
 			Append(_deleteModButton);
 		}
 
@@ -457,7 +457,7 @@ internal class UIModItem : UIPanel
 				Color = new Color(0, 0, 0, 0),
 				ScaleToFit = true
 			};
-			_blockInput.OnMouseDown += CloseDialog;
+			_blockInput.OnLeftMouseDown += CloseDialog;
 			Interface.modsMenu.Append(_blockInput);
 
 			_deleteModDialog = new UIPanel() {
@@ -478,7 +478,7 @@ internal class UIModItem : UIPanel
 				VAlign = .85f,
 				HAlign = .15f
 			}.WithFadedMouseOver();
-			_dialogYesButton.OnClick += DeleteMod;
+			_dialogYesButton.OnLeftClick += DeleteMod;
 			_deleteModDialog.Append(_dialogYesButton);
 
 			_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
@@ -488,7 +488,7 @@ internal class UIModItem : UIPanel
 				VAlign = .85f,
 				HAlign = .85f
 			}.WithFadedMouseOver();
-			_dialogNoButton.OnClick += CloseDialog;
+			_dialogNoButton.OnLeftClick += CloseDialog;
 			_deleteModDialog.Append(_dialogNoButton);
 
 			_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {

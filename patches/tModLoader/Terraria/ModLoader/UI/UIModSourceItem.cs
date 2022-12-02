@@ -55,7 +55,7 @@ internal class UIModSourceItem : UIPanel
 		}.WithFadedMouseOver();
 		buildButton.PaddingTop -= 2f;
 		buildButton.PaddingBottom -= 2f;
-		buildButton.OnClick += BuildMod;
+		buildButton.OnLeftClick += BuildMod;
 		Append(buildButton);
 
 		var buildReloadButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"));
@@ -63,7 +63,7 @@ internal class UIModSourceItem : UIPanel
 		buildReloadButton.Width.Pixels = 200;
 		buildReloadButton.Left.Pixels = 150;
 		buildReloadButton.WithFadedMouseOver();
-		buildReloadButton.OnClick += BuildAndReload;
+		buildReloadButton.OnLeftClick += BuildAndReload;
 		Append(buildReloadButton);
 
 		_builtMod = builtMod;
@@ -75,16 +75,16 @@ internal class UIModSourceItem : UIPanel
 			publishButton.WithFadedMouseOver();
 
 			if (builtMod.properties.side == ModSide.Server) {
-				publishButton.OnClick += PublishServerSideMod;
+				publishButton.OnLeftClick += PublishServerSideMod;
 				Append(publishButton);
 			}
 			else if (builtMod.Enabled) {
-				publishButton.OnClick += PublishMod;
+				publishButton.OnLeftClick += PublishMod;
 				Append(publishButton);
 			}
 		}
 
-		OnDoubleClick += BuildAndReload;
+		OnLeftDoubleClick += BuildAndReload;
 
 		string modFolderName = Path.GetFileName(_mod);
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
@@ -93,7 +93,7 @@ internal class UIModSourceItem : UIPanel
 				Left = { Pixels = -52, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
-			openCSProjButton.OnClick += (a, b) => {
+			openCSProjButton.OnLeftClick += (a, b) => {
 				Process.Start(
 					new ProcessStartInfo(csprojFile) {
 						UseShellExecute = true
@@ -126,7 +126,7 @@ internal class UIModSourceItem : UIPanel
 					Left = { Pixels = leftPixels, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
-				upgradeCSProjButton.OnClick += (s, e) => {
+				upgradeCSProjButton.OnLeftClick += (s, e) => {
 					File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
 					string propertiesFolder = Path.Combine(_mod, "Properties");
 					string AssemblyInfoFile = Path.Combine(propertiesFolder, "AssemblyInfo.cs");
@@ -169,7 +169,7 @@ internal class UIModSourceItem : UIPanel
 					Top = { Pixels = 4 }
 				};
 
-				upgradeLangFilesButton.OnClick += (s, e) => {
+				upgradeLangFilesButton.OnLeftClick += (s, e) => {
 					foreach (string file in files) {
 						LocalizationLoader.UpgradeLangFile(file, modName);
 					}
@@ -191,7 +191,7 @@ internal class UIModSourceItem : UIPanel
 					Top = { Pixels = 4 }
 				};
 
-				portModButton.OnClick += (s, e) => {
+				portModButton.OnLeftClick += (s, e) => {
 					string modFolderName = Path.GetFileName(_mod);
 					string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 

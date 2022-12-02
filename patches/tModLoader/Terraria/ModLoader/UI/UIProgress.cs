@@ -47,7 +47,7 @@ internal class UIProgress : UIState
 			HAlign = 0.5f,
 			Top = { Pixels = 170 }
 		}.WithFadedMouseOver();
-		_cancelButton.OnClick += CancelClick;
+		_cancelButton.OnLeftClick += CancelClick;
 		Append(_cancelButton);
 
 		subProgress = new UIText("", 0.5f, true) {

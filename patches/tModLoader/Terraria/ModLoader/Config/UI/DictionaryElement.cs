@@ -229,7 +229,7 @@ internal class DictionaryElement : CollectionElement
 				// fix delete.
 				object o = keysEnumerator.Current;
 
-				deleteButton.OnClick += (a, b) => {
+				deleteButton.OnLeftClick += (a, b) => {
 					((IDictionary)Data).Remove(o);
 					SetupList();
 					Interface.modConfig.SetPendingChanges();
