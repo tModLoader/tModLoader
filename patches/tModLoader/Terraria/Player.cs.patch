@@ -3827,6 +3827,14 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
+@@ -30673,6 +_,7 @@
+ 			int? forcedRandom = null;
+ 			TileObject objectData = default(TileObject);
+ 			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
++			PlantLoader.CheckAndInjectModSapling(tileTargetX, tileTargetY, ref tileToCreate, ref previewPlaceStyle);
+ 			if (overrideCanPlace.HasValue) {
+ 				canPlace = overrideCanPlace.Value;
+ 			}
 @@ -30757,9 +_,12 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
@@ -4299,17 +4307,11 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -33770,6 +_,14 @@
+@@ -33770,6 +_,8 @@
  		if (Main.myPlayer == whoAmI && itemAnimation == 0) {
  			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
  			FigureOutWhatToPlace(targetTile, sItem, out var tileToCreate, out var previewPlaceStyle, out var overrideCanPlace, out var forcedRandom);
-+			// Added by TML
-+			if (tileToCreate == TileID.Saplings) {
-+				Tile soil = Main.tile[tileTargetX, tileTargetY + 1];
-+
-+				if (soil.active())
-+					TileLoader.SaplingGrowthType(soil.type, ref tileToCreate, ref previewPlaceStyle);
-+			}
++			PlantLoader.CheckAndInjectModSapling(tileTargetX, tileTargetY, ref tileToCreate, ref previewPlaceStyle);
 +
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
@@ -4668,6 +4670,31 @@
  			if (sItem.axe > 0) {
  				AchievementsHelper.CurrentlyMining = true;
  				if (!WorldGen.CanKillTile(x, y))
+@@ -35630,7 +_,7 @@
+ 						NetMessage.SendData(17, -1, -1, null, 0, x, y);
+ 
+ 					if (sItem.type == 5295 && flag)
+-						TryReplantingTree();
++						TryReplantingTree(x, y);
+ 				}
+ 				else {
+ 					WorldGen.KillTile(x, y, fail: true);
+@@ -35673,10 +_,13 @@
+ 		return true;
+ 	}
+ 
+-	private void TryReplantingTree()
++	private void TryReplantingTree(int x, int y)
+ 	{
+-		ushort type = 20;
++		int type = 20;
+ 		int style = 0;
++
++		PlantLoader.CheckAndInjectModSapling(x, y, ref type, ref style);
++
+ 		if (!TileObject.CanPlace(tileTargetX, tileTargetY, type, style, direction, out var objectData))
+ 			return;
+ 
 @@ -35798,7 +_,14 @@
  	private void ItemCheck_UseMiningTools_TryPoundingTile(Item sItem, int tileHitId, ref bool hitWall, int x, int y)
  	{
