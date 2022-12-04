@@ -124,6 +124,17 @@ public static class PlantLoader
 		if (tree is not null)
 			leafGoreType = tree.TreeLeaf();
 	}
+
+	public static void CheckAndInjectModSapling(int x, int y, ref int tileToCreate, ref int previewPlaceStyle)
+	{
+		// Added by TML
+		if (tileToCreate == TileID.Saplings) {
+			Tile soil = Main.tile[x, y + 1];
+
+			if (soil.active())
+				TileLoader.SaplingGrowthType(soil.type, ref tileToCreate, ref previewPlaceStyle);
+		}
+	}
 }
 
 /// <summary>

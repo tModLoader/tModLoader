@@ -2,8 +2,6 @@
 
 ## General
 
-- Axe of regrowth needs a lookup to the sapling type of a given modtree
-
 - Check why we alter DrawData.useDestinationRectangle
 	https://github.com/tModLoader/tModLoader/commit/e38affeb6a121090555377c74eeed78c40280627
 
