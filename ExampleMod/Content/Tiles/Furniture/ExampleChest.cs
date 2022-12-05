@@ -27,6 +27,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.IsAContainer[Type] = true; // necessary for chest lock support
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
@@ -76,6 +77,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = dustType;
 			return true;
+		}
+
+		public override bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) {
+			return !Chest.IsLocked(i, j);
 		}
 
 		public static string MapChestName(string name, int i, int j) {
