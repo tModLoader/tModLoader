@@ -1016,4 +1016,9 @@ public static class TileLoader
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 	}
+
+	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
+	{
+		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;
+	}
 }
