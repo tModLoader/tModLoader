@@ -351,7 +351,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void ResetNearbyTileEffects() { }
 
 	/// <summary>
-	/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"
+	/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement"
 	/// </summary>
 	public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
 
