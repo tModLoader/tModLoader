@@ -1919,7 +1919,7 @@
  			float num18 = 1f / num17;
  			whipUseTimeMultiplier *= num18;
 +			*/
-+			summonerWeaponSpeedBonus += num17; //TML: Obsidian armor changed to additive.
++			summonerWeaponSpeedBonus += num17 - 1; //TML: Obsidian armor changed to additive.
  		}
  
  		ApplyArmorSoundAndDustChanges();
