@@ -104,6 +104,16 @@
  					for (int k = 0; k < 4; k++) {
  						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
+@@ -450,7 +_,9 @@
+ 				Tile tileSafely2 = Framing.GetTileSafely(i, j);
+ 				if (tileSafely2.type == type) {
+ 					tileSafely2.frameX += num;
++					/*
+ 					Main.tile[i, j] = tileSafely2;
++					*/
+ 				}
+ 			}
+ 		}
 @@ -540,15 +_,28 @@
  		}
  		else {
