@@ -1911,10 +1911,12 @@
  			dashType = 5;
  		}
  
-@@ -12581,11 +_,16 @@
+@@ -12580,12 +_,17 @@
+ 			setBonus = Language.GetTextValue("ArmorSetBonus.ObsidianOutlaw");
  			minionDamage += 0.15f;
  			whipRangeMultiplier += 0.3f;
- 			float num17 = 1.15f;
+-			float num17 = 1.15f;
++			float num17 = 0.15f;
 +			/*
  			float num18 = 1f / num17;
  			whipUseTimeMultiplier *= num18;
