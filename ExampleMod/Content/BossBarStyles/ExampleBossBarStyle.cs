@@ -31,7 +31,7 @@ namespace ExampleMod.Content.BossBars
 				if (info.showText && BigProgressBarSystem.ShowText) {
 					// If the bar can currently draw text and the setting for it is enabled, draw the "life/lifeMax" text in the center of the bar (position code taken from DrawBareBonesBar)
 					Rectangle barDimensions = Utils.CenteredRectangle(Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f), new Vector2(400f, 20f));
-					BossBarLoader.DrawHealthText(spriteBatch, barDimensions, 2 * Vector2.UnitY, npc.life, npc.lifeMax);
+					BigProgressBarHelper.DrawHealthText(spriteBatch, barDimensions, 2 * Vector2.UnitY, npc.life, npc.lifeMax);
 				}
 			}
 			else {

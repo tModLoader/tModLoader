@@ -1,12 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.Localization;
 using Terraria.ModLoader.Default;
@@ -322,34 +320,9 @@ public static class BossBarLoader
 
 		if (BigProgressBarSystem.ShowText && showText) {
 			if (shield > 0f)
-				DrawHealthText(spriteBatch, barPosition, textOffset, shield, shieldMax);
+				BigProgressBarHelper.DrawHealthText(spriteBatch, barPosition, textOffset, shield, shieldMax);
 			else
-				DrawHealthText(spriteBatch, barPosition, textOffset, life, lifeMax);
+				BigProgressBarHelper.DrawHealthText(spriteBatch, barPosition, textOffset, life, lifeMax);
 		}
-	}
-
-	// Copy of the private BigProgressBarHelper.DrawHealthText with an offset parameter
-	/// <summary>
-	/// Draws "<paramref name="current"/>/<paramref name="max"/>" as text centered on <paramref name="area"/>, offset by <paramref name="textOffset"/>.
-	/// </summary>
-	/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
-	/// <param name="area">The Rectangle that the text is centered on</param>
-	/// <param name="textOffset">Offset for the text position</param>
-	/// <param name="current">Number shown left of the "/"</param>
-	/// <param name="max">Number shown on the right of the "/"</param>
-	public static void DrawHealthText(SpriteBatch spriteBatch, Rectangle area, Vector2 textOffset, float current, float max)
-	{
-		DynamicSpriteFont value = FontAssets.ItemStack.Value;
-		Vector2 vector = area.Center.ToVector2() + textOffset;
-		vector.Y += 1f;
-		string text = "/";
-		Vector2 vector2 = value.MeasureString(text);
-		Utils.DrawBorderStringFourWay(spriteBatch, value, text, vector.X, vector.Y, Color.White, Color.Black, vector2 * 0.5f);
-		text = ((int)current).ToString();
-		vector2 = value.MeasureString(text);
-		Utils.DrawBorderStringFourWay(spriteBatch, value, text, vector.X - 5f, vector.Y, Color.White, Color.Black, vector2 * new Vector2(1f, 0.5f));
-		text = ((int)max).ToString();
-		vector2 = value.MeasureString(text);
-		Utils.DrawBorderStringFourWay(spriteBatch, value, text, vector.X + 5f, vector.Y, Color.White, Color.Black, vector2 * new Vector2(0f, 0.5f));
 	}
 }
