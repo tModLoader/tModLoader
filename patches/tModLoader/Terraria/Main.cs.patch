@@ -3994,7 +3994,7 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
-@@ -36393,10 +_,20 @@
+@@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
  		PlayerInput.SetZoom_UI();
@@ -4010,7 +4010,8 @@
 +		SystemLoader.ModifyInterfaceLayers(interfaceLayers);
 +		
 +		foreach (var layer in interfaceLayers) {
-+			layer.Draw();
++			if(!layer.Draw())
++				break;
 +		}
  
  		PlayerInput.SetZoom_World();
