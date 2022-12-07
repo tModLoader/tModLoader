@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
-@@ -1,6 +_,8 @@
+@@ -1,10 +_,12 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
@@ -8,6 +8,11 @@
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI.BigProgressBar;
+ 
+-public class BigProgressBarHelper
++public partial class BigProgressBarHelper
+ {
+ 	private const string _bossBarTexturePath = "Images/UI/UI_BossBar";
  
 @@ -24,6 +_,12 @@
  
@@ -36,7 +41,7 @@
 +			Color iconColor = Color.White;
 +			float iconScale = 1f;
 +
-+			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, shieldCurrent, shieldMax, iconScale);
++			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, shieldCurrent, shieldMax, iconScale, info.showText, Vector2.Zero);
 +
 +			bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
 +			if (!skipped)

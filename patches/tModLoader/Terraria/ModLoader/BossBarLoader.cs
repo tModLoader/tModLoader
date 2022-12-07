@@ -19,7 +19,7 @@ public static class BossBarLoader
 	/// </summary>
 	internal static BigProgressBarInfo? drawingInfo = null;
 
-	//Cache vanilla boss bar texture as it's being accessed via GetTexture again
+	// Cache vanilla boss bar texture as it's being accessed via GetTexture again
 	private static Asset<Texture2D> vanillaBossBarTexture;
 	public static Asset<Texture2D> VanillaBossBarTexture => vanillaBossBarTexture ??= Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar");
 
@@ -48,7 +48,7 @@ public static class BossBarLoader
 		vanillaStyle
 	};
 
-	//Saves repopulating the list again if we just remove all but the by-default styles on unload
+	// Saves repopulating the list again if we just remove all but the by-default styles on unload
 	internal static readonly int defaultStyleCount = bossBarStyles.Count;
 
 	/// <summary>
@@ -187,7 +187,7 @@ public static class BossBarLoader
 	{
 		int index = info.npcIndexToAimAt;
 		if (index < 0 || index > Main.maxNPCs)
-			return false; //Invalid data, abort
+			return false; // Invalid data, abort
 
 		NPC npc = Main.npc[index];
 
@@ -212,7 +212,7 @@ public static class BossBarLoader
 	{
 		int index = info.npcIndexToAimAt;
 		if (index < 0 || index > Main.maxNPCs)
-			return; //Invalid data, abort
+			return; // Invalid data, abort
 
 		NPC npc = Main.npc[index];
 
@@ -239,10 +239,10 @@ public static class BossBarLoader
 	/// <param name="drawParams">The draw parameters for the boss bar</param>
 	public static void DrawFancyBar_TML(SpriteBatch spriteBatch, BossBarDrawParams drawParams)
 	{
-		//DrawFancyBar without shieldPercent gets redirected to DrawFancyBar with shieldPercent as 0f
-		//DrawFancyBar with shieldPercent gets redirected to this
+		// DrawFancyBar without shieldCurrent gets redirected to DrawFancyBar with shieldCurrent as 0f
+		// DrawFancyBar with shieldCurrent gets redirected to this
 
-		(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield, float shieldMax, float iconScale) = drawParams;
+		(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield, float shieldMax, float iconScale, bool showText, Vector2 textOffset) = drawParams;
 
 		Point barSize = new Point(456, 22); //Size of the bar
 		Point topLeftOffset = new Point(32, 24); //Where the top left of the bar starts
@@ -284,38 +284,45 @@ public static class BossBarLoader
 		Vector2 barTopLeft = barPosition.TopLeft();
 		Vector2 topLeft = barTopLeft - topLeftOffset.ToVector2();
 
-		//Background
+		// Background
 		spriteBatch.Draw(barTexture, topLeft, bgFrame, bgColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-		//Bar itself
+		// Bar itself
 		Vector2 stretchScale = new Vector2(scale / barFrame.Width, 1f);
 		Color barColor = Color.White;
 		spriteBatch.Draw(barTexture, barTopLeft, barFrame, barColor, 0f, Vector2.Zero, stretchScale, SpriteEffects.None, 0f);
 
-		//Tip
+		// Tip
 		spriteBatch.Draw(barTexture, barTopLeft + new Vector2(scale - 2, 0f), tipFrame, barColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-		//Bar itself (shield)
+		// Bar itself (shield)
 		if (shield > 0f) {
 			stretchScale = new Vector2(shieldScale / barFrame.Width, 1f);
 			spriteBatch.Draw(barTexture, barTopLeft, barShieldFrame, barColor, 0f, Vector2.Zero, stretchScale, SpriteEffects.None, 0f);
 
-			//Tip
+			// Tip
 			spriteBatch.Draw(barTexture, barTopLeft + new Vector2(shieldScale - 2, 0f), tipShieldFrame, barColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 		}
 
-		//Frame
+		// Frame
 		Rectangle frameFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 0);
 		spriteBatch.Draw(barTexture, topLeft, frameFrame, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-		//Icon
+		// Icon
 		Vector2 iconOffset = new Vector2(4f, 20f);
 		Vector2 iconSize = new Vector2(26f, 28f);
-		//The vanilla method with the shieldPercent parameter, which is used only by the lunar pillars, uses iconSize = iconFrame.Size() instead, which have a size of 26x30,
-		//causing a slight vertical offset that is barely noticeable. Concidering that the non-shieldPercent method is the more general one, let's keep it like this
-		//(changing that using the lunar pillar code will cause many other icons to be offset instead) --direwolf420
+		// The vanilla method with the shieldCurrent parameter, which is used only by the lunar pillars, uses iconSize = iconFrame.Size() instead, which have a size of 26x30,
+		// causing a slight vertical offset that is barely noticeable. Concidering that the non-shieldCurrent method is the more general one, let's keep it like this
+		// (changing that using the lunar pillar code will cause many other icons to be offset instead) --direwolf420
 		Vector2 iconPos = iconOffset + iconSize / 2f;
-		//iconFrame Centered around iconPos
+		// iconFrame Centered around iconPos
 		spriteBatch.Draw(iconTexture, topLeft + iconPos, iconFrame, iconColor, 0f, iconFrame.Size() / 2f, iconScale, SpriteEffects.None, 0f);
+
+		if (BigProgressBarSystem.ShowText && showText) {
+			if (shield > 0f)
+				BigProgressBarHelper.DrawHealthText(spriteBatch, barPosition, textOffset, shield, shieldMax);
+			else
+				BigProgressBarHelper.DrawHealthText(spriteBatch, barPosition, textOffset, life, lifeMax);
+		}
 	}
 }
