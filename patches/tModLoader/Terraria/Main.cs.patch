@@ -5775,7 +5775,7 @@
  			if (!graphics.IsFullScreen) {
  				num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  				num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
-@@ -54746,6 +_,7 @@
+@@ -54749,6 +_,7 @@
  			graphics.ToggleFullScreen();
  		}
  
@@ -5783,7 +5783,7 @@
  		if (width != num3 || height != num4 || flag2) {
  			mapTime = 0;
  			if (gamePaused)
-@@ -54755,7 +_,14 @@
+@@ -54758,7 +_,14 @@
  			screenHeight = height;
  			graphics.PreferredBackBufferWidth = screenWidth;
  			graphics.PreferredBackBufferHeight = screenHeight;
