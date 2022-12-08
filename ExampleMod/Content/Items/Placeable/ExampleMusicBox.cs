@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Music Box (Marble Gallery)");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla
 
 			// The following code links the music box's item and tile with a music track:

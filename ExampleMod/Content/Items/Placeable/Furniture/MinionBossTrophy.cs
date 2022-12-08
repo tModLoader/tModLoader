@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Trophy");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

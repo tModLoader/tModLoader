@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

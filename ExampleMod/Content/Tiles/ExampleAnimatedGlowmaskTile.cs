@@ -86,7 +86,7 @@ namespace ExampleMod.Content.Tiles
 	internal class ExampleAnimatedGlowmaskTileItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

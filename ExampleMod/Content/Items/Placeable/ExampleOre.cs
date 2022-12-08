@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleOre : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 100;
+			Item.ResearchUnlockCount = 100;
 			ItemID.Sets.SortingPriorityMaterials[Item.type] = 58;
 		}
 

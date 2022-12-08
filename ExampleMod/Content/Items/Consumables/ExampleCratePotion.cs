@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Consumables
 			Tooltip.SetDefault("Increases chance to get a crate" +
 				"\nStacks with {$ItemName.CratePotion}");
 
-			Item.SacrificeTotal = 20;
+			Item.ResearchUnlockCount = 20;
 
 			// Dust that will appear in these colors when the item with ItemUseStyleID.DrinkLiquid is used
 			ItemID.Sets.DrinkParticleColors[Type] = new Color[3] {

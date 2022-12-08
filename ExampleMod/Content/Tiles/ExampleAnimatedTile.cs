@@ -154,7 +154,7 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Red Firefly in a Bottle");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Weapons
 		private int exampleResourceCost; // Add our custom resource cost
 
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

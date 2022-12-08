@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Mask");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

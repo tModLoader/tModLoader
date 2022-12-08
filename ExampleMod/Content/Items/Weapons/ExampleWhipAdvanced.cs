@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleWhip";
 
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

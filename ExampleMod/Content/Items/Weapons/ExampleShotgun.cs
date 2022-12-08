@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shotgun.");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

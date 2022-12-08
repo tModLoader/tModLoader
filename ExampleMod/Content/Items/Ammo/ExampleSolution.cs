@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Ammo
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
 
-			Item.SacrificeTotal = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {

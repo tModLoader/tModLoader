@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Tools
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
 
-			Item.SacrificeTotal = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
+			Item.ResearchUnlockCount = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
 		}
 
 		public override void SetDefaults() {

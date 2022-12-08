@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleHealingPotion : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 30;
+			Item.ResearchUnlockCount = 30;
 		}
 
 		public override void SetDefaults() {

@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded platform.");
 
-			Item.SacrificeTotal = 200;
+			Item.ResearchUnlockCount = 200;
 		}
 
 		public override void SetDefaults() {

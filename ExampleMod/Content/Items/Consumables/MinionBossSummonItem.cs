@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Consumables
 			DisplayName.SetDefault("Minion Boss Summon Item");
 			Tooltip.SetDefault("Summons Minion Boss");
 
-			Item.SacrificeTotal = 3;
+			Item.ResearchUnlockCount = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
 
 			// If this would be for a vanilla boss that has no summon item, you would have to include this line here:

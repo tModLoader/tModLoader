@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 	{
 		public override void SetStaticDefaults() {
 			// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

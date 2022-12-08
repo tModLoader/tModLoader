@@ -147,7 +147,7 @@ namespace ExampleMod.Content.Projectiles
 		public override string Texture => $"Terraria/Images/Item_{ItemID.NebulaBlaze}";
 
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

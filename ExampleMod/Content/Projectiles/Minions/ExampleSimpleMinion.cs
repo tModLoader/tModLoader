@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			DisplayName.SetDefault("Example Minion Item");
 			Tooltip.SetDefault("Summons an example minion to fight for you");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}

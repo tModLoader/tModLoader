@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded tile.");
 
-			Item.SacrificeTotal = 100;
+			Item.ResearchUnlockCount = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 
 			// Some please convert this to lang files, I'm too lazy to do it

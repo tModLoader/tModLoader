@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Herb Seeds");
 
-			Item.SacrificeTotal = 20;
+			Item.ResearchUnlockCount = 20;
 		}
 
 		public override void SetDefaults() {

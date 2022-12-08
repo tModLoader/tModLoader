@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Items.Consumables
 			ItemID.Sets.IsFishingCrate[Type] = true;
 			//ItemID.Sets.IsFishingCrateHardmode[Type] = true; // This is a crate that mimics a pre-hardmode biome crate, so this is commented out
 
-			Item.SacrificeTotal = 10;
+			Item.ResearchUnlockCount = 10;
 		}
 
 		public override void SetDefaults() {

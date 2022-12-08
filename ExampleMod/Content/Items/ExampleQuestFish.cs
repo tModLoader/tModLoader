@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Upside-down Fish");
 
-			Item.SacrificeTotal = 2;
+			Item.ResearchUnlockCount = 2;
 		}
 
 		public override void SetDefaults() {

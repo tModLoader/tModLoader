@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Armor
 				+ "\nImmunity to 'On Fire!'"
 				+ "\n+20 max mana and +1 max minions");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

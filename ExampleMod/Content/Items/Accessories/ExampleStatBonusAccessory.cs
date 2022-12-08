@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Accessories
 							 + "Magic attacks ignore an additional 5 defense points\n"
 							 + "Increases ranged firing speed by 15%");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

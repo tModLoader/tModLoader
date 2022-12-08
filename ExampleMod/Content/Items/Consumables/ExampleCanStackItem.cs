@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Consumables
 			DisplayName.SetDefault("Example CanStack Item: Gift Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
 
-			Item.SacrificeTotal = 3;
+			Item.ResearchUnlockCount = 3;
 		}
 
 		public override void SetDefaults() {

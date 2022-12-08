@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Tooltip.SetDefault("Counts as a water, lava, and honey source\n"
 							 + "'A shame there's no example liquids (yet)'");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

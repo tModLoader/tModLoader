@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items
 			DisplayName.SetDefault("ExampleMount Car key");
 			Tooltip.SetDefault("This summons a modded mount.");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

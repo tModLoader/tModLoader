@@ -47,11 +47,11 @@ public abstract class ModItem : ModType<Item, ModItem>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
 	// Deprecation date: 2022.12.XX
-	/// <inheritdoc cref="Item.SacrificeTotal"/>
-	[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.SacrificeTotal)} instead.", error: true)]
+	/// <inheritdoc cref="Item.ResearchUnlockCount"/>
+	[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.ResearchUnlockCount)} instead.", error: true)]
 	public int SacrificeTotal {
-		get => Item.SacrificeTotal;
-		set => Item.SacrificeTotal = value;
+		get => Item.ResearchUnlockCount;
+		set => Item.ResearchUnlockCount = value;
 	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };

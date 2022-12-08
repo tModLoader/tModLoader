@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items
 			ItemID.Sets.ItemIconPulse[Item.type] = true; // The item pulses while in the player's inventory
 			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
 
-			Item.SacrificeTotal = 25; // Configure the amount of this item that's needed to research it in Journey mode.
+			Item.ResearchUnlockCount = 25; // Configure the amount of this item that's needed to research it in Journey mode.
 		}
 
 		public override void SetDefaults() {

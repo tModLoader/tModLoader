@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is an advanced modded wall.");
-			Item.SacrificeTotal = 400;
+			Item.ResearchUnlockCount = 400;
 		}
 
 		public override void SetDefaults() {

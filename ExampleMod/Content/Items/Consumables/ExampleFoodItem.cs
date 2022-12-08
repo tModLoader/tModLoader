@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Consumables
 			// Make sure to match the tooltip with the buff you assign in SetDefaults
 			Tooltip.SetDefault("{$CommonItemTooltip.MediumStats}\n'Who knew examples could taste good'");
 
-			Item.SacrificeTotal = 5;
+			Item.ResearchUnlockCount = 5;
 
 			// This is to show the correct frame in the inventory
 			// The MaxValue argument is for the animation speed, we want it to be stuck on frame 1

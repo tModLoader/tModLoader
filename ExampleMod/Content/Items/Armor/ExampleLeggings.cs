@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Armor
 			Tooltip.SetDefault("This is a modded leg armor."
 				+ "\n5% increased movement speed");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			DisplayName.SetDefault("Minion Boss Pet");
 			Tooltip.SetDefault("Summons a miniature Minion Boss to follow you");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

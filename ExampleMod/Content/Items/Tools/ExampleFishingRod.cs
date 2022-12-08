@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Tools
 			Tooltip.SetDefault("Fires multiple lines at once. Can fish in lava.\n" +
 				"The fishing line never snaps.");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanFishInLava[Item.type] = true; // Allows the pole to fish in lava
 		}
 

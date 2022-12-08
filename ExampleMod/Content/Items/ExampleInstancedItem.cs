@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public override void SetStaticDefaults() {
-			Item.SacrificeTotal = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {

@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Items
 			DisplayName.SetDefault("Hot Potato");
 			Tooltip.SetDefault("Something magical happens when the timer runs out...");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			DisplayName.SetDefault("Example Table");
 			Tooltip.SetDefault("This is a modded table.");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded beard which matches your hair color.");
 
-			Item.SacrificeTotal = 1;
+			Item.ResearchUnlockCount = 1;
 
 			ArmorIDs.Beard.Sets.UseHairColor[Item.beardSlot] = true;
 		}
