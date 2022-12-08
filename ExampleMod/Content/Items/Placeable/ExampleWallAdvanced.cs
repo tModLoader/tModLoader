@@ -1,5 +1,5 @@
-using Terraria.ModLoader;
 using ExampleMod.Content.Tiles.Furniture;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
 {

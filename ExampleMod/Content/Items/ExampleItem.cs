@@ -1,9 +1,9 @@
+using ExampleMod.Content.Items.Placeable;
+using ExampleMod.Content.Items.Placeable.Furniture;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items.Placeable;
-using ExampleMod.Content.Items.Placeable.Furniture;
 
 namespace ExampleMod.Content.Items
 {

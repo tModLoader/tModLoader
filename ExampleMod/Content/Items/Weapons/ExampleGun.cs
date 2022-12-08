@@ -1,9 +1,9 @@
+using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Projectiles;
 
 namespace ExampleMod.Content.Items.Weapons
 {

@@ -1,9 +1,9 @@
 using System.Linq;
+using ExampleMod.Common.Configs;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Common.Configs;
 
 namespace ExampleMod.Content.Items.Accessories
 {

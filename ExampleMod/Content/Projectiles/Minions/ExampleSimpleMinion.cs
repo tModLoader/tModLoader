@@ -1,11 +1,11 @@
 using System;
+using ExampleMod.Content.Items;
+using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items;
-using ExampleMod.Content.Tiles.Furniture;
 
 namespace ExampleMod.Content.Projectiles.Minions
 {

@@ -1,8 +1,8 @@
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Dusts;
 
 namespace ExampleMod.Content.Items.Tools
 {

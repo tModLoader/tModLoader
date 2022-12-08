@@ -1,6 +1,6 @@
-﻿using Terraria;
+﻿using ExampleMod.Content.Projectiles;
+using Terraria;
 using Terraria.ModLoader;
-using ExampleMod.Content.Projectiles;
 
 namespace ExampleMod.Content.Items
 {

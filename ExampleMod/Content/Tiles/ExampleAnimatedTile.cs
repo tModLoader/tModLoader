@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
@@ -6,7 +7,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using ExampleMod.Content.Items;
 
 namespace ExampleMod.Content.Tiles
 {

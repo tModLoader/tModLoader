@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.GlobalProjectiles;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Common.GlobalProjectiles;
 
 namespace ExampleMod.Content.Items.Weapons
 {

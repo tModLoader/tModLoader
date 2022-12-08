@@ -1,6 +1,6 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.Players;
+using Terraria;
 using Terraria.ModLoader;
-using ExampleMod.Common.Players;
 
 namespace ExampleMod.Content.Items.Accessories
 {

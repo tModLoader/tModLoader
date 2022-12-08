@@ -1,6 +1,6 @@
+using ExampleMod.Content.Tiles;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Tiles;
 
 namespace ExampleMod.Content.Items.Placeable
 {

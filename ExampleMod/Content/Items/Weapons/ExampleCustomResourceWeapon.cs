@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using ExampleMod.Common.Players;
+using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Common.Players;
-using ExampleMod.Content.Tiles.Furniture;
 
 namespace ExampleMod.Content.Items.Weapons
 {
