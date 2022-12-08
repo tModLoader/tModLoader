@@ -1,11 +1,11 @@
 ﻿using System;
+using ExampleMod.Content.Tiles;
+using ExampleMod.Content.Tiles.Furniture;
+using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Tiles;
-using ExampleMod.Content.Tiles.Furniture;
-using ExampleMod.Content.Walls;
 
 namespace ExampleMod.Content.Items.Ammo
 {

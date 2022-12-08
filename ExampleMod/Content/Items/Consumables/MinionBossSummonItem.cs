@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Content.NPCs.MinionBoss;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.NPCs.MinionBoss;
 
 namespace ExampleMod.Content.Items.Consumables
 {
