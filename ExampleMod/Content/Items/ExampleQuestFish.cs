@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -13,12 +12,10 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.questItem = true;
-			Item.maxStack = 1;
-			Item.width = 26;
-			Item.height = 26;
-			Item.uniqueStack = true; // Make this item only stack one time.
-			Item.rare = ItemRarityID.Quest; // Sets the item's rarity. This exact line uses a special rarity for quest items.
+			// DefaultToQuestFish sets quest fish properties.
+			// Of note, it sets rare to ItemRarityID.Quest, which is the special rarity for quest items.
+			// It also sets uniqueStack to true, which prevents players from picking up a 2nd copy of the item into their inventory.
+			Item.DefaultToQuestFish();
 		}
 
 		public override bool IsQuestFish() => true; // Makes the item a quest fish

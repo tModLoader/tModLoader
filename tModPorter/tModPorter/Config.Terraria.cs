@@ -171,6 +171,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "thrownCost33",		to: "ThrownCost33");
 		RenameInstanceField("Terraria.Player",	from: "thrownCost50",		to: "ThrownCost50");
 		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
+		RenameInstanceField("Terraria.Player",	from: "discount",			to: "discountAvailable");
 
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
@@ -189,6 +190,20 @@ public static partial class Config
 		RefactorStaticMethodCall("Terraria.Audio.SoundEngine", "GetActiveSound", ToTryGet("TryGetActiveSound"));
 
 		RenameType("Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerResourcesDisplaySet");
+
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageSands", Comment("Suggestion: Suffocate"));
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageOther", Comment("Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding"));
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageVines", Comment("Suggestion: TouchDamageImmediate and TouchDamageDestroyTile"));
+
+
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnMouseDown",	to: "OnLeftMouseDown");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnMouseUp",		to: "OnLeftMouseUp");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnClick",		to: "OnLeftClick");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnDoubleClick",	to: "OnLeftDoubleClick");
+		RenameMethod("Terraria.UI.UIElement",			from: "MouseDown",		to: "LeftMouseDown");
+		RenameMethod("Terraria.UI.UIElement",			from: "MouseUp",		to: "LeftMouseUp");
+		RenameMethod("Terraria.UI.UIElement",			from: "Click",			to: "LeftClick");
+		RenameMethod("Terraria.UI.UIElement",			from: "DoubleClick",	to: "LeftDoubleClick");
 
 		AddWorldGenToGenVars();
 	}

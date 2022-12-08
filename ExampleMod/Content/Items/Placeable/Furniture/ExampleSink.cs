@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -18,14 +14,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTurn = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.autoReuse = true;
-			Item.maxStack = 999;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleSink>();
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleSink>());
 			Item.width = 24;
 			Item.height = 30;
 			Item.value = 3000;

@@ -1,31 +1,30 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
 @@ -5,8 +_,10 @@
+ 
+ internal class WindowsPlatform : Platform
  {
- 	internal class WindowsPlatform : Platform
- 	{
 +#if !NETCORE
- 		private WindowsMessageHook _wndProcHook;
- 		private bool _disposedValue;
+ 	private WindowsMessageHook _wndProcHook;
+ 	private bool _disposedValue;
 +#endif
  
- 		public WindowsPlatform()
- 			: base(PlatformType.Windows) {
-@@ -17,6 +_,10 @@
- 		}
+ 	public WindowsPlatform()
+ 		: base(PlatformType.Windows)
+@@ -19,6 +_,10 @@
  
- 		public override void InitializeClientServices(IntPtr windowHandle) {
+ 	public override void InitializeClientServices(IntPtr windowHandle)
+ 	{
 +#if NETCORE
-+			RegisterService((IImeService)new FnaIme());
-+		}
++		RegisterService((IImeService)new FnaIme());
++	}
 +#else
- 			if (_wndProcHook == null)
- 				_wndProcHook = new WindowsMessageHook(windowHandle);
+ 		if (_wndProcHook == null)
+ 			_wndProcHook = new WindowsMessageHook(windowHandle);
  
-@@ -34,5 +_,6 @@
- 				base.Dispose(disposing);
- 			}
+@@ -37,4 +_,5 @@
+ 			base.Dispose(disposing);
  		}
-+#endif
  	}
++#endif
  }

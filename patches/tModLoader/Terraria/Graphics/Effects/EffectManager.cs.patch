@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/EffectManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/EffectManager.cs
 @@ -6,7 +_,7 @@
- 	public abstract class EffectManager<T> where T : GameEffect
- 	{
- 		protected bool _isLoaded;
--		protected Dictionary<string, T> _effects = new Dictionary<string, T>();
-+		internal Dictionary<string, T> _effects = new Dictionary<string, T>();
+ public abstract class EffectManager<T> where T : GameEffect
+ {
+ 	protected bool _isLoaded;
+-	protected Dictionary<string, T> _effects = new Dictionary<string, T>();
++	protected internal Dictionary<string, T> _effects = new Dictionary<string, T>();
  
- 		public bool IsLoaded => _isLoaded;
+ 	public bool IsLoaded => _isLoaded;
  

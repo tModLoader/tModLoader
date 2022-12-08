@@ -1,44 +1,43 @@
 --- src/TerrariaNetCore/Terraria/Audio/OGGAudioTrack.cs
 +++ src/tModLoader/Terraria/Audio/OGGAudioTrack.cs
-@@ -3,6 +_,7 @@
- using NVorbis;
+@@ -1,4 +_,5 @@
+ #if !SERVER
++using System;
  using System.Collections.Generic;
  using System.IO;
-+using System;
+ using Microsoft.Xna.Framework.Audio;
+@@ -57,16 +_,34 @@
  
- namespace Terraria.Audio
- {
-@@ -51,15 +_,33 @@
- 		}
- 
- 		private void FindLoops() {
-+			// Vanilla: Code is faulty, tries to parse the whole comment as one integer.
-+			/*
- 			IDictionary<string, IList<string>> all = _vorbisReader.Tags.All;
- 			TryReadingTag(all, "LOOPSTART", ref _loopStart);
- 			TryReadingTag(all, "LOOPEND", ref _loopEnd);
-+			*/
-+
-+			// TML: Fixed parsing
-+			var tags = _vorbisReader.Tags.All;
-+			
-+			void TryReadInteger(string entryName, ref int result) {
-+				if (tags.TryGetValue(entryName, out var values) && values.Count > 0 && int.TryParse(values[0], out int potentialResult)) {
-+					result = potentialResult;
-+				}
-+			}
-+
-+			TryReadInteger("LOOPSTART", ref _loopStart);
-+			TryReadInteger("LOOPEND", ref _loopEnd);
- 		}
- 
-+		// See the above.
+ 	private void FindLoops()
+ 	{
++		// Vanilla: Code is faulty, tries to parse the whole comment as one integer.
 +		/*
- 		private void TryReadingTag(IDictionary<string, IList<string>> tags, string entryName, ref int result) {
- 			if (tags.TryGetValue(entryName, out IList<string> value) && value.Count > 0 && int.TryParse(value[0], out int result2))
- 				result = result2;
- 		}
+ 		IDictionary<string, IList<string>> all = _vorbisReader.Tags.All;
+ 		TryReadingTag(all, "LOOPSTART", ref _loopStart);
+ 		TryReadingTag(all, "LOOPEND", ref _loopEnd);
 +		*/
++
++		// TML: Fixed parsing
++		var tags = _vorbisReader.Tags.All;
++		
++		void TryReadInteger(string entryName, ref int result) {
++			if (tags.TryGetValue(entryName, out var values) && values.Count > 0 && int.TryParse(values[0], out int potentialResult)) {
++				result = potentialResult;
++			}
++		}
++
++		TryReadInteger("LOOPSTART", ref _loopStart);
++		TryReadInteger("LOOPEND", ref _loopEnd);
+ 	}
  
- 		public override void Dispose() {
- 			_soundEffectInstance.Dispose();
++	// See the above.
++	/*
+ 	private void TryReadingTag(IDictionary<string, IList<string>> tags, string entryName, ref int result)
+ 	{
+ 		if (tags.TryGetValue(entryName, out var value) && value.Count > 0 && int.TryParse(value[0], out var result2))
+ 			result = result2;
+ 	}
++	*/
+ 
+ 	public override void Dispose()
+ 	{

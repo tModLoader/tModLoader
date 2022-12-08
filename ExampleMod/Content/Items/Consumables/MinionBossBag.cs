@@ -1,12 +1,12 @@
-﻿using ExampleMod.Content.Items.Armor.Vanity;
-using ExampleMod.Content.NPCs.MinionBoss;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Items.Armor.Vanity;
+using ExampleMod.Content.NPCs.MinionBoss;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;

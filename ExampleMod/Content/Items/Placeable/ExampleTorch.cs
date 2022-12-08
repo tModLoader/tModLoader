@@ -1,8 +1,8 @@
-using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Dusts;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -10,23 +10,14 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded torch.");
+
 			Item.SacrificeTotal = 100;
 		}
 
 		public override void SetDefaults() {
-			Item.flame = true;
-			Item.noWet = true;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTurn = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.holdStyle = ItemHoldStyleID.HoldFront;
-			Item.autoReuse = true;
-			Item.maxStack = 999;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleTorch>();
-			Item.width = 10;
-			Item.height = 12;
+			// DefaultToTorch sets various properties common to torch placing items. Hover over DefaultToTorch in Visual Studio to see the specific properties set.
+			// Of particular note to torches are Item.holdStyle, Item.flame, and Item.noWet. 
+			Item.DefaultToTorch(ModContent.TileType<Tiles.ExampleTorch>(), 0, false);
 			Item.value = 50;
 		}
 

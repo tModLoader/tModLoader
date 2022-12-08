@@ -1,6 +1,6 @@
-﻿using ExampleMod.Content.DamageClasses;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using ExampleMod.Content.DamageClasses;
 
 namespace ExampleMod.Content.Items.Accessories
 {

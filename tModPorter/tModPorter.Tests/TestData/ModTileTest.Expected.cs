@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +12,10 @@ public class ModTileTest : ModTile
 		ItemDrop = 1;
 		DustType = 0;
 #if COMPILE_ERROR
+		// not-yet-implemented
 		HitSound/* tModPorter Suggestion: Use a SoundStyle here */ = 0;
+		// instead-expect
+		HitSound = 1;
 		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 
@@ -39,6 +43,14 @@ public class ModTileTest : ModTile
 #endif
 	}
 
+	public override void SetStaticDefaults() {
+#if COMPILE_ERROR
+		TileID.Sets.TouchDamageSands/* tModPorter Suggestion: Suffocate */[Type] = 15;
+		TileID.Sets.TouchDamageOther/* tModPorter Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding */[Type] = 99;
+		TileID.Sets.TouchDamageVines/* tModPorter Suggestion: TouchDamageImmediate and TouchDamageDestroyTile */[Type] = 10;
+#endif
+	}
+
 #if COMPILE_ERROR
 	public override int SaplingGrowthType(ref int style)/* tModPorter Note: Removed. Use ModTree.SaplingGrowthType */ { return -1; }
 #endif
@@ -52,10 +64,22 @@ public class ModTileTest : ModTile
 	public override bool RightClick(int i, int j) { return false; /* comment */ }
 
 	public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+		// not-yet-implemented
 		drawData.tileLight *= 0.5f;
+		// instead-expect
+#if COMPILE_ERROR
+		drawColor *= 0.5f;
+#endif
 
 		// Textbook usage of nextSpecialDrawIndex, reduced to one method in 1.4
+		// not-yet-implemented
 		Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+		// instead-expect
+#if COMPILE_ERROR
+		Main.specX[nextSpecialDrawIndex] = i;
+		Main.specY[nextSpecialDrawIndex] = j;
+		nextSpecialDrawIndex++;
+#endif
 	}
 
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) { /* comment */ }

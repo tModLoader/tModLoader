@@ -1,5 +1,5 @@
-using ExampleMod.Content.Tiles.Furniture;
 using Terraria.ModLoader;
+using ExampleMod.Content.Tiles.Furniture;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToPlaceableWall((ushort)ModContent.WallType<Walls.ExampleWallAdvanced>());
+			Item.DefaultToPlaceableWall(ModContent.WallType<Walls.ExampleWallAdvanced>());
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

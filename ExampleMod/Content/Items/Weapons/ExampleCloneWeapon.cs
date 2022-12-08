@@ -1,6 +1,6 @@
-using ExampleMod.Content.Projectiles;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Projectiles;
 
 namespace ExampleMod.Content.Items.Weapons
 {

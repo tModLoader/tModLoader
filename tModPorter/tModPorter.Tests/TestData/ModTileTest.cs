@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,10 +9,8 @@ public class ModTileTest : ModTile
 	void Method() {
 		drop = 1;
 		dustType = 0;
-#if COMPILE_ERROR
 		soundType = 1;
 		soundStyle = 0;
-#endif
 
 		dresserDrop = 0;
 		chestDrop = 0;
@@ -22,7 +21,6 @@ public class ModTileTest : ModTile
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
 
-#if COMPILE_ERROR
 		sapling = true;
 		torch = true;
 		bed = true;
@@ -34,12 +32,15 @@ public class ModTileTest : ModTile
 		SetModTree(new ExampleTree());
 		SetModCactus(new ExampleCactus());
 		SetModPalmTree(new ExamplePalmTree());
-#endif
 	}
 
-#if COMPILE_ERROR
+	public override void SetStaticDefaults() {
+		TileID.Sets.TouchDamageSands[Type] = 15;
+		TileID.Sets.TouchDamageOther[Type] = 99;
+		TileID.Sets.TouchDamageVines[Type] = 10;
+	}
+
 	public override int SaplingGrowthType(ref int style) { return -1; }
-#endif
 
 	public override bool Dangersense(int i, int j, Player player) {
 		return false;

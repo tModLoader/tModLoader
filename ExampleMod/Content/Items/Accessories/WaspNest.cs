@@ -1,6 +1,6 @@
-﻿using Mono.Cecil.Cil;
+﻿using System;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		// Only gets run once per type
 		public override void Load() {
-			IL.Terraria.Player.beeType += HookBeeType;
+			IL_Player.beeType += HookBeeType;
 		}
 
 		// This IL editing (Intermediate Language editing) example is walked through in the guide: https://github.com/tModLoader/tModLoader/wiki/Expert-IL-Editing#example---hive-pack-upgrade

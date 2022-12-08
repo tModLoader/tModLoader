@@ -8,26 +8,29 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1078,8 +_,13 @@
- 			int num = 0;
- 			byte difficulty = _player.difficulty;
- 			if (difficulty == 3) {
-+				PlayerLoader.ModifyMaxStats(_player);
-+				_player.statLife = _player.statLifeMax;
-+				_player.statMana = _player.statManaMax;
-+				/*
- 				_player.statLife = (_player.statLifeMax = 100);
- 				_player.statMana = (_player.statManaMax = 20);
-+				*/
- 				_player.inventory[num].SetDefaults(6);
- 				_player.inventory[num++].Prefix(-1);
- 				_player.inventory[num].SetDefaults(1);
-@@ -1117,6 +_,8 @@
- 
- 			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
- 			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
+@@ -1117,8 +_,14 @@
+ 		int num = 0;
+ 		byte difficulty = _player.difficulty;
+ 		if (difficulty == 3) {
++			PlayerLoader.ModifyMaxStats(_player);
 +
-+			PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone())));
- 		}
++			/*
+ 			_player.statLife = (_player.statLifeMax = 100);
+ 			_player.statMana = (_player.statManaMax = 20);
++			*/
++			_player.statLife = _player.statLifeMax;
++			_player.statMana = _player.statManaMax;
+ 			_player.inventory[num].SetDefaults(6);
+ 			_player.inventory[num++].Prefix(-1);
+ 			_player.inventory[num].SetDefaults(1);
+@@ -1156,6 +_,10 @@
  
- 		private bool GetHexColor(string hexString, out Vector3 hsl) {
+ 		_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
+ 		CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
++
++		var vanillaItems = _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone());
++		var startingItems = PlayerLoader.GetStartingItems(_player, vanillaItems);
++		PlayerLoader.SetStartInventory(_player, startingItems);
+ 	}
+ 
+ 	private bool GetHexColor(string hexString, out Vector3 hsl)

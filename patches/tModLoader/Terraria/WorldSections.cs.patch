@@ -2,10 +2,10 @@
 +++ src/tModLoader/Terraria/WorldSections.cs
 @@ -4,7 +_,7 @@
  
- namespace Terraria
+ namespace Terraria;
+ 
+-public class WorldSections
++public partial class WorldSections
  {
--	public class WorldSections
-+	public partial class WorldSections
+ 	private struct IterationState
  	{
- 		private struct IterationState
- 		{

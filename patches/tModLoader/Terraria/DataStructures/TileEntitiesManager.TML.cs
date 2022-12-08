@@ -1,33 +1,34 @@
 using System.Collections.Generic;
 
-namespace Terraria.DataStructures
+namespace Terraria.DataStructures;
+
+public partial class TileEntitiesManager
 {
-	public partial class TileEntitiesManager
+	/// <summary> Gets the template TileEntity object with the given id (not the new instance which gets added to the world as the game is played). This method will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	public TileEntity GetTileEntity<T>(int id) where T : TileEntity
+		=> _types[id] as T;
+
+	/// <summary> Attempts to get the template TileEntity object with the given id (not the new instance which gets added to the world as the game is played). </summary>
+	public bool TryGetTileEntity<T>(int id, out T tileEntity) where T : TileEntity
 	{
-		/// <summary> Gets the base ModTileEntity object with the given id. This method will throw exceptions on failure. </summary>
-		/// <exception cref="KeyNotFoundException"/>
-		public TileEntity GetTileEntity<T>(int id) where T : TileEntity
-			=> _types[id] as T;
+		if (!_types.TryGetValue(id, out var entity)) {
+			tileEntity = default;
 
-		/// <summary> Attempts to get the base ModTileEntity object with the given id. </summary>
-		public bool TryGetTileEntity<T>(int id, out T tileEntity) where T : TileEntity {
-			if (!_types.TryGetValue(id, out var entity)) {
-				tileEntity = default;
-
-				return false;
-			}
-
-			return (tileEntity = entity as T) != null;
+			return false;
 		}
 
-		public IReadOnlyDictionary<int, TileEntity> EnumerateEntities() => _types;
+		return (tileEntity = entity as T) != null;
+	}
 
-		internal void Reset() {
-			_types.Clear();
+	public IReadOnlyDictionary<int, TileEntity> EnumerateEntities() => _types;
 
-			_nextEntityID = 0;
+	internal void Reset()
+	{
+		_types.Clear();
 
-			RegisterAll();
-		}
+		_nextEntityID = 0;
+
+		RegisterAll();
 	}
 }

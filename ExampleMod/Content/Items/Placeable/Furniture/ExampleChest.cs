@@ -1,3 +1,4 @@
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,18 +13,11 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleChest>());
+			// Item.placeStyle = 1; // Use this to place the chest in its locked style
 			Item.width = 26;
 			Item.height = 22;
-			Item.maxStack = 99;
-			Item.useTurn = true;
-			Item.autoReuse = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.consumable = true;
 			Item.value = 500;
-			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleChest>();
-			// Item.placeStyle = 1; // Use this to place the chest in its locked style
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -43,9 +37,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.GoldenKey);
-			Item.width = 14;
-			Item.height = 20;
-			Item.maxStack = 99;
 		}
 	}
 }

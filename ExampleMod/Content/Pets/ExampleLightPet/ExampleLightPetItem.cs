@@ -1,8 +1,8 @@
-﻿using ExampleMod.Content.Items;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
+using ExampleMod.Content.Items;
 
 namespace ExampleMod.Content.Pets.ExampleLightPet
 {

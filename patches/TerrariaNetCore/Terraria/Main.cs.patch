@@ -1,170 +1,171 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/TerrariaNetCore/Terraria/Main.cs
-@@ -74,7 +_,7 @@
+@@ -75,7 +_,7 @@
  
- namespace Terraria
- {
+ namespace Terraria;
+ 
 -#if !WINDOWS
 +#if FNA && !NETCORE
- 	class Control
- 	{
- 		internal static Form FromHandle(IntPtr handle) {
-@@ -3325,6 +_,7 @@
+ class Control
+ {
+ 	internal static Form FromHandle(IntPtr handle)
+@@ -3330,6 +_,7 @@
  
- 			PendingBorderlessState = screenBorderless;
- 			screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
+ 		PendingBorderlessState = screenBorderless;
+ 		screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
 +#if !NETCORE
- 			if (Platform.IsWindows && !dedServ) {
- 				Form form = (Form)Control.FromHandle(instance.Window.Handle);
- 				if (screenBorderless) {
-@@ -3340,6 +_,7 @@
+ 		if (Platform.IsWindows && !dedServ) {
+ 			Form form = (Form)Control.FromHandle(instance.Window.Handle);
+ 			if (screenBorderless) {
+@@ -3345,6 +_,7 @@
  
+ 			form.BringToFront();
+ 		}
++#endif
+ 
+ 		int currentValue2 = graphics.PreferredBackBufferWidth;
+ 		int currentValue3 = graphics.PreferredBackBufferHeight;
+@@ -3712,8 +_,13 @@
+ 				if (num >= 2)
+ 					terrariasFixedTiming = binaryReader.ReadBoolean();
+ 
++#if NETCORE
++				if (num >= 91)
++					binaryReader.ReadBoolean();
++#else
+ 				if (num >= 91 && binaryReader.ReadBoolean() && !dedServ && Platform.IsWindows)
+ 					((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
++#endif
+ 
+ 				if (num >= 4) {
+ 					int width = binaryReader.ReadInt32();
+@@ -4975,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public Main()
++	public Main() : base(headlessMode: dedServ)
+ 	{
+ 		instance = this;
+ 		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+@@ -9081,6 +_,7 @@
+ 		if (SocialAPI.Workshop != null)
+ 			SocialAPI.Workshop.LoadEarlyContent();
+ 
++		CaptureManager.Instance = new CaptureManager(); // Move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
+ 		AssetSourceController.UseResourcePacks(AssetInitializer.CreateResourcePackList(base.Services));
+ 		AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
+ 		ChromaInitializer.Load();
+@@ -13677,6 +_,7 @@
+ 
+ 			UpdateOldNPCShop();
+ 			hasFocus = base.IsActive;
++#if !NETCORE
+ 			if (Platform.IsWindows) {
+ 				Form form = Control.FromHandle(base.Window.Handle) as Form;
+ 				bool num3 = form.WindowState == FormWindowState.Minimized;
+@@ -13685,6 +_,7 @@
+ 				if (num3)
+ 					hasFocus = false;
+ 			}
++#endif
+ 
+ 			if (!hasFocus && netMode == 0) {
+ 				if (!Platform.IsOSX)
+@@ -42859,6 +_,7 @@
+ 		return result;
+ 	}
+ 
++#if !NETCORE
+ 	private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form)
+ 	{
+ 		if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
+@@ -42887,6 +_,7 @@
+ 		form.Location = new System.Drawing.Point(0, 0);
+ 		form.FormBorderStyle = FormBorderStyle.None;
+ 	}
++#endif
+ 
+ 	public static void OpenCharacterSelectUI()
+ 	{
+@@ -54624,6 +_,9 @@
+ 	public static void SetDisplayMode(int width, int height, bool fullscreen)
+ 	{
+ 		bool flag = false;
++#if NETCORE
++		screenMaximized = false;
++#else
+ 		Form form = null;
+ 		if (Platform.IsWindows) {
+ 			form = (Form)Control.FromHandle(instance.Window.Handle);
+@@ -54638,6 +_,8 @@
+ 		else {
+ 			screenMaximized = false;
+ 		}
++#endif
++		screenMaximized = false;
+ 
+ 		bool flag2 = false;
+ 		int num3;
+@@ -54653,11 +_,13 @@
+ 				}
+ 			}
+ 
++#if !NETCORE
+ 			if (Platform.IsWindows) {
+ 				form.MinimumSize = new Size(0, 0);
+ 				if (!fullscreen && !flag3)
+ 					SetDisplayModeAsBorderless(ref width, ref height, form);
+ 			}
++#endif
+ 
+ 			if (width > maxScreenW) {
+ 				float num = (float)height / (float)width;
+@@ -54685,6 +_,7 @@
+ 		}
+ 		else {
+ 			PlayerInput.RawMouseScale = Vector2.One;
++#if !NETCORE
+ 			if (Platform.IsWindows) {
+ 				form.MinimumSize = new Size(minScreenW, minScreenH);
+ 				if (flag) {
+@@ -54692,6 +_,7 @@
+ 					height = displayHeight[0];
+ 				}
+ 			}
++#endif
+ 
+ 			width = Math.Min(width, maxScreenW);
+ 			height = Math.Min(height, maxScreenH);
+@@ -54700,6 +_,7 @@
+ 			flag2 = graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height;
+ 		}
+ 
++#if !NETCORE
+ 		if (Platform.IsWindows && !fullscreen && !flag2) {
+ 			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
+ 				width = form.ClientSize.Width;
+@@ -54711,6 +_,7 @@
+ 				flag2 = true;
+ 			}
+ 		}
++#endif
+ 
+ 		width &= 0x7FFFFFFE;
+ 		height &= 0x7FFFFFFE;
+@@ -54741,6 +_,7 @@
+ 			PendingResolutionWidth = screenWidth;
+ 			PendingResolutionHeight = screenHeight;
+ 			PlayerInput.CacheOriginalScreenDimensions();
++#if !NETCORE
+ 			if (Platform.IsWindows && !fullscreen) {
+ 				if (screenBorderless) {
+ 					ApplyBorderlessResolution(form);
+@@ -54753,6 +_,7 @@
+ 				form.SendToBack();
  				form.BringToFront();
  			}
 +#endif
  
- 			int currentValue2 = graphics.PreferredBackBufferWidth;
- 			int currentValue3 = graphics.PreferredBackBufferHeight;
-@@ -3706,8 +_,12 @@
- 							if (num >= 2)
- 								terrariasFixedTiming = binaryReader.ReadBoolean();
- 
-+#if NETCORE
-+							if (num >= 91) binaryReader.ReadBoolean();
-+#else
- 							if (num >= 91 && binaryReader.ReadBoolean() && !dedServ && Platform.IsWindows)
- 								((Form)Control.FromHandle(base.Window.Handle)).WindowState = FormWindowState.Maximized;
-+#endif
- 
- 							if (num >= 4) {
- 								int width = binaryReader.ReadInt32();
-@@ -4945,7 +_,7 @@
- 			}
- 		}
- 
--		public Main() {
-+		public Main() : base(headlessMode: dedServ) {
- 			instance = this;
- 			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
- 			base.Exiting += Main_Exiting;
-@@ -9003,6 +_,7 @@
- 			if (SocialAPI.Workshop != null)
- 				SocialAPI.Workshop.LoadEarlyContent();
- 
-+			CaptureManager.Instance = new CaptureManager(); // Move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
- 			AssetSourceController.UseResourcePacks(AssetInitializer.CreateResourcePackList(base.Services));
- 			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
- 			ChromaInitializer.Load();
-@@ -13552,6 +_,7 @@
- 
- 				UpdateOldNPCShop();
- 				hasFocus = base.IsActive;
-+#if !NETCORE
- 				if (Platform.IsWindows) {
- 					Form form = Control.FromHandle(base.Window.Handle) as Form;
- 					bool num3 = form.WindowState == FormWindowState.Minimized;
-@@ -13560,6 +_,7 @@
- 					if (num3)
- 						hasFocus = false;
- 				}
-+#endif
- 
- 				if (!hasFocus && netMode == 0) {
- 					if (!Platform.IsOSX)
-@@ -42394,6 +_,7 @@
- 			return result;
- 		}
- 
-+#if !NETCORE
- 		private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form) {
- 			if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
- 				screenBorderlessPendingResizes--;
-@@ -42419,6 +_,7 @@
- 			form.Location = new System.Drawing.Point(0, 0);
- 			form.FormBorderStyle = FormBorderStyle.None;
- 		}
-+#endif
- 
- 		public static void OpenCharacterSelectUI() {
- 			menuMode = 888;
-@@ -53928,6 +_,9 @@
- 
- 		public static void SetDisplayMode(int width, int height, bool fullscreen) {
- 			bool flag = false;
-+#if NETCORE
-+			screenMaximized = false;
-+#else
- 			Form form = null;
- 			if (Platform.IsWindows) {
- 				form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -53942,6 +_,8 @@
- 			else {
- 				screenMaximized = false;
- 			}
-+#endif
-+			screenMaximized = false;
- 
- 			bool flag2 = false;
- 			int num3;
-@@ -53957,11 +_,13 @@
- 					}
- 				}
- 
-+#if !NETCORE
- 				if (Platform.IsWindows) {
- 					form.MinimumSize = new Size(0, 0);
- 					if (!fullscreen && !flag3)
- 						SetDisplayModeAsBorderless(ref width, ref height, form);
- 				}
-+#endif
- 
- 				if (width > maxScreenW) {
- 					float num = (float)height / (float)width;
-@@ -53989,6 +_,7 @@
- 			}
- 			else {
- 				PlayerInput.RawMouseScale = Vector2.One;
-+#if !NETCORE
- 				if (Platform.IsWindows) {
- 					form.MinimumSize = new Size(minScreenW, minScreenH);
- 					if (flag) {
-@@ -53996,6 +_,7 @@
- 						height = displayHeight[0];
- 					}
- 				}
-+#endif
- 
- 				width = Math.Min(width, maxScreenW);
- 				height = Math.Min(height, maxScreenH);
-@@ -54004,6 +_,7 @@
- 				flag2 = (graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height);
- 			}
- 
-+#if !NETCORE
- 			if (Platform.IsWindows && !fullscreen && !flag2) {
- 				if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
- 					width = form.ClientSize.Width;
-@@ -54015,6 +_,7 @@
- 					flag2 = true;
- 				}
- 			}
-+#endif
- 
- 			width &= 0x7FFFFFFE;
- 			height &= 0x7FFFFFFE;
-@@ -54045,6 +_,7 @@
- 				PendingResolutionWidth = screenWidth;
- 				PendingResolutionHeight = screenHeight;
- 				PlayerInput.CacheOriginalScreenDimensions();
-+#if !NETCORE
- 				if (Platform.IsWindows && !fullscreen) {
- 					if (screenBorderless) {
- 						ApplyBorderlessResolution(form);
-@@ -54057,6 +_,7 @@
- 					form.SendToBack();
- 					form.BringToFront();
- 				}
-+#endif
- 
- 				Lighting.Initialize();
- 				if (!drawToScreen && !_isResizingAndRemakingTargets) {
+ 			Lighting.Initialize();
+ 			if (!drawToScreen && !_isResizingAndRemakingTargets) {

@@ -1,7 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -29,7 +30,7 @@ namespace ExampleMod.Content.Items
 			return clone;
 		}
 
-		public override void OnCreate(ItemCreationContext context) {
+		public override void OnCreated(ItemCreationContext context) {
 			GenerateNewColors();
 		}
 

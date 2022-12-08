@@ -3,14 +3,14 @@
 @@ -1,10 +_,12 @@
 +using Terraria.ModLoader;
 +
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
+ public class NPCHeadID
  {
- 	public class NPCHeadID
+ 	public static class Sets
  	{
- 		public static class Sets
- 		{
--			public static SetFactory Factory = new SetFactory(81);
-+			public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
- 			public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21, 80);
- 		}
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
+ 		public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21, 80);
+ 	}
  

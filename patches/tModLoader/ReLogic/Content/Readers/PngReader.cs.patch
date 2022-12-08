@@ -1,36 +1,38 @@
 --- src/TerrariaNetCore/ReLogic/Content/Readers/PngReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/PngReader.cs
-@@ -1,8 +_,10 @@
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
+@@ -1,6 +_,8 @@
  using System;
 +using System.Diagnostics;
  using System.IO;
  using System.Threading;
 +using System.Threading.Tasks;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  
- namespace ReLogic.Content.Readers
- {
-@@ -16,15 +_,20 @@
- 			_graphicsDevice = graphicsDevice;
- 			_colorProcessingCache = new ThreadLocal<Color[]>();
- 		}
-+		
-+		public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
+@@ -17,8 +_,14 @@
+ 		_graphicsDevice = graphicsDevice;
+ 		_colorProcessingCache = new ThreadLocal<Color[]>();
+ 	}
++	
++	// Implemented by TML.
++	public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
  
--		public T FromStream<T>(Stream stream) where T : class {
-+		public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
- 			if (typeof(T) != typeof(Texture2D))
- 				throw AssetLoadException.FromInvalidReader<PngReader, T>();
- 
++	/*
+ 	public T FromStream<T>(Stream stream) where T : class
++	*/
++	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
+ 	{
+ 		if (typeof(T) != typeof(Texture2D))
+ 			throw AssetLoadException.FromInvalidReader<PngReader, T>();
+@@ -26,7 +_,10 @@
  #if NETCORE
- 			IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
- 			PreMultiplyAlpha(img, len);
--			
+ 		IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
+ 		PreMultiplyAlpha(img, len);
+-		
 +
-+			await mainThreadCtx;
-+			Debug.Assert(mainThreadCtx.IsCompleted);
++		await mainThreadCtx;
++		Debug.Assert(mainThreadCtx.IsCompleted);
 +
- 			var texture2D = new Texture2D(_graphicsDevice, width, height);
- 			texture2D.SetDataPointerEXT(0, null, img, len);
- 			FNA3D.FNA3D_Image_Free(img);
+ 		var texture2D = new Texture2D(_graphicsDevice, width, height);
+ 		texture2D.SetDataPointerEXT(0, null, img, len);
+ 		FNA3D.FNA3D_Image_Free(img);

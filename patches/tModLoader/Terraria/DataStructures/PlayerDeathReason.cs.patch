@@ -1,25 +1,27 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDeathReason.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDeathReason.cs
-@@ -14,6 +_,14 @@
- 		private int _sourceItemPrefix;
- 		private string _sourceCustomReason;
+@@ -14,6 +_,15 @@
+ 	private int _sourceItemPrefix;
+ 	private string _sourceCustomReason;
  
-+		public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
-+		public ref int SourceNPCIndex => ref _sourceNPCIndex;
-+		public ref int SourceProjectileLocalIndex => ref _sourceProjectileLocalIndex;
-+		public ref int SourceOtherIndex => ref _sourceOtherIndex;
-+		public ref int SourceItemType => ref _sourceItemType;
-+		public ref int SourceItemPrefix => ref _sourceItemPrefix;
-+		public ref string SourceCustomReason => ref _sourceCustomReason;
++	// Ref fields added by TML.
++	public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
++	public ref int SourceNPCIndex => ref _sourceNPCIndex;
++	public ref int SourceProjectileLocalIndex => ref _sourceProjectileLocalIndex;
++	public ref int SourceOtherIndex => ref _sourceOtherIndex;
++	public ref int SourceItemType => ref _sourceItemType;
++	public ref int SourceItemPrefix => ref _sourceItemPrefix;
++	public ref string SourceCustomReason => ref _sourceCustomReason;
 +
- 		public int? SourceProjectileType {
- 			get {
- 				if (_sourceProjectileLocalIndex == -1)
-@@ -21,6 +_,7 @@
+ 	public int? SourceProjectileType {
+ 		get {
+ 			if (_sourceProjectileLocalIndex == -1)
+@@ -21,6 +_,8 @@
  
- 				return _sourceProjectileType;
- 			}
-+			set => _sourceProjectileType = value??-1;
+ 			return _sourceProjectileType;
  		}
++		// Added by TML.
++		set => _sourceProjectileType = value ?? -1;
+ 	}
  
- 		public bool TryGetCausingEntity(out Entity entity) {
+ 	public bool TryGetCausingEntity(out Entity entity)

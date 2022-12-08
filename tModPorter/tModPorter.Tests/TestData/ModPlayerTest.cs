@@ -28,7 +28,6 @@ public class ModPlayerTest : ModPlayer
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 
-#if COMPILE_ERROR
 	public override TagCompound Save() {
 		return new TagCompound();
 	}
@@ -44,7 +43,6 @@ public class ModPlayerTest : ModPlayer
 	public override Texture2D SetMapBackgroundImage() {
 		return null
 	}
-#endif
 
 	public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 
@@ -59,5 +57,10 @@ public class ModPlayerTest : ModPlayer
 		int questFishLocal = questFish;
 		ref int caughtTypeLocal = ref caughtType;
 		// ref int junkLocal = ref junk; // Can't really be transformed, unless you check for fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
+	}
+
+	public void UseQuickSpawnItem() {
+		Item item = new Item(22);
+		Player.QuickSpawnClonedItem(null, item);
 	}
 }

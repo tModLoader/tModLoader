@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.damage = 8; // The damage for projectiles isn't actually 8, it actually is the damage combined with the projectile and the item together
 			Item.DamageType = DamageClass.Ranged; // What type of damage does this ammo affect?
 
-			Item.maxStack = 999; // The maximum number of items that can be contained within a single stack
+			Item.maxStack = Item.CommonMaxStack; // The maximum number of items that can be contained within a single stack
 			Item.consumable = true; // This marks the item as consumable, making it automatically be consumed when it's used as ammunition, or something else, if possible
 			Item.knockBack = 2f; // Sets the item's knockback. Ammunition's knockback added together with weapon and projectiles.
 			Item.value = Item.sellPrice(0, 0, 1, 0); // Item price in copper coins (can be converted with Item.sellPrice/Item.buyPrice)

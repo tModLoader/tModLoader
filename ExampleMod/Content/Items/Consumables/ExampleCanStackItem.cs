@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,7 +26,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = 99; // This item is stackable, otherwise the example wouldn't work
+			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
 			Item.consumable = true;
 			Item.width = 22;
 			Item.height = 26;
@@ -46,9 +47,22 @@ namespace ExampleMod.Content.Items.Consumables
 			// The bag can only be stacked with other bags if the names match
 
 			// We have to cast the second item to the class (This is safe to do as the hook is only called on items of the same type)
-			var otherItem = item2.ModItem as ExampleCanStackItem;
+			var name1 = craftedPlayerName;
+			var name2 = ((ExampleCanStackItem)item2.ModItem).craftedPlayerName;
 
-			return craftedPlayerName == otherItem.craftedPlayerName;
+			// let items which have been spawned in and not assigned to a player, to stack with other bags the the current player owns
+			// This lets you craft multiple items into the mouse-held stack
+			if (name1 == string.Empty) name1 = Main.LocalPlayer.name;
+			if (name2 == string.Empty) name2 = Main.LocalPlayer.name;
+
+			return name1 == name2;
+		}
+
+		public override void OnStack(Item decrease, int numberToBeTransfered) {
+			// Combined with CanStack above, this ensures that empty spawned items can combine with bags made by the current player
+			if (craftedPlayerName == string.Empty) {
+				craftedPlayerName = ((ExampleCanStackItem)decrease.ModItem).craftedPlayerName;
+			}
 		}
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
@@ -90,8 +104,8 @@ namespace ExampleMod.Content.Items.Consumables
 			}
 		}
 
-		public override void OnCreate(ItemCreationContext context) {
-			if (context is RecipeCreationContext) {
+		public override void OnCreated(ItemCreationContext context) {
+			if (context is RecipeItemCreationContext) {
 				// If the item was crafted, store the crafting players name
 				craftedPlayerName = Main.LocalPlayer.name;
 			}

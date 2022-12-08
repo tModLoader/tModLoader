@@ -11,12 +11,10 @@ public class DamageClassTest
 		item.thrown = true;
 		item.ranged = true;
 
-#if COMPILE_ERROR
 		item.magic = false;
 
 		// can't port conditional setter, emit a suggestion
 		item.ranged = 1 > 2;
-#endif
 
 		bool itemIsmelee = item.melee;
 		bool itemIsmagic = item.magic;

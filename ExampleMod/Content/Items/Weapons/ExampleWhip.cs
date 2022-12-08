@@ -1,7 +1,7 @@
-﻿using ExampleMod.Content.Projectiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Projectiles;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -15,10 +15,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// This method quickly sets the whip's properties.
 			// Mouse over to see its parameters.
 			Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectile>(), 20, 2, 4); 
-
-			Item.shootSpeed = 4;
 			Item.rare = ItemRarityID.Green;
-
 			Item.channel = true;
 		}
 

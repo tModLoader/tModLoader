@@ -1,4 +1,4 @@
-using Terraria.ID;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -12,16 +12,9 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		}
 
 		public override void SetDefaults() {
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExamplePlatform>());
 			Item.width = 8;
 			Item.height = 10;
-			Item.maxStack = 999;
-			Item.useTurn = true;
-			Item.autoReuse = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.Furniture.ExamplePlatform>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -7,7 +7,6 @@ namespace ExampleMod.Content.Items
 {
 	public class ExampleResearchPresent : ModItem
 	{
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Present");
 			Tooltip.SetDefault("Contains a random accessory! Try researching it for infinite of it!");
@@ -18,7 +17,7 @@ namespace ExampleMod.Content.Items
 			Item.SacrificeTotal = Utils.Clamp(ItemLoader.ItemCount,1,9999);
 
 			// Use a MonoMod hook to allow our presents to run through the Sacrifice system.
-			On.Terraria.GameContent.Creative.CreativeUI.SacrificeItem_refItem_refInt32_bool += OnSacrificeItem;
+			On_CreativeUI.SacrificeItem_refItem_refInt32_bool += OnSacrificeItem;
 		}
 
 		public override void SetDefaults() {
@@ -27,7 +26,7 @@ namespace ExampleMod.Content.Items
 
 		// This allows for the present to be researched even when you already have infinite of them.
 		// This is not a standard use of the research system, but allows for re-running a 'research complete' effect
-		private CreativeUI.ItemSacrificeResult OnSacrificeItem(On.Terraria.GameContent.Creative.CreativeUI.orig_SacrificeItem_refItem_refInt32_bool orig,
+		private CreativeUI.ItemSacrificeResult OnSacrificeItem(On_CreativeUI.orig_SacrificeItem_refItem_refInt32_bool orig,
 				ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer) {
 
 			// If the item being sacrificed has the same type as us (is an ExampleResearchPresent) and is fully researched

@@ -1,247 +1,277 @@
 --- src/TerrariaNetCore/Terraria/IO/WorldFile.cs
 +++ src/tModLoader/Terraria/IO/WorldFile.cs
-@@ -16,6 +_,9 @@
- using Terraria.UI;
- using Terraria.Utilities;
- using Terraria.WorldBuilding;
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.Diagnostics;
+ using System.IO;
++using System.Linq;
+ using System.Threading;
+ using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
+@@ -12,6 +_,8 @@
+ using Terraria.GameContent.UI.States;
+ using Terraria.ID;
+ using Terraria.Localization;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
-+using System.Linq;
- 
- namespace Terraria.IO
- {
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.Utilities;
 @@ -69,7 +_,7 @@
- 		private static bool _tempBloodMoon = Main.bloodMoon;
- 		private static bool _tempEclipse = Main.eclipse;
- 		private static int _tempMoonPhase = Main.moonPhase;
--		private static int _tempCultistDelay = CultistRitual.delay;
-+		private static int _tempCultistDelay = (int)CultistRitual.delay;
- 		private static int _versionNumber;
- 		private static bool _isWorldOnCloud;
- 		private static bool _tempPartyGenuine;
-@@ -114,14 +_,14 @@
- 			_cachedMoonPhase = Main.moonPhase;
- 			_cachedBloodMoon = Main.bloodMoon;
- 			_cachedEclipse = Main.eclipse;
--			_cachedCultistDelay = CultistRitual.delay;
-+			_cachedCultistDelay = (int)CultistRitual.delay;
- 			_cachedPartyGenuine = BirthdayParty.GenuineParty;
- 			_cachedPartyManual = BirthdayParty.ManualParty;
- 			_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
- 			CachedCelebratingNPCs.Clear();
- 			CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
- 			_cachedSandstormHappening = Sandstorm.Happening;
--			_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
-+			_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
- 			_cachedSandstormSeverity = Sandstorm.Severity;
- 			_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
- 			_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -386,7 +_,8 @@
- 					}
- 				}
- 			}
--			catch (Exception) {
-+			catch (Exception e) {
-+				Logging.Terraria.Error($"Error reading WorldFileData: {file}, IsCloudSave={cloudSave}", e);
- 			}
- 
- 			return null;
-@@ -441,6 +_,7 @@
- 			Main.checkXMas();
- 			Main.checkHalloween();
- 			bool flag = loadFromCloud && SocialAPI.Cloud != null;
-+			//patch file: flag
- 			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
- 				if (!flag) {
- 					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -487,6 +_,8 @@
- 							CheckSavedOreTiers();
- 							binaryReader.Close();
- 							memoryStream.Close();
-+							SystemLoader.OnWorldLoad();
-+							WorldIO.Load(Main.worldPathName, flag);
- 							if (num3 != 0)
- 								WorldGen.loadFailed = true;
- 							else
-@@ -645,6 +_,9 @@
- 			if (Main.worldPathName == null)
- 				return;
- 
-+			if (!BackupIO.archiveLock)
-+				BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
-+
- 			new Stopwatch().Start();
- 			int num;
- 			byte[] array;
-@@ -682,6 +_,7 @@
- 
- 			if (text != null && array2 != null)
- 				FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
-+			WorldIO.Save(Main.worldPathName, useCloudSaving);
- 		}
- 
- 		private static void DoRollingBackups(string backupWorldWritePath) {
-@@ -745,18 +_,18 @@
- 			_tempMoonPhase = Main.moonPhase;
- 			_tempBloodMoon = Main.bloodMoon;
- 			_tempEclipse = Main.eclipse;
--			_tempCultistDelay = CultistRitual.delay;
-+			_tempCultistDelay = (int)CultistRitual.delay;
- 			_tempPartyManual = BirthdayParty.ManualParty;
- 			_tempPartyGenuine = BirthdayParty.GenuineParty;
- 			_tempPartyCooldown = BirthdayParty.PartyDaysOnCooldown;
- 			TempPartyCelebratingNPCs.Clear();
- 			TempPartyCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
- 			_tempSandstormHappening = Sandstorm.Happening;
--			_tempSandstormTimeLeft = Sandstorm.TimeLeft;
-+			_tempSandstormTimeLeft = (int)Sandstorm.TimeLeft;
- 			_tempSandstormSeverity = Sandstorm.Severity;
- 			_tempSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
- 			_tempRaining = Main.raining;
--			_tempRainTime = Main.rainTime;
-+			_tempRainTime = (int)Main.rainTime;
- 			_tempMaxRain = Main.maxRaining;
- 			_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
- 			_tempLanternNightGenuine = LanternNight.GenuineLanterns;
-@@ -782,7 +_,7 @@
- 			_tempSandstormSeverity = _cachedSandstormSeverity.Value;
- 			_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
- 			_tempRaining = Main.raining;
--			_tempRainTime = Main.rainTime;
-+			_tempRainTime = (int)Main.rainTime;
- 			_tempMaxRain = Main.maxRaining;
- 			_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
- 			_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
-@@ -853,7 +_,7 @@
- 				}
- 
- 				if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
--					TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
-+					TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
+ 	private static bool _tempBloodMoon = Main.bloodMoon;
+ 	private static bool _tempEclipse = Main.eclipse;
+ 	private static int _tempMoonPhase = Main.moonPhase;
+-	private static int _tempCultistDelay = CultistRitual.delay;
++	private static int _tempCultistDelay = (int)CultistRitual.delay;
+ 	private static int _versionNumber;
+ 	private static bool _isWorldOnCloud;
+ 	private static bool _tempPartyGenuine;
+@@ -115,14 +_,14 @@
+ 		_cachedMoonPhase = Main.moonPhase;
+ 		_cachedBloodMoon = Main.bloodMoon;
+ 		_cachedEclipse = Main.eclipse;
+-		_cachedCultistDelay = CultistRitual.delay;
++		_cachedCultistDelay = (int)CultistRitual.delay;
+ 		_cachedPartyGenuine = BirthdayParty.GenuineParty;
+ 		_cachedPartyManual = BirthdayParty.ManualParty;
+ 		_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 		CachedCelebratingNPCs.Clear();
+ 		CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 		_cachedSandstormHappening = Sandstorm.Happening;
+-		_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
++		_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 		_cachedSandstormSeverity = Sandstorm.Severity;
+ 		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
+@@ -387,7 +_,8 @@
+ 				return worldFileData;
  			}
  		}
+-		catch (Exception) {
++		catch (Exception e) {
++			Logging.Terraria.Error($"Error reading WorldFileData: {file}, IsCloudSave={cloudSave}", e);
+ 		}
  
-@@ -1026,7 +_,11 @@
+ 		return null;
+@@ -446,6 +_,8 @@
+ 		Main.checkXMas();
+ 		Main.checkHalloween();
+ 		bool flag = loadFromCloud && SocialAPI.Cloud != null;
++		// Patch note: flag ^ is used in WorldIO call below.
++
+ 		if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
+ 			if (!flag) {
+ 				for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
+@@ -492,6 +_,10 @@
+ 				CheckSavedOreTiers();
+ 				binaryReader.Close();
+ 				memoryStream.Close();
++
++				SystemLoader.OnWorldLoad();
++				WorldIO.Load(Main.worldPathName, flag);
++
+ 				if (num3 != 0)
+ 					WorldGen.loadFailed = true;
+ 				else
+@@ -652,6 +_,9 @@
+ 		if (Main.worldPathName == null)
+ 			return;
+ 
++		if (!BackupIO.archiveLock)
++			BackupIO.World.ArchiveWorld(Main.worldPathName, useCloudSaving);
++
+ 		new Stopwatch().Start();
+ 		int num;
+ 		byte[] array;
+@@ -688,6 +_,8 @@
+ 
+ 		if (text != null && array2 != null)
+ 			FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
++
++		WorldIO.Save(Main.worldPathName, useCloudSaving);
+ 	}
+ 
+ 	private static void DoRollingBackups(string backupWorldWritePath)
+@@ -754,18 +_,18 @@
+ 		_tempMoonPhase = Main.moonPhase;
+ 		_tempBloodMoon = Main.bloodMoon;
+ 		_tempEclipse = Main.eclipse;
+-		_tempCultistDelay = CultistRitual.delay;
++		_tempCultistDelay = (int)CultistRitual.delay;
+ 		_tempPartyManual = BirthdayParty.ManualParty;
+ 		_tempPartyGenuine = BirthdayParty.GenuineParty;
+ 		_tempPartyCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 		TempPartyCelebratingNPCs.Clear();
+ 		TempPartyCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 		_tempSandstormHappening = Sandstorm.Happening;
+-		_tempSandstormTimeLeft = Sandstorm.TimeLeft;
++		_tempSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 		_tempSandstormSeverity = Sandstorm.Severity;
+ 		_tempSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 		_tempRaining = Main.raining;
+-		_tempRainTime = Main.rainTime;
++		_tempRainTime = (int)Main.rainTime;
+ 		_tempMaxRain = Main.maxRaining;
+ 		_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
+ 		_tempLanternNightGenuine = LanternNight.GenuineLanterns;
+@@ -792,7 +_,7 @@
+ 		_tempSandstormSeverity = _cachedSandstormSeverity.Value;
+ 		_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
+ 		_tempRaining = Main.raining;
+-		_tempRainTime = Main.rainTime;
++		_tempRainTime = (int)Main.rainTime;
+ 		_tempMaxRain = Main.maxRaining;
+ 		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
+ 		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
+@@ -864,7 +_,7 @@
  			}
  
- 			writer.Write(NPC.savedAngler);
-+			if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount)
--			writer.Write(Main.anglerQuest);
-+				writer.Write(Main.anglerQuest);
-+			else
-+				writer.Write(0);
+ 			if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
+-				TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
++				TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
+ 		}
+ 	}
+ 
+@@ -1041,7 +_,9 @@
+ 		}
+ 
+ 		writer.Write(NPC.savedAngler);
+-		writer.Write(Main.anglerQuest);
 +
- 			writer.Write(NPC.savedStylist);
- 			writer.Write(NPC.savedTaxCollector);
- 			writer.Write(NPC.savedGolfer);
-@@ -1130,7 +_,7 @@
- 					byte b3;
- 					byte b4 = b3 = (b2 = (b = 0));
- 					bool flag = false;
--					if (tile.active())
-+					if (tile.active() && tile.type < TileID.Count)
- 						flag = true;
++		writer.Write(Main.anglerQuest < ItemLoader.vanillaQuestFishCount ? Main.anglerQuest : 0);
++		
+ 		writer.Write(NPC.savedStylist);
+ 		writer.Write(NPC.savedTaxCollector);
+ 		writer.Write(NPC.savedGolfer);
+@@ -1146,7 +_,7 @@
+ 				byte b3;
+ 				byte b4 = (b3 = (b2 = (b = 0)));
+ 				bool flag = false;
+-				if (tile.active())
++				if (tile.active() && tile.type < TileID.Count)
+ 					flag = true;
  
- 					if (flag) {
-@@ -1144,9 +_,11 @@
- 						}
- 
- 						if (Main.tileFrameImportant[tile.type]) {
-+							short frameX = tile.frameX;
-+							TileIO.VanillaSaveFrames(tile, ref frameX);
--							array[num3] = (byte)(tile.frameX & 0xFF);
-+							array[num3] = (byte)(frameX & 0xFF);
- 							num3++;
--							array[num3] = (byte)((tile.frameX & 0xFF00) >> 8);
-+							array[num3] = (byte)((frameX & 0xFF00) >> 8);
- 							num3++;
- 							array[num3] = (byte)(tile.frameY & 0xFF);
- 							num3++;
-@@ -1161,7 +_,7 @@
- 						}
+ 				if (flag) {
+@@ -1160,9 +_,11 @@
  					}
  
--					if (tile.wall != 0) {
-+					if (tile.wall != 0 && tile.wall < WallID.Count) {
- 						b4 = (byte)(b4 | 4);
- 						array[num3] = (byte)tile.wall;
+ 					if (Main.tileFrameImportant[tile.type]) {
++						short frameX = tile.frameX;
++						TileIO.VanillaSaveFrames(tile, ref frameX);
+-						array[num3] = (byte)((uint)tile.frameX & 0xFFu);
++						array[num3] = (byte)((uint)frameX & 0xFFu);
  						num3++;
-@@ -1314,7 +_,7 @@
- 				writer.Write(chest.name);
- 				for (int l = 0; l < 40; l++) {
- 					Item item = chest.item[l];
--					if (item == null || ItemID.Sets.ItemsThatShouldNotBeInInventory[item.type]) {
-+					if (item == null || ItemID.Sets.ItemsThatShouldNotBeInInventory[item.type] || item.ModItem != null) {
- 						writer.Write((short)0);
- 						continue;
- 					}
-@@ -1325,7 +_,7 @@
- 					writer.Write((short)item.stack);
- 					if (item.stack > 0) {
- 						writer.Write(item.netID);
--						writer.Write(item.prefix);
-+						ItemIO.WriteByteVanillaPrefix(item, writer);
+-						array[num3] = (byte)((tile.frameX & 0xFF00) >> 8);
++						array[num3] = (byte)((frameX & 0xFF00) >> 8);
+ 						num3++;
+ 						array[num3] = (byte)((uint)tile.frameY & 0xFFu);
+ 						num3++;
+@@ -1177,7 +_,7 @@
  					}
  				}
- 			}
-@@ -1364,7 +_,7 @@
  
- 			for (int j = 0; j < Main.npc.Length; j++) {
- 				NPC nPC = Main.npc[j];
--				if (nPC.active && nPC.townNPC && nPC.type != 368) {
-+				if (nPC.active && nPC.townNPC && nPC.type != 368 && !NPCLoader.IsModNPC(nPC)) {
- 					writer.Write(nPC.active);
- 					writer.Write(nPC.netID);
- 					writer.Write(nPC.GivenName);
-@@ -1384,7 +_,7 @@
- 			writer.Write(value: false);
- 			for (int k = 0; k < Main.npc.Length; k++) {
- 				NPC nPC2 = Main.npc[k];
--				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
-+				if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2)) {
- 					writer.Write(nPC2.active);
- 					writer.Write(nPC2.netID);
- 					writer.WriteVector2(nPC2.position);
-@@ -2120,8 +_,13 @@
- 
- 					while (num3 > 0) {
- 						j++;
--						Main.tile[i, j].CopyFrom(tile);
- 						num3--;
-+						// tML - significantly improve performance by directly accessing the relevant blocking data to copy. No need to copy mod data in this method.
-+						var tile2 = Main.tile[i, j];
-+						tile2.Get<LiquidData>() = tile.Get<LiquidData>();
-+						tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
-+						tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
-+						tile2.Get<TileWallWireStateData>() = tile.Get<TileWallWireStateData>();
- 					}
+-				if (tile.wall != 0) {
++				if (tile.wall != 0 && tile.wall < WallID.Count) {
+ 					b4 = (byte)(b4 | 4u);
+ 					array[num3] = (byte)tile.wall;
+ 					num3++;
+@@ -1331,7 +_,7 @@
+ 			writer.Write(chest.name);
+ 			for (int l = 0; l < 40; l++) {
+ 				Item item = chest.item[l];
+-				if (item == null || ItemID.Sets.ItemsThatShouldNotBeInInventory[item.type]) {
++				if (item == null || ItemID.Sets.ItemsThatShouldNotBeInInventory[item.type] || item.ModItem != null) {
+ 					writer.Write((short)0);
+ 					continue;
+ 				}
+@@ -1342,7 +_,7 @@
+ 				writer.Write((short)item.stack);
+ 				if (item.stack > 0) {
+ 					writer.Write(item.netID);
+-					writer.Write(item.prefix);
++					ItemIO.WriteByteVanillaPrefix(item, writer);
  				}
  			}
-@@ -2224,7 +_,7 @@
- 				int num3 = reader.ReadInt32();
- 				Tile tile = Main.tile[num2, num3];
- 				Sign sign;
--				if (tile.active() && Main.tileSign[tile.type]) {
-+				if (true) {//if (tile.active() && Main.tileSign[tile.type]) {
- 					sign = new Sign();
- 					sign.text = text;
- 					sign.x = num2;
-@@ -2547,6 +_,7 @@
- 				return result;
- 			}
- 			catch (Exception value) {
-+				Logging.Terraria.Error("World Validation", value);
- 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
- 					streamWriter.WriteLine(DateTime.Now);
- 					streamWriter.WriteLine(value);
-@@ -2597,8 +_,8 @@
+ 		}
+@@ -1377,13 +_,16 @@
+ 		bool[] array = (bool[])NPC.ShimmeredTownNPCs.Clone();
+ 		writer.Write(array.Count(value: true));
+ 		for (int i = 0; i < array.Length; i++) {
+-			if (array[i])
++			if (array[i] && i < NPCID.Count)
+ 				writer.Write(i);
+ 		}
  
- 		public static int SaveTileEntities(BinaryWriter writer) {
- 			lock (TileEntity.EntityCreationLock) {
--				writer.Write(TileEntity.ByID.Count);
--				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
-+				writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
-+				foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID.Where(pair => pair.Value.type < ModTileEntity.NumVanilla)) {
- 					TileEntity.Write(writer, item.Value);
+ 		for (int j = 0; j < Main.npc.Length; j++) {
+ 			NPC nPC = Main.npc[j];
+ 			if (nPC.active && nPC.townNPC && nPC.type != 368) {
++				if (NPCLoader.IsModNPC(nPC))
++					continue;
++
+ 				writer.Write(nPC.active);
+ 				writer.Write(nPC.netID);
+ 				writer.Write(nPC.GivenName);
+@@ -1404,6 +_,9 @@
+ 		for (int k = 0; k < Main.npc.Length; k++) {
+ 			NPC nPC2 = Main.npc[k];
+ 			if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
++				if (NPCLoader.IsModNPC(nPC2))
++					continue;
++
+ 				writer.Write(nPC2.active);
+ 				writer.Write(nPC2.netID);
+ 				writer.WriteVector2(nPC2.position);
+@@ -2147,8 +_,20 @@
+ 
+ 				while (num3 > 0) {
+ 					j++;
++					/*
+ 					Main.tile[i, j].CopyFrom(tile);
++					*/
+ 					num3--;
++
++					// TML:
++					// Significantly improve performance by directly accessing the relevant blocking data to copy.
++					// No need to copy mod data in this method.
++					var tile2 = Main.tile[i, j];
++
++					tile2.Get<LiquidData>() = tile.Get<LiquidData>();
++					tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
++					tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
++					tile2.Get<TileWallWireStateData>() = tile.Get<TileWallWireStateData>();
  				}
  			}
+ 		}
+@@ -2254,7 +_,11 @@
+ 			int num3 = reader.ReadInt32();
+ 			Tile tile = Main.tile[num2, num3];
+ 			Sign sign;
++
++			/*
+ 			if (tile.active() && Main.tileSign[tile.type]) {
++			*/
++			if (true) {
+ 				sign = new Sign();
+ 				sign.text = text;
+ 				sign.x = num2;
+@@ -2582,6 +_,8 @@
+ 			return result;
+ 		}
+ 		catch (Exception value) {
++			Logging.Terraria.Error("World Validation", value);
++
+ 			using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
+ 				streamWriter.WriteLine(DateTime.Now);
+ 				streamWriter.WriteLine(value);
+@@ -2639,8 +_,9 @@
+ 	public static int SaveTileEntities(BinaryWriter writer)
+ 	{
+ 		lock (TileEntity.EntityCreationLock) {
+-			writer.Write(TileEntity.ByID.Count);
+-			foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
++			// Exclude mod entities from being saved.
++			writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
++			foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID.Where(pair => pair.Value.type < ModTileEntity.NumVanilla)) {
+ 				TileEntity.Write(writer, item.Value);
+ 			}
+ 		}

@@ -9,12 +9,16 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleSpecificAmmoGun : ModItem
 	{
 		public bool consumptionDamageBoost = false;
+
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleGun"; //TODO: remove when sprite is made for this
+
 		public override void SetStaticDefaults() {
 			Item.SacrificeTotal = 1;
 		}
 
 		public override void SetDefaults() {
+			// Modders can use Item.DefaultToRangedWeapon to quickly set many common properties, such as: useTime, useAnimation, useStyle, autoReuse, DamageType, shoot, shootSpeed, useAmmo, and noMelee. These are all shown individually here for teaching purposes.
+
 			// Common Properties
 			Item.width = 62; // Hitbox width of the item.
 			Item.height = 32; // Hitbox height of the item.

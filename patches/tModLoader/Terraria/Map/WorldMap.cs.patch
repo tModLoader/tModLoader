@@ -8,19 +8,21 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -79,6 +_,7 @@
+@@ -86,6 +_,7 @@
+ 		}
  
- 			if (!FileUtilities.Exists(text, isCloudSave)) {
- 				Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
-+				//patch file: text
- 				return;
- 			}
+ 		if (!FileUtilities.Exists(text, isCloudSave)) {
++			// Patch note: text ^, used below.
+ 			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
+ 			return;
+ 		}
+@@ -101,6 +_,9 @@
+ 					MapHelper.LoadMapVersion2(binaryReader, num);
  
-@@ -93,6 +_,7 @@
- 								MapHelper.LoadMapVersion2(binaryReader, num);
- 
- 							ClearEdges();
-+							MapIO.ReadModFile(text, isCloudSave);
- 							Main.clearMap = true;
- 							Main.loadMap = true;
- 							Main.loadMapLock = true;
+ 				ClearEdges();
++
++				MapIO.ReadModFile(text, isCloudSave);
++
+ 				Main.clearMap = true;
+ 				Main.loadMap = true;
+ 				Main.loadMapLock = true;

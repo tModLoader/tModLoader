@@ -8,6 +8,7 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded paper airplane."); // The (English) text shown below your item's name
+
 			Item.SacrificeTotal = 1; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
 		}
 
@@ -29,7 +30,7 @@ namespace ExampleMod.Content.Items
 			// Item.noMelee = true;
 			// Item.DamageType = DamageClass.Ranged;
 			// Item.consumable = true;
-			// Item.maxStack = 999;
+			// Item.maxStack = Item.CommonMaxStack;
 
 			Item.SetWeaponValues(4, 2f); // A special method that sets the damage, knockback, and bonus critical strike chance.
 

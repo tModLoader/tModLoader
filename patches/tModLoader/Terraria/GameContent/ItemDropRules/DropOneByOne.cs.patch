@@ -4,43 +4,41 @@
 +using System;
  using System.Collections.Generic;
  
- namespace Terraria.GameContent.ItemDropRules
-@@ -19,7 +_,11 @@
- 		}
+ namespace Terraria.GameContent.ItemDropRules;
+@@ -19,12 +_,26 @@
+ 	}
  
- 		public int itemId;
--		public Parameters parameters;
-+
-+		public Parameters parameters {
-+			get;
-+			private init;
+ 	public int itemId;
+-	public Parameters parameters;
++	
++	//TML: Turned from a field into an autoproperty.
++	public Parameters parameters { get; private init; }
+ 
+ 	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public DropOneByOne(int itemId, Parameters parameters)
+ 	{
++		if (parameters.MinimumItemDropsCount > parameters.MaximumItemDropsCount) {
++			throw new ArgumentException($"{nameof(parameters.MinimumItemDropsCount)} must be lesser or equal to {nameof(parameters.MaximumItemDropsCount)}.", nameof(parameters));
 +		}
- 
- 		public List<IItemDropRuleChainAttempt> ChainedRules {
- 			get;
-@@ -27,6 +_,16 @@
- 		}
- 
- 		public DropOneByOne(int itemId, Parameters parameters) {
-+			if (parameters.MinimumItemDropsCount > parameters.MaximumItemDropsCount) {
-+				throw new ArgumentException($"{nameof(parameters.MinimumItemDropsCount)} must be lesser or equal to {nameof(parameters.MaximumItemDropsCount)}.", nameof(parameters));
-+			}
-+			if (parameters.MinimumStackPerChunkBase > parameters.MaximumStackPerChunkBase) {
-+				throw new ArgumentException($"{nameof(parameters.MinimumStackPerChunkBase)} must be lesser or equal to {nameof(parameters.MaximumStackPerChunkBase)}.", nameof(parameters));
-+			}
-+			if (parameters.BonusMinDropsPerChunkPerPlayer > parameters.BonusMaxDropsPerChunkPerPlayer) {
-+				throw new ArgumentException($"{nameof(parameters.BonusMinDropsPerChunkPerPlayer)} must be lesser or equal to {nameof(parameters.BonusMaxDropsPerChunkPerPlayer)}.", nameof(parameters));
-+			}
 +
- 			ChainedRules = new List<IItemDropRuleChainAttempt>();
- 			this.parameters = parameters;
- 			this.itemId = itemId;
-@@ -40,7 +_,7 @@
- 				int minValue = parameters.MinimumStackPerChunkBase + activePlayersCount * parameters.BonusMinDropsPerChunkPerPlayer;
- 				int num2 = parameters.MaximumStackPerChunkBase + activePlayersCount * parameters.BonusMaxDropsPerChunkPerPlayer;
- 				for (int i = 0; i < num; i++) {
--					CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
-+					CommonCode.DropItem(info, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
- 				}
++		if (parameters.MinimumStackPerChunkBase > parameters.MaximumStackPerChunkBase) {
++			throw new ArgumentException($"{nameof(parameters.MinimumStackPerChunkBase)} must be lesser or equal to {nameof(parameters.MaximumStackPerChunkBase)}.", nameof(parameters));
++		}
++
++		if (parameters.BonusMinDropsPerChunkPerPlayer > parameters.BonusMaxDropsPerChunkPerPlayer) {
++			throw new ArgumentException($"{nameof(parameters.BonusMinDropsPerChunkPerPlayer)} must be lesser or equal to {nameof(parameters.BonusMaxDropsPerChunkPerPlayer)}.", nameof(parameters));
++		}
++
+ 		ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 		this.parameters = parameters;
+ 		this.itemId = itemId;
+@@ -39,7 +_,7 @@
+ 			int minValue = parameters.MinimumStackPerChunkBase + activePlayersCount * parameters.BonusMinDropsPerChunkPerPlayer;
+ 			int num2 = parameters.MaximumStackPerChunkBase + activePlayersCount * parameters.BonusMaxDropsPerChunkPerPlayer;
+ 			for (int i = 0; i < num; i++) {
+-				CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
++				CommonCode.DropItem(info, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
+ 			}
  
- 				result = default(ItemDropAttemptResult);
+ 			result = default(ItemDropAttemptResult);

@@ -1,7 +1,7 @@
-﻿using ExampleMod.Common.Players;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Common.Players;
 
 namespace ExampleMod.Content.Items.Consumables
 {

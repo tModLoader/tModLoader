@@ -1,8 +1,8 @@
-using ExampleMod.Content.Rarities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Rarities;
 
 namespace ExampleMod.Content.Items.Weapons
 {

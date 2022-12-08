@@ -18,7 +18,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 
 			Item.width = 32;
 			Item.height = 32;
-			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(0, 1);
 		}

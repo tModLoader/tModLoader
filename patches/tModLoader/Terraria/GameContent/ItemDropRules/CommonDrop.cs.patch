@@ -4,24 +4,24 @@
 +using System;
  using System.Collections.Generic;
  
- namespace Terraria.GameContent.ItemDropRules
-@@ -16,6 +_,10 @@
- 		}
+ namespace Terraria.GameContent.ItemDropRules;
+@@ -14,6 +_,10 @@
  
- 		public CommonDrop(int itemId, int chanceDenominator, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1) {
-+			if (amountDroppedMinimum > amountDroppedMaximum) {
-+				throw new ArgumentOutOfRangeException(nameof(amountDroppedMinimum), $"{nameof(amountDroppedMinimum)} must be lesser or equal to {nameof(amountDroppedMaximum)}.");
-+			}
+ 	public CommonDrop(int itemId, int chanceDenominator, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1)
+ 	{
++		if (amountDroppedMinimum > amountDroppedMaximum) {
++			throw new ArgumentOutOfRangeException(nameof(amountDroppedMinimum), $"{nameof(amountDroppedMinimum)} must be lesser or equal to {nameof(amountDroppedMaximum)}.");
++		}
 +
- 			this.itemId = itemId;
- 			this.chanceDenominator = chanceDenominator;
- 			this.amountDroppedMinimum = amountDroppedMinimum;
-@@ -29,7 +_,7 @@
- 		public virtual ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
- 			ItemDropAttemptResult result;
- 			if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
--				CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
-+				CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
- 				result = default(ItemDropAttemptResult);
- 				result.State = ItemDropAttemptResultState.Success;
- 				return result;
+ 		this.itemId = itemId;
+ 		this.chanceDenominator = chanceDenominator;
+ 		this.amountDroppedMinimum = amountDroppedMinimum;
+@@ -28,7 +_,7 @@
+ 	{
+ 		ItemDropAttemptResult result;
+ 		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+-			CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
++			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
+ 			result = default(ItemDropAttemptResult);
+ 			result.State = ItemDropAttemptResultState.Success;
+ 			return result;
