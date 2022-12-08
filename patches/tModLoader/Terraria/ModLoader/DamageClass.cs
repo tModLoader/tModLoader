@@ -58,7 +58,7 @@ public abstract class DamageClass : ModType
 	/// </summary>
 	public string DisplayName => DisplayNameInternal;
 
-	internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
+	private protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
 
 	/// <summary>
 	/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
