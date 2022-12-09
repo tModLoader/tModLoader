@@ -276,7 +276,7 @@
  
  	public static void playWorldCallBack(object threadContext)
  	{
-+		Logging.Terraria.Info($"Loading World: {Main.ActiveWorldFileData.Name}, IsCloud={Main.ActiveWorldFileData.IsCloudSave}");
++		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, IsExpert: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode is 1 or 2);
 +
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
@@ -347,7 +347,7 @@
  
  	public static void serverLoadWorldCallBack()
  	{
-+		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Size={2}x{3}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY);
++		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, IsExpert: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode is 1 or 2);
 +
  		Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  		WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
@@ -410,7 +410,12 @@
  		remixWorldGen = tempRemixWorldGen;
  		tenthAnniversaryWorldGen = tempTenthAnniversaryWorldGen;
  		drunkWorldGen = false;
-@@ -6034,6 +_,9 @@
+@@ -6030,10 +_,13 @@
+ 		}
+ 
+ 		Main.zenithWorld = everythingWorldGen;
+-		Console.WriteLine("Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
++		Utils.LogAndConsoleInfoMessageFormat("Creating world - Seed: {0}, Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
  		Main.lockMenuBGChange = true;
  		GenVars.configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  		Hooks.ProcessWorldGenConfig(ref GenVars.configuration);
