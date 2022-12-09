@@ -1,7 +1,6 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
 {
@@ -14,7 +13,7 @@ namespace ExampleMod.Content.Items.Armor
 			Tooltip.SetDefault("This is a modded leg armor."
 				+ "\n5% increased movement speed");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

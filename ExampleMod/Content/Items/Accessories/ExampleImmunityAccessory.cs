@@ -8,7 +8,8 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded cross necklace that increases your immunity time by 1 second.");
-			SacrificeTotal = 1;
+
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

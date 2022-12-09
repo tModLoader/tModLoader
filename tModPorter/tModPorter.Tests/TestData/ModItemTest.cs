@@ -16,6 +16,8 @@ public class ModItemTest : ModItem
 
 		Console.WriteLine(item.IsCandidateForReforge);
 		item.CloneWithModdedDataFrom(item);
+
+		SacrificeTotal = 1;
 	}
 
 	public override bool IgnoreDamageModifiers => false;

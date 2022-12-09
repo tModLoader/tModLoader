@@ -1,7 +1,6 @@
 using ExampleMod.Content.Tiles;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -10,8 +9,8 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Music Box (Marble Gallery)");
 
+			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			// The following code links the music box's item and tile with a music track:
 			//   When music with the given ID is playing, equipped music boxes have a chance to change their id to the given item type.

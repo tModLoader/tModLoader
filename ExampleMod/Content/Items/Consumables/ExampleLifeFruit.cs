@@ -1,7 +1,7 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.Players;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Common.Players;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
 
-			SacrificeTotal = 10;
+			Item.ResearchUnlockCount = 10;
 		}
 
 		public override void SetDefaults() {

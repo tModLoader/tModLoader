@@ -46,12 +46,12 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
-	/// <summary>
-	/// Easy get/set for an item's Sacrifice Total Count
-	/// </summary>
+	// Deprecation date: 2022.12.XX
+	/// <inheritdoc cref="Item.ResearchUnlockCount"/>
+	[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.ResearchUnlockCount)} instead.", error: true)]
 	public int SacrificeTotal {
-		get => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
-		set => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+		get => Item.ResearchUnlockCount;
+		set => Item.ResearchUnlockCount = value;
 	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };

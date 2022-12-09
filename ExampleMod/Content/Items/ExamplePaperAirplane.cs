@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items
 {
@@ -9,7 +8,8 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded paper airplane."); // The (English) text shown below your item's name
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
+
+			Item.ResearchUnlockCount = 1; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
 		}
 
 		public override void SetDefaults() {

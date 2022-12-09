@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -20,7 +19,7 @@ namespace ExampleMod.Content.Items
 			ItemID.Sets.ItemIconPulse[Item.type] = true; // The item pulses while in the player's inventory
 			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25; // Configure the amount of this item that's needed to research it in Journey mode.
+			Item.ResearchUnlockCount = 25; // Configure the amount of this item that's needed to research it in Journey mode.
 		}
 
 		public override void SetDefaults() {

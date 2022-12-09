@@ -33,7 +33,7 @@ internal abstract class PatreonItem : ModLoaderModItem
 
 		DisplayName.SetDefault(displayName);
 
-		CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		Item.ResearchUnlockCount = 1;
 	}
 
 	public override void SetDefaults()
