@@ -276,7 +276,7 @@
  
  	public static void playWorldCallBack(object threadContext)
  	{
-+		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, IsExpert: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode is GameModeID.Expert or GameModeID.Master);
++		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, GameMode: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode);
 +
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
@@ -347,7 +347,7 @@
  
  	public static void serverLoadWorldCallBack()
  	{
-+		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, IsExpert: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode is GameModeID.Expert or GameModeID.Master);
++		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, GameMode: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode);
 +
  		Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  		WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
