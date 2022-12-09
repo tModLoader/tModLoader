@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader;
@@ -51,7 +52,13 @@ public static class PrefixLoader
 		=> categoryPrefixes[category];
 
 	internal static void ResizeArrays()
-		=> Array.Resize(ref Lang.prefix, PrefixCount);
+	{
+		//Sets
+		LoaderUtils.ResetStaticMembers(typeof(PrefixID), true);
+
+		//Etc
+		Array.Resize(ref Lang.prefix, PrefixCount);
+	}
 
 	internal static void Unload()
 	{
