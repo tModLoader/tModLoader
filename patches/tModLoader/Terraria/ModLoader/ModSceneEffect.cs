@@ -1,5 +1,7 @@
 using System;
 using Terraria.Graphics.Capture;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 
 namespace Terraria.ModLoader;
 
@@ -11,14 +13,33 @@ public abstract partial class ModSceneEffect : ModType
 	public int Type { get; internal set; }
 
 	// SceneEffect properties
+	/// <summary>
+	/// The ModWaterStyle that will apply to water.
+	/// </summary>
 	public virtual ModWaterStyle WaterStyle => null;
+
+	/// <summary>
+	/// The ModSurfaceBackgroundStyle that will draw its background when the player is on the surface.
+	/// </summary>
 	public virtual ModSurfaceBackgroundStyle SurfaceBackgroundStyle => null;
+
+	/// <summary>
+	/// The ModUndergroundBackgroundStyle that will draw its background when the player is underground.
+	/// </summary>
 	public virtual ModUndergroundBackgroundStyle UndergroundBackgroundStyle => null;
+
+	/// <summary>
+	/// The music that will play. -1 for letting other music play, 0 for no music, >0 for the given music to play. Defaults to -1.
+	/// </summary>
 	public virtual int Music => -1;
+
+	/// <summary>
+	/// The path to the texture that will display behind the map. Should be 115x65.
+	/// </summary>
 	public virtual string MapBackground => null;
 
 	/// <summary>
-	/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative postion compared to vanilla SceneEffect.
+	/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative position compared to a vanilla SceneEffect.
 	/// Analogously, if SceneEffect were competing in a wrestling match, this would be the 'Weight Class' that this SceneEffect is competing in.
 	/// </summary>
 	public virtual SceneEffectPriority Priority => SceneEffectPriority.None;
@@ -41,12 +62,12 @@ public abstract partial class ModSceneEffect : ModType
 	/// </summary>
 	internal void RegisterSceneEffect(ModSceneEffect modSceneEffect)
 	{
-		LoaderManager.Get<SceneEffectLoader>().Register(this);
+		LoaderManager.Get<SceneEffectLoader>().Register(modSceneEffect);
 	}
 
 	/// <summary>
 	/// Is invoked when two or more modded SceneEffect layers are active within the same <see cref="Priority"/> group to attempt to determine which one should take precedence, if it matters.
-	/// It's uncommon that need to assign a weight - you'd have to specifically believe that you don't need higher SceneEffectPriority, but do need to be the active SceneEffect within the priority you designated
+	/// It's uncommon to have the need to assign a weight - you'd have to specifically believe that you don't need higher SceneEffectPriority, but do need to be the active SceneEffect within the priority you designated.
 	/// Analogously, if SceneEffect were competing in a wrestling match, this would be how likely the SceneEffect should win within its weight class.
 	/// Is intentionally bounded at a max of 100% (1) to reduce complexity. Defaults to 50% (0.5).
 	/// Typical calculations may include: 1) how many tiles are present as a percentage of target amount; 2) how far away you are from the cause of the SceneEffect
@@ -63,10 +84,14 @@ public abstract partial class ModSceneEffect : ModType
 		return Math.Max(Math.Min(GetWeight(player), 1), 0) + (float)Priority;
 	}
 
+	/// <summary>
+	/// Return true to make the SceneEffect apply its effects (as long as its priority and weight allow that).
+	/// </summary>
 	public virtual bool IsSceneEffectActive(Player player) => false;
 
 	/// <summary>
-	/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
+	/// Allows you to create special visual effects in the area around the player. For example, the Blood Moon's red filter on the screen or the Slime Rain's falling slime in the background. You must create classes that override <see cref="ScreenShaderData"/> or <see cref="CustomSky"/>, add them in a Load hook, then call <see cref="Player.ManageSpecialBiomeVisuals"/>. See the ExampleMod if you do not have access to the source code.
+	/// <br/> This runs even if <see cref="IsSceneEffectActive"/> returns false. Check <paramref name="isActive"/> for the active status.
 	/// </summary>
 	public virtual void SpecialVisuals(Player player, bool isActive) { }
 }
