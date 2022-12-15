@@ -3509,6 +3509,15 @@
  		return num2;
  	}
  
+@@ -29131,6 +_,8 @@
+ 		_funkytownAchievementCheckCooldown = 100;
+ 		bool flag = false;
+ 		if (context == PlayerSpawnContext.SpawningIntoWorld) {
++			itemAnimationMax = -1; // Added by TML. Issue #3138
++
+ 			if (Main.netMode == 0 && unlockedBiomeTorches) {
+ 				NPC nPC = new NPC();
+ 				nPC.SetDefaults(664);
 @@ -29189,6 +_,10 @@
  			}
  
@@ -3520,14 +3529,6 @@
  			dead = false;
  			immuneTime = 0;
  		}
-@@ -29204,6 +_,7 @@
- 			Spawn_SetPositionAtWorldSpawn();
- 		}
- 
-+		itemAnimationMax = -1; // Added by TML. Issue #3138
- 		wet = false;
- 		wetCount = 0;
- 		lavaWet = false;
 @@ -29547,6 +_,13 @@
  				}
  			}
