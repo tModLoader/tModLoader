@@ -3520,6 +3520,14 @@
  			dead = false;
  			immuneTime = 0;
  		}
+@@ -29204,6 +_,7 @@
+ 			Spawn_SetPositionAtWorldSpawn();
+ 		}
+ 
++		itemAnimationMax = -1; // Added by TML. Issue #3138
+ 		wet = false;
+ 		wetCount = 0;
+ 		lavaWet = false;
 @@ -29547,6 +_,13 @@
  				}
  			}
