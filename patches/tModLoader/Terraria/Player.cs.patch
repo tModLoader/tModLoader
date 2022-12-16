@@ -353,7 +353,7 @@
 +	/// <summary>
 +	/// Returns true if the item animation is in its first frame.
 +	/// </summary>
-+	public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax/* - 1*/; //#2351
++	public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax/* - 1*/ && itemAnimation > 0; //#2351 & #3139
  
  	public float NormalizedLuck {
  		get {
