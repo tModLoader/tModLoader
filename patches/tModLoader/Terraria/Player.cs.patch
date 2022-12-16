@@ -353,7 +353,7 @@
 +	/// <summary>
 +	/// Returns true if the item animation is in its first frame.
 +	/// </summary>
-+	public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax/* - 1*/; //#2351
++	public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax && itemAnimation > 0/* - 1*/; //#2351 & #3139
  
  	public float NormalizedLuck {
  		get {
@@ -3509,15 +3509,6 @@
  		return num2;
  	}
  
-@@ -29131,6 +_,8 @@
- 		_funkytownAchievementCheckCooldown = 100;
- 		bool flag = false;
- 		if (context == PlayerSpawnContext.SpawningIntoWorld) {
-+			itemAnimationMax = -1; // Added by TML. Issue #3138
-+
- 			if (Main.netMode == 0 && unlockedBiomeTorches) {
- 				NPC nPC = new NPC();
- 				nPC.SetDefaults(664);
 @@ -29189,6 +_,10 @@
  			}
  
