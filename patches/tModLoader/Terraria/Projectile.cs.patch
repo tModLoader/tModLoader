@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Utilities;
 @@ -20,14 +_,16 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -1452,7 +1459,7 @@
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  			ai[1] = 0f;
-@@ -56584,9 +_,13 @@
+@@ -56584,15 +_,21 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					NewProjectile(GetProjectileSource_FromThis(), base.Center.X, base.Center.Y, x2, y8, 379, damage, knockBack, owner);
@@ -1466,6 +1473,46 @@
  
  		active = false;
  	}
+ 
+ 	private void DropGeodeGems()
+ 	{
++		// TML: #GeodeDrops
++		/*
+ 		List<int> list = new List<int> {
+ 			181,
+ 			182,
+@@ -56618,6 +_,31 @@
+ 		Main.item[num].noGrabDelay = 0;
+ 		if (Main.netMode == 1)
+ 			NetMessage.SendData(21, -1, -1, null, num, 1f);
++		*/
++		// TML: #GeodeDrops
++
++		var dict = ItemID.Sets.GeodeDrops;
++		foreach (var pair in dict) {
++			if (pair.Value.minStack < 1)
++				throw new Exception($"{Lang.GetItemName(pair.Key)} registered in 'ItemID.Sets.GeodeDrops' must have minStack bigger than 0");
++
++			if (pair.Value.maxStack <= pair.Value.minStack)
++				throw new Exception($"{Lang.GetItemName(pair.Key)} registered in 'ItemID.Sets.GeodeDrops' must have maxStack bigger than minStack");
++		}
++		var list = dict.Keys.ToList();
++
++		int attempts = 0;
++		while (attempts < 2 && list.Count > 0) {
++			attempts++;
++
++			int item = Main.rand.Next(list);
++			list.Remove(item);
++			int stack = Main.rand.Next(dict[item].minStack, dict[item].maxStack);
++			int num = Item.NewItem(new EntitySource_Loot(this), position, base.Size, item, stack);
++			Main.item[num].noGrabDelay = 0;
++			if (Main.netMode == 1)
++				NetMessage.SendData(21, -1, -1, null, num, 1f);
++		}
+ 	}
+ 
+ 	private void TryGettingHitByOtherPlayersExplosives()
 @@ -56692,9 +_,13 @@
  
  	public bool CanExplodeTile(int x, int y)
