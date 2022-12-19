@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Terraria;
@@ -83,6 +85,37 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 			projectile.originalDamage = parentProjectile.originalDamage;
 			projectile.CritChance += parentProjectile.CritChance;
 			projectile.ArmorPenetration += parentProjectile.ArmorPenetration;
+		}
+	}
+
+	/// <summary>
+	/// Will drop loot the same way as when <see cref="ProjectileID.Geode"/> is cracked open.
+	/// </summary>
+	/// <param name="entity">The entity the loot originates from</param>
+	public static void DropGeodeLoot(Entity entity)
+	{
+		var dict = ItemID.Sets.GeodeDrops;
+		foreach (var pair in dict) {
+			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.GeodeDrops)}'";
+			if (pair.Value.minStack < 1)
+				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
+
+			if (pair.Value.maxStack <= pair.Value.minStack)
+				throw new Exception($"{exceptionCommon} must have maxStack bigger than minStack");
+		}
+		var list = dict.Keys.ToList();
+
+		int attempts = 0;
+		while (attempts < 2 && list.Count > 0) {
+			attempts++;
+
+			int item = Main.rand.Next(list);
+			list.Remove(item);
+			int stack = Main.rand.Next(dict[item].minStack, dict[item].maxStack);
+			int num = Item.NewItem(new EntitySource_Loot(entity), entity.position, entity.Size, item, stack);
+			Main.item[num].noGrabDelay = 0;
+			if (Main.netMode == 1)
+				NetMessage.SendData(21, -1, -1, null, num, 1f);
 		}
 	}
 
