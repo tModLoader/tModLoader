@@ -78,6 +78,15 @@
  	private static WorldGenerator _generator;
  	public static int SmallConsecutivesFound = 0;
  	public static int SmallConsecutivesEliminated = 0;
+@@ -916,7 +_,7 @@
+ 	public const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
+ 	public static int grassSpread;
+ 	private static Point[] heartPos = new Point[100];
+-	private static int heartCount;
++	public static int heartCount; // Made public
+ 	private const int strip_w = 200;
+ 	private const int strip_h = 50;
+ 	private static readonly Vertical64BitStrips bitStrip = new Vertical64BitStrips(202);
 @@ -1284,7 +_,7 @@
  			}
  		}
