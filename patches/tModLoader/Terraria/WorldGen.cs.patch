@@ -435,6 +435,16 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
+@@ -7904,7 +_,9 @@
+ 					}
+ 
+ 					for (int num861 = num857; num861 < Main.maxTilesY; num861++) {
++						/*
+ 						Main.tile[num856, num861] = new Tile();
++						*/
+ 						Main.tile[num856, num861].active(active: true);
+ 						Main.tile[num856, num861].type = 57;
+ 					}
 @@ -9368,10 +_,11 @@
  						int num627 = 0;
  						while (!flag37 && num627 < 100) {
