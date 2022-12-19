@@ -435,13 +435,14 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
-@@ -7904,7 +_,9 @@
+@@ -7904,7 +_,10 @@
  					}
  
  					for (int num861 = num857; num861 < Main.maxTilesY; num861++) {
 +						/*
  						Main.tile[num856, num861] = new Tile();
 +						*/
++						Main.tile[num856, num861].Clear(TileDataType.All);
  						Main.tile[num856, num861].active(active: true);
  						Main.tile[num856, num861].type = 57;
  					}
