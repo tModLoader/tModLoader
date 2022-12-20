@@ -270,7 +270,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
+			npcLoot.Add(ItemDropRule.Common<ExampleCostume>());
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {

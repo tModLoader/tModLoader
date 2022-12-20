@@ -73,7 +73,7 @@ namespace ExampleMod.Content.Items.Consumables
 				ItemDropRule.Common(ItemID.TungstenBar, 1, 10, 21),
 				ItemDropRule.Common(ItemID.GoldBar, 1, 10, 21),
 				ItemDropRule.Common(ItemID.PlatinumBar, 1, 10, 21),
-				ItemDropRule.Common(ModContent.ItemType<Placeable.ExampleBar>(), 1, 10, 21),
+				ItemDropRule.Common<Placeable.ExampleBar>(1, 10, 21),
 			};
 			itemLoot.Add(new OneFromRulesRule(4, oreBars));
 
@@ -85,7 +85,7 @@ namespace ExampleMod.Content.Items.Consumables
 				ItemDropRule.Common(ItemID.GravitationPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.MiningPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.HeartreachPotion, 1, 2, 5),
-				ItemDropRule.Common(ModContent.ItemType<Consumables.ExampleBuffPotion>(), 1, 2, 5),
+				ItemDropRule.Common<Consumables.ExampleBuffPotion>(1, 2, 5),
 			};
 			itemLoot.Add(new OneFromRulesRule(4, explorationPotions));
 

@@ -20,7 +20,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			if (!NPCID.Sets.CountsAsCritter[npc.type]) { // If npc is not a critter
 				// Make it drop ExampleItem.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1));
+				npcLoot.Add(ItemDropRule.Common<ExampleItem>(1));
 
 				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a fractional chance specified.
 				// The chanceDenominator int is used for the denominator part of the fractional chance of dropping this item.
@@ -31,7 +31,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				// ItemDropRule.Common(...) does not let you specify the numerator, so you can use new CommonDrop(...) instead.
 				// (1 by default if using ItemDropRule.Common)
 				// For example, if you had a chanceDenominator as 7 and a chanceNumerator as 2, then the chance the item would drop is 2/7 or about 28%.
-				presentDropRule.OnSuccess(new CommonDrop(ModContent.ItemType<ExampleResearchPresent>(), chanceDenominator: 7, chanceNumerator: 2));
+				presentDropRule.OnSuccess(ItemDropRule.Common<ExampleResearchPresent>(new Fraction(2, 7)));
 				npcLoot.Add(presentDropRule);
 			}
 
@@ -113,7 +113,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		// Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
 		public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
 			// If the ExampleSoulCondition is true, drop ExampleSoul 20% of the time. See Common/ItemDropRules/DropConditions/ExampleSoulCondition.cs for how it's determined
-			globalLoot.Add(ItemDropRule.ByCondition(new ExampleSoulCondition(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1));
+			globalLoot.Add(ItemDropRule.ByCondition<ExampleSoul>(new ExampleSoulCondition(), 5, 1, 1));
 		}
 	}
 }

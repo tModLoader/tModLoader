@@ -40,9 +40,9 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
 			// We have to replicate the expert drops from MinionBossBody here
 
-			itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<MinionBossMask>(), 7));
-			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1, 12, 16));
-			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<MinionBossBody>()));
+			itemLoot.Add(ItemDropRule.NotScalingWithLuck<MinionBossMask>(7));
+			itemLoot.Add(ItemDropRule.Common<ExampleItem>(1, 12, 16));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue<MinionBossBody>());
 		}
 
 		// Below is code for the visuals
