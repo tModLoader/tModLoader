@@ -27,7 +27,8 @@ namespace Terraria.GameContent.ItemDropRules
 			}
 
 			long money = (long)(value * scale);
-			foreach ((int itemId, int count) in ToCoins(money)) {
+			var coins = ToCoins(money);
+			foreach ((int itemId, int count) in coins) {
 				CommonCode.DropItem(info, itemId, count);
 			}
 
@@ -35,6 +36,7 @@ namespace Terraria.GameContent.ItemDropRules
 		}
 
 		public static IEnumerable<(int itemId, int count)> ToCoins(long money) {
+			List<(int itemId, int count)> list = new();
 			int copper = (int)(money % 100);
 			money /= 100;
 			int silver = (int)(money % 100);
@@ -43,16 +45,18 @@ namespace Terraria.GameContent.ItemDropRules
 			money /= 100;
 			int plat = (int)money;
 
-			if (copper > 0) yield return (ItemID.CopperCoin, copper);
-			if (silver > 0) yield return (ItemID.SilverCoin, silver);
-			if (gold > 0) yield return (ItemID.GoldCoin, gold);
-			if (plat > 0) yield return (ItemID.PlatinumCoin, plat);
+			if (copper > 0) list.Add((ItemID.CopperCoin, copper));
+			if (silver > 0) list.Add((ItemID.SilverCoin, silver));
+			if (gold > 0) list.Add((ItemID.GoldCoin, gold));
+			if (plat > 0) list.Add((ItemID.PlatinumCoin, plat));
+			return list;
 		}
 
 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
 			// TODO: is there a sensible way to report variance here? probably not
 
-			foreach ((int itemId, int count) in ToCoins(value)) {
+			var coins = ToCoins(value);
+			foreach ((int itemId, int count) in coins) {
 				drops.Add(new DropRateInfo(itemId, count, count, ratesInfo.parentDroprateChance, ratesInfo.conditions));
 			}
 

@@ -1,6 +1,16 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonDropNotScalingWithLuck.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDropNotScalingWithLuck.cs
-@@ -9,7 +_,7 @@
+@@ -2,14 +_,15 @@
+ {
+ 	public class CommonDropNotScalingWithLuck : CommonDrop
+ 	{
++		// chanceNumerator parameter added by TML.
+-		public CommonDropNotScalingWithLuck(int itemId, int chanceDenominator, int amountDroppedMinimum, int amountDroppedMaximum)
++		public CommonDropNotScalingWithLuck(int itemId, int chanceDenominator, int amountDroppedMinimum, int amountDroppedMaximum, int chanceNumerator = 1)
+-			: base(itemId, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum) {
++			: base(itemId, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum, chanceNumerator) {
+ 		}
+ 
  		public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
  			ItemDropAttemptResult result;
  			if (info.rng.Next(chanceDenominator) < chanceNumerator) {

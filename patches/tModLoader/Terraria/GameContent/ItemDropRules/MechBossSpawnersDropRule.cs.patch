@@ -1,9 +1,39 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
-@@ -25,21 +_,21 @@
+@@ -2,15 +_,26 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class MechBossSpawnersDropRule : IItemDropRule
++	public class MechBossSpawnersDropRule : IItemDropRule, IItemDropRuleWithNumerator
+ 	{
+ 		public Conditions.MechanicalBossesDummyCondition dummyCondition = new Conditions.MechanicalBossesDummyCondition();
++		private int chanceNumerator = 1; // added by tml
++		private int chanceDenominator = 2500; // added by tml
+ 
+ 		public List<IItemDropRuleChainAttempt> ChainedRules {
+ 			get;
+ 			private set;
+ 		}
+ 
++		public int Numerator {
++			get => chanceNumerator;
++			set => chanceNumerator = value;
++		}
++		public int Denominator {
++			get => chanceDenominator;
++			set => chanceDenominator = value;
++		}
++
+ 		public MechBossSpawnersDropRule() {
+ 			ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 		}
+@@ -24,22 +_,22 @@
+ 
  		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
  			ItemDropAttemptResult result;
- 			if (!NPC.downedMechBoss1 && info.player.RollLuck(2500) == 0) {
+-			if (!NPC.downedMechBoss1 && info.player.RollLuck(2500) == 0) {
++			if (!NPC.downedMechBoss1 && info.player.RollLuck(chanceDenominator) < chanceNumerator) {
 -				CommonCode.DropItemFromNPC(info.npc, 556, 1);
 +				CommonCode.DropItem(info, 556, 1);
  				result = default(ItemDropAttemptResult);
@@ -11,7 +41,8 @@
  				return result;
  			}
  
- 			if (!NPC.downedMechBoss2 && info.player.RollLuck(2500) == 0) {
+-			if (!NPC.downedMechBoss2 && info.player.RollLuck(2500) == 0) {
++			if (!NPC.downedMechBoss2 && info.player.RollLuck(chanceDenominator) < chanceNumerator) {
 -				CommonCode.DropItemFromNPC(info.npc, 544, 1);
 +				CommonCode.DropItem(info, 544, 1);
  				result = default(ItemDropAttemptResult);
@@ -19,9 +50,19 @@
  				return result;
  			}
  
- 			if (!NPC.downedMechBoss3 && info.player.RollLuck(2500) == 0) {
+-			if (!NPC.downedMechBoss3 && info.player.RollLuck(2500) == 0) {
++			if (!NPC.downedMechBoss3 && info.player.RollLuck(chanceDenominator) < chanceNumerator) {
 -				CommonCode.DropItemFromNPC(info.npc, 557, 1);
 +				CommonCode.DropItem(info, 557, 1);
  				result = default(ItemDropAttemptResult);
  				result.State = ItemDropAttemptResultState.Success;
  				return result;
+@@ -52,7 +_,7 @@
+ 
+ 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
+ 			ratesInfo.AddCondition(dummyCondition);
+-			float num = 0.0004f;
++			float num = (float)chanceNumerator / (float)chanceDenominator;
+ 			float dropRate = num * ratesInfo.parentDroprateChance;
+ 			drops.Add(new DropRateInfo(556, 1, 1, dropRate, ratesInfo.conditions));
+ 			drops.Add(new DropRateInfo(544, 1, 1, dropRate, ratesInfo.conditions));

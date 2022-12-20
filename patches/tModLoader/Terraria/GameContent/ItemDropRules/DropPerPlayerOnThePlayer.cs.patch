@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/DropPerPlayerOnThePlayer.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropPerPlayerOnThePlayer.cs
+@@ -4,8 +_,9 @@
+ 	{
+ 		public IItemDropRuleCondition condition;
+ 
++		// chanceNumerator parameter added by TML.
+-		public DropPerPlayerOnThePlayer(int itemId, int chanceDenominator, int amountDroppedMinimum, int amountDroppedMaximum, IItemDropRuleCondition optionalCondition)
++		public DropPerPlayerOnThePlayer(int itemId, int chanceDenominator, int amountDroppedMinimum, int amountDroppedMaximum, IItemDropRuleCondition optionalCondition, int chanceNumerator = 1)
+-			: base(itemId, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum) {
++			: base(itemId, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum, chanceNumerator) {
+ 			condition = optionalCondition;
+ 		}
+ 

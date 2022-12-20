@@ -8,7 +8,7 @@ namespace Terraria.GameContent.ItemDropRules
 	/// Runs the provided rules in order, stopping after a rule succeeds.<br/>
 	/// Does not use player luck.<br/>
 	/// </summary>
-	public class SequentialRulesNotScalingWithLuckRule : IItemDropRule, INestedItemDropRule
+	public class SequentialRulesNotScalingWithLuckRule : IItemDropRule, INestedItemDropRule, IItemDropRuleWithDenominator
 	{
 		public IItemDropRule[] rules;
 		public int chanceDenominator;
@@ -16,6 +16,11 @@ namespace Terraria.GameContent.ItemDropRules
 		public List<IItemDropRuleChainAttempt> ChainedRules {
 			get;
 			private set;
+		}
+
+		public int Denominator {
+			get => chanceDenominator;
+			set => chanceDenominator = value;
 		}
 
 		public SequentialRulesNotScalingWithLuckRule(int chanceDenominator, params IItemDropRule[] rules) {

@@ -8,7 +8,7 @@ namespace Terraria.GameContent.ItemDropRules
 	/// <summary>
 	/// Runs multiple drop rules if successes.
 	/// </summary>
-	public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
+	public class FewFromRulesRule : IItemDropRule, INestedItemDropRule, IItemDropRuleWithDenominator
 	{
 		public int amount;
 		public IItemDropRule[] options;
@@ -17,6 +17,11 @@ namespace Terraria.GameContent.ItemDropRules
 		public List<IItemDropRuleChainAttempt> ChainedRules {
 			get;
 			private set;
+		}
+
+		public int Denominator {
+			get => chanceDenominator;
+			set => chanceDenominator = value;
 		}
 
 		public FewFromRulesRule(int amount, int chanceNumerator, params IItemDropRule[] options) {

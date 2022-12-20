@@ -1,5 +1,30 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class OneFromOptionsDropRule : IItemDropRule
++	public class OneFromOptionsDropRule : IItemDropRule, IItemDropRuleWithNumerator
+ 	{
+ 		public int[] dropIds;
+ 		public int chanceDenominator;
+@@ -13,6 +_,15 @@
+ 			private set;
+ 		}
+ 
++		public int Numerator {
++			get => chanceNumerator;
++			set => chanceNumerator = value;
++		}
++		public int Denominator {
++			get => chanceDenominator;
++			set => chanceDenominator = value;
++		}
++
+ 		public OneFromOptionsDropRule(int chanceDenominator, int chanceNumerator, params int[] options) {
+ 			this.chanceDenominator = chanceDenominator;
+ 			this.chanceNumerator = chanceNumerator;
 @@ -25,7 +_,7 @@
  		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
  			ItemDropAttemptResult result;

@@ -1,5 +1,20 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
+@@ -1,4 +_,5 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+@@ -15,7 +_,7 @@
+ 
+ 		public bool CanDrop(DropAttemptInfo info) {
+ 			if (info.npc.type == 1 && info.npc.ai[1] > 0f)
+-				return info.npc.ai[1] < 5125f;
++				return info.npc.ai[1] < ItemLoader.ItemCount;
+ 
+ 			return false;
+ 		}
 @@ -23,7 +_,7 @@
  		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
  			int itemId = (int)info.npc.ai[1];

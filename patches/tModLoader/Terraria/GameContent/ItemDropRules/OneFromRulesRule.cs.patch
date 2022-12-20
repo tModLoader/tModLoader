@@ -1,6 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
-@@ -6,14 +_,18 @@
+@@ -2,18 +_,31 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules
+ {
+-	public class OneFromRulesRule : IItemDropRule, INestedItemDropRule
++	public class OneFromRulesRule : IItemDropRule, INestedItemDropRule, IItemDropRuleWithNumerator
  	{
  		public IItemDropRule[] options;
  		public int chanceDenominator;
@@ -13,6 +18,15 @@
  
 -		public OneFromRulesRule(int chanceNumerator, params IItemDropRule[] options) {
 -			chanceDenominator = chanceNumerator;
++		public int Numerator {
++			get => chanceNumerator;
++			set => chanceNumerator = value;
++		}
++		public int Denominator {
++			get => chanceDenominator;
++			set => chanceDenominator = value;
++		}
++
 +		public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options) : this(chanceDenominator, 1, options) { }
 +
 +		public OneFromRulesRule(int chanceDenominator, int chanceNumerator, params IItemDropRule[] options) {
