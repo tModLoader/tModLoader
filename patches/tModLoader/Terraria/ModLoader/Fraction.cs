@@ -199,7 +199,7 @@ namespace Terraria.ModLoader {
 		#region Object methods
 		public override string ToString() {
 #if !NETSTANDARD2_0 && !NETFRAMEWORK
-			Span<char> span = stackalloc char[1 + (2 * 20)];
+			Span<char> span = stackalloc char[1 + (2 * 11)];
 			int pos = 0;
 
 			bool formatted = numerator.TryFormat(span[pos..], out int charsWritten);
