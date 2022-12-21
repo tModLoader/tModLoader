@@ -1,16 +1,66 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Terraria.ModLoader {
 	/// <summary>
 	/// Represents a part of a whole or, more generally, any number of equal parts.
 	/// </summary>
 	[DebuggerDisplay("{Numerator}/{Denominator}")]
+	[Serializable]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct Fraction
-		: IEquatable<float>, IEquatable<double>, IEquatable<decimal>, IEquatable<Fraction>,
+		: IConvertible, ISerializable, IDeserializationCallback,
+		IEquatable<float>, IEquatable<double>, IEquatable<decimal>, IEquatable<Fraction>,
 		IComparable, IComparable<float>, IComparable<double>, IComparable<decimal>, IComparable<Fraction> {
+		#region Decimal Wrapper
+		private readonly struct DecimalWrapper {
+			private delegate uint GetXDelegate(decimal deci);
+			private delegate int GetFlagsDelegate(decimal deci);
+
+			private static readonly GetXDelegate getLowDelegate;
+			private static readonly GetXDelegate getMidDelegate;
+			private static readonly GetXDelegate getHighDelegate;
+			private static readonly GetFlagsDelegate getFlagsDelegate;
+
+			private readonly decimal m_value;
+
+			public uint Low => getLowDelegate(m_value);
+			public uint Mid => getMidDelegate(m_value);
+			public uint High => getHighDelegate(m_value);
+			public int Flags => getFlagsDelegate(m_value);
+
+			static DecimalWrapper() {
+				getLowDelegate = CreateGetDelegate<GetXDelegate>(nameof(Low));
+				getMidDelegate = CreateGetDelegate<GetXDelegate>(nameof(Mid));
+				getHighDelegate = CreateGetDelegate<GetXDelegate>(nameof(High));
+				getFlagsDelegate = CreateFlagsDelegate();
+
+				static T CreateGetDelegate<T>(string propertyName) where T : Delegate {
+					ParameterExpression param = Expression.Parameter(typeof(decimal));
+					Expression field = Expression.Call(param, typeof(decimal).GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.GetMethod!);
+
+					return Expression.Lambda<T>(field, param).Compile();
+				}
+				static GetFlagsDelegate CreateFlagsDelegate() {
+					ParameterExpression param = Expression.Parameter(typeof(decimal));
+					Expression field = Expression.Field(param, typeof(decimal), "_flags");
+
+					return Expression.Lambda<GetFlagsDelegate>(field, param).Compile();
+				}
+			}
+
+			public DecimalWrapper(decimal value) {
+				m_value = value;
+			}
+		}
+		#endregion
+
 		#region Private Variables
 		// Should there be SingleFraction that will have numerator and denominator that are float? (maybe IFraction interface as well)
 		private int numerator;
@@ -98,37 +148,63 @@ namespace Terraria.ModLoader {
 		#endregion
 
 		#region Public Constructors
+		/// <summary>
+		/// <inheritdoc cref="Fraction(decimal)"/>
+		/// </summary>
+		/// <param name="chance">A fractional number.</param>
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public Fraction(float chance) : this(Convert.ToDecimal(chance)) {
 		}
 
+		/// <summary>
+		/// <inheritdoc cref="Fraction(decimal)"/>
+		/// </summary>
+		/// <param name="chance">A fractional number.</param>
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public Fraction(double chance) : this(Convert.ToDecimal(chance)) {
 		}
 
+		/// <summary>
+		/// Makes a fraction. Result chance will never be higher than 100%.
+		/// </summary>
+		/// <param name="chance">A fractional number.</param>
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public Fraction(decimal chance) {
-			if (chance == decimal.Zero) {
-				numerator = Zero.denominator;
-				denominator = Zero.numerator;
-				return;
+			DecimalWrapper wrapper = new(chance);
+			ulong numerator = (1 - (((ulong)wrapper.Flags >> 30) & 2)) *
+				(((uint)(int)wrapper.High << 64)
+					| (uint)(int)(wrapper.Mid << 32)
+					| (uint)(int)wrapper.Low);
+			ulong denominator = 1ul;
+			for (ulong i = 0, c = ((ulong)wrapper.Flags >> 16) & 0xFF; i < c; i++) {
+				denominator *= 10ul;
 			}
 
-			int tries = 0;
-			do {
-				chance *= 10.0m;
-				tries++;
-			}
-			while (tries < 15 && chance != (int)chance);
-			int num = (int)chance;
-			int den = (int)Math.Pow(10, tries);
-
-			numerator = num;
-			denominator = den;
-
+			this.numerator = (int)numerator;
+			this.denominator = (int)denominator;
 			Normalize();
 		}
 
+		/// <summary>
+		/// Makes a fraction using numerator and denominator, then simplifies the result.
+		/// </summary>
+		/// <param name="numerator">A numerator.</param>
+		/// <param name="denominator">A denominator.</param>
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public Fraction(int numerator, int denominator) {
 			this.numerator = numerator;
 			this.denominator = denominator;
+			Normalize();
+		}
+		#endregion
+
+		#region Private Constructors
+		private Fraction(SerializationInfo info, StreamingContext context) {
+			if (info == null)
+				throw new ArgumentNullException(nameof(info));
+
+			numerator = info.GetInt32(nameof(numerator));
+			denominator = info.GetInt32(nameof(denominator));
 		}
 		#endregion
 
@@ -136,44 +212,25 @@ namespace Terraria.ModLoader {
 		/// <summary>
 		/// Simplifies fraction. For example, from 5/100 to 1/20.
 		/// </summary>
-		/// <exception cref="ArithmeticException">Thrown if numerator and denominator are greater than <code>int.MaxValue / 2</code> or if numerator and denominator are lesser than <code>-int.MaxValue / 2</code>.</exception>
+		/// <exception cref="ArithmeticException"></exception>
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public void Normalize() {
-			bool numeratorIsNegative = numerator < 0;
-			bool denominatorIsNegative = denominator < 0;
-			if (numeratorIsNegative) {
-				numerator *= -1;
-			}
-			if (denominatorIsNegative) {
-				denominator *= -1;
-			}
-
-			if (numerator > int.MaxValue / 2 && denominator > int.MaxValue / 2) {
-				throw new ArithmeticException($"Numerator or denominator are greater than {int.MaxValue / 2} or lesser than {-int.MaxValue / 2}.");
-			}
-
 			numerator += denominator;
 			Reduce(GCD(numerator, denominator));
 			Reduce(Math.Sign(denominator));
 			numerator %= denominator;
-
-			if (numeratorIsNegative) {
-				numerator *= -1;
-			}
-			if (denominatorIsNegative) {
-				denominator *= -1;
-			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		private void Reduce(int x) {
 			numerator /= x;
 			denominator /= x;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		private static int GCD(int a, int b) {
 			while (b != 0) {
-				int t = b;
-				b = a % b;
-				a = t;
+				(a, b) = (b, a % b);
 			}
 			return a;
 		}
@@ -181,16 +238,19 @@ namespace Terraria.ModLoader {
 
 		#region Percentages
 		[Pure]
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public float ToPercentageSingle() {
 			return numerator / (float)denominator;
 		}
 
 		[Pure]
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public double ToPercentageDouble() {
 			return numerator / (double)denominator;
 		}
 
 		[Pure]
+		[MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
 		public decimal ToPercentageDecimal() {
 			return numerator / (decimal)denominator;
 		}
@@ -199,7 +259,7 @@ namespace Terraria.ModLoader {
 		#region Object methods
 		public override string ToString() {
 #if !NETSTANDARD2_0 && !NETFRAMEWORK
-			Span<char> span = stackalloc char[1 + (2 * 11)];
+			Span<char> span = stackalloc char[1 + (2 * 20)];
 			int pos = 0;
 
 			bool formatted = numerator.TryFormat(span[pos..], out int charsWritten);
@@ -220,6 +280,16 @@ namespace Terraria.ModLoader {
 
 		public override int GetHashCode() {
 			return HashCode.Combine(numerator, denominator);
+		}
+		#endregion
+
+		#region Serialization
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			info.AddValue(nameof(numerator), numerator);
+			info.AddValue(nameof(denominator), denominator);
+		}
+
+		public void OnDeserialization(object? sender) {
 		}
 		#endregion
 
@@ -281,6 +351,76 @@ namespace Terraria.ModLoader {
 		}
 		#endregion
 
+		#region Conversion methods
+		public TypeCode GetTypeCode() {
+			return TypeCode.Int64 | TypeCode.UInt64 | TypeCode.Single | TypeCode.Double | TypeCode.Decimal;
+		}
+
+		public bool ToBoolean(IFormatProvider? provider) {
+			return Convert.ToBoolean(numerator | denominator);
+		}
+
+		public byte ToByte(IFormatProvider? provider) {
+			return Convert.ToByte(numerator | denominator);
+		}
+
+		public char ToChar(IFormatProvider? provider) {
+			return Convert.ToChar(numerator | denominator);
+		}
+
+		public DateTime ToDateTime(IFormatProvider? provider) {
+			return Convert.ToDateTime(numerator | denominator);
+		}
+
+		public decimal ToDecimal(IFormatProvider? provider) {
+			return ToPercentageDecimal();
+		}
+
+		public double ToDouble(IFormatProvider? provider) {
+			return ToPercentageDouble();
+		}
+
+		public short ToInt16(IFormatProvider? provider) {
+			return Convert.ToInt16(numerator | denominator);
+		}
+
+		public int ToInt32(IFormatProvider? provider) {
+			return Convert.ToInt32(numerator | denominator);
+		}
+
+		public long ToInt64(IFormatProvider? provider) {
+			return Convert.ToInt64(numerator | denominator);
+		}
+
+		public sbyte ToSByte(IFormatProvider? provider) {
+			return Convert.ToSByte(numerator | denominator);
+		}
+
+		public float ToSingle(IFormatProvider? provider) {
+			return ToPercentageSingle();
+		}
+
+		public string ToString(IFormatProvider? provider) {
+			return ToString();
+		}
+
+		public object ToType(Type conversionType, IFormatProvider? provider) {
+			return Convert.ChangeType(this, conversionType, provider);
+		}
+
+		public ushort ToUInt16(IFormatProvider? provider) {
+			return Convert.ToUInt16(numerator | denominator);
+		}
+
+		public uint ToUInt32(IFormatProvider? provider) {
+			return Convert.ToUInt32(numerator | denominator);
+		}
+
+		public ulong ToUInt64(IFormatProvider? provider) {
+			return Convert.ToUInt64(numerator | denominator);
+		}
+		#endregion
+
 		#region Conversion operators
 		public static implicit operator float(Fraction self) => self.ToPercentageSingle();
 		public static implicit operator double(Fraction self) => self.ToPercentageDouble();
@@ -301,16 +441,11 @@ namespace Terraria.ModLoader {
 		public static Fraction operator -(Fraction left, float right) => new(left.ToPercentageSingle() - right);
 		public static Fraction operator -(Fraction left, double right) => new(left.ToPercentageDouble() - right);
 		public static Fraction operator -(Fraction left, decimal right) => new(left.ToPercentageDecimal() - right);
-		public static Fraction operator *(Fraction left, Fraction right) => new(left.numerator * right.numerator, left.denominator * right.denominator);
+		public static Fraction operator *(Fraction left, Fraction right) => new(left.ToPercentageDecimal() * right.ToPercentageDecimal());
 		public static Fraction operator *(Fraction left, float right) => new(left.ToPercentageSingle() * right);
 		public static Fraction operator *(Fraction left, double right) => new(left.ToPercentageDouble() * right);
 		public static Fraction operator *(Fraction left, decimal right) => new(left.ToPercentageDecimal() * right);
-		public static Fraction operator /(Fraction left, Fraction right) {
-			if (right.numerator == 0) {
-				throw new DivideByZeroException();
-			}
-			return new(left.numerator * right.denominator, left.denominator * right.numerator);
-		}
+		public static Fraction operator /(Fraction left, Fraction right) => new(left.numerator * right.denominator, left.denominator * right.numerator);
 		public static Fraction operator /(Fraction left, float right) => new(left.ToPercentageSingle() / right);
 		public static Fraction operator /(Fraction left, double right) => new(left.ToPercentageDouble() / right);
 		public static Fraction operator /(Fraction left, decimal right) => new(left.ToPercentageDecimal() / right);
@@ -321,29 +456,29 @@ namespace Terraria.ModLoader {
 		#endregion
 
 		#region Comparison operators
-		public static bool operator >(Fraction left, Fraction right) => left.denominator > right.denominator && left.numerator > right.denominator;
-		public static bool operator >(Fraction left, float right) => left.ToPercentageSingle() > right;
-		public static bool operator >(Fraction left, double right) => left.ToPercentageDouble() > right;
-		public static bool operator >(Fraction left, decimal right) => left.ToPercentageDecimal() > right;
-		public static bool operator >=(Fraction left, Fraction right) => left.denominator >= right.denominator && left.numerator >= right.denominator;
-		public static bool operator >=(Fraction left, float right) => left.ToPercentageSingle() >= right;
-		public static bool operator >=(Fraction left, double right) => left.ToPercentageDouble() >= right;
-		public static bool operator >=(Fraction left, decimal right) => left.ToPercentageDecimal() >= right;
-		public static bool operator <(Fraction left, Fraction right) => !(left > right);
-		public static bool operator <(Fraction left, float right) => !(left > right);
-		public static bool operator <(Fraction left, double right) => !(left > right);
-		public static bool operator <(Fraction left, decimal right) => !(left > right);
-		public static bool operator <=(Fraction left, Fraction right) => !(left >= right);
-		public static bool operator <=(Fraction left, float right) => !(left >= right);
-		public static bool operator <=(Fraction left, double right) => !(left >= right);
-		public static bool operator <=(Fraction left, decimal right) => !(left >= right);
+		public static bool operator >(Fraction left, Fraction right) => left.CompareTo(right) > 0;
+		public static bool operator >(Fraction left, float right) => left.CompareTo(right) > 0;
+		public static bool operator >(Fraction left, double right) => left.CompareTo(right) > 0;
+		public static bool operator >(Fraction left, decimal right) => left.CompareTo(right) > 0;
+		public static bool operator >=(Fraction left, Fraction right) => left.CompareTo(right) >= 0;
+		public static bool operator >=(Fraction left, float right) => left.CompareTo(right) >= 0;
+		public static bool operator >=(Fraction left, double right) => left.CompareTo(right) >= 0;
+		public static bool operator >=(Fraction left, decimal right) => left.CompareTo(right) >= 0;
+		public static bool operator <(Fraction left, Fraction right) => left.CompareTo(right) < 0;
+		public static bool operator <(Fraction left, float right) => left.CompareTo(right) < 0;
+		public static bool operator <(Fraction left, double right) => left.CompareTo(right) < 0;
+		public static bool operator <(Fraction left, decimal right) => left.CompareTo(right) < 0;
+		public static bool operator <=(Fraction left, Fraction right) => left.CompareTo(right) <= 0;
+		public static bool operator <=(Fraction left, float right) => left.CompareTo(right) <= 0;
+		public static bool operator <=(Fraction left, double right) => left.CompareTo(right) <= 0;
+		public static bool operator <=(Fraction left, decimal right) => left.CompareTo(right) <= 0;
 		#endregion
 
 		#region Bitwise operators
-		public static Fraction operator ~(Fraction single) => new(single.denominator, single.numerator);
-		//public static Fraction operator <<(Fraction left, Fraction other) => new(left.numerator << (int)other.numerator, left.numerator << (int)other.denominator);
-		//public static Fraction operator >>(Fraction left, Fraction other) => new(left.numerator >> (int)other.numerator, left.numerator >> (int)other.denominator);
-		//public static Fraction operator >>>(Fraction left, Fraction other) => new(left.numerator >>> (int)other.numerator, left.numerator >>> (int)other.denominator);
+		public static Fraction operator ~(Fraction single) => new(~single.numerator, ~single.denominator);
+		public static Fraction operator <<(Fraction left, Fraction other) => new(left.numerator << (int)other.numerator, left.numerator << (int)other.denominator);
+		public static Fraction operator >>(Fraction left, Fraction other) => new(left.numerator >> (int)other.numerator, left.numerator >> (int)other.denominator);
+		public static Fraction operator >>>(Fraction left, Fraction other) => new(left.numerator >>> (int)other.numerator, left.numerator >>> (int)other.denominator);
 		public static Fraction operator &(Fraction left, Fraction other) => new(left.numerator & other.numerator, left.denominator & other.denominator);
 		public static Fraction operator ^(Fraction left, Fraction other) => new(left.numerator ^ other.numerator, left.denominator ^ other.denominator);
 		public static Fraction operator |(Fraction left, Fraction other) => new(left.numerator | other.numerator, left.denominator | other.denominator);

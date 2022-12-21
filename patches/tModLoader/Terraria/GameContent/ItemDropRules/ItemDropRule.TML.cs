@@ -19,6 +19,7 @@ namespace Terraria.GameContent.ItemDropRules
 			// TODO, support dynamic NPC value, expert/master scaling etc. Not sure the best way to display/handle it.
 			return Coins((long)npc.value, withRandomBonus: true);
 		}
+		public static IItemDropRule CoinsBasedOnNPCValue<T>() where T : ModNPC => CoinsBasedOnNPCValue(ModContent.NPCType<T>());
 		public static IItemDropRule AlwaysAtleastOneSuccess(params IItemDropRule[] rules) => new AlwaysAtleastOneSuccessDropRule(rules);
 
 		// overloads
