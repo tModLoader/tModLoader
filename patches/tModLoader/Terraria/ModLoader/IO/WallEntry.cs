@@ -1,18 +1,17 @@
-﻿using System;
+using System;
 using Terraria.ModLoader.Default;
 
-namespace Terraria.ModLoader.IO
+namespace Terraria.ModLoader.IO;
+
+internal class WallEntry : ModEntry
 {
-	internal class WallEntry : ModEntry
-	{
-		public static Func<TagCompound, WallEntry> DESERIALIZER = tag => new WallEntry(tag);
+	public static Func<TagCompound, WallEntry> DESERIALIZER = tag => new WallEntry(tag);
 
-		public WallEntry(ModWall wall) : base(wall) { }
+	public WallEntry(ModWall wall) : base(wall) { }
 
-		public WallEntry(TagCompound tag) : base(tag) {}
+	public WallEntry(TagCompound tag) : base(tag) {}
 
-		public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedWall>().FullName;
+	public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedWall>().FullName;
 
-		protected override string GetUnloadedType(ushort type) => DefaultUnloadedType;
-	}
+	protected override string GetUnloadedType(ushort type) => DefaultUnloadedType;
 }

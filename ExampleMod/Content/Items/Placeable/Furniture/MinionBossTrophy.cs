@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Minion Boss Trophy");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {
@@ -19,7 +18,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 
 			Item.width = 32;
 			Item.height = 32;
-			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(0, 1);
 		}

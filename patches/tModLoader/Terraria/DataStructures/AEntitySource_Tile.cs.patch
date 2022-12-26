@@ -5,18 +5,18 @@
  
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public abstract class AEntitySource_Tile : IEntitySource
- 	{
- 		public readonly Point TileCoords;
+ namespace Terraria.DataStructures;
  
--		public AEntitySource_Tile(int tileCoordsX, int tileCoordsY) {
-+		public string? Context { get; }
+ public abstract class AEntitySource_Tile : IEntitySource
+ {
+ 	public readonly Point TileCoords;
+ 
+-	public AEntitySource_Tile(int tileCoordsX, int tileCoordsY)
++	public string? Context { get; }
 +
-+		public AEntitySource_Tile(int tileCoordsX, int tileCoordsY, string? context) {
- 			TileCoords = new Point(tileCoordsX, tileCoordsY);
-+			Context = null;
- 		}
++	public AEntitySource_Tile(int tileCoordsX, int tileCoordsY, string? context)
+ 	{
+ 		TileCoords = new Point(tileCoordsX, tileCoordsY);
++		Context = null;
  	}
  }

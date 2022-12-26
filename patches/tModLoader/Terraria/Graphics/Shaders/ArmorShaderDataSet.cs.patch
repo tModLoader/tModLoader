@@ -1,15 +1,16 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Shaders/ArmorShaderDataSet.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/ArmorShaderDataSet.cs
-@@ -5,9 +_,9 @@
- {
- 	public class ArmorShaderDataSet
- 	{
--		protected List<ArmorShaderData> _shaderData = new List<ArmorShaderData>();
-+		internal List<ArmorShaderData> _shaderData = new List<ArmorShaderData>();
--		protected Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
-+		internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
--		protected int _shaderDataCount;
-+		internal int _shaderDataCount;
+@@ -5,9 +_,10 @@
  
- 		public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData {
- 			_shaderLookupDictionary[itemId] = ++_shaderDataCount;
+ public class ArmorShaderDataSet
+ {
++	//TML: 'protected' -> 'protected internal'.
+-	protected List<ArmorShaderData> _shaderData = new List<ArmorShaderData>();
++	protected internal List<ArmorShaderData> _shaderData = new List<ArmorShaderData>();
+-	protected Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
++	protected internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
+-	protected int _shaderDataCount;
++	protected internal int _shaderDataCount;
+ 
+ 	public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData
+ 	{

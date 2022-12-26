@@ -90,7 +90,7 @@ namespace ExampleMod.Content.NPCs
 				return false;
 
 			// can't spawn if the sundial is active
-			if (Main.fastForwardTime)
+			if (Main.IsFastForwardingTime())
 				return false;
 
 			// can spawn if daytime, and between the spawn and despawn times
@@ -203,7 +203,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
+		public override bool CanTownNPCSpawn(int numTownNPCs) {
 			return false; // This should always be false, because we spawn in the Traveling Merchant manually
 		}
 

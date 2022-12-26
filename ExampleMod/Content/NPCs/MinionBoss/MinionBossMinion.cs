@@ -23,12 +23,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public bool HasParent => ParentIndex > -1;
 
-		public int PositionIndex {
-			get => (int)NPC.ai[1] - 1;
-			set => NPC.ai[1] = value + 1;
+		public float PositionOffset {
+			get => NPC.ai[1];
+			set => NPC.ai[1] = value;
 		}
-
-		public bool HasPosition => PositionIndex > -1;
 
 		public const float RotationTimerMax = 360;
 		public ref float RotationTimer => ref NPC.ai[2];
@@ -137,7 +135,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		private bool Despawn() {
 			if (Main.netMode != NetmodeID.MultiplayerClient &&
-				(!HasPosition || !HasParent || !Main.npc[ParentIndex].active || Main.npc[ParentIndex].type != BodyType())) {
+				(!HasParent || !Main.npc[ParentIndex].active || Main.npc[ParentIndex].type != BodyType())) {
 				// * Not spawned by the boss body (didn't assign a position and parent) or
 				// * Parent isn't active or
 				// * Parent isn't the body
@@ -165,7 +163,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// This basically turns the NPCs PositionIndex into a number between 0f and TwoPi to determine where around
 			// the main body it is positioned at
-			float rad = (float)PositionIndex / MinionBossBody.MinionCount() * MathHelper.TwoPi;
+			float rad = (float)PositionOffset * MathHelper.TwoPi;
 
 			// Add some slight uniform rotation to make the eyes move, giving a chance to touch the player and thus helping melee players
 			RotationTimer += 0.5f;

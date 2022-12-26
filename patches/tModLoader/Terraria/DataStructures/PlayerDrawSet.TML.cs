@@ -1,8 +1,7 @@
-namespace Terraria.DataStructures
+namespace Terraria.DataStructures;
+
+public partial struct PlayerDrawSet
 {
-	public partial struct PlayerDrawSet
-	{
-		public bool headOnlyRender;
-		public bool isBottomOverriden;
-	}
+	public bool headOnlyRender;
+	public bool isBottomOverriden;
 }

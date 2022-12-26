@@ -15,10 +15,7 @@ public class ModNPCTest : ModNPC
 		Console.Write(drawOffsetY);
 		Console.Write(banner);
 		Console.Write(bannerItem);
-
-#if COMPILE_ERROR
 		Console.Write(bossBag);
-#endif
 	}
 
 	public override bool PreNPCLoot() { return true; /*empty*/ }
@@ -36,9 +33,17 @@ public class ModNPCTest : ModNPC
 		Vector2 screen = Main.screenPosition - Vector2.One * 6f;
 	}
 
-#if COMPILE_ERROR
+	public override bool CanTownNPCSpawn(int numTownNPCs, int money) => false;
+
 	public override string[] AltTextures => new string[0];
 
 	public override string TownNPCName() { return "Name"; }
-#endif
+
+	public override bool? CanHitNPC(NPC target) {
+		return null;
+	}
+
+	public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+	{
+	}
 }

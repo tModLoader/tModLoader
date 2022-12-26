@@ -3,16 +3,16 @@
 @@ -1,11 +_,13 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_ItemUse_WithAmmo : EntitySource_ItemUse
- 	{
- 		public readonly int AmmoItemIdUsed;
+ namespace Terraria.DataStructures;
  
--		public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed)
--			: base(entity, item) {
-+		public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed, string? context = null)
-+			: base(entity, item, context) {
- 			AmmoItemIdUsed = ammoItemIdUsed;
- 		}
+ public class EntitySource_ItemUse_WithAmmo : EntitySource_ItemUse
+ {
+ 	public readonly int AmmoItemIdUsed;
+ 
+-	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed)
+-		: base(entity, item)
++	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed, string? context = null)
++		: base(entity, item, context)
+ 	{
+ 		AmmoItemIdUsed = ammoItemIdUsed;
  	}

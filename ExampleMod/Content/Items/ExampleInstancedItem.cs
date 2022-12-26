@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.Creative;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {
@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Items
 			return clone;
 		}
 
-		public override void OnCreate(ItemCreationContext context) {
+		public override void OnCreated(ItemCreationContext context) {
 			GenerateNewColors();
 		}
 

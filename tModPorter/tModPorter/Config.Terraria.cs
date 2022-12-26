@@ -18,6 +18,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.Tile", from: "wall",			to: "WallType");
 		RenameInstanceField("Terraria.Tile", from: "wallFrameX",	to: "WallFrameX");
 		RenameInstanceField("Terraria.Tile", from: "wallFrameY",	to: "WallFrameY");
+		RenameInstanceField("Terraria.Item", from: "canBePlacedInVanityRegardlessOfConditions",	to: "hasVanityEffects");
 
 		RefactorInstanceMethodCall("Terraria.Tile", "active",			GetterSetterToProperty("HasTile"));
 		RefactorInstanceMethodCall("Terraria.Tile", "inActive",			GetterSetterToProperty("IsActuated"));
@@ -48,7 +49,12 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
 		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		Comment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
-		RenameStaticField("Terraria.ID.DustID", from: "Fire", to: "Torch");
+		RenameStaticField("Terraria.ID.DustID",		from: "Fire",			to: "Torch");
+		RenameStaticField("Terraria.ID.MessageID",	from: "SendNPCBuffs",	to: "NPCBuffs");
+		RenameStaticField("Terraria.ID.MessageID",	from: "Unlock",			to: "LockAndUnlock");
+		RenameStaticField("Terraria.ID.MessageID",	from: "StartPlaying",	to: "InitialSpawn");
+		RenameStaticField("Terraria.ID.MessageID",	from: "SpawnBoss",		to: "SpawnBossUseLicenseStartEvent");
+		RenameStaticField("Terraria.ID.MessageID",	from: "Teleport",		to: "TeleportEntity");
 
 		RenameStaticField("Terraria.Tile", from: "Liquid_Water",		to: "Water",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Honey",		to: "Honey",			newType: "Terraria.ID.LiquidID");
@@ -89,6 +95,10 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"minionKB",			DamageModifier("Summon",	"GetKnockback", "Base"));
 		RefactorInstanceMember("Terraria.Player",		"armorPenetration",	DamageModifier("Generic",	"GetArmorPenetration"));
 		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
+
+		RefactorInstanceMethodCall("Terraria.Player", "VanillaUpdateEquip",	Removed("Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots)"));
+
+		RefactorInstanceMember("Terraria.Main", "fastForwardTime", Removed("Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk"));
 
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingUp",	to: "HoldUp");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingOut",	to: "Shoot");
@@ -161,11 +171,15 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "thrownCost33",		to: "ThrownCost33");
 		RenameInstanceField("Terraria.Player",	from: "thrownCost50",		to: "ThrownCost50");
 		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
+		RenameInstanceField("Terraria.Player",	from: "discount",			to: "discountAvailable");
+
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
+		RenameMethod("Terraria.Item",		from: "DefaultToPlacableWall",	to: "DefaultToPlaceableWall");
 		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
 		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage",		newType: "Terraria.Chat.ChatHelper");
+		RenameMethod("Terraria.Player",		from: "IsAValidEquipmentSlotForIteration", to: "IsItemSlotUnlockedAndUsable");
 
 		RenameMethod("Terraria.Main",		from: "PlayTrackedSound",		to: "PlaySound");
 		// sound refactors don't rename to SoundEngine because the fact that it's on Main lets us handle SoundID.Roar -> WormDig and SoundID.Splash -> SplashWeak properly (style 1 default)
@@ -174,6 +188,24 @@ public static partial class Config
 
 		RenameMethod("Terraria.Main", from: "GetActiveSound", to: "GetActiveSound", newType: "Terraria.Audio.SoundEngine");
 		RefactorStaticMethodCall("Terraria.Audio.SoundEngine", "GetActiveSound", ToTryGet("TryGetActiveSound"));
+
+		RenameType("Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerResourcesDisplaySet");
+
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageSands", Comment("Suggestion: Suffocate"));
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageOther", Comment("Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding"));
+		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageVines", Comment("Suggestion: TouchDamageImmediate and TouchDamageDestroyTile"));
+
+
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnMouseDown",	to: "OnLeftMouseDown");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnMouseUp",		to: "OnLeftMouseUp");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnClick",		to: "OnLeftClick");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnDoubleClick",	to: "OnLeftDoubleClick");
+		RenameMethod("Terraria.UI.UIElement",			from: "MouseDown",		to: "LeftMouseDown");
+		RenameMethod("Terraria.UI.UIElement",			from: "MouseUp",		to: "LeftMouseUp");
+		RenameMethod("Terraria.UI.UIElement",			from: "Click",			to: "LeftClick");
+		RenameMethod("Terraria.UI.UIElement",			from: "DoubleClick",	to: "LeftDoubleClick");
+
+		AddWorldGenToGenVars();
 	}
 
 	private static void AddTextureRenames() {
@@ -216,6 +248,157 @@ public static partial class Config
 		RenameMultipleTextures(43,	s => $"chain{s}Texture",			s => $"Chain{s}");
 		RenameMultipleTextures(18,	s => $"inventoryBack{s}Texture",	s => $"InventoryBack{s}");
 		RenameMultipleTextures(3,	s => $"sun{s}Texture",				s => $"Sun{s}");
+	}
+
+	private static void AddWorldGenToGenVars() {
+		static void RenameGenVar(string name) => RenameStaticField("Terraria.WorldGen", name, name, "Terraria.WorldBuilding.GenVars");
+
+		RenameGenVar("configuration");
+		RenameGenVar("structures");
+		RenameGenVar("copper");
+		RenameGenVar("iron");
+		RenameGenVar("silver");
+		RenameGenVar("gold");
+		RenameGenVar("copperBar");
+		RenameGenVar("ironBar");
+		RenameGenVar("silverBar");
+		RenameGenVar("goldBar");
+		RenameGenVar("mossTile");
+		RenameGenVar("mossWall");
+		RenameGenVar("lavaLine");
+		RenameGenVar("waterLine");
+		RenameGenVar("worldSurfaceLow");
+		RenameGenVar("worldSurface");
+		RenameGenVar("worldSurfaceHigh");
+		RenameGenVar("rockLayerLow");
+		RenameGenVar("rockLayer");
+		RenameGenVar("rockLayerHigh");
+		RenameGenVar("snowTop");
+		RenameGenVar("snowBottom");
+		RenameGenVar("snowOriginLeft");
+		RenameGenVar("snowOriginRight");
+		RenameGenVar("snowMinX");
+		RenameGenVar("snowMaxX");
+		RenameGenVar("leftBeachEnd");
+		RenameGenVar("rightBeachStart");
+		RenameGenVar("beachBordersWidth");
+		RenameGenVar("beachSandRandomCenter");
+		RenameGenVar("beachSandRandomWidthRange");
+		RenameGenVar("beachSandDungeonExtraWidth");
+		RenameGenVar("beachSandJungleExtraWidth");
+		RenameGenVar("shellStartXLeft");
+		RenameGenVar("shellStartYLeft");
+		RenameGenVar("shellStartXRight");
+		RenameGenVar("shellStartYRight");
+		RenameGenVar("oceanWaterStartRandomMin");
+		RenameGenVar("oceanWaterStartRandomMax");
+		RenameGenVar("oceanWaterForcedJungleLength");
+		RenameGenVar("evilBiomeBeachAvoidance");
+		RenameGenVar("evilBiomeAvoidanceMidFixer");
+		RenameGenVar("lakesBeachAvoidance");
+		RenameGenVar("smallHolesBeachAvoidance");
+		RenameGenVar("surfaceCavesBeachAvoidance2");
+		RenameGenVar("maxOceanCaveTreasure");
+		RenameGenVar("numOceanCaveTreasure");
+		RenameGenVar("oceanCaveTreasure");
+		RenameGenVar("skipDesertTileCheck");
+		RenameGenVar("UndergroundDesertLocation");
+		RenameGenVar("UndergroundDesertHiveLocation");
+		RenameGenVar("desertHiveHigh");
+		RenameGenVar("desertHiveLow");
+		RenameGenVar("desertHiveLeft");
+		RenameGenVar("desertHiveRight");
+		RenameGenVar("numLarva");
+		RenameGenVar("larvaY");
+		RenameGenVar("larvaX");
+		RenameGenVar("numPyr");
+		RenameGenVar("PyrX");
+		RenameGenVar("PyrY");
+		RenameGenVar("jungleOriginX");
+		RenameGenVar("jungleMinX");
+		RenameGenVar("jungleMaxX");
+		RenameGenVar("JungleX");
+		RenameGenVar("jungleHut");
+		RenameGenVar("mudWall");
+		RenameGenVar("JungleItemCount");
+		RenameGenVar("JChestX");
+		RenameGenVar("JChestY");
+		RenameGenVar("numJChests");
+		RenameGenVar("tLeft");
+		RenameGenVar("tRight");
+		RenameGenVar("tTop");
+		RenameGenVar("tBottom");
+		RenameGenVar("tRooms");
+		RenameGenVar("lAltarX");
+		RenameGenVar("lAltarY");
+		RenameGenVar("dungeonSide");
+		RenameGenVar("dungeonLocation");
+		RenameGenVar("dungeonLake");
+		RenameGenVar("crackedType");
+		RenameGenVar("dungeonX");
+		RenameGenVar("dungeonY");
+		RenameGenVar("lastDungeonHall");
+		RenameGenVar("maxDRooms");
+		RenameGenVar("numDRooms");
+		RenameGenVar("dRoomX");
+		RenameGenVar("dRoomY");
+		RenameGenVar("dRoomSize");
+		RenameGenVar("dRoomTreasure");
+		RenameGenVar("dRoomL");
+		RenameGenVar("dRoomR");
+		RenameGenVar("dRoomT");
+		RenameGenVar("dRoomB");
+		RenameGenVar("numDDoors");
+		RenameGenVar("DDoorX");
+		RenameGenVar("DDoorY");
+		RenameGenVar("DDoorPos");
+		RenameGenVar("numDungeonPlatforms");
+		RenameGenVar("dungeonPlatformX");
+		RenameGenVar("dungeonPlatformY");
+		RenameGenVar("dEnteranceX");
+		RenameGenVar("dSurface");
+		RenameGenVar("dxStrength1");
+		RenameGenVar("dyStrength1");
+		RenameGenVar("dxStrength2");
+		RenameGenVar("dyStrength2");
+		RenameGenVar("dMinX");
+		RenameGenVar("dMaxX");
+		RenameGenVar("dMinY");
+		RenameGenVar("dMaxY");
+		RenameGenVar("skyLakes");
+		RenameGenVar("generatedShadowKey");
+		RenameGenVar("numIslandHouses");
+		RenameStaticField("Terraria.WorldGen", "houseCount", "skyIslandHouseCount", "Terraria.WorldBuilding.GenVars");
+		RenameGenVar("skyLake");
+		RenameGenVar("floatingIslandHouseX");
+		RenameGenVar("floatingIslandHouseY");
+		RenameGenVar("floatingIslandStyle");
+		RenameGenVar("numMCaves");
+		RenameGenVar("mCaveX");
+		RenameGenVar("mCaveY");
+		RenameGenVar("maxTunnels");
+		RenameGenVar("numTunnels");
+		RenameGenVar("tunnelX");
+		RenameGenVar("maxOrePatch");
+		RenameGenVar("numOrePatch");
+		RenameGenVar("orePatchX");
+		RenameGenVar("maxMushroomBiomes");
+		RenameGenVar("numMushroomBiomes");
+		RenameGenVar("mushroomBiomesPosition");
+		RenameGenVar("logX");
+		RenameGenVar("logY");
+		RenameGenVar("maxLakes");
+		RenameGenVar("numLakes");
+		RenameGenVar("LakeX");
+		RenameGenVar("maxOasis");
+		RenameGenVar("numOasis");
+		RenameGenVar("oasisPosition");
+		RenameGenVar("oasisWidth");
+		RenameGenVar("oasisHeight");
+		RenameGenVar("hellChest");
+		RenameGenVar("hellChestItem");
+		RenameGenVar("statueList");
+		RenameGenVar("StatuesWithTraps");
 	}
 }
 

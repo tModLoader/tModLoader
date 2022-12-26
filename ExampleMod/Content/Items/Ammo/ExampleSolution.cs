@@ -1,12 +1,10 @@
-﻿using ExampleMod.Content.Items;
+﻿using System;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Ammo
@@ -19,18 +17,13 @@ namespace ExampleMod.Content.Items.Ammo
 			DisplayName.SetDefault("Monochromatic Solution");
 			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {
-			Item.shoot = ModContent.ProjectileType<ExampleSolutionProjectile>() - ProjectileID.PureSpray;
-			Item.ammo = AmmoID.Solution;
-			Item.width = 10;
-			Item.height = 12;
+			Item.DefaultToSolution(ModContent.ProjectileType<ExampleSolutionProjectile>());
 			Item.value = Item.buyPrice(0, 0, 25);
 			Item.rare = ItemRarityID.Orange;
-			Item.maxStack = 999;
-			Item.consumable = true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -53,14 +46,9 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			Projectile.width = 6;
-			Projectile.height = 6;
-			Projectile.friendly = true;
-			Projectile.alpha = 255;
-			Projectile.penetrate = -1;
-			Projectile.extraUpdates = 2;
-			Projectile.tileCollide = false;
-			Projectile.ignoreWater = true;
+			// This method quickly sets the projectile properties to match other sprays.
+			Projectile.DefaultToSpray();
+			Projectile.aiStyle = 0; // Here we set aiStyle back to 0 because we have custom AI code
 		}
 
 		public override void AI() {

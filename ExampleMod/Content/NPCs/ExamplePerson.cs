@@ -125,7 +125,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) { // Requirements for the town NPC to spawn.
+		public override bool CanTownNPCSpawn(int numTownNPCs) { // Requirements for the town NPC to spawn.
 			for (int k = 0; k < 255; k++) {
 				Player player = Main.player[k];
 				if (!player.active) {

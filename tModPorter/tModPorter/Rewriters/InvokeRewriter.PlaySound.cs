@@ -12,7 +12,11 @@ partial class InvokeRewriter
 {
 	private static IDictionary<int, string> _LegacySoundIDs;
 	private static string LookupLegacySoundID(Compilation comp, int id) {
-		_LegacySoundIDs ??= comp.GetTypeByMetadataName("Terraria.ID.LegacySoundIDs").GetMembers().OfType<IFieldSymbol>().ToDictionary(f => (int)f.ConstantValue, f => f.Name);
+		_LegacySoundIDs ??= comp.GetTypeByMetadataName("Terraria.ID.LegacySoundIDs")
+			.GetMembers()
+			.OfType<IFieldSymbol>()
+			.Where(f => f.IsConst)
+			.ToDictionary(f => (int)f.ConstantValue, f => f.Name);
 		return _LegacySoundIDs.TryGetValue(id, out var name) ? name : null;
 	}
 

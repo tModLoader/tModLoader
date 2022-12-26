@@ -3,18 +3,18 @@
 @@ -1,11 +_,16 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_TileEntity : IEntitySource
- 	{
- 		public TileEntity TileEntity;
+ namespace Terraria.DataStructures;
  
--		public EntitySource_TileEntity(TileEntity tileEntity) {
-+		public string? Context { get; }
+ public class EntitySource_TileEntity : IEntitySource
+ {
+ 	public TileEntity TileEntity;
+ 
+-	public EntitySource_TileEntity(TileEntity tileEntity)
++	public string? Context { get; }
 +
-+		public EntitySource_TileEntity(TileEntity tileEntity, string? context = null) {
- 			TileEntity = tileEntity;
-+			Context = context;
- 		}
++	public EntitySource_TileEntity(TileEntity tileEntity, string? context = null)
+ 	{
+ 		TileEntity = tileEntity;
++		Context = context;
  	}
  }

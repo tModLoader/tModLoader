@@ -94,7 +94,7 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		list.AddLast(rewrite);
 	}
 
-	protected bool IdentifierNameInvalid(IdentifierNameSyntax node, out IInvalidOperation op, out ITypeSymbol targetType, out bool isInvoke) {
+	protected bool IdentifierNameInvalid(IdentifierNameSyntax node, out IOperation op, out ITypeSymbol targetType, out bool isInvoke) {
 		switch (node.Parent) {
 			case MemberAccessExpressionSyntax memberAccess when node == memberAccess.Name && MemberReferenceInvalid(memberAccess, out op, out isInvoke):
 				targetType = model.GetTypeInfo(memberAccess.Expression).Type;
@@ -122,19 +122,22 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		return model.GetSymbolInfo(node).Symbol == null;
 	}
 
-	protected bool MemberReferenceInvalid(SyntaxNode memberRefExpr, out IInvalidOperation op, out bool isInvoke) {
+	protected bool MemberReferenceInvalid(SyntaxNode memberRefExpr, out IOperation op, out bool isInvoke) {
 		// for MemberAccessExpressionSyntax and MemberBindingExpressionSyntax which are the target of InvocationExpressionSyntax, there is no operation for the member access, only the invocation
 		// We check that all the arguments for the invocation are valid as a way of determining that it's the member access which is causing the failure (though this may fail if they rely on generic type inference I guess?)
 		// If only there was a way to get 'member not found diagnostics...'
 		// A different option would be to find the target type of the invoke/member access and see if the named member is missing
 		if (memberRefExpr.Parent is InvocationExpressionSyntax invoke && memberRefExpr == invoke.Expression) {
 			isInvoke = true;
-			return (op = model.GetOperation(invoke) as IInvalidOperation) != null && invoke.ArgumentList.Arguments.All(arg => model.GetOperation(arg) is not IInvalidOperation);
+			op = model.GetOperation(invoke);
+			return IsInvalidOrObsolete(op) && invoke.ArgumentList.Arguments.All(arg => model.GetOperation(arg) is not IInvalidOperation);
 		}
 
 		isInvoke = false;
 		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
 	}
+
+	public static bool IsInvalidOrObsolete(IOperation op) => op is IInvalidOperation || op is IInvocationOperation invocation && invocation.TargetMethod.IsObsolete();
 
 	public static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
 		switch (expr) {

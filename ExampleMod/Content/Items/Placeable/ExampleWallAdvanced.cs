@@ -1,5 +1,4 @@
 using ExampleMod.Content.Tiles.Furniture;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -8,11 +7,11 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is an advanced modded wall.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
+			Item.ResearchUnlockCount = 400;
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToPlacableWall((ushort)ModContent.WallType<Walls.ExampleWallAdvanced>());
+			Item.DefaultToPlaceableWall(ModContent.WallType<Walls.ExampleWallAdvanced>());
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
