@@ -516,6 +516,14 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type)
  				DelBuff(i);
+@@ -3117,6 +_,7 @@
+ 			AddBuff(item.buffType, num);
+ 		}
+ 
++		if (item.consumable && ItemLoader.ConsumeItem(item, this))
+ 		item.stack--;
+ 		if (item.stack <= 0)
+ 			item.TurnToAir();
 @@ -3141,7 +_,13 @@
  			if (item.stack <= 0 || item.type <= 0 || !item.potion || item.healLife <= 0)
  				continue;
@@ -530,6 +538,15 @@
  			if (item.type == 227 && num4 < 0) {
  				num4 += 30;
  				if (num4 > 0)
+@@ -3175,6 +_,8 @@
+ 				ApplyPotionDelay(item);
+ 
+ 			ApplyLifeAndOrMana(item);
++
++			if (item.consumable && ItemLoader.ConsumeItem(item, this))
+ 			item.stack--;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
