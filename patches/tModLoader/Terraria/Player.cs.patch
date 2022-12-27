@@ -556,9 +556,12 @@
  		if (CountBuffs() == maxBuffs)
  			return;
  
-@@ -3238,7 +_,7 @@
+@@ -3237,8 +_,10 @@
+ 			if (num == 0)
  				num = 3600;
  
++			ItemLoader.UseItem(item, this);
++
  			AddBuff(item.buffType, num);
 -			if (item.consumable) {
 +			if (item.consumable && ItemLoader.ConsumeItem(item, this)) {
