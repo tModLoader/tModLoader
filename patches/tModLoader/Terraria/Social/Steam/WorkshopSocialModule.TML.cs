@@ -23,12 +23,11 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			// If mod is already installed, then we can view it's 
 			var existing = CheckIfUploaded(modFile);
 			if (existing == null)
 				return false;
 
-			// Update the subscribed mod to be the latest version published
+			// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 			SteamedWraps.Download(new Steamworks.PublishedFileId_t(ulong.Parse(existing.PublishId)), forceUpdate: true);
 
 			// Grab the tags from workshop.json

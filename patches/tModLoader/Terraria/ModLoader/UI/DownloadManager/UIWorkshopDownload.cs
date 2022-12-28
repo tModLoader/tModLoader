@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
