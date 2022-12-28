@@ -1191,17 +1191,6 @@
  
  		protected IEnumerator LoadContent_Deferred() {
  			yield return null;
-@@ -8485,6 +_,10 @@
- 			CacheSupportedDisplaySizes();
- 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
- 			ContentSamples.CommonlyUsedContentSamples.PrepareAfterEverythingElseLoaded();
-+
-+			// Populate Mod Browser to have it ready to go for player - Solxan
-+			// Saves 10 seconds wait in exchange for ~ 15 MB RAM @ 3,300 mods (~4.5 kB per mod). 15 MB persists after opening anyways.
-+			WorkshopHelper.QueryHelper.QueryWorkshop();
- 		}
- 
- 		private IEnumerator LoadMusic_InSteps() {
 @@ -8892,6 +_,8 @@
  
  					if (SceneMetrics.ActiveMusicBox == 86)

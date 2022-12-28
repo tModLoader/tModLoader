@@ -193,7 +193,7 @@ namespace Terraria.Social.Steam
 			internal static ModDownloadItem FindModDownloadItem(string modName)
 			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-			internal static bool QueryWorkshop(bool startupPreload = false) {
+			internal static bool QueryWorkshop() {
 				HiddenModCount = IncompleteModCount = 0;
 				TotalItemsQueried = 0;
 				Items.Clear();
@@ -201,9 +201,6 @@ namespace Terraria.Social.Steam
 				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
 				if (!SteamedWraps.SteamAvailable) {
-					if (startupPreload)
-						return false;
-
 					if (!SteamedWraps.TryInitViaGameServer()) {
 						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
 						return false;
@@ -215,21 +212,16 @@ namespace Terraria.Social.Steam
 					}
 				}
 
-				if (!new AQueryInstance() { preload = startupPreload }.QueryAllWorkshopItems())
+				if (!new AQueryInstance().QueryAllWorkshopItems())
 					return false;
 
 				AQueryInstance.InstalledMods = null;
 				return true;
 			}
 
-			internal static bool HandleError(EResult eResult, bool preloading) {
+			internal static bool HandleError(EResult eResult) {
 				if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
 					return true;
-
-				if (preloading) {
-					Items.Clear();
-					return false;
-				}
 
 				if (eResult == EResult.k_EResultAccessDenied) {
 					Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
@@ -321,7 +313,6 @@ namespace Terraria.Social.Steam
 				protected uint _queryReturnCount;
 				protected string _nextCursor;
 				internal List<ulong> ugcChildren = new List<ulong>();
-				internal bool preload;
 
 				internal static IReadOnlyList<LocalMod> InstalledMods;
 
@@ -405,7 +396,7 @@ namespace Terraria.Social.Steam
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
-					return HandleError(_primaryQueryResult, preload);
+					return HandleError(_primaryQueryResult);
 				}
 
 				private void ProcessPageResult() {
