@@ -153,8 +153,18 @@ namespace Terraria.Social.Steam
 				uiProgress?.PrepUIForDownload(item.DisplayName);
 				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 				SteamedWraps.Download(publishId, uiProgress, forceUpdate);
+
+				// Due to issues with Steam moving files from downloading folder to installed folder,
+				// there can be some latency in detecting it's installed. - Solxan
+				Thread.Sleep(1000);
+
+				// Add installed info to the downloaded item
+				var localMod = ModOrganizer.FindWorkshopMods().FirstOrDefault(m => m.Name == item.ModName);
+				QueryHelper.FindModDownloadItem(item.ModName).Installed = localMod;
 			}
 
+			Interface.modBrowser.PopulateModBrowser(uiOnly: true);
+			Interface.modBrowser.UpdateNeeded = true;
 			uiProgress?.Leave(refreshBrowser: true);
 
 			if (reloadWhenDone)
@@ -180,17 +190,10 @@ namespace Terraria.Social.Steam
 
 			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
 
-			internal static bool FetchDownloadItems() {
-				if (!QueryWorkshop())
-					return false;
-
-				return true;
-			}
-
 			internal static ModDownloadItem FindModDownloadItem(string modName)
 			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-			internal static bool QueryWorkshop() {
+			internal static bool QueryWorkshop(bool startupPreload = false) {
 				HiddenModCount = IncompleteModCount = 0;
 				TotalItemsQueried = 0;
 				Items.Clear();
@@ -198,6 +201,9 @@ namespace Terraria.Social.Steam
 				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
 				if (!SteamedWraps.SteamAvailable) {
+					if (startupPreload)
+						return false;
+
 					if (!SteamedWraps.TryInitViaGameServer()) {
 						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
 						return false;
@@ -209,16 +215,21 @@ namespace Terraria.Social.Steam
 					}
 				}
 
-				if (!new AQueryInstance().QueryAllWorkshopItems())
+				if (!new AQueryInstance() { preload = startupPreload }.QueryAllWorkshopItems())
 					return false;
 
 				AQueryInstance.InstalledMods = null;
 				return true;
 			}
 
-			internal static bool HandleError(EResult eResult) {
+			internal static bool HandleError(EResult eResult, bool preloading) {
 				if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
 					return true;
+
+				if (preloading) {
+					Items.Clear();
+					return false;
+				}
 
 				if (eResult == EResult.k_EResultAccessDenied) {
 					Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
@@ -259,7 +270,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool CheckWorkshopConnection() {
 				// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-				if (!FetchDownloadItems())
+				if (!QueryWorkshop())
 					return false;
 
 				// If there are zero items on workshop, than return true.
@@ -310,6 +321,7 @@ namespace Terraria.Social.Steam
 				protected uint _queryReturnCount;
 				protected string _nextCursor;
 				internal List<ulong> ugcChildren = new List<ulong>();
+				internal bool preload;
 
 				internal static IReadOnlyList<LocalMod> InstalledMods;
 
@@ -393,7 +405,7 @@ namespace Terraria.Social.Steam
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
-					return HandleError(_primaryQueryResult);
+					return HandleError(_primaryQueryResult, preload);
 				}
 
 				private void ProcessPageResult() {

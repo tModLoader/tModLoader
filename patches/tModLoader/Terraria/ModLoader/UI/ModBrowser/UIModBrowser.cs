@@ -180,7 +180,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private void ReloadList(UIMouseEvent evt, UIElement listeningElement) {
 			if (Loading) return;
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			PopulateModBrowser();
+			PopulateModBrowser(uiOnly: false);
 		}
 
 		// TODO if we store a browser 'state' we can probably refactor this
@@ -203,11 +203,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public override void OnActivate() {
 			Main.clrInput();
 			if (!Loading && _items.Count <= 0) {
-				PopulateModBrowser();
+				if (WorkshopHelper.QueryHelper.Items.Count == 0)
+					PopulateModBrowser(uiOnly: false);
+				else
+					PopulateModBrowser(uiOnly: true);
 			}
 		}
 
-		internal void PopulateModBrowser() {
+		internal void PopulateModBrowser(bool uiOnly) {
 			// Initialize
 			Loading = true;
 			SpecialModPackFilter = null;
@@ -223,14 +226,14 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 			// Asynchronous load the Mod Browser
 			Task.Run(() => {
-				InnerPopulateModBrowser();
+				InnerPopulateModBrowser(uiOnly: uiOnly);
 				Loading = false;
 				_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 			});
 		}
 
-		internal bool InnerPopulateModBrowser() {
-			if (!WorkshopHelper.QueryHelper.FetchDownloadItems())
+		internal bool InnerPopulateModBrowser(bool uiOnly) {
+			if (!uiOnly && !WorkshopHelper.QueryHelper.QueryWorkshop())
 				return false;
 
 			foreach (var item in WorkshopHelper.QueryHelper.Items) {
@@ -276,6 +279,15 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		internal static void LogModBrowserException(Exception e) {
 			Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
+		}
+
+		internal static void CleanupDeletedItem(string modName) {
+			if (WorkshopHelper.QueryHelper.Items.Count > 0) {
+				WorkshopHelper.QueryHelper.FindModDownloadItem(modName).Installed = null;
+				WorkshopHelper.QueryHelper.FindModDownloadItem(modName).NeedsGameRestart = true;
+				Task.Run(() => { Interface.modBrowser.PopulateModBrowser(uiOnly: true); });
+				Interface.modBrowser.UpdateNeeded = true;
+			}
 		}
 	}
 }
