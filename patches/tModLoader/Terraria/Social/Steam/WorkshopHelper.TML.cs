@@ -153,8 +153,18 @@ namespace Terraria.Social.Steam
 				uiProgress?.PrepUIForDownload(item.DisplayName);
 				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 				SteamedWraps.Download(publishId, uiProgress, forceUpdate);
+
+				// Due to issues with Steam moving files from downloading folder to installed folder,
+				// there can be some latency in detecting it's installed. - Solxan
+				Thread.Sleep(1000);
+
+				// Add installed info to the downloaded item
+				var localMod = ModOrganizer.FindWorkshopMods().FirstOrDefault(m => m.Name == item.ModName);
+				QueryHelper.FindModDownloadItem(item.ModName).Installed = localMod;
 			}
 
+			Interface.modBrowser.PopulateModBrowser(uiOnly: true);
+			Interface.modBrowser.UpdateNeeded = true;
 			uiProgress?.Leave(refreshBrowser: true);
 
 			if (reloadWhenDone)
@@ -179,13 +189,6 @@ namespace Terraria.Social.Steam
 			internal static uint TotalItemsQueried;
 
 			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
-
-			internal static bool FetchDownloadItems() {
-				if (!QueryWorkshop())
-					return false;
-
-				return true;
-			}
 
 			internal static ModDownloadItem FindModDownloadItem(string modName)
 			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
@@ -259,7 +262,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool CheckWorkshopConnection() {
 				// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-				if (!FetchDownloadItems())
+				if (!QueryWorkshop())
 					return false;
 
 				// If there are zero items on workshop, than return true.

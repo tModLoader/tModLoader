@@ -184,8 +184,7 @@ namespace Terraria.ModLoader.UI
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
 			ModOrganizer.DeleteMod(_localMod);
-
-			Task.Run(() => { Interface.modBrowser.InnerPopulateModBrowser(); });
+			ModBrowser.UIModBrowser.CleanupDeletedItem(_modName);
 
 			Main.menuMode = _gotoMenu;
 		}
