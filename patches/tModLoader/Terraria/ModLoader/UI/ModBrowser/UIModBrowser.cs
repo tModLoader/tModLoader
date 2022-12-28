@@ -69,6 +69,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			_clearButton.SetText(Language.GetTextValue("tModLoader.MBClearSpecialFilter", value));
 			_specialModPackFilterTitle = value;
 		}
+
+		internal static void CleanupDeletedItem(string modName) {
+			if (WorkshopHelper.QueryHelper.Items.Count > 0) {
+				WorkshopHelper.QueryHelper.FindModDownloadItem(modName).Installed = null;
+				WorkshopHelper.QueryHelper.FindModDownloadItem(modName).NeedsGameRestart = true;
+				Task.Run(() => { Interface.modBrowser.PopulateModBrowser(uiOnly: true); });
+				Interface.modBrowser.UpdateNeeded = true;
+			}
+		}
 	}
 
 	public List<string> SpecialModPackFilter {
