@@ -1176,6 +1176,19 @@
  					float num2 = musicFade[i] * musicVolume * num;
  					if (i >= 62 && i <= 88) {
  						num2 *= 0.9f;
+@@ -9022,7 +_,11 @@
+ 			bool flag14 = false;
+ 			bool flag15 = false;
+ 			bool flag16 = false;
+-			if (!showSplash) {
++
++			int modMusic = -1;
++			ModLoader.SceneEffectPriority modPriority = ModLoader.SceneEffectPriority.None;
++
++			if (!gameMenu) { // showSplash -> gameMenu. Fix crash iterating active NPCs while unloading mods
+ 				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
+ 				int num = 5000;
+ 				for (int i = 0; i < 200; i++) {
 @@ -9129,17 +_,22 @@
  							break;
  					}
@@ -1193,14 +1206,133 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
  					if (rectangle.Intersects(value)) {
-+						//TODO: Implement modMusic and modPriority
-+						//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.SceneEffectPriority > modPriority)) {
-+						//	modMusic = npc[i].modNPC.music;
-+						//	modPriority = npc[i].modNPC.SceneEffectPriority;
-+						//}
++						//TODO: Can we simplify these two Decide music methods?
++						if (npc[i].ModNPC != null && npc[i].ModNPC.Music >= 0 && (modMusic < 0 || npc[i].ModNPC.SceneEffectPriority > modPriority)) {
++							modMusic = npc[i].ModNPC.Music;
++							modPriority = npc[i].ModNPC.SceneEffectPriority;
++						}
  						switch (num2) {
  							case 1:
  								flag = true;
+@@ -9194,6 +_,8 @@
+ 						break;
+ 					}
+ 				}
++
++				LoaderManager.Get<SceneEffectLoader>().UpdateMusic(ref modMusic, ref modPriority);
+ 			}
+ 
+ 			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
+@@ -9201,6 +_,30 @@
+ 				newMusic = 0;
+ 				return;
+ 			}
++
++			//TODO: Re-implment game menu/menuloader audio in Other World soundtrack???
++			/*if (gameMenu) {
++				if (netMode != 2) {
++					if (WorldGen.drunkWorldGen) {
++						newMusic = 60;
++					}
++					else if (menuMode == 3000) {
++						newMusic = 89;
++					}
++					else {
++						newMusic = MenuLoader.CurrentMenu.Music;
++					}
++					if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
++						newMusic = 51;
++						if (musicNoCrossFade[51])
++							musicFade[51] = 1f;
++					}
++				}
++				else {
++					newMusic = 0;
++				}
++				return;
++			}*/
+ 
+ 			float num3 = maxTilesX / 4200;
+ 			num3 *= num3;
+@@ -9208,12 +_,18 @@
+ 			if (CreditsRollEvent.IsEventOngoing) {
+ 				newMusic = 89;
+ 			}
++			else if (modPriority >= SceneEffectPriority.BossHigh) { //Should this be before credits or nah?	
++				newMusic = modMusic;
++			}
+ 			else if (player[myPlayer].happyFunTorchTime) {
+ 				newMusic = 87;
+ 			}
+ 			else if (flag8) {
+ 				newMusic = 84;
+ 			}
++			else if (modPriority >= SceneEffectPriority.BossMedium) {
++				newMusic = modMusic;
++			}
+ 			else if (flag10) {
+ 				newMusic = 82;
+ 			}
+@@ -9223,6 +_,9 @@
+ 			else if (flag7) {
+ 				newMusic = 85;
+ 			}
++			else if (modPriority >= SceneEffectPriority.BossLow) {
++				newMusic = modMusic;
++			}
+ 			else if (flag15) {
+ 				newMusic = 80;
+ 			}
+@@ -9244,6 +_,9 @@
+ 			else if (flag6) {
+ 				newMusic = 81;
+ 			}
++			else if (modPriority >= SceneEffectPriority.Event) {
++				newMusic = modMusic;
++			}
+ 			else if (flag14) {
+ 				newMusic = 80;
+ 			}
+@@ -9258,6 +_,9 @@
+ 			}
+ 			else if (flag13) {
+ 				newMusic = 82;
++			}
++			else if (modPriority >= SceneEffectPriority.Environment) {
++				newMusic = modMusic;
+ 			}
+ 			else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
+ 				newMusic = 79;
+@@ -9271,6 +_,9 @@
+ 			else if (num4 < 1f) {
+ 				newMusic = 70;
+ 			}
++			else if (modPriority >= SceneEffectPriority.BiomeHigh) {
++				newMusic = modMusic;
++			}
+ 			else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
+ 				newMusic = 69;
+ 			}
+@@ -9300,6 +_,9 @@
+ 				else
+ 					newMusic = 75;
+ 			}
++			else if (modPriority >= SceneEffectPriority.BiomeMedium) {
++				newMusic = modMusic;
++			}
+ 			else if (player[myPlayer].ZoneMeteor) {
+ 				newMusic = 79;
+ 			}
+@@ -9315,6 +_,9 @@
+ 				else
+ 					newMusic = 72;
+ 			}
++			else if (modPriority >= SceneEffectPriority.BiomeLow) {
++				newMusic = modMusic;
++			}
+ 			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
+ 				if (player[myPlayer].ZoneHallow)
+ 					newMusic = 78;
 @@ -9397,7 +_,10 @@
  			if (lastMusicPlayed == 50)
  				musicNoCrossFade[51] = true;
