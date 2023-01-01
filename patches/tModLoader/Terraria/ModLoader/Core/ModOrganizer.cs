@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Core
 		internal static string commandLineModPack;
 
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
-		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
+		private static List<string> readFailures = new List<string>(); //TODO: Reflect these skipped Mods in the UI somehow.
 
 		internal static string lastLaunchedModsFilePath = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 		internal static List<(string ModName, Version previousVersion)> modsThatUpdatedSinceLastLaunch = new List<(string ModName, Version previousVersion)>();
@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.Core
 			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
 			if (!ignoreModsFolder) {
 				foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
-					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
+					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, devLocation: true);
 			}
 
 			// Load Mods from Workshop downloads
@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.Core
 					if (fileName == null)
 						continue;
 
-					AttemptLoadMod(fileName, ref mods, ref names, logDuplicates, false);
+					AttemptLoadMod(fileName, ref mods, ref names, logDuplicates, devLocation: false);
 				}
 			}
 
@@ -97,8 +97,8 @@ namespace Terraria.ModLoader.Core
 						};
 					}
 
-					if (BuildInfo.IsPreview && !devLocation && !mod.properties.playableOnPreview) {
-						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. Mod not available on Preview");
+					if (SkipModForPreviewNotPlayable(mod)) {
+						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. Preview Mod not available on Preview");
 						return false;
 					}
 				}
@@ -124,6 +124,18 @@ namespace Terraria.ModLoader.Core
 				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 			}
 			return true;
+		}
+
+		internal static bool IsModNotPreviewSupported(LocalMod mod) {
+			return BuildInfo.IsPreview && IsModFromSteam(mod.modFile.path) && !mod.properties.playableOnPreview;
+		}
+
+		internal static bool SkipModForPreviewNotPlayable(LocalMod mod) {
+			return IsModNotPreviewSupported(mod) && mod.properties.buildVersion.MajorMinor() > BuildInfo.stableVersion;
+		}
+
+		internal static bool IsModFromSteam(string modPath) {
+			return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		internal static IEnumerable<ulong> IdentifyWorkshopDependencies() {
@@ -614,7 +626,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info) {
 			info = null;
-			if (!parentDir.Contains(Path.Combine("steamapps", "workshop")))
+			if (!IsModFromSteam(parentDir))
 				return false;
 
 			string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
@@ -624,7 +636,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static string GetParentDir(string tmodPath) {
 			string parentDir = Directory.GetParent(tmodPath).ToString();
-			if (!tmodPath.Contains("workshop", StringComparison.InvariantCultureIgnoreCase))
+			if (!IsModFromSteam(parentDir))
 				return parentDir;
 
 			var match = PublishFolderMetadata.Match(parentDir + Path.DirectorySeparatorChar);
