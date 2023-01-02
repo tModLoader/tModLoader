@@ -135,6 +135,23 @@
  		}
  
  		if (x < roomX1)
+@@ -2323,12 +_,15 @@
+ 						return false;
+ 
+ 					switch (Main.tile[m, n].type) {
++						case ushort _ when TileID.Sets.AvoidedByMeteorGeneration[Main.tile[m, n].type]:
++						/*
+ 						case 226:
+ 						case 470:
+ 						case 475:
+ 						case 488:
+ 						case 597:
++						*/
+-							return false;
++						return false;
+ 					}
+ 				}
+ 			}
 @@ -2440,8 +_,13 @@
  	{
  		Main.bottomWorld = Main.maxTilesY * 16;
