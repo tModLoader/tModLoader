@@ -525,6 +525,35 @@ public static class TileLoader
 		foreach (var hook in HookKillTile) {
 			hook(i, j, type, ref fail, ref effectOnly, ref noItem);
 		}
+
+		public static void RecountTiles(SceneMetrics metrics) {
+
+			// reset every tile count
+			metrics.HolyTileCount = metrics.EvilTileCount = metrics.BloodTileCount = metrics.SnowTileCount = metrics.JungleTileCount = metrics.MushroomTileCount = metrics.SandTileCount = 0;
+
+			for (int i = 0; i < TileCount; i++) {
+				if (TileID.Sets.HallowBiome[i] == true)
+					metrics.HolyTileCount += metrics._tileCounts[i];
+
+				if (TileID.Sets.CorruptBiome[i] == true)
+					metrics.EvilTileCount += metrics._tileCounts[i];
+
+				if (TileID.Sets.CrimsonBiome[i] == true)
+					metrics.BloodTileCount += metrics._tileCounts[i];
+
+				if (TileID.Sets.SnowBiome[i] == true)
+					metrics.SnowTileCount += metrics._tileCounts[i];
+
+				if (TileID.Sets.JungleBiome[i] == true)
+					metrics.JungleTileCount += metrics._tileCounts[i];
+
+				if (TileID.Sets.MushroomBiome[i] == true)
+					metrics.MushroomTileCount += metrics._tileCounts[i];
+
+				if (TileID.Sets.SandBiome[i] == true)
+					metrics.SandTileCount += metrics._tileCounts[i];
+			}
+		}
 	}
 
 	public static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
