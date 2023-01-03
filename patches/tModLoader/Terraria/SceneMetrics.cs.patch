@@ -166,6 +166,33 @@
  	}
  
  	private void ExportTileCountsToMain()
+@@ -300,6 +_,7 @@
+ 
+ 		ShimmerTileCount = _liquidCounts[3];
+ 		HoneyBlockCount = _tileCounts[229];
++		/*
+ 		HolyTileCount = _tileCounts[109] + _tileCounts[492] + _tileCounts[110] + _tileCounts[113] + _tileCounts[117] + _tileCounts[116] + _tileCounts[164] + _tileCounts[403] + _tileCounts[402];
+ 		SnowTileCount = _tileCounts[147] + _tileCounts[148] + _tileCounts[161] + _tileCounts[162] + _tileCounts[164] + _tileCounts[163] + _tileCounts[200];
+ 		if (Main.remixWorld) {
+@@ -314,12 +_,18 @@
+ 		}
+ 
+ 		MushroomTileCount = _tileCounts[70] + _tileCounts[71] + _tileCounts[72] + _tileCounts[528];
++		*/
+ 		MeteorTileCount = _tileCounts[37];
+ 		DungeonTileCount = _tileCounts[41] + _tileCounts[43] + _tileCounts[44] + _tileCounts[481] + _tileCounts[482] + _tileCounts[483];
++		/*
+ 		SandTileCount = _tileCounts[53] + _tileCounts[112] + _tileCounts[116] + _tileCounts[234] + _tileCounts[397] + _tileCounts[398] + _tileCounts[402] + _tileCounts[399] + _tileCounts[396] + _tileCounts[400] + _tileCounts[403] + _tileCounts[401];
++		*/
+ 		PartyMonolithCount = _tileCounts[455];
+ 		GraveyardTileCount = _tileCounts[85];
+ 		GraveyardTileCount -= _tileCounts[27] / 2;
++
++		TileLoader.RecountTiles(this);
++
+ 		if (_tileCounts[27] > 0)
+ 			HasSunflower = true;
+ 
 @@ -388,6 +_,9 @@
  		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  		hasBanner = false;

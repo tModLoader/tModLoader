@@ -71,5 +71,20 @@ partial class TileID
 		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
 		/// </summary>
 		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
+
+		/// <summary>
+		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
+		/// </summary>
+		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
+		public static int[] HallowBiome = Factory.CreateIntSet(0, 109, 1, 492, 1, 110, 1, 113, 1, 117, 1, 116, 1, 164, 1, 403, 1, 402, 1);
+		public static int[] CrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10);
+		public static int[] SnowBiome = Factory.CreateIntSet(0, 147, 1, 148, 1, 161, 1, 162, 1, 164, 1, 163, 1, 200, 1);
+		public static int[] JungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 226, 1, 225, 1);
+		public static int[] MushroomBiome = Factory.CreateIntSet(0, 70, 1, 71, 1, 72, 1, 528, 1);
+		public static int[] SandBiome = Factory.CreateIntSet(0, 53, 1, 112, 1, 116, 1, 234, 1, 397, 1, 398, 1, 402, 1, 399, 1, 396, 1, 400, 1, 403, 1, 401, 1);
+
+		public static int[] RemixJungle = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
+		public static int[] RemixCrimson = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
+		public static int[] RemixCorrupt = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
 	}
 }

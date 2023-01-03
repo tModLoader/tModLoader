@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
+using static Terraria.GameContent.ItemDropRules.Conditions;
 
 namespace Terraria.ModLoader;
 
@@ -91,7 +92,8 @@ public static class TileLoader
 
 	internal static int ReserveTileID()
 	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
+		if (ModNet.AllowVanillaClients)
+			throw new Exception("Adding tiles breaks vanilla client compatibility");
 
 		int reserveID = nextTile;
 		nextTile++;
@@ -440,21 +442,21 @@ public static class TileLoader
 			if (!hook(i, j, type, fail))
 				return false;
 		}
-		
+
 		var modTile = GetTile(type);
 
 		if (modTile != null) {
 			if (!modTile.KillSound(i, j, fail))
 				return false;
-			
+
 			SoundEngine.PlaySound(modTile.HitSound, new Vector2(i * 16, j * 16));
-			
+
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public static void NumDust(int i, int j, int type, bool fail, ref int numDust)
 	{
 		GetTile(type)?.NumDust(i, j, fail, ref numDust);
@@ -463,7 +465,7 @@ public static class TileLoader
 			hook(i, j, type, fail, ref numDust);
 		}
 	}
-	
+
 	public static bool CreateDust(int i, int j, int type, ref int dustType)
 	{
 		foreach (var hook in HookCreateDust) {
@@ -473,7 +475,7 @@ public static class TileLoader
 		}
 		return GetTile(type)?.CreateDust(i, j, ref dustType) ?? true;
 	}
-	
+
 	public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
 	{
 		GetTile(type)?.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
@@ -482,7 +484,7 @@ public static class TileLoader
 			hook(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
 		}
 	}
-	
+
 	public static bool Drop(int i, int j, int type)
 	{
 		foreach (var hook in HookDrop) {
@@ -507,7 +509,7 @@ public static class TileLoader
 
 		return true;
 	}
-	
+
 	public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
 	{
 		foreach (var hook in HookCanKillTile) {
@@ -517,7 +519,7 @@ public static class TileLoader
 		}
 		return GetTile(type)?.CanKillTile(i, j, ref blockDamaged) ?? true;
 	}
-	
+
 	public static void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
 	{
 		GetTile(type)?.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
@@ -646,7 +648,7 @@ public static class TileLoader
 			if (tileData != null) {
 				int partY = 0;
 				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
-						remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
+					remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 				}
 				width = tileData.CoordinateWidth;
 				offsetY = tileData.DrawYOffset;
@@ -655,7 +657,7 @@ public static class TileLoader
 			GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref tileFrameX, ref tileFrameY);
 		}
 	}
-	
+
 	public static void AnimateTiles()
 	{
 		if (loaded) {
@@ -1015,5 +1017,81 @@ public static class TileLoader
 	public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual)
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
+	}
+
+	public static void RecountTiles(SceneMetrics metrics)
+	{
+		// reset every tile count
+		metrics.HolyTileCount = metrics.EvilTileCount = metrics.BloodTileCount = metrics.SnowTileCount = metrics.JungleTileCount = metrics.MushroomTileCount = metrics.SandTileCount = 0;
+
+		// loop through all tiles, skipping ones not onscreen, and add each to the biome tile counts from their respective sets
+		for (int i = 0; i < TileCount; i++) {
+
+			int tileCount = metrics._tileCounts[i];
+
+			if (tileCount == 0)
+				continue;
+
+			int hallow = TileID.Sets.HallowBiome[i];
+			if (hallow != 0)
+				metrics.HolyTileCount += tileCount * hallow;
+
+			int snow = TileID.Sets.SnowBiome[i];
+			if (snow != 0)
+				metrics.SnowTileCount += tileCount * snow;
+
+			int mushroom = TileID.Sets.MushroomBiome[i];
+			if (mushroom != 0)
+				metrics.MushroomTileCount += tileCount * mushroom;
+
+			int sand = TileID.Sets.SandBiome[i];
+			if (sand != 0)
+				metrics.SandTileCount += tileCount * sand;
+
+			int crimson, corrupt, jungle = 0;
+
+			// handles if the world is using the remix seed or not, which slightly changes which blocks count
+			if (!Main.remixWorld) {
+				corrupt = TileID.Sets.CorruptBiome[i];
+				crimson = TileID.Sets.CrimsonBiome[i];
+				jungle = TileID.Sets.JungleBiome[i];
+			}
+
+			else {
+				corrupt = TileID.Sets.RemixCorrupt[i];
+				crimson = TileID.Sets.RemixCrimson[i];
+				jungle = TileID.Sets.RemixJungle[i];
+			}
+
+			if (corrupt != 0)
+				metrics.EvilTileCount += tileCount * corrupt;
+
+			if (crimson != 0)
+				metrics.BloodTileCount += tileCount * crimson;
+
+			if (jungle != 0)
+				metrics.JungleTileCount += tileCount * jungle;
+		}
+	}
+
+	/// <summary>
+	/// Function calls to simplify modders adding a tile to the biomes regardless of a remix world or not. Can still add manually as needed.
+	/// </summary>
+	public static void AddCrimsonTile(ushort type, int strength = 1)
+	{
+		TileID.Sets.CrimsonBiome[type] = strength;
+		TileID.Sets.RemixCrimson[type] = strength;
+	}
+
+	public static void AddCorruptionTile(ushort type, int strength = 1)
+	{
+		TileID.Sets.CorruptBiome[type] = strength;
+		TileID.Sets.RemixCorrupt[type] = strength;
+	}
+
+	public static void AddJungleTile(ushort type, int strength = 1)
+	{
+		TileID.Sets.JungleBiome[type] = strength;
+		TileID.Sets.RemixJungle[type] = strength;
 	}
 }
