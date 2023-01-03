@@ -1145,7 +1145,7 @@
 +			/*
  			new XnaContentSource(base.Content.RootDirectory)
 +			*/
-+			new XnaDirectContentSource(base.Content.RootDirectory, (Content as TMLContentManager).alternateContentManager.RootDirectory),
++			new XnaDirectContentSource(((TMLContentManager)Content).RootDirectories),
  		});
  
  		VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");

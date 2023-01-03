@@ -1,81 +1,44 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/XnaDirectContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/XnaDirectContentSource.cs
-@@ -1,23 +_,39 @@
+@@ -1,9 +_,36 @@
  using System;
--using System.Collections.Generic;
+ using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  
  namespace ReLogic.Content.Sources;
  
 +//TML: Now derives from ContentSource instead of IContentSource
--public class XnaDirectContentSource : IContentSource
 +public class XnaDirectContentSource : ContentSource
++{
++	private readonly string[] _rootDirectories;
++
++	public XnaDirectContentSource(IEnumerable<string> rootDirectories)
++	{
++		_rootDirectories = rootDirectories.Select(AssetPathHelper.CleanPath).ToArray();
++		SetAssetNames(
++			_rootDirectories
++				.SelectMany(rootDir => Directory.GetFiles(rootDir, "*.xnb", SearchOption.AllDirectories).Select(path => path.Substring(rootDir.Length + 1)))
++				.ToHashSet());
++	}
++
++	public override Stream OpenStream(string assetName)
++	{
++		try {
++			return File.OpenRead(_rootDirectories.Select(rootDir => Path.Combine(rootDir, assetName)).First(File.Exists));
++		}
++		catch (Exception innerException) {
++			throw AssetLoadException.FromMissingAsset(assetName, innerException);
++		}
++	}
++}
++
++/*
+ public class XnaDirectContentSource : IContentSource
  {
  	private readonly string _rootDirectory;
-+	private readonly string _alternateRootDirectory;
-+
-+	/*
- 	private readonly HashSet<string> _files = new HashSet<string>();
- 	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
- 
- 	public IContentValidator ContentValidator { get; set; }
-+	*/
- 
--	public XnaDirectContentSource(string rootDirectory)
-+	public XnaDirectContentSource(string rootDirectory, string alternateRootDirectory)
- 	{
- 		_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
-+		_alternateRootDirectory = AssetPathHelper.CleanPath(alternateRootDirectory);
-+
-+		/*
- 		BuildFileMap();
-+		*/
-+		SetAssetNames(
-+			Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
-+			.Select(path => path.Substring(_rootDirectory.Length+1))
-+			.Concat(Directory.GetFiles(_alternateRootDirectory, "*.xnb", SearchOption.AllDirectories)
-+			.Select(path => path.Substring(_alternateRootDirectory.Length + 1))).ToHashSet()
-+		);
- 	}
- 
-+	/*
- 	private void BuildFileMap()
- 	{
- 		_files.Clear();
-@@ -49,11 +_,20 @@
- 	}
- 
- 	public string GetExtension(string assetName) => ".xnb";
-+	*/
- 
--	public Stream OpenStream(string assetName)
-+	public override Stream OpenStream(string assetName)
- 	{
-+		/*
- 		string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
-+		*/
-+		string path = Path.Combine(_rootDirectory, assetName);
-+		string altPath = Path.Combine(_alternateRootDirectory, assetName);
-+
- 		try {
-+			if (File.Exists(altPath))
-+				return File.OpenRead(altPath);
-+
- 			return File.OpenRead(path);
- 		}
- 		catch (Exception innerException) {
-@@ -61,6 +_,7 @@
- 		}
- 	}
- 
-+	/*
- 	public void RejectAsset(string assetName, IRejectionReason reason)
- 	{
- 		_rejections.Reject(assetName, reason);
-@@ -72,4 +_,5 @@
- 	}
+@@ -73,3 +_,4 @@
  
  	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
-+	*/
  }
++*/
