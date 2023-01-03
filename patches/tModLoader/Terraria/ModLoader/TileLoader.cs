@@ -532,26 +532,30 @@ public static class TileLoader
 			metrics.HolyTileCount = metrics.EvilTileCount = metrics.BloodTileCount = metrics.SnowTileCount = metrics.JungleTileCount = metrics.MushroomTileCount = metrics.SandTileCount = 0;
 
 			for (int i = 0; i < TileCount; i++) {
-				if (TileID.Sets.HallowBiome[i] == true)
-					metrics.HolyTileCount += metrics._tileCounts[i];
 
-				if (TileID.Sets.CorruptBiome[i] == true)
-					metrics.EvilTileCount += metrics._tileCounts[i];
+				if (metrics._tileCounts[i] == 0)
+					continue;
 
-				if (TileID.Sets.CrimsonBiome[i] == true)
-					metrics.BloodTileCount += metrics._tileCounts[i];
+				if (TileID.Sets.HallowBiome[i] != 0)
+					metrics.HolyTileCount += metrics._tileCounts[i] * TileID.Sets.HallowBiome[i];
 
-				if (TileID.Sets.SnowBiome[i] == true)
-					metrics.SnowTileCount += metrics._tileCounts[i];
+				if (TileID.Sets.CorruptBiome[i] != 0)
+					metrics.EvilTileCount += metrics._tileCounts[i] * TileID.Sets.CorruptBiome[i];
 
-				if (TileID.Sets.JungleBiome[i] == true)
-					metrics.JungleTileCount += metrics._tileCounts[i];
+				if (TileID.Sets.CrimsonBiome[i] != 0)
+					metrics.BloodTileCount += metrics._tileCounts[i] * TileID.Sets.CrimsonBiome[i];
 
-				if (TileID.Sets.MushroomBiome[i] == true)
-					metrics.MushroomTileCount += metrics._tileCounts[i];
+				if (TileID.Sets.SnowBiome[i] != 0)
+					metrics.SnowTileCount += metrics._tileCounts[i] * TileID.Sets.SnowBiome[i];
 
-				if (TileID.Sets.SandBiome[i] == true)
-					metrics.SandTileCount += metrics._tileCounts[i];
+				if (TileID.Sets.JungleBiome[i] != 0)
+					metrics.JungleTileCount += metrics._tileCounts[i] * TileID.Sets.JungleBiome[i];
+
+				if (TileID.Sets.MushroomBiome[i] != 0)
+					metrics.MushroomTileCount += metrics._tileCounts[i] * TileID.Sets.MushroomBiome[i];
+
+				if (TileID.Sets.SandBiome[i] != 0)
+					metrics.SandTileCount += metrics._tileCounts[i] * TileID.Sets.SandBiome[i];
 			}
 		}
 	}
