@@ -38,13 +38,7 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// <summary>
 	/// The translations for the display name of this item.
 	/// </summary>
-	[DefaultLocalizedValue(typeof(ModItem), "DisplayNameGenerator")]
-	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
-
-	public static string DisplayNameGenerator(ModType modType)
-	{
-		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
-	}
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The current snapshot of the life and mana stats for Main.LocalPlayer

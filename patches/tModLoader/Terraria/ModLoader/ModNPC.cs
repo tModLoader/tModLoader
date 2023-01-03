@@ -28,13 +28,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public string Category => "NPC";
 
 	/// <summary> The translations for the display name of this NPC. </summary>
-	[DefaultLocalizedValue(typeof(ModItem), "DisplayNameGenerator")]
-	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
-
-	public static string DisplayNameGenerator(ModType modType)
-	{
-		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
-	}
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.

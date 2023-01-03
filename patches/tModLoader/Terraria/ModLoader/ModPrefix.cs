@@ -31,13 +31,7 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 
 	string ILocalizedModType.Category => "Prefix";
 
-	[DefaultLocalizedValue(typeof(ModPrefix), "DisplayNameGenerator")]
-	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
-
-	public static string DisplayNameGenerator(ModType modType)
-	{
-		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
-	}
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The category your prefix belongs to, PrefixCategory.Custom by default

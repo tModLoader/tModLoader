@@ -47,20 +47,13 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public string Category => "DamageClassName";
-
-	/// <summary>
-	/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part.
-	/// </summary>
-	public LocalizedText ClassName => this.GetLocalizedText(nameof(ClassName));
+	public string Category => "DamageClass";
 
 	/// <summary>
 	/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.
 	/// This should include the 'damage' part.
 	/// </summary>
-	public string DisplayName => DisplayNameInternal;
-
-	private protected virtual string DisplayNameInternal => ClassName.Value;
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.

@@ -25,14 +25,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public string Category => "Projectile";
 
 	/// <summary> The translations for the display name of this projectile. </summary>
-	[DefaultLocalizedValue(typeof(ModItem), "DisplayNameGenerator")]
-	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
-
-
-	public static string DisplayNameGenerator(ModType modType)
-	{
-		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
-	}
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 	public int AIType { get; set; }

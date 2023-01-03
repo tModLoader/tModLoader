@@ -17,10 +17,10 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	public string Category => "Buff";
 
 	/// <summary> The translations of this buff's display name. </summary>
-	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary> The translations of this buff's description. </summary>
-	public LocalizedText Description => this.GetLocalizedText(nameof(Description));
+	public virtual LocalizedText Description => this.GetOrAddLocalization(nameof(Description));
 
 	protected override sealed void Register()
 	{

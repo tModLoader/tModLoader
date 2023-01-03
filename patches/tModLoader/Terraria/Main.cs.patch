@@ -4232,7 +4232,7 @@
 +			else {
 +				num = info.Type;
 +				text2 = info.DisplayValue();
-+				text3 = info.DisplayName;
++				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);

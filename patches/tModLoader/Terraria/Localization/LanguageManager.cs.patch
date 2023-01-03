@@ -72,3 +72,23 @@
  		int index2 = index % list.Count;
  		return GetText(categoryName + "." + list[index2]);
  	}
+@@ -328,10 +_,15 @@
+ 
+ 	public LocalizedText GetText(string key)
+ 	{
+-		if (!_localizedTexts.ContainsKey(key))
+-			return new LocalizedText(key, key);
+-
+-		return _localizedTexts[key];
++		return _localizedTexts.TryGetValue(key, out var text) ? text : new LocalizedText(key, key);
++	}
++
++	public LocalizedText GetOrAddText(string key, Func<string> makeDefaultValue = null)
++	{
++		if (!_localizedTexts.TryGetValue(key, out var text))
++			_localizedTexts[key] = text = new LocalizedText(key, makeDefaultValue?.Invoke() ?? key);
++
++		return text;
+ 	}
+ 
+ 	public string GetTextValue(string key)

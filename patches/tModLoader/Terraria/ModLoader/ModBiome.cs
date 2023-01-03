@@ -19,19 +19,12 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
-	public string Category => "BiomeName";
+	public string Category => "Biome";
 
-	// Bestiary properties
 	/// <summary>
 	/// The display name for this biome in the bestiary.
 	/// </summary>
-	[DefaultLocalizedValue(typeof(ModItem), "DisplayNameGenerator")]
-	LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
-
-	public static string DisplayNameGenerator(ModType modType)
-	{
-		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
-	}
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The path to the 30x30 texture that will appear for this biome in the bestiary. Defaults to adding "_Icon" onto the usual namespace+classname derived texture path.

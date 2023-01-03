@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
@@ -75,6 +76,8 @@ public abstract class ModType : IModType
 	/// Check for the correct overrides of different hook methods and fields and properties
 	/// </summary>
 	protected virtual void ValidateType() { }
+
+	public string PrettyPrintName() => Regex.Replace(Name, "([A-Z])", " $1").Trim();
 }
 
 public abstract class ModType<TEntity> : ModType

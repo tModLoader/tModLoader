@@ -24,19 +24,12 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public string Category => "InfoDisplayName";
-
-	/// <summary>
-	/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when hovering over this info display.
-	/// </summary>
-	public LocalizedText InfoName => this.GetLocalizedText(nameof(InfoName));
+	public string Category => "InfoDisplay";
 
 	/// <summary>
 	/// This is the name that will show up when hovering over this info display.
 	/// </summary>
-	public string DisplayName => DisplayNameInternal;
-
-	private protected virtual string DisplayNameInternal => InfoName.Value;
+	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// This dictates whether or not this info display should be active.

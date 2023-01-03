@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -10,14 +11,10 @@ public interface ILocalizedModType : IModType
 
 public static class ILocalizedModTypeExtensions
 {
-	// Idea: use [CallerMemberName]? 
-	public static LocalizedText GetLocalizedText(this ILocalizedModType self, string suffix)
-	{
-		string key = $"Mods.{self.Mod.Name}.{self.Category}.{self.Name}.{suffix}";
+	// Idea: use [CallerMemberName]?
+	public static string GetLocalizationKey(this ILocalizedModType self, string suffix) =>
+		$"Mods.{self.Mod.Name}.{self.Category}.{self.Name}.{suffix}";
 
-		if(!LanguageManager.Instance.Exists(key))
-			LanguageManager.Instance._localizedTexts.Add(key, new LocalizedText(key, key));
-
-		return LanguageManager.Instance.GetText(key);
-	}
+	public static LocalizedText GetOrAddLocalization(this ILocalizedModType self, string suffix, Func<string> makeDefaultValue = null) =>
+		LanguageManager.Instance.GetOrAddText(self.GetLocalizationKey(suffix), makeDefaultValue);
 }
