@@ -13,13 +13,6 @@ public class AprilFools : ModLoaderModItem
 		return now.Month == 4 && now.Day <= 2;
 	}
 
-	public override void SetStaticDefaults()
-	{
-		/*
-		DisplayName.SetDefault("{$tModLoader.AprilFoolsJoke}");
-		*/
-	}
-
 	public override void SetDefaults()
 	{
 		if (CheckAprilFools()) {

@@ -555,6 +555,61 @@
 		"Patreon": "Patreon"
 	},
 	"Mods": {
+		"ModLoader.Item.AprilFools.Name": "April Fools Joke",
+		"ModLoader.Item.Jofairden_Body.Name": "Andromedon Body",
+		"ModLoader.Item.Jofairden_Body.Tooltip": "The power of the Andromedon flows within you",
+		"ModLoader.Item.Jofairden_Head.Name": "Andromedon Head",
+		"ModLoader.Item.Jofairden_Head.Tooltip": "The power of the Andromedon flows within you",
+		"ModLoader.Item.Jofairden_Legs.Name": "Andromedon Legs",
+		"ModLoader.Item.Jofairden_Legs.Tooltip": "The power of the Andromedon flows within you",
+		"ModLoader.Item.AetherBreaker_Body.Name": "AetherBreaker's Body",
+		"ModLoader.Item.AetherBreaker_Head.Name": "AetherBreaker's Head",
+		"ModLoader.Item.WitchDaggah_Head.Name": "WitchDaggah's Head",
+		"ModLoader.Item.AetherBreaker_Legs.Name": "AetherBreaker's Legs",
+		"ModLoader.Item.AetherBreaker_Wings.Name": "AetherBreaker's Wings",
+
+		"ModLoader.Item.AlejandroAkbal_Body.Name": "AlejandroAkbal's Body",
+		"ModLoader.Item.AlejandroAkbal_Head.Name": "AlejandroAkbal's Head",
+		"ModLoader.Item.AlejandroAkbal_Legs.Name": "AlejandroAkbal's Legs",
+		"ModLoader.Item.AlejandroAkbal_Back.Name": "AlejandroAkbal's Back",
+
+		"ModLoader.Item._Body.Name": "'s Body",
+		"ModLoader.Item._Head.Name": "'s Head",
+		"ModLoader.Item._Legs.Name": "'s Legs",
+		"ModLoader.Item._Wings.Name": "'s Wings",
+
+		"ModLoader.Item.Coolmike5000_Body.Name": "Coolmike5000's Body",
+		"ModLoader.Item.Coolmike5000_Head.Name": "Coolmike5000's Head",
+		"ModLoader.Item.Coolmike5000_Legs.Name": "Coolmike5000's Legs",
+		"ModLoader.Item.Coolmike5000_Wings.Name": "Coolmike5000's Wings",
+
+		"ModLoader.Item.dinidini_Body.Name": "dinidini's Body",
+		"ModLoader.Item.dinidini_Head.Name": "dinidini's Head",
+		"ModLoader.Item.dinidini_Legs.Name": "dinidini's Legs",
+		"ModLoader.Item.dinidini_Wings.Name": "dinidini's Wings",
+
+		"ModLoader.Item.dschosen_Body.Name": "dschosen's Body",
+		"ModLoader.Item.dschosen_Head.Name": "dschosen's Head",
+		"ModLoader.Item.dschosen_Legs.Name": "dschosen's Legs",
+		"ModLoader.Item.dschosen_Wings.Name": "dschosen's Wings",
+
+		"ModLoader.Item.Elfinlocks_Body.Name": "Elfinlocks' Body",
+		"ModLoader.Item.Elfinlocks_Head.Name": "Elfinlocks' Head",
+		"ModLoader.Item.Elfinlocks_Legs.Name": "Elfinlocks' Legs",
+
+		"ModLoader.Item.Glory_Body.Name": "Glory's Body",
+		"ModLoader.Item.Glory_Head.Name": "Glory's Head",
+		"ModLoader.Item.Glory_Legs.Name": "Glory's Legs",
+
+		"ModLoader.Item.Guildpack_Body.Name": "Guildpack's Body",
+		"ModLoader.Item.Guildpack_Head.Name": "Guildpack's Head",
+		"ModLoader.Item.Guildpack_Legs.Name": "Guildpack's Legs",
+
+		"ModLoader.Item.KittyKitCatCat_Body.Name": "KittyKitCatCat's Body",
+		"ModLoader.Item.KittyKitCatCat_Head.Name": "KittyKitCatCat's Head",
+		"ModLoader.Item.KittyKitCatCat_Legs.Name": "KittyKitCatCat's Legs",
+
+
 		"ModLoader.Item.UnloadedItem.Name": "Unloaded Item TESTName",
 		"ModLoader.Item.UnloadedItem.Tooltip": "UnloadedItem Tooltipppp.\n",
 		"StartBagTooltip": "Some starting items couldn't fit in your inventory",
