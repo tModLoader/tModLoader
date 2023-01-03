@@ -34,7 +34,6 @@ public partial class Main
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 	public static double timePass; // used to account for more precise time rates when deciding when to update weather
 
-	internal static TMLContentManager AlternateContentManager;
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
 	public static Color DiscoColor => new Color(DiscoR, DiscoG, DiscoB);
@@ -202,10 +201,12 @@ public partial class Main
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 		}
 
-		if (Directory.Exists(Path.Combine("Content", "Images")))
-			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 
-		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
+		TMLContentManager localOverrideContentManager = null;
+		if (Directory.Exists(Path.Combine("Content", "Images")))
+			localOverrideContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
+
+		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
 	
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
