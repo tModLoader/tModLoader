@@ -1022,7 +1022,7 @@ public static class TileLoader
 	public static void RecountTiles(SceneMetrics metrics)
 	{
 		// reset every tile count
-		metrics.HolyTileCount = metrics.EvilTileCount = metrics.BloodTileCount = metrics.SnowTileCount = metrics.JungleTileCount = metrics.MushroomTileCount = metrics.SandTileCount = 0;
+		metrics.HolyTileCount = metrics.EvilTileCount = metrics.BloodTileCount = metrics.SnowTileCount = metrics.JungleTileCount = metrics.MushroomTileCount = metrics.SandTileCount = metrics.DungeonTileCount = 0;
 
 		// loop through all tiles, skipping ones not onscreen, and add each to the biome tile counts from their respective sets
 		for (int i = 0; i < TileCount; i++) {
@@ -1032,25 +1032,15 @@ public static class TileLoader
 			if (tileCount == 0)
 				continue;
 
-			int hallow = TileID.Sets.HallowBiome[i];
-			if (hallow != 0)
-				metrics.HolyTileCount += tileCount * hallow;
-
-			int snow = TileID.Sets.SnowBiome[i];
-			if (snow != 0)
-				metrics.SnowTileCount += tileCount * snow;
-
-			int mushroom = TileID.Sets.MushroomBiome[i];
-			if (mushroom != 0)
-				metrics.MushroomTileCount += tileCount * mushroom;
-
-			int sand = TileID.Sets.SandBiome[i];
-			if (sand != 0)
-				metrics.SandTileCount += tileCount * sand;
+			metrics.HolyTileCount += tileCount * TileID.Sets.HallowBiome[i];
+			metrics.SnowTileCount += tileCount * TileID.Sets.SnowBiome[i];
+			metrics.MushroomTileCount += tileCount * TileID.Sets.MushroomBiome[i];
+			metrics.SandTileCount += tileCount * TileID.Sets.SandBiome[i];
+			metrics.DungeonTileCount += tileCount * TileID.Sets.DungeonBiome[i];
 
 			int crimson, corrupt, jungle = 0;
 
-			// handles if the world is using the remix seed or not, which slightly changes which blocks count
+			// handles if the world is using the remix seed or not, which slightly changes which blocks are counted
 			if (!Main.remixWorld) {
 				corrupt = TileID.Sets.CorruptBiome[i];
 				crimson = TileID.Sets.CrimsonBiome[i];
@@ -1058,40 +1048,33 @@ public static class TileLoader
 			}
 
 			else {
-				corrupt = TileID.Sets.RemixCorrupt[i];
-				crimson = TileID.Sets.RemixCrimson[i];
-				jungle = TileID.Sets.RemixJungle[i];
+				corrupt = TileID.Sets.RemixCorruptBiome[i];
+				crimson = TileID.Sets.RemixCrimsonBiome[i];
+				jungle = TileID.Sets.RemixJungleBiome[i];
 			}
 
-			if (corrupt != 0)
-				metrics.EvilTileCount += tileCount * corrupt;
-
-			if (crimson != 0)
-				metrics.BloodTileCount += tileCount * crimson;
-
-			if (jungle != 0)
-				metrics.JungleTileCount += tileCount * jungle;
+			metrics.EvilTileCount += tileCount * corrupt;
+			metrics.BloodTileCount += tileCount * crimson;
+			metrics.JungleTileCount += tileCount * jungle;
 		}
 	}
 
-	/// <summary>
-	/// Function calls to simplify modders adding a tile to the biomes regardless of a remix world or not. Can still add manually as needed.
-	/// </summary>
+	/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 	public static void AddCrimsonTile(ushort type, int strength = 1)
 	{
 		TileID.Sets.CrimsonBiome[type] = strength;
-		TileID.Sets.RemixCrimson[type] = strength;
+		TileID.Sets.RemixCrimsonBiome[type] = strength;
 	}
 
 	public static void AddCorruptionTile(ushort type, int strength = 1)
 	{
 		TileID.Sets.CorruptBiome[type] = strength;
-		TileID.Sets.RemixCorrupt[type] = strength;
+		TileID.Sets.RemixCorruptBiome[type] = strength;
 	}
 
 	public static void AddJungleTile(ushort type, int strength = 1)
 	{
 		TileID.Sets.JungleBiome[type] = strength;
-		TileID.Sets.RemixJungle[type] = strength;
+		TileID.Sets.RemixJungleBiome[type] = strength;
 	}
 }
