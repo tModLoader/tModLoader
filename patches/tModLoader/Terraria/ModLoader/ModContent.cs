@@ -335,6 +335,7 @@ public static class ModContent
 		SetupRecipes(token);
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
+		ItemLoader.ValidateGeodeDropsSet();
 
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();

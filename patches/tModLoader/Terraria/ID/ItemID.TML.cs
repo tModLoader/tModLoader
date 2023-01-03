@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Terraria.ID;
 
 partial class ItemID
@@ -58,5 +60,19 @@ partial class ItemID
 			ChlorophytePartisan,
 			NorthPole
 		);
+
+		/// <summary>
+		/// Dictionary for defining what items will drop from a <see cref="ProjectileID.Geode"/> when broken. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive).
+		/// <br/>Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.
+		/// </summary>
+		public static Dictionary<int, (int minStack, int maxStack)> GeodeDrops = new() {
+			{ Sapphire, (3, 7) },
+			{ Ruby, (3, 7) },
+			{ Emerald, (3, 7) },
+			{ Topaz, (3, 7) },
+			{ Amethyst, (3, 7) },
+			{ Diamond, (3, 7) },
+			{ Amber, (3, 7) }
+		};
 	}
 }

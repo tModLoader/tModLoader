@@ -1452,7 +1452,7 @@
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  			ai[1] = 0f;
-@@ -56584,9 +_,13 @@
+@@ -56584,15 +_,23 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					NewProjectile(GetProjectileSource_FromThis(), base.Center.X, base.Center.Y, x2, y8, 379, damage, knockBack, owner);
@@ -1466,6 +1466,16 @@
  
  		active = false;
  	}
+ 
+ 	private void DropGeodeGems()
+ 	{
++		// TML: Reroute to more flexible TML method
++		DropGeodeLoot(this);
++		return;
++
+ 		List<int> list = new List<int> {
+ 			181,
+ 			182,
 @@ -56692,9 +_,13 @@
  
  	public bool CanExplodeTile(int x, int y)
