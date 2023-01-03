@@ -1058,23 +1058,4 @@ public static class TileLoader
 			metrics.JungleTileCount += tileCount * jungle;
 		}
 	}
-
-	/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
-	public static void AddCrimsonTile(ushort type, int strength = 1)
-	{
-		TileID.Sets.CrimsonBiome[type] = strength;
-		TileID.Sets.RemixCrimsonBiome[type] = strength;
-	}
-
-	public static void AddCorruptionTile(ushort type, int strength = 1)
-	{
-		TileID.Sets.CorruptBiome[type] = strength;
-		TileID.Sets.RemixCorruptBiome[type] = strength;
-	}
-
-	public static void AddJungleTile(ushort type, int strength = 1)
-	{
-		TileID.Sets.JungleBiome[type] = strength;
-		TileID.Sets.RemixJungleBiome[type] = strength;
-	}
 }

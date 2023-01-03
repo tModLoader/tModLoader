@@ -85,5 +85,24 @@ partial class TileID
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
 		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+
+		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
+		public static void AddCrimsonTile(ushort type, int strength = 1)
+		{
+			CrimsonBiome[type] = strength;
+			RemixCrimsonBiome[type] = strength;
+		}
+
+		public static void AddCorruptionTile(ushort type, int strength = 1)
+		{
+			CorruptBiome[type] = strength;
+			RemixCorruptBiome[type] = strength;
+		}
+
+		public static void AddJungleTile(ushort type, int strength = 1)
+		{
+			JungleBiome[type] = strength;
+			RemixJungleBiome[type] = strength;
+		}
 	}
 }
