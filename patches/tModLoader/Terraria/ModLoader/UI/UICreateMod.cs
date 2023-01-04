@@ -297,7 +297,8 @@ $@"{{
 
 	internal string GetLocalizationFile(string modNameTrimmed)
 	{
-		return $@"Mods: {{
+		return
+$@"Mods: {{
 	{modNameTrimmed}: {{
 	}}
 }} 

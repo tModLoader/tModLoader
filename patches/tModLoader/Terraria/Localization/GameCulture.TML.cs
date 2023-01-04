@@ -25,9 +25,7 @@ public partial class GameCulture
 		string prefix = null;
 
 		string[] splitByFolder = path.Split("/");
-		for (int folderSplitIndex = 0; folderSplitIndex < splitByFolder.Length; folderSplitIndex++) {
-			string pathPart = splitByFolder[folderSplitIndex];
-
+		foreach (var pathPart in splitByFolder) {
 			string[] splitByUnderscore = pathPart.Split("_");
 			for (int underscoreSplitIndex = 0; underscoreSplitIndex < splitByUnderscore.Length; underscoreSplitIndex++) {
 				string underscorePart = splitByUnderscore[underscoreSplitIndex];
@@ -46,9 +44,9 @@ public partial class GameCulture
 			return (culture, "");
 		}
 		/*
+		string[] split = path.Split("/");
 		for (int index = split.Length - 1; index >= 0; index--) {
 			string pathPart = split[index];
-			
 			GameCulture culture = _legacyCultures.Values.FirstOrDefault(culture => culture.Name == pathPart);
 			if (culture != null)
 				return culture;
