@@ -1029,12 +1029,13 @@
  	}
  
  	private static string ReadLineInput()
-@@ -4958,9 +_,21 @@
+@@ -4958,9 +_,22 @@
  
  	public static void UpdateTimeRate()
  	{
 +		UpdateTimeRate_Inner();
 +
++		forceStopWorldEvents = false;
 +		SystemLoader.ModifyTimeRate(ref dayRate, ref desiredWorldTilesUpdateRate, ref desiredWorldEventsUpdateRate);
 +		if (dayRate > 86400)
 +			dayRate = 86400;
@@ -5187,7 +5188,7 @@
  					RenderWalls();
  					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
  					sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
-@@ -51005,9 +_,12 @@
+@@ -51005,9 +_,17 @@
  		if (gameMenu || netMode == 2)
  			bgTopY = -200;
  
@@ -5197,6 +5198,11 @@
  			num3 = 1;
 +		*/
 +		double num3 = desiredWorldEventsUpdateRate;
++		if (num3 <= 0)
++			num3 = 1;
++
++		if (Main.forceStopWorldEvents)
++			num3 = 0;
  
  		float num4 = 0.0005f * (float)num3;
  		if (gameMenu)
@@ -5482,7 +5488,7 @@
  		if (invasionType <= 0)
  			return;
  
-@@ -53170,9 +_,14 @@
+@@ -53170,9 +_,17 @@
  		if (invasionX == (double)spawnTileX)
  			return;
  
@@ -5492,7 +5498,10 @@
  			num = 1f;
 +		*/
 +		double num = desiredWorldEventsUpdateRate;
-+		if (num < 0)
++		if (num <= 0)
++			num = 1;
++
++		if (Main.forceStopWorldEvents)
 +			num = 0;
  
  		if (invasionX > (double)spawnTileX) {

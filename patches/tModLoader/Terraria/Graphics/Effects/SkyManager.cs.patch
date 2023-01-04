@@ -13,7 +13,7 @@
  
  	public void Reset()
  	{
-@@ -17,15 +_,20 @@
+@@ -17,15 +_,27 @@
  		}
  
  		_activeSkies.Clear();
@@ -29,9 +29,16 @@
 +		*/
 +
 +		_timePass += Main.desiredWorldEventsUpdateRate;
++
++		int timePass = (int)_timePass;
++		if (Main.desiredWorldEventsUpdateRate <= 0)
++			timePass = 1;
++
++		if (Main.forceStopWorldEvents)
++			timePass = 0;
  
 -		for (int i = 0; i < num; i++) {
-+		for (int i = 1; i <= (int)_timePass; i++) {
++		for (int i = 1; i <= timePass; i++) {
  			LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
  			while (linkedListNode != null) {
  				CustomSky value = linkedListNode.Value;
