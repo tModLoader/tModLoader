@@ -42,8 +42,7 @@ function update_script {
 }
 
 function get_latest_release {
-	local 
-release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
+	local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
 	local latest_release=$({
 		curl -s "$release_url" 2>/dev/null || wget -q -O- "$release_url";
 	} | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
