@@ -553,5 +553,18 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Item.UnloadedItem.Name": "Unloaded Item TESTName",
+		"ModLoader.Item.UnloadedItem.Tooltip": "UnloadedItem Tooltipppp.\n",
+		"StartBagTooltip": "Some starting items couldn't fit in your inventory",
+		"StartBagItemName": "Starting Bag",
+		"UnloadedItemItemName": "Unloaded Item",
+		"UnloadedItemModTooltip": "Mod: {0}",
+		"UnloadedItemItemNameTooltip": "Item: {0}",
+		"AprilFoolsJoke": "April Fools Joke",
+		"DefaultTownNPCName": "No-Name",
+		"DefaultTownNPCChat": "My modder forgot to give me a chat message.",
+		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 	}
 }

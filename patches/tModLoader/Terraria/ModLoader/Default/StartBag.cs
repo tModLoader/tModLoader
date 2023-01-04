@@ -11,8 +11,10 @@ public class StartBag : ModLoaderModItem
 
 	public override void SetStaticDefaults()
 	{
+		/*
 		DisplayName.SetDefault("{$tModLoader.StartBagItemName}");
 		Tooltip.SetDefault("{$tModLoader.StartBagTooltip}\n{$CommonItemTooltip.RightClickToOpen}");
+		*/
 	}
 
 	public override void SetDefaults()

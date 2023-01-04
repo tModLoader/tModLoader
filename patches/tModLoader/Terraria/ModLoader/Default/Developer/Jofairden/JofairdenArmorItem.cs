@@ -8,7 +8,9 @@ internal abstract class JofairdenArmorItem : DeveloperItem
 	{
 		base.SetStaticDefaults();
 
+		/*
 		DisplayName.SetDefault($"Andromedon {Name.Split('_')[1]}");
 		Tooltip.SetDefault("The power of the Andromedon flows within you");
+		*/
 	}
 }

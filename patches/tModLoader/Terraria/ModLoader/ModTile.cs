@@ -43,8 +43,10 @@ public abstract class ModTile : ModBlockType, ILocalizedModType
 
 	public string Category => "Tile";
 
+	/*
 	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
 	public LocalizedText ContainerName => this.GetLocalizedText(nameof(ContainerName));
+	*/
 
 	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
 	public virtual string HighlightTexture => Texture + "_Highlight";
@@ -514,4 +516,6 @@ public abstract class ModTile : ModBlockType, ILocalizedModType
 	/// <param name="manual">Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</param>
 	/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
 	public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
+
+	public virtual LocalizedText ContainerName(int frameX, int frameY) => null;
 }

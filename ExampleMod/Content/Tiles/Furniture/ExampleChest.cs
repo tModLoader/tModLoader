@@ -33,15 +33,15 @@ namespace ExampleMod.Content.Tiles.Furniture
 			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
 			// Names
-			ContainerName.SetDefault("Example Chest");
+			//ContainerName.SetDefault("Example Chest");
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Chest");
-			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
+			//ModTranslation name = CreateMapEntryName();
+			//name.SetDefault("Example Chest");
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("Mods.ExampleMod.Tile.ExampleChest.MapEntry1"), MapChestName);
 
-			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
-			name.SetDefault("Locked Example Chest");
-			AddMapEntry(new Color(0, 141, 63), name, MapChestName);
+			//name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
+			//name.SetDefault("Locked Example Chest");
+			AddMapEntry(new Color(0, 141, 63), Language.GetText("Mods.ExampleMod.Tile.ExampleChest.MapEntry2"), MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -58,6 +58,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override ushort GetMapOption(int i, int j) {
 			return (ushort)(Main.tile[i, j].TileFrameX / 36);
+		}
+
+		public override LocalizedText ContainerName(int frameX, int frameY) {
+			int option = frameX / 36;
+			return Language.GetText("Mods.ExampleMod.Tile.ExampleChest.MapEntry" + option);
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
@@ -202,7 +207,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Language.GetTextValue("LegacyChestType.0");
 			}
 			else {
-				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.ContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName) {
 					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();

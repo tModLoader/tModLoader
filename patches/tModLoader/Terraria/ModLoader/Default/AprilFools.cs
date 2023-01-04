@@ -15,7 +15,9 @@ public class AprilFools : ModLoaderModItem
 
 	public override void SetStaticDefaults()
 	{
+		/*
 		DisplayName.SetDefault("{$tModLoader.AprilFoolsJoke}");
+		*/
 	}
 
 	public override void SetDefaults()

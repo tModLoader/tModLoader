@@ -16,8 +16,10 @@ public sealed class UnloadedItem : ModLoaderModItem
 
 	public override void SetStaticDefaults()
 	{
+		/*
 		DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
 		Tooltip.SetDefault("\n");
+		*/
 	}
 
 	public override void SetDefaults()

@@ -36,15 +36,26 @@ public class UnloadedChest : UnloadedTile
 
 		AdjTiles = new int[] { TileID.Containers };
 
-		ContainerName.SetDefault("UnloadedChest");
+		//ContainerName.SetDefault("UnloadedChest");
 
-		ModTranslation name = CreateMapEntryName();
-		name.SetDefault("Unloaded Chest");
-		AddMapEntry(new Color(200, 200, 200), name, MapChestName);
+		//ModTranslation name = CreateMapEntryName();
+		//name.SetDefault("Unloaded Chest");
+		AddMapEntry(new Color(200, 200, 200), Language.GetText("Mods.ModLoaderMod.Tile.UnloadedChest.MapEntry1"), MapChestName);
 
-		name = CreateMapEntryName(Name + "_Locked");
-		name.SetDefault("Locked Unloaded Chest");
-		AddMapEntry(new Color(0, 141, 63), name, MapChestName);
+		//name = CreateMapEntryName(Name + "_Locked");
+		//name.SetDefault("Locked Unloaded Chest");
+		AddMapEntry(new Color(0, 141, 63), Language.GetText("Mods.ModLoaderMod.Tile.UnloadedChest.MapEntry2"), MapChestName);
+	}
+
+	public override LocalizedText ContainerName(int frameX, int frameY)
+	{
+		return Language.GetText("Mods.ModLoaderMod.Tile.UnloadedChest.MapEntry1");
+	}
+
+	public override ushort GetMapOption(int i, int j)
+	{
+		return 0; // I don't think locked is used
+		//return (ushort)(Main.tile[i, j].TileFrameX / 36);
 	}
 
 	public static string MapChestName(string name, int i, int j)

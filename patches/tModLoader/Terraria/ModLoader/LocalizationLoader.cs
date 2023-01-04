@@ -304,6 +304,9 @@ public static class LocalizationLoader
 
 	private static void AutoloadTranslations(Mod mod, Dictionary<string, LocalizedText> localizedTexts, GameCulture culture)
 	{
+		if (mod.File == null)
+			return;
+
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 			(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 			if (fileCulture != culture)
