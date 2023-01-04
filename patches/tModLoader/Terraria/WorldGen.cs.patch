@@ -139,7 +139,7 @@
  						return false;
  
  					switch (Main.tile[m, n].type) {
-+						case ushort _ when TileID.Sets.AvoidedByMeteorGeneration[Main.tile[m, n].type]:
++						case ushort _ when TileID.Sets.AvoidedByMeteorLanding[Main.tile[m, n].type]:
 +						/*
  						case 226:
  						case 470:

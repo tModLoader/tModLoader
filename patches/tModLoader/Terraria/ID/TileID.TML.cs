@@ -53,7 +53,7 @@ partial class TileID
 
 		/// <summary> Whether or not this tile prevents a meteor from landing near it.</summary>
 		/// <remarks> Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <see cref="BasicChest"/> and <see cref="Main.tileDungeon"/>)</remarks>
-		public static bool[] AvoidedByMeteorGeneration = Factory.CreateBoolSet(226, 470, 475, 448, 597);
+		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 448, 597);
 
 		/// <summary>
 		/// Whether or not this tile will prevent sand/slush from falling beneath it.
