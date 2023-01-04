@@ -2,7 +2,8 @@
 
 #shellcheck disable=2164
 
-script_version="1.0.0.0"
+script_version="1.0.0.1"
+script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
 # Define functions used in script
 
@@ -15,21 +16,13 @@ function popd {
 	command popd > /dev/null || return
 }
 
-# version less than or equal
-verlte() {
-    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
-}
-
-# version less than
-verlt() {
-    [ "$1" = "$2" ] && return 1 || verlte $1 $2
-}
-
 # Returns true if an update is needed
 function check_update {
-	latest_script_version=$(curl --silent "https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh" | grep "script_version=" | head -n1 | cut -d '"' -f2)
+	latest_script_version=$({
+		curl -s "$script_url" 2>/dev/null || wget -q -O- "$script_url";
+	} | grep "script_version=" | head -n1 | cut -d '"' -f2)
 
-	if verlt "$script_version" "$latest_script_version"; then
+	if [[ "$script_version" != "`echo -e "$script_version\n$latest_script_version" | sort -rV | head -n1`" ]]; then
 		return 0
 	else
 		return 1
@@ -39,7 +32,7 @@ function check_update {
 function update_script {
 	if check_update; then
 		echo "Updating from version v$script_version to v$latest_script_version"
-		curl --silent -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh
+		curl -s -O "$script_url" 2>/dev/null || wget -q "$script_url"
 		mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
 	else
 		echo "No new script updates"
@@ -49,21 +42,24 @@ function update_script {
 }
 
 function get_latest_release {
-	local latest_release
-	latest_release=$(curl --silent "https://api.github.com/repos/tModLoader/tModLoader/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
+	local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
+	local latest_release=$({
+		curl -s "$release_url" 2>/dev/null || wget -q -O- "$release_url";
+	} | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
 	echo "$latest_release" # So functions calling this can consume the result since you can't return strings in bash :)
 }
 
 # Takes version number as first parameter
 function down_release {
+	local down_url="https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
 	if [[ -v version ]]; then
 		set -- "$version"
 	fi
 	echo "Downloading version $1"
-	curl --silent -LJO "https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
+	curl -s -LJO "$down_url" 2>/dev/null || wget -q --content-disposition "$down_url"
 }
 
-# Check $username is defined, exit if not
+# Check $username is defined, ask if not
 function check_username {
 	if ! [[ -v username ]]; then
 		read -p "Please enter a Steam username to login with: " username
@@ -75,8 +71,7 @@ function copy_worlds {
 		[ -f "$file" ] || break
 		twld="$(basename "$file" .wld).twld"
 		echo "Copying $file and $twld"
-		mkdir -p ~/.local/share/Terraria/tModLoader/Worlds/
-		cp $file $twld ~/.local/share/Terraria/tModLoader/Worlds/
+		mkdir -p ~/.local/share/Terraria/tModLoader/Worlds/ && cp $file $twld $_  
 	done
 }
 
