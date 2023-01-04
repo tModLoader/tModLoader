@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Localization/GameCulture.cs
 +++ src/tModLoader/Terraria/Localization/GameCulture.cs
-@@ -4,7 +_,7 @@
+@@ -25,6 +_,8 @@
+ 	public readonly CultureInfo CultureInfo;
+ 	public readonly int LegacyId;
  
- namespace Terraria.Localization;
++	public static IEnumerable<GameCulture> KnownCultures => _legacyCultures.Values;
++
+ 	public static GameCulture DefaultCulture { get; set; }
  
--public class GameCulture
-+public partial class GameCulture
- {
- 	public enum CultureName
- 	{
+ 	public bool IsActive => Language.ActiveCulture == this;

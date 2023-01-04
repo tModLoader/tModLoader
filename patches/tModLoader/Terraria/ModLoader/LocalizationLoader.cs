@@ -228,6 +228,58 @@ public static class LocalizationLoader
 		File.Move(langFile, $"{langFile}.legacy", true);
 	}
 
+	/// <summary>
+	/// Derives a culture and shared prefix from a localization file path. Prefix will be found after culture, either separated by an underscore or nested in the folder.
+	/// <br/> Some examples:<code>
+	/// Localization/en-US_Mods.ExampleMod.hjson
+	/// Localization/en-US/Mods.ExampleMod.hjson
+	/// en-US_Mods.ExampleMod.hjson
+	/// en-US/Mods.ExampleMod.hjson
+	/// </code>
+	/// </summary>
+	/// <param name="path"></param>
+	/// <returns></returns>
+	public static (GameCulture culture, string prefix) GetCultureAndPrefixFromPath(string path)
+	{
+		path = Path.ChangeExtension(path, null);
+
+		GameCulture culture = null;
+		string prefix = null;
+
+		string[] splitByFolder = path.Split("/");
+		foreach (var pathPart in splitByFolder) {
+			string[] splitByUnderscore = pathPart.Split("_");
+			for (int underscoreSplitIndex = 0; underscoreSplitIndex < splitByUnderscore.Length; underscoreSplitIndex++) {
+				string underscorePart = splitByUnderscore[underscoreSplitIndex];
+				GameCulture parsedCulture = GameCulture.KnownCultures.FirstOrDefault(culture => culture.Name == underscorePart);
+				if (parsedCulture != null) {
+					culture = parsedCulture;
+					continue;
+				}
+				if (parsedCulture == null && culture != null) {
+					prefix = underscorePart;
+					return (culture, prefix);
+				}
+			}
+		}
+		if (culture != null) {
+			return (culture, "");
+		}
+		/*
+		string[] split = path.Split("/");
+		for (int index = split.Length - 1; index >= 0; index--) {
+			string pathPart = split[index];
+			GameCulture culture = _legacyCultures.Values.FirstOrDefault(culture => culture.Name == pathPart);
+			if (culture != null)
+				return culture;
+		}
+		*/
+		// TODO: Log message warning of localization file erroneously named
+		Logging.tML.Warn($"The localization file {path} doesn't match expected file naming patterns, it will load as English");
+
+		return (GameCulture.DefaultCulture, "");
+	}
+
 	private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary)
 	{
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
@@ -236,7 +288,7 @@ public static class LocalizationLoader
 
 			string translationFileContents = streamReader.ReadToEnd();
 
-			(var culture, string prefix) = GameCulture.FromPath(translationFile.Name);
+			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 
 			// Parse HJSON and convert to standard JSON
 			string jsonString = HjsonValue.Parse(translationFileContents).ToString();
@@ -340,7 +392,7 @@ public static class LocalizationLoader
 
 			string translationFileContents = streamReader.ReadToEnd();
 
-			(var culture, string prefix) = GameCulture.FromPath(translationFile.Name);
+			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 
 			foundCultures.Add(culture);
 			allLocalizationFileContents[translationFile.Name] = translationFileContents;
@@ -381,9 +433,9 @@ public static class LocalizationLoader
 
 		// Update target culture lang files based on English
 		foreach (var culture in foundCultures) {
-			foreach (var baseFile in baseLocalizationFiles) {
-				string hjsonContents = LocalizationFileToHjsonText(baseFile, culture);
-				string outputFileName = GetPathForCulture(baseFile, culture);
+			foreach (var baseLocalizationFileEntry in baseLocalizationFiles) {
+				string hjsonContents = LocalizationFileToHjsonText(baseLocalizationFileEntry, culture);
+				string outputFileName = GetPathForCulture(baseLocalizationFileEntry, culture);
 
 				// Only write if changed
 				if (!allLocalizationFileContents.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents != hjsonContents) {
@@ -505,11 +557,11 @@ public static class LocalizationLoader
 			}
 		}
 
-		static string GetKeyFromFilePrefixAndEntry(LocalizationFile file, LocalizationEntry entry)
+		static string GetKeyFromFilePrefixAndEntry(LocalizationFile baseLocalizationFileEntry, LocalizationEntry entry)
 		{
 			string key = entry.key;
-			if (!string.IsNullOrWhiteSpace(file.prefix)) {
-				key = key.Substring(file.prefix.Length + 1);
+			if (!string.IsNullOrWhiteSpace(baseLocalizationFileEntry.prefix)) {
+				key = key.Substring(baseLocalizationFileEntry.prefix.Length + 1);
 			}
 
 			return key;
@@ -560,7 +612,7 @@ public static class LocalizationLoader
 		}
 	}
 
-	private static LocalizationFile FindBaseHJSONFileForKey(List<LocalizationFile> files, string key)
+	private static LocalizationFile FindBaseHJSONFileForKey(List<LocalizationFile> baseLocalizationFiles, string key)
 	{
 		// This method searches through all existing files (for default language) and finds the most suitable file
 		// The most suitable file has existing entries that match as much of the "prefix" as possible.
@@ -569,28 +621,28 @@ public static class LocalizationLoader
 		// For non-English, missing files will need to be added to the List.
 
 		int levelFound = -1;
-		LocalizationFile mostSuitable = null;
+		LocalizationFile mostSuitableBaseLocalizationFile = null;
 
-		foreach (var file in files) {
-			if (!string.IsNullOrWhiteSpace(file.prefix) && !key.StartsWith(file.prefix))
+		foreach (var baseLocalizationFileEntry in baseLocalizationFiles) {
+			if (!string.IsNullOrWhiteSpace(baseLocalizationFileEntry.prefix) && !key.StartsWith(baseLocalizationFileEntry.prefix))
 				continue;
 
-			int level = LongestMatchingPrefix(file.LocalizationEntries, key);
+			int level = LongestMatchingPrefix(baseLocalizationFileEntry.LocalizationEntries, key);
 			if (level > levelFound) {
 				levelFound = level;
-				mostSuitable = file;
+				mostSuitableBaseLocalizationFile = baseLocalizationFileEntry;
 			}
 		}
 
-		if (mostSuitable == null) {
+		if (mostSuitableBaseLocalizationFile == null) {
 			// Add a "en-US.hjson" if missing. (or "en-US_Mods.Modname.hjson" instead?)
 			// TODO: detect common folder path and use that?
-			mostSuitable = new("en-US.hjson", "", new List<LocalizationEntry>());
-			files.Add(mostSuitable);
+			mostSuitableBaseLocalizationFile = new("en-US.hjson", "", new List<LocalizationEntry>());
+			baseLocalizationFiles.Add(mostSuitableBaseLocalizationFile);
 			//throw new Exception("Somehow there are no files for this key");
 		}
 
-		return mostSuitable;
+		return mostSuitableBaseLocalizationFile;
 	}
 
 	internal static int LongestMatchingPrefix(List<LocalizationEntry> localizationEntries, string key)
