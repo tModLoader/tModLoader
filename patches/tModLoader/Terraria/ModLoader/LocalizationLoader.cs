@@ -351,7 +351,7 @@ public static class LocalizationLoader
 	}
 
 	// Classes facilitating UpdateLocalizationFiles()
-	public record LocalizationFile(string path, string prefix, List<LocalizationEntry> LocalizationEntries);
+	public record LocalizationFile(string path, string prefix, List<LocalizationEntry> Entries);
 
 	public record LocalizationEntry(string key, string value, string comment, JsonType type = JsonType.String);
 
@@ -384,7 +384,7 @@ public static class LocalizationLoader
 		var baseLocalizationFiles = new List<LocalizationFile>();
 
 		// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
-		Dictionary<string, string> allLocalizationFileContents = new(); // <full filename , file contents>
+		Dictionary<string, string> localizationFileContentsByPath = new(); // <full filename , file contents>
 		HashSet<GameCulture> foundCultures = new();
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 			using var stream = mod.File.GetStream(translationFile);
@@ -395,7 +395,7 @@ public static class LocalizationLoader
 			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 
 			foundCultures.Add(culture);
-			allLocalizationFileContents[translationFile.Name] = translationFileContents;
+			localizationFileContentsByPath[translationFile.Name] = translationFileContents;
 
 			// TODO: Support arbitrary default language?
 			// Default language hjson files loaded into memory to gather comments and modder intended ordering.
@@ -412,7 +412,7 @@ public static class LocalizationLoader
 			return;
 
 		// Find and add new content localization keys which are missing from the base (English) localization files
-		var baseLocalizationKeys = baseLocalizationFiles.SelectMany(f => f.LocalizationEntries.Select(e => e.key)).ToHashSet();
+		var baseLocalizationKeys = baseLocalizationFiles.SelectMany(f => f.Entries.Select(e => e.key)).ToHashSet();
 		foreach (var translation in translations) {
 			if (!translation.Key.StartsWith($"Mods.{mod.Name}."))
 				continue;
@@ -423,7 +423,7 @@ public static class LocalizationLoader
 
 			// And then merge key into flattened in-memory model
 			LocalizationEntry newEntry = new(translation.Key, translation.Value.GetDefault(), null);
-			LocalizationFile suitableHJSONFile = FindBaseHJSONFileForKey(baseLocalizationFiles, newEntry.key);
+			LocalizationFile suitableHJSONFile = FindHJSONFileForKey(baseLocalizationFiles, newEntry.key);
 			AddEntryToHJSON(suitableHJSONFile, newEntry.key, newEntry.value, null);
 		}
 
@@ -432,13 +432,13 @@ public static class LocalizationLoader
 			targetCultures = new[] {specificCulture};
 
 		// Update target culture lang files based on English
-		foreach (var culture in foundCultures) {
-			foreach (var baseLocalizationFileEntry in baseLocalizationFiles) {
-				string hjsonContents = LocalizationFileToHjsonText(baseLocalizationFileEntry, culture);
-				string outputFileName = GetPathForCulture(baseLocalizationFileEntry, culture);
+		foreach (var culture in targetCultures) {
+			foreach (var baseFile in baseLocalizationFiles) {
+				string hjsonContents = LocalizationFileToHjsonText(baseFile, culture);
+				string outputFileName = GetPathForCulture(baseFile, culture);
 
 				// Only write if changed
-				if (!allLocalizationFileContents.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents != hjsonContents) {
+				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents != hjsonContents) {
 					var outputFilePath = Path.Combine(sourceFolder, outputFileName) + ".new";
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
@@ -451,7 +451,7 @@ public static class LocalizationLoader
 		// Clean up orphaned non-default language files, if any.
 		if (specificCulture != null) {
 			var outputPathsForAllLangs = foundCultures.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
-			var orphanedFiles = allLocalizationFileContents.Keys.Except(outputPathsForAllLangs);
+			var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
 
 			foreach (var name in orphanedFiles) {
 				string originalPath = Path.Combine(sourceFolder, name);
@@ -472,7 +472,7 @@ public static class LocalizationLoader
 
 		// Count prefixes to determine candidates for non-object output.
 		Dictionary<string, int> prefixCounts = new();
-		foreach (var entry in baseFile.LocalizationEntries) {
+		foreach (var entry in baseFile.Entries) {
 			if (entry.type == JsonType.Object)
 				continue;
 
@@ -485,20 +485,20 @@ public static class LocalizationLoader
 			}
 		}
 
-		for (int i = baseFile.LocalizationEntries.Count - 1; i >= 0; i--) {
-			var entry = baseFile.LocalizationEntries[i];
+		for (int i = baseFile.Entries.Count - 1; i >= 0; i--) {
+			var entry = baseFile.Entries[i];
 			if(entry.type == JsonType.Object) {
 				string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
 				if (prefixCounts.TryGetValue(key, out var count) && count <= minimumNumberOfEntriesInObject) {
 					// Remove objects with too few children. Should this be ignored if comments exist?
-					baseFile.LocalizationEntries.RemoveAt(i);
+					baseFile.Entries.RemoveAt(i);
 				}
 			}
 		}
 
 		var rootObject = new CommentedWscJsonObject();
 		// Convert back to JsonObject and write to disk
-		foreach (var entry in baseFile.LocalizationEntries) {
+		foreach (var entry in baseFile.Entries) {
 			CommentedWscJsonObject parent = rootObject;
 			string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
 
@@ -612,7 +612,7 @@ public static class LocalizationLoader
 		}
 	}
 
-	private static LocalizationFile FindBaseHJSONFileForKey(List<LocalizationFile> baseLocalizationFiles, string key)
+	private static LocalizationFile FindHJSONFileForKey(List<LocalizationFile> files, string key)
 	{
 		// This method searches through all existing files (for default language) and finds the most suitable file
 		// The most suitable file has existing entries that match as much of the "prefix" as possible.
@@ -621,28 +621,28 @@ public static class LocalizationLoader
 		// For non-English, missing files will need to be added to the List.
 
 		int levelFound = -1;
-		LocalizationFile mostSuitableBaseLocalizationFile = null;
+		LocalizationFile best = null;
 
-		foreach (var baseLocalizationFileEntry in baseLocalizationFiles) {
-			if (!string.IsNullOrWhiteSpace(baseLocalizationFileEntry.prefix) && !key.StartsWith(baseLocalizationFileEntry.prefix))
+		foreach (var file in files) {
+			if (!string.IsNullOrWhiteSpace(file.prefix) && !key.StartsWith(file.prefix))
 				continue;
 
-			int level = LongestMatchingPrefix(baseLocalizationFileEntry.LocalizationEntries, key);
+			int level = LongestMatchingPrefix(file.Entries, key);
 			if (level > levelFound) {
 				levelFound = level;
-				mostSuitableBaseLocalizationFile = baseLocalizationFileEntry;
+				best = file;
 			}
 		}
 
-		if (mostSuitableBaseLocalizationFile == null) {
+		if (best == null) {
 			// Add a "en-US.hjson" if missing. (or "en-US_Mods.Modname.hjson" instead?)
 			// TODO: detect common folder path and use that?
-			mostSuitableBaseLocalizationFile = new("en-US.hjson", "", new List<LocalizationEntry>());
-			baseLocalizationFiles.Add(mostSuitableBaseLocalizationFile);
+			best = new("en-US.hjson", "", new List<LocalizationEntry>());
+			files.Add(best);
 			//throw new Exception("Somehow there are no files for this key");
 		}
 
-		return mostSuitableBaseLocalizationFile;
+		return best;
 	}
 
 	internal static int LongestMatchingPrefix(List<LocalizationEntry> localizationEntries, string key)
@@ -664,8 +664,6 @@ public static class LocalizationLoader
 
 	internal static void AddEntryToHJSON(LocalizationFile file, string key, string value, string comment = null)
 	{
-		var localizationEntries = file.LocalizationEntries;
-
 		// If prefix exists, add to List after most specific prefix
 		int index = 0;
 
@@ -674,13 +672,13 @@ public static class LocalizationLoader
 			string k = splitKey[i];
 			string partialKey = string.Join(".", splitKey.Take(i + 1));
 
-			int newIndex = localizationEntries.FindLastIndex(x => x.key.StartsWith(partialKey));
+			int newIndex = file.Entries.FindLastIndex(x => x.key.StartsWith(partialKey));
 			if (newIndex != -1)
 				index = newIndex;
 		}
 
-		int placementIndex = file.LocalizationEntries.Count > 0 ? index + 1 : 0;
-		file.LocalizationEntries.Insert(placementIndex, new(key, value, comment));
+		int placementIndex = file.Entries.Count > 0 ? index + 1 : 0;
+		file.Entries.Insert(placementIndex, new(key, value, comment));
 	}
 
 	// Generates hjson files for the current culture in 
