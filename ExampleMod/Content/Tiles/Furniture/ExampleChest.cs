@@ -32,16 +32,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AdjTiles = new int[] { TileID.Containers };
 			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
-			// Names
-			//ContainerName.SetDefault("Example Chest");
-
-			//ModTranslation name = CreateMapEntryName();
-			//name.SetDefault("Example Chest");
-			AddMapEntry(new Color(200, 200, 200), Language.GetText("Mods.ExampleMod.Tile.ExampleChest.MapEntry1"), MapChestName);
-
-			//name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
-			//name.SetDefault("Locked Example Chest");
-			AddMapEntry(new Color(0, 141, 63), Language.GetText("Mods.ExampleMod.Tile.ExampleChest.MapEntry2"), MapChestName);
+			AddMapEntry(new Color(200, 200, 200), this.GetOrAddLocalization("MapEntry1"), MapChestName);
+			AddMapEntry(new Color(0, 141, 63), this.GetOrAddLocalization("MapEntry2"), MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);

@@ -15,7 +15,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 /// </summary>
-public abstract class ModTile : ModBlockType, ILocalizedModType
+public abstract class ModTile : ModBlockType
 {
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 	public int AnimationFrameHeight { get; set; }
@@ -41,7 +41,7 @@ public abstract class ModTile : ModBlockType, ILocalizedModType
 	/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 	public int DresserDrop { get; set; }
 
-	public string Category => "Tile";
+	public override string Category => "Tile";
 
 	/*
 	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
