@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -19,7 +20,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 /// </summary>
-public abstract class ModItem : ModType<Item, ModItem>
+public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 {
 	/// <summary>
 	/// The item object that this ModItem controls.
@@ -31,15 +32,26 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	public int Type => Item.type;
 
+	public string Category => "Item";
+
 	/// <summary>
 	/// The translations for the display name of this item.
 	/// </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	//public ModTranslation DisplayName { get; internal set; }
+	public LocalizedText DisplayName => this.GetLocalizedText(nameof(Tooltip));
 
-	/// <summary>
+	/// <summary>r
 	/// The translations for the tooltip of this item.
 	/// </summary>
-	public ModTranslation Tooltip { get; internal set; }
+	//public ModTranslation Tooltip { get; internal set; }
+	[DefaultLocalizedValue(typeof(ModItem), "DisplayNameGenerator")]
+
+	public LocalizedText Tooltip => this.GetLocalizedText(nameof(Tooltip));
+
+	public static string DisplayNameGenerator(ModType modType)
+	{
+		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
+	}
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.
@@ -68,8 +80,10 @@ public abstract class ModItem : ModType<Item, ModItem>
 	{
 		ModTypeLookup<ModItem>.Register(this);
 
+		/*
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 		Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
+		*/
 
 		Item.ResetStats(ItemLoader.ReserveItemID());
 		Item.ModItem = this;
@@ -132,8 +146,10 @@ public abstract class ModItem : ModType<Item, ModItem>
 			TextureAssets.ItemFlame[Item.type] = flameTexture;
 		}
 
+		/*
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+		*/
 	}
 
 	/// <summary>

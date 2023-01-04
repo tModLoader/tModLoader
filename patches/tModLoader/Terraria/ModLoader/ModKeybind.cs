@@ -16,20 +16,33 @@ public class ModKeybind // We could make this a ModType later
 	internal string Name { get; set; } // name from modder: "RandomBuff"
 	internal string FullName => $"{Mod.Name}/{Name}"; // name saved to disk: "ExampleMod/RandomBuff"
 	internal string DefaultBinding { get; set; } // from mod.Load
-	internal ModTranslation DisplayName { get; set; }
+	//internal ModTranslation DisplayName { get; set; }
+	internal LocalizedText DisplayName => GetLocalizedText(nameof(DisplayName));
+
+	public LocalizedText GetLocalizedText(string suffix)
+	{
+		string key = $"Mods.{Mod.Name}.Keybinds.{Name}.{suffix}";
+
+		if (!LanguageManager.Instance.Exists(key))
+			LanguageManager.Instance._localizedTexts.Add(key, new LocalizedText(key, key));
+
+		return LanguageManager.Instance.GetText(key);
+	}
 
 	internal ModKeybind(Mod mod, string name, string defaultBinding)
 	{
 		Mod = mod;
 		Name = name;
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Keybind.{Name}");
+		//DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Keybind.{Name}");
 		DefaultBinding = defaultBinding;
 	}
 
 	internal void SetupContent()
 	{
+		/*
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Name);
+		*/
 	}
 
 	/// <summary>

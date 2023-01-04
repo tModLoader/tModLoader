@@ -95,6 +95,13 @@ public static partial class SystemLoader
 		}
 	}
 
+	internal static void SetLanguage(GameCulture culture)
+	{
+		foreach (var system in HookSetLanguage.arr) {
+			system.SetLanguage(culture);
+		}
+	}
+
 	internal static void AddRecipes(Mod mod)
 	{
 		if (SystemsByMod.TryGetValue(mod, out var systems)) {

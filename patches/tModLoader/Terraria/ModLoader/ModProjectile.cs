@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -13,7 +14,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile">Basic Projectile Guide</see> teaches the basics of making a modded projectile.
 /// </summary>
-public abstract class ModProjectile : ModType<Projectile, ModProjectile>
+public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocalizedModType
 {
 	/// <summary> The projectile object that this ModProjectile controls. </summary>
 	public Projectile Projectile => Entity;
@@ -21,8 +22,17 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 	/// <summary>  Shorthand for Projectile.type; </summary>
 	public int Type => Projectile.type;
 
+	public string Category => "Projectile";
+
 	/// <summary> The translations for the display name of this projectile. </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	[DefaultLocalizedValue(typeof(ModItem), "DisplayNameGenerator")]
+	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
+
+
+	public static string DisplayNameGenerator(ModType modType)
+	{
+		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
+	}
 
 	/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 	public int AIType { get; set; }
@@ -57,7 +67,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 		ModTypeLookup<ModProjectile>.Register(this);
 
 		Projectile.type = ProjectileLoader.ReserveProjectileID();
+		/*
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
+		*/
 
 		ProjectileLoader.projectiles.Add(this);
 	}
@@ -98,8 +110,10 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 		if (Projectile.aiStyle == 7) {
 			Main.projHook[Projectile.type] = true;
 		}
+		/*
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+		*/
 	}
 
 	/// <summary>

@@ -51,7 +51,8 @@ internal static class MapLoader
 					names.Add(entry.name);
 				}
 				else {
-					names.Add(Language.GetText(entry.translation.Key));
+					throw new Exception("How did this happen?");
+					//names.Add(Language.GetText(entry.translation.Key));
 				}
 			}
 		}
@@ -66,7 +67,8 @@ internal static class MapLoader
 					names.Add(entry.name);
 				}
 				else {
-					names.Add(Language.GetText(entry.translation.Key));
+					throw new Exception("How did this happen?");
+					//names.Add(Language.GetText(entry.translation.Key));
 				}
 			}
 		}

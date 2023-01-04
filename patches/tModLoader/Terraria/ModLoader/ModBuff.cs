@@ -2,30 +2,35 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class serves as a place for you to define a new buff and how that buff behaves.
 /// </summary>
-public abstract class ModBuff : ModTexturedType
+public abstract class ModBuff : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The buff id of this buff. </summary>
 	public int Type { get; internal set; }
 
+	public string Category => "Buff";
+
 	/// <summary> The translations of this buff's display name. </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
 
 	/// <summary> The translations of this buff's description. </summary>
-	public ModTranslation Description { get; internal set; }
+	public LocalizedText Description => this.GetLocalizedText(nameof(Description));
 
 	protected override sealed void Register()
 	{
 		ModTypeLookup<ModBuff>.Register(this);
 
 		Type = BuffLoader.ReserveBuffID();
+		/*
 		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffName.{Name}");
 		Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffDescription.{Name}");
+		*/
 
 		BuffLoader.buffs.Add(this);
 	}

@@ -32,13 +32,13 @@ public abstract class ModBlockType : ModTexturedType
 	/// </summary>
 	/// <param name="key">The key for the ModTranslation. The full key will be MapObject.ModName.key</param>
 	/// <returns></returns>
-	public ModTranslation CreateMapEntryName(string key = null)
+	/*public ModTranslation CreateMapEntryName(string key = null)
 	{
 		if (string.IsNullOrEmpty(key)) {
 			key = Name;
 		}
 		return LocalizationLoader.GetOrCreateTranslation(Mod, $"MapObject.{key}");
-	}
+	}*/
 
 	/// <summary>
 	/// Allows you to modify the properties after initial loading has completed.

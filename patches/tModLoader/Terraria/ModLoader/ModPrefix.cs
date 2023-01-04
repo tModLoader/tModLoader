@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -24,11 +25,19 @@ public enum PrefixCategory
 	Custom
 }
 
-public abstract class ModPrefix : ModType
+public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
 
-	public ModTranslation DisplayName { get; internal set; }
+	string ILocalizedModType.Category => "Prefix";
+
+	[DefaultLocalizedValue(typeof(ModPrefix), "DisplayNameGenerator")]
+	public LocalizedText DisplayName => this.GetLocalizedText(nameof(DisplayName));
+
+	public static string DisplayNameGenerator(ModType modType)
+	{
+		return Regex.Replace(modType.Name, "([A-Z])", " $1").Trim();
+	}
 
 	/// <summary>
 	/// The category your prefix belongs to, PrefixCategory.Custom by default
@@ -40,7 +49,7 @@ public abstract class ModPrefix : ModType
 		ModTypeLookup<ModPrefix>.Register(this);
 
 		Type = PrefixLoader.ReservePrefixID();
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Prefix.{Name}");
+		// DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Prefix.{Name}");
 
 		PrefixLoader.RegisterPrefix(this);
 	}
@@ -53,8 +62,10 @@ public abstract class ModPrefix : ModType
 
 	public virtual void AutoStaticDefaults()
 	{
+		/*
 		if (DisplayName.IsDefault())
 			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+		*/
 	}
 
 	/// <summary>

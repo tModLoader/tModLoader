@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
 
-public abstract class InfoDisplay : ModTexturedType
+public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 {
 	public static InfoDisplay Watches { get; private set; } = new WatchesInfoDisplay();
 	public static InfoDisplay WeatherRadio { get; private set; } = new WeatherRadioInfoDisplay();
@@ -24,17 +24,19 @@ public abstract class InfoDisplay : ModTexturedType
 	/// </summary>
 	public int Type { get; internal set; }
 
+	public string Category => "InfoDisplayName";
+
 	/// <summary>
 	/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when hovering over this info display.
 	/// </summary>
-	public ModTranslation InfoName { get; internal set; }
+	public LocalizedText InfoName => this.GetLocalizedText(nameof(InfoName));
 
 	/// <summary>
 	/// This is the name that will show up when hovering over this info display.
 	/// </summary>
 	public string DisplayName => DisplayNameInternal;
 
-	private protected virtual string DisplayNameInternal => InfoName.GetTranslation(Language.ActiveCulture);
+	private protected virtual string DisplayNameInternal => InfoName.Value;
 
 	/// <summary>
 	/// This dictates whether or not this info display should be active.
@@ -54,7 +56,7 @@ public abstract class InfoDisplay : ModTexturedType
 
 	protected sealed override void Register()
 	{
-		InfoName = LocalizationLoader.GetOrCreateTranslation(Mod, $"InfoDisplayName.{Name}");
+		// InfoName = LocalizationLoader.GetOrCreateTranslation(Mod, $"InfoDisplayName.{Name}");
 
 		ModTypeLookup<InfoDisplay>.Register(this);
 

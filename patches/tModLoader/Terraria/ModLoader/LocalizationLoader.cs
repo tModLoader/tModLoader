@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using Hjson;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json.Linq;
 using Terraria.ID;
@@ -18,6 +20,7 @@ namespace Terraria.ModLoader;
 
 public static class LocalizationLoader
 {
+	/*
 	private static readonly Dictionary<string, ModTranslation> translations = new();
 
 	/// <summary>
@@ -57,12 +60,14 @@ public static class LocalizationLoader
 		translations[key] = newTranslation;
 		return newTranslation;
 	}
+	*/
 
 	internal static void Autoload(Mod mod)
 	{
 		if (mod.File == null)
 			return;
 
+		/*
 		var modTranslationDictionary = new Dictionary<string, ModTranslation>();
 
 		AutoloadTranslations(mod, modTranslationDictionary);
@@ -71,15 +76,17 @@ public static class LocalizationLoader
 			AddTranslation(value);
 
 			//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
+		TODO: Move this somewhere?
 			if (value.Key.StartsWith($"Mods.{mod.Name}.GameTips.")) {
 				Main.gameTips.allTips.Add(new GameTipData(new LocalizedText(value.Key, value.GetDefault()), mod));
 			}
 		}
+		*/
 	}
 
 	internal static void Unload()
 	{
-		translations.Clear();
+		//translations.Clear();
 	}
 
 	//TODO: Unhardcode ALL of this.
@@ -87,26 +94,36 @@ public static class LocalizationLoader
 	{
 		Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 
+		foreach (var mod in ModLoader.Mods) {
+			AutoloadTranslations(mod, dict, GameCulture.FromCultureName(GameCulture.CultureName.English));
+
+			// load the current language over the top of english
+			if (culture != GameCulture.FromCultureName(GameCulture.CultureName.English)) {
+				AutoloadTranslations(mod, dict, culture);
+			}
+		}
+
 		foreach (ModItem item in ItemLoader.items) {
-			var text = new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
+			var text = item.DisplayName; // new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
 
-			Lang._itemNameCache[item.Item.type] = SetLocalizedText(dict, text);
+			Lang._itemNameCache[item.Item.type] = text;
 
-			text = new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
+			text = item.Tooltip; // new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
 
 			if (text.Value != null) {
-				text = SetLocalizedText(dict, text);
+				//text = SetLocalizedText(dict, text);
 				Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
 				ContentSamples.ItemsByType[item.Item.type].RebuildTooltip();
 			}
 		}
 
 		foreach (ModPrefix prefix in PrefixLoader.prefixes) {
-			var text = new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
+			var text = prefix.DisplayName; //	new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
 
-			Lang.prefix[prefix.Type] = SetLocalizedText(dict, text);
+			Lang.prefix[prefix.Type] = text;
 		}
 
+		/*
 		foreach (var keyValuePair in MapLoader.tileEntries) {
 			foreach (MapEntry entry in keyValuePair.Value) {
 				if (entry.translation != null) {
@@ -124,33 +141,38 @@ public static class LocalizationLoader
 				}
 			}
 		}
+		*/
 
 		foreach (ModProjectile proj in ProjectileLoader.projectiles) {
-			var text = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
-			Lang._projectileNameCache[proj.Projectile.type] = SetLocalizedText(dict, text);
+			var text = proj.DisplayName; // = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
+			Lang._projectileNameCache[proj.Projectile.type] = text;
 		}
 
 		foreach (ModNPC npc in NPCLoader.npcs) {
-			var text = new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
+			var text = npc.DisplayName; // new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
 
-			Lang._npcNameCache[npc.NPC.type] = SetLocalizedText(dict, text);
+			Lang._npcNameCache[npc.NPC.type] = text;
 		}
 
 		foreach (ModBuff buff in BuffLoader.buffs) {
-			var text = new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
+			var text = buff.DisplayName; // new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
 
-			Lang._buffNameCache[buff.Type] = SetLocalizedText(dict, text);
+			Lang._buffNameCache[buff.Type] = text;
 
-			text = new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
+			text = buff.Description; //	new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
 
-			Lang._buffDescriptionCache[buff.Type] = SetLocalizedText(dict, text);
+			Lang._buffDescriptionCache[buff.Type] = text;
 		}
 
+		/*
 		foreach (ModTranslation translation in translations.Values) {
 			LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
 
 			SetLocalizedText(dict, text);
 		}
+		*/
+
+		SystemLoader.SetLanguage(culture);
 
 		LanguageManager.Instance.ProcessCopyCommandsInTexts();
 	}
@@ -280,15 +302,17 @@ public static class LocalizationLoader
 		return (GameCulture.DefaultCulture, "");
 	}
 
-	private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary)
+	private static void AutoloadTranslations(Mod mod, Dictionary<string, LocalizedText> localizedTexts, GameCulture culture)
 	{
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+			(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
+			if (fileCulture != culture)
+				continue;
+
 			using var stream = mod.File.GetStream(translationFile);
 			using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 			string translationFileContents = streamReader.ReadToEnd();
-
-			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 
 			// Parse HJSON and convert to standard JSON
 			string jsonString = HjsonValue.Parse(translationFileContents).ToString();
@@ -324,20 +348,18 @@ public static class LocalizationLoader
 			}
 
 			foreach (var (key, value) in flattened) {
+				// removing instances of .$parentVal is an easy way to make this special key assign its value
+				//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
 				string effectiveKey = key.Replace(".$parentVal", "");
-				if(!string.IsNullOrWhiteSpace(prefix))
+				if (!string.IsNullOrWhiteSpace(prefix))
 					effectiveKey = prefix + "." + effectiveKey;
-				if (!modTranslationDictionary.TryGetValue(effectiveKey, out ModTranslation mt)) {
-					// removing instances of .$parentVal is an easy way to make this special key assign its value
-					//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
-					modTranslationDictionary[effectiveKey] = mt = CreateTranslation(effectiveKey);
-				}
 
-				mt.AddTranslation(culture, value);
+				localizedTexts[effectiveKey] = new LocalizedText(effectiveKey, value);
 			}
 		}
 	}
 
+	/*
 	private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value)
 	{
 		if (dict.TryGetValue(value.Key, out var localizedText)) {
@@ -349,6 +371,7 @@ public static class LocalizationLoader
 
 		return dict[value.Key];
 	}
+	*/
 
 	// Classes facilitating UpdateLocalizationFiles()
 	public record LocalizationFile(string path, string prefix, List<LocalizationEntry> Entries);
@@ -375,45 +398,40 @@ public static class LocalizationLoader
 
 	private static void UpdateLocalizationFilesForMod(Mod mod, string outputPath = null, GameCulture specificCulture = null)
 	{
+		// TODO: Maybe optimize to only recently built?
 		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
 		if (!Directory.Exists(sourceFolder))
 			return;
 
-		// TODO: Maybe optimize to only recently built?
 
-		var baseLocalizationFiles = new List<LocalizationFile>();
+		Dictionary<GameCulture, List<LocalizationFile>> localizationFilesByCulture = new();
+		Dictionary<string, string> localizationFileContentsByPath = new(); // <full filename , file contents>
 
 		// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
-		Dictionary<string, string> localizationFileContentsByPath = new(); // <full filename , file contents>
-		HashSet<GameCulture> foundCultures = new();
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 			using var stream = mod.File.GetStream(translationFile);
 			using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 			string translationFileContents = streamReader.ReadToEnd();
-
-			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
-
-			foundCultures.Add(culture);
 			localizationFileContentsByPath[translationFile.Name] = translationFileContents;
 
-			// TODO: Support arbitrary default language?
-			// Default language hjson files loaded into memory to gather comments and modder intended ordering.
-			if (culture == GameCulture.FromCultureName(GameCulture.CultureName.English)) {
-				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
-				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
-				List<LocalizationEntry> entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
-				baseLocalizationFiles.Add(new(translationFile.Name, prefix, entries));
-			}
+			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
+			if (!localizationFilesByCulture.TryGetValue(culture, out var fileList))
+				localizationFilesByCulture[culture] = fileList = new();
+
+			JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+			// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
+			var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
+			fileList.Add(new(translationFile.Name, prefix, entries));
 		}
 
 		// Abort if no default localization files found
-		if (!baseLocalizationFiles.Any())
+		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles))
 			return;
 
 		// Find and add new content localization keys which are missing from the base (English) localization files
 		var baseLocalizationKeys = baseLocalizationFiles.SelectMany(f => f.Entries.Select(e => e.key)).ToHashSet();
-		foreach (var translation in translations) {
+		foreach (var translation in LanguageManager.Instance._localizedTexts.Values) {
 			if (!translation.Key.StartsWith($"Mods.{mod.Name}."))
 				continue;
 
@@ -422,19 +440,21 @@ public static class LocalizationLoader
 				continue;
 
 			// And then merge key into flattened in-memory model
-			LocalizationEntry newEntry = new(translation.Key, translation.Value.GetDefault(), null);
+			LocalizationEntry newEntry = new(translation.Key, translation.Value, comment: null);
 			LocalizationFile suitableHJSONFile = FindHJSONFileForKey(baseLocalizationFiles, newEntry.key);
 			AddEntryToHJSON(suitableHJSONFile, newEntry.key, newEntry.value, null);
 		}
 
-		IEnumerable<GameCulture> targetCultures = foundCultures;
+		IEnumerable<GameCulture> targetCultures = localizationFilesByCulture.Keys;
 		if (specificCulture != null)
 			targetCultures = new[] {specificCulture};
 
 		// Update target culture lang files based on English
 		foreach (var culture in targetCultures) {
+			var localizationsForCulture = localizationFilesByCulture[culture].SelectMany(f => f.Entries).ToDictionary(e => e.key, e => e.value) ?? new();
+
 			foreach (var baseFile in baseLocalizationFiles) {
-				string hjsonContents = LocalizationFileToHjsonText(baseFile, culture);
+				string hjsonContents = LocalizationFileToHjsonText(baseFile, localizationsForCulture);
 				string outputFileName = GetPathForCulture(baseFile, culture);
 
 				// Only write if changed
@@ -450,7 +470,7 @@ public static class LocalizationLoader
 
 		// Clean up orphaned non-default language files, if any.
 		if (specificCulture != null) {
-			var outputPathsForAllLangs = foundCultures.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
+			var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
 			var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
 
 			foreach (var name in orphanedFiles) {
@@ -465,7 +485,7 @@ public static class LocalizationLoader
 
 	private static string GetPathForCulture(LocalizationFile file, GameCulture culture) => file.path.Replace("en-US", culture.CultureInfo.Name);
 
-	private static string LocalizationFileToHjsonText(LocalizationFile baseFile, GameCulture culture)
+	private static string LocalizationFileToHjsonText(LocalizationFile baseFile, Dictionary<string, string> localizationsForCulture)
 	{
 		const int minimumNumberOfEntriesInObject = 1;
 		// TODO: Detect string entries that share a key with an object here, convert to "$parentVal" entry. We don't know if a translation key collides until all keys are collected, so here is a suitable place.
@@ -531,12 +551,9 @@ public static class LocalizationLoader
 			}
 			else {
 				// Add values
-				string value = translations[entry.key].GetTranslation(culture);
-				key = splitKey[^1];
-				if (culture.Name != "en-US" && value == translations[entry.key].GetDefault()) {
-					// This might be messing up Russian: OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
-					//key = "# " + key; // doesn't work, escaped by escapeName
-					parent.CommentedOut.Add(key);
+				if (!localizationsForCulture.TryGetValue(entry.key, out var value)) {
+					parent.CommentedOut.Add(finalKey);
+					value = entry.value;
 				}
 
 				PlaceCommentAboveNewEntry(entry, parent);

@@ -4,7 +4,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
-public abstract class DamageClass : ModType
+public abstract class DamageClass : ModType, ILocalizedModType
 {
 	/// <summary>
 	/// Default damage class for non-classed weapons and items, does not benefit from Generic bonuses
@@ -47,10 +47,12 @@ public abstract class DamageClass : ModType
 	/// </summary>
 	public int Type { get; internal set; }
 
+	public string Category => "DamageClassName";
+
 	/// <summary>
 	/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part.
 	/// </summary>
-	public ModTranslation ClassName { get; internal set; }
+	public LocalizedText ClassName => this.GetLocalizedText(nameof(ClassName));
 
 	/// <summary>
 	/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.
@@ -58,7 +60,7 @@ public abstract class DamageClass : ModType
 	/// </summary>
 	public string DisplayName => DisplayNameInternal;
 
-	private protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
+	private protected virtual string DisplayNameInternal => ClassName.Value;
 
 	/// <summary>
 	/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
@@ -90,6 +92,8 @@ public abstract class DamageClass : ModType
 	/// </summary>
 	public virtual bool UseStandardCritCalcs => true;
 
+
+
 	// to-do:
 	// this is a horrible approach to doin' this and I know full well that it is; this is just a stopgap to simplify the process for now
 	// once the tooltip rework happens, in-depth explanations for things like this, with examples primarily as a supplement to the lesson, NEED to be made available
@@ -103,7 +107,7 @@ public abstract class DamageClass : ModType
 
 	protected sealed override void Register()
 	{
-		ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
+		// ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
 
 		ModTypeLookup<DamageClass>.Register(this);
 

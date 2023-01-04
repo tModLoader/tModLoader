@@ -52,6 +52,8 @@ partial class SystemLoader
 
 	//Delegates
 
+	private delegate void DelegateSetLanguage(GameCulture culture);
+
 	private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
 
 	private delegate void DelegateModifySunLightColor(ref Color tileColor, ref Color backgroundColor);
@@ -71,6 +73,8 @@ partial class SystemLoader
 	private delegate void DelegateTileCountsAvailable(ReadOnlySpan<int> tileCounts);
 
 	//HookLists
+
+	private static HookList HookSetLanguage = AddHook<DelegateSetLanguage>(s => s.SetLanguage);
 
 	private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
 

@@ -322,7 +322,6 @@ public static class ModContent
 		Main.player[255] = new Player();
 
 		LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
-		LocalizationLoader.UpdateLocalizationFiles();
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 		PylonLoader.Setup();
@@ -337,6 +336,7 @@ public static class ModContent
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		ItemLoader.ValidateGeodeDropsSet();
+		LocalizationLoader.UpdateLocalizationFiles();
 
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();

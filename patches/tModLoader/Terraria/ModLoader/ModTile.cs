@@ -15,7 +15,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 /// </summary>
-public abstract class ModTile : ModBlockType
+public abstract class ModTile : ModBlockType, ILocalizedModType
 {
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 	public int AnimationFrameHeight { get; set; }
@@ -41,8 +41,10 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 	public int DresserDrop { get; set; }
 
+	public string Category => "Tile";
+
 	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
-	public ModTranslation ContainerName { get; internal set; }
+	public LocalizedText ContainerName => this.GetLocalizedText(nameof(ContainerName));
 
 	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
 	public virtual string HighlightTexture => Texture + "_Highlight";
@@ -75,6 +77,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
+/*
 	public void AddMapEntry(Color color, ModTranslation name)
 	{
 		if (!MapLoader.initialized) {
@@ -84,7 +87,7 @@ public abstract class ModTile : ModBlockType
 			}
 			MapLoader.tileEntries[Type].Add(entry);
 		}
-	}
+	}*/
 
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
@@ -103,6 +106,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 	/// </summary>
+	/*
 	public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
 	{
 		if (!MapLoader.initialized) {
@@ -112,11 +116,11 @@ public abstract class ModTile : ModBlockType
 			}
 			MapLoader.tileEntries[Type].Add(entry);
 		}
-	}
+	}*/
 
 	protected sealed override void Register()
 	{
-		ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
+		// ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 
 		ModTypeLookup<ModTile>.Register(this);
 
