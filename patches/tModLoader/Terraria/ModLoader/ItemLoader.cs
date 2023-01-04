@@ -29,7 +29,7 @@ public static class ItemLoader
 	internal static readonly List<GlobalItem> globalItems = new();
 	internal static GlobalItem[] NetGlobals;
 	internal static readonly int vanillaQuestFishCount = 41;
-	internal static readonly int[] vanillaWings = new int[Main.maxWings];
+	internal static readonly int[] vanillaWings = new int[ArmorIDs.Wing.Count];
 
 	private static int nextItem = ItemID.Count;
 
@@ -78,7 +78,7 @@ public static class ItemLoader
 	}
 
 	/// <summary>
-	/// Gets the ModItem instance corresponding to the specified type. Returns null if no modded item has the given type.
+	/// Gets the ModItem template instance corresponding to the specified type (not the clone/new instance which gets added to Items as the game is played). Returns null if no modded item has the given type.
 	/// </summary>
 	public static ModItem GetItem(int type)
 	{
@@ -117,7 +117,6 @@ public static class ItemLoader
 		//Which is why the following 2 lines have to run without any interruptions.
 		lock (Main.itemAnimationsRegistered) {
 			Array.Resize(ref Main.itemAnimations, nextItem);
-
 			Main.InitializeItemAnimations();
 		}
 
@@ -134,6 +133,18 @@ public static class ItemLoader
 
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update(globalItems);
+		}
+	}
+
+	internal static void ValidateGeodeDropsSet()
+	{
+		foreach (var pair in ItemID.Sets.GeodeDrops) {
+			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.GeodeDrops)}'";
+			if (pair.Value.minStack < 1)
+				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
+
+			if (pair.Value.maxStack <= pair.Value.minStack)
+				throw new Exception($"{exceptionCommon} must have maxStack bigger than minStack");
 		}
 	}
 
@@ -1380,7 +1391,7 @@ public static class ItemLoader
 	/// </summary>
 	public static bool CanStack(Item increase, Item decrease)
 	{
-		if (increase.prefix != decrease.prefix) // TML: #StackablePrefixWeapons
+		if (increase.prefix != decrease.prefix) // #StackablePrefixWeapons
 			return false;
 
 		foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {
@@ -1691,29 +1702,6 @@ public static class ItemLoader
 		foreach (var g in HookUpdate.Enumerate(item.globalItems)) {
 			g.Update(item, ref gravity, ref maxFallSpeed);
 		}
-	}
-
-	private static HookList HookCanBurnInLava = AddHook<Func<Item, bool?>>(g => g.CanBurnInLava);
-
-	/// <summary>
-	/// Calls ModItem.CanBurnInLava.
-	/// </summary>
-	public static bool? CanBurnInLava(Item item)
-	{
-		bool? canBurnInLava = null;
-		foreach (var g in HookCanBurnInLava.Enumerate(item.globalItems)) {
-			switch (g.CanBurnInLava(item)) {
-				case null:
-					continue;
-				case false:
-					canBurnInLava = false;
-					continue;
-				case true:
-					return true;
-			}
-		}
-
-		return canBurnInLava ?? item.ModItem?.CanBurnInLava();
 	}
 
 	private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);

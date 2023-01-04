@@ -35,7 +35,7 @@
  	public bool heldProjOverHand;
  	public int skinVar;
  	public bool fullHair;
-@@ -130,8 +_,13 @@
+@@ -131,8 +_,13 @@
  
  	public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
@@ -49,7 +49,7 @@
  		DrawDataCache = drawData;
  		DustCache = dust;
  		GoreCache = gore;
-@@ -139,7 +_,14 @@
+@@ -140,7 +_,14 @@
  		shadow = shadowOpacity;
  		this.rotation = rotation;
  		this.rotationOrigin = rotationOrigin;
@@ -65,7 +65,7 @@
  		cHead = drawPlayer.cHead;
  		cBody = drawPlayer.cBody;
  		cLegs = drawPlayer.cLegs;
-@@ -170,6 +_,10 @@
+@@ -172,6 +_,10 @@
  		cBalloonFront = drawPlayer.cBalloonFront;
  		cBeard = drawPlayer.cBeard;
  		isSitting = drawPlayer.sitting.isSitting;
@@ -76,7 +76,7 @@
  		seatYOffset = 0f;
  		sittingIndex = 0;
  		Vector2 posOffset = Vector2.Zero;
-@@ -207,16 +_,19 @@
+@@ -209,16 +_,19 @@
  		if (heldItem.type == 4952)
  			weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
  
@@ -97,7 +97,7 @@
  		if (drawPlayer.body == 77 || drawPlayer.body == 103 || drawPlayer.body == 41 || drawPlayer.body == 100 || drawPlayer.body == 10 || drawPlayer.body == 11 || drawPlayer.body == 12 || drawPlayer.body == 13 || drawPlayer.body == 14 || drawPlayer.body == 43 || drawPlayer.body == 15 || drawPlayer.body == 16 || drawPlayer.body == 20 || drawPlayer.body == 39 || drawPlayer.body == 50 || drawPlayer.body == 38 || drawPlayer.body == 40 || drawPlayer.body == 57 || drawPlayer.body == 44 || drawPlayer.body == 52 || drawPlayer.body == 53 || drawPlayer.body == 68 || drawPlayer.body == 81 || drawPlayer.body == 85 || drawPlayer.body == 88 || drawPlayer.body == 98 || drawPlayer.body == 86 || drawPlayer.body == 87 || drawPlayer.body == 99 || drawPlayer.body == 165 || drawPlayer.body == 166 || drawPlayer.body == 167 || drawPlayer.body == 171 || drawPlayer.body == 45 || drawPlayer.body == 168 || drawPlayer.body == 169 || drawPlayer.body == 42 || drawPlayer.body == 180 || drawPlayer.body == 181 || drawPlayer.body == 183 || drawPlayer.body == 186 || drawPlayer.body == 187 || drawPlayer.body == 188 || drawPlayer.body == 64 || drawPlayer.body == 189 || drawPlayer.body == 191 || drawPlayer.body == 192 || drawPlayer.body == 198 || drawPlayer.body == 199 || drawPlayer.body == 202 || drawPlayer.body == 203 || drawPlayer.body == 58 || drawPlayer.body == 59 || drawPlayer.body == 60 || drawPlayer.body == 61 || drawPlayer.body == 62 || drawPlayer.body == 63 || drawPlayer.body == 36 || drawPlayer.body == 104 || drawPlayer.body == 184 || drawPlayer.body == 74 || drawPlayer.body == 78 || drawPlayer.body == 185 || drawPlayer.body == 196 || drawPlayer.body == 197 || drawPlayer.body == 182 || drawPlayer.body == 87 || drawPlayer.body == 76 || drawPlayer.body == 209 || drawPlayer.body == 168 || drawPlayer.body == 210 || drawPlayer.body == 211 || drawPlayer.body == 213)
  			missingHand = true;
  
-@@ -225,14 +_,21 @@
+@@ -227,14 +_,21 @@
  			missingArm = false;
  		else
  			missingArm = true;
@@ -121,7 +121,7 @@
  		hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
  		if (drawPlayer.head == 0 && drawPlayer.hairDye == 0)
  			hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
-@@ -548,6 +_,11 @@
+@@ -550,6 +_,11 @@
  			colorArmorLegs = drawPlayer.GetImmuneAlphaPure(new Color(b14, b14, b14, 255), shadow);
  		}
  
@@ -133,19 +133,21 @@
  		float alphaReduction = shadow;
  		headGlowColor = drawPlayer.GetImmuneAlphaPure(headGlowColor, alphaReduction);
  		bodyGlowColor = drawPlayer.GetImmuneAlphaPure(bodyGlowColor, alphaReduction);
-@@ -1067,8 +_,10 @@
+@@ -1069,8 +_,12 @@
  		}
  
  		_ = drawPlayer.shimmering;
++
 +		bool fullBright = false;
 +		PlayerLoader.DrawEffects(this, ref num12, ref num13, ref num14, ref num15, ref fullBright);
++
  		if (num12 != 1f || num13 != 1f || num14 != 1f || num15 != 1f) {
 -			if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
 +			if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2 || fullBright) {
  				colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  				colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
  				colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
-@@ -1341,8 +_,14 @@
+@@ -1343,6 +_,13 @@
  			drawPlayer.headRotation = 0f;
  		}
  
@@ -157,11 +159,9 @@
 +	private void SetupHairFrames()
 +	{
  		Rectangle bodyFrame = drawPlayer.bodyFrame;
--		bodyFrame = drawPlayer.bodyFrame;
+ 		bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame.Y -= 336;
- 		if (bodyFrame.Y < 0)
- 			bodyFrame.Y = 0;
-@@ -1357,9 +_,18 @@
+@@ -1359,9 +_,18 @@
  			int height = 26;
  			hairFrontFrame.Height = height;
  		}
@@ -180,13 +180,13 @@
  		drawFloatingTube = drawPlayer.hasFloatingTube && !hideEntirePlayer;
  		drawUnicornHorn = drawPlayer.hasUnicornHorn;
  		drawAngelHalo = drawPlayer.hasAngelHalo;
-@@ -1417,9 +_,9 @@
+@@ -1419,9 +_,9 @@
  	{
  		frontShoulderOffset = Vector2.Zero;
  		backShoulderOffset = Vector2.Zero;
--		usesCompositeTorso = drawPlayer.body > 0 && drawPlayer.body < 248 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body];
--		usesCompositeFrontHandAcc = drawPlayer.handon > 0 && drawPlayer.handon < 24 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon];
--		usesCompositeBackHandAcc = drawPlayer.handoff > 0 && drawPlayer.handoff < 16 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff];
+-		usesCompositeTorso = drawPlayer.body > 0 && drawPlayer.body < ArmorIDs.Body.Count && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body];
+-		usesCompositeFrontHandAcc = drawPlayer.handon > 0 && drawPlayer.handon < ArmorIDs.HandOn.Count && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon];
+-		usesCompositeBackHandAcc = drawPlayer.handoff > 0 && drawPlayer.handoff < ArmorIDs.HandOff.Count && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff];
 +		usesCompositeTorso = drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body];
 +		usesCompositeFrontHandAcc = drawPlayer.handon > 0 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon];
 +		usesCompositeBackHandAcc = drawPlayer.handoff > 0 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff];

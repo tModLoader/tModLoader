@@ -125,14 +125,14 @@ internal class UIModConfig : UIState
 		previousConfigButton.Top.Set(-65f, 0f);
 		previousConfigButton.HAlign = 0f;
 		previousConfigButton.WithFadedMouseOver();
-		previousConfigButton.OnClick += PreviousConfig;
+		previousConfigButton.OnLeftClick += PreviousConfig;
 		//uIElement.Append(previousConfigButton);
 
 		nextConfigButton = new UITextPanel<string>(">", 1f, false);
 		nextConfigButton.CopyStyle(previousConfigButton);
 		nextConfigButton.WithFadedMouseOver();
 		nextConfigButton.HAlign = 1f;
-		nextConfigButton.OnClick += NextConfig;
+		nextConfigButton.OnLeftClick += NextConfig;
 		//uIElement.Append(nextConfigButton);
 
 		saveConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
@@ -142,7 +142,7 @@ internal class UIModConfig : UIState
 		saveConfigButton.WithFadedMouseOver();
 		saveConfigButton.HAlign = 0.33f;
 		saveConfigButton.VAlign = 1f;
-		saveConfigButton.OnClick += SaveConfig;
+		saveConfigButton.OnLeftClick += SaveConfig;
 		//uIElement.Append(saveConfigButton);
 
 		backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack"), 1f, false);//"Back"
@@ -157,14 +157,14 @@ internal class UIModConfig : UIState
 			if (pendingChanges)
 				backButton.BackgroundColor = Color.Red * 0.7f;
 		};
-		backButton.OnClick += BackClick;
+		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
 
 		revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
 		revertConfigButton.CopyStyle(saveConfigButton);
 		revertConfigButton.WithFadedMouseOver();
 		revertConfigButton.HAlign = 0.66f;
-		revertConfigButton.OnClick += RevertConfig;
+		revertConfigButton.OnLeftClick += RevertConfig;
 		//uIElement.Append(revertConfigButton);
 
 		//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
@@ -172,7 +172,7 @@ internal class UIModConfig : UIState
 		restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
 		restoreDefaultsConfigButton.WithFadedMouseOver();
 		restoreDefaultsConfigButton.HAlign = 1f;
-		restoreDefaultsConfigButton.OnClick += RestoreDefaults;
+		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
 		uIElement.Append(restoreDefaultsConfigButton);
 
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
@@ -734,7 +734,7 @@ internal class UIModConfig : UIState
 		//top += 40;
 		//var capturedCurrent = Interface.modConfig.currentConfigList;
 
-		back.OnClick += (a, c) => {
+		back.OnLeftClick += (a, c) => {
 			Interface.modConfig.uIElement.RemoveChild(uIPanel);
 			Interface.modConfig.configPanelStack.Pop();
 			Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());

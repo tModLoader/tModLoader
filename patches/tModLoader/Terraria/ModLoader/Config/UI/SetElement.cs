@@ -115,7 +115,7 @@ internal class SetElement : CollectionElement
 
 				// fix delete.
 				object o = valuesEnumerator.Current; // needed for closure?
-				deleteButton.OnClick += (a, b) => {
+				deleteButton.OnLeftClick += (a, b) => {
 					var removeMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
 					removeMethod.Invoke(Data, new object[] { o });
 					SetupList();

@@ -79,7 +79,7 @@ internal class UIModDownloadItem : UIPanel
 			Left = { Pixels = leftOffset },
 			Top = { Pixels = 40 }
 		};
-		_moreInfoButton.OnClick += ViewModInfo;
+		_moreInfoButton.OnLeftClick += ViewModInfo;
 		Append(_moreInfoButton);
 
 		var modBuildVersion = new Version(ModDownload.ModloaderVersion.Replace("tModLoader v",""));
@@ -94,7 +94,7 @@ internal class UIModDownloadItem : UIPanel
 			tMLUpdateRequired.CopyStyle(_moreInfoButton);
 			tMLUpdateRequired.Width.Pixels = 340;
 			tMLUpdateRequired.Left.Pixels += 36 + PADDING;
-			tMLUpdateRequired.OnClick += (a, b) => {
+			tMLUpdateRequired.OnLeftClick += (a, b) => {
 				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/releases/latest");
 			};
 			Append(tMLUpdateRequired);
@@ -103,14 +103,14 @@ internal class UIModDownloadItem : UIPanel
 			_updateButton = new UIImage(UICommon.ButtonExclamationTexture);
 			_updateButton.CopyStyle(_moreInfoButton);
 			_updateButton.Left.Pixels += 36 + PADDING;
-			_updateButton.OnClick += ShowGameNeedsRestart;
+			_updateButton.OnLeftClick += ShowGameNeedsRestart;
 			Append(_updateButton);
 		}
 		else if (ModDownload.HasUpdate || ModDownload.Installed == null) {
 			_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
 			_updateWithDepsButton.CopyStyle(_moreInfoButton);
 			_updateWithDepsButton.Left.Pixels += 36 + PADDING;
-			_updateWithDepsButton.OnClick += DownloadWithDeps;
+			_updateWithDepsButton.OnLeftClick += DownloadWithDeps;
 			Append(_updateWithDepsButton);
 		}
 
@@ -119,11 +119,11 @@ internal class UIModDownloadItem : UIPanel
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferences.Split(',').Select(x => x.Trim())))) {
 				Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 			};
-			modReferenceIcon.OnClick += ShowModDependencies;
+			modReferenceIcon.OnLeftClick += ShowModDependencies;
 			Append(modReferenceIcon);
 		}
 
-		OnDoubleClick += ViewModInfo;
+		OnLeftDoubleClick += ViewModInfo;
 	}
 
 	private void ShowModDependencies(UIMouseEvent evt, UIElement element)

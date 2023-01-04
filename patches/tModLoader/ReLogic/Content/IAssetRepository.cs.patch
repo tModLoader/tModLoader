@@ -7,13 +7,15 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -16,7 +_,13 @@
+@@ -16,7 +_,15 @@
  
  	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
  
++	//TML: Default request mode for mods changed to Async.
 -	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
 +	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
 +
++	// Added by TML.
 +	Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
  
  	void TransferCompletedAssets();

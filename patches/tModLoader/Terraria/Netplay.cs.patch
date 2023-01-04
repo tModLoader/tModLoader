@@ -49,15 +49,17 @@
  		Disconnect = false;
  		Connection = new RemoteServer();
 -		Connection.ReadBuffer = new byte[1024];
-+		Connection.ReadBuffer = new byte[ushort.MaxValue];
++		Connection.ReadBuffer = new byte[ushort.MaxValue]; // TML: 1024 -> ushort.MaxValue
  	}
  
  	private static void InnerClientLoop()
-@@ -472,6 +_,7 @@
+@@ -472,6 +_,9 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
++
 +						SystemLoader.OnWorldLoad();
++
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
@@ -65,29 +67,34 @@
  			}
  
  			if (!Main.gameMenu) {
-+				//This is only called in case of kicks and other sudden disconnects.
-+				//The more common (client) call to this is in Main.SaveAndQuitCallback
++				// This is only called in case of kicks and other sudden disconnects.
++				// The more common (client) call to this is in Main.SaveAndQuitCallback.
 +				SystemLoader.OnWorldUnload();
 +
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
  				MapHelper.noStatusText = true;
-@@ -589,7 +_,23 @@
+@@ -589,7 +_,29 @@
  		thread.Start();
  	}
  
--	public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
++	/*
+ 	public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
++	*/
++
 +	public static bool SetRemoteIP(string remoteAddress)
 +	{
 +		if (remoteAddress.Contains(':')) {
 +			int colonInd = remoteAddress.LastIndexOf(':');
++
 +			if (int.TryParse(remoteAddress.AsSpan(colonInd + 1), out int port)) {
 +				remoteAddress = remoteAddress.Substring(0, colonInd);
 +
 +				bool set = SetRemoteIPOld(remoteAddress);
-+				if (set) {
++
++				if (set)
 +					ListenPort = port;
-+				}
++
 +				return set;
 +			}
 +		}

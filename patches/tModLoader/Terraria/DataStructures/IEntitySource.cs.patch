@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
 +++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
-@@ -1,5 +_,35 @@
+@@ -1,5 +_,37 @@
 +using System.Collections.Generic;
 +
 +#nullable enable
@@ -13,6 +13,8 @@
 +/// </summary>
  public interface IEntitySource
  {
++	// All members here were added by TML.
++
 +	// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
 +	private static readonly Stack<IEntitySource> fallbacks = new();
 +

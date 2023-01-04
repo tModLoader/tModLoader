@@ -16,7 +16,7 @@ internal class BooleanElement : ConfigElement<bool>
 		base.OnBind();
 		_toggleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
 
-		OnClick += (ev, v) => Value = !Value;
+		OnLeftClick += (ev, v) => Value = !Value;
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)

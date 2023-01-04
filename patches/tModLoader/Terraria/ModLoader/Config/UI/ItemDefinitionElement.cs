@@ -18,7 +18,7 @@ internal class ItemDefinitionElement : DefinitionElement<ItemDefinition>
 
 		for (int i = 0; i < ItemLoader.ItemCount; i++) {
 			var optionElement = new ItemDefinitionOptionElement(new ItemDefinition(i), OptionScale);
-			optionElement.OnClick += (a, b) => {
+			optionElement.OnLeftClick += (a, b) => {
 				Value = optionElement.Definition;
 				UpdateNeeded = true;
 				SelectionExpanded = false;

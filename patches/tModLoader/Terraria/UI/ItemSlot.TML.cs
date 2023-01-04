@@ -119,10 +119,8 @@ public partial class ItemSlot
 		return item2;
 	}
 
-	/// <summary>
-	/// Returns true to disallow putting an item in to a given slot, typically invoked by mouse placement
-	/// </summary>
-	internal static bool AccCheck_Inner(Item[] itemCollection, Item item, int slot)
+	// Copy of Acc check, but runs hooks which take the local player as a context.
+	internal static bool AccCheck_ForLocalPlayer(Item[] itemCollection, Item item, int slot)
 	{
 		if (isEquipLocked(item.type))
 			return true;

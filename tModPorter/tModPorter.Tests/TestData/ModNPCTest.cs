@@ -38,4 +38,12 @@ public class ModNPCTest : ModNPC
 	public override string[] AltTextures => new string[0];
 
 	public override string TownNPCName() { return "Name"; }
+
+	public override bool? CanHitNPC(NPC target) {
+		return null;
+	}
+
+	public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+	{
+	}
 }

@@ -96,7 +96,7 @@ public static class NPCLoader
 	public static int NPCCount => nextNPC;
 
 	/// <summary>
-	/// Gets the ModNPC instance corresponding to the specified type.
+	/// Gets the ModNPC template instance corresponding to the specified type (not the clone/new instance which gets added to NPCs as the game is played).
 	/// </summary>
 	/// <param name="type">The type of the npc</param>
 	/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
@@ -195,14 +195,14 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookScaleExpertStats = AddHook<Action<NPC, int, float>>(g => g.ScaleExpertStats);
+	private static HookList HookApplyDifficultyAndPlayerScaling = AddHook<Action<NPC, int, float, float>>(g => g.ApplyDifficultyAndPlayerScaling);
 
-	public static void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	public static void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
 	{
-		npc.ModNPC?.ScaleExpertStats(numPlayers, bossLifeScale);
+		npc.ModNPC?.ApplyDifficultyAndPlayerScaling(numPlayers, balance, bossAdjustment);
 
-		foreach (GlobalNPC g in HookScaleExpertStats.Enumerate(npc.globalNPCs)) {
-			g.ScaleExpertStats(npc, numPlayers, bossLifeScale);
+		foreach (GlobalNPC g in HookApplyDifficultyAndPlayerScaling.Enumerate(npc.globalNPCs)) {
+			g.ApplyDifficultyAndPlayerScaling(npc, numPlayers, balance, bossAdjustment);
 		}
 	}
 
@@ -618,30 +618,16 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookCanHitNPC = AddHook<Func<NPC, NPC, bool?>>(g => g.CanHitNPC);
+	private static HookList HookCanHitNPC = AddHook<Func<NPC, NPC, bool>>(g => g.CanHitNPC);
 
-	public static bool? CanHitNPC(NPC npc, NPC target)
+	public static bool CanHitNPC(NPC npc, NPC target)
 	{
-		bool? flag = null;
 		foreach (GlobalNPC g in HookCanHitNPC.Enumerate(npc.globalNPCs)) {
-			bool? canHit = g.CanHitNPC(npc, target);
-			if (canHit.HasValue && !canHit.Value) {
+			if (!g.CanHitNPC(npc, target))
 				return false;
-			}
-			if (canHit.HasValue) {
-				flag = canHit.Value;
-			}
 		}
-		if (npc.ModNPC != null) {
-			bool? canHit = npc.ModNPC.CanHitNPC(target);
-			if (canHit.HasValue && !canHit.Value) {
-				return false;
-			}
-			if (canHit.HasValue) {
-				flag = canHit.Value;
-			}
-		}
-		return flag;
+
+		return npc.ModNPC?.CanHitNPC(target) ?? true;
 	}
 
 	private delegate void DelegateModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit);
@@ -1085,9 +1071,9 @@ public static class NPCLoader
 
 		foreach (GlobalNPC g in HookCanChat.Enumerate(npc.globalNPCs)) {
 			if (g.CanChat(npc) is bool canChat) {
-				if (!canChat) {
+				if (!canChat)
 					return false;
-				}
+				
 				ret = true;
 			}
 		}
@@ -1191,21 +1177,20 @@ public static class NPCLoader
 
 	private static HookList HookCanGoToStatue = AddHook<Func<NPC, bool, bool?>>(g => g.CanGoToStatue);
 
-	public static bool CanGoToStatue(NPC npc, bool toKingStatue, bool vanillaCanGo)
+	public static bool? CanGoToStatue(NPC npc, bool toKingStatue)
 	{
-		bool defaultCanGo = npc.ModNPC?.CanGoToStatue(toKingStatue) ?? vanillaCanGo;
+		bool? ret = npc.ModNPC?.CanGoToStatue(toKingStatue);
 
 		foreach (GlobalNPC g in HookCanGoToStatue.Enumerate(npc.globalNPCs)) {
-			bool? canGo = g.CanGoToStatue(npc, toKingStatue);
-			if (canGo.HasValue) {
-				if (!canGo.Value) {
+			if (g.CanGoToStatue(npc, toKingStatue) is bool canGo) {
+				if (!canGo)
 					return false;
-				}
-				defaultCanGo = true;
+				
+				ret = true;
 			}
 		}
 
-		return defaultCanGo;
+		return ret;
 	}
 
 	private static HookList HookOnGoToStatue = AddHook<Action<NPC, bool>>(g => g.OnGoToStatue);

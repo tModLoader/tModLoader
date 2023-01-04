@@ -1,7 +1,6 @@
 using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Ammo
@@ -11,7 +10,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded bullet ammo."); // The item's description, can be set to whatever you want.
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {

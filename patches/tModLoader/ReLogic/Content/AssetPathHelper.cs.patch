@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetPathHelper.cs
 +++ src/tModLoader/ReLogic/Content/AssetPathHelper.cs
-@@ -1,4 +_,5 @@
+@@ -1,30 +_,32 @@
  using System;
 +using System.Diagnostics;
  using System.IO;
  
  namespace ReLogic.Content;
-@@ -7,24 +_,24 @@
+ 
++//TML: 'StringComparison.Ordinal' added everywhere.	
+ public static class AssetPathHelper
  {
  	public static string CleanPath(string path)
  	{

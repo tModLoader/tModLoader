@@ -9,16 +9,25 @@ namespace Terraria.ModLoader.Engine;
 
 internal class TMLContentManager : ContentManager
 {
-	internal readonly TMLContentManager alternateContentManager;
+	internal readonly TMLContentManager overrideContentManager;
 	private readonly HashSet<string> ExistingImages = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
 	private int loadedAssets = 0;
 
-	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager alternateContentManager) : base(serviceProvider, rootDirectory)
+	public IEnumerable<string> RootDirectories {
+		get {
+			if (overrideContentManager != null)
+				yield return overrideContentManager.RootDirectory;
+
+			yield return RootDirectory;
+		}
+	}
+
+	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager overrideContentManager) : base(serviceProvider, rootDirectory)
 	{
 		TryFixFileCasings(rootDirectory);
 
-		this.alternateContentManager = alternateContentManager;
+		this.overrideContentManager = overrideContentManager;
 
 		//Fill cache for ImageExists() lookup.
 		void CacheImagePaths(string path) {
@@ -31,16 +40,16 @@ internal class TMLContentManager : ContentManager
 
 		CacheImagePaths(rootDirectory);
 
-		if (alternateContentManager != null)
-			CacheImagePaths(alternateContentManager.RootDirectory);
+		if (overrideContentManager != null)
+			CacheImagePaths(overrideContentManager.RootDirectory);
 	}
 
 	protected override Stream OpenStream(string assetName)
 	{
 		if (!assetName.StartsWith("tmod:")) {
-			if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb"))) {
+			if (overrideContentManager != null && File.Exists(Path.Combine(overrideContentManager.RootDirectory, assetName + ".xnb"))) {
 				try {
-					return alternateContentManager.OpenStream(assetName);
+					return overrideContentManager.OpenStream(assetName);
 				}
 				catch {}
 			}
@@ -73,7 +82,7 @@ internal class TMLContentManager : ContentManager
 	/// <summary> Safely attempts to get a path to the provided relative asset path, prioritizing overrides in the alternate content manager. </summary>
 	public bool TryGetPath(string asset, out string result)
 	{
-		if (alternateContentManager != null && alternateContentManager.TryGetPath(asset, out result)) {
+		if (overrideContentManager != null && overrideContentManager.TryGetPath(asset, out result)) {
 			return true;
 		}
 

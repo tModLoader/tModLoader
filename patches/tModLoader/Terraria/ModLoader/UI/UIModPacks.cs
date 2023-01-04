@@ -81,7 +81,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 			HAlign = 0f,
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
-		folderButton.OnClick += OpenFolder;
+		folderButton.OnLeftClick += OpenFolder;
 		uIElement.Append(folderButton);
 
 		var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
@@ -91,7 +91,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 			HAlign = 0f,
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
-		backButton.OnClick += BackClick;
+		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
 
 		var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
@@ -100,7 +100,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		saveNewButton.VAlign = 1f;
 		saveNewButton.HAlign = 1f;
 		saveNewButton.WithFadedMouseOver();
-		saveNewButton.OnClick += SaveNewModList;
+		saveNewButton.OnLeftClick += SaveNewModList;
 		uIElement.Append(saveNewButton);
 
 		Append(uIElement);

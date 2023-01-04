@@ -49,10 +49,10 @@ public class UICycleImage : UIElement
 		spriteBatch.Draw(_texture.Value, new Rectangle((int)dimensions.X, (int)dimensions.Y, DrawWidth, DrawHeight), new Rectangle(point.X, point.Y, DrawWidth, DrawHeight), color);
 	}
 
-	public override void Click(UIMouseEvent evt)
+	public override void LeftClick(UIMouseEvent evt)
 	{
 		CurrentState = (_currentState + 1) % _states;
-		base.Click(evt);
+		base.LeftClick(evt);
 	}
 
 	public override void RightClick(UIMouseEvent evt)

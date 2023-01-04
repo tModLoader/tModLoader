@@ -1,5 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/SkyManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/SkyManager.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
 @@ -9,6 +_,7 @@
  	public static SkyManager Instance = new SkyManager();
  	private float _lastDepth;
@@ -8,7 +13,7 @@
  
  	public void Reset()
  	{
-@@ -17,15 +_,19 @@
+@@ -17,15 +_,20 @@
  		}
  
  		_activeSkies.Clear();
@@ -22,32 +27,35 @@
  		if (num < 1)
  			num = 1;
 +		*/
- 
++
 +		_timePass += Main.desiredWorldEventsUpdateRate;
+ 
 -		for (int i = 0; i < num; i++) {
 +		for (int i = 1; i <= (int)_timePass; i++) {
  			LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
  			while (linkedListNode != null) {
  				CustomSky value = linkedListNode.Value;
-@@ -37,6 +_,7 @@
+@@ -37,6 +_,8 @@
  				linkedListNode = next;
  			}
  		}
++
 +		_timePass %= 1.0;
  	}
  
  	public void Draw(SpriteBatch spriteBatch)
-@@ -98,5 +_,13 @@
+@@ -98,5 +_,14 @@
  		}
  
  		return MathHelper.Clamp(num, 0f, 1f);
 +	}
 +
++	// Added by TML.
 +	internal void DeactivateAll()
 +	{
 +		foreach (string key in _effects.Keys) {
 +			if (this[key].IsActive())
-+				this[key].Deactivate(new object[0]);
++				this[key].Deactivate(Array.Empty<object>());
 +		}
  	}
  }

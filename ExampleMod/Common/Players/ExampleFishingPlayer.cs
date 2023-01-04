@@ -63,6 +63,20 @@ namespace ExampleMod.Common.Players
 				// Let's replace biome crates 50% of the time (player could be in multiple (modded) biomes, we should respect that)
 				if (!attempt.veryrare && !attempt.legendary && attempt.rare && Main.rand.NextBool()) {
 					itemDrop = ModContent.ItemType<Content.Items.Consumables.ExampleFishingCrate>();
+					return; // This is important so your code after this that rolls items will not run
+				}
+			}
+
+			// Here we will set the catch conditions for our ExampleQuestFish
+			int exampleQuestFish = ModContent.ItemType<Content.Items.ExampleQuestFish>(); // We'll store the type as a variable, since we'll be referencing it several times
+			// First we check if today's quest matches our quest fish
+			if (attempt.questFish == exampleQuestFish) {
+				// Our ExampleQuestFish states that it can only be caught whilst upside-down, so we'll have to check the gravity
+				// Normal gravity is positive, whilst reversed gravity is negative
+				// Finally, most vanilla quest fish only appear on an uncommon roll, so we'll do the same
+				if (Player.gravDir < 0f && attempt.uncommon) {
+					itemDrop = exampleQuestFish;
+					return; // While there is no more code that could roll a fish after this, we might add some in the future so it's best to return here
 				}
 			}
 		}

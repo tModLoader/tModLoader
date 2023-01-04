@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -14,7 +10,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Tooltip.SetDefault("Counts as a water, lava, and honey source\n"
 							 + "'A shame there's no example liquids (yet)'");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

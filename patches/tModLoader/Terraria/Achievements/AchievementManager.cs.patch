@@ -1,19 +1,21 @@
 --- src/TerrariaNetCore/Terraria/Achievements/AchievementManager.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
-@@ -54,6 +_,9 @@
+@@ -54,6 +_,10 @@
  
  	private void Save(string path, bool cloud)
  	{
++		// Check added by TML.
 +		if (SocialAPI.Mode == SocialMode.Steam)
 +			return;
 +
  		lock (_ioLock) {
  			if (SocialAPI.Achievements != null)
  				SocialAPI.Achievements.StoreStats();
-@@ -77,11 +_,17 @@
+@@ -77,11 +_,19 @@
  
  	public void Load()
  	{
++		// Check added by TML.
 +		if (SocialAPI.Mode == SocialMode.Steam)
 +			return;
 +
@@ -22,6 +24,7 @@
  
  	private void Load(string path, bool cloud)
  	{
++		// Check added by TML.
 +		if (SocialAPI.Mode == SocialMode.Steam)
 +			return;
 +

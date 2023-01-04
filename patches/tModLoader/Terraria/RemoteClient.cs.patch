@@ -8,12 +8,14 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria;
-@@ -11,7 +_,8 @@
+@@ -11,7 +_,10 @@
  	public int Id;
  	public string Name = "Anonymous";
  	public bool IsActive;
 -	public bool PendingTermination;
-+	//TML: Turned from a field into a private setter property.
++
++	// Changed from a field into a private setter property.
++	// Vanilla code must be changed to use SetPendingTermination instead.
 +	public bool PendingTermination { get; private set; }
  	public bool PendingTerminationApproved;
  	public bool IsAnnouncementCompleted;
@@ -22,7 +24,7 @@
  	public float SpamWaterMax = 50f;
  	private volatile bool _isReading;
  
-+	// log a reason for terminating clients
++	// Added by TML to log a reason for terminating clients
 +	internal void SetPendingTermination(string reason)
 +	{
 +		PendingTermination = true;

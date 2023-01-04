@@ -5,7 +5,7 @@
  	private const int SANDSTORM_DURATION_MAXIMUM = 86400;
  	public static bool Happening;
 -	public static int TimeLeft;
-+	public static double TimeLeft;
++	public static double TimeLeft; //TML: Changed from int to double.
  	public static float Severity;
  	public static float IntendedSeverity;
  	private static bool _effectsUp;
@@ -20,28 +20,31 @@
  	}
  
  	public static void UpdateTime()
-@@ -29,9 +_,9 @@
+@@ -29,9 +_,10 @@
  				if (TimeLeft > 86400)
  					TimeLeft = 0;
  
 -				TimeLeft -= Main.dayRate;
 +				TimeLeft -= Main.desiredWorldEventsUpdateRate;
++
  				if (!HasSufficientWind())
 -					TimeLeft -= 15 * Main.dayRate;
 +					TimeLeft -= 15 * Main.desiredWorldEventsUpdateRate;
  
  				if (Main.windSpeedCurrent == 0f)
  					TimeLeft = 0;
-@@ -43,10 +_,12 @@
+@@ -43,10 +_,14 @@
  				int num = 21600;
  				num = ((!Main.hardMode) ? (num * 3) : (num * 2));
  				if (HasSufficientWind()) {
 +					_timePass += Main.desiredWorldEventsUpdateRate;
++
 -					for (int i = 0; i < Main.dayRate; i++) {
 +					for (int i = 1; i <= (int)_timePass; i++) {
  						if (Main.rand.Next(num) == 0)
  							StartSandstorm();
  					}
++
 +					_timePass %= 1.0;
  				}
  			}

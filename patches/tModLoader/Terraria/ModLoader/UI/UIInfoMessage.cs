@@ -60,7 +60,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 			VAlign = 1f,
 			Top = { Pixels = -30 }
 		}.WithFadedMouseOver();
-		_button.OnClick += OKClick;
+		_button.OnLeftClick += OKClick;
 		_area.Append(_button);
 
 		_buttonAlt = new UITextPanel<string>("???", 0.7f, true) {
@@ -70,7 +70,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 			VAlign = 1f,
 			Top = { Pixels = -30 }
 		}.WithFadedMouseOver();
-		_buttonAlt.OnClick += AltClick;
+		_buttonAlt.OnLeftClick += AltClick;
 		_area.Append(_buttonAlt);
 
 		Append(_area);

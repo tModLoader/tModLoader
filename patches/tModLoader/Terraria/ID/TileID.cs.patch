@@ -19,7 +19,7 @@
  			};
  		}
  
--		public static SetFactory Factory = new SetFactory(693);
+-		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
  		public static bool[] IceSkateSlippery = Factory.CreateBoolSet(161, 162, 127, 163, 164, 200, 659);
  		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);

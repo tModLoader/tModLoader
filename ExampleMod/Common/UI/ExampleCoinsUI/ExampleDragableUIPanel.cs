@@ -17,16 +17,16 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 		// A flag that checks if the panel is currently being dragged
 		private bool dragging;
 
-		public override void MouseDown(UIMouseEvent evt) {
+		public override void LeftMouseDown(UIMouseEvent evt) {
 			// When you override UIElement methods, don't forget call the base method
 			// This helps to keep the basic behavior of the UIElement
-			base.MouseDown(evt);
+			base.LeftMouseDown(evt);
 			// When the mouse button is down, then we start dragging
 			DragStart(evt);
 		}
 
-		public override void MouseUp(UIMouseEvent evt) {
-			base.MouseUp(evt);
+		public override void LeftMouseUp(UIMouseEvent evt) {
+			base.LeftMouseUp(evt);
 			// When the mouse button is up, then we stop dragging
 			DragEnd(evt);
 		}

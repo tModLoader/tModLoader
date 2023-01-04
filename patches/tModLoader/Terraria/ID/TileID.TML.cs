@@ -1,4 +1,4 @@
-﻿namespace Terraria.ID;
+namespace Terraria.ID;
 
 partial class TileID
 {
@@ -51,6 +51,10 @@ partial class TileID
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530, 637, 655);
 
+		/// <summary> Whether or not this tile prevents a meteor from landing near it.</summary>
+		/// <remarks> Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <see cref="BasicChest"/> and <see cref="Main.tileDungeon"/>)</remarks>
+		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 448, 597);
+
 		/// <summary>
 		/// Whether or not this tile will prevent sand/slush from falling beneath it.
 		/// </summary>
@@ -71,5 +75,38 @@ partial class TileID
 		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
 		/// </summary>
 		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
+
+		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
+		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
+		public static int[] HallowBiome = Factory.CreateIntSet(0, 109, 1, 492, 1, 110, 1, 113, 1, 117, 1, 116, 1, 164, 1, 403, 1, 402, 1);
+		public static int[] CrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10);
+		public static int[] SnowBiome = Factory.CreateIntSet(0, 147, 1, 148, 1, 161, 1, 162, 1, 164, 1, 163, 1, 200, 1);
+		public static int[] JungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 226, 1, 225, 1);
+		public static int[] MushroomBiome = Factory.CreateIntSet(0, 70, 1, 71, 1, 72, 1, 528, 1);
+		public static int[] SandBiome = Factory.CreateIntSet(0, 53, 1, 112, 1, 116, 1, 234, 1, 397, 1, 398, 1, 402, 1, 399, 1, 396, 1, 400, 1, 403, 1, 401, 1);
+		public static int[] DungeonBiome = Factory.CreateIntSet(0, 41, 1, 43, 1, 44, 1, 481, 1, 482, 1, 483, 1);
+
+		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
+		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
+		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+
+		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
+		public static void AddCrimsonTile(ushort type, int strength = 1)
+		{
+			CrimsonBiome[type] = strength;
+			RemixCrimsonBiome[type] = strength;
+		}
+
+		public static void AddCorruptionTile(ushort type, int strength = 1)
+		{
+			CorruptBiome[type] = strength;
+			RemixCorruptBiome[type] = strength;
+		}
+
+		public static void AddJungleTile(ushort type, int strength = 1)
+		{
+			JungleBiome[type] = strength;
+			RemixJungleBiome[type] = strength;
+		}
 	}
 }

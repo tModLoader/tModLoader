@@ -5,7 +5,7 @@ namespace Terraria.ModLoader;
 [Autoload(false)]
 public abstract class VanillaDamageClass : DamageClass
 {
-	internal protected override string DisplayNameInternal => Language.GetTextValue(LangKey).Substring(1);
+	private protected sealed override string DisplayNameInternal => Language.GetTextValue(LangKey).Substring(1);
 
 	protected abstract string LangKey { get; }
 }

@@ -12,12 +12,12 @@
  		if (WorldGen.SkipFramingBecauseOfGen || i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
  			return;
  
--		if (Main.tile[i, j].wall >= 347)
+-		if (Main.tile[i, j].wall >= WallID.Count)
 +		if (Main.tile[i, j].wall >= WallLoader.WallCount)
  			Main.tile[i, j].wall = 0;
  
  		WorldGen.UpdateMapTile(i, j);
-@@ -336,43 +_,39 @@
+@@ -336,43 +_,49 @@
  		bool flag = Main.ShouldShowInvisibleWalls();
  		if (j - 1 >= 0) {
  			Tile tile2 = Main.tile[i, j - 1];
@@ -50,29 +50,37 @@
  		int num2 = 0;
  		if (Main.wallLargeFrames[tile.wall] == 1) {
  			num2 = phlebasTileFrameNumberLookup[j % 4][i % 3] - 1;
--			tile.wallFrameNumber((byte)num2);
++			/*
+ 			tile.wallFrameNumber((byte)num2);
++			*/
  		}
  		else if (Main.wallLargeFrames[tile.wall] == 2) {
  			num2 = lazureTileFrameNumberLookup[i % 2][j % 2] - 1;
--			tile.wallFrameNumber((byte)num2);
++			/*
+ 			tile.wallFrameNumber((byte)num2);
++			*/
  		}
  		else if (resetFrame) {
  			num2 = WorldGen.genRand.Next(0, 3);
  			if (tile.wall == 21 && WorldGen.genRand.Next(2) == 0)
  				num2 = 2;
--
--			tile.wallFrameNumber((byte)num2);
+ 
++			/*
+ 			tile.wallFrameNumber((byte)num2);
++			*/
  		}
  		else {
  			num2 = tile.wallFrameNumber();
-@@ -381,6 +_,10 @@
+@@ -380,6 +_,12 @@
+ 
  		if (num == 15)
  			num += centerWallFrameLookup[i % 3][j % 3];
- 
++
 +		if (!WallLoader.WallFrame(i, j, tile.wall, resetFrame, ref num, ref num2))
 +			return;
 +
++		// Moved from if-block contents above.
 +		tile.wallFrameNumber((byte)num2);
+ 
  		Point16 point = wallFrameLookup[num][num2];
  		tile.wallFrameX(point.X);
- 		tile.wallFrameY(point.Y);

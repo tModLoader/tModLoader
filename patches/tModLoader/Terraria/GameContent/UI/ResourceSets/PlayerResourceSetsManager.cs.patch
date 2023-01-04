@@ -9,15 +9,18 @@
  {
  	private Dictionary<string, IPlayerResourcesDisplaySet> _sets = new Dictionary<string, IPlayerResourcesDisplaySet>();
  	private IPlayerResourcesDisplaySet _activeSet;
-@@ -23,6 +_,7 @@
+@@ -23,6 +_,10 @@
  	private void Configuration_OnLoad(Preferences obj)
  	{
- 		_activeSetConfigKey = Main.Configuration.Get("PlayerResourcesSet", "New");
+ 		_activeSetConfigKey = obj.Get("PlayerResourcesSet", "New");
++
++		// Store original resource set value.
 +		_activeSetConfigKeyOriginal = _activeSetConfigKey;
++
  		if (_loadedContent)
  			SetActiveFromLoadedConfigKey();
  	}
-@@ -52,11 +_,18 @@
+@@ -51,11 +_,19 @@
  
  	private void SetActive(string name)
  	{
@@ -28,6 +31,7 @@
  
  		SetActiveFrame(playerResourcesDisplaySet);
 +		*/
++
 +		int index = accessKeys.FindIndex(s => s == name);
 +		if (index < 0)
 +			index = 0;
@@ -36,7 +40,7 @@
  	}
  
  	private void SetActiveFrame(IPlayerResourcesDisplaySet set)
-@@ -78,6 +_,7 @@
+@@ -77,6 +_,7 @@
  
  	public void CycleResourceSet()
  	{
@@ -44,11 +48,12 @@
  		IPlayerResourcesDisplaySet lastFrame = null;
  		_sets.Values.FirstOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
  			if (frame == _activeSet)
-@@ -91,5 +_,7 @@
+@@ -90,5 +_,8 @@
  			lastFrame = _sets.Values.Last();
  
  		SetActiveFrame(lastFrame);
 +		*/
++
 +		SetActiveFrameFromIndex(++selectedSet % accessKeys.Count);
  	}
  }

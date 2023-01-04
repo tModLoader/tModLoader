@@ -1,9 +1,11 @@
 --- src/Terraria/Terraria/NATUPNPLib/IUPnPNAT.cs
 +++ src/TerrariaNetCore/Terraria/NATUPNPLib/IUPnPNAT.cs
-@@ -1,9 +_,9 @@
+@@ -1,9 +_,11 @@
 -#if SERVER
++/*
  using System.Runtime.CompilerServices;
  using System.Runtime.InteropServices;
++*/
  
  namespace NATUPNPLib;
  

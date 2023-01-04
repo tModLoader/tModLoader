@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 
 namespace Terraria.ModLoader.Exceptions;

@@ -4,7 +4,7 @@
  	public static void Initialize()
  	{
  		_nextCurrencyIndex = 0;
-+		_currencies.Clear();
++		_currencies.Clear(); // Added by TML.
  		CustomCurrencyID.DefenderMedals = RegisterCurrency(new CustomCurrencySingleCoin(3817, 999L));
  	}
  

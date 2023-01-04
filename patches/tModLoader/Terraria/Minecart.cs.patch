@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Minecart.cs
 +++ src/tModLoader/Terraria/Minecart.cs
-@@ -502,7 +_,7 @@
+@@ -505,7 +_,7 @@
  		float num = vector3.Length();
  		vector3.Normalize();
  		Vector2 vector4 = vector2;

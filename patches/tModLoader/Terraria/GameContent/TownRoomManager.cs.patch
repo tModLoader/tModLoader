@@ -13,24 +13,29 @@
  	public static object EntityCreationLock = new object();
 -	private List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 +	internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
--	private bool[] _hasRoom = new bool[688];
+-	private bool[] _hasRoom = new bool[NPCID.Count];
 +	internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
  	public void AddOccupantsToList(int x, int y, List<int> occupantsList)
  	{
-@@ -82,8 +_,16 @@
+@@ -82,8 +_,22 @@
  	public void Save(BinaryWriter writer)
  	{
  		lock (EntityCreationLock) {
--			writer.Write(_roomLocationPairs.Count);
++			/*
+ 			writer.Write(_roomLocationPairs.Count);
++			*/
++
 +			int count = 0;
 +			foreach (Tuple<int, Point> current in _roomLocationPairs) {
-+				if (current.Item1 < Main.maxNPCTypes)
++				if (current.Item1 < NPCID.Count)
 +					count++;
 +			}
++
 +			writer.Write(count);
++
  			foreach (Tuple<int, Point> roomLocationPair in _roomLocationPairs) {
-+				if (roomLocationPair.Item1 >= Main.maxNPCTypes)
++				if (roomLocationPair.Item1 >= NPCID.Count)
 +					continue;
 +
  				writer.Write(roomLocationPair.Item1);

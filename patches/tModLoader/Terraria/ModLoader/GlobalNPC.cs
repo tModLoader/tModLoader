@@ -45,12 +45,18 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to customize an NPC's stats in expert mode.
+	/// Allows you to customize this NPC's stats when the difficulty is expert or higher.<br/>
+	/// This runs after <see cref="NPC.value"/>,  <see cref="NPC.lifeMax"/>,  <see cref="NPC.damage"/>,  <see cref="NPC.knockBackResist"/> have been adjusted for the current difficulty, (expert/master/FTW)<br/>
+	/// It is common to multiply lifeMax by the balance factor, and sometimes adjust knockbackResist.<br/>
+	/// <br/>
+	/// Eg:<br/>
+	/// <code>lifeMax = (int)(lifeMax * balance * bossAdjustment)</code>
 	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="numPlayers"></param>
-	/// <param name="bossLifeScale"></param>
-	public virtual void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+	/// <param name="npc">The newly spawned NPC</param>
+	/// <param name="numPlayers">The number of active players</param>
+	/// <param name="balance">Scaling factor that increases by a fraction for each player</param>
+	/// <param name="bossAdjustment">An extra reduction factor to be applied to boss life in high difficulty modes</param>
+	public virtual void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
 	{
 	}
 
@@ -323,14 +329,14 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether an NPC can hit the given friendly NPC. Return true to allow hitting the target, return false to block the NPC from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// Allows you to determine whether an NPC can hit the given friendly NPC. Return false to block the NPC from hitting the target, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(NPC npc, NPC target)
+	public virtual bool CanHitNPC(NPC npc, NPC target)
 	{
-		return null;
+		return true;
 	}
 
 	/// <summary>

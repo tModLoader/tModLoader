@@ -195,6 +195,16 @@ public static partial class Config
 		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageOther", Comment("Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding"));
 		RefactorStaticMember("Terraria.ID.TileID.Sets", "TouchDamageVines", Comment("Suggestion: TouchDamageImmediate and TouchDamageDestroyTile"));
 
+
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnMouseDown",	to: "OnLeftMouseDown");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnMouseUp",		to: "OnLeftMouseUp");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnClick",		to: "OnLeftClick");
+		RenameInstanceField("Terraria.UI.UIElement",	from: "OnDoubleClick",	to: "OnLeftDoubleClick");
+		RenameMethod("Terraria.UI.UIElement",			from: "MouseDown",		to: "LeftMouseDown");
+		RenameMethod("Terraria.UI.UIElement",			from: "MouseUp",		to: "LeftMouseUp");
+		RenameMethod("Terraria.UI.UIElement",			from: "Click",			to: "LeftClick");
+		RenameMethod("Terraria.UI.UIElement",			from: "DoubleClick",	to: "LeftDoubleClick");
+
 		AddWorldGenToGenVars();
 	}
 

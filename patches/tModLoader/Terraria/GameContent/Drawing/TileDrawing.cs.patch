@@ -29,7 +29,7 @@
  					switch (tile.type) {
  						case 5:
  							tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
-@@ -179,12 +_,12 @@
+@@ -179,12 +_,13 @@
  				}
  
  				if (!prepareLazily)
@@ -39,17 +39,21 @@
  		}
  	}
  
++	//TML: Added tileStyle parameter.
 -	private void MakeExtraPreparations(Tile tile, int x, int y)
 +	private void MakeExtraPreparations(Tile tile, int x, int y, int tileStyle)
  	{
  		switch (tile.type) {
  			case 5: {
-@@ -268,9 +_,19 @@
+@@ -268,9 +_,24 @@
  			}
  			case 323: {
  				int textureIndex = 15;
--				if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
-+				bool isOcean = x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance;
++				bool isOcean = false;
++
+ 				if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
++					isOcean = true;
++
 +				if (isOcean)
  					textureIndex = 21;
  
@@ -58,6 +62,7 @@
 +				if (Math.Abs(tileStyle) >= ModPalmTree.VanillaStyleCount) {
 +					textureIndex = (Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount);
 +					textureIndex *= -2;
++
 +					if (!isOcean)
 +						textureIndex -= 1;
 +				}
@@ -65,13 +70,14 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
-@@ -396,8 +_,9 @@
+@@ -396,8 +_,10 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
  		TileDrawInfo value = _currentTileDrawInfo.Value;
 -		for (int i = firstTileY; i < lastTileY + 4; i++) {
 -			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
-+		// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
++
++		//TML: Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
 +		for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
 +			for (int i = firstTileY; i < lastTileY + 4; i++) {
  				Tile tile = Main.tile[j, i];
@@ -117,13 +123,13 @@
  
 @@ -715,6 +_,7 @@
  
- 		Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
+ 		Rectangle rectangle = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
  		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
 +		TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
  		if (!flag)
  			return;
  
-@@ -963,7 +_,7 @@
+@@ -994,7 +_,7 @@
  		return true;
  	}
  
@@ -132,7 +138,7 @@
  	{
  		Texture2D result = TextureAssets.Tile[tile.type].Value;
  		int tileStyle = 0;
-@@ -979,6 +_,25 @@
+@@ -1010,6 +_,25 @@
  				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
  					num = 84;
  				Main.instance.LoadTiles(num);
@@ -158,7 +164,7 @@
  				break;
  		}
  
-@@ -989,7 +_,7 @@
+@@ -1020,7 +_,7 @@
  		return result;
  	}
  
@@ -167,11 +173,12 @@
  	{
  		Texture2D result = TextureAssets.Tile[tile.type].Value;
  		int tileStyle = 0;
-@@ -1005,6 +_,25 @@
+@@ -1036,6 +_,26 @@
  				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
  					num = 84;
  				Main.instance.LoadTiles(num);
 +				break;
++			// Whole case below is TML code.
 +			case 80:
 +			case 227:
 +				WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
@@ -193,7 +200,7 @@
  				break;
  		}
  
-@@ -1234,6 +_,9 @@
+@@ -1265,6 +_,9 @@
  			case 662:
  				return 4;
  			default:
@@ -203,7 +210,7 @@
  				return -1;
  		}
  	}
-@@ -2328,6 +_,9 @@
+@@ -2359,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
  
@@ -213,7 +220,7 @@
  		return num;
  	}
  
-@@ -2846,7 +_,7 @@
+@@ -2877,7 +_,7 @@
  		vertices.TopRightColor *= num7;
  		bool flag7 = false;
  		if (flag6) {
@@ -222,7 +229,7 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
-@@ -3081,7 +_,8 @@
+@@ -3112,7 +_,8 @@
  		}
  	}
  
@@ -230,20 +237,24 @@
 +	//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
 +	internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache)
  	{
- 		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654;
+ 		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3095,6 +_,10 @@
+@@ -3122,10 +_,14 @@
+ 			if (!localPlayer.fireWalk)
+ 				flag = flag || typeCache == 37 || typeCache == 58 || typeCache == 76;
+ 
++			// Extra patch context.
+ 			if (!localPlayer.iceSkate)
  				flag = flag || typeCache == 162;
  		}
  
-+		bool? modded = TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
-+		if (modded.HasValue)
-+			return modded.Value;
++		if (TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer) is bool modded)
++			return modded;
 +
  		return flag;
  	}
  
-@@ -3106,7 +_,7 @@
+@@ -3137,7 +_,7 @@
  		return _tileSolid[typeCache];
  	}
  
@@ -252,7 +263,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,7 +_,7 @@
+@@ -3179,7 +_,7 @@
  
  	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
  
@@ -261,41 +272,48 @@
  	{
  		tileTop = 0;
  		tileWidth = 16;
-@@ -3224,7 +_,9 @@
+@@ -3255,6 +_,10 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
 +
-+				if (treeBiome < ModTree.VanillaStyleCount)
--				tileFrameX += (short)(176 * (treeBiome + 1));
-+					tileFrameX += (short)(176 * (treeBiome + 1));
++				if (treeBiome >= ModTree.VanillaStyleCount)
++					break;
++
+ 				tileFrameX += (short)(176 * (treeBiome + 1));
  				break;
  			}
- 			case 583:
-@@ -3248,7 +_,10 @@
+@@ -3279,6 +_,12 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int palmTreeBiome = GetPalmTreeBiome(x, y);
-+				if (Math.Abs(palmTreeBiome) < ModPalmTree.VanillaStyleCount)
--				tileFrameY = (short)(22 * palmTreeBiome);
-+					tileFrameY = (short)(22 * palmTreeBiome);
-+				else
++
++				if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
 +					tileFrameY = (short)(22 * (palmTreeBiome < 0 ? 1 : 0));
++					break;
++				}
++
+ 				tileFrameY = (short)(22 * palmTreeBiome);
  				break;
  			}
- 			case 4:
-@@ -4820,6 +_,10 @@
+@@ -4848,9 +_,16 @@
+ 					glowColor = _meteorGlow;
+ 				}
+ 
++				// Extra patch context.
++
  				break;
  			}
  		}
 +
++		// End of GetTileDrawData
 +		TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
 +		TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
 +		TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
  	}
  
  	private bool IsWindBlocked(int x, int y)
-@@ -4891,18 +_,28 @@
+@@ -4922,18 +_,29 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
@@ -320,13 +338,14 @@
 -	private void AddSpecialLegacyPoint(int x, int y)
 +	public void AddSpecialLegacyPoint(int x, int y)
  	{
++		// Protection against too many special tiles
 +		if (_specialTilesCount >= _specialTileX.Length)
-+			return; //Protection against too many special tiles
++			return;
 +
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -5513,13 +_,27 @@
+@@ -5544,14 +_,28 @@
  		}
  	}
  
@@ -352,10 +371,12 @@
 +	/// <param name="x">The X coordinate of the target tile.</param>
 +	/// <param name="y">The Y coordinate of the target tile.</param>
 +	/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
- 	private void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType)
+-	private void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType)
++	public void EmitLivingTreeLeaf_Below(int x, int y, int leafGoreType)
  	{
  		Tile tile = Main.tile[x, y + 1];
-@@ -5530,6 +_,12 @@
+ 		if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
+@@ -5561,7 +_,13 @@
  		}
  	}
  
@@ -365,10 +386,12 @@
 +	/// <param name="x">The X coordinate of the target tile.</param>
 +	/// <param name="y">The Y coordinate of the target tile.</param>
 +	/// <param name="leafGoreType">The numerical ID of the leaf or other gore instance that should be spawned.</param>
- 	private void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType)
+-	private void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType)
++	public void EmitLivingTreeLeaf_Sideways(int x, int y, int leafGoreType)
  	{
  		int num = 0;
-@@ -5587,6 +_,8 @@
+ 		if (Main.WindForVisuals > 0.2f)
+@@ -5618,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
  			type = 1147;
@@ -377,7 +400,7 @@
  		else if (Main.waterStyle > 1)
  			type = 706 + Main.waterStyle - 1;
  
-@@ -5612,7 +_,17 @@
+@@ -5643,7 +_,17 @@
  		_gore[num2].velocity *= 0f;
  	}
  
@@ -396,7 +419,7 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return 0f;
-@@ -5636,7 +_,22 @@
+@@ -5667,7 +_,22 @@
  		return num2 * lerpValue;
  	}
  
@@ -420,8 +443,11 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return false;
-@@ -5927,6 +_,8 @@
+@@ -5956,8 +_,11 @@
+ 					Main.spriteBatch.Draw(value6, position2, value7, color6, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				}
  
++				// Extra patch context.
  				Main.spriteBatch.Draw(value6, vector, value7, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  			}
 +
@@ -429,10 +455,11 @@
  		}
  	}
  
-@@ -6178,6 +_,24 @@
+@@ -6209,6 +_,26 @@
  						num20 = 2;
  					}
  
++					// Handle mod palms.
 +					if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
 +						y2 = 0;
 +
@@ -446,6 +473,7 @@
 +
 +						treeTextureIndex = (Math.Abs(palmTreeBiome) - ModPalmTree.VanillaStyleCount);
 +						treeTextureIndex *= -2;
++
 +						// Oasis tree
 +						if (palmTreeBiome < 0)
 +							treeTextureIndex -= 1;
@@ -454,7 +482,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6203,8 +_,12 @@
+@@ -6234,8 +_,13 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -462,13 +490,14 @@
 +		if (texture2D == null) {
 +			if (treeTextureIndex < 0 || treeTextureIndex >= ModTree.VanillaTopTextureCount)
 +				treeTextureIndex = 0;
++
  			texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
 +		}
 +			
  
  		return texture2D;
  	}
-@@ -6212,8 +_,11 @@
+@@ -6243,8 +_,12 @@
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -476,12 +505,13 @@
 +		if (texture2D == null) {
 +			if (treeTextureIndex < 0 || treeTextureIndex >= ModTree.VanillaTopTextureCount)
 +				treeTextureIndex = 0;
++
  			texture2D = TextureAssets.TreeBranch[treeTextureIndex].Value;
 +		}
  
  		return texture2D;
  	}
-@@ -6363,7 +_,7 @@
+@@ -6394,7 +_,7 @@
  
  	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
  	{
@@ -490,7 +520,7 @@
  			if (tileLight.R < byte.MaxValue)
  				tileLight.R = byte.MaxValue;
  
-@@ -6382,7 +_,7 @@
+@@ -6413,7 +_,7 @@
  			}
  		}
  
@@ -499,7 +529,7 @@
  			if (tileLight.R < 200)
  				tileLight.R = 200;
  
-@@ -6422,7 +_,17 @@
+@@ -6453,7 +_,17 @@
  		}
  	}
  
@@ -518,7 +548,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		if (windTimeLeft >= pushAnimationTimeTotal / 2)
-@@ -6444,7 +_,18 @@
+@@ -6475,7 +_,18 @@
  		}
  	}
  

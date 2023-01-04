@@ -34,7 +34,7 @@ public abstract class InfoDisplay : ModTexturedType
 	/// </summary>
 	public string DisplayName => DisplayNameInternal;
 
-	internal protected virtual string DisplayNameInternal => InfoName.GetTranslation(Language.ActiveCulture);
+	private protected virtual string DisplayNameInternal => InfoName.GetTranslation(Language.ActiveCulture);
 
 	/// <summary>
 	/// This dictates whether or not this info display should be active.

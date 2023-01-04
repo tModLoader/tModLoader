@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Content.Items;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -74,7 +73,7 @@ namespace ExampleMod.Content.Projectiles
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
 
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

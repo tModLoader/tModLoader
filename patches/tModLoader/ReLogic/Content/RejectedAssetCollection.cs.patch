@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/ReLogic/Content/RejectedAssetCollection.cs
 +++ src/tModLoader/ReLogic/Content/RejectedAssetCollection.cs
-@@ -8,20 +_,31 @@
+@@ -2,26 +_,38 @@
+ 
+ namespace ReLogic.Content;
+ 
++//TML: Added locks to every method here.
+ public class RejectedAssetCollection
+ {
+ 	private Dictionary<string, IRejectionReason> _rejectedAssetsAndReasons = new Dictionary<string, IRejectionReason>();
  
  	public void Reject(string assetPath, IRejectionReason reason)
  	{

@@ -17,7 +17,7 @@ public static class GoreLoader
 	public static int GoreCount { get; private set; } = GoreID.Count;
 
 	/// <summary> Registers a new gore with the provided texture. </summary>
-	public static void AddGoreFromTexture<TGore>(Mod mod, string texture) where TGore : ModGore, new()
+	public static bool AddGoreFromTexture<TGore>(Mod mod, string texture) where TGore : ModGore, new()
 	{
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
@@ -28,7 +28,7 @@ public static class GoreLoader
 		if (!mod.loading)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-		mod.AddContent(new TGore {
+		return mod.AddContent(new TGore {
 			nameOverride = Path.GetFileNameWithoutExtension(texture),
 			textureOverride = texture
 		});

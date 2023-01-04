@@ -46,12 +46,12 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
-	/// <summary>
-	/// Easy get/set for an item's Sacrifice Total Count
-	/// </summary>
+	// Deprecation date: 2022.12.XX
+	/// <inheritdoc cref="Item.ResearchUnlockCount"/>
+	[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.ResearchUnlockCount)} instead.", error: true)]
 	public int SacrificeTotal {
-		get => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
-		set => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+		get => Item.ResearchUnlockCount;
+		set => Item.ResearchUnlockCount = value;
 	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
@@ -981,14 +981,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="maxFallSpeed">The maximum fall speed.</param>
 	public virtual void Update(ref float gravity, ref float maxFallSpeed)
 	{
-	}
-
-	/// <summary>
-	/// Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).
-	/// </summary>
-	public virtual bool? CanBurnInLava()
-	{
-		return null;
 	}
 
 	/// <summary>

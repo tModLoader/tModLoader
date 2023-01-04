@@ -16,6 +16,8 @@ public class ModItemTest : ModItem
 
 		Console.WriteLine(item.IsCandidateForReforge);
 		item.CloneWithModdedDataFrom(item);
+
+		SacrificeTotal = 1;
 	}
 
 	public override bool IgnoreDamageModifiers => false;
@@ -62,6 +64,8 @@ public class ModItemTest : ModItem
 	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
 
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+
+	public override bool? CanBurnInLava() => null;
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 

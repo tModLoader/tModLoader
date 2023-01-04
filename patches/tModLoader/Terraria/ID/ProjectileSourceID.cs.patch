@@ -7,7 +7,7 @@
 +
  namespace Terraria.ID;
  
-+//TML: Internalized in favor of string contexts on every entity source.
++//TML: Made internal in favor of string contexts on every entity source.
 -public static class ProjectileSourceID
 +internal static class ProjectileSourceID
  {
@@ -16,7 +16,7 @@
 @@ -21,4 +_,25 @@
  	public const int SetBonus_GhostHurt = 16;
  	public const int VampireKnives = 18;
- 	public const int Count = 19;
+ 	public static readonly int Count = 19;
 +
 +	public static string? ToContextString(int itemSourceId) => itemSourceId switch {
 +		SetBonus_SolarExplosion_WhenTakingDamage => nameof(SetBonus_SolarExplosion_WhenTakingDamage),

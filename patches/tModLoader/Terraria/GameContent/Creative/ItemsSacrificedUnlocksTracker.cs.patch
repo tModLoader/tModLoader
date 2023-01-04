@@ -23,7 +23,7 @@
  	public void Save(BinaryWriter writer)
  	{
 -		Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
-+		//Only include vanilla items in the dictionary.
++		// Only include vanilla items in the dictionary.
 +		Dictionary<string, int> dictionary = _sacrificeCountByItemPersistentId
 +			.Where(pair => ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(pair.Key, out int netID) && ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem) && realItem.ModItem == null)
 +			.ToDictionary(pair => pair.Key, pair => pair.Value);

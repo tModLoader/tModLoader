@@ -27,7 +27,7 @@ internal class UIModStateText : UIElement
 
 	public override void OnInitialize()
 	{
-		OnClick += (evt, el) => {
+		OnLeftClick += (evt, el) => {
 			if (_enabled) SetDisabled();
 			else SetEnabled();
 		};

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -6,25 +_,48 @@
+@@ -6,25 +_,52 @@
  using Terraria.GameContent;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameInput;
@@ -11,6 +11,7 @@
  
  public class TeleportPylonsMapLayer : IMapLayer
  {
++	// Added by TML.
 +	public bool Visible { get; set; } = true;
 +
  	public void Draw(ref MapOverlayDrawContext context, ref string text)
@@ -21,8 +22,10 @@
  		float scaleIfSelected = num * 2f;
 +		*/
 +		IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
++
  		Texture2D value = TextureAssets.Extra[182].Value;
  		bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer) && (Main.DroneCameraTracker == null || !Main.DroneCameraTracker.IsInUse());
++
 +		/*
  		Color color = Color.White;
  		if (!num2)
@@ -31,6 +34,7 @@
  
  		for (int i = 0; i < pylons.Count; i++) {
  			TeleportPylonInfo info = pylons[i];
++
 +			float num = 1f;
 +			float scaleIfSelected = num * 2f;
 +			Color color = Color.White;

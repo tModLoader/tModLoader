@@ -59,7 +59,17 @@ public struct BossBarDrawParams
 	/// </summary>
 	public float IconScale;
 
-	public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield = 0f, float shieldMax = 0f, float iconScale = 1f)
+	/// <summary>
+	/// If the current life (or shield) of the boss should be written on the bar.
+	/// </summary>
+	public bool ShowText;
+
+	/// <summary>
+	/// The text offset from the center (<see cref="BarCenter"/>)
+	/// </summary>
+	public Vector2 TextOffset;
+
+	public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield = 0f, float shieldMax = 0f, float iconScale = 1f, bool showText = true, Vector2 textOffset = default)
 	{
 		BarTexture = barTexture;
 		BarCenter = barCenter;
@@ -71,9 +81,11 @@ public struct BossBarDrawParams
 		Shield = shield;
 		ShieldMax = shieldMax;
 		IconScale = iconScale;
+		ShowText = showText;
+		TextOffset = textOffset;
 	}
 
-	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale)
+	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale, out bool showText, out Vector2 textOffset)
 	{
 		barTexture = BarTexture;
 		barCenter = BarCenter;
@@ -85,5 +97,7 @@ public struct BossBarDrawParams
 		shield = Shield;
 		shieldMax = ShieldMax;
 		iconScale = IconScale;
+		showText = ShowText;
+		textOffset = TextOffset;
 	}
 }

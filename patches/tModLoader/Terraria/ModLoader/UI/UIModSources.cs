@@ -110,14 +110,14 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -65 }
 		};
 		buttonBA.WithFadedMouseOver();
-		buttonBA.OnClick += BuildMods;
+		buttonBA.OnLeftClick += BuildMods;
 		//_uIElement.Append(buttonBA);
 
 		var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 		buttonBRA.CopyStyle(buttonBA);
 		buttonBRA.HAlign = 0.5f;
 		buttonBRA.WithFadedMouseOver();
-		buttonBRA.OnClick += BuildAndReload;
+		buttonBRA.OnLeftClick += BuildAndReload;
 		//_uIElement.Append(buttonBRA);
 
 		var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
@@ -125,7 +125,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		buttonCreateMod.HAlign = 1f;
 		buttonCreateMod.Top.Pixels = -20;
 		buttonCreateMod.WithFadedMouseOver();
-		buttonCreateMod.OnClick += ButtonCreateMod_OnClick;
+		buttonCreateMod.OnLeftClick += ButtonCreateMod_OnClick;
 		_uIElement.Append(buttonCreateMod);
 
 		var buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
@@ -133,14 +133,14 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		//buttonB.Width.Set(-10f, 1f / 3f);
 		buttonB.Top.Pixels = -20;
 		buttonB.WithFadedMouseOver();
-		buttonB.OnClick += BackClick;
+		buttonB.OnLeftClick += BackClick;
 		_uIElement.Append(buttonB);
 
 		var buttonOS = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"));
 		buttonOS.CopyStyle(buttonB);
 		buttonOS.HAlign = .5f;
 		buttonOS.WithFadedMouseOver();
-		buttonOS.OnClick += OpenSources;
+		buttonOS.OnLeftClick += OpenSources;
 		_uIElement.Append(buttonOS);
 
 		Append(_uIElement);

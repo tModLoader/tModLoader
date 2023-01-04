@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -16,19 +_,27 @@
+@@ -16,19 +_,26 @@
  	private float _currentPriceAdjustment;
  	private NPC _currentNPCBeingTalkedTo;
  	private Player _currentPlayerTalking;
@@ -21,7 +21,6 @@
  		new CrimsonBiome(),
  		new DungeonBiome()
  	};
-+	// Turned from private to internal.
 -	private const float likeValue = 0.94f;
 +	internal const float likeValue = 0.94f;
 -	private const float dislikeValue = 1.06f;
@@ -46,7 +45,7 @@
  				_currentPriceAdjustment *= 0.95f;
  			}
  
--			bool[] array = new bool[688];
+-			bool[] array = new bool[NPCID.Count];
 +			bool[] array = new bool[NPCLoader.NPCCount];
  			foreach (NPC item in nearbyResidentNPCs) {
  				array[item.type] = true;
@@ -131,12 +130,13 @@
  	public void LikeBiome(string nameKey)
  	{
  		AddHappinessReportText("LikeBiome", new {
-@@ -223,25 +_,27 @@
+@@ -223,25 +_,29 @@
  
  		_currentPriceAdjustment *= 0.94f;
  	}
 +	*/
  
++	//TML: Made internal.
 -	public void LoveNPCByTypeName(int npcType)
 +	internal void LoveNPCByTypeName(int npcType)
  	{
@@ -148,8 +148,9 @@
 +		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
  	}
  
++	//TML: Made internal.
 -	public void LikePrincess()
-+	internal  void LikePrincess()
++	internal void LikePrincess()
  	{
  		AddHappinessReportText("LikeNPC_Princess", new {
  			NPCName = NPC.GetFullnameByID(663)

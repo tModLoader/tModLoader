@@ -47,11 +47,11 @@ internal partial class UIModBrowser
 
 	private void InitializeInteractions()
 	{
-		_reloadButton.OnClick += ReloadList;
-		_backButton.OnClick += BackClick;
-		_clearButton.OnClick += ClearFilters;
-		_downloadAllButton.OnClick += DownloadAllFilteredMods;
-		_updateAllButton.OnClick += UpdateAllMods;
+		_reloadButton.OnLeftClick += ReloadList;
+		_backButton.OnLeftClick += BackClick;
+		_clearButton.OnLeftClick += ClearFilters;
+		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
+		_updateAllButton.OnLeftClick += UpdateAllMods;
 		_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnTextChange += (sender, e) => {

@@ -8,19 +8,26 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -24,19 +_,27 @@
+@@ -24,8 +_,11 @@
  
  	public static void Initialize(SocialMode? mode = null)
  	{
-+		_modules = new List<ISocialModule>();
++		
  		if (!mode.HasValue) {
  			mode = SocialMode.None;
--			if (Main.dedServ) {
--				if (Program.LaunchParameters.ContainsKey("-steam"))
--					mode = SocialMode.Steam;
++
++			/*
+ 			if (Main.dedServ) {
+ 				if (Program.LaunchParameters.ContainsKey("-steam"))
+ 					mode = SocialMode.Steam;
+@@ -33,6 +_,23 @@
+ 			else {
+ 				mode = SocialMode.Steam;
+ 			}
++			*/
 +
 +			// Added FamilyShared check as workaround for #881
-+			if (!Main.dedServ && !SteamedWraps.FamilyShared) { // #if !SERVER
++			if (!Main.dedServ && !SteamedWraps.FamilyShared) {
 +#if DEBUG
 +				if (!Program.LaunchParameters.ContainsKey("-nosteam")) {
 +#endif
@@ -30,31 +37,30 @@
 +#if DEBUG
 +				}
 +#endif
- 			}
--			else {
-+			else if (Program.LaunchParameters.ContainsKey("-steam"))
- 				mode = SocialMode.Steam;
--			}
++			}
++			else if (Program.LaunchParameters.ContainsKey("-steam")) {
++				mode = SocialMode.Steam;
++			}
  		}
  
  		_mode = mode.Value;
--		_modules = new List<ISocialModule>();
- 		JoinRequests = new ServerJoinRequestsManager();
- 		Main.OnTickForInternalCodeOnly += JoinRequests.Update;
- 		switch (Mode) {
-@@ -48,9 +_,8 @@
+@@ -48,9 +_,15 @@
  				break;
  		}
  
--		foreach (ISocialModule module in _modules) {
--			module.Initialize();
--		}
++		// Moved to LoadSteam
++		/*
+ 		foreach (ISocialModule module in _modules) {
+ 			module.Initialize();
+ 		}
++		*/
++
 +		//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
 +		SteamedWraps.Initialize();
  	}
  
  	public static void Shutdown()
-@@ -80,11 +_,19 @@
+@@ -80,11 +_,26 @@
  			_ = Environment.Is64BitProcess;
  	}
  
@@ -68,15 +74,21 @@
 +
  		LoadModule<Terraria.Social.Steam.CoreSocialModule>();
  		Friends = LoadModule<Terraria.Social.Steam.FriendsSocialModule>();
-+		// This seems to freeze the game when steam_appid.txt not present, and steam_appid.txt isn't supposed to be used in release
-+		//if (!ModLoader.Engine.Steam.IsSteamApp) {
--		Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+			//Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
-+		//}
++
++		// This seems to freeze the game when steam_appid.txt not present,
++		// and that file isn't supposed to be used in release.
++		/*
++		if (ModLoader.Engine.Steam.IsSteamApp)
++			goto SkipAchievements;
++		
+ 		Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
++		SkipAchievements:
++		*/
++
  		Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  		Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  		Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
-@@ -94,11 +_,26 @@
+@@ -94,11 +_,27 @@
  		else
  			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
  
@@ -84,6 +96,7 @@
  		WeGameHelper.WriteDebugString("LoadSteam modules");
 +		*/
 +
++		//TML: Moved here from Initialize()
 +		foreach (ISocialModule module in _modules) {
 +			module.Initialize();
 +		}
@@ -103,11 +116,12 @@
  		LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
  		Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  		Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
-@@ -109,5 +_,11 @@
+@@ -109,5 +_,12 @@
  			Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
  
  		WeGameHelper.WriteDebugString("LoadWeGame modules");
 +
++		//TML: Moved here from Initialize()
 +		foreach (ISocialModule module in _modules) {
 +			module.Initialize();
 +		}

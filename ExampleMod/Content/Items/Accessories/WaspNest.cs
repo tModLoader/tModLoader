@@ -1,10 +1,9 @@
-﻿using MonoMod.Cil;
-using System;
+﻿using System;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using Mono.Cecil.Cil;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -13,7 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		// Only gets run once per type
 		public override void Load() {
-			IL.Terraria.Player.beeType += HookBeeType;
+			IL_Player.beeType += HookBeeType;
 		}
 
 		// This IL editing (Intermediate Language editing) example is walked through in the guide: https://github.com/tModLoader/tModLoader/wiki/Expert-IL-Editing#example---hive-pack-upgrade
@@ -44,7 +43,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

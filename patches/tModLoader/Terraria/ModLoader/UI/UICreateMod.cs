@@ -63,14 +63,14 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
-		buttonBack.OnClick += BackClick;
+		buttonBack.OnLeftClick += BackClick;
 		_baseElement.Append(buttonBack);
 
 		var buttonCreate = new UITextPanel<string>(Language.GetTextValue("LegacyMenu.28")); // Create
 		buttonCreate.CopyStyle(buttonBack);
 		buttonCreate.HAlign = 1f;
 		buttonCreate.WithFadedMouseOver();
-		buttonCreate.OnClick += OKClick;
+		buttonCreate.OnLeftClick += OKClick;
 		_baseElement.Append(buttonCreate);
 
 		// TODO localisations

@@ -17,15 +17,13 @@ namespace Terraria.ModLoader;
 [Autoload(Side = ModSide.Client)]
 public sealed class BackgroundTextureLoader : Loader
 {
-	public const int VanillaBackgroundTextureCount = Main.maxBackgrounds;
-
 	private static BackgroundTextureLoader Instance => LoaderManager.Get<BackgroundTextureLoader>();
 
 	internal static IDictionary<string, int> backgrounds = new Dictionary<string, int>();
 
 	public BackgroundTextureLoader()
 	{
-		Initialize(VanillaBackgroundTextureCount);
+		Initialize(Main.maxBackgrounds);
 	}
 
 	/// <summary> Returns the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. Throws exceptions on failure. </summary>

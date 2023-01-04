@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader;
+namespace Terraria.ModLoader;
 
 /// <summary>
 /// A class that is used to modify existing info displays (i.e. the things that the Cell Phone uses to communicate information).

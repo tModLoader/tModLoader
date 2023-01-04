@@ -29,11 +29,10 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -182,29 +_,30 @@
+@@ -182,29 +_,29 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
-+	//TML: Many fields publicized.
 -	private MountData _data;
 +	public MountData _data;
 -	private int _type;
@@ -71,9 +70,9 @@
 -	private bool _abilityActive;
 +	public bool _abilityActive;
 -	private bool _aiming;
-+	public bool _shouldSuperCart;
--	private bool _shouldSuperCart;
 +	public bool _aiming;
+-	private bool _shouldSuperCart;
++	public bool _shouldSuperCart;
  	public List<DrillDebugDraw> _debugDraw;
 -	private object _mountSpecificData;
 +	public object _mountSpecificData;
@@ -82,7 +81,7 @@
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
-@@ -2131,13 +_,13 @@
+@@ -2131,13 +_,14 @@
  
  	public static int GetHeightBoost(int MountType)
  	{
@@ -94,19 +93,18 @@
  	}
  
 -	public int JumpHeight(float xVelocity)
++	//TML: Added 'player' parameter.
 +	public int JumpHeight(Player player, float xVelocity)
  	{
  		int num = _data.jumpHeight;
  		switch (_type) {
-@@ -2148,6 +_,7 @@
- 				num += (int)(Math.Abs(xVelocity) / 2.5f);
- 				break;
- 			case 4:
-+			// Extra patch context.
- 			case 49:
+@@ -2152,15 +_,18 @@
  				if (_frameState == 4)
  					num += 5;
-@@ -2157,10 +_,12 @@
+ 				break;
++			// Extra patch context.
+ 		}
+ 
  		if (_shouldSuperCart)
  			num = SuperCartJumpHeight;
  
@@ -120,15 +118,12 @@
  	{
  		float num = _data.jumpSpeed;
  		switch (_type) {
-@@ -2170,6 +_,7 @@
- 				break;
- 			case 4:
- 			case 49:
-+				// Extra patch context.
+@@ -2173,10 +_,13 @@
  				if (_frameState == 4)
  					num += 2.5f;
  				break;
-@@ -2177,6 +_,8 @@
++			// Extra patch context.
+ 		}
  
  		if (_shouldSuperCart)
  			num = SuperCartJumpSpeed;
@@ -202,20 +197,13 @@
  				}
  				if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  					mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -3952,7 +_,7 @@
- 		if (_type == -1)
- 			return;
- 
--		for (int i = 0; i < 44; i++) {
-+		for (int i = 0; i < Player.MaxBuffs; i++) {
- 			if (mountedPlayer.buffType[i] == _data.buff || (Cart && mountedPlayer.buffType[i] == _data.extraBuff))
- 				return;
- 		}
-@@ -4009,6 +_,7 @@
+@@ -4009,6 +_,9 @@
  	public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  	{
  		_aiming = true;
++
 +		MountLoader.AimAbility(this, mountedPlayer, mousePosition);
++
  		switch (_type) {
  			case 9: {
  				int frameExtra = _frameExtra;
@@ -229,26 +217,32 @@
  			DrawData item = new DrawData(texture2D, Position, value, drawColor, num9, origin, scale, spriteEffects);
  			item.shader = currentShader;
  			playerDrawData.Add(item);
-+			// Extra patch context.
++			// Patch note: num9 is used above.
  			if (texture2D2 != null) {
  				item = new DrawData(texture2D2, Position, value, color * ((float)(int)drawColor.A / 255f), num9, origin, scale, spriteEffects);
  				item.shader = currentShader;
-@@ -4612,6 +_,8 @@
+@@ -4612,6 +_,10 @@
  			bool cart = Cart;
  			_active = false;
  			mountedPlayer.ClearBuff(_data.buff);
++
 +			bool skipDust = false;
 +			MountLoader.Dismount(this, mountedPlayer, ref skipDust);
++
  			_mountSpecificData = null;
  			_ = _type;
  			if (cart) {
-@@ -4622,7 +_,8 @@
+@@ -4622,7 +_,13 @@
  
  			mountedPlayer.fullRotation = 0f;
  			mountedPlayer.fullRotationOrigin = Vector2.Zero;
-+			if (!skipDust)
--			DoSpawnDust(mountedPlayer, isDismounting: true);
-+				DoSpawnDust(mountedPlayer, isDismounting: true);
++
++			if (skipDust)
++				goto PostDustSpawn;
++			
+ 			DoSpawnDust(mountedPlayer, isDismounting: true);
++			PostDustSpawn:
++
  			Reset();
  			mountedPlayer.position.Y += mountedPlayer.height;
  			mountedPlayer.height = 42;
@@ -261,15 +255,19 @@
  			return;
  
  		if (_active) {
-@@ -4701,7 +_,10 @@
+@@ -4701,7 +_,15 @@
  		if (_type == 35)
  			_mountSpecificData = new ExtraFrameMountData();
  
 +		bool skipDust = false;
 +		MountLoader.SetMount(this, mountedPlayer, ref skipDust);
-+		if (!skipDust)
--		DoSpawnDust(mountedPlayer, isDismounting: false);
-+			DoSpawnDust(mountedPlayer, isDismounting: false);
++
++		if (skipDust)
++			goto PostDustSpawn;
++		
+ 		DoSpawnDust(mountedPlayer, isDismounting: false);
++		PostDustSpawn:
++
  		if (mountedPlayer.whoAmI == Main.myPlayer)
  			NetMessage.SendData(13, -1, -1, null, mountedPlayer.whoAmI);
  	}

@@ -195,6 +195,11 @@ partial class Utils
 		}
 	}
 
+	public static void LogAndConsoleInfoMessageFormat(string format, params object[] args)
+	{
+		LogAndConsoleInfoMessage(string.Format(format, args));
+	}
+
 	public static void LogAndConsoleErrorMessage(string message)
 	{
 		Logging.tML.Error(message);

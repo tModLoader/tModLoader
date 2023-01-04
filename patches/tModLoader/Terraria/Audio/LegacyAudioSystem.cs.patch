@@ -42,26 +42,29 @@
 +		Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
 +		SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
  		Engine.Update();
--		WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
-+		WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb")); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
+-		WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512); //TODO, investigate history of windows looping errors with streaming wavebank from disk in FNA in Windows.
++		WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512); //TODO, investigate history of windows looping errors with streaming wavebank from disk in FNA in Windows.
  		Engine.Update();
- 		AudioTracks = new IAudioTrack[92];
+ 		AudioTracks = new IAudioTrack[Main.maxMusic];
  		TrackNamesByIndex = new Dictionary<int, string>();
-@@ -118,6 +_,8 @@
+@@ -118,6 +_,10 @@
  		}
  	}
  
-+	internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
++	// Added by TML.
++	internal Cue GetCueInternal(string cueName)
++		=> SoundBank.GetCue(cueName);
 +
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -256,7 +_,7 @@
+@@ -256,7 +_,8 @@
  
  	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
  	{
 -		if (!WaveBank.IsPrepared)
-+		if (!WaveBank.IsPrepared || AudioTracks[i] is null) // should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
++		// Track should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
++		if (!WaveBank.IsPrepared || AudioTracks[i] is null)
  			return;
  
  		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {

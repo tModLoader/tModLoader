@@ -6,7 +6,7 @@ namespace Terraria.GameContent.UI.ResourceSets;
 
 partial class PlayerResourceSetsManager
 {
-	private static readonly string[] vanillaSets = new string[] { "New", "HorizontalBars", "Default" };
+	private static readonly string[] vanillaSets = new string[] { "New", "NewWithText", "HorizontalBars", "HorizontalBarsWithText", "HorizontalBarsWithFullText", "Default" };
 
 	private readonly List<string> accessKeys = new(vanillaSets);
 	private int selectedSet = 0;

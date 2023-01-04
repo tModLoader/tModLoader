@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.DataStructures;
@@ -12,7 +12,7 @@ namespace Terraria.ModLoader;
 [Autoload(false)]
 public abstract class VanillaInfoDisplay : InfoDisplay
 {
-	internal protected override string DisplayNameInternal => Language.GetTextValue(LangKey);
+	private protected sealed override string DisplayNameInternal => Language.GetTextValue(LangKey);
 
 	protected abstract string LangKey { get; }
 

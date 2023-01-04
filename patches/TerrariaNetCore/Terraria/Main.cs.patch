@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/TerrariaNetCore/Terraria/Main.cs
-@@ -74,7 +_,7 @@
+@@ -75,7 +_,7 @@
  
  namespace Terraria;
  
@@ -9,7 +9,7 @@
  class Control
  {
  	internal static Form FromHandle(IntPtr handle)
-@@ -3345,6 +_,7 @@
+@@ -3330,6 +_,7 @@
  
  		PendingBorderlessState = screenBorderless;
  		screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
@@ -17,7 +17,7 @@
  		if (Platform.IsWindows && !dedServ) {
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
-@@ -3360,6 +_,7 @@
+@@ -3345,6 +_,7 @@
  
  			form.BringToFront();
  		}
@@ -25,7 +25,7 @@
  
  		int currentValue2 = graphics.PreferredBackBufferWidth;
  		int currentValue3 = graphics.PreferredBackBufferHeight;
-@@ -3727,8 +_,13 @@
+@@ -3712,8 +_,13 @@
  				if (num >= 2)
  					terrariasFixedTiming = binaryReader.ReadBoolean();
  
@@ -39,7 +39,7 @@
  
  				if (num >= 4) {
  					int width = binaryReader.ReadInt32();
-@@ -4990,7 +_,7 @@
+@@ -4975,7 +_,7 @@
  		}
  	}
  
@@ -48,7 +48,7 @@
  	{
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
-@@ -9066,6 +_,7 @@
+@@ -9081,6 +_,7 @@
  		if (SocialAPI.Workshop != null)
  			SocialAPI.Workshop.LoadEarlyContent();
  
@@ -56,7 +56,7 @@
  		AssetSourceController.UseResourcePacks(AssetInitializer.CreateResourcePackList(base.Services));
  		AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  		ChromaInitializer.Load();
-@@ -13649,6 +_,7 @@
+@@ -13677,6 +_,7 @@
  
  			UpdateOldNPCShop();
  			hasFocus = base.IsActive;
@@ -64,7 +64,7 @@
  			if (Platform.IsWindows) {
  				Form form = Control.FromHandle(base.Window.Handle) as Form;
  				bool num3 = form.WindowState == FormWindowState.Minimized;
-@@ -13657,6 +_,7 @@
+@@ -13685,6 +_,7 @@
  				if (num3)
  					hasFocus = false;
  			}
@@ -72,7 +72,7 @@
  
  			if (!hasFocus && netMode == 0) {
  				if (!Platform.IsOSX)
-@@ -42811,6 +_,7 @@
+@@ -42859,6 +_,7 @@
  		return result;
  	}
  
@@ -80,7 +80,7 @@
  	private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form)
  	{
  		if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
-@@ -42839,6 +_,7 @@
+@@ -42887,6 +_,7 @@
  		form.Location = new System.Drawing.Point(0, 0);
  		form.FormBorderStyle = FormBorderStyle.None;
  	}
@@ -88,7 +88,7 @@
  
  	public static void OpenCharacterSelectUI()
  	{
-@@ -54588,6 +_,9 @@
+@@ -54624,6 +_,9 @@
  	public static void SetDisplayMode(int width, int height, bool fullscreen)
  	{
  		bool flag = false;
@@ -98,7 +98,7 @@
  		Form form = null;
  		if (Platform.IsWindows) {
  			form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -54602,6 +_,8 @@
+@@ -54638,6 +_,8 @@
  		else {
  			screenMaximized = false;
  		}
@@ -107,7 +107,7 @@
  
  		bool flag2 = false;
  		int num3;
-@@ -54617,11 +_,13 @@
+@@ -54653,11 +_,13 @@
  				}
  			}
  
@@ -121,7 +121,7 @@
  
  			if (width > maxScreenW) {
  				float num = (float)height / (float)width;
-@@ -54649,6 +_,7 @@
+@@ -54685,6 +_,7 @@
  		}
  		else {
  			PlayerInput.RawMouseScale = Vector2.One;
@@ -129,7 +129,7 @@
  			if (Platform.IsWindows) {
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
-@@ -54656,6 +_,7 @@
+@@ -54692,6 +_,7 @@
  					height = displayHeight[0];
  				}
  			}
@@ -137,7 +137,7 @@
  
  			width = Math.Min(width, maxScreenW);
  			height = Math.Min(height, maxScreenH);
-@@ -54664,6 +_,7 @@
+@@ -54700,6 +_,7 @@
  			flag2 = graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height;
  		}
  
@@ -145,15 +145,21 @@
  		if (Platform.IsWindows && !fullscreen && !flag2) {
  			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  				width = form.ClientSize.Width;
-@@ -54675,6 +_,7 @@
+@@ -54711,9 +_,13 @@
  				flag2 = true;
  			}
  		}
 +#endif
  
++		// Causes window maximization to not work.
++		/*
  		width &= 0x7FFFFFFE;
  		height &= 0x7FFFFFFE;
-@@ -54705,6 +_,7 @@
++		*/
+ 		width = Math.Max(width, minScreenW);
+ 		height = Math.Max(height, minScreenH);
+ 		if (graphics.IsFullScreen != fullscreen) {
+@@ -54741,6 +_,7 @@
  			PendingResolutionWidth = screenWidth;
  			PendingResolutionHeight = screenHeight;
  			PlayerInput.CacheOriginalScreenDimensions();
@@ -161,7 +167,7 @@
  			if (Platform.IsWindows && !fullscreen) {
  				if (screenBorderless) {
  					ApplyBorderlessResolution(form);
-@@ -54717,6 +_,7 @@
+@@ -54753,6 +_,7 @@
  				form.SendToBack();
  				form.BringToFront();
  			}

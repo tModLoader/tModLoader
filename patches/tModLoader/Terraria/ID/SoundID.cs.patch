@@ -78,7 +78,7 @@
  	public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
  	public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
  	public static readonly LegacySoundStyle BlizzardStrongLoop = CreateTrackable("blizzard_strong_loop", SoundType.Ambient).WithVolume(0.5f);
-@@ -509,9 +_,9 @@
+@@ -509,9 +_,10 @@
  	public static Dictionary<string, ushort> IndexByName = null;
  	public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;
  
@@ -87,25 +87,17 @@
  
 -	public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
 +	internal static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
++
  	private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
  	private static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
  	private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
-@@ -522,6 +_,7 @@
- 			_trackableLegacySoundPathList = new List<string>();
- 
- 		int count = _trackableLegacySoundPathList.Count;
-+
- 		if (variations == 1) {
- 			_trackableLegacySoundPathList.Add(name);
- 		}
-@@ -531,7 +_,11 @@
+@@ -531,7 +_,10 @@
  			}
  		}
  
 +		/*
  		return new LegacySoundStyle(42, count, variations, type);
 +		*/
-+		
 +		return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", 0, variations, type);
  	}
  

@@ -51,7 +51,7 @@ internal class ListElement : CollectionElement
 				// Add delete button.
 				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, "Remove");
 				deleteButton.VAlign = 0.5f;
-				deleteButton.OnClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
+				deleteButton.OnLeftClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
 				wrapped.Item1.Append(deleteButton);
 			}
 		}

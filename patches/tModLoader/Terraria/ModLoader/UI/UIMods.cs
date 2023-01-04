@@ -105,7 +105,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
-		buttonEA.OnClick += EnableAll;
+		buttonEA.OnLeftClick += EnableAll;
 		uIElement.Append(buttonEA);
 
 		// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
@@ -114,7 +114,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonDA.TextColor = Color.Red;
 		buttonDA.HAlign = 0.5f;
 		buttonDA.WithFadedMouseOver();
-		buttonDA.OnClick += DisableAll;
+		buttonDA.OnLeftClick += DisableAll;
 		uIElement.Append(buttonDA);
 
 		buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsForceReload"));
@@ -122,7 +122,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonRM.Width = new StyleDimension(-10f, 1f / 3f);
 		buttonRM.HAlign = 1f;
 		buttonRM.WithFadedMouseOver();
-		buttonRM.OnClick += ReloadMods;
+		buttonRM.OnLeftClick += ReloadMods;
 		uIElement.Append(buttonRM);
 
 		UpdateTopRowButtons();
@@ -134,14 +134,14 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 
-		buttonB.OnClick += BackClick;
+		buttonB.OnLeftClick += BackClick;
 
 		uIElement.Append(buttonB);
 		buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolders"));
 		buttonOMF.CopyStyle(buttonB);
 		buttonOMF.HAlign = 0.5f;
 		buttonOMF.WithFadedMouseOver();
-		buttonOMF.OnClick += OpenModsFolder;
+		buttonOMF.OnLeftClick += OpenModsFolder;
 		uIElement.Append(buttonOMF);
 
 		var texture = UICommon.ModBrowserIconsTexture;
@@ -156,7 +156,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 				toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
 				toggleImage.SetCurrentState((int)sortMode);
-				toggleImage.OnClick += (a, b) => {
+				toggleImage.OnLeftClick += (a, b) => {
 					sortMode = sortMode.NextEnum();
 					updateNeeded = true;
 				};
@@ -168,7 +168,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			else if (j == 1) {
 				toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 4, 0);
 				toggleImage.SetCurrentState((int)enabledFilterMode);
-				toggleImage.OnClick += (a, b) => {
+				toggleImage.OnLeftClick += (a, b) => {
 					enabledFilterMode = enabledFilterMode.NextEnum();
 					updateNeeded = true;
 				};
@@ -180,7 +180,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			else {
 				toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
 				toggleImage.SetCurrentState((int)modSideFilterMode);
-				toggleImage.OnClick += (a, b) => {
+				toggleImage.OnLeftClick += (a, b) => {
 					modSideFilterMode = modSideFilterMode.NextEnum();
 					updateNeeded = true;
 				};
@@ -221,14 +221,14 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		};
 
 		//clearSearchButton.OnMouseOver += searchCancelButton_OnMouseOver;
-		clearSearchButton.OnClick += ClearSearchField;
+		clearSearchButton.OnLeftClick += ClearSearchField;
 		filterTextBoxBackground.Append(clearSearchButton);
 
 		SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
 			Left = { Pixels = 545 }
 		};
 		SearchFilterToggle.SetCurrentState((int)searchFilterMode);
-		SearchFilterToggle.OnClick += (a, b) => {
+		SearchFilterToggle.OnLeftClick += (a, b) => {
 			searchFilterMode = searchFilterMode.NextEnum();
 			updateNeeded = true;
 		};
@@ -243,7 +243,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonMP.CopyStyle(buttonOMF);
 		buttonMP.HAlign = 1f;
 		buttonMP.WithFadedMouseOver();
-		buttonMP.OnClick += null;
+		buttonMP.OnLeftClick += null;
 		//uIElement.Append(buttonMP);
 
 		uIPanel.Append(upperMenuContainer);

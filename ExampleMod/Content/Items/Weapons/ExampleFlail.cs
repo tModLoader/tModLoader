@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Content.Projectiles;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Projectiles;
-using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -13,7 +13,8 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Flail");
 			Tooltip.SetDefault("This is a modded flail with normal behavior.");
-			SacrificeTotal = 1;
+
+			Item.ResearchUnlockCount = 1;
 
 			// This line will make the damage shown in the tooltip twice the actual Item.damage. This multiplier is used to adjust for the dynamic damage capabilities of the projectile.
 			// When thrown directly at enemies, the flail projectile will deal double Item.damage, matching the tooltip, but deals normal damage in other modes.

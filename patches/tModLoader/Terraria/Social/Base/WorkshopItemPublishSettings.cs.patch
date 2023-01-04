@@ -1,9 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Social/Base/WorkshopItemPublishSettings.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopItemPublishSettings.cs
-@@ -7,6 +_,7 @@
+@@ -7,6 +_,9 @@
  	public WorkshopTagOption[] UsedTags = new WorkshopTagOption[0];
  	public WorkshopItemPublicSettingId Publicity;
  	public string PreviewImagePath;
++	
++	// Added by TML.
 +	public string ChangeNotes;
  
  	public string[] GetUsedTagsInternalNames() => UsedTags.Select((WorkshopTagOption x) => x.InternalNameForAPIs).ToArray();

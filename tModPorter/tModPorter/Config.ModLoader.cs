@@ -95,6 +95,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "PreNPCLoot",			to: "PreKill");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SpecialNPCLoot",		to: "SpecialOnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SpecialNPCLoot",		to: "SpecialOnKill");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "ScaleExpertStats",	to: "ApplyDifficultyAndPlayerScaling");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "ScaleExpertStats",	to: "ApplyDifficultyAndPlayerScaling");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "TownNPCName",		to: "SetNPCNameList");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
@@ -140,6 +142,10 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
@@ -187,6 +193,8 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
 
+		HookRemoved("Terraria.ModLoader.ModItem",		"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
 		HookRemoved("Terraria.ModLoader.ModItem",		"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
 		HookRemoved("Terraria.ModLoader.ModItem",		"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
 		HookRemoved("Terraria.ModLoader.ModGore",		"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
@@ -252,6 +260,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModPrefix", from: "ValidateItem", to: "AllStatChangesHaveEffectOn");
 		ChangeHookSignature("Terraria.ModLoader.ModPrefix", "AllStatChangesHaveEffectOn");
 
+
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.InfoDisplay",	from: "SetDefaults", to: "SetStaticDefaults");
@@ -260,6 +269,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModDust",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModMount",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "SetDefaults", to: "SetStaticDefaults");
+
+		RenameInstanceField("Terraria.ModLoader.ModItem", from: "SacrificeTotal", to: "Item.ResearchUnlockCount");
 
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",	to: "DustType");

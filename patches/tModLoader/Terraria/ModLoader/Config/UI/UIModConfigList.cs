@@ -68,7 +68,7 @@ internal class UIModConfigList : UIState
 		buttonB.HAlign = 0.5f;
 		buttonB.Top.Set(-45f, 0f);
 		buttonB.WithFadedMouseOver();
-		buttonB.OnClick += BackClick;
+		buttonB.OnLeftClick += BackClick;
 		uIElement.Append(buttonB);
 
 		/*
@@ -77,7 +77,7 @@ internal class UIModConfigList : UIState
 		buttonOMF.HAlign = 0.5f;
 		buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
 		buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
-		buttonOMF.OnClick += OpenModsFolder;
+		buttonOMF.OnLeftClick += OpenModsFolder;
 		uIElement.Append(buttonOMF);
 		*/
 
@@ -137,7 +137,7 @@ internal class UIModConfigList : UIState
 				var t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
 				//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
 
-				t.OnClick += (a, b) => {
+				t.OnLeftClick += (a, b) => {
 					Interface.modConfig.SetMod(item.Key, config);
 					Main.InGameUI.SetState(Interface.modConfig);
 				};

@@ -1,7 +1,5 @@
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Placeable
 {
@@ -10,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Herb Seeds");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
+			Item.ResearchUnlockCount = 20;
 		}
 
 		public override void SetDefaults() {

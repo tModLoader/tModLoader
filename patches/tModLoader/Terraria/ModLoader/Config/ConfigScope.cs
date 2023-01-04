@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.Config;
+namespace Terraria.ModLoader.Config;
 
 /// <summary>
 /// Each ModConfig class has a different scope. Failure to use the correct mode will lead to bugs.

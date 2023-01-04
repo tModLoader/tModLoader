@@ -11,7 +11,7 @@
  {
  	public static void Load()
  	{
--		WingStats[] array = new WingStats[47];
+-		WingStats[] array = new WingStats[ArmorIDs.Wing.Count];
 +		WingStats[] array = new WingStats[EquipLoader.nextEquip[EquipType.Wings]];
  		float flySpeedOverride = 3f;
  		float flySpeedOverride2 = 6f;

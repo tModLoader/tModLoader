@@ -33,7 +33,7 @@ internal class UIExpandablePanel : UIPanel
 		expandButton = new UIHoverImage(CollapsedTexture, "Expand");
 		expandButton.Top.Set(3, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-25, 1f);
-		expandButton.OnClick += (a, b) => {
+		expandButton.OnLeftClick += (a, b) => {
 			expanded = !expanded;
 			pendingChanges = true;
 		};

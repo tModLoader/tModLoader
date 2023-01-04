@@ -8,12 +8,14 @@
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
  using Terraria.DataStructures;
-@@ -15,10 +_,12 @@
+@@ -13,12 +_,14 @@
+ using Terraria.GameContent.UI;
+ using Terraria.Graphics.Shaders;
  using Terraria.ID;
- using Terraria.UI;
- using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
+ using Terraria.UI;
+ using Terraria.Utilities;
  
  namespace Terraria;
  
@@ -22,14 +24,16 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,74 +_,373 @@
+@@ -37,74 +_,437 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
++
 +	/// <summary>
 +	/// The default stack size for stackable items: 9999
 +	/// </summary>
  	public static int CommonMaxStack = 9999;
++
 +	/// <summary>
 +	/// The number of cached item spawns by type.<br/>
 +	/// A value of -1 means that an item type is not being cached.<br/>
@@ -37,21 +41,25 @@
 +	/// Indexed by <see cref="type"/>.Defaults to -1.<br/>
 +	/// </summary>
  	public static int[] cachedItemSpawnsByType = ItemID.Sets.Factory.CreateIntSet(-1);
++
 +	/// <summary>
 +	/// The default cooldown, in ticks, of most healing items.<br/>
 +	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.potionDelayTime"/>.<br/>
 +	/// </summary>
  	public static int potionDelay = 3600;
++
 +	/// <summary>
 +	/// The default cooldown, in ticks, of Restoration Potions.<br/>
 +	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.restorationDelayTime"/>.<br/>
 +	/// </summary>
  	public static int restorationDelay = 2700;
++
 +	/// <summary>
 +	/// The default cooldown, in ticks, of Mushrooms.<br/>
 +	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.mushroomDelayTime"/>.<br/>
 +	/// </summary>
  	public static int mushroomDelay = 1800;
++
 +	/// <summary>
 +	/// If true, categorizes the given item as a quest fish.<br/>
 +	/// Quest fish get a special tooltip, their own category in the Research Menu, and cannot be auto-moved to the Void Vault when picked up.<br/>
@@ -60,75 +68,88 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool questItem;
++
 +	/// <summary>
 +	/// An array for converting an <see cref="headSlot"/> value into a <see cref="type"/> value.<br/>
 +	/// Indexed by <see cref="headSlot"/>. Defaults to 0.<br/>
 +	/// </summary>
- 	public static int[] headType = new int[282];
+ 	public static int[] headType = new int[ArmorIDs.Head.Count];
++
 +	/// <summary>
 +	/// An array for converting an <see cref="bodySlot"/> value into a <see cref="type"/> value.<br/>
 +	/// Indexed by <see cref="bodySlot"/>. Defaults to 0.<br/>
 +	/// </summary>
- 	public static int[] bodyType = new int[248];
+ 	public static int[] bodyType = new int[ArmorIDs.Body.Count];
++
 +	/// <summary>
 +	/// An array for converting an <see cref="legSlot"/> value into a <see cref="type"/> value.<br/>
 +	/// Indexed by <see cref="legSlot"/>. Defaults to 0.<br/>
 +	/// </summary>
- 	public static int[] legType = new int[236];
+ 	public static int[] legType = new int[ArmorIDs.Legs.Count];
++
 +	/// <summary>
 +	/// If true, categorizes the given item type as a staff.<br/>
 +	/// Staffs are held differently when their <see cref="useStyle"/> is <see cref="ItemUseStyleID.Shoot"/>, but are otherwise no different than any other item.<br/>
 +	/// Indexed by <see cref="type"/>. Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
- 	public static bool[] staff = new bool[5456];
+ 	public static bool[] staff = new bool[ItemID.Count];
++
 +	/// <summary>
 +	/// If true, categorizes the given item type as a claw.<br/>
 +	/// Claws are held differently when their <see cref="useStyle"/> is <see cref="ItemUseStyleID.Swing"/>, but are otherwise no different than any other item.<br/>
 +	/// Used exclusively by the Bladed Glove in vanilla.<br/>
 +	/// Indexed by <see cref="type"/>. Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
- 	public static bool[] claw = new bool[5456];
+ 	public static bool[] claw = new bool[ItemID.Count];
++
 +	/// <summary>
 +	/// If true, will cause the corresponding flame texture to be drawn while this item is held. Used for torches, candles, .
 +	/// <br/> Modded items should make a texture file postfixed by "_Flame" to autoload the flame texture. For example, ExampleTorch in ExampleMod has both ExampleTorch.png and ExampleTorch_Flame.png.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool flame;
++
 +	/// <summary>
 +	/// If true, then the given item will show all placed wires and actuators when held.<br/>
 +	/// This item will also be grouped with other items with <c>mech</c> set to <see langword="true"/> when the inventory is sorted.<br/>
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool mech;
++
 +	/// <summary>
 +	/// The delay, in ticks, before players can pick up this item.<br/>
 +	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
 +	/// Set to 0 whenever an item drops from a projectile.<br/>
 +	/// </summary>
  	public int noGrabDelay;
++
 +	/// <summary>
 +	/// If true, then this item is currently being grabbed by a player.<br/>
 +	/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
 +	/// </summary>
  	public bool beingGrabbed;
++
 +	/// <summary>
 +	/// A value that increases every tick an item is in the world.<br/>
 +	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
 +	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
 +	/// </summary>
  	public int timeSinceItemSpawned;
++
 +	/// <summary>
 +	/// The numerical ID of the item this item consumes when used.<br/>
 +	/// If greater than 0, this item cannot be used unless the player has the item type <c>tileWand</c> is set to. The item also gains a counter for said item type.<br/>
 +	/// Defaults to -1.<br/>
 +	/// </summary>
  	public int tileWand = -1;
++
 +	/// <summary>
 +	/// If true, then this item is in the local player's armor slots.<br/>
 +	/// This causes the item to gain the set bonus tooltip if <see cref="Player.setBonus"/> isn't an empty string.<br/>
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool wornArmor;
++
 +	/// <summary>
 +	/// The context in which this item's tooltip is being drawn.<br/>
 +	/// See <see cref="ItemSlot.Context"/> for more details.<br/>
@@ -136,12 +157,14 @@
 +	/// </summary>
  	public int tooltipContext = -1;
 -	public byte dye;
++
 +	/// <summary>
 +	/// The numerical ID of the armor shader in <see cref="GameShaders.Armor"/> this item activates when worn in a dye slot.<br/>
 +	/// If greater than 0, then this item can be equipped into dye slots.<br/>
 +	/// Defaults to -1.<br/>
 +	/// </summary>
 +	public int dye; //TML: Changed from byte to int.
++
 +	/// <summary>
 +	/// The numerical value this item adds to a player's fishing skill when held.<br/>
 +	/// If greater than 0, categorizes this item as a fishing pole.<br/>
@@ -149,6 +172,7 @@
 +	/// Defaults to 0.<br/>
 +	/// </summary>
  	public int fishingPole = 1;
++
 +	/// <summary>
 +	/// The numerical value this item adds to a player's fishing skill when used as bait.<br/>
 +	/// If greater than 0, categorizes this item as bait.<br/>
@@ -157,53 +181,63 @@
 +	/// Defaults to 0.<br/>
 +	/// </summary>
  	public int bait;
++
 +	/// <summary>
 +	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
 +	/// Applies to <see cref="ItemID.CopperCoin"/>, <see cref="ItemID.SilverCoin"/>, <see cref="ItemID.GoldCoin"/>, and <see cref="ItemID.PlatinumCoin"/>.<br/>
 +	/// </summary>
  	public static int coinGrabRange = 350;
++
 +	/// <summary>
 +	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (<see cref="Player.manaMagnet"/>).<br/>
 +	/// Applies to <see cref="ItemID.Star"/>, <see cref="ItemID.SoulCake"/>, and <see cref="ItemID.SugarPlum"/>.<br/>
 +	/// </summary>
  	public static int manaGrabRange = 300;
++
 +	/// <summary>
 +	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (<see cref="Player.lifeMagnet"/>).<br/>
 +	/// Applies to <see cref="ItemID.Heart"/>, <see cref="ItemID.CandyApple"/>, and <see cref="ItemID.CandyCane"/>.<br/>
 +	/// </summary>
  	public static int lifeGrabRange = 250;
++
 +	/// <summary>
 +	/// The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (<see cref="Player.treasureMagnet"/>).<br/>
 +	/// </summary>
  	public static int treasureGrabRange = 150;
 -	public short makeNPC;
++
 +	/// <summary>
 +	/// The numerical ID of the NPC that this item creates when used.<br/>
 +	/// Mainly used for caught critters as items so that they can be released into the world.
 +	/// </summary>
-+	public int makeNPC; // tML: changed to int for convenience and consistency purposes
++	public int makeNPC; //TML: changed to int for convenience and consistency purposes.
++
 +	/// <summary>
 +	/// If true, then the given item's effects only function in Expert Mode or higher (<see cref="Main.expertMode"/>).<br/>
 +	/// Specifically, any equipped, Expert-only accessory will not update, any Expert-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br/>
 +	/// Unused in vanilla.<br/>
 +	/// </summary>
  	public bool expertOnly;
++
 +	/// <summary>
 +	/// If true, then the given item is automatically given the Expert rarity, causing its name to be drawn in rainbow text.<br/>
 +	/// It also adds the "Expert" tooltip. To use the Expert rarity without adding this tooltip, see <see cref="ItemRarityID.Expert"/>.<br/>
 +	/// </summary>
  	public bool expert;
++
 +	/// <summary>
 +	/// If true, then the given item's effects only function in Master Mode or higher (<see cref="Main.masterMode"/>).<br/>
 +	/// Specifically, any equipped, Master-only accessory will not update, any Master-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br/>
 +	/// Unused in vanilla.<br/>
 +	/// </summary>
 +	public bool masterOnly;
++
 +	/// <summary>
 +	/// If true, then the given item is automatically given the Master rarity, causing its name to be drawn in red-orange text.<br/>
 +	/// It also adds the "Master" tooltip. To use the Master rarity without adding this tooltip, see <see cref="ItemRarityID.Master"/>.<br/>
 +	/// </summary>
 +	public bool master;
++
 +	/// <summary>
 +	/// If true, then the given item is being sold in a shop.<br/>
 +	/// Shop items display their price. See <see cref="value"/>.<br/>
@@ -211,6 +245,7 @@
  	public bool isAShopItem;
 -	public short hairDye = -1;
 +	public int hairDye = -1; //TML: Changed from short to int.
++
 +	/// <summary>
 +	/// The numerical ID of the paint applied by this item when used with a paint brush or paint roller.<br/>
 +	/// For conversion into a shader index, see <see cref="Main.ConvertPaintIdToTileShaderIndex"/>.<br/>
@@ -219,6 +254,7 @@
 +	/// </summary>
  	public byte paint;
  	public byte paintCoating;
++
 +	/// <summary>
 +	/// If true, then the given item is instanced per-client.<br/>
 +	/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
@@ -235,10 +271,12 @@
  	public int ownTime;
  	public int keepTime;
  	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
++
 +	/// <summary>
 +	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement. 
 +	/// </summary>
  	public int type;
++
 +	/// <summary>
 +	/// If true, then the given item is favorited.<br/>
 +	/// Favorited items cannot be dropped, automatically moved into chests, placed in any kind of item rack, sold, trashed, or sorted.<br/>
@@ -247,152 +285,180 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool favorited;
++
 +	/// <summary>
 +	/// Assign to an <see cref="ItemHoldStyleID"/> value to give this item a specific animation while the player is not using the item, but the item is currently selected. Leave as 0 and use <see cref="ModLoader.ModItem.HoldStyle(Player, Rectangle)"/> hook to implement a custom animation.
 +	/// <br/> Defaults to <see cref="ItemHoldStyleID.None"/>.
 +	/// </summary>
  	public int holdStyle;
++
 +	/// <summary>
 +	/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use. Leave as 0 and use <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
 +	/// <br/> Defaults to <see cref="ItemUseStyleID.None"/>.
 +	/// </summary>
  	public int useStyle;
++
 +	/// Used for items that have special behavior when the attack button is held.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool channel;
++
 +	/// <summary>
 +	/// Whether the item is an accessory.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool accessory;
++
 +	/// <summary>
 +	/// The time span of the using animation for the item in ticks. This is independant of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <see cref="useTime"/> as this is only the animation.
 +	/// <br/> Blocks use 15. Default value is 100. Terraria runs at 60 frames per second, so 15 is 1/4th of a second.
 +	/// </summary>
  	public int useAnimation;
++
 +	/// <summary>
 +	/// The time span of using the item in ticks. This is independant of the time it takes for the item animation to finish. 
 +	/// <br/> Blocks use 10. Default value is 100.
 +	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L111">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
  	public int useTime;
++
 +	/// <summary>
 +	/// The current stack of the item. <see cref="maxStack"/> indicates the max possible stack.
 +	/// </summary>
  	public int stack;
++
 +	/// <summary>
 +	/// The maximum number of items that can be contained within a single stack. <see cref="stack"/> indicates the current stack size.
 +	/// <br/> Defaults to 1.
 +	/// </summary>
  	public int maxStack;
++
 +	/// <summary>
 +	/// The Pickaxe power of this item. For example, <c>Item.pick = 50;</c> will appear as 50% Pickaxe Power in the tooltip.
 +	/// <br/> The <see href="https://terraria.wiki.gg/wiki/Pickaxes">Pickaxes wiki page</see> is a good resource for finding a suitable value.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int pick;
++
 +	/// <summary>
 +	/// The Axe power of this item. The Axe power percentage shown to the user is five times this value, so adjust accordingly. For example, <c>Item.axe = 9;</c> will appear as 45% Axe Power in the tooltip.
 +	/// <br/> The <see href="https://terraria.wiki.gg/wiki/Axes">Axes wiki page</see> is a good resource for finding a suitable value.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int axe;
++
 +	/// <summary>
 +	/// The Hammer power of this item. For example, <c>Item.hammer = 70;</c> will appear as 70% Hammer Power in the tooltip.
 +	/// <br/> The <see href="https://terraria.wiki.gg/wiki/Hammers">Hammers wiki page</see> is a good resource for finding a suitable value.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int hammer;
++
 +	/// <summary>
 +	/// Additional tile range provided by this tool or tile. Copper Pickaxe has a value of -1, reducing the range. Chain uses 3 to allow the tile to be placed from farther away than normal tiles.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int tileBoost;
++
 +	/// <summary>
 +	/// The ID of the tile this item places on use. Either a <see cref="TileID"/> entry or <see cref="ModContent.TileType{T}"/>, for example <see cref="TileID.WorkBenches"/> or ModContent.ItemType&lt;ExampleWorkbench&gt;()
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int createTile = -1;
++
 +	/// <summary>
 +	/// The ID of the wall this item places on use. Either a <see cref="WallID"/> entry or <see cref="ModContent.WallType{T}"/>, for example <see cref="WallID.TopazGemspark"/> or ModContent.ItemType&lt;ExampleWall&gt;()
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int createWall = -1;
++
 +	/// <summary>
 +	/// The style of the tile being placed. Used for tiles that have a different look depending on the item used to place them.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#multiple-styles">Basic Tile guide</see> explains more about this concept.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int placeStyle;
++
 +	/// <summary>
 +	/// The base damage inflicted by this item. The <see href="https://terraria.wiki.gg/wiki/List_of_weapons">List of weapons wiki page</see> can be a useful guide for deciding on a value.
 +	/// <br/> Use <see cref="ModItem.ModifyWeaponDamage(Player, ref StatModifier)"/> for dynamic damage values.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int damage;
++
 +	/// <summary>
 +	/// The force of the knock back. Max value is 20. The <see href="https://terraria.wiki.gg/wiki/Knockback">Knockback wiki page</see> has info on existing values. The <see href="https://terraria.wiki.gg/wiki/List_of_weapons">List of weapons wiki page</see> can also be a useful guide for deciding on a value.
 +	/// <br/> Use <see cref="ModItem.ModifyWeaponKnockback(Player, ref StatModifier)"/> for dynamic knockback values.
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float knockBack;
++
 +	/// <summary>
 +	/// The amount of health this item restores on use.
 +	/// <br/> Use <see cref="ModItem.GetHealLife(Player, bool, ref int)"/> for dynamic health restoring values.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int healLife;
++
 +	/// <summary>
 +	/// The amount of mana this item restores on use.
 +	/// <br/> Use <see cref="ModItem.GetHealMana(Player, bool, ref int)"/> for dynamic mana restoring values.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int healMana;
++
 +	/// <summary>
 +	/// If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness, and if the item can be used with the Quick Heal key.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool potion;
++
 +	/// <summary>
 +	/// Whether the item is consumed after use. If consumed, the item stack will decrease by 1. Modders can use the <see cref="ModItem.ConsumeItem(Player)"/> hook to dynamically decide if the item should be consumed. Modders can use <see cref="ModItem.OnConsumeItem(Player)"/> to act on an item being consumed.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool consumable;
++
 +	/// <summary>
 +	/// Whether the item is in continuous use while the mouse button is held down.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool autoReuse;
++
 +	/// <summary>
 +	/// Whether the player can turn around while the using animation of this item is happening.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool useTurn;
++
 +	/// <summary>
 +	/// Draws the item sprite with a colored tint. Gel and Sharkfin use this to spawn different colored items from the same ItemID. <c>NetMessage.SendData(88, ...)</c> needs to be used to sync this if not done in SetDefaults.
 +	/// <br/> Defaults to <see cref="Color.Transparent"/>
 +	/// </summary>
  	public Color color;
++
 +	/// <summary>
 +	/// Set to a value from 0 to 255 to control how transparant the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
  	public short glowMask;
++
 +	/// <summary>
 +	/// The size multiplier of the item's sprite while the item is being used. Also increases range for melee weapons.
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
 -	public LegacySoundStyle UseSound;
++
 +	/// <summary>
 +	/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
 +	/// <br/> For example <c>Item.UseSound = SoundID.Item1;</c> can be used for the sword swing sound.
 +	/// <br/> Defaults to null.
 +	/// </summary>
-+	public SoundStyle? UseSound;
++	public SoundStyle? UseSound; //TML: Changed from LegacySoundStyle.
++
 +	/// <summary>
 +	/// The amount of defense this item provides when equipped, either as an accessory or armor.
 +	/// <br/> Defaults to 0.
@@ -400,39 +466,45 @@
  	public int defense;
  	public int headSlot = -1;
  	public int bodySlot = -1;
-@@ -125,42 +_,177 @@
+@@ -125,43 +_,204 @@
  	public ItemTooltip ToolTip;
  	public string BestiaryNotes;
  	public int playerIndexTheItemIsReservedFor = 255;
++
 +	/// <summary>
 +	/// Indicates the rarity of an item. Assign to a <see cref="ItemRarityID"/> value. Vanilla values range from -1 to 13.
-+	/// <br/> Items with <see cref="ItemRarityID.White"/> rarity will burn in lava unless <see cref="ModItem.CanBurnInLava"/> or <see cref="ItemID.Sets.IsLavaImmuneRegardlessOfRarity"/> are used.
++	/// <br/> Items with <see cref="ItemRarityID.White"/> rarity will burn in lava unless <see cref="ItemID.Sets.IsLavaImmuneRegardlessOfRarity"/> is used.
 +	/// <br/> Modded rarities can be assigned by: <c>Item.rare = ModContent.RarityType&lt;ExampleModRarity&gt;();</c>
 +	/// <br/> The <see href="https://terraria.wiki.gg/wiki/Rarity">Rarity wiki page</see> has guidelines for deciding on a suitable rarity.
 +	/// <br/> Defaults to <see cref="ItemRarityID.White"/>
 +	/// </summary>
  	public int rare;
++
 +	/// <summary>
 +	/// The ID of the projectile that is fired by this item on use. Either a <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.FireArrow"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;()
 +	/// <br/> If this weapon uses <see cref="useAmmo"/>, then this value is ignored as the projectile will be decided by the ammo item, but shoot should still be 10 by convention.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int shoot;
++
 +	/// <summary>
 +	/// The velocity in pixels the projectile fired by this item will have. Actual velocity depends on the projectile being fired. If your weapon is shooting projectiles and they are stationary, change this to something like 10f. Throwing Knife uses 10f. Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float shootSpeed;
++
 +	/// <summary>
 +	/// The Ammo ID this item belongs to. Weapons with <see cref="useAmmo"/> set to the same AmmoID will consume this item as ammo. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information.
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
 +	/// </summary>
  	public int ammo = AmmoID.None;
++
 +	/// <summary>
 +	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Wire.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool notAmmo;
++
 +	/// <summary>
 +	/// The Ammo ID this weapon will consume. Ammo items with <see cref="ammo"/> set to this same AmmoID will be consumed as ammo for this weapon to be used. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information.
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
@@ -441,22 +513,26 @@
  	public int lifeRegen;
  	public int manaIncrease;
  	public bool buyOnce;
++
 +	/// <summary>
 +	/// The amount of mana this item consumes on use. Use <see cref="ModItem.ModifyManaCost(Player, ref float, ref float)"/> for dynamic mana costs.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int mana;
++
 +	/// <summary>
 +	/// If true, the item's sprite will not be visible while the item is in use.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noUseGraphic;
++
 +	/// <summary>
 +	/// If true, the item's using animation will not deal damage. Set to true on most weapons that aren't swords.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noMelee;
  	public int timeSinceTheItemHasBeenReservedForSomeone;
++
 +	/// <summary>
 +	/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
 +	/// <br/> For convenience, you can also use the <see cref="Item.buyPrice(int, int, int, int)"/> method for setting values: <c>Item.value = Item.buyPrice(0, 1, 4, 62);</c> You can also use the <see cref="Item.sellPrice(int, int, int, int)"/> method if you would rather think about an item's value the other way. Both <c>Item.buyPrice(0, 0, 10, 55)</c> and <c>Item.sellPrice(0, 0, 2, 11)</c> would set the value to <c>1055</c>.
@@ -465,33 +541,39 @@
  	public bool buy;
  	public bool social;
  	public bool vanity;
++
 +	/// <summary>
 +	/// Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe. Automatically assigned.
 +	/// </summary>
  	public bool material;
++
 +	/// <summary>
 +	/// If true, the item won't be drawn while the holding player is wet. The player will also not be in the animation frame corresponding to the item's holdStyle
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noWet;
++
 +	/// <summary>
 +	/// The Buff ID of the buff given by this item on use. To have a potion give multiple buffs, assign one buff here and in <see cref="ModItem.UseItem(Player)"/>, call <see cref="Player.AddBuff(int, int, bool, bool)"/> for the remaining buffs you wish to give.
 +	/// <br/> Make sure to set <see cref="buffTime"/> as well or the buff will instantly disappear.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int buffType;
++
 +	/// <summary>
 +	/// The duration in ticks of the buff given by this item on use. There are 60 ticks per second, multiply the number of seconds by 60. For example, a buff lasting 8 minutes would use a value of either <c>28800</c> or <c>8*60*60</c>. 
 +	/// <br/> Make sure to set <see cref="buffType"/> as well. 
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int buffTime;
++
 +	/// <summary>
 +	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int mountType = -1;
  	public bool cartTrack;
++
 +	/// <summary>
 +	/// Players cannot pick up a <c>uniqueStack</c> item if they have an item with the same <see cref="type"/> in their inventory.<br/>
 +	/// This does not apply to equipped items, nor does it apply to items held with the mouse (<see cref="Main.mouseItem"/>).<br/>
@@ -499,6 +581,7 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool uniqueStack;
++
 +	/// <summary>
 +	/// The numerical ID of the special currency this item is bought using.<br/>
 +	/// To make an item bought using Defender Medals, set this to <see cref="CustomCurrencyID.DefenderMedals"/>.<br/>
@@ -506,6 +589,7 @@
 +	/// Defaults to -1, which means an item is bought using coins.<br/>
 +	/// </summary>
  	public int shopSpecialCurrency = -1;
++
 +	/// <summary>
 +	/// If not <see langword="null"/>, the custom value of the given item when being bought from a shop.<br/>
 +	/// Used for assigning a non-default price to an item in shops.<br/>
@@ -515,6 +599,8 @@
 +	/// </summary>
  	public int? shopCustomPrice;
  	public bool shootsEveryUse;
+ 	public bool chlorophyteExtractinatorConsumable;
++
 +	/// <summary>
 +	/// If true, the given item is categorized as a Dungeon Defenders 2 summon item.<br/>
 +	/// DD2 summon items get a counter for how much Etherian Mana is in the player's inventory.<br/>
@@ -523,6 +609,7 @@
 +	/// </summary>
  	public bool DD2Summon;
  	public int netID;
++
 +	/// <summary>
 +	/// The base critical chance for this item. Remember that the player has a base crit chance of 4.
 +	/// <br/> Defaults to 0
@@ -533,6 +620,7 @@
 -	public bool magic;
 -	public bool ranged;
 -	public bool summon;
++
 +	/// <summary>
 +	/// The current prefix applied to this item. Either a <see cref="PrefixID"/> entry or <see cref="ModContent.PrefixType{T}"/>. Prefixes are assigned by calling the <see cref="Item.Prefix(int)"/> method.
 +	/// <br/> Defaults to 0.
@@ -548,6 +636,7 @@
 +				DamageType = DamageClass.Default;
 +		}
 +	}
++
 +	internal bool magic {
 +		get => CountsAsClass(DamageClass.Magic);
 +		set {
@@ -557,6 +646,7 @@
 +				DamageType = DamageClass.Default;
 +		}
 +	}
++
 +	internal bool ranged {
 +		get => CountsAsClass(DamageClass.Ranged);
 +		set {
@@ -566,6 +656,7 @@
 +				DamageType = DamageClass.Default;
 +		}
 +	}
++
 +	internal bool summon {
 +		get => CountsAsClass(DamageClass.Summon);
 +		set {
@@ -575,7 +666,9 @@
 +				DamageType = DamageClass.Default;
 +		}
 +	}
++
  	public bool sentry;
++
 +	/// <summary>
 +	/// A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items.
 +	/// <br/> Defaults to 0.
@@ -583,12 +676,14 @@
  	public int reuseDelay;
  	public bool newAndShiny;
  	[Old("This is used to allow items to be discerned as vanity even if they didn't have visual slots to poll against")]
-@@ -172,6 +_,19 @@
+@@ -173,6 +_,21 @@
  	public bool shimmered;
  	public float shimmerTime;
  
-+	public Item() { } // EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
++	// EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
++	public Item() { }
 +
++	// Added by TML.
 +	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
 +	{
 +		SetDefaults(setDefaultsToType);
@@ -603,15 +698,18 @@
  	public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
  
  	public string HoverName {
-@@ -195,11 +_,11 @@
+@@ -196,11 +_,19 @@
  
  	public bool FitsAccessoryVanitySlot => true;
  
--	public int OriginalRarity => ContentSamples.ItemsByType[type].rare;
--
--	public int OriginalDamage => ContentSamples.ItemsByType[type].damage;
--
--	public int OriginalDefense => ContentSamples.ItemsByType[type].defense;
++	/*
+ 	public int OriginalRarity => ContentSamples.ItemsByType[type].rare;
+ 
+ 	public int OriginalDamage => ContentSamples.ItemsByType[type].damage;
+ 
+ 	public int OriginalDefense => ContentSamples.ItemsByType[type].defense;
++	*/
++
 +	public int OriginalRarity => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.rare : 0;
 +
 +	public int OriginalDamage => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.damage : 0;
@@ -620,15 +718,18 @@
  
  	public ItemVariant Variant { get; private set; }
  
-@@ -278,11 +_,18 @@
+@@ -279,12 +_,20 @@
  		}
  	}
  
++	// Internal, modders should use GetSource_FromThis
+-	public IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
++	internal IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
++
++	// Internal redirect
 +	/*
  	public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
 +	*/
-+
-+	// Internal redirect
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
  	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
@@ -640,7 +741,7 @@
  		if (type != 0 && maxStack == 1) {
  			if (damage <= 0)
  				return accessory;
-@@ -291,6 +_,13 @@
+@@ -293,6 +_,13 @@
  		}
  
  		return false;
@@ -654,17 +755,19 @@
  	}
  
  	public bool Prefix(int prefixWeWant)
-@@ -304,7 +_,17 @@
+@@ -306,7 +_,19 @@
  		if (!CanHavePrefixes())
  			return false;
  
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
 +
-+		if (prefixWeWant == -1 && maxStack > 1) // TML: #StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged
++		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
++		if (prefixWeWant == -1 && maxStack > 1)
 +			return false;
 +
  		UnifiedRandom unifiedRandom = (WorldGen.gen ? WorldGen.genRand : Main.rand);
++
 +		bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
 +		if (applyPrefixOverride is false)
 +			return false;
@@ -672,37 +775,38 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -316,12 +_,16 @@
+@@ -318,12 +_,18 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
--			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
--				rolledPrefix = 0;
++
 +			if (applyPrefixOverride is true) { } else
-+			if (rolledPrefix == -1 && unifiedRandom.NextBool(4))
-+				return true;
+ 			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
+-				rolledPrefix = 0;
++				return true; //rolledPrefix = 0;
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;
  
-+			if (prefixWeWant == -3) // faster check implementation than actually rolling.
++			// Faster check implementation than actually rolling.
++			if (prefixWeWant == -3)
 +				return PrefixLoader.Roll(this, unifiedRandom, out _, justCheck: true);
 +
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -329,8 +_,9 @@
+@@ -331,8 +_,9 @@
  				case -3:
  					return true;
  				case -1:
 +					if (applyPrefixOverride is true) { } else
- 					if ((rolledPrefix == 7 || rolledPrefix == 8 || rolledPrefix == 9 || rolledPrefix == 10 || rolledPrefix == 11 || rolledPrefix == 22 || rolledPrefix == 23 || rolledPrefix == 24 || rolledPrefix == 29 || rolledPrefix == 30 || rolledPrefix == 31 || rolledPrefix == 39 || rolledPrefix == 40 || rolledPrefix == 56 || rolledPrefix == 41 || rolledPrefix == 47 || rolledPrefix == 48 || rolledPrefix == 49) && unifiedRandom.Next(3) != 0)
+ 					if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
 -						rolledPrefix = 0;
-+						return true;
++						return true; //rolledPrefix = 0;
  					break;
  			}
  
-@@ -345,6 +_,8 @@
+@@ -347,6 +_,8 @@
  			}
  		}
  
@@ -711,7 +815,7 @@
  		damage = (int)Math.Round((float)damage * dmg);
  		useAnimation = (int)Math.Round((float)useAnimation * spd);
  		useTime = (int)Math.Round((float)useTime * spd);
-@@ -354,6 +_,12 @@
+@@ -356,6 +_,12 @@
  		scale *= size;
  		shootSpeed *= shtspd;
  		crit += crt;
@@ -724,7 +828,7 @@
  		float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
  		if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
  			num *= 1.05f;
-@@ -367,6 +_,10 @@
+@@ -369,6 +_,11 @@
  		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
  			num *= 1.2f;
  
@@ -732,10 +836,11 @@
 +			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
 +
 +		int baseRarity = rare;
++
  		if ((double)num >= 1.2)
  			rare += 2;
  		else if ((double)num >= 1.05)
-@@ -376,17 +_,22 @@
+@@ -378,17 +_,22 @@
  		else if ((double)num <= 0.95)
  			rare--;
  
@@ -761,7 +866,7 @@
  		return true;
  	}
  
-@@ -395,6 +_,7 @@
+@@ -397,6 +_,7 @@
  		if (!CanHavePrefixes())
  			return false;
  
@@ -769,7 +874,7 @@
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -405,6 +_,9 @@
+@@ -407,6 +_,9 @@
  		}
  
  		return false;
@@ -779,10 +884,11 @@
  	}
  
  	public bool CanApplyPrefix(int prefix)
-@@ -704,6 +_,12 @@
+@@ -706,6 +_,13 @@
  				dmg = 1.05f;
  				crt = 2;
  				break;
++			// Handle mod prefixes.
 +			case int pre when PrefixLoader.GetPrefix(pre) is ModPrefix modPrefix:
 +				if (!modPrefix.AllStatChangesHaveEffectOn(this))
 +					return false;
@@ -792,20 +898,21 @@
  		}
  
  		if (dmg != 1f && Math.Round((float)damage * dmg) == (double)damage)
-@@ -721,7 +_,7 @@
+@@ -723,7 +_,8 @@
  		return true;
  	}
  
++	//TML: Made internal.
 -	public int[] GetRollablePrefixes()
 +	internal int[] GetRollablePrefixes()
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -748,14 +_,50 @@
+@@ -750,14 +_,50 @@
  		return null;
  	}
  
-+	// Added by tML
++	// Added by TML.
 +	public PrefixCategory? GetPrefixCategory()
 +	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
@@ -826,7 +933,7 @@
 +		return null;
 +	}
 +
-+	// Added by tML
++	// Added by TML.
 +	public static int[] GetVanillaPrefixes(PrefixCategory category) => category switch {
 +		PrefixCategory.Melee => PrefixLegacy.Prefixes.PrefixesForSwords,
 +		PrefixCategory.Ranged => PrefixLegacy.Prefixes.PrefixesForGunsBows,
@@ -854,82 +961,104 @@
  	public bool IsAPrefixableAccessory()
 @@ -791,6 +_,8 @@
  
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+ 
++	// Removed in favor of UpdateWhichItemsAreMaterials logic
++	/*
  	public bool checkMat()
  	{
-+		material = ItemID.Sets.IsAMaterial[type];
-+		return material; // bypass performance issue.
  		if (type >= 71 && type <= 74) {
- 			material = false;
- 			return false;
-@@ -998,6 +_,9 @@
+@@ -839,9 +_,11 @@
+ 
+ 				material = false;
+ 				return false;
++				// Extra patch context.
+ 			}
+ 		}
+ 	}
++	*/
+ 
+ 	public void netDefaults(int type)
+ 	{
+@@ -1000,6 +_,9 @@
  
  	public static int BannerToItem(int banner)
  	{
-+		if (NPCLoader.bannerToItem.ContainsKey(banner))
-+			return NPCLoader.bannerToItem[banner];
++		if (NPCLoader.bannerToItem.TryGetValue(banner, out int result))
++			return result;
 +
  		int num = 0;
  		if (banner == 289)
  			return 5352;
-@@ -1770,9 +_,10 @@
+@@ -1771,11 +_,15 @@
+ 				return 286;
+ 			case 176:
+ 				return 287;
++			// Extra patch context.
+ 			case 133:
  				return 288;
  			case 676:
  				return 289;
--			default:
--				return 0;
+ 			default:
++				if (i >= NPCID.Count) // in NPCtoBanner method
++					return NPCLoader.GetNPC(i).Banner;
++
+ 				return 0;
  		}
-+		if (i >= NPCID.Count) // in NPCtoBanner method
-+			return NPCLoader.GetNPC(i).Banner;
-+		return 0;
  	}
- 
- 	public static int BannerToNPC(int i)
-@@ -2346,9 +_,10 @@
+@@ -2347,11 +_,15 @@
+ 				return 475;
+ 			case 287:
+ 				return 176;
++			// Extra patch context.
+ 			case 288:
  				return 133;
  			case 289:
  				return 676;
--			default:
--				return 0;
+ 			default:
++				if (i >= NPCID.Count) // in BannerToNPC method
++					return i;
++
+ 				return 0;
  		}
-+		if (i >= NPCID.Count) // in BannerToNPC method
-+			return i;
-+		return 0;
  	}
- 
- 	public bool FitsAmmoSlot()
-@@ -7673,6 +_,7 @@
+@@ -7679,6 +_,8 @@
  				value = 300;
  				break;
  			case 434:
-+				consumeAmmoOnLastShotOnly = true;
++				consumeAmmoOnLastShotOnly = true; // Added by TML.
++
  				autoReuse = true;
  				useStyle = 5;
  				useAnimation = 12;
-@@ -8645,6 +_,7 @@
+@@ -8651,6 +_,8 @@
  				rare = 2;
  				break;
  			case 506:
-+				consumeAmmoOnFirstShotOnly = true;
++				consumeAmmoOnFirstShotOnly = true; // Added by TML.
++
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -12071,6 +_,7 @@
- 				scale = 1.15f;
+@@ -12077,6 +_,8 @@
+ 				scale = 1f;
  				break;
  			case 779:
-+				consumeAmmoOnLastShotOnly = true;
++				consumeAmmoOnLastShotOnly = true; // Added by TML
++
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -22758,6 +_,7 @@
+@@ -22766,6 +_,8 @@
  				melee = true;
  				return;
  			case 1910:
-+				consumeAmmoOnFirstShotOnly = true;
++				consumeAmmoOnFirstShotOnly = true; // Added by TML.
++
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -30142,6 +_,17 @@
+@@ -30150,6 +_,17 @@
  			value = buyPrice(0, 2, 70);
  	}
  
@@ -947,15 +1076,16 @@
  	public void DefaultToQuestFish()
  	{
  		questItem = true;
-@@ -36877,6 +_,7 @@
+@@ -36886,6 +_,8 @@
  				shootSpeed = 17f;
  				return;
  			case 3852:
-+				useLimitPerAnimation = 4;
++				useLimitPerAnimation = 4; // Added by TML.
++
  				useStyle = 5;
  				useAnimation = 25;
  				useTime = 3;
-@@ -38313,6 +_,26 @@
+@@ -38322,6 +_,26 @@
  		}
  	}
  
@@ -982,24 +1112,26 @@
  	public void DefaultToGolfBall(int projid)
  	{
  		shoot = projid;
-@@ -43072,6 +_,7 @@
+@@ -43082,6 +_,8 @@
  				expert = true;
  				break;
  			case 4952:
-+				useLimitPerAnimation = 4;
++				useLimitPerAnimation = 4; // Added by TML.
++
  				autoReuse = true;
  				useStyle = 14;
  				holdStyle = 6;
-@@ -43093,6 +_,8 @@
+@@ -43103,6 +_,9 @@
  				flame = true;
  				break;
  			case 4953:
-+				useLimitPerAnimation = 5;
-+				consumeAmmoOnLastShotOnly = true;
++				useLimitPerAnimation = 5; // Added by TML.
++				consumeAmmoOnLastShotOnly = true; // Added by TML.
++
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -46335,6 +_,20 @@
+@@ -46345,6 +_,20 @@
  		}
  	}
  
@@ -1020,7 +1152,7 @@
  	public void DefaultToSolution(int projectileId)
  	{
  		shoot = projectileId - 145;
-@@ -46347,6 +_,30 @@
+@@ -46357,6 +_,30 @@
  		consumable = true;
  	}
  
@@ -1051,36 +1183,37 @@
  	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46358,7 +_,8 @@
+@@ -46368,7 +_,10 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
--		summon = true;
-+		//summon = true;
++		/*
+ 		summon = true;
++		*/
 +		DamageType = DamageClass.SummonMeleeSpeed;
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46412,7 +_,7 @@
+@@ -46422,7 +_,7 @@
  		return false;
  	}
  
--	private void DefaultToSeaShelll()
-+	public void DefaultToSeaShelll()
+-	private void DefaultToSeaShell()
++	public void DefaultToSeaShell()
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46446,7 +_,8 @@
+@@ -46456,7 +_,8 @@
  		}
  	}
  
-+	// tML: changed to take an int instead of a short for convenience and consistency purposes
++	//TML: Changed to take an int instead of a short for convenience and consistency purposes
 -	public void DefaultToCapturedCritter(short npcIdToSpawnOnUse)
 +	public void DefaultToCapturedCritter(int npcIdToSpawnOnUse)
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46461,6 +_,21 @@
+@@ -46471,6 +_,21 @@
  		makeNPC = npcIdToSpawnOnUse;
  	}
  
@@ -1102,7 +1235,7 @@
  	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
  	{
  		DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
-@@ -46470,6 +_,25 @@
+@@ -46480,6 +_,25 @@
  		UseSound = SoundID.Item43;
  	}
  
@@ -1128,7 +1261,7 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -46842,7 +_,24 @@
+@@ -46852,7 +_,24 @@
  		mountType = mount;
  	}
  
@@ -1154,7 +1287,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -46863,6 +_,14 @@
+@@ -46873,6 +_,14 @@
  		crit = bonusCritChance;
  	}
  
@@ -1169,7 +1302,7 @@
  	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
-@@ -46871,6 +_,23 @@
+@@ -46881,6 +_,23 @@
  		UseSound = SoundID.Item5;
  	}
  
@@ -1193,7 +1326,7 @@
  	public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46883,6 +_,25 @@
+@@ -46893,6 +_,25 @@
  		magic = true;
  	}
  
@@ -1219,7 +1352,7 @@
  	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46896,6 +_,25 @@
+@@ -46906,6 +_,25 @@
  		ranged = true;
  	}
  
@@ -1245,7 +1378,7 @@
  	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46910,7 +_,36 @@
+@@ -46920,7 +_,36 @@
  		maxStack = CommonMaxStack;
  	}
  
@@ -1283,7 +1416,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -46929,11 +_,29 @@
+@@ -46939,11 +_,29 @@
  		useTime = 10;
  	}
  
@@ -1313,7 +1446,7 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
-@@ -46975,6 +_,27 @@
+@@ -46995,6 +_,27 @@
  		autoReuse = true;
  	}
  
@@ -1341,7 +1474,7 @@
  	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
  	{
  		if (useGulpSound)
-@@ -47015,12 +_,18 @@
+@@ -47035,12 +_,18 @@
  		healLife = healingAmount;
  	}
  
@@ -1360,7 +1493,7 @@
  	public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID)
  	{
  		width = newwidth;
-@@ -47045,7 +_,34 @@
+@@ -47065,7 +_,34 @@
  		useAnimation = (useTime = 12);
  	}
  
@@ -1396,17 +1529,20 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47068,6 +_,19 @@
+@@ -47088,6 +_,22 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
++	// Added by TML.
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModItem = ModItem;
 +		var originalGlobals = globalItems;
++
 +		SetDefaults(TypeToClone);
++
 +		type = originalType;
 +		netID = originalNetID;
 +		ModItem = originalModItem;
@@ -1416,18 +1552,19 @@
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47081,8 +_,10 @@
+@@ -47101,8 +_,11 @@
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  		ResetStats(Type);
++
 +		/*
- 		if (type >= 5456)
+ 		if (type >= ItemID.Count)
  			type = 0;
 +		*/
  
  		if (variant == null)
  			variant = ItemVariants.SelectVariant(Type);
-@@ -47113,7 +_,18 @@
+@@ -47133,7 +_,18 @@
  			SetDefaults5(type);
  		}
  
@@ -1437,7 +1574,7 @@
 +		// tML: make sure some vanilla balance doesn't get obliterated by attack speed changes
 +		RestoreMeleeSpeedBehaviorOnVanillaItems();
 +
-+		//Set 'master' bool for vanilla items with master rarity.
++		// Set 'master' bool for vanilla items with master rarity.
 +		if (type < ItemID.Count && rare == ItemRarityID.Master) {
 +			master = true;
 +		}
@@ -1447,32 +1584,37 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47277,11 +_,12 @@
+@@ -47297,11 +_,14 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
++
 +		ItemLoader.SetDefaults(this);
++
  		if (!noMatCheck)
  			material = ItemID.Sets.IsAMaterial[type];
  
  		RebuildTooltip();
--		if (type > 0 && type < 5456 && ItemID.Sets.Deprecated[type]) {
+-		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
 +		if (type > 0 && ItemID.Sets.Deprecated[type]) {
  			netID = 0;
  			type = 0;
  			stack = 0;
-@@ -47290,6 +_,7 @@
+@@ -47310,6 +_,8 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
 +		ItemLoader.OnCreated(this, context);
++
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47298,14 +_,27 @@
+@@ -47318,14 +_,30 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
++
++		// TML field initialization:
 +		ModItem = null;
 +		globalItems = new Instanced<GlobalItem>[0];
 +		StatsModifiedBy = new();
@@ -1484,77 +1626,82 @@
 +		InterruptChannelOnHurt = false;
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
++
  		sentry = false;
  		hasVanityEffects = false;
  		DD2Summon = false;
  		shopSpecialCurrency = -1;
  		shopCustomPrice = null;
  		expert = false;
-+		master = false;
++		master = false; // Added by TML.
  		isAShopItem = false;
  		expertOnly = false;
-+		masterOnly = false;
++		masterOnly = false; // Added by TML.
  		instanced = false;
  		questItem = false;
  		fishingPole = 0;
-@@ -47323,10 +_,12 @@
+@@ -47343,10 +_,14 @@
  		mech = false;
  		flame = false;
  		reuseDelay = 0;
++
 +		/*
  		melee = false;
  		magic = false;
  		ranged = false;
  		summon = false;
 +		*/
++
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
-@@ -47405,6 +_,10 @@
+@@ -47426,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
  	{
-+		Color? modColor = ItemLoader.GetAlpha(this, newColor);
-+		if (modColor.HasValue)
-+			return modColor.Value;
++		if (ItemLoader.GetAlpha(this, newColor) is Color modColor)
++			return modColor;
 +
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
-@@ -48066,6 +_,7 @@
+@@ -47857,7 +_,7 @@
+ 			int num13 = FindDecraftAmount();
+ 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
+ 			int num14 = 0;
+-			bool flag = recipe.requiredItem[1].stack > 0;
++			bool flag = recipe.requiredItem.Count > 1;
+ 			IEnumerable<Item> enumerable = recipe.requiredItem;
+ 			if (recipe.customShimmerResults != null)
+ 				enumerable = recipe.customShimmerResults;
+@@ -48124,6 +_,8 @@
  			timeSinceItemSpawned += num7;
  		}
  
 +		ItemLoader.PostUpdate(this);
++
  		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  			timeSinceTheItemHasBeenReservedForSomeone++;
  			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -48163,6 +_,7 @@
- 
- 	private void CheckLavaDeath(int i)
- 	{
-+		bool? canBurnInLava = ItemLoader.CanBurnInLava(this);
- 		if (type == 267) {
- 			if (Main.netMode == 1)
- 				return;
-@@ -48216,7 +_,7 @@
+@@ -48274,7 +_,7 @@
  
  			NetMessage.SendData(21, -1, -1, null, i);
  		}
--		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < 5456 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
-+		else if (canBurnInLava ?? (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type])) {
+-		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < ItemID.Count && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
  			active = false;
  			type = 0;
  			stack = 0;
-@@ -48227,6 +_,7 @@
+@@ -48285,6 +_,8 @@
  
  	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
  	{
 +		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
++
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
-@@ -48611,14 +_,25 @@
+@@ -48669,14 +_,26 @@
  				num2 *= 2;
  
  			if (num < (float)num2) {
@@ -1569,7 +1716,7 @@
 +
 +				ItemLoader.StackItems(this, item, out _);
 +
-+				/* TML: #OnStackHook
++				/* #OnStackHook
  				int num3 = item.stack;
  				if (num3 > maxStack - stack)
  					num3 = maxStack - stack;
@@ -1577,15 +1724,18 @@
  				item.stack -= num3;
  				stack += num3;
 +				*/
++
  				if (item.stack <= 0) {
  					item.SetDefaults();
  					item.active = false;
-@@ -49019,21 +_,65 @@
+@@ -49077,21 +_,68 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);
  			default:
--				return TextureAssets.Item[type].Frame();
-+				// Vanila:  return TextureAssets.Item[type].Frame();
++				/*
+ 				return TextureAssets.Item[type].Frame();
++				*/
++
 +				// Notes:
 +				//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
 +				//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
@@ -1647,7 +1797,7 @@
  		if (Main.tenthAnniversaryWorld) {
  			if (Type == 58) {
  				Type = Main.rand.NextFromList(new short[3] {
-@@ -49068,7 +_,7 @@
+@@ -49126,7 +_,7 @@
  				Type = 1868;
  		}
  
@@ -1656,7 +1806,7 @@
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}
-@@ -49081,9 +_,20 @@
+@@ -49139,9 +_,19 @@
  		Main.timeItemSlotCannotBeReusedFor[num] = 0;
  		Main.item[num] = new Item();
  		Item item = Main.item[num];
@@ -1671,13 +1821,12 @@
  		item.SetDefaults(Type);
  		item.Prefix(pfix);
  		item.stack = Stack;
-+
 +		skipItemCreation:
 +
  		item.position.X = X + Width / 2 - item.width / 2;
  		item.position.Y = Y + Height / 2 - item.height / 2;
  		item.wet = Collision.WetCollision(item.position, item.width, item.height);
-@@ -49103,6 +_,8 @@
+@@ -49161,6 +_,8 @@
  		if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
  			item.newAndShiny = true;
  
@@ -1686,13 +1835,14 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -49182,14 +_,17 @@
+@@ -49240,16 +_,21 @@
  					continue;
  
  				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
 -				if (player.CanPullItem(Main.item[whoAmI], status)) {
 +				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
  					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
++
 +					int grabRange = Player.defaultItemGrabRange;
  					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
 -						num3 -= (float)manaGrabRange;
@@ -1702,19 +1852,23 @@
 -						num3 -= (float)lifeGrabRange;
 +						grabRange += lifeGrabRange;
  
+ 					if (type == 4143)
+-						num3 -= (float)manaGrabRange;
++						grabRange += manaGrabRange;
++
 +					ItemLoader.GrabRange(Main.item[whoAmI], player, ref grabRange);
 +					num3 -= grabRange;
- 					if (type == 4143)
- 						num3 -= (float)manaGrabRange;
  
-@@ -49208,10 +_,22 @@
+ 					if (num2 > num3) {
+ 						num2 = num3;
+@@ -49266,10 +_,29 @@
  		}
  	}
  
--	public Item Clone() => (Item)MemberwiseClone();
--	public Item DeepClone() => (Item)MemberwiseClone();
--
--	public bool IsTheSameAs(Item compareItem)
++
++	/*
+ 	public Item Clone() => (Item)MemberwiseClone();
++	*/
 +	public Item Clone()
 +	{
 +		Item newItem = (Item)MemberwiseClone();
@@ -1727,34 +1881,39 @@
 +		return newItem;
 +	}
 +
++	/*
+ 	public Item DeepClone() => (Item)MemberwiseClone();
++	*/
 +	internal Item DeepClone() => Clone();
-+
+ 
 +	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
+-	public bool IsTheSameAs(Item compareItem)
 +	internal bool IsTheSameAs(Item compareItem)
  	{
  		if (netID == compareItem.netID)
  			return type == compareItem.type;
-@@ -49219,7 +_,9 @@
+@@ -49277,7 +_,9 @@
  		return false;
  	}
  
 +	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
-+	//TODO change to !IsNetSyncEquivalent ?
++	// TODO: change to !IsNetSyncEquivalent ?
 -	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
  	{
  		if (netID == compareItem.netID && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -49251,6 +_,8 @@
+@@ -49309,6 +_,9 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
++
 +		ModItem = null;
 +		globalItems = new Instanced<GlobalItem>[0];
  	}
  
  	public void OnPurchase(Item item)
-@@ -49274,7 +_,7 @@
+@@ -49332,7 +_,7 @@
  		if (context == ItemSerializationContext.SavingAndLoading) {
  			writer.Write(netID);
  			writer.Write(stack);
@@ -1763,16 +1922,16 @@
  		}
  	}
  
-@@ -49286,7 +_,7 @@
+@@ -49344,7 +_,7 @@
  			Prefix(reader.ReadByte());
  		}
  
--		if (type >= 5456)
+-		if (type >= ItemID.Count)
 +		if (type >= ItemLoader.ItemCount)
  			TurnToAir();
  	}
  
-@@ -49301,6 +_,7 @@
+@@ -49359,6 +_,7 @@
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
@@ -1780,13 +1939,13 @@
  			bool flag = favorited;
  			int num = stack;
  			int num2 = netID;
-@@ -49309,6 +_,13 @@
+@@ -49367,6 +_,13 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;
 +			*/
 +
-+			// TODO, could speed this up by reusing the memory stream, reader and writer, perhaps with a `ThreadLocalCache`?
++			//TODO: Could speed this up by reusing the memory stream, reader and writer, perhaps with a `ThreadLocalCache`?
 +			using var ms = new MemoryStream(64);
 +			ItemIO.Send(this, new BinaryWriter(ms), writeStack: true, writeFavorite: true);
 +			ms.Position = 0;

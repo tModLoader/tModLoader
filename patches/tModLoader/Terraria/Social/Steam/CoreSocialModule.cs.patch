@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/CoreSocialModule.cs
-@@ -1,16 +_,18 @@
+@@ -1,16 +_,22 @@
  using System;
 +using System.IO;
  using System.Threading;
@@ -15,8 +15,11 @@
  public class CoreSocialModule : ISocialModule
  {
  	private static CoreSocialModule _instance;
--	public const int SteamAppId = 105600;
-+	public const uint SteamAppId = ModLoader.Engine.Steam.TMLAppID; // No references to this?
++
++	/*
+ 	public const int SteamAppId = 105600;
++	*/
++
  	private bool IsSteamValid;
  	private object _steamTickLock = new object();
  	private object _steamCallbackLock = new object();
@@ -30,8 +33,8 @@
  			return;
  		}
 +		*/
- 
 +		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
+ 
  		if (!SteamAPI.Init()) {
 -			MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
 -			Environment.Exit(1);

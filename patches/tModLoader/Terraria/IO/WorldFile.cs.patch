@@ -1,15 +1,22 @@
 --- src/TerrariaNetCore/Terraria/IO/WorldFile.cs
 +++ src/tModLoader/Terraria/IO/WorldFile.cs
-@@ -16,6 +_,9 @@
- using Terraria.UI;
- using Terraria.Utilities;
- using Terraria.WorldBuilding;
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.Diagnostics;
+ using System.IO;
++using System.Linq;
+ using System.Threading;
+ using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
+@@ -12,6 +_,8 @@
+ using Terraria.GameContent.UI.States;
+ using Terraria.ID;
+ using Terraria.Localization;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
-+using System.Linq;
- 
- namespace Terraria.IO;
- 
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.Utilities;
 @@ -69,7 +_,7 @@
  	private static bool _tempBloodMoon = Main.bloodMoon;
  	private static bool _tempEclipse = Main.eclipse;
@@ -46,20 +53,23 @@
  		}
  
  		return null;
-@@ -446,6 +_,7 @@
+@@ -446,6 +_,8 @@
  		Main.checkXMas();
  		Main.checkHalloween();
  		bool flag = loadFromCloud && SocialAPI.Cloud != null;
-+		//patch file: flag
++		// Patch note: flag ^ is used in WorldIO call below.
++
  		if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  			if (!flag) {
  				for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -492,6 +_,8 @@
+@@ -492,6 +_,10 @@
  				CheckSavedOreTiers();
  				binaryReader.Close();
  				memoryStream.Close();
++
 +				SystemLoader.OnWorldLoad();
 +				WorldIO.Load(Main.worldPathName, flag);
++
  				if (num3 != 0)
  					WorldGen.loadFailed = true;
  				else
@@ -73,10 +83,11 @@
  		new Stopwatch().Start();
  		int num;
  		byte[] array;
-@@ -688,6 +_,7 @@
+@@ -688,6 +_,8 @@
  
  		if (text != null && array2 != null)
  			FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
++
 +		WorldIO.Save(Main.worldPathName, useCloudSaving);
  	}
  
@@ -121,16 +132,14 @@
  		}
  	}
  
-@@ -1041,7 +_,11 @@
+@@ -1041,7 +_,9 @@
  		}
  
  		writer.Write(NPC.savedAngler);
-+		if (Main.anglerQuest < ItemLoader.vanillaQuestFishCount)
 -		writer.Write(Main.anglerQuest);
-+			writer.Write(Main.anglerQuest);
-+		else
-+			writer.Write(0);
 +
++		writer.Write(Main.anglerQuest < ItemLoader.vanillaQuestFishCount ? Main.anglerQuest : 0);
++		
  		writer.Write(NPC.savedStylist);
  		writer.Write(NPC.savedTaxCollector);
  		writer.Write(NPC.savedGolfer);
@@ -184,32 +193,48 @@
  				}
  			}
  		}
-@@ -1383,7 +_,7 @@
+@@ -1377,13 +_,16 @@
+ 		bool[] array = (bool[])NPC.ShimmeredTownNPCs.Clone();
+ 		writer.Write(array.Count(value: true));
+ 		for (int i = 0; i < array.Length; i++) {
+-			if (array[i])
++			if (array[i] && i < NPCID.Count)
+ 				writer.Write(i);
+ 		}
  
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
--			if (nPC.active && nPC.townNPC && nPC.type != 368) {
-+			if (nPC.active && nPC.townNPC && nPC.type != 368 && !NPCLoader.IsModNPC(nPC)) {
+ 			if (nPC.active && nPC.townNPC && nPC.type != 368) {
++				if (NPCLoader.IsModNPC(nPC))
++					continue;
++
  				writer.Write(nPC.active);
  				writer.Write(nPC.netID);
  				writer.Write(nPC.GivenName);
-@@ -1403,7 +_,7 @@
- 		writer.Write(value: false);
+@@ -1404,6 +_,9 @@
  		for (int k = 0; k < Main.npc.Length; k++) {
  			NPC nPC2 = Main.npc[k];
--			if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
-+			if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type] && !NPCLoader.IsModNPC(nPC2)) {
+ 			if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
++				if (NPCLoader.IsModNPC(nPC2))
++					continue;
++
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2147,8 +_,13 @@
+@@ -2147,8 +_,20 @@
  
  				while (num3 > 0) {
  					j++;
--					Main.tile[i, j].CopyFrom(tile);
++					/*
+ 					Main.tile[i, j].CopyFrom(tile);
++					*/
  					num3--;
-+					// tML - significantly improve performance by directly accessing the relevant blocking data to copy. No need to copy mod data in this method.
++
++					// TML:
++					// Significantly improve performance by directly accessing the relevant blocking data to copy.
++					// No need to copy mod data in this method.
 +					var tile2 = Main.tile[i, j];
++
 +					tile2.Get<LiquidData>() = tile.Get<LiquidData>();
 +					tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
 +					tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
@@ -217,29 +242,34 @@
  				}
  			}
  		}
-@@ -2254,7 +_,7 @@
+@@ -2254,7 +_,11 @@
  			int num3 = reader.ReadInt32();
  			Tile tile = Main.tile[num2, num3];
  			Sign sign;
--			if (tile.active() && Main.tileSign[tile.type]) {
-+			if (true) {//if (tile.active() && Main.tileSign[tile.type]) {
++
++			/*
+ 			if (tile.active() && Main.tileSign[tile.type]) {
++			*/
++			if (true) {
  				sign = new Sign();
  				sign.text = text;
  				sign.x = num2;
-@@ -2582,6 +_,7 @@
+@@ -2582,6 +_,8 @@
  			return result;
  		}
  		catch (Exception value) {
 +			Logging.Terraria.Error("World Validation", value);
++
  			using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  				streamWriter.WriteLine(DateTime.Now);
  				streamWriter.WriteLine(value);
-@@ -2639,8 +_,8 @@
+@@ -2639,8 +_,9 @@
  	public static int SaveTileEntities(BinaryWriter writer)
  	{
  		lock (TileEntity.EntityCreationLock) {
 -			writer.Write(TileEntity.ByID.Count);
 -			foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID) {
++			// Exclude mod entities from being saved.
 +			writer.Write(TileEntity.ByID.Count - ModTileEntity.CountInWorld());
 +			foreach (KeyValuePair<int, TileEntity> item in TileEntity.ByID.Where(pair => pair.Value.type < ModTileEntity.NumVanilla)) {
  				TileEntity.Write(writer, item.Value);

@@ -1,13 +1,14 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDrawHeadSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadSet.cs
-@@ -5,9 +_,12 @@
+@@ -5,9 +_,14 @@
  
  namespace Terraria.DataStructures;
  
--public struct PlayerDrawHeadSet
 +// This struct is basically deleted, and its BoringSetup() is moved into PlayerDrawSet under the name HeadOnlySetup()
 +
-+//public struct PlayerDrawHeadSet
++/*
+ public struct PlayerDrawHeadSet
++*/
 +public partial struct PlayerDrawSet
  {
 -	public List<DrawData> DrawData;
@@ -15,12 +16,11 @@
  	public List<int> Dust;
  	public List<int> Gore;
  	public Player drawPlayer;
-@@ -49,31 +_,40 @@
- 			result.Height--;
+@@ -50,30 +_,46 @@
  			return result;
  		}
--	}
-+	}*/
+ 	}
++	*/
  
 -	public void BoringSetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale)
 +	public void HeadOnlySetup(Player drawPlayer2, List<DrawData> drawData, List<int> dust, List<int> gore, float X, float Y, float Alpha, float Scale)
@@ -28,12 +28,15 @@
 +		projectileDrawPosition = -1;
 +		headOnlyRender = true;
 +
--		DrawData = drawData;
++		/*
+ 		DrawData = drawData;
+ 		Dust = dust;
+ 		Gore = gore;
++		*/
 +		DrawDataCache = drawData;
--		Dust = dust;
 +		DustCache = dust;
--		Gore = gore;
 +		GoreCache = gore;
++
  		drawPlayer = drawPlayer2;
  		Position = drawPlayer.position;
 +		/*
@@ -56,7 +59,7 @@
 +			hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
  
  		skinDyePacked = drawPlayer.skinDyePacked;
- 		if (drawPlayer.face > 0 && drawPlayer.face < 22)
+ 		if (drawPlayer.face > 0 && drawPlayer.face < ArmorIDs.Face.Count)
  			Main.instance.LoadAccFace(drawPlayer.face);
  
 +		/*
@@ -98,11 +101,11 @@
 +		// Workaround for movement bobbing affecting head-only rendering.
 +		Position -= Main.OffsetsPlayerHeadgear[drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height];
 +
- 		if (drawPlayer.head > 0 && drawPlayer.head < 282) {
+ 		if (drawPlayer.head > 0 && drawPlayer.head < ArmorIDs.Head.Count) {
  			Main.instance.LoadArmorHead(drawPlayer.head);
  			int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
 @@ -127,12 +_,14 @@
- 		if (drawPlayer.beard > 0 && drawPlayer.beard < 5)
+ 		if (drawPlayer.beard > 0 && drawPlayer.beard < ArmorIDs.Beard.Count)
  			Main.instance.LoadAccBeard(drawPlayer.beard);
  
 -		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out var _, out helmetIsOverFullHair);
@@ -113,7 +116,7 @@
 +		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 +		/*
  		helmetIsTall = drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 158;
- 		helmetIsNormal = !helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < 282 && drawPlayer.head != 28;
+ 		helmetIsNormal = !helmetIsTall && !helmetIsOverFullHair && drawPlayer.head > 0 && drawPlayer.head < ArmorIDs.Head.Count && drawPlayer.head != 28;
 +		*/
  	}
  }

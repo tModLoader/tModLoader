@@ -4,7 +4,7 @@
  public struct DropAttemptInfo
  {
  	public NPC npc;
-+	public int item;
++	public int item; // Added by TML.
  	public Player player;
  	public UnifiedRandom rng;
  	public bool IsInSimulation;

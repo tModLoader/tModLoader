@@ -548,7 +548,8 @@
 		"InHive": "Needs to be in Hive",
 		"InGemCave": "Needs to be in Gem Cave",
 		"InLihzardTemple": "Needs to be in Lihzard Temple",
-		"InGraveyardBiome": "Needs to be in Graveyard Biome"
+		"InGraveyardBiome": "Needs to be in Graveyard Biome",
+		"EverythingSeed": "Needs to be an Everything world"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
