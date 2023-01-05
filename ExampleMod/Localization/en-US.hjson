@@ -60,11 +60,11 @@ Mods: {
 			ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
-				MapEntry: Example Chest
 				ContainerName: Example Chest
+				MapEntry0: Example Chest
+				MapEntry1: Locked Example Chest
 			}
 
-			ExampleChest_Locked.MapEntry: Locked Example Chest
 			ExampleDoorClosed.MapEntry: Example Door
 			ExampleDoorOpen.MapEntry: Example Door
 			ExampleTable.MapEntry: Table
@@ -222,8 +222,15 @@ Mods: {
 					'''
 			}
 
-			ExampleRobe.DisplayName: Example Robe
-			MinionBossMask.DisplayName: Minion Boss Mask
+			ExampleRobe: {
+				DisplayName: Example Robe
+				Tooltip: ""
+			}
+
+			MinionBossMask: {
+				DisplayName: Minion Boss Mask
+				Tooltip: ""
+			}
 
 			ExampleBuffPotion: {
 				DisplayName: Example Buff Potion
@@ -258,7 +265,10 @@ Mods: {
 					'''
 			}
 
-			ExampleHealingPotion.DisplayName: Example Healing Potion
+			ExampleHealingPotion: {
+				DisplayName: Example Healing Potion
+				Tooltip: ""
+			}
 
 			ExampleLifeFruit: {
 				DisplayName: Example Life Fruit
@@ -303,10 +313,25 @@ Mods: {
 				Tooltip: Something magical happens when the timer runs out...
 			}
 
-			ExampleDye.DisplayName: Example Dye
-			ExampleGolfBall.DisplayName: Example Golf Ball
-			ExampleHairDye.DisplayName: Example Hair Dye
-			ExampleInstancedItem.DisplayName: Example Instanced Item
+			ExampleDye: {
+				DisplayName: Example Dye
+				Tooltip: ""
+			}
+
+			ExampleGolfBall: {
+				DisplayName: Example Golf Ball
+				Tooltip: ""
+			}
+
+			ExampleHairDye: {
+				DisplayName: Example Hair Dye
+				Tooltip: ""
+			}
+
+			ExampleInstancedItem: {
+				DisplayName: Example Instanced Item
+				Tooltip: ""
+			}
 
 			ExampleItem: {
 				DisplayName: Example Item
@@ -323,7 +348,10 @@ Mods: {
 				Tooltip: This is a modded paper airplane.
 			}
 
-			ExampleQuestFish.DisplayName: Upside-down Fish
+			ExampleQuestFish: {
+				DisplayName: Upside-down Fish
+				Tooltip: ""
+			}
 
 			ExampleResearchPresent: {
 				DisplayName: Example Present
@@ -335,7 +363,10 @@ Mods: {
 				Tooltip: "'The essence of example creatures'"
 			}
 
-			ExampleStackableDurabilityItem.DisplayName: Example Stackable Durability Item
+			ExampleStackableDurabilityItem: {
+				DisplayName: Example Stackable Durability Item
+				Tooltip: ""
+			}
 
 			ExampleTooltipsItem: {
 				DisplayName: Example Tooltips Item
@@ -346,17 +377,35 @@ Mods: {
 					'''
 			}
 
-			ExampleBar.DisplayName: Example Bar
+			ExampleBar: {
+				DisplayName: Example Bar
+				Tooltip: ""
+			}
 
 			ExampleBlock: {
 				DisplayName: Example Block
 				Tooltip: This is a modded tile.
 			}
 
-			ExampleHerbSeeds.DisplayName: Example Herb Seeds
-			ExampleLamp.DisplayName: Example Lamp
-			ExampleMusicBox.DisplayName: Music Box (Marble Gallery)
-			ExampleOre.DisplayName: Example Ore
+			ExampleHerbSeeds: {
+				DisplayName: Example Herb Seeds
+				Tooltip: ""
+			}
+
+			ExampleLamp: {
+				DisplayName: Example Lamp
+				Tooltip: ""
+			}
+
+			ExampleMusicBox: {
+				DisplayName: Music Box (Marble Gallery)
+				Tooltip: ""
+			}
+
+			ExampleOre: {
+				DisplayName: Example Ore
+				Tooltip: ""
+			}
 
 			ExampleSlopedTile: {
 				DisplayName: Example Sloped Tile
@@ -393,7 +442,10 @@ Mods: {
 				Tooltip: This is a modded chest.
 			}
 
-			ExampleChestKey.DisplayName: Example Chest Key
+			ExampleChestKey: {
+				DisplayName: Example Chest Key
+				Tooltip: ""
+			}
 
 			ExampleClock: {
 				DisplayName: Example Clock
@@ -434,8 +486,15 @@ Mods: {
 				Tooltip: This is a modded workbench.
 			}
 
-			MinionBossRelic.DisplayName: Minion Boss Relic
-			MinionBossTrophy.DisplayName: Minion Boss Trophy
+			MinionBossRelic: {
+				DisplayName: Minion Boss Relic
+				Tooltip: ""
+			}
+
+			MinionBossTrophy: {
+				DisplayName: Minion Boss Trophy
+				Tooltip: ""
+			}
 
 			ExampleBugNet: {
 				DisplayName: Example Bug Net
@@ -462,8 +521,15 @@ Mods: {
 				Tooltip: This is a modded hamaxe.
 			}
 
-			ExampleHookItem.DisplayName: Example Hook
-			ExampleMagicMirror.DisplayName: Example Magic Mirror
+			ExampleHookItem: {
+				DisplayName: Example Hook
+				Tooltip: ""
+			}
+
+			ExampleMagicMirror: {
+				DisplayName: Example Magic Mirror
+				Tooltip: ""
+			}
 
 			ExamplePickaxe: {
 				DisplayName: Example Pickaxe
@@ -484,15 +550,25 @@ Mods: {
 				Tooltip: This is a modded flail with custom behavior.
 			}
 
-			ExampleCloneWeapon.DisplayName: Meowmere V2
+			ExampleCloneWeapon: {
+				DisplayName: Meowmere V2
+				Tooltip: ""
+			}
 
 			ExampleCustomAmmoGun: {
 				DisplayName: Example Custom Ammo Gun
 				Tooltip: Uses ExampleCustomAmmo as ammo and shooting HomingProjectiles
 			}
 
-			ExampleCustomDamageWeapon.DisplayName: Example Custom Damage Weapon
-			ExampleCustomResourceWeapon.DisplayName: Example Custom Resource Weapon
+			ExampleCustomDamageWeapon: {
+				DisplayName: Example Custom Damage Weapon
+				Tooltip: ""
+			}
+
+			ExampleCustomResourceWeapon: {
+				DisplayName: Example Custom Resource Weapon
+				Tooltip: ""
+			}
 
 			ExampleFlail: {
 				DisplayName: Example Flail
@@ -523,14 +599,20 @@ Mods: {
 				Tooltip: This is a modded minigun.
 			}
 
-			ExampleModifiedProjectilesItem.DisplayName: Example Modified Projectiles Item
+			ExampleModifiedProjectilesItem: {
+				DisplayName: Example Modified Projectiles Item
+				Tooltip: ""
+			}
 
 			ExampleShootingSword: {
 				DisplayName: Example Shooting Sword
 				Tooltip: This is a modded sword that shoots Star Wrath-like projectiles.
 			}
 
-			ExampleShortsword.DisplayName: Example Shortsword
+			ExampleShortsword: {
+				DisplayName: Example Shortsword
+				Tooltip: ""
+			}
 
 			ExampleShotgun: {
 				DisplayName: Example Shotgun
@@ -547,8 +629,15 @@ Mods: {
 				Tooltip: This is a modded sword.
 			}
 
-			ExampleWhip.DisplayName: Example Whip
-			ExampleWhipAdvanced.DisplayName: Example Whip Advanced
+			ExampleWhip: {
+				DisplayName: Example Whip
+				Tooltip: ""
+			}
+
+			ExampleWhipAdvanced: {
+				DisplayName: Example Whip Advanced
+				Tooltip: ""
+			}
 
 			ExampleYoyo: {
 				DisplayName: Example Yoyo
@@ -565,20 +654,50 @@ Mods: {
 				Tooltip: Summons a miniature Minion Boss to follow you
 			}
 
-			ExampleAdvancedAnimatedProjectileItem.DisplayName: Example Advanced Animated Projectile Item
-			ExamplePiercingProjectileItem.DisplayName: Example Piercing Projectile Item
+			ExampleAdvancedAnimatedProjectileItem: {
+				DisplayName: Example Advanced Animated Projectile Item
+				Tooltip: ""
+			}
+
+			ExamplePiercingProjectileItem: {
+				DisplayName: Example Piercing Projectile Item
+				Tooltip: ""
+			}
 
 			ExampleSimpleMinionItem: {
 				DisplayName: Example Minion Item
 				Tooltip: Summons an example minion to fight for you
 			}
 
-			ExampleAnimatedGlowmaskTileItem.DisplayName: Example Animated Glowmask Tile Item
-			ExampleAnimatedTileItem.DisplayName: Red Firefly in a Bottle
+			ExampleAnimatedGlowmaskTileItem: {
+				DisplayName: Example Animated Glowmask Tile Item
+				Tooltip: ""
+			}
+
+			ExampleAnimatedTileItem: {
+				DisplayName: Red Firefly in a Bottle
+				Tooltip: ""
+			}
+
 			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus". 
 			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file. 
 			OctopusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 			SarcophagusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
+
+			HoldStyleShowcase: {
+				DisplayName: Hold Style Showcase
+				Tooltip: ""
+			}
+
+			ShimmerShowcaseCrimsonCorruption: {
+				DisplayName: Shimmer Showcase Crimson Corruption
+				Tooltip: ""
+			}
+
+			ShimmerShowcaseCustomShimmerResult: {
+				DisplayName: Shimmer Showcase Custom Shimmer Result
+				Tooltip: ""
+			}
 		}
 
 		Projectiles: {

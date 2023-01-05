@@ -29,7 +29,7 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
 
-	public string LocalizationCategory => "Prefix";
+	public string LocalizationCategory => "Prefixes";
 
 	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
 
