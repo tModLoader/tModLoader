@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items
 	public class ExampleItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded Item."); // The (English) text shown below your item's name
+			// Tooltip.SetDefault("This is a modded Item."); // The (English) text shown below your item's name
 
 			Item.ResearchUnlockCount = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/wiki/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
 		}

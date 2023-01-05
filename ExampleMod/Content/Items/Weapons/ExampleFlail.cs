@@ -11,8 +11,8 @@ namespace ExampleMod.Content.Items.Weapons
 	internal class ExampleFlail : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Flail");
-			Tooltip.SetDefault("This is a modded flail with normal behavior.");
+			// DisplayName.SetDefault("Example Flail");
+			// Tooltip.SetDefault("This is a modded flail with normal behavior.");
 
 			Item.ResearchUnlockCount = 1;
 

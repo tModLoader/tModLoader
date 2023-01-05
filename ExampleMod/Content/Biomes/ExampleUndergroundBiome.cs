@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Biomes
 
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Underground");
+			// DisplayName.SetDefault("Example Underground");
 		}
 
 		// Calculate when the biome is active.

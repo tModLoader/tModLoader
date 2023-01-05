@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public const int ManaPerCrystal = 10;
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault($"Permanently increases maximum mana by {ManaPerCrystal}\nUp to {MaxExampleManaCrystals} can be used");
+			// Tooltip.SetDefault($"Permanently increases maximum mana by {ManaPerCrystal}\nUp to {MaxExampleManaCrystals} can be used");
 
 			Item.ResearchUnlockCount = 10;
 		}

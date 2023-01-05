@@ -14,8 +14,8 @@ namespace ExampleMod.Content.Items.Ammo
 		public override string Texture => ExampleMod.AssetPath + "Textures/Items/ExampleSolution";
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Monochromatic Solution");
-			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
+			// DisplayName.SetDefault("Monochromatic Solution");
+			// Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
 
 			Item.ResearchUnlockCount = 99;
 		}
@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public ref float Progress => ref Projectile.ai[0];
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Spray");
+			// DisplayName.SetDefault("Example Spray");
 		}
 
 		public override void SetDefaults() {

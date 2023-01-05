@@ -7,8 +7,8 @@ namespace ExampleMod.Content.Buffs
 	public class ExampleCrateBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Crate");
-			Description.SetDefault("Greater chance of fishing up a crate");
+			// DisplayName.SetDefault("Example Crate");
+			// Description.SetDefault("Greater chance of fishing up a crate");
 		}
 
 		public override void Update(Player player, ref int buffIndex) {

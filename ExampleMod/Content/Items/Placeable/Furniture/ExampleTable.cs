@@ -7,8 +7,8 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleTable : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Table");
-			Tooltip.SetDefault("This is a modded table.");
+			// DisplayName.SetDefault("Example Table");
+			// Tooltip.SetDefault("This is a modded table.");
 
 			Item.ResearchUnlockCount = 1;
 		}

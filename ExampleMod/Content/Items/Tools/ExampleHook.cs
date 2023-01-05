@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Tools
 	internal class ExampleHookItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
+			// DisplayName.SetDefault("Example Hook"); // The item's name in-game.
 
 			Item.ResearchUnlockCount = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
 		}
@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
+			// DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
 		}
 
 		public override void SetDefaults() {

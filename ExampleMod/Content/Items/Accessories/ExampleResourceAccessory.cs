@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleResourceAccessory : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("\nDrastically increases example resource regen rate\nIncreases maximum example resource by 100");
+			// Tooltip.SetDefault("\nDrastically increases example resource regen rate\nIncreases maximum example resource by 100");
 		}
 
 		public override void SetDefaults() {

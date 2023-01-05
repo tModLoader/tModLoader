@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleHamaxe : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded hamaxe.");
+			// Tooltip.SetDefault("This is a modded hamaxe.");
 
 			Item.ResearchUnlockCount = 1;
 		}

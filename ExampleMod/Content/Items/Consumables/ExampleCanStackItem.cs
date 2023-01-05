@@ -19,8 +19,8 @@ namespace ExampleMod.Content.Items.Consumables
 		public string craftedPlayerName = string.Empty;
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example CanStack Item: Gift Bag");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			// DisplayName.SetDefault("Example CanStack Item: Gift Bag");
+			// Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
 
 			Item.ResearchUnlockCount = 3;
 		}

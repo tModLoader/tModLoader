@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleShield : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded shield.");
+			// Tooltip.SetDefault("This is a modded shield.");
 
 			Item.ResearchUnlockCount = 1;
 		}

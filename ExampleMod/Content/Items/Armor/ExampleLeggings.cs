@@ -10,8 +10,8 @@ namespace ExampleMod.Content.Items.Armor
 	public class ExampleLeggings : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded leg armor."
-				+ "\n5% increased movement speed");
+			/* Tooltip.SetDefault("This is a modded leg armor."
+				+ "\n5% increased movement speed"); */
 
 			Item.ResearchUnlockCount = 1;
 		}

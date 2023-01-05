@@ -28,6 +28,7 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.ModMountData", to: "Terraria.ModLoader.ModMount");
 		RenameType(from: "Terraria.ModLoader.ModWorld",		to: "Terraria.ModLoader.ModSystem");
 		RenameType(from: "Terraria.ModLoader.ModHotKey",	to: "Terraria.ModLoader.ModKeybind");
+		RenameType(from: "Terraria.ModLoader.ModTranslation", to: "Terraria.Localization.LocalizedText");
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "text",			to: "Text");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "mod",			to: "Mod");
@@ -398,5 +399,10 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
+
+		// Was previously Terraria.ModLoader.ModTranslation
+		RefactorInstanceMethodCall("Terraria.Localization.LocalizedText", "SetDefault", CommentOut);
+		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
+		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
 	}
 }

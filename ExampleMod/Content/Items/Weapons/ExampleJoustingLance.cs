@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
-			Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nThis is a modded jousting lance.");
+			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nThis is a modded jousting lance.");
 
 			Item.ResearchUnlockCount = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}

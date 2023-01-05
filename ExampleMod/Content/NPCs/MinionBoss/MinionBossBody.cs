@@ -106,7 +106,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss");
+			// DisplayName.SetDefault("Minion Boss");
 			Main.npcFrameCount[Type] = 6;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)

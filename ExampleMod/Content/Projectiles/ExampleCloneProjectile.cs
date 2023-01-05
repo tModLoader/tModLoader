@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleCloneProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Meowmere V2");
+			// DisplayName.SetDefault("Meowmere V2");
 		}
 
 		public override void SetDefaults() {

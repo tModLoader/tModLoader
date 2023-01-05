@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleTorch : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded torch.");
+			// Tooltip.SetDefault("This is a modded torch.");
 
 			Item.ResearchUnlockCount = 100;
 		}

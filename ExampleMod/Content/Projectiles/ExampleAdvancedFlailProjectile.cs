@@ -40,7 +40,7 @@ namespace ExampleMod.Content.Projectiles
 		public ref float SpinningStateTimer => ref Projectile.localAI[1];
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Advanced Flail");
+			// DisplayName.SetDefault("Example Advanced Flail");
 
 			// These lines facilitate the trail drawing
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;

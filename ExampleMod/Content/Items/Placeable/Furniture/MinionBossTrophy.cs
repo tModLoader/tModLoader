@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class MinionBossTrophy : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Trophy");
+			// DisplayName.SetDefault("Minion Boss Trophy");
 
 			Item.ResearchUnlockCount = 1;
 		}

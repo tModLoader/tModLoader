@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleShortsword : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Shortsword");
+			// DisplayName.SetDefault("Example Shortsword");
 
 			Item.ResearchUnlockCount = 1;
 		}

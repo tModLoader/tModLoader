@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExamplePlatform : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded platform.");
+			// Tooltip.SetDefault("This is a modded platform.");
 
 			Item.ResearchUnlockCount = 200;
 		}

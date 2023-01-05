@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleMusicBox : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Music Box (Marble Gallery)");
+			// DisplayName.SetDefault("Music Box (Marble Gallery)");
 
 			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla

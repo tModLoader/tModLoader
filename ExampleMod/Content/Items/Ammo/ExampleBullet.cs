@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Ammo
 	public class ExampleBullet : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded bullet ammo."); // The item's description, can be set to whatever you want.
+			// Tooltip.SetDefault("This is a modded bullet ammo."); // The item's description, can be set to whatever you want.
 
 			Item.ResearchUnlockCount = 99;
 		}

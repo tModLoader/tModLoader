@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleHerbSeeds : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Herb Seeds");
+			// DisplayName.SetDefault("Example Herb Seeds");
 
 			Item.ResearchUnlockCount = 20;
 		}

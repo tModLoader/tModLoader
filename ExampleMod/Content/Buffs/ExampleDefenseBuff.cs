@@ -6,8 +6,8 @@ namespace ExampleMod.Content.Buffs
 	public class ExampleDefenseBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Defensive Buff");
-			Description.SetDefault("Grants +4 defense.");
+			// DisplayName.SetDefault("Defensive Buff");
+			// Description.SetDefault("Grants +4 defense.");
 		}
 
 		public override void Update(Player player, ref int buffIndex) {

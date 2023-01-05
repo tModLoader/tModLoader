@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleShotgun : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded shotgun.");
+			// Tooltip.SetDefault("This is a modded shotgun.");
 
 			Item.ResearchUnlockCount = 1;
 		}

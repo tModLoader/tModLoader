@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Shortsword");
+			// DisplayName.SetDefault("Example Shortsword");
 		}
 
 		public override void SetDefaults() {

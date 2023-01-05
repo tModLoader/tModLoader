@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Projectiles
 		protected virtual float HoldoutRangeMax => 96f;
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Spear");
+			// DisplayName.SetDefault("Spear");
 		}
 
 		public override void SetDefaults() {

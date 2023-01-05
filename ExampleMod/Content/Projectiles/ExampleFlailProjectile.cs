@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExampleFlailProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Flail");
+			// DisplayName.SetDefault("Example Flail");
 		}
 
 		public override void SetDefaults() {

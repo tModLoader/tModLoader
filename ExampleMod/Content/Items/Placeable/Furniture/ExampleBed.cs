@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleBed : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded bed.");
+			// Tooltip.SetDefault("This is a modded bed.");
 
 			Item.ResearchUnlockCount = 1;
 		}

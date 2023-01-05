@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleClock : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded clock.");
+			// Tooltip.SetDefault("This is a modded clock.");
 
 			Item.ResearchUnlockCount = 1;
 		}

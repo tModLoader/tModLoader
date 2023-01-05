@@ -20,6 +20,13 @@ public class ModItemTest : ModItem
 		SacrificeTotal = 1;
 	}
 
+	public override void SetStaticDefaults()
+	{
+		Tooltip.SetDefault(
+			"This tooltip\n" +
+			"Has multiple lines");
+	}
+
 	public override bool IgnoreDamageModifiers => false;
 
 	public override bool OnlyShootOnSwing => false;

@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExamplePaperAirplaneProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Paper Airplane Projectile"); // The English name of the projectile
+			// DisplayName.SetDefault("Example Paper Airplane Projectile"); // The English name of the projectile
 		}
 
 		public override void SetDefaults() {

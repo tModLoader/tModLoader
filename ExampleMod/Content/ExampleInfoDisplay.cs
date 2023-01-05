@@ -10,7 +10,7 @@ namespace ExampleMod.Content
 	{
 		public override void SetStaticDefaults() {
 			// This is the name that will show up when hovering over icon of this info display
-			InfoName.SetDefault("Minion Count");
+			// DisplayName.SetDefault("Minion Count");
 		}
 
 		// This dictates whether or not this info display should be active

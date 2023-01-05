@@ -11,8 +11,8 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleFishingCrate : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Crate");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			// DisplayName.SetDefault("Example Crate");
+			// Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
 
 			// Disclaimer for both of these sets (as per their docs): They are only checked for vanilla item IDs, but for cross-mod purposes it would be helpful to set them for modded crates too
 			ItemID.Sets.IsFishingCrate[Type] = true;

@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public ref float AIDashCharge => ref Projectile.ai[1];
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Annoying Light");
+			// DisplayName.SetDefault("Annoying Light");
 
 			Main.projFrames[Projectile.type] = 1;
 			Main.projPet[Projectile.type] = true;

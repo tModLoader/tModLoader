@@ -8,8 +8,8 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 	public class ExampleLightPetBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Annoying Light");
-			Description.SetDefault("Ugh, soooo annoying");
+			// DisplayName.SetDefault("Annoying Light");
+			// Description.SetDefault("Ugh, soooo annoying");
 
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.lightPet[Type] = true;

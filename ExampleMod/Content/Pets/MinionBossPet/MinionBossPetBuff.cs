@@ -8,8 +8,8 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 	public class MinionBossPetBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Pet");
-			Description.SetDefault("A miniature Minion Boss is following you");
+			// DisplayName.SetDefault("Minion Boss Pet");
+			// Description.SetDefault("A miniature Minion Boss is following you");
 
 			Main.buffNoTimeDisplay[Type] = true;
 			Main.vanityPet[Type] = true;

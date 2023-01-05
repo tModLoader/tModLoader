@@ -10,8 +10,8 @@ namespace ExampleMod.Content.Items.Consumables
 	public class MinionBossSummonItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Summon Item");
-			Tooltip.SetDefault("Summons Minion Boss");
+			// DisplayName.SetDefault("Minion Boss Summon Item");
+			// Tooltip.SetDefault("Summons Minion Boss");
 
 			Item.ResearchUnlockCount = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.

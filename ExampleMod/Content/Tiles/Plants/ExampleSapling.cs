@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent.Metadata;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -41,8 +42,8 @@ namespace ExampleMod.Content.Tiles.Plants
 
 			TileObjectData.addTile(Type);
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Sapling");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Example Sapling");
 			AddMapEntry(new Color(200, 200, 200), name);
 
 			TileID.Sets.TreeSapling[Type] = true;

@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword";
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This item showcases each HoldStyle.\n<right> to cycle through HoldStyles.");
+			// Tooltip.SetDefault("This item showcases each HoldStyle.\n<right> to cycle through HoldStyles.");
 		}
 
 		public override void SetDefaults() {

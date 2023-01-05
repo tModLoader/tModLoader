@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleShootingSword : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded sword that shoots Star Wrath-like projectiles.");
+			// Tooltip.SetDefault("This is a modded sword that shoots Star Wrath-like projectiles.");
 
 			Item.ResearchUnlockCount = 1;
 		}

@@ -10,8 +10,8 @@ namespace ExampleMod.Content.Buffs
 	public class Blocky : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Blocky");
-			Description.SetDefault("Jumping power is increased");
+			// DisplayName.SetDefault("Blocky");
+			// Description.SetDefault("Jumping power is increased");
 			Main.debuff[Type] = true;
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;

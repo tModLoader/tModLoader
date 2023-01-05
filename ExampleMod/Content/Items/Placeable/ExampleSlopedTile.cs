@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleSlopedTile : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Example tile that can be sloped but is not solid");
+			// Tooltip.SetDefault("Example tile that can be sloped but is not solid");
 		}
 
 		public override void SetDefaults() {

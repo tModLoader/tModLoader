@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleJoustingLanceProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Jousting Lance"); // The English name of the projectile
+			// DisplayName.SetDefault("Example Jousting Lance"); // The English name of the projectile
 
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.

@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Pet");
+			// DisplayName.SetDefault("Minion Boss Pet");
 
 			Main.projFrames[Projectile.type] = 6;
 			Main.projPet[Projectile.type] = true;

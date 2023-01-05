@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,6 +42,10 @@ public class ModTileTest : ModTile
 		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead */;
 		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead */;
 #endif
+
+		LocalizedText name = CreateMapEntryName();
+		// name.SetDefault("Test");
+		AddMapEntry(new Color(200, 200, 200), name);
 	}
 
 	public override void SetStaticDefaults() {

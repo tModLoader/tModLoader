@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Projectiles
 		private Color FishingLineColor => PossibleLineColors[fishingLineColorIndex];
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Bobber");
+			// DisplayName.SetDefault("Example Bobber");
 		}
 
 		public override void SetDefaults() {

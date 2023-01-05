@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExamplePiercingProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Piercing Projectile"); // The name of the projectile(it can be appeared in chat)
+			// DisplayName.SetDefault("Example Piercing Projectile"); // The name of the projectile(it can be appeared in chat)
 		}
 
 		public override void SetDefaults() {

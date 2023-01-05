@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Projectiles
 		private Color trailColor;
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Instanced Projectile"); //The English name of the projectile
+			// DisplayName.SetDefault("Example Instanced Projectile"); //The English name of the projectile
 		}
 
 		public override void SetDefaults() {

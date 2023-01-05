@@ -6,9 +6,9 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleSink : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Sink");
-			Tooltip.SetDefault("Counts as a water, lava, and honey source\n"
-							 + "'A shame there's no example liquids (yet)'");
+			// DisplayName.SetDefault("Example Sink");
+			/* Tooltip.SetDefault("Counts as a water, lava, and honey source\n"
+							 + "'A shame there's no example liquids (yet)'"); */
 
 			Item.ResearchUnlockCount = 1;
 		}

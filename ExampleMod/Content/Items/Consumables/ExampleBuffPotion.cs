@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleBuffPotion : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Gives a light defense buff.");
+			// Tooltip.SetDefault("Gives a light defense buff.");
 
 			Item.ResearchUnlockCount = 20;
 

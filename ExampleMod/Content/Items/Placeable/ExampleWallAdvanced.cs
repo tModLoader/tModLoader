@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleWallAdvanced : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is an advanced modded wall.");
+			// Tooltip.SetDefault("This is an advanced modded wall.");
 			Item.ResearchUnlockCount = 400;
 		}
 

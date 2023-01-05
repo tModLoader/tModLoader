@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Armor
 	public class ExampleHood : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded hood.");
+			// Tooltip.SetDefault("This is a modded hood.");
 
 			Item.ResearchUnlockCount = 1;
 		}
