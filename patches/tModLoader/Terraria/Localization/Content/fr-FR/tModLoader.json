@@ -353,6 +353,7 @@
 		"MSBuildReloadAll": "Tout compiler + Tout relancer",
 		"MSUpgradeCSProj": "Mettre à jour le fichier .csproj",
 		"MSUpgradeLangFiles": "Mettre à niveau les fichiers .lang à .hjson (non destructif)",
+		// "MSExport144LangFiles": "Export 1.4.4+ localization files",
 		"MSOpenSources": "Dossier des sources",
 		"MSManagePublished": "Gérer les publications",
 		"MSPublish": "Publier",

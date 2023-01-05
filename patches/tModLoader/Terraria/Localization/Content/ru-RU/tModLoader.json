@@ -353,6 +353,7 @@
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSUpgradeCSProj": "Обновить .csproj файл",
 		"MSUpgradeLangFiles": "Обновить .lang файлы до .hjson (будут сделаны резервные копии)",
+		// "MSExport144LangFiles": "Export 1.4.4+ localization files",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static Terraria.ModLoader.LocalizationLoader;
 
 namespace Terraria.ModLoader.Utilities
 {
@@ -69,7 +70,9 @@ namespace Terraria.ModLoader.Utilities
 					}
 
 					if (commentedObject != null) {
+						bool skipFirst = !showBraces;
 						string kwl = GetComments(commentedObject.Comments, "");
+						JsonType? lastJsonType = null;
 
 						foreach (string key in commentedObject.Order.Concat(commentedObject.Keys).Distinct()) {
 							if (!jObject.ContainsKey(key))
@@ -77,15 +80,32 @@ namespace Terraria.ModLoader.Utilities
 
 							var val = jObject[key];
 
+							if ((val.JsonType != lastJsonType && lastJsonType != null) || lastJsonType == JsonType.Object) {
+								NewLine(tw, 0);
+							}
+
+							if (!string.IsNullOrWhiteSpace(kwl))
+								kwl = (isRootObject ? "" : "\n") + new string('\t', level + (showBraces ? 1 : 0)) + kwl.TrimStart();
+
+							lastJsonType = val.JsonType;
+
 							tw.Write(kwl);
 
-							NewLine(tw, level + 1);
+							NewLine(tw, level + (showBraces ? 1 : 0));
+
 							kwl = GetComments(commentedObject.Comments, key);
+
+							bool commentedOut = jObject is CommentedWscJsonObject commented && commented.CommentedOut.Contains(key);
+							if (commentedOut)
+								tw.Write("/* ");
 
 							tw.Write(escapeName(key));
 							tw.Write(':');
 
 							WriteFancyHjsonValue(tw, val, level + (showBraces ? 1 : 0), in style, hasComments: TestCommentString(kwl));
+
+							if (commentedOut)
+								tw.Write(" */");
 						}
 
 						tw.Write(kwl);

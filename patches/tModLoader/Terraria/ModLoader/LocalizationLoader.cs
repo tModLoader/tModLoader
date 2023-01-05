@@ -8,11 +8,13 @@ using System.Text;
 using Terraria.Localization;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
+using System;
+using Terraria.ModLoader.Core;
+using System.Text.RegularExpressions;
 
 namespace Terraria.ModLoader
 {
-	public static class LocalizationLoader
-	{
+	public static class LocalizationLoader {
 		private static readonly Dictionary<string, ModTranslation> translations = new();
 
 		/// <summary>
@@ -45,7 +47,7 @@ namespace Terraria.ModLoader
 
 			if (translations.TryGetValue(key, out var translation))
 				return translation;
-			
+
 			var newTranslation = new ModTranslation(key, defaultEmpty);
 			translations[key] = newTranslation;
 			return newTranslation;
