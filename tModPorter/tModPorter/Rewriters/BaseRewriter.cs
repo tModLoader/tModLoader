@@ -114,7 +114,8 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 
 		targetType = null;
 		isInvoke = false;
-		if ((op = model.GetOperation(node) as IInvalidOperation) != null) {
+		op = model.GetOperation(node);
+		if (IsInvalidOrObsolete(op)) {
 			return true;
 		}
 
@@ -137,7 +138,10 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
 	}
 
-	public static bool IsInvalidOrObsolete(IOperation op) => op is IInvalidOperation || op is IInvocationOperation invocation && invocation.TargetMethod.IsObsolete();
+	public static bool IsInvalidOrObsolete(IOperation op) =>
+		op is IInvalidOperation ||
+		op is IInvocationOperation invocation && invocation.TargetMethod.IsObsolete() ||
+		op is IMemberReferenceOperation reference && reference.Member.IsObsolete();
 
 	public static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
 		switch (expr) {
