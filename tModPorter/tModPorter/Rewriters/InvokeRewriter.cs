@@ -46,6 +46,9 @@ public partial class InvokeRewriter : BaseRewriter
 	}
 
 	private SyntaxNode Refactor(InvocationExpressionSyntax node, SimpleNameSyntax nameSyntax, ITypeSymbol targetType) {
+		if (targetType == null)
+			return node;
+
 		var nameToken = nameSyntax.Identifier;
 		foreach (var (type, name, isStatic, handler) in handlers) {
 			if (name != nameToken.Text || !targetType.InheritsFrom(type))
