@@ -253,8 +253,10 @@ namespace Terraria.Social.Steam
 		}
 
 		internal static void OnGameExitCleanup() {
-			if (!SteamAvailable)
+			if (!SteamAvailable) {
+				CleanupACF();
 				return;
+			}
 
 			if (SteamClient) {
 				SteamAPI.Shutdown();
@@ -262,6 +264,7 @@ namespace Terraria.Social.Steam
 			}
 			
 			GameServer.Shutdown();
+			CleanupACF();
 		}
 
 		public static uint GetWorkshopItemState(PublishedFileId_t publishId) {
@@ -305,7 +308,15 @@ namespace Terraria.Social.Steam
 			Directory.Delete(installPath, true);
 
 			if (!SteamClient)
-				UninstallACF(publishId);
+				// Steam Game Server has to be terminated before the ACF file is modified, so we defer cleanup to end of game likse steam client.
+				deletedItems.Add(publishId);
+		}
+
+		private static List<PublishedFileId_t> deletedItems = new List<PublishedFileId_t>();
+
+		private static void CleanupACF() {
+			foreach (var item in deletedItems)
+				UninstallACF(item);
 		}
 
 		private static void UninstallACF(PublishedFileId_t publishId) {
