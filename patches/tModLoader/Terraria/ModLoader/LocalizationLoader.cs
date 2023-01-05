@@ -351,6 +351,9 @@ namespace Terraria.ModLoader
 					if (baseLocalizationKeys.Contains(existingKey.key))
 						continue;
 
+					if (string.IsNullOrWhiteSpace(existingKey.value))
+						continue;
+
 					// And then merge key into flattened in-memory model
 					LocalizationFileEntry suitableHJSONFile = FindBaseHJSONFileForKey(baseLocalizationFiles, existingKey.key);
 
