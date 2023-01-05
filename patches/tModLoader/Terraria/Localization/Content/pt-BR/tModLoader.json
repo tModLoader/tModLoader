@@ -354,6 +354,7 @@
 		"MSBuildReloadAll": "Construir + Recarregar Todos",
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
 		"MSUpgradeLangFiles": "Atualizar arquivos .lang para .hjson (não destrutivo)",
+		// "MSExport144LangFiles": "Export 1.4.4+ localization files",
 		"MSOpenSources": "Abrir Fontes",
 		"MSManagePublished": "Gerenciar Publicados",
 		"MSPublish": "Publicar",
