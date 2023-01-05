@@ -36,15 +36,16 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
-			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
+			Main.npcFrameCount[Type] = 25; // The total amount of frames the NPC has
 
-			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs.
-			NPCID.Sets.AttackFrameCount[Type] = 4;
-			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
-			NPCID.Sets.AttackType[Type] = 0;
+			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs. This is the remaining frames after the walking frames.
+			NPCID.Sets.AttackFrameCount[Type] = 4; // The amount of frames in the attacking animation.
+			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the NPC that it tries to attack enemies.
+			NPCID.Sets.AttackType[Type] = 0; // The type of attack the Town NPC performs. 0 = throwing, 1 = shooting, 2 = magic, 3 = melee
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
-			NPCID.Sets.AttackAverageChance[Type] = 30;
+			NPCID.Sets.AttackAverageChance[Type] = 30; // The denominator for the chance for a Town NPC to attack. Lower numbers make the Town NPC appear more aggressive.
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -297,7 +298,7 @@ namespace ExampleMod.Content.NPCs
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
 		}
 
-		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
+		// Make this Town NPC teleport to the King and/or Queen statue when triggered. Return toKingStatue for only King Statues. Return !toKingStatue for only Queen Statues. Return true for both.
 		public override bool CanGoToStatue(bool toKingStatue) => true;
 
 		// Make something happen when the npc teleports to a statue. Since this method only runs server side, any visual effects like dusts or gores have to be synced across all clients manually.
@@ -364,11 +365,17 @@ namespace ExampleMod.Content.NPCs
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn) // For the Bestiary
 				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
 
-			if (npc.altTexture == 1)
+			if (!npc.IsShimmerVariant && npc.altTexture == 1) // Not shimmered and party
 				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+
+			if (npc.IsShimmerVariant && npc.altTexture != 1) // Shimmered and no party
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Shimmered");
+
+			if (npc.IsShimmerVariant && npc.altTexture == 1) // Shimmered and party
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Shimmered_Party");
 
 			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
 		}
