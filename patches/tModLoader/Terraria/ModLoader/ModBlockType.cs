@@ -28,7 +28,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
-	public abstract string Category { get; }
+	public abstract string LocalizationCategory { get; }
 
 	/// <summary>
 	/// Legacy helper method for creating a localization sub-key MapEntry

@@ -33,7 +33,7 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// </summary>
 	public string ConfigKey => FullName;
 
-	public string Category => "ResourceDisplaySet";
+	public string LocalizationCategory => "ResourceDisplaySet";
 
 	/// <summary>
 	/// The translations for the display name of this item.

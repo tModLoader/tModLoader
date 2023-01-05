@@ -14,7 +14,7 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	/// <summary> The buff id of this buff. </summary>
 	public int Type { get; internal set; }
 
-	public string Category => "Buff";
+	public string LocalizationCategory => "Buff";
 
 	/// <summary> The translations of this buff's display name. </summary>
 	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);

@@ -25,7 +25,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> Shorthand for NPC.type; </summary>
 	public int Type => NPC.type;
 
-	public string Category => "NPC";
+	public string LocalizationCategory => "NPC";
 
 	/// <summary> The translations for the display name of this NPC. </summary>
 	public virtual LocalizedText DisplayName => this.GetOrAddLocalization(nameof(DisplayName), PrettyPrintName);
