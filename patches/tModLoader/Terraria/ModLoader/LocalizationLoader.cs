@@ -1,14 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Json;
-using System.Reflection;
 using System.Text;
 using Hjson;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json.Linq;
 using Terraria.ID;
 using Terraria.Localization;
@@ -20,48 +14,6 @@ namespace Terraria.ModLoader;
 
 public static class LocalizationLoader
 {
-	/*
-	private static readonly Dictionary<string, ModTranslation> translations = new();
-
-	/// <summary>
-	/// Creates a <see cref="ModTranslation"/> object using the provided mod for a prefix to the key. You can use the resulting object in <see cref="AddTranslation"/>.
-	/// </summary>
-	/// <param name="mod"> The mod that this translation is for. </param>
-	/// <param name="key"> The key for the ModTranslation. The full key will be 'Mods.{<paramref name="mod"/>.Name}.{<paramref name="key"/>}'. </param>
-	public static ModTranslation CreateTranslation(Mod mod, string key)
-		=> CreateTranslation($"Mods.{mod.Name}.{key}");
-
-	/// <summary>
-	/// Creates a <see cref="ModTranslation"/> object using the provided full key. You can use the resulting object in <see cref="AddTranslation"/>.
-	/// </summary>
-	/// <param name="key"> The full key for the ModTranslation. </param>
-	public static ModTranslation CreateTranslation(string key)
-		=> new ModTranslation(key);
-
-	/// <summary>
-	/// Adds a <see cref="ModTranslation"/> to the game so that you can use <see cref="Language.GetText"/> to get a <see cref="LocalizedText"/>.
-	/// </summary>
-	public static void AddTranslation(ModTranslation translation)
-	{
-		translations[translation.Key] = translation;
-	}
-
-	public static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
-		=> GetOrCreateTranslation($"Mods.{mod.Name}.{key}", defaultEmpty);
-
-	public static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false)
-	{
-		key = key.Replace(" ", "_");
-
-		if (translations.TryGetValue(key, out var translation))
-			return translation;
-		
-		var newTranslation = new ModTranslation(key, defaultEmpty);
-		translations[key] = newTranslation;
-		return newTranslation;
-	}
-	*/
-
 	internal static void Autoload(Mod mod)
 	{
 		if (mod.File == null)

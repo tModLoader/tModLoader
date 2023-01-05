@@ -83,7 +83,7 @@
 +		return _localizedTexts.TryGetValue(key, out var text) ? text : new LocalizedText(key, key);
 +	}
 +
-+	public LocalizedText GetOrAddText(string key, Func<string> makeDefaultValue = null)
++	public LocalizedText GetOrRegister(string key, Func<string> makeDefaultValue = null)
 +	{
 +		if (!_localizedTexts.TryGetValue(key, out var text))
 +			_localizedTexts[key] = text = new LocalizedText(key, makeDefaultValue?.Invoke() ?? key);

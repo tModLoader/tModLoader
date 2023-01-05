@@ -32,8 +32,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AdjTiles = new int[] { TileID.Containers };
 			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
-			AddMapEntry(new Color(200, 200, 200), this.GetOrAddLocalization("MapEntry1"), MapChestName);
-			AddMapEntry(new Color(0, 141, 63), this.GetOrAddLocalization("MapEntry2"), MapChestName);
+			AddMapEntry(new Color(200, 200, 200), this.GetOrRegisterLocalization("MapEntry1"), MapChestName);
+			AddMapEntry(new Color(0, 141, 63), this.GetOrRegisterLocalization("MapEntry2"), MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);

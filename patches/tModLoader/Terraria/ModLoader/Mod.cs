@@ -167,6 +167,8 @@ public partial class Mod
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
+	public string GetLocalizationKey(string suffix) => $"Mods.{Name}.{suffix}";
+
 	/// <summary>
 	/// Assigns a head texture to the given town NPC type.
 	/// </summary>

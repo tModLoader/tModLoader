@@ -11,8 +11,8 @@ public interface ILocalizedModType : IModType
 public static class ILocalizedModTypeExtensions
 {
 	public static string GetLocalizationKey(this ILocalizedModType self, string suffix) =>
-		$"Mods.{self.Mod.Name}.{self.LocalizationCategory}.{self.Name}.{suffix}";
+		self.Mod.GetLocalizationKey($"{self.LocalizationCategory}.{self.Name}.{suffix}");
 
-	public static LocalizedText GetOrAddLocalization(this ILocalizedModType self, string suffix, Func<string> makeDefaultValue = null) =>
-		LanguageManager.Instance.GetOrAddText(self.GetLocalizationKey(suffix), makeDefaultValue);
+	public static LocalizedText GetOrRegisterLocalization(this ILocalizedModType self, string suffix, Func<string> makeDefaultValue = null) =>
+		Language.GetOrRegister(self.GetLocalizationKey(suffix), makeDefaultValue);
 }

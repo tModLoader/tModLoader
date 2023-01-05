@@ -34,7 +34,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// Legacy helper method for creating a localization sub-key MapEntry
 	/// </summary>
 	/// <returns></returns>
-	public LocalizedText CreateMapEntryName() => this.GetOrAddLocalization("MapEntry", PrettyPrintName);
+	public LocalizedText CreateMapEntryName() => this.GetOrRegisterLocalization("MapEntry", PrettyPrintName);
 
 	/// <summary>
 	/// Allows you to modify the properties after initial loading has completed.
