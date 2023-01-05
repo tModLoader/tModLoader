@@ -32,7 +32,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public int Type => Item.type;
 
-	public string LocalizationCategory => "Item";
+	public string LocalizationCategory => "Items";
 
 	/// <summary>
 	/// The translations for the display name of this item.

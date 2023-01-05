@@ -19,7 +19,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
-	public string LocalizationCategory => "Biome";
+	public string LocalizationCategory => "Biomes";
 
 	/// <summary>
 	/// The display name for this biome in the bestiary.

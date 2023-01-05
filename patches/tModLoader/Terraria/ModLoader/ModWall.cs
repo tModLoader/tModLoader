@@ -13,7 +13,7 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModWall : ModBlockType
 {
-	public override string LocalizationCategory => "Wall";
+	public override string LocalizationCategory => "Walls";
 
 	/// <summary>
 	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.

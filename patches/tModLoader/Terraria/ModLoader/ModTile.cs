@@ -41,7 +41,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 	public int DresserDrop { get; set; }
 
-	public override string LocalizationCategory => "Tile";
+	public override string LocalizationCategory => "Tiles";
 
 	/*
 	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
