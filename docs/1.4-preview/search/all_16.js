@@ -5,7 +5,7 @@ var searchData=
   ['wait_2',['Wait',['../class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_wait.html',1,'Terraria.GameContent.Skies.CreditsRoll.Actions.NPCs.Wait'],['../class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_players_1_1_wait.html',1,'Terraria.GameContent.Skies.CreditsRoll.Actions.Players.Wait'],['../class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_wait.html',1,'Terraria.GameContent.Skies.CreditsRoll.Actions.Sprites.Wait']]],
   ['walkdust_3',['WalkDust',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a34536351a09ae478bd2700a93cc9d0e2',1,'Terraria::ModLoader::ModTile']]],
   ['walldrawing_4',['WallDrawing',['../class_terraria_1_1_game_content_1_1_drawing_1_1_wall_drawing.html',1,'Terraria::GameContent::Drawing']]],
-  ['wallframe_5',['WallFrame',['../class_terraria_1_1_mod_loader_1_1_global_wall.html#a63a1c97ab7c7394c5d56390264ad444a',1,'Terraria.ModLoader.GlobalWall.WallFrame()'],['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#a63427e507d3861103dd14cf8b479ecfd',1,'Terraria.ModLoader.ModWall.WallFrame()']]],
+  ['wallframe_5',['WallFrame',['../class_terraria_1_1_mod_loader_1_1_mod_wall.html#a63427e507d3861103dd14cf8b479ecfd',1,'Terraria.ModLoader.ModWall.WallFrame()'],['../class_terraria_1_1_mod_loader_1_1_global_wall.html#a63a1c97ab7c7394c5d56390264ad444a',1,'Terraria.ModLoader.GlobalWall.WallFrame()']]],
   ['wallid_6',['WallID',['../class_terraria_1_1_i_d_1_1_wall_i_d.html',1,'Terraria::ID']]],
   ['wallioimpl_7',['WallIOImpl',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_tile_i_o_1_1_wall_i_o_impl.html',1,'Terraria::ModLoader::IO::TileIO']]],
   ['wallloader_8',['WallLoader',['../class_terraria_1_1_mod_loader_1_1_wall_loader.html',1,'Terraria::ModLoader']]],
@@ -67,7 +67,7 @@ var searchData=
   ['wingsallowflight_64',['WingsAllowFlight',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a517a47be2bf5f3bb38f605435d8f6725',1,'Terraria::ModLoader::GameTipID']]],
   ['wingstats_65',['WingStats',['../struct_terraria_1_1_data_structures_1_1_wing_stats.html',1,'Terraria::DataStructures']]],
   ['wingstatsinitializer_66',['WingStatsInitializer',['../class_terraria_1_1_initializers_1_1_wing_stats_initializer.html',1,'Terraria::Initializers']]],
-  ['wingupdate_67',['WingUpdate',['../class_terraria_1_1_mod_loader_1_1_global_item.html#a2c68eea8c1c266b9e88b15fbbc8f9102',1,'Terraria.ModLoader.GlobalItem.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#ac0256b1a5513250b598b495c4e814624',1,'Terraria.ModLoader.EquipTexture.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#aa3849baf5c0607283abd3b59da1f631a',1,'Terraria.ModLoader.ModItem.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d4fc974b572ac7e8ba55036e6b46584',1,'Terraria.ModLoader.ItemLoader.WingUpdate()']]],
+  ['wingupdate_67',['WingUpdate',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#ac0256b1a5513250b598b495c4e814624',1,'Terraria.ModLoader.EquipTexture.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#aa3849baf5c0607283abd3b59da1f631a',1,'Terraria.ModLoader.ModItem.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a0d4fc974b572ac7e8ba55036e6b46584',1,'Terraria.ModLoader.ItemLoader.WingUpdate()'],['../class_terraria_1_1_mod_loader_1_1_global_item.html#a2c68eea8c1c266b9e88b15fbbc8f9102',1,'Terraria.ModLoader.GlobalItem.WingUpdate()']]],
   ['wirekite_68',['WireKite',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af270c3c0abba274909463893d31aa228',1,'Terraria::ID::ProjAIStyleID']]],
   ['wiresfrommechanic_69',['WiresFromMechanic',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#a9a9575431f72e5186896a5c9653c12cd',1,'Terraria::ModLoader::GameTipID']]],
   ['wiresradial_70',['WiresRadial',['../class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_wires_radial.html',1,'Terraria::GameContent::UI::WiresUI']]],
@@ -108,5 +108,6 @@ var searchData=
   ['wornarmor_105',['wornArmor',['../class_terraria_1_1_item.html#abed9b1df378dc470c3b3d3a553c05c27',1,'Terraria::Item']]],
   ['writeextradata_106',['WriteExtraData',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#a46d214ed56f5b7d9437d08bd1e1087f9',1,'Terraria::ModLoader::ModTileEntity']]],
   ['writeinformation_107',['WriteInformation',['../class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer_1_1_write_information.html',1,'Terraria.Social.Steam.SteamP2PWriter.WriteInformation'],['../class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html',1,'Terraria.Social.WeGame.WeGameP2PWriter.WriteInformation']]],
-  ['wrongbugnet_108',['WrongBugNet',['../class_terraria_1_1_i_d_1_1_immunity_cooldown_i_d.html#abacdc707f5d7358b91228c98991fa1fc',1,'Terraria::ID::ImmunityCooldownID']]]
+  ['wrongbugnet_108',['WrongBugNet',['../class_terraria_1_1_i_d_1_1_immunity_cooldown_i_d.html#abacdc707f5d7358b91228c98991fa1fc',1,'Terraria::ID::ImmunityCooldownID']]],
+  ['wscjsonobject_109',['WscJsonObject',['../class_wsc_json_object.html',1,'']]]
 ];

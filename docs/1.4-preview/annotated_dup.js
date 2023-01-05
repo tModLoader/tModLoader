@@ -1585,5 +1585,6 @@ var annotated_dup =
     [ "SynchronizationContext", "class_synchronization_context.html", null ],
     [ "TagSerializer", "class_tag_serializer.html", null ],
     [ "TileEntity", "class_tile_entity.html", null ],
-    [ "TypeConverter", "class_type_converter.html", null ]
+    [ "TypeConverter", "class_type_converter.html", null ],
+    [ "WscJsonObject", "class_wsc_json_object.html", null ]
 ];
