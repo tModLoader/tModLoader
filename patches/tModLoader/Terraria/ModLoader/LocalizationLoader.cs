@@ -309,7 +309,10 @@ public static class LocalizationLoader
 				if (!string.IsNullOrWhiteSpace(prefix))
 					effectiveKey = prefix + "." + effectiveKey;
 
-				localizedTexts[effectiveKey] = new LocalizedText(effectiveKey, value);
+				if (localizedTexts.TryGetValue(effectiveKey, out var text))
+					text.SetValue(value);
+				else
+					localizedTexts[effectiveKey] = new LocalizedText(effectiveKey, value);
 			}
 		}
 	}
