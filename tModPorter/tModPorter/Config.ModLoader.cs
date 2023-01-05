@@ -399,7 +399,7 @@ public static partial class Config
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
 
-		// 1.3 -> 1.4
+		// 1.4.3 -> 1.4.4
 		RenameType(from: "Terraria.ModLoader.ModTranslation", to: "Terraria.Localization.LocalizedText");
 		RefactorInstanceMethodCall(	"Terraria.ModLoader.Mod",					"AddTranslation", Removed("Use Language.GetOrRegister"));
 		RefactorStaticMethodCall(	"Terraria.ModLoader.LocalizationLoader",	"AddTranslation", Removed("Use Language.GetOrRegister"));
