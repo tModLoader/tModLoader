@@ -501,6 +501,8 @@ public static class ModContent
 		ContentSamples.Initialize();
 		SetupBestiary();
 
+		LanguageManager.Instance.UnloadModdedEntries();
+
 		CleanupModReferences();
 	}
 

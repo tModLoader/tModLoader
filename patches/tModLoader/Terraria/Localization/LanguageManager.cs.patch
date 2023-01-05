@@ -18,17 +18,22 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -101,6 +_,10 @@
+@@ -101,6 +_,7 @@
  			}
  
  			LoadLanguage(culture);
 +
-+			if (ActiveCulture != null)
-+				LocalizationLoader.RefreshModLanguage(culture);
-+
  			ActiveCulture = culture;
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+@@ -114,6 +_,7 @@
+ 	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
+ 	{
+ 		LoadFilesForCulture(culture);
++		LocalizationLoader.RefreshModLanguage(culture);
+ 		if (this.OnLanguageChanging != null)
+ 			this.OnLanguageChanging(this);
+ 
 @@ -144,11 +_,19 @@
  		}
  	}

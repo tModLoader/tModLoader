@@ -47,12 +47,7 @@ public static class LocalizationLoader
 		Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 
 		foreach (var mod in ModLoader.Mods) {
-			AutoloadTranslations(mod, dict, GameCulture.FromCultureName(GameCulture.CultureName.English));
-
-			// load the current language over the top of english
-			if (culture != GameCulture.FromCultureName(GameCulture.CultureName.English)) {
-				AutoloadTranslations(mod, dict, culture);
-			}
+			AutoloadTranslations(mod, dict, culture);
 		}
 
 		foreach (ModItem item in ItemLoader.items) {
@@ -417,7 +412,7 @@ public static class LocalizationLoader
 
 				// Only write if changed
 				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents != hjsonContents) {
-					var outputFilePath = Path.Combine(sourceFolder, outputFileName) + ".new";
+					var outputFilePath = Path.Combine(sourceFolder, outputFileName) /*+ ".new"*/;
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
 
