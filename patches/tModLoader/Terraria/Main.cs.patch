@@ -1605,6 +1605,24 @@
  	}
  
  	private void DoDebugFunctions()
+@@ -14013,7 +_,7 @@
+ 		Player player = clientPlayer;
+ 		bool syncedAnyInventoryContents = false;
+ 		for (int i = 0; i < 59; i++) {
+-			if (Main.player[myPlayer].inventory[i].IsNotTheSameAs(player.inventory[i])) {
++			if (Main.player[myPlayer].inventory[i].IsNetStateDifferent(player.inventory[i])) {
+ 				syncedAnyInventoryContents = true;
+ 				NetMessage.SendData(5, -1, -1, null, myPlayer, PlayerItemSlotID.Inventory0 + i, (int)Main.player[myPlayer].inventory[i].prefix);
+ 			}
+@@ -14025,7 +_,7 @@
+ 		TrySyncingItemArray(ref syncedAnyInventoryContents, Main.player[myPlayer].miscDyes, player.miscDyes, PlayerItemSlotID.MiscDye0);
+ 		TrySyncingItemArray(ref syncedAnyInventoryContents, Main.player[myPlayer].bank.item, player.bank.item, PlayerItemSlotID.Bank1_0);
+ 		TrySyncingItemArray(ref syncedAnyInventoryContents, Main.player[myPlayer].bank2.item, player.bank2.item, PlayerItemSlotID.Bank2_0);
+-		if (Main.player[myPlayer].trashItem.IsNotTheSameAs(player.trashItem)) {
++		if (Main.player[myPlayer].trashItem.IsNetStateDifferent(player.trashItem)) {
+ 			syncedAnyInventoryContents = true;
+ 			NetMessage.SendData(5, -1, -1, null, myPlayer, PlayerItemSlotID.TrashItem, (int)Main.player[myPlayer].trashItem.prefix);
+ 		}
 @@ -14077,6 +_,9 @@
  		if ((byte)Main.player[myPlayer].zone5 != (byte)player.zone5)
  			flag = true;
@@ -1615,7 +1633,7 @@
  		if (flag)
  			NetMessage.SendData(36, -1, -1, null, myPlayer);
  
-@@ -14137,6 +_,8 @@
+@@ -14137,13 +_,15 @@
  		if (syncedAnyInventoryContents)
  			NetMessage.SendData(138);
  
@@ -1624,6 +1642,14 @@
  		clientPlayer = Main.player[myPlayer].clientClone();
  	}
  
+ 	private static void TrySyncingItemArray(ref bool syncedAnyInventoryContents, Item[] my, Item[] other, int slotOffset)
+ 	{
+ 		for (int i = 0; i < my.Length; i++) {
+-			if (my[i].IsNotTheSameAs(other[i])) {
++			if (my[i].IsNetStateDifferent(other[i])) {
+ 				syncedAnyInventoryContents = true;
+ 				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
+ 			}
 @@ -14156,6 +_,9 @@
  	{
  		UpdateParticleSystems();

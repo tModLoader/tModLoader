@@ -23,6 +23,19 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
 	/// <summary>
+	/// An additional identifier 
+	/// </summary>
+	public int NetStateVersion { get; private set; }
+
+	/// <summary>
+	/// Call this to trigger a re-sync of this item in a player's inventory or equipment in multiplayer.<br/>
+	/// The item will be sent to the server and other players at the end of the frame (not immediately).<br/>
+	///<br/>
+	/// Has no effect on server-side items or items in remote player's inventories<br/>
+	/// </summary>
+	public void NetStateChanged() => NetStateVersion++;
+
+	/// <summary>
 	/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
 	/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
 	/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.
@@ -121,16 +134,27 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
-	// public version of IsNotTheSameAs for modders
 	/// <summary>
-	/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
+	/// returns false if and only if type, stack and prefix match<br/>
+	/// <seealso cref="IsNetStateEquivalent(Item)"/>
 	/// </summary>
-	public bool IsNotSameTypePrefixAndStack(Item compareItem)
-	{
-		if (netID == compareItem.netID && stack == compareItem.stack)
-			return prefix != compareItem.prefix;
+	public bool IsNotSameTypePrefixAndStack(Item compareItem) => type != compareItem.type || stack != compareItem.stack || prefix != compareItem.prefix;
 
-		return true;
+	/// <summary>
+	/// Returns true if these items are different and there is a need to re-sync them
+	/// </summary>
+	public bool IsNetStateDifferent(Item compareItem) => type != compareItem.type || stack != compareItem.stack || prefix != compareItem.prefix || NetStateVersion != compareItem.NetStateVersion;
+
+	/// <summary>
+	/// Use this instead of <see cref="Clone"/> for much faster state snapshotting and change sync detection.<br/>
+	/// Note!! <see cref="SetDefaults"/> will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion
+	/// </summary>
+	public void CopyNetStateTo(Item target)
+	{
+		target.type = type;
+		target.stack = stack;
+		target.prefix = prefix;
+		target.NetStateVersion = NetStateVersion;
 	}
 
 	/// <summary>
