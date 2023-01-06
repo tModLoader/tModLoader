@@ -172,9 +172,9 @@ public class ModAccessorySlotPlayer : ModPlayer
 	}
 
 	// The following netcode is adapted from ChickenBone's UtilitySlots:
-	public override void clientClone(ModPlayer clientClone)
+	public override void CopyClientState(ModPlayer targetCopy)
 	{
-		var defaultInv = (ModAccessorySlotPlayer)clientClone;
+		var defaultInv = (ModAccessorySlotPlayer)targetCopy;
 		for (int i = 0; i < LoadedSlotCount; i++) {
 			exAccessorySlot[i].CopyNetStateTo(defaultInv.exAccessorySlot[i]);
 			defaultInv.exAccessorySlot[i + LoadedSlotCount] = exAccessorySlot[i + SlotCount].Clone();

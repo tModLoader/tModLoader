@@ -5657,7 +5657,7 @@
  		DpadRadial.CopyTo(player.DpadRadial);
  		CircularRadial.CopyTo(player.CircularRadial);
 +
-+		PlayerLoader.clientClone(this, player);
++		PlayerLoader.CopyClientState(this, player);
 +
  		return player;
  	}
