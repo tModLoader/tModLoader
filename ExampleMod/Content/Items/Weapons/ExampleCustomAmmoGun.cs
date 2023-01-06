@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleCustomAmmoGun : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Uses ExampleCustomAmmo as ammo and shooting HomingProjectiles");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

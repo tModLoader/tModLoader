@@ -38,7 +38,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Etc
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Example Bed");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 

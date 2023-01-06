@@ -10,9 +10,6 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 	public class MinionBossPetItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Minion Boss Pet");
-			// Tooltip.SetDefault("Summons a miniature Minion Boss to follow you");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

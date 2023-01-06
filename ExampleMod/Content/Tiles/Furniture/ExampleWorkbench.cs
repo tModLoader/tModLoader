@@ -32,7 +32,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Etc
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Work Bench");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 

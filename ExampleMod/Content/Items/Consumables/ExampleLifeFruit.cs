@@ -14,6 +14,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public const int LifePerFruit = 10;
 
 		public override void SetStaticDefaults() {
+			// TODO: value binding
 			// Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
 
 			Item.ResearchUnlockCount = 10;

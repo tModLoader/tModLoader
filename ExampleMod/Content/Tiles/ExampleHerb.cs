@@ -48,7 +48,6 @@ namespace ExampleMod.Content.Tiles
 			//Main.tileAlch[Type] = true;
 
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Example Herb");
 			AddMapEntry(new Color(128, 128, 128), name);
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);

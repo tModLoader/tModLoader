@@ -10,13 +10,6 @@ namespace ExampleMod.Content.Items.Armor
 	public class ExampleBreastplate : ModItem
 	{
 		public override void SetStaticDefaults() {
-			base.SetStaticDefaults();
-
-			// DisplayName.SetDefault("Example Breastplate");
-			/* Tooltip.SetDefault("This is a modded body armor."
-				+ "\nImmunity to 'On Fire!'"
-				+ "\n+20 max mana and +1 max minions"); */
-
 			Item.ResearchUnlockCount = 1;
 		}
 

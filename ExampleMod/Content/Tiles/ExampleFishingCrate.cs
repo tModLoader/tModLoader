@@ -23,7 +23,6 @@ namespace ExampleMod.Content.Tiles
 
 			// Etc
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Crate"); //Vanilla has no lang entry for this
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 

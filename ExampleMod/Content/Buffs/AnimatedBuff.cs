@@ -20,9 +20,6 @@ namespace ExampleMod.Content.Buffs
 		private Asset<Texture2D> animatedTexture;
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Animated Buff");
-			// Description.SetDefault("Animates and increases all damage by 10%.");
-
 			if (Main.netMode != NetmodeID.Server) {
 				// Do NOT load textures on the server!
 				animatedTexture = ModContent.Request<Texture2D>(AnimationSheetPath);

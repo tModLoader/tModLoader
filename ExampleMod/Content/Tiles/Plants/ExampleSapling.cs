@@ -43,7 +43,6 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileObjectData.addTile(Type);
 
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Example Sapling");
 			AddMapEntry(new Color(200, 200, 200), name);
 
 			TileID.Sets.TreeSapling[Type] = true;

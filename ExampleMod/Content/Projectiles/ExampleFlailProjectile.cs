@@ -15,10 +15,6 @@ namespace ExampleMod.Content.Projectiles
 	// ExampleFlailProjectile is a copy of the Sunfury flail projectile.
 	internal class ExampleFlailProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Example Flail");
-		}
-
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
 			Projectile.width = 22; // The width of your projectile

@@ -33,7 +33,6 @@ namespace ExampleMod.Content.Tiles
 
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Red Firefly in a Bottle");
 			AddMapEntry(new Color(238, 145, 105), name);
 
 			// Can't use this since texture is vertical
@@ -153,8 +152,6 @@ namespace ExampleMod.Content.Tiles
 	internal class ExampleAnimatedTileItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Red Firefly in a Bottle");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

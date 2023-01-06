@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Items.Ammo
 	public class ExampleCustomAmmo : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Chases enemies through walls"); // The item's description, can be set to whatever you want.
-
 			Item.ResearchUnlockCount = 99;
 		}
 

@@ -64,10 +64,6 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Charm of Example");
-			/* Tooltip.SetDefault("Turns the holder into Blocky near town NPC"
-				+ "\nBlocky's colors will invert in water"); */
-
 			SetupDrawing();
 		}
 

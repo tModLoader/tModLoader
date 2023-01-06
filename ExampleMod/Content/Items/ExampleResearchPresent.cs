@@ -8,9 +8,6 @@ namespace ExampleMod.Content.Items
 	public class ExampleResearchPresent : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Example Present");
-			// Tooltip.SetDefault("Contains a random accessory! Try researching it for infinite of it!");
-
 			// Must be researched as many times as there are items in the game.
 			// If fully researched, and a new mod is added, it will become un-researched and require that much more
 			// Research amount will never go down or over the max limit of 9999.

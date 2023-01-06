@@ -22,7 +22,6 @@ namespace ExampleMod.Content.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("ExampleOre");
 			AddMapEntry(new Color(152, 171, 198), name);
 
 			DustType = 84;

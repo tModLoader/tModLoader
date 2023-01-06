@@ -35,7 +35,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Names
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Example Door");
 			AddMapEntry(new Color(200, 200, 200), name);
 
 			// Placement

@@ -9,9 +9,6 @@ namespace ExampleMod.Content.Items.Consumables
 	public class PlanteraItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Plantera");
-			// Tooltip.SetDefault("The wrath of the jungle");
-
 			Item.ResearchUnlockCount = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
 

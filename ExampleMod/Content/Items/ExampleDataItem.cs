@@ -12,9 +12,6 @@ namespace ExampleMod.Content.Items
 		public int timer;
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Hot Potato");
-			// Tooltip.SetDefault("Something magical happens when the timer runs out...");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

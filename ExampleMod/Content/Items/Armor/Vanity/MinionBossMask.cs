@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 	public class MinionBossMask : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Minion Boss Mask");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

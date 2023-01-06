@@ -8,9 +8,6 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleCratePotion : ModItem
 	{
 		public override void SetStaticDefaults() {
-			/* Tooltip.SetDefault("Increases chance to get a crate" +
-				"\nStacks with {$ItemName.CratePotion}"); */
-
 			Item.ResearchUnlockCount = 20;
 
 			// Dust that will appear in these colors when the item with ItemUseStyleID.DrinkLiquid is used

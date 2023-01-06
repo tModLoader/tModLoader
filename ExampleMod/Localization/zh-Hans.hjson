@@ -162,6 +162,7 @@ Mods: {
 
 			WaspNest: {
 				/* DisplayName: Wasp Nest */
+				# Here we use a vanilla language key to copy the tooltip from HiveBackpack
 				/* Tooltip: "{$ItemTooltip.HiveBackpack}" */
 			}
 
@@ -239,6 +240,7 @@ Mods: {
 
 			ExampleCanStackItem: {
 				/* DisplayName: Example CanStack Item: Gift Bag */
+				# References a language key that says "Right Click To Open" in the language of the game
 				/* Tooltip: "{$CommonItemTooltip.RightClickToOpen}" */
 			}
 
@@ -258,6 +260,11 @@ Mods: {
 
 			ExampleFoodItem: {
 				/* DisplayName: Example Pie */
+				# Using references to existing language keys allow the tooltip to be easily translated
+				# Listed below are some keys that you may find useful for making a food item
+				# MinorStats, MediumStats, MajorStats, TipsyStats
+				# These correspond to the WellFed, WellFed2, WellFed3, and Tipsy buffs respectively.
+				# Make sure to match the tooltip with the buff you assign in SetDefaults
 				/* Tooltip:
 					'''
 					{$CommonItemTooltip.MediumStats}
@@ -370,6 +377,7 @@ Mods: {
 
 			ExampleTooltipsItem: {
 				/* DisplayName: Example Tooltips Item */
+				# This tooltip has color and icons by using chat tags. See here for help on using Tags: https://terraria.wiki.gg/wiki/Chat#Tags
 				/* Tooltip:
 					'''
 					How are you feeling today?
@@ -538,6 +546,7 @@ Mods: {
 
 			UseStyleShowcase: {
 				/* DisplayName: Use Style Showcase */
+				# The special text "<right>" will change depending on if the user is using keyboard or gamepad to show the alternate click button
 				/* Tooltip:
 					'''
 					This item showcases each UseStyle.
@@ -582,9 +591,10 @@ Mods: {
 
 			ExampleJoustingLance: {
 				/* DisplayName: Example Jousting Lance */
+				# The substitution "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
 				/* Tooltip:
 					'''
-					Build momentum to increase attack power
+					{$ItemTooltip.HallowJoustingLance}
 					This is a modded jousting lance.
 					''' */
 			}
@@ -686,7 +696,12 @@ Mods: {
 
 			HoldStyleShowcase: {
 				/* DisplayName: Hold Style Showcase */
-				/* Tooltip: "" */
+				# 
+				/* Tooltip:
+					'''
+					This item showcases each HoldStyle.
+					<right> to cycle through HoldStyles.
+					''' */
 			}
 
 			ShimmerShowcaseCrimsonCorruption: {
@@ -700,6 +715,7 @@ Mods: {
 			}
 		}
 
+		# Projectile display names mainly show in chat when a player dies from it.
 		Projectiles: {
 			/* ExamplePetProjectile.DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}" */
 			/* ExamplePet.DisplayName: Mods.ExampleMod.ProjectileName.ExamplePet */

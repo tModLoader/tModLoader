@@ -11,10 +11,6 @@ namespace ExampleMod.Content.Projectiles
 {
 	public class ExamplePaperAirplaneProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Example Paper Airplane Projectile"); // The English name of the projectile
-		}
-
 		public override void SetDefaults() {
 			Projectile.width = 10; // The width of the projectile
 			Projectile.height = 10; // The height of the projectile

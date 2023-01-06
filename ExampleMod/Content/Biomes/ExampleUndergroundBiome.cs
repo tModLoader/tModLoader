@@ -22,11 +22,6 @@ namespace ExampleMod.Content.Biomes
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 
-		// Use SetStaticDefaults to assign the display name
-		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Example Underground");
-		}
-
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player) {
 			// Limit the biome height to be underground in either rock layer or dirt layer

@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleSpear : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("This is a modded spear");
-
 			ItemID.Sets.SkipsInitialUseSound[Item.type] = true; // This skips use animation-tied sound playback, so that we're able to make it be tied to use time instead in the UseItem() hook.
 			ItemID.Sets.Spears[Item.type] = true; // This allows the game to recognize our new item as a spear.
 			Item.ResearchUnlockCount = 1;

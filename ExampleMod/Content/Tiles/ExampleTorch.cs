@@ -53,9 +53,6 @@ namespace ExampleMod.Content.Tiles
 
 			// Etc
 			LocalizedText name = CreateMapEntryName();
-
-			// name.SetDefault("Torch");
-
 			AddMapEntry(new Color(200, 200, 200), name);
 
 			// Assets
