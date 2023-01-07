@@ -179,10 +179,10 @@ namespace Terraria
 				vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 			}
 			else {
-				vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
+				vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
 				if (!Directory.Exists(vanillaContentFolder)) {
-					vanillaContentFolder = "../Content"; // Nested Manual Install
+					vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 				}
 				Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 			}
