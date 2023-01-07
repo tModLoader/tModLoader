@@ -405,7 +405,7 @@ namespace Terraria.Social.Steam
 						return true;
 
 					// Should only be one of the matching mod
-					itemDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 1);
+					itemDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
 					return true;
 				}
 
