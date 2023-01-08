@@ -162,7 +162,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -131,17 +_,23 @@
+@@ -131,17 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -180,6 +180,8 @@
 +		//TML: Just in case something throws or breaks and the 'clear after craft' doesn't run.
 +		RecipeLoader.ConsumedItems.Clear();
 +
++		Dictionary<List<Item>, PlayerLoader.ActionOnUsedForCrafting> moddedMaterials = PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer);
++
  		Item[] array = null;
  		Item item = null;
 -		Item item2 = null;
@@ -192,7 +194,7 @@
  			int num = item2.stack;
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
-@@ -158,9 +_,12 @@
+@@ -158,25 +_,36 @@
  				}
  			}
  
@@ -205,8 +207,11 @@
  			array = Main.player[Main.myPlayer].inventory;
  			for (int k = 0; k < 58; k++) {
  				item = array[k];
-@@ -169,10 +_,15 @@
+ 				if (num <= 0)
+ 					break;
  
++				ConsumeForCraft(item, item2, ref num);
++				/*
  				if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
  					if (item.stack > num) {
 +						RecipeLoader.ConsumedItems.Add(item.Clone());
@@ -221,7 +226,48 @@
  						num -= item.stack;
  						array[k] = new Item();
  					}
-@@ -228,6 +_,9 @@
+ 				}
++				*/
+ 			}
+ 
+ 			if (Main.player[Main.myPlayer].chest != -1) {
+@@ -196,6 +_,11 @@
+ 					if (num <= 0)
+ 						break;
+ 
++					ConsumeForCraft(item, item2, ref num, () => {
++						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
++					});
++					/*
+ 					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
+ 						continue;
+ 
+@@ -212,11 +_,13 @@
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+ 					}
++					*/
+ 				}
+ 			}
+ 
+ 			if (!Main.player[Main.myPlayer].useVoidBag() || Main.player[Main.myPlayer].chest == -5)
+-				continue;
++				goto ModdedMaterials;
++				// continue;
+ 
+ 			array = Main.player[Main.myPlayer].bank4.item;
+ 			for (int m = 0; m < 40; m++) {
+@@ -224,10 +_,18 @@
+ 				if (num <= 0)
+ 					break;
+ 
++				ConsumeForCraft(item, item2, ref num, () => {
++					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
++				});
++				/*
+ 				if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
  					continue;
  
  				if (item.stack > num) {
@@ -231,7 +277,7 @@
  					item.stack -= num;
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
  						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
-@@ -235,6 +_,8 @@
+@@ -235,12 +_,29 @@
  					num = 0;
  				}
  				else {
@@ -240,10 +286,57 @@
  					num -= item.stack;
  					array[m] = new Item();
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
-@@ -248,7 +_,7 @@
+ 						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
+ 				}
++				*/
+ 			}
++
++			ModdedMaterials: ;
++			foreach ((List<Item> items, PlayerLoader.ActionOnUsedForCrafting consumedAction) in moddedMaterials) {
++				for (int i = 0; i < items.Count; i++) {
++					if (num <= 0)
++						goto End;
++
++					ConsumeForCraft(items[i], item2, ref num, () => {
++						consumedAction?.Invoke(items[i], i);
++					});
++				}
++			}
++
++			End: ;
+ 		}
+ 
+ 		AchievementsHelper.NotifyItemCraft(this);
+@@ -248,7 +_,33 @@
  		FindRecipes();
  	}
  
++	// Added by TML. Replaces multiple vanilla crafting code.
++	private void ConsumeForCraft(Item item, Item requiredItem, ref int stackRequired, Action consumedAction = null)
++	{
++		if (!item.IsTheSameAs(requiredItem) && !useWood(item.type, requiredItem.type) && !useSand(item.type, requiredItem.type) && !useIronBar(item.type, requiredItem.type) && !usePressurePlate(item.type, requiredItem.type) && !useFragment(item.type, requiredItem.type) && !AcceptedByItemGroups(item.type, requiredItem.type))
++			return;
++
++		if (item.stack > stackRequired) {
++			RecipeLoader.ConsumedItems.Add(item.Clone());
++			RecipeLoader.ConsumedItems[^1].stack = stackRequired;
++
++			item.stack -= stackRequired;
++
++			consumedAction?.Invoke();
++
++			stackRequired = 0;
++		}
++		else {
++			RecipeLoader.ConsumedItems.Add(item);
++
++			stackRequired -= item.stack;
++			item.TurnToAir();
++
++			consumedAction?.Invoke();
++		}
++	}
++
 -	public bool useWood(int invType, int reqType)
 +	private bool useWood(int invType, int reqType)
  	{
@@ -285,19 +378,17 @@
  	{
  		if (!anyPressurePlate)
  			return false;
-@@ -381,8 +_,15 @@
- 			Recipe recipe = Main.recipe[i];
+@@ -382,7 +_,14 @@
  			if (recipe.createItem.type == 0)
  				break;
--
-+				
+ 
 +			if (recipe.Disabled)
 +				continue;
-+			
++
 +			bool requirementsMet = false;
  			if (PlayerMeetsTileRequirements(localPlayer, recipe) && PlayerMeetsEnvironmentConditions(localPlayer, recipe) && CollectedEnoughItemsToCraftRecipeNew(recipe))
 +				requirementsMet = true;
-+			
++
 +			if (requirementsMet && RecipeLoader.RecipeAvailable(recipe))
  				AddToAvailableRecipes(i);
  		}
@@ -338,6 +429,18 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
+@@ -483,6 +_,11 @@
+ 			CollectItems(currentInventory, 40);
+ 		}
+ 
++		Dictionary<List<Item>, ActionOnUsedForCrafting> moddedMaterials = PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer);
++		foreach ((List<Item> items, _) in moddedMaterials) {
++			CollectItems(items.ToArray(), items.Count);
++		}
++
+ 		AddFakeCountsForItemGroups();
+ 	}
+ 
 @@ -516,7 +_,10 @@
  			if (recipe.createItem.type == 0)
  				break;
