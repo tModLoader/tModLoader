@@ -157,6 +157,14 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		target.NetStateVersion = NetStateVersion;
 	}
 
+	[ThreadStatic]
+	private static string cloningDisabled = null;
+	public ref struct DisableCloneMethod
+	{
+		public DisableCloneMethod(string msg) => cloningDisabled = msg;
+		public void Dispose() => cloningDisabled = null;
+	}
+
 	/// <summary>
 	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 	/// <br/><br/>This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.

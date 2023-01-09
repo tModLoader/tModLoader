@@ -177,7 +177,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 		var defaultInv = (ModAccessorySlotPlayer)targetCopy;
 		for (int i = 0; i < LoadedSlotCount; i++) {
 			exAccessorySlot[i].CopyNetStateTo(defaultInv.exAccessorySlot[i]);
-			defaultInv.exAccessorySlot[i + LoadedSlotCount] = exAccessorySlot[i + SlotCount].Clone();
+			exAccessorySlot[i + SlotCount].CopyNetStateTo(defaultInv.exAccessorySlot[i + LoadedSlotCount]);
 			exDyesAccessory[i].CopyNetStateTo(defaultInv.exDyesAccessory[i]);
 			defaultInv.exHideAccessory[i] = exHideAccessory[i];
 		}

@@ -5585,7 +5585,7 @@
  			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  			obj.noGrabDelay = 100;
-@@ -41733,9 +_,10 @@
+@@ -41733,9 +_,13 @@
  		}
  	}
  
@@ -5593,6 +5593,9 @@
  	public Player clientClone()
  	{
 -		Player player = new Player();
++		// Disable cloning until the end of the method.
++		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
++
 +		Player player = _clientClone ??= new Player();
  		player.zone1 = zone1;
  		player.zone2 = zone2;

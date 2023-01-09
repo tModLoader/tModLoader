@@ -1861,7 +1861,7 @@
  
  					if (num2 > num3) {
  						num2 = num3;
-@@ -49266,10 +_,29 @@
+@@ -49266,10 +_,32 @@
  		}
  	}
  
@@ -1871,6 +1871,9 @@
 +	*/
 +	public Item Clone()
 +	{
++		if (cloningDisabled != null)
++			throw new Exception(cloningDisabled);
++
 +		Item newItem = (Item)MemberwiseClone();
 +
 +		newItem.ModItem = ModItem?.Clone(newItem);
