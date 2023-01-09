@@ -421,13 +421,7 @@
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
 		"MSAddingRecipes": "Dodawanie przepisów...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
-		"StartBagItemName": "Początkowy ekwipunek",
-		"UnloadedItemItemName": "Nieaktywny przedmiot",
-		"UnloadedItemModTooltip": "Mod: {0}",
-		"UnloadedItemItemNameTooltip": "Przedmiot: {0}",
-		"AprilFoolsJoke": "Prima Aprilis",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Bez nazwy",
 		"DefaultTownNPCChat": "Mój modder zapomniał dać mi dialog.",
 		"DefaultNurseCantHealChat": "Nie wiem dlaczego, ale nie mogę cię wyleczyć. Najwyraźniej modder zapomniał dać mi dialog.",
@@ -552,5 +546,13 @@
 	},
 	"TitleLinks": {
 		// "Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
+		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Nieaktywny przedmiot",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Przedmiot: {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis"
 	}
 }

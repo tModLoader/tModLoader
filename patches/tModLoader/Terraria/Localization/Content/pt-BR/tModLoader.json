@@ -421,13 +421,7 @@
 		"MSFinishingResourceLoading": "Terminando o Carregamento de Recursos",
 		"MSAddingRecipes": "Adicionando Receitas...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Alguns itens iniciais não cabem em seu inventário",
-		"StartBagItemName": "Bolsa Iniciante",
-		"UnloadedItemItemName": "Item Descarregado",
-		"UnloadedItemModTooltip": "Mod: {0}",
-		"UnloadedItemItemNameTooltip": "Item: {0}",
-		"AprilFoolsJoke": "Piada de 1° de Abril",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Sem Nome",
 		"DefaultTownNPCChat": "Meu desenvolvedor de mod se esqueceu de me dar uma mensagem de bate-papo.",
 		"DefaultNurseCantHealChat": "Eu não sei por que não posso curar você, o meu desenvolvedor de mod esqueceu de me dar uma mensagem de bate-papo.",
@@ -552,5 +546,13 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "Alguns itens iniciais não cabem em seu inventário",
+		"ModLoader.Items.StartBag.DisplayName": "Bolsa Iniciante",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Item Descarregado",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "Piada de 1° de Abril"
 	}
 }

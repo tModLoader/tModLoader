@@ -421,13 +421,7 @@
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Загрузка рецептов модов...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
-		"StartBagItemName": "Стартовая сумка",
-		"UnloadedItemItemName": "Незагруженный предмет",
-		"UnloadedItemModTooltip": "Мод: {0}",
-		"UnloadedItemItemNameTooltip": "Предмет: {0}",
-		"AprilFoolsJoke": "Первоапрельская шутка",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Безымянный",
 		"DefaultTownNPCChat": "Мой моддер совсем забыл дать мне сообщение.",
 		"DefaultNurseCantHealChat": "Я не знаю почему я не могу тебя полечить, моддер ответственный за это забыл дать мне сообщение, объясняющее это.",
@@ -552,5 +546,13 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
+		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Незагруженный предмет",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Мод: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Предмет: {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка"
 	}
 }

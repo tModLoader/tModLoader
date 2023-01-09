@@ -422,13 +422,7 @@
 		"MSFinishingResourceLoading": "资源加载完成",
 		"MSAddingRecipes": "添加合成配方...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "部分起始物品无法正常放入背包",
-		"StartBagItemName": "起始包",
-		"UnloadedItemItemName": "卸载物品",
-		"UnloadedItemModTooltip": "模组: {0}",
-		"UnloadedItemItemNameTooltip": "物品: {0}",
-		"AprilFoolsJoke": "愚人节玩笑",
+		// Default Unimplemented
 		"DefaultTownNPCName": "无名氏",
 		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
 		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
@@ -553,5 +547,13 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "部分起始物品无法正常放入背包",
+		"ModLoader.Items.StartBag.DisplayName": "起始包",
+		"ModLoader.Items.UnloadedItem.DisplayName": "卸载物品",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "模组: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "物品: {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "愚人节玩笑"
 	}
 }

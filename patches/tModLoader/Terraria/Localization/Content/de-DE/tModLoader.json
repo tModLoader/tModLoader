@@ -421,13 +421,7 @@
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",
-		"StartBagItemName": "Starterpaket",
-		"UnloadedItemItemName": "Ungeladenes Item",
-		"UnloadedItemModTooltip": "Mod: {0}",
-		"UnloadedItemItemNameTooltip": "Item: {0}",
-		"AprilFoolsJoke": "Aprilscherz",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Kein Name",
 		"DefaultTownNPCChat": "Mein Modder hat vergessen mir einen Dialog zu geben.",
 		"DefaultNurseCantHealChat": "Ich weiß nicht warum, aber ich kann dich nicht Heilen. Anscheinend hat der Modder vergessen, mir einen Dialog zu geben.",
@@ -552,5 +546,13 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",
+		"ModLoader.Items.StartBag.DisplayName": "Starterpaket",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Ungeladenes Item",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz"
 	}
 }

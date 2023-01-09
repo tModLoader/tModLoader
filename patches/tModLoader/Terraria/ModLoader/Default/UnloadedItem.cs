@@ -14,14 +14,6 @@ public sealed class UnloadedItem : ModLoaderModItem
 	public string ModName { get; private set; }
 	public string ItemName { get; private set; }
 
-	public override void SetStaticDefaults()
-	{
-		/*
-		DisplayName.SetDefault("{$tModLoader.UnloadedItemItemName}");
-		Tooltip.SetDefault("\n");
-		*/
-	}
-
 	public override void SetDefaults()
 	{
 		Item.width = 20;
@@ -40,10 +32,10 @@ public sealed class UnloadedItem : ModLoaderModItem
 	{
 		for (int k = 0; k < tooltips.Count; k++) {
 			if (tooltips[k].Name == "Tooltip0") {
-				tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
+				tooltips[k].Text = Language.GetTextValue(this.GetLocalizationKey("UnloadedItemModTooltip"), ModName);
 			}
 			else if (tooltips[k].Name == "Tooltip1") {
-				tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", ItemName);
+				tooltips[k].Text = Language.GetTextValue(this.GetLocalizationKey("UnloadedItemItemNameTooltip"), ItemName);
 			}
 		}
 	}

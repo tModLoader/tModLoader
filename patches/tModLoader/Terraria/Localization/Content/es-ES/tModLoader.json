@@ -421,13 +421,7 @@
 		"MSFinishingResourceLoading": "Finalizando carga de recursos",
 		"MSAddingRecipes": "Añadiendo recetas...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Algunos objetos de partida no cabían en tu inventario",
-		"StartBagItemName": "Bolsa de partida",
-		"UnloadedItemItemName": "Objeto sin cargar",
-		"UnloadedItemModTooltip": "Mod: {0}",
-		"UnloadedItemItemNameTooltip": "Objeto: {0}",
-		"AprilFoolsJoke": "Chiste del Día de los Inocentes",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Sin nombre",
 		"DefaultTownNPCChat": "A mi modder se le olvidó darme un mensaje que decir.",
 		"DefaultNurseCantHealChat": "No sé por qué no puedo curarte, a mi modder se le olvidó darme un mensaje que decir.",
@@ -552,5 +546,13 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "Algunos objetos de partida no cabían en tu inventario",
+		"ModLoader.Items.StartBag.DisplayName": "Bolsa de partida",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Objeto sin cargar",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Objeto: {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "Chiste del Día de los Inocentes"
 	}
 }

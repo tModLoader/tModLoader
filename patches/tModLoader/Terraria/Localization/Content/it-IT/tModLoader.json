@@ -423,9 +423,9 @@
 		// "MSFinishingResourceLoading": "Finishing Resource Loading",
 		// "MSAddingRecipes": "Adding Recipes...",
 
-		// Mod Loader Mod
+		// Default Unimplemented
 		// "StartBagTooltip": "Some starting items couldn't fit in your inventory",
-		// "StartBagItemName": "Starting Bag",
+		// "ModLoader.Items.StartBag.DisplayName": "Starting Bag",
 		// "UnloadedItemItemName": "Unloaded Item",
 		// "UnloadedItemModTooltip": "Mod: {0}",
 		// "UnloadedItemItemNameTooltip": "Item: {0}",
@@ -554,5 +554,8 @@
 	},
 	"TitleLinks": {
 		// "Patreon": "Patreon"
+	},
+	"Mods": {
+
 	}
 }

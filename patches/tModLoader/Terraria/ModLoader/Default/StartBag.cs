@@ -9,14 +9,6 @@ public class StartBag : ModLoaderModItem
 	[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
 	private List<Item> items = new List<Item>();
 
-	public override void SetStaticDefaults()
-	{
-		/*
-		DisplayName.SetDefault("{$tModLoader.StartBagItemName}");
-		Tooltip.SetDefault("{$tModLoader.StartBagTooltip}\n{$CommonItemTooltip.RightClickToOpen}");
-		*/
-	}
-
 	public override void SetDefaults()
 	{
 		Item.width = 20;

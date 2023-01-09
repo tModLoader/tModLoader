@@ -421,13 +421,7 @@
 		"MSFinishingResourceLoading": "Finalisation du chargement des ressources",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
-		"StartBagItemName": "Sac de Départ",
-		"UnloadedItemItemName": "Objet désactivé",
-		"UnloadedItemModTooltip": "Mod : {0}",
-		"UnloadedItemItemNameTooltip": "Objet : {0}",
-		"AprilFoolsJoke": "La Blague du Poisson D'Avril",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Sans-Nom",
 		"DefaultTownNPCChat": "Mon Moddeur a oublié de me donner un message de dialogue.",
 		"DefaultNurseCantHealChat": "Je ne sais pas pourquoi je ne peux pas vous soigner, le Moddeur a oublié de me donner un message de dialogue.",
@@ -552,5 +546,13 @@
 	},
 	"TitleLinks": {
 		// "Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.StartBag.Tooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
+		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Objet désactivé",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod : {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Objet : {0}",
+		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril"
 	}
 }
