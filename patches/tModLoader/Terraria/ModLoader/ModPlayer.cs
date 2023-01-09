@@ -124,10 +124,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
 	}
 
-	[Obsolete($"Use {nameof(CopyClientState)}, be sure to read its documentation in full.", error: true)]
-	public virtual void clientClone(ModPlayer clientClone)
-		=> CopyClientState(clientClone);
-
 	/// <summary>
 	/// <br/> Allows you to copy information that you intend to sync between server and client to the <paramref name="targetCopy"/> parameter.
 	/// <br/> You would then use the <see cref="SendClientChanges"/> hook to compare against that data and decide what needs synchronizing.
