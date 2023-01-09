@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
+using Terraria.Utilities.FileBrowser;
 
 namespace Terraria
 {
@@ -170,37 +171,62 @@ namespace Terraria
 			}
 		}
 
+		public static bool IsValidContentFolder(string vanillaContentFolder, out string reason) {
+			if (!Directory.Exists(vanillaContentFolder)) {
+				reason = Language.GetTextValue("tModLoader.ContentFolderNotFound");
+				return false;
+			}
+
+			// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
+			if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
+				reason = Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage");
+				return false;
+			}
+
+			reason = "Valid";
+			return true;
+		}
+
+		public static string GetContentFolderPath() {
+			string vanillaContentFolder;
+			if (!File.Exists("LaunchUtils/TerrariaFolderPath.txt") || !IsValidContentFolder(File.ReadAllText("LaunchUtils/TerrariaFolderPath.txt"), out _)) {
+				if (SocialAPI.Mode == SocialMode.Steam) {
+					vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
+				}
+				else {
+					vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
+
+					if (!Directory.Exists(vanillaContentFolder)) {
+						vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
+					}
+				}
+
+				if (!IsValidContentFolder(vanillaContentFolder, out _)) {
+					nativefiledialog.NFD_PickFolder(null, out vanillaContentFolder);
+				}
+
+				File.WriteAllText("LaunchUtils/TerrariaFolderPath.txt", vanillaContentFolder);
+			}
+			else {
+				vanillaContentFolder = File.ReadAllText("LaunchUtils/TerrariaFolderPath.txt");
+			}
+
+			if (!IsValidContentFolder(vanillaContentFolder, out var reason)) {
+				ErrorReporting.FatalExit(reason);
+			}
+
+			return vanillaContentFolder;
+		}
+
 		internal void InitTMLContentManager() {
 			if (dedServ) {
 				return;
 			}
 
-			string vanillaContentFolder;
-			if (SocialAPI.Mode == SocialMode.Steam) {
-				vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
-			}
-			else {
-				vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
-
-				if (!Directory.Exists(vanillaContentFolder)) {
-					vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
-				}
-				Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
-			}
-
-			if (!Directory.Exists(vanillaContentFolder)) {
-				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
-			}
-
-			// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
-			if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
-				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
-			}
-
 			if (Directory.Exists(Path.Combine("Content", "Images")))
 				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 
-			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
+			base.Content = new TMLContentManager(Content.ServiceProvider, GetContentFolderPath(), AlternateContentManager);
 		}
 		
 		private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump) {

@@ -9,3 +9,12 @@
  		return result;
  	}
  
+@@ -107,7 +_,7 @@
+ 		IntPtr outPath2;
+ 		nfdresult_t result = INTERNAL_NFD_PickFolder(intPtr, out outPath2);
+ 		Marshal.FreeHGlobal((IntPtr)(void*)intPtr);
+-		outPath = UTF8_ToManaged(outPath2, freePtr: true);
++		outPath = UTF8_ToManaged(outPath2, freePtr: false);
+ 		return result;
+ 	}
+ 
