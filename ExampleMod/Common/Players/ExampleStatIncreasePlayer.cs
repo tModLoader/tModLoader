@@ -35,8 +35,8 @@ namespace ExampleMod.Common.Players
 			exampleManaCrystals = reader.ReadByte();
 		}
 
-		public override void clientClone(ModPlayer clientClone) {
-			ExampleStatIncreasePlayer clone = clientClone as ExampleStatIncreasePlayer;
+		public override void CopyClientState(ModPlayer targetCopy) {
+			ExampleStatIncreasePlayer clone = targetCopy as ExampleStatIncreasePlayer;
 			clone.exampleLifeFruits = exampleLifeFruits;
 			clone.exampleManaCrystals = exampleManaCrystals;
 		}

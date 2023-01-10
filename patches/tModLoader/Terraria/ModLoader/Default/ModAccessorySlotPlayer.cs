@@ -172,13 +172,13 @@ public class ModAccessorySlotPlayer : ModPlayer
 	}
 
 	// The following netcode is adapted from ChickenBone's UtilitySlots:
-	public override void clientClone(ModPlayer clientClone)
+	public override void CopyClientState(ModPlayer targetCopy)
 	{
-		var defaultInv = (ModAccessorySlotPlayer)clientClone;
+		var defaultInv = (ModAccessorySlotPlayer)targetCopy;
 		for (int i = 0; i < LoadedSlotCount; i++) {
-			defaultInv.exAccessorySlot[i] = exAccessorySlot[i].Clone();
-			defaultInv.exAccessorySlot[i + LoadedSlotCount] = exAccessorySlot[i + SlotCount].Clone();
-			defaultInv.exDyesAccessory[i] = exDyesAccessory[i].Clone();
+			exAccessorySlot[i].CopyNetStateTo(defaultInv.exAccessorySlot[i]);
+			exAccessorySlot[i + SlotCount].CopyNetStateTo(defaultInv.exAccessorySlot[i + LoadedSlotCount]);
+			exDyesAccessory[i].CopyNetStateTo(defaultInv.exDyesAccessory[i]);
 			defaultInv.exHideAccessory[i] = exHideAccessory[i];
 		}
 	}
@@ -197,13 +197,13 @@ public class ModAccessorySlotPlayer : ModPlayer
 	{
 		var clientInv = (ModAccessorySlotPlayer)clientPlayer;
 		for (int i = 0; i < LoadedSlotCount; i++) {
-			if (exAccessorySlot[i].IsNotTheSameAs(clientInv.exAccessorySlot[i]))
+			if (exAccessorySlot[i].IsNetStateDifferent(clientInv.exAccessorySlot[i]))
 				NetHandler.SendSlot(-1, Player.whoAmI, i, exAccessorySlot[i]);
 
-			if (exAccessorySlot[i + SlotCount].IsNotTheSameAs(clientInv.exAccessorySlot[i + LoadedSlotCount]))
+			if (exAccessorySlot[i + SlotCount].IsNetStateDifferent(clientInv.exAccessorySlot[i + LoadedSlotCount]))
 				NetHandler.SendSlot(-1, Player.whoAmI, i + LoadedSlotCount, exAccessorySlot[i + SlotCount]);
 
-			if (exDyesAccessory[i].IsNotTheSameAs(clientInv.exDyesAccessory[i]))
+			if (exDyesAccessory[i].IsNetStateDifferent(clientInv.exDyesAccessory[i]))
 				NetHandler.SendSlot(-1, Player.whoAmI, -i - 1, exDyesAccessory[i]);
 
 			if (exHideAccessory[i] != clientInv.exHideAccessory[i])

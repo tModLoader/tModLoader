@@ -43,7 +43,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 		base.ValidateType();
 		
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
-		LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
+		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
 
 	protected sealed override void Register()
@@ -125,10 +125,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to copy information about this player to the clientClone parameter. You should copy information that you intend to sync between server and client. This hook is called in the Player.clientClone method. See SendClientChanges for more info.
+	/// <br/> Allows you to copy information that you intend to sync between server and client to the <paramref name="targetCopy"/> parameter.
+	/// <br/> You would then use the <see cref="SendClientChanges"/> hook to compare against that data and decide what needs synchronizing.
+	/// <br/> This hook is called with every call of the <see cref="Player.clientClone"/> method.
+	/// <br/>
+	/// <br/> <b>NOTE:</b> For performance reasons, avoid deep cloning or copying any excessive information.
+	/// <br/> <b>NOTE:</b> Using <see cref="Item.CopyNetStateTo"/> is the recommended way of creating item snapshots.
 	/// </summary>
-	/// <param name="clientClone"></param>
-	public virtual void clientClone(ModPlayer clientClone)
+	/// <param name="targetCopy"></param>
+	public virtual void CopyClientState(ModPlayer targetCopy)
 	{
 	}
 

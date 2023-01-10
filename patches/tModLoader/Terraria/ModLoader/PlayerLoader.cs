@@ -172,12 +172,12 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookClientClone = AddHook<Action<ModPlayer>>(p => p.clientClone);
+	private static HookList HookCopyClientState = AddHook<Action<ModPlayer>>(p => p.CopyClientState);
 
-	public static void clientClone(Player player, Player clientClone)
+	public static void CopyClientState(Player player, Player targetCopy)
 	{
-		foreach (var modPlayer in HookClientClone.Enumerate(player.modPlayers)) {
-			modPlayer.clientClone(clientClone.modPlayers[modPlayer.Index]);
+		foreach (var modPlayer in HookCopyClientState.Enumerate(player.modPlayers)) {
+			modPlayer.CopyClientState(targetCopy.modPlayers[modPlayer.Index]);
 		}
 	}
 
