@@ -15,7 +15,7 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 
-	//TODO: Revisit this. It feels wrong.
+	//TODO: Revisit this. Creates a lot of 'slowness' when publishing due to needing to jump through re-querying the mod browser.
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
@@ -28,6 +28,10 @@ public partial class WorkshopSocialModule
 		if (existing == null)
 			return false;
 
+		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
+		SteamedWraps.Download(new Steamworks.PublishedFileId_t(ulong.Parse(existing.PublishId)), forceUpdate: true);
+
+		// Grab the tags from workshop.json
 		string searchFolder = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
 
 		return ModOrganizer.TryReadManifest(searchFolder, out info);
@@ -67,13 +71,11 @@ public partial class WorkshopSocialModule
 			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
 			var currID = Steamworks.SteamUser.GetSteamID();
 
+			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
 			if (existingID != currID.m_SteamID) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
 				return false;
 			}
-
-			// Update the subscribed mod to be the latest version published
-			SteamedWraps.Download(new Steamworks.PublishedFileId_t(currPublishID), forceUpdate: true);
 
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
@@ -111,11 +113,7 @@ public partial class WorkshopSocialModule
 			string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
 
 			// Solxan: File.Copy sometimes fails to delete the file that it needs to replace.
-			// This mitigates that issue by forcing the deletion before copying.
 			//TODO: But why though? Needs deeper look later.
-			if (File.Exists(modPath))
-				File.Delete(modPath);
-
 			File.Copy(modFile.path, modPath, true);
 
 			// Cleanup Old Folders

@@ -402,7 +402,7 @@ public static class SteamedWraps
 		}
 		else {
 			// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-			Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate"));
+			Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
 		}
 	}
 

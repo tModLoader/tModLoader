@@ -186,7 +186,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		if (Loading) return;
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		PopulateModBrowser();
+		PopulateModBrowser(uiOnly: false);
 	}
 
 	// TODO if we store a browser 'state' we can probably refactor this
@@ -211,11 +211,14 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		Main.clrInput();
 		if (!Loading && _items.Count <= 0) {
-			PopulateModBrowser();
+			if (WorkshopHelper.QueryHelper.Items.Count == 0)
+				PopulateModBrowser(uiOnly: false);
+			else
+				PopulateModBrowser(uiOnly: true);
 		}
 	}
 
-	internal void PopulateModBrowser()
+	internal void PopulateModBrowser(bool uiOnly)
 	{
 		// Initialize
 		Loading = true;
@@ -232,15 +235,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		// Asynchronous load the Mod Browser
 		Task.Run(() => {
-			InnerPopulateModBrowser();
+			InnerPopulateModBrowser(uiOnly: uiOnly);
 			Loading = false;
 			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 		});
 	}
 
-	internal bool InnerPopulateModBrowser()
+	internal bool InnerPopulateModBrowser(bool uiOnly)
 	{
-		if (!WorkshopHelper.QueryHelper.FetchDownloadItems())
+		if (!uiOnly && !WorkshopHelper.QueryHelper.QueryWorkshop())
 			return false;
 
 		foreach (var item in WorkshopHelper.QueryHelper.Items) {
@@ -289,5 +292,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	internal static void LogModBrowserException(Exception e)
 	{
 		Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
+	}
+
+	internal static void CleanupDeletedItem(string modName)
+	{
+		if (WorkshopHelper.QueryHelper.Items.Count > 0) {
+			WorkshopHelper.QueryHelper.FindModDownloadItem(modName).Installed = null;
+			WorkshopHelper.QueryHelper.FindModDownloadItem(modName).NeedsGameRestart = true;
+			Task.Run(() => { Interface.modBrowser.PopulateModBrowser(uiOnly: true); });
+			Interface.modBrowser.UpdateNeeded = true;
+		}
 	}
 }
