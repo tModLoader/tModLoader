@@ -641,7 +641,7 @@ internal static class ModOrganizer
 
 		if (TryReadManifest(parentDir, out var info)) {
 			// Is a mod on Steam Workshop
-			SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId));
+			SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId), parentDir);
 		}
 		else {
 			// Is a Mod in Mods Folder
