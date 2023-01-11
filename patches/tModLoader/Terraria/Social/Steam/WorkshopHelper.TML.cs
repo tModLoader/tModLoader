@@ -273,6 +273,15 @@ public partial class WorkshopHelper
 				GetDependenciesRecursive(dep, ref set);
 		}
 
+		internal static bool GetPublishIdByInternalName(string internalName, out ulong publishId)
+		{
+			var query = new AQueryInstance();
+			bool success = query.SearchByInternalName(internalName, out var itemDetails);
+
+			publishId = itemDetails.m_nPublishedFileId.m_PublishedFileId;
+			return success;
+		}
+
 		internal static bool CheckWorkshopConnection()
 		{
 			// If populating fails during query, than no connection. Attempt connection if not yet attempted.
@@ -402,6 +411,25 @@ public partial class WorkshopHelper
 
 					ReleaseWorkshopQuery();
 				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
+				return true;
+			}
+
+			// Only use if we don't have a guaranteed PublishID source
+			internal bool SearchByInternalName(string modName, out SteamUGCDetails_t itemDetails)
+			{
+				string currentPage = _nextCursor;
+				itemDetails = new();
+
+				// If Query Fails, we can't publish.
+				if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, internalName: modName)))
+					return false;
+
+				// If Query Succeeds, but doesn't find a match, assume safe to publish new item.
+				if (_queryReturnCount == 0)
+					return true;
+
+				// Should only be one of the matching mod
+				itemDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
 				return true;
 			}
 

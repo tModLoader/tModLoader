@@ -137,6 +137,31 @@ public static class SteamedWraps
 		}
 	}
 
+	private static void FilterByTags(ref UGCQueryHandle_t qHandle, List<string> tags)
+	{
+		if (tags == null)
+			return;
+
+		foreach (var tag in tags) {
+			if (SteamClient)
+				SteamUGC.AddRequiredTag(qHandle, tag);
+			else if (SteamAvailable)
+				SteamGameServerUGC.AddRequiredTag(qHandle, tag);
+		}
+	}
+
+	private static void FilterByInternalName(ref UGCQueryHandle_t qHandle, string internalName)
+	{
+		if (internalName == null)
+			return;
+
+		// TODO: Test that this obeys the StringComparison limitations previously enforced. ExampleMod vs Examplemod need to not be allowed
+		if (SteamClient)
+			SteamUGC.AddRequiredKeyValueTag(qHandle, "name", internalName);
+		else if (SteamAvailable)
+			SteamGameServerUGC.AddRequiredKeyValueTag(qHandle, "name", internalName);
+	}
+
 	public static SteamAPICall_t GenerateSingleItemQuery(ulong publishId)
 	{
 		if (SteamClient) {
@@ -152,16 +177,20 @@ public static class SteamedWraps
 		return new();
 	}
 
-	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor)
+	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, List<string> tags = null, string internalName = null)
 	{
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
+			FilterByTags(ref qHandle, tags);
+			FilterByInternalName(ref qHandle, internalName);
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
+			FilterByTags(ref qHandle, tags);
+			FilterByInternalName(ref qHandle, internalName);
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
