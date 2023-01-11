@@ -60,9 +60,12 @@ public class ModPlayerTest : ModPlayer
 	}
 
 	public override void clientClone(ModPlayer clientClone)
-	{
+	{ }
 
-	}
+	public override void PlayerConnect(Player player) { }
+	public override void PlayerDisconnect(Player player) { }
+	public override void OnEnterWorld(Player player) { }
+	public override void OnRespawn(Player player) { }
 
 	public void UseQuickSpawnItem() {
 		Item item = new Item(22);

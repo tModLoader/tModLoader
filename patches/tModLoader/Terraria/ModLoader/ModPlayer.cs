@@ -948,32 +948,28 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Called on clients when a player connects.
 	/// </summary>
-	/// <param name="player">The player that connected.</param>
-	public virtual void PlayerConnect(Player player)
+	public virtual void PlayerConnect()
 	{
 	}
 
 	/// <summary>
 	/// Called when a player disconnects.
 	/// </summary>
-	/// <param name="player">The player that disconnected.</param>
-	public virtual void PlayerDisconnect(Player player)
+	public virtual void PlayerDisconnect()
 	{
 	}
 
 	/// <summary>
 	/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
 	/// </summary>
-	/// <param name="player">The player that entered the world.</param>
-	public virtual void OnEnterWorld(Player player)
+	public virtual void OnEnterWorld()
 	{
 	}
 
 	/// <summary>
 	/// Called when a player respawns in the world.
 	/// </summary>
-	/// <param name="player">The player that respawns</param>
-	public virtual void OnRespawn(Player player)
+	public virtual void OnRespawn()
 	{
 	}
 
