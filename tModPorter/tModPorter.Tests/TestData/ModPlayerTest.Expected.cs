@@ -82,9 +82,12 @@ public class ModPlayerTest : ModPlayer
 	}
 
 	public override void CopyClientState(ModPlayer clientClone)/* tModPorter Suggestion: Replace Item.Clone usages with Item.CopyNetStateTo */
-	{
+	{ }
 
-	}
+	public override void PlayerConnect() { }
+	public override void PlayerDisconnect() { }
+	public override void OnEnterWorld() { }
+	public override void OnRespawn() { }
 
 	public void UseQuickSpawnItem() {
 		Item item = new Item(22);

@@ -89,8 +89,8 @@ public class HookList<T> where T : class
 	public FilteredSpanEnumerator<T> Enumerate(ReadOnlySpan<T> instances)
 		=> new(instances, indices);
 
-	public FilteredSpanEnumerator<T> Enumerate(List<T> instances) =>
-		Enumerate(CollectionsMarshal.AsSpan(instances));
+	public FilteredSpanEnumerator<T> Enumerate(List<T> instances)
+		=> Enumerate(CollectionsMarshal.AsSpan(instances));
 
 	public void Update<U>(IList<U> instances) where U : IIndexed
 	{

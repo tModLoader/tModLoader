@@ -1133,43 +1133,43 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookPlayerConnect = AddHook<Action<Player>>(p => p.PlayerConnect);
+	private static HookList HookPlayerConnect = AddHook<Action>(p => p.PlayerConnect);
 
 	public static void PlayerConnect(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
 		foreach (var modPlayer in HookPlayerConnect.Enumerate(player.modPlayers)) {
-			modPlayer.PlayerConnect(player);
+			modPlayer.PlayerConnect();
 		}
 	}
 
-	private static HookList HookPlayerDisconnect = AddHook<Action<Player>>(p => p.PlayerDisconnect);
+	private static HookList HookPlayerDisconnect = AddHook<Action>(p => p.PlayerDisconnect);
 
 	public static void PlayerDisconnect(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
 		foreach (var modPlayer in HookPlayerDisconnect.Enumerate(player.modPlayers)) {
-			modPlayer.PlayerDisconnect(player);
+			modPlayer.PlayerDisconnect();
 		}
 	}
 
-	private static HookList HookOnEnterWorld = AddHook<Action<Player>>(p => p.OnEnterWorld);
+	private static HookList HookOnEnterWorld = AddHook<Action>(p => p.OnEnterWorld);
 
 	// Do NOT hook into the Player.Hooks.OnEnterWorld event
 	public static void OnEnterWorld(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
 		foreach (var modPlayer in HookOnEnterWorld.Enumerate(player.modPlayers)) {
-			modPlayer.OnEnterWorld(player);
+			modPlayer.OnEnterWorld();
 		}
 	}
 
-	private static HookList HookOnRespawn = AddHook<Action<Player>>(p => p.OnRespawn);
+	private static HookList HookOnRespawn = AddHook<Action>(p => p.OnRespawn);
 
 	public static void OnRespawn(Player player)
 	{
 		foreach (var modPlayer in HookOnRespawn.Enumerate(player.modPlayers)) {
-			modPlayer.OnRespawn(player);
+			modPlayer.OnRespawn();
 		}
 	}
 

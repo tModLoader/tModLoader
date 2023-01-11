@@ -165,6 +165,10 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PostHurt");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"AddStartingItems", comment: "Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PlayerConnect");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PlayerDisconnect");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnEnterWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnRespawn");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"SetDrawPositions");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
