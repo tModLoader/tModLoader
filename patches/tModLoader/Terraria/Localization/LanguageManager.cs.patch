@@ -34,7 +34,7 @@
  		if (this.OnLanguageChanging != null)
  			this.OnLanguageChanging(this);
  
-@@ -144,19 +_,49 @@
+@@ -144,19 +_,48 @@
  		}
  	}
  
@@ -53,7 +53,7 @@
 +				continue;
 +
  			for (int i = 0; i < 100; i++) {
-+				string text = regex.Replace(value.Value, (Match match) => GenerateReplacement(match, localizedText.Key));
++				string text = regex.Replace(value.Value, (Match match) => GetTextValue(FindKeyInScope(match.Groups[1].ToString(), localizedText.Key)));
 +				/* 
  				string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
 +				*/
@@ -66,21 +66,20 @@
 +
 +		// Provides additional functionality allowing substitutions to assume the scope of the key they belong to.
 +		// For example, if a key is Mods.ExampleMod.Common.Test with a match, {$Common.PaperAirplane}, Mods.ExampleMod.Common.PaperAirplane if it exists would be matched. All other key variations from each parent key are checked. 
-+		string GenerateReplacement(Match match, string key)
++		string FindKeyInScope(string key, string scope)
 +		{
-+			string matchText = match.Groups[1].ToString();
-+			if (Exists(matchText))
-+				return GetTextValue(matchText);
++			if (Exists(key))
++				return key;
 +
-+			string[] splitKey = key.Split(".");
++			string[] splitKey = scope.Split(".");
 +			for (int j = splitKey.Length - 1; j >= 0; j--) {
 +				string partialKey = string.Join(".", splitKey.Take(j + 1));
-+				string combinedKey = partialKey + "." + matchText;
++				string combinedKey = partialKey + "." + key;
 +				if (Exists(combinedKey))
-+					return GetTextValue(combinedKey);
++					return combinedKey;
 +			}
 +
-+			return GetTextValue(matchText);
++			return key;
 +		}
  	}
  
