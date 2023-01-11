@@ -30,11 +30,11 @@
  	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
  	{
  		LoadFilesForCulture(culture);
-+		LocalizationLoader.RefreshModLanguage(culture);
++		LocalizationLoader.RefreshModLanguage(culture, false);
  		if (this.OnLanguageChanging != null)
  			this.OnLanguageChanging(this);
  
-@@ -144,11 +_,19 @@
+@@ -144,19 +_,49 @@
  		}
  	}
  
@@ -53,8 +53,38 @@
 +				continue;
 +
  			for (int i = 0; i < 100; i++) {
++				string text = regex.Replace(value.Value, (Match match) => GenerateReplacement(match, localizedText.Key));
++				/* 
  				string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
++				*/
  				if (text == value.Value)
+ 					break;
+ 
+ 				value.SetValue(text);
+ 			}
+ 		}
++
++		// Provides additional functionality allowing substitutions to assume the scope of the key they belong to.
++		// For example, if a key is Mods.ExampleMod.Common.Test with a match, {$Common.PaperAirplane}, Mods.ExampleMod.Common.PaperAirplane if it exists would be matched. All other key variations from each parent key are checked. 
++		string GenerateReplacement(Match match, string key)
++		{
++			string matchText = match.Groups[1].ToString();
++			if (Exists(matchText))
++				return GetTextValue(matchText);
++
++			string[] splitKey = key.Split(".");
++			for (int j = splitKey.Length - 1; j >= 0; j--) {
++				string partialKey = string.Join(".", splitKey.Take(j + 1));
++				string combinedKey = partialKey + "." + matchText;
++				if (Exists(combinedKey))
++					return GetTextValue(combinedKey);
++			}
++
++			return GetTextValue(matchText);
++		}
+ 	}
+ 
+ 	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
 @@ -310,7 +_,9 @@
  		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");

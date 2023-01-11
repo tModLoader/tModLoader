@@ -549,7 +549,7 @@
 		"Patreon": "Patreon"
 	},
 	"Mods": {
-		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка"
+		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
 		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
 		"ModLoader.Items.StartBag.Tooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
 		"ModLoader.Items.UnloadedItem.DisplayName": "Незагруженный предмет",

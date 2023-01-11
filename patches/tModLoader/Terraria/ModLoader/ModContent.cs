@@ -321,7 +321,7 @@ public static class ModContent
 
 		Main.player[255] = new Player();
 
-		LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
+		LocalizationLoader.RefreshModLanguage(Language.ActiveCulture, true);
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 		PylonLoader.Setup();

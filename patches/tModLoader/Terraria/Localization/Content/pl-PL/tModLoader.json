@@ -549,7 +549,7 @@
 		// "Patreon": "Patreon"
 	},
 	"Mods": {
-		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis"
+		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis",
 		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
 		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
 		"ModLoader.Items.UnloadedItem.DisplayName": "Nieaktywny przedmiot",

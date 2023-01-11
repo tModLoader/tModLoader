@@ -43,7 +43,7 @@ public static class LocalizationLoader
 	}
 
 	//TODO: Unhardcode ALL of this.
-	public static void RefreshModLanguage(GameCulture culture)
+	public static void RefreshModLanguage(GameCulture culture, bool processCopyCommands)
 	{
 		Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
 
@@ -122,7 +122,8 @@ public static class LocalizationLoader
 
 		SystemLoader.SetLanguage(culture);
 
-		LanguageManager.Instance.ProcessCopyCommandsInTexts();
+		if(processCopyCommands)
+			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 	}
 
 	internal static void UpgradeLangFile(string langFile, string modName)

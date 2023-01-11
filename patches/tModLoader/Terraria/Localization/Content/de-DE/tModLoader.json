@@ -549,7 +549,7 @@
 		"Patreon": "Patreon"
 	},
 	"Mods": {
-		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz"
+		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz",
 		"ModLoader.Items.StartBag.DisplayName": "Starterpaket",
 		"ModLoader.Items.StartBag.Tooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",
 		"ModLoader.Items.UnloadedItem.DisplayName": "Ungeladenes Item",

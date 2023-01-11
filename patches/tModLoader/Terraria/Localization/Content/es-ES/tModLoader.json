@@ -549,7 +549,7 @@
 		"Patreon": "Patreon"
 	},
 	"Mods": {
-		"ModLoader.Items.AprilFools.DisplayName": "Chiste del Día de los Inocentes"
+		"ModLoader.Items.AprilFools.DisplayName": "Chiste del Día de los Inocentes",
 		"ModLoader.Items.StartBag.DisplayName": "Bolsa de partida",
 		"ModLoader.Items.StartBag.Tooltip": "Algunos objetos de partida no cabían en tu inventario",
 		"ModLoader.Items.UnloadedItem.DisplayName": "Objeto sin cargar",
