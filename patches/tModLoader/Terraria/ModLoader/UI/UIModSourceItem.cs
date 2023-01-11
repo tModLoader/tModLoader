@@ -28,6 +28,7 @@ internal class UIModSourceItem : UIPanel
 	private readonly LocalMod _builtMod;
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
+	private int contextButtonsLeft = -26;
 
 	public UIModSourceItem(string mod, LocalMod builtMod)
 	{
@@ -90,7 +91,7 @@ internal class UIModSourceItem : UIPanel
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 		if (File.Exists(csprojFile)) {
 			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
-				Left = { Pixels = -52, Percent = 1f },
+				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
 			openCSProjButton.OnLeftClick += (a, b) => {
@@ -101,6 +102,8 @@ internal class UIModSourceItem : UIPanel
 				);
 			};
 			Append(openCSProjButton);
+
+			contextButtonsLeft -= 26;
 		}
 	}
 
@@ -117,13 +120,11 @@ internal class UIModSourceItem : UIPanel
 			string modFolderName = Path.GetFileName(_mod);
 			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
-			int leftPixels = -26;
-
 			bool projNeedsUpdate = false;
 			if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 				var icon = UICommon.ButtonExclamationTexture;
 				var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
-					Left = { Pixels = leftPixels, Percent = 1f },
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
 				upgradeCSProjButton.OnLeftClick += (s, e) => {
@@ -154,7 +155,7 @@ internal class UIModSourceItem : UIPanel
 				};
 				Append(upgradeCSProjButton);
 
-				leftPixels -= 26;
+				contextButtonsLeft -= 26;
 				projNeedsUpdate = true;
 			}
 
@@ -165,7 +166,7 @@ internal class UIModSourceItem : UIPanel
 			if (files.Length > 0) {
 				var icon = UICommon.ButtonExclamationTexture;
 				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
-					Left = { Pixels = leftPixels, Percent = 1f },
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
 
@@ -179,7 +180,7 @@ internal class UIModSourceItem : UIPanel
 
 				Append(upgradeLangFilesButton);
 
-				leftPixels -= 26;
+				contextButtonsLeft -= 26;
 			}
 
 
@@ -187,7 +188,7 @@ internal class UIModSourceItem : UIPanel
 			if (Platform.IsWindows && !projNeedsUpdate) {
 				var pIcon = UICommon.ButtonExclamationTexture;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
-					Left = { Pixels = leftPixels, Percent = 1f },
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
 
@@ -210,7 +211,7 @@ internal class UIModSourceItem : UIPanel
 
 				Append(portModButton);
 
-				leftPixels -= 26;
+				contextButtonsLeft -= 26;
 			}
 		}
 	}
