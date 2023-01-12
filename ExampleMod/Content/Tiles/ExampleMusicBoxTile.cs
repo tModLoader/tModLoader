@@ -2,6 +2,7 @@ using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -13,6 +14,7 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileObsidianKill[Type] = true;
+			TileID.Sets.TileIsModMusicBox[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.LavaDeath = false;

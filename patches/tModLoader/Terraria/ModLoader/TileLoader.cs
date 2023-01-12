@@ -387,8 +387,8 @@ public static class TileLoader
 
 	public static bool IsModMusicBox(Tile tile)
 	{
-		return MusicLoader.tileToMusic.ContainsKey(tile.type)
-		&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
+		return (MusicLoader.tileToMusic.ContainsKey(tile.type) && MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36))
+		|| TileID.Sets.TileIsModMusicBox[tile.type];
 	}
 
 	public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings)
