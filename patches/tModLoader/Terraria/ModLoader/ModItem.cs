@@ -37,12 +37,12 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// The translations for the display name of this item.
 	/// </summary>
-	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>r
 	/// The translations for the tooltip of this item.
 	/// </summary>
-	public virtual LocalizedText Tooltip => this.GetOrRegisterLocalization(nameof(Tooltip), () => "");
+	public virtual LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.

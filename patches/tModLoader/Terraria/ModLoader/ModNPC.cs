@@ -28,7 +28,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public string LocalizationCategory => "NPCs";
 
 	/// <summary> The translations for the display name of this NPC. </summary>
-	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.

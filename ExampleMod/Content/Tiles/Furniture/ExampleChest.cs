@@ -34,8 +34,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Other tiles with just one map entry use CreateMapEntryName() to use the default translationkey, "MapEntry"
 			// Since ExampleChest needs multiple, we register our own MapEntry keys
-			AddMapEntry(new Color(200, 200, 200), this.GetOrRegisterLocalization("MapEntry0"), MapChestName);
-			AddMapEntry(new Color(0, 141, 63), this.GetOrRegisterLocalization("MapEntry1"), MapChestName);
+			AddMapEntry(new Color(200, 200, 200), this.GetLocalization("MapEntry0"), MapChestName);
+			AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -56,7 +56,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override LocalizedText ContainerName(int frameX, int frameY) {
 			int option = frameX / 36;
-			return Language.GetText(this.GetLocalizationKey("MapEntry" + option));
+			return this.GetLocalization("MapEntry" + option);
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {

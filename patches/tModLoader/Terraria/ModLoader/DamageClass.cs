@@ -53,7 +53,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.
 	/// This should include the 'damage' part.
 	/// </summary>
-	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.

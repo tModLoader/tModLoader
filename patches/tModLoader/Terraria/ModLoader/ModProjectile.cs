@@ -25,7 +25,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public string LocalizationCategory => "Projectiles";
 
 	/// <summary> The translations for the display name of this projectile. </summary>
-	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 	public int AIType { get; set; }

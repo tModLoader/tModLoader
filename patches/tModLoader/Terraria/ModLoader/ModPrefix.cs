@@ -31,7 +31,7 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 
 	public string LocalizationCategory => "Prefixes";
 
-	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The category your prefix belongs to, PrefixCategory.Custom by default

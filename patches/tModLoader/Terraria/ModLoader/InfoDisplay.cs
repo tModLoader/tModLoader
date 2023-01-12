@@ -29,7 +29,7 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	/// <summary>
 	/// This is the name that will show up when hovering over this info display.
 	/// </summary>
-	public virtual LocalizedText DisplayName => this.GetOrRegisterLocalization(nameof(DisplayName), PrettyPrintName);
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// This dictates whether or not this info display should be active.

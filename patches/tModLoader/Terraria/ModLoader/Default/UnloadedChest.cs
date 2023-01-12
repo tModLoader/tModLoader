@@ -36,9 +36,9 @@ public class UnloadedChest : UnloadedTile
 
 		AdjTiles = new int[] { TileID.Containers };
 
-		AddMapEntry(new Color(200, 200, 200), this.GetOrRegisterLocalization("MapEntry0"), MapChestName);
+		AddMapEntry(new Color(200, 200, 200), this.GetLocalization("MapEntry0"), MapChestName);
 
-		AddMapEntry(new Color(0, 141, 63), this.GetOrRegisterLocalization("MapEntry1"), MapChestName);
+		AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 	}
 
 	public override LocalizedText ContainerName(int frameX, int frameY)
