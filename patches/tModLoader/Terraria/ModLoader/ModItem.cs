@@ -71,11 +71,6 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 		ModTypeLookup<ModItem>.Register(this);
 
-		/*
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
-		Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
-		*/
-
 		Item.ResetStats(ItemLoader.ReserveItemID());
 		Item.ModItem = this;
 
@@ -136,11 +131,6 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 		if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
 			TextureAssets.ItemFlame[Item.type] = flameTexture;
 		}
-
-		/*
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-		*/
 	}
 
 	/// <summary>

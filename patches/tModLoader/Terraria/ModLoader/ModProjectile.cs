@@ -58,12 +58,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModProjectile>.Register(this);
-
 		Projectile.type = ProjectileLoader.ReserveProjectileID();
-		/*
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
-		*/
-
 		ProjectileLoader.projectiles.Add(this);
 	}
 
@@ -103,10 +98,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 		if (Projectile.aiStyle == 7) {
 			Main.projHook[Projectile.type] = true;
 		}
-		/*
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-		*/
 	}
 
 	/// <summary>

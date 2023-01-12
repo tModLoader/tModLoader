@@ -26,11 +26,6 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	{
 		ModTypeLookup<ModBuff>.Register(this);
 		Type = BuffLoader.ReserveBuffID();
-		/*
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffName.{Name}");
-		Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffDescription.{Name}");
-		*/
-
 		BuffLoader.buffs.Add(this);
 	}
 

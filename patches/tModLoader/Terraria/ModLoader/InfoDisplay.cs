@@ -49,8 +49,6 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 
 	protected sealed override void Register()
 	{
-		// InfoName = LocalizationLoader.GetOrCreateTranslation(Mod, $"InfoDisplayName.{Name}");
-
 		ModTypeLookup<InfoDisplay>.Register(this);
 
 		Type = InfoDisplayLoader.Add(this);

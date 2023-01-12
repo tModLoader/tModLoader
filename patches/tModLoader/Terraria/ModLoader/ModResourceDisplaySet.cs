@@ -48,28 +48,10 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModResourceDisplaySet>.Register(this);
-
-		// DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{Name}");
-
 		Type = ResourceDisplaySetLoader.Add(this);
 	}
 
-	public sealed override void SetupContent()
-	{
-		AutoStaticDefaults();
-		SetStaticDefaults();
-	}
-
-	/// <summary>
-	/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
-	/// </summary>
-	public virtual void AutoStaticDefaults()
-	{
-		/*
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(DisplayedName, "([A-Z])", " $1").Trim());
-		*/
-	}
+	public sealed override void SetupContent() => SetStaticDefaults();
 
 	public void Draw()
 	{

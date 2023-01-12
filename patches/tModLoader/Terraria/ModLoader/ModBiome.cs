@@ -50,17 +50,10 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	{
 		Type = LoaderManager.Get<BiomeLoader>().Register(this);
 		RegisterSceneEffect(this);
-
-		// DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");
 	}
 
 	public sealed override void SetupContent()
 	{
-		/*
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-		*/
-
 		SetStaticDefaults();
 		
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);

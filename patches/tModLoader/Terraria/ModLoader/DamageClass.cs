@@ -100,8 +100,6 @@ public abstract class DamageClass : ModType, ILocalizedModType
 
 	protected sealed override void Register()
 	{
-		// ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
-
 		ModTypeLookup<DamageClass>.Register(this);
 
 		Type = DamageClassLoader.Add(this);

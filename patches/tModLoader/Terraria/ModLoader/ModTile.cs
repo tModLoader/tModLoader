@@ -43,11 +43,6 @@ public abstract class ModTile : ModBlockType
 
 	public override string LocalizationCategory => "Tiles";
 
-	/*
-	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
-	public LocalizedText ContainerName => this.GetLocalizedText(nameof(ContainerName));
-	*/
-
 	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
 	public virtual string HighlightTexture => Texture + "_Highlight";
 
@@ -77,21 +72,6 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-/*
-	public void AddMapEntry(Color color, ModTranslation name)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
-	}*/
-
-	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
@@ -105,29 +85,10 @@ public abstract class ModTile : ModBlockType
 		}
 	}
 
-	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
-	/// </summary>
-	/*
-	public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
-	}*/
-
 	protected sealed override void Register()
 	{
-		// ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
-
 		ModTypeLookup<ModTile>.Register(this);
-
 		Type = (ushort)TileLoader.ReserveTileID();
-
 		TileLoader.tiles.Add(this);
 	}
 
