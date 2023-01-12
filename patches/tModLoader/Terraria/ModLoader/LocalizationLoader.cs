@@ -402,8 +402,11 @@ public static class LocalizationLoader
 		}
 
 		IEnumerable<GameCulture> targetCultures = localizationFilesByCulture.Keys;
-		if (specificCulture != null)
-			targetCultures = new[] {specificCulture};
+		if (specificCulture != null) {
+			targetCultures = new[] { specificCulture };
+			if (!localizationFilesByCulture.TryGetValue(specificCulture, out var fileList))
+				localizationFilesByCulture[specificCulture] = fileList = new();
+		}
 
 		// Update target culture lang files based on English
 		foreach (var culture in targetCultures) {
