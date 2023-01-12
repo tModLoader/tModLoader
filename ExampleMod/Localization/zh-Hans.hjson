@@ -276,6 +276,7 @@ Mods: {
 			ExampleHealingPotion: {
 				/* DisplayName: Example Healing Potion */
 				/* Tooltip: "" */
+				/* RestoreLifeText: "{0} ({1} when quick healing)" */
 			}
 
 			ExampleLifeFruit: {
