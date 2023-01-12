@@ -60,6 +60,13 @@ public static class PrefixLoader
 		Array.Resize(ref Lang.prefix, PrefixCount);
 	}
 
+	internal static void FinishSetup()
+	{
+		foreach (ModPrefix prefix in prefixes) {
+			Lang.prefix[prefix.Type] = prefix.DisplayName;
+		}
+	}
+
 	internal static void Unload()
 	{
 		prefixes.Clear();

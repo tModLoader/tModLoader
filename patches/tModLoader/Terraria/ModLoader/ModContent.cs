@@ -321,21 +321,25 @@ public static class ModContent
 
 		Main.player[255] = new Player();
 
+		BuffLoader.FinishSetup();
+		ItemLoader.FinishSetup();
+		NPCLoader.FinishSetup();
+		PrefixLoader.FinishSetup();
+		ProjectileLoader.FinishSetup();
+		PylonLoader.FinishSetup();
+
+		MapLoader.FinishSetup();
+		PlantLoader.FinishSetup();
+		RarityLoader.FinishSetup();
+
 		LocalizationLoader.RefreshModLanguage(Language.ActiveCulture, true);
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
-
-		PylonLoader.Setup();
-		MapLoader.SetupModMap();
-		PlantLoader.SetupPlants();
-		RarityLoader.Initialize();
-		KeybindLoader.SetupContent();
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
 		SetupRecipes(token);
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
-		ItemLoader.ValidateGeodeDropsSet();
 		LocalizationLoader.UpdateLocalizationFiles();
 
 		MenuLoader.GotoSavedModMenu();

@@ -14,7 +14,7 @@ public static class PylonLoader
 	internal static readonly IList<ModPylon> modPylons = new List<ModPylon>();
 	internal static TeleportPylonType nextPylonID = VanillaPylonCount;
 
-	internal static void Setup()
+	internal static void FinishSetup()
 	{
 		foreach (ModPylon pylon in TileLoader.tiles.OfType<ModPylon>()) {
 			ModTypeLookup<ModPylon>.Register(pylon);

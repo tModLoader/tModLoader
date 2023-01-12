@@ -31,7 +31,7 @@ internal static class MapLoader
 	//add internal modPosition field to Terraria.Map.MapHelper
 	//near end of Terraria.Map.MapHelper.Initialize set modPosition to num11 + 1
 	//in Terraria.Map.MapHelper.SaveMap add mod-type-check to darkness check
-	internal static void SetupModMap()
+	internal static void FinishSetup()
 	{
 		if (Main.dedServ) {
 			return;

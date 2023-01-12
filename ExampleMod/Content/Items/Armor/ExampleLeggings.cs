@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
@@ -9,6 +10,10 @@ namespace ExampleMod.Content.Items.Armor
 	[AutoloadEquip(EquipType.Legs)]
 	public class ExampleLeggings : ModItem
 	{
+		public static readonly int MoveSpeedBonus = 5;
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MoveSpeedBonus);
+
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 1;
 		}
@@ -22,7 +27,7 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void UpdateEquip(Player player) {
-			player.moveSpeed += 0.05f; // Increase the movement speed of the player
+			player.moveSpeed += MoveSpeedBonus / 100f; // Increase the movement speed of the player
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -21,13 +21,6 @@ public static class LocalizationLoader
 			return;
 
 		/*
-		var modTranslationDictionary = new Dictionary<string, ModTranslation>();
-
-		AutoloadTranslations(mod, modTranslationDictionary);
-
-		foreach (var value in modTranslationDictionary.Values) {
-			AddTranslation(value);
-
 			//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
 		TODO: Move this somewhere?
 			if (value.Key.StartsWith($"Mods.{mod.Name}.GameTips.")) {
@@ -37,12 +30,6 @@ public static class LocalizationLoader
 		*/
 	}
 
-	internal static void Unload()
-	{
-		//translations.Clear();
-	}
-
-	//TODO: Unhardcode ALL of this.
 	public static void RefreshModLanguage(GameCulture culture, bool processCopyCommands)
 	{
 		Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
@@ -50,75 +37,6 @@ public static class LocalizationLoader
 		foreach (var mod in ModLoader.Mods) {
 			AutoloadTranslations(mod, dict, culture);
 		}
-
-		foreach (ModItem item in ItemLoader.items) {
-			var text = item.DisplayName; // new LocalizedText(item.DisplayName.Key, item.DisplayName.GetTranslation(culture));
-
-			Lang._itemNameCache[item.Item.type] = text;
-
-			text = item.Tooltip; // new LocalizedText(item.Tooltip.Key, item.Tooltip.GetTranslation(culture));
-
-			if (text.Value != null) {
-				//text = SetLocalizedText(dict, text);
-				Lang._itemTooltipCache[item.Item.type] = ItemTooltip.FromLanguageKey(text.Key);
-				ContentSamples.ItemsByType[item.Item.type].RebuildTooltip();
-			}
-		}
-
-		foreach (ModPrefix prefix in PrefixLoader.prefixes) {
-			var text = prefix.DisplayName; //	new LocalizedText(prefix.DisplayName.Key, prefix.DisplayName.GetTranslation(culture));
-
-			Lang.prefix[prefix.Type] = text;
-		}
-
-		/*
-		foreach (var keyValuePair in MapLoader.tileEntries) {
-			foreach (MapEntry entry in keyValuePair.Value) {
-				if (entry.translation != null) {
-					SetLocalizedText(dict, new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture)));
-				}
-			}
-		}
-
-		foreach (var keyValuePair in MapLoader.wallEntries) {
-			foreach (MapEntry entry in keyValuePair.Value) {
-				if (entry.translation != null) {
-					var text = new LocalizedText(entry.translation.Key, entry.translation.GetTranslation(culture));
-
-					SetLocalizedText(dict, text);
-				}
-			}
-		}
-		*/
-
-		foreach (ModProjectile proj in ProjectileLoader.projectiles) {
-			var text = proj.DisplayName; // = new LocalizedText(proj.DisplayName.Key, proj.DisplayName.GetTranslation(culture));
-			Lang._projectileNameCache[proj.Projectile.type] = text;
-		}
-
-		foreach (ModNPC npc in NPCLoader.npcs) {
-			var text = npc.DisplayName; // new LocalizedText(npc.DisplayName.Key, npc.DisplayName.GetTranslation(culture));
-
-			Lang._npcNameCache[npc.NPC.type] = text;
-		}
-
-		foreach (ModBuff buff in BuffLoader.buffs) {
-			var text = buff.DisplayName; // new LocalizedText(buff.DisplayName.Key, buff.DisplayName.GetTranslation(culture));
-
-			Lang._buffNameCache[buff.Type] = text;
-
-			text = buff.Description; //	new LocalizedText(buff.Description.Key, buff.Description.GetTranslation(culture));
-
-			Lang._buffDescriptionCache[buff.Type] = text;
-		}
-
-		/*
-		foreach (ModTranslation translation in translations.Values) {
-			LocalizedText text = new LocalizedText(translation.Key, translation.GetTranslation(culture));
-
-			SetLocalizedText(dict, text);
-		}
-		*/
 
 		SystemLoader.SetLanguage(culture);
 
@@ -313,20 +231,6 @@ public static class LocalizationLoader
 			}
 		}
 	}
-
-	/*
-	private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value)
-	{
-		if (dict.TryGetValue(value.Key, out var localizedText)) {
-			localizedText.SetValue(value.Value);
-		}
-		else {
-			dict[value.Key] = value;
-		}
-
-		return dict[value.Key];
-	}
-	*/
 
 	// Classes facilitating UpdateLocalizationFiles()
 	public record LocalizationFile(string path, string prefix, List<LocalizationEntry> Entries);

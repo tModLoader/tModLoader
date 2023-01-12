@@ -98,4 +98,6 @@ public partial class LocalizedText
 
 		return string.Format(value, args);
 	}
+
+	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
 }

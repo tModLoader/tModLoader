@@ -34,7 +34,7 @@
  		if (this.OnLanguageChanging != null)
  			this.OnLanguageChanging(this);
  
-@@ -144,19 +_,48 @@
+@@ -144,19 +_,50 @@
  		}
  	}
  
@@ -63,6 +63,8 @@
  				value.SetValue(text);
  			}
  		}
++
++		RecalculateBoundTextValues();
 +
 +		// Provides additional functionality allowing substitutions to assume the scope of the key they belong to.
 +		// For example, if a key is Mods.ExampleMod.Common.Test with a match, {$Common.PaperAirplane}, Mods.ExampleMod.Common.PaperAirplane if it exists would be matched. All other key variations from each parent key are checked. 
