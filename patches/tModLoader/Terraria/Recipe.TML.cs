@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -99,6 +100,7 @@ public partial class Recipe
 
 	public readonly Mod Mod;
 	public readonly List<Condition> Conditions = new List<Condition>();
+	public readonly List<Condition> ShimmerConditions = new List<Condition>();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
@@ -282,7 +284,7 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// Adds a collection of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">A collection of conditions.</param>
 	public Recipe AddCondition(IEnumerable<Condition> conditions)
@@ -292,21 +294,50 @@ public partial class Recipe
 		return this;
 	}
 
+	/// <summary>
+	/// Sets a condition delegate that will determine whether or not the recipe can be decrafted/changed in shimmer.. The condition can be unrelated to items or tiles (for example, biome or time).
+	/// </summary>
+	/// <param name="condition">The predicate delegate condition.</param>
+	/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
+	public Recipe AddShimmerCondition(NetworkText description, Predicate<Recipe> condition) => AddShimmerCondition(new Condition(description, condition));
+
+	/// <summary>
+	/// Adds an array of conditions that will determine whether or not the recipe can be decrafted/changed in shimmer. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// </summary>
+	/// <param name="conditions">An array of conditions.</param>
+	public Recipe AddShimmerCondition(params Condition[] conditions) => AddShimmerCondition((IEnumerable<Condition>)conditions);
+
+	public Recipe AddShimmerCondition(Condition condition)
+	{
+		ShimmerConditions.Add(condition);
+		return this;
+	}
+
+	/// <summary>
+	/// Adds a collection of conditions that will determine whether or not the recipe can be decrafted/changed in shimmer. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// </summary>
+	/// <param name="conditions">A collection of conditions.</param>
+	public Recipe AddShimmerCondition(IEnumerable<Condition> conditions)
+	{
+		ShimmerConditions.AddRange(conditions);
+		return this;
+	}
+
+	/// <summary>
+	/// Adds every condition from Recipie.Condtions to Recipie.ShimmerContions, checking for duplicates.
+	/// </summary>
+	public Recipe CopyConditionsToShimmer()
+	{
+		foreach (Condition condition in Conditions) {
+			if (!ShimmerConditions.Contains(condition)) {
+				ShimmerConditions.Add(condition);
+			}
+		}
+		return this;
+	}
 	public Recipe DisableShimmer()
 	{
 		notDecraftable = true;
-		return this;
-	}
-
-	public Recipe CrimsonOnly()
-	{
-		crimson = true;
-		return this;
-	}
-
-	public Recipe CorruptionOnly()
-	{
-		corruption = true;
 		return this;
 	}
 
@@ -413,8 +444,6 @@ public partial class Recipe
 		clone.requiredTile = new List<int>(requiredTile.ToArray());
 		clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
 		clone.notDecraftable = notDecraftable;
-		clone.crimson = crimson;
-		clone.corruption = corruption;
 
 		// These fields shouldn't be true, but are here just in case.
 		clone.needHoney = needHoney;
@@ -434,6 +463,10 @@ public partial class Recipe
 		clone.ConsumeItemHooks = ConsumeItemHooks;
 		foreach (Condition condition in Conditions) {
 			clone.AddCondition(condition);
+		}
+
+		foreach (Condition condition in ShimmerConditions) {
+			clone.AddShimmerCondition(condition);
 		}
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove

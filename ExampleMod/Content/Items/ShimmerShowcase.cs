@@ -27,14 +27,12 @@ public class ShimmerShowcaseCrimsonCorruption : ModItem
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.RottenChunk)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.CorruptionOnly()
 			.Register();
 
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Vertebrae)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.CrimsonOnly()
 			.Register();
 	}
 }

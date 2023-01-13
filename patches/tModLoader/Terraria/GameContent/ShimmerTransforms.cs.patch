@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ShimmerTransforms.cs
++++ src/tModLoader/Terraria/GameContent/ShimmerTransforms.cs
+@@ -1,4 +_,5 @@
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent;
+ 
+@@ -35,6 +_,9 @@
+ 			return true;
+ 
+ 		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[decraftingRecipeIndex])
++			return true;
++
++		if (!RecipeLoader.ShimmerAvailable(Main.recipe[decraftingRecipeIndex]))
+ 			return true;
+ 
+ 		return false;
