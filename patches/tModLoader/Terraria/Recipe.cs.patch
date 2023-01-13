@@ -482,9 +482,9 @@
 +
 +			if (!Main.recipe[i].notDecraftable) {
 +				if (ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type][0] == -1)
-+					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type][0] = i;
-+
-+				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type].Append(i);
++					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = new int[1] { i};
++				else
++					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type].Append(i).ToArray();
 +			}
  
  			if (Main.recipe[i].crimson)

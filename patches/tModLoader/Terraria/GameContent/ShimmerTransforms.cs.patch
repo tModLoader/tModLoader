@@ -30,7 +30,7 @@
 +		int recipe = recipeIndecies[recipeIndecies.Length -1];
 +
 +		foreach (int posRec in recipeIndecies) {
-+			if (!RecipeLoader.DecraftAvailable(Main.recipe[posRec]))
++			if (RecipeLoader.DecraftAvailable(Main.recipe[posRec]))
 +				recipe = posRec;
 +		}
 +
