@@ -74,5 +74,13 @@ public class ShimmerShowcaseCustomShimmerResult : ModItem
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
 			.DisableShimmer()
 			.Register();
+
+		//Another method of changing priority is using .SetShimmerPriority, setting it to -1 puts it bellow the unset 0 of both others here
+		CreateRecipe()
+			.AddIngredient<ExampleItem>()
+			.AddIngredient(ItemID.GoldenDelight)
+			.AddTile<Tiles.Furniture.ExampleWorkbench>()
+			.SetShimmerPriority(-1)
+			.Register();
 	}
 }

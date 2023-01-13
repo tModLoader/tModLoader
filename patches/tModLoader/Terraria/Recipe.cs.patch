@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,52 @@
+@@ -15,40 +_,58 @@
  		public int stack;
  	}
  
@@ -68,11 +68,17 @@
 -	public bool needEverythingSeed;
 +	internal bool needEverythingSeed;
 -	public bool notDecraftable;
-+	internal bool notDecraftable;
++
++	// Following fields made internal, automatically replaced with corresponding Decrafting Conditions
 -	public bool crimson;
 +	internal bool crimson;
 -	public bool corruption;
 +	internal bool corruption;
++
++	// Following fields made internal, use DisableShimmer() and EnableShimmer()
++	internal bool notDecraftable;
++
++	public int shimmerPriority = 0;
 +
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
@@ -150,7 +156,7 @@
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -120,9 +_,10 @@
+@@ -120,9 +_,19 @@
  		item.SetDefaults(itemType);
  		item.stack = itemStack;
  		customShimmerResults.Add(item);
@@ -158,6 +164,15 @@
 +		return this;
  	}
  
++	/// <summary>
++	/// Sets the priority of this recipe over other recipes for the same item, highest first, defaults to 0
++	/// </summary>
++	public Recipe SetShimmerPriority(int priority)
++	{
++		shimmerPriority = priority;
++		return this;
++	}
++
 +	/*
  	public Recipe()
  	{

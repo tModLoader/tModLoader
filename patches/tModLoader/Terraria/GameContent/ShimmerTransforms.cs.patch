@@ -22,16 +22,19 @@
  			return -1;
  
  		if (WorldGen.crimson && ItemID.Sets.IsCraftedCrimson[type] >= 0)
-@@ -22,7 +_,15 @@
+@@ -22,7 +_,18 @@
  		if (!WorldGen.crimson && ItemID.Sets.IsCraftedCorruption[type] >= 0)
  			return ItemID.Sets.IsCraftedCorruption[type];
  
-+		//Deliberately preserving the "last first" order of the previous implementation
++		//Deliberately preserving the "last first" order of the previous implementation, adding manual priority support
 +		int recipe = recipeIndecies[recipeIndecies.Length -1];
 +
 +		foreach (int posRec in recipeIndecies) {
-+			if (RecipeLoader.DecraftAvailable(Main.recipe[posRec]))
-+				recipe = posRec;
++			if (RecipeLoader.DecraftAvailable(Main.recipe[posRec])) {
++				if (Main.recipe[posRec].shimmerPriority >= Main.recipe[recipe].shimmerPriority)
++					recipe = posRec;
++
++			}
 +		}
 +
 -		return num;

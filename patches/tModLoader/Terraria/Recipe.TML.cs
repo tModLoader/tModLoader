@@ -340,9 +340,22 @@ public partial class Recipe
 		}
 		return this;
 	}
+
+	/// <summary>
+	/// Sets a check that is used during load to prevent shimmer being used for this recipe, not for on the fly use
+	/// </summary>
 	public Recipe DisableShimmer()
 	{
 		notDecraftable = true;
+		return this;
+	}
+
+	/// <summary>
+	/// resets a check that is used during load to prevent shimmer being used for this recipe, not for on the fly use
+	/// </summary>
+	public Recipe EnableShimmer()
+	{
+		notDecraftable = false;
 		return this;
 	}
 
