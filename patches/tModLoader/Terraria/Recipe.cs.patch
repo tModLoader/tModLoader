@@ -428,7 +428,7 @@
  			}
  
  			Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -14585,17 +_,47 @@
+@@ -14585,19 +_,58 @@
  
  	public static void UpdateWhichItemsAreMaterials()
  	{
@@ -473,9 +473,22 @@
 +			if (Main.recipe[i].Disabled)
 +				continue;
 +
- 			if (!Main.recipe[i].notDecraftable)
- 				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
++			/*Vanilla:
+-			if (!Main.recipe[i].notDecraftable)
++			 * if (!Main.recipe[i].notDecraftable)
+-				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
++			 * ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
++			 */
++
++			if (!Main.recipe[i].notDecraftable) {
++				if (ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type][0] == -1)
++					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type][0] = i;
++
++				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type].Append(i);
++			}
  
+ 			if (Main.recipe[i].crimson)
+ 				ItemID.Sets.IsCraftedCrimson[Main.recipe[i].createItem.type] = i;
 @@ -15747,23 +_,23 @@
  	{
  		int num = numRecipes;

@@ -63,7 +63,10 @@ public partial class Recipe
 		public static readonly Condition InGemCave = new Condition(NetworkText.FromKey("RecipeConditions.InGemCave"), _ => Main.LocalPlayer.ZoneGemCave);
 		public static readonly Condition InLihzhardTemple = new Condition(NetworkText.FromKey("RecipeConditions.InLihzardTemple"), _ => Main.LocalPlayer.ZoneLihzhardTemple);
 		public static readonly Condition InGraveyardBiome = new Condition(NetworkText.FromKey("RecipeConditions.InGraveyardBiome"), _ => Main.LocalPlayer.ZoneGraveyard);
+		//WorldType
 		public static readonly Condition EverythingSeed = new Condition(NetworkText.FromKey("RecipeConditions.EverythingSeed"), _ => Main.remixWorld && Main.getGoodWorld);
+		public static readonly Condition CrimsonWorld = new Condition(NetworkText.FromKey("RecipeConditions.CrimsonWorld"), _ => WorldGen.crimson);
+		public static readonly Condition CorruptWorld = new Condition(NetworkText.FromKey("RecipeConditions.CorruptWorld"), _ => !WorldGen.crimson);
 
 		#endregion
 
@@ -80,6 +83,8 @@ public partial class Recipe
 
 		public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
 	}
+
+
 
 	public static class ConsumptionRules
 	{
@@ -100,7 +105,7 @@ public partial class Recipe
 
 	public readonly Mod Mod;
 	public readonly List<Condition> Conditions = new List<Condition>();
-	public readonly List<Condition> ShimmerConditions = new List<Condition>();
+	public readonly List<Condition> DecraftConditions = new List<Condition>();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
@@ -299,17 +304,17 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="condition">The predicate delegate condition.</param>
 	/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-	public Recipe AddShimmerCondition(NetworkText description, Predicate<Recipe> condition) => AddShimmerCondition(new Condition(description, condition));
+	public Recipe AddDecraftCondition(NetworkText description, Predicate<Recipe> condition) => AddDecraftCondition(new Condition(description, condition));
 
 	/// <summary>
 	/// Adds an array of conditions that will determine whether or not the recipe can be decrafted/changed in shimmer. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">An array of conditions.</param>
-	public Recipe AddShimmerCondition(params Condition[] conditions) => AddShimmerCondition((IEnumerable<Condition>)conditions);
+	public Recipe AddDecraftCondition(params Condition[] conditions) => AddDecraftCondition((IEnumerable<Condition>)conditions);
 
-	public Recipe AddShimmerCondition(Condition condition)
+	public Recipe AddDecraftCondition(Condition condition)
 	{
-		ShimmerConditions.Add(condition);
+		DecraftConditions.Add(condition);
 		return this;
 	}
 
@@ -317,9 +322,9 @@ public partial class Recipe
 	/// Adds a collection of conditions that will determine whether or not the recipe can be decrafted/changed in shimmer. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">A collection of conditions.</param>
-	public Recipe AddShimmerCondition(IEnumerable<Condition> conditions)
+	public Recipe AddDecraftCondition(IEnumerable<Condition> conditions)
 	{
-		ShimmerConditions.AddRange(conditions);
+		DecraftConditions.AddRange(conditions);
 		return this;
 	}
 
@@ -329,8 +334,8 @@ public partial class Recipe
 	public Recipe CopyConditionsToShimmer()
 	{
 		foreach (Condition condition in Conditions) {
-			if (!ShimmerConditions.Contains(condition)) {
-				ShimmerConditions.Add(condition);
+			if (!DecraftConditions.Contains(condition)) {
+				DecraftConditions.Add(condition);
 			}
 		}
 		return this;
@@ -338,6 +343,20 @@ public partial class Recipe
 	public Recipe DisableShimmer()
 	{
 		notDecraftable = true;
+		return this;
+	}
+
+	[Obsolete("Replaced by the conditions system")]
+	public Recipe CrimsonOnly()
+	{
+		crimson = true;
+		return this;
+	}
+
+	[Obsolete("Replaced by the conditions system")]
+	public Recipe CorruptionOnly()
+	{
+		corruption = true;
 		return this;
 	}
 
@@ -465,8 +484,8 @@ public partial class Recipe
 			clone.AddCondition(condition);
 		}
 
-		foreach (Condition condition in ShimmerConditions) {
-			clone.AddShimmerCondition(condition);
+		foreach (Condition condition in DecraftConditions) {
+			clone.AddDecraftCondition(condition);
 		}
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove

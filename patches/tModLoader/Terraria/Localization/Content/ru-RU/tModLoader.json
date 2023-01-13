@@ -546,6 +546,9 @@
 		"InGemCave": "Нужна самоцветная пещера",
 		"InLihzardTemple": "Нужен Храм Джунглей",
 		"InGraveyardBiome": "Нужно кладбище"
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

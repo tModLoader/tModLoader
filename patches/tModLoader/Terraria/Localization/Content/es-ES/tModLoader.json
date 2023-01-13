@@ -546,6 +546,9 @@
 		"InGemCave": "Debe crearse en una cueva de gemas",
 		"InLihzardTemple": "Debe crearse en el templo de la selva",
 		"InGraveyardBiome": "Debe crearse en el bioma de cementerio"
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

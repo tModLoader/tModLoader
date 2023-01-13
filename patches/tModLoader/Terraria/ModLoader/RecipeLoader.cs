@@ -160,13 +160,13 @@ public static class RecipeLoader
 	}
 
 	/// <summary>
-	/// Returns whether or not the conditions are met for this recipe to be available for the player to use.
+	/// Returns whether or not the conditions are met for this recipe to be transformed/decrafted.
 	/// </summary>
 	/// <param name="recipe">The recipe to check.</param>
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
-	public static bool ShimmerAvailable(Recipe recipe)
+	public static bool DecraftAvailable(Recipe recipe)
 	{
-		return recipe.ShimmerConditions.All(c => c.RecipeAvailable(recipe));
+		return recipe.DecraftConditions.All(c => c.RecipeAvailable(recipe));
 	}
 
 

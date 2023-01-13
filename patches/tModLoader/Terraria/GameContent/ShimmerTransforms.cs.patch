@@ -6,13 +6,46 @@
  
  namespace Terraria.GameContent;
  
+@@ -12,8 +_,15 @@
+ 
+ 	public static int GetDecraftingRecipeIndex(int type)
+ 	{
++		/*
++		vanilla:
+ 		int num = ItemID.Sets.IsCrafted[type];
+ 		if (num < 0)
++		return false;
++		*/
++
++		int[] recipeIndecies = ItemID.Sets.IsCrafted[type];
++		if (recipeIndecies[0] < 0)
+ 			return -1;
+ 
+ 		if (WorldGen.crimson && ItemID.Sets.IsCraftedCrimson[type] >= 0)
+@@ -22,7 +_,15 @@
+ 		if (!WorldGen.crimson && ItemID.Sets.IsCraftedCorruption[type] >= 0)
+ 			return ItemID.Sets.IsCraftedCorruption[type];
+ 
++		//Deliberately preserving the "last first" order of the previous implementation
++		int recipe = recipeIndecies[recipeIndecies.Length -1];
++
++		foreach (int posRec in recipeIndecies) {
++			if (!RecipeLoader.DecraftAvailable(Main.recipe[posRec]))
++				recipe = posRec;
++		}
++
+-		return num;
++		return recipe;
+ 	}
+ 
+ 	public static bool IsItemTransformLocked(int type)
 @@ -35,6 +_,9 @@
  			return true;
  
  		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[decraftingRecipeIndex])
 +			return true;
 +
-+		if (!RecipeLoader.ShimmerAvailable(Main.recipe[decraftingRecipeIndex]))
++		if (!RecipeLoader.DecraftAvailable(Main.recipe[decraftingRecipeIndex]))
  			return true;
  
  		return false;
