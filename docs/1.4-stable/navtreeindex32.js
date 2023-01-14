@@ -1,5 +1,11 @@
 var NAVTREEINDEX32 =
 {
+"interface_terraria_1_1_mod_loader_1_1_i_loot.html":[3,0,2,13,61],
+"interface_terraria_1_1_mod_loader_1_1_i_loot.html":[2,0,2,14,62],
+"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html":[2,0,2,14,63],
+"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html":[3,0,2,13,62],
+"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af":[3,0,2,13,62,0],
+"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af":[2,0,2,14,63,0],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6":[3,0,2,13,62,2],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6":[2,0,2,14,63,2],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#ae001b098c12c404ce71f234957dcb8a4":[3,0,2,13,62,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX32 =
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ab01d9564117ff3f671ad2a98ec46739b":[3,0,2,4,4,2],
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ab44bbe6bd5c7dfd902e2ebf01c8ea1ec":[3,0,2,4,4,4],
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ab44bbe6bd5c7dfd902e2ebf01c8ea1ec":[2,0,2,4,4,4],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ad6a5fa1ebd1986be15342a176c0f4154":[3,0,2,4,4,0],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ad6a5fa1ebd1986be15342a176c0f4154":[2,0,2,4,4,0],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#af1681eaeae4d0d4ef25450ef8894d86b":[3,0,2,4,4,5],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#af1681eaeae4d0d4ef25450ef8894d86b":[2,0,2,4,4,5],
-"struct_terraria_1_1_data_structures_1_1_buff_draw_params.html":[2,0,2,4,5],
-"struct_terraria_1_1_data_structures_1_1_buff_draw_params.html":[3,0,2,4,5],
-"struct_terraria_1_1_data_structures_1_1_buff_draw_params.html#a3d520acdf62694050297ee559afbb538":[3,0,2,4,5,0]
+"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ad6a5fa1ebd1986be15342a176c0f4154":[3,0,2,4,4,0]
 };

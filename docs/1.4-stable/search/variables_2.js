@@ -47,8 +47,9 @@ var searchData=
   ['crystalleaf_44',['CrystalLeaf',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a8918ef64f35181ee817776f016dcaa8f',1,'Terraria::ID::ProjAIStyleID']]],
   ['crystalleafshot_45',['CrystalLeafShot',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a0eb0f3b466437cd2c3cff35eb1eacc5a',1,'Terraria::ID::ProjAIStyleID']]],
   ['crystalshard_46',['CrystalShard',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ae27f82a88b0a2026436c02eb1ad0a136',1,'Terraria::ID::ProjAIStyleID']]],
-  ['cursedflamewall_47',['CursedFlameWall',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a321abd20c74c35b7655edc02e22614b6',1,'Terraria::ID::ProjAIStyleID']]],
-  ['cursedskull_48',['CursedSkull',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a70d97ec8d9182ca6cf851804a816deb1',1,'Terraria::ID::NPCAIStyleID']]],
-  ['cyan_49',['Cyan',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#acf76172c938b3c8ededab584d31fdb7f',1,'Terraria::ID::ItemRarityID']]],
-  ['cyborgsellsrockets_50',['CyborgSellsRockets',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ac779daa26340b9f91bd0f0824b0deb21',1,'Terraria::ModLoader::GameTipID']]]
+  ['cultistisresistantto_47',['CultistIsResistantTo',['../class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a2c9496169fa11bb2fbb84fe7439475e4',1,'Terraria::ID::ProjectileID::Sets']]],
+  ['cursedflamewall_48',['CursedFlameWall',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a321abd20c74c35b7655edc02e22614b6',1,'Terraria::ID::ProjAIStyleID']]],
+  ['cursedskull_49',['CursedSkull',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a70d97ec8d9182ca6cf851804a816deb1',1,'Terraria::ID::NPCAIStyleID']]],
+  ['cyan_50',['Cyan',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#acf76172c938b3c8ededab584d31fdb7f',1,'Terraria::ID::ItemRarityID']]],
+  ['cyborgsellsrockets_51',['CyborgSellsRockets',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ac779daa26340b9f91bd0f0824b0deb21',1,'Terraria::ModLoader::GameTipID']]]
 ];
