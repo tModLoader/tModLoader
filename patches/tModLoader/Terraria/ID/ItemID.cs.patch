@@ -25,7 +25,7 @@
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
-@@ -303,8 +_,12 @@
+@@ -303,17 +_,26 @@
  				}
  			}
  		});
@@ -36,10 +36,14 @@
 +		/// <summary> Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the Recipe that results in this item in <see cref="Main.recipe"/> array. Inner array contains multiple results for multiple recipes in order of creation</summary>
 +		public static int[][] IsCrafted = Factory.CreateCustomSet<int[]>(new int[1] {-1});
 +
++		/* automatically replaced with corresponding Decrafting Conditions
  		public static int[] IsCraftedCrimson = Factory.CreateIntSet();
  		public static int[] IsCraftedCorruption = Factory.CreateIntSet();
++		*/
++
  		public static bool[] IgnoresEncumberingStone = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
-@@ -313,7 +_,9 @@
+ 		public static float[] ToolTipDamageMultiplier = Factory.CreateFloatSet(1f, 162f, 2f, 801f, 2f, 163f, 2f, 220f, 2f, 389f, 2f, 1259f, 2f, 4272f, 2f, 5011f, 2f, 5012f, 2f);
+ 		public static bool[] IsAPickup = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455);
  		public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
  		public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);
  		public static bool[] IsPaintScraper = Factory.CreateBoolSet(1100, 1545);

@@ -166,7 +166,7 @@ public static class RecipeLoader
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
 	public static bool DecraftAvailable(Recipe recipe)
 	{
-		return recipe.DecraftConditions.All(c => c.RecipeAvailable(recipe));
+		return recipe.ShimmerConditions.All(c => c.RecipeAvailable(recipe));
 	}
 
 	/// <summary>

@@ -70,7 +70,7 @@ public partial class Recipe
 
 	public bool HasCondition(Condition condition) => Conditions.Contains(condition);
 
-	public bool HasShimmerCondition(Condition condition) => DecraftConditions.Contains(condition);
+	public bool HasShimmerCondition(Condition condition) => ShimmerConditions.Contains(condition);
 	#endregion
 
 	#region TryGetX
@@ -138,7 +138,7 @@ public partial class Recipe
 
 	public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
-	public bool RemoveShimmerCondition(Condition condition) => DecraftConditions.Remove(condition);
+	public bool RemoveShimmerCondition(Condition condition) => ShimmerConditions.Remove(condition);
 
 	public void DisableRecipe()
 	{

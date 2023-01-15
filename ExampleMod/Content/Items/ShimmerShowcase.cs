@@ -28,14 +28,14 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.RottenChunk)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.AddDecraftCondition(Recipe.Condition.CorruptWorld)
+			.AddShimmerCondition(Recipe.Condition.CorruptWorld)
 			.Register();
 
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Vertebrae)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.AddDecraftCondition(Recipe.Condition.CrimsonWorld)
+			.AddShimmerCondition(Recipe.Condition.CrimsonWorld)
 			.Register();
 
 		// Or in a specific biome, keep in mind that decraft order is reverse of recipe register, so this desert example has priority over the world evil
@@ -44,7 +44,7 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Cactus)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.AddDecraftCondition(Recipe.Condition.InDesert)
+			.AddShimmerCondition(Recipe.Condition.InDesert)
 			.Register();
 	}
 }
