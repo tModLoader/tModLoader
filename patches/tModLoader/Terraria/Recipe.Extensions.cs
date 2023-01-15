@@ -137,6 +137,7 @@ public partial class Recipe
 	public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
 
 	public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
+
 	public bool RemoveShimmerCondition(Condition condition) => DecraftConditions.Remove(condition);
 
 	public void DisableRecipe()

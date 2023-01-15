@@ -169,7 +169,6 @@ public static class RecipeLoader
 		return recipe.DecraftConditions.All(c => c.RecipeAvailable(recipe));
 	}
 
-
 	/// <summary>
 	/// recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext
 	/// </summary>

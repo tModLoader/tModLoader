@@ -22,7 +22,7 @@
  			return -1;
  
  		if (WorldGen.crimson && ItemID.Sets.IsCraftedCrimson[type] >= 0)
-@@ -22,7 +_,18 @@
+@@ -22,7 +_,17 @@
  		if (!WorldGen.crimson && ItemID.Sets.IsCraftedCorruption[type] >= 0)
  			return ItemID.Sets.IsCraftedCorruption[type];
  
@@ -33,7 +33,6 @@
 +			if (RecipeLoader.DecraftAvailable(Main.recipe[posRec])) {
 +				if (Main.recipe[posRec].shimmerPriority >= Main.recipe[recipe].shimmerPriority)
 +					recipe = posRec;
-+
 +			}
 +		}
 +

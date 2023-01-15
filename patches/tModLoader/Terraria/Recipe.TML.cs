@@ -84,8 +84,6 @@ public partial class Recipe
 		public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
 	}
 
-
-
 	public static class ConsumptionRules
 	{
 		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
@@ -356,20 +354,6 @@ public partial class Recipe
 	public Recipe EnableShimmer()
 	{
 		notDecraftable = false;
-		return this;
-	}
-
-	[Obsolete("Replaced by the conditions system")]
-	public Recipe CrimsonOnly()
-	{
-		crimson = true;
-		return this;
-	}
-
-	[Obsolete("Replaced by the conditions system")]
-	public Recipe CorruptionOnly()
-	{
-		corruption = true;
 		return this;
 	}
 
