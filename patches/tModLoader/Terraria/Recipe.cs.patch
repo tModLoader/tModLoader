@@ -328,7 +328,7 @@
 +			stackRequired = 0;
 +		}
 +		else {
-+			RecipeLoader.ConsumedItems.Add(item);
++			RecipeLoader.ConsumedItems.Add(item.Clone());
 +
 +			stackRequired -= item.stack;
 +			item.TurnToAir();
