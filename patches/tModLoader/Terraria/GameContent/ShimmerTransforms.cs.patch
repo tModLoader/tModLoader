@@ -22,25 +22,23 @@
  			return -1;
  
  		if (WorldGen.crimson && ItemID.Sets.IsCraftedCrimson[type] >= 0)
-@@ -22,7 +_,17 @@
+@@ -22,6 +_,16 @@
  		if (!WorldGen.crimson && ItemID.Sets.IsCraftedCorruption[type] >= 0)
  			return ItemID.Sets.IsCraftedCorruption[type];
  
 +		//Deliberately preserving the "last first" order of the previous implementation, adding manual priority support
-+		int recipe = recipeIndecies[recipeIndecies.Length -1];
++		int num = recipeIndecies[recipeIndecies.Length -1];
 +
 +		foreach (int posRec in recipeIndecies) {
 +			if (RecipeLoader.DecraftAvailable(Main.recipe[posRec])) {
-+				if (Main.recipe[posRec].shimmerPriority >= Main.recipe[recipe].shimmerPriority)
-+					recipe = posRec;
++				if (Main.recipe[posRec].shimmerPriority >= Main.recipe[num].shimmerPriority)
++					num = posRec;
 +			}
 +		}
 +
--		return num;
-+		return recipe;
+ 		return num;
  	}
  
- 	public static bool IsItemTransformLocked(int type)
 @@ -35,6 +_,9 @@
  			return true;
  
