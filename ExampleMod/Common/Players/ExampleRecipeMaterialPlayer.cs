@@ -8,7 +8,7 @@ using Terraria.ID;
 namespace ExampleMod.Common.Players
 {
 	// This class showcases how to use items in the chest player stands on (if exists)
-	// for crafting (consuming items from piggy bank), even if it is not opened by the player
+	// for crafting, even if it is not opened by the player
 	// One use of this is allowing items in your custom bank to be used for crafting
 	public class ExampleRecipeMaterialPlayer : ModPlayer
 	{
@@ -45,7 +45,7 @@ namespace ExampleMod.Common.Players
 				}
 
 				int chest = Chest.FindChest(left, top);
-				if (chest > 0) {
+				if (chest > 0 && !Chest.IsLocked(left, top)) {
 					_chestIndexNearby = chest;
 					break;
 				}
@@ -59,14 +59,14 @@ namespace ExampleMod.Common.Players
 		}
 
 		// Use items in the chest for crafting
-		public override IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback onUsedForCrafting) {
+		public override IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback itemConsumedCallback) {
 			// Ensure there is a chest nearby that is not opened by the player
 			if (_chestIndexNearby is -1 || Player.chest == _chestIndexNearby)
-				return base.AddMaterialsForCrafting(out onUsedForCrafting);
+				return base.AddMaterialsForCrafting(out itemConsumedCallback);
 
 			// onUsedForCrafting invokes when the item is consumed, can be used to send packets in multiplayer mode
 			// If there is no need for this, just set it to null
-			onUsedForCrafting = (_, index) => {
+			itemConsumedCallback = (_, index) => {
 				if (Main.netMode is NetmodeID.MultiplayerClient) {
 					// Sync chest data
 					NetMessage.SendData(MessageID.SyncChestItem, number: _chestIndexNearby, number2: index);

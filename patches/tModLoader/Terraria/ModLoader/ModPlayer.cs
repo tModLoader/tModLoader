@@ -1125,11 +1125,11 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Called when Recipe.FindRecipes is called or the player is crafting an item
 	/// You can use this method to add items as the materials that may be used for crafting items
 	/// </summary>
-	/// <param name="onUsedForCrafting">The action that gets invoked when the item is consumed</param>
+	/// <param name="itemConsumedCallback">The action that gets invoked when the item is consumed</param>
 	/// <returns>A list of the items that may be used as crafting materials or null if none are available.</returns>
-	public virtual IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback onUsedForCrafting)
+	public virtual IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback itemConsumedCallback)
 	{
-		onUsedForCrafting = null;
+		itemConsumedCallback = null;
 		return null;
 	}
 }
