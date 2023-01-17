@@ -27,7 +27,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public override ModPlayer NewInstance(Player entity)
 	{
 		var inst = base.NewInstance(entity);
-
+		
 		inst.Index = Index;
 
 		return inst;
@@ -41,7 +41,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	protected override void ValidateType()
 	{
 		base.ValidateType();
-
+		
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
 	}
@@ -1120,9 +1120,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="onUsedForCrafting">The action that gets invoked when the item is consumed</param>
 	/// <returns>An list of the items that may be used as crafting materials. If you want to add nothing, return new List&lt;Item&gt;().</returns>
-	public virtual List<Item> AddMaterialsForCrafting(out PlayerLoader.ActionOnUsedForCrafting onUsedForCrafting)
+	public virtual IEnumerable<Item> AddMaterialsForCrafting(out PlayerLoader.ActionOnUsedForCrafting onUsedForCrafting)
 	{
 		onUsedForCrafting = null;
-		return new List<Item>();
+		return null;
 	}
 }

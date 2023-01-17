@@ -1006,7 +1006,7 @@ public static class PlayerLoader
 			modPlayer.ModifyFishingAttempt(ref attempt);
 		}
 
-		attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this
+		attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this 
 	}
 
 	private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
@@ -1272,7 +1272,7 @@ public static class PlayerLoader
 	}
 
 	private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
-
+	
 	private static readonly HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 
 	public static bool ModifyNurseHeal(Player player, NPC npc, ref int health, ref bool removeDebuffs, ref string chat)
@@ -1331,19 +1331,22 @@ public static class PlayerLoader
 	/// The action that gets invoked when the item is consumed
 	/// </summary>
 	/// <param name="item">The item that is consumed for crafting</param>
-	/// <param name="index">The index of the item in the List&lt;Item&gt;</param>
+	/// <param name="index">The index number of the item enumerated in IEnumerable&lt;Item&gt;</param>
 	public delegate void ActionOnUsedForCrafting(Item item, int index);
-	private delegate List<Item> DelegateFindMaterialsFrom(out ActionOnUsedForCrafting onUsedForCrafting);
+	private delegate IEnumerable<Item> DelegateFindMaterialsFrom(out ActionOnUsedForCrafting onUsedForCrafting);
 	private static HookList HookAddCraftingMaterials = AddHook<DelegateFindMaterialsFrom>(p => p.AddMaterialsForCrafting);
 
-	public static Dictionary<List<Item>, ActionOnUsedForCrafting> GetModdedCraftingMaterials(Player player)
+	public static Dictionary<IEnumerable<Item>, ActionOnUsedForCrafting> GetModdedCraftingMaterials(Player player)
 	{
-		var items = new Dictionary<List<Item>, ActionOnUsedForCrafting>();
+		var itemsMap = new Dictionary<IEnumerable<Item>, ActionOnUsedForCrafting>();
 
 		foreach (var modPlayer in HookAddCraftingMaterials.Enumerate(player.modPlayers)) {
-			items.Add(modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting), onUsedForCrafting);
+			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
+			if (items != null) {
+				itemsMap.Add(items, onUsedForCrafting);
+			}
 		}
 
-		return items;
+		return itemsMap;
 	}
 }

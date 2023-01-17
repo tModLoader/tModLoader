@@ -162,7 +162,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -131,17 +_,25 @@
+@@ -131,17 +_,23 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -179,8 +179,6 @@
  	{
 +		//TML: Just in case something throws or breaks and the 'clear after craft' doesn't run.
 +		RecipeLoader.ConsumedItems.Clear();
-+
-+		Dictionary<List<Item>, PlayerLoader.ActionOnUsedForCrafting> moddedMaterials = PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer);
 +
  		Item[] array = null;
  		Item item = null;
@@ -277,7 +275,7 @@
  					item.stack -= num;
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
  						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
-@@ -235,12 +_,29 @@
+@@ -235,12 +_,31 @@
  					num = 0;
  				}
  				else {
@@ -292,14 +290,16 @@
  			}
 +
 +			ModdedMaterials: ;
-+			foreach ((List<Item> items, PlayerLoader.ActionOnUsedForCrafting consumedAction) in moddedMaterials) {
-+				for (int i = 0; i < items.Count; i++) {
++			foreach ((IEnumerable<Item> items, PlayerLoader.ActionOnUsedForCrafting consumedAction) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++				int index = 0; // For the 'index' parameter of the action 'consumedAction'
++				foreach (var materialItem in items) {
 +					if (num <= 0)
 +						goto End;
 +
-+					ConsumeForCraft(items[i], item2, ref num, () => {
-+						consumedAction?.Invoke(items[i], i);
++					ConsumeForCraft(materialItem, item2, ref num, () => {
++						consumedAction?.Invoke(materialItem, index);
 +					});
++					index++;
 +				}
 +			}
 +
@@ -429,13 +429,12 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
-@@ -483,6 +_,11 @@
+@@ -483,6 +_,10 @@
  			CollectItems(currentInventory, 40);
  		}
  
-+		Dictionary<List<Item>, ActionOnUsedForCrafting> moddedMaterials = PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer);
-+		foreach ((List<Item> items, _) in moddedMaterials) {
-+			CollectItems(items.ToArray(), items.Count);
++		foreach ((IEnumerable<Item> items, _) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++			CollectItems(items.ToArray(), items.Count());
 +		}
 +
  		AddFakeCountsForItemGroups();

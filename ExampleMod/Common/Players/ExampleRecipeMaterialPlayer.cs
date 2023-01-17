@@ -59,7 +59,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		// Use items in the chest for crafting
-		public override List<Item> AddMaterialsForCrafting(out PlayerLoader.ActionOnUsedForCrafting onUsedForCrafting) {
+		public override IEnumerable<Item> AddMaterialsForCrafting(out PlayerLoader.ActionOnUsedForCrafting onUsedForCrafting) {
 			// Ensure there is a chest nearby that is not opened by the player
 			if (_chestIndexNearby is -1 || Player.chest == _chestIndexNearby)
 				return base.AddMaterialsForCrafting(out onUsedForCrafting);
@@ -75,7 +75,7 @@ namespace ExampleMod.Common.Players
 
 			// Returns the items in the chest to use them for crafting
 			// The returned list should not be a cloned version of items otherwise items will not be consumed
-			return Main.chest[_chestIndexNearby].item.ToList();
+			return Main.chest[_chestIndexNearby].item;
 		}
 	}
 }
