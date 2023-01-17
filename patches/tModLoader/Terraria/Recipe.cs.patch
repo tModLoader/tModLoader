@@ -75,7 +75,7 @@
 -	public bool corruption;
 +	internal bool corruption;
 +
-+	// Following fields made internal, use DisableShimmer()
++	// Following fields made internal, use DisableDecraft()
 +	internal bool notDecraftable;
 +
  	private static bool _hasDelayedFindRecipes;

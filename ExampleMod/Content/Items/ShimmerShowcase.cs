@@ -60,7 +60,7 @@ public class ShimmerShowcaseCustomShimmerResult : ModItem
 	}
 
 	public override void AddRecipes() {
-		// By default, the first added recipe will be used for shimmer decrafting. We can use DisableShimmer() to tell the game to ignore this recipe and use the below recipe instead.
+		// By default, the first added recipe will be used for shimmer decrafting. We can use DisableDecraft() to tell the game to ignore this recipe and use the below recipe instead.
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.PadThai)
