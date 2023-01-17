@@ -16,27 +16,28 @@ public static class LocalizationLoader
 	internal static void Load()
 	{
 		LanguageManager.Instance.ReloadLanguage();
-		AutoloadGameTips();
 	}
 
-	private static void AutoloadGameTips()
+	internal static void Autoload(Mod mod)
 	{
+		// Should we add all keys into LanguageManager now? Just english?
 
+		var lang = LanguageManager.Instance;
+		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
-		/*
-			//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
-		TODO: Move this somewhere?
-			if (value.Key.StartsWith($"Mods.{mod.Name}.GameTips.")) {
-				Main.gameTips.allTips.Add(new GameTipData(new LocalizedText(value.Key, value.GetDefault()), mod));
-			}
+		foreach (var (key, _) in LoadTranslations(mod, GameCulture.DefaultCulture)) {
+			if (key.StartsWith(gameTipPrefix))
+				Main.gameTips.allTips.Add(new GameTipData(lang.GetOrRegister(key), mod));
 		}
-		*/
 	}
 
 	public static void LoadModTranslations(GameCulture culture)
 	{
+		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
-			LoadTranslations(mod, culture);
+			foreach (var (key, value) in LoadTranslations(mod, culture)) {
+				lang.GetOrRegister(key).SetValue(value);
+			}
 		}
 	}
 
@@ -165,13 +166,15 @@ public static class LocalizationLoader
 		return (GameCulture.DefaultCulture, "");
 	}
 
-	private static void LoadTranslations(Mod mod, GameCulture culture)
+	private static List<(string key, string value)> LoadTranslations(Mod mod, GameCulture culture)
 	{
 		if (mod.File == null)
-			return;
+			return new();
 
 		try {
-			var lang = LanguageManager.Instance;
+			// Flatten JSON into dot seperated key and value
+			var flattened = new List<(string, string)>();
+
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 				(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 				if (fileCulture != culture)
@@ -187,8 +190,6 @@ public static class LocalizationLoader
 
 				// Parse JSON
 				var jsonObject = JObject.Parse(jsonString);
-				// Flatten JSON into dot seperated key and value
-				var flattened = new Dictionary<string, string>();
 
 				foreach (JToken t in jsonObject.SelectTokens("$..*")) {
 					if (t.HasValues) {
@@ -212,19 +213,17 @@ public static class LocalizationLoader
 						current = parent;
 					}
 
-					flattened.Add(path, t.ToString());
-				}
-
-				foreach (var (key, value) in flattened) {
 					// removing instances of .$parentVal is an easy way to make this special key assign its value
 					//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
-					string effectiveKey = key.Replace(".$parentVal", "");
+					path = path.Replace(".$parentVal", "");
 					if (!string.IsNullOrWhiteSpace(prefix))
-						effectiveKey = prefix + "." + effectiveKey;
+						path = prefix + "." + path;
 
-					lang.GetOrRegister(effectiveKey).SetValue(value);
+					flattened.Add((path, t.ToString()));
 				}
 			}
+
+			return flattened;
 		}
 		catch (Exception e) {
 			e.Data["mod"] = mod.Name;

@@ -48,6 +48,8 @@ partial class Mod
 		if (Code == null)
 			return;
 
+		LocalizationLoader.Autoload(this);
+
 		Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
 		while (AsyncLoadQueue.Count > 0)
 			AsyncLoadQueue.Dequeue().Wait();
