@@ -69,14 +69,14 @@
 +	internal bool needEverythingSeed;
 -	public bool notDecraftable;
 +
-+	// Following fields made internal, automatically replaced with corresponding Decrafting Conditions
 -	public bool crimson;
-+	internal bool crimson;
--	public bool corruption;
-+	internal bool corruption;
-+
 +	// Following fields made internal, use DisableDecraft()
+-	public bool corruption;
 +	internal bool notDecraftable;
++
++	// Following fields made internal, automatically replaced with corresponding Decrafting Conditions
++	internal bool crimson;
++	internal bool corruption;
 +
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();

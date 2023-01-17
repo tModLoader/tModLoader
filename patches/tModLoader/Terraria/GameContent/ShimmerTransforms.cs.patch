@@ -21,7 +21,7 @@
 +		*/
 +
 +		foreach (int recipeIndex in ItemID.Sets.CraftingRecipeIndices[type]) {
-+			if (RecipeLoader.DecraftAvailable(Main.recipe[recipeIndex]) && recipeIndex >= 0)
++			if (RecipeLoader.DecraftAvailable(Main.recipe[recipeIndex]))
 +				return recipeIndex;
 +		}
 +
