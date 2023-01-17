@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -12,14 +_,15 @@
+@@ -11,15 +_,15 @@
+ using ReLogic.Content.Sources;
  using ReLogic.Graphics;
  using Terraria.GameContent;
- using Terraria.Initializers;
+-using Terraria.Initializers;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  

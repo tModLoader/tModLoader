@@ -21,6 +21,8 @@ public static class LocalizationLoader
 
 	private static void AutoloadGameTips()
 	{
+
+
 		/*
 			//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
 		TODO: Move this somewhere?
@@ -34,7 +36,7 @@ public static class LocalizationLoader
 	public static void LoadModTranslations(GameCulture culture)
 	{
 		foreach (var mod in ModLoader.Mods) {
-			AutoloadTranslations(mod, culture);
+			LoadTranslations(mod, culture);
 		}
 	}
 
@@ -163,64 +165,70 @@ public static class LocalizationLoader
 		return (GameCulture.DefaultCulture, "");
 	}
 
-	private static void AutoloadTranslations(Mod mod, GameCulture culture)
+	private static void LoadTranslations(Mod mod, GameCulture culture)
 	{
 		if (mod.File == null)
 			return;
 
-		var lang = LanguageManager.Instance;
-		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-			(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
-			if (fileCulture != culture)
-				continue;
-
-			using var stream = mod.File.GetStream(translationFile);
-			using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
-
-			string translationFileContents = streamReader.ReadToEnd();
-
-			// Parse HJSON and convert to standard JSON
-			string jsonString = HjsonValue.Parse(translationFileContents).ToString();
-
-			// Parse JSON
-			var jsonObject = JObject.Parse(jsonString);
-			// Flatten JSON into dot seperated key and value
-			var flattened = new Dictionary<string, string>();
-
-			foreach (JToken t in jsonObject.SelectTokens("$..*")) {
-				if (t.HasValues) {
-					continue;
-				}
-
-				// Due to comments, some objects can by empty
-				if (t is JObject obj && obj.Count == 0)
+		try {
+			var lang = LanguageManager.Instance;
+			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+				(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
+				if (fileCulture != culture)
 					continue;
 
-				// Custom implementation of Path to allow "x.y" keys
-				string path = "";
-				JToken current = t;
+				using var stream = mod.File.GetStream(translationFile);
+				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
-				for (JToken parent = t.Parent; parent != null; parent = parent.Parent) {
-					path = parent switch {
-						JProperty property => property.Name + (path == string.Empty ? string.Empty : "." + path),
-						JArray array => array.IndexOf(current) + (path == string.Empty ? string.Empty : "." + path),
-						_ => path
-					};
-					current = parent;
+				string translationFileContents = streamReader.ReadToEnd();
+
+				// Parse HJSON and convert to standard JSON
+				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
+
+				// Parse JSON
+				var jsonObject = JObject.Parse(jsonString);
+				// Flatten JSON into dot seperated key and value
+				var flattened = new Dictionary<string, string>();
+
+				foreach (JToken t in jsonObject.SelectTokens("$..*")) {
+					if (t.HasValues) {
+						continue;
+					}
+
+					// Due to comments, some objects can by empty
+					if (t is JObject obj && obj.Count == 0)
+						continue;
+
+					// Custom implementation of Path to allow "x.y" keys
+					string path = "";
+					JToken current = t;
+
+					for (JToken parent = t.Parent; parent != null; parent = parent.Parent) {
+						path = parent switch {
+							JProperty property => property.Name + (path == string.Empty ? string.Empty : "." + path),
+							JArray array => array.IndexOf(current) + (path == string.Empty ? string.Empty : "." + path),
+							_ => path
+						};
+						current = parent;
+					}
+
+					flattened.Add(path, t.ToString());
 				}
 
-				flattened.Add(path, t.ToString());
-			}
+				foreach (var (key, value) in flattened) {
+					// removing instances of .$parentVal is an easy way to make this special key assign its value
+					//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
+					string effectiveKey = key.Replace(".$parentVal", "");
+					if (!string.IsNullOrWhiteSpace(prefix))
+						effectiveKey = prefix + "." + effectiveKey;
 
-			foreach (var (key, value) in flattened) {
-				// removing instances of .$parentVal is an easy way to make this special key assign its value
-				//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
-				string effectiveKey = key.Replace(".$parentVal", "");
-				if (!string.IsNullOrWhiteSpace(prefix))
-					effectiveKey = prefix + "." + effectiveKey;
-
-				lang.GetOrRegister(effectiveKey).SetValue(value);
+					lang.GetOrRegister(effectiveKey).SetValue(value);
+				}
 			}
+		}
+		catch (Exception e) {
+			e.Data["mod"] = mod.Name;
+			throw;
 		}
 	}
 
