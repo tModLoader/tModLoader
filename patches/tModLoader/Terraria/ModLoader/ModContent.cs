@@ -297,9 +297,9 @@ public static class ModContent
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
-		LocalizationLoader.Load();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
+		LanguageManager.Instance.ReloadLanguage();
 		LoadModContent(token, mod => {
 			mod.SetupContent();
 		});

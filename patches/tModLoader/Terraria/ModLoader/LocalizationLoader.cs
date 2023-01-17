@@ -13,21 +13,16 @@ namespace Terraria.ModLoader;
 
 public static class LocalizationLoader
 {
-	internal static void Load()
-	{
-		LanguageManager.Instance.ReloadLanguage();
-	}
-
 	internal static void Autoload(Mod mod)
 	{
-		// Should we add all keys into LanguageManager now? Just english?
-
 		var lang = LanguageManager.Instance;
 		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
 		foreach (var (key, _) in LoadTranslations(mod, GameCulture.DefaultCulture)) {
+			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
+
 			if (key.StartsWith(gameTipPrefix))
-				Main.gameTips.allTips.Add(new GameTipData(lang.GetOrRegister(key), mod));
+				Main.gameTips.allTips.Add(new GameTipData(text, mod));
 		}
 	}
 
@@ -36,7 +31,7 @@ public static class LocalizationLoader
 		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
 			foreach (var (key, value) in LoadTranslations(mod, culture)) {
-				lang.GetOrRegister(key).SetValue(value);
+				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
 			}
 		}
 	}
