@@ -230,9 +230,12 @@ public static class CombinedHooks
 
 		// UseSpeedMultiplier tries to affect both useTime and useAnimation in a way that doesn't break their relativity.
 		// The code below multiplies useAnimation based on the difference that UseSpeedMultiplier makes on the item's useTime.
-		float timeAnimationFactor = item.useAnimation / (float)item.useTime;
-		int multipliedUseTime = Math.Max(1, (int)(item.useTime / TotalUseSpeedMultiplier(player, item)));
-		int relativeUseAnimation = Math.Max(1, (int)(multipliedUseTime * timeAnimationFactor));
+		// NOTE #3179, the * (1 / useSpeedMultiplier) is important. Due to floating point rounding errors, the order of multiply and divide must match the code in TotalUseTime above.
+		//   Test case is useSpeedMultiplier = 1.1f, useTime = 33.
+		//   33/1.1f = 30
+		//   33*(1/1.1f) = 29.9999
+		int multipliedUseTime = Math.Max(1, (int)(item.useTime * (1 / TotalUseSpeedMultiplier(player, item))));
+		int relativeUseAnimation = Math.Max(1, (int)(multipliedUseTime * item.useAnimation / item.useTime));
 
 		result *= relativeUseAnimation / (float)item.useAnimation;
 
