@@ -889,3 +889,5 @@ Mods: {
 		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
 	}
 }
+# Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
+UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Journey world, silly.

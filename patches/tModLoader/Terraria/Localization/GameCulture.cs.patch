@@ -1,11 +1,23 @@
 --- src/TerrariaNetCore/Terraria/Localization/GameCulture.cs
 +++ src/tModLoader/Terraria/Localization/GameCulture.cs
-@@ -25,6 +_,8 @@
+@@ -1,9 +_,11 @@
+ using System.Collections.Generic;
++using System.Diagnostics;
+ using System.Globalization;
+ using System.Linq;
+ 
+ namespace Terraria.Localization;
+ 
++[DebuggerDisplay("{Name}")]
+ public class GameCulture
+ {
+ 	public enum CultureName
+@@ -24,6 +_,8 @@
+ 	private static Dictionary<int, GameCulture> _legacyCultures;
  	public readonly CultureInfo CultureInfo;
  	public readonly int LegacyId;
- 
-+	public static IEnumerable<GameCulture> KnownCultures => _legacyCultures.Values;
 +
++	public static IEnumerable<GameCulture> KnownCultures => _legacyCultures.Values;
+ 
  	public static GameCulture DefaultCulture { get; set; }
  
- 	public bool IsActive => Language.ActiveCulture == this;

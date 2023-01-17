@@ -66,6 +66,7 @@ internal class BuildProperties
 	internal string description = "";
 	internal ModSide side;
 	internal bool playableOnPreview = true;
+	internal bool translationMod = false;
 
 	public IEnumerable<ModReference> Refs(bool includeWeak) =>
 		includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -147,6 +148,9 @@ internal class BuildProperties
 				case "playableOnPreview":
 					properties.playableOnPreview = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
+				case "translationMod":
+					properties.translationMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+					break;
 				case "hideCode":
 					properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
@@ -226,6 +230,9 @@ internal class BuildProperties
 				if (!playableOnPreview) {
 					writer.Write("!playableOnPreview");
 				}
+				if (translationMod) {
+					writer.Write("translationMod");
+				}
 				if (!hideCode) {
 					writer.Write("!hideCode");
 				}
@@ -303,6 +310,9 @@ internal class BuildProperties
 				if (tag == "!playableOnPreview") {
 					properties.playableOnPreview = false;
 				}
+				if (tag == "translationMod") {
+					properties.translationMod = true;
+				}
 				if (tag == "!hideCode") {
 					properties.hideCode = false;
 				}
@@ -353,6 +363,8 @@ internal class BuildProperties
 			sb.AppendLine($"includeSource = true");
 		if (!properties.playableOnPreview)
 			sb.AppendLine($"playableOnPreview = false");
+		if (properties.translationMod)
+			sb.AppendLine($"translationMod = true");
 		// buildIgnores isn't preserved in Info, but it doesn't matter with extraction since the ignored files won't be present anyway.
 		// if (properties.buildIgnores.Length > 0)
 		//	sb.AppendLine($"buildIgnores = {string.Join(", ", properties.buildIgnores)}");

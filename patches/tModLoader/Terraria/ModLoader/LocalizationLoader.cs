@@ -251,32 +251,84 @@ public static class LocalizationLoader
 
 	private static void UpdateLocalizationFilesForMod(Mod mod, string outputPath = null, GameCulture specificCulture = null)
 	{
+		var desiredCultures = new HashSet<GameCulture>();
+		if (specificCulture != null)
+			desiredCultures.Add(specificCulture);
+
+		var mods = new List<Mod> {
+			mod
+		};
+
 		// TODO: Maybe optimize to only recently built?
+		// TODO: Only update if mod is a locally built mod (not in workshop folder), to mitigate modders testing old versions of their mods removing text from their source folder
 		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
 		if (!Directory.Exists(sourceFolder))
 			return;
 
 		DateTime modLastModified = File.GetLastWriteTime(mod.File.path);
 
+		if(mod.TranslationForMods != null) {
+			foreach (var translatedMod in mod.TranslationForMods) {
+				ModLoader.TryGetMod(translatedMod, out Mod otherMod);
+				if (otherMod == null) {
+					// Skip Update since a mod is missing somehow.
+					// TODO: Does this make sense? Do we need to skip just because a weak reference mod is missing? (Such as an Addon mod that this mod also translates?)
+					return;
+				}
+				mods.Add(otherMod);
+
+				// Use the newest of the mods to determine if localization files should update.
+				DateTime otherModLastModified = File.GetLastWriteTime(otherMod.File.path);
+				if (otherModLastModified > modLastModified) {
+					modLastModified = otherModLastModified;
+				}
+
+				// In case of conflicts, how do we inherit comments?
+				// Comments from the other mod should take priority usually.
+				// Comments on Mods are used for credits, should we ignore that specifically?
+			}
+		}
+
 		Dictionary<GameCulture, List<LocalizationFile>> localizationFilesByCulture = new();
 		Dictionary<string, string> localizationFileContentsByPath = new(); // <full filename , file contents>
 
 		// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
-		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-			using var stream = mod.File.GetStream(translationFile);
-			using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+		foreach (var inputMod in mods) {
+			foreach (var translationFile in inputMod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+				using var stream = inputMod.File.GetStream(translationFile);
+				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
-			string translationFileContents = streamReader.ReadToEnd();
-			localizationFileContentsByPath[translationFile.Name] = translationFileContents;
+				string translationFileContents = streamReader.ReadToEnd();
+				bool fileExists = localizationFileContentsByPath.ContainsKey(translationFile.Name);
 
-			(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
-			if (!localizationFilesByCulture.TryGetValue(culture, out var fileList))
-				localizationFilesByCulture[culture] = fileList = new();
+				if (!fileExists)
+					localizationFileContentsByPath[translationFile.Name] = translationFileContents;
+				// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
 
-			JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
-			// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
-			var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
-			fileList.Add(new(translationFile.Name, prefix, entries));
+				(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
+				if (!localizationFilesByCulture.TryGetValue(culture, out var fileList))
+					localizationFilesByCulture[culture] = fileList = new();
+
+				if (inputMod == mod)
+					desiredCultures.Add(culture);
+
+				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
+				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
+				if (!fileExists)
+					fileList.Add(new(translationFile.Name, prefix, entries));
+				else {
+					// If file exists, then we are merging.
+					// Resulting entries will have new entries added
+					// Comments will be taken from 1st loaded english
+					LocalizationFile localizationFile = fileList.First(x => x.path == translationFile.Name);
+					foreach (var entry in entries) {
+						if (!localizationFile.Entries.Exists(x => x.key == entry.key)) {
+							localizationFile.Entries.Add(entry);
+						}
+					}
+				}
+			}
 		}
 
 		// Abort if no default localization files found
@@ -299,7 +351,7 @@ public static class LocalizationLoader
 			AddEntryToHJSON(suitableHJSONFile, newEntry.key, newEntry.value, null);
 		}
 
-		IEnumerable<GameCulture> targetCultures = localizationFilesByCulture.Keys;
+		IEnumerable<GameCulture> targetCultures = desiredCultures.ToList();
 		if (specificCulture != null) {
 			targetCultures = new[] { specificCulture };
 			if (!localizationFilesByCulture.TryGetValue(specificCulture, out var fileList))
@@ -328,6 +380,7 @@ public static class LocalizationLoader
 		}
 
 		// Clean up orphaned non-default language files, if any.
+		// TODO: This should apply in more cases, expand to other situations once feature working well. Currently translation mods won't remove extra files.
 		if (specificCulture != null) {
 			var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
 			var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
@@ -405,8 +458,10 @@ public static class LocalizationLoader
 			// Populate parent object with this translation, manipulating comments to appear above the entry.
 
 			if (entry.value == null && entry.type == JsonType.Object) {
-				PlaceCommentAboveNewEntry(entry, parent);
-				parent.Add(splitKey[^1], new CommentedWscJsonObject());
+				if (!parent.ContainsKey(splitKey[^1])) {
+					PlaceCommentAboveNewEntry(entry, parent);
+					parent.Add(splitKey[^1], new CommentedWscJsonObject());
+				}
 			}
 			else {
 				// Add values
