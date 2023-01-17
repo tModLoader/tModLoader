@@ -1115,12 +1115,19 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// An action to be invoked when an item is partially or fully consumed
+	/// </summary>
+	/// <param name="item">The item that has been consumed. May have been set to air if the item was fully consumed.</param>
+	/// <param name="index">The index of the item enumerated in IEnumerable&lt;Item&gt;</param>
+	public delegate void ItemConsumedCallback(Item item, int index);
+
+	/// <summary>
 	/// Called when Recipe.FindRecipes is called or the player is crafting an item
 	/// You can use this method to add items as the materials that may be used for crafting items
 	/// </summary>
 	/// <param name="onUsedForCrafting">The action that gets invoked when the item is consumed</param>
-	/// <returns>An list of the items that may be used as crafting materials. If you want to add nothing, return new List&lt;Item&gt;().</returns>
-	public virtual IEnumerable<Item> AddMaterialsForCrafting(out PlayerLoader.ActionOnUsedForCrafting onUsedForCrafting)
+	/// <returns>A list of the items that may be used as crafting materials or null if none are available.</returns>
+	public virtual IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback onUsedForCrafting)
 	{
 		onUsedForCrafting = null;
 		return null;

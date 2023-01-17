@@ -1327,26 +1327,16 @@ public static class PlayerLoader
 			.ToList();
 	}
 
-	/// <summary>
-	/// The action that gets invoked when the item is consumed
-	/// </summary>
-	/// <param name="item">The item that is consumed for crafting</param>
-	/// <param name="index">The index number of the item enumerated in IEnumerable&lt;Item&gt;</param>
-	public delegate void ActionOnUsedForCrafting(Item item, int index);
-	private delegate IEnumerable<Item> DelegateFindMaterialsFrom(out ActionOnUsedForCrafting onUsedForCrafting);
+	private delegate IEnumerable<Item> DelegateFindMaterialsFrom(out ModPlayer.ItemConsumedCallback onUsedForCrafting);
 	private static HookList HookAddCraftingMaterials = AddHook<DelegateFindMaterialsFrom>(p => p.AddMaterialsForCrafting);
 
-	public static Dictionary<IEnumerable<Item>, ActionOnUsedForCrafting> GetModdedCraftingMaterials(Player player)
+	public static IEnumerable<(IEnumerable<Item>, ModPlayer.ItemConsumedCallback)> GetModdedCraftingMaterials(Player player)
 	{
-		var itemsMap = new Dictionary<IEnumerable<Item>, ActionOnUsedForCrafting>();
-
-		foreach (var modPlayer in HookAddCraftingMaterials.Enumerate(player.modPlayers)) {
+		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path. 
+		foreach (var modPlayer in HookAddCraftingMaterials.EnumerateSlow(player.modPlayers)) {
 			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
-			if (items != null) {
-				itemsMap.Add(items, onUsedForCrafting);
-			}
+			if (items != null)
+				yield return (items, onUsedForCrafting);
 		}
-
-		return itemsMap;
 	}
 }

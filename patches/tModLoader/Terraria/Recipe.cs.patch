@@ -233,15 +233,15 @@
  					if (num <= 0)
  						break;
  
-+					ConsumeForCraft(item, item2, ref num, () => {
++					if (ConsumeForCraft(item, item2, ref num)) {
 +						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
 +							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
-+					});
++					}
 +					/*
  					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
  						continue;
  
-@@ -212,11 +_,13 @@
+@@ -212,11 +_,12 @@
  						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
  							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
  					}
@@ -251,19 +251,16 @@
  
  			if (!Main.player[Main.myPlayer].useVoidBag() || Main.player[Main.myPlayer].chest == -5)
 -				continue;
-+				goto ModdedMaterials;
-+				// continue;
++				goto ModdedMaterials; // continue;
  
  			array = Main.player[Main.myPlayer].bank4.item;
  			for (int m = 0; m < 40; m++) {
-@@ -224,10 +_,18 @@
+@@ -224,10 +_,16 @@
  				if (num <= 0)
  					break;
  
-+				ConsumeForCraft(item, item2, ref num, () => {
-+					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
-+						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
-+				});
++				// tML note, the net syncing code is redundant (vanilla bug) and doesn't need to be called. Void bag is synced like player inventory
++				ConsumeForCraft(item, item2, ref num);
 +				/*
  				if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
  					continue;
@@ -275,7 +272,7 @@
  					item.stack -= num;
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
  						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
-@@ -235,12 +_,31 @@
+@@ -235,11 +_,31 @@
  					num = 0;
  				}
  				else {
@@ -287,54 +284,47 @@
  						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
  				}
 +				*/
- 			}
-+
-+			ModdedMaterials: ;
-+			foreach ((IEnumerable<Item> items, PlayerLoader.ActionOnUsedForCrafting consumedAction) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
-+				int index = 0; // For the 'index' parameter of the action 'consumedAction'
-+				foreach (var materialItem in items) {
-+					if (num <= 0)
-+						goto End;
-+
-+					ConsumeForCraft(materialItem, item2, ref num, () => {
-+						consumedAction?.Invoke(materialItem, index);
-+					});
-+					index++;
-+				}
 +			}
 +
-+			End: ;
++			ModdedMaterials:
++			foreach ((var items, var onConsumedCallback) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++				if (num <= 0)
++					break;
++
++				int index = 0;
++				foreach (var materialItem in items) {
++					if (num <= 0)
++						break;
++
++					if (ConsumeForCraft(materialItem, item2, ref num))
++						onConsumedCallback?.Invoke(materialItem, index);
++
++					index++;
++				}
+ 			}
  		}
  
- 		AchievementsHelper.NotifyItemCraft(this);
-@@ -248,7 +_,33 @@
+@@ -248,7 +_,26 @@
  		FindRecipes();
  	}
  
 +	// Added by TML. Replaces multiple vanilla crafting code.
-+	private void ConsumeForCraft(Item item, Item requiredItem, ref int stackRequired, Action consumedAction = null)
++	private bool ConsumeForCraft(Item item, Item requiredItem, ref int stackRequired)
 +	{
-+		if (!item.IsTheSameAs(requiredItem) && !useWood(item.type, requiredItem.type) && !useSand(item.type, requiredItem.type) && !useIronBar(item.type, requiredItem.type) && !usePressurePlate(item.type, requiredItem.type) && !useFragment(item.type, requiredItem.type) && !AcceptedByItemGroups(item.type, requiredItem.type))
-+			return;
++		if (item.stack == 0 || !item.IsTheSameAs(requiredItem) && !AcceptedByItemGroups(item.type, requiredItem.type))
++			return false;
 +
-+		if (item.stack > stackRequired) {
-+			RecipeLoader.ConsumedItems.Add(item.Clone());
-+			RecipeLoader.ConsumedItems[^1].stack = stackRequired;
++		var consumed = item.Clone();
++		consumed.stack = Math.Min(item.stack, stackRequired);
++		RecipeLoader.ConsumedItems.Add(consumed);
 +
-+			item.stack -= stackRequired;
++		item.stack -= consumed.stack;
++		stackRequired -= consumed.stack;
 +
-+			consumedAction?.Invoke();
-+
-+			stackRequired = 0;
-+		}
-+		else {
-+			RecipeLoader.ConsumedItems.Add(item.Clone());
-+
-+			stackRequired -= item.stack;
++		if (item.stack == 0)
 +			item.TurnToAir();
 +
-+			consumedAction?.Invoke();
-+		}
++		return true;
 +	}
 +
 -	public bool useWood(int invType, int reqType)
@@ -433,13 +423,31 @@
  			CollectItems(currentInventory, 40);
  		}
  
-+		foreach ((IEnumerable<Item> items, _) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
-+			CollectItems(items.ToArray(), items.Count());
++		foreach ((var items, _) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++			CollectItems(items);
 +		}
 +
  		AddFakeCountsForItemGroups();
  	}
  
+@@ -496,8 +_,17 @@
+ 
+ 	private static void CollectItems(Item[] currentInventory, int slotCap)
+ 	{
++		CollectItems(currentInventory.Take(slotCap));
++	}
++
++	// Added by TML
++	private static void CollectItems(IEnumerable<Item> items)
++	{
++		/*
+ 		for (int i = 0; i < slotCap; i++) {
+ 			Item item = currentInventory[i];
++			*/
++		foreach (var item in items) {
+ 			if (item.stack > 0) {
+ 				int num = item.stack;
+ 				if (_ownedItems.TryGetValue(item.netID, out var value))
 @@ -516,7 +_,10 @@
  			if (recipe.createItem.type == 0)
  				break;
