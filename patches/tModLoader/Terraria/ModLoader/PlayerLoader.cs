@@ -1326,4 +1326,17 @@ public static class PlayerLoader
 			.SelectMany(kv => kv.Value)
 			.ToList();
 	}
+
+	private delegate IEnumerable<Item> DelegateFindMaterialsFrom(out ModPlayer.ItemConsumedCallback onUsedForCrafting);
+	private static HookList HookAddCraftingMaterials = AddHook<DelegateFindMaterialsFrom>(p => p.AddMaterialsForCrafting);
+
+	public static IEnumerable<(IEnumerable<Item>, ModPlayer.ItemConsumedCallback)> GetModdedCraftingMaterials(Player player)
+	{
+		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path. 
+		foreach (var modPlayer in HookAddCraftingMaterials.EnumerateSlow(player.modPlayers)) {
+			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
+			if (items != null)
+				yield return (items, onUsedForCrafting);
+		}
+	}
 }

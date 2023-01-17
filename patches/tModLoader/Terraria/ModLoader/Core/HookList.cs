@@ -92,6 +92,12 @@ public class HookList<T> where T : class
 	public FilteredSpanEnumerator<T> Enumerate(List<T> instances)
 		=> Enumerate(CollectionsMarshal.AsSpan(instances));
 
+	public IEnumerable<T> EnumerateSlow(IReadOnlyList<T> instances)
+	{
+		foreach (var i in indices)
+			yield return instances[i];
+	}
+
 	public void Update<U>(IList<U> instances) where U : IIndexed
 	{
 		indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
