@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ReLogic.Content.Sources;
 
 namespace Terraria.Localization;
 
 public partial class LanguageManager
 {
+	private IContentSource[] _contentSources = Array.Empty<IContentSource>();
+	private HashSet<string> _moddedKeys = new();
+
 	public List<string> GetKeysInCategory(string categoryName) => _categoryGroupedKeys[categoryName];
 
 	public List<string> GetLocalizedEntriesInCategory(string categoryName)
@@ -23,26 +27,13 @@ public partial class LanguageManager
 
 	internal void UnloadModdedEntries()
 	{
-		/* Alternate approach that won't reload all localization files, but might miss out on unloading some vanilla text changes.
-		var toRemove = LanguageManager.Instance._localizedTexts.Where(entry => entry.Key.StartsWith("Mods."))
-						 .Select(pair => pair.Key)
-						 .ToList();
-		foreach (var key in toRemove) {
-			LanguageManager.Instance._localizedTexts.Remove(key);
-		}
-		*/
+		foreach (var key in _moddedKeys)
+			_localizedTexts.Remove(key);
 
-		LanguageManager.Instance._localizedTexts.Clear();
-		if (LanguageManager.Instance.ActiveCulture != _fallbackCulture) {
-			SetAllTextValuesToKeys();
-			LanguageManager.Instance.LoadLanguage(_fallbackCulture);
-		}
-		LanguageManager.Instance.LoadLanguage(LanguageManager.Instance.ActiveCulture);
-		Lang.InitializeLegacyLocalization();
-		//Main.AssetSourceController.Refresh();
-		// Issue: Current implementation doesn't reload resource packs. LoadLanguage doesn't load resource packs, and neither does vanilla when switching languages. UseSources also calls LoadLanguage itself. Main thread error if Refresh is called here since this might be called in Unload. Revisit once vanilla issue is resolved to get everything loading in all situations.
+		_moddedKeys.Clear();
 
 		ResetBoundTexts();
+		ReloadLanguage();
 	}
 
 	#region "Text Binding"

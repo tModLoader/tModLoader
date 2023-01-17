@@ -232,6 +232,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
 		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
 
+		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization");
+		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
+
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",		to: "LoadData");

@@ -95,10 +95,10 @@ public static partial class SystemLoader
 		}
 	}
 
-	internal static void SetLanguage(GameCulture culture)
+	internal static void OnLocalizationsLoaded()
 	{
-		foreach (var system in HookSetLanguage.arr) {
-			system.SetLanguage(culture);
+		foreach (var system in HookOnLocalizationsLoaded.arr) {
+			system.OnLocalizationsLoaded();
 		}
 	}
 

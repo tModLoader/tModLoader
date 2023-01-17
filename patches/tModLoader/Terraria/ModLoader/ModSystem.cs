@@ -49,10 +49,10 @@ public abstract partial class ModSystem : ModType
 	public virtual void PostSetupContent() { }
 
 	/// <summary>
-	/// Allows mods to react to language changing. This happens at the end of mod loading and whenever the language is changed.
+	/// Allows mods to react to language changing. <br/>
+	/// This happens whenever the language is changed, and when resource packs are reloaded.
 	/// </summary>
-	/// <param name="culture"></param>
-	public virtual void SetLanguage(GameCulture culture) { }
+	public virtual void OnLocalizationsLoaded() { }
 
 	/// <summary>
 	/// Override this method to add recipes to the game.

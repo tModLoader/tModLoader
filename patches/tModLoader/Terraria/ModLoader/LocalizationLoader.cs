@@ -5,21 +5,22 @@ using System.Linq;
 using System.Text;
 using Hjson;
 using Newtonsoft.Json.Linq;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
-using Terraria.UI;
 
 namespace Terraria.ModLoader;
 
 public static class LocalizationLoader
 {
-	internal static void Autoload(Mod mod)
+	internal static void Load()
 	{
-		if (mod.File == null)
-			return;
+		LanguageManager.Instance.ReloadLanguage();
+		AutoloadGameTips();
+	}
 
+	private static void AutoloadGameTips()
+	{
 		/*
 			//This must be manually added here, since we need to know what mod is added in order to add GameTipData.
 		TODO: Move this somewhere?
@@ -30,18 +31,11 @@ public static class LocalizationLoader
 		*/
 	}
 
-	public static void RefreshModLanguage(GameCulture culture, bool processCopyCommands)
+	public static void LoadModTranslations(GameCulture culture)
 	{
-		Dictionary<string, LocalizedText> dict = LanguageManager.Instance._localizedTexts;
-
 		foreach (var mod in ModLoader.Mods) {
-			AutoloadTranslations(mod, dict, culture);
+			AutoloadTranslations(mod, culture);
 		}
-
-		SystemLoader.SetLanguage(culture);
-
-		if(processCopyCommands)
-			LanguageManager.Instance.ProcessCopyCommandsInTexts();
 	}
 
 	internal static void UpgradeLangFile(string langFile, string modName)
@@ -169,11 +163,12 @@ public static class LocalizationLoader
 		return (GameCulture.DefaultCulture, "");
 	}
 
-	private static void AutoloadTranslations(Mod mod, Dictionary<string, LocalizedText> localizedTexts, GameCulture culture)
+	private static void AutoloadTranslations(Mod mod, GameCulture culture)
 	{
 		if (mod.File == null)
 			return;
 
+		var lang = LanguageManager.Instance;
 		foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 			(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 			if (fileCulture != culture)
@@ -224,10 +219,7 @@ public static class LocalizationLoader
 				if (!string.IsNullOrWhiteSpace(prefix))
 					effectiveKey = prefix + "." + effectiveKey;
 
-				if (localizedTexts.TryGetValue(effectiveKey, out var text))
-					text.SetValue(value);
-				else
-					localizedTexts[effectiveKey] = new LocalizedText(effectiveKey, value);
+				lang.GetOrRegister(effectiveKey).SetValue(value);
 			}
 		}
 	}

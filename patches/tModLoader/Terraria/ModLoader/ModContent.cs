@@ -297,6 +297,8 @@ public static class ModContent
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
+		LocalizationLoader.Load();
+
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
 			mod.SetupContent();
@@ -310,7 +312,6 @@ public static class ModContent
 			SystemLoader.PostSetupContent(mod);
 			mod.TransferAllAssets();
 		});
-
 
 		MemoryTracking.Finish();
 
@@ -332,7 +333,6 @@ public static class ModContent
 		PlantLoader.FinishSetup();
 		RarityLoader.FinishSetup();
 
-		LocalizationLoader.RefreshModLanguage(Language.ActiveCulture, true);
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 		PlayerInput.reinitialize = true;

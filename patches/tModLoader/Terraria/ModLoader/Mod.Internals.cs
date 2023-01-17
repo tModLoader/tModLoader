@@ -52,7 +52,6 @@ partial class Mod
 		while (AsyncLoadQueue.Count > 0)
 			AsyncLoadQueue.Dequeue().Wait();
 
-		LocalizationLoader.Autoload(this);
 		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
 		if (ContentAutoloadingEnabled) {
