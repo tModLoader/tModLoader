@@ -6,41 +6,29 @@
  
  namespace Terraria.GameContent;
  
-@@ -12,15 +_,34 @@
+@@ -12,6 +_,7 @@
  
  	public static int GetDecraftingRecipeIndex(int type)
  	{
 +		/*
-+		vanilla:
  		int num = ItemID.Sets.IsCrafted[type];
  		if (num < 0)
-+		return false;
-+		*/
-+
-+		int[] recipeIndecies = ItemID.Sets.IsCrafted[type];
-+		if (recipeIndecies[0] < 0)
  			return -1;
- 
-+		/*  automatically replaced with corresponding Decrafting Conditions
- 		if (WorldGen.crimson && ItemID.Sets.IsCraftedCrimson[type] >= 0)
- 			return ItemID.Sets.IsCraftedCrimson[type];
- 
- 		if (!WorldGen.crimson && ItemID.Sets.IsCraftedCorruption[type] >= 0)
+@@ -23,6 +_,14 @@
  			return ItemID.Sets.IsCraftedCorruption[type];
-+		*/
-+
-+		//Deliberately preserving the "last first" order of the previous implementation, adding manual priority support
-+		int num = recipeIndecies[recipeIndecies.Length -1];
-+
-+		foreach (int posRec in recipeIndecies) {
-+			if (RecipeLoader.DecraftAvailable(Main.recipe[posRec])) {
-+				if (Main.recipe[posRec].shimmerPriority >= Main.recipe[num].shimmerPriority)
-+					num = posRec;
-+			}
-+		}
  
  		return num;
++		*/
++
++		foreach (int recipeIndex in ItemID.Sets.CraftingRecipeIndices[type]) {
++			if (RecipeLoader.DecraftAvailable(Main.recipe[recipeIndex]) && recipeIndex >= 0)
++				return recipeIndex;
++		}
++
++		return -1;
  	}
+ 
+ 	public static bool IsItemTransformLocked(int type)
 @@ -35,6 +_,9 @@
  			return true;
  

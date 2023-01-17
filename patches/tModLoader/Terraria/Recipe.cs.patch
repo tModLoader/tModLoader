@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,58 @@
+@@ -15,40 +_,56 @@
  		public int stack;
  	}
  
@@ -75,10 +75,8 @@
 -	public bool corruption;
 +	internal bool corruption;
 +
-+	// Following fields made internal, use DisableShimmer() and EnableShimmer()
++	// Following fields made internal, use DisableShimmer()
 +	internal bool notDecraftable;
-+
-+	public int shimmerPriority = 0;
 +
  	private static bool _hasDelayedFindRecipes;
  	private static Dictionary<int, int> _ownedItems = new Dictionary<int, int>();
@@ -156,7 +154,7 @@
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -120,9 +_,19 @@
+@@ -120,9 +_,10 @@
  		item.SetDefaults(itemType);
  		item.stack = itemStack;
  		customShimmerResults.Add(item);
@@ -164,15 +162,6 @@
 +		return this;
  	}
  
-+	/// <summary>
-+	/// Sets the priority of this recipe over other recipes for the same item, highest first, defaults to 0
-+	/// </summary>
-+	public Recipe SetShimmerPriority(int priority)
-+	{
-+		shimmerPriority = priority;
-+		return this;
-+	}
-+
 +	/*
  	public Recipe()
  	{
@@ -386,6 +375,37 @@
  				array[j].Refresh();
  			}
  		}
+@@ -1727,12 +_,14 @@
+ 		currentRecipe.requiredItem[1].SetDefaults(316);
+ 		currentRecipe.requiredItem[2].SetDefaults(68);
+ 		currentRecipe.requiredTile[0] = 13;
++		currentRecipe.corruption = true; //TML
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(300);
+ 		currentRecipe.requiredItem[0].SetDefaults(126);
+ 		currentRecipe.requiredItem[1].SetDefaults(316);
+ 		currentRecipe.requiredItem[2].SetDefaults(1330);
+ 		currentRecipe.requiredTile[0] = 13;
++		currentRecipe.crimson = true; //TML
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(301);
+ 		currentRecipe.requiredItem[0].SetDefaults(126);
+@@ -14415,6 +_,7 @@
+ 		currentRecipe.requiredItem[2].SetDefaults(521);
+ 		currentRecipe.requiredItem[2].stack = 6;
+ 		currentRecipe.requiredTile[0] = 134;
++		currentRecipe.corruption = true; //TML
+ 		currentRecipe.anyIronBar = true;
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(556);
+@@ -14425,6 +_,7 @@
+ 		currentRecipe.requiredItem[2].SetDefaults(521);
+ 		currentRecipe.requiredItem[2].stack = 6;
+ 		currentRecipe.requiredTile[0] = 134;
++		currentRecipe.crimson = true; //TML
+ 		currentRecipe.anyIronBar = true;
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(557);
 @@ -14518,10 +_,18 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
@@ -443,7 +463,7 @@
  			}
  
  			Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -14585,25 +_,66 @@
+@@ -14585,17 +_,47 @@
  
  	public static void UpdateWhichItemsAreMaterials()
  	{
@@ -484,34 +504,29 @@
  
  	public static void UpdateWhichItemsAreCrafted()
  	{
++		List<int>[] recipeLists = new List<int>[ItemLoader.ItemCount];
  		for (int i = 0; i < numRecipes; i++) {
-+			if (Main.recipe[i].Disabled)
-+				continue;
 +
-+			/*Vanilla:
--			if (!Main.recipe[i].notDecraftable)
-+			 * if (!Main.recipe[i].notDecraftable)
--				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
-+			 * ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
-+			 */
++			/*
+ 			if (!Main.recipe[i].notDecraftable)
+ 				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
  
-+			if (!Main.recipe[i].notDecraftable) {
-+				if (ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type][0] == -1)
-+					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = new int[1] { i};
-+				else
-+					ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type].Append(i).ToArray();
-+			}
-+
-+			/* autoreplaced with conditions
- 			if (Main.recipe[i].crimson)
- 				ItemID.Sets.IsCraftedCrimson[Main.recipe[i].createItem.type] = i;
+@@ -14604,7 +_,15 @@
  
  			if (Main.recipe[i].corruption)
  				ItemID.Sets.IsCraftedCorruption[Main.recipe[i].createItem.type] = i;
 +			*/
++
++			Recipe recipe = Main.recipe[i];
++
++			if (!recipe.notDecraftable && !recipe.Disabled)
++				(recipeLists[recipe.createItem.type] ??= new()).Add(i);
  		}
++
++		ItemID.Sets.CraftingRecipeIndices = recipeLists.Select(l => (l ??= new()).ToArray()).ToArray();
  	}
  
+ 	private static void AddSolarFurniture()
 @@ -15747,23 +_,23 @@
  	{
  		int num = numRecipes;
@@ -608,10 +623,10 @@
 +			field = false;
 +		}
 +
-+		static void ReplaceShimmerCondition(ref bool field, Recipe.Condition cond)
++		static void ReplaceDecraftCondition(ref bool field, Recipe.Condition cond)
 +		{
 +			if (field)
-+				currentRecipe.AddShimmerCondition(cond);
++				currentRecipe.AddDecraftCondition(cond);
 +
 +			field = false;
 +		}
@@ -623,8 +638,8 @@
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
 +		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
 +
-+		ReplaceShimmerCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
-+		ReplaceShimmerCondition(ref currentRecipe.corruption, Condition.CorruptWorld);
++		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
++		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);
 +
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);

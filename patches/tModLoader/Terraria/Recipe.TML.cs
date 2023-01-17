@@ -102,7 +102,7 @@ public partial class Recipe
 
 	public readonly Mod Mod;
 	public readonly List<Condition> Conditions = new List<Condition>();
-	public readonly List<Condition> ShimmerConditions = new List<Condition>();
+	public readonly List<Condition> DecraftConditions = new List<Condition>();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
@@ -297,62 +297,57 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Sets a condition delegate that will determine whether or not the recipe can be decrafted/changed in shimmer.. The condition can be unrelated to items or tiles (for example, biome or time).
+	/// Sets a condition delegate that will determine whether or not the recipe can be shimmered/decrafted. The condition can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="condition">The predicate delegate condition.</param>
 	/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-	public Recipe AddShimmerCondition(NetworkText description, Predicate<Recipe> condition) => AddShimmerCondition(new Condition(description, condition));
+	public Recipe AddDecraftCondition(NetworkText description, Predicate<Recipe> condition) => AddDecraftCondition(new Condition(description, condition));
 
 	/// <summary>
-	/// Adds an array of conditions that will determine whether or not the recipe can be decrafted/changed in shimmer. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// Adds an array of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">An array of conditions.</param>
-	public Recipe AddShimmerCondition(params Condition[] conditions) => AddShimmerCondition((IEnumerable<Condition>)conditions);
+	public Recipe AddDecraftCondition(params Condition[] conditions) => AddDecraftCondition((IEnumerable<Condition>)conditions);
 
-	public Recipe AddShimmerCondition(Condition condition)
+	public Recipe AddDecraftCondition(Condition condition)
 	{
-		ShimmerConditions.Add(condition);
+		DecraftConditions.Add(condition);
 		return this;
 	}
 
 	/// <summary>
-	/// Adds a collection of conditions that will determine whether or not the recipe can be decrafted/changed in shimmer. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// Adds a collection of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">A collection of conditions.</param>
-	public Recipe AddShimmerCondition(IEnumerable<Condition> conditions)
+	public Recipe AddDecraftCondition(IEnumerable<Condition> conditions)
 	{
-		ShimmerConditions.AddRange(conditions);
+		DecraftConditions.AddRange(conditions);
 		return this;
 	}
 
 	/// <summary>
-	/// Adds every condition from Recipie.Condtions to Recipie.ShimmerContions, checking for duplicates.
+	/// Adds every condition from Recipie.Condtions to Recipie.DecraftContions, checking for duplicates.
 	/// </summary>
-	public Recipe CopyConditionsToShimmer()
+	public Recipe ApplyConditionsAsDecraftConditions()
 	{
 		foreach (Condition condition in Conditions) {
-			if (!ShimmerConditions.Contains(condition)) {
-				ShimmerConditions.Add(condition);
+			if (!DecraftConditions.Contains(condition)) {
+				DecraftConditions.Add(condition);
 			}
 		}
 		return this;
 	}
 
 	/// <summary>
-	/// Sets a check that is used during load to prevent shimmer being used for this recipe, not for on the fly use
+	/// Sets a check that is used during load to prevent this being shimmered/decrafted.
 	/// </summary>
-	public Recipe DisableShimmer()
+	/// <exception cref="RecipeException">A Recipe can only be disabled inside Recipe related methods.</exception>
+	public Recipe DisableDecraft()
 	{
-		notDecraftable = true;
-		return this;
-	}
+		if (!RecipeLoader.setupRecipes)
+			throw new RecipeException("A Recipe can only be disabled inside Recipe related methods.");
 
-	/// <summary>
-	/// resets a check that is used during load to prevent shimmer being used for this recipe, not for on the fly use
-	/// </summary>
-	public Recipe EnableShimmer()
-	{
-		notDecraftable = false;
+		notDecraftable = true;
 		return this;
 	}
 
@@ -482,8 +477,8 @@ public partial class Recipe
 			clone.AddCondition(condition);
 		}
 
-		foreach (Condition condition in ShimmerConditions) {
-			clone.AddShimmerCondition(condition);
+		foreach (Condition condition in DecraftConditions) {
+			clone.AddDecraftCondition(condition);
 		}
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
