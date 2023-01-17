@@ -547,7 +547,10 @@
 		// "InHive": "Needs to be in Hive",
 		// "InGemCave": "Needs to be in Gem Cave",
 		// "InLihzardTemple": "Needs to be in Lihzard Temple",
-		// "InGraveyardBiome": "Needs to be in Graveyard Biome"
+		// "InGraveyardBiome": "Needs to be in Graveyard Biome",
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		// "Patreon": "Patreon"

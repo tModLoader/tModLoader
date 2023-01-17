@@ -160,6 +160,16 @@ public static class RecipeLoader
 	}
 
 	/// <summary>
+	/// Returns whether or not the conditions are met for this recipe to be shimmered/decrafted.
+	/// </summary>
+	/// <param name="recipe">The recipe to check.</param>
+	/// <returns>Whether or not the conditions are met for this recipe.</returns>
+	public static bool DecraftAvailable(Recipe recipe)
+	{
+		return recipe.DecraftConditions.All(c => c.RecipeAvailable(recipe));
+	}
+
+	/// <summary>
 	/// recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext
 	/// </summary>
 	/// <param name="item">The item crafted.</param>

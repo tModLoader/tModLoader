@@ -547,6 +547,9 @@
 		"InGemCave": "需要位于宝石洞内",
 		"InLihzardTemple": "需要位于丛林神庙内",
 		"InGraveyardBiome": "需要位于墓地环境"
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

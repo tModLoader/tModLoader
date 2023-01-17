@@ -546,6 +546,9 @@
 		"InGemCave": "Precisa estar na Caverna de Joias",
 		"InLihzardTemple": "Precisa estar no Templo Lagharto",
 		"InGraveyardBiome": "Precisa estar no bioma de Cemitério"
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

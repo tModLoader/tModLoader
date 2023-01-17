@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,52 @@
+@@ -15,40 +_,56 @@
  		public int stack;
  	}
  
@@ -68,10 +68,14 @@
 -	public bool needEverythingSeed;
 +	internal bool needEverythingSeed;
 -	public bool notDecraftable;
-+	internal bool notDecraftable;
++
 -	public bool crimson;
-+	internal bool crimson;
++	// Following fields made internal, use DisableDecraft()
 -	public bool corruption;
++	internal bool notDecraftable;
++
++	// Following fields made internal, automatically replaced with corresponding Decrafting Conditions
++	internal bool crimson;
 +	internal bool corruption;
 +
  	private static bool _hasDelayedFindRecipes;
@@ -481,6 +485,37 @@
  				array[j].Refresh();
  			}
  		}
+@@ -1727,12 +_,14 @@
+ 		currentRecipe.requiredItem[1].SetDefaults(316);
+ 		currentRecipe.requiredItem[2].SetDefaults(68);
+ 		currentRecipe.requiredTile[0] = 13;
++		currentRecipe.corruption = true; //TML
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(300);
+ 		currentRecipe.requiredItem[0].SetDefaults(126);
+ 		currentRecipe.requiredItem[1].SetDefaults(316);
+ 		currentRecipe.requiredItem[2].SetDefaults(1330);
+ 		currentRecipe.requiredTile[0] = 13;
++		currentRecipe.crimson = true; //TML
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(301);
+ 		currentRecipe.requiredItem[0].SetDefaults(126);
+@@ -14415,6 +_,7 @@
+ 		currentRecipe.requiredItem[2].SetDefaults(521);
+ 		currentRecipe.requiredItem[2].stack = 6;
+ 		currentRecipe.requiredTile[0] = 134;
++		currentRecipe.corruption = true; //TML
+ 		currentRecipe.anyIronBar = true;
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(556);
+@@ -14425,6 +_,7 @@
+ 		currentRecipe.requiredItem[2].SetDefaults(521);
+ 		currentRecipe.requiredItem[2].stack = 6;
+ 		currentRecipe.requiredTile[0] = 134;
++		currentRecipe.crimson = true; //TML
+ 		currentRecipe.anyIronBar = true;
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(557);
 @@ -14518,10 +_,18 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
@@ -579,13 +614,29 @@
  
  	public static void UpdateWhichItemsAreCrafted()
  	{
++		List<int>[] recipeLists = new List<int>[ItemLoader.ItemCount];
  		for (int i = 0; i < numRecipes; i++) {
-+			if (Main.recipe[i].Disabled)
-+				continue;
 +
++			/*
  			if (!Main.recipe[i].notDecraftable)
  				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
  
+@@ -14604,7 +_,15 @@
+ 
+ 			if (Main.recipe[i].corruption)
+ 				ItemID.Sets.IsCraftedCorruption[Main.recipe[i].createItem.type] = i;
++			*/
++
++			Recipe recipe = Main.recipe[i];
++
++			if (!recipe.notDecraftable && !recipe.Disabled)
++				(recipeLists[recipe.createItem.type] ??= new()).Add(i);
+ 		}
++
++		ItemID.Sets.CraftingRecipeIndices = recipeLists.Select(l => (l ??= new()).ToArray()).ToArray();
+ 	}
+ 
+ 	private static void AddSolarFurniture()
 @@ -15747,23 +_,23 @@
  	{
  		int num = numRecipes;
@@ -657,7 +708,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,60 @@
+@@ -15821,12 +_,71 @@
  
  	private static void AddRecipe()
  	{
@@ -682,12 +733,23 @@
 +			field = false;
 +		}
 +
++		static void ReplaceDecraftCondition(ref bool field, Recipe.Condition cond)
++		{
++			if (field)
++				currentRecipe.AddDecraftCondition(cond);
++
++			field = false;
++		}
++
 +		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
 +		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
++
++		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
++		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);
 +
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);

@@ -546,6 +546,9 @@
 		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
 		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
 		"InGraveyardBiome": "Musi być na cmentarzu"
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		// "Patreon": "Patreon"
