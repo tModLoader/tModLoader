@@ -71,9 +71,6 @@ partial class TileID
 			597
 		};
 
-		// Without this TileLoader.IsModMusicBox will fail server side due to music not loading server side. This leads to wiring not working with modded music boxes in multiplayer
-		public static bool[] TileIsModMusicBox = Factory.CreateBoolSet();
-
 		/// <summary>
 		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
 		/// </summary>
