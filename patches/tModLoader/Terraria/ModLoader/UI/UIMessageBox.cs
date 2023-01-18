@@ -25,6 +25,15 @@ internal class UIMessageBox : UIPanel
 	public void SetText(string text)
 	{
 		_text = text;
+		_textElement?.SetText(_text);
+		ResetScrollbar();
+	}
+
+	private void ResetScrollbar()
+	{
+		if (_scrollbar != null) {
+			_scrollbar.ViewPosition = 0;
+		}
 	}
 
 	public override void OnInitialize()
@@ -40,14 +49,9 @@ internal class UIMessageBox : UIPanel
 		_list.Add(_textElement = new UIText(_text) {
 			Width = StyleDimension.Fill,
 			IsWrapped = true,
+			MinWidth = StyleDimension.Empty, // IsWrapped and ctor call InternalSetText, which assigns a MinWidth, this must be below IsWrapped. 
+			TextOriginX = 0f,
 		});
-	}
-
-	public override void Update(GameTime gameTime)
-	{
-		_textElement.SetText(_text);
-
-		base.Update(gameTime);
 	}
 
 	public void SetScrollbar(UIScrollbar scrollbar)
