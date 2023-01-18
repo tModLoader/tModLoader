@@ -280,5 +280,7 @@ internal class UIModInfo : UIState
 			_modInfo.RemoveChild(_loaderElement);
 			_ready = false;
 		}
+
+		base.Update(gameTime);
 	}
 }
