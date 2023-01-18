@@ -2075,6 +2075,17 @@
  		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops);
  		if (!Main.getGoodWorld || tileCache.active()) {
  			if (dropItem > 0) {
+@@ -45780,6 +_,10 @@
+ 		secondaryItemStack = 1;
+ 		int num = 0;
+ 		if (includeLargeObjectDrops) {
++			var modTile = TileLoader.GetTile(tileCache.type);
++			if (modTile != null)
++				dropItem = modTile.ChestDrop > 0 ? modTile.ChestDrop : modTile.DresserDrop;
++
+ 			switch (tileCache.type) {
+ 				case 21:
+ 				case 467:
 @@ -46858,13 +_,17 @@
  						case 234:
  							dropItem = 911;

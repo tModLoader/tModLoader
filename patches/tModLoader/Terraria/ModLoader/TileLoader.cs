@@ -504,7 +504,7 @@ public static class TileLoader
 				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, modTile.ItemDrop, 1, false, -1);
 			}
 
-			return false;
+			return modTile.ChestDrop > 0 || modTile.DresserDrop > 0;
 		}
 
 		return true;
