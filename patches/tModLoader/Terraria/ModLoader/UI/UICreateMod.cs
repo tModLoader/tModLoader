@@ -132,6 +132,7 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 		_modDiplayName.SetText("");
 		_modAuthor.SetText("");
 		_messagePanel.SetText("");
+		_modName.Focused = true;
 	}
 
 	private string lastKnownMessage = "";
@@ -178,6 +179,8 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 				_messagePanel.SetText("Folder already exists");
 			else if (!provider.IsValidIdentifier(modNameTrimmed))
 				_messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
+			else if (modNameTrimmed.Equals("Mod", StringComparison.InvariantCultureIgnoreCase) || modNameTrimmed.Equals("ModLoader", StringComparison.InvariantCultureIgnoreCase) || modNameTrimmed.Equals("tModLoader", StringComparison.InvariantCultureIgnoreCase))
+				_messagePanel.SetText("ModName is a reserved mod name. Choose a different name.");
 			else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !provider.IsValidIdentifier(basicSwordTrimmed))
 				_messagePanel.SetText("BasicSword is invalid C# identifier. Remove spaces.");
 			else if (string.IsNullOrWhiteSpace(_modDiplayName.CurrentString))
