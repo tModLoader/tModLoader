@@ -64,7 +64,7 @@ internal class UIModInfo : UIState
 		uIPanel.Append(_modInfo);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = {Pixels = -20, Percent = 1f},
+			Height = {Pixels = -12, Percent = 1f},
 			VAlign = 0.5f,
 			HAlign = 1f
 		}.WithView(100f, 1000f);
