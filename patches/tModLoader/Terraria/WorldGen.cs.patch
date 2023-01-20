@@ -1974,6 +1974,15 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
+@@ -44647,7 +_,7 @@
+ 		if (TileID.Sets.Platforms[t.type])
+ 			t.frameY = (short)(targetStyle * 18);
+ 
+-		if (t.type == 4)
++		if (TileID.Sets.Torch[t.type])
+ 			t.frameY = (short)(targetStyle * 22);
+ 
+ 		t.ClearBlockPaintAndCoating();
 @@ -44729,7 +_,7 @@
  	public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y)
  	{
@@ -1992,6 +2001,15 @@
  		bool flag6 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  		return !(num && flag2 && flag3 && flag && flag4 && flag5 && flag6);
  	}
+@@ -44767,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	private static bool ReplaceTile_IsValidTorch(int type) => type == 4;
++	private static bool ReplaceTile_IsValidTorch(int type) => TileID.Sets.Torch[type];
+ 	private static bool ReplaceTile_IsValidCampfire(int type) => type == 215;
+ 	private static bool ReplaceTile_IsValidChest(int type) => TileID.Sets.BasicChest[type];
+ 	private static bool ReplaceTile_IsValidDresser(int type) => TileID.Sets.BasicDresser[type];
 @@ -44973,14 +_,26 @@
  					else if (i % 3 == 1) {
  						treeFrame += 3;
@@ -2065,16 +2083,32 @@
  		for (int k = 0; k < num16; k++) {
  			KillTile_MakeTileDust(i, j, tile);
  		}
-@@ -45758,6 +_,9 @@
+@@ -45756,9 +_,14 @@
  
- 	private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
+ 	private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
+ 
+-	private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
++	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
  	{
 +		if (!TileLoader.Drop(x, y, Main.tile[x, y].type))
 +			return;
 +
- 		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops);
+-		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops);
++		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
++
++		// TODO: support centering spawn location for multitiles
  		if (!Main.getGoodWorld || tileCache.active()) {
  			if (dropItem > 0) {
+ 				int num = Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, dropItem, dropItemStack, noBroadcast: false, -1);
+@@ -45772,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void KillTile_GetItemDrops(int x, int y, Tile tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, bool includeLargeObjectDrops = false)
++	public static void KillTile_GetItemDrops(int x, int y, Tile tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
+ 	{
+ 		dropItem = 0;
+ 		dropItemStack = 1;
 @@ -46858,13 +_,17 @@
  						case 234:
  							dropItem = 911;
@@ -2093,6 +2127,15 @@
  				}
  
  				break;
+@@ -47806,6 +_,8 @@
+ 			case 665:
+ 				break;
+ 		}
++
++		TileLoader.GetItemDrops(x, y, tileCache, ref dropItem, ref dropItemStack, ref secondaryItem, ref secondaryItemStack, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
+ 	}
+ 
+ 	private static void SetGemTreeDrops(int gemType, int seedType, Tile tileCache, ref int dropItem, ref int secondaryItem)
 @@ -47881,7 +_,12 @@
  
  					if (Main.tile[i, k] != null) {

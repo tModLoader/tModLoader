@@ -300,6 +300,9 @@ public static class TileLoader
 		for (int remainingFrameY = partFrameY; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
 			remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 		}
+		// We need to use the tile that trigger this, since it still has the tile type instead of air
+		int originalI = i;
+		int originalJ = j;
 		i -= partX;
 		j -= partY;
 		int originX = i + tileData.Origin.X;
@@ -318,6 +321,8 @@ public static class TileLoader
 		}
 		if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, onlyCheck: true, checkStay: true)) {
 			WorldGen.destroyObject = true;
+			// First the Items to drop are tallied and spawned, then Kill each tile, then KillMultiTile can clean up TileEntities or Chests
+			WorldGen.KillTile_DropItems(originalI, originalJ, Main.tile[originalI, originalJ], includeLargeObjectDrops: true, includeAllModdedLargeObjectDrops: true); // include all drops.
 			for (int x = i; x < i + tileData.Width; x++) {
 				for (int y = j; y < j + tileData.Height; y++) {
 					if (Main.tile[x, y].type == type && Main.tile[x, y].active()) {
@@ -499,15 +504,43 @@ public static class TileLoader
 			if (!modTile.Drop(i, j)) {
 				return false;
 			}
-
-			if (modTile.ItemDrop > 0) {
-				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, modTile.ItemDrop, 1, false, -1);
-			}
-
-			return false;
 		}
 
 		return true;
+	}
+
+	public static void GetItemDrops(int x, int y, Tile tileCache, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
+	{
+		ModTile modTile = GetTile(tileCache.TileType);
+		if (modTile == null)
+			return;
+
+		// Various call sites to WorldGen.KillTile_DropItems expect different sets of tile drops to be retrieved:
+		// KillTile: All 1x1 tiles
+		// ReplaceTile: All 1x1 tiles, all supported multitiles
+		// CheckModTile: All modded tiles
+		bool needDrops = false;
+		TileObjectData tileData = TileObjectData.GetTileData(tileCache.TileType, 0, 0);
+		if (tileData == null || tileData.Width == 1 && tileData.Height == 1) {
+			// 1x1 tile
+			needDrops = true;
+		}
+		else {
+			if (includeAllModdedLargeObjectDrops)
+				needDrops = true;
+			else if (includeLargeObjectDrops) {
+				if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type]) {
+					needDrops = true;
+				}
+			}
+
+		}
+		if (needDrops) {
+			if (modTile.ItemDrop > 0) {
+				dropItem = modTile.ItemDrop;
+			}
+			modTile.GetItemDrops(x, y, ref dropItem, ref dropItemStack, ref secondaryItem, ref secondaryItemStack);
+		}
 	}
 
 	public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)

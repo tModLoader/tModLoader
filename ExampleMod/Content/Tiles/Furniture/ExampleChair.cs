@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Chairs };
+			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>();
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Chair"));
@@ -52,10 +53,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>());
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {

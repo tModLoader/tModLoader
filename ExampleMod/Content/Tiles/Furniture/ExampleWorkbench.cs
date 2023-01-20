@@ -21,6 +21,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
 			AdjTiles = new int[] { TileID.WorkBenches };
+			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x1);
@@ -37,10 +38,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int x, int y, bool fail, ref int num) {
 			num = fail ? 1 : 3;
-		}
-
-		public override void KillMultiTile(int x, int y, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 16, ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
 		}
 	}
 }
