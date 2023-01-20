@@ -25,6 +25,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileWaterDeath[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			// Main.tileFlame[Type] = true; // This breaks it.
+			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleLamp>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);
@@ -40,10 +41,6 @@ namespace ExampleMod.Content.Tiles
 			if (!Main.dedServ) {
 				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 			}
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<Items.Placeable.ExampleLamp>());
 		}
 
 		public override void HitWire(int i, int j) {

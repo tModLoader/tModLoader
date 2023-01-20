@@ -230,6 +230,10 @@ public abstract class ModTile : ModBlockType
 		return true;
 	}
 
+	public virtual void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack)
+	{
+	}
+
 	/// <summary>
 	/// Allows you to determine whether or not the tile at the given coordinates can be hit by anything. Returns true by default. blockDamaged currently has no use.
 	/// </summary>

@@ -13,6 +13,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolidTop[Type] = true;
 			Main.tileTable[Type] = true;
+			ItemDrop = ModContent.ItemType<Items.Consumables.ExampleFishingCrate>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -28,10 +29,6 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool CreateDust(int i, int j, ref int type) {
 			return false;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Consumables.ExampleFishingCrate>());
 		}
 	}
 }

@@ -31,6 +31,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
 			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
 			// Names
 			ContainerName.SetDefault("Example Chest");
@@ -54,6 +55,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
+		}
+
+		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack) {
+			Tile tile = Main.tile[i, j];
+			int style = TileObjectData.GetTileStyle(tile);
+			if (style == 0)
+				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 		}
 
 		public override ushort GetMapOption(int i, int j) {
@@ -107,7 +115,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ChestDrop);
+			// We override KillMultiTile to handle additional logic other than the item drop. In this case, unregistering the Chest from the world
 			Chest.DestroyChest(i, j);
 		}
 
