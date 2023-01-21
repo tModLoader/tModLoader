@@ -176,8 +176,7 @@ public static class WallLoader
 			hook(i, j, type, fail, ref numDust);
 		}
 	}
-	//in Terraria.WorldGen.KillWall before if statements creating dust add
-	//  if(!WallLoader.CreateDust(i, j, tile.wall, ref int num2)) { continue; }
+
 	public static bool CreateDust(int i, int j, int type, ref int dustType)
 	{
 		foreach (var hook in HookCreateDust) {
@@ -187,6 +186,7 @@ public static class WallLoader
 		}
 		return GetWall(type)?.CreateDust(i, j, ref dustType) ?? true;
 	}
+
 	//in Terraria.WorldGen.KillWall replace if (num4 > 0) with
 	//  if (WallLoader.Drop(i, j, tile.wall, ref num4) && num4 > 0)
 	public static bool Drop(int i, int j, int type, ref int dropType)
