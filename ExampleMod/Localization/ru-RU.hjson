@@ -25,6 +25,17 @@ Mods: {
 			LocalizedHeader: Заголовки помогут организовывать.
 		}
 
+		CommonItemTooltip: {
+			/* IncreasesMaxExampleResourceBy: Increases maximum example resource by {0} */
+			# It is recommended to make some common tooltips for custom damage classes
+			# You can use them by referencing {$CommonItemTooltip.PercentIncreasedExampleDamage}
+			# Other mods can use them by referencing {$ExampleMod.CommonItemTooltip.PercentIncreasedExampleDamage}
+			/* PercentIncreasedExampleDamage: "{0}% increased example damage" */
+			/* PercentIncreasedExampleCritChance: "{0}% increased example critical strike chance" */
+			/* PercentIncreasedExampleDamageCritChance: "{0}% increased example damage and critical strike chance" */
+			/* PercentIncreasedExampleSpeed: "{0}% increased example attack speed" */
+		}
+
 		/* Currencies.ExampleCustomCurrency: example items */
 		/* DamageClasses.ExampleDamageClass.DisplayName: example damage */
 		/* Keybinds.RandomBuff.DisplayName: Random Buff */
@@ -136,7 +147,7 @@ Mods: {
 					'''
 
 					Drastically increases example resource regen rate
-					Increases maximum example resource by {0}
+					{$CommonItemTooltip.IncreasesMaxExampleResourceBy}
 					''' */
 			}
 
@@ -149,13 +160,13 @@ Mods: {
 				/* DisplayName: Example Stat Bonus Accessory */
 				/* Tooltip:
 					'''
-					{0}% increased damage, this is an additive multiplier with other damage bonuses
+					{$CommonItemTooltip.PercentIncreasedDamage}, this is an additive multiplier with other damage bonuses
 					{1}% increased multiplicative damage multiplier; this is multiplicative with other damage bonuses
 					Increases base damage for all weapons by {2}
 					Increases total damage for all weapons by {3}
-					{4}% increased melee crit chance
+					{$CommonItemTooltip.PercentIncreasedMeleeCritChance@4}
 					{5}% increased example knockback
-					Magic attacks ignore an additional {6} defense points
+					{6} magic armor penetration
 					Increases ranged firing speed by {7}%
 					''' */
 			}
@@ -196,7 +207,8 @@ Mods: {
 					'''
 					This is a modded body armor.
 					Immunity to 'On Fire!'
-					+20 max mana and +1 max minions
+					{$CommonItemTooltip.IncreasesMaxManaBy}
+					{$CommonItemTooltip.IncreasesMaxMinionsBy@1}
 					''' */
 			}
 
@@ -224,7 +236,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					This is a modded leg armor.
-					{0}% increased movement speed
+					{$CommonItemTooltip.PercentIncreasedMovementSpeed}
 					''' */
 			}
 
@@ -287,7 +299,7 @@ Mods: {
 				/* DisplayName: Example Life Fruit */
 				/* Tooltip:
 					'''
-					Permanently increases maximum life by {0}
+					{$CommonItemTooltip.PermanentlyIncreasesMaxLifeBy}
 					Up to {1} can be used
 					''' */
 			}
@@ -296,7 +308,7 @@ Mods: {
 				/* DisplayName: Example Mana Crystal */
 				/* Tooltip:
 					'''
-					Permanently increases maximum mana by {0}
+					{$CommonItemTooltip.PermanentlyIncreasesMaxManaBy}
 					Up to {1} can be used
 					''' */
 			}
@@ -726,7 +738,7 @@ Mods: {
 			/* ExamplePetProjectile.DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}" */
 			ExamplePet.DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}"
 			/* ExampleSolutionProjectile.DisplayName: Example Spray */
-			/* ExampleHookProjectile.DisplayName: ${ProjectileName.GemHookAmethyst} */
+			/* ExampleHookProjectile.DisplayName: "{$ProjectileName.GemHookAmethyst}" */
 			/* ExampleLightPetProjectile.DisplayName: Annoying Light */
 			/* MinionBossPetProjectile.DisplayName: Minion Boss Pet */
 			/* ExampleAdvancedAnimatedProjectile.DisplayName: Example Advanced Animated Projectile */
@@ -779,7 +791,7 @@ Mods: {
 
 			ExampleDefenseBuff: {
 				/* DisplayName: Defensive Buff */
-				/* Description: Grants +{0} defense. */
+				/* Description: "{$CommonItemTooltip.IncreasesDefenseBy}" */
 			}
 
 			ExampleLifeRegenDebuff: {

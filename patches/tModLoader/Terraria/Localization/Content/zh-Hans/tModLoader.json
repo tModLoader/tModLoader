@@ -505,7 +505,56 @@
 		"TagsGenDescription": "影响地图生成的方式, 例如添加了新的矿物、地形等"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "增加{0}%伤害"
+		"IncreasesDefenseBy": "防御力增加{0}点",
+		"IncreasesArmorPenBy": "增加{0}点盔甲穿透力",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "最大魔力值增加{0}",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		// "IncreasesMaxManaByPercent": "Increases maximum mana by {0}%",
+
+		"IncreasesBowDamageByPercent": "弓的伤害增加{0}%",
+		"IncreasesGunDamageByPercent": "枪的伤害增加{0}%",
+		"IncreasesSpecialistDamageByPercent": "专业远程武器伤害增加{0}%",
+
+		"IncreasesWhipRangeByPercent": "鞭子范围增加{0}%",
+		"IncreasesMaxMinionsBy": "仆从数量上限增加{0}个",
+		"IncreasesMaxSentriesBy": "哨兵数量上限增加{0}个",
+
+		"IncreasesFishingPowerBy": "渔力增加{0}点",
+
+		"PermanentlyIncreasesMaxLifeBy": "最大生命值永久增加{0}",
+		"PermanentlyIncreasesMaxManaBy": "最大魔力值永久增加{0}",
+
+		"ReducesDamageTakenByPercent": "所受伤害减少{0}%",
+
+		"PercentChanceToSaveAmmo": "{0}%的几率节省弹药",
+		"PercentReducedManaCost": "魔力值消耗减少{0}%",
+
+		"PercentIncreasedMiningSpeed": "采矿速度增加{0}%",
+		"PercentIncreasedMovementSpeed": "移动速度提高{0}%",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "伤害增加{0}%",
+		"PercentIncreasedCritChance": "暴击率增加{0}%",
+		"PercentIncreasedDamageCritChance": "伤害和暴击率各增加{0}%",
+
+		"PercentIncreasedMagicDamage": "魔法伤害增加{0}%",
+		"PercentIncreasedMagicCritChance": "魔法暴击率增加{0}%",
+		"PercentIncreasedMagicDamageCritChance": "魔法伤害和暴击率各增加{0}%",
+
+		"PercentIncreasedMeleeDamage": "近战伤害增加{0}%",
+		"PercentIncreasedMeleeCritChance": "近战暴击率增加{0}%",
+		"PercentIncreasedMeleeDamageCritChance": "近战伤害和暴击率各增加{0}%",
+		"PercentIncreasedMeleeSpeed": "近战速度提高{0}%",
+
+		"PercentIncreasedRangedDamage": "远程伤害增加{0}%",
+		"PercentIncreasedRangedCritChance": "远程暴击率增加{0}%",
+		"PercentIncreasedRangedDamageCritChance": "远程伤害和暴击率各增加{0}%",
+
+		"PercentIncreasedSummonDamage": "召唤伤害增加{0}%",
+		"SummonTagDamage": "{0}点召唤标记伤害",
+		"PercentSummonTagCritChance": "{0}%的召唤标记暴击率"
 	},
 	"RecipeConditions": {
 		"NearWater": "需要水",

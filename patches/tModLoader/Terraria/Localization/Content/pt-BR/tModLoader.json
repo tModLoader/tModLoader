@@ -504,7 +504,56 @@
 		"TagsGenDescription": "Altera a forma como o mundo é gerado (por exemplo, minérios, novas estruturas, etc.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "{0}% de aumento nos danos"
+		"IncreasesDefenseBy": "Aumenta a defesa em {0}",
+		"IncreasesArmorPenBy": "Aumenta a perfuração de blindagem em {0}",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "Aumenta a mana máxima em {0}",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		"IncreasesMaxManaByPercent": "Aumenta a mana máxima em {0}%",
+
+		"IncreasesBowDamageByPercent": "Aumenta o dano por flechas em {0}%",
+		"IncreasesGunDamageByPercent": "Aumenta o dano por arma em {0}%",
+		"IncreasesSpecialistDamageByPercent": "Aumenta o dano por ataque à distância com armas especializadas em {0}%",
+
+		"IncreasesWhipRangeByPercent": "Aumenta o alcance dos chicotes em {0}%",
+		"IncreasesMaxMinionsBy": "Aumenta o número máximo de lacaios que você pode ter em {0}",
+		"IncreasesMaxSentriesBy": "Aumenta o número máximo de sentinelas em {0}",
+
+		"IncreasesFishingPowerBy": "Aumenta o poder de pescaria em {0}",
+
+		"PermanentlyIncreasesMaxLifeBy": "Aumenta a vida máxima permanentemente em {0}",
+		"PermanentlyIncreasesMaxManaBy": "Aumenta a mana máxima permanentemente em {0}",
+
+		"ReducesDamageTakenByPercent": "Danos sofridos reduzidos em {0}%",
+
+		"PercentChanceToSaveAmmo": "{0}% de chance de economizar munição",
+		"PercentReducedManaCost": "{0}% de redução no custo de mana",
+
+		"PercentIncreasedMiningSpeed": "Aumento de {0}% na velocidade de mineração",
+		"PercentIncreasedMovementSpeed": "{0}% de aumento na velocidade dos movimentos",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "{0}% de aumento nos danos",
+		"PercentIncreasedCritChance": "{0}% de aumento na chance de acerto crítico",
+		"PercentIncreasedDamageCritChance": "{0}% de aumento nos danos e na chance de ataque crítico",
+
+		"PercentIncreasedMagicDamage": "{0}% de aumento no dano por magia",
+		"PercentIncreasedMagicCritChance": "{0}% de aumento na chance de ataque mágico crítico",
+		"PercentIncreasedMagicDamageCritChance": "{0}% de aumento no dano por magia e na chance de acerto crítico",
+
+		"PercentIncreasedMeleeDamage": "{0}% de aumento nos danos por ataques físicos",
+		"PercentIncreasedMeleeCritChance": "{0}% de aumento na chance de acerto crítico em ataque físico",
+		"PercentIncreasedMeleeDamageCritChance": "{0}% de aumento nos danos por ataque físico e na chance de ataque crítico",
+		"PercentIncreasedMeleeSpeed": "{0}% de aumento na velocidade de ataque físico",
+
+		"PercentIncreasedRangedDamage": "{0}% de aumento nos danos por ataque à distância",
+		"PercentIncreasedRangedCritChance": "{0}% de aumento na chance de acerto crítico à distância",
+		"PercentIncreasedRangedDamageCritChance": "{0}% de aumento nos danos por ataque à distância e na chance de ataque crítico",
+
+		"PercentIncreasedSummonDamage": "{0}% de aumento nos danos por invocação",
+		"SummonTagDamage": "Adiciona {0} marcas de dano para invocações",
+		"PercentSummonTagCritChance": "Concede {0}% de chance de acerto crítico em marcas de dano para invocações"
 	},
 	"RecipeConditions": {
 		"NearWater": "Precisa de água",

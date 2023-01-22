@@ -504,7 +504,56 @@
 		"TagsGenDescription": "Zmienia sposób generowania świata (np. surowce, nowe struktury, itd.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "{0}% zwiększone obrażenia"
+		"IncreasesDefenseBy": "Zwiększ obronę o {0}",
+		"IncreasesArmorPenBy": "Zwiększa penetrację pancerza o {0}",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "Zwiększa maksymalną liczbę punktów many o {0}",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		// "IncreasesMaxManaByPercent": "Increases maximum mana by {0}%",
+
+		"IncreasesBowDamageByPercent": "Zwiększa obrażenia zadawane z łuku o {0}%",
+		"IncreasesGunDamageByPercent": "Zwiększa obrażenia zadawane z pistoletu o {0}%",
+		"IncreasesSpecialistDamageByPercent": "Zwiększa obrażenia zadawane specjalną bronią dystansową o {0}%",
+
+		"IncreasesWhipRangeByPercent": "Zwiększa zasięg bicza o {0}%",
+		"IncreasesMaxMinionsBy": "Zwiększa maksymalną liczbę twoich sług o {0}",
+		"IncreasesMaxSentriesBy": "Zwiększa maksymalną liczbę wartowników o {0}",
+
+		"IncreasesFishingPowerBy": "Zwiększa moc wędkarstwa o {0}",
+
+		"PermanentlyIncreasesMaxLifeBy": "Trwale zwiększa maksymalną liczbę punktów życia o {0}",
+		"PermanentlyIncreasesMaxManaBy": "Trwale zwiększa maksymalną liczbę punktów many o {0}",
+
+		"ReducesDamageTakenByPercent": "Zmniejsza otrzymywane obrażenia o {0}%",
+
+		"PercentChanceToSaveAmmo": "{0}% szans na zaoszczędzenie amunicji",
+		"PercentReducedManaCost": "{0}% mniejszy koszt many",
+
+		"PercentIncreasedMiningSpeed": "{0}% zwiększona szybkość kopania",
+		"PercentIncreasedMovementSpeed": "{0}% zwiększona szybkość poruszania się",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "{0}% zwiększone obrażenia",
+		"PercentIncreasedCritChance": "{0}% większa szansa na trafienie krytyczne",
+		"PercentIncreasedDamageCritChance": "{0}% zwiększone obrażenia oraz szansa na trafienie krytyczne",
+
+		"PercentIncreasedMagicDamage": "{0}% zwiększone obrażenia magiczne",
+		"PercentIncreasedMagicCritChance": "{0}% większa szansa na magiczne trafienie krytyczne",
+		"PercentIncreasedMagicDamageCritChance": "{0}% zwiększone obrażenia magiczne oraz szansa na trafienie krytyczne",
+
+		"PercentIncreasedMeleeDamage": "{0}% zwiększone obrażenia w walce w zwarciu",
+		"PercentIncreasedMeleeCritChance": "{0}% większa szansa na trafienie krytyczne w walce w zwarciu",
+		"PercentIncreasedMeleeDamageCritChance": "{0}% zwiększone obrażenia w walce w zwarciu oraz szansa na trafienie krytyczne",
+		"PercentIncreasedMeleeSpeed": "{0}% zwiększona szybkość walki w zwarciu",
+
+		"PercentIncreasedRangedDamage": "{0}% zwiększone obrażenia dystansowe",
+		"PercentIncreasedRangedCritChance": "{0}% większa szansa na dystansowe trafienie krytyczne",
+		"PercentIncreasedRangedDamageCritChance": "{0}% zwiększone obrażenia dystansowe oraz szansa na trafienie krytyczne",
+
+		"PercentIncreasedSummonDamage": "{0}% zwiększone obrażenia istot przywołanych",
+		"SummonTagDamage": "{0} pkt dodatkowych obrażeń zadanych przez istoty przywołane",
+		"PercentSummonTagCritChance": "{0}% szansy na trafienie krytyczne zadane przez istoty przywołane"
 	},
 	"RecipeConditions": {
 		"NearWater": "Wymaga Wody",

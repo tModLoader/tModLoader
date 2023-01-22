@@ -504,7 +504,56 @@
 		"TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "{0}% increased damage"
+		"IncreasesDefenseBy": "Increases defense by {0}",
+		"IncreasesArmorPenBy": "Increases armor penetration by {0}",
+
+		"IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "Increases maximum mana by {0}",
+		"IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		"IncreasesMaxManaByPercent": "Increases maximum mana by {0}%",
+
+		"IncreasesBowDamageByPercent": "Increases bow damage by {0}%",
+		"IncreasesGunDamageByPercent": "Increases gun damage by {0}%",
+		"IncreasesSpecialistDamageByPercent": "Increases specialist ranged damage by {0}%",
+
+		"IncreasesWhipRangeByPercent": "Increases whip range by {0}%",
+		"IncreasesMaxMinionsBy": "Increases your max number of minions by {0}",
+		"IncreasesMaxSentriesBy": "Increases your max number of sentries by {0}",
+
+		"IncreasesFishingPowerBy": "Increases fishing power by {0}",
+
+		"PermanentlyIncreasesMaxLifeBy": "Permanently increases maximum life by {0}",
+		"PermanentlyIncreasesMaxManaBy": "Permanently increases maximum mana by {0}",
+
+		"ReducesDamageTakenByPercent": "Reduces damage taken by {0}%",
+
+		"PercentChanceToSaveAmmo": "{0}% chance to save ammo",
+		"PercentReducedManaCost": "{0}% reduced mana cost",
+
+		"PercentIncreasedMiningSpeed": "{0}% increased mining speed",
+		"PercentIncreasedMovementSpeed": "{0}% increased movement speed",
+
+		"ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "{0}% increased damage",
+		"PercentIncreasedCritChance": "{0}% increased critical strike chance",
+		"PercentIncreasedDamageCritChance": "{0}% increased damage and critical strike chance",
+
+		"PercentIncreasedMagicDamage": "{0}% increased magic damage",
+		"PercentIncreasedMagicCritChance": "{0}% increased magic critical strike chance",
+		"PercentIncreasedMagicDamageCritChance": "{0}% increased magic damage and critical strike chance",
+
+		"PercentIncreasedMeleeDamage": "{0}% increased melee damage",
+		"PercentIncreasedMeleeCritChance": "{0}% increased melee critical strike chance",
+		"PercentIncreasedMeleeDamageCritChance": "{0}% increased melee damage and critical strike chance",
+		"PercentIncreasedMeleeSpeed": "{0}% increased melee speed",
+
+		"PercentIncreasedRangedDamage": "{0}% increased ranged damage",
+		"PercentIncreasedRangedCritChance": "{0}% increased ranged critical strike chance",
+		"PercentIncreasedRangedDamageCritChance": "{0}% increased ranged damage and critical strike chance",
+
+		"PercentIncreasedSummonDamage": "{0}% increased summon damage",
+		"SummonTagDamage": "{0} summon tag damage",
+		"PercentSummonTagCritChance": "{0}% summon tag critical strike chance"
 	},
 	"RecipeConditions": {
 		"NearWater": "Needs water",

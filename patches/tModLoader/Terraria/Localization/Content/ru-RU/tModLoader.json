@@ -504,7 +504,56 @@
 		"TagsGenDescription": "Меняет, как генерируется мир (т.е. руды, новые структуры, и т.д.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "{0}% увеличение урона"
+		"IncreasesDefenseBy": "Увеличивает защиту на {0}",
+		"IncreasesArmorPenBy": "Увеличивает пробивание брони на {0}",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "Увеличивает максимум маны на {0}",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		"IncreasesMaxManaByPercent": "Увеличивает максимум маны на {0}%",
+
+		"IncreasesBowDamageByPercent": "Увеличивает урон от стрел на {0} %",
+		"IncreasesGunDamageByPercent": "Увеличивает урон от пушек на {0} %",
+		"IncreasesSpecialistDamageByPercent": "Увеличивает урон от особого дальнобойного оружия на {0}%",
+
+		"IncreasesWhipRangeByPercent": "Увеличивает дальность удара кнутом на {0}%",
+		"IncreasesMaxMinionsBy": "Увеличивает максимальное число ваших прислужников на {0}",
+		"IncreasesMaxSentriesBy": "Увеличивает урон призываемых существ на {0}",
+
+		"IncreasesFishingPowerBy": "Увеличивает мастерство рыбалки на {0}",
+
+		"PermanentlyIncreasesMaxLifeBy": "Навсегда увеличивает максимальный уровень жизни на {0}",
+		"PermanentlyIncreasesMaxManaBy": "Навсегда увеличивает максимум маны на {0}",
+
+		"ReducesDamageTakenByPercent": "Получаемый урон снижен на {0} %",
+
+		"PercentChanceToSaveAmmo": "Шанс {0} % сохранить боеприпасы",
+		"PercentReducedManaCost": "Уменьшает стоимость в мане на {0} %",
+
+		"PercentIncreasedMiningSpeed": "Увеличивает скорость добычи на {0}%",
+		"PercentIncreasedMovementSpeed": "Увеличивает скорость движения на {0} %",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "Увеличивает урон на {0} %",
+		"PercentIncreasedCritChance": "Увеличивает шанс критического удара на {0} %",
+		"PercentIncreasedDamageCritChance": "Увеличивает на {0} % урон и шанс критического удара",
+
+		"PercentIncreasedMagicDamage": "Увеличивает магический урон на {0} %",
+		"PercentIncreasedMagicCritChance": "Увеличивает шанс критического магического урона на {0} %",
+		"PercentIncreasedMagicDamageCritChance": "Увеличивает на {0} % магический урон и шанс критического удара",
+
+		"PercentIncreasedMeleeDamage": "Увеличивает урон в ближнем бою на {0} %",
+		"PercentIncreasedMeleeCritChance": "Увеличивает шанс критического урона в ближнем бою на {0} %",
+		"PercentIncreasedMeleeDamageCritChance": "Увеличивает на {0} % урон в ближнем бою и шанс критического удара",
+		"PercentIncreasedMeleeSpeed": "Увеличивает скорость ближнего боя на {0} %",
+
+		"PercentIncreasedRangedDamage": "Увеличивает дистанционный урон на {0} %",
+		"PercentIncreasedRangedCritChance": "Увеличивает шанс критического дистанционного урона на {0} %",
+		"PercentIncreasedRangedDamageCritChance": "Увеличивает на {0} % дистанционный урон и шанс критического удара",
+
+		"PercentIncreasedSummonDamage": "Увеличивает урон призываемых существ на {0}%",
+		"SummonTagDamage": "Увеличивает урон призываемых существ на {0}",
+		"PercentSummonTagCritChance": "Увеличивает шанс критического удара призываемых существ на {0}%"
 	},
 	"RecipeConditions": {
 		"NearWater": "Нужна вода",

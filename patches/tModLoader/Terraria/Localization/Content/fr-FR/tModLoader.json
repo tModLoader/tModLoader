@@ -504,7 +504,56 @@
 		// "TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "+{0} % de dégâts"
+		"IncreasesDefenseBy": "+{0} points de défense",
+		"IncreasesArmorPenBy": "+{0} points de pénétration d'armure",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "+{0} points de mana max",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		// "IncreasesMaxManaByPercent": "Increases maximum mana by {0}%",
+
+		"IncreasesBowDamageByPercent": "+{0} % de dégâts de flèches",
+		"IncreasesGunDamageByPercent": "+{0} % de dégâts de pistolets",
+		"IncreasesSpecialistDamageByPercent": "+{0} % de dégâts causés par les armes de longue portée de spécialiste",
+
+		"IncreasesWhipRangeByPercent": "+{0} % de portée de fouet",
+		"IncreasesMaxMinionsBy": "Augmente le nombre de sbires max de {0}",
+		"IncreasesMaxSentriesBy": "Augmente le nombre de sentinelles max de {0}",
+
+		"IncreasesFishingPowerBy": "+{0} de puissance de pêche",
+
+		"PermanentlyIncreasesMaxLifeBy": "+{0} points de santé max définitifs",
+		"PermanentlyIncreasesMaxManaBy": "+{0} points de santé max définitifs",
+
+		"ReducesDamageTakenByPercent": "-{0} % de dégâts subis",
+
+		"PercentChanceToSaveAmmo": "{0} % de chances d’économiser des munitions",
+		"PercentReducedManaCost": "-{0} % d'usage de mana",
+
+		"PercentIncreasedMiningSpeed": "+{0} % de vitesse d'extraction",
+		"PercentIncreasedMovementSpeed": "+{0} % de vitesse de déplacement",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "+{0} % de dégâts",
+		"PercentIncreasedCritChance": "+{0} % de chances de coup critique",
+		"PercentIncreasedDamageCritChance": "+{0} % de dégâts et de chances de coup critique",
+
+		"PercentIncreasedMagicDamage": "+{0} % de dégâts magiques",
+		"PercentIncreasedMagicCritChance": "+{0} % de chances de coup critique magique",
+		"PercentIncreasedMagicDamageCritChance": "+{0} % de dégâts magiques et de chances de coup critique",
+
+		"PercentIncreasedMeleeDamage": "+{0} % de dégâts au corps à corps",
+		"PercentIncreasedMeleeCritChance": "+{0} % de chances de coup critique au corps à corps",
+		"PercentIncreasedMeleeDamageCritChance": "+{0} % de dégâts au corps à corps et de chances de coup critique",
+		"PercentIncreasedMeleeSpeed": "+{0} % de vitesse au corps à corps",
+
+		"PercentIncreasedRangedDamage": "+{0} % de dégâts à distance",
+		"PercentIncreasedRangedCritChance": "+{0} % de chances de coup critique à distance",
+		"PercentIncreasedRangedDamageCritChance": "+{0} % de dégâts à distance et de chances de coup critique",
+
+		"PercentIncreasedSummonDamage": "+{0} % de dégâts d’invocation",
+		"SummonTagDamage": "+{0} points de dégâts aux cibles des sbires invoqués",
+		"PercentSummonTagCritChance": "{0} % de chances de coup critique pour les sbires invoqués"
 	},
 	"RecipeConditions": {
 		"NearWater": "Besoins d’eau",

@@ -504,7 +504,56 @@
 		"TagsGenDescription": "Ändert, wie die Welt genertiert wird (z.B. Erze, neue Strukturen, usw.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "Um {0}% erhöhter Schaden"
+		"IncreasesDefenseBy": "Erhöht die Abwehr um {0}",
+		"IncreasesArmorPenBy": "Erhöht Durchdringen von Rüstung um {0}",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "Erhöht maximales Mana um {0}",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		"IncreasesMaxManaByPercent": "Erhöht maximales Mana um {0}%",
+
+		"IncreasesBowDamageByPercent": "Um {0}% erhöhter Bogenschaden",
+		"IncreasesGunDamageByPercent": "Um {0}% erhöhter Schusswaffenschaden",
+		"IncreasesSpecialistDamageByPercent": "Um {0}% erhöhter Spezialwaffen-Fernkampfschaden",
+
+		"IncreasesWhipRangeByPercent": "Erhöht Peitschenreichweite um {0} %",
+		"IncreasesMaxMinionsBy": "Erhöht die maximale Anzahl deiner Günstlinge um {0}",
+		"IncreasesMaxSentriesBy": "Erhöht die maximale Anzahl deiner Wächter um {0}",
+
+		"IncreasesFishingPowerBy": "Erhöht die Angelkraft um {0}",
+
+		"PermanentlyIncreasesMaxLifeBy": "Erhöht die maximalen Lebenspunkte um {0}",
+		"PermanentlyIncreasesMaxManaBy": "Erhöht maximales Mana dauerhaft um {0}",
+
+		"ReducesDamageTakenByPercent": "Verringert eingesteckten Schaden um {0}%",
+
+		"PercentChanceToSaveAmmo": "{0}% Chance, Munition zu sparen",
+		"PercentReducedManaCost": "Um {0}% reduzierte Manakosten",
+
+		"PercentIncreasedMiningSpeed": "Um {0} % erhöhtes Abbautempo",
+		"PercentIncreasedMovementSpeed": "Um {0}% erhöhtes Bewegungstempo",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "Um {0}% erhöhter Schaden",
+		"PercentIncreasedCritChance": "Um {0} % erhöhte kritische Trefferchance",
+		"PercentIncreasedDamageCritChance": "Um {0}% erhöhter Schaden und Chance auf kritischen Treffer",
+
+		"PercentIncreasedMagicDamage": "Um {0}% erhöhter Magieschaden",
+		"PercentIncreasedMagicCritChance": "Um {0}% erhöhte kritische Magie-Trefferchance",
+		"PercentIncreasedMagicDamageCritChance": "Um {0}% erhöhter Magieschaden und erhöhte kritische Trefferchance",
+
+		"PercentIncreasedMeleeDamage": "Um {0}% erhöhter Nahkampfschaden",
+		"PercentIncreasedMeleeCritChance": "Um {0}% erhöhte kritische Nahkampf-Trefferchance",
+		"PercentIncreasedMeleeDamageCritChance": "Um {0}% erhöhter Nahkampfschaden und erhöhte kritische Trefferchance",
+		"PercentIncreasedMeleeSpeed": "Um {0}% erhöhtes Nahkampftempo",
+
+		"PercentIncreasedRangedDamage": "Um {0}% erhöhter Fernkampfschaden",
+		"PercentIncreasedRangedCritChance": "Um {0}% erhöhte kritische Fernkampf-Trefferchance",
+		"PercentIncreasedRangedDamageCritChance": "Um {0}% erhöhter Fernkampfschaden und kritische Trefferchance",
+
+		"PercentIncreasedSummonDamage": "Erhöht Beschwörungsschaden um {0} %",
+		"SummonTagDamage": "{0} Beschwörungsschaden",
+		"PercentSummonTagCritChance": "{0} % kritische Beschwörung-Trefferchance"
 	},
 	"RecipeConditions": {
 		"NearWater": "Braucht Wasser",

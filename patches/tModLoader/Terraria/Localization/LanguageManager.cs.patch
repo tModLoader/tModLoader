@@ -69,7 +69,7 @@
  
  	private void LoadFilesForCulture(GameCulture culture)
  	{
-@@ -142,28 +_,72 @@
+@@ -142,8 +_,12 @@
  				break;
  			}
  		}
@@ -77,50 +77,20 @@
 +		LocalizationLoader.LoadModTranslations(culture);
  	}
  
--	private void ProcessCopyCommandsInTexts()
-+	internal void ProcessCopyCommandsInTexts()
++	// Replaced by ProcessCopyCommandsInTexts implementation in LanguageManager.tML.cs
++	/*
+ 	private void ProcessCopyCommandsInTexts()
  	{
-+		/*
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-+		*/
-+		Regex regex = new Regex(@"{\$([\w\.]+)}", RegexOptions.Compiled);
-+
- 		foreach (KeyValuePair<string, LocalizedText> localizedText in _localizedTexts) {
- 			LocalizedText value = localizedText.Value;
-+
-+			if (value.Value == null)
-+				continue;
-+
- 			for (int i = 0; i < 100; i++) {
-+				string text = regex.Replace(value.Value, (Match match) => GetTextValue(FindKeyInScope(match.Groups[1].ToString(), localizedText.Key)));
-+				/* 
- 				string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
-+				*/
- 				if (text == value.Value)
+@@ -155,15 +_,30 @@
  					break;
  
  				value.SetValue(text);
++				// patch context
  			}
  		}
-+
-+		// Provides additional functionality allowing substitutions to assume the scope of the key they belong to.
-+		// For example, if a key is Mods.ExampleMod.Common.Test with a match, {$Common.PaperAirplane}, Mods.ExampleMod.Common.PaperAirplane if it exists would be matched. All other key variations from each parent key are checked. 
-+		string FindKeyInScope(string key, string scope)
-+		{
-+			if (Exists(key))
-+				return key;
-+
-+			string[] splitKey = scope.Split(".");
-+			for (int j = splitKey.Length - 1; j >= 0; j--) {
-+				string partialKey = string.Join(".", splitKey.Take(j + 1));
-+				string combinedKey = partialKey + "." + key;
-+				if (Exists(combinedKey))
-+					return combinedKey;
-+			}
-+
-+			return key;
-+		}
  	}
++	*/
  
  	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
  	{
