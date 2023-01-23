@@ -260,9 +260,13 @@ public static class LocalizationLoader
 		};
 
 		// TODO: Maybe optimize to only recently built?
-		// TODO: Only update if mod is a locally built mod (not in workshop folder), to mitigate modders testing old versions of their mods removing text from their source folder
 		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
 		if (!Directory.Exists(sourceFolder))
+			return;
+
+		// Only update if mod is a locally built mod (not in workshop folder), to mitigate modders testing published versions of their mods removing text from their source folder
+		string localBuiltTModFile = Path.Combine(ModLoader.ModPath, mod.Name + ".tmod"); // LocalMod not available in Mod class.
+		if (outputPath == null && !File.Exists(localBuiltTModFile))
 			return;
 
 		DateTime modLastModified = File.GetLastWriteTime(mod.File.path);
