@@ -98,15 +98,22 @@ internal static class HjsonExtensions
 						kwl = GetComments(commentedObject.Comments, key);
 
 						bool commentedOut = jObject is CommentedWscJsonObject commented && commented.CommentedOut.Contains(key);
-						if (commentedOut)
-							tw.Write("/* ");
+						bool commentIsMultiline = false;
+						if (commentedOut) {
+							commentIsMultiline = val.GetRawString().IndexOf('\n') != -1;
+
+							if (commentIsMultiline)
+								tw.Write("/* ");
+							else
+								tw.Write("// ");
+						}
 
 						tw.Write(escapeName(key));
 						tw.Write(':');
 
 						WriteFancyHjsonValue(tw, val, level + (showBraces ? 1 : 0), in style, hasComments: TestCommentString(kwl));
 
-						if (commentedOut)
+						if (commentedOut && commentIsMultiline)
 							tw.Write(" */");
 					}
 
