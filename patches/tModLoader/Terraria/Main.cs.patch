@@ -1506,6 +1506,14 @@
  			CinematicManager.Instance.Update(gameTime);
  			if (netMode == 2) {
  				for (int i = 0; i < 256; i++) {
+@@ -13526,6 +_,7 @@
+ 			}
+ 		}
+ 
++		LocalizationLoader.Update();
+ 		DoUpdate_AutoSave();
+ 		if (!dedServ) {
+ 			ChromaInitializer.UpdateEvents();
 @@ -13705,6 +_,11 @@
  
  				mouseLeftRelease = false;

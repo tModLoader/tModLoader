@@ -459,6 +459,7 @@
 		"WorldGenError": "Wystąpił problem podczas generowania świata",
 		"WorldIODataException": "Gra napotkała problem z danymi moda dla świata.",
 		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProszę sprawdź server.log aby ustalić, czy mod jest odpowiedzialny za tę awarię, w przeciwnym wypadku odwiedź #support na Discordzie tModLoadera",
+		// "WatchLocalizationFileMessage": "The following localization files have changed and have been reloaded: {0}",
 
 		// MessageBox
 		"ContentFolderNotFound": "Folder z zawartością Terrarii nie został znaleziony. Jeśli zainstalowałeś tModLoader przez Steam, upewnij się, że Terraria jest zainstalowana. Jeśli nie, upewnij się, że zainstalowałeś tModLoader w folderze wewnątrz katalogu instalacyjnego Terraria lub w folderze obok katalogu instalacyjnego Terraria.",
