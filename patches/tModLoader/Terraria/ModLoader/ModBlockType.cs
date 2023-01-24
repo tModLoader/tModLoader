@@ -89,7 +89,6 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <param name="type">The dust type that will be spawned by the calling code</param>
 	public virtual bool CreateDust(int i, int j, ref int type)
 	{
-		type = DustType; // TODO: this is strange
 		return true;
 	}
 

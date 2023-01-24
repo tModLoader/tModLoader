@@ -172,12 +172,12 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookClientClone = AddHook<Action<ModPlayer>>(p => p.clientClone);
+	private static HookList HookCopyClientState = AddHook<Action<ModPlayer>>(p => p.CopyClientState);
 
-	public static void clientClone(Player player, Player clientClone)
+	public static void CopyClientState(Player player, Player targetCopy)
 	{
-		foreach (var modPlayer in HookClientClone.Enumerate(player.modPlayers)) {
-			modPlayer.clientClone(clientClone.modPlayers[modPlayer.Index]);
+		foreach (var modPlayer in HookCopyClientState.Enumerate(player.modPlayers)) {
+			modPlayer.CopyClientState(targetCopy.modPlayers[modPlayer.Index]);
 		}
 	}
 
@@ -1133,43 +1133,43 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookPlayerConnect = AddHook<Action<Player>>(p => p.PlayerConnect);
+	private static HookList HookPlayerConnect = AddHook<Action>(p => p.PlayerConnect);
 
 	public static void PlayerConnect(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
 		foreach (var modPlayer in HookPlayerConnect.Enumerate(player.modPlayers)) {
-			modPlayer.PlayerConnect(player);
+			modPlayer.PlayerConnect();
 		}
 	}
 
-	private static HookList HookPlayerDisconnect = AddHook<Action<Player>>(p => p.PlayerDisconnect);
+	private static HookList HookPlayerDisconnect = AddHook<Action>(p => p.PlayerDisconnect);
 
 	public static void PlayerDisconnect(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
 		foreach (var modPlayer in HookPlayerDisconnect.Enumerate(player.modPlayers)) {
-			modPlayer.PlayerDisconnect(player);
+			modPlayer.PlayerDisconnect();
 		}
 	}
 
-	private static HookList HookOnEnterWorld = AddHook<Action<Player>>(p => p.OnEnterWorld);
+	private static HookList HookOnEnterWorld = AddHook<Action>(p => p.OnEnterWorld);
 
 	// Do NOT hook into the Player.Hooks.OnEnterWorld event
 	public static void OnEnterWorld(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
 		foreach (var modPlayer in HookOnEnterWorld.Enumerate(player.modPlayers)) {
-			modPlayer.OnEnterWorld(player);
+			modPlayer.OnEnterWorld();
 		}
 	}
 
-	private static HookList HookOnRespawn = AddHook<Action<Player>>(p => p.OnRespawn);
+	private static HookList HookOnRespawn = AddHook<Action>(p => p.OnRespawn);
 
 	public static void OnRespawn(Player player)
 	{
 		foreach (var modPlayer in HookOnRespawn.Enumerate(player.modPlayers)) {
-			modPlayer.OnRespawn(player);
+			modPlayer.OnRespawn();
 		}
 	}
 
@@ -1325,5 +1325,18 @@ public static class PlayerLoader
 			.OrderBy(kv => kv.Key == "Terraria" ? "" : kv.Key)
 			.SelectMany(kv => kv.Value)
 			.ToList();
+	}
+
+	private delegate IEnumerable<Item> DelegateFindMaterialsFrom(out ModPlayer.ItemConsumedCallback onUsedForCrafting);
+	private static HookList HookAddCraftingMaterials = AddHook<DelegateFindMaterialsFrom>(p => p.AddMaterialsForCrafting);
+
+	public static IEnumerable<(IEnumerable<Item>, ModPlayer.ItemConsumedCallback)> GetModdedCraftingMaterials(Player player)
+	{
+		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path. 
+		foreach (var modPlayer in HookAddCraftingMaterials.EnumerateSlow(player.modPlayers)) {
+			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
+			if (items != null)
+				yield return (items, onUsedForCrafting);
+		}
 	}
 }

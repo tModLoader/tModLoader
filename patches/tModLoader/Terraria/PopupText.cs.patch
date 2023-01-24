@@ -20,6 +20,14 @@
  	public bool notActuallyAnItem {
  		get {
  			if (npcNetID == 0)
+@@ -64,6 +_,7 @@
+ 		text.rotation = 0f;
+ 		text.alpha = 1f;
+ 		text.alphaDir = -1;
++		text.rarity = 0;
+ 	}
+ 
+ 	public static int NewText(AdvancedPopupRequest request, Vector2 position)
 @@ -256,10 +_,14 @@
  				popupText2.color = new Color(5, 200, 255);
  			else if (newItem.rare == 10)

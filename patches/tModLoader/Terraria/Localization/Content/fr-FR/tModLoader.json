@@ -593,7 +593,9 @@
 		"InGemCave": "Doit être dans la Grotte des Gemmes",
 		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd",
 		"InGraveyardBiome": "Doit être dans le Biome du Cimetière"
-		// "EverythingSeed": "Needs to be an Everything world"
+		//"EverythingSeed": "Needs to be an Everything world",
+		//"CrimsonWorld": "Needs to be a Crimson World",
+		//"CorruptWorld": "Needs to be a Corrupt World"
 	},
 	"TitleLinks": {
 		// "Patreon": "Patreon"

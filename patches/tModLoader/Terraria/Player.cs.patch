@@ -5585,6 +5585,21 @@
  			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
  			obj.noGrabDelay = 100;
+@@ -41733,9 +_,13 @@
+ 		}
+ 	}
+ 
++	private Player _clientClone;
+ 	public Player clientClone()
+ 	{
+-		Player player = new Player();
++		// Disable cloning until the end of the method.
++		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
++
++		Player player = _clientClone ??= new Player();
+ 		player.zone1 = zone1;
+ 		player.zone2 = zone2;
+ 		player.zone3 = zone3;
 @@ -41743,6 +_,9 @@
  		player.zone5 = zone5;
  		player.voidVaultInfo = voidVaultInfo;
@@ -5595,16 +5610,92 @@
  		player.extraAccessory = extraAccessory;
  		player.MinionRestTargetPoint = MinionRestTargetPoint;
  		player.MinionAttackTargetNPC = MinionAttackTargetNPC;
+@@ -41771,34 +_,34 @@
+ 		player.hideMisc = hideMisc;
+ 		player.shieldRaised = shieldRaised;
+ 		for (int i = 0; i < 59; i++) {
+-			player.inventory[i] = inventory[i].Clone();
++			inventory[i].CopyNetStateTo(player.inventory[i]);
+ 			if (i < armor.Length)
+-				player.armor[i] = armor[i].Clone();
++				armor[i].CopyNetStateTo(player.armor[i]);
+ 
+ 			if (i < dye.Length)
+-				player.dye[i] = dye[i].Clone();
++				dye[i].CopyNetStateTo(player.dye[i]);
+ 
+ 			if (i < miscEquips.Length)
+-				player.miscEquips[i] = miscEquips[i].Clone();
++				miscEquips[i].CopyNetStateTo(player.miscEquips[i]);
+ 
+ 			if (i < miscDyes.Length)
+-				player.miscDyes[i] = miscDyes[i].Clone();
++				miscDyes[i].CopyNetStateTo(player.miscDyes[i]);
+ 
+ 			if (i < bank.item.Length)
+-				player.bank.item[i] = bank.item[i].Clone();
++				bank.item[i].CopyNetStateTo(player.bank.item[i]);
+ 
+ 			if (i < bank2.item.Length)
+-				player.bank2.item[i] = bank2.item[i].Clone();
++				bank2.item[i].CopyNetStateTo(player.bank2.item[i]);
+ 
+ 			if (i < bank3.item.Length)
+-				player.bank3.item[i] = bank3.item[i].Clone();
++				bank3.item[i].CopyNetStateTo(player.bank3.item[i]);
+ 
+ 			if (i < bank4.item.Length)
+-				player.bank4.item[i] = bank4.item[i].Clone();
++				bank4.item[i].CopyNetStateTo(player.bank4.item[i]);
+ 		}
+ 
+ 		CloneLoadouts(player);
+-		player.trashItem = trashItem.Clone();
++		trashItem.CopyNetStateTo(player.trashItem);
+ 		for (int j = 0; j < maxBuffs; j++) {
+ 			player.buffType[j] = buffType[j];
+ 			player.buffTime[j] = buffTime[j];
 @@ -41806,6 +_,9 @@
  
  		DpadRadial.CopyTo(player.DpadRadial);
  		CircularRadial.CopyTo(player.CircularRadial);
 +
-+		PlayerLoader.clientClone(this, player);
++		PlayerLoader.CopyClientState(this, player);
 +
  		return player;
  	}
  
+@@ -41814,26 +_,26 @@
+ 		Item[] array = armor;
+ 		Item[] array2 = clonePlayer.armor;
+ 		for (int i = 0; i < array.Length; i++) {
+-			array2[i] = array[i].Clone();
++			array[i].CopyNetStateTo(array2[i]);
+ 		}
+ 
+ 		array = dye;
+ 		array2 = clonePlayer.dye;
+ 		for (int j = 0; j < array.Length; j++) {
+-			array2[j] = array[j].Clone();
++			array[j].CopyNetStateTo(array2[j]);
+ 		}
+ 
+ 		for (int k = 0; k < Loadouts.Length; k++) {
+ 			array = Loadouts[k].Armor;
+ 			array2 = clonePlayer.Loadouts[k].Armor;
+ 			for (int l = 0; l < array.Length; l++) {
+-				array2[l] = array[l].Clone();
++				array[l].CopyNetStateTo(array2[l]);
+ 			}
+ 
+ 			array = Loadouts[k].Dye;
+ 			array2 = clonePlayer.Loadouts[k].Dye;
+ 			for (int m = 0; m < array.Length; m++) {
+-				array2[m] = array[m].Clone();
++				array[m].CopyNetStateTo(array2[m]);
+ 			}
+ 		}
+ 	}
 @@ -41855,7 +_,10 @@
  		if (Main.tile[x, y - 1] == null)
  			return false;
@@ -5795,6 +5886,33 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
+@@ -42216,22 +_,22 @@
+ 	{
+ 		Item mouseItem = new Item();
+ 		if (_temporaryItemSlots[0] != null)
+-			mouseItem = _temporaryItemSlots[0].Clone();
++			_temporaryItemSlots[0].CopyNetStateTo(mouseItem);
+ 
+ 		Main.mouseItem = mouseItem;
+ 		mouseItem = new Item();
+ 		if (_temporaryItemSlots[1] != null)
+-			mouseItem = _temporaryItemSlots[1].Clone();
++			_temporaryItemSlots[1].CopyNetStateTo(mouseItem);
+ 
+ 		Main.CreativeMenu.SetItembyIndex(mouseItem, 0);
+ 		mouseItem = new Item();
+ 		if (_temporaryItemSlots[2] != null)
+-			mouseItem = _temporaryItemSlots[2].Clone();
++			_temporaryItemSlots[2].CopyNetStateTo(mouseItem);
+ 
+ 		Main.guideItem = mouseItem;
+ 		mouseItem = new Item();
+ 		if (_temporaryItemSlots[3] != null)
+-			mouseItem = _temporaryItemSlots[3].Clone();
++			_temporaryItemSlots[3].CopyNetStateTo(mouseItem);
+ 
+ 		Main.reforgeItem = mouseItem;
+ 		CreativePowerManager.Instance.ApplyLoadedDataToPlayer(this);
 @@ -42272,6 +_,10 @@
  
  		Player player = new Player();

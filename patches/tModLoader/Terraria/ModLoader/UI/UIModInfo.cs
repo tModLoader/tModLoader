@@ -66,7 +66,7 @@ internal class UIModInfo : UIState
 		uIPanel.Append(_modInfo);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = {Pixels = -20, Percent = 1f},
+			Height = {Pixels = -12, Percent = 1f},
 			VAlign = 0.5f,
 			HAlign = 1f
 		}.WithView(100f, 1000f);
@@ -221,8 +221,7 @@ internal class UIModInfo : UIState
 		SoundEngine.PlaySound(SoundID.MenuClose);
 
 		ModOrganizer.DeleteMod(_localMod);
-
-		Task.Run(() => { Interface.modBrowser.InnerPopulateModBrowser(); });
+		ModBrowser.UIModBrowser.CleanupDeletedItem(_modName);
 
 		Main.menuMode = _gotoMenu;
 	}
@@ -318,5 +317,7 @@ internal class UIModInfo : UIState
 			_modInfo.RemoveChild(_loaderElement);
 			_ready = false;
 		}
+
+		base.Update(gameTime);
 	}
 }

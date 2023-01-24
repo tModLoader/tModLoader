@@ -412,7 +412,8 @@ public static class AssemblyManager
 			bool isNewSlot = (methodInfo.Attributes & MethodAttributes.VtableLayoutMask) == MethodAttributes.NewSlot;
 
 			// By combining the logic of the method being virtual and also an override, by checking if GetBaseDefinition returns itself, we can determine that the original base definition is gone now.
-			if (methodInfo.IsVirtual && !isNewSlot && methodInfo.GetBaseDefinition() == methodInfo)
+			// Note: GetBaseDefinition returns the calling instance if the instance's declaring type is an interface -- absoluteAquarian
+			if (methodInfo.IsVirtual && !isNewSlot && methodInfo.DeclaringType?.IsInterface is false && methodInfo.GetBaseDefinition() == methodInfo)
 				throw new Exception($"{method} overrides a method which doesn't exist in any base class");
 		}
 	}

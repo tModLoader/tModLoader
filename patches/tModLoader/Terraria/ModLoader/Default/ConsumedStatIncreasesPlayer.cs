@@ -11,9 +11,9 @@ internal class ConsumedStatIncreasesPlayer : ModPlayer
 		NetHandler.SendConsumedState(toWho, Player);
 	}
 
-	public override void clientClone(ModPlayer clientClone)
+	public override void CopyClientState(ModPlayer targetCopy)
 	{
-		Player source = Player, target = clientClone.Player;
+		Player source = Player, target = targetCopy.Player;
 
 		target.ConsumedLifeCrystals = source.ConsumedLifeCrystals;
 		target.ConsumedLifeFruit = source.ConsumedLifeFruit;
