@@ -45,7 +45,7 @@
  	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
  	{
  		LoadFilesForCulture(culture);
-@@ -122,6 +_,23 @@
+@@ -122,6 +_,25 @@
  
  		ChatInitializer.PrepareAliases();
  	}
@@ -65,6 +65,8 @@
 +		RecalculateBoundTextValues();
 +
 +		SystemLoader.OnLocalizationsLoaded();
++
++		SetupFileWatchers();
 +	}
  
  	private void LoadFilesForCulture(GameCulture culture)

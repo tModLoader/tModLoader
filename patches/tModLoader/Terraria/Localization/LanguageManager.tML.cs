@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ReLogic.Content.Sources;
+using Terraria.ModLoader;
 
 namespace Terraria.Localization;
 
@@ -148,4 +150,65 @@ public partial class LanguageManager
 		return string.Format(value, binding.args);
 	}
 	#endregion
+
+	private const int defaultWatcherCooldown = 15;
+	private FileSystemWatcher localizationFileWatcher;
+	internal string watchedMod;
+	internal string watchedFile;
+	internal int watcherCooldown;
+	private void SetupFileWatchers()
+	{
+		if (localizationFileWatcher != null)
+			return;
+		try {
+			localizationFileWatcher = new FileSystemWatcher();
+			localizationFileWatcher.Path = ModLoader.Core.ModCompile.ModSourcePath;
+			localizationFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
+			localizationFileWatcher.Filter = "*.hjson";
+			localizationFileWatcher.IncludeSubdirectories = true;
+
+			localizationFileWatcher.Changed += (a, b) => {
+				HandleFileChangedOrRenamed(b.Name);
+			};
+			localizationFileWatcher.Renamed += (a, b) => {
+				HandleFileChangedOrRenamed(b.Name);
+			};
+
+			// Begin watching.
+			localizationFileWatcher.EnableRaisingEvents = true;
+		}
+		catch (Exception) {
+			throw;
+		}
+	}
+
+	private void HandleFileChangedOrRenamed(string fileName)
+	{
+		// fileName is relative to watched folder path
+		string modName = fileName.Split(Path.DirectorySeparatorChar).First();
+		if (ModLoader.ModLoader.TryGetMod(modName, out _)) {
+			watchedMod = modName;
+			watcherCooldown = defaultWatcherCooldown;
+			watchedFile = fileName;
+		}
+	}
+
+	internal void Update()
+	{
+		// Saving a file in some programs trigger the file multiple times. A cooldown allows tmod to wait until file is finished being changed.
+		if (watcherCooldown > 0) {
+			watcherCooldown--;
+			if (watcherCooldown == 0) {
+				string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", watchedFile);
+
+				if (!Main.dedServ)
+					Main.NewText(newText);
+				else
+					Console.WriteLine(newText);
+				Logging.tML.Info(newText);
+
+				LanguageManager.Instance.ReloadLanguage();
+			}
+		}
+	}
 }

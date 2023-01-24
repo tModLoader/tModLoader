@@ -180,6 +180,23 @@ public static class LocalizationLoader
 
 				string translationFileContents = streamReader.ReadToEnd();
 
+				if (LanguageManager.Instance.watchedMod == mod.Name) {
+					string path = Path.Combine(ModCompile.ModSourcePath, mod.Name, translationFile.Name);
+					if (File.Exists(path)) {
+						try {
+							translationFileContents = File.ReadAllText(path);
+						}
+						catch (Exception) {
+							string newText = $"Failed to read {path}";
+							if (!Main.dedServ)
+								Main.NewText(newText);
+							else
+								Console.WriteLine(newText);
+							Logging.tML.Info(newText);
+						}
+					}
+				}
+
 				// Parse HJSON and convert to standard JSON
 				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
 
