@@ -97,6 +97,13 @@ public static class ProjectileLoader
 		}
 	}
 
+	internal static void FinishSetup()
+	{
+		foreach (ModProjectile proj in ProjectileLoader.projectiles) {
+			Lang._projectileNameCache[proj.Type] = proj.DisplayName;
+		}
+	}
+
 	internal static void Unload()
 	{
 		projectiles.Clear();

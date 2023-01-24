@@ -13,6 +13,8 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModWall : ModBlockType
 {
+	public override string LocalizationCategory => "Walls";
+
 	/// <summary>
 	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
@@ -30,7 +32,7 @@ public abstract class ModWall : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, ModTranslation name)
+	/*public void AddMapEntry(Color color, ModTranslation name)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name);
@@ -39,7 +41,7 @@ public abstract class ModWall : ModBlockType
 			}
 			MapLoader.wallEntries[Type].Add(entry);
 		}
-	}
+	}*/
 
 	/// <summary>
 	/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
@@ -58,7 +60,7 @@ public abstract class ModWall : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
+	/*public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name, nameFunc);
@@ -67,7 +69,7 @@ public abstract class ModWall : ModBlockType
 			}
 			MapLoader.wallEntries[Type].Add(entry);
 		}
-	}
+	}*/
 
 	protected override sealed void Register()
 	{

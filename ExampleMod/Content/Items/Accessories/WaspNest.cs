@@ -40,9 +40,6 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetStaticDefaults() {
-			// We can use vanilla language keys to copy the tooltip from HiveBackpack
-			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

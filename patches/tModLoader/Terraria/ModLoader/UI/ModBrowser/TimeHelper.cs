@@ -11,7 +11,6 @@ internal class TimeHelper
 	private const int DAY = 24 * HOUR;
 	private const int MONTH = 30 * DAY;
 
-	// Note: Polish has different plural for numbers ending in 2,3,4. Too complicated to do though.
 	public static string HumanTimeSpanString(DateTime yourDate)
 	{
 		var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);

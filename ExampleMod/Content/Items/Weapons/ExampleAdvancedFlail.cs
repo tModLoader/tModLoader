@@ -9,9 +9,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleAdvancedFlail : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Advanced Flail");
-			Tooltip.SetDefault("This is a modded flail with custom behavior.");
-
 			Item.ResearchUnlockCount = 1;
 
 			// This line will make the damage shown in the tooltip twice the actual Item.damage. This multiplier is used to adjust for the dynamic damage capabilities of the projectile.

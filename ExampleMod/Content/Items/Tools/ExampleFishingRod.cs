@@ -9,10 +9,6 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleFishingRod : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Fishing Rod");
-			Tooltip.SetDefault("Fires multiple lines at once. Can fish in lava.\n" +
-				"The fishing line never snaps.");
-
 			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanFishInLava[Item.type] = true; // Allows the pole to fish in lava
 		}

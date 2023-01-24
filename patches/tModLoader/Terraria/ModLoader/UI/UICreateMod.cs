@@ -209,6 +209,10 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 					File.WriteAllBytes(Path.Combine(itemsFolder, $"{basicSwordTrimmed}.png"), ExampleSwordPNG);
 				}
 
+				string localizationFolder = Path.Combine(sourceFolder, "Localization");
+				Directory.CreateDirectory(localizationFolder);
+				File.WriteAllText(Path.Combine(localizationFolder, $"en-US.hjson"), GetLocalizationFile(modNameTrimmed));
+
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;
 			}
@@ -292,6 +296,16 @@ $@"{{
     }}
   }}
 }}";
+	}
+
+	internal string GetLocalizationFile(string modNameTrimmed)
+	{
+		return
+$@"Mods: {{
+	{modNameTrimmed}: {{
+	}}
+}} 
+";
 	}
 
 	internal string GetBasicSword(string modNameTrimmed, string basicSwordName)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
@@ -20,8 +21,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileSolid[Type] = true;
 			Main.tileBlockLight[Type] = true;
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("ExampleOre");
+			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(152, 171, 198), name);
 
 			DustType = 84;

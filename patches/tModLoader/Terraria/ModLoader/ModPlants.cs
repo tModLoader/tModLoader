@@ -40,7 +40,7 @@ public static class PlantLoader
 	internal static List<IPlant> plantList = new List<IPlant>();
 	internal static Dictionary<int, int> plantIdToStyleLimit = new Dictionary<int, int>();
 
-	internal static void SetupPlants()
+	internal static void FinishSetup()
 	{
 		foreach (var plant in plantList) {
 			plant.SetStaticDefaults();

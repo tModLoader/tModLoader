@@ -4,6 +4,7 @@ using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -11,8 +12,11 @@ namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleMultiUseItem : ModItem
 	{
-		public static int MaxUses = 4;
+		public static readonly int MaxUses = 4;
+
 		public int useCount;
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MaxUses);
 
 		public override void SetDefaults() {
 			Item.width = 20;

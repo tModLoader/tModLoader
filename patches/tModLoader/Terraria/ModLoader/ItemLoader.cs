@@ -136,6 +136,17 @@ public static class ItemLoader
 		}
 	}
 
+	internal static void FinishSetup()
+	{
+		foreach (ModItem item in items) {
+			Lang._itemNameCache[item.Type] = item.DisplayName;
+			Lang._itemTooltipCache[item.Type] = ItemTooltip.FromLocalization(item.Tooltip);
+			ContentSamples.ItemsByType[item.Type].RebuildTooltip();
+		}
+
+		ValidateGeodeDropsSet();
+	}
+
 	internal static void ValidateGeodeDropsSet()
 	{
 		foreach (var pair in ItemID.Sets.GeodeDrops) {

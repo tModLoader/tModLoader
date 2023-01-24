@@ -12,8 +12,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleCloneWeapon : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Meowmere V2");
-
 			Item.ResearchUnlockCount = 1;
 		}
 
