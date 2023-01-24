@@ -460,6 +460,7 @@
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
 		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support",
+		// "WatchLocalizationFileMessage": "The following localization files have changed and have been reloaded: {0}",
 
 		// MessageBox
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",

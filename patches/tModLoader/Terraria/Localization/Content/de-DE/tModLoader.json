@@ -459,6 +459,7 @@
 		"WorldGenError": "Ein Problem ist beim Erstellen der Welt aufgetreten",
 		"WorldIODataException": "Das Spiel hat ein Mod-Datei Problem bei dieser Welt festgestellt.",
 		"ServerCrash": "Server crash: {0}\n{1}\n\nBitte checke server.log um festzustellen ob ein Mod daran schuld ist, ansonsten gehe in den #support Kanal im tModLoader Discord!",
+		// "WatchLocalizationFileMessage": "The following localization files have changed and have been reloaded: {0}",
 
 		// MessageBox
 		"ContentFolderNotFound": "Terraria Content-Ordner nicht gefunden. Falls du tModLoader über Steam installiert hast, stelle sicher das Terraria installiert ist. Falls nicht, stelle sicher tModLoader in einem Ordner innerhalb des Terraria-Installationsverzeichnisses oder einem Ordner neben des Terraria-Installationsverzeichnisses zu installieren.",

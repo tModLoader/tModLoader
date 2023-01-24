@@ -152,45 +152,57 @@ public partial class LanguageManager
 	#endregion
 
 	private const int defaultWatcherCooldown = 15;
-	private FileSystemWatcher localizationFileWatcher;
-	internal string watchedMod;
-	internal string watchedFile;
+	private Dictionary<Mod, FileSystemWatcher> localizationFileWatchers = new();
+	internal HashSet<string> changedFiles = new();
+	internal HashSet<string> pendingFiles = new();
 	internal int watcherCooldown;
-	private void SetupFileWatchers()
+	internal void SetupFileWatchers()
 	{
-		if (localizationFileWatcher != null)
-			return;
-		try {
-			localizationFileWatcher = new FileSystemWatcher();
-			localizationFileWatcher.Path = ModLoader.Core.ModCompile.ModSourcePath;
-			localizationFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
-			localizationFileWatcher.Filter = "*.hjson";
-			localizationFileWatcher.IncludeSubdirectories = true;
+		// Add a watcher for each loaded mod that has a corresponding mod sources folder
+		// Don't worry about the mod being local or not, for now. The feature might be useful for even workshop tmod files
+		foreach (var mod in ModLoader.ModLoader.Mods) {
+			string path = Path.Combine(ModLoader.Core.ModCompile.ModSourcePath, mod.Name);
+			if (!Directory.Exists(path))
+				continue;
 
-			localizationFileWatcher.Changed += (a, b) => {
-				HandleFileChangedOrRenamed(b.Name);
-			};
-			localizationFileWatcher.Renamed += (a, b) => {
-				HandleFileChangedOrRenamed(b.Name);
-			};
+			try {
+				var localizationFileWatcher = new FileSystemWatcher();
+				localizationFileWatcher.Path = path;
+				localizationFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
+				localizationFileWatcher.Filter = "*.hjson";
+				localizationFileWatcher.IncludeSubdirectories = true;
 
-			// Begin watching.
-			localizationFileWatcher.EnableRaisingEvents = true;
-		}
-		catch (Exception) {
-			throw;
+				localizationFileWatcher.Changed += (a, b) => {
+					HandleFileChangedOrRenamed(mod.Name, b.Name);
+				};
+				localizationFileWatcher.Renamed += (a, b) => {
+					HandleFileChangedOrRenamed(mod.Name, b.Name);
+				};
+
+				// Begin watching.
+				localizationFileWatcher.EnableRaisingEvents = true;
+
+				localizationFileWatchers[mod] = localizationFileWatcher;
+			}
+			catch (Exception) {
+				throw;
+			}
 		}
 	}
 
-	private void HandleFileChangedOrRenamed(string fileName)
+	internal void UnloadFileWatchers()
 	{
-		// fileName is relative to watched folder path
-		string modName = fileName.Split(Path.DirectorySeparatorChar).First();
-		if (ModLoader.ModLoader.TryGetMod(modName, out _)) {
-			watchedMod = modName;
-			watcherCooldown = defaultWatcherCooldown;
-			watchedFile = fileName;
+		foreach (var fileWatcher in localizationFileWatchers.Values) {
+			fileWatcher.EnableRaisingEvents = false;
+			fileWatcher.Dispose();
 		}
+		localizationFileWatchers.Clear();
+	}
+
+	private void HandleFileChangedOrRenamed(string modName, string fileName)
+	{
+		watcherCooldown = defaultWatcherCooldown;
+		pendingFiles.Add(Path.Combine(modName, fileName));
 	}
 
 	internal void Update()
@@ -199,13 +211,11 @@ public partial class LanguageManager
 		if (watcherCooldown > 0) {
 			watcherCooldown--;
 			if (watcherCooldown == 0) {
-				string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", watchedFile);
+				string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", string.Join(", ", pendingFiles));
+				Utils.LogAndChatAndConsoleInfoMessage(newText);
 
-				if (!Main.dedServ)
-					Main.NewText(newText);
-				else
-					Console.WriteLine(newText);
-				Logging.tML.Info(newText);
+				changedFiles.UnionWith(pendingFiles);
+				pendingFiles.Clear();
 
 				LanguageManager.Instance.ReloadLanguage();
 			}
