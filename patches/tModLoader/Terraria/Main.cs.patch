@@ -1510,7 +1510,7 @@
  			}
  		}
  
-+		LanguageManager.Instance.Update();
++		LocalizationLoader.Update();
  		DoUpdate_AutoSave();
  		if (!dedServ) {
  			ChromaInitializer.UpdateEvents();

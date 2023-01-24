@@ -340,8 +340,7 @@ public static class ModContent
 		SetupRecipes(token);
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
-		LocalizationLoader.UpdateLocalizationFiles();
-		LanguageManager.Instance.SetupFileWatchers();
+		LocalizationLoader.FinishSetup();
 
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();
@@ -506,8 +505,7 @@ public static class ModContent
 		ContentSamples.Initialize();
 		SetupBestiary();
 
-		LanguageManager.Instance.UnloadModdedEntries();
-		LanguageManager.Instance.UnloadFileWatchers();
+		LocalizationLoader.Unload();
 
 		CleanupModReferences();
 	}
