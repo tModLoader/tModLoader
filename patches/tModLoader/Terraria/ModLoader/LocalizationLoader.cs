@@ -654,10 +654,9 @@ public static class LocalizationLoader
 	}
 
 	private const int defaultWatcherCooldown = 60;
-	private static Dictionary<Mod, FileSystemWatcher> localizationFileWatchers = new();
-	private static HashSet<string> changedFiles = new();
-	private static HashSet<string> pendingFiles = new();
-	private static readonly object pendingFilesLock = new object();
+	private static readonly Dictionary<Mod, FileSystemWatcher> localizationFileWatchers = new();
+	private static readonly HashSet<string> changedFiles = new();
+	private static readonly HashSet<string> pendingFiles = new();
 	private static int watcherCooldown;
 	private static void SetupFileWatchers()
 	{
@@ -711,7 +710,7 @@ public static class LocalizationLoader
 	private static void HandleFileChangedOrRenamed(string modName, string fileName)
 	{
 		watcherCooldown = defaultWatcherCooldown;
-		lock (pendingFilesLock) {
+		lock (pendingFiles) {
 			pendingFiles.Add(Path.Combine(modName, fileName));
 		}
 	}
@@ -726,12 +725,12 @@ public static class LocalizationLoader
 		if (watcherCooldown != 0)
 			return;
 
-		lock (pendingFilesLock) {
+		lock (pendingFiles) {
 			string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", string.Join(", ", pendingFiles));
 			Utils.LogAndChatAndConsoleInfoMessage(newText);
 		}
 
-		lock (pendingFilesLock) {
+		lock (pendingFiles) {
 			changedFiles.UnionWith(pendingFiles);
 			pendingFiles.Clear();
 		}
