@@ -190,13 +190,10 @@ partial class Utils
 	{
 		Logging.tML.Info(message);
 
-		if (Main.dedServ) {
+		if (Main.dedServ)
 			Console.WriteLine(message);
-		}
-		else {
+		else
 			Main.NewText(message);
-		}
-
 	}
 
 	public static void LogAndConsoleInfoMessage(string message)
