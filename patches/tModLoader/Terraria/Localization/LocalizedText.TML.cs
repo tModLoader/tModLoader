@@ -12,7 +12,7 @@ public partial class LocalizedText
 	// English, German, Italian, Spanish, Portugese, French
 	//   one, other
 	// Russian, Polish
-	//   one, few, many, other
+	//   one, few, many
 	// Chinese
 	//   other
 	public static int CardinalPluralRule(GameCulture culture, int count)
@@ -23,7 +23,7 @@ public partial class LocalizedText
 
 		switch (culture.LegacyId) {
 			case (int)GameCulture.CultureName.Russian:
-				// one, few, many, other
+				// one, few, many
 				// _C_RULE_13
 				if (mod_i10 == 1 && mod_i100 != 11)
 					return 0;
@@ -31,7 +31,7 @@ public partial class LocalizedText
 				if (contains(mod_i10, 2, 4) && !contains(mod_i100, 12, 14))
 					return 1;
 
-				return mod_i10 == 0L || contains(mod_i10, 5, 9) || contains(mod_i100, 11, 14) ? 2 : 3;
+				return 2;
 
 			case (int)GameCulture.CultureName.English:
 			case (int)GameCulture.CultureName.German:
@@ -46,14 +46,14 @@ public partial class LocalizedText
 				return count == 0 || count == 1 ? 0 : 1;
 
 			case (int)GameCulture.CultureName.Polish:
-				// one, few, many, other
+				// one, few, many
 				if (count == 1)
 					return 0;
 				
 				if (contains(mod_i10, 2, 4) && !contains(mod_i100, 12, 14))
 					return 1;
 				
-				return count != 1 && contains(mod_i10, 0, 1) || contains(mod_i10, 5, 9) || contains(mod_i100, 12, 14) ? 2 : 3;
+				return 2;
 
 			case (int)GameCulture.CultureName.Chinese:
 			default:
