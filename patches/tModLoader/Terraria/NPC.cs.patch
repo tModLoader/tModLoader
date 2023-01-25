@@ -1691,7 +1691,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,35 +_,76 @@
+@@ -64591,35 +_,77 @@
  
  		return armorPenetration / 2;
  	}
@@ -1755,6 +1755,7 @@
 +		bool crit = strike.Crit;
 +		int hitDirection = strike.HitDirection;
 +		float knockBack = strike.KnockBack;
++
 +		if (skipVanillaDamageCalcs)
 +			goto skipVanillaDamageCalcs;
 +
@@ -1773,6 +1774,16 @@
  			if (friendly) {
  				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
  				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);
+@@ -64712,6 +_,9 @@
+ 			if (type == 185)
+ 				localAI[0] = 1f;
+ 
++			if (strike.InstantKill)
++				num = realLife > 0 ? Main.npc[realLife].life : life;
++
+ 			if (!immortal) {
+ 				if (realLife >= 0) {
+ 					Main.npc[realLife].life -= (int)num;
 @@ -64803,11 +_,11 @@
  			if ((type == 113 || type == 114) && life <= 0) {
  				for (int i = 0; i < 200; i++) {
