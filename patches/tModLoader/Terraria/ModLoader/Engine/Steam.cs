@@ -51,7 +51,8 @@ namespace Terraria.ModLoader.Engine
 		internal static void SetAppId(AppId_t appId) {
 			var steam_appid_path = "steam_appid.txt";
 
-			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+			// Family Share & GoG, Dev Enviroments rely on steam_appid.txt to know what the game is in Steam
+			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" || Social.Steam.SteamedWraps.FamilyShared) {
 				File.WriteAllText(steam_appid_path, appId.ToString());
 				return;
 			}
@@ -61,6 +62,8 @@ namespace Terraria.ModLoader.Engine
 			}
 			catch (IOException) { }
 
+			//Solxan: While testing family share, noticed this inherently fails if game is not initiated from the 'start' button in Steam.
+			// Not normally a problem, as family share should be pathing to game server anyways
 			if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
 				throw new Exception("Cannot overwrite steam env. SteamAppId=" + Environment.GetEnvironmentVariable("SteamAppId"));
 			}
