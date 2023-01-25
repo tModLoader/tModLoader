@@ -1682,9 +1682,20 @@
  			return false;
  
  		int num = townNpcVariationIndex;
-@@ -64592,34 +_,70 @@
+@@ -64574,6 +_,8 @@
+ 		}
+ 	}
+ 
++	// Moved to StrikeNPC as bonus armor penetration there
++	/*
+ 	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
+ 	{
+ 		if (ichor)
+@@ -64591,35 +_,76 @@
+ 
  		return armorPenetration / 2;
  	}
++	*/
  
 -	public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
 +	internal int StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false/*, bool noEffect = false*/, bool fromNet = false)
@@ -1735,6 +1746,10 @@
  		double num = Damage;
  		num = Main.CalculateDamageNPCsTake((int)num, defense);
 +		*/
++
++		if (ichor) strike.ArmorPenetration += 15;
++		if (betsysCurse) strike.ArmorPenetration += 40;
++
 +		bool skipVanillaDamageCalcs = !NPCLoader.StrikeNPC(this, ref strike);
 +		double num = strike.Damage;
 +		bool crit = strike.Crit;
