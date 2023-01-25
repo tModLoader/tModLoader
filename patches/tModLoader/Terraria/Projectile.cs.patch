@@ -760,42 +760,63 @@
  									int num34 = direction;
  									switch (type) {
  										case 697:
-@@ -10639,10 +_,24 @@
+@@ -10639,11 +_,33 @@
  											num3 *= 0.5f;
  									}
  
 +									// Patching, locals which change here also change in the next patch
-+									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref num19, ref num3, ref flag12, ref num34);
++									var strike = new DamageStrike {
++										DamageType = DamageType,
++										Damage = num19,
++										Crit = flag12,
++										KnockBack = num3,
++										HitDirection = num34,
++										ArmorPenetration = ArmorPenetration,
++										ArmorPenetrationPercent = (int)(armorPenetrationPercent * 100)
++									};
++									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref strike);
++									num34 = strike.HitDirection;
++
 +									goto VanillaOnHitEffectsStart;
 +
 +									PostModifyHit:
-+									
-+									// TML-introduced armor penetration field overrides vanilla's calculations.
-+									// Vanilla values are instead moved into the projectile SetDefaults method(s).
-+									num6 = ArmorPenetration;
 +
 +									/*
  									if (flag && !hostile)
-+									*/
-+									if (flag && !hostile && num6 > 0)
  										num19 += nPC.checkArmorPenetration(num4, armorPenetrationPercent);
++									*/
  
  									NPCKillAttempt attempt = new NPCKillAttempt(nPC);
-+									// Patch note: num19, num3, num34 used above and below
++									/*
  									int num35 = ((!flag) ? ((int)nPC.StrikeNPCNoInteraction(num19, num3, num34, flag12)) : ((int)nPC.StrikeNPC(num19, num3, num34, flag12)));
++									*/
++									int num35 = nPC.StrikeNPC(strike, noPlayerInteraction: !flag);
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
-@@ -10913,9 +_,14 @@
+ 
+@@ -10768,10 +_,13 @@
+ 										localAI[0] = 1f;
+ 
+ 									if (Main.netMode != 0) {
++										/*
+ 										if (flag12)
+ 											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34, 1);
+ 										else
+ 											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
++										*/
++										NetMessage.SendStrikeNPC(nPC, strike);
+ 									}
+ 
+ 									if (type == 916)
+@@ -10913,9 +_,12 @@
  										}
  									}
  
 +									// Extra patch context.
-+
  									if (type == 710)
  										BetsySharpnel(i);
  
-+									// Patching: See ModifyHitX above for locals
-+									CombinedHooks.OnHitNPCWithProj(this, nPC, num19, num3, flag12);
++									CombinedHooks.OnHitNPCWithProj(this, nPC, strike);
 +
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)

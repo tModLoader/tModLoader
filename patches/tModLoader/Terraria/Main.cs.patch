@@ -5920,6 +5920,15 @@
  	}
  
  	public static int DamageVar(float dmg, float luck = 0f)
+@@ -54538,7 +_,7 @@
+ 		return (int)Math.Round(num);
+ 	}
+ 
+-	public static double CalculateDamageNPCsTake(int Damage, int Defense)
++	public static double CalculateDamageNPCsTake(double Damage, int Defense)
+ 	{
+ 		double num = (double)Damage - (double)Defense * 0.5;
+ 		if (num < 1.0)
 @@ -54625,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)

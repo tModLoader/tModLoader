@@ -160,7 +160,7 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
-@@ -710,11 +_,20 @@
+@@ -710,14 +_,44 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
@@ -172,16 +172,39 @@
  				}
  				case 28:
  					writer.Write((short)number);
-+
-+					if (ModNet.AllowVanillaClients)
--					writer.Write((short)number2);
-+						writer.Write((short)number2);
-+					else
-+						writer.Write((int)number2);
-+
++					/*
+ 					writer.Write((short)number2);
  					writer.Write(number3);
  					writer.Write((byte)(number4 + 1f));
  					writer.Write((byte)number5);
++					*/
++					var strike = _currentStrike;
++					if (number7 == 0) {
++						strike.DamageType = DamageClass.Default;
++						strike.Damage = (int)number2;
++						strike.KnockBack = number3;
++						strike.HitDirection = (int)number4;
++						strike.Crit = number5 != 0;
++						strike.InstantKill = strike.Damage == 9999;
++					}
++
++					if (ModNet.AllowVanillaClients) {
++						writer.Write((short)strike.Damage);
++						writer.Write(strike.KnockBack);
++						writer.Write((byte)(strike.HitDirection + 1f));
++						writer.Write((byte)(strike.Crit ? 1 : 0));
++					}
++					else {
++						writer.Write7BitEncodedInt(strike.DamageType.Type);
++						writer.Write7BitEncodedInt(strike.Damage);
++						writer.Write(strike.KnockBack);
++						writer.Write7BitEncodedInt(strike.ArmorPenetration);
++						writer.Write((byte)strike.ArmorPenetrationPercent);
++						writer.Write((byte)strike.Flags);
++					}
+ 					break;
+ 				case 29:
+ 					writer.Write((short)number);
 @@ -735,13 +_,21 @@
  					Item item7 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
@@ -502,6 +525,20 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
+@@ -2291,6 +_,13 @@
+ 		SendData(126, remoteClient, ignoreClient);
+ 	}
+ 
++	private static DamageStrike _currentStrike;
++	public static void SendStrikeNPC(NPC npc, in DamageStrike strike)
++	{
++		_currentStrike = strike;
++		SendData(28, -1, -1, null, npc.whoAmI, number7: 1);
++	}
++
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
 @@ -2455,7 +_,7 @@
  		}
  

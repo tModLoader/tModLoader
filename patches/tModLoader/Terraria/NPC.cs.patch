@@ -409,6 +409,16 @@
  	public float value;
  	public int extraValue;
  	public bool dontTakeDamage;
+@@ -382,7 +_,9 @@
+ 	private static bool dayTimeHax;
+ 	private static bool rainingHax;
+ 	private static float cloudAlphaHax;
++	/*
+ 	private static int ignorePlayerInteractions = 0;
++	*/
+ 	public static int ladyBugGoodLuckTime = 43200;
+ 	public static int ladyBugBadLuckTime = -10800;
+ 	private static int ladyBugRainTime = 1800;
 @@ -462,8 +_,20 @@
  		}
  	}
@@ -1672,15 +1682,68 @@
  			return false;
  
  		int num = townNpcVariationIndex;
-@@ -64612,12 +_,17 @@
- 			return 0.0;
+@@ -64592,34 +_,70 @@
+ 		return armorPenetration / 2;
+ 	}
  
- 		double num = Damage;
+-	public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
++	internal int StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false/*, bool noEffect = false*/, bool fromNet = false)
+ 	{
++		return StrikeNPC(Damage, knockBack, hitDirection, crit, fromNet, noPlayerInteraction: true);
++	}
 +
-+		if (!NPCLoader.StrikeNPC(this, ref num, defense, ref knockBack, hitDirection, ref crit))
++	public int StrikeNPCNoInteraction(DamageStrike strike, bool fromNet = false)
++	{
++		/*
+ 		if (Main.netMode == 0)
+ 			ignorePlayerInteractions++;
++		*/
+ 
+-		return StrikeNPC(Damage, knockBack, hitDirection, crit, noEffect, fromNet);
++		return StrikeNPC(strike, fromNet, noPlayerInteraction: true);
+ 	}
+ 
+-	public double StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
++	internal int StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false/*, bool noEffect = false*/, bool fromNet = false, bool noPlayerInteraction = false)
++	{
++		return StrikeNPC(new DamageStrike {
++			DamageType = DamageClass.Default,
++			Damage = Damage,
++			Crit = crit,
++			KnockBack = knockBack,
++			HitDirection = hitDirection,
++			InstantKill = Damage == 9999
++		}, fromNet: fromNet);
++	}
++
++	public int StrikeNPC(DamageStrike strike, bool fromNet = false, bool noPlayerInteraction = false)
+ 	{
+ 		bool flag = Main.netMode == 0;
++		/*
+ 		if (flag && ignorePlayerInteractions > 0) {
+ 			ignorePlayerInteractions--;
+ 			flag = false;
+ 		}
++		*/
++		flag &= !noPlayerInteraction;
+ 
+ 		if (!active || life <= 0)
+-			return 0.0;
+-
++			return 0;
++		/*
+ 		double num = Damage;
+ 		num = Main.CalculateDamageNPCsTake((int)num, defense);
++		*/
++		bool skipVanillaDamageCalcs = !NPCLoader.StrikeNPC(this, ref strike);
++		double num = strike.Damage;
++		bool crit = strike.Crit;
++		int hitDirection = strike.HitDirection;
++		float knockBack = strike.KnockBack;
++		if (skipVanillaDamageCalcs)
 +			goto skipVanillaDamageCalcs;
 +
- 		num = Main.CalculateDamageNPCsTake((int)num, defense);
++		num = Main.CalculateDamageNPCsTake(num, strike.GetRemainingDefense(defense));
  		if (crit)
  			num *= 2.0;
  
@@ -1688,29 +1751,71 @@
  			num *= (double)takenDamageMultiplier;
 +		skipVanillaDamageCalcs:
  
++		/*
  		if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
++		*/
++		if (!strike.HideCombatText && !strike.InstantKill && lifeMax > 1) {
  			if (friendly) {
-@@ -64898,6 +_,20 @@
+ 				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
+ 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);
+@@ -64803,11 +_,11 @@
+ 			if ((type == 113 || type == 114) && life <= 0) {
+ 				for (int i = 0; i < 200; i++) {
+ 					if (Main.npc[i].active && (Main.npc[i].type == 113 || Main.npc[i].type == 114))
+-						Main.npc[i].HitEffect(hitDirection, num);
++						Main.npc[i].HitEffect(hitDirection, num, strike.InstantKill);
+ 				}
+ 			}
+ 			else {
+-				HitEffect(hitDirection, num);
++				HitEffect(hitDirection, num, strike.InstantKill);
+ 			}
+ 
+ 			if (HitSound != null)
+@@ -64818,10 +_,10 @@
+ 			else
+ 				checkDead();
+ 
+-			return num;
++			return (int)num;
+ 		}
+ 
+-		return 0.0;
++		return 0;
  	}
  
- 	public void HitEffect(int hitDirection = 0, double dmg = 10.0)
-+		=> NPCLoader.HitEffect(this, hitDirection, dmg);
+ 	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
+@@ -64897,7 +_,18 @@
+ 		}
+ 	}
+ 
+-	public void HitEffect(int hitDirection = 0, double dmg = 10.0)
++	// Added instantKill parameter
++	public void HitEffect(int hitDirection = 0, double dmg = 10.0, bool? instantKill = null)
++		=> NPCLoader.HitEffect(this, hitDirection, dmg, instantKill ?? dmg == 9999);
 +
-+	public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0)
++	public void VanillaHitEffect(int hitDirection, double dmg, bool instantKill)
 +	{
-+		var usedSource = new EntitySource_HitEffect(this);
-+
 +		IEntitySource.PushFallback(thisEntitySourceCache);
-+
-+		VanillaHitEffect_Inner(hitDirection, dmg);
-+
++		VanillaHitEffect_Inner(hitDirection, dmg, instantKill);
 +		IEntitySource.PopFallback();
 +	}
 +
-+	private void VanillaHitEffect_Inner(int hitDirection, double dmg)
++	private void VanillaHitEffect_Inner(int hitDirection, double dmg, bool instantKill)
  	{
  		if (!active)
  			return;
+@@ -65805,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (type == 437 && dmg == 9999.0) {
++		*/
++		if (type == 437 && instantKill) {
+ 			for (int num96 = 0; num96 < 6; num96++) {
+ 				int num97 = Gore.NewGore(base.Center - new Vector2(10f), Vector2.UnitY.RotatedByRandom(6.2831854820251465) * 5f, 728 + num96);
+ 			}
 @@ -72206,6 +_,9 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
@@ -1857,7 +1962,7 @@
  				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624) {
  					BeHurtByOtherNPC(i, nPC);
  					break;
-@@ -74099,14 +_,22 @@
+@@ -74099,14 +_,26 @@
  			num = 20;
  
  		int num2 = Main.DamageVar(thatNPC.damage);
@@ -1866,18 +1971,23 @@
  		int num4 = ((!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1));
 -		double num5 = StrikeNPCNoInteraction(num2, num3, num4);
 +
-+		bool crit = false;
-+		NPCLoader.ModifyHitNPC(thatNPC, this, ref num2, ref num3, ref crit);
-+		// TML: pass extra crit arg
-+		double num5 = StrikeNPCNoInteraction(num2, num3, num4, crit: crit);
++		var strike = new DamageStrike {
++			DamageType = DamageClass.Generic,
++			Damage = num2,
++			KnockBack = num3,
++			HitDirection = num4
++		};
 +
++		NPCLoader.ModifyHitNPC(thatNPC, this, ref strike);
++		double num5 = StrikeNPCNoInteraction(strike);
  		if (Main.netMode != 0)
- 			NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
+-			NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
++			NetMessage.SendStrikeNPC(this, strike);
  
  		netUpdate = true;
  		immune[255] = num;
 +
-+		NPCLoader.OnHitNPC(thatNPC, this, (int)num5, num3, crit);
++		NPCLoader.OnHitNPC(thatNPC, this, strike);
 +
  		if (dryadWard) {
  			num2 = (int)num5 / 3;
