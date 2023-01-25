@@ -252,11 +252,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="knockback">The modifiable knockback.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	/// <param name="hitDirection">The modifiable hit direction.</param>
-	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="strike">The modifiable damage.</param>
+	public virtual void ModifyHitNPC(NPC target, ref DamageStrike strike)
 	{
 	}
 
@@ -264,10 +261,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockback">The knockback.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+	/// <param name="strike">The damage.</param>
+	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
+	public virtual void OnHitNPC(NPC target, DamageStrike strike, int damageDone)
 	{
 	}
 

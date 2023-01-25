@@ -480,26 +480,26 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
+	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref DamageStrike strike);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	public static void ModifyHitNPC(Projectile projectile, NPC target, ref DamageStrike strike)
 	{
-		projectile.ModProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
+		projectile.ModProjectile?.ModifyHitNPC(target, ref strike);
 
 		foreach (GlobalProjectile g in HookModifyHitNPC.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyHitNPC(projectile, target, ref damage, ref knockback, ref crit, ref hitDirection);
+			g.ModifyHitNPC(projectile, target, ref strike);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, int, float, bool>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, DamageStrike, int>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+	public static void OnHitNPC(Projectile projectile, NPC target, in DamageStrike strike, int damageDone)
 	{
-		projectile.ModProjectile?.OnHitNPC(target, damage, knockback, crit);
+		projectile.ModProjectile?.OnHitNPC(target, strike, damageDone);
 
 		foreach (GlobalProjectile g in HookOnHitNPC.Enumerate(projectile.globalProjectiles)) {
-			g.OnHitNPC(projectile, target, damage, knockback, crit);
+			g.OnHitNPC(projectile, target, strike, damageDone);
 		}
 	}
 

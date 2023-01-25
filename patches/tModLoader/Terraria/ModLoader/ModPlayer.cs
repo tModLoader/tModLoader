@@ -640,10 +640,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="strike"></param>
+	public virtual void ModifyHitNPC(Item item, NPC target, ref DamageStrike strike)
 	{
 	}
 
@@ -652,10 +650,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+	/// <param name="strike"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPC(Item item, NPC target, DamageStrike strike, int damageDone)
 	{
 	}
 
@@ -675,11 +672,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="strike"></param>
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref DamageStrike strike)
 	{
 	}
 
@@ -688,10 +682,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+	/// <param name="strike"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, DamageStrike strike, int damageDone)
 	{
 	}
 

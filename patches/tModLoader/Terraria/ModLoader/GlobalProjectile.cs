@@ -223,11 +223,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="strike"></param>
+	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref DamageStrike strike)
 	{
 	}
 
@@ -236,10 +233,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+	/// <param name="strike"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPC(Projectile projectile, NPC target, DamageStrike strike, int damageDone)
 	{
 	}
 

@@ -177,7 +177,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(NPC npc, int hitDirection, double damage)
+	public virtual void HitEffect(NPC npc, int hitDirection, double damage, bool instantKill)
 	{
 	}
 
@@ -344,10 +344,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="strike"></param>
+	public virtual void ModifyHitNPC(NPC npc, NPC target, ref DamageStrike strike)
 	{
 	}
 
@@ -356,10 +354,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+	/// <param name="strike"></param>
+	public virtual void OnHitNPC(NPC npc, NPC target, DamageStrike strike)
 	{
 	}
 
@@ -381,10 +377,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="strike"></param>
+	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref DamageStrike strike)
 	{
 	}
 
@@ -394,10 +388,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+	/// <param name="strike"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByItem(NPC npc, Player player, Item item, DamageStrike strike, int damageDone)
 	{
 	}
 
@@ -417,11 +410,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="strike"></param>
+	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref DamageStrike strike)
 	{
 	}
 
@@ -430,10 +420,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+	/// <param name="strike"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, DamageStrike strike, int damageDone)
 	{
 	}
 
@@ -441,13 +430,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="defense"></param>
-	/// <param name="knockback"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
+	/// <param name="strike"></param>
 	/// <returns></returns>
-	public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	public virtual bool StrikeNPC(NPC npc, ref DamageStrike strike)
 	{
 		return true;
 	}

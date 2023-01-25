@@ -816,7 +816,7 @@
  									if (type == 710)
  										BetsySharpnel(i);
  
-+									CombinedHooks.OnHitNPCWithProj(this, nPC, strike);
++									CombinedHooks.OnHitNPCWithProj(this, nPC, strike, num35);
 +
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
