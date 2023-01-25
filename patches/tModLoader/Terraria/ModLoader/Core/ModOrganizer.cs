@@ -128,14 +128,22 @@ internal static class ModOrganizer
 		return true;
 	}
 
-	internal static bool IsModNotPreviewSupported(LocalMod mod)
+	internal static bool ApplyPreviewChecks(LocalMod mod)
 	{
-		return BuildInfo.IsPreview && IsModFromSteam(mod.modFile.path) && !mod.properties.playableOnPreview;
+		return BuildInfo.IsPreview && IsModFromSteam(mod.modFile.path);
 	}
 
+	// Used to Warn Players that the mod was built on Stable or earlier, and may not work on Preview.
+	internal static bool CheckStableBuildOnPreview(LocalMod mod)
+	{
+		return ApplyPreviewChecks(mod) && mod.properties.buildVersion.MajorMinor() <= BuildInfo.stableVersion.MajorMinor();
+	}
+
+	// Used to Hide Preview built versions of Mods from being displayed as the available mod in 1.4-Preview tModLoader.
+	// Primarily intended to allow for publishing your mod ahead of a monthly breaking change build
 	internal static bool SkipModForPreviewNotPlayable(LocalMod mod)
 	{
-		return IsModNotPreviewSupported(mod) && mod.properties.buildVersion.MajorMinor() > BuildInfo.stableVersion;
+		return ApplyPreviewChecks(mod) && !mod.properties.playableOnPreview && mod.properties.buildVersion.MajorMinor() > BuildInfo.stableVersion;
 	}
 
 	internal static bool IsModFromSteam(string modPath)
