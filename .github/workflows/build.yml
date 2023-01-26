@@ -32,7 +32,7 @@ jobs:
 
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4.4')
         shell: bash
         run: |
           echo "Attempting get previous version id"
@@ -54,7 +54,7 @@ jobs:
              echo "Rolling Forward the Patch #..."
              ((++patch))   
           fi
-          if [[ "refs/heads/1.4-preview" = $branch ]] ; then
+          if [[ "refs/heads/1.4-preview" = $branch || "refs/heads/1.4.4" = $branch ]] ; then
             echo "Rolling Forward the Feature #..."
              ((++feature))
              newdt="$(date +%Y.%m)"
@@ -442,7 +442,7 @@ jobs:
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4.4')
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
@@ -534,6 +534,9 @@ jobs:
           fi
           if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
             manifesto=$manifesto/preview.vdf
+          fi
+          if [ ${{github.ref}} = 'refs/heads/1.4.4' ] ; then
+            manifesto=$manifesto/1.4.4-preview.vdf
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
