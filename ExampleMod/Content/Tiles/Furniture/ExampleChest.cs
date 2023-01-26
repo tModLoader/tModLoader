@@ -30,7 +30,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
 			// Names

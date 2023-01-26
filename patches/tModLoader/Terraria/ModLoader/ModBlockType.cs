@@ -21,7 +21,8 @@ public abstract class ModBlockType : ModTexturedType
 	/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
 	public int DustType { get; set; }
 
-	/// <summary> The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item. </summary>
+	/// <summary> The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item. If this tile/wall drops multiple items, set this to the default item.
+	/// <br/> For ModTile, use <see cref="ModTile.GetItemDrops(int, int, ref int, ref int, ref int, ref int)"/> to customize which item drops depending on tile style or other conditions.</summary>
 	public int ItemDrop { get; set; }
 
 	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>

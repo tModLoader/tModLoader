@@ -35,12 +35,6 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The ID of the tile that this door transforms into when it is opened. Defaults to -1, which means this tile isn't a door. </summary>
 	public int OpenDoorID { get; set; } = -1;
 
-	/// <summary> The ID of the item that drops when this chest is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
-	public int ChestDrop { get; set; }
-
-	/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
-	public int DresserDrop { get; set; }
-
 	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
 	public ModTranslation ContainerName { get; internal set; }
 
