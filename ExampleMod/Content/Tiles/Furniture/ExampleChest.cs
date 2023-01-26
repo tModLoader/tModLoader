@@ -27,6 +27,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.AvoidedByNPCs[Type] = true;
+			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.IsAContainer[Type] = true;
+			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
@@ -49,7 +53,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(Chest.FindEmptyChest, -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(Chest.AfterPlacement_Hook, -1, 0, false);
-			TileObjectData.newTile.AnchorInvalidTiles = new int[] { TileID.MagicalIceBlock };
+			TileObjectData.newTile.AnchorInvalidTiles = new int[] {
+				TileID.MagicalIceBlock,
+				TileID.Boulder,
+				TileID.BouncyBoulder,
+				TileID.LifeCrystalBoulder,
+				TileID.RollingCactus
+			};
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
@@ -149,7 +159,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			bool isLocked = Chest.IsLocked(left, top);
 			if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked) {
-				if (left == player.chestX && top == player.chestY && player.chest >= 0) {
+				if (left == player.chestX && top == player.chestY && player.chest != -1) {
 					player.chest = -1;
 					Recipe.FindRecipes();
 					SoundEngine.PlaySound(SoundID.MenuClose);
@@ -163,7 +173,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				if (isLocked) {
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<ExampleChestKey>();
-					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
+					if (player.ConsumeItem(key, includeVoidBag: true) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
 							NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 						}
@@ -171,7 +181,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				}
 				else {
 					int chest = Chest.FindChest(left, top);
-					if (chest >= 0) {
+					if (chest != -1) {
 						Main.stackSplit = 600;
 						if (chest == player.chest) {
 							player.chest = -1;

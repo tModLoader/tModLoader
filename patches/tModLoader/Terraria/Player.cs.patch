@@ -3242,15 +3242,15 @@
  			noThrow = 2;
  			cursorItemIconEnabled = true;
  			cursorItemIconID = inventory[selectedItem].type;
-@@ -26828,6 +_,8 @@
+@@ -26824,6 +_,8 @@
+ 			noThrow = 2;
+ 		}
+ 
++		TileLoader.MouseOver(myX, myY);
++
+ 		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
- 		}
-+
-+		TileLoader.MouseOver(myX, myY);
- 	}
- 
- 	public Color ChatColor()
 @@ -26967,11 +_,23 @@
  			if (!item.active || item.shimmerTime != 0f || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item) || (item.shimmered && !((double)item.velocity.Length() < 0.2)))
  				continue;
