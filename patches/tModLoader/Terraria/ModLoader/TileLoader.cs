@@ -490,6 +490,9 @@ public static class TileLoader
 		}
 	}
 
+	// TODO: Drop is usually called after vanilla multitiles are already killed, meaning frame information is missing. 
+	// i and j are the coordinates being checked, not the top left. (Should it be top left?)
+	// Could potentially change this to be called in Item.NewItem when EntitySource_TileBreak, but that is used for TEs dropping container items as well. Also tile type is unrecoverable at that point.
 	public static bool Drop(int i, int j, int type)
 	{
 		foreach (var hook in HookDrop) {

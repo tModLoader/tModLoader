@@ -963,7 +963,7 @@
  				KillTile(num + 1, num6 + m);
  		}
  
-+		if (!TileLoader.Drop(num, j, type))
++		if (!TileLoader.Drop(i, j, type))
 +			goto SkipDrops;
 +
  		if (type == 104) {
@@ -977,11 +977,10 @@
  		destroyObject = false;
  	}
  
-@@ -28474,7 +_,13 @@
+@@ -28474,7 +_,12 @@
  			}
  		}
  
-+
 +		if (!TileLoader.Drop(x, y, TileID.ChristmasTree))
 +			goto SkipDrops;
 +
@@ -1028,7 +1027,7 @@
  		if (Main.tile[x, num + 1].type == type)
  			KillTile(x, num + 1);
  
-+		if (!TileLoader.Drop(x, num, type))
++		if (!TileLoader.Drop(x, j, type))
 +			goto skipDrop;
 +
  		if (type == 216)
@@ -1046,23 +1045,59 @@
  		destroyObject = false;
  	}
  
-@@ -29077,6 +_,9 @@
+@@ -29077,6 +_,8 @@
  			if (type != 395)
  				Sign.KillSign(num7, num8);
  
-+			if (!TileLoader.Drop(x, y, type))
-+				goto skipDrop;
++			bool skipDrop = !TileLoader.Drop(x, y, type);
 +
  			switch (type) {
  				case 85: {
  					int type2 = 321;
-@@ -29110,11 +_,13 @@
+@@ -29085,7 +_,8 @@
+ 					else if (num12 >= 1 && num12 <= 5)
+ 						type2 = 1173 + num12 - 1;
+ 
++					if(!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, type2);
++						Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, type2);
+ 					if (Main.netMode != 1 && genRand.Next(2) == 0 && NPC.CountNPCS(316) < 2) {
+ 						int num14 = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);
+ 						if (Main.player[num14].ZoneGraveyard || !Main.dayTime || (double)y > Main.worldSurface)
+@@ -29095,26 +_,34 @@
+ 					break;
+ 				}
+ 				case 395:
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 3270);
++						Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 3270);
+ 					TEItemFrame.Kill(num7, num8);
+ 					break;
+ 				case 425:
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 3617);
++						Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 3617);
+ 					break;
+ 				case 573:
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4710);
++						Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4710);
+ 					break;
+ 				case 511:
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4320);
++						Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4320);
+ 					break;
  				case 510:
- 					Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4319);
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4319);
++						Item.NewItem(GetItemSource_FromTileBreak(num7, num8), num7 * 16, num8 * 16, 32, 32, 4319);
  					break;
 +				// Extra patch context.
  				default:
- 					Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 171);
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 171);
++						Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 171);
  					break;
  			}
  
@@ -1070,11 +1105,97 @@
  			destroyObject = false;
  			return;
  		}
+@@ -29621,6 +_,9 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(x, y, type))
++			goto skipDrop;
++
+ 		switch (type) {
+ 			case 240:
+ 				num += num2 * 36;
+@@ -29792,6 +_,7 @@
+ 			}
+ 		}
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 	}
+ 
+@@ -29860,6 +_,9 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(x, y, type))
++			goto skipDrop;
++
+ 		if (type == 245) {
+ 			if (num >= 19 && num <= 28) {
+ 				Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 5248 + num - 19);
+@@ -29906,6 +_,7 @@
+ 			}
+ 		}
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 	}
+ 
+@@ -29974,6 +_,9 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(x, y, type))
++			goto skipDrop;
++
+ 		if (type == 246) {
+ 			switch (num) {
+ 				case 16:
+@@ -30015,6 +_,7 @@
+ 			}
+ 		}
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 	}
+ 
+@@ -30084,9 +_,13 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(x, y, type))
++			goto skipDrop;
++
+ 		if (type == 241)
+ 			Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 1417);
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 	}
+ 
+@@ -30157,6 +_,9 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(x, y, type))
++			goto skipDrop;
++
+ 		if (type == 242) {
+ 			switch (num) {
+ 				case 30:
+@@ -30240,6 +_,7 @@
+ 			}
+ 		}
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 	}
+ 
 @@ -30928,6 +_,9 @@
  				KillTile(x, num + k);
  		}
  
-+		if (!TileLoader.Drop(x, num + 1, type))
++		if (!TileLoader.Drop(x, j, type))
 +			goto SkipDrops;
 +
  		if (type == 91) {
@@ -1146,7 +1267,7 @@
  		if (Main.tile[x, num + 1].type == type)
  			KillTile(x, num + 1);
  
-+		if (!TileLoader.Drop(x, num, type))
++		if (!TileLoader.Drop(x, j, type))
 +			goto SkipDrops;
 +
  		switch (type) {
@@ -1170,7 +1291,7 @@
  		if (Main.tile[num + 1, y].type == type)
  			KillTile(num + 1, y);
  
-+		if (!TileLoader.Drop(num3, y, type))
++		if (!TileLoader.Drop(i, y, type))
 +			goto SkipDrops;
 +
  		if (type == 16) {
@@ -1272,7 +1393,7 @@
  
 +		// FishingCrate, GeyserTrap, AntlionLarva, and BeeHive
 +		// geyser is 2x1
-+		if (!TileLoader.Drop(num2, num3, type))
++		if (!TileLoader.Drop(x, y, type))
 +			goto SkipDrops;
 +		
  		if (num13 != 0)
@@ -1590,7 +1711,7 @@
  			}
  		}
 +
-+		if (!TileLoader.Drop(num, j, type))
++		if (!TileLoader.Drop(i, j, type))
 +			goto skipDrop;
  
  		switch (type) {
@@ -1608,6 +1729,80 @@
  				TileFrame(num16, num17);
  			}
  		}
+@@ -37816,6 +_,9 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(i, j, type))
++			goto skipDrop;
++
+ 		switch (type) {
+ 			case 547:
+ 				Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 4430 + num3);
+@@ -37825,6 +_,7 @@
+ 				break;
+ 		}
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 		for (int num8 = num - 1; num8 < num + 3; num8++) {
+ 			for (int num9 = num2 - 1; num9 < num2 + 6; num9++) {
+@@ -37887,9 +_,13 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(i, j, type))
++			goto skipDrop;
++
+ 		if (type == 613)
+ 			Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 4904 + num3);
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 		for (int num8 = num - 1; num8 < num + 4; num8++) {
+ 			for (int num9 = num2 - 1; num9 < num2 + 6; num9++) {
+@@ -37952,6 +_,9 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(i, j, type))
++			goto skipDrop;
++
+ 		if (type == 548) {
+ 			if (num3 >= 7)
+ 				Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 4902 + num3 - 7);
+@@ -37962,6 +_,7 @@
+ 		if (type == 614)
+ 			Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 4906);
+ 
++		skipDrop:
+ 		destroyObject = false;
+ 		for (int num8 = num - 1; num8 < num + 4; num8++) {
+ 			for (int num9 = num2 - 1; num9 < num2 + 7; num9++) {
+@@ -38182,7 +_,11 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(i, j, type))
++			goto skipDrop;
++
+ 		Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 63);
++		skipDrop:
+ 		destroyObject = false;
+ 	}
+ 
+@@ -38279,7 +_,11 @@
+ 			if (tileSafely2.type == num)
+ 				KillTile(x, num2 + 1);
+ 
++			if (!TileLoader.Drop(x, j, num))
++				goto skipDrop;
++
+ 			Item.NewItem(GetItemSource_FromTileBreak(x, num2), x * 16, num2 * 16, 16, 32, 4609);
++			skipDrop:
+ 			destroyObject = false;
+ 		}
+ 	}
 @@ -38407,7 +_,7 @@
  			}
  		}
@@ -1626,7 +1821,7 @@
  			KillTile(i, j);
  			return true;
  		}
-@@ -38481,14 +_,17 @@
+@@ -38481,18 +_,26 @@
  			for (int n = num2; n < num2 + 2; n++) {
  				if (Main.tile[m, n] != null && Main.tile[m, n].type == type)
  					KillTile(m, n);
@@ -1635,16 +1830,35 @@
  			}
  		}
  
--		if (Main.netMode != 1 && !noTileActions) {
-+		if (Main.netMode != 1 && !noTileActions && TileLoader.Drop(num, num2, type)) {
+ 		if (Main.netMode != 1 && !noTileActions) {
++			bool skipDrop = !TileLoader.Drop(i, j, type);
  			switch (type) {
  				case 12:
- 					Item.NewItem(GetItemSource_FromTileBreak(num, num2), num * 16, num2 * 16, 32, 32, 29);
++					if(!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num, num2), num * 16, num2 * 16, 32, 32, 29);
++						Item.NewItem(GetItemSource_FromTileBreak(num, num2), num * 16, num2 * 16, 32, 32, 29);
  					break;
 +				// Extra patch context.
  				case 639:
- 					Item.NewItem(GetItemSource_FromTileBreak(num, num2), num * 16, num2 * 16, 32, 32, 109);
++					if (!skipDrop)
+-					Item.NewItem(GetItemSource_FromTileBreak(num, num2), num * 16, num2 * 16, 32, 32, 109);
++						Item.NewItem(GetItemSource_FromTileBreak(num, num2), num * 16, num2 * 16, 32, 32, 109);
  					break;
+ 				case 31:
++					if (skipDrop)
++						goto skipOrbDrop;
+ 					if (flag) {
+ 						int num3 = Main.rand.Next(5);
+ 						if (!shadowOrbSmashed)
+@@ -38545,6 +_,8 @@
+ 								break;
+ 						}
+ 					}
++
++					skipOrbDrop:
+ 					shadowOrbSmashed = true;
+ 					shadowOrbCount++;
+ 					if (shadowOrbCount >= 3) {
 @@ -38616,6 +_,9 @@
  		if (num2 == 112)
  			num2 = 53;
@@ -1765,6 +1979,18 @@
 +			NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
 +
  		return num;
+ 	}
+ 
+@@ -41075,7 +_,11 @@
+ 			}
+ 		}
+ 
++		if (!TileLoader.Drop(i, j, type))
++			goto skipDrop;
++
+ 		Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, chestItemDrop);
++		skipDrop:
+ 		destroyObject = false;
  	}
  
 @@ -42137,8 +_,10 @@
@@ -2625,6 +2851,36 @@
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
+@@ -63615,7 +_,8 @@
+ 		if (!SolidTile(tile) || !SolidTile(tile2)) {
+ 			flag = true;
+ 			destroyObject = true;
++			if (TileLoader.Drop(i, j, tileCache.type))
+-			DropDoorItem(i, j, num4);
++				DropDoorItem(i, j, num4);
+ 		}
+ 
+ 		int num5 = num2;
+@@ -63628,7 +_,8 @@
+ 					Tile tile3 = Main.tile[k, l];
+ 					if (!tile3.active() || tile3.type != 11) {
+ 						destroyObject = true;
++						if (TileLoader.Drop(i, j, tileCache.type))
+-						DropDoorItem(i, j, num4);
++							DropDoorItem(i, j, num4);
+ 						flag = true;
+ 						k = num5;
+ 						l = num3;
+@@ -63702,7 +_,8 @@
+ 				KillTile(i, num);
+ 				KillTile(i, num + 1);
+ 				KillTile(i, num + 2);
++				if (TileLoader.Drop(i, j, type))
+-				DropDoorItem(i, j, num2);
++					DropDoorItem(i, j, num2);
+ 			}
+ 
+ 			destroyObject = false;
 @@ -63800,7 +_,7 @@
  			return false;
  
