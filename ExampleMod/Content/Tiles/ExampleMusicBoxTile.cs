@@ -19,13 +19,11 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.addTile(Type);
 
+			ItemDrop = ModContent.ItemType<ExampleMusicBox>();
+
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Music Box");
 			AddMapEntry(new Color(200, 200, 200), name);
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<ExampleMusicBox>());
 		}
 
 		public override void MouseOver(int i, int j) {

@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.ClosedDoor };
+			ItemDrop = ModContent.ItemType<ExampleDoor>();
 			OpenDoorID = ModContent.TileType<ExampleDoorOpen>();
 
 			// Names
@@ -63,10 +64,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<ExampleDoor>());
 		}
 
 		public override void MouseOver(int i, int j) {

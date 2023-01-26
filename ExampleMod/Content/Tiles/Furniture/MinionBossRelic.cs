@@ -46,6 +46,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void SetStaticDefaults() {
 			Main.tileShine[Type] = 400; // Responsible for golden particles
 			Main.tileFrameImportant[Type] = true; // Any multitile requires this
+			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>();
 			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4); // Relics are 3x4
@@ -73,22 +74,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(233, 207, 94), Language.GetText("MapObject.Relic"));
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			// This code here infers the placeStyle the tile was placed with. Only required if you go the Item.placeStyle approach. You just need Item.NewItem otherwise
+		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack) {
+			// This code here infers the placeStyle the tile was placed with. Only required if you go the Item.placeStyle approach. You just need ItemDrop otherwise
 			// The placeStyle calculated here corresponds to whatever placeStyle you specified on your items that place this tile (Either through Item.placeTile or Item.DefaultToPlacableTile)
-			int placeStyle = frameX / FrameWidth;
-
-			int itemType = 0;
-			switch (placeStyle) {
-				case 0:
-					itemType = ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>();
-					break;
-				// Optional: Add more cases here
-			}
-
-			if (itemType > 0) {
-				// Spawn the item
-				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, itemType);
+			int placeStyle = TileObjectData.GetTileStyle(Main.tile[i, j]);
+			
+			if (placeStyle == 0) {
+				dropItem = ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>();
 			}
 		}
 
@@ -167,8 +159,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 	{
 		public override string RelicTextureName => "ExampleMod/Content/Tiles/Furniture/MyBossRelic";
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Placeable.Furniture.MyBossRelic>());
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
+			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.MyBossRelic>());
 		}
 	}
 	*/

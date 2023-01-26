@@ -30,6 +30,8 @@ namespace ExampleMod.Content.Tiles
 			// Before that, you can make some changes to newTile like height, origin and etc.
 			TileObjectData.addTile(Type);
 
+			ItemDrop = ModContent.ItemType<ExampleAnimatedTileItem>();
+
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
 			ModTranslation name = CreateMapEntryName();
 			name.SetDefault("Red Firefly in a Bottle");
@@ -142,10 +144,6 @@ namespace ExampleMod.Content.Tiles
 
 			// Above code works, but since we are just mimicking another tile, we can just use the same value
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 

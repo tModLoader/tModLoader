@@ -31,16 +31,14 @@ namespace ExampleMod.Content.Tiles
 			// Finally adding newTile
 			TileObjectData.addTile(Type);
 
+			ItemDrop = ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>();
+
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
 			AddMapEntry(new Color(75, 139, 166));
 
 			// The height of a group of animation frames for this tile
 			// Defaults to 0, which disables animations
 			AnimationFrameHeight = 56;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>());
 		}
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {

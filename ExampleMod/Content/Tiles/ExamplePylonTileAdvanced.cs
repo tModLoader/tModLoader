@@ -44,6 +44,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 
+			ItemDrop = ModContent.ItemType<ExamplePylonItemAdvanced>();
+
 			// This time around, we'll have a tile that is 2x3 instead of 3x4.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 3;
@@ -89,8 +91,6 @@ namespace ExampleMod.Content.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			ModContent.GetInstance<AdvancedPylonTileEntity>().Kill(i, j);
-
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}
 
 		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
