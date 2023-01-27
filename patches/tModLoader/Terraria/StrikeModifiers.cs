@@ -19,8 +19,8 @@ public struct StrikeModifiers
 	/// <br/>
 	/// Only use this when the effect is unique to this specific strike.<br/>
 	/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
-	/// For effects which apply to all dealt an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
-	/// For effects which apply to all dealt bu projectile, consider using <see cref="GlobalProjectile.ModifyDamageScaling"/> instead. <br/>
+	/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
+	/// For effects which apply to all dealt by a projectile, consider using <see cref="GlobalProjectile.ModifyDamageScaling"/> instead. <br/>
 	/// <br/>
 	/// Used by vanilla for banners, parry damage, and cultist projectile resistances, weapons which scale based on enemy health, etc
 	/// </summary>
@@ -65,9 +65,9 @@ public struct StrikeModifiers
 	/// <summary>
 	/// Applied to the final damage (after defense) result when the strike is a crit. Defaults to +1f additive (+100% damage). <br/>
 	///  <br/>
-	/// Add to give strikes extra crit damage. <br/>
+	/// Add to give strikes extra crit damage (eg +0.1f for 10% extra crit damage (total +110% or 2.1 times base). <br/>
 	/// Add to <see cref="StatModifier.Flat"/> to give crits extra flat damage. Use with caution as this extra damage will not be reduced by armor. <br/>
-	/// Multiplication not recommended. <br/>
+	/// Multiplication not recommended for buffs. Could be used to decrease the effectiveness of crits on an enemy without disabling completely. <br/>
 	/// Use of <see cref="StatModifier.Base"/> also not recommended. <br/>
 	/// </summary>
 	public StatModifier CritDamage;
@@ -83,6 +83,10 @@ public struct StrikeModifiers
 	public StatModifier FinalDamage;
 
 	public bool CritDisabled { get; private set; }
+
+	/// <summary>
+	/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="DamageStrike.Crit"/> flag from the resulting strike.
+	/// </summary>
 	public void DisableCrit() => CritDisabled = true;
 
 	/// <summary>
