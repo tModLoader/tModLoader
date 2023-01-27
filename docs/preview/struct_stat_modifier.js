@@ -1,0 +1,10 @@
+var struct_stat_modifier =
+[
+    [ "operator*", "struct_stat_modifier.html#a2c77880e64ec8b1147e27abeb524a5ad", null ],
+    [ "operator+", "struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b", null ],
+    [ "operator-", "struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f", null ],
+    [ "Base", "struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5", null ],
+    [ "Flat", "struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b", null ],
+    [ "Additive", "struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091", null ],
+    [ "Multiplicative", "struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602", null ]
+];

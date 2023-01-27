@@ -1,0 +1,26 @@
+var class_dust_i_d =
+[
+    [ "BreatheBubble", "class_dust_i_d.html#a91d005454d4658c586897959f402d9c7", null ],
+    [ "CosmicCarKeys", "class_dust_i_d.html#ad253c5698cdc7ac08c61f39a145464d3", null ],
+    [ "DrillContainmentUnit", "class_dust_i_d.html#a495962dc20c4340e559a7bec9a849700", null ],
+    [ "Enchanted_Gold", "class_dust_i_d.html#a2636a38c27bc83bf5e3414bcdb1b559e", null ],
+    [ "Enchanted_Pink", "class_dust_i_d.html#a4ef13cde92752d1c64370b76c9ebbce9", null ],
+    [ "GlowingMushroom", "class_dust_i_d.html#a1606364c2ceec5d7cd6a4764637005ce", null ],
+    [ "JungleSpore", "class_dust_i_d.html#ad7865bffe90c8c951c04de5aed7f9e8e", null ],
+    [ "LastPrism", "class_dust_i_d.html#a6899e1321e3a2b4c1a3be0096b1cd231", null ],
+    [ "Paint", "class_dust_i_d.html#a6dc00d9651fc67dd11c9c95195604e08", null ],
+    [ "PlanteraBulb", "class_dust_i_d.html#a38ed33cb1d72724477529d1f127986a7", null ],
+    [ "RainbowRod", "class_dust_i_d.html#af2bfe6875245dc2ddfb1563e93cc3e44", null ],
+    [ "Snow", "class_dust_i_d.html#a5e3edb621749f9bf6c30a06fc997d91a", null ],
+    [ "Water", "class_dust_i_d.html#a07acb16baff2b81d98769f3e50f7f122", null ],
+    [ "Water_BloodMoon", "class_dust_i_d.html#a9211d0cf26715e7ebd8698b51e8e11af", null ],
+    [ "Water_Cavern", "class_dust_i_d.html#a23d9616b4d4dd305414162d03735382f", null ],
+    [ "Water_Corruption", "class_dust_i_d.html#ad559b2fd10921e28e472aa0398fa90fd", null ],
+    [ "Water_Crimson", "class_dust_i_d.html#a7ca2f89e5d2bb51e7aad683fc9c2d3af", null ],
+    [ "Water_Desert", "class_dust_i_d.html#a921ac12169b8da4d900126f2bb191761", null ],
+    [ "Water_GlowingMushroom", "class_dust_i_d.html#a5544c83109148d7abd80ca7bae6da091", null ],
+    [ "Water_Hallowed", "class_dust_i_d.html#a580fdb5f58208375905d240a7305f285", null ],
+    [ "Water_Jungle", "class_dust_i_d.html#acd41bf1f83c73382c05ea367ccf41af6", null ],
+    [ "Water_Snow", "class_dust_i_d.html#a6e02f0ffa6748867480ad476b8c0f200", null ],
+    [ "Water_Space", "class_dust_i_d.html#a25069e96d5f4a9be34051022f68e7756", null ]
+];
