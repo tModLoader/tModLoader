@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -626,13 +627,23 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
+	// TODO: Remove some day?
 	/// <summary>
 	/// Allows you to add items to an NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="shop"></param>
 	/// <param name="nextSlot"></param>
+	[Obsolete]
 	public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
+	{
+	}
+
+	public virtual void SetupShop(int type, ChestLoot shop)
+	{
+	}
+
+	public virtual void PostSetupShop(int type, ChestLoot shop)
 	{
 	}
 

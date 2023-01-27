@@ -1115,6 +1115,14 @@
  		ClientInitialize();
  		base.Initialize();
  	}
+@@ -5179,6 +_,7 @@
+ 		ItemDropsDB = itemDropDatabase;
+ 		bestiaryDatabase.Merge(ItemDropsDB);
+ 		bestiaryDatabaseNPCsPopulator.AddDropOverrides(bestiaryDatabase);
++		TMLLootDB = new TMLLootDatabase();
+ 		PylonSystem = new TeleportPylonsSystem();
+ 		ItemDropSolver = new ItemDropResolver(itemDropDatabase);
+ 		ShopHelper = new ShopHelper();
 @@ -9051,13 +_,21 @@
  	{
  	}

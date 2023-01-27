@@ -189,6 +189,15 @@
  	}
  
  	public static bool SetupTravelShop_CanAddItemToShop(int it)
+@@ -1175,7 +_,7 @@
+ 		}
+ 
+ 		int num = 0;
+-		switch (type) {
++		/*switch (type) {
+ 			case 1: {
+ 				array[num].SetDefaults(88);
+ 				num++;
 @@ -2313,12 +_,12 @@
  				num++;
  				array[num].SetDefaults(1979);
@@ -204,7 +213,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,9 +_,12 @@
+@@ -2987,16 +_,22 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -212,8 +221,19 @@
  			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
  				array[num++].SetDefaults(4921);
  		}
++		*/
 +
++		ChestLoot loot = Main.TMLLootDB.GetNpcShopById(type);
++		array = loot.Build(out num);
 +		NPCLoader.SetupShop(type, this, ref num);
  
  		for (int num15 = 0; num15 < num; num15++) {
  			array[num15].isAShopItem = true;
+ 		}
+ 	}
+ 
+-	private static bool BestiaryGirl_IsFairyTorchAvailable()
++	internal static bool BestiaryGirl_IsFairyTorchAvailable() // TML: Changed from private to internal.
+ 	{
+ 		if (!DidDiscoverBestiaryEntry(585))
+ 			return false;
