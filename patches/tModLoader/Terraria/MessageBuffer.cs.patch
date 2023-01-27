@@ -289,56 +289,61 @@
  				projectile.ProjectileFixDesperation();
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(27, -1, whoAmI, null, num38);
-@@ -1523,10 +_,34 @@
+@@ -1523,10 +_,32 @@
  			}
  			case 28: {
  				int num190 = reader.ReadInt16();
-+				/*
++
++				DamageStrike strike = default;
++				if (!ModNet.AllowVanillaClients)
++					goto ModdedRead;
++
  				int num191 = reader.ReadInt16();
  				float num192 = reader.ReadSingle();
  				int num193 = reader.ReadByte() - 1;
  				byte b10 = reader.ReadByte();
-+				*/
-+				DamageStrike strike;
-+				if (ModNet.AllowVanillaClients) {
++				goto HandleStrikeNPC;
++
++				ModdedRead:
++				num191 = reader.Read7BitEncodedInt();
++				num192 = 0;
++				num193 = 0;
++				b10 = 0;
++				if (num191 >= 0) {
 +					strike = new DamageStrike {
-+						DamageType = DamageClass.Default,
-+						Damage = reader.ReadInt16(),
-+						KnockBack = reader.ReadSingle(),
-+						HitDirection = reader.ReadByte() - 1,
-+						Crit = reader.ReadByte() == 1,
-+					};
-+				}
-+				else {
-+					strike = new DamageStrike {
++						Damage = num191,
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
-+						Damage = reader.Read7BitEncodedInt(),
 +						KnockBack = reader.ReadSingle(),
-+						ArmorPenetration = reader.Read7BitEncodedInt(),
-+						ArmorPenetrationPercent = reader.ReadByte(),
 +						Flags = reader.ReadByte()
 +					};
 +				}
-+				int num191 = strike.Damage;
 +
++				HandleStrikeNPC:
  				if (Main.netMode == 2) {
  					if (num191 < 0)
  						num191 = 0;
-@@ -1535,7 +_,7 @@
+@@ -1535,7 +_,10 @@
  				}
  
  				if (num191 >= 0) {
++					if (ModNet.AllowVanillaClients)
 -					Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, noEffect: false, fromNet: true);
-+					Main.npc[num190].StrikeNPC(strike, fromNet: true);
++						Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, fromNet: true);
++					else
++						Main.npc[num190].StrikeNPCDirect(strike, fromNet: true);
  				}
  				else {
  					Main.npc[num190].life = 0;
-@@ -1546,7 +_,7 @@
+@@ -1546,7 +_,11 @@
  				if (Main.netMode != 2)
  					break;
  
++				if (ModNet.AllowVanillaClients)
 -				NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
-+				NetMessage.SendStrikeNPC(Main.npc[num190], strike);
++					NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
++				else
++					NetMessage.SendStrikeNPCDirect(Main.npc[num190], strike);
++
  				if (Main.npc[num190].life <= 0)
  					NetMessage.TrySendData(23, -1, -1, null, num190);
  				else

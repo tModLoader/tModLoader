@@ -160,7 +160,7 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
-@@ -710,14 +_,44 @@
+@@ -710,15 +_,36 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
@@ -172,39 +172,31 @@
  				}
  				case 28:
  					writer.Write((short)number);
-+					/*
++					if (!ModNet.AllowVanillaClients)
++						goto SendDirectStrike;
++
  					writer.Write((short)number2);
  					writer.Write(number3);
  					writer.Write((byte)(number4 + 1f));
  					writer.Write((byte)number5);
-+					*/
-+					var strike = _currentStrike;
-+					if (number7 == 0) {
-+						strike.DamageType = DamageClass.Default;
-+						strike.Damage = (int)number2;
-+						strike.KnockBack = number3;
-+						strike.HitDirection = (int)number4;
-+						strike.Crit = number5 != 0;
-+						strike.InstantKill = strike.Damage == 9999;
+ 					break;
++
++					SendDirectStrike:
++					if (number2 < 0) {
++						// send 'kill NPC' variant
++						writer.Write7BitEncodedInt((int)number2);
++						break;
 +					}
 +
-+					if (ModNet.AllowVanillaClients) {
-+						writer.Write((short)strike.Damage);
-+						writer.Write(strike.KnockBack);
-+						writer.Write((byte)(strike.HitDirection + 1f));
-+						writer.Write((byte)(strike.Crit ? 1 : 0));
-+					}
-+					else {
-+						writer.Write7BitEncodedInt(strike.DamageType.Type);
-+						writer.Write7BitEncodedInt(strike.Damage);
-+						writer.Write(strike.KnockBack);
-+						writer.Write7BitEncodedInt(strike.ArmorPenetration);
-+						writer.Write((byte)strike.ArmorPenetrationPercent);
-+						writer.Write((byte)strike.Flags);
-+					}
- 					break;
++					var strike = number7 == 1 ? _currentStrike : _lastLegacyStrike;
++					writer.Write7BitEncodedInt(strike.Damage);
++					writer.Write7BitEncodedInt(strike.DamageType.Type);
++					writer.Write(strike.KnockBack);
++					writer.Write((byte)strike.Flags);
++					break;
  				case 29:
  					writer.Write((short)number);
+ 					writer.Write((byte)number2);
 @@ -735,13 +_,21 @@
  					Item item7 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
@@ -525,13 +517,22 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
-@@ -2291,6 +_,13 @@
+@@ -2291,6 +_,22 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
-+	private static DamageStrike _currentStrike;
-+	public static void SendStrikeNPC(NPC npc, in DamageStrike strike)
++	private static DamageStrike _lastLegacyStrike;
++	internal static void SetLegacyStrike(DamageStrike strike)
 +	{
++		_lastLegacyStrike = strike;
++	}
++
++	private static DamageStrike _currentStrike;
++	public static void SendStrikeNPCDirect(NPC npc, in DamageStrike strike)
++	{
++		if (ModNet.AllowVanillaClients)
++			throw new NotSupportedException("Cannot send direct strike data when supporting vanilla clients");
++
 +		_currentStrike = strike;
 +		SendData(28, -1, -1, null, npc.whoAmI, number7: 1);
 +	}

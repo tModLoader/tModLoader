@@ -53,7 +53,7 @@
  	public float rotation;
 +
 +	/// <summary>
-+	/// The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectile loaded into the game. This will be equal to either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.WoodenArrowFriendly"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;(). To check if a Projectile instance is a specific Projectile, check <c>Projectile.type == ProjectileID.VanillaProjectileHere</c> or <c>Projectile.type == ModContent.ProjectileType&lt;ModdedProjectileHere&gt;()</c> in an <see langword="if"/> statement. 
++	/// The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectile loaded into the game. This will be equal to either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.WoodenArrowFriendly"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;(). To check if a Projectile instance is a specific Projectile, check <c>Projectile.type == ProjectileID.VanillaProjectileHere</c> or <c>Projectile.type == ModContent.ProjectileType&lt;ModdedProjectileHere&gt;()</c> in an <see langword="if"/> statement.
 +	/// </summary>
  	public int type;
 +
@@ -605,23 +605,14 @@
 +		bool vanillaCanDamage = true;
  		if (type == 18 || type == 72 || type == 86 || type == 87 || aiStyle == 31 || aiStyle == 32 || type == 226 || type == 378 || type == 613 || type == 650 || type == 882 || type == 888 || type == 895 || type == 896 || (type == 434 && localAI[0] != 0f) || type == 439 || type == 444 || (type == 451 && ((int)(ai[0] - 1f) / penetrate == 0 || ai[1] < 5f) && ai[0] != 0f) || type == 500 || type == 653 || type == 1018 || type == 460 || type == 633 || type == 600 || type == 601 || type == 602 || type == 535 || (type == 631 && localAI[1] == 0f) || (type == 537 && localAI[0] <= 30f) || type == 651 || (type == 188 && localAI[0] < 5f) || (aiStyle == 137 && ai[0] != 0f) || aiStyle == 138 || (type == 261 && velocity.Length() < 1.5f) || (type == 818 && ai[0] < 1f) || type == 831 || type == 970 || (type == 833 && ai[0] == 4f) || (type == 834 && ai[0] == 4f) || (type == 835 && ai[0] == 4f) || (type == 281 && ai[0] == -3f) || ((type == 598 || type == 636 || type == 614 || type == 971 || type == 975) && ai[0] == 1f) || (type == 923 && localAI[0] <= 60f) || (type == 919 && localAI[0] <= 60f) || (aiStyle == 15 && ai[0] == 0f && localAI[1] <= 12f) || type == 861 || (type >= 511 && type <= 513 && ai[1] >= 1f) || type == 1007 || (aiStyle == 93 && ai[0] != 0f && ai[0] != 2f) || (aiStyle == 10 && localAI[1] == -1f) || (type == 85 && localAI[0] >= 54f) || (Main.projPet[type] && type != 266 && type != 407 && type != 317 && (type != 388 || ai[0] != 2f) && (type < 390 || type > 392) && (type < 393 || type > 395) && (type != 533 || !(ai[0] >= 6f) || !(ai[0] <= 8f)) && (type < 625 || type > 628) && (type != 755 || ai[0] == 0f) && (type != 946 || ai[0] == 0f) && type != 758 && type != 951 && type != 963 && (type != 759 || frame == Main.projFrames[type] - 1) && type != 833 && type != 834 && type != 835 && type != 864 && (type != 623 || ai[0] != 2f)))
 +			vanillaCanDamage = false;
-+			
++
 +		if (Main.projPet[type] && ProjectileLoader.MinionContactDamage(this))
 +			vanillaCanDamage = true;
-+		
++
 +		if (!(ProjectileLoader.CanDamage(this) ?? vanillaCanDamage))
  			return;
  
  		Rectangle rectangle = Damage_GetHitbox();
-@@ -9835,6 +_,8 @@
- 			if (type == 533 && localAI[2] >= 40f)
- 				num *= 0.5f;
- 
-+			ProjectileLoader.ModifyDamageScaling(this, ref num);
-+
- 			bool flag = !npcProj && !trap;
- 			bool flag2 = usesOwnerMeleeHitCD && flag && owner < 255;
- 			bool flag3 = damage > 0;
 @@ -9858,6 +_,14 @@
  					if (!((!Main.npc[i].dontTakeDamage || NPCID.Sets.ZappingJellyfish[Main.npc[i].type]) && flag5) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
  						continue;
@@ -661,8 +652,11 @@
  							if (!flag9 && (Main.npc[i].noTileCollide || !ownerHitCheck || CanHitWithMeleeWeapon(Main.npc[i]))) {
  								bool flag10 = false;
  								if (Main.npc[i].type == 414) {
-@@ -9992,7 +_,12 @@
+@@ -9990,9 +_,15 @@
+ 									if (type == 604)
+ 										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
  
++									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType);
  									float num3 = knockBack;
  									bool flag12 = false;
 +
@@ -690,9 +684,17 @@
  									}
  
  									if (flag13) {
-@@ -10073,7 +_,7 @@
+@@ -10071,9 +_,14 @@
+ 										return;
+ 									}
  
- 									int num5 = (int)((float)damage * num);
+-									int num5 = (int)((float)damage * num);
++
++									var damageModifier = StatModifier.Default * num;
++									ProjectileLoader.ModifyDamageScaling(this, ref damageModifier);
++									// TODO, finish this..., maybe incorporate knockback?
++									int num5 = damageModifier.ApplyTo(damage);
++
  									int num6 = 0;
 -									if (type > 0 && type < ProjectileID.Count && ProjectileID.Sets.StardustDragon[type]) {
 +									if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
@@ -725,16 +727,37 @@
  
  										int num12 = type;
  										if ((uint)(num12 - 688) <= 2u) {
-@@ -10468,7 +_,7 @@
+@@ -10455,9 +_,12 @@
+ 									}
+ 
+ 									if (Main.netMode != 2 && flag) {
++										/*
+ 										int num27 = Item.NPCtoBanner(nPC.BannerID());
+ 										if (num27 > 0 && Main.player[owner].HasNPCBannerBuff(num27))
+ 											num19 = ((!Main.expertMode) ? ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].NormalDamageDealt)) : ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].ExpertDamageDealt)));
++										*/
++										Main.player[owner].ApplyBannerOffenseBuff(nPC, ref modifiers);
+ 									}
+ 
+ 									if (Main.expertMode) {
+@@ -10468,8 +_,8 @@
  											num19 = (int)((double)num19 * 0.75);
  									}
  
 -									if (Main.netMode != 2 && nPC.type == 439 && type >= 0 && type <= ProjectileID.Count && ProjectileID.Sets.CultistIsResistantTo[type])
+-										num19 = (int)((float)num19 * 0.75f);
 +									if (Main.netMode != 2 && nPC.type == 439 && type >= 0 && ProjectileID.Sets.CultistIsResistantTo[type])
- 										num19 = (int)((float)num19 * 0.75f);
++										modifiers.InitialDamage *= 0.75f; //num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10604,6 +_,10 @@
+ 										ai[0] = 25f;
+@@ -10599,11 +_,15 @@
+ 									}
+ 
+ 									if (flag && melee && Main.player[owner].parryDamageBuff && !ProjectileID.Sets.DontApplyParryDamageBuff[type]) {
+-										num19 *= 5;
++										modifiers.InitialDamage *= 5; //num19 *= 5;
+ 										Main.player[owner].parryDamageBuff = false;
  										Main.player[owner].ClearBuff(198);
  									}
  
@@ -760,22 +783,15 @@
  									int num34 = direction;
  									switch (type) {
  										case 697:
-@@ -10639,11 +_,33 @@
+@@ -10639,11 +_,26 @@
  											num3 *= 0.5f;
  									}
  
 +									// Patching, locals which change here also change in the next patch
-+									var strike = new DamageStrike {
-+										DamageType = DamageType,
-+										Damage = num19,
-+										Crit = flag12,
-+										KnockBack = num3,
-+										HitDirection = num34,
-+										ArmorPenetration = ArmorPenetration,
-+										ArmorPenetrationPercent = (int)(armorPenetrationPercent * 100)
-+									};
-+									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref strike);
-+									num34 = strike.HitDirection;
++									modifiers.ArmorPenetration += ArmorPenetration;
++									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
++									var strike = modifiers.ToStrike(DamageType, num19, flag12, num3, num34);
 +
 +									goto VanillaOnHitEffectsStart;
 +
@@ -790,11 +806,11 @@
 +									/*
  									int num35 = ((!flag) ? ((int)nPC.StrikeNPCNoInteraction(num19, num3, num34, flag12)) : ((int)nPC.StrikeNPC(num19, num3, num34, flag12)));
 +									*/
-+									int num35 = nPC.StrikeNPC(strike, noPlayerInteraction: !flag);
++									int num35 = nPC.StrikeNPCDirect(strike, noPlayerInteraction: !flag);
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
  
-@@ -10768,10 +_,13 @@
+@@ -10768,10 +_,16 @@
  										localAI[0] = 1f;
  
  									if (Main.netMode != 0) {
@@ -804,7 +820,10 @@
  										else
  											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
 +										*/
-+										NetMessage.SendStrikeNPC(nPC, strike);
++										if (ModNet.AllowVanillaClients)
++											NetMessage.SendData(28, -1, -1, null, i, modifiers.InitialDamage.ApplyTo(num19), num3, num34, strike.Crit ? 1 : 0);
++										else
++											NetMessage.SendStrikeNPCDirect(nPC, strike);
  									}
  
  									if (type == 916)
@@ -988,7 +1007,7 @@
 +			int num2 = (overrideWidth != -1) ? overrideWidth : width;
 +			int num3 = (overrideHeight != -1) ? overrideHeight : height;
 +
-+			if (!ProjectileLoader.TileCollideStyle(this, ref num2, ref num3, ref flag6, ref hitboxCenterFrac)) { } else 
++			if (!ProjectileLoader.TileCollideStyle(this, ref num2, ref num3, ref flag6, ref hitboxCenterFrac)) { } else
  			if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				//TML: base.Center isn't correct due to snapping, we have to calculate it without that.
 +				Vector2 center = base.position + new Vector2(base.width, base.height) * 0.5f;

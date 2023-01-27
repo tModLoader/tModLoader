@@ -489,7 +489,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
 	/// </summary>
-	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref DamageStrike strike)
+	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref StrikeModifiers modifiers)
 	{
 	}
 

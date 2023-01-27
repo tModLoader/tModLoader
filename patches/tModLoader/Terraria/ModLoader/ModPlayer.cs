@@ -640,8 +640,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="strike"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref DamageStrike strike)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(Item item, NPC target, ref StrikeModifiers modifiers)
 	{
 	}
 
@@ -672,8 +672,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="strike"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref DamageStrike strike)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref StrikeModifiers modifiers)
 	{
 	}
 

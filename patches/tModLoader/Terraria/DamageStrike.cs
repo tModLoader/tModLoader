@@ -14,14 +14,6 @@ public struct DamageStrike
 
 	public float KnockBack;
 
-	private int _armorPenetration;
-	public int ArmorPenetration { readonly get => _armorPenetration; set => _armorPenetration = Math.Max(0, value); }
-
-	private int _armorPenetrationPercent;
-	public int ArmorPenetrationPercent { readonly get => _armorPenetrationPercent; set => _armorPenetrationPercent = Utils.Clamp(value, 0, 100); }
-
 	public bool InstantKill { readonly get => Flags[2]; set => Flags[2] = value; }
 	public bool HideCombatText { readonly get => Flags[3]; set => Flags[3] = value; }
-
-	public readonly int GetRemainingDefense(int baseDefense) => Math.Max(baseDefense * (100 - ArmorPenetrationPercent) / 100 - ArmorPenetration, 0);
 }

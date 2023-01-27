@@ -802,13 +802,13 @@ public static class PlayerLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, NPC target, ref DamageStrike strike);
+	private delegate void DelegateModifyHitNPC(Item item, NPC target, ref StrikeModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Player player, Item item, NPC target, ref DamageStrike strike)
+	public static void ModifyHitNPC(Player player, Item item, NPC target, ref StrikeModifiers modifiers)
 	{
 		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitNPC(item, target, ref strike);
+			modPlayer.ModifyHitNPC(item, target, ref modifiers);
 		}
 	}
 
@@ -842,17 +842,17 @@ public static class PlayerLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref DamageStrike strike);
+	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref StrikeModifiers modifiers);
 	private static HookList HookModifyHitNPCWithProj = AddHook<DelegateModifyHitNPCWithProj>(p => p.ModifyHitNPCWithProj);
 
-	public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref DamageStrike strike)
+	public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref StrikeModifiers modifiers)
 	{
 		if (proj.npcProj || proj.trap) {
 			return;
 		}
 		Player player = Main.player[proj.owner];
 		foreach (var modPlayer in HookModifyHitNPCWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitNPCWithProj(proj, target, ref strike);
+			modPlayer.ModifyHitNPCWithProj(proj, target, ref modifiers);
 		}
 	}
 

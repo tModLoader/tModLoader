@@ -437,15 +437,15 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegateModifyDamageScaling(Projectile projectile, ref float damageScale);
+	private delegate void DelegateModifyDamageScaling(Projectile projectile, ref StatModifier modifier);
 	private static HookList HookModifyDamageScaling = AddHook<DelegateModifyDamageScaling>(g => g.ModifyDamageScaling);
 
-	public static void ModifyDamageScaling(Projectile projectile, ref float damageScale)
+	public static void ModifyDamageScaling(Projectile projectile, ref StatModifier modifier)
 	{
-		projectile.ModProjectile?.ModifyDamageScaling(ref damageScale);
+		projectile.ModProjectile?.ModifyDamageScaling(ref modifier);
 
 		foreach (GlobalProjectile g in HookModifyDamageScaling.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyDamageScaling(projectile, ref damageScale);
+			g.ModifyDamageScaling(projectile, ref modifier);
 		}
 	}
 
@@ -480,15 +480,15 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref DamageStrike strike);
+	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref StrikeModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Projectile projectile, NPC target, ref DamageStrike strike)
+	public static void ModifyHitNPC(Projectile projectile, NPC target, ref StrikeModifiers modifiers)
 	{
-		projectile.ModProjectile?.ModifyHitNPC(target, ref strike);
+		projectile.ModProjectile?.ModifyHitNPC(target, ref modifiers);
 
 		foreach (GlobalProjectile g in HookModifyHitNPC.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyHitNPC(projectile, target, ref strike);
+			g.ModifyHitNPC(projectile, target, ref modifiers);
 		}
 	}
 

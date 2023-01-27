@@ -927,18 +927,18 @@ public static class ItemLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref DamageStrike strike);
+	private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref StrikeModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
 	/// <summary>
 	/// Calls ModItem.ModifyHitNPC, then all GlobalItem.ModifyHitNPC hooks.
 	/// </summary>
-	public static void ModifyHitNPC(Item item, Player player, NPC target, ref DamageStrike strike)
+	public static void ModifyHitNPC(Item item, Player player, NPC target, ref StrikeModifiers modifiers)
 	{
-		item.ModItem?.ModifyHitNPC(player, target, ref strike);
+		item.ModItem?.ModifyHitNPC(player, target, ref modifiers);
 
 		foreach (var g in HookModifyHitNPC.Enumerate(item.globalItems)) {
-			g.ModifyHitNPC(item, player, target, ref strike);
+			g.ModifyHitNPC(item, player, target, ref modifiers);
 		}
 	}
 

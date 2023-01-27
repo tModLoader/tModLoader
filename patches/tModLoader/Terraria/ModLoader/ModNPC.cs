@@ -257,7 +257,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(int hitDirection, double damage, bool instantKill)
+	public virtual void HitEffect(DamageStrike strike)
 	{
 	}
 
@@ -411,8 +411,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC.
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="strike"></param>
-	public virtual void ModifyHitNPC(NPC target, ref DamageStrike strike)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC target, ref StrikeModifiers modifiers)
 	{
 	}
 
@@ -441,8 +441,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="strike"></param>
-	public virtual void ModifyHitByItem(Player player, Item item, ref DamageStrike strike)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByItem(Player player, Item item, ref StrikeModifiers modifiers)
 	{
 	}
 
@@ -471,8 +471,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="strike"></param>
-	public virtual void ModifyHitByProjectile(Projectile projectile, ref DamageStrike strike)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByProjectile(Projectile projectile, ref StrikeModifiers modifiers)
 	{
 	}
 
@@ -487,13 +487,12 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.
+	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// </summary>
-	/// <param name="strike"></param>
-	/// <returns></returns>
-	public virtual bool StrikeNPC(ref DamageStrike strike)
+	/// <param name="damageType"></param>
+	/// <param name="modifiers"></param>
+	public virtual void AddIncomingStrikeModifiers(DamageClass damageType, ref StrikeModifiers modifiers)
 	{
-		return true;
 	}
 
 	/// <summary>

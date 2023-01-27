@@ -202,8 +202,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="damageScale">The damage scaling</param>
-	public virtual void ModifyDamageScaling(Projectile projectile, ref float damageScale)
+	/// <param name="modifier">The modifier to apply to the projectile base damage</param>
+	public virtual void ModifyDamageScaling(Projectile projectile, ref StatModifier modifier)
 	{
 	}
 
@@ -223,8 +223,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="strike"></param>
-	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref DamageStrike strike)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref StrikeModifiers modifiers)
 	{
 	}
 

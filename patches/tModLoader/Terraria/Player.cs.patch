@@ -2427,46 +2427,61 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -15863,21 +_,39 @@
+@@ -15863,21 +_,52 @@
  		return num;
  	}
  
--	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
-+	internal void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, DamageClass? damageType = null)
- 	{
-+		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
-+		ApplyDamageToNPC(npc, new DamageStrike {
-+			DamageType = damageType ?? DamageClass.Default,
-+			Damage = damage,
-+			Crit = crit,
-+			KnockBack = knockback,
-+			HitDirection = direction,
-+			ArmorPenetration = (int)GetTotalArmorPenetration(damageType ?? DamageClass.Generic)
-+		});
++	// Added by TML
++	public void ApplyBannerOffenseBuff(NPC npc, ref StrikeModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
++
++	// Added by TML
++	public void ApplyBannerOffenseBuff(int bannerId, ref StrikeModifiers modifiers)
++	{
++		if (!HasNPCBannerBuff(bannerId))
++			return;
++
++		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
++		modifiers.InitialDamage *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
 +	}
 +
-+	public void ApplyDamageToNPC(NPC npc, DamageStrike strike)
-+	{
-+		int damage = strike.Damage;
-+
- 		int num = Item.NPCtoBanner(npc.BannerID());
+-	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, DamageClass? damageType = null)
+ 	{
+-		int num = Item.NPCtoBanner(npc.BannerID());
++		/*
++		int num = ;
  		if (num > 0 && HasNPCBannerBuff(num))
  			damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
++		*/
++		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default);
  
-+		strike.Damage = damage;
++		ApplyBannerOffenseBuff(npc, ref modifiers);
++
++		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
++		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
++
++		StrikeNPCDirect(npc, modifiers.ToStrike(damageType ?? DamageClass.Default, damage, crit, knockback, direction));
++
++		if (Main.netMode != 0 && ModNet.AllowVanillaClients) // send a vanilla strike packet instead.
++			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, modifiers.InitialDamage.ApplyTo(damage), knockback, direction, crit ? 1 : 0);
++	}
++
++	public void StrikeNPCDirect(NPC npc, DamageStrike strike)
++	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
 +		/*
  		damage += npc.checkArmorPenetration(armorPenetration, 0f);
 +		*/
  		NPCKillAttempt attempt = new NPCKillAttempt(npc);
 -		int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
-+		int dmg = npc.StrikeNPC(strike);
++		int dmg = npc.StrikeNPCDirect(strike);
  		if (accDreamCatcher)
  			addDPS(dmg);
  
- 		if (Main.netMode != 0)
+-		if (Main.netMode != 0)
 -			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, damage, knockback, direction, crit.ToInt());
-+			NetMessage.SendStrikeNPC(npc, strike);
++		if (Main.netMode != 0 && !ModNet.AllowVanillaClients)
++			NetMessage.SendStrikeNPCDirect(npc, strike);
  
  		int num2 = Item.NPCtoBanner(npc.BannerID());
  		if (num2 >= 0)
@@ -4580,42 +4595,102 @@
  			if (nPC.friendly && (nPC.type != 22 || !killGuide) && (nPC.type != 54 || !killClothier) && (!nPC.isLikeATownNPC || sItem.type != 5129))
  				return;
  
-@@ -34391,6 +_,8 @@
+@@ -34391,24 +_,32 @@
  			if (!flag || (!nPC.noTileCollide && !CanHit(nPC)))
  				return;
  
 +			skipVanillaHitChecks:
 +
++			var modifiers = nPC.GetIncomingStrikeModifiers(sItem.DamageType);
++			/*
  			int num = originalDamage;
++			*/
  			bool flag3 = false;
  			int weaponCrit = GetWeaponCrit(sItem);
-@@ -34470,23 +_,44 @@
+ 			if (Main.rand.Next(1, 101) <= weaponCrit)
+ 				flag3 = true;
+ 
++			/*
+ 			int num2 = Item.NPCtoBanner(nPC.BannerID());
+ 			if (num2 > 0 && HasNPCBannerBuff(num2))
+ 				num = ((!Main.expertMode) ? ((int)((float)num * ItemID.Sets.BannerStrength[Item.BannerToItem(num2)].NormalDamageDealt)) : ((int)((float)num * ItemID.Sets.BannerStrength[Item.BannerToItem(num2)].ExpertDamageDealt)));
++			*/
++			ApplyBannerOffenseBuff(nPC, ref modifiers);
+ 
+ 			if (parryDamageBuff && sItem.melee) {
+-				num *= 5;
++				modifiers.InitialDamage *= 5; //num *= 5;
+ 				parryDamageBuff = false;
+ 				ClearBuff(198);
+ 			}
+ 
+ 			if (sItem.type == 426 && (float)nPC.life >= (float)nPC.lifeMax * 0.9f)
+-				num = (int)((float)num * 2.5f);
++				modifiers.InitialDamage *= 2.5f; //num = (int)((float)num * 2.5f);
+ 
+ 			if (sItem.type == 5096) {
+ 				int num3 = 0;
+@@ -34422,14 +_,20 @@
+ 					num3 = 3;
+ 
+ 				float num4 = 1f + 0.05f * (float)num3;
++				/*
+ 				num = (int)((float)num * num4);
++				*/
++				modifiers.InitialDamage += num4 - 1;
+ 			}
+ 
+ 			if (sItem.type == 671) {
+ 				float t = (float)nPC.life / (float)nPC.lifeMax;
+ 				float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
+ 				float num5 = 1f * lerpValue;
++				/*
+ 				num = (int)((float)num * (1f + num5));
++				*/
++				modifiers.InitialDamage *= 1f + num5;
+ 				Vector2 point = itemRectangle.Center.ToVector2();
+ 				Vector2 positionInWorld = nPC.Hitbox.ClosestPointInRect(point);
+ 				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
+@@ -34437,12 +_,15 @@
+ 				}, whoAmI);
+ 			}
+ 
++			/*
+ 			int num6 = Main.DamageVar(num, luck);
++			*/
++			int variedDamage = Main.DamageVar(originalDamage, luck);
+ 			float armorPenetrationPercent = 0f;
+ 			if (sItem.type == 5129 && nPC.isLikeATownNPC) {
+ 				armorPenetrationPercent = 1f;
+ 				if (nPC.type == 18)
+-					num6 *= 2;
++					modifiers.InitialDamage *= 2; //num6 *= 2;
+ 			}
+ 
+ 			if (sItem.type == 3258) {
+@@ -34470,23 +_,43 @@
  			if (nPC.life > 5)
  				OnHit(nPC.Center.X, nPC.Center.Y, nPC);
  
-+			var strike = new DamageStrike {
-+				DamageType = sItem.DamageType,
-+				Damage = num6,
-+				Crit = flag3,
-+				KnockBack = knockBack,
-+				HitDirection = direction,
-+				ArmorPenetration = GetWeaponArmorPenetration(sItem),
-+				ArmorPenetrationPercent = (int)(armorPenetrationPercent * 100)
-+			};
-+			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref strike);
-+			num6 = strike.Damage;
-+			knockBack = strike.KnockBack;
-+
 +			/*
  			num6 += nPC.checkArmorPenetration(armorPenetration, armorPenetrationPercent);
 +			*/
++			modifiers.ArmorPenetration += GetWeaponArmorPenetration(sItem);
++			modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref modifiers);
++			var strike = modifiers.ToStrike(sItem.DamageType, originalDamage, flag3, knockBack, direction);
++
  			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
 -			int dmgDone = (int)nPC.StrikeNPC(num6, knockBack, direction, flag3);
-+			int dmgDone = nPC.StrikeNPC(strike);
++			int dmgDone = nPC.StrikeNPCDirect(strike);
 +
 +			CombinedHooks.OnPlayerHitNPCWithItem(this, sItem, nPC, strike, dmgDone);
-+
++			/*
  			ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, npcIndex, num6, dmgDone);
++			*/
++			// Note, we don't exactly have access to the same 'num' value pre-randomization but post various buffs in this method.
++			// But it's probably better to pass originalDamage here anyway, because that way we avoid double-stacking banner buffs and other random stuff
++			ApplyNPCOnHitEffects(sItem, itemRectangle, originalDamage, strike.KnockBack, npcIndex, strike.Damage, dmgDone);
  			int num7 = Item.NPCtoBanner(nPC.BannerID());
  			if (num7 >= 0)
  				lastCreatureHit = num7;
@@ -4627,7 +4702,10 @@
  				else
  					NetMessage.SendData(28, -1, -1, null, npcIndex, num6, knockBack, direction);
 +				*/
-+				NetMessage.SendStrikeNPC(nPC, strike);
++				if (ModNet.AllowVanillaClients) // take a stab at sending the right values for the vanilla computation :|
++					NetMessage.SendData(28, -1, -1, null, npcIndex, modifiers.InitialDamage.ApplyTo(variedDamage), knockBack, direction, strike.Crit ? 1 : 0);
++				else
++					NetMessage.SendStrikeNPCDirect(nPC, strike);
  			}
  
  			if (accDreamCatcher)
