@@ -719,6 +719,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 	}
 
+	public virtual List<Item> SetupLootBoxShop()
+	{
+		return null;
+	}
+
 	/// <summary>
 	/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
 	/// </summary>

@@ -219,7 +219,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,22 @@
+@@ -2987,16 +_,28 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -229,8 +229,14 @@
  		}
 +		*/
 +
-+		ChestLoot loot = Main.TMLLootDB.GetNpcShopsOf(type).First();
-+		array = loot.Build(out num);
++		List<Items> lootbox = NPCLoader.SetupLootboxShop(type);
++		if (lootbox != null) {
++			array = lootbox.ToArray();
++		}
++		else {
++			ChestLoot loot = Main.TMLLootDB.GetNpcShopsOf(type).First();
++			array = loot.Build(out num);
++		}
 +		NPCLoader.SetupShop(type, this, ref num);
  
  		for (int num15 = 0; num15 < num; num15++) {

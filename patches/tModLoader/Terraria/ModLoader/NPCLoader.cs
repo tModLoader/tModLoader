@@ -1177,8 +1177,23 @@ public static class NPCLoader
 			GetNPC(type)?.SetupShop();
 		}
 		foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
-			g.SetupShop(type, shop);
+			g.SetupShop(type);
 		}
+	}
+
+	private delegate void DelegateSetupLootboxShop(int type);
+	private static HookList HookSetupLootboxShop = AddHook<DelegateSetupLootboxShop>(g => g.SetupLootboxShop);
+
+	public static List<Item> SetupLootboxShop(int type)
+	{
+		if (type < NPCID.Count) {
+			return;
+		}
+		List<Item> items = GetNPC(type)?.SetupLootboxShop();
+		foreach (GlobalNPC g in HookSetupLootboxShop.Enumerate(globalNPCs)) {
+			g.SetupLootboxShop(type, items);
+		}
+		return items;
 	}
 
 	private delegate void DelegatePostSetupShop(int type);

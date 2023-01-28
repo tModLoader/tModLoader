@@ -254,15 +254,8 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot) {
-			foreach (Item item in shopItems) {
-				// We don't want "empty" items and unloaded items to appear
-				if (item == null || item.type == ItemID.None)
-					continue;
-
-				shop.item[nextSlot].SetDefaults(item.type);
-				nextSlot++;
-			}
+		public override List<Item> SetupLootboxShop() {
+			return shopItems;
 		}
 
 		public override void AI() {
