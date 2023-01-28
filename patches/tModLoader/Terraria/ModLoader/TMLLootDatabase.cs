@@ -706,8 +706,8 @@ namespace Terraria.ModLoader
 			shop[^1].item.shopCustomPrice = 75;
 			shop[^1].item.shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
 
-			for (int i = 0; i < items.GetLength(0); i++) {
-				for (int j = 0; j < items.GetLength(1); i++) {
+			for (int i = 0; i < items.Length; i++) {
+				for (int j = 0; j < items[i].Length; j++) {
 					int condType = conditions[i][j];
 					if ((condType & golem) > 0) {
 						shop.Add(items[i][j], golemCond);
