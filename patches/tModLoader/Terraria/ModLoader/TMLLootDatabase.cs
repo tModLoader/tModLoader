@@ -73,8 +73,8 @@ namespace Terraria.ModLoader
 
 			RegisterGlobalNpcShop();
 
-			foreach (var lbt in npcShopByName) {
-				NPCLoader.PostSetupShop(lbt.Key);
+			for (int i = 0; i < NPCLoader.NPCCount; i++) {
+				NPCLoader.PostSetupShop(i);
 			}
 		}
 

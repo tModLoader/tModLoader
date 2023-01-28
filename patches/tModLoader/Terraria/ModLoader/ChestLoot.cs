@@ -9,7 +9,7 @@ using Terraria.Localization;
 namespace Terraria.ModLoader;
 
 // TODO: AddPylon method at some point?
-public readonly struct ChestLoot {
+public class ChestLoot {
 	public interface ICondition {
 		string Description { get; }
 

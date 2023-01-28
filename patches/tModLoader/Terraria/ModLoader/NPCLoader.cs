@@ -1181,7 +1181,7 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate List<Item> DelegateSetupLootboxShop(int type);
+	private delegate void DelegateSetupLootboxShop(int type, List<Item> items);
 	private static HookList HookSetupLootboxShop = AddHook<DelegateSetupLootboxShop>(g => g.SetupLootboxShop);
 
 	public static List<Item> SetupLootboxShop(int type)
