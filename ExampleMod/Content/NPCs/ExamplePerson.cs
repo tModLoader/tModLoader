@@ -240,58 +240,30 @@ namespace ExampleMod.Content.NPCs
 
 		// Not completely finished, but below is what the NPC will sell
 
-		// public override void SetupShop(Chest shop, ref int nextSlot) {
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());
-		// 	// shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
-		// 	// nextSlot++;
-		// 	// shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
-		// 	// nextSlot++;
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChair>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleDoor>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleBed>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChest>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
-		//
-		// 	if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
-		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
-		// 	}
-		//
-		// 	// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
-		// 	// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	if (Main.moonPhase < 2) {
-		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
-		// 	}
-		// 	else if (Main.moonPhase < 4) {
-		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		// 		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		// 	}
-		// 	else if (Main.moonPhase < 6) {
-		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
+		public override void SetupShop() {
+			var exampleGunBulletCondition = new ChestLoot.Condition(NetworkText.FromLiteral("If its third quarter or waning crescent moon", () => Main.moonPhase >= 2 && Main.moonPhase < 4));
+			var chestLoot = new ChestLoot()
+				.Add(ItemType<ExampleItem>())
+				//.Add(ItemType<EquipMaterial>())
+				//.Add(ItemType<BossItem>())
+				.Add(ItemType<Items.Placeable.Furniture.ExampleWorkbench>())
+				.Add(ItemType<Items.Placeable.Furniture.ExampleChair>())
+				.Add(ItemType<Items.Placeable.Furniture.ExampleDoor>())
+				.Add(ItemType<Items.Placeable.Furniture.ExampleBed>())
+				.Add(ItemType<Items.Placeable.Furniture.ExampleChest>())
+				.Add(ItemType<ExamplePickaxe>())
+				.Add(ItemType<ExampleHamaxe>())
+				.Add(ItemType<ExampleHealingPotion>(), new ChestLoot.Condition(NetworkText.FromLiteral("If player has Lifeforce buff", () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce))))
+				//.Add(ItemType<ExampleWings>(), new ChestLoot.Condition(NetworkText.FromLiteral("If player is in example biome and wings are not disabled", () => Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings)))
+				.Add(ItemType<ExampleSword>(), new ChestLoot.Condition(NetworkText.FromLiteral("If its full or waning gibbous moon", () => Main.moonPhase < 2)))
+				//.Add(ItemType<ExampleGun>(), exampleGunBulletCondition)
+				.Add(ItemType<ExampleBullet>(), exampleGunBulletCondition)
+				//.Add(ItemType<ExampleStaff>(), new ChestLoot.Condition(NetworkText.FromLiteral("If its new or waxing crescent moon", () => Main.moonPhase >= 4 && Main.moonPhase < 6)));
+			if (ModLoader.TryFind<ModItem>("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
+		 	 	chestLoot.Add(bloodTalisman.Type);
+		 	 }
+			chestLoot.RegisterShop(Type);
+		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
