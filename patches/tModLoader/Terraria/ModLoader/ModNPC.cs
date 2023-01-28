@@ -719,9 +719,12 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 	}
 
-	public virtual List<Item> SetupLootBoxShop()
+	public virtual List<Item> SetupLootboxShop()
 	{
 		return null;
+	}
+	public virtual void PostSetupShop()
+	{
 	}
 
 	/// <summary>

@@ -1181,13 +1181,13 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateSetupLootboxShop(int type);
+	private delegate List<Item> DelegateSetupLootboxShop(int type);
 	private static HookList HookSetupLootboxShop = AddHook<DelegateSetupLootboxShop>(g => g.SetupLootboxShop);
 
 	public static List<Item> SetupLootboxShop(int type)
 	{
 		if (type < NPCID.Count) {
-			return;
+			return null;
 		}
 		List<Item> items = GetNPC(type)?.SetupLootboxShop();
 		foreach (GlobalNPC g in HookSetupLootboxShop.Enumerate(globalNPCs)) {

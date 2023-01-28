@@ -229,12 +229,12 @@
  		}
 +		*/
 +
-+		List<Items> lootbox = NPCLoader.SetupLootboxShop(type);
++		List<Item> lootbox = NPCLoader.SetupLootboxShop(type);
 +		if (lootbox != null) {
 +			array = lootbox.ToArray();
 +		}
 +		else {
-+			ChestLoot loot = Main.TMLLootDB.GetNpcShopsOf(type).First();
++			ChestLoot loot = Main.TMLLootDB.GetNpcShopsOf(type).First().Value;
 +			array = loot.Build(out num);
 +		}
 +		NPCLoader.SetupShop(type, this, ref num);
