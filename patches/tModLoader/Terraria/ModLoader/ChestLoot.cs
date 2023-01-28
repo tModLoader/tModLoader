@@ -184,7 +184,6 @@ public readonly struct ChestLoot {
 
 	private readonly List<(int nextTo, bool after)> putCandidates;
 	private readonly List<Entry> putCandidates2; // list that contains all entries those going to get from putCandidates
-	private readonly int npcId;
 
 	public IReadOnlyList<Entry> Items {
 		get {
@@ -216,18 +215,14 @@ public readonly struct ChestLoot {
 		}
 	}
 
-	public ChestLoot(int npcId) {
+	public ChestLoot() {
 		items = new();
 		putCandidates = new();
 		putCandidates2 = new();
-		this.npcId = npcId;
 	}
 
-	public void RegisterShop(string name) {
+	public void RegisterShop(int npcId, string name = "Shop") {
 		Main.TMLLootDB.RegisterNpcShop(npcId, (ChestLoot)MemberwiseClone(), name);
-		items.Clear();
-		putCandidates.Clear();
-		putCandidates2.Clear();
 	}
 
 	private void AddCandidates(IList<Entry> entries) {
@@ -253,55 +248,54 @@ public readonly struct ChestLoot {
 		}
 	}
 
-	public void AddRange(params Entry[] entries) {
-		foreach (var e in entries) {
-			Add(e);
-		}
+	public ChestLoot AddRange(params Entry[] entries) {
+		items.AddRange(entries);
+		return this;
 	}
 
-	public void Add(Entry entry) {
+	public ChestLoot Add(Entry entry) {
 		items.Add(entry);
+		return this;
 	}
 
-	public bool Add(int item, params ICondition[] condition) {
+	public ChestLoot Add(int item, params ICondition[] condition) {
 		return Add(ContentSamples.ItemsByType[item], condition);
 	}
 
-	public bool Add(Item item, params ICondition[] condition) {
-		Add(new Entry(item, condition));
-		return true;
+	public ChestLoot Add(Item item, params ICondition[] condition) {
+		return Add(new Entry(item, condition));
 	}
 
-	private bool PutAt(int destination, Item item, bool after, params ICondition[] condition) {
+	private ChestLoot PutAt(int destination, Item item, bool after, params ICondition[] condition) {
 		putCandidates.Add(new(destination, after));
 		putCandidates2.Add(new(item, condition));
-		return true;
+		return this;
 	}
 
-	private bool PutAt(int targetItem, int item, bool after, params ICondition[] condition) {
+	private ChestLoot PutAt(int targetItem, int item, bool after, params ICondition[] condition) {
 		return PutAt(targetItem, ContentSamples.ItemsByType[item], after, condition);
 	}
 
-	public bool InsertBefore(int targetItem, int item, params ICondition[] condition) {
+	public ChestLoot InsertBefore(int targetItem, int item, params ICondition[] condition) {
 		return PutAt(targetItem, item, false, condition);
 	}
 
-	public bool InsertBefore(int targetItem, Item item, params ICondition[] condition) {
+	public ChestLoot InsertBefore(int targetItem, Item item, params ICondition[] condition) {
 		return PutAt(targetItem, item, false, condition);
 	}
 
-	public bool InsertAfter(int targetItem, int item, params ICondition[] condition) {
+	public ChestLoot InsertAfter(int targetItem, int item, params ICondition[] condition) {
 		return PutAt(targetItem + 1, item, true, condition);
 	}
 
-	public bool InsertAfter(int targetItem, Item item, params ICondition[] condition) {
+	public ChestLoot InsertAfter(int targetItem, Item item, params ICondition[] condition) {
 		return PutAt(targetItem + 1, item, true, condition);
 	}
 
-	public bool Hide(int item) {
+	public ChestLoot Hide(int item) {
 		Entry entry = this[item];
 		entry.Hidden = true;
-		return true;
+		return this;
 	}
 
 	public Item[] Build(bool lastSlotEmpty = true) {
