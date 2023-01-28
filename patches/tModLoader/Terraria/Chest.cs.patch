@@ -1,5 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
+@@ -1,4 +_,5 @@
+ using System.Collections.Generic;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Terraria.Audio;
+ using Terraria.DataStructures;
 @@ -8,6 +_,7 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
@@ -223,7 +229,7 @@
  		}
 +		*/
 +
-+		ChestLoot loot = Main.TMLLootDB.GetNpcShopById(type);
++		ChestLoot loot = Main.TMLLootDB.GetNpcShopsOf(type).First();
 +		array = loot.Build(out num);
 +		NPCLoader.SetupShop(type, this, ref num);
  
