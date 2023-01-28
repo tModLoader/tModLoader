@@ -639,11 +639,11 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	public virtual void SetupShop(int type, ChestLoot shop)
+	public virtual void SetupShop(int type)
 	{
 	}
 
-	public virtual void PostSetupShop(int type, ChestLoot shop)
+	public virtual void PostSetupShop(int type)
 	{
 	}
 

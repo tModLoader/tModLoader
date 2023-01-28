@@ -1165,35 +1165,35 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateSetupShopNew(int type, ChestLoot shop);
+	private delegate void DelegateSetupShopNew(int type);
 	private static HookList HookSetupShopNew = AddHook<DelegateSetupShopNew>(g => g.SetupShop);
 
-	public static void SetupShop(int type, ChestLoot shop)
+	public static void SetupShop(int type)
 	{
 		if (type < shopToNPC.Length) {
 			type = shopToNPC[type];
 		}
 		else {
-			GetNPC(type)?.SetupShop(shop);
+			GetNPC(type)?.SetupShop();
 		}
 		foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
 			g.SetupShop(type, shop);
 		}
 	}
 
-	private delegate void DelegatePostSetupShop(int type, ChestLoot shop);
+	private delegate void DelegatePostSetupShop(int type);
 	private static HookList HookPostSetupShop = AddHook<DelegatePostSetupShop>(g => g.PostSetupShop);
 
-	public static void PostSetupShop(int type, ChestLoot shop)
+	public static void PostSetupShop(int type)
 	{
 		if (type < shopToNPC.Length) {
 			type = shopToNPC[type];
 		}
 		else {
-			GetNPC(type)?.PostSetupShop(shop);
+			GetNPC(type)?.PostSetupShop();
 		}
 		foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
-			g.PostSetupShop(type, shop);
+			g.PostSetupShop(type);
 		}
 	}
 

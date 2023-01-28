@@ -715,7 +715,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 	}
 
-	public virtual void SetupShop(ChestLoot shop)
+	public virtual void SetupShop()
 	{
 	}
 
