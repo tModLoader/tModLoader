@@ -9,22 +9,28 @@ namespace Terraria.ModLoader
 	// can and/or will be used for other tml loots later. (ie pots loot)
 	public class TMLLootDatabase
 	{
-		private Dictionary<int, ChestLoot> npcShopByType = new();
+		private Dictionary<string, ChestLoot> npcShopByName = new();
 		private List<ChestLoot.Entry> globalNpcShopEntries = new();
 
-		public TMLLootDatabase() {
-			Initialize();
+		public void RegisterNpcShop(int npcId, ChestLoot chestLoot, string shopName = "Shop") {
+			npcShopByName.Add($"{(npcId < NPCID.Count ? "Terraria" : NPCLoader.GetNPC(npcId).Mod.Name)}/{(npcId < NPCID.Count ? NPCID.Search.GetName(npcId) : NPCLoader.GetNPC(npcId).Name)}/{shopName}", chestLoot);
 		}
-
-		public void RegisterNpcShop(int npcId, ChestLoot chestLoot) => npcShopByType.Add(npcId, chestLoot);
 
 		public void RegisterGlobalNpcShop(ChestLoot.Entry entry) => globalNpcShopEntries.Add(entry);
 
-		public ChestLoot GetNpcShopById(int npcId) => npcShopByType[npcId];
+		public Dictionary<string, ChestLoot> GetNpcShopsOf(int npcId) {
+			return npcShopByName.Where(x => {
+				var split = x.Key.Split('/');
+				return split[0] == (npcId < NPCID.Count ? "Terraria" : NPCLoader.GetNPC(npcId).Mod.Name)
+				&& split[1] == (npcId < NPCID.Count ? NPCID.Search.GetName(npcId) : NPCLoader.GetNPC(npcId).Name);
+			}).ToDictionary(x => x.Key, x => x.Value);
+		}
 
 		public List<ChestLoot.Entry> GetGlobalNpcShopEntries() => globalNpcShopEntries;
 
 		public void Initialize() {
+			// not updating shops to 1.4.4 yet
+			// it took me lot of hours last time ;-;
 			RegisterMerchant();
 			RegisterArmsDealer();
 			RegisterDryad();
@@ -50,23 +56,21 @@ namespace Terraria.ModLoader
 			RegisterPrincess();
 
 			for (int i = 0; i < NPCLoader.NPCCount; i++) {
-				ChestLoot chest = npcShopByType.TryGetValue(i, out ChestLoot chestLoot) ? chestLoot : new();
+				ChestLoot chest = new();
 				NPCLoader.SetupShop(i, chest);
-
-				if (!npcShopByType.ContainsKey(i))
+				if (chest.Items.Count > 0) {
 					RegisterNpcShop(i, chest);
-				else
-					npcShopByType[i] = chest;
+				}
 			}
 
 			RegisterGlobalNpcShop();
 
-			var clone = npcShopByType.ToDictionary(x => x.Key, x => x.Value);
-			foreach (var lbt in npcShopByType) {
+			var clone = npcShopByName.ToDictionary(x => x.Key, x => x.Value);
+			foreach (var lbt in npcShopByName) {
 				NPCLoader.PostSetupShop(lbt.Key, lbt.Value);
 				clone[lbt.Key] = lbt.Value;
 			}
-			npcShopByType = clone;
+			npcShopByName = clone;
 		}
 
 		private void RegisterGlobalNpcShop() {
@@ -103,7 +107,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterMerchant() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Merchant);
 			shop.Add(88);
 			shop.Add(87);
 			shop.Add(35);
@@ -135,7 +139,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterArmsDealer() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.ArmsDealer);
 			shop.Add(97);
 			shop.Add(4915, new ChestLoot.Condition(NetworkText.Empty, () => Main.bloodMoon || Main.hardMode), new ChestLoot.Condition(NetworkText.Empty, () => WorldGen.SavedOreTiers.Silver == 168));
 			shop.Add(278, new ChestLoot.Condition(NetworkText.Empty, () => Main.bloodMoon || Main.hardMode), new ChestLoot.Condition(NetworkText.Empty, () => WorldGen.SavedOreTiers.Silver != 168));
@@ -158,7 +162,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterDryad() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Dryad);
 			shop.Add(2886, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld);
 			shop.Add(2171, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld);
 			shop.Add(4508, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld);
@@ -213,7 +217,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterBombGuy() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Demolitionist);
 			shop.Add(168);
 			shop.Add(166);
 			shop.Add(167);
@@ -228,7 +232,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterClothier() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Clothier);
 			shop.Add(254);
 			shop.Add(981);
 			shop.Add(242, ChestLoot.Condition.TimeDay);
@@ -290,7 +294,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterGoblin() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.GoblinTinkerer);
 			shop.Add(128);
 			shop.Add(286);
 			shop.Add(398);
@@ -301,7 +305,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterWizard() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Wizard);
 			shop.Add(487);
 			shop.Add(496);
 			shop.Add(500);
@@ -316,7 +320,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterMechanic() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Mechanic);
 			shop.Add(509);
 			shop.Add(850);
 			shop.Add(851);
@@ -349,8 +353,8 @@ namespace Terraria.ModLoader
 			RegisterNpcShop(8, shop);
 		}
 
-		private void RegisterSantaClaus() {
-			ChestLoot shop = new();
+		private void RegisterSantaClaus() { // santa claws
+			ChestLoot shop = new(NPCID.SantaClaus);
 			shop.Add(588);
 			shop.Add(589);
 			shop.Add(590);
@@ -364,7 +368,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterTruffle() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Truffle);
 			shop.Add(756, ChestLoot.Condition.DownedMechBossAny);
 			shop.Add(787, ChestLoot.Condition.DownedMechBossAny);
 			shop.Add(868);
@@ -375,7 +379,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterSteampunker() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Steampunker);
 			shop.Add(779);
 			shop.Add(748, new ChestLoot.Condition(NetworkText.Empty, () => Main.moonPhase >= 4));
 			for (int i = 0; i < 3; i++) {
@@ -419,7 +423,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterDyeTrader() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.DyeTrader);
 			shop.Add(1037);
 			shop.Add(2874);
 			shop.Add(1120);
@@ -434,7 +438,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterPartyGirl() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.PartyGirl);
 			shop.Add(859);
 			shop.Add(4743, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
 			shop.Add(1000);
@@ -482,7 +486,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterCyborg() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Cyborg);
 			shop.Add(771);
 			shop.Add(772, ChestLoot.Condition.BloodMoon);
 			shop.Add(773, new ChestLoot.Condition(NetworkText.Empty, () => !Main.dayTime || Main.eclipse));
@@ -503,7 +507,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterPainter() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Painter);
 			shop.Add(1071);
 			shop.Add(1072);
 			shop.Add(1100);
@@ -550,7 +554,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterWitchDoctor() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.WitchDoctor);
 			shop.Add(1430);
 			shop.Add(986);
 			shop.Add(2999, new ChestLoot.Condition(NetworkText.Empty, () => NPC.AnyNPCs(108)));
@@ -578,7 +582,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterPirate() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Pirate);
 			shop.Add(928);
 			shop.Add(929);
 			shop.Add(876);
@@ -594,7 +598,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterStylist() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Stylist);
 			shop.Add(1990);
 			shop.Add(1979);
 			shop.Add(1977, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.ConsumedLifeCrystals == Player.LifeCrystalMax));
@@ -627,7 +631,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterSkeletonMerchant() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.SkeletonMerchant);
 			shop.Add(3001, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase % 2) == 0));
 			shop.Add(28, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase % 2) == 0));
 			shop.Add(3002, new ChestLoot.Condition(NetworkText.Empty, () => !Main.dayTime || (Main.moonPhase % 2) == 0));
@@ -676,7 +680,7 @@ namespace Terraria.ModLoader
 				new int[] { 100, 100, 100, 100, 25, 25, 25, 25, 25, 25 },
 			};
 
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.DD2Bartender);
 			ChestLoot.Condition[] mechCond = { ChestLoot.Condition.Hardmode, ChestLoot.Condition.DownedMechBossAny };
 			ChestLoot.Condition[] golemCond = { ChestLoot.Condition.Hardmode, ChestLoot.Condition.DownedGolem };
 
@@ -719,7 +723,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterGolfer() {
-			ChestLoot chestLoot = new();
+			ChestLoot chestLoot = new(NPCID.Golfer);
 			chestLoot.Add(4587);
 			chestLoot.Add(4590);
 			chestLoot.Add(4589);
@@ -765,7 +769,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterZoologist() {
-			ChestLoot chestLoot = new();
+			ChestLoot chestLoot = new(NPCID.BestiaryGirl);
 			chestLoot.Add(4776, new ChestLoot.Condition(NetworkText.Empty, Chest.BestiaryGirl_IsFairyTorchAvailable));
 			chestLoot.Add(4767);
 			chestLoot.Add(4759);
@@ -804,7 +808,7 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterPrincess() {
-			ChestLoot shop = new();
+			ChestLoot shop = new(NPCID.Princess);
 			shop.Add(5071);
 			shop.Add(5073);
 			shop.Add(5073);

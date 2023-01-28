@@ -18,70 +18,70 @@ public readonly struct ChestLoot {
 
 	public sealed class Condition : ICondition {
 		#region Common conditions
-		public static readonly Condition Christmas = new(NetworkText.Empty, () => Main.xMas);
-		public static readonly Condition Halloween = new(NetworkText.Empty, () => Main.halloween);
-		public static readonly Condition Hardmode = new(NetworkText.Empty, () => Main.hardMode);
-		public static readonly Condition PreHardmode = new(NetworkText.Empty, () => !Main.hardMode);
-		public static readonly Condition TimeDay = new(NetworkText.Empty, () => Main.dayTime);
-		public static readonly Condition TimeNight = new(NetworkText.Empty, () => !Main.dayTime);
-		public static readonly Condition NotBloodMoon = new(NetworkText.Empty, () => !Main.bloodMoon);
-		public static readonly Condition BloodMoon = new(NetworkText.Empty, () => Main.bloodMoon);
-		public static readonly Condition Eclipse = new(NetworkText.Empty, () => Main.eclipse);
-		public static readonly Condition NotEclipse = new(NetworkText.Empty, () => !Main.eclipse);
-		public static readonly Condition RemixWorld = new(NetworkText.Empty, () => Main.remixWorld);
-		public static readonly Condition TenthAnniversary = new(NetworkText.Empty, () => Main.tenthAnniversaryWorld);
-		public static readonly Condition BirthdayPartyIsUp = new(NetworkText.Empty, () => BirthdayParty.PartyIsUp);
-		public static readonly Condition NightLanternsUp = new(NetworkText.Empty, () => LanternNight.LanternsUp);
-		public static readonly Condition IsMoonFull = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.Full);
-		public static readonly Condition IsMoonWaningGibbous = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.ThreeQuartersAtLeft);
-		public static readonly Condition IsMoonThirdQuarter = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.HalfAtLeft);
-		public static readonly Condition IsMoonWaningCrescent = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.QuarterAtLeft);
-		public static readonly Condition IsMoonNew = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.Empty);
-		public static readonly Condition IsMoonWaxingCrescent = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.QuarterAtRight);
-		public static readonly Condition IsMoonFirstQuarter = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.HalfAtRight);
-		public static readonly Condition IsMoonWaxingGibbous = new(NetworkText.Empty, () => Main.GetMoonPhase() == MoonPhase.ThreeQuartersAtRight);
-		public static readonly Condition HappyWindyDay = new(NetworkText.Empty, () => Main.IsItAHappyWindyDay);
-		public static readonly Condition InSnowBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneSnow);
-		public static readonly Condition InJungleBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneJungle);
-		public static readonly Condition InCorruptBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneCorrupt);
-		public static readonly Condition InCrimsonBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneCrimson);
-		public static readonly Condition InHallowBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneHallow);
-		public static readonly Condition InDesertBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneDesert);
-		public static readonly Condition InGraveyard = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneGraveyard);
-		public static readonly Condition InGlowshroomBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneGlowshroom);
-		public static readonly Condition InBeachBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneBeach);
-		public static readonly Condition InDungeonBiome = new(NetworkText.Empty, () => Main.LocalPlayer.ZoneDungeon);
-		public static readonly Condition NotInSnowBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneSnow);
-		public static readonly Condition NotInJungleBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneJungle);
-		public static readonly Condition NotInCorruptBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneCorrupt);
-		public static readonly Condition NotInCrimsonBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneCrimson);
-		public static readonly Condition NotInHallowBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneHallow);
-		public static readonly Condition NotInDesertBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneDesert);
-		public static readonly Condition NotInGraveyard = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneGraveyard);
-		public static readonly Condition NotInGlowshroomBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneGlowshroom);
-		public static readonly Condition NotInBeachBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneBeach);
-		public static readonly Condition NotInDungeonBiome = new(NetworkText.Empty, () => !Main.LocalPlayer.ZoneDungeon);
-		public static readonly Condition CorruptionWorld = new(NetworkText.Empty, () => !WorldGen.crimson);
-		public static readonly Condition CrimsonWorld = new(NetworkText.Empty, () => WorldGen.crimson);
-		public static readonly Condition DownedKingSlime = new(NetworkText.Empty, () => NPC.downedSlimeKing);
-		public static readonly Condition DownedEyeOfCthulhu = new(NetworkText.Empty, () => NPC.downedBoss1);
-		public static readonly Condition DownedEowOrBoc = new(NetworkText.Empty, () => NPC.downedBoss2);
-		public static readonly Condition DownedEaterOfWorlds = new(NetworkText.Empty, () => NPC.downedBoss2 && !WorldGen.crimson);
-		public static readonly Condition DownedBrainOfCthulhu = new(NetworkText.Empty, () => NPC.downedBoss2 && WorldGen.crimson);
-		public static readonly Condition DownedQueenBee = new(NetworkText.Empty, () => NPC.downedQueenBee);
-		public static readonly Condition DownedSkeletron = new(NetworkText.Empty, () => NPC.downedBoss3);
-		public static readonly Condition DownedMechBossAny = new(NetworkText.Empty, () => NPC.downedMechBossAny);
-		public static readonly Condition DownedTwins = new(NetworkText.Empty, () => NPC.downedMechBoss2);
-		public static readonly Condition DownedDestroyer = new(NetworkText.Empty, () => NPC.downedMechBoss1);
-		public static readonly Condition DownedSkeletronPrime = new(NetworkText.Empty, () => NPC.downedMechBoss3);
-		public static readonly Condition DownedPlantera = new(NetworkText.Empty, () => NPC.downedPlantBoss);
-		public static readonly Condition DownedGolem = new(NetworkText.Empty, () => NPC.downedGolemBoss);
-		public static readonly Condition DownedCultist = new(NetworkText.Empty, () => NPC.downedAncientCultist);
-		public static readonly Condition DownedMoonLord = new(NetworkText.Empty, () => NPC.downedMoonlord);
-		public static readonly Condition DownedClown = new(NetworkText.Empty, () => NPC.downedClown);
-		public static readonly Condition DownedPirates = new(NetworkText.Empty, () => NPC.downedPirates);
-		public static readonly Condition DownedMartians = new(NetworkText.Empty, () => NPC.downedMartians);
-		public static readonly Condition DownedFrost = new(NetworkText.Empty, () => NPC.downedFrost);
+		public static readonly Condition Christmas = new(NetworkText.FromLiteral("During Christmas"), () => Main.xMas);
+		public static readonly Condition Halloween = new(NetworkText.FromLiteral("During Halloween"), () => Main.halloween);
+		public static readonly Condition Hardmode = new(NetworkText.FromLiteral("In Hardmode"), () => Main.hardMode);
+		public static readonly Condition PreHardmode = new(NetworkText.FromLiteral("Before Hardmode"), () => !Main.hardMode);
+		public static readonly Condition TimeDay = new(NetworkText.FromLiteral("During day"), () => Main.dayTime);
+		public static readonly Condition TimeNight = new(NetworkText.FromLiteral("During night"), () => !Main.dayTime);
+		public static readonly Condition NotBloodMoon = new(NetworkText.FromLiteral("During normal night"), () => !Main.bloodMoon);
+		public static readonly Condition BloodMoon = new(NetworkText.FromLiteral("During blood moon"), () => Main.bloodMoon);
+		public static readonly Condition Eclipse = new(NetworkText.FromLiteral("During solar eclipse"), () => Main.eclipse);
+		public static readonly Condition NotEclipse = new(NetworkText.FromLiteral("During normal day"), () => !Main.eclipse);
+		public static readonly Condition RemixWorld = new(NetworkText.FromLiteral("In Remix world"), () => Main.remixWorld);
+		public static readonly Condition TenthAnniversary = new(NetworkText.FromLiteral("In Tenth Anniversary world"), () => Main.tenthAnniversaryWorld);
+		public static readonly Condition BirthdayPartyIsUp = new(NetworkText.FromLiteral("During birthday party"), () => BirthdayParty.PartyIsUp);
+		public static readonly Condition NightLanternsUp = new(NetworkText.FromLiteral("While night lanterns are up"), () => LanternNight.LanternsUp);
+		public static readonly Condition IsMoonFull = new(NetworkText.FromLiteral("During full moon"), () => Main.GetMoonPhase() == MoonPhase.Full);
+		public static readonly Condition IsMoonWaningGibbous = new(NetworkText.FromLiteral("During waning gibbous moon"), () => Main.GetMoonPhase() == MoonPhase.ThreeQuartersAtLeft);
+		public static readonly Condition IsMoonThirdQuarter = new(NetworkText.FromLiteral("During third quarter moon"), () => Main.GetMoonPhase() == MoonPhase.HalfAtLeft);
+		public static readonly Condition IsMoonWaningCrescent = new(NetworkText.FromLiteral("During waning crescent moon"), () => Main.GetMoonPhase() == MoonPhase.QuarterAtLeft);
+		public static readonly Condition IsMoonNew = new(NetworkText.FromLiteral("During new moon"), () => Main.GetMoonPhase() == MoonPhase.Empty);
+		public static readonly Condition IsMoonWaxingCrescent = new(NetworkText.FromLiteral("During waxing crescent moon"), () => Main.GetMoonPhase() == MoonPhase.QuarterAtRight);
+		public static readonly Condition IsMoonFirstQuarter = new(NetworkText.FromLiteral("During first quarter moon"), () => Main.GetMoonPhase() == MoonPhase.HalfAtRight);
+		public static readonly Condition IsMoonWaxingGibbous = new(NetworkText.FromLiteral("During waxing gibbous moon"), () => Main.GetMoonPhase() == MoonPhase.ThreeQuartersAtRight);
+		public static readonly Condition HappyWindyDay = new(NetworkText.FromLiteral("During windy day"), () => Main.IsItAHappyWindyDay);
+		public static readonly Condition InSnowBiome = new(NetworkText.FromLiteral("In Snow"), () => Main.LocalPlayer.ZoneSnow);
+		public static readonly Condition InJungleBiome = new(NetworkText.FromLiteral("In Jungle"), () => Main.LocalPlayer.ZoneJungle);
+		public static readonly Condition InCorruptBiome = new(NetworkText.FromLiteral("In Corruption"), () => Main.LocalPlayer.ZoneCorrupt);
+		public static readonly Condition InCrimsonBiome = new(NetworkText.FromLiteral("In Crimson"), () => Main.LocalPlayer.ZoneCrimson);
+		public static readonly Condition InHallowBiome = new(NetworkText.FromLiteral("In Hallow"), () => Main.LocalPlayer.ZoneHallow);
+		public static readonly Condition InDesertBiome = new(NetworkText.FromLiteral("In Desert"), () => Main.LocalPlayer.ZoneDesert);
+		public static readonly Condition InGraveyard = new(NetworkText.FromLiteral("In Graveyard"), () => Main.LocalPlayer.ZoneGraveyard);
+		public static readonly Condition InGlowshroomBiome = new(NetworkText.FromLiteral("In Glowing Mushroom"), () => Main.LocalPlayer.ZoneGlowshroom);
+		public static readonly Condition InBeachBiome = new(NetworkText.FromLiteral("In Ocean"), () => Main.LocalPlayer.ZoneBeach);
+		public static readonly Condition InDungeonBiome = new(NetworkText.FromLiteral("In Dungeon"), () => Main.LocalPlayer.ZoneDungeon);
+		public static readonly Condition NotInSnowBiome = new(NetworkText.FromLiteral("Not in Snow"), () => !Main.LocalPlayer.ZoneSnow);
+		public static readonly Condition NotInJungleBiome = new(NetworkText.FromLiteral("Not in Jungle"), () => !Main.LocalPlayer.ZoneJungle);
+		public static readonly Condition NotInCorruptBiome = new(NetworkText.FromLiteral("Not in Corruption"), () => !Main.LocalPlayer.ZoneCorrupt);
+		public static readonly Condition NotInCrimsonBiome = new(NetworkText.FromLiteral("Not in Crimson"), () => !Main.LocalPlayer.ZoneCrimson);
+		public static readonly Condition NotInHallowBiome = new(NetworkText.FromLiteral("Not in Hallow"), () => !Main.LocalPlayer.ZoneHallow);
+		public static readonly Condition NotInDesertBiome = new(NetworkText.FromLiteral("Not in Desert"), () => !Main.LocalPlayer.ZoneDesert);
+		public static readonly Condition NotInGraveyard = new(NetworkText.FromLiteral("Not in Graveyard"), () => !Main.LocalPlayer.ZoneGraveyard);
+		public static readonly Condition NotInGlowshroomBiome = new(NetworkText.FromLiteral("Not in Glowing Mushroom"), () => !Main.LocalPlayer.ZoneGlowshroom);
+		public static readonly Condition NotInBeachBiome = new(NetworkText.FromLiteral("Not in Ocean"), () => !Main.LocalPlayer.ZoneBeach);
+		public static readonly Condition NotInDungeonBiome = new(NetworkText.FromLiteral("Not in Dungeon"), () => !Main.LocalPlayer.ZoneDungeon);
+		public static readonly Condition CorruptionWorld = new(NetworkText.FromLiteral("In Corruption world"), () => !WorldGen.crimson);
+		public static readonly Condition CrimsonWorld = new(NetworkText.FromLiteral("In Crimson world"), () => WorldGen.crimson);
+		public static readonly Condition DownedKingSlime = new(NetworkText.FromLiteral("King Slime is slain"), () => NPC.downedSlimeKing);
+		public static readonly Condition DownedEyeOfCthulhu = new(NetworkText.FromLiteral("Eye of Cthulhu is slain"), () => NPC.downedBoss1);
+		public static readonly Condition DownedEowOrBoc = new(NetworkText.FromLiteral("Boss of Evil is slain"), () => NPC.downedBoss2);
+		public static readonly Condition DownedEaterOfWorlds = new(NetworkText.FromLiteral("Eater of Worlds is slain"), () => NPC.downedBoss2 && !WorldGen.crimson);
+		public static readonly Condition DownedBrainOfCthulhu = new(NetworkText.FromLiteral("Brain of Cthulhu is slain"), () => NPC.downedBoss2 && WorldGen.crimson);
+		public static readonly Condition DownedQueenBee = new(NetworkText.FromLiteral("Queen Bee is slain"), () => NPC.downedQueenBee);
+		public static readonly Condition DownedSkeletron = new(NetworkText.FromLiteral("Skeletron is slain"), () => NPC.downedBoss3);
+		public static readonly Condition DownedMechBossAny = new(NetworkText.FromLiteral("Any Mechanical Boss is slain"), () => NPC.downedMechBossAny);
+		public static readonly Condition DownedTwins = new(NetworkText.FromLiteral("The Twins are slain"), () => NPC.downedMechBoss2);
+		public static readonly Condition DownedDestroyer = new(NetworkText.FromLiteral("The Destroyer is slain"), () => NPC.downedMechBoss1);
+		public static readonly Condition DownedSkeletronPrime = new(NetworkText.FromLiteral("Skeletron Prime is slain"), () => NPC.downedMechBoss3);
+		public static readonly Condition DownedPlantera = new(NetworkText.FromLiteral("Plantera is slain"), () => NPC.downedPlantBoss);
+		public static readonly Condition DownedGolem = new(NetworkText.FromLiteral("Golem is slain"), () => NPC.downedGolemBoss);
+		public static readonly Condition DownedCultist = new(NetworkText.FromLiteral("Lunatic Cultist is slain"), () => NPC.downedAncientCultist);
+		public static readonly Condition DownedMoonLord = new(NetworkText.FromLiteral("Moon Lord is slain"), () => NPC.downedMoonlord);
+		public static readonly Condition DownedClown = new(NetworkText.FromLiteral("Clown is slain"), () => NPC.downedClown);
+		public static readonly Condition DownedPirates = new(NetworkText.FromLiteral("Pirates are defeated"), () => NPC.downedPirates);
+		public static readonly Condition DownedMartians = new(NetworkText.FromLiteral("Martians are defeated"), () => NPC.downedMartians);
+		public static readonly Condition DownedFrost = new(NetworkText.FromLiteral("Frost Legion is defeated"), () => NPC.downedFrost);
 		#endregion
 
 		private readonly NetworkText DescriptionText;
@@ -184,6 +184,7 @@ public readonly struct ChestLoot {
 
 	private readonly List<(int nextTo, bool after)> putCandidates;
 	private readonly List<Entry> putCandidates2; // list that contains all entries those going to get from putCandidates
+	private readonly int npcId;
 
 	public IReadOnlyList<Entry> Items {
 		get {
@@ -215,10 +216,18 @@ public readonly struct ChestLoot {
 		}
 	}
 
-	public ChestLoot() {
+	public ChestLoot(int npcId) {
 		items = new();
 		putCandidates = new();
 		putCandidates2 = new();
+		this.npcId = npcId;
+	}
+
+	public void RegisterShop(string name) {
+		Main.TMLLootDB.RegisterNpcShop(npcId, (ChestLoot)MemberwiseClone(), name);
+		items.Clear();
+		putCandidates.Clear();
+		putCandidates2.Clear();
 	}
 
 	private void AddCandidates(IList<Entry> entries) {
@@ -269,24 +278,24 @@ public readonly struct ChestLoot {
 		return true;
 	}
 
-	private bool PutAt(int destination, int item, bool after, params ICondition[] condition) {
-		return PutAt(destination, ContentSamples.ItemsByType[item], after, condition);
+	private bool PutAt(int targetItem, int item, bool after, params ICondition[] condition) {
+		return PutAt(targetItem, ContentSamples.ItemsByType[item], after, condition);
 	}
 
-	public bool InsertBefore(int destination, int item, params ICondition[] condition) {
-		return PutAt(destination, item, false, condition);
+	public bool InsertBefore(int targetItem, int item, params ICondition[] condition) {
+		return PutAt(targetItem, item, false, condition);
 	}
 
-	public bool InsertBefore(int destination, Item item, params ICondition[] condition) {
-		return PutAt(destination, item, false, condition);
+	public bool InsertBefore(int targetItem, Item item, params ICondition[] condition) {
+		return PutAt(targetItem, item, false, condition);
 	}
 
-	public bool InsertAfter(int destination, int item, params ICondition[] condition) {
-		return PutAt(destination + 1, item, true, condition);
+	public bool InsertAfter(int targetItem, int item, params ICondition[] condition) {
+		return PutAt(targetItem + 1, item, true, condition);
 	}
 
-	public bool InsertAfter(int destination, Item item, params ICondition[] condition) {
-		return PutAt(destination + 1, item, true, condition);
+	public bool InsertAfter(int targetItem, Item item, params ICondition[] condition) {
+		return PutAt(targetItem + 1, item, true, condition);
 	}
 
 	public bool Hide(int item) {
@@ -309,6 +318,9 @@ public readonly struct ChestLoot {
 		}
 
 		slots = array.Count;
+		if (array.Count > 40) {
+			Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
+		}
 		if (array.Count < 40) {
 			array.AddRange(Enumerable.Repeat(emptyInstance, 40 - array.Count));
 		}
