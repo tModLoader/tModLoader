@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void RegisterNpcShop(int npcId, ChestLoot chestLoot, string shopName = "Shop") {
-			npcShopByName.Add($"{(npcId < NPCID.Count ? "Terraria" : NPCLoader.GetNPC(npcId).Mod.Name)}/{(npcId < NPCID.Count ? NPCID.Search.GetName(npcId) : NPCLoader.GetNPC(npcId).Name)}/{shopName}", chestLoot);
+			npcShopByName.Add($"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}", chestLoot);
 		}
 
 		public void RegisterGlobalNpcShop(ChestLoot.Entry entry) => globalNpcShopEntries.Add(entry);
