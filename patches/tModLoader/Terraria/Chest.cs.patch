@@ -228,13 +228,9 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,44 @@
- 			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
- 				array[num++].SetDefaults(4916);
- 
-+			// Extra patch context.
- 			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
- 				array[num++].SetDefaults(4921);
+@@ -2943,6 +_,28 @@
+ 				array[num++].SetDefaults(5088);
+ 				break;
  		}
 +		*/
 +
@@ -258,7 +254,18 @@
 +					array = loot.Build(out num);
 +			}
 +		}
-+
+ 
+ 		bool num12 = type != 19 && type != 20;
+ 		bool flag3 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
+@@ -2987,16 +_,22 @@
+ 			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
+ 				array[num++].SetDefaults(4916);
+ 
++			// Extra patch context.
+ 			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
+ 				array[num++].SetDefaults(4921);
+ 		}
++		
 +		//TODO: Below is an Obsoleted Hook to be removed.
 +		NPCLoader.SetupShop(type, this, ref num);
  
