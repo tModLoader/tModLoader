@@ -4,10 +4,10 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable, 1.4]
+    branches: [1.4_mergedtesting, gh_actions_test, 1.4-preview, stable, 1.4]
   pull_request_target:
     types: [labeled]
-    branches: [1.4-preview, 1.4-stable, 1.4, 1.4.4]
+    branches: [1.4-preview, stable, 1.4, 1.4.4]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -32,7 +32,7 @@ jobs:
 
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/1.4-preview')
         shell: bash
         run: |
           echo "Attempting get previous version id"
@@ -50,7 +50,7 @@ jobs:
             exit 1
           fi
           echo "Applying verison updates"
-          if [[ "refs/heads/1.4-stable" = $branch ]] ; then
+          if [[ "refs/heads/stable" = $branch ]] ; then
              echo "Rolling Forward the Patch #..."
              ((++patch))   
           fi
@@ -80,7 +80,7 @@ jobs:
       - name: Check out stable branch
         uses: actions/checkout@v2
         with:
-          ref: "1.4-stable"
+          ref: "stable"
           persist-credentials: false
           fetch-depth: 0
       
@@ -209,7 +209,7 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Giving Purpose         
-          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/stable' ] ; then
             export BUILDPURPOSE="Stable"
           fi
           if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
@@ -275,7 +275,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/1.4-preview')
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
@@ -373,9 +373,9 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
-    # Documentation generated on successful builds of pushes to 1.4-stable and 1.4-preview
+    # Documentation generated on successful builds of pushes to stable and 1.4-preview
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/1.4-preview')
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -436,13 +436,13 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: ${{ fromJSON('{"refs/heads/1.4-stable":"docs/1.4-stable", "refs/heads/1.4-preview":"docs/1.4-preview"}')[github.ref] }}
+          destination_dir: ${{ fromJSON('{"refs/heads/stable":"docs/1.4-stable", "refs/heads/1.4-preview":"docs/1.4-preview"}')[github.ref] }}
           commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/stable')
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
@@ -529,7 +529,7 @@ jobs:
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
           manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
-          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/stable' ] ; then
             manifesto=$manifesto/stable.vdf
           fi
           if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
@@ -579,7 +579,7 @@ jobs:
         working-directory: artifacts/ExampleMod
 
       - name: Install Zip
-        if: github.ref == 'refs/heads/1.4-stable'
+        if: github.ref == 'refs/heads/stable'
         uses: montudor/action-zip@v1
         
       - name: Zip Artifacts
@@ -589,11 +589,11 @@ jobs:
           cd Build; zip -qq -r ../tModLoader.zip .; cd ..
       
       - name: Make a release
-        if: github.ref == 'refs/heads/1.4-stable'
+        if: github.ref == 'refs/heads/stable'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
-          body: "Monthly Github Auto-release for 1.4-stable"
+          body: "Monthly Github Auto-release for stable"
           tag: ${{ steps.version2.outputs.new_version }}
