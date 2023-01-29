@@ -228,7 +228,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,42 @@
+@@ -2987,16 +_,44 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -265,6 +265,8 @@
  		for (int num15 = 0; num15 < num; num15++) {
  			array[num15].isAShopItem = true;
  		}
++
++		item = array;
  	}
  
 -	private static bool BestiaryGirl_IsFairyTorchAvailable()

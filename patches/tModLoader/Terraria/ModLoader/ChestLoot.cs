@@ -162,7 +162,7 @@ public class ChestLoot {
 				return;
 
 			if (IsAvailable()) {
-				if (askingNicelyToNotAdd) {
+				if (!askingNicelyToNotAdd) {
 					items.Add(item);
 				}
 				foreach (var entry in ChainedEntries[true]) {
@@ -224,7 +224,7 @@ public class ChestLoot {
 
 	public void RegisterShop(int npcId, string name = "Shop") {
 		this.name = name;
-		Main.TMLLootDB.RegisterNpcShop(npcId, (ChestLoot)MemberwiseClone(), name);
+		Main.TMLLootDB.RegisterNpcShop(npcId, this, name);
 	}
 
 	private void AddCandidates(IList<Entry> entries) {
@@ -306,7 +306,8 @@ public class ChestLoot {
 
 	public Item[] Build(out int slots, bool lastSlotEmpty = true) {
 		List<Item> array = new();
-		List<Entry> oldEntries = items; // incase current instance still gets used after building for some reason.
+		List<Entry> oldEntries = new List<Entry>();
+		oldEntries.AddRange(items); // incase current instance still gets used after building for some reason.
 
 		AddCandidates(oldEntries);
 		foreach (Entry group in oldEntries) {

@@ -337,6 +337,8 @@ public static class ModContent
 		ItemSorting.SetupWhiteLists();
 		ItemLoader.ValidateGeodeDropsSet();
 
+		Main.TMLLootDB.Initialize();
+
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();
 
