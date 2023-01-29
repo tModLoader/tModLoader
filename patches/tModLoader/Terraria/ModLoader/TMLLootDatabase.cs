@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.GameContent;
@@ -201,59 +202,144 @@ namespace Terraria.ModLoader
 				.RegisterShop(NPCID.ArmsDealer);
 		}
 
-		private void RegisterDryad() {
-			ChestLoot shop = new();
-			shop.Add(2886, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld);
-			shop.Add(2171, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld);
-			shop.Add(4508, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld);
-			shop.Add(67, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CorruptionWorld);
-			shop.Add(59, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CorruptionWorld);
-			shop.Add(4504, ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CorruptionWorld);
-			shop.Add(66, ChestLoot.Condition.NotBloodMoon);
-			shop.Add(62, ChestLoot.Condition.NotBloodMoon);
-			shop.Add(63, ChestLoot.Condition.NotBloodMoon);
-			shop.Add(745, ChestLoot.Condition.NotBloodMoon);
-			shop.Add(59, ChestLoot.Condition.Hardmode, ChestLoot.Condition.InGraveyard, ChestLoot.Condition.CrimsonWorld);
-			shop.Add(2171, ChestLoot.Condition.Hardmode, ChestLoot.Condition.InGraveyard, ChestLoot.Condition.CorruptionWorld);
-			shop.Add(27);
-			shop.Add(114);
-			shop.Add(1828);
-			shop.Add(747);
-			shop.Add(746, ChestLoot.Condition.Hardmode);
-			shop.Add(369, ChestLoot.Condition.Hardmode);
-			shop.Add(4505, ChestLoot.Condition.Hardmode);
-			shop.Add(194, ChestLoot.Condition.InGlowshroomBiome);
-			shop.Add(1853, ChestLoot.Condition.Halloween);
-			shop.Add(1854, ChestLoot.Condition.Halloween);
-			shop.Add(3215, ChestLoot.Condition.DownedKingSlime);
-			shop.Add(3216, ChestLoot.Condition.DownedQueenBee);
-			shop.Add(3219, ChestLoot.Condition.DownedEyeOfCthulhu);
-			shop.Add(3218, ChestLoot.Condition.DownedBrainOfCthulhu);
-			shop.Add(3217, ChestLoot.Condition.DownedEaterOfWorlds);
-			shop.Add(3220, ChestLoot.Condition.DownedSkeletron);
-			shop.Add(3221, ChestLoot.Condition.DownedSkeletron);
-			shop.Add(4047);
-			shop.Add(4045);
-			shop.Add(4044);
-			shop.Add(4043);
-			shop.Add(4042);
-			shop.Add(4046);
-			shop.Add(4041);
-			shop.Add(4241);
-			shop.Add(4048);
-			for (int i = 0; i < 3; i++) {
-				shop.Add(4430 + i, ChestLoot.Condition.Hardmode, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 0));
-			}
-			for (int i = 0; i < 3; i++) {
-				shop.Add(4433 + i, ChestLoot.Condition.Hardmode, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 1));
-			}
-			for (int i = 0; i < 3; i++) {
-				shop.Add(4436 + i, ChestLoot.Condition.Hardmode, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 2));
-			}
-			for (int i = 0; i < 3; i++) {
-				shop.Add(4439 + i, ChestLoot.Condition.Hardmode, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 3));
-			}
-			RegisterNpcShop(NPCID.Dryad, shop);
+		private static void RegisterDryad() {
+			var shop = new ChestLoot();
+			var mp1_2 = new ChestLoot.Condition(NetworkText.FromLiteral("During Full or Waning Gibbous moon phase"), () => Main.moonPhase / 2 == 0);
+			var mp3_4 = new ChestLoot.Condition(NetworkText.FromLiteral("During Third Quarter or Waning Crescent moon phase"), () => Main.moonPhase / 2 == 1);
+			var mp5_6 = new ChestLoot.Condition(NetworkText.FromLiteral("During New or Waxing Crescent moon phase"), () => Main.moonPhase / 2 == 2);
+			var mp7_8 = new ChestLoot.Condition(NetworkText.FromLiteral("During First Quarter or Waxing Gibbous moon phase"), () => Main.moonPhase / 2 == 3);
+
+			#region Entries
+			#region Powders
+			// Represents this:
+			//	if (Main.bloodMoon) {
+			//		if (WorldGen.crimson) {
+			//			if (!Main.remixWorld) {
+			//				array[num++].SetDefaults(ItemID.ViciousPowder);
+			//			}
+			//		}
+			//		else {
+			//			if (!Main.remixWorld) {
+			//				array[num++].SetDefaults(ItemID.VilePowder);
+			//			}
+			//		}
+			//	}
+			//	else {
+			//		if (!Main.remixWorld) {
+			//			array[num++].SetDefaults(ItemID.PurificationPowder);
+			//		}
+			//	}
+			var powders = new ChestLoot.Entry(ChestLoot.Condition.BloodMoon);
+
+			var evilPowders = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
+			var vilePowder = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
+			vilePowder.OnSuccess(ItemID.VilePowder);
+			var viciousPowder = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
+			viciousPowder.OnSuccess(ItemID.ViciousPowder);
+
+			evilPowders.OnSuccess(viciousPowder);
+			evilPowders.OnFail(vilePowder);
+
+			var purePowder = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
+			purePowder.OnSuccess(ItemID.PurificationPowder);
+
+			powders.OnSuccess(evilPowders);
+			powders.OnFail(purePowder);
+			#endregion
+			#region Evil Seeds
+			// Represents this:
+			//	if (Main.bloodMoon) {
+			//		if (!WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && WorldGen.crimson) {
+			//			array[num++].SetDefaults(ItemID.CorruptSeeds);
+			//		}
+			//		if (WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && !WorldGen.crimson) {
+			//			array[num++].SetDefaults(ItemID.CrimsonSeeds);
+			//		}
+			//	}
+			var evilSeeds = new ChestLoot.Entry(ChestLoot.Condition.BloodMoon);
+			var esCrimson = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
+			var esCorrupt = new ChestLoot.Entry(ChestLoot.Condition.CorruptionWorld);
+
+			var corruptSeedsGraveyard = new ChestLoot.Entry(ChestLoot.Condition.InGraveyard, ChestLoot.Condition.CrimsonWorld);
+			var crimsonSeedsGraveyard = new ChestLoot.Entry(ChestLoot.Condition.InGraveyard, ChestLoot.Condition.CorruptionWorld);
+			corruptSeedsGraveyard.OnSuccess(ItemID.CorruptSeeds);
+			crimsonSeedsGraveyard.OnSuccess(ItemID.CrimsonSeeds);
+
+			esCrimson.OnFail(corruptSeedsGraveyard);
+			esCrimson.OnSuccess(ItemID.CrimsonSeeds);
+			esCorrupt.OnFail(crimsonSeedsGraveyard);
+			esCorrupt.OnSuccess(ItemID.CorruptSeeds);
+			#endregion
+			#region Grass Walls
+			// Represents this:
+			//	if (Main.bloodMoon) {
+			//		if (!WorldGen.crimson) {
+			//			array[num++].SetDefaults(ItemID.CorruptGrassEcho);
+			//		}
+			//		else {
+			//			array[num++].SetDefaults(ItemID.CrimsonGrassEcho);
+			//		}
+			//	}
+			//	else {
+			//		array[num++].SetDefaults(ItemID.GrassWall);
+			//	}
+			var grassWalls = new ChestLoot.Entry(ChestLoot.Condition.BloodMoon);
+			var evilGrassWall = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
+
+			evilGrassWall.OnSuccess(ItemID.CrimsonGrassEcho);														// Crimosn Grass Wall
+			evilGrassWall.OnFail(ItemID.CorruptGrassEcho);															// Corrupt Grass Wall
+
+			grassWalls.OnSuccess(evilGrassWall);
+			grassWalls.OnFail(ItemID.GrassWall);
+			#endregion
+			#endregion
+
+			shop.Add(powders)
+				.Add(ItemID.GrassSeeds,			ChestLoot.Condition.NotBloodMoon)
+				.Add(ItemID.AshGrassSeeds,		ChestLoot.Condition.InUnderworld)
+				.Add(evilSeeds)
+				.Add(ItemID.Sunflower,			ChestLoot.Condition.NotBloodMoon)
+				.Add(ItemID.Acorn)
+				.Add(ItemID.DirtRod)
+				.Add(ItemID.PumpkinSeed)
+				.Add(grassWalls)
+				.Add(ItemID.FlowerWall)
+				.Add(ItemID.JungleWall,			ChestLoot.Condition.Hardmode)
+				.Add(ItemID.HallowedSeeds,		ChestLoot.Condition.Hardmode)
+				.Add(ItemID.HallowedGrassEcho,	ChestLoot.Condition.Hardmode)										// Hallowed Grass Wall
+				.Add(ItemID.MushroomGrassSeeds, ChestLoot.Condition.InGlowshroomBiome)
+				.Add(ItemID.DryadCoverings,		ChestLoot.Condition.Halloween)
+				.Add(ItemID.DryadLoincloth,		ChestLoot.Condition.Halloween)
+				.Add(ItemID.DayBloomPlanterBox,	ChestLoot.Condition.DownedKingSlime)
+				.Add(ItemID.MoonglowPlanterBox, ChestLoot.Condition.DownedQueenBee)
+				.Add(ItemID.BlinkrootPlanterBox, ChestLoot.Condition.DownedEyeOfCthulhu)
+				.Add(ItemID.PotSuspendedDeathweedCorrupt, ChestLoot.Condition.DownedEaterOfWorlds)
+				.Add(ItemID.PotSuspendedDeathweedCrimson, ChestLoot.Condition.DownedBrainOfCthulhu)
+				.Add(ItemID.WaterleafPlanterBox, ChestLoot.Condition.DownedSkeletron)
+				.Add(ItemID.ShiverthornPlanterBox, ChestLoot.Condition.DownedSkeletron)
+				.Add(ItemID.FireBlossomPlanterBox, ChestLoot.Condition.Hardmode)
+				.Add(ItemID.FlowerPacketWhite)																		// White Flower Seeds
+				.Add(ItemID.FlowerPacketYellow)																		// Yellows Flower Seeds
+				.Add(ItemID.FlowerPacketRed)																		// Red Flower Seeds
+				.Add(ItemID.FlowerPacketPink)																		// Pink Flower Seeds
+				.Add(ItemID.FlowerPacketMagenta)																	// Magenta Flower Seeds
+				.Add(ItemID.FlowerPacketViolet)																		// Violet Flower Seeds
+				.Add(ItemID.FlowerPacketBlue)																		// Blue Flower Seeds
+				.Add(ItemID.FlowerPacketWild)																		// Wild Flower Seeds
+				.Add(ItemID.FlowerPacketTallGrass)																	// Tall Grass Seeds
+				.Add(ItemID.PottedForestCedar,	ChestLoot.Condition.Hardmode, mp1_2)
+				.Add(ItemID.PottedJungleCedar,	ChestLoot.Condition.Hardmode, mp1_2)
+				.Add(ItemID.PottedHallowCedar,	ChestLoot.Condition.Hardmode, mp1_2)
+				.Add(ItemID.PottedForestTree,	ChestLoot.Condition.Hardmode, mp3_4)
+				.Add(ItemID.PottedJungleTree,	ChestLoot.Condition.Hardmode, mp3_4)
+				.Add(ItemID.PottedHallowTree,	ChestLoot.Condition.Hardmode, mp3_4)
+				.Add(ItemID.PottedForestPalm,	ChestLoot.Condition.Hardmode, mp5_6)
+				.Add(ItemID.PottedJunglePalm,	ChestLoot.Condition.Hardmode, mp5_6)
+				.Add(ItemID.PottedHallowPalm,	ChestLoot.Condition.Hardmode, mp5_6)
+				.Add(ItemID.PottedForestBamboo, ChestLoot.Condition.Hardmode, mp7_8)
+				.Add(ItemID.PottedJungleBamboo, ChestLoot.Condition.Hardmode, mp7_8)
+				.Add(ItemID.PottedHallowBamboo, ChestLoot.Condition.Hardmode, mp7_8)
+				.RegisterShop(NPCID.Dryad);
 		}
 
 		private static void RegisterBombGuy() {
@@ -432,48 +518,101 @@ namespace Terraria.ModLoader
 				.RegisterShop(NPCID.Truffle);
 		}
 
-		private void RegisterSteampunker() {
-			ChestLoot shop = new();
-			shop.Add(779);
-			shop.Add(748, new ChestLoot.Condition(NetworkText.Empty, () => Main.moonPhase >= 4));
-			for (int i = 0; i < 3; i++) {
-				shop.Add(839 + i, new ChestLoot.Condition(NetworkText.Empty, () => Main.moonPhase < 4));
-			}
-			shop.Add(948, ChestLoot.Condition.DownedGolem);
-			shop.Add(3623);
-			shop.Add(3603);
-			shop.Add(3604);
-			shop.Add(3607);
-			shop.Add(3605);
-			shop.Add(3606);
-			shop.Add(3608);
-			shop.Add(3618);
-			shop.Add(3602);
-			shop.Add(3663);
-			shop.Add(3609);
-			shop.Add(3610);
-			shop.Add(995);
-			shop.Add(2203, ChestLoot.Condition.DownedEyeOfCthulhu, ChestLoot.Condition.DownedEowOrBoc, ChestLoot.Condition.DownedSkeletron);
-			shop.Add(2193, ChestLoot.Condition.CrimsonWorld);
-			shop.Add(4142, ChestLoot.Condition.CorruptionWorld);
-			shop.Add(2192, ChestLoot.Condition.InGraveyard);
-			shop.Add(2204, ChestLoot.Condition.InJungleBiome);
-			shop.Add(2198, ChestLoot.Condition.InSnowBiome);
-			shop.Add(2197, new ChestLoot.Condition(NetworkText.Empty, () => (Main.LocalPlayer.position.Y / 16.0) < Main.worldSurface * 0.3499999940395355));
-			shop.Add(2196, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.HasItem(832)));
-			shop.Add(1263);
+		private static void RegisterSteampunker() {
+			var firstFourPhases = new ChestLoot.Condition(NetworkText.FromLiteral("During a Full, Waning Gibbous, Third Quarter or Waning Crescent moon phase"), () => Main.moonPhase < 4);
+			var secondFourPhases = new ChestLoot.Condition(NetworkText.FromLiteral("During a New, Waxing Crescent, First Quarter, Waxing Gibbous moon phase"), () => Main.moonPhase >= 4);
+			var livingWoodWandInInv = new ChestLoot.Condition(NetworkText.FromLiteral("If the player has a Living Wood Wand in their inventory"), () => Main.LocalPlayer.HasItem(ItemID.LivingWoodWand));
+			var eclipseOrBloodMoon = new ChestLoot.Condition(NetworkText.FromLiteral("During a Blood Moon or Solar Eclipse"), () => Main.bloodMoon || Main.eclipse);
 
-			ChestLoot.Entry entry = new(new ChestLoot.Condition(NetworkText.Empty, () => Main.eclipse || Main.bloodMoon));
-			entry.OnSuccess(784, ChestLoot.Condition.CrimsonWorld);
-			entry.OnSuccess(782, ChestLoot.Condition.CorruptionWorld);
-			entry.OnFail(781, ChestLoot.Condition.InHallowBiome);
-			entry.OnFail(780, ChestLoot.Condition.InHallowBiome);
-			shop.Add(entry);
+			#region Entries
+			#region Blend-O-Matic
+			// Represents this:
+			//	if (Main.hardMode || !Main.getGoodWorld) {
+			//		array[num++].SetDefaults(ItemID.BlendOMatic);
+			//	}
+			var blendOMatic = new ChestLoot.Entry(ChestLoot.Condition.Hardmode);
+			var notWorthyMatic = new ChestLoot.Entry(ChestLoot.Condition.NotForTheWorthy);
+			notWorthyMatic.OnSuccess(ItemID.BlendOMatic);
+			blendOMatic.OnFail(notWorthyMatic);
+			blendOMatic.OnSuccess(ItemID.BlendOMatic);
+			#endregion
+			#region Solutions
+			// Represents this:
+			//	if (!Main.remixWorld) {
+			//		if (Main.eclipse || Main.bloodMoon) {
+			// 			if (WorldGen.crimson)
+			//				array[num++].SetDefaults(784);
+			// 			else
+			//				array[num++].SetDefaults(782);
+			//		}
+			//		else if (Main.player[Main.myPlayer].ZoneHallow) {
+			//			array[num++].SetDefaults(781);
+			//		}
+			//		else {
+			// 			array[num++].SetDefaults(780);
+			//		}
+			// 
+			//		if (NPC.downedMoonlord) {
+			// 			array[num++].SetDefaults(5392);
+			// 			array[num++].SetDefaults(5393);
+			// 			array[num++].SetDefaults(5394);
+			//		}
+			//	}
+			var solutions = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
+			var evilSolutions = new ChestLoot.Entry(eclipseOrBloodMoon);
 
-			shop.Add(1344, ChestLoot.Condition.Hardmode);
-			shop.Add(4472, ChestLoot.Condition.Hardmode);
-			shop.Add(1742, ChestLoot.Condition.Halloween);
-			RegisterNpcShop(NPCID.Steampunker, shop);
+			var crimsonSolution = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
+			crimsonSolution.OnSuccess(ItemID.RedSolution);
+			crimsonSolution.OnFail(ItemID.PurpleSolution);
+
+			var hallowSolution = new ChestLoot.Entry(ChestLoot.Condition.InHallowBiome);
+			hallowSolution.OnSuccess(ItemID.BlueSolution);
+			hallowSolution.OnFail(ItemID.GreenSolution);
+
+			evilSolutions.OnSuccess(crimsonSolution);
+			evilSolutions.OnFail(hallowSolution);
+
+			var terraSolutions = new ChestLoot.Entry(ChestLoot.Condition.DownedMoonLord);
+			terraSolutions.OnSuccess(ItemID.SandSolution);
+			terraSolutions.OnSuccess(ItemID.SnowSolution);
+			terraSolutions.OnSuccess(ItemID.DirtSolution);
+
+			solutions.OnSuccess(terraSolutions);
+			#endregion
+			#endregion
+
+			new ChestLoot()
+				.Add(ItemID.Clentaminator,		ChestLoot.Condition.NotRemixWorld)
+				.Add(ItemID.SteampunkHat,		firstFourPhases)
+				.Add(ItemID.SteampunkShirt,		firstFourPhases)
+				.Add(ItemID.SteampunkPants,		firstFourPhases)
+				.Add(ItemID.Jetpack,			ChestLoot.Condition.Hardmode, secondFourPhases)
+				.Add(blendOMatic)
+				.Add(ItemID.FleshCloningVaat,	ChestLoot.Condition.CrimsonWorld)
+				.Add(ItemID.LesionStation,		ChestLoot.Condition.CorruptionWorld)                             // Decay Chamber
+				.Add(ItemID.IceMachine,			ChestLoot.Condition.InSnowBiome)
+				.Add(ItemID.SkyMill,			ChestLoot.Condition.InSpace)
+				.Add(ItemID.HoneyDispenser,		ChestLoot.Condition.InJungleBiome)
+				.Add(ItemID.BoneWelder,			ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.LivingLoom,			livingWoodWandInInv)
+				.Add(ItemID.SteampunkBoiler,	ChestLoot.Condition.DownedEyeOfCthulhu, ChestLoot.Condition.DownedEowOrBoc, ChestLoot.Condition.DownedSkeletron)
+				.Add(solutions)
+				.Add(ItemID.Cog)
+				.Add(ItemID.SteampunkMinecart)
+				.Add(ItemID.SteampunkGoggles,	ChestLoot.Condition.Halloween)
+				.Add(ItemID.LogicGate_AND)
+				.Add(ItemID.LogicGate_OR)
+				.Add(ItemID.LogicGate_XOR)
+				.Add(ItemID.LogicGate_NAND)
+				.Add(ItemID.LogicGate_NOR)
+				.Add(ItemID.LogicGate_NXOR)
+				.Add(ItemID.LogicGateLamp_Off)
+				.Add(ItemID.LogicGateLamp_On)
+				.Add(ItemID.LogicGateLamp_Faulty)
+				.Add(ItemID.StaticHook,			ChestLoot.Condition.Hardmode)
+				.Add(ItemID.ConveyorBeltLeft)
+				.Add(ItemID.ConveyorBeltRight)
+				.RegisterShop(NPCID.Steampunker);
 		}
 
 		private static void RegisterDyeTrader() {
@@ -493,73 +632,81 @@ namespace Terraria.ModLoader
 				.RegisterShop(NPCID.DyeTrader);
 		}
 
-		private void RegisterPartyGirl() {
-			ChestLoot shop = new();
-			shop.Add(859);
-			shop.Add(4743, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			shop.Add(1000);
-			shop.Add(1168);
-			shop.Add(1449, ChestLoot.Condition.TimeDay);
-			shop.Add(4552, ChestLoot.Condition.TimeNight);
-			shop.Add(1345);
-			shop.Add(1450);
-			shop.Add(3253);
-			shop.Add(4553);
-			shop.Add(2700);
-			shop.Add(2738);
-			shop.Add(4470);
-			shop.Add(4681);
-			shop.Add(4682, ChestLoot.Condition.InGraveyard);
-			shop.Add(4702, ChestLoot.Condition.NightLanternsUp);
-			shop.Add(3548, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.HasItem(3548)));
-			shop.Add(3369, new ChestLoot.Condition(NetworkText.Empty, () => NPC.AnyNPCs(229)));
-			shop.Add(3369, ChestLoot.Condition.DownedGolem);
-			shop.Add(3214, ChestLoot.Condition.Hardmode);
-			shop.Add(2868, ChestLoot.Condition.Hardmode);
-			for (int i = 0; i < 4; i++)
-			{
-				shop.Add(970 + i, ChestLoot.Condition.Hardmode);
-			}
-			shop.Add(4791);
-			shop.Add(3747);
-			shop.Add(3732);
-			shop.Add(3742);
+		private static void RegisterPartyGirl() {
+			var happyGrenadesInInv = new ChestLoot.Condition(NetworkText.FromLiteral("If the player has Happy Grenades in inventory"), () => Main.LocalPlayer.HasItem(ItemID.PartyGirlGrenade));
+			var scoreOver500 = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 500"), () => Main.LocalPlayer.golferScoreAccumulated > 500);
+			var piratePresent = new ChestLoot.Condition(NetworkText.FromLiteral("When Pirate is present"), () => NPC.AnyNPCs(NPCID.Pirate));
 
-			ChestLoot.Entry entry = new(ChestLoot.Condition.BirthdayPartyIsUp);
-			entry.OnSuccess(3749);
-			entry.OnSuccess(3746);
-			entry.OnSuccess(3739);
-			entry.OnSuccess(3740);
-			entry.OnSuccess(3741);
-			entry.OnSuccess(3737);
-			entry.OnSuccess(3738);
-			entry.OnSuccess(3736);
-			entry.OnSuccess(3745);
-			entry.OnSuccess(3744);
-			entry.OnSuccess(3743);
-			shop.Add(entry);
-			RegisterNpcShop(NPCID.PartyGirl, shop);
+			new ChestLoot()
+				.Add(ItemID.ConfettiGun)
+				.Add(ItemID.Confetti)
+				.Add(ItemID.SmokeBomb)
+				.Add(ItemID.BubbleMachine,		ChestLoot.Condition.TimeDay)
+				.Add(ItemID.FogMachine,			ChestLoot.Condition.TimeNight)
+				.Add(ItemID.BubbleWand)
+				.Add(ItemID.BeachBall)
+				.Add(ItemID.LavaLamp)
+				.Add(ItemID.PlasmaLamp)
+				.Add(ItemID.FireworksBox)
+				.Add(ItemID.FireworkFountain)
+				.Add(ItemID.PartyMinecart)																			// Party Wagon
+				.Add(ItemID.KiteSpectrum)																			// Spectrum Kite
+				.Add(ItemID.PogoStick)
+				.Add(ItemID.RedRocket,			ChestLoot.Condition.Hardmode)
+				.Add(ItemID.GreenRocket,		ChestLoot.Condition.Hardmode)
+				.Add(ItemID.BlueRocket,			ChestLoot.Condition.Hardmode)
+				.Add(ItemID.YellowRocket,		ChestLoot.Condition.Hardmode)
+				.Add(ItemID.PartyGirlGrenade,	happyGrenadesInInv)													// Happy Grenade
+				.Add(ItemID.ConfettiCannon,		piratePresent)
+				.Add(ItemID.Bubble,				ChestLoot.Condition.Hardmode)
+				.Add(ItemID.SmokeBlock,			ChestLoot.Condition.Hardmode)
+				.Add(ItemID.PartyMonolith)																			// Party Center
+				.Add(ItemID.PartyHat)
+				.Add(ItemID.SillyBalloonMachine)
+				.Add(ItemID.PartyPresent,		ChestLoot.Condition.BirthdayPartyIsUp)
+				.Add(ItemID.Pigronata,			ChestLoot.Condition.BirthdayPartyIsUp)
+				.Add(ItemID.SillyStreamerBlue,	ChestLoot.Condition.BirthdayPartyIsUp)								// Blue Streamer
+				.Add(ItemID.SillyStreamerGreen, ChestLoot.Condition.BirthdayPartyIsUp)								// Green Streamer
+				.Add(ItemID.SillyStreamerPink,	ChestLoot.Condition.BirthdayPartyIsUp)								// Pink Streamer
+				.Add(ItemID.SillyBalloonPurple, ChestLoot.Condition.BirthdayPartyIsUp)								// Silly Purple Balloon
+				.Add(ItemID.SillyBalloonGreen,	ChestLoot.Condition.BirthdayPartyIsUp)                              // Silly Green Balloon
+				.Add(ItemID.SillyBalloonPink,	ChestLoot.Condition.BirthdayPartyIsUp)                              // Silly Pink Balloon
+				.Add(ItemID.SillyBalloonTiedGreen, ChestLoot.Condition.BirthdayPartyIsUp)							// Silly Tied Balloon (Green)
+				.Add(ItemID.SillyBalloonTiedPurple, ChestLoot.Condition.BirthdayPartyIsUp)                          // Silly Tied Balloon (Purple)
+				.Add(ItemID.SillyBalloonTiedPink, ChestLoot.Condition.BirthdayPartyIsUp)                            // Silly Tied Balloon (Pink)
+				.Add(ItemID.FireworksLauncher,	ChestLoot.Condition.Golem)											// Celebration
+				.Add(ItemID.ReleaseDoves,		ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.ReleaseLantern,		ChestLoot.Condition.NightLanternsUp)
+				.Add(ItemID.Football,			scoreOver500)
+				.RegisterShop(NPCID.PartyGirl);
 		}
 
-		private void RegisterCyborg() {
-			ChestLoot shop = new();
-			shop.Add(771);
-			shop.Add(772, ChestLoot.Condition.BloodMoon);
-			shop.Add(773, new ChestLoot.Condition(NetworkText.Empty, () => !Main.dayTime || Main.eclipse));
-			shop.Add(774, ChestLoot.Condition.Eclipse);
-			shop.Add(4445, ChestLoot.Condition.DownedMartians);
-			shop.Add(4446, ChestLoot.Condition.DownedMartians, new ChestLoot.Condition(NetworkText.Empty, () => Main.bloodMoon || Main.eclipse));
-			shop.Add(4459, ChestLoot.Condition.Hardmode);
-			shop.Add(760, ChestLoot.Condition.Hardmode);
-			shop.Add(1346, ChestLoot.Condition.Hardmode);
-			shop.Add(4409, ChestLoot.Condition.InGraveyard);
-			shop.Add(4392, ChestLoot.Condition.InGraveyard);
-			for (int i = 0; i < 3; i++) {
-				shop.Add(1743 + i, ChestLoot.Condition.Halloween);
-			}
-			shop.Add(2862, ChestLoot.Condition.DownedMartians);
-			shop.Add(3664, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.HasItem(3384) || Main.LocalPlayer.HasItem(3664)));
-			RegisterNpcShop(NPCID.Cyborg, shop);
+		private static void RegisterCyborg() {
+			var rocker3Cond = new ChestLoot.Condition(NetworkText.FromLiteral("At night or during Solar Eclipse"), () => !Main.dayTime || Main.eclipse);
+			var clustRocketCond = new ChestLoot.Condition(NetworkText.FromLiteral("During a Blood Moon or Solar Eclipse"), () => Main.bloodMoon || Main.eclipse);
+			var portalGunStation = new ChestLoot.Condition(NetworkText.FromLiteral("When the player has a Portal Gun or Portal Gun Station in the inventory"), () => Main.LocalPlayer.HasItem(ItemID.PortalGun) || Main.LocalPlayer.HasItem(ItemID.PortalGunStation));
+
+			new ChestLoot()
+				.Add(ItemID.RocketI)
+				.Add(ItemID.RocketII,			ChestLoot.Condition.BloodMoon)
+				.Add(ItemID.RocketIII,			rocker3Cond)
+				.Add(ItemID.RocketIV,			ChestLoot.Condition.Eclipse)
+				.Add(ItemID.DryRocket)
+				.Add(ItemID.ProximityMineLauncher)
+				.Add(ItemID.Nanites)
+				.Add(ItemID.ClusterRocketI,		ChestLoot.Condition.DownedMartians)
+				.Add(ItemID.ClusterRocketII,	ChestLoot.Condition.DownedMartians, clustRocketCond)
+				.Add(ItemID.CyborgHelmet,		ChestLoot.Condition.Halloween)
+				.Add(ItemID.CyborgShirt,		ChestLoot.Condition.Halloween)
+				.Add(ItemID.CyborgPants,		ChestLoot.Condition.Halloween)
+				.Add(ItemID.HiTekSunglasses,	ChestLoot.Condition.DownedMartians)
+				.Add(ItemID.NightVisionHelmet,  ChestLoot.Condition.DownedMartians)
+				.Add(ItemID.PortalGunStation,	portalGunStation)
+				.Add(ItemID.EchoBlock,			ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.SpectreGoggles,		ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.JimsDrone)
+				.Add(ItemID.JimsDroneVisor)
+				.RegisterShop(NPCID.Cyborg);
 		}
 
 		private void RegisterPainter() {
@@ -609,32 +756,37 @@ namespace Terraria.ModLoader
 			RegisterNpcShop(NPCID.Painter, shop);
 		}
 
-		private void RegisterWitchDoctor() {
-			ChestLoot shop = new();
-			shop.Add(1430);
-			shop.Add(986);
-			shop.Add(2999, new ChestLoot.Condition(NetworkText.Empty, () => NPC.AnyNPCs(108)));
-			shop.Add(1158, ChestLoot.Condition.TimeNight);
-			ChestLoot.Entry entry = new(ChestLoot.Condition.Hardmode);
-			entry.OnSuccess(1159, ChestLoot.Condition.DownedPlantera);
-			entry.OnSuccess(1160, ChestLoot.Condition.DownedPlantera);
-			entry.OnSuccess(1161, ChestLoot.Condition.DownedPlantera);
-			entry.OnSuccess(1167, ChestLoot.Condition.DownedPlantera, ChestLoot.Condition.InJungleBiome);
-			entry.OnSuccess(1339, ChestLoot.Condition.DownedPlantera);
-			entry.OnSuccess(1171, ChestLoot.Condition.InJungleBiome);
-			entry.OnSuccess(1162, ChestLoot.Condition.InJungleBiome, ChestLoot.Condition.TimeNight);
-			shop.Add(entry);
-			shop.Add(909);
-			shop.Add(910);
-			for (int i = 0; i < 6; i++) {
-				shop.Add(940 + i);
-			}
-			shop.Add(4922);
-			shop.Add(4417);
-			shop.Add(1836, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.HasItem(1835)));
-			shop.Add(1261, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.HasItem(1258)));
-			shop.Add(1791, ChestLoot.Condition.Halloween);
-			RegisterNpcShop(NPCID.WitchDoctor, shop);
+		private static void RegisterWitchDoctor() {
+			var styngerBoltCond = new ChestLoot.Condition(NetworkText.FromLiteral("When player has a Stynger"), () => Main.LocalPlayer.HasItem(ItemID.Stynger))
+			var stakeCondition = new ChestLoot.Condition(NetworkText.FromLiteral("When player has a Stake Launcher"), () => Main.LocalPlayer.HasItem(ItemID.StakeLauncher));
+			var wizardCondition = new ChestLoot.Condition(NetworkText.FromLiteral("If Wizard is present"), () => NPC.AnyNPCs(NPCID.Wizard))
+
+			new ChestLoot()
+				.Add(ItemID.ImbuingStation)
+				.Add(ItemID.Blowgun)
+				.Add(ItemID.StyngerBolt,		styngerBoltCond)
+				.Add(ItemID.Stake,				stakeCondition)
+				.Add(ItemID.Cauldron,			ChestLoot.Condition.Halloween)
+				.Add(ItemID.TikiTotem,			ChestLoot.Condition.Hardmode, ChestLoot.Condition.InJungleBiome)
+				.Add(ItemID.LeafWings,			ChestLoot.Condition.Hardmode, ChestLoot.Condition.InJungleBiome, ChestLoot.Condition.TimeNight, ChestLoot.Condition.DownedPlantera)
+				.Add(ItemID.VialofVenom,		ChestLoot.Condition.DownedPlantera)
+				.Add(ItemID.TikiMask,			ChestLoot.Condition.DownedPlantera)
+				.Add(ItemID.TikiShirt,			ChestLoot.Condition.DownedPlantera)
+				.Add(ItemID.TikiPants,			ChestLoot.Condition.DownedPlantera)
+				.Add(ItemID.PygmyNecklace,		ChestLoot.Condition.TimeNight)
+				.Add(ItemID.HerculesBeetle,		ChestLoot.Condition.Hardmode, ChestLoot.Condition.DownedPlantera, ChestLoot.Condition.InJungleBiome)
+				.Add(ItemID.PureWaterFountain)
+				.Add(ItemID.DesertWaterFountain)
+				.Add(ItemID.JungleWaterFountain)
+				.Add(ItemID.IcyWaterFountain)
+				.Add(ItemID.CorruptWaterFountain)
+				.Add(ItemID.CrimsonWaterFountain)
+				.Add(ItemID.HallowedWaterFountain)
+				.Add(ItemID.BloodWaterFountain)
+				.Add(ItemID.CavernFountain)																			// Cavern Water Fountain
+				.Add(ItemID.OasisFountain)																			// Oasis Water Fountain
+				.Add(ItemID.BewitchingTable,	wizardCondition)
+				.RegisterShop(NPCID.WitchDoctor);
 		}
 
 		private static void RegisterPirate() {
@@ -820,50 +972,59 @@ namespace Terraria.ModLoader
 			shop.RegisterShop(NPCID.DD2Bartender);
 		}
 
-		private void RegisterGolfer() {
-			ChestLoot chestLoot = new();
-			chestLoot.Add(4587);
-			chestLoot.Add(4590);
-			chestLoot.Add(4589);
-			chestLoot.Add(4588);
-			chestLoot.Add(4083);
-			chestLoot.Add(4084);
-			chestLoot.Add(4085);
-			chestLoot.Add(4086);
-			chestLoot.Add(4087);
-			chestLoot.Add(4088);
-			chestLoot.Add(4039, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			chestLoot.Add(4094, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			chestLoot.Add(4093, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			chestLoot.Add(4092, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			chestLoot.Add(4089);
-			chestLoot.Add(3989);
-			chestLoot.Add(4095);
-			chestLoot.Add(4040);
-			chestLoot.Add(4319);
-			chestLoot.Add(4320);
-			chestLoot.Add(4591, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 1000));
-			chestLoot.Add(4594, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 1000));
-			chestLoot.Add(4593, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 1000));
-			chestLoot.Add(4592, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 1000));
-			chestLoot.Add(4135);
-			chestLoot.Add(4138);
-			chestLoot.Add(4136);
-			chestLoot.Add(4137);
-			chestLoot.Add(4049);
-			chestLoot.Add(4265, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			chestLoot.Add(4598, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 2000));
-			chestLoot.Add(4597, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 2000));
-			chestLoot.Add(4596, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 2000));
-			chestLoot.Add(4264, ChestLoot.Condition.DownedSkeletron, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 2000));
-			chestLoot.Add(4599, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated > 500));
-			chestLoot.Add(4600, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated >= 1000));
-			chestLoot.Add(4601, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated >= 2000));
-			chestLoot.Add(4658, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated >= 2000 && (Main.moonPhase / 2) == 0));
-			chestLoot.Add(4659, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated >= 2000 && (Main.moonPhase / 2) == 1));
-			chestLoot.Add(4660, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated >= 2000 && (Main.moonPhase / 2) == 2));
-			chestLoot.Add(4661, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.golferScoreAccumulated >= 2000 && (Main.moonPhase / 2) == 3));
-			RegisterNpcShop(NPCID.Golfer, chestLoot);
+		private static void RegisterGolfer() {
+			var scoreOver500 = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 500"), () => Main.LocalPlayer.golferScoreAccumulated > 500);
+			var scoreOver1000 = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 1000"), () => Main.LocalPlayer.golferScoreAccumulated > 1000);
+			var scoreOver2000 = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 2000"), () => Main.LocalPlayer.golferScoreAccumulated > 2000);
+			var painting1Cond = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 2000, during Full or Waning Gibbous moon phase"), () => Main.LocalPlayer.golferScoreAccumulated > 2000 && Main.moonPhase / 2 == 0);
+			var painting2Cond = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 2000, during Third Quarter or Waning Crescent moon phase"), () => Main.LocalPlayer.golferScoreAccumulated > 2000 && Main.moonPhase / 2 == 1);
+			var painting3Cond = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 2000, during New or Waxing Crescent moon phase"), () => Main.LocalPlayer.golferScoreAccumulated > 2000 && Main.moonPhase / 2 == 2);
+			var painting4Cond = new ChestLoot.Condition(NetworkText.FromLiteral("Golf score over 2000, during First Quarter or Waxing Gibbous moon phase"), () => Main.LocalPlayer.golferScoreAccumulated > 2000 && Main.moonPhase / 2 == 3);
+
+			new ChestLoot()
+				.Add(ItemID.GolfClubStoneIron)                                                                      // Worn Golf Club (Iron)
+				.Add(ItemID.GolfClubWoodDriver)                                                                     // Worn Golf Club (Driver)
+				.Add(ItemID.GolfClubBronzeWedge)                                                                    // Worn Golf Club (Wedge)
+				.Add(ItemID.GolfClubRustyPutter)                                                                    // Worn Golf Club (Putter)
+				.Add(ItemID.GolfCupFlagWhite)                                                                       // White Pin Flag
+				.Add(ItemID.GolfCupFlagRed)																			// Red Pin Flag
+				.Add(ItemID.GolfCupFlagGreen)                                                                       // Green Pin Flag
+				.Add(ItemID.GolfCupFlagBlue)																		// Blue Pin Flag
+				.Add(ItemID.GolfCupFlagYellow)																		// Yellow Pin Flag
+				.Add(ItemID.GolfCupFlagPurple)                                                                      // Purple Pin Flag
+				.Add(ItemID.GolfTee)
+				.Add(ItemID.GolfBall)
+				.Add(ItemID.GolfWhistle)
+				.Add(ItemID.GolfCup)
+				.Add(ItemID.ArrowSign)
+				.Add(ItemID.PaintedArrowSign)
+				.Add(ItemID.GolfHat)																				// Country Club Cap
+				.Add(ItemID.GolfVisor)                                                                              // Country Club Visor
+				.Add(ItemID.GolfShirt)                                                                              // Country Club Vest
+				.Add(ItemID.GolfPants)                                                                              // Country Club Trousers
+				.Add(ItemID.LawnMower)
+				.Add(ItemID.GolfCart,			scoreOver2000, ChestLoot.Condition.DownedSkeletron)					// Golf Cart Keys
+				.Add(ItemID.GolfPainting1,		painting1Cond)														// The Rolling Greens
+				.Add(ItemID.GolfPainting2,		painting2Cond)														// Study of a Ball at Rest
+				.Add(ItemID.GolfPainting3,		painting3Cond)														// Fore!
+				.Add(ItemID.GolfPainting4,		painting4Cond)														// The Duplicity of Reflections
+				.Add(ItemID.GolfClubIron,		scoreOver500)                                                       // Golf Club (Iron)
+				.Add(ItemID.GolfClubDriver,		scoreOver500)                                                       // Golf Club (Driver)
+				.Add(ItemID.GolfClubWedge,		scoreOver500)                                                       // Golf Club (Wedge)
+				.Add(ItemID.GolfClubPutter,		scoreOver500)                                                       // Golf Club (Putter)
+				.Add(ItemID.GolfChest,			scoreOver500)
+				.Add(ItemID.GolfTrophyBronze,	scoreOver500)														// Bronze Golf Trophy
+				.Add(ItemID.GolfClubMythrilIron,scoreOver1000)                                                      // Fancy Golf Club (Iron)
+				.Add(ItemID.GolfClubPearlwoodDriver, scoreOver1000)                                                 // Fancy Golf Club (Driver)
+				.Add(ItemID.GolfClubGoldWedge,	scoreOver1000)                                                      // Fancy Golf Club (Wedge)
+				.Add(ItemID.GolfClubLeadPutter, scoreOver1000)                                                      // Fancy Golf Club (Putter)
+				.Add(ItemID.GolfTrophySilver,	scoreOver1000)														// Silver Golf Trophy
+				.Add(ItemID.GolfClubTitaniumIron,scoreOver2000)                                                     // Premium Golf Club (Iron)
+				.Add(ItemID.GolfClubChlorophyteDriver, scoreOver2000)                                               // Premium Golf Club (Driver)
+				.Add(ItemID.GolfClubDiamondWedge, scoreOver2000)                                                    // Premium Golf Club (Wedge)
+				.Add(ItemID.GolfClubShroomitePutter, scoreOver2000)                                                 // Premium Golf Club (Putter)
+				.Add(ItemID.GolfTrophyGold,		scoreOver2000)														// Gold Golf Trophy
+				.RegisterShop(NPCID.Golfer);
 		}
 
 		private static void RegisterZoologist() {
@@ -925,29 +1086,36 @@ namespace Terraria.ModLoader
 				.RegisterShop(NPCID.BestiaryGirl);
 		}
 
-		private void RegisterPrincess() {
-			ChestLoot shop = new();
-			shop.Add(5071);
-			shop.Add(5073);
-			shop.Add(5073);
-			for (int i = 5076; i < 5087; i++)
-			{
+		private static void RegisterPrincess() {
+			var goodsCondition = new ChestLoot.Condition(NetworkText.FromLiteral("In Celebrationmk10 and Get fixed boi worlds."), () => Main.tenthAnniversaryWorld);
+			var pirateStaffCond = new ChestLoot.Condition(NetworkText.FromLiteral("In Celebrationmk10 and Get fixed boi worlds, in Hardmode, after the Pirate Invasion has been defeated, during the Full or Waning Gibbous moon phase"), () => Main.tenthAnniversaryWorld && NPC.downedPirates && Main.moonPhase / 2 == 0);
+			var discountCardCond = new ChestLoot.Condition(NetworkText.FromLiteral("In Celebrationmk10 and Get fixed boi worlds, in Hardmode, after the Pirate Invasion has been defeated, during the Third Quarter or Waning Crescent moon phase"), () => Main.tenthAnniversaryWorld && NPC.downedPirates && Main.moonPhase / 2 == 1);
+			var luckyCoinCond = new ChestLoot.Condition(NetworkText.FromLiteral("In Celebrationmk10 and Get fixed boi worlds, in Hardmode, after the Pirate Invasion has been defeated, during the New or Waxing Crescent moon phase"), () => Main.tenthAnniversaryWorld && NPC.downedPirates && Main.moonPhase / 2 == 2);
+			var coinGunCond = new ChestLoot.Condition(NetworkText.FromLiteral("In Celebrationmk10 and Get fixed boi worlds, in Hardmode, after the Pirate Invasion has been defeated, during the First Quarter or Waxing Gibbous moon phase"), () => Main.tenthAnniversaryWorld && NPC.downedPirates && Main.moonPhase / 2 == 3);
+
+			var shop = new ChestLoot()
+				.Add(ItemID.RoyalTiara)
+				.Add(ItemID.RoyalDressTop)																			// Royal Blouse
+				.Add(ItemID.RoyalDressBottom);																		// Royal Dress
+			for (int i = 5076; i < 5087; i++) {
 				shop.Add(i);
 			}
-			shop.Add(5044, ChestLoot.Condition.Hardmode, ChestLoot.Condition.DownedMoonLord);
-			shop.Add(1309, ChestLoot.Condition.TenthAnniversary);
-			shop.Add(1859, ChestLoot.Condition.TenthAnniversary);
-			shop.Add(1358, ChestLoot.Condition.TenthAnniversary);
-			shop.Add(857, ChestLoot.Condition.TenthAnniversary, ChestLoot.Condition.InDesertBiome);
-			shop.Add(4144, ChestLoot.Condition.TenthAnniversary, ChestLoot.Condition.BloodMoon);
-			ChestLoot.Entry entry = new(ChestLoot.Condition.TenthAnniversary, ChestLoot.Condition.Hardmode, ChestLoot.Condition.DownedPirates);
-			entry.OnSuccess(2584, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 0));
-			entry.OnSuccess(854, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 1));
-			entry.OnSuccess(855, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 2));
-			entry.OnSuccess(905, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 3));
-			shop.Add(entry);
-			shop.Add(5088);
-			RegisterNpcShop(NPCID.Princess, shop);
+			shop.Add(ItemID.PrincessStyle)
+				.Add(ItemID.SuspiciouslySparkly)
+				.Add(ItemID.TerraBladeChronicles)
+				.Add(ItemID.BerniePetItem)                                                                          // Bernie's Button
+				.Add(ItemID.RoyalRomance,		ChestLoot.Condition.DownedKingSlime, ChestLoot.Condition.DownedKingSlime)
+				.Add(ItemID.MusicBoxCredits,	ChestLoot.Condition.Hardmode, ChestLoot.Condition.DownedMoonLord)   // Music Box (Journey's End)
+				.Add(ItemID.SlimeStaff,			goodsCondition)
+				.Add(ItemID.HeartLantern,		goodsCondition)
+				.Add(ItemID.FlaskofParty,		goodsCondition)
+				.Add(ItemID.SandstorminaBottle, goodsCondition, ChestLoot.Condition.InDesertBiome)
+				.Add(ItemID.Terragrim,			goodsCondition, ChestLoot.Condition.BloodMoon)
+				.Add(ItemID.PirateStaff,		pirateStaffCond)
+				.Add(ItemID.DiscountCard,		discountCardCond)
+				.Add(ItemID.LuckyCoin,			luckyCoinCond)
+				.Add(ItemID.CoinGun,			coinGunCond)
+				.RegisterShop(NPCID.Princess);
 		}
 	}
 }

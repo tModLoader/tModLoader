@@ -28,8 +28,12 @@ public class ChestLoot {
 		public static readonly Condition BloodMoon = new(NetworkText.FromLiteral("During blood moon"), () => Main.bloodMoon);
 		public static readonly Condition Eclipse = new(NetworkText.FromLiteral("During solar eclipse"), () => Main.eclipse);
 		public static readonly Condition NotEclipse = new(NetworkText.FromLiteral("During normal day"), () => !Main.eclipse);
+		public static readonly Condition ForTheWorthy = new(NetworkText.FromLiteral("In For The Worthy world"), () => Main.getGoodWorld);
 		public static readonly Condition RemixWorld = new(NetworkText.FromLiteral("In Remix world"), () => Main.remixWorld);
 		public static readonly Condition TenthAnniversary = new(NetworkText.FromLiteral("In Tenth Anniversary world"), () => Main.tenthAnniversaryWorld);
+		public static readonly Condition NotForTheWorthy = new(NetworkText.FromLiteral("Not in For The Worthy world"), () => !Main.getGoodWorld);
+		public static readonly Condition NotRemixWorld = new(NetworkText.FromLiteral("Not in Remix world"), () => !Main.remixWorld);
+		public static readonly Condition NotTenthAnniversary = new(NetworkText.FromLiteral("Not in Tenth Anniversary world"), () => !Main.tenthAnniversaryWorld);
 		public static readonly Condition BirthdayPartyIsUp = new(NetworkText.FromLiteral("During birthday party"), () => BirthdayParty.PartyIsUp);
 		public static readonly Condition NightLanternsUp = new(NetworkText.FromLiteral("While night lanterns are up"), () => LanternNight.LanternsUp);
 		public static readonly Condition IsMoonFull = new(NetworkText.FromLiteral("During full moon"), () => Main.GetMoonPhase() == MoonPhase.Full);
@@ -50,7 +54,9 @@ public class ChestLoot {
 		public static readonly Condition InGraveyard = new(NetworkText.FromLiteral("In Graveyard"), () => Main.LocalPlayer.ZoneGraveyard);
 		public static readonly Condition InGlowshroomBiome = new(NetworkText.FromLiteral("In Glowing Mushroom"), () => Main.LocalPlayer.ZoneGlowshroom);
 		public static readonly Condition InBeachBiome = new(NetworkText.FromLiteral("In Ocean"), () => Main.LocalPlayer.ZoneBeach);
+		public static readonly Condition InUnderworld = new(NetworkText.FromLiteral("In Underworld"), () => Main.LocalPlayer.ZoneUnderworldHeight);
 		public static readonly Condition InDungeonBiome = new(NetworkText.FromLiteral("In Dungeon"), () => Main.LocalPlayer.ZoneDungeon);
+		public static readonly Condition InSpace = new(NetworkText.FromLiteral("In Space"), () => Main.LocalPlayer.ZoneSkyHeight);
 		public static readonly Condition NotInSnowBiome = new(NetworkText.FromLiteral("Not in Snow"), () => !Main.LocalPlayer.ZoneSnow);
 		public static readonly Condition NotInJungleBiome = new(NetworkText.FromLiteral("Not in Jungle"), () => !Main.LocalPlayer.ZoneJungle);
 		public static readonly Condition NotInCorruptBiome = new(NetworkText.FromLiteral("Not in Corruption"), () => !Main.LocalPlayer.ZoneCorrupt);
@@ -60,7 +66,9 @@ public class ChestLoot {
 		public static readonly Condition NotInGraveyard = new(NetworkText.FromLiteral("Not in Graveyard"), () => !Main.LocalPlayer.ZoneGraveyard);
 		public static readonly Condition NotInGlowshroomBiome = new(NetworkText.FromLiteral("Not in Glowing Mushroom"), () => !Main.LocalPlayer.ZoneGlowshroom);
 		public static readonly Condition NotInBeachBiome = new(NetworkText.FromLiteral("Not in Ocean"), () => !Main.LocalPlayer.ZoneBeach);
+		public static readonly Condition NotInUnderworld = new(NetworkText.FromLiteral("Not in Underworld"), () => !Main.LocalPlayer.ZoneUnderworldHeight);
 		public static readonly Condition NotInDungeonBiome = new(NetworkText.FromLiteral("Not in Dungeon"), () => !Main.LocalPlayer.ZoneDungeon);
+		public static readonly Condition NotInSpace = new(NetworkText.FromLiteral("Not in Space"), () => Main.LocalPlayer.ZoneSkyHeight);
 		public static readonly Condition CorruptionWorld = new(NetworkText.FromLiteral("In Corruption world"), () => !WorldGen.crimson);
 		public static readonly Condition CrimsonWorld = new(NetworkText.FromLiteral("In Crimson world"), () => WorldGen.crimson);
 		public static readonly Condition DownedKingSlime = new(NetworkText.FromLiteral("King Slime is slain"), () => NPC.downedSlimeKing);
