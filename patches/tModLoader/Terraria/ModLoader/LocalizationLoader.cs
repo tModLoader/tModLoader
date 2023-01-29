@@ -337,8 +337,14 @@ namespace Terraria.ModLoader
 			}
 
 			// Abort if no default localization files found
-			if (!baseLocalizationFiles.Any())
-				return;
+			if (!baseLocalizationFiles.Any()) {
+				//	return;
+				string translationFileName = "en-US.hjson";
+				baseLocalizationFiles.Add(new(translationFileName, "", new List<LocalizationEntry>()));
+				allLocalizationFilesAllLanguages.Add(translationFileName);
+				allLanguages.Add(GameCulture.FromCultureName(GameCulture.CultureName.English));
+				allLocalizationFileContentsAllLanguages[translationFileName] = "";
+			}
 
 			var existingKeys = new List<LocalizationEntry>();
 			// Collect known keys. These are potentially missing from the localization files
@@ -382,12 +388,17 @@ namespace Terraria.ModLoader
 				}
 			}
 
+			HashSet<string> foldersToOpen = new();
 			// Update all languages that have been found in the mod
 			foreach (var culture in allLanguages) {
 				// Save all localization files
 				foreach (var baseLocalizationFileEntry in baseLocalizationFiles) {
-					WriteOutLocalizationFile(sourceFolder, allLocalizationFilesAllLanguages, culture, baseLocalizationFileEntry, allLocalizationFileContentsAllLanguages);
+					WriteOutLocalizationFile(sourceFolder, allLocalizationFilesAllLanguages, culture, baseLocalizationFileEntry, allLocalizationFileContentsAllLanguages, foldersToOpen);
 				}
+			}
+
+			foreach (var folderToOpen in foldersToOpen) {
+				Utils.OpenFolder(folderToOpen);
 			}
 		}
 
@@ -409,7 +420,7 @@ namespace Terraria.ModLoader
 			["Keybind"] = ("Keybinds", "DisplayName"),
 		};
 
-		private static void WriteOutLocalizationFile(string sourceFolder, List<string> allLocalizationFilesAllLanguages, GameCulture culture, LocalizationFileEntry baseLocalizationFileEntry, Dictionary<string, string> allLocalizationFileContentsAllLanguages) {
+		private static void WriteOutLocalizationFile(string sourceFolder, List<string> allLocalizationFilesAllLanguages, GameCulture culture, LocalizationFileEntry baseLocalizationFileEntry, Dictionary<string, string> allLocalizationFileContentsAllLanguages, HashSet<string> foldersToOpen) {
 			const int minimumNumberOfEntriesInObject = 1;
 			// TODO: Detect string entries that share a key with an object here, convert to "$parentVal" entry. We don't know if a translation key collides until all keys are collected, so here is a suitable place.
 
@@ -501,8 +512,10 @@ namespace Terraria.ModLoader
 				// File matches previously read content, don't attempt to write to disk
 			}
 			else {
-				Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
+				string outputFileFolder = Path.GetDirectoryName(outputFilePath);
+				Directory.CreateDirectory(outputFileFolder); // Folder might not exist when using Extract mode
 				File.WriteAllText(outputFilePath, hjsonContents);
+				foldersToOpen.Add(outputFileFolder);
 			}
 
 			allLocalizationFilesAllLanguages.Remove(outputFileName);
