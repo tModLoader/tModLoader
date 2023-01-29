@@ -70,11 +70,13 @@ public class ChestLoot {
 		public static readonly Condition DownedBrainOfCthulhu = new(NetworkText.FromLiteral("Brain of Cthulhu is slain"), () => NPC.downedBoss2 && WorldGen.crimson);
 		public static readonly Condition DownedQueenBee = new(NetworkText.FromLiteral("Queen Bee is slain"), () => NPC.downedQueenBee);
 		public static readonly Condition DownedSkeletron = new(NetworkText.FromLiteral("Skeletron is slain"), () => NPC.downedBoss3);
+		public static readonly Condition DownedQueenSlime = new(NetworkText.FromLiteral("Queen Slime is slain"), () => NPC.downedQueenSlime);
 		public static readonly Condition DownedMechBossAny = new(NetworkText.FromLiteral("Any Mechanical Boss is slain"), () => NPC.downedMechBossAny);
 		public static readonly Condition DownedTwins = new(NetworkText.FromLiteral("The Twins are slain"), () => NPC.downedMechBoss2);
 		public static readonly Condition DownedDestroyer = new(NetworkText.FromLiteral("The Destroyer is slain"), () => NPC.downedMechBoss1);
 		public static readonly Condition DownedSkeletronPrime = new(NetworkText.FromLiteral("Skeletron Prime is slain"), () => NPC.downedMechBoss3);
 		public static readonly Condition DownedPlantera = new(NetworkText.FromLiteral("Plantera is slain"), () => NPC.downedPlantBoss);
+		public static readonly Condition DownedEmpressOfLight = new(NetworkText.FromLiteral("Empress of Light is slain"), () => NPC.downedEmpressOfLight);
 		public static readonly Condition DownedGolem = new(NetworkText.FromLiteral("Golem is slain"), () => NPC.downedGolemBoss);
 		public static readonly Condition DownedCultist = new(NetworkText.FromLiteral("Lunatic Cultist is slain"), () => NPC.downedAncientCultist);
 		public static readonly Condition DownedMoonLord = new(NetworkText.FromLiteral("Moon Lord is slain"), () => NPC.downedMoonlord);
