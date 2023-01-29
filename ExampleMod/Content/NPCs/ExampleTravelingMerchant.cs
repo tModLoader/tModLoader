@@ -248,9 +248,9 @@ namespace ExampleMod.Content.NPCs
 			button = Language.GetTextValue("LegacyInterface.28");
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
-				shop = true;
+				shop = "Shop"; // The default value
 			}
 		}
 

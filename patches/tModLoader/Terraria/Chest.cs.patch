@@ -195,6 +195,15 @@
  	}
  
  	public static bool SetupTravelShop_CanAddItemToShop(int it)
+@@ -1166,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void SetupShop(int type)
++	public void SetupShop(string shop, int type)
+ 	{
+ 		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
+ 		Item[] array = item;
 @@ -1175,7 +_,7 @@
  		}
  
@@ -219,7 +228,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,28 @@
+@@ -2987,16 +_,42 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -229,14 +238,28 @@
  		}
 +		*/
 +
-+		List<Item> lootbox = NPCLoader.SetupLootboxShop(type);
-+		if (lootbox != null) {
-+			array = lootbox.ToArray();
++		if (type == 19) // Travelling Merchant, move in to the LootboxShop setup method
++		{
++			for (int num11 = 0; num11 < 40; num11++) {
++				if (Main.travelShop[num11] != 0) {
++					array[num].netDefaults(Main.travelShop[num11]);
++					num++;
++				}
++			}
 +		}
 +		else {
-+			ChestLoot loot = Main.TMLLootDB.GetNpcShopsOf(type).First().Value;
-+			array = loot.Build(out num);
++			List<Item> lootbox = NPCLoader.SetupLootboxShop(type);
++			if (lootbox != null) {
++				array = lootbox.ToArray();
++			}
++			else {
++				var loot = Main.TMLLootDB.GetNpcShop(shop);
++				if (loot != null)
++					array = loot.Build(out num);
++			}
 +		}
++
++		//TODO: Below is an Obsoleted Hook to be removed.
 +		NPCLoader.SetupShop(type, this, ref num);
  
  		for (int num15 = 0; num15 < num; num15++) {

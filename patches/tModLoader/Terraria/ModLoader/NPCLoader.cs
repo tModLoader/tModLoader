@@ -1130,17 +1130,17 @@ public static class NPCLoader
 	public static void OnChatButtonClicked(bool firstButton)
 	{
 		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
-		bool shop = false;
+		string shopName = null;
 
 		if (npc.ModNPC != null) {
-			npc.ModNPC.OnChatButtonClicked(firstButton, ref shop);
+			npc.ModNPC.OnChatButtonClicked(firstButton, ref shopName);
 			SoundEngine.PlaySound(SoundID.MenuTick);
 
-			if (shop) {
+			if (shopName != null) {
 				Main.playerInventory = true;
 				Main.npcChatText = "";
 				Main.npcShop = Main.MaxShopIDs - 1;
-				Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+				Main.instance.shop[Main.npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npc.type, shopName), npc.type);
 			}
 		}
 

@@ -1124,6 +1124,26 @@
  		PylonSystem = new TeleportPylonsSystem();
  		ItemDropSolver = new ItemDropResolver(itemDropDatabase);
  		ShopHelper = new ShopHelper();
+@@ -5242,7 +_,18 @@
+ 		Chest.SetupTravelShop();
+ 		for (int m = 1; m < 100; m++) {
+ 			shop[m] = new Chest();
+-			shop[m].SetupShop(m);
++
++			if (m > TMLLootDatabase.VanillaShopIndexToNpcType.Length)
++				continue;
++
++			int npcType = TMLLootDatabase.VanillaShopIndexToNpcType[m - 1];
++
++			if (m == 25) { // Painter 2 Shop Special Case
++				shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Shop2"), m);
++				continue;
++			}
++
++			shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType), m);
+ 		}
+ 
+ 		teamColor[0] = Microsoft.Xna.Framework.Color.White;
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -3644,6 +3664,25 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
+@@ -32406,7 +_,17 @@
+ 		stackSplit = 9999;
+ 		npcChatText = "";
+ 		SetNPCShopIndex(shopIndex);
+-		shop[npcShop].SetupShop(npcShop);
++
++		int npcType = TMLLootDatabase.VanillaShopIndexToNpcType[npcShop - 1];
++
++		if (npcShop == 25) { // Painter 2 Shop Special Case
++			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Shop2"), npcShop);
++			
++		}
++		else {
++			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType), npcShop);
++		}
++		
+ 		SoundEngine.PlaySound(12);
+ 	}
+ 
 @@ -32451,8 +_,12 @@
  			npcChatFocus2 = false;
  		}

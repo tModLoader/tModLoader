@@ -13,13 +13,21 @@ namespace Terraria.ModLoader
 		private List<ChestLoot.Entry> globalNpcShopEntries = new();
 
 		public void RegisterNpcShop(int npcId, ChestLoot chestLoot, string shopName = "Shop") {
-			npcShopByName.Add($"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}", chestLoot);
+			npcShopByName.Add(CalculateShopName(npcId, shopName), chestLoot);
 		}
 
 		public void RegisterGlobalNpcShop(ChestLoot.Entry entry) => globalNpcShopEntries.Add(entry);
 
 		public ChestLoot GetNpcShop(string fullName) {
-			return npcShopByName[fullName];
+			if (npcShopByName.ContainsKey(fullName))
+				return npcShopByName[fullName];
+
+			return null;
+		}
+
+		public static string CalculateShopName(int npcId, string shopName = "Shop")
+		{
+			return $"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}";
 		}
 
 		public Dictionary<string, ChestLoot> GetNpcShopsOf(int npcId) {
@@ -35,6 +43,18 @@ namespace Terraria.ModLoader
 		public void Initialize() {
 			NPCShops();
 		}
+
+		public static readonly int[] VanillaShopIndexToNpcType = {
+			NPCID.Merchant, NPCID.ArmsDealer, NPCID.Dryad, // 1, 2, 3
+			NPCID.Demolitionist, NPCID.Clothier, NPCID.GoblinTinkerer, // 4, 5, 6
+			NPCID.Wizard, NPCID.Mechanic, NPCID.SantaClaus, // 7, 8, 9
+			NPCID.Truffle, NPCID.Steampunker, NPCID.DyeTrader, // 10, 11, 12
+			NPCID.PartyGirl, NPCID.Cyborg, NPCID.Painter, // 13, 14, 15
+			NPCID.WitchDoctor, NPCID.Pirate, NPCID.Stylist, //16, 17, 18
+			NPCID.TravellingMerchant,						//19
+			NPCID.SkeletonMerchant, NPCID.DD2Bartender, NPCID.Golfer, //20, 21, 22
+			NPCID.BestiaryGirl, NPCID.Princess, NPCID.Painter //23, 24, 25
+		};
 
 		public void NPCShops() {
 			// not updating shops to 1.4.4 yet
@@ -652,7 +672,7 @@ namespace Terraria.ModLoader
 			shop.Add(3314, ChestLoot.Condition.Hardmode);
 			shop.Add(3258, ChestLoot.Condition.Hardmode, ChestLoot.Condition.BloodMoon);
 			shop.Add(3034, ChestLoot.Condition.IsMoonFull, ChestLoot.Condition.TimeNight);
-			RegisterNpcShop(NPCID.Skeleton, shop);
+			RegisterNpcShop(NPCID.SkeletonMerchant, shop);
 		}
 
 		private void RegisterBartender() {

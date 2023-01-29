@@ -216,7 +216,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
 				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
 
@@ -234,7 +234,7 @@ namespace ExampleMod.Content.NPCs
 					return;
 				}
 
-				shop = true;
+				shop = "ExampliumShop"; // Name of the shop tab we want to open.
 			}
 		}
 
@@ -261,8 +261,8 @@ namespace ExampleMod.Content.NPCs
 				//.Add(ItemType<ExampleStaff>(), new ChestLoot.Condition(NetworkText.FromLiteral("If its new or waxing crescent moon", () => Main.moonPhase >= 4 && Main.moonPhase < 6)));
 			if (ModContent.TryFind<ModItem>("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
 		 	 	chestLoot.Add(bloodTalisman.Type);
-		 	 }
-			chestLoot.RegisterShop(Type);
+		 	}
+			chestLoot.RegisterShop(Type, "ExampliumShop"); // Name of this shop tab
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {

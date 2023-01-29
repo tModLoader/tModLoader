@@ -700,7 +700,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// </summary>
 	/// <param name="firstButton"></param>
 	/// <param name="shop"></param>
-	public virtual void OnChatButtonClicked(bool firstButton, ref bool shop)
+	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
 	{
 	}
 

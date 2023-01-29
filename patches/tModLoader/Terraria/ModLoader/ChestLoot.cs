@@ -181,6 +181,7 @@ public class ChestLoot {
 	private static readonly Item defaultInstance = default;
 
 	private readonly List<Entry> items;
+	private string name;
 
 	private readonly List<(int nextTo, bool after)> putCandidates;
 	private readonly List<Entry> putCandidates2; // list that contains all entries those going to get from putCandidates
@@ -222,6 +223,7 @@ public class ChestLoot {
 	}
 
 	public void RegisterShop(int npcId, string name = "Shop") {
+		this.name = name;
 		Main.TMLLootDB.RegisterNpcShop(npcId, (ChestLoot)MemberwiseClone(), name);
 	}
 
@@ -314,6 +316,8 @@ public class ChestLoot {
 		slots = array.Count;
 		if (array.Count > 40) {
 			Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
+			Logging.tML.Warn($"Unable to fit all item in the shop {name}");
+			slots = 40;
 		}
 		if (array.Count < 40) {
 			array.AddRange(Enumerable.Repeat(emptyInstance, 40 - array.Count));
