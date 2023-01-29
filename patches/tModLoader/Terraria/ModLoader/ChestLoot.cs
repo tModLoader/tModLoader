@@ -107,7 +107,7 @@ public class ChestLoot {
 
 		public bool Hidden { private get => hide; set => hide = true; }
 
-		public Entry(params ICondition[] condition) : this(emptyInstance, condition) {
+		public Entry(params ICondition[] condition) : this(EmptyInstance, condition) {
 			askingNicelyToNotAdd = true;
 		}
 
@@ -177,7 +177,7 @@ public class ChestLoot {
 		}
 	}
 
-	private static readonly Item emptyInstance = new();
+	private static Item EmptyInstance => new();
 	private static readonly Item defaultInstance = default;
 
 	private readonly List<Entry> items;
@@ -315,17 +315,19 @@ public class ChestLoot {
 		}
 
 		slots = array.Count;
-		if (array.Count > 40) {
+		if (array.Count > 39) {
 			Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
 			Logging.tML.Warn($"Unable to fit all item in the shop {name}");
-			slots = 40;
+			slots = 39;
 		}
 		if (array.Count < 40) {
-			array.AddRange(Enumerable.Repeat(emptyInstance, 40 - array.Count));
+			for (int i = array.Count; i < 40; i++) {
+				array.Add(EmptyInstance);
+			}
 		}
 		array = array.Take(40).ToList();
 		if (lastSlotEmpty)
-			array[^1] = emptyInstance;
+			array[^1] = EmptyInstance;
 
 		return array.ToArray();
 	}
