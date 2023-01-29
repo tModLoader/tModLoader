@@ -61,8 +61,6 @@ namespace Terraria.ModLoader
 		};
 
 		public void NPCShops() {
-			// not updating shops to 1.4.4 yet
-			// it took me lot of hours last time ;-;
 			RegisterMerchant();
 			RegisterArmsDealer();
 			RegisterDryad();
@@ -709,51 +707,83 @@ namespace Terraria.ModLoader
 				.RegisterShop(NPCID.Cyborg);
 		}
 
-		private void RegisterPainter() {
-			ChestLoot shop = new();
-			shop.Add(1071);
-			shop.Add(1072);
-			shop.Add(1100);
-			for (int i = 1073; i <= 1083; i++) {
-				shop.Add(i);
-			}
-			shop.Add(1097);
-			shop.Add(1098);
-			shop.Add(1966);
-			shop.Add(4668, ChestLoot.Condition.InGraveyard);
-			shop.Add(1967, ChestLoot.Condition.Hardmode);
-			shop.Add(1968, ChestLoot.Condition.Hardmode);
-			ChestLoot.Entry entry = new(ChestLoot.Condition.NotInGraveyard);
-			entry.OnSuccess(1490);
-			entry.OnSuccess(1481, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 0));
-			entry.OnSuccess(1482, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 1));
-			entry.OnSuccess(1483, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 2));
-			entry.OnSuccess(1484, new ChestLoot.Condition(NetworkText.Empty, () => (Main.moonPhase / 2) == 3));
-			shop.Add(entry);
-			shop.Add(1492, ChestLoot.Condition.InCrimsonBiome);
-			shop.Add(1488, ChestLoot.Condition.InCorruptBiome);
-			shop.Add(1489, ChestLoot.Condition.InHallowBiome);
-			shop.Add(1486, ChestLoot.Condition.InJungleBiome);
-			shop.Add(1487, ChestLoot.Condition.InSnowBiome);
-			shop.Add(1491, ChestLoot.Condition.InDesertBiome);
-			shop.Add(1493, ChestLoot.Condition.BloodMoon);
-			entry = new(ChestLoot.Condition.NotInGraveyard, new ChestLoot.Condition(NetworkText.Empty, () => (Main.player[Main.myPlayer].position.Y / 16.0) < Main.worldSurface * 0.3499999940395355));
-			entry.OnSuccess(1485);
-			entry.OnSuccess(1494, ChestLoot.Condition.Hardmode);
-			shop.Add(entry);
-			for (int i = 0; i < 7; i++) {
-				shop.Add(4723 + i, ChestLoot.Condition.InGraveyard);
-			}
-			for (int i = 1948; i <= 1957; i++) {
-				shop.Add(i, ChestLoot.Condition.Christmas);
-			}
-			for (int i = 2158; i <= 2160; i++) {
-				shop.Add(i);
-			}
-			for (int i = 2008; i <= 2014; i++) {
-				shop.Add(i);
-			}
-			RegisterNpcShop(NPCID.Painter, shop);
+		private static void RegisterPainter() {
+			var moonIsFullOrWaningGibbous = new ChestLoot.Condition(NetworkText.FromLiteral("If moon is full or waning gibbous"), () => Main.moonPhase <= 1);
+			var moonIsThirdOrWaningCrescent = new ChestLoot.Condition(NetworkText.FromLiteral("If moon is third quarter or waning crescent"), () => Main.moonPhase >= 2 && Main.moonPhase <= 3);
+			var moonIsNewOrWaxingCrescent = new ChestLoot.Condition(NetworkText.FromLiteral("If moon is new or waxing crescent"), () => Main.moonPhase >= 4 && Main.moonPhase <= 5);
+			var moonIsFirstOrWaxingGibbous = new ChestLoot.Condition(NetworkText.FromLiteral("If moon is first quarter or waxing gibbous"), () => Main.moonPhase >= 6);
+
+			new ChestLoot()
+				.Add(ItemID.Paintbrush)
+				.Add(ItemID.PaintRoller)
+				.Add(ItemID.PaintScraper)
+				.Add(ItemID.RedPaint)
+				.Add(ItemID.OrangePaint)
+				.Add(ItemID.YellowPaint)
+				.Add(ItemID.LimePaint)
+				.Add(ItemID.GreenPaint)
+				.Add(ItemID.TealPaint)
+				.Add(ItemID.CyanPaint)
+				.Add(ItemID.SkyBluePaint)
+				.Add(ItemID.BluePaint)
+				.Add(ItemID.PurplePaint)
+				.Add(ItemID.VioletPaint)
+				.Add(ItemID.PinkPaint)
+				.Add(ItemID.BlackPaint)
+				.Add(ItemID.GrayPaint)
+				.Add(ItemID.WhitePaint)
+				.Add(ItemID.ShadowPaint,		ChestLoot.Condition.Hardmode)
+				.Add(ItemID.NegativePaint,		ChestLoot.Condition.Hardmode)
+				.Add(ItemID.GlowPaint,			ChestLoot.Condition.InGraveyard)									// Illuminant Coating
+				.Add(ItemID.EchoCoating,		ChestLoot.Condition.InGraveyard, ChestLoot.Condition.DownedPlantera)
+				.RegisterShop(NPCID.Painter, "Shop");
+
+			new ChestLoot()
+				.Add(ItemID.Daylight)
+				.Add(ItemID.FirstEncounter,		moonIsFullOrWaningGibbous)
+				.Add(ItemID.GoodMorning,		moonIsThirdOrWaningCrescent)
+				.Add(ItemID.UndergroundReward,	moonIsNewOrWaxingCrescent)
+				.Add(ItemID.ThroughtheWindow,	moonIsFirstOrWaxingGibbous)
+				.Add(ItemID.Purity,				ChestLoot.Condition.InShoppingForestBiome)
+				.Add(ItemID.DeadlandComesAlive, ChestLoot.Condition.InCrimsonBiome)
+				.Add(ItemID.LightlessChasms,	ChestLoot.Condition.InCorruptBiome)
+				.Add(ItemID.TheLandofDeceivingLooks, ChestLoot.Condition.InHallowBiome)
+				.Add(ItemID.DoNotStepontheGrass, ChestLoot.Condition.InJungleBiome)
+				.Add(ItemID.ColdWatersintheWhiteLand, ChestLoot.Condition.InSnowBiome)
+				.Add(ItemID.SecretoftheSands,	ChestLoot.Condition.InDesertBiome)
+				.Add(ItemID.EvilPresence,		ChestLoot.Condition.BloodMoon)
+				.Add(ItemID.PlaceAbovetheClouds,ChestLoot.Condition.InSpace)
+				.Add(ItemID.SkyGuardian,		ChestLoot.Condition.Hardmode, ChestLoot.Condition.InSpace)
+				.Add(ItemID.Thunderbolt,		ChestLoot.Condition.Thunderstorm)
+				.Add(ItemID.Nevermore,			ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.Reborn,				ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.Graveyard,			ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.GhostManifestation, ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.WickedUndead,		ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.HailtotheKind,		ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.BloodyGoblet,		ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.StillLife,			ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.ChristmasTreeWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.CandyCaneWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.StarsWallpaper,		ChestLoot.Condition.Christmas)
+				.Add(ItemID.SnowflakeWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.BluegreenWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.OrnamentWallpaper,  ChestLoot.Condition.Christmas)
+				.Add(ItemID.FestiveWallpaper,	ChestLoot.Condition.Christmas)
+				.Add(ItemID.SquigglesWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.KrampusHornWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.GrinchFingerWallpaper, ChestLoot.Condition.Christmas)
+				.Add(ItemID.BubbleWallpaper)
+				.Add(ItemID.CopperPipeWallpaper)
+				.Add(ItemID.DuckyWallpaper)
+				.Add(ItemID.FancyGreyWallpaper)
+				.Add(ItemID.IceFloeWallpaper)
+				.Add(ItemID.MusicWallpaper)
+				.Add(ItemID.PurpleRainWallpaper)
+				.Add(ItemID.RainbowWallpaper)
+				.Add(ItemID.SparkleStoneWallpaper)
+				.Add(ItemID.StarlitHeavenWallpaper)
+				.RegisterShop(NPCID.Painter, "Decor");
 		}
 
 		private static void RegisterWitchDoctor() {

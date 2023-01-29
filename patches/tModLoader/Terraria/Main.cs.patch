@@ -1136,7 +1136,7 @@
 +			int npcType = TMLLootDatabase.VanillaShopIndexToNpcType[m - 1];
 +
 +			if (m == 25) { // Painter 2 Shop Special Case
-+				shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Shop2"), m);
++				shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Decor"), m);
 +				continue;
 +			}
 +
@@ -3673,7 +3673,7 @@
 +		int npcType = TMLLootDatabase.VanillaShopIndexToNpcType[npcShop - 1];
 +
 +		if (npcShop == 25) { // Painter 2 Shop Special Case
-+			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Shop2"), npcShop);
++			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Decor"), npcShop);
 +			
 +		}
 +		else {

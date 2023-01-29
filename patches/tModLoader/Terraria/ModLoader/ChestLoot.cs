@@ -28,6 +28,7 @@ public class ChestLoot {
 		public static readonly Condition BloodMoon = new(NetworkText.FromLiteral("During blood moon"), () => Main.bloodMoon);
 		public static readonly Condition Eclipse = new(NetworkText.FromLiteral("During solar eclipse"), () => Main.eclipse);
 		public static readonly Condition NotEclipse = new(NetworkText.FromLiteral("During normal day"), () => !Main.eclipse);
+		public static readonly Condition Thunderstorm = new(NetworkText.FromLiteral("During thunderstorm"), () => Main.IsItStorming);
 		public static readonly Condition ForTheWorthy = new(NetworkText.FromLiteral("In For The Worthy world"), () => Main.getGoodWorld);
 		public static readonly Condition RemixWorld = new(NetworkText.FromLiteral("In Remix world"), () => Main.remixWorld);
 		public static readonly Condition TenthAnniversary = new(NetworkText.FromLiteral("In Tenth Anniversary world"), () => Main.tenthAnniversaryWorld);
@@ -45,6 +46,9 @@ public class ChestLoot {
 		public static readonly Condition IsMoonFirstQuarter = new(NetworkText.FromLiteral("During first quarter moon"), () => Main.GetMoonPhase() == MoonPhase.HalfAtRight);
 		public static readonly Condition IsMoonWaxingGibbous = new(NetworkText.FromLiteral("During waxing gibbous moon"), () => Main.GetMoonPhase() == MoonPhase.ThreeQuartersAtRight);
 		public static readonly Condition HappyWindyDay = new(NetworkText.FromLiteral("During windy day"), () => Main.IsItAHappyWindyDay);
+		public static readonly Condition InShoppingForestBiome = new(NetworkText.FromLiteral("In Forest"), () => Main.LocalPlayer.ShoppingZone_Forest);
+		public static readonly Condition InForestBiome = new(NetworkText.FromLiteral("In Forest"), () => Main.LocalPlayer.ZoneForest);
+		public static readonly Condition InPurityBiome = new(NetworkText.FromLiteral("In Purity"), () => Main.LocalPlayer.ZonePurity);
 		public static readonly Condition InSnowBiome = new(NetworkText.FromLiteral("In Snow"), () => Main.LocalPlayer.ZoneSnow);
 		public static readonly Condition InJungleBiome = new(NetworkText.FromLiteral("In Jungle"), () => Main.LocalPlayer.ZoneJungle);
 		public static readonly Condition InCorruptBiome = new(NetworkText.FromLiteral("In Corruption"), () => Main.LocalPlayer.ZoneCorrupt);
@@ -57,6 +61,8 @@ public class ChestLoot {
 		public static readonly Condition InUnderworld = new(NetworkText.FromLiteral("In Underworld"), () => Main.LocalPlayer.ZoneUnderworldHeight);
 		public static readonly Condition InDungeonBiome = new(NetworkText.FromLiteral("In Dungeon"), () => Main.LocalPlayer.ZoneDungeon);
 		public static readonly Condition InSpace = new(NetworkText.FromLiteral("In Space"), () => Main.LocalPlayer.ZoneSkyHeight);
+		public static readonly Condition NotInForestBiome = new(NetworkText.FromLiteral("Not in Forest"), () => !Main.LocalPlayer.ZoneForest);
+		public static readonly Condition NotInPurityBiome = new(NetworkText.FromLiteral("Not in Purity"), () => !Main.LocalPlayer.ZonePurity);
 		public static readonly Condition NotInSnowBiome = new(NetworkText.FromLiteral("Not in Snow"), () => !Main.LocalPlayer.ZoneSnow);
 		public static readonly Condition NotInJungleBiome = new(NetworkText.FromLiteral("Not in Jungle"), () => !Main.LocalPlayer.ZoneJungle);
 		public static readonly Condition NotInCorruptBiome = new(NetworkText.FromLiteral("Not in Corruption"), () => !Main.LocalPlayer.ZoneCorrupt);
