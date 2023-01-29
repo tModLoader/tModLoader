@@ -2380,6 +2380,9 @@ var hierarchy =
     [ "Terraria.WorldBuilding.WorldUtils", "class_terraria_1_1_world_building_1_1_world_utils.html", null ],
     [ "Terraria.Social.Steam.SteamP2PWriter.WriteInformation", "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer_1_1_write_information.html", null ],
     [ "Terraria.Social.WeGame.WeGameP2PWriter.WriteInformation", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html", null ],
+    [ "WscJsonObject", "class_wsc_json_object.html", [
+      [ "Terraria.ModLoader.LocalizationLoader.CommentedWscJsonObject", "class_terraria_1_1_mod_loader_1_1_localization_loader_1_1_commented_wsc_json_object.html", null ]
+    ] ],
     [ "BinaryReader", null, [
       [ "Terraria.ModLoader.IO.BigEndianReader", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html", null ]
     ] ],

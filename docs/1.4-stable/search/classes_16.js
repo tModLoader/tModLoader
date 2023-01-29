@@ -67,5 +67,6 @@ var searchData=
   ['worldutils_64',['WorldUtils',['../class_terraria_1_1_world_building_1_1_world_utils.html',1,'Terraria::WorldBuilding']]],
   ['worldworkshopentry_65',['WorldWorkshopEntry',['../class_terraria_1_1_social_1_1_base_1_1_world_workshop_entry.html',1,'Terraria::Social::Base']]],
   ['wormshader_66',['WormShader',['../class_terraria_1_1_game_content_1_1_r_g_b_1_1_worm_shader.html',1,'Terraria::GameContent::RGB']]],
-  ['writeinformation_67',['WriteInformation',['../class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer_1_1_write_information.html',1,'Terraria.Social.Steam.SteamP2PWriter.WriteInformation'],['../class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html',1,'Terraria.Social.WeGame.WeGameP2PWriter.WriteInformation']]]
+  ['writeinformation_67',['WriteInformation',['../class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer_1_1_write_information.html',1,'Terraria.Social.Steam.SteamP2PWriter.WriteInformation'],['../class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html',1,'Terraria.Social.WeGame.WeGameP2PWriter.WriteInformation']]],
+  ['wscjsonobject_68',['WscJsonObject',['../class_wsc_json_object.html',1,'']]]
 ];
