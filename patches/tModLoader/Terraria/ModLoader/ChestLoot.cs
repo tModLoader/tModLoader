@@ -98,6 +98,7 @@ public class ChestLoot {
 		public static readonly Condition DownedPirates = new(NetworkText.FromLiteral("Pirates are defeated"), () => NPC.downedPirates);
 		public static readonly Condition DownedMartians = new(NetworkText.FromLiteral("Martians are defeated"), () => NPC.downedMartians);
 		public static readonly Condition DownedFrost = new(NetworkText.FromLiteral("Frost Legion is defeated"), () => NPC.downedFrost);
+		public static readonly Condition HappyEnough = new(NetworkText.FromLiteral("Is Happy enough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
 		#endregion
 
 		private readonly NetworkText DescriptionText;
@@ -247,21 +248,11 @@ public class ChestLoot {
 		IReadOnlyList<(int nextTo, bool after)> candidates = putCandidates;
 		candidates = candidates.Reverse().ToList();
 
-		List<(int nextTo, bool after)> unsuccessedCandidates = new();
-
-		for (int i = 0; i < 2; i++) { // run twice, cause mods might want to add to chained items
-			var a = candidates;
-			if (i == 1)
-				a = unsuccessedCandidates;
-
-			foreach (var (nextTo, after) in a) {
-				int index = items.FindIndex(x => x.item.type.Equals(nextTo));
-				if (index != -1) {
-					entries.Insert(index + after.ToInt(), putCandidates2[index]);
-				}
-				else {
-					unsuccessedCandidates.Add((nextTo, after));
-				}
+		var a = candidates;
+		foreach ((int nextTo, bool after) in a) {
+			int index = items.FindIndex(x => x.item.type.Equals(nextTo));
+			if (index != -1) {
+				entries.Insert(index + after.ToInt(), putCandidates2[index]);
 			}
 		}
 	}
@@ -303,11 +294,11 @@ public class ChestLoot {
 	}
 
 	public ChestLoot InsertAfter(int targetItem, int item, params ICondition[] condition) {
-		return PutAt(targetItem + 1, item, true, condition);
+		return PutAt(targetItem, item, true, condition);
 	}
 
 	public ChestLoot InsertAfter(int targetItem, Item item, params ICondition[] condition) {
-		return PutAt(targetItem + 1, item, true, condition);
+		return PutAt(targetItem, item, true, condition);
 	}
 
 	public ChestLoot Hide(int item) {

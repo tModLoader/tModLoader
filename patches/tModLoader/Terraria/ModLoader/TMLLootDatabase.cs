@@ -91,38 +91,128 @@ namespace Terraria.ModLoader
 		}
 
 		private void RegisterGlobalNpcShop() {
-			ChestLoot.Entry forestPylon = new(new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.ZonePurity)); // should be kept as "!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom"?
-			forestPylon.OnSuccess(new ChestLoot.Entry(ChestLoot.Condition.RemixWorld)
-				.OnSuccess(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => (double)(Main.player[Main.myPlayer].Center.Y / 16f) > Main.rockLayer && Main.player[Main.myPlayer].Center.Y / 16f < (Main.maxTilesY - 350)))
-				.OnSuccess(ItemID.TeleportationPylonPurity)))
-				.OnFail(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => (double)(Main.player[Main.myPlayer].Center.Y / 16f) < Main.worldSurface))
-				.OnSuccess(ItemID.TeleportationPylonPurity));
-
-			ChestLoot.Entry cavePylon = new ChestLoot.Entry(ChestLoot.Condition.RemixWorld)
-				.OnSuccess(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => !Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface))
-				.OnSuccess(4917))
-				.OnFail(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => !Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface))
-				.OnSuccess(4917));
-
-			ChestLoot.Entry entry = new(new ChestLoot.Condition(NetworkText.Empty, () => (Main.LocalPlayer.currentShoppingSettings.PriceAdjustment > 0.8999999761581421 || Main.remixWorld) && TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()) && !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt));
-			entry.OnSuccess(forestPylon);
-			entry.OnSuccess(ItemID.TeleportationPylonSnow, ChestLoot.Condition.InSnowBiome);
-			entry.OnSuccess(ItemID.TeleportationPylonDesert, ChestLoot.Condition.InDesertBiome);
-			entry.OnSuccess(ItemID.TeleportationPylonOcean, ChestLoot.Condition.InBeachBiome, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.position.Y < Main.worldSurface * 16f));
-			entry.OnSuccess(ItemID.TeleportationPylonJungle, ChestLoot.Condition.InJungleBiome);
-			entry.OnSuccess(ItemID.TeleportationPylonHallow, ChestLoot.Condition.InHallowBiome);
-			entry.OnSuccess(ItemID.TeleportationPylonMushroom, ChestLoot.Condition.InGlowshroomBiome, new ChestLoot.Condition(NetworkText.Empty, () => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < (Main.maxTilesY - 200)));
-
 			/*
-			foreach (ModPylon pylon in PylonLoader.modPylons) {
-				int? pylonReturn = pylon.IsPylonForSale(Main.LocalPlayer, Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
-				if (pylonReturn.HasValue) {
-					entry.OnSuccess(pylonReturn.Value, new ChestLoot.Condition(NetworkText.Empty, () => pylon.IsPylonForSale(Main.LocalPlayer, Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421).Value > 0));
+			bool num12 = type != 19 && type != 20;
+			bool flag3 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
+			if (num12 && (flag || Main.remixWorld) && flag3 && !Main.player[Main.myPlayer].ZoneCorrupt && !Main.player[Main.myPlayer].ZoneCrimson) {
+				if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom) {
+					if (Main.remixWorld) {
+						if ((double)(Main.player[Main.myPlayer].Center.Y / 16f) > Main.rockLayer && Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 350) && num < 39)
+							array[num++].SetDefaults(4876);
+					}
+					else if ((double)(Main.player[Main.myPlayer].Center.Y / 16f) < Main.worldSurface && num < 39) {
+						array[num++].SetDefaults(4876);
+					}
 				}
-			}
-			*/
 
-			RegisterGlobalNpcShop(entry);
+				if (Main.player[Main.myPlayer].ZoneSnow && num < 39)
+					array[num++].SetDefaults(4920);
+
+				if (Main.player[Main.myPlayer].ZoneDesert && num < 39)
+					array[num++].SetDefaults(4919);
+
+				if (Main.remixWorld) {
+					if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface && num < 39)
+						array[num++].SetDefaults(4917);
+				}
+				else if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface && num < 39) {
+					array[num++].SetDefaults(4917);
+				}
+
+				bool flag4 = Main.player[Main.myPlayer].ZoneBeach && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0;
+				if (Main.remixWorld) {
+					float num13 = Main.player[Main.myPlayer].position.X / 16f;
+					float num14 = Main.player[Main.myPlayer].position.Y / 16f;
+					flag4 |= ((double)num13 < (double)Main.maxTilesX * 0.43 || (double)num13 > (double)Main.maxTilesX * 0.57) && (double)num14 > Main.rockLayer && num14 < (float)(Main.maxTilesY - 350);
+				}
+
+				if (flag4 && num < 39)
+					array[num++].SetDefaults(4918);
+
+				if (Main.player[Main.myPlayer].ZoneJungle && num < 39)
+					array[num++].SetDefaults(4875);
+
+				if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
+					array[num++].SetDefaults(4916);
+
+				if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
+					array[num++].SetDefaults(4921);
+			}*/
+			var pylonMainCondition = new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () =>
+				Main.LocalPlayer.talkNPC != -1 && Main.npc[Main.LocalPlayer.talkNPC].type != NPCLoader.shopToNPC[19] && Main.npc[Main.LocalPlayer.talkNPC].type != NPCLoader.shopToNPC[20]
+				&& (Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421 || Main.remixWorld)
+				&& TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16())
+				&& !Main.LocalPlayer.ZoneCorrupt && !Main.LocalPlayer.ZoneCrimson
+				));
+
+			#region Purity Pylon
+			var purityPylon = new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () =>
+				!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
+				&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
+				&& !Main.LocalPlayer.ZoneHallow && !Main.LocalPlayer.ZoneGlowshroom));
+			var purityIfRemix = new ChestLoot.Entry(ChestLoot.Condition.RemixWorld);
+
+
+			purityIfRemix.OnFail(new ChestLoot.Entry(ItemID.TeleportationPylonPurity,
+				new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.Center.Y / 16.0 < Main.worldSurface)));
+
+			purityIfRemix.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonPurity,
+				new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350)));
+
+			purityPylon.OnSuccess(purityIfRemix);
+			#endregion
+			#region Cavern Pylon
+			var cavernPylon = new ChestLoot.Entry(ChestLoot.Condition.RemixWorld);
+			// the only difference here is that the latter one doesnt has check for glowshroom
+			cavernPylon.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonUnderground, new ChestLoot.Condition(NetworkText.Empty, () =>
+				!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
+				&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
+				&& !Main.LocalPlayer.ZoneHallow && (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface)));
+
+			cavernPylon.OnFail(new ChestLoot.Entry(ItemID.TeleportationPylonUnderground, new ChestLoot.Condition(NetworkText.Empty, () =>
+				!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
+				&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
+				&& !Main.LocalPlayer.ZoneHallow && !Main.LocalPlayer.ZoneGlowshroom
+				&& (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface)));
+			#endregion
+
+			pylonMainCondition.OnSuccess(purityPylon);
+			pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonSnow, ChestLoot.Condition.InSnowBiome));
+			pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonDesert, ChestLoot.Condition.InDesertBiome));
+			pylonMainCondition.OnSuccess(cavernPylon);
+			
+			pylonMainCondition.OnSuccess(ItemID.TeleportationPylonOcean, new ChestLoot.Condition(NetworkText.Empty, () => {
+				bool flag4 = Main.LocalPlayer.ZoneBeach && Main.LocalPlayer.position.Y < Main.worldSurface * 16.0;
+				if (Main.remixWorld) {
+					double num13 = Main.LocalPlayer.position.X / 16.0;
+					double num14 = Main.LocalPlayer.position.Y / 16.0;
+					flag4 |= (num13 < Main.maxTilesX * 0.43 || num13 > Main.maxTilesX * 0.57) && num14 > Main.rockLayer && num14 < Main.maxTilesY - 350;
+				}
+				return flag4;
+			}));
+			pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonJungle, ChestLoot.Condition.InJungleBiome));
+			pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonHallow, ChestLoot.Condition.InHallowBiome));
+			pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonMushroom,
+				ChestLoot.Condition.InGlowshroomBiome,
+				new ChestLoot.Condition(NetworkText.Empty, () => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200)));
+
+			foreach (ModPylon pylon in PylonLoader.modPylons) {
+				if (pylon.ItemDrop == 0) {
+					continue;
+				}
+
+				pylonMainCondition.OnSuccess(new ChestLoot.Entry(pylon.ItemDrop, new ChestLoot.Condition(NetworkText.Empty, () =>
+					Main.LocalPlayer.talkNPC != -1 &&
+					pylon.IsPylonForSale(
+						Main.npc[Main.LocalPlayer.talkNPC].type,
+						Main.LocalPlayer,
+						Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421
+						)
+					.HasValue
+					)));
+			}
+
+			RegisterGlobalNpcShop(pylonMainCondition);
 		}
 
 		private static void RegisterMerchant() {
