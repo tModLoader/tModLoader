@@ -1,8 +1,8 @@
 var searchData=
 [
   ['packethistory_0',['PacketHistory',['../class_terraria_1_1_testing_1_1_packet_history.html',1,'Terraria::Testing']]],
-  ['paint_1',['paint',['../class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22',1,'Terraria::Item']]],
-  ['paint_2',['Paint',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a6d11902faf4d01fee0ab91bd5836722c',1,'Terraria::ID::DustID']]],
+  ['paint_1',['Paint',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a6d11902faf4d01fee0ab91bd5836722c',1,'Terraria::ID::DustID']]],
+  ['paint_2',['paint',['../class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22',1,'Terraria::Item']]],
   ['painterneedsothernpcstomovein_3',['PainterNeedsOtherNPCsToMoveIn',['../class_terraria_1_1_mod_loader_1_1_game_tip_i_d.html#ad042f78a5ce043b98d47cc824a66d151',1,'Terraria::ModLoader::GameTipID']]],
   ['paintid_4',['PaintID',['../class_terraria_1_1_i_d_1_1_paint_i_d.html',1,'Terraria::ID']]],
   ['paperplane_5',['PaperPlane',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aeeaea8b9a20262b6bcfea075691fd27d',1,'Terraria::ID::ProjAIStyleID']]],
