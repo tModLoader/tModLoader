@@ -42,8 +42,13 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Example of adding new items with complex conditions in the Merchant shop.
-		public override void SetupShop(int type) {
-			if (type != NPCID.Merchant)
+		public override void SetupShop(string shopId, ChestLoot shopContents) {
+			// Style 1 check for application
+			if (shopId != TMLLootDatabase.CalculateShopName(NPCID.Merchant, "Shop"))
+				return;
+
+			// Style 2 check for application
+			if (shopId != "Terraria/Merchant/Shop")
 				return;
 
 			// Get Merchant shop content, so we can add items in it.
@@ -72,12 +77,7 @@ namespace ExampleMod.Content.NPCs
 
 		// PostSetupShop hook is best when it comes to modifying existing items.
 		public override void PostSetupShop(string shopId, ChestLoot shopContents) {
-			// Style 1 check for application
 			if (shopId != TMLLootDatabase.CalculateShopName(NPCID.Merchant, "Shop"))
-				return;
-
-			// Style 2 check for application
-			if (shopId != "Terraria/Merchant/Shop")
 				return;
 
 			// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
