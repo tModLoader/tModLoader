@@ -49,7 +49,7 @@ namespace ExampleMod.Content.NPCs
 			if (shopId != "Terraria/Merchant/Shop")
 				return;
 
-			shopContents.Add(ModContent.ItemType<Items.Placeable.ExampleTorch>(), ChestLoot.Condition.TimeDay);
+			shopContents.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), ChestLoot.Condition.TimeDay);
 		}
 
 		public override void SaveData(NPC npc, TagCompound tag) {
