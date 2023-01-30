@@ -328,7 +328,15 @@ namespace Terraria.ModLoader
 					JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
 					// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 					List<LocalizationEntry> existingEntries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
-					baseLocalizationFiles.Add(new(translationFile.Name, prefix, existingEntries));
+
+					string finalFileName = translationFile.Name;
+					if (!finalFileName.Contains("en-US"))
+					{
+						// typo in en filename will cause issues later, fix here.
+						finalFileName = Path.Combine(Path.GetDirectoryName(finalFileName), "en-US.hjson");
+					}
+
+					baseLocalizationFiles.Add(new(finalFileName, prefix, existingEntries));
 
 					foreach (var entry in existingEntries) {
 						baseLocalizationKeys.Add(entry.key);
@@ -350,6 +358,10 @@ namespace Terraria.ModLoader
 			// Collect known keys. These are potentially missing from the localization files
 			foreach (var translation in translations) {
 				if (translation.Key.StartsWith($"Mods.{mod.Name}.")) {
+					// Check translation for code only languages:
+					var supportedCultures = translation.Value.GetSupportedCultures();
+					allLanguages.UnionWith(supportedCultures);
+
 					LocalizationEntry existingKey = new(translation.Key, translation.Value.GetDefault(), null);
 					existingKeys.Add(existingKey);
 
@@ -488,6 +500,7 @@ namespace Terraria.ModLoader
 				else {
 					// Add values
 					string legacyKey = entry.legacyKey ?? entry.key;
+					legacyKey = legacyKey.Replace(".$parentVal", "");
 					string value = translations[legacyKey].GetTranslation(culture);
 					key = splitKey[^1];
 					if (culture.Name != "en-US" && value == translations[legacyKey].GetDefault()) {
