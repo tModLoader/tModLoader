@@ -84,11 +84,8 @@ namespace ExampleMod.Content.NPCs
 			shopContents.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), ChestLoot.Condition.TimeDay);
 
 			// Hiding Copper Pickaxe and Copper Axe. They will never appear in Merchant shop anymore
-			var copperPickaxeEntry = shopContents[ItemID.CopperPickaxe];
-			copperPickaxeEntry.Hidden = true;
-
-			var copperAxeEntry = shopContents[ItemID.CopperAxe];
-			copperAxeEntry.Hidden = true;
+			shopContents.Hide(ItemID.CopperPickaxe);
+			shopContents.Hide(ItemID.CopperAxe);
 
 			// Adding new Condition to Blue Flare. Now it appers just if player carries a Flare Gun in their inventory AND is in Snow biome
 			shopContents[ItemID.BlueFlare].AddCondition(ChestLoot.Condition.InSnowBiome);

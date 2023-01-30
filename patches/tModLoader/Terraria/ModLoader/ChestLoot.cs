@@ -119,8 +119,7 @@ public partial class ChestLoot {
 	}
 
 	public ChestLoot Hide(int item) {
-		Entry entry = this[item];
-		entry.Hidden = true;
+		this[item].Hide();
 		return this;
 	}
 

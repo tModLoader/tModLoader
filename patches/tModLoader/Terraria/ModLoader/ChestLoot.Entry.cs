@@ -12,11 +12,9 @@ public partial class ChestLoot {
 		public readonly Item item;
 		private readonly List<ICondition> conditions;
 		private readonly bool askingNicelyToNotAdd = false;
-		private bool hide;
+		private Ref<bool> hide;
 
 		public Dictionary<bool, List<Entry>> ChainedEntries;
-
-		public bool Hidden { private get => hide; set => hide = true; }
 
 		public Entry(params ICondition[] condition) : this(EmptyInstance, condition) {
 			askingNicelyToNotAdd = true;
@@ -25,7 +23,7 @@ public partial class ChestLoot {
 		public Entry(int item, params ICondition[] condition) : this(ContentSamples.ItemsByType[item], condition) { }
 
 		public Entry(Item item, params ICondition[] condition) {
-			hide = false;
+			hide = new(false);
 			this.item = item;
 			conditions = condition.ToList();
 
@@ -54,9 +52,15 @@ public partial class ChestLoot {
 			return this;
 		}
 
-		public void AddCondition(ICondition condition) {
+		public Entry AddCondition(ICondition condition) {
 			ArgumentNullException.ThrowIfNull(condition, nameof(condition));
 			conditions.Add(condition);
+			return this;
+		}
+
+		public Entry Hide() {
+			hide.Value = true;
+			return this;
 		}
 
 		public bool IsAvailable() {
@@ -69,7 +73,7 @@ public partial class ChestLoot {
 		}
 
 		public void TryAdd(List<Item> items) {
-			if (hide)
+			if (hide.Value)
 				return;
 
 			if (IsAvailable()) {
