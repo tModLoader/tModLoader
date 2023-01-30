@@ -135,9 +135,10 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot) {
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleItem>());
-			nextSlot++;
+		public override void SetupShop() {
+			new ChestLoot()
+				.Add(ModContent.ItemType<ExampleItem>())
+				.RegisterShop(Type);
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {
