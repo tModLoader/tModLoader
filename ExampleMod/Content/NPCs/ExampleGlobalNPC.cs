@@ -1,3 +1,5 @@
+using ExampleMod.Content.Items;
+using ReLogic.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,7 +41,36 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
+		// Example of adding new items with complex conditions in the Merchant shop.
+		public override void SetupShop(int type) {
+			if (type != NPCID.Merchant)
+				return;
+
+			// Get Merchant shop content, so we can add items in it.
+			var merchantShopContents = Main.TMLLootDB.GetNpcShop(TMLLootDatabase.CalculateShopName(NPCID.Merchant, "Shop"));
+
+			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
+			var complexCondition = new ChestLoot.Entry(
+				ChestLoot.Condition.HappyWindyDay,
+				ChestLoot.Condition.HappyEnough
+				// you can add as many conditions as you want!
+			);
+			// If condition is fulfilled, add an item to the shop.
+			complexCondition.OnSuccess(ModContent.ItemType<ExampleItem>());
+
+			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
+			// Style 1 adding entry like that
+			var innerCondition = new ChestLoot.Entry(ChestLoot.Condition.ForTheWorthy);
+			innerCondition.OnSuccess(ItemID.RedPotion);
+			complexCondition.OnFail(innerCondition);
+			// Style 2
+			//complexCondition.OnFail(ItemID.RedPotion, ChestLoot.Condition.ForTheWorthy);
+
+			// Finally, add the complex condition in shop contents.
+			merchantShopContents.Add(complexCondition);
+		}
+
+		// PostSetupShop hook is best when it comes to modifying existing items.
 		public override void PostSetupShop(string shopId, ChestLoot shopContents) {
 			// Style 1 check for application
 			if (shopId != TMLLootDatabase.CalculateShopName(NPCID.Merchant, "Shop"))
@@ -49,7 +80,18 @@ namespace ExampleMod.Content.NPCs
 			if (shopId != "Terraria/Merchant/Shop")
 				return;
 
+			// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
 			shopContents.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), ChestLoot.Condition.TimeDay);
+
+			// Hiding Copper Pickaxe and Copper Axe. They will never appear in Merchant shop anymore
+			var copperPickaxeEntry = shopContents[ItemID.CopperPickaxe];
+			copperPickaxeEntry.Hidden = true;
+
+			var copperAxeEntry = shopContents[ItemID.CopperAxe];
+			copperAxeEntry.Hidden = true;
+
+			// Adding new Condition to Blue Flare. Now it appers just if player carries a Flare Gun in their inventory AND is in Snow biome
+			shopContents[ItemID.BlueFlare].AddCondition(ChestLoot.Condition.InSnowBiome);
 		}
 
 		public override void SaveData(NPC npc, TagCompound tag) {
