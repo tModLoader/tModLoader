@@ -8,11 +8,13 @@ namespace Terraria.ModLoader;
 public partial class ChestLoot {
 	private static Item EmptyInstance => new();
 
-	public struct Entry {
-		public readonly Item item;
+	public class Entry {
+		internal readonly Item item;
 		private readonly List<ICondition> conditions;
 		private readonly bool askingNicelyToNotAdd = false;
 		private Ref<bool> hide;
+
+		public Item Item => item;
 
 		public Dictionary<bool, List<Entry>> ChainedEntries;
 
