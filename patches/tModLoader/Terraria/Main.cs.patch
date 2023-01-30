@@ -1130,10 +1130,10 @@
  			shop[m] = new Chest();
 -			shop[m].SetupShop(m);
 +
-+			if (m > TMLLootDatabase.VanillaShopIndexToNpcType.Length)
++			if (m >= NPCLoader.shopToNPC.Length)
 +				continue;
 +
-+			int npcType = TMLLootDatabase.VanillaShopIndexToNpcType[m - 1];
++			int npcType = NPCLoader.shopToNPC[m];
 +
 +			if (m == 25) { // Painter 2 Shop Special Case
 +				shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Decor"), m);
@@ -3670,7 +3670,7 @@
  		SetNPCShopIndex(shopIndex);
 -		shop[npcShop].SetupShop(npcShop);
 +
-+		int npcType = TMLLootDatabase.VanillaShopIndexToNpcType[npcShop - 1];
++		int npcType = NPCLoader.shopToNPC[npcShop];
 +
 +		if (npcShop == 25) { // Painter 2 Shop Special Case
 +			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Decor"), npcShop);

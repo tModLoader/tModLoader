@@ -31,7 +31,7 @@ public static class NPCLoader
 	internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 	internal static readonly List<GlobalNPC> globalNPCs = new();
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-	private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
+	internal static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 	/// <summary>
 	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 	/// </summary>
@@ -82,6 +82,7 @@ public static class NPCLoader
 		shopToNPC[22] = NPCID.Golfer;
 		shopToNPC[23] = NPCID.BestiaryGirl;
 		shopToNPC[24] = NPCID.Princess;
+		shopToNPC[25] = NPCID.Painter;
 	}
 
 	internal static int ReserveNPCID()
@@ -1196,19 +1197,18 @@ public static class NPCLoader
 		return items;
 	}
 
-	private delegate void DelegatePostSetupShop(int type);
+	private delegate void DelegatePostSetupShop(string shopId, ChestLoot shopContents);
 	private static HookList HookPostSetupShop = AddHook<DelegatePostSetupShop>(g => g.PostSetupShop);
 
 	public static void PostSetupShop(int type)
 	{
-		if (type < shopToNPC.Length) {
-			type = shopToNPC[type];
-		}
-		else {
-			GetNPC(type)?.PostSetupShop();
-		}
+		GetNPC(type)?.PostSetupShop();
+	}
+
+	public static void PostSetupShop(string shopName, ChestLoot shopContents)
+	{
 		foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
-			g.PostSetupShop(type);
+			g.PostSetupShop(shopName, shopContents);
 		}
 	}
 

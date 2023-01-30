@@ -647,7 +647,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	public virtual void PostSetupShop(int type)
+	public virtual void PostSetupShop(string shopId, ChestLoot shopContents)
 	{
 	}
 

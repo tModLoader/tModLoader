@@ -48,18 +48,6 @@ namespace Terraria.ModLoader
 			NPCShops();
 		}
 
-		public static readonly int[] VanillaShopIndexToNpcType = {
-			NPCID.Merchant, NPCID.ArmsDealer, NPCID.Dryad, // 1, 2, 3
-			NPCID.Demolitionist, NPCID.Clothier, NPCID.GoblinTinkerer, // 4, 5, 6
-			NPCID.Wizard, NPCID.Mechanic, NPCID.SantaClaus, // 7, 8, 9
-			NPCID.Truffle, NPCID.Steampunker, NPCID.DyeTrader, // 10, 11, 12
-			NPCID.PartyGirl, NPCID.Cyborg, NPCID.Painter, // 13, 14, 15
-			NPCID.WitchDoctor, NPCID.Pirate, NPCID.Stylist, //16, 17, 18
-			NPCID.TravellingMerchant,						//19
-			NPCID.SkeletonMerchant, NPCID.DD2Bartender, NPCID.Golfer, //20, 21, 22
-			NPCID.BestiaryGirl, NPCID.Princess, NPCID.Painter //23, 24, 25
-		};
-
 		public void NPCShops() {
 			RegisterMerchant();
 			RegisterArmsDealer();
@@ -94,15 +82,21 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < NPCLoader.NPCCount; i++) {
 				NPCLoader.PostSetupShop(i);
 			}
+
+			var globalShopEntries = GetGlobalNpcShopEntries().ToArray();
+			foreach (var shop in npcShopByName) {
+				shop.Value.AddRange(globalShopEntries);
+				NPCLoader.PostSetupShop(shop.Key, shop.Value);
+			}
 		}
 
 		private void RegisterGlobalNpcShop() {
 			ChestLoot.Entry forestPylon = new(new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.ZonePurity)); // should be kept as "!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom"?
 			forestPylon.OnSuccess(new ChestLoot.Entry(ChestLoot.Condition.RemixWorld)
 				.OnSuccess(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => (double)(Main.player[Main.myPlayer].Center.Y / 16f) > Main.rockLayer && Main.player[Main.myPlayer].Center.Y / 16f < (Main.maxTilesY - 350)))
-				.OnSuccess(4876)))
+				.OnSuccess(ItemID.TeleportationPylonPurity)))
 				.OnFail(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => (double)(Main.player[Main.myPlayer].Center.Y / 16f) < Main.worldSurface))
-				.OnSuccess(4876));
+				.OnSuccess(ItemID.TeleportationPylonPurity));
 
 			ChestLoot.Entry cavePylon = new ChestLoot.Entry(ChestLoot.Condition.RemixWorld)
 				.OnSuccess(new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () => !Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface))
@@ -112,19 +106,21 @@ namespace Terraria.ModLoader
 
 			ChestLoot.Entry entry = new(new ChestLoot.Condition(NetworkText.Empty, () => (Main.LocalPlayer.currentShoppingSettings.PriceAdjustment > 0.8999999761581421 || Main.remixWorld) && TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()) && !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt));
 			entry.OnSuccess(forestPylon);
-			entry.OnSuccess(4920, ChestLoot.Condition.InSnowBiome);
-			entry.OnSuccess(4919, ChestLoot.Condition.InDesertBiome);
-			entry.OnSuccess(4916, ChestLoot.Condition.InBeachBiome, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.position.Y < Main.worldSurface * 16f));
-			entry.OnSuccess(4875, ChestLoot.Condition.InJungleBiome);
-			entry.OnSuccess(4916, ChestLoot.Condition.InHallowBiome);
-			entry.OnSuccess(4921, ChestLoot.Condition.InGlowshroomBiome, new ChestLoot.Condition(NetworkText.Empty, () => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < (Main.maxTilesY - 200)));
+			entry.OnSuccess(ItemID.TeleportationPylonSnow, ChestLoot.Condition.InSnowBiome);
+			entry.OnSuccess(ItemID.TeleportationPylonDesert, ChestLoot.Condition.InDesertBiome);
+			entry.OnSuccess(ItemID.TeleportationPylonOcean, ChestLoot.Condition.InBeachBiome, new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.position.Y < Main.worldSurface * 16f));
+			entry.OnSuccess(ItemID.TeleportationPylonJungle, ChestLoot.Condition.InJungleBiome);
+			entry.OnSuccess(ItemID.TeleportationPylonHallow, ChestLoot.Condition.InHallowBiome);
+			entry.OnSuccess(ItemID.TeleportationPylonMushroom, ChestLoot.Condition.InGlowshroomBiome, new ChestLoot.Condition(NetworkText.Empty, () => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < (Main.maxTilesY - 200)));
 
-			/*foreach (ModPylon pylon in PylonLoader.modPylons) {
+			/*
+			foreach (ModPylon pylon in PylonLoader.modPylons) {
 				int? pylonReturn = pylon.IsPylonForSale(Main.LocalPlayer, Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
 				if (pylonReturn.HasValue) {
 					entry.OnSuccess(pylonReturn.Value, new ChestLoot.Condition(NetworkText.Empty, () => pylon.IsPylonForSale(Main.LocalPlayer, Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421).Value > 0));
 				}
-			}*/
+			}
+			*/
 
 			RegisterGlobalNpcShop(entry);
 		}
@@ -672,7 +668,7 @@ namespace Terraria.ModLoader
 				.Add(ItemID.SillyBalloonTiedGreen, ChestLoot.Condition.BirthdayPartyIsUp)							// Silly Tied Balloon (Green)
 				.Add(ItemID.SillyBalloonTiedPurple, ChestLoot.Condition.BirthdayPartyIsUp)                          // Silly Tied Balloon (Purple)
 				.Add(ItemID.SillyBalloonTiedPink, ChestLoot.Condition.BirthdayPartyIsUp)                            // Silly Tied Balloon (Pink)
-				.Add(ItemID.FireworksLauncher,	ChestLoot.Condition.Golem)											// Celebration
+				.Add(ItemID.FireworksLauncher,	ChestLoot.Condition.DownedGolem)											// Celebration
 				.Add(ItemID.ReleaseDoves,		ChestLoot.Condition.InGraveyard)
 				.Add(ItemID.ReleaseLantern,		ChestLoot.Condition.NightLanternsUp)
 				.Add(ItemID.Football,			scoreOver500)
@@ -760,7 +756,7 @@ namespace Terraria.ModLoader
 				.Add(ItemID.Graveyard,			ChestLoot.Condition.InGraveyard)
 				.Add(ItemID.GhostManifestation, ChestLoot.Condition.InGraveyard)
 				.Add(ItemID.WickedUndead,		ChestLoot.Condition.InGraveyard)
-				.Add(ItemID.HailtotheKind,		ChestLoot.Condition.InGraveyard)
+				.Add(ItemID.HailtotheKing,		ChestLoot.Condition.InGraveyard)
 				.Add(ItemID.BloodyGoblet,		ChestLoot.Condition.InGraveyard)
 				.Add(ItemID.StillLife,			ChestLoot.Condition.InGraveyard)
 				.Add(ItemID.ChristmasTreeWallpaper, ChestLoot.Condition.Christmas)
@@ -787,9 +783,9 @@ namespace Terraria.ModLoader
 		}
 
 		private static void RegisterWitchDoctor() {
-			var styngerBoltCond = new ChestLoot.Condition(NetworkText.FromLiteral("When player has a Stynger"), () => Main.LocalPlayer.HasItem(ItemID.Stynger))
+			var styngerBoltCond = new ChestLoot.Condition(NetworkText.FromLiteral("When player has a Stynger"), () => Main.LocalPlayer.HasItem(ItemID.Stynger));
 			var stakeCondition = new ChestLoot.Condition(NetworkText.FromLiteral("When player has a Stake Launcher"), () => Main.LocalPlayer.HasItem(ItemID.StakeLauncher));
-			var wizardCondition = new ChestLoot.Condition(NetworkText.FromLiteral("If Wizard is present"), () => NPC.AnyNPCs(NPCID.Wizard))
+			var wizardCondition = new ChestLoot.Condition(NetworkText.FromLiteral("If Wizard is present"), () => NPC.AnyNPCs(NPCID.Wizard));
 
 			new ChestLoot()
 				.Add(ItemID.ImbuingStation)

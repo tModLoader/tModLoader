@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -36,6 +37,19 @@ namespace ExampleMod.Content.NPCs
 				int value = item.shopCustomPrice ?? item.value;
 				item.shopCustomPrice = value * 2;
 			}
+		}
+
+		// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
+		public override void PostSetupShop(string shopId, ChestLoot shopContents) {
+			// Style 1 check for application
+			if (shopId != TMLLootDatabase.CalculateShopName(NPCID.Merchant, "Shop"))
+				return;
+
+			// Style 2 check for application
+			if (shopId != "Terraria/Merchant/Shop")
+				return;
+
+			shopContents.Add(ModContent.ItemType<Items.Placeable.ExampleTorch>(), ChestLoot.Condition.TimeDay);
 		}
 
 		public override void SaveData(NPC npc, TagCompound tag) {
