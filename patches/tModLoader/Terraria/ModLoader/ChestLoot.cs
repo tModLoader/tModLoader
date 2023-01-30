@@ -244,15 +244,18 @@ public class ChestLoot {
 		Main.TMLLootDB.RegisterNpcShop(npcId, this, name);
 	}
 
-	private void AddCandidates(IList<Entry> entries) {
-		IReadOnlyList<(int nextTo, bool after)> candidates = putCandidates;
-		candidates = candidates.Reverse().ToList();
+	private void AddCandidates(List<Entry> entries) {
+		List<(int nextTo, bool after)> candidates = putCandidates;
+		List<Entry> candidates2 = putCandidates2;
+		candidates.Reverse();
+		candidates2.Reverse();
 
 		var a = candidates;
-		foreach ((int nextTo, bool after) in a) {
-			int index = items.FindIndex(x => x.item.type.Equals(nextTo));
+		for (int i = 0; i < a.Count; i++) {
+			(int nextTo, bool after) = a[i];
+			int index = entries.FindIndex(x => x.item.type.Equals(nextTo));
 			if (index != -1) {
-				entries.Insert(index + after.ToInt(), putCandidates2[index]);
+				entries.Insert(index + after.ToInt(), candidates2[i]);
 			}
 		}
 	}
