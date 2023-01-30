@@ -51,9 +51,6 @@ namespace ExampleMod.Content.NPCs
 			if (shopId != "Terraria/Merchant/Shop")
 				return;
 
-			// Get Merchant shop content, so we can add items in it.
-			var merchantShopContents = Main.TMLLootDB.GetNpcShop(TMLLootDatabase.CalculateShopName(NPCID.Merchant, "Shop"));
-
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
 			var complexCondition = new ChestLoot.Entry(
 				ChestLoot.Condition.HappyWindyDay,
@@ -72,7 +69,7 @@ namespace ExampleMod.Content.NPCs
 			//complexCondition.OnFail(ItemID.RedPotion, ChestLoot.Condition.ForTheWorthy);
 
 			// Finally, add the complex condition in shop contents.
-			merchantShopContents.Add(complexCondition);
+			shopContents.Add(complexCondition);
 		}
 
 		// PostSetupShop hook is best when it comes to modifying existing items.
