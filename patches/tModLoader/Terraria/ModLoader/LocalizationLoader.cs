@@ -312,7 +312,7 @@ public static class LocalizationLoader
 		}
 
 		Dictionary<GameCulture, List<LocalizationFile>> localizationFilesByCulture = new();
-		Dictionary<string, string> localizationFileContentsByPath = new(); // <full filename , file contents>
+		Dictionary<string, string> localizationFileContentsByPath = new(); // <full filename , file contents>. Actual files for this mod.
 
 		// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
 		foreach (var inputMod in mods) {
@@ -321,29 +321,36 @@ public static class LocalizationLoader
 				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 				string translationFileContents = streamReader.ReadToEnd();
-				bool fileExists = localizationFileContentsByPath.ContainsKey(translationFile.Name);
-
-				if (!fileExists)
-					localizationFileContentsByPath[translationFile.Name] = translationFileContents;
-				// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
-
 				(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
+				string fixedFileName = translationFile.Name;
+				if(culture == GameCulture.DefaultCulture && !fixedFileName.Contains("en-US"))
+				{
+					fixedFileName = Path.Combine(Path.GetDirectoryName(fixedFileName), "en-US.hjson").Replace("\\", "/");
+				}
+
 				if (!localizationFilesByCulture.TryGetValue(culture, out var fileList))
 					localizationFilesByCulture[culture] = fileList = new();
 
 				if (inputMod == mod)
+				{
 					desiredCultures.Add(culture);
+
+					// Check translationFile.Name instead of fixedFileName since this is used for modified and file cleanup.
+					if (!localizationFileContentsByPath.ContainsKey(translationFile.Name))
+						localizationFileContentsByPath[translationFile.Name] = translationFileContents;
+					// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
+				}
 
 				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
 				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
-				if (!fileExists)
-					fileList.Add(new(translationFile.Name, prefix, entries));
+				if (!fileList.Any(x => x.path == fixedFileName))
+					fileList.Add(new(fixedFileName, prefix, entries));
 				else {
 					// If file exists, then we are merging.
 					// Resulting entries will have new entries added
 					// Comments will be taken from 1st loaded english
-					LocalizationFile localizationFile = fileList.First(x => x.path == translationFile.Name);
+					LocalizationFile localizationFile = fileList.First(x => x.path == fixedFileName);
 					foreach (var entry in entries) {
 						if (!localizationFile.Entries.Exists(x => x.key == entry.key)) {
 							localizationFile.Entries.Add(entry);
@@ -382,7 +389,12 @@ public static class LocalizationLoader
 
 		// Update target culture lang files based on English
 		foreach (var culture in targetCultures) {
-			var localizationsForCulture = localizationFilesByCulture[culture].SelectMany(f => f.Entries).ToDictionary(e => e.key, e => e.value) ?? new();
+			IEnumerable<LocalizationEntry> localizationEntriesForCulture = localizationFilesByCulture[culture].SelectMany(f => f.Entries);
+			Dictionary<string, string> localizationsForCulture = new();
+			foreach (var localizationEntry in localizationEntriesForCulture)
+			{
+				localizationsForCulture[localizationEntry.key] = localizationEntry.value;
+			}
 
 			foreach (var baseFile in baseLocalizationFiles) {
 				string hjsonContents = LocalizationFileToHjsonText(baseFile, localizationsForCulture);
@@ -401,19 +413,16 @@ public static class LocalizationLoader
 			}
 		}
 
-		// Clean up orphaned non-default language files, if any.
-		// TODO: This should apply in more cases, expand to other situations once feature working well. Currently translation mods won't remove extra files.
-		if (specificCulture != null) {
-			var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
-			var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
+		// Clean up orphaned language files, if any. This should remove any hjson not present in english, and any english files without "en-US"
+		var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
+		var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
 
-			foreach (var name in orphanedFiles) {
-				string originalPath = Path.Combine(sourceFolder, name);
-				string newPath = originalPath + ".legacy";
+		foreach (var name in orphanedFiles) {
+			string originalPath = Path.Combine(sourceFolder, name);
+			string newPath = originalPath + ".legacy";
 
-
+			if(File.Exists(originalPath)) // File might have already been deleted
 				File.Move(originalPath, newPath);
-			}
 		}
 	}
 
