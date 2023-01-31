@@ -15,8 +15,8 @@ namespace ExampleMod.Content.Items.Consumables
 	// This item, when crafted, stores the players name, and only lets other players open it. Bags with the same stored name aren't stackable
 	public class ExampleCanStackItem : ModItem
 	{
-		// We set this when the item is crafted. In other contexts, this will be the empty string ""
-		public string craftedPlayerName = string.Empty;
+		// We set this when the item is crafted. In other contexts, this will be null
+		public string craftedPlayerName;
 
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 3;
@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override bool CanRightClick() {
 			// The bag can't be opened if it wasn't crafted
-			if (craftedPlayerName == string.Empty) {
+			if (craftedPlayerName is null) {
 				return false;
 			}
 
@@ -45,21 +45,19 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// We have to cast the second item to the class (This is safe to do as the hook is only called on items of the same type)
 			var name1 = craftedPlayerName;
-			var name2 = ((ExampleCanStackItem)item2.ModItem).craftedPlayerName;
+			var name2 = (item2.ModItem as ExampleCanStackItem).craftedPlayerName;
 
 			// let items which have been spawned in and not assigned to a player, to stack with other bags the the current player owns
 			// This lets you craft multiple items into the mouse-held stack
-			if (name1 == string.Empty) name1 = Main.LocalPlayer.name;
-			if (name2 == string.Empty) name2 = Main.LocalPlayer.name;
+			name1 ??= Main.LocalPlayer.name;
+			name2 ??= Main.LocalPlayer.name;
 
 			return name1 == name2;
 		}
 
-		public override void OnStack(Item decrease, int numberToBeTransfered) {
+		public override void OnStack(Item source, int numToTransfer) {
 			// Combined with CanStack above, this ensures that empty spawned items can combine with bags made by the current player
-			if (craftedPlayerName == string.Empty) {
-				craftedPlayerName = ((ExampleCanStackItem)decrease.ModItem).craftedPlayerName;
-			}
+			craftedPlayerName ??= (source.ModItem as ExampleCanStackItem).craftedPlayerName;
 		}
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
