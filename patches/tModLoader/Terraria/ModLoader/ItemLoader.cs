@@ -1451,7 +1451,7 @@ public static class ItemLoader
 
 	/// <summary>
 	/// Stacks <paramref name="destination"/> onto <paramref name="source"/><br/>
-	/// This method should not be called unless <see cref="CanStack(Item, Item)"/> return true.  See: <see cref="TryStackItems(Item, Item, out int, bool)"/>
+	/// This method should not be called unless <see cref="CanStack(Item, Item)"/> returns true.  See: <see cref="TryStackItems(Item, Item, out int, bool)"/>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
