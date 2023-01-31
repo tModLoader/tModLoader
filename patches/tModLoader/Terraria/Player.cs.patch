@@ -4637,7 +4637,7 @@
 +				/*
  				num = (int)((float)num * num4);
 +				*/
-+				modifiers.InitialDamage += num4 - 1;
++				modifiers.InitialDamage *= num4;
  			}
  
  			if (sItem.type == 671) {
@@ -4678,7 +4678,7 @@
 +			modifiers.ArmorPenetration += GetWeaponArmorPenetration(sItem);
 +			modifiers.ScalingArmorPenetration += armorPenetrationPercent;
 +			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref modifiers);
-+			var strike = modifiers.ToStrike(sItem.DamageType, originalDamage, flag3, knockBack, direction);
++			var strike = modifiers.ToStrike(sItem.DamageType, variedDamage, flag3, knockBack, direction);
 +
  			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
 -			int dmgDone = (int)nPC.StrikeNPC(num6, knockBack, direction, flag3);

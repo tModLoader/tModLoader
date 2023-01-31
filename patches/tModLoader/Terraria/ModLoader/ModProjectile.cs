@@ -234,9 +234,26 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
 	/// </summary>
-	/// <param name="modifier">The modifier to apply to the projectile base damage</param>
-	public virtual void ModifyDamageScaling(ref StatModifier modifier)
+	/// <param name="damage">The modifier to apply to the projectile base damage</param>
+	/// <param name="crit">Set to true to make the projectile crit</param>
+	/// <param name="knockback">The modifier to apply to the projectile base knockback</param>
+	public virtual void ModifyDamageStats(ref StatModifier damage, ref bool crit, ref StatModifier knockback)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to spawn projectiles or other things which happen on-hit, using the per-strike calculated damage of the projectile, before target (NPC) resistances are applied. <br/>
+	/// Exists so that multiple proc effects don't interfere with each-other. <br/>
+	/// Vanilla uses this for whip tag damage, tag buffs and some on-hit projectiles. <br/>
+	/// <br/>
+	/// If you need to add a crit or knockback bonus effect, consider <see cref="ModifyDamageStats"/> <br/>
+	/// If you need to add an armor penetration bonus effect, consider <see cref="ModifyHitNPC"/> <br/>
+	/// </summary>
+	/// <param name="baseDamage">The calculated base damage of the projectile</param>
+	/// <returns>Bonus damage to be applied to the target</returns>
+	public virtual float ApplyDamageProcEffects(float baseDamage)
+	{
+		return 0;
 	}
 
 	/// <summary>

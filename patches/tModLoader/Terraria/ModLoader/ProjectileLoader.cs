@@ -437,16 +437,32 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegateModifyDamageScaling(Projectile projectile, ref StatModifier modifier);
-	private static HookList HookModifyDamageScaling = AddHook<DelegateModifyDamageScaling>(g => g.ModifyDamageScaling);
+	private delegate void DelegateModifyDamageStats(Projectile projectile, ref StatModifier damage, ref bool crit, ref StatModifier knockback);
+	private static HookList HookModifyDamageStats = AddHook<DelegateModifyDamageStats>(g => g.ModifyDamageStats);
 
-	public static void ModifyDamageScaling(Projectile projectile, ref StatModifier modifier)
+	public static void ModifyDamageStats(Projectile projectile, ref StatModifier damage, ref bool crit, ref StatModifier knockback)
 	{
-		projectile.ModProjectile?.ModifyDamageScaling(ref modifier);
+		projectile.ModProjectile?.ModifyDamageStats(ref damage, ref crit, ref knockback);
 
-		foreach (GlobalProjectile g in HookModifyDamageScaling.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyDamageScaling(projectile, ref modifier);
+		foreach (GlobalProjectile g in HookModifyDamageStats.Enumerate(projectile.globalProjectiles)) {
+			bool c = false;
+			g.ModifyDamageStats(projectile, ref damage, ref c, ref knockback);
+			crit |= c;
 		}
+	}
+
+	private delegate float DelegateApplyDamageProcEffects(Projectile projectile, float damage);
+	private static HookList HookApplyDamageProcEffects = AddHook<DelegateApplyDamageProcEffects>(g => g.ApplyDamageProcEffects);
+
+	public static float ApplyDamageProcEffects(Projectile projectile, float baseDamage)
+	{
+		float bonusDamage = projectile.ModProjectile?.ApplyDamageProcEffects(baseDamage) ?? 0;
+
+		foreach (GlobalProjectile g in HookApplyDamageProcEffects.Enumerate(projectile.globalProjectiles)) {
+			bonusDamage += g.ApplyDamageProcEffects(projectile, baseDamage);
+		}
+
+		return bonusDamage;
 	}
 
 	private static HookList HookCanHitNPC = AddHook<Func<Projectile, NPC, bool?>>(g => g.CanHitNPC);

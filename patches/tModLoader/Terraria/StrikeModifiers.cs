@@ -20,7 +20,7 @@ public struct StrikeModifiers
 	/// Only use this when the effect is unique to this specific strike.<br/>
 	/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
 	/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
-	/// For effects which apply to all dealt by a projectile, consider using <see cref="GlobalProjectile.ModifyDamageScaling"/> instead. <br/>
+	/// For effects which apply to all dealt by a projectile, consider using <see cref="GlobalProjectile.ModifyDamageStats"/> instead. <br/>
 	/// <br/>
 	/// Used by vanilla for banners, parry damage, and cultist projectile resistances, weapons which scale based on enemy health, etc
 	/// </summary>
@@ -39,6 +39,8 @@ public struct StrikeModifiers
 	private float _armorPenetration;
 	/// <summary>
 	/// Flat defense reduction. Applies after ScalingArmorPenetration. <br/>
+	/// Add to give bonus flat armor penetration. <br/>
+	/// Do not subtract or multiply, consider altering <see cref="Defense"/> or <see cref="ScalingArmorPenetration"/> instead.
 	/// <br/>
 	/// Used by the <see cref="Projectile.ArmorPenetration"/>, <see cref="Item.ArmorPenetration"/> and <see cref="Player.GetTotalArmorPenetration"/> stats.
 	/// </summary>

@@ -377,6 +377,15 @@
  		ownerHitCheck = false;
  		hide = false;
  		lavaWet = false;
+@@ -1167,6 +_,8 @@
+ 			magic = true;
+ 		}
+ 		else if (type == 85) {
++			ArmorPenetration = 15; // Added by TML
++
+ 			width = 6;
+ 			height = 6;
+ 			aiStyle = 193;
 @@ -1859,6 +_,8 @@
  			ignoreWater = true;
  		}
@@ -395,6 +404,17 @@
  			width = 8;
  			height = 8;
  			aiStyle = 36;
+@@ -4245,6 +_,10 @@
+ 			ignoreWater = true;
+ 		}
+ 		else if (type == 410) {
++			 // Added by TML.
++			if (Main.remixWorld)
++				ArmorPenetration = 20;
++
+ 			width = 14;
+ 			height = 14;
+ 			aiStyle = 72;
 @@ -4960,6 +_,8 @@
  			netImportant = true;
  		}
@@ -444,7 +464,7 @@
  				coldDamage = true;
  		}
  		else if (type == 916) {
-+			ArmorPenetration = 25; // Added by TML.
++			ArmorPenetration = 50; // Added by TML.
 +
  			width = 18;
  			height = 18;
@@ -476,6 +496,33 @@
  			width = 56;
  			height = 64;
  			aiStyle = 177;
+@@ -8224,6 +_,8 @@
+ 			hide = true;
+ 		}
+ 		else if (type == 977) {
++			ArmorPenetration = 5; // Added by TML
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
+@@ -8250,6 +_,8 @@
+ 			coldDamage = true;
+ 		}
+ 		else if (type == 974) {
++			ArmorPenetration = 5; // Added by TML
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 188;
+@@ -8279,6 +_,8 @@
+ 			timeLeft = 30;
+ 		}
+ 		else if (type == 976) {
++			ArmorPenetration = 20; // Added by TML
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
 @@ -8643,9 +_,17 @@
  			friendly = true;
  			penetrate = -1;
@@ -656,7 +703,7 @@
  									if (type == 604)
  										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
  
-+									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType);
++									var strikeModifiers = nPC.GetIncomingStrikeModifiers(DamageType);
  									float num3 = knockBack;
  									bool flag12 = false;
 +
@@ -669,6 +716,15 @@
  									float armorPenetrationPercent = 0f;
  									bool flag13 = false;
  									switch (type) {
+@@ -10027,7 +_,7 @@
+ 										case 189:
+ 											num4 += 10;
+ 											if (flag && Main.player[owner].strongBees)
+-												num4 += 5;
++												strikeModifiers.ArmorPenetration += 5; //num4 += 5
+ 											break;
+ 										case 723:
+ 										case 724:
 @@ -10058,12 +_,14 @@
  										case 976:
  											num4 += 20;
@@ -684,25 +740,27 @@
  									}
  
  									if (flag13) {
-@@ -10071,9 +_,14 @@
+@@ -10071,9 +_,13 @@
  										return;
  									}
  
--									int num5 = (int)((float)damage * num);
-+
-+									var damageModifier = StatModifier.Default * num;
-+									ProjectileLoader.ModifyDamageScaling(this, ref damageModifier);
-+									// TODO, finish this..., maybe incorporate knockback?
-+									int num5 = damageModifier.ApplyTo(damage);
-+
++									/*
+ 									int num5 = (int)((float)damage * num);
++									*/
++									var damageModifier = StatModifier.Default * num; // num turned into a multiplier
++									float num5 = 1000; // extract multipliers
  									int num6 = 0;
 -									if (type > 0 && type < ProjectileID.Count && ProjectileID.Sets.StardustDragon[type]) {
 +									if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
  										float value = (scale - 1f) * 100f;
  										value = Utils.Clamp(value, 0f, 50f);
  										num5 = (int)((float)num5 * (1f + value * 0.23f));
-@@ -10106,14 +_,25 @@
- 										num5 += 5;
+@@ -10103,17 +_,28 @@
+ 									}
+ 
+ 									if (flag && type == 189 && Main.player[owner].strongBees)
+-										num5 += 5;
++										damageModifier.Base += 5; //num5 += 5;
  
  									if (flag) {
 +										/*
@@ -727,6 +785,43 @@
  
  										int num12 = type;
  										if ((uint)(num12 - 688) <= 2u) {
+@@ -10127,12 +_,21 @@
+ 										}
+ 									}
+ 
++									damageModifier *= num5 / 1000;
++									var knockbackModifier = StatModifier.Default * (num3 / knockBack);
++									ProjectileLoader.ModifyDamageStats(this, ref damageModifier, ref flag12, ref knockbackModifier);
++									num5 = damageModifier.ApplyTo(damage);
++									num3 = knockbackModifier.ApplyTo(knockBack);
++
++									/*
+ 									float num13 = 1f;
+ 									if (type == 864)
+ 										num13 = 0.75f;
+ 
+ 									if (type == 688 || type == 689 || type == 690)
+ 										num13 /= 2f;
++									*/
++									float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];
+ 
+ 									if (flag && (minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type])) {
+ 										bool flag14 = false;
+@@ -10228,8 +_,14 @@
+ 									}
+ 
+ 									num6 = (int)((float)num6 * num13);
++									ProjectileLoader.ApplyDamageProcEffects(this, num5);
+ 									num5 += num6;
++									/*
+ 									int num19 = ((!flag) ? Main.DamageVar(num5) : Main.DamageVar(num5, Main.player[owner].luck));
++									*/
++									int variedDamage = ((!flag) ? Main.DamageVar(num5) : Main.DamageVar(num5, Main.player[owner].luck));
++									float num19 = 1000; // to reduce patches, set num19 to 1000, and then turn it into a multiplier later
++
+ 									if (type == 1002)
+ 										num19 /= 2;
+ 
 @@ -10455,9 +_,12 @@
  									}
  
@@ -736,28 +831,20 @@
  										if (num27 > 0 && Main.player[owner].HasNPCBannerBuff(num27))
  											num19 = ((!Main.expertMode) ? ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].NormalDamageDealt)) : ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].ExpertDamageDealt)));
 +										*/
-+										Main.player[owner].ApplyBannerOffenseBuff(nPC, ref modifiers);
++										Main.player[owner].ApplyBannerOffenseBuff(nPC, ref strikeModifiers);
  									}
  
  									if (Main.expertMode) {
-@@ -10468,8 +_,8 @@
+@@ -10468,7 +_,7 @@
  											num19 = (int)((double)num19 * 0.75);
  									}
  
 -									if (Main.netMode != 2 && nPC.type == 439 && type >= 0 && type <= ProjectileID.Count && ProjectileID.Sets.CultistIsResistantTo[type])
--										num19 = (int)((float)num19 * 0.75f);
 +									if (Main.netMode != 2 && nPC.type == 439 && type >= 0 && ProjectileID.Sets.CultistIsResistantTo[type])
-+										modifiers.InitialDamage *= 0.75f; //num19 = (int)((float)num19 * 0.75f);
+ 										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
- 										ai[0] = 25f;
-@@ -10599,11 +_,15 @@
- 									}
- 
- 									if (flag && melee && Main.player[owner].parryDamageBuff && !ProjectileID.Sets.DontApplyParryDamageBuff[type]) {
--										num19 *= 5;
-+										modifiers.InitialDamage *= 5; //num19 *= 5;
- 										Main.player[owner].parryDamageBuff = false;
+@@ -10604,6 +_,10 @@
  										Main.player[owner].ClearBuff(198);
  									}
  
@@ -787,11 +874,11 @@
  											num3 *= 0.5f;
  									}
  
-+									// Patching, locals which change here also change in the next patch
-+									modifiers.ArmorPenetration += ArmorPenetration;
-+									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
-+									var strike = modifiers.ToStrike(DamageType, num19, flag12, num3, num34);
++									strikeModifiers.ArmorPenetration = ArmorPenetration;
++									strikeModifiers.ScalingArmorPenetration += armorPenetrationPercent;
++									strikeModifiers.InitialDamage *= num19 / 1000;
++									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref strikeModifiers);
++									var strike = strikeModifiers.ToStrike(DamageType, variedDamage, flag12, num3, num34);
 +
 +									goto VanillaOnHitEffectsStart;
 +
@@ -821,7 +908,7 @@
  											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
 +										*/
 +										if (ModNet.AllowVanillaClients)
-+											NetMessage.SendData(28, -1, -1, null, i, modifiers.InitialDamage.ApplyTo(num19), num3, num34, strike.Crit ? 1 : 0);
++											NetMessage.SendData(28, -1, -1, null, i, strikeModifiers.InitialDamage.ApplyTo(variedDamage), num3, num34, strike.Crit ? 1 : 0);
 +										else
 +											NetMessage.SendStrikeNPCDirect(nPC, strike);
  									}
