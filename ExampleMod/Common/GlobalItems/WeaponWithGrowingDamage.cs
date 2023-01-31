@@ -144,15 +144,24 @@ namespace ExampleMod.Common.GlobalItems
 	}
 	public class SnowBallShop : GlobalNPC
 	{
-		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type != ModContent.NPCType<ExamplePerson>()) {
+		public override void SetupShop(string shopId, ChestLoot shopContents) {
+			if (shopId != TMLLootDatabase.CalculateShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
 				return;
 			}
 
-			Item item = shop.item[nextSlot++];
-			item.SetDefaults(ItemID.Snowball);
-			if (item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
-				weapon.GainExperience(item, 2); // can buy snowballs with 2xp!
+			shopContents.Add(ItemID.Snowball);
+		}
+
+		public override void ModifyActiveShop(NPC npc, string shopId, Item[] items) {
+			if (shopId != TMLLootDatabase.CalculateShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
+				return;
+			}
+
+			for (int i = 0; i < items.Length; i++) {
+				Item item = items[i];
+				if (item.type == ItemID.Snowball && item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
+					weapon.GainExperience(item, 2); // can buy snowballs with 2xp!
+				}
 			}
 		}
 	}

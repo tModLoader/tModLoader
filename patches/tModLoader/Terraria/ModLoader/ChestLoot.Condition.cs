@@ -95,6 +95,9 @@ public partial class ChestLoot {
 		public static readonly Condition DownedMartians = new(NetworkText.FromLiteral("Martians are defeated"), () => NPC.downedMartians);
 		public static readonly Condition DownedFrost = new(NetworkText.FromLiteral("Frost Legion is defeated"), () => NPC.downedFrost);
 		public static readonly Condition HappyEnough = new(NetworkText.FromLiteral("Is Happy enough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
+
+		public static readonly Condition InExpertMode = new(NetworkText.FromLiteral("In Expert mode"), () => Main.expertMode);
+		public static readonly Condition InMasterMode = new(NetworkText.FromLiteral("In Master mode"), () => Main.masterMode);
 		#endregion
 
 		private readonly NetworkText DescriptionText;
