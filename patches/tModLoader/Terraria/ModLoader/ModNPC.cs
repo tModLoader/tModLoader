@@ -704,17 +704,6 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 	}
 
-	// TODO: remove some day
-	/// <summary>
-	/// Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
-	/// </summary>
-	/// <param name="shop"></param>
-	/// <param name="nextSlot"></param>
-	[Obsolete]
-	public virtual void SetupShop(Chest shop, ref int nextSlot)
-	{
-	}
-
 	public virtual void SetupShop()
 	{
 	}
@@ -723,6 +712,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 		return null;
 	}
+
 	public virtual void PostSetupShop()
 	{
 	}
