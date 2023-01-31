@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"class_tag_serializer.html#a5f5b3ae8ee7386883a6c6e9224a71510":[2,0,1130,1],
+"class_tally_counter_info_display.html":[2,0,1131],
 "class_tally_counter_info_display.html#a760d62fe493673620e4b0e0aeac90a06":[2,0,1131,0],
 "class_tcp_address.html":[2,0,1132],
 "class_tcp_socket.html":[2,0,1133],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[2,0,1327,1],
 "class_unloaded_chest.html#aedbfa84a1f9064e56981b813926cf047":[2,0,1327,0],
 "class_unloaded_dresser.html":[2,0,1328],
-"class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461":[2,0,1328,0],
-"class_unloaded_global_item.html":[2,0,1329],
-"class_unloaded_global_item.html#a4924c96de0a247d8e257958023cbbd2c":[2,0,1329,1]
+"class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461":[2,0,1328,0]
 };

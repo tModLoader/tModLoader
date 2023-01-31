@@ -171,14 +171,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRightClick<
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShoot</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a76135a35e07002d77e9a66a4e553235b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each GlobalItem.CanShoot hook, then <a class="el" href="class_mod_item.html#a11bcfb78762023a6f3279e976b4363f6" title="Allows you to prevent this item from shooting a projectile on use. Returns true by default.">ModItem.CanShoot</a>, until one of them returns false. If all of them return true, returns true. <br /></td></tr>
 <tr class="separator:a76135a35e07002d77e9a66a4e553235b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d2e2e318fd671db3bc8acf26855644"><td class="memItemLeft" align="right" valign="top"><a id="aa9d2e2e318fd671db3bc8acf26855644" name="aa9d2e2e318fd671db3bc8acf26855644"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanStack</b> (<a class="el" href="class_item.html">Item</a> increase, <a class="el" href="class_item.html">Item</a> decrease)</td></tr>
-<tr class="memdesc:aa9d2e2e318fd671db3bc8acf26855644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns false if item prefixes don't match. Then calls all <a class="el" href="class_item_loader.html#aa9d2e2e318fd671db3bc8acf26855644" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">GlobalItem.CanStack</a> hooks until one returns false then <a class="el" href="class_mod_item.html#a796c4a57b17ae928413840f7d3b52406" title="Allows you to decide if this item is allowed to stack with another of its type.  This is only called ...">ModItem.CanStack</a>. Returns whether any of the hooks returned false. <br /></td></tr>
-<tr class="separator:aa9d2e2e318fd671db3bc8acf26855644"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82bbecbee6b20274b5de9dfcd74f7981"><td class="memItemLeft" align="right" valign="top"><a id="a82bbecbee6b20274b5de9dfcd74f7981" name="a82bbecbee6b20274b5de9dfcd74f7981"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanStackInWorld</b> (<a class="el" href="class_item.html">Item</a> increase, <a class="el" href="class_item.html">Item</a> decrease)</td></tr>
-<tr class="memdesc:a82bbecbee6b20274b5de9dfcd74f7981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_item_loader.html#a82bbecbee6b20274b5de9dfcd74f7981" title="Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld....">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_mod_item.html#aac26141b463d8870804435370da33c09" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false. <br /></td></tr>
-<tr class="separator:a82bbecbee6b20274b5de9dfcd74f7981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0576a329e0d90fd0ee4f09b3f1a7f871"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871">CanStack</a> (<a class="el" href="class_item.html">Item</a> destination, <a class="el" href="class_item.html">Item</a> source)</td></tr>
+<tr class="memdesc:a0576a329e0d90fd0ee4f09b3f1a7f871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns false if item prefixes don't match. Then calls all <a class="el" href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">GlobalItem.CanStack</a> hooks until one returns false then <a class="el" href="class_mod_item.html#abe74a706630de7e7c6f60dd5f6855f99" title="Allows you to decide if this item is allowed to stack with another of its type.  This is only called ...">ModItem.CanStack</a>. Returns whether any of the hooks returned false.  <a href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871">More...</a><br /></td></tr>
+<tr class="separator:a0576a329e0d90fd0ee4f09b3f1a7f871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707a1a9f2047897d335563936b8d0f49"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a707a1a9f2047897d335563936b8d0f49">CanStackInWorld</a> (<a class="el" href="class_item.html">Item</a> destination, <a class="el" href="class_item.html">Item</a> source)</td></tr>
+<tr class="memdesc:a707a1a9f2047897d335563936b8d0f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_item_loader.html#a707a1a9f2047897d335563936b8d0f49" title="Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld....">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_mod_item.html#a453b418e0a6eada1997713d3c2123ac6" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false.  <a href="class_item_loader.html#a707a1a9f2047897d335563936b8d0f49">More...</a><br /></td></tr>
+<tr class="separator:a707a1a9f2047897d335563936b8d0f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ce424d63bcd7238590890dcb9035c23"><td class="memItemLeft" align="right" valign="top"><a id="a9ce424d63bcd7238590890dcb9035c23" name="a9ce424d63bcd7238590890dcb9035c23"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a9ce424d63bcd7238590890dcb9035c23"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -339,6 +337,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>OnPickup</b> (
 <tr class="memitem:a0c52429ca1c61e6eea80317037cdb40f"><td class="memItemLeft" align="right" valign="top"><a id="a0c52429ca1c61e6eea80317037cdb40f" name="a0c52429ca1c61e6eea80317037cdb40f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnResearched</b> (<a class="el" href="class_item.html">Item</a> item, bool fullyResearched)</td></tr>
 <tr class="separator:a0c52429ca1c61e6eea80317037cdb40f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f09be3aef82ed03e450cb74979ecde"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a96f09be3aef82ed03e450cb74979ecde">OnStack</a> (<a class="el" href="class_item.html">Item</a> destination, <a class="el" href="class_item.html">Item</a> source, int numToTransfer)</td></tr>
+<tr class="memdesc:a96f09be3aef82ed03e450cb74979ecde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the <a class="el" href="class_item_loader.html#a96f09be3aef82ed03e450cb74979ecde" title="Calls the GlobalItem.OnStack hooks in destination , then the ModItem.OnStack hook in destination   On...">GlobalItem.OnStack</a> hooks in <em>destination</em> , then the <a class="el" href="class_mod_item.html#a05cfd3ac2d68987974690b1d68620e6d" title="Allows you to make things happen when items stack together.  This hook is called on item being stacke...">ModItem.OnStack</a> hook in <em>destination</em> <br  />
+ OnStack is called before the items are transferred from <em>source</em>  to <em>destination</em>   <a href="class_item_loader.html#a96f09be3aef82ed03e450cb74979ecde">More...</a><br /></td></tr>
+<tr class="separator:a96f09be3aef82ed03e450cb74979ecde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed7348aa006ba8f972bc0b35ec606590"><td class="memItemLeft" align="right" valign="top"><a id="aed7348aa006ba8f972bc0b35ec606590" name="aed7348aa006ba8f972bc0b35ec606590"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PickAmmo</b> (<a class="el" href="class_item.html">Item</a> weapon, <a class="el" href="class_item.html">Item</a> ammo, <a class="el" href="class_player.html">Player</a> player, ref int type, ref float speed, ref <a class="el" href="struct_stat_modifier.html">StatModifier</a> damage, ref float knockback)</td></tr>
 <tr class="memdesc:aed7348aa006ba8f972bc0b35ec606590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_mod_item.html#ac1dd6ef05783b496685b5e14c2c33d9e" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">ModItem.PickAmmo</a>, then all <a class="el" href="class_item_loader.html#aed7348aa006ba8f972bc0b35ec606590" title="Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.">GlobalItem.PickAmmo</a> hooks. <br /></td></tr>
@@ -404,22 +406,19 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMatch</b> (
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Shoot</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_entity_source___item_use___with_ammo.html">EntitySource_ItemUse_WithAmmo</a> source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool defaultResult=true)</td></tr>
 <tr class="memdesc:a89e80c1a38407d62ae36654f4a49c623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each <a class="el" href="class_item_use_style_i_d.html#aedf57c54df1f32daa0adea4f1a46580d" title="Item is held in front of player pointing towards mouse. Item sprite should be oriented horizontally w...">GlobalItem.Shoot</a> hook then, if none of them returns false, calls the <a class="el" href="class_mod_item.html#abafa3a6472a43dbda93aa6ec0da7705f" title="Allows you to modify this item&#39;s shooting mechanism. Return false to prevent vanilla&#39;s shooting code ...">ModItem.Shoot</a> hook and returns its value. <br /></td></tr>
 <tr class="separator:a89e80c1a38407d62ae36654f4a49c623"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89881e7623d9640529bd47bc8956fd24"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a89881e7623d9640529bd47bc8956fd24">SplitStack</a> (<a class="el" href="class_item.html">Item</a> increase, <a class="el" href="class_item.html">Item</a> decrease, int numToTransfer)</td></tr>
-<tr class="memdesc:a89881e7623d9640529bd47bc8956fd24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when splitting a stack of items.  <a href="class_item_loader.html#a89881e7623d9640529bd47bc8956fd24">More...</a><br /></td></tr>
-<tr class="separator:a89881e7623d9640529bd47bc8956fd24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a419b3b84ff2826d607691b64495288dd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a419b3b84ff2826d607691b64495288dd">StackItems</a> (<a class="el" href="class_item.html">Item</a> increase, <a class="el" href="class_item.html">Item</a> decrease, out int numTransfered, bool infiniteSource=false, int? numToTransfer=null)</td></tr>
-<tr class="memdesc:a419b3b84ff2826d607691b64495288dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks <em>increase</em>  and <em>decrease</em>  items. <br  />
- Calls all <a class="el" href="class_mod_item.html#a0dc6360aa62781352d2089dd347887c1" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">GlobalItem.OnStack</a> and <a class="el" href="class_mod_item.html#a0dc6360aa62781352d2089dd347887c1" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if <em>increase</em> .stack is less than <em>increase</em> .maxStack.  <a href="class_item_loader.html#a419b3b84ff2826d607691b64495288dd">More...</a><br /></td></tr>
-<tr class="separator:a419b3b84ff2826d607691b64495288dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cdc9f272e0596548b0e08ed1bb54acd"><td class="memItemLeft" align="right" valign="top"><a id="a2cdc9f272e0596548b0e08ed1bb54acd" name="a2cdc9f272e0596548b0e08ed1bb54acd"></a>
-static <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TransferWithLimit</b> (<a class="el" href="class_item.html">Item</a> decrease, int limit)</td></tr>
-<tr class="separator:a2cdc9f272e0596548b0e08ed1bb54acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a830b7eac8ff99306e0c2775779525ce1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a830b7eac8ff99306e0c2775779525ce1">TryStackItems</a> (<a class="el" href="class_item.html">Item</a> increase, <a class="el" href="class_item.html">Item</a> decrease, out int numTransfered, bool infiniteSource=false)</td></tr>
-<tr class="memdesc:a830b7eac8ff99306e0c2775779525ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Short-circuits if <a class="el" href="class_item_loader.html#aa9d2e2e318fd671db3bc8acf26855644" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">CanStack</a> hooks don't return true. <br  />
- Returns the result of the initial check. <br  />
- <br  />
-   <a href="class_item_loader.html#a830b7eac8ff99306e0c2775779525ce1">More...</a><br /></td></tr>
-<tr class="separator:a830b7eac8ff99306e0c2775779525ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4680c054592574cc3b5e86176d42d4b9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a4680c054592574cc3b5e86176d42d4b9">SplitStack</a> (<a class="el" href="class_item.html">Item</a> destination, <a class="el" href="class_item.html">Item</a> source, int numToTransfer)</td></tr>
+<tr class="memdesc:a4680c054592574cc3b5e86176d42d4b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when splitting a stack of items.  <a href="class_item_loader.html#a4680c054592574cc3b5e86176d42d4b9">More...</a><br /></td></tr>
+<tr class="separator:a4680c054592574cc3b5e86176d42d4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac409567b93a7331273b6d1d2259fbe6d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#ac409567b93a7331273b6d1d2259fbe6d">StackItems</a> (<a class="el" href="class_item.html">Item</a> destination, <a class="el" href="class_item.html">Item</a> source, out int numTransferred, bool infiniteSource=false, int? numToTransfer=null)</td></tr>
+<tr class="memdesc:ac409567b93a7331273b6d1d2259fbe6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks <em>destination</em>  onto <em>source</em> <br  />
+ This method should not be called unless <a class="el" href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">CanStack(Item, Item)</a> returns true. See: <a class="el" href="class_item_loader.html#a3d0c6cdead9fd0edcb35f3e7d022ce73" title="Stacks source  onto destination  if CanStack permits the transfer">TryStackItems(Item, Item, out int, bool)</a>  <a href="class_item_loader.html#ac409567b93a7331273b6d1d2259fbe6d">More...</a><br /></td></tr>
+<tr class="separator:ac409567b93a7331273b6d1d2259fbe6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f875cc6b907c04553b75b939cab9b9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a15f875cc6b907c04553b75b939cab9b9">TransferWithLimit</a> (<a class="el" href="class_item.html">Item</a> source, int limit)</td></tr>
+<tr class="memdesc:a15f875cc6b907c04553b75b939cab9b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract up to <em>limit</em>  items from <em>source</em> . If some items remain, <a class="el" href="class_item_loader.html#a4680c054592574cc3b5e86176d42d4b9" title="Called when splitting a stack of items.">SplitStack</a> will be used.  <a href="class_item_loader.html#a15f875cc6b907c04553b75b939cab9b9">More...</a><br /></td></tr>
+<tr class="separator:a15f875cc6b907c04553b75b939cab9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0c6cdead9fd0edcb35f3e7d022ce73"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_loader.html#a3d0c6cdead9fd0edcb35f3e7d022ce73">TryStackItems</a> (<a class="el" href="class_item.html">Item</a> destination, <a class="el" href="class_item.html">Item</a> source, out int numTransferred, bool infiniteSource=false)</td></tr>
+<tr class="memdesc:a3d0c6cdead9fd0edcb35f3e7d022ce73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks <em>source</em>  onto <em>destination</em>  if CanStack permits the transfer  <a href="class_item_loader.html#a3d0c6cdead9fd0edcb35f3e7d022ce73">More...</a><br /></td></tr>
+<tr class="separator:a3d0c6cdead9fd0edcb35f3e7d022ce73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafc72702834aa8807879cd324f3d8c56"><td class="memItemLeft" align="right" valign="top"><a id="aafc72702834aa8807879cd324f3d8c56" name="aafc72702834aa8807879cd324f3d8c56"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (<a class="el" href="class_item.html">Item</a> item, ref float gravity, ref float maxFallSpeed)</td></tr>
 <tr class="memdesc:aafc72702834aa8807879cd324f3d8c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_mod_item.html#a447ad0bbe4c2ec773600a06351725684" title="Allows you to customize this item&#39;s movement when lying in the world. Note that this will not be call...">ModItem.Update</a>, then all GlobalItem.Update hooks. <br /></td></tr>
@@ -562,6 +561,151 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 
 </div>
 </div>
+<a id="a0576a329e0d90fd0ee4f09b3f1a7f871" name="a0576a329e0d90fd0ee4f09b3f1a7f871"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0576a329e0d90fd0ee4f09b3f1a7f871">&#9670;&nbsp;</a></span>CanStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool ItemLoader.CanStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>destination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns false if item prefixes don't match. Then calls all <a class="el" href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">GlobalItem.CanStack</a> hooks until one returns false then <a class="el" href="class_mod_item.html#abe74a706630de7e7c6f60dd5f6855f99" title="Allows you to decide if this item is allowed to stack with another of its type.  This is only called ...">ModItem.CanStack</a>. Returns whether any of the hooks returned false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will attempt to stack onto</td></tr>
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the items are allowed to stack</dd></dl>
+
+</div>
+</div>
+<a id="a707a1a9f2047897d335563936b8d0f49" name="a707a1a9f2047897d335563936b8d0f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a707a1a9f2047897d335563936b8d0f49">&#9670;&nbsp;</a></span>CanStackInWorld()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool ItemLoader.CanStackInWorld </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>destination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls all <a class="el" href="class_item_loader.html#a707a1a9f2047897d335563936b8d0f49" title="Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld....">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_mod_item.html#a453b418e0a6eada1997713d3c2123ac6" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will attempt to stack onto</td></tr>
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the items are allowed to stack</dd></dl>
+
+</div>
+</div>
+<a id="a96f09be3aef82ed03e450cb74979ecde" name="a96f09be3aef82ed03e450cb74979ecde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96f09be3aef82ed03e450cb74979ecde">&#9670;&nbsp;</a></span>OnStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ItemLoader.OnStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>destination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numToTransfer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls the <a class="el" href="class_item_loader.html#a96f09be3aef82ed03e450cb74979ecde" title="Calls the GlobalItem.OnStack hooks in destination , then the ModItem.OnStack hook in destination   On...">GlobalItem.OnStack</a> hooks in <em>destination</em> , then the <a class="el" href="class_mod_item.html#a05cfd3ac2d68987974690b1d68620e6d" title="Allows you to make things happen when items stack together.  This hook is called on item being stacke...">ModItem.OnStack</a> hook in <em>destination</em> <br  />
+ OnStack is called before the items are transferred from <em>source</em>  to <em>destination</em>  </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will attempt to stack onto</td></tr>
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
+    <tr><td class="paramname">numToTransfer</td><td>The quanity of <em>source</em>  that will be transferred to <em>destination</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ac8b18ec09a7dc4cd8d064d0e1641280c" name="ac8b18ec09a7dc4cd8d064d0e1641280c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8b18ec09a7dc4cd8d064d0e1641280c">&#9670;&nbsp;</a></span>ReforgePrice()</h2>
 
@@ -663,8 +807,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 
 </div>
 </div>
-<a id="a89881e7623d9640529bd47bc8956fd24" name="a89881e7623d9640529bd47bc8956fd24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89881e7623d9640529bd47bc8956fd24">&#9670;&nbsp;</a></span>SplitStack()</h2>
+<a id="a4680c054592574cc3b5e86176d42d4b9" name="a4680c054592574cc3b5e86176d42d4b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4680c054592574cc3b5e86176d42d4b9">&#9670;&nbsp;</a></span>SplitStack()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -676,13 +820,13 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
           <td class="memname">static void ItemLoader.SplitStack </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>increase</em>, </td>
+          <td class="paramname"><em>destination</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>decrease</em>, </td>
+          <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -706,17 +850,18 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 <p>Called when splitting a stack of items. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">increase</td><td>A clone of decrease. Stack is set to zero then incremented in SplitStack or after SplitStack is called.</td></tr>
-    <tr><td class="paramname">decrease</td><td>The original item with stack being reduced.</td></tr>
-    <tr><td class="paramname">numToTransfer</td><td>Usually 1, but possible to be higher.</td></tr>
+    <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will transfer items to, and is usually a clone of <em>source</em> .<br  />
+ This parameter's stack will be set to zero before any transfer occurs. </td></tr>
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
+    <tr><td class="paramname">numToTransfer</td><td>The quantity of <em>source</em>  that will be transferred to <em>destination</em> </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a419b3b84ff2826d607691b64495288dd" name="a419b3b84ff2826d607691b64495288dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a419b3b84ff2826d607691b64495288dd">&#9670;&nbsp;</a></span>StackItems()</h2>
+<a id="ac409567b93a7331273b6d1d2259fbe6d" name="ac409567b93a7331273b6d1d2259fbe6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac409567b93a7331273b6d1d2259fbe6d">&#9670;&nbsp;</a></span>StackItems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -728,19 +873,19 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
           <td class="memname">static void ItemLoader.StackItems </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>increase</em>, </td>
+          <td class="paramname"><em>destination</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>decrease</em>, </td>
+          <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">out int&#160;</td>
-          <td class="paramname"><em>numTransfered</em>, </td>
+          <td class="paramname"><em>numTransferred</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -767,23 +912,69 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Stacks <em>increase</em>  and <em>decrease</em>  items. <br  />
- Calls all <a class="el" href="class_mod_item.html#a0dc6360aa62781352d2089dd347887c1" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">GlobalItem.OnStack</a> and <a class="el" href="class_mod_item.html#a0dc6360aa62781352d2089dd347887c1" title="Allows you to make things happen when items stack together.  This item will have its stack increased ...">ModItem.OnStack</a> hooks if <em>increase</em> .stack is less than <em>increase</em> .maxStack. </p>
+<p>Stacks <em>destination</em>  onto <em>source</em> <br  />
+ This method should not be called unless <a class="el" href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">CanStack(Item, Item)</a> returns true. See: <a class="el" href="class_item_loader.html#a3d0c6cdead9fd0edcb35f3e7d022ce73" title="Stacks source  onto destination  if CanStack permits the transfer">TryStackItems(Item, Item, out int, bool)</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">increase</td><td><a class="el" href="class_item.html">Item</a> where the stack is being increased.</td></tr>
-    <tr><td class="paramname">decrease</td><td><a class="el" href="class_item.html">Item</a> where the stack is being reduced.</td></tr>
-    <tr><td class="paramname">numTransfered</td><td>Amount to be transfered </td></tr>
-    <tr><td class="paramname">infiniteSource</td><td></td></tr>
-    <tr><td class="paramname">numToTransfer</td><td>Used to only transfer a specidied amount instead of all.</td></tr>
+    <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will attempt to stack onto</td></tr>
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
+    <tr><td class="paramname">numTransferred</td><td>The quanity of <em>source</em>  that was transferred to <em>destination</em> </td></tr>
+    <tr><td class="paramname">infiniteSource</td><td>If true, <em>source</em> .stack will not be decreased</td></tr>
+    <tr><td class="paramname">numToTransfer</td><td>An optional argument used to specify the quantity of items to transfer from <em>source</em>  to <em>destination</em> .<br  />
+ By default, as many items as possible will be transferred. That is, either source will be empty, or destination will be full (maxStack) </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a830b7eac8ff99306e0c2775779525ce1" name="a830b7eac8ff99306e0c2775779525ce1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a830b7eac8ff99306e0c2775779525ce1">&#9670;&nbsp;</a></span>TryStackItems()</h2>
+<a id="a15f875cc6b907c04553b75b939cab9b9" name="a15f875cc6b907c04553b75b939cab9b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15f875cc6b907c04553b75b939cab9b9">&#9670;&nbsp;</a></span>TransferWithLimit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_item.html">Item</a> ItemLoader.TransferWithLimit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>limit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extract up to <em>limit</em>  items from <em>source</em> . If some items remain, <a class="el" href="class_item_loader.html#a4680c054592574cc3b5e86176d42d4b9" title="Called when splitting a stack of items.">SplitStack</a> will be used. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The original item instance</td></tr>
+    <tr><td class="paramname">limit</td><td>How many items should be transferred</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3d0c6cdead9fd0edcb35f3e7d022ce73" name="a3d0c6cdead9fd0edcb35f3e7d022ce73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d0c6cdead9fd0edcb35f3e7d022ce73">&#9670;&nbsp;</a></span>TryStackItems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -795,19 +986,19 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
           <td class="memname">static bool ItemLoader.TryStackItems </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>increase</em>, </td>
+          <td class="paramname"><em>destination</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>decrease</em>, </td>
+          <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">out int&#160;</td>
-          <td class="paramname"><em>numTransfered</em>, </td>
+          <td class="paramname"><em>numTransferred</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -828,19 +1019,17 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Short-circuits if <a class="el" href="class_item_loader.html#aa9d2e2e318fd671db3bc8acf26855644" title="Returns false if item prefixes don&#39;t match. Then calls all GlobalItem.CanStack hooks until one return...">CanStack</a> hooks don't return true. <br  />
- Returns the result of the initial check. <br  />
- <br  />
-  </p>
+<p>Stacks <em>source</em>  onto <em>destination</em>  if CanStack permits the transfer </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">increase</td><td><a class="el" href="class_item.html">Item</a> where the stack is being increased.</td></tr>
-    <tr><td class="paramname">decrease</td><td><a class="el" href="class_item.html">Item</a> where the stack is being reduced.</td></tr>
-    <tr><td class="paramname">numTransfered</td><td>Amount to be transfered </td></tr>
-    <tr><td class="paramname">infiniteSource</td><td>The final stack of item2</td></tr>
+    <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will attempt to stack onto</td></tr>
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
+    <tr><td class="paramname">numTransferred</td><td>The quanity of <em>source</em>  that was transferred to <em>destination</em> </td></tr>
+    <tr><td class="paramname">infiniteSource</td><td>If true, <em>source</em> .stack will not be decreased</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the items were allowed to stack</dd></dl>
 
 </div>
 </div>

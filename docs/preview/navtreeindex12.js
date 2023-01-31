@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"class_overlay_manager.html":[2,0,877],
+"class_overlay_social_module.html":[2,0,879],
 "class_overlays.html":[2,0,878],
 "class_p_v_p_death_command.html":[2,0,971],
 "class_packet_history.html":[2,0,880],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "class_proj_a_i_style_i_d.html#a0cdc0aee93975b88b07be63080021a54":[2,0,962,162],
 "class_proj_a_i_style_i_d.html#a0f6f47e7c4be7b94aa5a55c894098ef9":[2,0,962,10],
 "class_proj_a_i_style_i_d.html#a119b862fde90bb78e35f39944f7fd7c4":[2,0,962,158],
-"class_proj_a_i_style_i_d.html#a142eae977096e1a0871a0a352d7e7cd4":[2,0,962,96],
-"class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92":[2,0,962,44],
-"class_proj_a_i_style_i_d.html#a15308aabff3753ed4ede582e370dc490":[2,0,962,77]
+"class_proj_a_i_style_i_d.html#a142eae977096e1a0871a0a352d7e7cd4":[2,0,962,96]
 };

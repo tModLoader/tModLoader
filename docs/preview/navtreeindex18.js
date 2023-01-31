@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"struct_pos_data.html#a7c60ea2da5d803f3c2574f5e65cd66e2":[2,0,944,7],
+"struct_pos_data.html#a944d81baa10077208a21e6e2bb4b612c":[2,0,944,8],
 "struct_pos_data.html#ab9a1efd082ec2fb25609e06677347e19":[2,0,944,9],
 "struct_pos_data.html#ac88465266a438788d12582053b9f9932":[2,0,944,2],
 "struct_pos_data.html#af0fa98792a2c9d5135f0ce01b983b8de":[2,0,944,4],
