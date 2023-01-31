@@ -748,23 +748,24 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
 	/// </summary>
-	/// <param name="increase">The item that will have its stack increased.</param>
-	/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to increase.</param>
-	public virtual void OnStack(Item increase, Item decrease, int numberToBeTransfered)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	public virtual void OnStack(Item destination, Item source, int numToTransfer)
 	{
-		
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.
+	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.
 	/// </summary>
-	/// <param name="increase">The new item which is a clone of decrease.  increase.stack will always be 0.  It is increased after SplitStack.</param>
-	/// <param name="decrease">The original item that will have it's stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to increase.</param>
-	public virtual void SplitStack(Item increase, Item decrease, int numberToBeTransfered)
+	/// <param name="destination">
+	/// The item instance that <paramref name="source"/> will transfer items to, and is usually a clone of <paramref name="source"/>.<br/>
+	/// This parameter's stack will always be zero.
+	/// </param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to to <paramref name="destination"/></param>
+	public virtual void SplitStack(Item destination, Item source, int numToTransfer)
 	{
-
 	}
 
 	/// <summary>

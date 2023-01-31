@@ -1431,89 +1431,107 @@ public static class ItemLoader
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
 
 	/// <summary>
-	/// Short-circuits if <see cref="CanStack"/> hooks don't return true.
-	/// <br/> Returns the result of the initial check.
-	/// <br/>
-	/// <br/> <inheritdoc cref="StackItems"/>
+	/// Stacks <paramref name="source"/> onto <paramref name="destination"/> if CanStack permits the transfer
 	/// </summary>
-	/// <param name="increase">Item where the stack is being increased.</param>
-	/// <param name="decrease">Item where the stack is being reduced.</param>
-	/// <param name="numTransfered">Amount to be transfered </param>
-	/// <param name="infiniteSource">The final stack of item2</param>
-	public static bool TryStackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="infiniteSource">Whether <paramref name="source"/>.stack should be decreased</param>
+	public static bool TryStackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false)
 	{
-		numTransfered = 0;
+		numTransferred = 0;
 
-		if (!CanStack(increase, decrease))
+		if (!CanStack(destination, source))
 			return false;
 
-		StackItems(increase, decrease, out numTransfered, infiniteSource);
+		StackItems(destination, source, out numTransferred, infiniteSource);
 
 		return true;
 	}
 
 	/// <summary>
-	/// Stacks <paramref name="increase"/> and <paramref name="decrease"/> items.
-	/// <br/> Calls all <see cref="GlobalItem.OnStack"/> and <see cref="ModItem.OnStack"/> hooks if <paramref name="increase"/>.stack is less than <paramref name="increase"/>.maxStack.
+	/// Attempts to stack <paramref name="destination"/> onto <paramref name="source"/>
 	/// </summary>
-	/// <param name="increase">Item where the stack is being increased.</param>
-	/// <param name="decrease">Item where the stack is being reduced.</param>
-	/// <param name="numTransfered">Amount to be transfered </param>
-	/// <param name="infiniteSource"></param>
-	/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
-	public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int? numToTransfer = null)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="infiniteSource">Whether <paramref name="source"/>.stack should be decreased</param>
+	/// <param name="numToTransfer">
+	/// An optional argument used to specify the quantity of items to transfer form <paramref name="source"/> to <paramref name="destination"/>.<br/>
+	/// By default, the transfer quantity is the minimum between <paramref name="source"/>.stack and <paramref name="destination"/>.maxStack - <paramref name="destination"/>.stack
+	/// </param>
+	public static void StackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false, int? numToTransfer = null)
 	{
-		numTransfered = numToTransfer ?? Math.Min(decrease.stack, increase.maxStack - increase.stack);
+		numTransferred = numToTransfer ?? Math.Min(source.stack, destination.maxStack - destination.stack);
 
-		foreach (var g in HookOnStack.Enumerate(increase.globalItems)) {
-			g.OnStack(increase, decrease, numTransfered);
+		OnStack(destination, source, numTransferred);
+
+		if (source.favorited) {
+			destination.favorited = true;
+			source.favorited = false;
 		}
 
-		increase.ModItem?.OnStack(decrease, numTransfered);
-
-		if (decrease.favorited) {
-			increase.favorited = true;
-			decrease.favorited = false;
-		}
-
-		increase.stack += numTransfered;
+		destination.stack += numTransferred;
 		if (!infiniteSource)
-			decrease.stack -= numTransfered;
+			source.stack -= numTransferred;
+	}
+
+	/// <summary>
+	/// Calls the GlobalItem.OnStack hooks in <paramref name="destination"/>, then the ModItem.OnStack hook in <paramref name="destination"/>
+	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	public static void OnStack(Item destination, Item source, int numTransferred)
+	{
+		foreach (var g in HookOnStack.Enumerate(destination.globalItems)) {
+			g.OnStack(destination, source, numTransferred);
+		}
+
+		destination.ModItem?.OnStack(source, numTransferred);
 	}
 
 	private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
 
-	public static Item TransferWithLimit(Item decrease, int limit)
+	/// <summary>
+	/// Creates a clone of <paramref name="source"/>, then transfers at most <paramref name="limit"/> from <paramref name="source"/> to the clone
+	/// </summary>
+	/// <param name="source">The original item instance</param>
+	/// <param name="limit">How many items should be transferred</param>
+	public static Item TransferWithLimit(Item source, int limit)
 	{
-		Item increase = decrease.Clone();
-		if (decrease.stack <= limit) {
-			decrease.TurnToAir();
+		Item destination = source.Clone();
+		if (source.stack <= limit) {
+			source.TurnToAir();
 		}
 		else {
-			SplitStack(increase, decrease, limit);
+			SplitStack(destination, source, limit);
 		}
-		return increase;
+		return destination;
 	}
 
 	/// <summary>
 	/// Called when splitting a stack of items.
 	/// </summary>
-	/// <param name="increase">A clone of decrease.  Stack is set to zero then incremented in SplitStack or after SplitStack is called.</param>
-	/// <param name="decrease">The original item with stack being reduced.</param>
-	/// <param name="numToTransfer">Usually 1, but possible to be higher.</param>
-	public static void SplitStack(Item increase, Item decrease, int numToTransfer)
+	/// <param name="destination">
+	/// The item instance that <paramref name="source"/> will transfer items to, and is usually a clone of <paramref name="source"/>.<br/>
+	/// This parameter's stack will be set to zero before any transfer occurs.
+	/// </param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	public static void SplitStack(Item destination, Item source, int numToTransfer)
 	{
-		increase.stack = 0;
-		increase.favorited = false;
+		destination.stack = 0;
+		destination.favorited = false;
 
-		foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
-			g.SplitStack(increase, decrease, numToTransfer);
+		foreach (var g in HookSplitStack.Enumerate(destination.globalItems)) {
+			g.SplitStack(destination, source, numToTransfer);
 		}
 
-		increase.ModItem?.SplitStack(decrease, numToTransfer);
+		destination.ModItem?.SplitStack(source, numToTransfer);
 
-		increase.stack += numToTransfer;
-		decrease.stack -= numToTransfer;
+		destination.stack += numToTransfer;
+		source.stack -= numToTransfer;
 	}
 
 	private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
