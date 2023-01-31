@@ -729,6 +729,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <br/>This is usually not called for coins and ammo in the inventory/UI.
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
 	public virtual bool CanStack(Item destination, Item source)
 	{
@@ -739,6 +741,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to prevent items from stacking in the world.
 	/// <br/>This is only called when two items of the same type attempt to stack.
 	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
 	public virtual bool CanStackInWorld(Item destination, Item source)
 	{

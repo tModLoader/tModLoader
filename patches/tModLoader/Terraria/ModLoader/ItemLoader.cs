@@ -1400,6 +1400,9 @@ public static class ItemLoader
 	/// <summary>
 	/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <returns>Whether or not the items are allowed to stack</returns>
 	public static bool CanStack(Item destination, Item source)
 	{
 		if (destination.prefix != source.prefix) // #StackablePrefixWeapons
@@ -1418,6 +1421,9 @@ public static class ItemLoader
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <returns>Whether or not the items are allowed to stack</returns>
 	public static bool CanStackInWorld(Item destination, Item source)
 	{
 		foreach (var g in HookCanStackInWorld.Enumerate(destination.globalItems)) {
@@ -1437,6 +1443,7 @@ public static class ItemLoader
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
 	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
+	/// <returns>Whether or not the items were allowed to stack</returns>
 	public static bool TryStackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false)
 	{
 		numTransferred = 0;
@@ -1478,7 +1485,8 @@ public static class ItemLoader
 	}
 
 	/// <summary>
-	/// Calls the GlobalItem.OnStack hooks in <paramref name="destination"/>, then the ModItem.OnStack hook in <paramref name="destination"/>
+	/// Calls the GlobalItem.OnStack hooks in <paramref name="destination"/>, then the ModItem.OnStack hook in <paramref name="destination"/><br/>
+	/// OnStack called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
