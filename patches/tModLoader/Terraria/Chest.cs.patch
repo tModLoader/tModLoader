@@ -228,7 +228,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,43 @@
+@@ -2987,16 +_,45 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -260,7 +260,9 @@
 +			}
 +		}
 +
-+		NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shop, array);
++		if ((Main.LocalPlayer?.talkNPC ?? -1) != -1) {
++			NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shop, array);
++		}
  		for (int num15 = 0; num15 < num; num15++) {
  			array[num15].isAShopItem = true;
  		}
