@@ -88,7 +88,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			if (craftedPlayerName != string.Empty) {
+			if (craftedPlayerName is not null) {
 				// Here we make a distinction to disclose that the bag can't be opened by the player who crafted it
 				if (Main.LocalPlayer.name == craftedPlayerName) {
 					tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameCannotOpen", $"You crafted this bag and cannot open it!"));
