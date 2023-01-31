@@ -1159,7 +1159,7 @@ public static class NPCLoader
 
 	public static void SetupShop(string shopId, ChestLoot shopContents)
 	{
-		foreach (GlobalNPC g in HookSetupShopNew.Enumerate(globalNPCs)) {
+		foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
 			g.SetupShop(shopId, shopContents);
 		}
 	}
@@ -1197,7 +1197,7 @@ public static class NPCLoader
 	private delegate void DelegateModifyActiveShop(NPC npc, string shopId, Item[] items);
 	private static HookList HookModifyActiveShop = AddHook<DelegateModifyActiveShop>(g => g.ModifyActiveShop);
 
-	public static void ModifyActiveShop(NPC npc, string shopId, ChestLoot shopContents)
+	public static void ModifyActiveShop(NPC npc, string shopId, Item[] shopContents)
 	{
 		GetNPC(npc.type)?.ModifyActiveShop(shopId, shopContents);
 		foreach (GlobalNPC g in HookModifyActiveShop.Enumerate(globalNPCs)) {
