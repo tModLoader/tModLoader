@@ -15,8 +15,8 @@ namespace ExampleMod.Content.Items.Consumables
 	// This item, when crafted, stores the players name, and only lets other players open it. Bags with the same stored name aren't stackable
 	public class ExampleCanStackItem : ModItem
 	{
-		// We set this when the item is crafted. In other contexts, this will be null
-		public string craftedPlayerName;
+		// We set this when the item is crafted. In other contexts, this will be an empty string
+		public string craftedPlayerName = string.Empty;
 
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 3;
@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override bool CanRightClick() {
 			// The bag can't be opened if it wasn't crafted
-			if (craftedPlayerName is null) {
+			if (craftedPlayerName == string.Empty) {
 				return false;
 			}
 
@@ -49,9 +49,9 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// let items which have been spawned in and not assigned to a player, to stack with other bags the the current player owns
 			// This lets you craft multiple items into the mouse-held stack
-			if (name1 is null)
+			if (name1 == string.Empty)
 				name1 = Main.LocalPlayer.name;
-			if (name2 is null)
+			if (name2 == string.Empty)
 				name2 = Main.LocalPlayer.name;
 
 			return name1 == name2;
@@ -59,7 +59,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void OnStack(Item source, int numToTransfer) {
 			// Combined with CanStack above, this ensures that empty spawned items can combine with bags made by the current player
-			if (craftedPlayerName is null)
+			if (craftedPlayerName == string.Empty)
 				craftedPlayerName = ((ExampleCanStackItem)source.ModItem).craftedPlayerName;
 		}
 
@@ -88,7 +88,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			if (craftedPlayerName is not null) {
+			if (craftedPlayerName != string.Empty) {
 				// Here we make a distinction to disclose that the bag can't be opened by the player who crafted it
 				if (Main.LocalPlayer.name == craftedPlayerName) {
 					tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameCannotOpen", $"You crafted this bag and cannot open it!"));
