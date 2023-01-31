@@ -867,7 +867,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.<br/>
-	/// This hook is called on item being stacked onto from <paramref name="source"/>
+	/// This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>

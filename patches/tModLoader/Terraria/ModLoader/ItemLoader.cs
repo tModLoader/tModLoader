@@ -1486,7 +1486,7 @@ public static class ItemLoader
 
 	/// <summary>
 	/// Calls the GlobalItem.OnStack hooks in <paramref name="destination"/>, then the ModItem.OnStack hook in <paramref name="destination"/><br/>
-	/// OnStack called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
+	/// OnStack is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>

@@ -750,7 +750,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when items stack together.
+	/// Allows you to make things happen when items stack together.<br/>
+	/// This hook is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
