@@ -19,8 +19,7 @@ public partial class ChestLoot {
 
 	public IReadOnlyList<Entry> Items {
 		get {
-			List<Entry> entries = items;
-			return entries;
+			return items;
 		}
 	}
 

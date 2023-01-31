@@ -228,7 +228,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,41 @@
+@@ -2987,16 +_,43 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -237,7 +237,7 @@
  				array[num++].SetDefaults(4921);
  		}
 +		*/
-+
+ 
 +		if (type == 19) // Travelling Merchant, move in to the LootboxShop setup method
 +		{
 +			for (int num11 = 0; num11 < 40; num11++) {
@@ -249,16 +249,18 @@
 +		}
 +		else {
 +			List<Item> lootbox = NPCLoader.SetupLootboxShop(type);
-+			if (lootbox != null) {
-+				array = lootbox.ToArray();
-+			}
-+			else {
++			if (lootbox == null) {
 +				var loot = Main.TMLLootDB.GetNpcShop(shop);
 +				if (loot != null)
 +					array = loot.Build(out num);
 +			}
++			else {
++				num = lootbox.Count;
++				array = lootbox.ToArray();
++			}
 +		}
- 
++
++		NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shop, array);
  		for (int num15 = 0; num15 < num; num15++) {
  			array[num15].isAShopItem = true;
  		}

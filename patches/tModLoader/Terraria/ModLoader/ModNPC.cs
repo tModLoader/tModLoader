@@ -717,6 +717,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 	}
 
+	public virtual void ModifyActiveShop(string shopId, Item[] items)
+	{
+	}
+
 	/// <summary>
 	/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
 	/// </summary>
