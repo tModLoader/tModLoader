@@ -730,7 +730,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public virtual bool CanStack(Item increase, Item decrease)
+	public virtual bool CanStack(Item destination, Item source)
 	{
 		return true;
 	}
@@ -740,7 +740,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <br/>This is only called when two items of the same type attempt to stack.
 	/// </summary>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item increase, Item decrease)
+	public virtual bool CanStackInWorld(Item destination, Item source)
 	{
 		return true;
 	}

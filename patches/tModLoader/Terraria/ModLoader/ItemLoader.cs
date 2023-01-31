@@ -1400,17 +1400,17 @@ public static class ItemLoader
 	/// <summary>
 	/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 	/// </summary>
-	public static bool CanStack(Item increase, Item decrease)
+	public static bool CanStack(Item destination, Item source)
 	{
-		if (increase.prefix != decrease.prefix) // #StackablePrefixWeapons
+		if (destination.prefix != source.prefix) // #StackablePrefixWeapons
 			return false;
 
-		foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {
-			if (!g.CanStack(increase, decrease))
+		foreach (var g in HookCanStack.Enumerate(destination.globalItems)) {
+			if (!g.CanStack(destination, source))
 				return false;
 		}
 
-		return increase.ModItem?.CanStack(decrease) ?? true;
+		return destination.ModItem?.CanStack(source) ?? true;
 	}
 
 	private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
@@ -1418,14 +1418,14 @@ public static class ItemLoader
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 	/// </summary>
-	public static bool CanStackInWorld(Item increase, Item decrease)
+	public static bool CanStackInWorld(Item destination, Item source)
 	{
-		foreach (var g in HookCanStackInWorld.Enumerate(increase.globalItems)) {
-			if (!g.CanStackInWorld(increase, decrease))
+		foreach (var g in HookCanStackInWorld.Enumerate(destination.globalItems)) {
+			if (!g.CanStackInWorld(destination, source))
 				return false;
 		}
 
-		return increase.ModItem?.CanStackInWorld(decrease) ?? true;
+		return destination.ModItem?.CanStackInWorld(source) ?? true;
 	}
 	
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);

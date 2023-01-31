@@ -848,7 +848,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStack(Item decrease)
+	public virtual bool CanStack(Item source)
 	{
 		return true;
 	}
@@ -858,7 +858,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <br/>This is only called when attempting to stack with an item of the same type.
 	/// </summary>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item decrease)
+	public virtual bool CanStackInWorld(Item source)
 	{
 		return true;
 	}

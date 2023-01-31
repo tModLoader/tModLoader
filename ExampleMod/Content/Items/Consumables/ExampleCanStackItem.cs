@@ -40,12 +40,12 @@ namespace ExampleMod.Content.Items.Consumables
 			return Main.LocalPlayer.name != craftedPlayerName;
 		}
 
-		public override bool CanStack(Item item2) {
+		public override bool CanStack(Item source) {
 			// The bag can only be stacked with other bags if the names match
 
 			// We have to cast the second item to the class (This is safe to do as the hook is only called on items of the same type)
 			var name1 = craftedPlayerName;
-			var name2 = ((ExampleCanStackItem)item2.ModItem).craftedPlayerName;
+			var name2 = ((ExampleCanStackItem)source.ModItem).craftedPlayerName;
 
 			// let items which have been spawned in and not assigned to a player, to stack with other bags the the current player owns
 			// This lets you craft multiple items into the mouse-held stack
