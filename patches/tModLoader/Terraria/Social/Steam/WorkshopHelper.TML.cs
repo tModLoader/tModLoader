@@ -339,6 +339,7 @@ public partial class WorkshopHelper
 			protected uint _queryReturnCount;
 			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
+			internal bool stopCurrentQuery = false;
 
 			internal static IReadOnlyList<LocalMod> InstalledMods;
 
@@ -388,8 +389,12 @@ public partial class WorkshopHelper
 				return pDetails;
 			}
 
+			internal const int ItemsPerBrowserPage = 100;
+
 			internal bool QueryAllWorkshopItems()
 			{
+				int pageIndex = 0;
+
 				do {
 					// Appx. 0.5 seconds per page of 50 items during testing. No way to parallelize.
 					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
@@ -409,8 +414,16 @@ public partial class WorkshopHelper
 					// Appx. 10 ms per page of 50 items
 					ProcessPageResult();
 
+					// 100 items per Browser UI Item Dictionairy page.
+					if (Math.Floor((double)(Items.Count / ItemsPerBrowserPage)) > pageIndex) {
+						Interface.modBrowser.AddUIDownloadItemsToPage(ItemsPerBrowserPage, pageIndex++, Items, ItemsPerBrowserPage);
+					}
+
 					ReleaseWorkshopQuery();
-				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
+				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount && !stopCurrentQuery);
+
+				Interface.modBrowser.AddUIDownloadItemsToPage((uint)(Items.Count % ItemsPerBrowserPage), pageIndex, Items, ItemsPerBrowserPage);
+
 				return true;
 			}
 

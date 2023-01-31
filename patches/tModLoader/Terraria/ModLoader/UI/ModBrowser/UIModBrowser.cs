@@ -243,6 +243,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	internal bool InnerPopulateModBrowser(bool uiOnly)
 	{
+		if (!uiOnly)
+			modBrowserPages.Clear();
+
 		if (!uiOnly && !WorkshopHelper.QueryHelper.QueryWorkshop())
 			return false;
 
@@ -251,6 +254,20 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 
 		return UpdateNeeded = true;
+	}
+
+	internal Dictionary<int, List<UIModDownloadItem>> modBrowserPages = new Dictionary<int, List<UIModDownloadItem>>();
+
+	internal void AddUIDownloadItemsToPage(uint numberOfItemsToAdd, int pageIndex, List<ModDownloadItem> items, int nominalPageSize)
+	{
+		List<UIModDownloadItem> modBrowserPage = new List<UIModDownloadItem>();
+		int baseItemNumber = pageIndex * nominalPageSize;
+
+		for (int i = baseItemNumber; i < baseItemNumber + numberOfItemsToAdd; i++) {
+			modBrowserPage.Add(new UIModDownloadItem(items[i]));
+		}
+
+		modBrowserPages.Add(pageIndex, modBrowserPage);
 	}
 
 	/// <summary>
