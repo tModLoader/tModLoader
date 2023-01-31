@@ -28,6 +28,7 @@ namespace Terraria.ModLoader.UI
 		private readonly LocalMod _builtMod;
 		private bool _upgradePotentialChecked;
 		private Stopwatch uploadTimer;
+		private int contextButtonsLeft = -26;
 
 		public UIModSourceItem(string mod, LocalMod builtMod) {
 			_mod = mod;
@@ -89,7 +90,7 @@ namespace Terraria.ModLoader.UI
 			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 			if (File.Exists(csprojFile)) {
 				var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
-					Left = { Pixels = -52, Percent = 1f },
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
 				openCSProjButton.OnClick += (a, b) => {
@@ -100,6 +101,8 @@ namespace Terraria.ModLoader.UI
 					);
 				};
 				Append(openCSProjButton);
+
+				contextButtonsLeft -= 26;
 			}
 		}
 
@@ -115,13 +118,11 @@ namespace Terraria.ModLoader.UI
 				string modFolderName = Path.GetFileName(_mod);
 				string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
-				int leftPixels = -26;
-
 				bool projNeedsUpdate = false;
 				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
-						Left = { Pixels = leftPixels, Percent = 1f },
+						Left = { Pixels = contextButtonsLeft, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 					upgradeCSProjButton.OnClick += (s, e) => {
@@ -152,7 +153,7 @@ namespace Terraria.ModLoader.UI
 					};
 					Append(upgradeCSProjButton);
 
-					leftPixels -= 26;
+					contextButtonsLeft -= 26;
 					projNeedsUpdate = true;
 				}
 
@@ -163,7 +164,7 @@ namespace Terraria.ModLoader.UI
 				if (files.Length > 0) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
-						Left = { Pixels = leftPixels, Percent = 1f },
+						Left = { Pixels = contextButtonsLeft, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 
@@ -177,7 +178,7 @@ namespace Terraria.ModLoader.UI
 
 					Append(upgradeLangFilesButton);
 
-					leftPixels -= 26;
+					contextButtonsLeft -= 26;
 				}
 
 
@@ -185,7 +186,7 @@ namespace Terraria.ModLoader.UI
 				if (Platform.IsWindows && !projNeedsUpdate) {
 					var pIcon = UICommon.ButtonExclamationTexture;
 					var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
-						Left = { Pixels = leftPixels, Percent = 1f },
+						Left = { Pixels = contextButtonsLeft, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 
@@ -208,7 +209,28 @@ namespace Terraria.ModLoader.UI
 
 					Append(portModButton);
 
-					leftPixels -= 26;
+					contextButtonsLeft -= 26;
+				}
+
+				//string[] filesFor144 = Directory.GetFiles(_mod, "*.lang.new", SearchOption.AllDirectories);
+				//if (files.Length <= 0) {
+				if (_builtMod != null && _builtMod.Enabled)	{
+					var icon = UICommon.ButtonExpandedTexture;
+					var export144LangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSExport144LangFiles")) {
+						Left = { Pixels = contextButtonsLeft, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+
+					export144LangFilesButton.OnClick += (s, e) => {
+						if (ModLoader.TryGetMod(_builtMod.Name, out Mod mod)) {
+							LocalizationLoader.Export144LangFiles(mod);
+							export144LangFilesButton.Remove();
+						}
+					};
+
+					Append(export144LangFilesButton);
+
+					contextButtonsLeft -= 26;
 				}
 			}
 		}

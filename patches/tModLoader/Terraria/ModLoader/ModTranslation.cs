@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -19,6 +20,11 @@ namespace Terraria.ModLoader
 			this.Key = key;
 			this.translations = new Dictionary<int, string>();
 			this.translations[fallback] = defaultEmpty ? null : key;
+		}
+
+		public IEnumerable<GameCulture> GetSupportedCultures()
+		{
+			return translations.Select(x => GameCulture.FromLegacyId(x.Key));
 		}
 
 		public void SetDefault(string value) {
