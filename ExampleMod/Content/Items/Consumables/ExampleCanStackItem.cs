@@ -49,15 +49,18 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// let items which have been spawned in and not assigned to a player, to stack with other bags the the current player owns
 			// This lets you craft multiple items into the mouse-held stack
-			name1 ??= Main.LocalPlayer.name;
-			name2 ??= Main.LocalPlayer.name;
+			if (name1 is null)
+				name1 = Main.LocalPlayer.name;
+			if (name2 is null)
+				name2 = Main.LocalPlayer.name;
 
 			return name1 == name2;
 		}
 
 		public override void OnStack(Item source, int numToTransfer) {
 			// Combined with CanStack above, this ensures that empty spawned items can combine with bags made by the current player
-			craftedPlayerName ??= ((ExampleCanStackItem)source.ModItem).craftedPlayerName;
+			if (craftedPlayerName is null)
+				craftedPlayerName = ((ExampleCanStackItem)source.ModItem).craftedPlayerName;
 		}
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
