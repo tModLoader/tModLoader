@@ -1495,7 +1495,7 @@ public static class ItemLoader
 	private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
 
 	/// <summary>
-	/// Creates a clone of <paramref name="source"/>, then transfers at most <paramref name="limit"/> from <paramref name="source"/> to the clone
+	/// Extract up to <paramref name="limit"/> items from <paramref name="source"/>. If some items remain, <see cref="SplitStack"/> will be used.
 	/// </summary>
 	/// <param name="source">The original item instance</param>
 	/// <param name="limit">How many items should be transferred</param>
