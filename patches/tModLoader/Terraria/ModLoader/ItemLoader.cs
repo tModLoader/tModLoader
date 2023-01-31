@@ -1436,7 +1436,7 @@ public static class ItemLoader
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
-	/// <param name="infiniteSource">Whether <paramref name="source"/>.stack should be decreased</param>
+	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
 	public static bool TryStackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false)
 	{
 		numTransferred = 0;
@@ -1450,15 +1450,16 @@ public static class ItemLoader
 	}
 
 	/// <summary>
-	/// Attempts to stack <paramref name="destination"/> onto <paramref name="source"/>
+	/// Stacks <paramref name="destination"/> onto <paramref name="source"/><br/>
+	/// This method should not be called unless <see cref="CanStack(Item, Item)"/> return true.  See: <see cref="TryStackItems(Item, Item, out int, bool)"/>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
-	/// <param name="infiniteSource">Whether <paramref name="source"/>.stack should be decreased</param>
+	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
 	/// <param name="numToTransfer">
-	/// An optional argument used to specify the quantity of items to transfer form <paramref name="source"/> to <paramref name="destination"/>.<br/>
-	/// By default, the transfer quantity is the minimum between <paramref name="source"/>.stack and <paramref name="destination"/>.maxStack - <paramref name="destination"/>.stack
+	/// An optional argument used to specify the quantity of items to transfer from <paramref name="source"/> to <paramref name="destination"/>.<br/>
+	/// By default, as many items as possible will be transferred.  That is, either source will be empty, or destination will be full (maxStack)
 	/// </param>
 	public static void StackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false, int? numToTransfer = null)
 	{
@@ -1481,14 +1482,14 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
-	public static void OnStack(Item destination, Item source, int numTransferred)
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	public static void OnStack(Item destination, Item source, int numToTransfer)
 	{
 		foreach (var g in HookOnStack.Enumerate(destination.globalItems)) {
-			g.OnStack(destination, source, numTransferred);
+			g.OnStack(destination, source, numToTransfer);
 		}
 
-		destination.ModItem?.OnStack(source, numTransferred);
+		destination.ModItem?.OnStack(source, numToTransfer);
 	}
 
 	private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);

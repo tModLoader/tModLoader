@@ -90,7 +90,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		private void MergeUseCount(Item source) {
-			var incoming = source.ModItem as ExampleMultiUseItem;
+			var incoming = (ExampleMultiUseItem)source.ModItem;
 			useCount += incoming.useCount;
 			if (useCount >= MaxUses) {
 				Item.stack--;

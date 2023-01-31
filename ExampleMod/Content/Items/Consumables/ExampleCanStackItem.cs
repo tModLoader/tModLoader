@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// We have to cast the second item to the class (This is safe to do as the hook is only called on items of the same type)
 			var name1 = craftedPlayerName;
-			var name2 = (item2.ModItem as ExampleCanStackItem).craftedPlayerName;
+			var name2 = ((ExampleCanStackItem)item2.ModItem).craftedPlayerName;
 
 			// let items which have been spawned in and not assigned to a player, to stack with other bags the the current player owns
 			// This lets you craft multiple items into the mouse-held stack
@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void OnStack(Item source, int numToTransfer) {
 			// Combined with CanStack above, this ensures that empty spawned items can combine with bags made by the current player
-			craftedPlayerName ??= (source.ModItem as ExampleCanStackItem).craftedPlayerName;
+			craftedPlayerName ??= ((ExampleCanStackItem)source.ModItem).craftedPlayerName;
 		}
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {

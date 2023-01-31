@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void OnStack(Item source, int numToTransfer) {
-			var incomingDurability = (source.ModItem as ExampleStackableDurabilityItem).durability;
+			var incomingDurability = ((ExampleStackableDurabilityItem)source.ModItem).durability;
 			durability = WeightedAverage(durability, Item.stack, incomingDurability, numToTransfer);
 		}
 
