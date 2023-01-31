@@ -404,5 +404,10 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
+
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile", "Drop", comment: "Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation.");
+		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
 	}
 }

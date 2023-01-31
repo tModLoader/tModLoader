@@ -41,6 +41,8 @@ public static class TileLoader
 	private static int nextTile = TileID.Count;
 	internal static readonly IList<ModTile> tiles = new List<ModTile>();
 	internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
+	/// <summary> Maps Tile type and Tile style to the Item type that places the tile with the style. </summary>
+	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -54,7 +56,8 @@ public static class TileLoader
 	private static DelegateCreateDust[] HookCreateDust;
 	private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance);
 	private static DelegateDropCritterChance[] HookDropCritterChance;
-	private static Func<int, int, int, bool>[] HookDrop;
+	private static Func<int, int, int, bool>[] HookCanDrop;
+	private static Action<int, int, int>[] HookDrop;
 	private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 	private static DelegateCanKillTile[] HookCanKillTile;
 	private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
@@ -206,6 +209,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateNumDust>(ref HookNumDust, globalTiles, g => g.NumDust);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCreateDust>(ref HookCreateDust, globalTiles, g => g.CreateDust);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDropCritterChance>(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
+		ModLoader.BuildGlobalHook(ref HookCanDrop, globalTiles, g => g.CanDrop);
 		ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCanKillTile>(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateKillTile>(ref HookKillTile, globalTiles, g => g.KillTile);
@@ -247,6 +251,7 @@ public static class TileLoader
 
 		tiles.Clear();
 		globalTiles.Clear();
+		tileTypeAndTileStyleToItemType.Clear();
 
 		// Has to be ran on the main thread, since this may dispose textures.
 		Main.QueueMainThreadAction(() => {
@@ -495,24 +500,27 @@ public static class TileLoader
 	// Could potentially change this to be called in Item.NewItem when EntitySource_TileBreak, but that is used for TEs dropping container items as well. Also tile type is unrecoverable at that point.
 	public static bool Drop(int i, int j, int type)
 	{
-		foreach (var hook in HookDrop) {
+		bool dropItem = true;
+		ModTile modTile = GetTile(type);
+		foreach (var hook in HookCanDrop) {
 			if (!hook(i, j, type)) {
-				return false;
+				dropItem = false;
 			}
 		}
-
-		ModTile modTile = GetTile(type);
-
 		if (modTile != null) {
-			if (!modTile.Drop(i, j)) {
-				return false;
-			}
+			dropItem &= modTile.CanDrop(i, j);
+		}
+		if (!dropItem)
+			return false;
+
+		foreach (var hook in HookDrop) {
+			hook(i, j, type);
 		}
 
 		return true;
 	}
 
-	public static void GetItemDrops(int x, int y, Tile tileCache, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
+	public static void GetItemDrops(int x, int y, Tile tileCache, ref int dropItem, ref int dropItemStack, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
 	{
 		ModTile modTile = GetTile(tileCache.TileType);
 		if (modTile == null)
@@ -521,12 +529,16 @@ public static class TileLoader
 		// Various call sites to WorldGen.KillTile_DropItems expect different sets of tile drops to be retrieved:
 		// KillTile: All 1x1 tiles
 		// ReplaceTile: All 1x1 tiles, all supported multitiles
-		// CheckModTile: All modded tiles
+		// CheckModTile: All modded tiles (except 1x1 tiles will drop from killtile)
 		bool needDrops = false;
 		TileObjectData tileData = TileObjectData.GetTileData(tileCache.TileType, 0, 0);
-		if (tileData == null || tileData.Width == 1 && tileData.Height == 1) {
-			// 1x1 tile
+		if (tileData == null) {
+			// Terrain tile
 			needDrops = true;
+		}
+		else if(tileData.Width == 1 && tileData.Height == 1) {
+			// 1x1 tile, includeAllModdedLargeObjectDrops prevents double spawns from framing code calling CheckModTile, which calls KillTile_DropItems and KillTile. (Bars)
+			needDrops = !includeAllModdedLargeObjectDrops;
 		}
 		else {
 			if (includeAllModdedLargeObjectDrops)
@@ -536,13 +548,20 @@ public static class TileLoader
 					needDrops = true;
 				}
 			}
-
 		}
 		if (needDrops) {
 			if (modTile.ItemDrop > 0) {
 				dropItem = modTile.ItemDrop;
 			}
-			modTile.GetItemDrops(x, y, ref dropItem, ref dropItemStack, ref secondaryItem, ref secondaryItemStack);
+			if (tileData != null) {
+				int style = TileObjectData.GetTileStyle(tileCache);
+				(int type, int style) key = (tileCache.type, style);
+				if (tileTypeAndTileStyleToItemType.ContainsKey(key)) {
+					dropItem = tileTypeAndTileStyleToItemType[key];
+				}
+			}
+
+			modTile.GetItemDrops(x, y, ref dropItem, ref dropItemStack);
 		}
 	}
 

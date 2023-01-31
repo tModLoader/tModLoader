@@ -109,48 +109,46 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			offsetY = -2; // This is -1 for tiles using StyleAlch, but vanilla sets to -2 for herbs, which causes a slight visual offset between the placement preview and the placed tile. 
-		} 
+		}
 
-		public override bool Drop(int i, int j) {
+		public override bool CanDrop(int i, int j) {
 			PlantStage stage = GetStage(i, j);
 
 			if (stage == PlantStage.Planted) {
 				// Do not drop anything when just planted
 				return false;
 			}
+			return true;
+		}
+
+		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
+			PlantStage stage = GetStage(i, j);
 
 			Vector2 worldPosition = new Vector2(i, j).ToWorldCoordinates();
 			Player nearestPlayer = Main.player[Player.FindClosest(worldPosition, 16, 16)];
 
-			int herbItemType = ModContent.ItemType<ExampleItem>();
-			int herbItemStack = 1;
+			dropItem = ModContent.ItemType<ExampleItem>();
+			dropItemStack = 1;
 
 			int seedItemType = ModContent.ItemType<ExampleHerbSeeds>();
 			int seedItemStack = 1;
 
 			if (nearestPlayer.active && nearestPlayer.HeldItem.type == ItemID.StaffofRegrowth) {
 				// Increased yields with Staff of Regrowth, even when not fully grown
-				herbItemStack = Main.rand.Next(1, 3);
+				dropItemStack = Main.rand.Next(1, 3);
 				seedItemStack = Main.rand.Next(1, 6);
 			}
 			else if (stage == PlantStage.Grown) {
 				// Default yields, only when fully grown
-				herbItemStack = 1;
+				dropItemStack = 1;
 				seedItemStack = Main.rand.Next(1, 4);
 			}
 
+			// tModLoader code will handle spawning dropItem. seedItemType is an additional drop and is spawned here
 			var source = new EntitySource_TileBreak(i, j);
-
-			if (herbItemType > 0 && herbItemStack > 0) {
-				Item.NewItem(source, worldPosition, herbItemType, herbItemStack);
-			}
-
 			if (seedItemType > 0 && seedItemStack > 0) {
 				Item.NewItem(source, worldPosition, seedItemType, seedItemStack);
 			}
-
-			// Custom drop code, so return false
-			return false;
 		}
 
 		public override bool IsTileSpelunkable(int i, int j) {

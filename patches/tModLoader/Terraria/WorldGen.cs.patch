@@ -2309,7 +2309,7 @@
  		for (int k = 0; k < num16; k++) {
  			KillTile_MakeTileDust(i, j, tile);
  		}
-@@ -45756,9 +_,14 @@
+@@ -45756,9 +_,16 @@
  
  	private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
  
@@ -2319,19 +2319,21 @@
 +		if (!TileLoader.Drop(x, y, Main.tile[x, y].type))
 +			return;
 +
--		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops);
-+		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
+ 		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops);
 +
-+		// TODO: support centering spawn location for multitiles
++		TileLoader.GetItemDrops(x, y, tileCache, ref dropItem, ref dropItemStack, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
++
++		// TODO: support centering spawn location for multitiles? Vanilla code is inconsistent in doing this.
  		if (!Main.getGoodWorld || tileCache.active()) {
  			if (dropItem > 0) {
  				int num = Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, dropItem, dropItemStack, noBroadcast: false, -1);
-@@ -45772,7 +_,7 @@
+@@ -45772,7 +_,8 @@
  		}
  	}
  
++	// tML: Made internal because despite appearing pure, this method does have side effects. ItemDrops can't be safely queried unless more work is done.
 -	public static void KillTile_GetItemDrops(int x, int y, Tile tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, bool includeLargeObjectDrops = false)
-+	public static void KillTile_GetItemDrops(int x, int y, Tile tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
++	internal static void KillTile_GetItemDrops(int x, int y, Tile tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, bool includeLargeObjectDrops = false)
  	{
  		dropItem = 0;
  		dropItemStack = 1;
@@ -2353,15 +2355,6 @@
  				}
  
  				break;
-@@ -47806,6 +_,8 @@
- 			case 665:
- 				break;
- 		}
-+
-+		TileLoader.GetItemDrops(x, y, tileCache, ref dropItem, ref dropItemStack, ref secondaryItem, ref secondaryItemStack, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
- 	}
- 
- 	private static void SetGemTreeDrops(int gemType, int seedType, Tile tileCache, ref int dropItem, ref int secondaryItem)
 @@ -47881,7 +_,12 @@
  
  					if (Main.tile[i, k] != null) {

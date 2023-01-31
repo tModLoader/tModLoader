@@ -74,7 +74,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(233, 207, 94), Language.GetText("MapObject.Relic"));
 		}
 
-		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack) {
+		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
 			// This code here infers the placeStyle the tile was placed with. Only required if you go the Item.placeStyle approach. You just need ItemDrop otherwise
 			// The placeStyle calculated here corresponds to whatever placeStyle you specified on your items that place this tile (Either through Item.placeTile or Item.DefaultToPlacableTile)
 			int placeStyle = TileObjectData.GetTileStyle(Main.tile[i, j]);

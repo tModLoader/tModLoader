@@ -215,16 +215,28 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize which items the tile at the given coordinates drops. Remember that the x, y (i, j) coordinates are in tile coordinates, you will need to multiply them by 16 if you want to drop an item using them. Return false to stop the game from dropping the tile's default item. Returns true by default. Please note that this hook currently only works for 1x1 tiles.
+	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. See <see cref="GetItemDrops"/> to customize the item drop.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool Drop(int i, int j)
+	public virtual bool CanDrop(int i, int j)
 	{
 		return true;
 	}
 
-	public virtual void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack)
+	/// <summary>
+	/// Allows you to customize which item the tile at the given coordinates drops.
+	/// <br/> By default, <paramref name="dropItem"/> will be set to the <see cref="ModBlockType.ItemDrop"/> of this ModTile and <paramref name="dropItemStack"/> will be 1. Assign to these to customize the item that will drop.
+	/// <br/> For tiles with a <see cref="TileObjectData"/>, <paramref name="dropItem"/> will be set to the item type of the loaded item with <see cref="Item.createTile"/> set to this Tile and <see cref="Item.placeStyle"/> matching the style of the Tile. 
+	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles.
+	/// <br/> If this tile drops additional items, those can be spawned here. If the main item drop needs to be customized, spawn the item and set <paramref name="dropItem"/> to 0 to prevent the drop.
+	/// <br/> Use <see cref="CanDrop"/> to prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="dropItem">The Item type of the drop item.</param>
+	/// <param name="dropItemStack">The stack of the drop item. Defaults to 1.</param>
+	public virtual void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack)
 	{
 	}
 
@@ -240,7 +252,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping.
+	/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping. Use this to clean up extra data such as Chests, Signs, or TileEntities. For tiles larger than 1x1, use <see cref="KillMultiTile(int, int, int, int)"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -252,7 +264,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// This hook is called exactly once whenever a block encompassing multiple tiles is destroyed. You can use it to make your multi-tile block drop a single item, for example.
+	/// This hook is called exactly once whenever a block encompassing multiple tiles is destroyed. Use this to clean up extra data such as Chests, Signs, or TileEntities. For tiles that are 1x1, use <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

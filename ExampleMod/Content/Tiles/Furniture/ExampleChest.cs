@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
-		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack, ref int secondaryItem, ref int secondaryItemStack) {
+		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
 			Tile tile = Main.tile[i, j];
 			int style = TileObjectData.GetTileStyle(tile);
 			if (style == 0)
