@@ -82,7 +82,7 @@ var searchData=
   ['modnpc_79',['ModNPC',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html',1,'Terraria::ModLoader']]],
   ['modpacket_80',['ModPacket',['../class_terraria_1_1_mod_loader_1_1_mod_packet.html',1,'Terraria::ModLoader']]],
   ['modpalmtree_81',['ModPalmTree',['../class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html',1,'Terraria::ModLoader']]],
-  ['modplayer_82',['ModPlayer',['../class_terraria_1_1_mod_loader_1_1_mod_player.html',1,'Terraria::ModLoader']]],
+  ['modplayer_82',['ModPlayer',['../class_mod_player.html',1,'ModPlayer'],['../class_terraria_1_1_mod_loader_1_1_mod_player.html',1,'Terraria.ModLoader.ModPlayer']]],
   ['modprefix_83',['ModPrefix',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html',1,'Terraria::ModLoader']]],
   ['modprojectile_84',['ModProjectile',['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html',1,'Terraria::ModLoader']]],
   ['modpublisherinstance_85',['ModPublisherInstance',['../class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_mod_publisher_instance.html',1,'Terraria::Social::Steam::WorkshopHelper']]],
