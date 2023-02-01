@@ -1977,6 +1977,14 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
+@@ -44660,6 +_,7 @@
+ 			t.halfBrick(halfBrick: false);
+ 		}
+ 
++		TileFrame(topLeftX, topLeftY); // Fix #2835: block to platform swap under chest using old frameX and breaking chest because it sees the platform as a stair.
+ 		if (Main.tenthAnniversaryWorld && !Main.remixWorld && (targetType == 53 || targetType == 396 || targetType == 397))
+ 			t.color(7);
+ 
 @@ -44729,7 +_,7 @@
  	public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y)
  	{
