@@ -67,7 +67,7 @@ internal class Saethar_Head : PatreonItem
 			EquipLoader.GetEquipSlot(Mod, $"{InternalSetName}_{EquipType.Legs}", EquipType.Legs),
 		};
 
-		return head == equipSlots[0] && body == equipSlots[1] && legs == equipSlots[2];
+		return head == equipSlots[0]; // && body == equipSlots[1] && legs == equipSlots[2];
 	}
 
 	public override void UpdateVanitySet(Player player)
