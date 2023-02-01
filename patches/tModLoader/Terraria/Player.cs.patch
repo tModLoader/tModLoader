@@ -4595,7 +4595,7 @@
  			if (nPC.friendly && (nPC.type != 22 || !killGuide) && (nPC.type != 54 || !killClothier) && (!nPC.isLikeATownNPC || sItem.type != 5129))
  				return;
  
-@@ -34391,24 +_,32 @@
+@@ -34391,15 +_,24 @@
  			if (!flag || (!nPC.noTileCollide && !CanHit(nPC)))
  				return;
  
@@ -4605,6 +4605,7 @@
 +			/*
  			int num = originalDamage;
 +			*/
++			float num = 1000f; // to reduce patches, set to 1000, and then turn it into a multiplier later
  			bool flag3 = false;
  			int weaponCrit = GetWeaponCrit(sItem);
  			if (Main.rand.Next(1, 101) <= weaponCrit)
@@ -4618,46 +4619,15 @@
 +			ApplyBannerOffenseBuff(nPC, ref modifiers);
  
  			if (parryDamageBuff && sItem.melee) {
--				num *= 5;
-+				modifiers.InitialDamage *= 5; //num *= 5;
- 				parryDamageBuff = false;
- 				ClearBuff(198);
- 			}
- 
- 			if (sItem.type == 426 && (float)nPC.life >= (float)nPC.lifeMax * 0.9f)
--				num = (int)((float)num * 2.5f);
-+				modifiers.InitialDamage *= 2.5f; //num = (int)((float)num * 2.5f);
- 
- 			if (sItem.type == 5096) {
- 				int num3 = 0;
-@@ -34422,14 +_,20 @@
- 					num3 = 3;
- 
- 				float num4 = 1f + 0.05f * (float)num3;
-+				/*
- 				num = (int)((float)num * num4);
-+				*/
-+				modifiers.InitialDamage *= num4;
- 			}
- 
- 			if (sItem.type == 671) {
- 				float t = (float)nPC.life / (float)nPC.lifeMax;
- 				float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
- 				float num5 = 1f * lerpValue;
-+				/*
- 				num = (int)((float)num * (1f + num5));
-+				*/
-+				modifiers.InitialDamage *= 1f + num5;
- 				Vector2 point = itemRectangle.Center.ToVector2();
- 				Vector2 positionInWorld = nPC.Hitbox.ClosestPointInRect(point);
- 				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
-@@ -34437,12 +_,15 @@
+ 				num *= 5;
+@@ -34437,12 +_,16 @@
  				}, whoAmI);
  			}
  
 +			/*
  			int num6 = Main.DamageVar(num, luck);
 +			*/
++			modifiers.InitialDamage *= num / 1000f;
 +			int variedDamage = Main.DamageVar(originalDamage, luck);
  			float armorPenetrationPercent = 0f;
  			if (sItem.type == 5129 && nPC.isLikeATownNPC) {
