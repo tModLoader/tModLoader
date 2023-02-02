@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -24,11 +25,13 @@ public enum PrefixCategory
 	Custom
 }
 
-public abstract class ModPrefix : ModType
+public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
 
-	public ModTranslation DisplayName { get; internal set; }
+	public string LocalizationCategory => "Prefixes";
+
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The category your prefix belongs to, PrefixCategory.Custom by default
@@ -38,24 +41,11 @@ public abstract class ModPrefix : ModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModPrefix>.Register(this);
-
 		Type = PrefixLoader.ReservePrefixID();
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Prefix.{Name}");
-
 		PrefixLoader.RegisterPrefix(this);
 	}
 
-	public sealed override void SetupContent()
-	{
-		AutoStaticDefaults();
-		SetStaticDefaults();
-	}
-
-	public virtual void AutoStaticDefaults()
-	{
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-	}
+	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
 	/// The roll chance of your prefix relative to a vanilla prefix, 1f by default.

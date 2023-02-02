@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
+using System.Text.RegularExpressions;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -209,6 +210,11 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 					File.WriteAllBytes(Path.Combine(itemsFolder, $"{basicSwordTrimmed}.png"), ExampleSwordPNG);
 				}
 
+				string localizationFolder = Path.Combine(sourceFolder, "Localization");
+				Directory.CreateDirectory(localizationFolder);
+				File.WriteAllText(Path.Combine(localizationFolder, $"en-US_Mods.{modNameTrimmed}.hjson"), GetLocalizationFile(modNameTrimmed, basicSwordTrimmed));
+
+				Utils.OpenFolder(sourceFolder);
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 				Main.menuMode = Interface.modSourcesID;
 			}
@@ -294,6 +300,22 @@ $@"{{
 }}";
 	}
 
+	internal string GetLocalizationFile(string modNameTrimmed, string basicSwordTrimmed)
+	{
+		if (string.IsNullOrEmpty(basicSwordTrimmed))
+			return "# This file will automatically update with entries for new content after a build and reload";
+		return
+$@"# This file will automatically update with entries for new content after a build and reload
+
+Items: {{
+	{basicSwordTrimmed}: {{
+		DisplayName: {Regex.Replace(basicSwordTrimmed, "([A-Z])", " $1").Trim()}
+		Tooltip: """"
+	}}
+}} 
+";
+	}
+
 	internal string GetBasicSword(string modNameTrimmed, string basicSwordName)
 	{
 		return
@@ -305,11 +327,7 @@ namespace {modNameTrimmed}.Items
 {{
 	public class {basicSwordName} : ModItem
 	{{
-		public override void SetStaticDefaults()
-		{{
-			// DisplayName.SetDefault(""{basicSwordName}""); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault(""This is a basic modded sword."");
-		}}
+        // The Display Name and Tooltip of this item can be edited in the Localization/en-US_Mods.{modNameTrimmed}.hjson file.
 
 		public override void SetDefaults()
 		{{

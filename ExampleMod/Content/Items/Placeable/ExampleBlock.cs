@@ -8,8 +8,6 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleBlock : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded tile.");
-
 			Item.ResearchUnlockCount = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

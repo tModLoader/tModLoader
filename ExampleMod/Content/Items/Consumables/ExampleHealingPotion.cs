@@ -9,7 +9,11 @@ namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleHealingPotion : ModItem
 	{
+		public static LocalizedText RestoreLifeText { get; private set; }
+
 		public override void SetStaticDefaults() {
+			RestoreLifeText = this.GetLocalization(nameof(RestoreLifeText));
+
 			Item.ResearchUnlockCount = 30;
 		}
 
@@ -37,7 +41,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			if (line != null) {
 				// Change the text to 'Heals max/2 (max/4 when quick healing) life'
-				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", $"{Main.LocalPlayer.statLifeMax2 / 2} ({Main.LocalPlayer.statLifeMax2 / 4} when quick healing)");
+				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", RestoreLifeText.Format(Main.LocalPlayer.statLifeMax2 / 2, Main.LocalPlayer.statLifeMax2 / 4));
 			}
 		}
 

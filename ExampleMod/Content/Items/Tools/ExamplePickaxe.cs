@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExamplePickaxe : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded pickaxe.");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

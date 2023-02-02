@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Metadata;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -46,8 +47,7 @@ namespace ExampleMod.Content.Tiles
 			// Do NOT use this, it causes many unintended side effects
 			//Main.tileAlch[Type] = true;
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Herb");
+			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(128, 128, 128), name);
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);

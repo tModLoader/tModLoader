@@ -50,11 +50,4 @@ public sealed class KeybindLoader : Loader
 
 		return keybind;
 	}
-
-	internal static void SetupContent()
-	{
-		foreach (var modKebind in modKeybinds.Values) {
-			modKebind.SetupContent();
-		}
-	}
 }

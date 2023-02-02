@@ -7,9 +7,6 @@ namespace ExampleMod.Content.Items
 	public class ExampleMountItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("ExampleMount Car key");
-			Tooltip.SetDefault("This summons a modded mount.");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

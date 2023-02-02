@@ -95,6 +95,13 @@ public static partial class SystemLoader
 		}
 	}
 
+	internal static void OnLocalizationsLoaded()
+	{
+		foreach (var system in HookOnLocalizationsLoaded.arr) {
+			system.OnLocalizationsLoaded();
+		}
+	}
+
 	internal static void AddRecipes(Mod mod)
 	{
 		if (SystemsByMod.TryGetValue(mod, out var systems)) {

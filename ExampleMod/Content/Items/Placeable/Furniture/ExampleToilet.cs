@@ -7,9 +7,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleToilet : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Toilet");
-			Tooltip.SetDefault("This is a modded toilet.");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

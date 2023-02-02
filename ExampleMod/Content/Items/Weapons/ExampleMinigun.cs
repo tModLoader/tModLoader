@@ -8,8 +8,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleMinigun : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded minigun.");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

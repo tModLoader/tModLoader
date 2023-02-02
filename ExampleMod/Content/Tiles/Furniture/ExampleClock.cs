@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 
 			// Etc
-			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName()); // We don't need to call SetDefault() on CreateMapEntryName()'s return value if we have .lang files.
+			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName());
 		}
 
 		public override bool RightClick(int x, int y) {

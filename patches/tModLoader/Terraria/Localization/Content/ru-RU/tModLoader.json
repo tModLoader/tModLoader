@@ -178,6 +178,9 @@
 		"ModInfoProblemTryAgain": "Произошла ошибка, попробуйте ещё раз",
 		"ModInfoDisableModToDelete": "Выключите мод перед его удалением",
 		"ModInfoVisitSteampage": "Перейти на страницу мода в Мастерской",
+		// "ModInfoExtractLocalization": "Extract Localization",
+		// "ModInfoExtracted": "Extracted",
+		// "ModInfoEnableModToExtractLocalizationFiles": "Enable Mod to Extract Localization Files",
 
 		// Mod Packs
 		"ModPacksHeader": "Сборки модов",
@@ -418,13 +421,7 @@
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Загрузка рецептов модов...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
-		"StartBagItemName": "Стартовая сумка",
-		"UnloadedItemItemName": "Незагруженный предмет",
-		"UnloadedItemModTooltip": "Мод: {0}",
-		"UnloadedItemItemNameTooltip": "Предмет: {0}",
-		"AprilFoolsJoke": "Первоапрельская шутка",
+		// Default Unimplemented
 		"DefaultTownNPCName": "Безымянный",
 		"DefaultTownNPCChat": "Мой моддер совсем забыл дать мне сообщение.",
 		"DefaultNurseCantHealChat": "Я не знаю почему я не могу тебя полечить, моддер ответственный за это забыл дать мне сообщение, объясняющее это.",
@@ -462,6 +459,7 @@
 		"WorldGenError": "Произошла ошибка во время создания мира",
 		"WorldIODataException": "Произошла ошибка во время загрузки мод-данных этого мира.",
 		"ServerCrash": "Сбой сервера: {0}\n{1}\n\nПожалуйста, проверьте server.log чтобы понять если в этом виноват какой-либо мод. Иначе, идите в текстовый канал #support в Discord сервере tModLoader, и не забудьте отправить этот самый файл.",
+		// "WatchLocalizationFileMessage": "The following localization files have changed and have been reloaded: {0}",
 
 		// MessageBox
 		"ContentFolderNotFound": "Невозможно найти папку Content Террарии. Если Вы устанавливали tModLoader через Steam, убедитесь что террария установлена. Если нет, поместите tModLoader в папку в папке с террарией, либо в папку рядом с папкой террарии. (ContentFolderNotFound)",
@@ -507,7 +505,56 @@
 		"TagsGenDescription": "Меняет, как генерируется мир (т.е. руды, новые структуры, и т.д.)"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "{0}% увеличение урона"
+		"IncreasesDefenseBy": "Увеличивает защиту на {0}",
+		"IncreasesArmorPenBy": "Увеличивает пробивание брони на {0}",
+
+		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxManaBy": "Увеличивает максимум маны на {0}",
+		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		"IncreasesMaxManaByPercent": "Увеличивает максимум маны на {0}%",
+
+		"IncreasesBowDamageByPercent": "Увеличивает урон от стрел на {0} %",
+		"IncreasesGunDamageByPercent": "Увеличивает урон от пушек на {0} %",
+		"IncreasesSpecialistDamageByPercent": "Увеличивает урон от особого дальнобойного оружия на {0}%",
+
+		"IncreasesWhipRangeByPercent": "Увеличивает дальность удара кнутом на {0}%",
+		"IncreasesMaxMinionsBy": "Увеличивает максимальное число ваших прислужников на {0}",
+		"IncreasesMaxSentriesBy": "Увеличивает урон призываемых существ на {0}",
+
+		"IncreasesFishingPowerBy": "Увеличивает мастерство рыбалки на {0}",
+
+		"PermanentlyIncreasesMaxLifeBy": "Навсегда увеличивает максимальный уровень жизни на {0}",
+		"PermanentlyIncreasesMaxManaBy": "Навсегда увеличивает максимум маны на {0}",
+
+		"ReducesDamageTakenByPercent": "Получаемый урон снижен на {0} %",
+
+		"PercentChanceToSaveAmmo": "Шанс {0} % сохранить боеприпасы",
+		"PercentReducedManaCost": "Уменьшает стоимость в мане на {0} %",
+
+		"PercentIncreasedMiningSpeed": "Увеличивает скорость добычи на {0}%",
+		"PercentIncreasedMovementSpeed": "Увеличивает скорость движения на {0} %",
+
+		// "ArmorPenetration": "{0} armor penetration",
+		"PercentIncreasedDamage": "Увеличивает урон на {0} %",
+		"PercentIncreasedCritChance": "Увеличивает шанс критического удара на {0} %",
+		"PercentIncreasedDamageCritChance": "Увеличивает на {0} % урон и шанс критического удара",
+
+		"PercentIncreasedMagicDamage": "Увеличивает магический урон на {0} %",
+		"PercentIncreasedMagicCritChance": "Увеличивает шанс критического магического урона на {0} %",
+		"PercentIncreasedMagicDamageCritChance": "Увеличивает на {0} % магический урон и шанс критического удара",
+
+		"PercentIncreasedMeleeDamage": "Увеличивает урон в ближнем бою на {0} %",
+		"PercentIncreasedMeleeCritChance": "Увеличивает шанс критического урона в ближнем бою на {0} %",
+		"PercentIncreasedMeleeDamageCritChance": "Увеличивает на {0} % урон в ближнем бою и шанс критического удара",
+		"PercentIncreasedMeleeSpeed": "Увеличивает скорость ближнего боя на {0} %",
+
+		"PercentIncreasedRangedDamage": "Увеличивает дистанционный урон на {0} %",
+		"PercentIncreasedRangedCritChance": "Увеличивает шанс критического дистанционного урона на {0} %",
+		"PercentIncreasedRangedDamageCritChance": "Увеличивает на {0} % дистанционный урон и шанс критического удара",
+
+		"PercentIncreasedSummonDamage": "Увеличивает урон призываемых существ на {0}%",
+		"SummonTagDamage": "Увеличивает урон призываемых существ на {0}",
+		"PercentSummonTagCritChance": "Увеличивает шанс критического удара призываемых существ на {0}%"
 	},
 	"RecipeConditions": {
 		"NearWater": "Нужна вода",
@@ -552,5 +599,86 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
+		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
+		"ModLoader.Items.StartBag.Tooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
+		"ModLoader.Items.UnloadedItem.DisplayName": "Незагруженный предмет",
+		// "ModLoader.Items.UnloadedItem.Tooltip": "\n",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Мод: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Предмет: {0}",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry0": "Unloaded Chest",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry1": "Locked Unloaded Chest",
+		// "ModLoader.Items.Jofairden_Body.DisplayName": "Andromedon Body",
+		// "ModLoader.Items.Jofairden_Body.Tooltip": "The power of the Andromedon flows within you",
+		// "ModLoader.Items.Jofairden_Head.DisplayName": "Andromedon Head",
+		// "ModLoader.Items.Jofairden_Head.Tooltip": "The power of the Andromedon flows within you",
+		// "ModLoader.Items.Jofairden_Legs.DisplayName": "Andromedon Legs",
+		// "ModLoader.Items.Jofairden_Legs.Tooltip": "The power of the Andromedon flows within you",
+		// "ModLoader.Items.AetherBreaker_Body.DisplayName": "AetherBreaker's Body",
+		// "ModLoader.Items.AetherBreaker_Head.DisplayName": "AetherBreaker's Head",
+		// "ModLoader.Items.WitchDaggah_Head.DisplayName": "WitchDaggah's Head",
+		// "ModLoader.Items.AetherBreaker_Legs.DisplayName": "AetherBreaker's Legs",
+		// "ModLoader.Items.AetherBreaker_Wings.DisplayName": "AetherBreaker's Wings",
+		// "ModLoader.Items.AlejandroAkbal_Body.DisplayName": "AlejandroAkbal's Body",
+		// "ModLoader.Items.AlejandroAkbal_Head.DisplayName": "AlejandroAkbal's Head",
+		// "ModLoader.Items.AlejandroAkbal_Legs.DisplayName": "AlejandroAkbal's Legs",
+		// "ModLoader.Items.AlejandroAkbal_Back.DisplayName": "AlejandroAkbal's Back",
+		// "ModLoader.Items.Coolmike5000_Body.DisplayName": "Coolmike5000's Body",
+		// "ModLoader.Items.Coolmike5000_Head.DisplayName": "Coolmike5000's Head",
+		// "ModLoader.Items.Coolmike5000_Legs.DisplayName": "Coolmike5000's Legs",
+		// "ModLoader.Items.Coolmike5000_Wings.DisplayName": "Coolmike5000's Wings",
+		// "ModLoader.Items.dinidini_Body.DisplayName": "dinidini's Body",
+		// "ModLoader.Items.dinidini_Head.DisplayName": "dinidini's Head",
+		// "ModLoader.Items.dinidini_Legs.DisplayName": "dinidini's Legs",
+		// "ModLoader.Items.dinidini_Wings.DisplayName": "dinidini's Wings",
+		// "ModLoader.Items.dschosen_Body.DisplayName": "dschosen's Body",
+		// "ModLoader.Items.dschosen_Head.DisplayName": "dschosen's Head",
+		// "ModLoader.Items.dschosen_Legs.DisplayName": "dschosen's Legs",
+		// "ModLoader.Items.dschosen_Wings.DisplayName": "dschosen's Wings",
+		// "ModLoader.Items.Elfinlocks_Body.DisplayName": "Elfinlocks' Body",
+		// "ModLoader.Items.Elfinlocks_Head.DisplayName": "Elfinlocks' Head",
+		// "ModLoader.Items.Elfinlocks_Legs.DisplayName": "Elfinlocks' Legs",
+		// "ModLoader.Items.Glory_Body.DisplayName": "Glory's Body",
+		// "ModLoader.Items.Glory_Head.DisplayName": "Glory's Head",
+		// "ModLoader.Items.Glory_Legs.DisplayName": "Glory's Legs",
+		// "ModLoader.Items.Guildpack_Body.DisplayName": "Guildpack's Body",
+		// "ModLoader.Items.Guildpack_Head.DisplayName": "Guildpack's Head",
+		// "ModLoader.Items.Guildpack_Legs.DisplayName": "Guildpack's Legs",
+		// "ModLoader.Items.KittyKitCatCat_Body.DisplayName": "KittyKitCatCat's Body",
+		// "ModLoader.Items.KittyKitCatCat_Head.DisplayName": "KittyKitCatCat's Head",
+		// "ModLoader.Items.KittyKitCatCat_Legs.DisplayName": "KittyKitCatCat's Legs",
+		// "ModLoader.Items.Orian_Body.DisplayName": "Orian's Body",
+		// "ModLoader.Items.Orian_Head.DisplayName": "Orian's Head",
+		// "ModLoader.Items.Orian_Legs.DisplayName": "Orian's Legs",
+		// "ModLoader.Items.POCKETS_Body.DisplayName": "POCKETS' Body",
+		// "ModLoader.Items.POCKETS_Head.DisplayName": "POCKETS' Head",
+		// "ModLoader.Items.POCKETS_Legs.DisplayName": "POCKETS' Legs",
+		// "ModLoader.Items.POCKETS_Wings.DisplayName": "POCKETS' Wings",
+		// "ModLoader.Items.Polyblank_Body.DisplayName": "Polyblank's Body",
+		// "ModLoader.Items.Polyblank_Head.DisplayName": "Polyblank's Head",
+		// "ModLoader.Items.Polyblank_Legs.DisplayName": "Polyblank's Legs",
+		// "ModLoader.Items.Remeus_Body.DisplayName": "Remeus' Body",
+		// "ModLoader.Items.Remeus_Head.DisplayName": "Remeus' Head",
+		// "ModLoader.Items.Remeus_Legs.DisplayName": "Remeus' Legs",
+		// "ModLoader.Items.Saethar_Body.DisplayName": "Saethar's Body",
+		// "ModLoader.Items.Saethar_Head.DisplayName": "Saethar's Head",
+		// "ModLoader.Items.Saethar_Legs.DisplayName": "Saethar's Legs",
+		// "ModLoader.Items.Saethar_Wings.DisplayName": "Saethar's Wings",
+		// "ModLoader.Items.Sailing_Squid_Body.DisplayName": "Sailing_Squid's Body",
+		// "ModLoader.Items.Sailing_Squid_Head.DisplayName": "Sailing_Squid's Head",
+		// "ModLoader.Items.Sailing_Squid_Legs.DisplayName": "Sailing_Squid's Legs",
+		// "ModLoader.Items.Sailing_Squid_Wings.DisplayName": "Sailing_Squid's Wings",
+		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
+		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
+		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
+		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
+		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",
+		// "ModLoader.Items.Zeph_Body.DisplayName": "Zeph's Body",
+		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
+		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
+		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
 	}
 }

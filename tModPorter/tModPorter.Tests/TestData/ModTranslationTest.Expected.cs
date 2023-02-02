@@ -1,22 +1,23 @@
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 public class ModTranslationTest : Mod
 {
 	void Method() {
 		Mod mod = this;
-		LocalizationLoader.AddTranslation(null);
-		LocalizationLoader.CreateTranslation(mod, "");
+		Language.GetOrRegister(mod, "");
+		Language.GetOrRegister(this, "");
 
-		LocalizationLoader.AddTranslation(null);
-		LocalizationLoader.CreateTranslation(this, "");
-	}
-}
+#if COMPILE_ERROR
+		mod.AddTranslation(null)/* tModPorter Note: Removed. Use Language.GetOrRegister */;
+		AddTranslation(null)/* tModPorter Note: Removed. Use Language.GetOrRegister */;
+#endif
 
-public class SideEffectTest : ModItem
-{
-	Mod GetModMightHaveSideEffects() => Mod;
-
-	void Method() {
-		/* GetModMightHaveSideEffects() */LocalizationLoader.AddTranslation(null);
+		// 1.4.3 -> 1.4.4 removal of ModTranslation
+#if COMPILE_ERROR
+		LocalizationLoader.AddTranslation(null)/* tModPorter Note: Removed. Use Language.GetOrRegister */;
+#endif
+		Language.GetOrRegister("A.B.C");
+		Language.GetOrRegister(mod, "suffix");
 	}
 }

@@ -393,7 +393,7 @@ public static class TileLoader
 		return tile.type == TileID.ClosedDoor;
 	}
 
-	public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
+	public static string ContainerName(int type, int frameX, int frameY) => GetTile(type)?.ContainerName(frameY, frameY)?.Value ?? string.Empty;
 
 	public static bool IsModMusicBox(Tile tile)
 	{
