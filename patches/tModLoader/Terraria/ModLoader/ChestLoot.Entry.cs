@@ -11,8 +11,9 @@ public partial class ChestLoot {
 	public class Entry {
 		internal readonly Item item;
 		private readonly List<ICondition> conditions;
+		// this flag is for really good reason. reason is: condition trees (and tavernkeep/bratender)
 		private readonly bool askingNicelyToNotAdd = false;
-		private Ref<bool> hide;
+		private bool hide;
 
 		public Item Item => item;
 
@@ -25,10 +26,9 @@ public partial class ChestLoot {
 		public Entry(int item, params ICondition[] condition) : this(ContentSamples.ItemsByType[item], condition) { }
 
 		public Entry(Item item, params ICondition[] condition) {
-			hide = new(false);
+			hide = false;
 			this.item = item;
 			conditions = condition.ToList();
-
 			ChainedEntries = new()
 			{
 				{ false, new() },
@@ -40,7 +40,7 @@ public partial class ChestLoot {
 			return OnSuccess(new Entry(ContentSamples.ItemsByType[itemId], condition));
 		}
 
-		public Entry OnSuccess(Entry entry) {
+		public Entry OnSuccess(Entry entry, params ICondition[] condition) {
 			ChainedEntries[true].Add(entry);
 			return this;
 		}
@@ -61,21 +61,21 @@ public partial class ChestLoot {
 		}
 
 		public Entry Hide() {
-			hide.Value = true;
+			hide = true;
 			return this;
 		}
 
 		public bool IsAvailable() {
-			foreach (ICondition condition in conditions) {
-				if (!condition.IsAvailable()) {
+			for (int i = 0; i < conditions.Count; i++) {
+				if (!conditions[i].IsAvailable()) {
 					return false;
 				}
 			}
 			return true;
 		}
 
-		public void TryAdd(List<Item> items) {
-			if (hide.Value)
+		public void AddEntries(List<Item> items) {
+			if (hide)
 				return;
 
 			if (IsAvailable()) {
@@ -83,12 +83,12 @@ public partial class ChestLoot {
 					items.Add(item);
 				}
 				foreach (var entry in ChainedEntries[true]) {
-					entry.TryAdd(items);
+					entry.AddEntries(items);
 				}
 			}
 			else {
 				foreach (var entry in ChainedEntries[false]) {
-					entry.TryAdd(items);
+					entry.AddEntries(items);
 				}
 			}
 		}

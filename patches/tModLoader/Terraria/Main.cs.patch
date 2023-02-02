@@ -1136,11 +1136,11 @@
 +			int npcType = NPCLoader.shopToNPC[m];
 +
 +			if (m == 25) { // Painter 2 Shop Special Case
-+				shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Decor"), m);
++				shop[m].SetupShop(TMLLootDatabase.GetNPCShopName(npcType, "Decor"), m);
 +				continue;
 +			}
 +
-+			shop[m].SetupShop(TMLLootDatabase.CalculateShopName(npcType), m);
++			shop[m].SetupShop(TMLLootDatabase.GetNPCShopName(npcType), m);
  		}
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
@@ -3673,11 +3673,11 @@
 +		int npcType = NPCLoader.shopToNPC[npcShop];
 +
 +		if (npcShop == 25) { // Painter 2 Shop Special Case
-+			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType, "Decor"), npcShop);
++			shop[npcShop].SetupShop(TMLLootDatabase.GetNPCShopName(npcType, "Decor"), npcShop);
 +			
 +		}
 +		else {
-+			shop[npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npcType), npcShop);
++			shop[npcShop].SetupShop(TMLLootDatabase.GetNPCShopName(npcType), npcShop);
 +		}
 +		
  		SoundEngine.PlaySound(12);

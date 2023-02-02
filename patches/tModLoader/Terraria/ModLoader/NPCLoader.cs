@@ -1141,7 +1141,7 @@ public static class NPCLoader
 				Main.playerInventory = true;
 				Main.npcChatText = "";
 				Main.npcShop = Main.MaxShopIDs - 1;
-				Main.instance.shop[Main.npcShop].SetupShop(TMLLootDatabase.CalculateShopName(npc.type, shopName), npc.type);
+				Main.instance.shop[Main.npcShop].SetupShop(TMLLootDatabase.GetNPCShopName(npc.type, shopName), npc.type);
 			}
 		}
 

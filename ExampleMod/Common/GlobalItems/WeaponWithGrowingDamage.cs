@@ -145,15 +145,20 @@ namespace ExampleMod.Common.GlobalItems
 	public class SnowBallShop : GlobalNPC
 	{
 		public override void SetupShop(string shopId, ChestLoot shopContents) {
-			if (shopId != TMLLootDatabase.CalculateShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
+			if (shopId != TMLLootDatabase.GetNPCShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
 				return;
 			}
 
-			shopContents.Add(ItemID.Snowball);
+			var snowball = new Item();
+			snowball.SetDefaults(ItemID.Snowball);
+			if (snowball.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
+				weapon.GainExperience(snowball, 2);
+			}
+			shopContents.Add(snowball);
 		}
 
 		public override void ModifyActiveShop(NPC npc, string shopId, Item[] items) {
-			if (shopId != TMLLootDatabase.CalculateShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
+			if (shopId != TMLLootDatabase.GetNPCShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
 				return;
 			}
 

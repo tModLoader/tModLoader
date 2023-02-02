@@ -250,7 +250,7 @@
 +		else {
 +			List<Item> lootbox = NPCLoader.SetupLootboxShop(type);
 +			if (lootbox == null) {
-+				var loot = Main.TMLLootDB.GetNpcShop(shop);
++				var loot = Main.TMLLootDB.GetNPCShop(shop);
 +				if (loot != null)
 +					array = loot.Build(out num);
 +			}
