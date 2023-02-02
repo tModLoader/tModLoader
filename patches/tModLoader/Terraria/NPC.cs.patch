@@ -1691,7 +1691,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,91 @@
+@@ -64591,26 +_,106 @@
  
  		return armorPenetration / 2;
  	}
@@ -1712,46 +1712,46 @@
 -	public double StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
 +	internal int StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, bool noPlayerInteraction = false)
 +	{
-+		return StrikeNPCDirect(CalculateStrikeFromLegacyValues(Damage, knockBack, hitDirection, crit), fromNet, noPlayerInteraction);
++		return StrikeNPC(CalculateStrikeFromLegacyValues(Damage, knockBack, hitDirection, crit), fromNet, noPlayerInteraction);
 +	}
 +
 +	internal DamageStrike CalculateStrikeFromLegacyValues(int Damage, float knockBack, int hitDirection, bool crit)
 +	{
-+		bool instantKill = Damage == 9999;
-+		if (instantKill) {
-+			Damage = 0;
++		DamageStrike strike;
++		if (Damage == 9999) {
++			strike = new DamageStrike {
++				DamageType = DamageClass.Default,
++				SourceDamage = Damage,
++				TargetDamage = 0,
++				Crit = crit,
++				KnockBack = knockBack,
++				HitDirection = hitDirection,
++				InstantKill = true
++			};
 +		}
 +		else {
-+			var modifiers = GetIncomingStrikeModifiers(DamageClass.Default);
-+			crit &= !modifiers.CritDisabled;
-+			Damage = modifiers.GetDamage(Damage, crit);
-+			knockBack = modifiers.GetKnockback(knockBack);
++			var modifiers = GetIncomingStrikeModifiers(DamageClass.Default, ignoreArmorDebuffs: true);
++			strike = modifiers.ToStrike(DamageClass.Default, Damage, crit, knockBack, hitDirection, damageVariation: false);
 +		}
 +
-+		var strike = new DamageStrike {
-+			DamageType = DamageClass.Default,
-+			Damage = Damage,
-+			Crit = crit,
-+			KnockBack = knockBack,
-+			HitDirection = hitDirection,
-+			InstantKill = instantKill
-+		};
 +		NetMessage.SetLegacyStrike(strike);
 +		return strike;
 +	}
 +
-+	public StrikeModifiers GetIncomingStrikeModifiers(DamageClass damageType)
++	public StrikeModifiers GetIncomingStrikeModifiers(DamageClass damageType, bool ignoreArmorDebuffs = false)
 +	{
 +		var modifiers = StrikeModifiers.Default;
 +
 +		modifiers.FinalDamage *= takenDamageMultiplier;
 +
 +		modifiers.Defense.Base += defense;
-+		if (ichor)
-+			modifiers.Defense.Flat -= 15;
++		if (!ignoreArmorDebuffs) {
++			if (ichor)
++				modifiers.Defense.Flat -= 15;
 +
-+		if (betsysCurse)
-+			modifiers.Defense.Flat -= 40;
++			if (betsysCurse)
++				modifiers.Defense.Flat -= 40;
++		}
 +
 +		if (onFire2)
 +			modifiers.KnockbackModifier += 0.1f;
@@ -1759,11 +1759,26 @@
 +		modifiers.KnockbackModifier *= knockBackResist;
 +
 +		damageType ??= DamageClass.Default; // just in case people forget
-+		NPCLoader.AddIncomingStrikeModifiers(this, damageType, ref modifiers);
++		NPCLoader.ModifyIncomingStrike(this, damageType, ref modifiers);
 +		return modifiers;
 +	}
 +
-+	public int StrikeNPCDirect(DamageStrike strike, bool fromNet = false, bool noPlayerInteraction = false)
++	/// <summary>
++	/// Runs <see cref="NPCLoader.ModifyIncomingStrike"/> hooks and and does the full damage calculations. <br/>
++	/// The result <see cref="DamageStrike.TargetDamage"/> will contain the health the NPC will lose when applied. <br/>
++	/// </summary>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Defaults to false</param>
++	/// <param name="knockBack">Defaults to 0</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <returns>A <see cref="DamageStrike"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	public DamageStrike SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false) {
++		return GetIncomingStrikeModifiers(damageType).ToStrike(damageType, damage, crit, knockBack, hitDirection, damageVariation);
++	}
++
++	public int StrikeNPC(DamageStrike strike, bool fromNet = false, bool noPlayerInteraction = false)
  	{
  		bool flag = Main.netMode == 0;
 +		/*
@@ -1778,7 +1793,7 @@
 -			return 0.0;
 +			return 0;
  
-+		double num = strike.Damage;
++		double num = strike.TargetDamage;
 +		bool crit = strike.Crit;
 +		int hitDirection = strike.HitDirection;
 +		if (strike.InstantKill)
@@ -1840,7 +1855,7 @@
  	}
  
  	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
-@@ -64897,7 +_,29 @@
+@@ -64897,7 +_,31 @@
  		}
  	}
  
@@ -1848,20 +1863,22 @@
 +	// Added instantKill parameter
 +	public void HitEffect(int hitDirection = 0, double dmg = 10.0, bool? instantKill = null)
 +	{
++		instantKill ??= dmg == 9999;
 +		HitEffect(new DamageStrike {
 +			DamageType = DamageClass.Default,
-+			Damage = (int)dmg,
++			SourceDamage = (int)dmg,
++			TargetDamage = instantKill.Value ? 0 : (int)dmg,
 +			Crit = false,
 +			HitDirection = hitDirection,
 +			KnockBack = 0,
-+			InstantKill = instantKill ?? dmg == 9999
++			InstantKill = instantKill.Value
 +		});
 +	}
 +
 +	public void HitEffect(DamageStrike strike)
 +	{
 +		IEntitySource.PushFallback(thisEntitySourceCache);
-+		VanillaHitEffect(strike.HitDirection, strike.Damage, strike.InstantKill);
++		VanillaHitEffect(strike.HitDirection, strike.TargetDamage, strike.InstantKill);
 +		IEntitySource.PopFallback();
 +
 +		NPCLoader.HitEffect(this, strike);
@@ -2028,32 +2045,37 @@
  				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624) {
  					BeHurtByOtherNPC(i, nPC);
  					break;
-@@ -74099,14 +_,25 @@
+@@ -74098,15 +_,34 @@
+ 		if (type == 548)
  			num = 20;
  
++		/*
  		int num2 = Main.DamageVar(thatNPC.damage);
--		int num3 = 6;
-+		float num3 = 6; // int -> float
++		*/
+ 		int num3 = 6;
  		int num4 = ((!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1));
 +
++		/*
+ 		double num5 = StrikeNPCNoInteraction(num2, num3, num4);
+ 		if (Main.netMode != 0)
+ 			NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
++		*/
 +		var modifiers = GetIncomingStrikeModifiers(DamageClass.Default);
 +		NPCLoader.ModifyHitNPC(thatNPC, this, ref modifiers);
-+		var strike = modifiers.ToStrike(DamageClass.Generic, num2, crit: false, num3, num4);
--		double num5 = StrikeNPCNoInteraction(num2, num3, num4);
-+		double num5 = StrikeNPCDirect(strike, noPlayerInteraction: true);
--		if (Main.netMode != 0)
++		var strike = modifiers.ToStrike(DamageClass.Generic, thatNPC.damage, crit: false, num3, num4, damageVariation: true);
++		double num5 = StrikeNPC(strike, noPlayerInteraction: true);
 +		if (Main.netMode != 0) {
 +			if (ModNet.AllowVanillaClients)
--			NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
-+				NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
++				NetMessage.SendData(28, -1, -1, null, whoAmI, modifiers.GetVanillaDamage(defense), num3, num4);
 +			else
-+				NetMessage.SendStrikeNPCDirect(this, strike);
++				NetMessage.SendStrikeNPC(this, strike);
 +		}
  
  		netUpdate = true;
  		immune[255] = num;
 +
 +		NPCLoader.OnHitNPC(thatNPC, this, strike);
++		int num2 = strike.SourceDamage; // slightly more 'technically correct' to use modifiers.GetVanillaDamage, but better practice is to use pre-randomization or even post-mitigation values for reflection.
 +
  		if (dryadWard) {
  			num2 = (int)num5 / 3;

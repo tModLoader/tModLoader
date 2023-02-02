@@ -491,7 +491,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="damageType"></param>
 	/// <param name="modifiers"></param>
-	public virtual void AddIncomingStrikeModifiers(DamageClass damageType, ref StrikeModifiers modifiers)
+	public virtual void ModifyIncomingStrike(DamageClass damageType, ref StrikeModifiers modifiers)
 	{
 	}
 

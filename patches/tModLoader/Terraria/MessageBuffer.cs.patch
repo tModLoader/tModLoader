@@ -289,7 +289,7 @@
  				projectile.ProjectileFixDesperation();
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(27, -1, whoAmI, null, num38);
-@@ -1523,10 +_,32 @@
+@@ -1523,10 +_,33 @@
  			}
  			case 28: {
  				int num190 = reader.ReadInt16();
@@ -311,7 +311,8 @@
 +				b10 = 0;
 +				if (num191 >= 0) {
 +					strike = new DamageStrike {
-+						Damage = num191,
++						TargetDamage = num191,
++						SourceDamage = reader.Read7BitEncodedInt(),
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
 +						KnockBack = reader.ReadSingle(),
 +						Flags = reader.ReadByte()
@@ -330,7 +331,7 @@
 -					Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, noEffect: false, fromNet: true);
 +						Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, fromNet: true);
 +					else
-+						Main.npc[num190].StrikeNPCDirect(strike, fromNet: true);
++						Main.npc[num190].StrikeNPC(strike, fromNet: true);
  				}
  				else {
  					Main.npc[num190].life = 0;
@@ -342,7 +343,7 @@
 -				NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
 +					NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
 +				else
-+					NetMessage.SendStrikeNPCDirect(Main.npc[num190], strike);
++					NetMessage.SendStrikeNPC(Main.npc[num190], strike);
 +
  				if (Main.npc[num190].life <= 0)
  					NetMessage.TrySendData(23, -1, -1, null, num190);

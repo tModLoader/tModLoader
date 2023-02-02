@@ -160,7 +160,7 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
-@@ -710,15 +_,36 @@
+@@ -710,15 +_,37 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
@@ -189,7 +189,8 @@
 +					}
 +
 +					var strike = number7 == 1 ? _currentStrike : _lastLegacyStrike;
-+					writer.Write7BitEncodedInt(strike.Damage);
++					writer.Write7BitEncodedInt(strike.TargetDamage);
++					writer.Write7BitEncodedInt(strike.SourceDamage);
 +					writer.Write7BitEncodedInt(strike.DamageType.Type);
 +					writer.Write(strike.KnockBack);
 +					writer.Write((byte)strike.Flags);
@@ -517,7 +518,7 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
-@@ -2291,6 +_,22 @@
+@@ -2291,6 +_,26 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -528,7 +529,11 @@
 +	}
 +
 +	private static DamageStrike _currentStrike;
-+	public static void SendStrikeNPCDirect(NPC npc, in DamageStrike strike)
++
++	/// <summary>
++	/// Use this to synchronize damage strikes against NPCs!
++	/// </summary>
++	public static void SendStrikeNPC(NPC npc, in DamageStrike strike)
 +	{
 +		if (ModNet.AllowVanillaClients)
 +			throw new NotSupportedException("Cannot send direct strike data when supporting vanilla clients");

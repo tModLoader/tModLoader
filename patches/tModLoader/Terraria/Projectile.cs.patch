@@ -699,11 +699,15 @@
  							if (!flag9 && (Main.npc[i].noTileCollide || !ownerHitCheck || CanHitWithMeleeWeapon(Main.npc[i]))) {
  								bool flag10 = false;
  								if (Main.npc[i].type == 414) {
-@@ -9990,9 +_,15 @@
+@@ -9990,9 +_,19 @@
  									if (type == 604)
  										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
  
-+									var strikeModifiers = nPC.GetIncomingStrikeModifiers(DamageType);
++									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType);
++									modifiers.ArmorPenetration += ArmorPenetration;
++									ProjectileLoader.ModifyStrike(this, ref modifiers);
++									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
++
  									float num3 = knockBack;
  									bool flag12 = false;
 +
@@ -721,7 +725,7 @@
  											num4 += 10;
  											if (flag && Main.player[owner].strongBees)
 -												num4 += 5;
-+												strikeModifiers.ArmorPenetration += 5; //num4 += 5
++												modifiers.ArmorPenetration += 5; //num4 += 5
  											break;
  										case 723:
  										case 724:
@@ -747,8 +751,8 @@
 +									/*
  									int num5 = (int)((float)damage * num);
 +									*/
-+									var damageModifier = StatModifier.Default * num; // num turned into a multiplier
-+									float num5 = 1000; // extract multipliers
++									modifiers.SourceDamage *= num;
++									float num5 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
  									int num6 = 0;
 -									if (type > 0 && type < ProjectileID.Count && ProjectileID.Sets.StardustDragon[type]) {
 +									if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
@@ -760,7 +764,7 @@
  
  									if (flag && type == 189 && Main.player[owner].strongBees)
 -										num5 += 5;
-+										damageModifier.Base += 5; //num5 += 5;
++										modifiers.SourceDamage.Base += 5; //num5 += 5;
  
  									if (flag) {
 +										/*
@@ -785,15 +789,13 @@
  
  										int num12 = type;
  										if ((uint)(num12 - 688) <= 2u) {
-@@ -10127,12 +_,21 @@
+@@ -10127,12 +_,19 @@
  										}
  									}
  
-+									damageModifier *= num5 / 1000;
-+									var knockbackModifier = StatModifier.Default * (num3 / knockBack);
-+									ProjectileLoader.ModifyDamageStats(this, ref damageModifier, ref flag12, ref knockbackModifier);
-+									num5 = damageModifier.ApplyTo(damage);
-+									num3 = knockbackModifier.ApplyTo(knockBack);
++									modifiers.SourceDamage *= num5 / 1000;
++									// set this just so that summon procs which scale with this value can spawn correctly
++									num5 = modifiers.SourceDamage.ApplyTo(damage);
 +
 +									/*
  									float num13 = 1f;
@@ -807,17 +809,23 @@
  
  									if (flag && (minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type])) {
  										bool flag14 = false;
-@@ -10228,8 +_,14 @@
+@@ -10223,13 +_,19 @@
+ 											int num17 = (int)((float)num5 * 1.75f);
+ 											int num18 = NewProjectile(GetProjectileSource_FromThis(), nPC.Center, Vector2.Zero, 918, num17, 0f, owner);
+ 											Main.projectile[num18].localNPCImmunity[i] = -1;
+-											num6 += num17;
++											modifiers.ScalingBonusDamage += 0.75f * num13; //num6 += num17;
+ 										}
  									}
  
  									num6 = (int)((float)num6 * num13);
-+									ProjectileLoader.ApplyDamageProcEffects(this, num5);
- 									num5 += num6;
 +									/*
+ 									num5 += num6;
  									int num19 = ((!flag) ? Main.DamageVar(num5) : Main.DamageVar(num5, Main.player[owner].luck));
 +									*/
-+									int variedDamage = ((!flag) ? Main.DamageVar(num5) : Main.DamageVar(num5, Main.player[owner].luck));
-+									float num19 = 1000; // to reduce patches, set num19 to 1000, and then turn it into a multiplier later
++									modifiers.FlatBonusDamage += num6;
++									float luck = flag ? Main.player[owner].luck : 0f;
++									float num19 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
 +
  									if (type == 1002)
  										num19 /= 2;
@@ -831,7 +839,7 @@
  										if (num27 > 0 && Main.player[owner].HasNPCBannerBuff(num27))
  											num19 = ((!Main.expertMode) ? ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].NormalDamageDealt)) : ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].ExpertDamageDealt)));
 +										*/
-+										Main.player[owner].ApplyBannerOffenseBuff(nPC, ref strikeModifiers);
++										Main.player[owner].ApplyBannerOffenseBuff(nPC, ref modifiers);
  									}
  
  									if (Main.expertMode) {
@@ -844,7 +852,19 @@
  										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10604,6 +_,10 @@
+@@ -10594,16 +_,20 @@
+ 									}
+ 
+ 									if (type == 261 && velocity.Length() < 3.5f) {
+-										num19 /= 2;
++										modifiers.SourceDamage /= 2; //num19 /= 2;
+ 										num3 /= 2f;
+ 									}
+ 
+ 									if (flag && melee && Main.player[owner].parryDamageBuff && !ProjectileID.Sets.DontApplyParryDamageBuff[type]) {
+-										num19 *= 5;
++										modifiers.ScalingBonusDamage += 4f; //num19 *= 5;
+ 										Main.player[owner].parryDamageBuff = false;
  										Main.player[owner].ClearBuff(198);
  									}
  
@@ -870,15 +890,14 @@
  									int num34 = direction;
  									switch (type) {
  										case 697:
-@@ -10639,11 +_,26 @@
+@@ -10639,11 +_,25 @@
  											num3 *= 0.5f;
  									}
  
-+									strikeModifiers.ArmorPenetration = ArmorPenetration;
-+									strikeModifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+									strikeModifiers.InitialDamage *= num19 / 1000;
-+									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref strikeModifiers);
-+									var strike = strikeModifiers.ToStrike(DamageType, variedDamage, flag12, num3, num34);
++									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++									modifiers.KnockbackModifier *= num3 / knockBack;
++									modifiers.TargetDamageMultiplier *= num19 / 1000;
++									var strike = modifiers.ToStrike(DamageType, damage, flag12, num3, num34);
 +
 +									goto VanillaOnHitEffectsStart;
 +
@@ -893,7 +912,7 @@
 +									/*
  									int num35 = ((!flag) ? ((int)nPC.StrikeNPCNoInteraction(num19, num3, num34, flag12)) : ((int)nPC.StrikeNPC(num19, num3, num34, flag12)));
 +									*/
-+									int num35 = nPC.StrikeNPCDirect(strike, noPlayerInteraction: !flag);
++									int num35 = nPC.StrikeNPC(strike, noPlayerInteraction: !flag);
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
  
@@ -908,9 +927,9 @@
  											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
 +										*/
 +										if (ModNet.AllowVanillaClients)
-+											NetMessage.SendData(28, -1, -1, null, i, strikeModifiers.InitialDamage.ApplyTo(variedDamage), num3, num34, strike.Crit ? 1 : 0);
++											NetMessage.SendData(28, -1, -1, null, i, modifiers.GetVanillaDamage(nPC.defense), num3, num34, strike.Crit ? 1 : 0);
 +										else
-+											NetMessage.SendStrikeNPCDirect(nPC, strike);
++											NetMessage.SendStrikeNPC(nPC, strike);
  									}
  
  									if (type == 916)

@@ -432,7 +432,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="damageType"></param>
 	/// <param name="modifiers"></param>
-	public virtual void AddIncomingStrikeModifiers(NPC npc, DamageClass damageType, ref StrikeModifiers modifiers)
+	public virtual void ModifyIncomingStrike(NPC npc, DamageClass damageType, ref StrikeModifiers modifiers)
 	{
 	}
 

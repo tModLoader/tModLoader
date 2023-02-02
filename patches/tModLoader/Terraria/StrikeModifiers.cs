@@ -6,25 +6,42 @@ namespace Terraria;
 public struct StrikeModifiers
 {
 	public static StrikeModifiers Default = new() {
-		InitialDamage = StatModifier.Default,
+		SourceDamage = StatModifier.Default,
 		Defense = StatModifier.Default,
-		DefenseEffectiveness = 0.5f,
+		DefenseEffectiveness = MultipliableFloat.One * .5f,
 		CritDamage = StatModifier.Default + 1f,
 		FinalDamage = StatModifier.Default,
 		KnockbackModifier = StatModifier.Default,
 	};
 
 	/// <summary>
-	/// Use this to add extra damage buffs or debuffs which should apply before armor/defense. <br/>
+	/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="DamageStrike.SourceDamage"/> and be transferred to on-hit effects. <br/>
 	/// <br/>
-	/// Only use this when the effect is unique to this specific strike.<br/>
 	/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
 	/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
-	/// For effects which apply to all dealt by a projectile, consider using <see cref="GlobalProjectile.ModifyDamageStats"/> instead. <br/>
 	/// <br/>
-	/// Used by vanilla for banners, parry damage, and cultist projectile resistances, weapons which scale based on enemy health, etc
+	/// Used by vanilla for weapons with unique scaling such as jousting lance, ham bat, breaker blade. And for accessories which enhance a projectile (strong bees)
 	/// </summary>
-	public StatModifier InitialDamage;
+	public StatModifier SourceDamage;
+
+	/// <summary>
+	/// Use this to add bonus damage to the strike, but not to on-hit effects. <br/>
+	/// <br/>
+	/// Used by vanilla for most summon tag damage.
+	/// </summary>
+	public AddableFloat FlatBonusDamage;
+
+	/// <summary>
+	/// Use this to add bonus <br/>
+	/// Used by vanilla for melee parry buff (+4f) and some summon tag damage.
+	/// </summary>
+	public AddableFloat ScalingBonusDamage;
+
+	/// <summary>
+	/// Not recommended for modded use, consider multiplying <see cref="FinalDamage"/> instead. <br/>
+	/// Used by vanilla for banners, cultist projectile resistances, extra damage for stakes against vampires etc.
+	/// </summary>
+	public MultipliableFloat TargetDamageMultiplier;
 
 	/// <summary>
 	/// The defense of the receiver, including any temporary modifiers (buffs/debuffs). <br/>
@@ -36,7 +53,6 @@ public struct StrikeModifiers
 	/// </summary>
 	public StatModifier Defense;
 
-	private float _armorPenetration;
 	/// <summary>
 	/// Flat defense reduction. Applies after ScalingArmorPenetration. <br/>
 	/// Add to give bonus flat armor penetration. <br/>
@@ -44,17 +60,15 @@ public struct StrikeModifiers
 	/// <br/>
 	/// Used by the <see cref="Projectile.ArmorPenetration"/>, <see cref="Item.ArmorPenetration"/> and <see cref="Player.GetTotalArmorPenetration"/> stats.
 	/// </summary>
-	public float ArmorPenetration { get => _armorPenetration; set => _armorPenetration = Math.Max(value, 0); }
+	public AddableFloat ArmorPenetration;
 
-	private float _scalingArmorPenetration;
 	/// <summary>
-	/// Used to ignore a fraction of enemy armor. Capped between 0 and 1. Recommend only additive buffs, no multiplication or subtraction. <br/>
+	/// Used to ignore a fraction of enemy armor. Recommend only additive buffs, no multiplication or subtraction. <br/>
 	/// <br/>
 	/// At 1f, the attack will completely ignore all defense. Applies before flat <see cref="ArmorPenetration"/>.
 	/// </summary>
-	public float ScalingArmorPenetration { get => _scalingArmorPenetration; set => _scalingArmorPenetration = Utils.Clamp(value, 0, 1); }
+	public AddableFloat ScalingArmorPenetration;
 
-	private float _defenseEffectiveness;
 	/// <summary>
 	/// The conversion ratio between defense and damage reduction. Defaults to 0.5 for NPCs. Depends on difficulty for players. <br/>
 	/// Increase to make defense more effective and armor penetration more important. <br/>
@@ -62,7 +76,7 @@ public struct StrikeModifiers
 	/// Recommend only multiplication, no addition or subtraction. <br/>
 	/// Not recommended to for buffs/debuffs. Use for gamemode tweaks, or if an enemy revolves very heavily around armor penetration.
 	/// </summary>
-	public float DefenseEffectiveness { get => _defenseEffectiveness; set => _defenseEffectiveness = Math.Min(value, 0); }
+	public MultipliableFloat DefenseEffectiveness;
 
 	/// <summary>
 	/// Applied to the final damage (after defense) result when the strike is a crit. Defaults to +1f additive (+100% damage). <br/>
@@ -80,16 +94,25 @@ public struct StrikeModifiers
 	/// Used by <see cref="Player.endurance" /> to reduce overall incoming damage. <br/>
 	/// <br/>
 	/// Multiply to make your enemy more susceptible or resistant to damage. <br/>
+	/// Add to give 'bonus' post-mitigation damage. <br/>
 	/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional bonus damage, ignoring all resistances or multipliers. <br/>
 	/// </summary>
 	public StatModifier FinalDamage;
 
-	public bool CritDisabled { get; private set; }
+	public bool DamageVariationDisabled { get; private set; }
+	public void DisableDamageVariation() => DamageVariationDisabled = true;
+
+	public bool? CritOverride { get; private set; }
 
 	/// <summary>
 	/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="DamageStrike.Crit"/> flag from the resulting strike.
 	/// </summary>
-	public void DisableCrit() => CritDisabled = true;
+	public void DisableCrit() => CritOverride = false;
+
+	/// <summary>
+	/// Sets the strike to be a crit. Does nothing if <see cref="DisableCrit"/> has been called
+	/// </summary>
+	public void SetCrit() => CritOverride ??= true;
 
 	/// <summary>
 	/// Used by <see cref="NPC.onFire2"/> buff (additive) and <see cref="NPC.knockBackResist"/> (multiplicative) <br/>
@@ -104,26 +127,52 @@ public struct StrikeModifiers
 	/// </summary>
 	public StatModifier KnockbackModifier;
 
-	public int GetDamage(float baseDamage, bool crit)
+	public bool IsInstantKill { get; private set; }
+	public void SetInstantKill() => IsInstantKill = true;
+
+	public bool CombatTextHidden { get; private set; }
+	public void HideCombatText() => CombatTextHidden = true;
+
+	/// <summary>
+	/// Used internally for calculating the equivalent vanilla strike damage for networking with vanilla clients
+	/// </summary>
+	private float _calculatedPostDefenseDamage;
+
+	public int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 	{
-		float damage = InitialDamage.ApplyTo(baseDamage);
+		float damage = SourceDamage.ApplyTo(baseDamage);
+		damage += FlatBonusDamage.Value + ScalingBonusDamage.Value * damage;
+		damage *= TargetDamageMultiplier.Value;
 
-		float damageReduction = Math.Max(Defense.ApplyTo(0) * (1 - ScalingArmorPenetration) - ArmorPenetration, 0) * DefenseEffectiveness;
-		damage = Math.Min(damage - damageReduction, 1);
+		if (damageVariation && !DamageVariationDisabled)
+			damage = Main.DamageVar(damage, luck);
 
-		if (crit && !CritDisabled)
+		float defense = Defense.ApplyTo(0);
+		float armorPenetration = defense * Math.Clamp(ScalingArmorPenetration.Value, 0, 1) + ArmorPenetration.Value;
+		defense = Math.Max(defense - armorPenetration, 0);
+
+		float damageReduction = defense * DefenseEffectiveness.Value;
+		damage = Math.Max(damage - damageReduction, 1);
+		_calculatedPostDefenseDamage = damage;
+
+		if (CritOverride ?? crit)
 			damage = CritDamage.ApplyTo(damage);
 
-		return Math.Min((int)FinalDamage.ApplyTo(damage), 1);
+		return Math.Max((int)FinalDamage.ApplyTo(damage), 1);
 	}
 
 	public float GetKnockback(float baseKnockback) => KnockbackModifier.ApplyTo(baseKnockback);
 
-	public DamageStrike ToStrike(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection) => new() {
+	internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
+
+	public DamageStrike ToStrike(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
 		DamageType = damageType,
-		Damage = GetDamage(baseDamage, crit),
-		Crit = crit && !CritDisabled,
+		SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
+		TargetDamage = IsInstantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),
+		Crit = CritOverride ?? crit,
 		KnockBack = GetKnockback(baseKnockback),
-		HitDirection = hitDirection
+		HitDirection = hitDirection,
+		InstantKill = IsInstantKill,
+		HideCombatText = CombatTextHidden
 	};
 }
