@@ -5911,7 +5911,7 @@
  				num40++;
  			}
  		}
-@@ -54517,6 +_,8 @@
+@@ -54517,20 +_,28 @@
  
  			WorldGen.prioritizedTownNPCType = num42;
  		}
@@ -5919,7 +5919,30 @@
 +		NPCLoader.CanTownNPCSpawn(num40);
  	}
  
++	public static int DefaultDamageVariationPercent = 15;
  	public static int DamageVar(float dmg, float luck = 0f)
+ 	{
++		return DamageVar(dmg, DefaultDamageVariationPercent, luck);
++	}
++	
++	public static int DamageVar(float dmg, int percent, float luck = 0f)
++	{
+-		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++		float num = dmg * (1f + (float)rand.Next(-percent, percent+1) * 0.01f);
+ 		if (luck > 0f) {
+ 			if (rand.NextFloat() < luck) {
+-				float num2 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++				float num2 = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
+ 				if (num2 > num)
+ 					num = num2;
+ 			}
+ 		}
+ 		else if (luck < 0f && rand.NextFloat() < 0f - luck) {
+-			float num3 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++			float num3 = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
+ 			if (num3 < num)
+ 				num = num3;
+ 		}
 @@ -54538,7 +_,8 @@
  		return (int)Math.Round(num);
  	}

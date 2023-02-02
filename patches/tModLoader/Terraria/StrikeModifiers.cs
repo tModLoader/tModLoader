@@ -9,6 +9,7 @@ public struct StrikeModifiers
 		SourceDamage = StatModifier.Default,
 		Defense = StatModifier.Default,
 		DefenseEffectiveness = MultipliableFloat.One * .5f,
+		DamageVariationScale = MultipliableFloat.One,
 		CritDamage = StatModifier.Default + 1f,
 		FinalDamage = StatModifier.Default,
 		KnockbackModifier = StatModifier.Default,
@@ -99,8 +100,13 @@ public struct StrikeModifiers
 	/// </summary>
 	public StatModifier FinalDamage;
 
-	public bool DamageVariationDisabled { get; private set; }
-	public void DisableDamageVariation() => DamageVariationDisabled = true;
+	/// <summary>
+	/// Multiply to adjust the damage variation of the strike. <br/>
+	/// Multiply by 0 to disable damage variation.<br/>
+	/// Default damage variation is 15%, so maximum scale is ~6.67 <br/>
+	/// Only affects strikes where damage variation is enabled (which is most projectile/item/NPC damage)
+	/// </summary>
+	public MultipliableFloat DamageVariationScale;
 
 	public bool? CritOverride { get; private set; }
 
@@ -144,8 +150,9 @@ public struct StrikeModifiers
 		damage += FlatBonusDamage.Value + ScalingBonusDamage.Value * damage;
 		damage *= TargetDamageMultiplier.Value;
 
-		if (damageVariation && !DamageVariationDisabled)
-			damage = Main.DamageVar(damage, luck);
+		int variationPercent = Utils.Clamp((int)Math.Round(Main.DefaultDamageVariationPercent * DamageVariationScale.Value), 0, 100);
+		if (damageVariation && variationPercent > 0)
+			damage = Main.DamageVar(damage, variationPercent, luck);
 
 		float defense = Defense.ApplyTo(0);
 		float armorPenetration = defense * Math.Clamp(ScalingArmorPenetration.Value, 0, 1) + ArmorPenetration.Value;
