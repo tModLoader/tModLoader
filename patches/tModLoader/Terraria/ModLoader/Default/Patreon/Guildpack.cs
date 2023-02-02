@@ -68,12 +68,11 @@ namespace Terraria.ModLoader.Default.Patreon
 			var headOrigin = drawInfo.headVect;
 			var player = drawInfo.drawPlayer;
 
-			var position = drawInfo.Position - Main.screenPosition;
-			position.X -= player.bodyFrame.Width / 2;
-			position.X += player.width / 2;
-			position.Y += player.height - player.bodyFrame.Height + 4f;
-			position += player.headPosition + headOrigin;
-			position = position.ToPoint().ToVector2();
+			//TODO: Mitigate the need for this boilerplate.
+			Vector2 position = player.headPosition + drawInfo.headVect + new Vector2(
+				(int)(drawInfo.Position.X + player.width / 2f - player.bodyFrame.Width / 2f - Main.screenPosition.X),
+				(int)(drawInfo.Position.Y + player.height - player.bodyFrame.Height + 4f - Main.screenPosition.Y)
+			);
 
 			drawInfo.DrawDataCache.Add(new DrawData(texture, position, player.bodyFrame, Color.White, player.headRotation, headOrigin, 1f, drawInfo.playerEffect, 0));
 		}
