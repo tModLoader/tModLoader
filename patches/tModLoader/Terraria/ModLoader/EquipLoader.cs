@@ -187,40 +187,40 @@ public static class EquipLoader
 					item.legSlot = slot;
 					break;
 				case EquipType.HandsOn:
-					item.handOnSlot = (sbyte)slot;
+					item.handOnSlot = slot;
 					break;
 				case EquipType.HandsOff:
-					item.handOffSlot = (sbyte)slot;
+					item.handOffSlot = slot;
 					break;
 				case EquipType.Back:
-					item.backSlot = (sbyte)slot;
+					item.backSlot = slot;
 					break;
 				case EquipType.Front:
-					item.frontSlot = (sbyte)slot;
+					item.frontSlot = slot;
 					break;
 				case EquipType.Shoes:
-					item.shoeSlot = (sbyte)slot;
+					item.shoeSlot = slot;
 					break;
 				case EquipType.Waist:
-					item.waistSlot = (sbyte)slot;
+					item.waistSlot = slot;
 					break;
 				case EquipType.Wings:
-					item.wingSlot = (sbyte)slot;
+					item.wingSlot = slot;
 					break;
 				case EquipType.Shield:
-					item.shieldSlot = (sbyte)slot;
+					item.shieldSlot = slot;
 					break;
 				case EquipType.Neck:
-					item.neckSlot = (sbyte)slot;
+					item.neckSlot = slot;
 					break;
 				case EquipType.Face:
-					item.faceSlot = (sbyte)slot;
+					item.faceSlot = slot;
 					break;
 				case EquipType.Beard:
-					item.beardSlot = (sbyte)slot;
+					item.beardSlot = slot;
 					break;
 				case EquipType.Balloon:
-					item.balloonSlot = (sbyte)slot;
+					item.balloonSlot = slot;
 					break;
 			}
 		}
