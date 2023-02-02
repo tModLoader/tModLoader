@@ -62,7 +62,7 @@
 +		*/
 +
 +		Vector2 vector = ChatManager.GetStringSize(value, text, Vector2.One);
-+		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
++		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 1.5f);
 +		return vector * scale;
  	}
  

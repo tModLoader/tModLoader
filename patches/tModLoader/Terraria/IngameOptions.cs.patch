@@ -19,12 +19,16 @@
  		0.7f,
  		0.7f,
  		0.7f,
-@@ -179,6 +_,9 @@
+@@ -179,6 +_,13 @@
  		bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  		int num7 = (flag5 ? 1 : 0);
  		int num8 = 5 + num7 + 2;
 +
 +		num8++; // Add 1 for ModConfig menu
++
++		// Subtract 1 if achievements should be skipped, since this causing an annoying offset in the menu
++		if (SocialAPI.Mode == SocialMode.Steam)
++			num8--;
 +
  		Vector2 vector4 = new Vector2(vector3.X + vector2.X / 4f, vector3.Y + (float)(num3 * 5 / 2));
  		Vector2 vector5 = new Vector2(0f, vector2.Y - (float)(num3 * 5)) / (num8 + 1);
