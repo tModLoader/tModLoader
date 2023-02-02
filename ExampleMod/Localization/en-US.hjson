@@ -81,6 +81,7 @@ Mods: {
 			ExampleTable.MapEntry: Table
 			ExampleWorkbench.MapEntry: Work Bench
 			ExampleSapling.MapEntry: Example Sapling
+			ExampleDresser.MapEntry: Example Dresser
 		}
 
 		Items: {
@@ -731,6 +732,21 @@ Mods: {
 			ShimmerShowcaseConditions: {
 				Tooltip: ""
 				DisplayName: Shimmer Showcase Conditions
+			}
+
+			ExampleTrapA: {
+				DisplayName: Example Trap - Ichor Bullet
+				Tooltip: ""
+			}
+
+			ExampleTrapB: {
+				DisplayName: Example Trap - Chlorophyte Bullet
+				Tooltip: ""
+			}
+
+			ExampleDresser: {
+				DisplayName: Example Dresser
+				Tooltip: This is a modded dresser.
 			}
 		}
 

@@ -7,8 +7,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleDresser : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded dresser.");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

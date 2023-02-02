@@ -33,6 +33,7 @@ namespace ExampleMod.Content.Items.Placeable
 		private readonly int placeStyle;
 
 		// The internal name of each piece of content must be unique. This code ensures that each of the 2 ExampleTrap instances added have a unique name.
+		// In the localization files, these internal names are used as keys for DisplayName and Tooltip
 		public override string Name => placeStyle switch {
 			0 => ExampleTrapA,
 			1 => ExampleTrapB,
@@ -42,14 +43,6 @@ namespace ExampleMod.Content.Items.Placeable
 		// Content loaded multiple times must have a non-default constructor. This is where unique data is passed in to be used later. This also prevents the game from attempting to add this ModItem to the game automatically.
 		public ExampleTrap(int placeStyle) {
 			this.placeStyle = placeStyle;
-		}
-
-		public override void SetStaticDefaults() {
-			// Since this code will run for 2 separate items, we need to check which item's SetStaticDefaults method is running and run the appropriate code.
-			if (Name == ExampleTrapA)
-				DisplayName.SetDefault("Example Trap - Ichor Bullet");
-			if (Name == ExampleTrapB)
-				DisplayName.SetDefault("Example Trap - Chlorophyte Bullet");
 		}
 
 		public override void SetDefaults() {

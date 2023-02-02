@@ -34,11 +34,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			DustType = ModContent.DustType<Sparkle>();
 
 			// Names
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Dresser");
-			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
-
-			ContainerName.SetDefault("Example Dresser");
+			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName(), MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
@@ -53,6 +49,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 			};
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.addTile(Type);
+		}
+
+		public override LocalizedText ContainerName(int frameX, int frameY) {
+			return CreateMapEntryName();
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
@@ -150,7 +150,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Language.GetTextValue("LegacyDresserType.0");
 			}
 			else {
-				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.ContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
 
 				if (Main.chest[chestIndex].name != "") {
 					player.cursorItemIconText = Main.chest[chestIndex].name;
