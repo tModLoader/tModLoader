@@ -437,15 +437,15 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegateModifyStrike(Projectile projectile, ref StrikeModifiers modifiers);
-	private static HookList HookModifyDamageStats = AddHook<DelegateModifyStrike>(g => g.ModifyStrike);
+	private delegate void DelegateModifyHit(Projectile projectile, ref StrikeModifiers modifiers);
+	private static HookList HookModifyDamageStats = AddHook<DelegateModifyHit>(g => g.ModifyHit);
 
-	public static void ModifyStrike(Projectile projectile, ref StrikeModifiers modifiers)
+	public static void ModifyHit(Projectile projectile, ref StrikeModifiers modifiers)
 	{
-		projectile.ModProjectile?.ModifyStrike(ref modifiers);
+		projectile.ModProjectile?.ModifyHit(ref modifiers);
 
 		foreach (GlobalProjectile g in HookModifyDamageStats.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyStrike(projectile, ref modifiers);
+			g.ModifyHit(projectile, ref modifiers);
 		}
 	}
 

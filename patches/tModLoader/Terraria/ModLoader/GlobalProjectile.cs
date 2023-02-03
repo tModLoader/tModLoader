@@ -203,7 +203,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyStrike(Projectile projectile, ref StrikeModifiers modifiers)
+	public virtual void ModifyHit(Projectile projectile, ref StrikeModifiers modifiers)
 	{
 	}
 

@@ -235,7 +235,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
 	/// </summary>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyStrike(ref StrikeModifiers modifiers)
+	public virtual void ModifyHit(ref StrikeModifiers modifiers)
 	{
 	}
 

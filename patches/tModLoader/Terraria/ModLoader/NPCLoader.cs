@@ -764,14 +764,14 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateAddModifyIncomingStrike(NPC npc, DamageClass damageType, ref StrikeModifiers modifiers);
-	private static HookList HookAddModifyIncomingStrike = AddHook<DelegateAddModifyIncomingStrike>(g => g.ModifyIncomingStrike);
+	private delegate void DelegateAddModifyIncomingHit(NPC npc, DamageClass damageType, ref StrikeModifiers modifiers);
+	private static HookList HookAddModifyIncomingHit = AddHook<DelegateAddModifyIncomingHit>(g => g.ModifyIncomingHit);
 
-	public static void ModifyIncomingStrike(NPC npc, DamageClass damageType, ref StrikeModifiers modifiers)
+	public static void ModifyIncomingHit(NPC npc, DamageClass damageType, ref StrikeModifiers modifiers)
 	{
-		npc.ModNPC?.ModifyIncomingStrike(damageType, ref modifiers);
-		foreach (GlobalNPC g in HookAddModifyIncomingStrike.Enumerate(npc.globalNPCs)) {
-			g.ModifyIncomingStrike(npc, damageType, ref modifiers);
+		npc.ModNPC?.ModifyIncomingHit(damageType, ref modifiers);
+		foreach (GlobalNPC g in HookAddModifyIncomingHit.Enumerate(npc.globalNPCs)) {
+			g.ModifyIncomingHit(npc, damageType, ref modifiers);
 		}
 	}
 
