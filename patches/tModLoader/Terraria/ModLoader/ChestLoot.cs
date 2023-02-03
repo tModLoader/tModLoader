@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using log4net.Repository.Hierarchy;
-using Terraria.Enums;
-using Terraria.GameContent.Events;
 using Terraria.ID;
-using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -15,8 +10,6 @@ public partial class ChestLoot {
 	private readonly List<Entry> items;
 	private string name;
 
-	private readonly Dictionary<Entry, (Entry entry, bool after)> putCandidates;
-
 	public IReadOnlyList<Entry> Items => items;
 
 	public Entry LastEntry => items[^1];
@@ -25,41 +18,17 @@ public partial class ChestLoot {
 		get {
 			int index = items.FindIndex(x => x.item.type.Equals(item));
 			bool hasInNormal = index != -1;
-			if (hasInNormal)
-				return items[index];
-			return putCandidates.FirstOrDefault(x => x.Key.item.type.Equals(item)).Value.entry;
+			return items[index];
 		}
 	}
 
 	public ChestLoot() {
 		items = new();
-		putCandidates = new();
 	}
 
 	public void RegisterShop(int npcId, string name = "Shop") {
 		this.name = name;
 		Main.TMLLootDB.RegisterNpcShop(npcId, this, name);
-	}
-
-	private void AddCandidates(List<Entry> entries) {
-		Dictionary<Entry, (Entry entry, bool after)> candidates = new(putCandidates);
-		int maxTries = candidates.Count * 3;
-		int tries = 0;
-		do {
-			// TODO: Somehow optimize i to be single call?
-			int i = entries.FindIndex(x => candidates.ContainsKey(x));
-			if (i != -1) {
-				var e = entries[i];
-				entries.Insert(i + candidates[e].after.ToInt(), candidates[e].entry);
-				candidates.Remove(e);
-			}
-
-			if (++tries >= maxTries) {
-				Logging.tML.Warn("Failed to insert entries!");
-				break;
-			}
-		}
-		while (candidates.Count > 0);
 	}
 
 	public ChestLoot Add(params Entry[] entries) {
@@ -76,8 +45,9 @@ public partial class ChestLoot {
 	}
 
 	private ChestLoot InsertAt(Entry targetEntry, Item item, bool after, params ICondition[] condition) {
-		putCandidates.Add(targetEntry, (new Entry(item, condition), after));
-		return this;
+		var orderEntry = new Entry(item, condition);
+		orderEntry.Target(targetEntry, after);
+		return Add(orderEntry);
 	}
 
 	private ChestLoot InsertAt(int targetItem, Item item, bool after, params ICondition[] condition) {
@@ -109,7 +79,9 @@ public partial class ChestLoot {
 		return this;
 	}
 
-	public ChestLoot Hide(int item) => Hide(this[item]);
+	public ChestLoot Hide(int item) {
+		return Hide(this[item]);
+	}
 
 	public Item[] Build(bool lastSlotEmpty = true) {
 		return Build(out _, lastSlotEmpty);
@@ -119,9 +91,9 @@ public partial class ChestLoot {
 		List<Item> array = new();
 		List<Entry> oldEntries = new(items);
 
-		AddCandidates(oldEntries);
+		SortBeforeAfter(oldEntries, r => r.Ordering);
 		foreach (Entry group in oldEntries) {
-			group.AddEntries(array);
+			group.Add(array);
 		}
 
 		slots = array.Count;

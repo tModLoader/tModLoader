@@ -11,17 +11,11 @@ public partial class ChestLoot {
 	public class Entry {
 		internal readonly Item item;
 		private readonly List<ICondition> conditions;
-		// this flag is for really good reason. reason is: condition trees (and tavernkeep/bratender)
-		private readonly bool askingNicelyToNotAdd = false;
 		private bool hide;
 
+		public (Entry target, bool after) Ordering { get; private set; } = (null, false);
+
 		public Item Item => item;
-
-		public Dictionary<bool, List<Entry>> ChainedEntries;
-
-		public Entry(params ICondition[] condition) : this(EmptyInstance, condition) {
-			askingNicelyToNotAdd = true;
-		}
 
 		public Entry(int item, params ICondition[] condition) : this(ContentSamples.ItemsByType[item], condition) { }
 
@@ -29,28 +23,19 @@ public partial class ChestLoot {
 			hide = false;
 			this.item = item;
 			conditions = condition.ToList();
-			ChainedEntries = new()
-			{
-				{ false, new() },
-				{ true, new() }
-			};
 		}
 
-		public Entry OnSuccess(int itemId, params ICondition[] condition) {
-			return OnSuccess(new Entry(ContentSamples.ItemsByType[itemId], condition));
-		}
+		public Entry Target(Entry entry, bool after = false) {
+			ArgumentNullException.ThrowIfNull(entry, nameof(entry));
+			Ordering = (entry, after);
 
-		public Entry OnSuccess(Entry entry, params ICondition[] condition) {
-			ChainedEntries[true].Add(entry);
-			return this;
-		}
+			var target = entry;
+			do {
+				if (target == this)
+					throw new Exception("Entry ordering loop!");
 
-		public Entry OnFail(int itemId, params ICondition[] condition) {
-			return OnFail(new Entry(ContentSamples.ItemsByType[itemId], condition));
-		}
-
-		public Entry OnFail(Entry entry) {
-			ChainedEntries[false].Add(entry);
+				target = target.Ordering.target;
+			} while (target != null);
 			return this;
 		}
 
@@ -74,23 +59,54 @@ public partial class ChestLoot {
 			return true;
 		}
 
-		public void AddEntries(List<Item> items) {
-			if (hide)
+		public void Add(List<Item> items) {
+			if (hide || !IsAvailable()) {
 				return;
+			}
+			items.Add(item);
+		}
+	}
 
-			if (IsAvailable()) {
-				if (!askingNicelyToNotAdd) {
-					items.Add(item);
-				}
-				foreach (var entry in ChainedEntries[true]) {
-					entry.AddEntries(items);
-				}
+	private static void SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
+		var baseOrder = new List<T>();
+		var sortBefore = new Dictionary<T, List<T>>();
+		var sortAfter = new Dictionary<T, List<T>>();
+
+		foreach (var r in values) {
+			switch (func(r)) {
+				case (null, _):
+					baseOrder.Add(r);
+					break;
+				case (var target, false):
+					if (!sortBefore.TryGetValue(target, out var before))
+						before = sortBefore[target] = new();
+
+					before.Add(r);
+					break;
+				case (var target, true):
+					if (!sortAfter.TryGetValue(target, out var after))
+						after = sortAfter[target] = new();
+
+					after.Add(r);
+					break;
 			}
-			else {
-				foreach (var entry in ChainedEntries[false]) {
-					entry.AddEntries(items);
-				}
-			}
+		}
+
+		if (!sortBefore.Any() && !sortAfter.Any())
+			return;
+
+		void Sort(T r) {
+			if (sortBefore.TryGetValue(r, out var before))
+				foreach (var c in before)
+					Sort(c);
+
+			if (sortAfter.TryGetValue(r, out var after))
+				foreach (var c in after)
+					Sort(c);
+		}
+
+		foreach (var r in baseOrder) {
+			Sort(r);
 		}
 	}
 }

@@ -140,50 +140,25 @@ public class TMLLootDatabase
 			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
 				array[num++].SetDefaults(4921);
 		}*/
-		var pylonMainCondition = new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () =>
+		var pylonMainCondition = new ChestLoot.Condition(NetworkText.FromLiteral("When happy enough to sell pylons"), () =>
 			Main.LocalPlayer.talkNPC != -1 && Main.npc[Main.LocalPlayer.talkNPC].type != NPCLoader.shopToNPC[19] && Main.npc[Main.LocalPlayer.talkNPC].type != NPCLoader.shopToNPC[20]
 			&& (Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421 || Main.remixWorld)
 			&& TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16())
 			&& !Main.LocalPlayer.ZoneCorrupt && !Main.LocalPlayer.ZoneCrimson
-			));
-
-		#region Purity Pylon
-		var purityPylon = new ChestLoot.Entry(new ChestLoot.Condition(NetworkText.Empty, () =>
-			!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
+			);
+		var purityPylonCondition = new ChestLoot.Condition(NetworkText.FromLiteral(""), () => { // im having struggles localizing these
+			if (Main.remixWorld) {
+				return Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350;
+			}
+			return Main.LocalPlayer.Center.Y / 16.0 < Main.worldSurface;
+		});
+		var cavernPylonCondition = new ChestLoot.Condition(NetworkText.FromLiteral(""), () => {
+			return !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
 			&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
-			&& !Main.LocalPlayer.ZoneHallow && !Main.LocalPlayer.ZoneGlowshroom));
-		var purityIfRemix = new ChestLoot.Entry(ChestLoot.Condition.RemixWorld);
-
-
-		purityIfRemix.OnFail(new ChestLoot.Entry(ItemID.TeleportationPylonPurity,
-			new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.Center.Y / 16.0 < Main.worldSurface)));
-
-		purityIfRemix.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonPurity,
-			new ChestLoot.Condition(NetworkText.Empty, () => Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350)));
-
-		purityPylon.OnSuccess(purityIfRemix);
-		#endregion
-		#region Cavern Pylon
-		var cavernPylon = new ChestLoot.Entry(ChestLoot.Condition.RemixWorld);
-		// the only difference here is that the latter one doesnt has check for glowshroom
-		cavernPylon.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonUnderground, new ChestLoot.Condition(NetworkText.Empty, () =>
-			!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
-			&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
-			&& !Main.LocalPlayer.ZoneHallow && (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface)));
-
-		cavernPylon.OnFail(new ChestLoot.Entry(ItemID.TeleportationPylonUnderground, new ChestLoot.Condition(NetworkText.Empty, () =>
-			!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
-			&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
-			&& !Main.LocalPlayer.ZoneHallow && !Main.LocalPlayer.ZoneGlowshroom
-			&& (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface)));
-		#endregion
-
-		pylonMainCondition.OnSuccess(purityPylon);
-		pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonSnow, ChestLoot.Condition.InSnowBiome));
-		pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonDesert, ChestLoot.Condition.InDesertBiome));
-		pylonMainCondition.OnSuccess(cavernPylon);
-		
-		pylonMainCondition.OnSuccess(ItemID.TeleportationPylonOcean, new ChestLoot.Condition(NetworkText.Empty, () => {
+			&& !Main.LocalPlayer.ZoneHallow && (!Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
+			&& (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface;
+		});
+		var oceanPylonCondition = new ChestLoot.Condition(NetworkText.FromKey("RecipeConditions.InBeach"), () => {
 			bool flag4 = Main.LocalPlayer.ZoneBeach && Main.LocalPlayer.position.Y < Main.worldSurface * 16.0;
 			if (Main.remixWorld) {
 				double num13 = Main.LocalPlayer.position.X / 16.0;
@@ -191,30 +166,33 @@ public class TMLLootDatabase
 				flag4 |= (num13 < Main.maxTilesX * 0.43 || num13 > Main.maxTilesX * 0.57) && num14 > Main.rockLayer && num14 < Main.maxTilesY - 350;
 			}
 			return flag4;
-		}));
-		pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonJungle, ChestLoot.Condition.InJungleBiome));
-		pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonHallow, ChestLoot.Condition.InHallowBiome));
-		pylonMainCondition.OnSuccess(new ChestLoot.Entry(ItemID.TeleportationPylonMushroom,
-			ChestLoot.Condition.InGlowshroomBiome,
-			new ChestLoot.Condition(NetworkText.Empty, () => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200)));
+		});
+		var glowshroomPylonCondtiion = new ChestLoot.Condition(NetworkText.FromLiteral("Underground, when in remix world"),
+			() => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200);
+
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonPurity,	pylonMainCondition, ChestLoot.Condition.InPurityBiome, purityPylonCondition));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonSnow,	pylonMainCondition, ChestLoot.Condition.InSnowBiome));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonDesert,	pylonMainCondition, ChestLoot.Condition.InDesertBiome));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonUnderground, pylonMainCondition, cavernPylonCondition));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonOcean, pylonMainCondition, oceanPylonCondition));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonJungle, pylonMainCondition, ChestLoot.Condition.InJungleBiome));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonHallow, pylonMainCondition, ChestLoot.Condition.InHallowBiome));
+		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonMushroom, pylonMainCondition, ChestLoot.Condition.InGlowshroomBiome, glowshroomPylonCondtiion));
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
 			if (pylon.ItemDrop == 0) {
 				continue;
 			}
 
-			pylonMainCondition.OnSuccess(new ChestLoot.Entry(pylon.ItemDrop, new ChestLoot.Condition(NetworkText.Empty, () =>
+			RegisterGlobalNpcShop(new ChestLoot.Entry(pylon.ItemDrop, new ChestLoot.Condition(NetworkText.Empty, () =>
 				Main.LocalPlayer.talkNPC != -1 &&
 				pylon.IsPylonForSale(
 					Main.npc[Main.LocalPlayer.talkNPC].type,
 					Main.LocalPlayer,
 					Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421
-					)
-				.HasValue
+				).HasValue
 				)));
 		}
-
-		RegisterGlobalNpcShop(pylonMainCondition);
 	}
 
 	private static void RegisterMerchant() {
@@ -294,101 +272,23 @@ public class TMLLootDatabase
 		var mp3_4 = new ChestLoot.Condition(NetworkText.FromLiteral("During Third Quarter or Waning Crescent moon phase"), () => Main.moonPhase / 2 == 1);
 		var mp5_6 = new ChestLoot.Condition(NetworkText.FromLiteral("During New or Waxing Crescent moon phase"), () => Main.moonPhase / 2 == 2);
 		var mp7_8 = new ChestLoot.Condition(NetworkText.FromLiteral("During First Quarter or Waxing Gibbous moon phase"), () => Main.moonPhase / 2 == 3);
+		var corruptSeedsCondition = new ChestLoot.Condition(NetworkText.FromLiteral("In Corruption world or in Graveyrad in Crimson world"), () => !WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && WorldGen.crimson);
+		var crimsonSeedsCondition = new ChestLoot.Condition(NetworkText.FromLiteral("In Crimson world or in Graveyrad in Corruption world"), () => WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && !WorldGen.crimson);
 
-		#region Entries
-		#region Powders
-		// Represents this:
-		//	if (Main.bloodMoon) {
-		//		if (WorldGen.crimson) {
-		//			if (!Main.remixWorld) {
-		//				array[num++].SetDefaults(ItemID.ViciousPowder);
-		//			}
-		//		}
-		//		else {
-		//			if (!Main.remixWorld) {
-		//				array[num++].SetDefaults(ItemID.VilePowder);
-		//			}
-		//		}
-		//	}
-		//	else {
-		//		if (!Main.remixWorld) {
-		//			array[num++].SetDefaults(ItemID.PurificationPowder);
-		//		}
-		//	}
-		var powders = new ChestLoot.Entry(ChestLoot.Condition.BloodMoon);
-
-		var evilPowders = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
-		var vilePowder = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
-		vilePowder.OnSuccess(ItemID.VilePowder);
-		var viciousPowder = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
-		viciousPowder.OnSuccess(ItemID.ViciousPowder);
-
-		evilPowders.OnSuccess(viciousPowder);
-		evilPowders.OnFail(vilePowder);
-
-		var purePowder = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
-		purePowder.OnSuccess(ItemID.PurificationPowder);
-
-		powders.OnSuccess(evilPowders);
-		powders.OnFail(purePowder);
-		#endregion
-		#region Evil Seeds
-		// Represents this:
-		//	if (Main.bloodMoon) {
-		//		if (!WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && WorldGen.crimson) {
-		//			array[num++].SetDefaults(ItemID.CorruptSeeds);
-		//		}
-		//		if (WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && !WorldGen.crimson) {
-		//			array[num++].SetDefaults(ItemID.CrimsonSeeds);
-		//		}
-		//	}
-		var evilSeeds = new ChestLoot.Entry(ChestLoot.Condition.BloodMoon);
-		var esCrimson = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
-		var esCorrupt = new ChestLoot.Entry(ChestLoot.Condition.CorruptionWorld);
-
-		var corruptSeedsGraveyard = new ChestLoot.Entry(ChestLoot.Condition.InGraveyard, ChestLoot.Condition.CrimsonWorld);
-		var crimsonSeedsGraveyard = new ChestLoot.Entry(ChestLoot.Condition.InGraveyard, ChestLoot.Condition.CorruptionWorld);
-		corruptSeedsGraveyard.OnSuccess(ItemID.CorruptSeeds);
-		crimsonSeedsGraveyard.OnSuccess(ItemID.CrimsonSeeds);
-
-		esCrimson.OnFail(corruptSeedsGraveyard);
-		esCrimson.OnSuccess(ItemID.CrimsonSeeds);
-		esCorrupt.OnFail(crimsonSeedsGraveyard);
-		esCorrupt.OnSuccess(ItemID.CorruptSeeds);
-		#endregion
-		#region Grass Walls
-		// Represents this:
-		//	if (Main.bloodMoon) {
-		//		if (!WorldGen.crimson) {
-		//			array[num++].SetDefaults(ItemID.CorruptGrassEcho);
-		//		}
-		//		else {
-		//			array[num++].SetDefaults(ItemID.CrimsonGrassEcho);
-		//		}
-		//	}
-		//	else {
-		//		array[num++].SetDefaults(ItemID.GrassWall);
-		//	}
-		var grassWalls = new ChestLoot.Entry(ChestLoot.Condition.BloodMoon);
-		var evilGrassWall = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
-
-		evilGrassWall.OnSuccess(ItemID.CrimsonGrassEcho);														// Crimosn Grass Wall
-		evilGrassWall.OnFail(ItemID.CorruptGrassEcho);															// Corrupt Grass Wall
-
-		grassWalls.OnSuccess(evilGrassWall);
-		grassWalls.OnFail(ItemID.GrassWall);
-		#endregion
-		#endregion
-
-		shop.Add(powders)
+		shop.Add(ItemID.VilePowder,			ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld, ChestLoot.Condition.NotRemixWorld)
+			.Add(ItemID.ViciousPowder,		ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CorruptionWorld, ChestLoot.Condition.NotRemixWorld)
+			.Add(ItemID.PurificationPowder, ChestLoot.Condition.NotBloodMoon, ChestLoot.Condition.NotRemixWorld)
 			.Add(ItemID.GrassSeeds,			ChestLoot.Condition.NotBloodMoon)
 			.Add(ItemID.AshGrassSeeds,		ChestLoot.Condition.InUnderworld)
-			.Add(evilSeeds)
+			.Add(ItemID.CorruptSeeds,		ChestLoot.Condition.BloodMoon, corruptSeedsCondition)
+			.Add(ItemID.CrimsonSeeds,		ChestLoot.Condition.BloodMoon, crimsonSeedsCondition)
 			.Add(ItemID.Sunflower,			ChestLoot.Condition.NotBloodMoon)
 			.Add(ItemID.Acorn)
 			.Add(ItemID.DirtRod)
 			.Add(ItemID.PumpkinSeed)
-			.Add(grassWalls)
+			.Add(ItemID.CorruptGrassEcho,	ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CorruptionWorld) // Crimosn Grass Wall
+			.Add(ItemID.CrimsonGrassEcho,	ChestLoot.Condition.BloodMoon, ChestLoot.Condition.CrimsonWorld)    // Corrupt Grass Wall
+			.Add(ItemID.GrassWall,			ChestLoot.Condition.NotBloodMoon)
 			.Add(ItemID.FlowerWall)
 			.Add(ItemID.JungleWall,			ChestLoot.Condition.Hardmode)
 			.Add(ItemID.HallowedSeeds,		ChestLoot.Condition.Hardmode)
@@ -609,63 +509,8 @@ public class TMLLootDatabase
 		var secondFourPhases = new ChestLoot.Condition(NetworkText.FromLiteral("During a New, Waxing Crescent, First Quarter, Waxing Gibbous moon phase"), () => Main.moonPhase >= 4);
 		var livingWoodWandInInv = new ChestLoot.Condition(NetworkText.FromLiteral("If the player has a Living Wood Wand in their inventory"), () => Main.LocalPlayer.HasItem(ItemID.LivingWoodWand));
 		var eclipseOrBloodMoon = new ChestLoot.Condition(NetworkText.FromLiteral("During a Blood Moon or Solar Eclipse"), () => Main.bloodMoon || Main.eclipse);
-
-		#region Entries
-		#region Blend-O-Matic
-		// Represents this:
-		//	if (Main.hardMode || !Main.getGoodWorld) {
-		//		array[num++].SetDefaults(ItemID.BlendOMatic);
-		//	}
-		var blendOMatic = new ChestLoot.Entry(ChestLoot.Condition.Hardmode);
-		var notWorthyMatic = new ChestLoot.Entry(ChestLoot.Condition.NotForTheWorthy);
-		notWorthyMatic.OnSuccess(ItemID.BlendOMatic);
-		blendOMatic.OnFail(notWorthyMatic);
-		blendOMatic.OnSuccess(ItemID.BlendOMatic);
-		#endregion
-		#region Solutions
-		// Represents this:
-		//	if (!Main.remixWorld) {
-		//		if (Main.eclipse || Main.bloodMoon) {
-		// 			if (WorldGen.crimson)
-		//				array[num++].SetDefaults(784);
-		// 			else
-		//				array[num++].SetDefaults(782);
-		//		}
-		//		else if (Main.player[Main.myPlayer].ZoneHallow) {
-		//			array[num++].SetDefaults(781);
-		//		}
-		//		else {
-		// 			array[num++].SetDefaults(780);
-		//		}
-		// 
-		//		if (NPC.downedMoonlord) {
-		// 			array[num++].SetDefaults(5392);
-		// 			array[num++].SetDefaults(5393);
-		// 			array[num++].SetDefaults(5394);
-		//		}
-		//	}
-		var solutions = new ChestLoot.Entry(ChestLoot.Condition.NotRemixWorld);
-		var evilSolutions = new ChestLoot.Entry(eclipseOrBloodMoon);
-
-		var crimsonSolution = new ChestLoot.Entry(ChestLoot.Condition.CrimsonWorld);
-		crimsonSolution.OnSuccess(ItemID.RedSolution);
-		crimsonSolution.OnFail(ItemID.PurpleSolution);
-
-		var hallowSolution = new ChestLoot.Entry(ChestLoot.Condition.InHallowBiome);
-		hallowSolution.OnSuccess(ItemID.BlueSolution);
-		hallowSolution.OnFail(ItemID.GreenSolution);
-
-		evilSolutions.OnSuccess(crimsonSolution);
-		evilSolutions.OnFail(hallowSolution);
-
-		var terraSolutions = new ChestLoot.Entry(ChestLoot.Condition.DownedMoonLord);
-		terraSolutions.OnSuccess(ItemID.SandSolution);
-		terraSolutions.OnSuccess(ItemID.SnowSolution);
-		terraSolutions.OnSuccess(ItemID.DirtSolution);
-
-		solutions.OnSuccess(terraSolutions);
-		#endregion
-		#endregion
+		var notEclipseOrBloodMoon = new ChestLoot.Condition(NetworkText.FromLiteral("During a not Blood Moon and Solar Eclipse"), () => !Main.bloodMoon && !Main.eclipse);
+		var blendOMaticCondition = new ChestLoot.Condition(NetworkText.FromLiteral("In Hardmode or in not For the Worthy world"), () => Main.hardMode || !Main.getGoodWorld);
 
 		new ChestLoot()
 			.Add(ItemID.Clentaminator,		ChestLoot.Condition.NotRemixWorld)
@@ -673,7 +518,7 @@ public class TMLLootDatabase
 			.Add(ItemID.SteampunkShirt,		firstFourPhases)
 			.Add(ItemID.SteampunkPants,		firstFourPhases)
 			.Add(ItemID.Jetpack,			ChestLoot.Condition.Hardmode, secondFourPhases)
-			.Add(blendOMatic)
+			.Add(ItemID.BlendOMatic,		blendOMaticCondition)
 			.Add(ItemID.FleshCloningVaat,	ChestLoot.Condition.CrimsonWorld)
 			.Add(ItemID.LesionStation,		ChestLoot.Condition.CorruptionWorld)                             // Decay Chamber
 			.Add(ItemID.IceMachine,			ChestLoot.Condition.InSnowBiome)
@@ -682,7 +527,13 @@ public class TMLLootDatabase
 			.Add(ItemID.BoneWelder,			ChestLoot.Condition.InGraveyard)
 			.Add(ItemID.LivingLoom,			livingWoodWandInInv)
 			.Add(ItemID.SteampunkBoiler,	ChestLoot.Condition.DownedEyeOfCthulhu, ChestLoot.Condition.DownedEowOrBoc, ChestLoot.Condition.DownedSkeletron)
-			.Add(solutions)
+			.Add(ItemID.RedSolution,		ChestLoot.Condition.NotRemixWorld, eclipseOrBloodMoon, ChestLoot.Condition.CrimsonWorld)
+			.Add(ItemID.PurpleSolution,		ChestLoot.Condition.NotRemixWorld, eclipseOrBloodMoon, ChestLoot.Condition.CorruptionWorld)
+			.Add(ItemID.BlueSolution,		ChestLoot.Condition.NotRemixWorld, notEclipseOrBloodMoon, ChestLoot.Condition.InHallowBiome)
+			.Add(ItemID.GreenSolution,		ChestLoot.Condition.NotRemixWorld, notEclipseOrBloodMoon, ChestLoot.Condition.InPurityBiome)
+			.Add(ItemID.SandSolution,		ChestLoot.Condition.NotRemixWorld, ChestLoot.Condition.DownedMoonLord)
+			.Add(ItemID.SnowSolution,		ChestLoot.Condition.NotRemixWorld, ChestLoot.Condition.DownedMoonLord)
+			.Add(ItemID.DirtSolution,		ChestLoot.Condition.NotRemixWorld, ChestLoot.Condition.DownedMoonLord)
 			.Add(ItemID.Cog)
 			.Add(ItemID.SteampunkMinecart)
 			.Add(ItemID.SteampunkGoggles,	ChestLoot.Condition.Halloween)
@@ -1054,16 +905,10 @@ public class TMLLootDatabase
 
 		shop.Add(353);
 
-		ChestLoot.Entry entry = new(ChestLoot.Condition.Hardmode, new ChestLoot.Condition(NetworkText.Empty, () => NPC.downedGolemBoss || NPC.downedMechBossAny));
-		entry.OnSuccess(3828, ChestLoot.Condition.DownedGolem);
-		entry.OnSuccess(3828, ChestLoot.Condition.DownedMechBossAny);
-		entry.OnFail(3828);
+		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(gold: 4) }, ChestLoot.Condition.DownedGolem, ChestLoot.Condition.DownedMechBossAny);
+		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(gold: 1) }, new ChestLoot.Condition(NetworkText.FromLiteral("Golem is not slain"), () => !NPC.downedGolemBoss), ChestLoot.Condition.DownedMechBossAny);
+		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(silver: 25) }, new ChestLoot.Condition(NetworkText.FromLiteral("Golem is not slain"), () => !NPC.downedGolemBoss && !NPC.downedMechBossAny));
 
-		entry.ChainedEntries[true][0].item.shopCustomPrice = Item.buyPrice(gold: 4);
-		entry.ChainedEntries[true][1].item.shopCustomPrice = Item.buyPrice(gold: 1);
-		entry.ChainedEntries[false][0].item.shopCustomPrice = Item.buyPrice(silver: 25);
-
-		shop.Add(entry);
 		shop.Add(3816);
 		shop.Add(3813);
 		shop.LastEntry.item.shopCustomPrice = 75;

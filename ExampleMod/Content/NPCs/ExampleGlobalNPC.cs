@@ -2,6 +2,7 @@ using ExampleMod.Content.Items;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -51,25 +52,15 @@ namespace ExampleMod.Content.NPCs
 			if (shopId != "Terraria/Merchant/Shop")
 				return;
 
+			// Creaate a condition for later use.
+			var redPotCondition = new ChestLoot.Condition(NetworkText.FromLiteral("Describe what your condition is!"), () => !ChestLoot.Condition.HappyWindyDay.IsAvailable() || !ChestLoot.Condition.HappyEnough.IsAvailable());
+
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
-			var complexCondition = new ChestLoot.Entry(
-				ChestLoot.Condition.HappyWindyDay,
-				ChestLoot.Condition.HappyEnough
-				// you can add as many conditions as you want!
-			);
 			// If condition is fulfilled, add an item to the shop.
-			complexCondition.OnSuccess(ModContent.ItemType<ExampleItem>());
+			shopContents.Add(ModContent.ItemType<ExampleItem>(), ChestLoot.Condition.HappyWindyDay, ChestLoot.Condition.HappyEnough);
 
 			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
-			// Style 1 adding entry like that
-			var innerCondition = new ChestLoot.Entry(ChestLoot.Condition.ForTheWorthy);
-			innerCondition.OnSuccess(ItemID.RedPotion);
-			complexCondition.OnFail(innerCondition);
-			// Style 2
-			//complexCondition.OnFail(ItemID.RedPotion, ChestLoot.Condition.ForTheWorthy);
-
-			// Finally, add the complex condition in shop contents.
-			shopContents.Add(complexCondition);
+			shopContents.Add(ItemID.RedPotion, redPotCondition, ChestLoot.Condition.ForTheWorthy);
 		}
 
 		// PostSetupShop hook is best when it comes to modifying existing items.
