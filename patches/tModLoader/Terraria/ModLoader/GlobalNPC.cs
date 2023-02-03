@@ -772,7 +772,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damageMultiplier"></param>
 	/// <param name="npcHitbox"></param>
 	/// <returns></returns>
-	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
+	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
 	{
 		return true;
 	}

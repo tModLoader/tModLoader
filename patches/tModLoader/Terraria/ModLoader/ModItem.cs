@@ -357,7 +357,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
-	public virtual void ModifyWeaponCrit(Player player, ref float crit)
+	public virtual void ModifyWeaponCrit(Player player, ref AddableFloat crit)
 	{
 	}
 

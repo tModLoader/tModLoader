@@ -317,7 +317,7 @@
 +
 +	/// <summary>
 +	/// The sound that plays when this npc is hit. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
-+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
++	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds.
 +	/// <br/> For example <c>NPC.HitSound = SoundID.NPCHit1;</c> can be used for the typical NPC hit sound.
 +	/// <br/> Defaults to null.
 +	/// </summary>
@@ -325,7 +325,7 @@
 +
 +	/// <summary>
 +	/// The sound that plays when this npc dies. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
-+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
++	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds.
 +	/// <br/> For example <c>NPC.DeathSound = SoundID.NPCDeath1;</c> can be used for the typical NPC kill sound.
 +	/// <br/> Defaults to null.
 +	/// </summary>
@@ -531,7 +531,7 @@
  	{
 +		// Delightfully devilish.
 +		var Language = new NPCNameFakeLanguageCategoryPassthrough();
-+		
++
  		switch (npcType) {
  			case 17:
  				return Language.RandomFromCategory("MerchantNames", WorldGen.genRand).Value;
@@ -897,7 +897,7 @@
  				Point coords = (base.Bottom + Vector2.UnitY * -2f).ToTileCoordinates();
  				Tile tile = Main.tile[coords.X, coords.Y];
 +
-+				// #ModdedChairsForNPCs 
++				// #ModdedChairsForNPCs
 +				/*
  				if (tile.type != 15 && tile.type != 497)
 +				*/
@@ -958,7 +958,7 @@
  			int num49 = 0;
  			int maxValue2 = 0;
  			float knockBack2 = 0f;
-+			
++
 +			//TML: int -> float.
 -			int num50 = 0;
 +			float num50 = 0;
@@ -1413,9 +1413,9 @@
  				Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +				*/
 +				int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
-+				
++
 +				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
-+				
++
  				Main.npc[i].active = false;
  				NetMessage.SendData(23, -1, -1, null, i);
  			}
@@ -1626,7 +1626,7 @@
  	}
  
 +	/// <summary>
-+	/// Spawns an NPC into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the NPC targetting a specific Player immediately on spawn. Start can be used to ensure that an NPC spawns in a slot after an existing NPC. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. The return value is the index of the spawned NPC within the <see cref="Main.npc"/> array. 
++	/// Spawns an NPC into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the NPC targetting a specific Player immediately on spawn. Start can be used to ensure that an NPC spawns in a slot after an existing NPC. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. The return value is the index of the spawned NPC within the <see cref="Main.npc"/> array.
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="X"></param>
@@ -1759,7 +1759,7 @@
 +		modifiers.KnockbackModifier *= knockBackResist;
 +
 +		damageType ??= DamageClass.Default; // just in case people forget
-+		NPCLoader.ModifyIncomingStrike(this, damageType, ref modifiers);
++		NPCLoader.ModifyIncomingHit(this, damageType, ref modifiers);
 +		return modifiers;
 +	}
 +
@@ -2029,7 +2029,7 @@
  				else
  					shimmering = true;
  			}
-+			
++
 +			//TODO: Move?
 +			BuffLoader.Update(buffType[i], this, ref i);
  		}

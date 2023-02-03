@@ -705,7 +705,7 @@
  
 +									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType);
 +									modifiers.ArmorPenetration += ArmorPenetration;
-+									ProjectileLoader.ModifyStrike(this, ref modifiers);
++									ProjectileLoader.ModifyHit(this, ref modifiers);
 +									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
 +
  									float num3 = knockBack;

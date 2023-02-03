@@ -661,10 +661,10 @@ public static class PlayerLoader
 		}
 	}
 
-	private delegate void DelegateModifyWeaponCrit(Item item, ref float crit);
+	private delegate void DelegateModifyWeaponCrit(Item item, ref AddableFloat crit);
 	private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(p => p.ModifyWeaponCrit);
 
-	public static void ModifyWeaponCrit(Player player, Item item, ref float crit)
+	public static void ModifyWeaponCrit(Player player, Item item, ref AddableFloat crit)
 	{
 		if (item.IsAir) return;
 		foreach (var modPlayer in HookModifyWeaponCrit.Enumerate(player.modPlayers)) {
@@ -1006,7 +1006,7 @@ public static class PlayerLoader
 			modPlayer.ModifyFishingAttempt(ref attempt);
 		}
 
-		attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this 
+		attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this
 	}
 
 	private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
@@ -1272,7 +1272,7 @@ public static class PlayerLoader
 	}
 
 	private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
-	
+
 	private static readonly HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 
 	public static bool ModifyNurseHeal(Player player, NPC npc, ref int health, ref bool removeDebuffs, ref string chat)
@@ -1332,7 +1332,7 @@ public static class PlayerLoader
 
 	public static IEnumerable<(IEnumerable<Item>, ModPlayer.ItemConsumedCallback)> GetModdedCraftingMaterials(Player player)
 	{
-		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path. 
+		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path.
 		foreach (var modPlayer in HookAddCraftingMaterials.EnumerateSlow(player.modPlayers)) {
 			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
 			if (items != null)
