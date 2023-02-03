@@ -31,7 +31,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Toilets }; // Condider adding TileID.Chairs to AdjTiles to mirror "(regular) Toilet" and "Golden Toilet" behavior for crafting stations
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleToilet>();
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Toilet"));

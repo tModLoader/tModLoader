@@ -31,8 +31,6 @@ namespace ExampleMod.Content.Tiles
 			// Finally adding newTile
 			TileObjectData.addTile(Type);
 
-			ItemDrop = ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>();
-
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
 			AddMapEntry(new Color(75, 139, 166));
 

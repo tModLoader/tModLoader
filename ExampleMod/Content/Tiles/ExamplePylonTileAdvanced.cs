@@ -45,8 +45,6 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 
-			ItemDrop = ModContent.ItemType<ExamplePylonItemAdvanced>();
-
 			// This time around, we'll have a tile that is 2x3 instead of 3x4.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 3;

@@ -20,7 +20,6 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.addTile(Type);
 
-			ItemDrop = ModContent.ItemType<ExampleMusicBox>();
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(200, 200, 200), name);
 		}

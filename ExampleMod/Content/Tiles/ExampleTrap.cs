@@ -35,12 +35,7 @@ namespace ExampleMod.Content.Tiles
 			Tile t = Main.tile[i, j];
 			int style = t.TileFrameY / 18;
 			// It can be useful to share a single tile with multiple styles.
-			if (style == 0) {
-				dropItem = Mod.Find<ModItem>(Items.Placeable.ExampleTrap.ExampleTrapA).Type;
-			}
-			if (style == 1) {
-				dropItem = Mod.Find<ModItem>(Items.Placeable.ExampleTrap.ExampleTrapB).Type;
-			}
+			dropItem = Mod.Find<ModItem>(Items.Placeable.ExampleTrap.GetInternalNameFromStyle(style)).Type;
 		}
 
 		public override bool CreateDust(int i, int j, ref int type) {

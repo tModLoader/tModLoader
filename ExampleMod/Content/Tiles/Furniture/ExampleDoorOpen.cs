@@ -28,6 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.OpenDoor };
+			// Tiles usually drop their correspoding item automatically, but ItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
 			ItemDrop = ModContent.ItemType<ExampleDoor>();
 			CloseDoorID = ModContent.TileType<ExampleDoorClosed>();
 

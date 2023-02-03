@@ -30,7 +30,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
 			AdjTiles = new int[] { TileID.Dressers };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleDresser>();
 			DustType = ModContent.DustType<Sparkle>();
 
 			// Names

@@ -500,15 +500,10 @@ public static class TileLoader
 	// Could potentially change this to be called in Item.NewItem when EntitySource_TileBreak, but that is used for TEs dropping container items as well. Also tile type is unrecoverable at that point.
 	public static bool Drop(int i, int j, int type)
 	{
-		bool dropItem = true;
 		ModTile modTile = GetTile(type);
+		bool dropItem = modTile?.CanDrop(i, j) ?? true;
 		foreach (var hook in HookCanDrop) {
-			if (!hook(i, j, type)) {
-				dropItem = false;
-			}
-		}
-		if (modTile != null) {
-			dropItem &= modTile.CanDrop(i, j);
+			dropItem &= hook(i, j, type);
 		}
 		if (!dropItem)
 			return false;
@@ -536,33 +531,45 @@ public static class TileLoader
 			// Terrain tile
 			needDrops = true;
 		}
-		else if(tileData.Width == 1 && tileData.Height == 1) {
+		else if (tileData.Width == 1 && tileData.Height == 1) {
 			// 1x1 tile, includeAllModdedLargeObjectDrops prevents double spawns from framing code calling CheckModTile, which calls KillTile_DropItems and KillTile. (Bars)
 			needDrops = !includeAllModdedLargeObjectDrops;
 		}
-		else {
-			if (includeAllModdedLargeObjectDrops)
+		else if (includeAllModdedLargeObjectDrops)
+			needDrops = true;
+		else if (includeLargeObjectDrops) {
+			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type]) {
 				needDrops = true;
-			else if (includeLargeObjectDrops) {
-				if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type]) {
-					needDrops = true;
-				}
 			}
 		}
-		if (needDrops) {
-			if (modTile.ItemDrop > 0) {
-				dropItem = modTile.ItemDrop;
-			}
-			if (tileData != null) {
-				int style = TileObjectData.GetTileStyle(tileCache);
-				(int type, int style) key = (tileCache.type, style);
-				if (tileTypeAndTileStyleToItemType.ContainsKey(key)) {
-					dropItem = tileTypeAndTileStyleToItemType[key];
-				}
-			}
+		if (!needDrops) {
+			return;
+		}
+		// Automatic item derived from item.createTile and item.placeStyle
+		int style = 0;
+		if (tileData != null) {
+			style = TileObjectData.GetTileStyle(tileCache);
+		}
+		dropItem = GetItemDropFromTypeAndStyle(tileCache.type, style);
+		modTile.GetItemDrops(x, y, ref dropItem, ref dropItemStack);
+	}
 
-			modTile.GetItemDrops(x, y, ref dropItem, ref dropItemStack);
+	public static int GetItemDropFromTypeAndStyle(int type, int style = 0, bool allowFallbackToStyleZero = true)
+	{
+		int dropItem = 0;
+		(int type, int style) key = (type, style);
+		if (tileTypeAndTileStyleToItemType.TryGetValue(key, out int value)) {
+			dropItem = value;
 		}
+		else if (allowFallbackToStyleZero && tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out int fallbackValue)) {
+			dropItem = fallbackValue;
+		}
+		// Override
+		ModTile modTile = GetTile(type);
+		if (modTile?.ItemDrop > 0) {
+			dropItem = modTile.ItemDrop;
+		}
+		return dropItem;
 	}
 
 	public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)

@@ -31,7 +31,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.ClosedDoor };
-			ItemDrop = ModContent.ItemType<ExampleDoor>();
 			OpenDoorID = ModContent.TileType<ExampleDoorOpen>();
 
 			// Names

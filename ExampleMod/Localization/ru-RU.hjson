@@ -738,19 +738,19 @@ Mods: {
 				// DisplayName: Shimmer Showcase Conditions
 			}
 
-			ExampleTrapA: {
-				// DisplayName: Example Trap - Ichor Bullet
-				// Tooltip: ""
-			}
-
-			ExampleTrapB: {
-				// DisplayName: Example Trap - Chlorophyte Bullet
-				// Tooltip: ""
-			}
-
 			ExampleDresser: {
 				// DisplayName: Example Dresser
 				// Tooltip: This is a modded dresser.
+			}
+
+			ExampleTrapIchorBullet: {
+				// DisplayName: Example Trap - {$ItemName.IchorBullet}
+				// Tooltip: ""
+			}
+
+			ExampleTrapChlorophyteBullet: {
+				// DisplayName: Example Trap - {$ItemName.ChlorophyteBullet}
+				// Tooltip: ""
 			}
 		}
 

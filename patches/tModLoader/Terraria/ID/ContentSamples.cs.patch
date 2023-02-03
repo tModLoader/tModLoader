@@ -53,7 +53,7 @@
  			NPC nPC = new NPC();
  			nPC.SetDefaults(i);
  			NpcsByNetId[i] = nPC;
-@@ -750,20 +_,22 @@
+@@ -750,20 +_,26 @@
  
  		ModifyNPCIds();
  		ProjectilesByType.Clear();
@@ -73,8 +73,12 @@
  			string name2 = ItemID.Search.GetName(item.netID);
  			ItemPersistentIdsByNetIds[k] = name2;
  			ItemNetIdsByPersistentIds[name2] = k;
-+			if (item.createTile > 0) // TODO: do we still need ItemDrop? Should it be preferred?
-+				TileLoader.tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
++			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
++				if (item.createTile > -1)
++					TileLoader.tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
++				if (item.createWall > -1)
++					WallLoader.wallTypeToItemType[item.createWall] = item.type;
++			}
  		}
  
  		foreach (int item3 in ItemID.Sets.ItemsThatAreProcessedAfterNormalContentSample) {

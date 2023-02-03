@@ -16,8 +16,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.FramesOnKillWall[Type] = true;
 
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>();
-
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3Wall);
 			TileObjectData.addTile(Type);
 

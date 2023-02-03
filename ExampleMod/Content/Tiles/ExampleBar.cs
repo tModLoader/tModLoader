@@ -20,8 +20,6 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.addTile(Type);
 
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleBar>();
-
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.MetalBar")); // localized text for "Metal Bar"
 		}
 	}

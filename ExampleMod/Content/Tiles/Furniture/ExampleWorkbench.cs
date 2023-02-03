@@ -22,7 +22,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
 			AdjTiles = new int[] { TileID.WorkBenches };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x1);

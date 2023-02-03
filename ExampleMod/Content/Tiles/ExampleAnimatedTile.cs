@@ -31,8 +31,6 @@ namespace ExampleMod.Content.Tiles
 			// Before that, you can make some changes to newTile like height, origin and etc.
 			TileObjectData.addTile(Type);
 
-			ItemDrop = ModContent.ItemType<ExampleAnimatedTileItem>();
-
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(238, 145, 105), name);

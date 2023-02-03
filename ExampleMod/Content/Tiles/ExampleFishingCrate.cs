@@ -14,7 +14,6 @@ namespace ExampleMod.Content.Tiles
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolidTop[Type] = true;
 			Main.tileTable[Type] = true;
-			ItemDrop = ModContent.ItemType<Items.Consumables.ExampleFishingCrate>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);

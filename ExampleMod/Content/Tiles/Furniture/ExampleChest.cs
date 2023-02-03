@@ -34,7 +34,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
 			// Other tiles with just one map entry use CreateMapEntryName() to use the default translationkey, "MapEntry"
 			// Since ExampleChest needs multiple, we register our own MapEntry keys
@@ -60,10 +59,14 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
+		// This example shows using GetItemDrops to manually decide item drops. This example is for a tile with a TileObjectData.
 		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
 			Tile tile = Main.tile[i, j];
 			int style = TileObjectData.GetTileStyle(tile);
 			if (style == 0)
+				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+			// Style 1 is ExampleChest when locked. We want that tile style to drop ExampleChest item as well. 
+			if (style == 1)
 				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 		}
 

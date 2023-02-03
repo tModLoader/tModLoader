@@ -93,7 +93,6 @@ public abstract class ModWall : ModBlockType
 	/// </summary>
 	public virtual bool Drop(int i, int j, ref int type)
 	{
-		type = ItemDrop;
 		return true;
 	}
 

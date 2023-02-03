@@ -74,5 +74,11 @@ partial class ItemID
 			{ Diamond, (3, 7) },
 			{ Amber, (3, 7) }
 		};
+
+		/// <summary>
+		/// Set to true to ignore this Item when determining Tile or Wall drops automatically from <see cref="Item.createTile"/> and <see cref="Item.createWall"/>. Use this for any item that places the same Tile/Wall as another item, but shouldn't be retrieved when mined. For example, an "infinite" version of a placement item would set this, allowing the non-infinite version to be used reliably as the drop.
+		/// <br/> Also use this for any item which places a tile that doesn't return that same item when mined. Herb Seeds, for example, don't necessarily drop from Herb plants.
+		/// </summary>
+		public static bool[] DisableAutomaticPlaceableDrop = Factory.CreateBoolSet(false);
 	}
 }

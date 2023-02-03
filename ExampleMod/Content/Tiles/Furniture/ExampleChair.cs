@@ -30,7 +30,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Chairs };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>();
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Chair"));

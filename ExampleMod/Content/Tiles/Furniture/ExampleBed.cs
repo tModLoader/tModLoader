@@ -29,7 +29,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Beds };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); // this style already takes care of direction for us

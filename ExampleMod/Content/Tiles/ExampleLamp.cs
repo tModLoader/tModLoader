@@ -25,7 +25,6 @@ namespace ExampleMod.Content.Tiles
 			Main.tileWaterDeath[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			// Main.tileFlame[Type] = true; // This breaks it.
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleLamp>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);

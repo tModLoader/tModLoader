@@ -19,7 +19,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.GrandfatherClocks };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleClock>();
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);

@@ -32,7 +32,6 @@ namespace ExampleMod.Content.Tiles
 
 			DustType = 84;
 			AdjTiles = new int[] { Type };
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleSink>();
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {

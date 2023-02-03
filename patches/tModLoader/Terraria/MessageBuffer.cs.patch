@@ -347,7 +347,7 @@
 +								/*
  								Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, Chest.chestItemSpawn[num205], 1, noBroadcast: true);
 +								*/
-+								int itemSpawn = b12 < 100 ? Chest.chestItemSpawn[num205] : TileLoader.GetTile(modType).ItemDrop;
++								int itemSpawn = b12 < 100 ? Chest.chestItemSpawn[num205] : TileLoader.GetItemDropFromTypeAndStyle(modType);
 +								if (itemSpawn > 0)
 +									Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  							}
@@ -393,7 +393,7 @@
 +										/*
  										Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, Chest.dresserItemSpawn[num205], 1, noBroadcast: true);
 +										*/
-+										int itemSpawn = b12 < 100 ? Chest.dresserItemSpawn[num205] : TileLoader.GetTile(modType).ItemDrop;
++										int itemSpawn = b12 < 100 ? Chest.dresserItemSpawn[num205] : TileLoader.GetItemDropFromTypeAndStyle(modType);
 +										if (itemSpawn > 0)
 +											Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  									}

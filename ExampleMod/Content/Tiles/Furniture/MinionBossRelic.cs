@@ -46,7 +46,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void SetStaticDefaults() {
 			Main.tileShine[Type] = 400; // Responsible for golden particles
 			Main.tileFrameImportant[Type] = true; // Any multitile requires this
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>();
 			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4); // Relics are 3x4
@@ -56,10 +55,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.StyleHorizontal = false; // Based on how the alternate sprites are positioned on the sprite (by default, true)
 
 			// Optional: If you decide to make your tile utilize different styles through Item.placeStyle, you need these, aswell as the code in SetDrawPositions
-			// TileObjectData.newTile.StyleWrapLimitVisualOverride = 2;
-			// TileObjectData.newTile.StyleMultiplier = 2;
-			// TileObjectData.newTile.StyleWrapLimit = 2;
-			// TileObjectData.newTile.styleLineSkipVisualOverride = 0;
+			TileObjectData.newTile.StyleWrapLimitVisualOverride = 2;
+			TileObjectData.newTile.StyleMultiplier = 2;
+			TileObjectData.newTile.StyleWrapLimit = 2;
+			TileObjectData.newTile.styleLineSkipVisualOverride = 0;
 
 			// Register an alternate tile data with flipped direction
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile); // Copy everything from above, saves us some code
@@ -72,16 +71,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Register map name and color
 			// "MapObject.Relic" refers to the translation key for the vanilla "Relic" text
 			AddMapEntry(new Color(233, 207, 94), Language.GetText("MapObject.Relic"));
-		}
-
-		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
-			// This code here infers the placeStyle the tile was placed with. Only required if you go the Item.placeStyle approach. You just need ItemDrop otherwise
-			// The placeStyle calculated here corresponds to whatever placeStyle you specified on your items that place this tile (Either through Item.placeTile or Item.DefaultToPlacableTile)
-			int placeStyle = TileObjectData.GetTileStyle(Main.tile[i, j]);
-			
-			if (placeStyle == 0) {
-				dropItem = ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>();
-			}
 		}
 
 		public override bool CreateDust(int i, int j, ref int type) {
