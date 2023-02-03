@@ -496,7 +496,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	public virtual void OnHitNPC(Item item, Player player, NPC target, DamageStrike strike, int damageDone)
+	public virtual void OnHitNPC(Item item, Player player, NPC target, Strike strike, int damageDone)
 	{
 	}
 

@@ -263,7 +263,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <param name="target">The target.</param>
 	/// <param name="strike">The damage.</param>
 	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
-	public virtual void OnHitNPC(NPC target, DamageStrike strike, int damageDone)
+	public virtual void OnHitNPC(NPC target, Strike strike, int damageDone)
 	{
 	}
 

@@ -492,9 +492,9 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, DamageStrike, int>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, Strike, int>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(Projectile projectile, NPC target, in DamageStrike strike, int damageDone)
+	public static void OnHitNPC(Projectile projectile, NPC target, in Strike strike, int damageDone)
 	{
 		projectile.ModProjectile?.OnHitNPC(target, strike, damageDone);
 

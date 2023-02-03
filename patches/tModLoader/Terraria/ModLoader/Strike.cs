@@ -1,9 +1,6 @@
-﻿using System;
-using Terraria.ModLoader;
+﻿namespace Terraria.ModLoader;
 
-namespace Terraria;
-
-public struct DamageStrike
+public struct Strike
 {
 	internal BitsByte Flags = default;
 
@@ -15,7 +12,7 @@ public struct DamageStrike
 
 	public float KnockBack = 0;
 
-	public DamageStrike()
+	public Strike()
 	{
 		DamageType = DamageClass.Default;
 	}

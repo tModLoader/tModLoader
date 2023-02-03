@@ -257,7 +257,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(DamageStrike strike)
+	public virtual void HitEffect(Strike strike)
 	{
 	}
 
@@ -421,7 +421,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="strike"></param>
-	public virtual void OnHitNPC(NPC target, DamageStrike strike)
+	public virtual void OnHitNPC(NPC target, Strike strike)
 	{
 	}
 
@@ -453,7 +453,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="item"></param>
 	/// <param name="strike"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitByItem(Player player, Item item, DamageStrike strike, int damageDone)
+	public virtual void OnHitByItem(Player player, Item item, Strike strike, int damageDone)
 	{
 	}
 
@@ -482,7 +482,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="projectile"></param>
 	/// <param name="strike"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitByProjectile(Projectile projectile, DamageStrike strike, int damageDone)
+	public virtual void OnHitByProjectile(Projectile projectile, Strike strike, int damageDone)
 	{
 	}
 

@@ -812,9 +812,9 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, DamageStrike, int>>(p => p.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, Strike, int>>(p => p.OnHitNPC);
 
-	public static void OnHitNPC(Player player, Item item, NPC target, in DamageStrike strike, int damageDone)
+	public static void OnHitNPC(Player player, Item item, NPC target, in Strike strike, int damageDone)
 	{
 		foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
 			modPlayer.OnHitNPC(item, target, strike, damageDone);
@@ -856,9 +856,9 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, DamageStrike, int>>(p => p.OnHitNPCWithProj);
+	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, Strike, int>>(p => p.OnHitNPCWithProj);
 
-	public static void OnHitNPCWithProj(Projectile proj, NPC target, in DamageStrike strike, int damageDone)
+	public static void OnHitNPCWithProj(Projectile proj, NPC target, in Strike strike, int damageDone)
 	{
 		if (proj.npcProj || proj.trap) {
 			return;

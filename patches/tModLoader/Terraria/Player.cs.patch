@@ -2465,7 +2465,7 @@
 +			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, modifiers.GetVanillaDamage(npc.defense), knockback, direction, crit ? 1 : 0);
 +	}
 +
-+	public void StrikeNPCDirect(NPC npc, DamageStrike strike)
++	public void StrikeNPCDirect(NPC npc, Strike strike)
 +	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
 +		/*

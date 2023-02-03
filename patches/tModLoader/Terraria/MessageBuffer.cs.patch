@@ -294,7 +294,7 @@
  			case 28: {
  				int num190 = reader.ReadInt16();
 +
-+				DamageStrike strike = default;
++				Strike strike = default;
 +				if (!ModNet.AllowVanillaClients)
 +					goto ModdedRead;
 +
@@ -310,7 +310,7 @@
 +				num193 = 0;
 +				b10 = 0;
 +				if (num191 >= 0) {
-+					strike = new DamageStrike {
++					strike = new Strike {
 +						TargetDamage = num191,
 +						SourceDamage = reader.Read7BitEncodedInt(),
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],

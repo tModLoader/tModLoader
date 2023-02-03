@@ -1715,11 +1715,11 @@
 +		return StrikeNPC(CalculateStrikeFromLegacyValues(Damage, knockBack, hitDirection, crit), fromNet, noPlayerInteraction);
 +	}
 +
-+	internal DamageStrike CalculateStrikeFromLegacyValues(int Damage, float knockBack, int hitDirection, bool crit)
++	internal Strike CalculateStrikeFromLegacyValues(int Damage, float knockBack, int hitDirection, bool crit)
 +	{
-+		DamageStrike strike;
++		Strike strike;
 +		if (Damage == 9999) {
-+			strike = new DamageStrike {
++			strike = new Strike {
 +				DamageType = DamageClass.Default,
 +				SourceDamage = Damage,
 +				TargetDamage = 0,
@@ -1765,7 +1765,7 @@
 +
 +	/// <summary>
 +	/// Runs <see cref="NPCLoader.ModifyIncomingStrike"/> hooks and and does the full damage calculations. <br/>
-+	/// The result <see cref="DamageStrike.TargetDamage"/> will contain the health the NPC will lose when applied. <br/>
++	/// The result <see cref="Strike.TargetDamage"/> will contain the health the NPC will lose when applied. <br/>
 +	/// </summary>
 +	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
 +	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
@@ -1773,12 +1773,12 @@
 +	/// <param name="knockBack">Defaults to 0</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
-+	/// <returns>A <see cref="DamageStrike"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
-+	public DamageStrike SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false) {
++	/// <returns>A <see cref="Strike"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	public Strike SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false) {
 +		return GetIncomingStrikeModifiers(damageType).ToStrike(damageType, damage, crit, knockBack, hitDirection, damageVariation);
 +	}
 +
-+	public int StrikeNPC(DamageStrike strike, bool fromNet = false, bool noPlayerInteraction = false)
++	public int StrikeNPC(Strike strike, bool fromNet = false, bool noPlayerInteraction = false)
  	{
  		bool flag = Main.netMode == 0;
 +		/*
@@ -1864,7 +1864,7 @@
 +	public void HitEffect(int hitDirection = 0, double dmg = 10.0, bool? instantKill = null)
 +	{
 +		instantKill ??= dmg == 9999;
-+		HitEffect(new DamageStrike {
++		HitEffect(new Strike {
 +			DamageType = DamageClass.Default,
 +			SourceDamage = (int)dmg,
 +			TargetDamage = instantKill.Value ? 0 : (int)dmg,
@@ -1875,7 +1875,7 @@
 +		});
 +	}
 +
-+	public void HitEffect(DamageStrike strike)
++	public void HitEffect(Strike strike)
 +	{
 +		IEntitySource.PushFallback(thisEntitySourceCache);
 +		VanillaHitEffect(strike.HitDirection, strike.TargetDamage, strike.InstantKill);

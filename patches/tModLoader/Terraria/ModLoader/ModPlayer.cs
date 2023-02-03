@@ -652,7 +652,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="strike"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitNPC(Item item, NPC target, DamageStrike strike, int damageDone)
+	public virtual void OnHitNPC(Item item, NPC target, Strike strike, int damageDone)
 	{
 	}
 
@@ -684,7 +684,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="strike"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, DamageStrike strike, int damageDone)
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, Strike strike, int damageDone)
 	{
 	}
 

@@ -235,7 +235,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <param name="target"></param>
 	/// <param name="strike"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitNPC(Projectile projectile, NPC target, DamageStrike strike, int damageDone)
+	public virtual void OnHitNPC(Projectile projectile, NPC target, Strike strike, int damageDone)
 	{
 	}
 

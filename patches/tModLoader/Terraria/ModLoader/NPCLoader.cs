@@ -396,9 +396,9 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookHitEffect = AddHook<Action<NPC, DamageStrike>>(g => g.HitEffect);
+	private static HookList HookHitEffect = AddHook<Action<NPC, Strike>>(g => g.HitEffect);
 
-	public static void HitEffect(NPC npc, in DamageStrike strike)
+	public static void HitEffect(NPC npc, in Strike strike)
 	{
 		npc.ModNPC?.HitEffect(strike);
 
@@ -648,9 +648,9 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC, DamageStrike>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC, Strike>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(NPC npc, NPC target, in DamageStrike strike)
+	public static void OnHitNPC(NPC npc, NPC target, in Strike strike)
 	{
 		npc.ModNPC?.OnHitNPC(target, strike);
 
@@ -704,9 +704,9 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookOnHitByItem = AddHook<Action<NPC, Player, Item, DamageStrike, int>>(g => g.OnHitByItem);
+	private static HookList HookOnHitByItem = AddHook<Action<NPC, Player, Item, Strike, int>>(g => g.OnHitByItem);
 
-	public static void OnHitByItem(NPC npc, Player player, Item item, in DamageStrike strike, int damageDone)
+	public static void OnHitByItem(NPC npc, Player player, Item item, in Strike strike, int damageDone)
 	{
 		npc.ModNPC?.OnHitByItem(player, item, strike, damageDone);
 
@@ -753,9 +753,9 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookOnHitByProjectile = AddHook<Action<NPC, Projectile, DamageStrike, int>>(g => g.OnHitByProjectile);
+	private static HookList HookOnHitByProjectile = AddHook<Action<NPC, Projectile, Strike, int>>(g => g.OnHitByProjectile);
 
-	public static void OnHitByProjectile(NPC npc, Projectile projectile, in DamageStrike strike, int damageDone)
+	public static void OnHitByProjectile(NPC npc, Projectile projectile, in Strike strike, int damageDone)
 	{
 		npc.ModNPC?.OnHitByProjectile(projectile, strike, damageDone);
 

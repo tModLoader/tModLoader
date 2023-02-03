@@ -1,7 +1,6 @@
 ﻿using System;
-using Terraria.ModLoader;
 
-namespace Terraria;
+namespace Terraria.ModLoader;
 
 public struct StrikeModifiers
 {
@@ -16,7 +15,7 @@ public struct StrikeModifiers
 	};
 
 	/// <summary>
-	/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="DamageStrike.SourceDamage"/> and be transferred to on-hit effects. <br/>
+	/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="Strike.SourceDamage"/> and be transferred to on-hit effects. <br/>
 	/// <br/>
 	/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
 	/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
@@ -111,7 +110,7 @@ public struct StrikeModifiers
 	public bool? CritOverride { get; private set; }
 
 	/// <summary>
-	/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="DamageStrike.Crit"/> flag from the resulting strike.
+	/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="Strike.Crit"/> flag from the resulting strike.
 	/// </summary>
 	public void DisableCrit() => CritOverride = false;
 
@@ -172,7 +171,7 @@ public struct StrikeModifiers
 
 	internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
 
-	public DamageStrike ToStrike(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
+	public Strike ToStrike(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
 		DamageType = damageType,
 		SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
 		TargetDamage = IsInstantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),

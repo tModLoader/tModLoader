@@ -107,7 +107,7 @@ public static class CombinedHooks
 		PlayerLoader.ModifyHitNPC(player, sItem, nPC, ref modifiers);
 	}
 
-	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in DamageStrike strike, int damageDone)
+	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in Strike strike, int damageDone)
 	{
 		ItemLoader.OnHitNPC(sItem, player, nPC, strike, damageDone);
 		NPCLoader.OnHitByItem(nPC, player, sItem, strike, damageDone);
@@ -155,7 +155,7 @@ public static class CombinedHooks
 		PlayerLoader.ModifyHitNPCWithProj(projectile, nPC, ref modifiers);
 	}
 
-	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in DamageStrike strike, int damageDone)
+	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in Strike strike, int damageDone)
 	{
 		ProjectileLoader.OnHitNPC(projectile, nPC, strike, damageDone);
 		NPCLoader.OnHitByProjectile(nPC, projectile, strike, damageDone);

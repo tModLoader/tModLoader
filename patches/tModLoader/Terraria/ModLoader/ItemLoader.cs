@@ -942,12 +942,12 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, DamageStrike, int>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, Strike, int>>(g => g.OnHitNPC);
 
 	/// <summary>
 	/// Calls ModItem.OnHitNPC and all GlobalItem.OnHitNPC hooks.
 	/// </summary>
-	public static void OnHitNPC(Item item, Player player, NPC target, in DamageStrike strike, int damageDone)
+	public static void OnHitNPC(Item item, Player player, NPC target, in Strike strike, int damageDone)
 	{
 		item.ModItem?.OnHitNPC(player, target, strike, damageDone);
 
