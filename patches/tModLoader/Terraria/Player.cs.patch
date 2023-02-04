@@ -4393,10 +4393,10 @@
 +					// Copied as-is from 1.3
 +					if (item.CountsAsClass(DamageClass.Throwing)) {
 +						if (ThrownCost50 && Main.rand.Next(100) < 50)
-+							flag6 = true;
++							flag6 = false;
 +
 +						if (ThrownCost33 && Main.rand.Next(100) < 33)
-+							flag6 = true;
++							flag6 = false;
 +					}
 +
  					if (item.IsACoin)
