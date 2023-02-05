@@ -585,14 +585,18 @@
  				else if (getGoodWorldGen)
  					num36 *= 2.0;
  
-@@ -13850,11 +_,22 @@
+@@ -13850,11 +_,26 @@
  			progress.Message = Lang.gen[87].Value;
  		});
  
++		genPassILEdits = new();
++		genPassDetours = new();
++
 +		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
 +
  		_generator.GenerateWorld(customProgressObject);
  		ConsumePostGenActions(GenVars.structures);
++		RemoveGenPassILEditsAndDetours();
 +
 +		SystemLoader.PostWorldGen();
 +
