@@ -13,19 +13,19 @@ using Terraria.Localization;
 namespace ExampleMod.Content.Tiles.Furniture
 {
 	// Common code for a Master Mode boss relic
-	// Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
-	// And in case of wanting to add more relics but not wanting to go the optional way, scroll down to the bottom of the file
+	// Supports optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
+	// If you want to add more relics but don't want to use the Item.placeStyle approach, see the inheritance example at the bottom of the file
 	public class MinionBossRelic : ModTile
 	{
 		public const int FrameWidth = 18 * 3;
 		public const int FrameHeight = 18 * 4;
 		public const int HorizontalFrames = 1;
-		public const int VerticalFrames = 1; // Optional: Increase this number to match the amount of relics you have on your extra sheet, if you choose to go the Item.placeStyle way
+		public const int VerticalFrames = 1; // Optional: Increase this number to match the amount of relics you have on your extra sheet, if you choose to use the Item.placeStyle approach
 
 		public Asset<Texture2D> RelicTexture;
 
 		// Every relic has its own extra floating part, should be 50x50. Optional: Expand this sheet if you want to add more, stacked vertically
-		// If you do not go the optional way, and you extend from this class, you can override this to point to a different texture
+		// If you do not use the Item.placeStyle approach, and you extend from this class, you can override this to point to a different texture
 		public virtual string RelicTextureName => "ExampleMod/Content/Tiles/Furniture/MinionBossRelic";
 
 		// All relics use the same pedestal texture, this one is copied from vanilla
@@ -54,11 +54,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft; // Player faces to the left
 			TileObjectData.newTile.StyleHorizontal = false; // Based on how the alternate sprites are positioned on the sprite (by default, true)
 
-			// Optional: If you decide to make your tile utilize different styles through Item.placeStyle, you need these, aswell as the code in SetDrawPositions
+			// This controls how styles are laid out in the texture file. This tile is special in that all styles will use the same texture section to draw the pedestal.
 			TileObjectData.newTile.StyleWrapLimitVisualOverride = 2;
 			TileObjectData.newTile.StyleMultiplier = 2;
 			TileObjectData.newTile.StyleWrapLimit = 2;
-			TileObjectData.newTile.styleLineSkipVisualOverride = 0;
+			TileObjectData.newTile.styleLineSkipVisualOverride = 0; // This forces the tile preview to draw as if drawing the 1st style.
 
 			// Register an alternate tile data with flipped direction
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile); // Copy everything from above, saves us some code
@@ -78,9 +78,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			// Only required If you decide to make your tile utilize different styles through Item.placeStyle
-
-			// This preserves its original frameX/Y which is required for determining the correct texture floating on the pedestal, but makes it draw properly
+			// This forces the tile to draw the pedestal even if the placeStyle differs. 
 			tileFrameX %= FrameWidth; // Clamps the frameX
 			tileFrameY %= FrameHeight * 2; // Clamps the frameY (two horizontally aligned place styles, hence * 2)
 		}
@@ -141,7 +139,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 	}
 
-	// If you want to make more relics but do not go the optional way, you can use inheritance to avoid using duplicate code:
+	// If you want to make more relics but do not use the Item.placeStyle approach, you can use inheritance to avoid using duplicate code:
 	// Your tile code would then inherit from the MinionBossRelic class (which you should make abstract) and should look like this:
 	/*
 	public class MyBossRelic : MinionBossRelic
@@ -150,7 +148,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.MyBossRelic>());
 		}
 	}
 	*/
