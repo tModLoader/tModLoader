@@ -7,8 +7,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleMagicWeapon : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is an example magic weapon");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

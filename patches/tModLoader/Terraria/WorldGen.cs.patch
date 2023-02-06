@@ -1893,10 +1893,13 @@
  			Item.NewItem(GetItemSource_FromWallBreak(i, j), i * 16, j * 16, 16, 16, num);
  	}
  
-@@ -44268,6 +_,9 @@
+@@ -44268,6 +_,12 @@
  		if (tileCache.wall == 245)
  			num = 195;
  
++		if (WallLoader.GetWall(tileCache.wall) is ModWall modWall)
++			num = modWall.DustType;
++
 +		if (!WallLoader.CreateDust(i, j, tileCache.wall, ref num))
 +			return;
 +
@@ -1974,6 +1977,14 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
+@@ -44663,6 +_,7 @@
+ 		if (Main.tenthAnniversaryWorld && !Main.remixWorld && (targetType == 53 || targetType == 396 || targetType == 397))
+ 			t.color(7);
+ 
++		TileFrame(topLeftX, topLeftY); // Fix #2835: block to platform swap under chest using old frameX and breaking chest because it sees the platform as a stair.
+ 		SquareTileFrame(topLeftX, topLeftY);
+ 	}
+ 
 @@ -44729,7 +_,7 @@
  	public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y)
  	{
@@ -2202,11 +2213,14 @@
  				}
  			}
  		}
-@@ -50136,7 +_,7 @@
+@@ -50136,7 +_,10 @@
  		if (type == 178 || (uint)(type - 426) <= 1u || (uint)(type - 430) <= 10u)
  			flag = true;
  
 -		if (num >= 0) {
++		if (TileLoader.GetTile(tileCache.type) is ModTile modTile)
++			num = modTile.DustType;
++
 +		if (TileLoader.CreateDust(i, j, tileCache.type, ref num) && num >= 0) {
  			if (tileCache.type == 627 || tileCache.type == 628 || (tileCache.type == 184 && tileCache.frameX / 22 == 10)) {
  				int num18 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, num, 0f, 0f, 0, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB));

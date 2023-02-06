@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIText.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIText.cs
-@@ -149,7 +_,10 @@
+@@ -149,9 +_,14 @@
  		else
  			_visibleText = _lastTextReference;
  
@@ -10,5 +10,10 @@
 +		Vector2 vector = ChatManager.GetStringSize(dynamicSpriteFont, _visibleText, new Vector2(1));
 +	
  		Vector2 vector2 = (_textSize = ((!IsWrapped) ? (new Vector2(vector.X, large ? 32f : 16f) * textScale) : (new Vector2(vector.X, vector.Y + WrappedTextBottomPadding) * textScale)));
- 		MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);
++		if (!IsWrapped) { // TML: IsWrapped when true should prevent changing MinWidth, otherwise can't shrink in width due to logic.
+-		MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);
++			MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);
++		}
  		MinHeight.Set(vector2.Y + PaddingTop + PaddingBottom, 0f);
+ 		if (this.OnInternalTextChange != null)
+ 			this.OnInternalTextChange();

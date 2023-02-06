@@ -34,8 +34,6 @@ namespace ExampleMod.Content.NPCs
 		public int NumberOfTimesTalkedTo = 0;
 
 		public override void SetStaticDefaults() {
-			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
-			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[Type] = 25; // The total amount of frames the NPC has
 
 			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs. This is the remaining frames after the walking frames.

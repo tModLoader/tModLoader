@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
 using Terraria.GameContent.Personalities;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -9,7 +10,7 @@ namespace Terraria.ModLoader;
 /// <br/>To check if a player is in the biome, use <see cref="Player.InModBiome{T}"/>.
 /// <br/>Unlike <see cref="ModSceneEffect"/>, this defaults <see cref="Music"/> to 0 and <see cref="Priority"/> to <see cref="SceneEffectPriority.BiomeLow"/>.
 /// </summary>
-public abstract class ModBiome : ModSceneEffect, IShoppingBiome
+public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModType
 {
 	// Basic Biome information
 	public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
@@ -18,11 +19,12 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
-	// Bestiary properties
+	public string LocalizationCategory => "Biomes";
+
 	/// <summary>
 	/// The display name for this biome in the bestiary.
 	/// </summary>
-	public ModTranslation DisplayName { get; private set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The path to the 30x30 texture that will appear for this biome in the bestiary. Defaults to adding "_Icon" onto the usual namespace+classname derived texture path.
@@ -48,15 +50,10 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	{
 		Type = LoaderManager.Get<BiomeLoader>().Register(this);
 		RegisterSceneEffect(this);
-
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");
 	}
 
 	public sealed override void SetupContent()
 	{
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-
 		SetStaticDefaults();
 		
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);

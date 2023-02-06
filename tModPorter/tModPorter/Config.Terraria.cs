@@ -179,6 +179,7 @@ public static partial class Config
 		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
 		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage",		newType: "Terraria.Chat.ChatHelper");
+		RenameMethod("Terraria.NetMessage",	from: "SendObjectPlacment",		to: "SendObjectPlacement");
 		RenameMethod("Terraria.Player",		from: "IsAValidEquipmentSlotForIteration", to: "IsItemSlotUnlockedAndUsable");
 
 		RenameMethod("Terraria.Main",		from: "PlayTrackedSound",		to: "PlaySound");

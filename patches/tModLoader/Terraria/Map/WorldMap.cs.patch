@@ -16,13 +16,12 @@
  			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
  			return;
  		}
-@@ -101,6 +_,9 @@
+@@ -99,6 +_,8 @@
+ 					MapHelper.LoadMapVersion1(binaryReader, num);
+ 				else
  					MapHelper.LoadMapVersion2(binaryReader, num);
- 
- 				ClearEdges();
 +
 +				MapIO.ReadModFile(text, isCloudSave);
-+
+ 
+ 				ClearEdges();
  				Main.clearMap = true;
- 				Main.loadMap = true;
- 				Main.loadMapLock = true;

@@ -146,6 +146,13 @@ public static class NPCLoader
 		}
 	}
 
+	internal static void FinishSetup()
+	{
+		foreach (ModNPC npc in npcs) {
+			Lang._npcNameCache[npc.Type] = npc.DisplayName;
+		}
+	}
+
 	internal static void Unload()
 	{
 		loaded = false;

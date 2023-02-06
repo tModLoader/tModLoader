@@ -6,8 +6,6 @@ namespace ExampleMod.Content.Items
 	public class ExampleQuestFish : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Upside-down Fish");
-
 			Item.ResearchUnlockCount = 2;
 		}
 

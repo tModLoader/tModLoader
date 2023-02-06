@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,52 @@
+@@ -15,40 +_,56 @@
  		public int stack;
  	}
  
@@ -68,10 +68,14 @@
 -	public bool needEverythingSeed;
 +	internal bool needEverythingSeed;
 -	public bool notDecraftable;
-+	internal bool notDecraftable;
++
 -	public bool crimson;
-+	internal bool crimson;
++	// Following fields made internal, use DisableDecraft()
 -	public bool corruption;
++	internal bool notDecraftable;
++
++	// Following fields made internal, automatically replaced with corresponding Decrafting Conditions
++	internal bool crimson;
 +	internal bool corruption;
 +
  	private static bool _hasDelayedFindRecipes;
@@ -192,7 +196,7 @@
  			int num = item2.stack;
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
-@@ -158,9 +_,12 @@
+@@ -158,25 +_,36 @@
  				}
  			}
  
@@ -205,8 +209,11 @@
  			array = Main.player[Main.myPlayer].inventory;
  			for (int k = 0; k < 58; k++) {
  				item = array[k];
-@@ -169,10 +_,15 @@
+ 				if (num <= 0)
+ 					break;
  
++				ConsumeForCraft(item, item2, ref num);
++				/*
  				if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
  					if (item.stack > num) {
 +						RecipeLoader.ConsumedItems.Add(item.Clone());
@@ -221,7 +228,45 @@
  						num -= item.stack;
  						array[k] = new Item();
  					}
-@@ -228,6 +_,9 @@
+ 				}
++				*/
+ 			}
+ 
+ 			if (Main.player[Main.myPlayer].chest != -1) {
+@@ -196,6 +_,11 @@
+ 					if (num <= 0)
+ 						break;
+ 
++					if (ConsumeForCraft(item, item2, ref num)) {
++						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
++					}
++					/*
+ 					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
+ 						continue;
+ 
+@@ -212,11 +_,12 @@
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+ 					}
++					*/
+ 				}
+ 			}
+ 
+ 			if (!Main.player[Main.myPlayer].useVoidBag() || Main.player[Main.myPlayer].chest == -5)
+-				continue;
++				goto ModdedMaterials; // continue;
+ 
+ 			array = Main.player[Main.myPlayer].bank4.item;
+ 			for (int m = 0; m < 40; m++) {
+@@ -224,10 +_,16 @@
+ 				if (num <= 0)
+ 					break;
+ 
++				// tML note, the net syncing code is redundant (vanilla bug) and doesn't need to be called. Void bag is synced like player inventory
++				ConsumeForCraft(item, item2, ref num);
++				/*
+ 				if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
  					continue;
  
  				if (item.stack > num) {
@@ -231,7 +276,7 @@
  					item.stack -= num;
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
  						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
-@@ -235,6 +_,8 @@
+@@ -235,11 +_,31 @@
  					num = 0;
  				}
  				else {
@@ -240,10 +285,52 @@
  					num -= item.stack;
  					array[m] = new Item();
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
-@@ -248,7 +_,7 @@
+ 						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
+ 				}
++				*/
++			}
++
++			ModdedMaterials:
++			foreach ((var items, var onConsumedCallback) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++				if (num <= 0)
++					break;
++
++				int index = 0;
++				foreach (var materialItem in items) {
++					if (num <= 0)
++						break;
++
++					if (ConsumeForCraft(materialItem, item2, ref num))
++						onConsumedCallback?.Invoke(materialItem, index);
++
++					index++;
++				}
+ 			}
+ 		}
+ 
+@@ -248,7 +_,26 @@
  		FindRecipes();
  	}
  
++	// Added by TML. Replaces multiple vanilla crafting code.
++	private bool ConsumeForCraft(Item item, Item requiredItem, ref int stackRequired)
++	{
++		if (item.stack == 0 || !item.IsTheSameAs(requiredItem) && !AcceptedByItemGroups(item.type, requiredItem.type))
++			return false;
++
++		var consumed = item.Clone();
++		consumed.stack = Math.Min(item.stack, stackRequired);
++		RecipeLoader.ConsumedItems.Add(consumed);
++
++		item.stack -= consumed.stack;
++		stackRequired -= consumed.stack;
++
++		if (item.stack == 0)
++			item.TurnToAir();
++
++		return true;
++	}
++
 -	public bool useWood(int invType, int reqType)
 +	private bool useWood(int invType, int reqType)
  	{
@@ -285,19 +372,17 @@
  	{
  		if (!anyPressurePlate)
  			return false;
-@@ -381,8 +_,15 @@
- 			Recipe recipe = Main.recipe[i];
+@@ -382,7 +_,14 @@
  			if (recipe.createItem.type == 0)
  				break;
--
-+				
+ 
 +			if (recipe.Disabled)
 +				continue;
-+			
++
 +			bool requirementsMet = false;
  			if (PlayerMeetsTileRequirements(localPlayer, recipe) && PlayerMeetsEnvironmentConditions(localPlayer, recipe) && CollectedEnoughItemsToCraftRecipeNew(recipe))
 +				requirementsMet = true;
-+			
++
 +			if (requirementsMet && RecipeLoader.RecipeAvailable(recipe))
  				AddToAvailableRecipes(i);
  		}
@@ -338,6 +423,35 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
+@@ -483,6 +_,10 @@
+ 			CollectItems(currentInventory, 40);
+ 		}
+ 
++		foreach ((var items, _) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++			CollectItems(items);
++		}
++
+ 		AddFakeCountsForItemGroups();
+ 	}
+ 
+@@ -496,8 +_,17 @@
+ 
+ 	private static void CollectItems(Item[] currentInventory, int slotCap)
+ 	{
++		CollectItems(currentInventory.Take(slotCap));
++	}
++
++	// Added by TML
++	private static void CollectItems(IEnumerable<Item> items)
++	{
++		/*
+ 		for (int i = 0; i < slotCap; i++) {
+ 			Item item = currentInventory[i];
++			*/
++		foreach (var item in items) {
+ 			if (item.stack > 0) {
+ 				int num = item.stack;
+ 				if (_ownedItems.TryGetValue(item.netID, out var value))
 @@ -516,7 +_,10 @@
  			if (recipe.createItem.type == 0)
  				break;
@@ -371,6 +485,37 @@
  				array[j].Refresh();
  			}
  		}
+@@ -1727,12 +_,14 @@
+ 		currentRecipe.requiredItem[1].SetDefaults(316);
+ 		currentRecipe.requiredItem[2].SetDefaults(68);
+ 		currentRecipe.requiredTile[0] = 13;
++		currentRecipe.corruption = true; //TML
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(300);
+ 		currentRecipe.requiredItem[0].SetDefaults(126);
+ 		currentRecipe.requiredItem[1].SetDefaults(316);
+ 		currentRecipe.requiredItem[2].SetDefaults(1330);
+ 		currentRecipe.requiredTile[0] = 13;
++		currentRecipe.crimson = true; //TML
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(301);
+ 		currentRecipe.requiredItem[0].SetDefaults(126);
+@@ -14415,6 +_,7 @@
+ 		currentRecipe.requiredItem[2].SetDefaults(521);
+ 		currentRecipe.requiredItem[2].stack = 6;
+ 		currentRecipe.requiredTile[0] = 134;
++		currentRecipe.corruption = true; //TML
+ 		currentRecipe.anyIronBar = true;
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(556);
+@@ -14425,6 +_,7 @@
+ 		currentRecipe.requiredItem[2].SetDefaults(521);
+ 		currentRecipe.requiredItem[2].stack = 6;
+ 		currentRecipe.requiredTile[0] = 134;
++		currentRecipe.crimson = true; //TML
+ 		currentRecipe.anyIronBar = true;
+ 		AddRecipe();
+ 		currentRecipe.createItem.SetDefaults(557);
 @@ -14518,10 +_,18 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
@@ -469,13 +614,29 @@
  
  	public static void UpdateWhichItemsAreCrafted()
  	{
++		List<int>[] recipeLists = new List<int>[ItemLoader.ItemCount];
  		for (int i = 0; i < numRecipes; i++) {
-+			if (Main.recipe[i].Disabled)
-+				continue;
 +
++			/*
  			if (!Main.recipe[i].notDecraftable)
  				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
  
+@@ -14604,7 +_,15 @@
+ 
+ 			if (Main.recipe[i].corruption)
+ 				ItemID.Sets.IsCraftedCorruption[Main.recipe[i].createItem.type] = i;
++			*/
++
++			Recipe recipe = Main.recipe[i];
++
++			if (!recipe.notDecraftable && !recipe.Disabled)
++				(recipeLists[recipe.createItem.type] ??= new()).Add(i);
+ 		}
++
++		ItemID.Sets.CraftingRecipeIndices = recipeLists.Select(l => (l ??= new()).ToArray()).ToArray();
+ 	}
+ 
+ 	private static void AddSolarFurniture()
 @@ -15747,23 +_,23 @@
  	{
  		int num = numRecipes;
@@ -547,7 +708,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,60 @@
+@@ -15821,12 +_,71 @@
  
  	private static void AddRecipe()
  	{
@@ -572,12 +733,23 @@
 +			field = false;
 +		}
 +
++		static void ReplaceDecraftCondition(ref bool field, Recipe.Condition cond)
++		{
++			if (field)
++				currentRecipe.AddDecraftCondition(cond);
++
++			field = false;
++		}
++
 +		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
 +		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
++
++		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
++		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);
 +
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);

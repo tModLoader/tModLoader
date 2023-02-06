@@ -43,7 +43,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 		base.ValidateType();
 		
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
-		LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
+		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
 
 	protected sealed override void Register()
@@ -125,10 +125,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to copy information about this player to the clientClone parameter. You should copy information that you intend to sync between server and client. This hook is called in the Player.clientClone method. See SendClientChanges for more info.
+	/// <br/> Allows you to copy information that you intend to sync between server and client to the <paramref name="targetCopy"/> parameter.
+	/// <br/> You would then use the <see cref="SendClientChanges"/> hook to compare against that data and decide what needs synchronizing.
+	/// <br/> This hook is called with every call of the <see cref="Player.clientClone"/> method.
+	/// <br/>
+	/// <br/> <b>NOTE:</b> For performance reasons, avoid deep cloning or copying any excessive information.
+	/// <br/> <b>NOTE:</b> Using <see cref="Item.CopyNetStateTo"/> is the recommended way of creating item snapshots.
 	/// </summary>
-	/// <param name="clientClone"></param>
-	public virtual void clientClone(ModPlayer clientClone)
+	/// <param name="targetCopy"></param>
+	public virtual void CopyClientState(ModPlayer targetCopy)
 	{
 	}
 
@@ -943,32 +948,28 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Called on clients when a player connects.
 	/// </summary>
-	/// <param name="player">The player that connected.</param>
-	public virtual void PlayerConnect(Player player)
+	public virtual void PlayerConnect()
 	{
 	}
 
 	/// <summary>
 	/// Called when a player disconnects.
 	/// </summary>
-	/// <param name="player">The player that disconnected.</param>
-	public virtual void PlayerDisconnect(Player player)
+	public virtual void PlayerDisconnect()
 	{
 	}
 
 	/// <summary>
 	/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
 	/// </summary>
-	/// <param name="player">The player that entered the world.</param>
-	public virtual void OnEnterWorld(Player player)
+	public virtual void OnEnterWorld()
 	{
 	}
 
 	/// <summary>
 	/// Called when a player respawns in the world.
 	/// </summary>
-	/// <param name="player">The player that respawns</param>
-	public virtual void OnRespawn(Player player)
+	public virtual void OnRespawn()
 	{
 	}
 
@@ -1112,5 +1113,24 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 	public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath)
 	{
+	}
+
+	/// <summary>
+	/// An action to be invoked when an item is partially or fully consumed
+	/// </summary>
+	/// <param name="item">The item that has been consumed. May have been set to air if the item was fully consumed.</param>
+	/// <param name="index">The index of the item enumerated in IEnumerable&lt;Item&gt;</param>
+	public delegate void ItemConsumedCallback(Item item, int index);
+
+	/// <summary>
+	/// Called when Recipe.FindRecipes is called or the player is crafting an item
+	/// You can use this method to add items as the materials that may be used for crafting items
+	/// </summary>
+	/// <param name="itemConsumedCallback">The action that gets invoked when the item is consumed</param>
+	/// <returns>A list of the items that may be used as crafting materials or null if none are available.</returns>
+	public virtual IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback itemConsumedCallback)
+	{
+		itemConsumedCallback = null;
+		return null;
 	}
 }

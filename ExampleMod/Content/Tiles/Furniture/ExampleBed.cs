@@ -37,8 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 
 			// Etc
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Bed");
+			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 

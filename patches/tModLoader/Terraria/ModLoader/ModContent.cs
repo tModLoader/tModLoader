@@ -297,7 +297,9 @@ public static class ModContent
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
 
+
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
+		LanguageManager.Instance.ReloadLanguage();
 		LoadModContent(token, mod => {
 			mod.SetupContent();
 		});
@@ -311,7 +313,6 @@ public static class ModContent
 			mod.TransferAllAssets();
 		});
 
-
 		MemoryTracking.Finish();
 
 		if (Main.dedServ)
@@ -321,21 +322,25 @@ public static class ModContent
 
 		Main.player[255] = new Player();
 
-		LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
-		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
+		BuffLoader.FinishSetup();
+		ItemLoader.FinishSetup();
+		NPCLoader.FinishSetup();
+		PrefixLoader.FinishSetup();
+		ProjectileLoader.FinishSetup();
+		PylonLoader.FinishSetup();
 
-		PylonLoader.Setup();
-		MapLoader.SetupModMap();
-		PlantLoader.SetupPlants();
-		RarityLoader.Initialize();
-		KeybindLoader.SetupContent();
+		MapLoader.FinishSetup();
+		PlantLoader.FinishSetup();
+		RarityLoader.FinishSetup();
+
+		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
 		SetupRecipes(token);
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
-		ItemLoader.ValidateGeodeDropsSet();
+		LocalizationLoader.FinishSetup();
 
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();
@@ -500,6 +505,8 @@ public static class ModContent
 		ContentSamples.Initialize();
 		SetupBestiary();
 
+		LocalizationLoader.Unload();
+
 		CleanupModReferences();
 	}
 
@@ -529,10 +536,6 @@ public static class ModContent
 		}
 
 		LoaderManager.ResizeArrays();
-
-		foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
-			text.Override = null;
-		}
 
 		// TML: Due to Segments.PlayerSegment._player being initialized way before any mods are loaded, calling methods on this player (which vanilla does) will crash since no ModPlayers are set up for it, so reinitialize it
 		if (!Main.dedServ)

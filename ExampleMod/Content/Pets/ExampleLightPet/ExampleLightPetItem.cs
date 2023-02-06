@@ -9,9 +9,6 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 	public class ExampleLightPetItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Annoying Light");
-			Tooltip.SetDefault("Summons an annoying light");
-
 			Item.ResearchUnlockCount = 1;
 		}
 

@@ -62,7 +62,10 @@ public partial class Recipe
 		public static readonly Condition InGemCave = new Condition(NetworkText.FromKey("RecipeConditions.InGemCave"), _ => Main.LocalPlayer.ZoneGemCave);
 		public static readonly Condition InLihzhardTemple = new Condition(NetworkText.FromKey("RecipeConditions.InLihzardTemple"), _ => Main.LocalPlayer.ZoneLihzhardTemple);
 		public static readonly Condition InGraveyardBiome = new Condition(NetworkText.FromKey("RecipeConditions.InGraveyardBiome"), _ => Main.LocalPlayer.ZoneGraveyard);
+		//WorldType
 		public static readonly Condition EverythingSeed = new Condition(NetworkText.FromKey("RecipeConditions.EverythingSeed"), _ => Main.remixWorld && Main.getGoodWorld);
+		public static readonly Condition CrimsonWorld = new Condition(NetworkText.FromKey("RecipeConditions.CrimsonWorld"), _ => WorldGen.crimson);
+		public static readonly Condition CorruptWorld = new Condition(NetworkText.FromKey("RecipeConditions.CorruptWorld"), _ => !WorldGen.crimson);
 
 		#endregion
 
@@ -99,6 +102,7 @@ public partial class Recipe
 
 	public readonly Mod Mod;
 	public readonly List<Condition> Conditions = new List<Condition>();
+	public readonly List<Condition> DecraftConditions = new List<Condition>();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
@@ -282,7 +286,7 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// Adds a collection of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
 	/// <param name="conditions">A collection of conditions.</param>
 	public Recipe AddCondition(IEnumerable<Condition> conditions)
@@ -292,21 +296,58 @@ public partial class Recipe
 		return this;
 	}
 
-	public Recipe DisableShimmer()
+	/// <summary>
+	/// Sets a condition delegate that will determine whether or not the recipe can be shimmered/decrafted. The condition can be unrelated to items or tiles (for example, biome or time).
+	/// </summary>
+	/// <param name="condition">The predicate delegate condition.</param>
+	/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
+	public Recipe AddDecraftCondition(NetworkText description, Predicate<Recipe> condition) => AddDecraftCondition(new Condition(description, condition));
+
+	/// <summary>
+	/// Adds an array of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// </summary>
+	/// <param name="conditions">An array of conditions.</param>
+	public Recipe AddDecraftCondition(params Condition[] conditions) => AddDecraftCondition((IEnumerable<Condition>)conditions);
+
+	public Recipe AddDecraftCondition(Condition condition)
 	{
+		DecraftConditions.Add(condition);
+		return this;
+	}
+
+	/// <summary>
+	/// Adds a collection of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).
+	/// </summary>
+	/// <param name="conditions">A collection of conditions.</param>
+	public Recipe AddDecraftCondition(IEnumerable<Condition> conditions)
+	{
+		DecraftConditions.AddRange(conditions);
+		return this;
+	}
+
+	/// <summary>
+	/// Adds every condition from Recipie.Condtions to Recipie.DecraftContions, checking for duplicates.
+	/// </summary>
+	public Recipe ApplyConditionsAsDecraftConditions()
+	{
+		foreach (Condition condition in Conditions) {
+			if (!DecraftConditions.Contains(condition)) {
+				DecraftConditions.Add(condition);
+			}
+		}
+		return this;
+	}
+
+	/// <summary>
+	/// Sets a check that is used during load to prevent this being shimmered/decrafted.
+	/// </summary>
+	/// <exception cref="RecipeException">A Recipe can only be disabled inside Recipe related methods.</exception>
+	public Recipe DisableDecraft()
+	{
+		if (!RecipeLoader.setupRecipes)
+			throw new RecipeException("A Recipe can only be disabled inside Recipe related methods.");
+
 		notDecraftable = true;
-		return this;
-	}
-
-	public Recipe CrimsonOnly()
-	{
-		crimson = true;
-		return this;
-	}
-
-	public Recipe CorruptionOnly()
-	{
-		corruption = true;
 		return this;
 	}
 
@@ -434,6 +475,10 @@ public partial class Recipe
 		clone.ConsumeItemHooks = ConsumeItemHooks;
 		foreach (Condition condition in Conditions) {
 			clone.AddCondition(condition);
+		}
+
+		foreach (Condition condition in DecraftConditions) {
+			clone.AddDecraftCondition(condition);
 		}
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove

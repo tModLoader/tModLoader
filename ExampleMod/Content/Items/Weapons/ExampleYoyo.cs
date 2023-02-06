@@ -11,7 +11,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleYoyo : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded yoyo with normal behavior. It won't receive bad prefixes.");
 			Item.ResearchUnlockCount = 1; // The amount of this item that needs to be researched to unlock it in the journey mode duplication menu.
 
 			// These are all related to gamepad controls and don't seem to affect anything else

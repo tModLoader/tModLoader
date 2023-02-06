@@ -48,11 +48,12 @@ partial class Mod
 		if (Code == null)
 			return;
 
+		LocalizationLoader.Autoload(this);
+
 		Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
 		while (AsyncLoadQueue.Count > 0)
 			AsyncLoadQueue.Dequeue().Wait();
 
-		LocalizationLoader.Autoload(this);
 		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
 		if (ContentAutoloadingEnabled) {

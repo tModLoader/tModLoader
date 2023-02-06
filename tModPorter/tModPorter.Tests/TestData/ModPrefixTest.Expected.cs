@@ -3,7 +3,9 @@ using Terraria.ModLoader;
 
 public class ModPrefixTest : ModPrefix
 {
-	public override void AutoStaticDefaults() { /* Empty */ }
+#if COMPILE_ERROR
+	public override void AutoStaticDefaults()/* tModPorter Note: Removed. Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization */ { /* Empty */ }
+#endif
 
 	void Method() {
 		ModPrefix modPrefix = PrefixLoader.GetPrefix(Type);

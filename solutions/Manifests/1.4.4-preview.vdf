@@ -1,0 +1,18 @@
+"appbuild"
+{
+  "appid" "1281930"
+  "desc" "Github Actions 1.4.4 Preview Auto-Release"
+  "buildoutput" "../../BuildOutput"
+  "contentroot" "../../artifacts"
+  "setlive" "1.4.4-preview"
+  "preview" ""
+  "local" ""
+
+  "depots"
+  {
+    "1281931" "shared.vdf"
+    "1281932" "windows.vdf"
+    "1281933" "linux.vdf"
+    "1281934" "mac.vdf"
+  }
+}

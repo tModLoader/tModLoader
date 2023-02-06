@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -63,7 +64,7 @@ namespace ExampleMod.Content.Tiles
 
 			AddToArray(ref TileID.Sets.CountsAsPylon);
 
-			ModTranslation pylonName = CreateMapEntryName();
+			LocalizedText pylonName = CreateMapEntryName();
 			AddMapEntry(Color.Black, pylonName);
 		}
 

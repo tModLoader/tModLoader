@@ -162,15 +162,15 @@ internal class UIModItem : UIPanel
 			_modName.Recalculate();
 		}
 
-		/*
-		if (_mod.properties.beta) {
-			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.ShadowKey].Name), Language.GetTextValue("tModLoader.BetaModCantPublish")) {
-				Left = { Pixels = -10, Percent = 1f }
+
+		if (ModOrganizer.CheckStableBuildOnPreview(_mod)) {
+			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.LavaSkull].Name), Language.GetTextValue("ModStableOnPreviewWarning")) {
+				Left = { Pixels = 4, Percent = 0.2f },
+				Top = { Pixels = 0, Percent = 0.5f }
 			};
 
 			Append(_keyImage);
 		}
-		*/
 
 		if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
 			BackgroundColor = Color.MediumPurple * 0.7f;
@@ -515,7 +515,7 @@ internal class UIModItem : UIPanel
 	{
 		ModOrganizer.DeleteMod(_mod);
 
-		Interface.modsMenu.needsMBRefresh = true;
+		UIModBrowser.CleanupDeletedItem(ModName);
 
 		CloseDialog(evt, listeningElement);
 		Interface.modsMenu.Activate();
