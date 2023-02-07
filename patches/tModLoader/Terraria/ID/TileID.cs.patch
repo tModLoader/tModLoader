@@ -28,6 +28,38 @@
  		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);
  		public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
  		public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
+@@ -115,7 +_,17 @@
+ 		public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
++		/// <summary>
++		/// Prevents a tile immediately below a tile of this type from being mineable.
++		/// <br/> Use <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/> or <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
++		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
++		/// </summary>
+ 		public static bool[] PreventsTileRemovalIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634);
++		/// <summary>
++		/// Prevents a tile immediately below a tile of this type from being replaceable via the block swap feature.
++		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
++		/// <br/> Used mostly by trees tiles.
++		/// </summary>
+ 		public static bool[] PreventsTileReplaceIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] CommonSapling = Factory.CreateBoolSet(false, 20, 590, 595, 615);
+ 		public static bool[] AllBlocksWithSmoothBordersToResolveHalfBlockIssue = Factory.CreateBoolSet(false, 321, 157, 208, 159, 190, 80, 251, 202, 229, 56, 38, 39, 152, 118, 151, 148, 206, 119, 175, 46, 176, 45, 140, 347, 370, 121, 122, 680, 681, 682, 685, 686, 346, 687, 688, 689, 690, 691, 692, 160, 226, 54, 156, 155, 153, 154, 150, 250, 198, 273, 274, 325, 284, 348, 385, 327, 326, 345, 328, 329, 357, 369, 268, 261, 262, 255, 267, 260, 265, 258, 266, 259, 264, 257, 263, 256, 311, 431, 426, 433, 430, 434, 432, 272, 145, 146, 350, 127, 472, 473, 477, 478, 479, 492, 496, 507, 508, 563, 618);
+@@ -148,7 +_,13 @@
+ 			(ushort)579,
+ 			true
+ 		});
++		/// <summary>
++		/// Indicates that this tile can't replace another tile via the block swap feature.
++		/// </summary>
+ 		public static bool[] DoesntPlaceWithTileReplacement = Factory.CreateBoolSet(2, 60, 70, 109, 199, 23, 661, 662, 633);
++		/// <summary>
++		/// Indicates that this tile can't be replaced with another tile via the block swap feature. 
++		/// </summary>
+ 		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
+ 		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
+ 		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
 @@ -164,6 +_,9 @@
  		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
  		public static bool[] HasSlopeFrames = Factory.CreateBoolSet(421, 422);
