@@ -80,6 +80,7 @@ public static class TileLoader
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
+	private static Func<int, int, int, int, bool>[] HookCanReplace;
 	private static Func<int, int[]>[] HookAdjTiles;
 	private static Action<int, int, int>[] HookRightClick;
 	private static Action<int, int, int>[] HookMouseOver;
@@ -227,6 +228,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateTileFrame>(ref HookTileFrame, globalTiles, g => g.TileFrame);
 		ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
+		ModLoader.BuildGlobalHook(ref HookCanReplace, globalTiles, g => g.CanReplace);
 		ModLoader.BuildGlobalHook(ref HookAdjTiles, globalTiles, g => g.AdjTiles);
 		ModLoader.BuildGlobalHook(ref HookRightClick, globalTiles, g => g.RightClick);
 		ModLoader.BuildGlobalHook(ref HookMouseOver, globalTiles, g => g.MouseOver);
@@ -833,6 +835,16 @@ public static class TileLoader
 			}
 		}
 		return GetTile(type)?.CanPlace(i, j) ?? true;
+	}
+
+	public static bool CanReplace(int i, int j, int type, int tileTypeBeingPlaced)
+	{
+		foreach (var hook in HookCanReplace) {
+			if (!hook(i, j, type, tileTypeBeingPlaced)) {
+				return false;
+			}
+		}
+		return GetTile(type)?.CanReplace(i, j, tileTypeBeingPlaced) ?? true;
 	}
 
 	public static void AdjTiles(Player player, int type)

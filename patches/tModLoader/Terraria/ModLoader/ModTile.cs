@@ -489,4 +489,19 @@ public abstract class ModTile : ModBlockType
 	public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
 
 	public virtual LocalizedText ContainerName(int frameX, int frameY) => null;
+
+	/// <summary>
+	/// Allows you to stop this tile at the given coordinates from being replaced via the block swap feature. The tileTypeBeingPlaced parameter is the tile type that will replace the current tile.
+	/// <br/> This method is called on the local client. This method is only called if the local player has sufficient pickaxe power to mine the existing tile.
+	/// <br/> Return false to block the tile from being replaced. Returns true by default.
+	/// <br/> Use this for dynamic logic. <see cref="ID.TileID.Sets.DoesntGetReplacedWithTileReplacement"/>, <see cref="ID.TileID.Sets.DoesntPlaceWithTileReplacement"/>, and <see cref="ID.TileID.Sets.PreventsTileReplaceIfOnTopOfIt"/> cover the most common use cases and should be used instead if possible.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="tileTypeBeingPlaced"></param>
+	/// <returns></returns>
+	public virtual bool CanReplace(int i, int j, int tileTypeBeingPlaced)
+	{
+		return true;
+	}
 }

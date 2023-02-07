@@ -3923,10 +3923,13 @@
  			if (overrideCanPlace.HasValue) {
  				canPlace = overrideCanPlace.Value;
  			}
-@@ -30757,9 +_,12 @@
+@@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
  
++			if (!TileLoader.CanReplace(tileTargetX, tileTargetY, tile.type, HeldItem.createTile))
++				return false;
++
 +			if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
 +				return false;
 +
