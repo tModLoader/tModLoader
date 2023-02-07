@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Chat;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
@@ -169,6 +170,15 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[NPC.type] = 90;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
+
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Velocity = 2f, // Draws the NPC in the bestiary as if its walking +2 tiles in the x direction
+				Direction = -1 // -1 is left and 1 is right.
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
 		public override void SetDefaults() {
@@ -186,6 +196,12 @@ namespace ExampleMod.Content.NPCs
 			AnimationType = NPCID.Guide;
 			TownNPCStayingHomeless = true;
 			CreateNewShop();
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+			});
 		}
 
 		public override void SaveData(TagCompound tag) {
@@ -300,11 +316,17 @@ namespace ExampleMod.Content.NPCs
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn) // For the Bestiary
 				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
 
-			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+			if (!npc.IsShimmerVariant && npc.altTexture == 1) // Not shimmered and party
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Party");
+
+			if (npc.IsShimmerVariant && npc.altTexture != 1) // Shimmered and no party
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Shimmered");
+
+			if (npc.IsShimmerVariant && npc.altTexture == 1) // Shimmered and party
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Shimmered_Party");
 
 			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
 		}

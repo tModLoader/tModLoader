@@ -8,6 +8,9 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -28,6 +31,7 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
 
 			//This sets entry is the most important part of this NPC. Since it is true, it tells the game that we want this NPC to act like a town NPC without ACTUALLY being one.
 			//What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
@@ -96,6 +100,10 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
+		public override ITownNPCProfile TownNPCProfile() {
+			return new ExampleBoneMerchantProfile();
+		}
+
 		public override List<string> SetNPCNameList() {
 			return new List<string> {
 				"Blocky Bones",
@@ -154,5 +162,23 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
+	}
+
+	public class ExampleBoneMerchantProfile : ITownNPCProfile
+	{
+		public int RollVariation() => 0;
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn) // For the Bestiary
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleBoneMerchant");
+
+			if (npc.IsShimmerVariant) // Shimmered
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleBoneMerchant_Shimmered");
+
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleBoneMerchant");
+		}
+
+		public int GetHeadTextureIndex(NPC npc) => 0; // No head texture
 	}
 }
