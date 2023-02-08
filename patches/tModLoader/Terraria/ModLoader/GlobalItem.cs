@@ -489,14 +489,14 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
 	/// </summary>
-	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref StrikeModifiers modifiers)
+	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	public virtual void OnHitNPC(Item item, Player player, NPC target, Strike strike, int damageDone)
+	public virtual void OnHitNPC(Item item, Player player, NPC target, HitInfo hit, int damageDone)
 	{
 	}
 

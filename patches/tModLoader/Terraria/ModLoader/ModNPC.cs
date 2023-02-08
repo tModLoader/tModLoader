@@ -257,7 +257,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(Strike strike)
+	public virtual void HitEffect(HitInfo hit)
 	{
 	}
 
@@ -408,7 +408,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitNPC(NPC target, ref StrikeModifiers modifiers)
+	public virtual void ModifyHitNPC(NPC target, ref HitModifiers modifiers)
 	{
 	}
 
@@ -416,8 +416,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to create special effects when this NPC hits a friendly NPC.
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="strike"></param>
-	public virtual void OnHitNPC(NPC target, Strike strike)
+	/// <param name="hit"></param>
+	public virtual void OnHitNPC(NPC target, HitInfo hit)
 	{
 	}
 
@@ -438,7 +438,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="player"></param>
 	/// <param name="item"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitByItem(Player player, Item item, ref StrikeModifiers modifiers)
+	public virtual void ModifyHitByItem(Player player, Item item, ref HitModifiers modifiers)
 	{
 	}
 
@@ -447,9 +447,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="strike"></param>
+	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitByItem(Player player, Item item, Strike strike, int damageDone)
+	public virtual void OnHitByItem(Player player, Item item, HitInfo hit, int damageDone)
 	{
 	}
 
@@ -468,7 +468,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitByProjectile(Projectile projectile, ref StrikeModifiers modifiers)
+	public virtual void ModifyHitByProjectile(Projectile projectile, ref HitModifiers modifiers)
 	{
 	}
 
@@ -476,9 +476,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to create special effects when this NPC is hit by a projectile.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="strike"></param>
+	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitByProjectile(Projectile projectile, Strike strike, int damageDone)
+	public virtual void OnHitByProjectile(Projectile projectile, HitInfo hit, int damageDone)
 	{
 	}
 
@@ -487,7 +487,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="damageType"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyIncomingHit(DamageClass damageType, ref StrikeModifiers modifiers)
+	public virtual void ModifyIncomingHit(DamageClass damageType, ref HitModifiers modifiers)
 	{
 	}
 

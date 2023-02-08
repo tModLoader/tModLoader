@@ -575,7 +575,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
 	/// <param name="modifiers">The strike.</param>
-	public virtual void ModifyHitNPC(Player player, NPC target, ref StrikeModifiers modifiers)
+	public virtual void ModifyHitNPC(Player player, NPC target, ref HitModifiers modifiers)
 	{
 	}
 
@@ -584,9 +584,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="strike">The strike.</param>
+	/// <param name="hit">The strike.</param>
 	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
-	public virtual void OnHitNPC(Player player, NPC target, Strike strike, int damageDone)
+	public virtual void OnHitNPC(Player player, NPC target, HitInfo hit, int damageDone)
 	{
 	}
 

@@ -103,18 +103,18 @@ public static class CombinedHooks
 		return ret;
 	}
 
-	public static void ModifyPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, ref StrikeModifiers modifiers)
+	public static void ModifyPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, ref HitModifiers modifiers)
 	{
 		ItemLoader.ModifyHitNPC(sItem, player, nPC, ref modifiers);
 		NPCLoader.ModifyHitByItem(nPC, player, sItem, ref modifiers);
 		PlayerLoader.ModifyHitNPC(player, sItem, nPC, ref modifiers);
 	}
 
-	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in Strike strike, int damageDone)
+	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in HitInfo hit, int damageDone)
 	{
-		ItemLoader.OnHitNPC(sItem, player, nPC, strike, damageDone);
-		NPCLoader.OnHitByItem(nPC, player, sItem, strike, damageDone);
-		PlayerLoader.OnHitNPC(player, sItem, nPC, strike, damageDone);
+		ItemLoader.OnHitNPC(sItem, player, nPC, hit, damageDone);
+		NPCLoader.OnHitByItem(nPC, player, sItem, hit, damageDone);
+		PlayerLoader.OnHitNPC(player, sItem, nPC, hit, damageDone);
 	}
 
 	public static bool CanHitPvp(Player player, Item sItem, Player target)
@@ -139,18 +139,18 @@ public static class CombinedHooks
 		return ret;
 	}
 
-	public static void ModifyHitNPCWithProj(Projectile projectile, NPC nPC, ref StrikeModifiers modifiers)
+	public static void ModifyHitNPCWithProj(Projectile projectile, NPC nPC, ref HitModifiers modifiers)
 	{
 		ProjectileLoader.ModifyHitNPC(projectile, nPC, ref modifiers);
 		NPCLoader.ModifyHitByProjectile(nPC, projectile, ref modifiers);
 		PlayerLoader.ModifyHitNPCWithProj(projectile, nPC, ref modifiers);
 	}
 
-	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in Strike strike, int damageDone)
+	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in HitInfo hit, int damageDone)
 	{
-		ProjectileLoader.OnHitNPC(projectile, nPC, strike, damageDone);
-		NPCLoader.OnHitByProjectile(nPC, projectile, strike, damageDone);
-		PlayerLoader.OnHitNPCWithProj(projectile, nPC, strike, damageDone);
+		ProjectileLoader.OnHitNPC(projectile, nPC, hit, damageDone);
+		NPCLoader.OnHitByProjectile(nPC, projectile, hit, damageDone);
+		PlayerLoader.OnHitNPCWithProj(projectile, nPC, hit, damageDone);
 	}
 
 	public static bool CanBeHitByProjectile(Player player, Projectile projectile)

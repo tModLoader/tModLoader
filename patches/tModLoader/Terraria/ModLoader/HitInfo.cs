@@ -1,9 +1,9 @@
 ﻿namespace Terraria.ModLoader;
 
-public struct Strike
+public struct HitInfo
 {
 	/// <summary>
-	/// The DamageType of the strike. Should not be null, but it may be a good idea to check just in-case a mod does something bad.
+	/// The DamageType of the hit. Should not be null, but it may be a good idea to check just in-case a mod does something bad.
 	/// </summary>
 	public DamageClass DamageType;
 
@@ -25,7 +25,7 @@ public struct Strike
 	public int Damage = 0;
 
 	/// <summary>
-	/// Whether or not the strike is a crit
+	/// Whether or not the hit is a crit
 	/// </summary>
 	public bool Crit = false;
 
@@ -51,7 +51,7 @@ public struct Strike
 	/// </summary>
 	public bool HideCombatText = false;
 
-	public Strike()
+	public HitInfo()
 	{
 		DamageType = DamageClass.Default;
 	}

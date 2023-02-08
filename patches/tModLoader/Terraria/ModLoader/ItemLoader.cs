@@ -927,13 +927,13 @@ public static class ItemLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref StrikeModifiers modifiers);
+	private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
 	/// <summary>
 	/// Calls ModItem.ModifyHitNPC, then all GlobalItem.ModifyHitNPC hooks.
 	/// </summary>
-	public static void ModifyHitNPC(Item item, Player player, NPC target, ref StrikeModifiers modifiers)
+	public static void ModifyHitNPC(Item item, Player player, NPC target, ref HitModifiers modifiers)
 	{
 		item.ModItem?.ModifyHitNPC(player, target, ref modifiers);
 
@@ -942,17 +942,17 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, Strike, int>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, HitInfo, int>>(g => g.OnHitNPC);
 
 	/// <summary>
 	/// Calls ModItem.OnHitNPC and all GlobalItem.OnHitNPC hooks.
 	/// </summary>
-	public static void OnHitNPC(Item item, Player player, NPC target, in Strike strike, int damageDone)
+	public static void OnHitNPC(Item item, Player player, NPC target, in HitInfo hit, int damageDone)
 	{
-		item.ModItem?.OnHitNPC(player, target, strike, damageDone);
+		item.ModItem?.OnHitNPC(player, target, hit, damageDone);
 
 		foreach (var g in HookOnHitNPC.Enumerate(item.globalItems)) {
-			g.OnHitNPC(item, player, target, strike, damageDone);
+			g.OnHitNPC(item, player, target, hit, damageDone);
 		}
 	}
 

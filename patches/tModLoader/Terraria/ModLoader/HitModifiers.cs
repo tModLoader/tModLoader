@@ -2,9 +2,9 @@
 
 namespace Terraria.ModLoader;
 
-public struct StrikeModifiers
+public struct HitModifiers
 {
-	public static StrikeModifiers Default = new() {
+	public static HitModifiers Default = new() {
 		SourceDamage = StatModifier.Default,
 		Defense = StatModifier.Default,
 		DefenseEffectiveness = MultipliableFloat.Default * .5f,
@@ -15,7 +15,7 @@ public struct StrikeModifiers
 	};
 
 	/// <summary>
-	/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="Strike.SourceDamage"/> and be transferred to on-hit effects. <br/>
+	/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see creHitInfoHit.SourceDamage"/> and be transferred to on-hit effects. <br/>
 	/// <br/>
 	/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
 	/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
@@ -25,7 +25,7 @@ public struct StrikeModifiers
 	public StatModifier SourceDamage;
 
 	/// <summary>
-	/// Use this to add bonus damage to the strike, but not to on-hit effects. <br/>
+	/// Use this to add bonus damage to the hit, but not to on-hit effects. <br/>
 	/// <br/>
 	/// Used by vanilla for most summon tag damage.
 	/// </summary>
@@ -80,9 +80,9 @@ public struct StrikeModifiers
 	public MultipliableFloat DefenseEffectiveness;
 
 	/// <summary>
-	/// Applied to the final damage (after defense) result when the strike is a crit. Defaults to +1f additive (+100% damage). <br/>
+	/// Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (+100% damage). <br/>
 	///  <br/>
-	/// Add to give strikes extra crit damage (eg +0.1f for 10% extra crit damage (total +110% or 2.1 times base). <br/>
+	/// Add to give hits extra crit damage (eg +0.1f for 10% extra crit damage (total +110% or 2.1 times base). <br/>
 	/// Add to <see cref="StatModifier.Flat"/> to give crits extra flat damage. Use with caution as this extra damage will not be reduced by armor. <br/>
 	/// Multiplication not recommended for buffs. Could be used to decrease the effectiveness of crits on an enemy without disabling completely. <br/>
 	/// Use of <see cref="StatModifier.Base"/> also not recommended. <br/>
@@ -100,22 +100,22 @@ public struct StrikeModifiers
 	public StatModifier FinalDamage;
 
 	/// <summary>
-	/// Multiply to adjust the damage variation of the strike. <br/>
+	/// Multiply to adjust the damage variation of the hit. <br/>
 	/// Multiply by 0 to disable damage variation.<br/>
 	/// Default damage variation is 15%, so maximum scale is ~6.67 <br/>
-	/// Only affects strikes where damage variation is enabled (which is most projectile/item/NPC damage)
+	/// Only affects hits where damage variation is enabled (which is most projectile/item/NPC damage)
 	/// </summary>
 	public MultipliableFloat DamageVariationScale;
 
 	private bool? _critOverride;
 
 	/// <summary>
-	/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="Strike.Crit"/> flag from the resulting strike.
+	/// Disables <see cref="CritDamage"/> calculations, and clears <see creHitInfoHit.Crit"/> flag from the resulting hit.
 	/// </summary>
 	public void DisableCrit() => _critOverride = false;
 
 	/// <summary>
-	/// Sets the strike to be a crit. Does nothing if <see cref="DisableCrit"/> has been called
+	/// Sets the hit to be a crit. Does nothing if <see cref="DisableCrit"/> has been called
 	/// </summary>
 	public void SetCrit() => _critOverride ??= true;
 
@@ -141,19 +141,19 @@ public struct StrikeModifiers
 
 	private bool _instantKill;
 	/// <summary>
-	/// Set to make the strike instantly kill the target, dealing as much damage as necessary. </br>
+	/// Set to make the hit instantly kill the target, dealing as much damage as necessary. </br>
 	/// Combat text will not be shown.
 	/// </summary>
 	public void SetInstantKill() => _instantKill = true;
 
 	private bool _combatTextHidden;
 	/// <summary>
-	/// Set to hide the damage number popup for this strike.
+	/// Set to hide the damage number popup for this hit.
 	/// </summary>
 	public void HideCombatText() => _combatTextHidden = true;
 
 	/// <summary>
-	/// Used internally for calculating the equivalent vanilla strike damage for networking with vanilla clients
+	/// Used internally for calculating the equivalent vanilla hit damage for networking with vanilla clients
 	/// </summary>
 	private float _calculatedPostDefenseDamage;
 
@@ -185,7 +185,7 @@ public struct StrikeModifiers
 
 	internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
 
-	public Strike ToStrike(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
+	public HitInfo ToHitInfo(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
 		DamageType = damageType,
 		SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
 		Damage = _instantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),

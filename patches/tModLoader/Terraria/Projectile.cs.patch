@@ -897,7 +897,7 @@
 +									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
 +									modifiers.Knockback *= num3 / knockBack;
 +									modifiers.TargetDamageMultiplier *= num19 / 1000;
-+									var strike = modifiers.ToStrike(DamageType, damage, flag12, num3, num34);
++									var strike = modifiers.ToHitInfo(DamageType, damage, flag12, num3, num34);
 +
 +									goto VanillaOnHitEffectsStart;
 +

@@ -40,7 +40,7 @@ public partial class Player
 		/// Use this to enhance or scale the base damage of the NPC/projectile/hit. <br/>
 		/// <br/>
 		/// Not used by vanilla due to lack of proper pvp support. <br/>
-		/// Use cases are similar to <see cref="StrikeModifiers.SourceDamage"/> <br/>
+		/// Use cases are similar to <see cref="HitModifiers.SourceDamage"/> <br/>
 		/// </summary>
 		public StatModifier SourceDamage;
 

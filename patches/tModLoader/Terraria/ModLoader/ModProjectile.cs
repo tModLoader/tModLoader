@@ -235,7 +235,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
 	/// </summary>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHit(ref StrikeModifiers modifiers)
+	public virtual void ModifyHit(ref HitModifiers modifiers)
 	{
 	}
 
@@ -253,7 +253,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="modifiers">The modifiers for this strike.</param>
-	public virtual void ModifyHitNPC(NPC target, ref StrikeModifiers modifiers)
+	public virtual void ModifyHitNPC(NPC target, ref HitModifiers modifiers)
 	{
 	}
 
@@ -261,9 +261,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="strike">The damage.</param>
+	/// <param name="hit">The damage.</param>
 	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
-	public virtual void OnHitNPC(NPC target, Strike strike, int damageDone)
+	public virtual void OnHitNPC(NPC target, HitInfo hit, int damageDone)
 	{
 	}
 
