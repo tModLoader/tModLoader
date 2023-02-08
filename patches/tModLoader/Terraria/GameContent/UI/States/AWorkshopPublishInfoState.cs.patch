@@ -119,11 +119,27 @@
  			};
  		}
  
-@@ -634,6 +_,7 @@
+@@ -634,10 +_,22 @@
  				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  			};
  
-+			// TODO: support default folder, set default folder to mod source folder for mods.
- 			string text = FileBrowser.OpenFilePanel("Open icon", extensions);
++			// Toggle fullscreen if neccessary to prevent file picker opening in background and locking user input
++			bool wasFullscreen = Main.graphics.IsFullScreen;
++			if (wasFullscreen) {
++				Main.ToggleFullScreen();
++			}
++
++			string openPath = Path.GetFullPath(Path.GetDirectoryName(_previewImagePath));
+-			string text = FileBrowser.OpenFilePanel("Open icon", extensions);
++			string text = FileBrowser.OpenFilePanel("Open icon", extensions, openPath);
++
  			if (text != null) {
  				_previewImagePath = text;
+ 				UpdateImagePreview();
++			}
++
++			if (wasFullscreen) {
++				Main.ToggleFullScreen();
+ 			}
+ 		}
+ 

@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Utilities/FileBrowser/IFileBrowser.cs
++++ src/tModLoader/Terraria/Utilities/FileBrowser/IFileBrowser.cs
+@@ -2,6 +_,6 @@
+ {
+ 	public interface IFileBrowser
+ 	{
+-		string OpenFilePanel(string title, ExtensionFilter[] extensions);
++		string OpenFilePanel(string title, ExtensionFilter[] extensions, string path);
+ 	}
+ }

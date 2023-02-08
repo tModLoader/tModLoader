@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/Utilities/FileBrowser/NativeFileDialog.cs
++++ src/tModLoader/Terraria/Utilities/FileBrowser/NativeFileDialog.cs
+@@ -4,9 +_,9 @@
+ {
+ 	public class NativeFileDialog : IFileBrowser
+ 	{
+-		public string OpenFilePanel(string title, ExtensionFilter[] extensions) {
++		public string OpenFilePanel(string title, ExtensionFilter[] extensions, string path = null) {
+ 			string[] value = extensions.SelectMany((ExtensionFilter x) => x.Extensions).ToArray();
+-			if (nativefiledialog.NFD_OpenDialog(string.Join(",", value), null, out string outPath) == nativefiledialog.nfdresult_t.NFD_OKAY)
++			if (nativefiledialog.NFD_OpenDialog(string.Join(",", value), path, out string outPath) == nativefiledialog.nfdresult_t.NFD_OKAY)
+ 				return outPath;
+ 
+ 			return null;
