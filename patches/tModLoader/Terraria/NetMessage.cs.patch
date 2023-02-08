@@ -160,7 +160,7 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
-@@ -710,15 +_,37 @@
+@@ -710,15 +_,39 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
@@ -188,12 +188,14 @@
 +						break;
 +					}
 +
-+					var strike = number7 == 1 ? _currentStrike : _lastLegacyStrike;
-+					writer.Write7BitEncodedInt(strike.Damage);
-+					writer.Write7BitEncodedInt(strike.SourceDamage);
-+					writer.Write7BitEncodedInt(strike.DamageType.Type);
-+					writer.Write(strike.KnockBack);
-+					writer.Write((byte)strike.Flags);
++					var hit = number7 == 1 ? _currentStrike : _lastLegacyStrike;
++					writer.Write7BitEncodedInt(hit.Damage);
++					writer.Write7BitEncodedInt(hit.SourceDamage);
++					writer.Write7BitEncodedInt(hit.DamageType.Type);
++					writer.Write((sbyte)hit.HitDirection);
++					writer.Write(hit.KnockBack);
++					var flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
++					writer.Write(flags);
 +					break;
  				case 29:
  					writer.Write((short)number);
