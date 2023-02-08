@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,74 +_,437 @@
+@@ -37,78 +_,442 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -466,7 +466,29 @@
  	public int defense;
  	public int headSlot = -1;
  	public int bodySlot = -1;
-@@ -125,43 +_,204 @@
+ 	public int legSlot = -1;
++	/* sbyte -> int
+ 	public sbyte handOnSlot = -1;
+ 	public sbyte handOffSlot = -1;
+ 	public sbyte backSlot = -1;
+@@ -121,47 +_,221 @@
+ 	public sbyte faceSlot = -1;
+ 	public sbyte balloonSlot = -1;
+ 	public sbyte beardSlot = -1;
++	*/
++	public int handOnSlot = -1;
++	public int handOffSlot = -1;
++	public int backSlot = -1;
++	public int frontSlot = -1;
++	public int shoeSlot = -1;
++	public int waistSlot = -1;
++	public int wingSlot = -1;
++	public int shieldSlot = -1;
++	public int neckSlot = -1;
++	public int faceSlot = -1;
++	public int balloonSlot = -1;
++	public int beardSlot = -1;
+ 	public int stringColor;
  	public ItemTooltip ToolTip;
  	public string BestiaryNotes;
  	public int playerIndexTheItemIsReservedFor = 255;
@@ -1861,7 +1883,7 @@
  
  					if (num2 > num3) {
  						num2 = num3;
-@@ -49266,10 +_,29 @@
+@@ -49266,10 +_,32 @@
  		}
  	}
  
@@ -1871,6 +1893,9 @@
 +	*/
 +	public Item Clone()
 +	{
++		if (cloningDisabled != null)
++			throw new Exception(cloningDisabled);
++
 +		Item newItem = (Item)MemberwiseClone();
 +
 +		newItem.ModItem = ModItem?.Clone(newItem);
@@ -1897,7 +1922,7 @@
  	}
  
 +	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
-+	// TODO: change to !IsNetSyncEquivalent ?
++	// Many usages replaced with !IsNetStateEquivalent
 -	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
  	{

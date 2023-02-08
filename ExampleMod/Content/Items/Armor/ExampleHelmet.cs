@@ -1,7 +1,6 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
 {
@@ -11,9 +10,7 @@ namespace ExampleMod.Content.Items.Armor
 	public class ExampleHelmet : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded helmet.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			Item.ResearchUnlockCount = 3;
 
 			// If your head equipment should draw hair while drawn, use one of the following:
 			// ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask

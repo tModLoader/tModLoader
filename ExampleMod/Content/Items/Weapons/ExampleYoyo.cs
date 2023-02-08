@@ -1,19 +1,17 @@
-﻿using ExampleMod.Content.Projectiles;
-using ExampleMod.Content.Tiles.Furniture;
+﻿using System;
+using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Rarities;
+using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using System;
 
 namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleYoyo : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded yoyo with normal behavior. It won't receive bad prefixes.");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The amount of this item that needs to be researched to unlock it in the journey mode duplication menu.
+			Item.ResearchUnlockCount = 1; // The amount of this item that needs to be researched to unlock it in the journey mode duplication menu.
 
 			// These are all related to gamepad controls and don't seem to affect anything else
 			ItemID.Sets.Yoyo[Item.type] = true;

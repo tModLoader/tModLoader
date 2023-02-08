@@ -1,8 +1,7 @@
-using ExampleMod.Common.Configs;
 using System.Linq;
+using ExampleMod.Common.Configs;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,9 +16,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded wing.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 
 			// These wings use the same values as the solar wings
 			// Fly time: 180 ticks = 3 seconds

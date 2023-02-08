@@ -12,7 +12,7 @@ namespace Terraria.ModLoader;
 [Autoload(false)]
 public abstract class VanillaInfoDisplay : InfoDisplay
 {
-	internal protected override string DisplayNameInternal => Language.GetTextValue(LangKey);
+	public override LocalizedText DisplayName => Language.GetText(LangKey);
 
 	protected abstract string LangKey { get; }
 

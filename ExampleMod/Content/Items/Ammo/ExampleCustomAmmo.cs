@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,9 +9,7 @@ namespace ExampleMod.Content.Items.Ammo
 	public class ExampleCustomAmmo : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Chases enemies through walls"); // The item's description, can be set to whatever you want.
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {

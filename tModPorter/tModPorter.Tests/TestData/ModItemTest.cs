@@ -16,6 +16,15 @@ public class ModItemTest : ModItem
 
 		Console.WriteLine(item.IsCandidateForReforge);
 		item.CloneWithModdedDataFrom(item);
+
+		SacrificeTotal = 1;
+	}
+
+	public override void SetStaticDefaults()
+	{
+		Tooltip.SetDefault(
+			"This tooltip\n" +
+			"Has multiple lines");
 	}
 
 	public override bool IgnoreDamageModifiers => false;

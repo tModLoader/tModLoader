@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -32,8 +32,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addTile(Type);
 
 			// AddMapEntry is for setting the color and optional text associated with the Tile when viewed on the map
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Red Firefly in a Bottle");
+			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(238, 145, 105), name);
 
 			// Can't use this since texture is vertical
@@ -153,9 +152,7 @@ namespace ExampleMod.Content.Tiles
 	internal class ExampleAnimatedTileItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Red Firefly in a Bottle");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

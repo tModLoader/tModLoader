@@ -14,7 +14,7 @@
  			default:
 +				// Handle mod keybinds.
 +				if (KeybindLoader.modKeybinds.TryGetValue(_keybind, out var modKeybind))
-+					return modKeybind.DisplayName.GetTranslation(Language.ActiveCulture);
++					return modKeybind.DisplayName.Value;
 +			
  				return _keybind;
  			case "MouseLeft":

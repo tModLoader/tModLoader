@@ -1,6 +1,4 @@
 using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.Furniture
@@ -8,9 +6,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExamplePlatform : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded platform.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 200;
+			Item.ResearchUnlockCount = 200;
 		}
 
 		public override void SetDefaults() {

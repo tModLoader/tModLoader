@@ -19,7 +19,7 @@ public static class RarityLoader
 		return RarityCount - 1;
 	}
 
-	internal static void Initialize()
+	internal static void FinishSetup()
 	{
 		ItemRarity.Initialize();
 	}

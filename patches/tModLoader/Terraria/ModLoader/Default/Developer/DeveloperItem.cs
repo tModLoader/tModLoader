@@ -13,11 +13,13 @@ internal abstract class DeveloperItem : ModLoaderModItem
 
 	public override void SetStaticDefaults()
 	{
+		/*
 		string displayName = Name.Replace('_', ' ');
 		displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 		DisplayName.SetDefault(displayName);
+		*/
 
-		CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		Item.ResearchUnlockCount = 1;
 	}
 
 	public override void SetDefaults()

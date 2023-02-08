@@ -20,6 +20,15 @@ public class ModItemTest : ModItem
 		Console.WriteLine(Item.IsCandidateForReforge/* tModPorter Note: Removed. Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable */);
 		Item.CloneWithModdedDataFrom(Item)/* tModPorter Note: Removed. Use Clone, ResetPrefix or Refresh */;
 #endif
+
+		Item.ResearchUnlockCount = 1;
+	}
+
+	public override void SetStaticDefaults()
+	{
+		/* Tooltip.SetDefault(
+			"This tooltip\n" +
+			"Has multiple lines"); */
 	}
 
 #if COMPILE_ERROR

@@ -158,7 +158,18 @@ public partial class WorkshopHelper
 			uiProgress?.PrepUIForDownload(item.DisplayName);
 			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 			SteamedWraps.Download(publishId, uiProgress, forceUpdate);
+
+			// Due to issues with Steam moving files from downloading folder to installed folder,
+			// there can be some latency in detecting it's installed. - Solxan
+			Thread.Sleep(1000);
+
+			// Add installed info to the downloaded item
+			var localMod = ModOrganizer.FindWorkshopMods().FirstOrDefault(m => m.Name == item.ModName);
+			QueryHelper.FindModDownloadItem(item.ModName).Installed = localMod;
 		}
+
+		Interface.modBrowser.PopulateModBrowser(uiOnly: true);
+		Interface.modBrowser.UpdateNeeded = true;
 
 		uiProgress?.Leave(refreshBrowser: true);
 
@@ -185,14 +196,6 @@ public partial class WorkshopHelper
 		internal static uint TotalItemsQueried;
 
 		internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
-
-		internal static bool FetchDownloadItems()
-		{
-			if (!QueryWorkshop())
-				return false;
-
-			return true;
-		}
 
 		internal static ModDownloadItem FindModDownloadItem(string modName)
 		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
@@ -270,10 +273,19 @@ public partial class WorkshopHelper
 				GetDependenciesRecursive(dep, ref set);
 		}
 
+		internal static bool GetPublishIdByInternalName(string internalName, out ulong publishId)
+		{
+			var query = new AQueryInstance();
+			bool success = query.SearchByInternalName(internalName, out var itemDetails);
+
+			publishId = itemDetails.m_nPublishedFileId.m_PublishedFileId;
+			return success;
+		}
+
 		internal static bool CheckWorkshopConnection()
 		{
 			// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-			if (!FetchDownloadItems())
+			if (!QueryWorkshop())
 				return false;
 
 			// If there are zero items on workshop, than return true.
@@ -399,6 +411,25 @@ public partial class WorkshopHelper
 
 					ReleaseWorkshopQuery();
 				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
+				return true;
+			}
+
+			// Only use if we don't have a guaranteed PublishID source
+			internal bool SearchByInternalName(string modName, out SteamUGCDetails_t itemDetails)
+			{
+				string currentPage = _nextCursor;
+				itemDetails = new();
+
+				// If Query Fails, we can't publish.
+				if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, internalName: modName)))
+					return false;
+
+				// If Query Succeeds, but doesn't find a match, assume safe to publish new item.
+				if (_queryReturnCount == 0)
+					return true;
+
+				// Should only be one of the matching mod
+				itemDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
 				return true;
 			}
 

@@ -179,6 +179,9 @@
 		"ModInfoProblemTryAgain": "出现问题,请重试",
 		"ModInfoDisableModToDelete": "禁用模组以删除",
 		"ModInfoVisitSteampage": "访问Steam创意工坊主页",
+		"ModInfoExtractLocalization": "提取本地化文件",
+		"ModInfoExtracted": "已提取",
+		"ModInfoEnableModToExtractLocalizationFiles": "启用模组以提取其本地化文件",
 
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",
@@ -363,7 +366,7 @@
 		"VersionUpgrade": "链接: 了解如何迁移到tModLoader 1.4",
 		"MSPortToLatest": "运行tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "使用Visual Studio制作tModLoader模组现在需要安装.NET 6.0的SDK. 对此最简单的方案是安装Visual Studio 2022.\n\nGitHub上有教程（The Migration Guide）描述了关于将模组升级到1.4的必要变更, 也有关于如何使用tModPorter来自动完成很大一部分的变动.",
-		// "DownloadNetSDK": "Download .NET SDK",
+		"DownloadNetSDK": "下载.NET软件开发工具包",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
@@ -419,16 +422,10 @@
 		"MSFinishingResourceLoading": "资源加载完成",
 		"MSAddingRecipes": "添加合成配方...",
 
-		// Mod Loader Mod
-		"StartBagTooltip": "部分起始物品无法正常放入背包",
-		"StartBagItemName": "起始包",
-		"UnloadedItemItemName": "卸载物品",
-		"UnloadedItemModTooltip": "模组: {0}",
-		"UnloadedItemItemNameTooltip": "物品: {0}",
-		"AprilFoolsJoke": "愚人节玩笑",
+		// Default Unimplemented
 		"DefaultTownNPCName": "无名氏",
-		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
-		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
+		"DefaultTownNPCChat": "模组作者忘了给我一个聊天信息。",
+		"DefaultNurseCantHealChat": "我也不知道为什么我无法治疗你，模组作者忘了给我一个聊天信息。",
 
 		// Tooltip lines
 		"NoAttackSpeedScaling": "攻击频率不受攻击速度加成影响",
@@ -458,11 +455,12 @@
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
-		"DeleteModConfirm": "你确定要删除这个模组吗？",
+		"DeleteModConfirm": "您确定要删除这个模组吗？",
 		"PatreonSetTooltip": "感谢您的支持!",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
 		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support",
+		"WatchLocalizationFileMessage": "以下本地化文件被修改并重新加载了：{0}",
 
 		// MessageBox
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
@@ -477,7 +475,7 @@
 		"TerrariaNotInstalled": "tModLoader运行时需要安装原版Terraria。 请打开你的Steam客户端以安装原版Terraria，并启动至少一次以确认所有内容都安装成功且可用。",
 		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。此版本的tModLoader需要安装Terraria {1}, 请使用GOG Galaxy升级或降级你的Terraria, 或等待tModLoader更新。",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
+		"GOGVersionHint": "该tModLoader发行版应与泰拉瑞亚{0}版一同安装。如果泰拉瑞亚最近更新了，你可能需要在GOG Galaxy中将其降至早前的发行版。",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
 		"LogPathHint": "你可以在{1}中找到一个名为{0}的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
 		"OutOfMemoryHint": "提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。",
@@ -485,7 +483,7 @@
 		"OneDriveHint": "提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
 		"AntivirusHint": "提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
 		"TypeInitializationHint": "提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
-		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+		"TerrariaOutOfDateMessage": "泰拉瑞亚 (Terraria) 是过时的，你需要在Steam中更新泰拉瑞亚。",
 
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
@@ -508,7 +506,56 @@
 		"TagsGenDescription": "影响地图生成的方式, 例如添加了新的矿物、地形等"
 	},
 	"CommonItemTooltip": {
-		"PercentIncreasedDamage": "增加{0}%伤害"
+		"IncreasesDefenseBy": "防御力增加{0}点",
+		"IncreasesArmorPenBy": "增加{0}点盔甲穿透力",
+
+		"IncreasesMaxLifeBy": "最大生命值增加{0}",
+		"IncreasesMaxManaBy": "最大魔力值增加{0}",
+		"IncreasesMaxLifeByPercent": "最大生命值增加{0}%",
+		"IncreasesMaxManaByPercent": "最大魔力值增加{0}%",
+
+		"IncreasesBowDamageByPercent": "弓的伤害增加{0}%",
+		"IncreasesGunDamageByPercent": "枪的伤害增加{0}%",
+		"IncreasesSpecialistDamageByPercent": "专业远程武器伤害增加{0}%",
+
+		"IncreasesWhipRangeByPercent": "鞭子范围增加{0}%",
+		"IncreasesMaxMinionsBy": "仆从数量上限增加{0}个",
+		"IncreasesMaxSentriesBy": "哨兵数量上限增加{0}个",
+
+		"IncreasesFishingPowerBy": "渔力增加{0}点",
+
+		"PermanentlyIncreasesMaxLifeBy": "最大生命值永久增加{0}",
+		"PermanentlyIncreasesMaxManaBy": "最大魔力值永久增加{0}",
+
+		"ReducesDamageTakenByPercent": "所受伤害减少{0}%",
+
+		"PercentChanceToSaveAmmo": "{0}%的几率节省弹药",
+		"PercentReducedManaCost": "魔力值消耗减少{0}%",
+
+		"PercentIncreasedMiningSpeed": "采矿速度增加{0}%",
+		"PercentIncreasedMovementSpeed": "移动速度提高{0}%",
+
+		"ArmorPenetration": "{0}盔甲穿透",
+		"PercentIncreasedDamage": "伤害增加{0}%",
+		"PercentIncreasedCritChance": "暴击率增加{0}%",
+		"PercentIncreasedDamageCritChance": "伤害和暴击率各增加{0}%",
+
+		"PercentIncreasedMagicDamage": "魔法伤害增加{0}%",
+		"PercentIncreasedMagicCritChance": "魔法暴击率增加{0}%",
+		"PercentIncreasedMagicDamageCritChance": "魔法伤害和暴击率各增加{0}%",
+
+		"PercentIncreasedMeleeDamage": "近战伤害增加{0}%",
+		"PercentIncreasedMeleeCritChance": "近战暴击率增加{0}%",
+		"PercentIncreasedMeleeDamageCritChance": "近战伤害和暴击率各增加{0}%",
+		"PercentIncreasedMeleeSpeed": "近战速度提高{0}%",
+
+		"PercentIncreasedRangedDamage": "远程伤害增加{0}%",
+		"PercentIncreasedRangedCritChance": "远程暴击率增加{0}%",
+		"PercentIncreasedRangedDamageCritChance": "远程伤害和暴击率各增加{0}%",
+
+		"PercentIncreasedSummonDamage": "召唤伤害增加{0}%",
+		"SummonTagDamage": "{0}点召唤标记伤害",
+		"PercentSummonTagCritChance": "{0}%的召唤标记暴击率"
 	},
 	"RecipeConditions": {
 		"NearWater": "需要水",
@@ -547,8 +594,92 @@
 		"InGemCave": "需要位于宝石洞内",
 		"InLihzardTemple": "需要位于丛林神庙内",
 		"InGraveyardBiome": "需要位于墓地环境"
+		"EverythingSeed": "需要在天顶世界",
+		"CrimsonWorld": "需要在猩红世界",
+		"CorruptWorld": "需要在腐化世界"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Mods": {
+		"ModLoader.Items.AprilFools.DisplayName": "愚人节玩笑",
+		"ModLoader.Items.StartBag.DisplayName": "起始包",
+		"ModLoader.Items.StartBag.Tooltip": "部分起始物品无法正常放入背包",
+		"ModLoader.Items.UnloadedItem.DisplayName": "卸载物品",
+		// "ModLoader.Items.UnloadedItem.Tooltip": "\n",
+		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "模组: {0}",
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "物品: {0}",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry0": "Unloaded Chest",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry1": "Locked Unloaded Chest",
+		// "ModLoader.Items.Jofairden_Body.DisplayName": "Andromedon Body",
+		// "ModLoader.Items.Jofairden_Body.Tooltip": "The power of the Andromedon flows within you",
+		// "ModLoader.Items.Jofairden_Head.DisplayName": "Andromedon Head",
+		// "ModLoader.Items.Jofairden_Head.Tooltip": "The power of the Andromedon flows within you",
+		// "ModLoader.Items.Jofairden_Legs.DisplayName": "Andromedon Legs",
+		// "ModLoader.Items.Jofairden_Legs.Tooltip": "The power of the Andromedon flows within you",
+		// "ModLoader.Items.AetherBreaker_Body.DisplayName": "AetherBreaker's Body",
+		// "ModLoader.Items.AetherBreaker_Head.DisplayName": "AetherBreaker's Head",
+		// "ModLoader.Items.WitchDaggah_Head.DisplayName": "WitchDaggah's Head",
+		// "ModLoader.Items.AetherBreaker_Legs.DisplayName": "AetherBreaker's Legs",
+		// "ModLoader.Items.AetherBreaker_Wings.DisplayName": "AetherBreaker's Wings",
+		// "ModLoader.Items.AlejandroAkbal_Body.DisplayName": "AlejandroAkbal's Body",
+		// "ModLoader.Items.AlejandroAkbal_Head.DisplayName": "AlejandroAkbal's Head",
+		// "ModLoader.Items.AlejandroAkbal_Legs.DisplayName": "AlejandroAkbal's Legs",
+		// "ModLoader.Items.AlejandroAkbal_Back.DisplayName": "AlejandroAkbal's Back",
+		// "ModLoader.Items.Coolmike5000_Body.DisplayName": "Coolmike5000's Body",
+		// "ModLoader.Items.Coolmike5000_Head.DisplayName": "Coolmike5000's Head",
+		// "ModLoader.Items.Coolmike5000_Legs.DisplayName": "Coolmike5000's Legs",
+		// "ModLoader.Items.Coolmike5000_Wings.DisplayName": "Coolmike5000's Wings",
+		// "ModLoader.Items.dinidini_Body.DisplayName": "dinidini's Body",
+		// "ModLoader.Items.dinidini_Head.DisplayName": "dinidini's Head",
+		// "ModLoader.Items.dinidini_Legs.DisplayName": "dinidini's Legs",
+		// "ModLoader.Items.dinidini_Wings.DisplayName": "dinidini's Wings",
+		// "ModLoader.Items.dschosen_Body.DisplayName": "dschosen's Body",
+		// "ModLoader.Items.dschosen_Head.DisplayName": "dschosen's Head",
+		// "ModLoader.Items.dschosen_Legs.DisplayName": "dschosen's Legs",
+		// "ModLoader.Items.dschosen_Wings.DisplayName": "dschosen's Wings",
+		// "ModLoader.Items.Elfinlocks_Body.DisplayName": "Elfinlocks' Body",
+		// "ModLoader.Items.Elfinlocks_Head.DisplayName": "Elfinlocks' Head",
+		// "ModLoader.Items.Elfinlocks_Legs.DisplayName": "Elfinlocks' Legs",
+		// "ModLoader.Items.Glory_Body.DisplayName": "Glory's Body",
+		// "ModLoader.Items.Glory_Head.DisplayName": "Glory's Head",
+		// "ModLoader.Items.Glory_Legs.DisplayName": "Glory's Legs",
+		// "ModLoader.Items.Guildpack_Body.DisplayName": "Guildpack's Body",
+		// "ModLoader.Items.Guildpack_Head.DisplayName": "Guildpack's Head",
+		// "ModLoader.Items.Guildpack_Legs.DisplayName": "Guildpack's Legs",
+		// "ModLoader.Items.KittyKitCatCat_Body.DisplayName": "KittyKitCatCat's Body",
+		// "ModLoader.Items.KittyKitCatCat_Head.DisplayName": "KittyKitCatCat's Head",
+		// "ModLoader.Items.KittyKitCatCat_Legs.DisplayName": "KittyKitCatCat's Legs",
+		// "ModLoader.Items.Orian_Body.DisplayName": "Orian's Body",
+		// "ModLoader.Items.Orian_Head.DisplayName": "Orian's Head",
+		// "ModLoader.Items.Orian_Legs.DisplayName": "Orian's Legs",
+		// "ModLoader.Items.POCKETS_Body.DisplayName": "POCKETS' Body",
+		// "ModLoader.Items.POCKETS_Head.DisplayName": "POCKETS' Head",
+		// "ModLoader.Items.POCKETS_Legs.DisplayName": "POCKETS' Legs",
+		// "ModLoader.Items.POCKETS_Wings.DisplayName": "POCKETS' Wings",
+		// "ModLoader.Items.Polyblank_Body.DisplayName": "Polyblank's Body",
+		// "ModLoader.Items.Polyblank_Head.DisplayName": "Polyblank's Head",
+		// "ModLoader.Items.Polyblank_Legs.DisplayName": "Polyblank's Legs",
+		// "ModLoader.Items.Remeus_Body.DisplayName": "Remeus' Body",
+		// "ModLoader.Items.Remeus_Head.DisplayName": "Remeus' Head",
+		// "ModLoader.Items.Remeus_Legs.DisplayName": "Remeus' Legs",
+		// "ModLoader.Items.Saethar_Body.DisplayName": "Saethar's Body",
+		// "ModLoader.Items.Saethar_Head.DisplayName": "Saethar's Head",
+		// "ModLoader.Items.Saethar_Legs.DisplayName": "Saethar's Legs",
+		// "ModLoader.Items.Saethar_Wings.DisplayName": "Saethar's Wings",
+		// "ModLoader.Items.Sailing_Squid_Body.DisplayName": "Sailing_Squid's Body",
+		// "ModLoader.Items.Sailing_Squid_Head.DisplayName": "Sailing_Squid's Head",
+		// "ModLoader.Items.Sailing_Squid_Legs.DisplayName": "Sailing_Squid's Legs",
+		// "ModLoader.Items.Sailing_Squid_Wings.DisplayName": "Sailing_Squid's Wings",
+		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
+		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
+		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
+		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
+		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",
+		// "ModLoader.Items.Zeph_Body.DisplayName": "Zeph's Body",
+		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
+		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
+		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
 	}
 }

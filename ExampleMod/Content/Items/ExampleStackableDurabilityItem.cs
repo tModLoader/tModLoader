@@ -65,9 +65,9 @@ namespace ExampleMod.Content.Items
 			return (durability1 * stack1 + durability2 * stack2) / (stack1 + stack2);
 		}
 
-		public override void OnStack(Item decrease, int numberToBeTransfered) {
-			var incomingDurability = ((ExampleStackableDurabilityItem)decrease.ModItem).durability;
-			durability = WeightedAverage(durability, Item.stack, incomingDurability, numberToBeTransfered);
+		public override void OnStack(Item source, int numToTransfer) {
+			var incomingDurability = ((ExampleStackableDurabilityItem)source.ModItem).durability;
+			durability = WeightedAverage(durability, Item.stack, incomingDurability, numToTransfer);
 		}
 
 		//SplitStack:  This example does not need to use SplitStack because durability will be the intended value from being cloned.

@@ -27,13 +27,15 @@ internal abstract class PatreonItem : ModLoaderModItem
 
 	public override void SetStaticDefaults()
 	{
+		/*
 		string displayName = Name.Replace('_', ' ');
 
 		displayName = displayName.Insert(Name.IndexOf('_'), SetSuffix);
 
 		DisplayName.SetDefault(displayName);
+		*/
 
-		CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		Item.ResearchUnlockCount = 1;
 	}
 
 	public override void SetDefaults()

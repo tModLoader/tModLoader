@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
@@ -11,9 +10,7 @@ namespace ExampleMod.Content.Items.Tools
 	internal class ExampleHookItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
+			Item.ResearchUnlockCount = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
 		}
 
 		public override void SetDefaults() {
@@ -44,10 +41,6 @@ namespace ExampleMod.Content.Items.Tools
 		public override void Unload() { // This is called once on mod reload when this piece of content is being unloaded.
 			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
 			chainTexture = null;
-		}
-
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
 		}
 
 		public override void SetDefaults() {

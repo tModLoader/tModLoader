@@ -186,6 +186,16 @@ partial class Utils
 			LogAndConsoleErrorMessage(message);
 	}
 
+	public static void LogAndChatAndConsoleInfoMessage(string message)
+	{
+		Logging.tML.Info(message);
+
+		if (Main.dedServ)
+			Console.WriteLine(message);
+		else
+			Main.NewText(message);
+	}
+
 	public static void LogAndConsoleInfoMessage(string message)
 	{
 		Logging.tML.Info(message);
@@ -193,6 +203,11 @@ partial class Utils
 		if (Main.dedServ) {
 			Console.WriteLine(message);
 		}
+	}
+
+	public static void LogAndConsoleInfoMessageFormat(string format, params object[] args)
+	{
+		LogAndConsoleInfoMessage(string.Format(format, args));
 	}
 
 	public static void LogAndConsoleErrorMessage(string message)

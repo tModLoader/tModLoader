@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/AchievementsSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/AchievementsSocialModule.cs
-@@ -105,7 +_,8 @@
+@@ -100,12 +_,14 @@
+ 
+ 	public override void CompleteAchievement(string name)
+ 	{
++		//Solxan: Blocks attempts to give steam achievements in tml
+-		SteamUserStats.SetAchievement(name);
++		//SteamUserStats.SetAchievement(name);
+ 	}
  
  	private void OnUserStatsReceived(UserStatsReceived_t results)
  	{

@@ -32,6 +32,10 @@ public class ModTileTest : ModTile
 		SetModTree(new ExampleTree());
 		SetModCactus(new ExampleCactus());
 		SetModPalmTree(new ExamplePalmTree());
+
+		ModTranslation name = CreateMapEntryName();
+		name.SetDefault("Test");
+		AddMapEntry(new Color(200, 200, 200), name);
 	}
 
 	public override void SetStaticDefaults() {

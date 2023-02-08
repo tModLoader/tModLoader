@@ -1,17 +1,18 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.Items.Placeable.Furniture;
+using Terraria;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
 	public class ExampleItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded Item."); // The (English) text shown below your item's name
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/wiki/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
+			// The text shown below some item names is called a tooltip. Tooltips are defined in the localization files. See en-US.hjson.
+
+			Item.ResearchUnlockCount = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/wiki/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
 		}
 
 		public override void SetDefaults() {

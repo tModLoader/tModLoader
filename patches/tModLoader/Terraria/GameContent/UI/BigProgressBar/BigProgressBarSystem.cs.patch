@@ -46,7 +46,7 @@
  	}
  
  	private void TryFindingNPCToTrack()
-@@ -103,7 +_,12 @@
+@@ -103,14 +_,19 @@
  		bigProgressBarInfo.npcIndexToAimAt = npcIndex;
  		BigProgressBarInfo info = bigProgressBarInfo;
  		IBigProgressBar bigProgressBar = _bossBar;
@@ -59,4 +59,12 @@
 +		else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out var value))
  			bigProgressBar = value;
  
++		info.showText = true; // Moved so that mods can set it to false
  		if (!bigProgressBar.ValidateAndCollectNecessaryInfo(ref info))
+ 			return false;
+ 
+ 		_currentBar = bigProgressBar;
+-		info.showText = true;
+ 		_info = info;
+ 		return true;
+ 	}

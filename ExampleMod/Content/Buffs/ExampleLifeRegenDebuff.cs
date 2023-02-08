@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Buffs
 	public class ExampleLifeRegenDebuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Fire debuff"); // Buff display name
-			Description.SetDefault("Losing life"); // Buff description
 			Main.debuff[Type] = true;  // Is it a debuff?
 			Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
 			Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world

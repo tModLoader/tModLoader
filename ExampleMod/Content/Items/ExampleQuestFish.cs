@@ -1,6 +1,4 @@
 using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -8,9 +6,7 @@ namespace ExampleMod.Content.Items
 	public class ExampleQuestFish : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Upside-down Fish");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 2;
+			Item.ResearchUnlockCount = 2;
 		}
 
 		public override void SetDefaults() {

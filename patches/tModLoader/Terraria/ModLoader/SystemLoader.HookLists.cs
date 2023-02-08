@@ -72,6 +72,8 @@ partial class SystemLoader
 
 	//HookLists
 
+	private static HookList HookOnLocalizationsLoaded = AddHook<Action>(s => s.OnLocalizationsLoaded);
+
 	private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
 
 	private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);

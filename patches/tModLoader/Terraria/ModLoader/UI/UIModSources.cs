@@ -282,7 +282,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 			foreach (var line in output.Split('\n')) {
 				var dotnetVersion = new Version(new Regex("([0-9.]+).*").Match(line).Groups[1].Value);
-				if (dotnetVersion >= new Version(6, 0)) {
+				if (dotnetVersion.Major == Environment.Version.Major) {
 					dotnetSDKFound = true;
 					break;
 				}

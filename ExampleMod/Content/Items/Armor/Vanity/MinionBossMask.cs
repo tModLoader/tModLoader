@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,9 +10,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 	public class MinionBossMask : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Mask");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {

@@ -145,14 +145,20 @@
  		if (Platform.IsWindows && !fullscreen && !flag2) {
  			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  				width = form.ClientSize.Width;
-@@ -54711,6 +_,7 @@
+@@ -54711,9 +_,13 @@
  				flag2 = true;
  			}
  		}
 +#endif
  
++		// Causes window maximization to not work.
++		/*
  		width &= 0x7FFFFFFE;
  		height &= 0x7FFFFFFE;
++		*/
+ 		width = Math.Max(width, minScreenW);
+ 		height = Math.Max(height, minScreenH);
+ 		if (graphics.IsFullScreen != fullscreen) {
 @@ -54741,6 +_,7 @@
  			PendingResolutionWidth = screenWidth;
  			PendingResolutionHeight = screenHeight;

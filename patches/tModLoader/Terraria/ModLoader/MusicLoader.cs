@@ -12,8 +12,12 @@ namespace Terraria.ModLoader;
 public sealed class MusicLoader : ILoader
 {
 	internal static readonly string[] supportedExtensions = { ".mp3", ".ogg", ".wav" };
+
+	/// <summary>Unloaded server side </summary>
 	internal static readonly Dictionary<int, int> musicToItem = new();
+	/// <summary>Unloaded server side </summary>
 	internal static readonly Dictionary<int, int> itemToMusic = new();
+	/// <summary>Only Loads the two keys, Tile type and Tile Y frame server side, the value is set to 0</summary>
 	internal static readonly Dictionary<int, Dictionary<int, int>> tileToMusic = new();
 	internal static readonly Dictionary<string, int> musicByPath = new();
 	internal static readonly Dictionary<string, string> musicExtensions = new();
@@ -125,10 +129,7 @@ public sealed class MusicLoader : ILoader
 		//if (!mod.loading)
 		//	throw new Exception($"{nameof(AddMusicBox)} can only be called during mod loading.");
 
-		if (Main.audioSystem == null)
-			return;
-
-		if (musicSlot < Main.maxMusic)
+		if (musicSlot < Main.maxMusic && !(Main.dedServ && musicSlot == 0))
 			throw new ArgumentOutOfRangeException($"Cannot assign music box to vanilla music ID {musicSlot}");
 
 		if (musicSlot >= MusicCount)
@@ -161,8 +162,10 @@ public sealed class MusicLoader : ILoader
 		if (tileFrameY % 36 != 0)
 			throw new ArgumentException("Y-frame must be divisible by 36");
 
-		musicToItem[musicSlot] = itemType;
-		itemToMusic[itemType] = musicSlot;
+		if (!Main.dedServ) {
+			musicToItem[musicSlot] = itemType;
+			itemToMusic[itemType] = musicSlot;
+		}
 		tileToMusic[tileType][tileFrameY] = musicSlot;
 	}
 

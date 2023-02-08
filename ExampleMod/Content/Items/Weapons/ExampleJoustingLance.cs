@@ -1,18 +1,14 @@
 using Terraria;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
 using Terraria.Enums;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleJoustingLance : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
-			Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nThis is a modded jousting lance.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
+			Item.ResearchUnlockCount = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}
 
 		public override void SetDefaults() {

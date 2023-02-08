@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -70,3 +71,4 @@ public class ModTranslation
 		return GetTranslation(culture.LegacyId);
 	}
 }
+*/

@@ -135,6 +135,21 @@
  		}
  
  		if (x < roomX1)
+@@ -2323,11 +_,14 @@
+ 						return false;
+ 
+ 					switch (Main.tile[m, n].type) {
++						case ushort _ when TileID.Sets.AvoidedByMeteorLanding[Main.tile[m, n].type]:
++						/*
+ 						case 226:
+ 						case 470:
+ 						case 475:
+ 						case 488:
+ 						case 597:
++						*/
+ 							return false;
+ 					}
+ 				}
 @@ -2440,8 +_,13 @@
  	{
  		Main.bottomWorld = Main.maxTilesY * 16;
@@ -276,7 +291,7 @@
  
  	public static void playWorldCallBack(object threadContext)
  	{
-+		Logging.Terraria.Info($"Loading World: {Main.ActiveWorldFileData.Name}, IsCloud={Main.ActiveWorldFileData.IsCloudSave}");
++		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, GameMode: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode);
 +
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
@@ -347,7 +362,7 @@
  
  	public static void serverLoadWorldCallBack()
  	{
-+		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Size={2}x{3}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY);
++		Logging.Terraria.InfoFormat("Loading World: {0}, IsCloud={1}, Width: {2}, Height: {3}, Evil: {4}, GameMode: {5}", Main.ActiveWorldFileData.Name, Main.ActiveWorldFileData.IsCloudSave, Main.ActiveWorldFileData.WorldSizeX, Main.ActiveWorldFileData.WorldSizeY, Main.ActiveWorldFileData.HasCrimson.ToInt(), Main.ActiveWorldFileData.GameMode);
 +
  		Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  		WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
@@ -410,7 +425,12 @@
  		remixWorldGen = tempRemixWorldGen;
  		tenthAnniversaryWorldGen = tempTenthAnniversaryWorldGen;
  		drunkWorldGen = false;
-@@ -6034,6 +_,9 @@
+@@ -6030,10 +_,13 @@
+ 		}
+ 
+ 		Main.zenithWorld = everythingWorldGen;
+-		Console.WriteLine("Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
++		Utils.LogAndConsoleInfoMessageFormat("Creating world - Seed: {0}, Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
  		Main.lockMenuBGChange = true;
  		GenVars.configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  		Hooks.ProcessWorldGenConfig(ref GenVars.configuration);
@@ -430,6 +450,17 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
+@@ -7904,7 +_,10 @@
+ 					}
+ 
+ 					for (int num861 = num857; num861 < Main.maxTilesY; num861++) {
++						/*
+ 						Main.tile[num856, num861] = new Tile();
++						*/
++						Main.tile[num856, num861].Clear(TileDataType.All);
+ 						Main.tile[num856, num861].active(active: true);
+ 						Main.tile[num856, num861].type = 57;
+ 					}
 @@ -9368,10 +_,11 @@
  						int num627 = 0;
  						while (!flag37 && num627 < 100) {
@@ -1862,10 +1893,13 @@
  			Item.NewItem(GetItemSource_FromWallBreak(i, j), i * 16, j * 16, 16, 16, num);
  	}
  
-@@ -44268,6 +_,9 @@
+@@ -44268,6 +_,12 @@
  		if (tileCache.wall == 245)
  			num = 195;
  
++		if (WallLoader.GetWall(tileCache.wall) is ModWall modWall)
++			num = modWall.DustType;
++
 +		if (!WallLoader.CreateDust(i, j, tileCache.wall, ref num))
 +			return;
 +
@@ -1943,6 +1977,14 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
+@@ -44663,6 +_,7 @@
+ 		if (Main.tenthAnniversaryWorld && !Main.remixWorld && (targetType == 53 || targetType == 396 || targetType == 397))
+ 			t.color(7);
+ 
++		TileFrame(topLeftX, topLeftY); // Fix #2835: block to platform swap under chest using old frameX and breaking chest because it sees the platform as a stair.
+ 		SquareTileFrame(topLeftX, topLeftY);
+ 	}
+ 
 @@ -44729,7 +_,7 @@
  	public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y)
  	{
@@ -2171,11 +2213,14 @@
  				}
  			}
  		}
-@@ -50136,7 +_,7 @@
+@@ -50136,7 +_,10 @@
  		if (type == 178 || (uint)(type - 426) <= 1u || (uint)(type - 430) <= 10u)
  			flag = true;
  
 -		if (num >= 0) {
++		if (TileLoader.GetTile(tileCache.type) is ModTile modTile)
++			num = modTile.DustType;
++
 +		if (TileLoader.CreateDust(i, j, tileCache.type, ref num) && num >= 0) {
  			if (tileCache.type == 627 || tileCache.type == 628 || (tileCache.type == 184 && tileCache.frameX / 22 == 10)) {
  				int num18 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, num, 0f, 0f, 0, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB));

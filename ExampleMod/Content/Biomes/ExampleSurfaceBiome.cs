@@ -24,12 +24,6 @@ namespace ExampleMod.Content.Biomes
 		public override Color? BackgroundColor => base.BackgroundColor;
 		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
 
-		// Use SetStaticDefaults to assign the display name
-		public override void SetStaticDefaults() {
-			// This translation is set in localization files
-			// DisplayName.SetDefault("Example Surface");
-		}
-
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player) {
 			// First, we will use the exampleBlockCount from our added ModSystem for our first custom condition

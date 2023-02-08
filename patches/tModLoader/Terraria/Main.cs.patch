@@ -1145,7 +1145,7 @@
 +			/*
  			new XnaContentSource(base.Content.RootDirectory)
 +			*/
-+			new XnaDirectContentSource(base.Content.RootDirectory, (Content as TMLContentManager).alternateContentManager.RootDirectory),
++			new XnaDirectContentSource(((TMLContentManager)Content).RootDirectories),
  		});
  
  		VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
@@ -1194,6 +1194,19 @@
  				float num2 = musicFade[i] * musicVolume * num;
  				if (i >= 62 && i <= 88) {
  					num2 *= 0.9f;
+@@ -9764,7 +_,11 @@
+ 		bool flag15 = false;
+ 		bool flag16 = false;
+ 		bool flag17 = false;
+-		if (!showSplash) {
++
++		int modMusic = -1;
++		ModLoader.SceneEffectPriority modPriority = ModLoader.SceneEffectPriority.None;
++
++		if (!gameMenu) { // showSplash -> gameMenu. Fix crash iterating active NPCs while unloading mods
+ 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
+ 			int num = 5000;
+ 			for (int i = 0; i < 200; i++) {
 @@ -9871,7 +_,8 @@
  						break;
  				}
@@ -1214,14 +1227,133 @@
  
  				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[i].position.X + (float)(npc[i].width / 2)) - num, (int)(npc[i].position.Y + (float)(npc[i].height / 2)) - num, num * 2, num * 2);
  				if (rectangle.Intersects(value)) {
-+					//TODO: Implement modMusic and modPriority
-+					//if (npc[i].modNPC != null && npc[i].modNPC.music >= 0 && (modMusic < 0 || npc[i].modNPC.SceneEffectPriority > modPriority)) {
-+					//	modMusic = npc[i].modNPC.music;
-+					//	modPriority = npc[i].modNPC.SceneEffectPriority;
-+					//}
++					//TODO: Can we simplify these two Decide music methods?
++					if (npc[i].ModNPC != null && npc[i].ModNPC.Music >= 0 && (modMusic < 0 || npc[i].ModNPC.SceneEffectPriority > modPriority)) {
++						modMusic = npc[i].ModNPC.Music;
++						modPriority = npc[i].ModNPC.SceneEffectPriority;
++					}
  					switch (num2) {
  						case 1:
  							flag = true;
+@@ -9942,6 +_,8 @@
+ 					break;
+ 				}
+ 			}
++
++			LoaderManager.Get<SceneEffectLoader>().UpdateMusic(ref modMusic, ref modPriority);
+ 		}
+ 
+ 		_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
+@@ -9949,6 +_,30 @@
+ 			newMusic = 0;
+ 			return;
+ 		}
++
++		//TODO: Re-implment game menu/menuloader audio in Other World soundtrack???
++        /*if (gameMenu) {
++			if (netMode != 2) {
++				if (WorldGen.drunkWorldGen) {
++					newMusic = 60;
++				}
++				else if (menuMode == 3000) {
++					newMusic = 89;
++				}
++				else {
++					newMusic = MenuLoader.CurrentMenu.Music;
++				}
++				if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
++					newMusic = 51;
++					if (musicNoCrossFade[51])
++						musicFade[51] = 1f;
++				}
++			}
++			else {
++				newMusic = 0;
++			}
++			return;
++		}*/
+ 
+ 		float num3 = (float)maxTilesX / 4200f;
+ 		num3 *= num3;
+@@ -9956,12 +_,18 @@
+ 		if (CreditsRollEvent.IsEventOngoing) {
+ 			newMusic = 89;
+ 		}
++		else if (modPriority >= SceneEffectPriority.BossHigh) {
++			newMusic = modMusic;
++		}
+ 		else if (player[myPlayer].happyFunTorchTime) {
+ 			newMusic = 87;
+ 		}
+ 		else if (flag8) {
+ 			newMusic = 84;
+ 		}
++		else if (modPriority >= SceneEffectPriority.BossMedium) {
++			newMusic = modMusic;
++		}
+ 		else if (flag17) {
+ 			newMusic = 81;
+ 		}
+@@ -9974,6 +_,9 @@
+ 		else if (flag7) {
+ 			newMusic = 85;
+ 		}
++		else if (modPriority >= SceneEffectPriority.BossLow) {
++			newMusic = modMusic;
++		}
+ 		else if (flag15) {
+ 			newMusic = 80;
+ 		}
+@@ -9995,6 +_,9 @@
+ 		else if (flag6) {
+ 			newMusic = 81;
+ 		}
++		else if (modPriority >= SceneEffectPriority.Event) {
++			newMusic = modMusic;
++		}
+ 		else if (flag14) {
+ 			newMusic = 80;
+ 		}
+@@ -10009,6 +_,9 @@
+ 		}
+ 		else if (flag13) {
+ 			newMusic = 82;
++		}
++		else if (modPriority >= SceneEffectPriority.Environment) {
++			newMusic = modMusic;
+ 		}
+ 		else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
+ 			newMusic = 79;
+@@ -10034,6 +_,9 @@
+ 		else if (num4 < 1f) {
+ 			newMusic = 70;
+ 		}
++		else if (modPriority >= SceneEffectPriority.BiomeHigh) {
++			newMusic = modMusic;
++		}
+ 		else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
+ 			newMusic = 69;
+ 		}
+@@ -10063,6 +_,9 @@
+ 			else
+ 				newMusic = 75;
+ 		}
++		else if (modPriority >= SceneEffectPriority.BiomeMedium) {
++			newMusic = modMusic;
++		}
+ 		else if (player[myPlayer].ZoneMeteor) {
+ 			newMusic = 79;
+ 		}
+@@ -10094,6 +_,9 @@
+ 				newMusic = 72;
+ 			}
+ 		}
++		else if (modPriority >= SceneEffectPriority.BiomeLow) {
++			newMusic = modMusic;
++		}
+ 		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
+ 			if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2)) {
+ 				if (player[myPlayer].ZoneUndergroundDesert)
 @@ -10199,7 +_,11 @@
  		if (lastMusicPlayed == 50)
  			musicNoCrossFade[51] = true;
@@ -1506,6 +1638,14 @@
  			CinematicManager.Instance.Update(gameTime);
  			if (netMode == 2) {
  				for (int i = 0; i < 256; i++) {
+@@ -13526,6 +_,7 @@
+ 			}
+ 		}
+ 
++		LocalizationLoader.Update();
+ 		DoUpdate_AutoSave();
+ 		if (!dedServ) {
+ 			ChromaInitializer.UpdateEvents();
 @@ -13705,6 +_,11 @@
  
  				mouseLeftRelease = false;
@@ -1605,6 +1745,24 @@
  	}
  
  	private void DoDebugFunctions()
+@@ -14013,7 +_,7 @@
+ 		Player player = clientPlayer;
+ 		bool syncedAnyInventoryContents = false;
+ 		for (int i = 0; i < 59; i++) {
+-			if (Main.player[myPlayer].inventory[i].IsNotTheSameAs(player.inventory[i])) {
++			if (Main.player[myPlayer].inventory[i].IsNetStateDifferent(player.inventory[i])) {
+ 				syncedAnyInventoryContents = true;
+ 				NetMessage.SendData(5, -1, -1, null, myPlayer, PlayerItemSlotID.Inventory0 + i, (int)Main.player[myPlayer].inventory[i].prefix);
+ 			}
+@@ -14025,7 +_,7 @@
+ 		TrySyncingItemArray(ref syncedAnyInventoryContents, Main.player[myPlayer].miscDyes, player.miscDyes, PlayerItemSlotID.MiscDye0);
+ 		TrySyncingItemArray(ref syncedAnyInventoryContents, Main.player[myPlayer].bank.item, player.bank.item, PlayerItemSlotID.Bank1_0);
+ 		TrySyncingItemArray(ref syncedAnyInventoryContents, Main.player[myPlayer].bank2.item, player.bank2.item, PlayerItemSlotID.Bank2_0);
+-		if (Main.player[myPlayer].trashItem.IsNotTheSameAs(player.trashItem)) {
++		if (Main.player[myPlayer].trashItem.IsNetStateDifferent(player.trashItem)) {
+ 			syncedAnyInventoryContents = true;
+ 			NetMessage.SendData(5, -1, -1, null, myPlayer, PlayerItemSlotID.TrashItem, (int)Main.player[myPlayer].trashItem.prefix);
+ 		}
 @@ -14077,6 +_,9 @@
  		if ((byte)Main.player[myPlayer].zone5 != (byte)player.zone5)
  			flag = true;
@@ -1615,7 +1773,7 @@
  		if (flag)
  			NetMessage.SendData(36, -1, -1, null, myPlayer);
  
-@@ -14137,6 +_,8 @@
+@@ -14137,13 +_,15 @@
  		if (syncedAnyInventoryContents)
  			NetMessage.SendData(138);
  
@@ -1624,6 +1782,14 @@
  		clientPlayer = Main.player[myPlayer].clientClone();
  	}
  
+ 	private static void TrySyncingItemArray(ref bool syncedAnyInventoryContents, Item[] my, Item[] other, int slotOffset)
+ 	{
+ 		for (int i = 0; i < my.Length; i++) {
+-			if (my[i].IsNotTheSameAs(other[i])) {
++			if (my[i].IsNetStateDifferent(other[i])) {
+ 				syncedAnyInventoryContents = true;
+ 				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
+ 			}
 @@ -14156,6 +_,9 @@
  	{
  		UpdateParticleSystems();
@@ -2609,7 +2775,7 @@
  			Y = (int)((float)screenHeight * num4 - zero.Y - 4f);
  
 +		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, 255); // 255 needed for black check in item tags
-+		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, buffString, new Vector2(X, Y + vector.Y), color, 0f, Vector2.Zero, Vector2.One);
++		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, buffString, new Vector2(X, Y + buffNameHeight), color, 0f, Vector2.Zero, Vector2.One);
 +		/*
  		for (int k = 0; k < 5; k++) {
  			int num11 = X;
@@ -3327,7 +3493,7 @@
  			string text = textLines[i];
  			if (text != null) {
  				if (i == amountOfLines - 1 && flag3)
-@@ -31778,6 +_,20 @@
+@@ -31778,6 +_,23 @@
  				else
  					Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, 170 + (screenWidth - 800) / 2, 120 + i * 30, color2, Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
  			}
@@ -3338,6 +3504,9 @@
 +			if (hoveredSnippetNum > -1)
 +				hoveredSnippet = text[hoveredSnippetNum];
 +		}
++
++		if (flag3)
++			textLines[amountOfLines - 1].RemoveAt(textLines[amountOfLines - 1].Count - 1);
 +
 +		// Added on-hover and on-click callbacks as well
 +		if (hoveredSnippet is not null) {
@@ -3994,7 +4163,7 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
-@@ -36393,10 +_,20 @@
+@@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
  		PlayerInput.SetZoom_UI();
@@ -4010,7 +4179,8 @@
 +		SystemLoader.ModifyInterfaceLayers(interfaceLayers);
 +		
 +		foreach (var layer in interfaceLayers) {
-+			layer.Draw();
++			if(!layer.Draw())
++				break;
 +		}
  
  		PlayerInput.SetZoom_World();
@@ -4231,7 +4401,7 @@
 +			else {
 +				num = info.Type;
 +				text2 = info.DisplayValue();
-+				text3 = info.DisplayName;
++				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
@@ -5774,7 +5944,7 @@
  			if (!graphics.IsFullScreen) {
  				num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  				num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
-@@ -54746,6 +_,7 @@
+@@ -54749,6 +_,7 @@
  			graphics.ToggleFullScreen();
  		}
  
@@ -5782,7 +5952,7 @@
  		if (width != num3 || height != num4 || flag2) {
  			mapTime = 0;
  			if (gamePaused)
-@@ -54755,7 +_,14 @@
+@@ -54758,7 +_,14 @@
  			screenHeight = height;
  			graphics.PreferredBackBufferWidth = screenWidth;
  			graphics.PreferredBackBufferHeight = screenHeight;

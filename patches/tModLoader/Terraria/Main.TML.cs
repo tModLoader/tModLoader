@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +35,6 @@ public partial class Main
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 	public static double timePass; // used to account for more precise time rates when deciding when to update weather
 
-	internal static TMLContentManager AlternateContentManager;
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
 	public static Color DiscoColor => new Color(DiscoR, DiscoG, DiscoB);
@@ -185,10 +185,10 @@ public partial class Main
 			vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 		}
 		else {
-			vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
+			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
 			if (!Directory.Exists(vanillaContentFolder)) {
-				vanillaContentFolder = "../Content"; // Nested Manual Install
+				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
 			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 		}
@@ -202,10 +202,12 @@ public partial class Main
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 		}
 
-		if (Directory.Exists(Path.Combine("Content", "Images")))
-			AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 
-		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
+		TMLContentManager localOverrideContentManager = null;
+		if (Directory.Exists(Path.Combine("Content", "Images")))
+			localOverrideContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
+
+		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
 	
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)

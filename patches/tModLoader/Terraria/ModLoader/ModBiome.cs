@@ -1,35 +1,42 @@
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
 using Terraria.GameContent.Personalities;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate.
+/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate, such as netcode.
+/// <br/>To check if a player is in the biome, use <see cref="Player.InModBiome{T}"/>.
+/// <br/>Unlike <see cref="ModSceneEffect"/>, this defaults <see cref="Music"/> to 0 and <see cref="Priority"/> to <see cref="SceneEffectPriority.BiomeLow"/>.
 /// </summary>
-public abstract class ModBiome : ModSceneEffect, IShoppingBiome
+public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModType
 {
 	// Basic Biome information
-
 	public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
+
 	public override int Music => 0;
 
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
-	// Bestiary properties
+	public string LocalizationCategory => "Biomes";
+
 	/// <summary>
 	/// The display name for this biome in the bestiary.
 	/// </summary>
-	public ModTranslation DisplayName { get; private set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
+
 	/// <summary>
 	/// The path to the 30x30 texture that will appear for this biome in the bestiary. Defaults to adding "_Icon" onto the usual namespace+classname derived texture path.
 	/// <br/> Vanilla icons use a drop shadow at 40 percent opacity and the texture will be offset 1 pixel left and up from centered in the bestiary filter grid.
 	/// </summary>
 	public virtual string BestiaryIcon => (GetType().Namespace + "." + Name + "_Icon").Replace('.', '/');
+
 	/// <summary>
 	/// The path to the background texture that will appear for this biome behind npcs in the bestiary. Defaults to adding "_Background" onto the usual namespace+classname derived texture path.
 	/// </summary>
 	public virtual string BackgroundPath => (GetType().Namespace + "." + Name + "_Background").Replace('.', '/');
+
 	/// <summary>
 	/// The color of the bestiary background.
 	/// </summary>
@@ -43,15 +50,10 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	{
 		Type = LoaderManager.Get<BiomeLoader>().Register(this);
 		RegisterSceneEffect(this);
-
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");
 	}
 
 	public sealed override void SetupContent()
 	{
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
-
 		SetStaticDefaults();
 		
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
@@ -95,5 +97,5 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	{
 	}
 
-	bool IShoppingBiome.IsInBiome(Player player) => IsBiomeActive(player);
+	bool IShoppingBiome.IsInBiome(Player player) => IsSceneEffectActive(player);
 }

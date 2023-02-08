@@ -1,12 +1,10 @@
-﻿using ExampleMod.Content.Items;
+﻿using System;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Ammo
@@ -16,10 +14,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public override string Texture => ExampleMod.AssetPath + "Textures/Items/ExampleSolution";
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Monochromatic Solution");
-			Tooltip.SetDefault("Used by the Clentaminator\nSpreads the example");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {
@@ -42,10 +37,6 @@ namespace ExampleMod.Content.Items.Ammo
 		public override string Texture => ExampleMod.AssetPath + "Textures/Projectiles/ExampleSolution";
 
 		public ref float Progress => ref Projectile.ai[0];
-
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Spray");
-		}
 
 		public override void SetDefaults() {
 			// This method quickly sets the projectile properties to match other sprays.

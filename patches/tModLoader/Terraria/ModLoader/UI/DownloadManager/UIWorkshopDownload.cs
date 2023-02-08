@@ -39,16 +39,6 @@ internal class UIWorkshopDownload : UIProgress
 
 	public void Leave(bool refreshBrowser)
 	{
-		// Due to issues with Steam moving files from downloading folder to installed folder,
-		// there can be some latency in detecting it's installed. - Solxan
-		System.Threading.Thread.Sleep(50);
-
-		// Re-populate the mod Browser so that the "Installed" information refreshes.
-		if (refreshBrowser) {
-			Interface.modBrowser.PopulateModBrowser();
-			Interface.modBrowser.UpdateNeeded = true;
-		}
-
 		// Exit
 		ReturnToPreviousMenu();
 	}

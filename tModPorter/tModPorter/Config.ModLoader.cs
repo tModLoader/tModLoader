@@ -104,6 +104,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
 		RenameMethod("Terraria.ModLoader.EquipTexture", from: "UpdateVanity",		to: "FrameEffects");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "SetupStartInventory",to: "AddStartingItems");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "clientClone",		to: "CopyClientState").FollowBy(AddCommentToOverride("Suggestion: Replace Item.Clone usages with Item.CopyNetStateTo"));
+		RenameMethod("Terraria.ModLoader.ModTree",		from: "GrowthFXGore",		to: "TreeLeaf");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "AutoDefaults",		to: "AutoStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 		RenameMethod("Terraria.ModLoader.ModTree",		from: "GrowthFXGore",		to: "TreeLeaf");
@@ -163,6 +165,10 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PostHurt");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"AddStartingItems", comment: "Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PlayerConnect");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PlayerDisconnect");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnEnterWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnRespawn");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"SetDrawPositions");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
@@ -232,6 +238,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
 		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
 
+		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization");
+		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
+
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",		to: "LoadData");
@@ -269,6 +278,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModDust",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModMount",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "SetDefaults", to: "SetStaticDefaults");
+
+		RenameInstanceField("Terraria.ModLoader.ModItem", from: "SacrificeTotal", to: "Item.ResearchUnlockCount");
 
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",	to: "DustType");
@@ -321,8 +332,6 @@ public static partial class Config
 		//RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent, and same as Mod.GetGoreSlot
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "RegisterHotKey",		ToStaticMethodCall("Terraria.ModLoader.KeybindLoader",				"RegisterKeybind",		targetBecomesFirstArg: true));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddTranslation",		ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"AddTranslation",		targetBecomesFirstArg: false));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation",	ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"CreateTranslation",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddBackgroundTexture",ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"AddBackgroundTexture",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetBackgroundSlot",	ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"GetBackgroundSlot",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipTexture",		targetBecomesFirstArg: true));
@@ -396,5 +405,20 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
+
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
+
+		// 1.4.3 -> 1.4.4
+		RenameType(from: "Terraria.ModLoader.ModTranslation", to: "Terraria.Localization.LocalizedText");
+		RefactorInstanceMethodCall(	"Terraria.ModLoader.Mod",					"AddTranslation", Removed("Use Language.GetOrRegister"));
+		RefactorStaticMethodCall(	"Terraria.ModLoader.LocalizationLoader",	"AddTranslation", Removed("Use Language.GetOrRegister"));
+
+		RenameMethod("Terraria.ModLoader.LocalizationLoader", "CreateTranslation",		"GetOrRegister", newType: "Terraria.Localization.Language");
+		RenameMethod("Terraria.ModLoader.LocalizationLoader", "GetOrCreateTranslation", "GetOrRegister", newType: "Terraria.Localization.Language");
+
+		RefactorInstanceMethodCall("Terraria.Localization.LocalizedText", "SetDefault", CommentOut);
+		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
+		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
+
 	}
 }
