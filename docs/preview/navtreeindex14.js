@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_recipe.html#a3dff5481bb47513683cfdd8abec91a94":[2,0,987,7],
 "class_recipe.html#a42c2a6104d56731eae1d3c50137485ae":[2,0,987,24],
 "class_recipe.html#a4c427fbd553b1208d55163a6206c03b4":[2,0,987,4],
 "class_recipe.html#a4fb1462aac3ce2547c222f858b55b6d5":[2,0,987,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_tag_compound.html":[2,0,1126],
 "class_tag_i_o.html":[2,0,1127],
 "class_tag_printer.html":[2,0,1128],
-"class_tag_serializer.html":[2,0,1130],
-"class_tag_serializer.html#a38658fafb986bb6dcdbd8e6ac6224076":[2,0,1130,0]
+"class_tag_serializer.html":[2,0,1130]
 };

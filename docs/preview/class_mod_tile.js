@@ -21,6 +21,7 @@ var class_mod_tile =
     [ "IsTileSpelunkable", "class_mod_tile.html#a442bc92e90e61588278fdf7f89376ca7", null ],
     [ "KillMultiTile", "class_mod_tile.html#a5b8ac3afe10944cf94c39fb87cd6bf1d", null ],
     [ "KillTile", "class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a", null ],
+    [ "LockChest", "class_mod_tile.html#a1d8436a763df22b5e1df54953d49e547", null ],
     [ "ModifySittingTargetInfo", "class_mod_tile.html#a48a903b22d9bde0bbce741e9c8a8a12a", null ],
     [ "ModifySleepingTargetInfo", "class_mod_tile.html#ad0f6ba4c849efeca2a4457d9df7e386e", null ],
     [ "ModifySmartInteractCoords", "class_mod_tile.html#a0265b641b2afd441ede1e4ef9e034dcb", null ],

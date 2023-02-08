@@ -176,6 +176,9 @@ This is only called if Main.tileSpelunker[type] is false.  <a href="class_mod_ti
 <tr class="memitem:af7ec20e3094327b7226a7c03ccb8205a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a">KillTile</a> (int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)</td></tr>
 <tr class="memdesc:af7ec20e3094327b7226a7c03ccb8205a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping.  <a href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a">More...</a><br /></td></tr>
 <tr class="separator:af7ec20e3094327b7226a7c03ccb8205a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8436a763df22b5e1df54953d49e547"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a1d8436a763df22b5e1df54953d49e547">LockChest</a> (int i, int j, ref short frameXAdjustment, ref bool manual)</td></tr>
+<tr class="memdesc:a1d8436a763df22b5e1df54953d49e547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows customization of how locking a chest is accomplished. By default, frameXAdjustment will be 36, shifting the frameX over to the right by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. This hook is called on the client, and if successful will be called on the server and other clients as the action is synced. Make sure that the logic is consistent and not dependent on local player data.  <a href="class_mod_tile.html#a1d8436a763df22b5e1df54953d49e547">More...</a><br /></td></tr>
+<tr class="separator:a1d8436a763df22b5e1df54953d49e547"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48a903b22d9bde0bbce741e9c8a8a12a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a48a903b22d9bde0bbce741e9c8a8a12a">ModifySittingTargetInfo</a> (int i, int j, ref <a class="el" href="struct_tile_resting_info.html">TileRestingInfo</a> info)</td></tr>
 <tr class="memdesc:a48a903b22d9bde0bbce741e9c8a8a12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify the parameters for the entity sitting on this furniture tile with its type registered to TileID.Sets.CanBeSatOnForPlayers. <br  />
 This is also called on NPCs sitting on this tile! To access the entity (player or <a class="el" href="class_n_p_c.html">NPC</a>), use info.restingEntity. <br  />
@@ -1383,6 +1386,66 @@ This is only called if Main.tileSpelunker[type] is false. </p>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1d8436a763df22b5e1df54953d49e547" name="a1d8436a763df22b5e1df54953d49e547"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8436a763df22b5e1df54953d49e547">&#9670;&nbsp;</a></span>LockChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ModTile.LockChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref short&#160;</td>
+          <td class="paramname"><em>frameXAdjustment</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>manual</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows customization of how locking a chest is accomplished. By default, frameXAdjustment will be 36, shifting the frameX over to the right by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. This hook is called on the client, and if successful will be called on the server and other clients as the action is synced. Make sure that the logic is consistent and not dependent on local player data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">frameXAdjustment</td><td>The adjustment made to each Tile.frameX, defaults to 36</td></tr>
+    <tr><td class="paramname">manual</td><td>Set this to true to bypass the code playing the lock sound and adjusting the tile frame. Network syncing will still happen.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return true if this tile truly is an unlocked chest and the chest can be locked</dd></dl>
 
 </div>
 </div>

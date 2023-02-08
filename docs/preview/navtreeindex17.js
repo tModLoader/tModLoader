@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[2,0,160,1],
 "interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[2,0,160,0],
 "interface_i_achievement_tracker.html":[2,0,465],
 "interface_i_animation_segment.html":[2,0,466],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "struct_portable_stool_usage.html":[2,0,942],
 "struct_pos_data.html":[2,0,944],
 "struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[2,0,944,3],
-"struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[2,0,944,6],
-"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc":[2,0,944,5]
+"struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[2,0,944,6]
 };

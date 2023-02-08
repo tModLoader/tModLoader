@@ -10,8 +10,8 @@ var searchData=
   ['onedroplogo_7',['OneDropLogo',['../class_drawable_tooltip_line.html#ae64fa687abe69507799b918d43bbb056',1,'DrawableTooltipLine']]],
   ['orange_8',['Orange',['../class_item_rarity_i_d.html#a0d9d114e1f5acf41e803bceed3977445',1,'ItemRarityID']]],
   ['orepickaxepowerrequirements_9',['OrePickaxePowerRequirements',['../class_game_tip_i_d.html#aafed67febd5e4e767f00af2548efd439',1,'GameTipID']]],
-  ['origin_10',['origin',['../struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651',1,'ResourceOverlayDrawContext']]],
-  ['origin_11',['Origin',['../class_drawable_tooltip_line.html#ac79493ea7168ee83d0b39a955b5d6fc4',1,'DrawableTooltipLine']]],
+  ['origin_10',['Origin',['../class_drawable_tooltip_line.html#ac79493ea7168ee83d0b39a955b5d6fc4',1,'DrawableTooltipLine']]],
+  ['origin_11',['origin',['../struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651',1,'ResourceOverlayDrawContext']]],
   ['overpoweredsand_12',['OverpoweredSand',['../class_game_tip_i_d.html#af8f708671b2675af7b7cea8bd829f19d',1,'GameTipID']]],
   ['overridecolor_13',['OverrideColor',['../class_tooltip_line.html#adc6a212a9b0baa54b2e0c4be7fdf6f1a',1,'TooltipLine']]],
   ['owner_14',['owner',['../class_projectile.html#aab5b090f7428f4d974921a807149e991',1,'Projectile']]]

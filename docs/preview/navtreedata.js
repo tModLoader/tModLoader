@@ -54,14 +54,14 @@ var NAVTREEINDEX =
 "class_mod_item.html#a7f1ab496eeef31e46ff6b028e979f0ec",
 "class_mod_player.html#a518fe106339dc4ed0d3b8de9a88e4973",
 "class_mod_system.html#a895054130daea8301afbd74af6168490",
-"class_n_p_c.html#a64991e8657153fdce11c33746dc806fa",
-"class_overlay_manager.html",
-"class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92",
-"class_recipe.html#a42c2a6104d56731eae1d3c50137485ae",
-"class_tag_serializer.html#a5f5b3ae8ee7386883a6c6e9224a71510",
-"class_unloaded_global_item.html",
-"interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da",
-"struct_pos_data.html#a7c60ea2da5d803f3c2574f5e65cd66e2"
+"class_n_p_c.html#a62b76723c81ba46dd6210c219769eaf6",
+"class_overlay.html",
+"class_proj_a_i_style_i_d.html#a142eae977096e1a0871a0a352d7e7cd4",
+"class_recipe.html#a3dff5481bb47513683cfdd8abec91a94",
+"class_tag_serializer.html#a38658fafb986bb6dcdbd8e6ac6224076",
+"class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461",
+"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb",
+"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

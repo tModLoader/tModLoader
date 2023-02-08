@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461":[2,0,1328,0],
 "class_unloaded_global_item.html":[2,0,1329],
 "class_unloaded_global_item.html#a4924c96de0a247d8e257958023cbbd2c":[2,0,1329,1],
 "class_unloaded_global_item.html#abdbdf089a40637872b52fbaba9462fab":[2,0,1329,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "interface_actions_1_1_n_p_cs_1_1_i_n_p_c_action.html":[2,0,15,10,4],
 "interface_actions_1_1_players_1_1_i_player_action.html":[2,0,15,13,1],
 "interface_actions_1_1_sprites_1_1_i_sprite_action.html":[2,0,15,24,2],
-"interface_command_caller.html":[2,0,160],
-"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[2,0,160,1]
+"interface_command_caller.html":[2,0,160]
 };
