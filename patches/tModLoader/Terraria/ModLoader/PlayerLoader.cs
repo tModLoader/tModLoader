@@ -812,19 +812,19 @@ public static class PlayerLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, NPC target, ref HitModifiers modifiers);
+	private delegate void DelegateModifyHitNPC(Item item, NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Player player, Item item, NPC target, ref HitModifiers modifiers)
+	public static void ModifyHitNPC(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers)
 	{
 		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
 			modPlayer.ModifyHitNPC(item, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, HitInfo, int>>(p => p.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, NPC.HitInfo, int>>(p => p.OnHitNPC);
 
-	public static void OnHitNPC(Player player, Item item, NPC target, in HitInfo hit, int damageDone)
+	public static void OnHitNPC(Player player, Item item, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
 		foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
 			modPlayer.OnHitNPC(item, target, hit, damageDone);
@@ -852,10 +852,10 @@ public static class PlayerLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref HitModifiers modifiers);
+	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPCWithProj = AddHook<DelegateModifyHitNPCWithProj>(p => p.ModifyHitNPCWithProj);
 
-	public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref HitModifiers modifiers)
+	public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
 	{
 		if (proj.npcProj || proj.trap) {
 			return;
@@ -866,9 +866,9 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, HitInfo, int>>(p => p.OnHitNPCWithProj);
+	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, NPC.HitInfo, int>>(p => p.OnHitNPCWithProj);
 
-	public static void OnHitNPCWithProj(Projectile proj, NPC target, in HitInfo hit, int damageDone)
+	public static void OnHitNPCWithProj(Projectile proj, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
 		if (proj.npcProj || proj.trap) {
 			return;

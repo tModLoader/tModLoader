@@ -585,18 +585,18 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
-+	private static HitInfo _lastLegacyStrike;
-+	internal static void SetLegacyStrike(HitInfo hit)
++	private static NPC.HitInfo _lastLegacyStrike;
++	internal static void SetLegacyStrike(NPC.HitInfo hit)
 +	{
 +		_lastLegacyStrike = hit;
 +	}
 +
-+	private static HitInfo _currentStrike;
++	private static NPC.HitInfo _currentStrike;
 +
 +	/// <summary>
 +	/// Use this to synchronize damage strikes against NPCs!
 +	/// </summary>
-+	public static void SendStrikeNPC(NPC npc, in HitInfo hit)
++	public static void SendStrikeNPC(NPC npc, in NPC.HitInfo hit)
 +	{
 +		if (ModNet.AllowVanillaClients)
 +			throw new NotSupportedException("Cannot send direct strike data when supporting vanilla clients");

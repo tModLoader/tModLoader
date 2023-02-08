@@ -437,10 +437,10 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegateModifyHit(Projectile projectile, ref HitModifiers modifiers);
+	private delegate void DelegateModifyHit(Projectile projectile, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyDamageStats = AddHook<DelegateModifyHit>(g => g.ModifyHit);
 
-	public static void ModifyHit(Projectile projectile, ref HitModifiers modifiers)
+	public static void ModifyHit(Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
 		projectile.ModProjectile?.ModifyHit(ref modifiers);
 
@@ -480,10 +480,10 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref HitModifiers modifiers);
+	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Projectile projectile, NPC target, ref HitModifiers modifiers)
+	public static void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
 	{
 		projectile.ModProjectile?.ModifyHitNPC(target, ref modifiers);
 
@@ -492,9 +492,9 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, HitInfo, int>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, NPC.HitInfo, int>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(Projectile projectile, NPC target, in HitInfo hit, int damageDone)
+	public static void OnHitNPC(Projectile projectile, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
 		projectile.ModProjectile?.OnHitNPC(target, hit, damageDone);
 

@@ -103,14 +103,14 @@ public static class CombinedHooks
 		return ret;
 	}
 
-	public static void ModifyPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, ref HitModifiers modifiers)
+	public static void ModifyPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, ref NPC.HitModifiers modifiers)
 	{
 		ItemLoader.ModifyHitNPC(sItem, player, nPC, ref modifiers);
 		NPCLoader.ModifyHitByItem(nPC, player, sItem, ref modifiers);
 		PlayerLoader.ModifyHitNPC(player, sItem, nPC, ref modifiers);
 	}
 
-	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in HitInfo hit, int damageDone)
+	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in NPC.HitInfo hit, int damageDone)
 	{
 		ItemLoader.OnHitNPC(sItem, player, nPC, hit, damageDone);
 		NPCLoader.OnHitByItem(nPC, player, sItem, hit, damageDone);
@@ -139,14 +139,14 @@ public static class CombinedHooks
 		return ret;
 	}
 
-	public static void ModifyHitNPCWithProj(Projectile projectile, NPC nPC, ref HitModifiers modifiers)
+	public static void ModifyHitNPCWithProj(Projectile projectile, NPC nPC, ref NPC.HitModifiers modifiers)
 	{
 		ProjectileLoader.ModifyHitNPC(projectile, nPC, ref modifiers);
 		NPCLoader.ModifyHitByProjectile(nPC, projectile, ref modifiers);
 		PlayerLoader.ModifyHitNPCWithProj(projectile, nPC, ref modifiers);
 	}
 
-	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in HitInfo hit, int damageDone)
+	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in NPC.HitInfo hit, int damageDone)
 	{
 		ProjectileLoader.OnHitNPC(projectile, nPC, hit, damageDone);
 		NPCLoader.OnHitByProjectile(nPC, projectile, hit, damageDone);

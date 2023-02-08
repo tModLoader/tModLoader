@@ -177,7 +177,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
 	/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
-	public virtual void HitEffect(NPC npc, HitInfo hit)
+	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
 	}
 
@@ -341,7 +341,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitNPC(NPC npc, NPC target, ref HitModifiers modifiers)
+	public virtual void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -351,7 +351,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
-	public virtual void OnHitNPC(NPC npc, NPC target, HitInfo hit)
+	public virtual void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit)
 	{
 	}
 
@@ -374,7 +374,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref HitModifiers modifiers)
+	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -386,7 +386,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="item"></param>
 	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitByItem(NPC npc, Player player, Item item, HitInfo hit, int damageDone)
+	public virtual void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -407,7 +407,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref HitModifiers modifiers)
+	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -418,7 +418,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="projectile"></param>
 	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, HitInfo hit, int damageDone)
+	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -428,7 +428,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="damageType"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyIncomingHit(NPC npc, DamageClass damageType, ref HitModifiers modifiers)
+	public virtual void ModifyIncomingHit(NPC npc, DamageClass damageType, ref NPC.HitModifiers modifiers)
 	{
 	}
 

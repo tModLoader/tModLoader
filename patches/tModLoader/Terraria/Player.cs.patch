@@ -2443,10 +2443,10 @@
  	}
  
 +	// Added by TML
-+	public void ApplyBannerOffenseBuff(NPC npc, ref HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
++	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
 +
 +	// Added by TML
-+	public void ApplyBannerOffenseBuff(int bannerId, ref HitModifiers modifiers)
++	public void ApplyBannerOffenseBuff(int bannerId, ref NPC.HitModifiers modifiers)
 +	{
 +		if (!HasNPCBannerBuff(bannerId))
 +			return;
@@ -2489,7 +2489,7 @@
 +			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, modifiers.GetVanillaDamage(npc.defense), knockback, direction, crit ? 1 : 0);
 +	}
 +
-+	public void StrikeNPCDirect(NPC npc, HitInfo hit)
++	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
 +	{
 +		// just in-case
 +		hit.DamageType ??= DamageClass.Default;

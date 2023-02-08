@@ -669,7 +669,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="item"></param>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref HitModifiers modifiers)
+	public virtual void ModifyHitNPC(Item item, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -680,7 +680,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitNPC(Item item, NPC target, HitInfo hit, int damageDone)
+	public virtual void OnHitNPC(Item item, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -701,7 +701,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref HitModifiers modifiers)
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -712,7 +712,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, HitInfo hit, int damageDone)
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
