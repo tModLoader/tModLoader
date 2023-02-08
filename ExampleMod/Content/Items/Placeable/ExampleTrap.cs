@@ -38,10 +38,12 @@ namespace ExampleMod.Content.Items.Placeable
 			// Here we define some strings that will be used as the ModItem.Name, the internal name of the ModItem.
 			// Every ModItem must have a unique internal name, so this step is necessary.
 			// We use these in the ExampleMod.Content.Tiles.ExampleTrap.GetItemDrops rather than ModContent.ItemType<Items.Placeable.ExampleTrap>() to retrieve the correct ItemID.
-			if (style == 0)
+			if (style == 0) {
 				return "ExampleTrapIchorBullet";
-			if (style == 1)
+			}
+			if (style == 1) {
 				return "ExampleTrapChlorophyteBullet";
+			}
 			throw new Exception("Invalid style");
 		}
 

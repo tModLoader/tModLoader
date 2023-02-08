@@ -63,11 +63,14 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
 			Tile tile = Main.tile[i, j];
 			int style = TileObjectData.GetTileStyle(tile);
-			if (style == 0)
+			if (style == 0) {
 				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
-			// Style 1 is ExampleChest when locked. We want that tile style to drop ExampleChest item as well. 
-			if (style == 1)
+			}
+			if (style == 1) {
+				// Style 1 is ExampleChest when locked. We want that tile style to drop the ExampleChest item as well. Use the Chest Lock item to lock this chest.
+				// No item places ExampleChest in the locked style, so the automatic item drop is unknown, this is why GetItemDrops is necessary in this situation. 
 				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+			}
 		}
 
 		public override ushort GetMapOption(int i, int j) {
@@ -100,7 +103,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) {
 			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
 			// We need to return true only if the tile style is the unlocked variant of a chest that supports locking. 
-			if(style == 0) {
+			if (style == 0) {
 				// We can check other conditions as well, such as how biome chests can't be locked until Plantera is defeated
 				return true;
 			}
