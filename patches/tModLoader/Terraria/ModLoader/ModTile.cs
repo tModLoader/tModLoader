@@ -488,6 +488,19 @@ public abstract class ModTile : ModBlockType
 	/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
 	public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
 
+	/// <summary>
+	/// Allows customization of how locking a chest is accomplished. By default, frameXAdjustment will be 36, shifting the frameX over to the right
+	/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly.
+	/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.
+	/// Make sure that the logic is consistent and not dependent on local player data.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="frameXAdjustment">The adjustment made to each Tile.frameX, defaults to 36</param>
+	/// <param name="manual">Set this to true to bypass the code playing the lock sound and adjusting the tile frame. Network syncing will still happen.</param>
+	/// <returns>Return true if this tile truly is an unlocked chest and the chest can be locked</returns>
+	public virtual bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) => false;
+
 	public virtual LocalizedText ContainerName(int frameX, int frameY) => null;
 
 	/// <summary>

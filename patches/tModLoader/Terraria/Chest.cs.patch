@@ -107,6 +107,46 @@
  					for (int k = 0; k < 4; k++) {
  						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
+@@ -405,6 +_,21 @@
+ 		Tile tileSafely = Framing.GetTileSafely(X, Y);
+ 		int type = tileSafely.type;
+ 		int num2 = tileSafely.frameX / 36;
++
++		// Handle mod chests
++		if (Main.tile[X, Y].type >= TileID.Count) {
++			num = 36;
++			bool manual = false;
++
++			if (!TileLoader.LockChest(X, Y, Main.tile[X, Y].type, ref num, ref manual))
++				return false;
++
++			if (manual)
++				return true;
++
++			goto PostVanillaChests;
++		}
++
+ 		switch (type) {
+ 			case 21:
+ 				switch (num2) {
+@@ -444,13 +_,17 @@
+ 				return false;
+ 		}
+ 
++		PostVanillaChests:
++
+ 		SoundEngine.PlaySound(22, X * 16, Y * 16);
+ 		for (int i = X; i <= X + 1; i++) {
+ 			for (int j = Y; j <= Y + 1; j++) {
+ 				Tile tileSafely2 = Framing.GetTileSafely(i, j);
+ 				if (tileSafely2.type == type) {
+ 					tileSafely2.frameX += num;
++					/*
+ 					Main.tile[i, j] = tileSafely2;
++					*/
+ 				}
+ 			}
+ 		}
 @@ -540,15 +_,28 @@
  		}
  		else {
