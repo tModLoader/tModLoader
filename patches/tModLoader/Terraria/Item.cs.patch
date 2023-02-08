@@ -1814,7 +1814,7 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
-+		if (NPCLoader.blockLoot.Contains(Type))
++		if (NPCLoader.blockLoot.Contains(Type) || newItemDisabled)
 +			return Main.maxItems;
 +
  		if (Main.tenthAnniversaryWorld) {

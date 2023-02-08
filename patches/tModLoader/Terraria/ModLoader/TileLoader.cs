@@ -329,7 +329,9 @@ public static class TileLoader
 		if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, onlyCheck: true, checkStay: true)) {
 			WorldGen.destroyObject = true;
 			// First the Items to drop are tallied and spawned, then Kill each tile, then KillMultiTile can clean up TileEntities or Chests
-			WorldGen.KillTile_DropItems(originalI, originalJ, Main.tile[originalI, originalJ], includeLargeObjectDrops: true, includeAllModdedLargeObjectDrops: true); // include all drops.
+			// KillTile will handle calling DropItems for 1x1 tiles.
+			if (tileData.Width != 1 || tileData.Height != 1)
+				WorldGen.KillTile_DropItems(originalI, originalJ, Main.tile[originalI, originalJ], includeLargeObjectDrops: true, includeAllModdedLargeObjectDrops: true); // include all drops.
 			for (int x = i; x < i + tileData.Width; x++) {
 				for (int y = j; y < j + tileData.Height; y++) {
 					if (Main.tile[x, y].type == type && Main.tile[x, y].active()) {
@@ -497,11 +499,27 @@ public static class TileLoader
 		}
 	}
 
-	// TODO: Drop is usually called after vanilla multitiles are already killed, meaning frame information is missing. 
-	// i and j are the coordinates being checked, not the top left. (Should it be top left?)
-	// Could potentially change this to be called in Item.NewItem when EntitySource_TileBreak, but that is used for TEs dropping container items as well. Also tile type is unrecoverable at that point.
-	public static bool Drop(int i, int j, int type)
+	// Reminders:
+	// i and j are the coordinates being checked, not the top left.
+	// Drop must be called before KillTile. Item.DisableNewItemMethod must be used after KillTile to prevent accidentally preventing drops from other tiles broken by KillTile->TileFrame chains. If NewItem code is above KillTile code in vanilla code, just use goto skipDrops.
+	public static bool Drop(int i, int j, int type, bool includeLargeObjectDrops = true)
 	{
+		// Drop is called in TileFrame->CheckX methods with includeLargeObjectDrops true. Each individual tile is then killed in those methods where includeLargeObjectDrops will be false. Ignore those situations.
+		bool isLarge = false;
+		if (Main.tileFrameImportant[type]) {
+			var tileData = TileObjectData.GetTileData(type, 0);
+			if (tileData != null) {
+				if(tileData.Width != 1 || tileData.Height != 1)
+					isLarge = true;
+			}
+			else if (TileID.Sets.IsMultitile[type])
+				isLarge = true;
+		}
+		if (!includeLargeObjectDrops && isLarge)
+			return true;
+
+		Tile t = Main.tile[i, j];
+		// Comment out to debug: Main.NewText($"Drop: {i}, {j}, {type}, L: {includeLargeObjectDrops}, HasTile: {t.HasTile}, type: {t.TileType}, fX: {t.TileFrameX}, name: {TileID.Search.GetName(t.TileType)}");
 		ModTile modTile = GetTile(type);
 		bool dropItem = modTile?.CanDrop(i, j) ?? true;
 		foreach (var hook in HookCanDrop) {

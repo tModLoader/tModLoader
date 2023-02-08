@@ -165,6 +165,15 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		public void Dispose() => cloningDisabled = null;
 	}
 
+	[ThreadStatic]
+	private static bool newItemDisabled = false;
+	// Used to disable NewItem in situations that would result in an undesireable amount of patches.
+	internal ref struct DisableNewItemMethod
+	{
+		internal DisableNewItemMethod(bool disabled) => newItemDisabled = disabled;
+		internal void Dispose() => newItemDisabled = false;
+	}
+
 	/// <summary>
 	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 	/// <br/><br/>This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.

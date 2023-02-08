@@ -52,6 +52,8 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to spawn additional items when the tile at the given coordinates drops.
+	/// <br/> This hook is called once for multitiles. Trees or Cactus call this method for every individual tile.
+	/// <br/> For multitiles, the coordinates correspond to the tile that triggered this multitile to drop, so if checking <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>, be aware that the coordinates won't necessarily be the top left corner or origin of the multitile. Also be aware that some parts of the multitile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in.
 	/// </summary>
 	public virtual void Drop(int i, int j, int type)
 	{
