@@ -608,9 +608,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
@@ -619,9 +617,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitPvp(Player player, Player target, int damage, bool crit)
+	public virtual void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

@@ -511,14 +511,14 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
 	/// </summary>
-	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits a player.
 	/// </summary>
-	public virtual void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

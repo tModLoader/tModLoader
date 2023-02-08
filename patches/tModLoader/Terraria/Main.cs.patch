@@ -5953,13 +5953,13 @@
  	{
  		double num = (double)Damage - (double)Defense * 0.5;
  		if (num < 1.0)
-@@ -54546,6 +_,7 @@
+@@ -54569,6 +_,7 @@
  
  		return num;
  	}
 +	*/
  
- 	public static double CalculateDamagePlayersTakeInPVP(int Damage, int Defense)
+ 	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)
  	{
 @@ -54625,7 +_,11 @@
  

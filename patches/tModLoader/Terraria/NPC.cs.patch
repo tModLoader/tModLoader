@@ -1722,7 +1722,7 @@
 +			strike = new Strike {
 +				DamageType = DamageClass.Default,
 +				SourceDamage = Damage,
-+				TargetDamage = 0,
++				Damage = 0,
 +				Crit = crit,
 +				KnockBack = knockBack,
 +				HitDirection = hitDirection,
@@ -1754,9 +1754,9 @@
 +		}
 +
 +		if (onFire2)
-+			modifiers.KnockbackModifier += 0.1f;
++			modifiers.Knockback += 0.1f;
 +
-+		modifiers.KnockbackModifier *= knockBackResist;
++		modifiers.Knockback *= knockBackResist;
 +
 +		damageType ??= DamageClass.Default; // just in case people forget
 +		NPCLoader.ModifyIncomingHit(this, damageType, ref modifiers);
@@ -1765,7 +1765,7 @@
 +
 +	/// <summary>
 +	/// Runs <see cref="NPCLoader.ModifyIncomingStrike"/> hooks and and does the full damage calculations. <br/>
-+	/// The result <see cref="Strike.TargetDamage"/> will contain the health the NPC will lose when applied. <br/>
++	/// The result <see cref="Strike.Damage"/> will contain the health the NPC will lose when applied. <br/>
 +	/// </summary>
 +	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
 +	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
@@ -1793,7 +1793,7 @@
 -			return 0.0;
 +			return 0;
  
-+		double num = strike.TargetDamage;
++		double num = strike.Damage;
 +		bool crit = strike.Crit;
 +		int hitDirection = strike.HitDirection;
 +		if (strike.InstantKill)
@@ -1867,7 +1867,7 @@
 +		HitEffect(new Strike {
 +			DamageType = DamageClass.Default,
 +			SourceDamage = (int)dmg,
-+			TargetDamage = instantKill.Value ? 0 : (int)dmg,
++			Damage = instantKill.Value ? 0 : (int)dmg,
 +			Crit = false,
 +			HitDirection = hitDirection,
 +			KnockBack = 0,
@@ -1878,7 +1878,7 @@
 +	public void HitEffect(Strike strike)
 +	{
 +		IEntitySource.PushFallback(thisEntitySourceCache);
-+		VanillaHitEffect(strike.HitDirection, strike.TargetDamage, strike.InstantKill);
++		VanillaHitEffect(strike.HitDirection, strike.Damage, strike.InstantKill);
 +		IEntitySource.PopFallback();
 +
 +		NPCLoader.HitEffect(this, strike);

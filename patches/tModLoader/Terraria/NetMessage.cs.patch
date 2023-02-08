@@ -189,7 +189,7 @@
 +					}
 +
 +					var strike = number7 == 1 ? _currentStrike : _lastLegacyStrike;
-+					writer.Write7BitEncodedInt(strike.TargetDamage);
++					writer.Write7BitEncodedInt(strike.Damage);
 +					writer.Write7BitEncodedInt(strike.SourceDamage);
 +					writer.Write7BitEncodedInt(strike.DamageType.Type);
 +					writer.Write(strike.KnockBack);
@@ -282,6 +282,38 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
+@@ -1247,6 +_,11 @@
+ 					writer.Write(number);
+ 					break;
+ 				case 117:
++					if (number7 == 1) {
++						writer.Write((byte)255); // special signifier of new direct hurt packet
++						goto SendDirectHurt;
++					}
++
+ 					writer.Write((byte)number);
+ 					_currentPlayerDeathReason.WriteSelfTo(writer);
+ 					writer.Write((short)number2);
+@@ -1254,6 +_,19 @@
+ 					writer.Write((byte)number4);
+ 					writer.Write((sbyte)number5);
+ 					break;
++
++					SendDirectHurt:
++					writer.Write((byte)number);
++					var args = _currentPlayerHurtInfo;
++					var pack = new BitsByte(args.PvP, args.Dodgeable, args.DustDisabled, args.SoundDisabled);
++					writer.Write(pack);
++					args.DamageSource.WriteSelfTo(writer);
++					writer.Write((sbyte)args.CooldownCounter);
++					writer.Write7BitEncodedInt(args.SourceDamage);
++					writer.Write7BitEncodedInt(args.Damage);
++					writer.Write((sbyte)args.HitDirection);
++					writer.Write(args.Knockback);
++					break;
+ 				case 118:
+ 					writer.Write((byte)number);
+ 					_currentPlayerDeathReason.WriteSelfTo(writer);
 @@ -1291,9 +_,16 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
@@ -518,6 +550,35 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
+@@ -2262,8 +_,12 @@
+ 			SendData(77, whoAmi, -1, null, animationType, tileType, xCoord, yCoord);
+ 	}
+ 
++	// Made internal, only for PvP use
+-	public static void SendPlayerHurt(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool critical, bool pvp, int hitContext, int remoteClient = -1, int ignoreClient = -1)
++	internal static void SendPlayerHurt(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool critical, bool pvp, int hitContext, int remoteClient = -1, int ignoreClient = -1)
+ 	{
++		if (!pvp)
++			throw new ArgumentException("SendPlayerHurt is legacy, for pvp usage only. Call Player.Hurt with quiet: false, or use the Player.HurtInfo overload");
++
+ 		_currentPlayerDeathReason = reason;
+ 		BitsByte bitsByte = (byte)0;
+ 		bitsByte[0] = critical;
+@@ -2271,6 +_,14 @@
+ 		SendData(117, remoteClient, ignoreClient, null, playerTargetIndex, damage, direction, (int)(byte)bitsByte, hitContext);
+ 	}
+ 
++	// Added by TML
++	private static Player.HurtInfo _currentPlayerHurtInfo;
++	public static void SendPlayerHurt(int playerTargetIndex, Player.HurtInfo info, int remoteClient, int ignoreClient)
++	{
++		_currentPlayerHurtInfo = info;
++		SendData(117, remoteClient, ignoreClient, number: playerTargetIndex, number7: 1);
++	}
++
+ 	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
+ 	{
+ 		_currentPlayerDeathReason = reason;
 @@ -2291,6 +_,26 @@
  		SendData(126, remoteClient, ignoreClient);
  	}

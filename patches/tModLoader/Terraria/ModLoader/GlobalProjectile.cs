@@ -251,28 +251,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a projectile does to an opponent player.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when a projectile hits an opponent player.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether a hostile projectile can hit the given player. Return false to block the projectile from hitting the target. Returns true by default.
 	/// </summary>
 	/// <param name="projectile"></param>
@@ -288,9 +266,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
@@ -299,9 +275,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+	public virtual void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

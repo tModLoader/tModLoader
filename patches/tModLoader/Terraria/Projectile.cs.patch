@@ -895,7 +895,7 @@
  									}
  
 +									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+									modifiers.KnockbackModifier *= num3 / knockBack;
++									modifiers.Knockback *= num3 / knockBack;
 +									modifiers.TargetDamageMultiplier *= num19 / 1000;
 +									var strike = modifiers.ToStrike(DamageType, damage, flag12, num3, num34);
 +
@@ -956,37 +956,21 @@
  					if (aiStyle == 3) {
  						if (ai[0] == 0f) {
  							velocity.X = 0f - velocity.X;
-@@ -11103,15 +_,21 @@
+@@ -11103,11 +_,14 @@
  						timeLeft = 1;
  
  					bool flag27 = false;
++					/*
 -					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
 +					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].GetTotalCritChance(DamageClass.Melee))
  						flag27 = true;
++					*/
  
-+					// Patch note: ^ flag27 and num46, to be used below multiple times.
  					int num46 = Main.DamageVar((int)((float)damage * num), Main.player[owner].luck);
  					bool dodgeable = IsDamageDodgable();
 +
-+					CombinedHooks.ModifyHitPvpWithProj(this, player3, ref num46, ref flag27);
-+
  					if (!player3.immune)
  						StatusPvP(m);
- 
- 					TryDoingOnHitEffects(player3);
-+
-+					// Patch note: num47, to be used below.
- 					int num47 = (int)player3.Hurt(playerDeathReason, num46, direction, pvp: true, quiet: false, flag27, -1, dodgeable);
- 					if (num47 > 0 && Main.player[owner].ghostHeal && friendly && !hostile)
- 						ghostHeal(num47, new Vector2(player3.Center.X, player3.Center.Y), player3);
-@@ -11122,6 +_,8 @@
- 					if ((melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 7)
- 						NewProjectile(GetProjectileSource_FromThis(), player3.Center.X, player3.Center.Y, player3.velocity.X, player3.velocity.Y, 289, 0, 0f, owner);
- 
-+					CombinedHooks.OnHitPvpWithProj(this, player3, num47, flag27);
-+
- 					if (Main.netMode != 0)
- 						NetMessage.SendPlayerHurt(m, playerDeathReason, num46, direction, flag27, pvp: true, -1);
  
 @@ -11207,10 +_,12 @@
  			case 919:
@@ -1001,7 +985,7 @@
  		int myPlayer = Main.myPlayer;
  		bool flag28 = Main.player[myPlayer].active && !Main.player[myPlayer].dead && (!Main.player[myPlayer].immune || num49 != -1);
  		if (flag28 && type == 281)
-@@ -11219,9 +_,15 @@
+@@ -11219,13 +_,21 @@
  		if (Main.getGoodWorld && type == 281)
  			flag28 = true;
  
@@ -1017,30 +1001,32 @@
  		int num50 = direction;
  		num50 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		if (!Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity)) {
-@@ -11262,7 +_,14 @@
+ 			int num51 = Main.DamageVar(damage, 0f - Main.player[owner].luck);
++			// Moved to CombinedHooks.ModifyHitByProjectile
++			/*
+ 			int num52 = bannerIdToRespondTo;
+ 			if (num52 > 0 && Main.player[myPlayer].HasNPCBannerBuff(num52)) {
+ 				ItemID.BannerEffect bannerEffect = ItemID.Sets.BannerStrength[Item.BannerToItem(num52)];
+@@ -11245,7 +_,9 @@
+ 
+ 				num51 = (int)((float)num51 * num53);
+ 			}
++			*/
+ 
++			// projectiles just do double damage to players :|
+ 			int num54 = num51 * 2;
+ 			if (type == 961) {
+ 				if (penetrate == 1) {
+@@ -11262,7 +_,8 @@
  			if (ProjectileID.Sets.IsAGravestone[type])
  				playerIndex2 = (int)ai[0];
  
-+			bool crit = false;
-+			CombinedHooks.ModifyHitByProjectile(Main.player[myPlayer], this, ref num54, ref crit);
-+
-+			/*
- 			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: false, num49, dodgeable2) > 0.0 && !Main.player[myPlayer].dead)
-+			*/
-+			int realDamage = (int)Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: crit, num49, dodgeable2);
-+			if (realDamage > 0 && !Main.player[myPlayer].dead)
++			// Added ArmorPenetration argument
+-			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: false, num49, dodgeable2) > 0.0 && !Main.player[myPlayer].dead)
++			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: false, num49, dodgeable2, armorPenetration: ArmorPenetration) > 0.0 && !Main.player[myPlayer].dead)
  				StatusPlayer(myPlayer);
  
  			if (trap) {
-@@ -11270,6 +_,8 @@
- 				if (Main.player[myPlayer].dead)
- 					AchievementsHelper.HandleSpecialEvent(Main.player[myPlayer], 4);
- 			}
-+
-+			CombinedHooks.OnHitByProjectile(Main.player[myPlayer], this, realDamage, crit);
- 		}
- 
- 		if (true) {
 @@ -11307,6 +_,7 @@
  		if (type == 967)
  			result.Inflate(10, 10);
@@ -1049,6 +1035,16 @@
  		return result;
  	}
  
+@@ -11337,7 +_,8 @@
+ 
+ 		bool dodgeable = IsDamageDodgable();
+ 		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(playerIndex, whoAmI);
++		// Added ArmorPenetration argument
+-		if (Main.player[j].Hurt(damageSource, num, direction, pvp, quiet: false, Crit: false, -1, dodgeable) > 0.0 && !Main.player[j].dead)
++		if (Main.player[j].Hurt(damageSource, num, direction, pvp, quiet: false, Crit: false, -1, dodgeable, armorPenetration: ArmorPenetration) > 0.0 && !Main.player[j].dead)
+ 			StatusPlayer(j);
+ 
+ 		if (trap) {
 @@ -11393,7 +_,7 @@
  		return num;
  	}

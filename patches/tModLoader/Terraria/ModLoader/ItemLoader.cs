@@ -972,32 +972,32 @@ public static class ItemLoader
 		return item.ModItem == null || item.ModItem.CanHitPvp(player, target);
 	}
 
-	private delegate void DelegateModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(g => g.ModifyHitPvp);
 
 	/// <summary>
 	/// Calls ModItem.ModifyHitPvp, then all GlobalItem.ModifyHitPvp hooks.
 	/// </summary>
-	public static void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+	public static void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
-		item.ModItem?.ModifyHitPvp(player, target, ref damage, ref crit);
+		item.ModItem?.ModifyHitPvp(player, target, ref modifiers);
 
 		foreach (var g in HookModifyHitPvp.Enumerate(item.globalItems)) {
-			g.ModifyHitPvp(item, player, target, ref damage, ref crit);
+			g.ModifyHitPvp(item, player, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitPvp = AddHook<Action<Item, Player, Player, int, bool>>(g => g.OnHitPvp);
+	private static HookList HookOnHitPvp = AddHook<Action<Item, Player, Player, Player.HurtInfo>>(g => g.OnHitPvp);
 
 	/// <summary>
 	/// Calls ModItem.OnHitPvp and all GlobalItem.OnHitPvp hooks.
 	/// </summary>
-	public static void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+	public static void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
-		item.ModItem?.OnHitPvp(player, target, damage, crit);
+		item.ModItem?.OnHitPvp(player, target, hurtInfo);
 
 		foreach (var g in HookOnHitPvp.Enumerate(item.globalItems)) {
-			g.OnHitPvp(item, player, target, damage, crit);
+			g.OnHitPvp(item, player, target, hurtInfo);
 		}
 	}
 

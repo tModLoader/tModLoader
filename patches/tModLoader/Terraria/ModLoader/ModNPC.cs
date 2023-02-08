@@ -381,9 +381,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to modify the damage, etc., that this NPC does to a player.
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
@@ -391,9 +389,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs).
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

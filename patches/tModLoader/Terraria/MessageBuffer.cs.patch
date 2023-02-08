@@ -311,7 +311,7 @@
 +				b10 = 0;
 +				if (num191 >= 0) {
 +					strike = new Strike {
-+						TargetDamage = num191,
++						Damage = num191,
 +						SourceDamage = reader.Read7BitEncodedInt(),
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
 +						KnockBack = reader.ReadSingle(),
@@ -637,6 +637,50 @@
  				if (num186 == 255) {
  					if (EmoteBubble.byID.ContainsKey(num185))
  						EmoteBubble.byID.Remove(num185);
+@@ -3182,7 +_,16 @@
+ 				break;
+ 			case 117: {
+ 				int num234 = reader.ReadByte();
++				bool directHurt = false;
++				if (num234 == 255) {
++					num234 = reader.ReadByte();
++					directHurt = true;
++				}
++
+ 				if (Main.netMode != 2 || whoAmI == num234 || (Main.player[num234].hostile && Main.player[whoAmI].hostile)) {
++					if (directHurt)
++						goto ReadDirectHurt;
++
+ 					PlayerDeathReason playerDeathReason2 = PlayerDeathReason.FromReader(reader);
+ 					int damage3 = reader.ReadInt16();
+ 					int num235 = reader.ReadByte() - 1;
+@@ -3193,6 +_,26 @@
+ 					Main.player[num234].Hurt(playerDeathReason2, damage3, num235, pvp2, quiet: true, flag15, num236);
+ 					if (Main.netMode == 2)
+ 						NetMessage.SendPlayerHurt(num234, playerDeathReason2, damage3, num235, flag15, pvp2, num236, -1, whoAmI);
++
++					break;
++
++					ReadDirectHurt:
++					BitsByte pack = reader.ReadByte();
++					var args = new Player.HurtInfo {
++						DamageSource = PlayerDeathReason.FromReader(reader),
++						PvP = pack[0],
++						CooldownCounter = reader.ReadSByte(),
++						Dodgeable = pack[1],
++						SourceDamage = reader.Read7BitEncodedInt(),
++						Damage = reader.Read7BitEncodedInt(),
++						HitDirection = reader.ReadSByte(),
++						Knockback = reader.ReadSingle(),
++						DustDisabled = pack[2],
++						SoundDisabled = pack[3]
++					};
++					Main.player[num234].Hurt(args, quiet: true);
++					if (Main.netMode == 2)
++						NetMessage.SendPlayerHurt(num234, args, -1, whoAmI);
+ 				}
+ 
+ 				break;
 @@ -3293,10 +_,23 @@
  				if (Main.netMode == 2) {
  					short x10 = reader.ReadInt16();

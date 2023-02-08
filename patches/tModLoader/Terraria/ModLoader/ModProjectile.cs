@@ -277,26 +277,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this projectile does to an opponent player.
-	/// </summary>
-	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	public virtual void ModifyHitPvp(Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when this projectile hits an opponent player.
-	/// </summary>
-	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitPvp(Player target, int damage, bool crit)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether this hostile projectile can hit the given player. Return false to block this projectile from hitting the target. Returns true by default.
 	/// </summary>
 	/// <param name="target">The target.</param>
@@ -309,9 +289,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
@@ -319,9 +297,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to create special effects when this hostile projectile hits a player.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

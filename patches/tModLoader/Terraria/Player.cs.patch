@@ -1154,7 +1154,18 @@
  			}
  			else if (buffType[j] == 116) {
  				inferno = true;
-@@ -7397,10 +_,13 @@
+@@ -7388,19 +_,22 @@
+ 						player.AddBuff(num2, 120);
+ 
+ 					if (flag) {
++						PlayerDeathReason reason = PlayerDeathReason.ByOther(16, whoAmI);
+-						player.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0, pvp: true);
++						player.Hurt(reason, damage, 0, pvp: true);
+ 						if (Main.netMode != 0) {
+-							PlayerDeathReason reason = PlayerDeathReason.ByOther(16);
+ 							NetMessage.SendPlayerHurt(l, reason, damage, 0, critical: false, pvp: true, -1);
+ 						}
+ 					}
  				}
  			}
  			else if (buffType[j] == 117) {
@@ -2427,7 +2438,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -15863,21 +_,52 @@
+@@ -15863,21 +_,68 @@
  		return num;
  	}
  
@@ -2444,6 +2455,19 @@
 +		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
 +	}
 +
++	// Added by TML
++	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers) => ApplyBannerDefenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
++
++	// Added by TML
++	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
++	{
++		if (!HasNPCBannerBuff(bannerId))
++			return;
++
++		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
++		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
++	}
++
 -	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
 +	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, DamageClass? damageType = null, bool damageVariation = false)
  	{
@@ -2453,7 +2477,7 @@
  			damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
 +		*/
 +		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default);
- 
++
 +		ApplyBannerOffenseBuff(npc, ref modifiers);
 +
 +		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
@@ -2467,6 +2491,9 @@
 +
 +	public void StrikeNPCDirect(NPC npc, Strike strike)
 +	{
++		// just in-case
++		strike.DamageType ??= DamageClass.Default;
+ 
  		OnHit(npc.Center.X, npc.Center.Y, npc);
 +		/*
  		damage += npc.checkArmorPenetration(armorPenetration, 0f);
@@ -3110,41 +3137,34 @@
  			if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
  				continue;
  
-@@ -23587,10 +_,14 @@
+@@ -23583,10 +_,15 @@
+ 					num3 = 1;
+ 
+ 				int num4 = Main.DamageVar((float)Main.npc[i].damage * damageMultiplier, 0f - luck);
++
++				// Moved to CombinedHooks.ModifyHitByNPC
++				/*
+ 				int num5 = Item.NPCtoBanner(Main.npc[i].BannerID());
  				if (num5 > 0 && HasNPCBannerBuff(num5))
  					num4 = ((!Main.expertMode) ? ((int)((float)num4 * ItemID.Sets.BannerStrength[Item.BannerToItem(num5)].NormalDamageReceived)) : ((int)((float)num4 * ItemID.Sets.BannerStrength[Item.BannerToItem(num5)].ExpertDamageReceived)));
++				*/
  
 +				// Extra patch context.
  				bool flag3 = !immune;
  				if (specialHitSetter >= 0)
  					flag3 = hurtCooldowns[specialHitSetter] == 0;
+@@ -23609,8 +_,11 @@
+ 					ApplyDamageToNPC(Main.npc[i], damage, knockback, -num3, crit: false);
+ 				}
  
-+				bool crit = false;
-+				CombinedHooks.ModifyNPCHitPlayer(Main.npc[i], this, ref num4, ref crit);
-+
- 				if (whoAmI == Main.myPlayer && num2 > 0f && flag3 && !Main.npc[i].dontTakeDamage) {
- 					int num6 = (int)((float)num4 * num2);
- 					if (num6 > 1000)
-@@ -23612,8 +_,19 @@
++				// Moved to CombinedHooks.ModifyHitByNPC
++				/*
  				if (resistCold && Main.npc[i].coldDamage)
  					num4 = (int)((float)num4 * 0.7f);
- 
-+				/*
- 				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
 +				*/
-+				if (flag) {
-+					int realDamage = (int)Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter);
-+					if (realDamage <= 0 || dead || flag2)
-+						goto SkipStatus;
-+
- 					StatusFromNPC(Main.npc[i]);
-+					SkipStatus:
-+
-+					CombinedHooks.OnNPCHitPlayer(Main.npc[i], this, realDamage, crit);
-+				}
  
- 				if (num) {
- 					GiveImmuneTimeForCollisionAttack(longInvince ? 60 : 30);
+ 				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
+ 					StatusFromNPC(Main.npc[i]);
 @@ -23694,6 +_,9 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
@@ -3659,31 +3679,136 @@
  			dead = false;
  			immuneTime = 0;
  		}
-@@ -29547,6 +_,13 @@
+@@ -29505,14 +_,46 @@
+ 			frostArmor = true;
+ 	}
+ 
++	// Added to replace Main.CalculateDamagePlayersTake[InPvP]
++	public static float GetBaseDefenseEffectiveness(bool pvp = false)
++	{
++		if (!pvp) {
++			if (Main.masterMode)
++				return 1;
++			if (Main.expertMode)
++				return 0.75f;
++		}
++
++		return 0.5f;
++	}
++
++	// made internal because public version has Crit param removed, added armorPenetration arg for smaller Projectile patches
+-	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp = false, bool quiet = false, bool Crit = false, int cooldownCounter = -1, bool dodgeable = true)
++	internal double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp, bool quiet, bool Crit, int cooldownCounter, bool dodgeable = true, float armorPenetration = 0)
+ 	{
++		return Hurt(damageSource, Damage, hitDirection, pvp, quiet, cooldownCounter, dodgeable, armorPenetration);
++	}
++
++	// extra parameters (armorPenetration, scalingArmorPenetration, knockback) added. Crit param removed
++	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
++	{
++		return Hurt(damageSource, Damage, hitDirection, out _,
++			pvp, quiet, cooldownCounter, dodgeable, armorPenetration, scalingArmorPenetration, knockback);
++	}
++
++	// out param and extras from above added
++	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, out Player.HurtInfo info, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
++	{
++		info = default;
++
+ 		if (shimmering && AllowShimmerDodge(damageSource, cooldownCounter, dodgeable))
+ 			return 0.0;
+ 
+ 		if (creativeGodMode)
+ 			return 0.0;
+ 
++		if (PlayerLoader.ImmuneTo(this, damageSource, cooldownCounter, dodgeable))
++			return 0.0;
++
+ 		bool flag = !immune;
+ 		bool flag2 = false;
+ 		int hitContext = cooldownCounter;
+@@ -29531,6 +_,9 @@
+ 
+ 		if (flag) {
+ 			if (dodgeable) {
++				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, damageSource, cooldownCounter))
++					return 0.0;
++
+ 				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
+ 					NinjaDodge();
+ 					return 0.0;
+@@ -29545,24 +_,70 @@
+ 					ShadowDodge();
+ 					return 0.0;
  				}
++
++				if (whoAmI == Main.myPlayer && PlayerLoader.ConsumableDodge(this, damageSource, cooldownCounter))
++					return 0.0;
  			}
  
-+			bool customDamage = false;
-+			bool playSound = true;
-+			bool genGore = true;
++			Player.HurtModifiers modifiers = new() {
++				DamageSource = damageSource,
++				PvP = pvp,
++				CooldownCounter = cooldownCounter,
++				Dodgeable = dodgeable,
++				SourceDamage = StatModifier.Default,
++				IncomingDamageMultiplier = MultipliableFloat.Default,
++				Knockback = StatModifier.Default,
++				KnockbackImmunityEffectiveness = MultipliableFloat.Default
++			};
++			PlayerLoader.ModifyHurt(this, ref modifiers);
 +
-+			if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter))
-+				return 0.0;
++			// intentionally add parameter modifiers after, to reduce the temptation to read their values in Modify hooks
++			modifiers.ArmorPenetration += armorPenetration;
++			modifiers.ScalingArmorPenetration += scalingArmorPenetration;
 +
++			// ogre knockback re-implemented from below
++			if (flag2) {
++				// this gives the right values for X knockback.
++				// Y knockback will be slightly different, but mostly accurate
++				modifiers.Knockback.Base += 6f;
++				modifiers.KnockbackImmunityEffectiveness *= 0.8f; // still launch the player a little
++			}
++
++			ApplyVanillaHurtEffectModifiers(ref modifiers);
++			info = modifiers.ToHurtInfo(Damage, statDefense, GetBaseDefenseEffectiveness(), knockback, noKnockback);
++			Hurt(info);
++			return info.Damage;
++		}
++
++		return 0.0;
++	}
++
++	private void OnHurt_Part1(HurtInfo info)
++	{
++		int hitDirection = info.HitDirection;
++		{
  			if (whoAmI == Main.myPlayer && panic)
  				AddBuff(63, 480);
  
-@@ -29558,7 +_,8 @@
+ 			if (whoAmI == Main.myPlayer && setSquireT2)
+ 				AddBuff(205, 300);
+ 
++			// Note for future, potential optimization, no need to reset stealth every hit
+ 			stealth = 1f;
+ 			if (Main.netMode == 1)
  				NetMessage.SendData(84, -1, -1, null, whoAmI);
  
++			// Note, vanilla condition can never fail, num2 (damage to take) is always at least 1
++			// num is commented out, as it was only used to lie about pvp
++			/*
  			int num = Damage;
--			double num2 = Main.CalculateDamagePlayersTake(num, statDefense);
-+			// Patch note: num2 - calculated damage, used below in Hurt hook.
-+			double num2 = customDamage ? num : Main.CalculateDamagePlayersTake(num, statDefense);
+ 			double num2 = Main.CalculateDamagePlayersTake(num, statDefense);
  			if (Crit)
  				num *= 2;
  
-@@ -29584,6 +_,16 @@
+ 			if (num2 >= 1.0) {
++			*/
++			{
+ 				if (whoAmI == Main.myPlayer) {
+ 					Main.NotifyOfEvent(GameNotificationType.Damage);
+ 					if (hasFootball) {
+@@ -29584,22 +_,60 @@
  					}
  				}
  
@@ -3700,7 +3825,51 @@
  				if (invis) {
  					for (int k = 0; k < maxBuffs; k++) {
  						if (buffType[k] == 10)
-@@ -29607,7 +_,7 @@
+ 							DelBuff(k);
+ 					}
+ 				}
++			}
++		}
++	}
+ 
++	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
++	{
++		{
++			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
++			if (setSolar && solarShields > 0)
++				modifiers.FinalDamage *= 0.8f;
++
++			if (beetleDefense && beetleOrbs > 0)
++				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
++
++			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
++				modifiers.FinalDamage *= 0.75f;
++		}
++	}
++
++	private void OnHurt_Part2(HurtInfo info)
++	{
++		// Implementations for solar flare, beetle defense and paladin's shield have been split into ApplyVanillaHurtEffectModifiers (above)
++		var damageSource = info.DamageSource;
++		{
++			{
++				/*
+ 				num2 = (int)((double)(1f - endurance) * num2);
+ 				if (num2 < 1.0)
+ 					num2 = 1.0;
++				*/
+ 
+ 				if (ConsumeSolarFlare()) {
++					/*
+ 					float num3 = 0.2f;
+ 					num2 = (int)((double)(1f - num3) * num2);
+ 					if (num2 < 1.0)
+ 						num2 = 1.0;
++						*/
+ 
+ 					if (whoAmI == Main.myPlayer) {
+ 						IEntitySource spawnSource = GetProjectileSource_SetBonus(1);
+@@ -29607,15 +_,17 @@
  						if (damageSource.TryGetCausingEntity(out entity))
  							spawnSource = GetProjectileSource_OnHurt(entity, 1);
  
@@ -3709,46 +3878,188 @@
  						Main.projectile[num4].netUpdate = true;
  						Main.projectile[num4].Kill();
  					}
-@@ -29709,6 +_,9 @@
- 					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
  				}
  
-+				// Patch note: num2 (calculated damage) is at start of the method.
-+				PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
+ 				if (beetleDefense && beetleOrbs > 0) {
++					/*
+ 					float num5 = 0.15f * (float)beetleOrbs;
+ 					num2 = (int)((double)(1f - num5) * num2);
++					*/
+ 					beetleOrbs--;
+ 					for (int l = 0; l < maxBuffs; l++) {
+ 						if (buffType[l] >= 95 && buffType[l] <= 97)
+@@ -29626,12 +_,14 @@
+ 						AddBuff(95 + beetleOrbs - 1, 5, quiet: false);
+ 
+ 					beetleCounter = 0f;
++					/*
+ 					if (num2 < 1.0)
+ 						num2 = 1.0;
++					*/
+ 				}
+ 
+ 				if (magicCuffs) {
+-					int num6 = num;
++					int num6 = info.SourceDamage; //num;
+ 					statMana += num6;
+ 					if (statMana > statManaMax2)
+ 						statMana = statManaMax2;
+@@ -29659,14 +_,30 @@
+ 								}
+ 
+ 								if (flag3) {
++									/*
+ 									int damage = (int)(num2 * 0.25);
+ 									num2 = (int)(num2 * 0.75);
++									*/
++									int damage = info.Damage / 3; // Damage has already been reduced by 1/4 when applying to target player, so dividing by 3 gives us the correct value
+ 									player.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
+ 								}
+ 							}
+ 						}
+ 					}
++					/*
+ 					else {
++					*/
++				}
++			}
++		}
++	}
 +
++	private bool TeammateHasPalidinShieldAndCanTakeDamage()
++	{
++		{
++			{
++				{
++					{
+ 						bool flag4 = false;
+ 						for (int n = 0; n < 255; n++) {
+ 							if (n != Main.myPlayer && Main.player[n].active && !Main.player[n].dead && !Main.player[n].immune && Main.player[n].hasPaladinShield && Main.player[n].team == team && (float)Main.player[n].statLife > (float)Main.player[n].statLifeMax2 * 0.25f) {
+@@ -29675,11 +_,22 @@
+ 							}
+ 						}
+ 
++						/*
+ 						if (flag4)
+ 							num2 = (int)(num2 * 0.75);
++						*/
++						return flag4;
+ 					}
+ 				}
++			}
++		}
++	}
+ 
++	private void OnHurt_Part3(HurtInfo info)
++	{
++		double num2 = info.Damage;
++		{
++			{
+ 				if (brainOfConfusionItem != null && !brainOfConfusionItem.IsAir && Main.myPlayer == whoAmI) {
+ 					for (int num9 = 0; num9 < 200; num9++) {
+ 						if (!Main.npc[num9].active || Main.npc[num9].friendly)
+@@ -29708,14 +_,37 @@
+ 
+ 					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
+ 				}
++			}
++		}
++	}
+ 
++	public void Hurt(HurtInfo info, bool quiet = false)
++	{
++		var damageSource = info.DamageSource;
++		int hitDirection = info.HitDirection;
++		int cooldownCounter = info.CooldownCounter;
++		bool pvp = info.PvP;
++		double num2 = info.Damage;
++		bool Crit = false; // Crit has been removed, since it didn't work anyway
++		bool flag2 = cooldownCounter == ImmunityCooldownID.DD2OgreKnockback;
++
++		{
++			{
  				if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
++					/*
  					if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
++					*/
++					if (info.Knockback != 0 && hitDirection != 0 && (!mount.Active || !mount.Cart))
  						NetMessage.SendData(13, -1, -1, null, whoAmI);
-@@ -29841,6 +_,7 @@
+ 
+ 					NetMessage.SendData(16, -1, -1, null, whoAmI);
+-					NetMessage.SendPlayerHurt(whoAmI, damageSource, Damage, hitDirection, Crit, pvp, hitContext);
++					NetMessage.SendPlayerHurt(whoAmI, info, remoteClient: -1, ignoreClient: -1);
+ 				}
++
++				PlayerLoader.OnHurt(this, info);
++				OnHurt_Part1(info);
++				OnHurt_Part2(info);
++				OnHurt_Part3(info);
+ 
+ 				Color color = (Crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
+ 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num2, Crit);
+@@ -29821,6 +_,7 @@
+ 				}
+ 
+ 				StopVanityActions();
++				/*
+ 				if (flag2 && hitDirection != 0) {
+ 					if (!mount.Active || !mount.Cart) {
+ 						float num23 = 10.5f;
+@@ -29838,9 +_,16 @@
+ 				else if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart)) {
+ 					velocity.X = 4.5f * (float)hitDirection;
+ 					velocity.Y = -3.5f;
++				}
++				*/
++
++				if (info.Knockback != 0 && hitDirection != 0 && (!mount.Active || !mount.Cart)) {
++					velocity.X = info.Knockback * hitDirection;
++					velocity.Y = info.Knockback * -7 / 9;
  					fallStart = (int)(position.Y / 16f);
  				}
  
-+				if (!playSound) { } else
++				if (info.SoundDisabled) { } else
  				if (stoned)
  					SoundEngine.PlaySound(0, (int)position.X, (int)position.Y);
  				else if (mount.Active && mount.Type == 52)
-@@ -29858,6 +_,10 @@
+@@ -29858,6 +_,9 @@
  
  				eyeHelper.BlinkBecausePlayerGotHurt();
  				if (statLife > 0) {
-+					if (!genGore)
-+						goto PostGore;
++					if (info.DustDisabled)
++						goto PostDust;
 +
-+					// Patch note: num2 (calculated damage), is used below and is confirmed at the top of the method.
  					double num24 = num2 / (double)statLifeMax2 * 100.0;
  					float num25 = 2 * hitDirection;
  					float num26 = 0f;
-@@ -29882,6 +_,10 @@
+@@ -29882,6 +_,9 @@
  							Dust.NewDust(position, width, height, 5, num25 + (float)hitDirection * num26 * Main.rand.NextFloat(), -2f);
  						}
  					}
 +
-+					PostGore:
-+
-+					PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
++					PostDust:
++					PlayerLoader.PostHurt(this, info);
  				}
  				else {
  					statLife = 0;
+@@ -29890,13 +_,17 @@
+ 				}
+ 			}
+ 
++			/*
+ 			if (pvp)
+ 				num2 = Main.CalculateDamagePlayersTakeInPVP(num, statDefense);
+ 
+ 			return num2;
++			*/
+ 		}
+ 
++		/*
+ 		return 0.0;
++		*/
+ 	}
+ 
+ 	private static bool AllowShimmerDodge(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
 @@ -29931,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -4543,7 +4854,7 @@
  
  			bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  			ItemCheck_CutTiles(sItem, itemRectangle, shouldIgnore2);
-@@ -34216,11 +_,17 @@
+@@ -34216,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;
  
@@ -4551,17 +4862,23 @@
 +				continue;
 +
  			bool flag = false;
++			/*
  			if (Main.rand.Next(1, 101) <= 10)
  				flag = true;
++			*/
  
  			int num = Main.DamageVar(damage, luck);
 +
-+			CombinedHooks.ModifyHitPvp(this, sItem, player, ref num, ref flag);
-+
  			StatusToPlayerPvP(sItem.type, i);
  			OnHit(player.Center.X, player.Center.Y, player);
- 			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
-@@ -34260,12 +_,16 @@
+-			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
++			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayerItem(whoAmI, sItem);
+-			int num2 = (int)player.Hurt(playerDeathReason, num, direction, pvp: true, quiet: false, flag);
++			int num2 = (int)player.Hurt(playerDeathReason, num, direction, pvp: true, quiet: false, flag, -1);
+ 			if (inventory[selectedItem].type == 3211) {
+ 				Vector2 vector = new Vector2(direction * 100 + Main.rand.Next(-25, 26), Main.rand.Next(-75, 76));
+ 				vector.Normalize();
+@@ -34260,6 +_,8 @@
  				}
  			}
  
@@ -4570,14 +4887,6 @@
  			if (inventory[selectedItem].type == 3106) {
  				stealth = 1f;
  				if (Main.netMode == 1)
- 					NetMessage.SendData(84, -1, -1, null, whoAmI);
- 			}
- 
-+			CombinedHooks.OnHitPvp(this, sItem, player, num2, flag);
-+
- 			if (Main.netMode != 0)
- 				NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
- 
 @@ -34375,6 +_,15 @@
  				TakeDamageFromJellyfish(npcIndex);
  		}

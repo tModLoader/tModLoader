@@ -601,26 +601,26 @@ public static class NPCLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
 
-	public static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+	public static void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
 	{
-		npc.ModNPC?.ModifyHitPlayer(target, ref damage, ref crit);
+		npc.ModNPC?.ModifyHitPlayer(target, ref modifiers);
 
 		foreach (GlobalNPC g in HookModifyHitPlayer.Enumerate(npc.globalNPCs)) {
-			g.ModifyHitPlayer(npc, target, ref damage, ref crit);
+			g.ModifyHitPlayer(npc, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitPlayer = AddHook<Action<NPC, Player, int, bool>>(g => g.OnHitPlayer);
+	private static HookList HookOnHitPlayer = AddHook<Action<NPC, Player, Player.HurtInfo>>(g => g.OnHitPlayer);
 
-	public static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+	public static void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
 	{
-		npc.ModNPC?.OnHitPlayer(target, damage, crit);
+		npc.ModNPC?.OnHitPlayer(target, hurtInfo);
 
 		foreach (GlobalNPC g in HookOnHitPlayer.Enumerate(npc.globalNPCs)) {
-			g.OnHitPlayer(npc, target, damage, crit);
+			g.OnHitPlayer(npc, target, hurtInfo);
 		}
 	}
 
@@ -1344,7 +1344,7 @@ public static class NPCLoader
 
 	public static bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
 	{
-		MultipliableFloat damageMult = MultipliableFloat.One;
+		MultipliableFloat damageMult = MultipliableFloat.Default;
 
 		bool result = true;
 		foreach (GlobalNPC g in HookModifyCollisionData.Enumerate(npc.globalNPCs)) {

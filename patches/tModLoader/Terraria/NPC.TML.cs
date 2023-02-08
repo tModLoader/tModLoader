@@ -129,23 +129,25 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 			return canCatch.Value;
 		}
-		else if (!lavaProofTool && ItemID.Sets.IsLavaBait[npc.catchItem]) {
-			CombinedHooks.OnCatchNPC(player, npc, item, true);
-			if (Main.myPlayer == player.whoAmI && player.Hurt(PlayerDeathReason.ByNPC(npc.whoAmI), 1, (npc.Center.X < player.Center.X) ? 1 : (-1), pvp: false, quiet: false, Crit: false, 3) > 0.0 && !player.dead)
-				player.AddBuff(24, 300, quiet: false);
+
+		if (!lavaProofTool && ItemID.Sets.IsLavaBait[npc.catchItem]) {
+			CombinedHooks.OnCatchNPC(player, npc, item, failed: true);
+			if (Main.myPlayer == player.whoAmI && player.Hurt(PlayerDeathReason.ByNPC(npc.whoAmI), 1, (npc.Center.X < player.Center.X) ? 1 : -1, cooldownCounter: 3) > 0.0 && !player.dead)
+				player.AddBuff(24, 300);
+
 			return false;
 		}
-		else if (npc.type == NPCID.FairyCritterBlue || npc.type == NPCID.FairyCritterPink || npc.type == NPCID.FairyCritterGreen) {
+
+		if (npc.type is NPCID.FairyCritterBlue or NPCID.FairyCritterPink or NPCID.FairyCritterGreen) {
 			bool canCatchFairy = npc.ai[2] <= 1f;
 			CombinedHooks.OnCatchNPC(player, npc, item, !canCatchFairy);
 			if (canCatchFairy)
 				CatchNPC(npc.whoAmI, player.whoAmI);
 			return canCatchFairy;
 		}
-		else {
-			CombinedHooks.OnCatchNPC(player, npc, item, false);
-			CatchNPC(npc.whoAmI, player.whoAmI);
-			return true;
-		}
+
+		CombinedHooks.OnCatchNPC(player, npc, item, failed: false);
+		CatchNPC(npc.whoAmI, player.whoAmI);
+		return true;
 	}
 }

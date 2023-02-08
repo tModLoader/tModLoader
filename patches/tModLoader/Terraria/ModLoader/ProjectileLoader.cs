@@ -520,29 +520,6 @@ public static class ProjectileLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit);
-	private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(g => g.ModifyHitPvp);
-
-	public static void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
-	{
-		projectile.ModProjectile?.ModifyHitPvp(target, ref damage, ref crit);
-
-		foreach (GlobalProjectile g in HookModifyHitPvp.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyHitPvp(projectile, target, ref damage, ref crit);
-		}
-	}
-
-	private static HookList HookOnHitPvp = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPvp);
-
-	public static void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
-	{
-		projectile.ModProjectile?.OnHitPvp(target, damage, crit);
-
-		foreach (GlobalProjectile g in HookOnHitPvp.Enumerate(projectile.globalProjectiles)) {
-			g.OnHitPvp(projectile, target, damage, crit);
-		}
-	}
-
 	private static HookList HookCanHitPlayer = AddHook<Func<Projectile, Player, bool>>(g => g.CanHitPlayer);
 
 	public static bool CanHitPlayer(Projectile projectile, Player target)
@@ -560,26 +537,26 @@ public static class ProjectileLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
 
-	public static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
+	public static void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
 	{
-		projectile.ModProjectile?.ModifyHitPlayer(target, ref damage, ref crit);
+		projectile.ModProjectile?.ModifyHitPlayer(target, ref modifiers);
 
 		foreach (GlobalProjectile g in HookModifyHitPlayer.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyHitPlayer(projectile, target, ref damage, ref crit);
+			g.ModifyHitPlayer(projectile, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitPlayer = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPlayer);
+	private static HookList HookOnHitPlayer = AddHook<Action<Projectile, Player, Player.HurtInfo>>(g => g.OnHitPlayer);
 
-	public static void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+	public static void OnHitPlayer(Projectile projectile, Player target, in Player.HurtInfo hurtInfo)
 	{
-		projectile.ModProjectile?.OnHitPlayer(target, damage, crit);
+		projectile.ModProjectile?.OnHitPlayer(target, hurtInfo);
 
 		foreach (GlobalProjectile g in HookOnHitPlayer.Enumerate(projectile.globalProjectiles)) {
-			g.OnHitPlayer(projectile, target, damage, crit);
+			g.OnHitPlayer(projectile, target, hurtInfo);
 		}
 	}
 

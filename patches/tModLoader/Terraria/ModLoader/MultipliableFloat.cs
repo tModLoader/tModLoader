@@ -2,7 +2,7 @@
 
 public readonly struct MultipliableFloat
 {
-	public static MultipliableFloat One = new(1f);
+	public static MultipliableFloat Default = new(1f);
 
 	public float Value { get; }
 

@@ -7,11 +7,11 @@ public struct StrikeModifiers
 	public static StrikeModifiers Default = new() {
 		SourceDamage = StatModifier.Default,
 		Defense = StatModifier.Default,
-		DefenseEffectiveness = MultipliableFloat.One * .5f,
-		DamageVariationScale = MultipliableFloat.One,
+		DefenseEffectiveness = MultipliableFloat.Default * .5f,
+		DamageVariationScale = MultipliableFloat.Default,
 		CritDamage = StatModifier.Default + 1f,
 		FinalDamage = StatModifier.Default,
-		KnockbackModifier = StatModifier.Default,
+		Knockback = StatModifier.Default,
 	};
 
 	/// <summary>
@@ -46,7 +46,7 @@ public struct StrikeModifiers
 	/// <summary>
 	/// The defense of the receiver, including any temporary modifiers (buffs/debuffs). <br/>
 	/// <br/>
-	/// Increase <see cref="StatModifier.Base" /> to add extra defense. <br/>
+	/// Increase <see cref="StatModifier.Base"/> to add extra defense. <br/>
 	/// Add for scaling buffs (eg +0.1f for +10% defense). <br/>
 	/// Multiply for debuffs (eg *0.9f for -10% defense). <br/>
 	/// Decrease <see cref="StatModifier.Flat"/> to provide flat debuffs like ichor or betsys curse <br/>
@@ -54,7 +54,7 @@ public struct StrikeModifiers
 	public StatModifier Defense;
 
 	/// <summary>
-	/// Flat defense reduction. Applies after ScalingArmorPenetration. <br/>
+	/// Flat defense reduction. Applies after <see cref="ScalingArmorPenetration"/>. <br/>
 	/// Add to give bonus flat armor penetration. <br/>
 	/// Do not subtract or multiply, consider altering <see cref="Defense"/> or <see cref="ScalingArmorPenetration"/> instead.
 	/// <br/>
@@ -63,9 +63,10 @@ public struct StrikeModifiers
 	public AddableFloat ArmorPenetration;
 
 	/// <summary>
-	/// Used to ignore a fraction of enemy armor. Recommend only additive buffs, no multiplication or subtraction. <br/>
+	/// Used to ignore a fraction of enemy armor. Applies before flat <see cref="ArmorPenetration"/>. <br/>
+	/// Recommend only additive buffs, no multiplication or subtraction. <br/>
 	/// <br/>
-	/// At 1f, the attack will completely ignore all defense. Applies before flat <see cref="ArmorPenetration"/>.
+	/// At 1f, the attack will completely ignore all defense.
 	/// </summary>
 	public AddableFloat ScalingArmorPenetration;
 
@@ -91,7 +92,6 @@ public struct StrikeModifiers
 	/// <summary>
 	/// Applied to the final damage result. <br/>
 	/// Used by <see cref="NPC.takenDamageMultiplier"/> to make enemies extra susceptible/resistant to damage. <br/>
-	/// Used by <see cref="Player.endurance" /> to reduce overall incoming damage. <br/>
 	/// <br/>
 	/// Multiply to make your enemy more susceptible or resistant to damage. <br/>
 	/// Add to give 'bonus' post-mitigation damage. <br/>
@@ -107,17 +107,17 @@ public struct StrikeModifiers
 	/// </summary>
 	public MultipliableFloat DamageVariationScale;
 
-	public bool? CritOverride { get; private set; }
+	private bool? _critOverride;
 
 	/// <summary>
 	/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="Strike.Crit"/> flag from the resulting strike.
 	/// </summary>
-	public void DisableCrit() => CritOverride = false;
+	public void DisableCrit() => _critOverride = false;
 
 	/// <summary>
 	/// Sets the strike to be a crit. Does nothing if <see cref="DisableCrit"/> has been called
 	/// </summary>
-	public void SetCrit() => CritOverride ??= true;
+	public void SetCrit() => _critOverride ??= true;
 
 	/// <summary>
 	/// Used by <see cref="NPC.onFire2"/> buff (additive) and <see cref="NPC.knockBackResist"/> (multiplicative) <br/>
@@ -130,13 +130,27 @@ public struct StrikeModifiers
 	/// <br/>
 	/// Knockback falloff still applies after this, so high knockback has diminishing returns. <br/>
 	/// </summary>
-	public StatModifier KnockbackModifier;
+	public StatModifier Knockback;
 
-	public bool IsInstantKill { get; private set; }
-	public void SetInstantKill() => IsInstantKill = true;
+	/// <summary>
+	/// Overrides the default hit direction logic. <br/>
+	/// If set by multiple mods, only the last override will apply. <br/>
+	/// Not recommended for use outside <see cref="ModProjectile.ModifyHit"/>
+	/// </summary>
+	public int? HitDirectionOverride;
 
-	public bool CombatTextHidden { get; private set; }
-	public void HideCombatText() => CombatTextHidden = true;
+	private bool _instantKill;
+	/// <summary>
+	/// Set to make the strike instantly kill the target, dealing as much damage as necessary. </br>
+	/// Combat text will not be shown.
+	/// </summary>
+	public void SetInstantKill() => _instantKill = true;
+
+	private bool _combatTextHidden;
+	/// <summary>
+	/// Set to hide the damage number popup for this strike.
+	/// </summary>
+	public void HideCombatText() => _combatTextHidden = true;
 
 	/// <summary>
 	/// Used internally for calculating the equivalent vanilla strike damage for networking with vanilla clients
@@ -161,24 +175,24 @@ public struct StrikeModifiers
 		damage = Math.Max(damage - damageReduction, 1);
 		_calculatedPostDefenseDamage = damage;
 
-		if (CritOverride ?? crit)
+		if (_critOverride ?? crit)
 			damage = CritDamage.ApplyTo(damage);
 
 		return Math.Max((int)FinalDamage.ApplyTo(damage), 1);
 	}
 
-	public float GetKnockback(float baseKnockback) => KnockbackModifier.ApplyTo(baseKnockback);
+	public float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
 
 	internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
 
 	public Strike ToStrike(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
 		DamageType = damageType,
 		SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
-		TargetDamage = IsInstantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),
-		Crit = CritOverride ?? crit,
+		Damage = _instantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),
+		Crit = _critOverride ?? crit,
 		KnockBack = GetKnockback(baseKnockback),
-		HitDirection = hitDirection,
-		InstantKill = IsInstantKill,
-		HideCombatText = CombatTextHidden
+		HitDirection = HitDirectionOverride ?? hitDirection,
+		InstantKill = _instantKill,
+		HideCombatText = _combatTextHidden
 	};
 }
