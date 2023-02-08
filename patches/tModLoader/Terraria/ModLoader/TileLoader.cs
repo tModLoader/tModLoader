@@ -1022,7 +1022,7 @@ public static class TileLoader
 	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
 	{
 		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;
-  }
+	}
 
 	public static void RecountTiles(SceneMetrics metrics)
 	{
