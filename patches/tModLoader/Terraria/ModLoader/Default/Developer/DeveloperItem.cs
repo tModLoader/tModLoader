@@ -18,8 +18,6 @@ internal abstract class DeveloperItem : ModLoaderModItem
 		displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 		DisplayName.SetDefault(displayName);
 		*/
-
-		Item.ResearchUnlockCount = 1;
 	}
 
 	public override void SetDefaults()

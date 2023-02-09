@@ -6,10 +6,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleDoor : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<ExampleDoorClosed>());
 			Item.width = 14;

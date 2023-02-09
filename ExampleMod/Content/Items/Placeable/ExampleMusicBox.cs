@@ -7,7 +7,6 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleMusicBox : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla
 
 			// The following code links the music box's item and tile with a music track:

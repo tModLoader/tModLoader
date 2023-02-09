@@ -9,10 +9,6 @@ namespace ExampleMod.Content.Items.Tools
 {
 	internal class ExampleHookItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
-		}
-
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
 			Item.CloneDefaults(ItemID.AmethystHook);

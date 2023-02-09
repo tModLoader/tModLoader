@@ -21,8 +21,6 @@ namespace ExampleMod.Content.Items.Tools
 			// This set is needed to define an item as a tool for catching NPCs at all.
 			// An additional set exists called LavaproofCatchingTool which will allow your item to freely catch the Underworld's lava critters. Use it accordingly.
 			ItemID.Sets.CatchingTool[Item.type] = true;
-
-			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {
