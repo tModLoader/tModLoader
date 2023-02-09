@@ -2399,6 +2399,7 @@ var hierarchy =
     ] ],
     [ "WorkshopHelper.UGCBased", "class_workshop_helper_1_1_u_g_c_based.html", null ],
     [ "UIAlign", "class_u_i_align.html", null ],
+    [ "UIAutoScaleTextTextPanel< LocalizedText >", "class_u_i_auto_scale_text_text_panel.html", null ],
     [ "UIAutoScaleTextTextPanel< string >", "class_u_i_auto_scale_text_text_panel.html", null ],
     [ "UICommon", "class_u_i_common.html", null ],
     [ "UIEvent", "class_u_i_event.html", [
