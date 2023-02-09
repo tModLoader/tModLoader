@@ -18,7 +18,7 @@ public partial class NPC
 		};
 
 		/// <summary>
-		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see creHitInfoHit.SourceDamage"/> and be transferred to on-hit effects. <br/>
+		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
 		/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
 		/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
@@ -113,7 +113,7 @@ public partial class NPC
 		private bool? _critOverride;
 
 		/// <summary>
-		/// Disables <see cref="CritDamage"/> calculations, and clears <see creHitInfoHit.Crit"/> flag from the resulting hit.
+		/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="HitInfo.Crit"/> flag from the resulting hit.
 		/// </summary>
 		public void DisableCrit() => _critOverride = false;
 

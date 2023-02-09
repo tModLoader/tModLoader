@@ -1715,11 +1715,11 @@
 +		return StrikeNPC(CalculateStrikeFromLegacyValues(Damage, knockBack, hitDirection, crit), fromNet, noPlayerInteraction);
 +	}
 +
-+	internal Strike CalculateStrikeFromLegacyValues(int Damage, float knockBack, int hitDirection, bool crit)
++	internal HitInfo CalculateStrikeFromLegacyValues(int Damage, float knockBack, int hitDirection, bool crit)
 +	{
-+		Strike strike;
++		HitInfo hit;
 +		if (Damage == 9999) {
-+			strike = new Strike {
++			hit = new HitInfo {
 +				DamageType = DamageClass.Default,
 +				SourceDamage = Damage,
 +				Damage = 0,
@@ -1731,16 +1731,16 @@
 +		}
 +		else {
 +			var modifiers = GetIncomingStrikeModifiers(DamageClass.Default, ignoreArmorDebuffs: true);
-+			strike = modifiers.ToStrike(DamageClass.Default, Damage, crit, knockBack, hitDirection, damageVariation: false);
++			hit = modifiers.ToHitInfo(DamageClass.Default, Damage, crit, knockBack, hitDirection, damageVariation: false);
 +		}
 +
-+		NetMessage.SetLegacyStrike(strike);
-+		return strike;
++		NetMessage.SetLegacyStrike(hit);
++		return hit;
 +	}
 +
-+	public StrikeModifiers GetIncomingStrikeModifiers(DamageClass damageType, bool ignoreArmorDebuffs = false)
++	public HitModifiers GetIncomingStrikeModifiers(DamageClass damageType, bool ignoreArmorDebuffs = false)
 +	{
-+		var modifiers = StrikeModifiers.Default;
++		var modifiers = HitModifiers.Default;
 +
 +		modifiers.FinalDamage *= takenDamageMultiplier;
 +
@@ -1765,7 +1765,7 @@
 +
 +	/// <summary>
 +	/// Runs <see cref="NPCLoader.ModifyIncomingStrike"/> hooks and and does the full damage calculations. <br/>
-+	/// The result <see cref="Strike.Damage"/> will contain the health the NPC will lose when applied. <br/>
++	/// The result <see cref="HitInfo.Damage"/> will contain the health the NPC will lose when applied. <br/>
 +	/// </summary>
 +	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
 +	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
@@ -1773,12 +1773,12 @@
 +	/// <param name="knockBack">Defaults to 0</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
-+	/// <returns>A <see cref="Strike"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
-+	public Strike SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false) {
-+		return GetIncomingStrikeModifiers(damageType).ToStrike(damageType, damage, crit, knockBack, hitDirection, damageVariation);
++	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	public HitInfo SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false) {
++		return GetIncomingStrikeModifiers(damageType).ToHitInfo(damageType, damage, crit, knockBack, hitDirection, damageVariation);
 +	}
 +
-+	public int StrikeNPC(Strike strike, bool fromNet = false, bool noPlayerInteraction = false)
++	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false)
  	{
  		bool flag = Main.netMode == 0;
 +		/*
@@ -1793,10 +1793,10 @@
 -			return 0.0;
 +			return 0;
  
-+		double num = strike.Damage;
-+		bool crit = strike.Crit;
-+		int hitDirection = strike.HitDirection;
-+		if (strike.InstantKill)
++		double num = hit.Damage;
++		bool crit = hit.Crit;
++		int hitDirection = hit.HitDirection;
++		if (hit.InstantKill)
 +			num = realLife > 0 ? Main.npc[realLife].life : life;
 +
 +		/*
@@ -1808,7 +1808,7 @@
  
  		if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
 +		*/
-+		if (!strike.HideCombatText && !strike.InstantKill && lifeMax > 1) {
++		if (!hit.HideCombatText && !hit.InstantKill && lifeMax > 1) {
  			if (friendly) {
  				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
  				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);
@@ -1823,8 +1823,8 @@
  				if (onFire2)
  					num3 *= 1.1f;
 +			*/
-+			if (strike.KnockBack > 0) {
-+				float num3 = strike.KnockBack;
++			if (hit.KnockBack > 0) {
++				float num3 = hit.KnockBack;
  
  				if (num3 > 8f) {
  					float num4 = num3 - 8f;
@@ -1833,12 +1833,12 @@
  				for (int i = 0; i < 200; i++) {
  					if (Main.npc[i].active && (Main.npc[i].type == 113 || Main.npc[i].type == 114))
 -						Main.npc[i].HitEffect(hitDirection, num);
-+						Main.npc[i].HitEffect(hitDirection, num, strike.InstantKill);
++						Main.npc[i].HitEffect(hitDirection, num, hit.InstantKill);
  				}
  			}
  			else {
 -				HitEffect(hitDirection, num);
-+				HitEffect(strike);
++				HitEffect(hit);
  			}
  
  			if (HitSound != null)
@@ -1864,7 +1864,7 @@
 +	public void HitEffect(int hitDirection = 0, double dmg = 10.0, bool? instantKill = null)
 +	{
 +		instantKill ??= dmg == 9999;
-+		HitEffect(new Strike {
++		HitEffect(new HitInfo {
 +			DamageType = DamageClass.Default,
 +			SourceDamage = (int)dmg,
 +			Damage = instantKill.Value ? 0 : (int)dmg,
@@ -1875,13 +1875,13 @@
 +		});
 +	}
 +
-+	public void HitEffect(Strike strike)
++	public void HitEffect(HitInfo hit)
 +	{
 +		IEntitySource.PushFallback(thisEntitySourceCache);
-+		VanillaHitEffect(strike.HitDirection, strike.Damage, strike.InstantKill);
++		VanillaHitEffect(hit.HitDirection, hit.Damage, hit.InstantKill);
 +		IEntitySource.PopFallback();
 +
-+		NPCLoader.HitEffect(this, strike);
++		NPCLoader.HitEffect(this, hit);
 +	}
 +
 +	private void VanillaHitEffect(int hitDirection, double dmg, bool instantKill)
@@ -2062,7 +2062,7 @@
 +		*/
 +		var modifiers = GetIncomingStrikeModifiers(DamageClass.Default);
 +		NPCLoader.ModifyHitNPC(thatNPC, this, ref modifiers);
-+		var strike = modifiers.ToStrike(DamageClass.Generic, thatNPC.damage, crit: false, num3, num4, damageVariation: true);
++		var strike = modifiers.ToHitInfo(DamageClass.Generic, thatNPC.damage, crit: false, num3, num4, damageVariation: true);
 +		double num5 = StrikeNPC(strike, noPlayerInteraction: true);
 +		if (Main.netMode != 0) {
 +			if (ModNet.AllowVanillaClients)
