@@ -224,9 +224,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		Loading = true;
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
-		_reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
+		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
 		_backgroundElement.Append(_loaderElement);
-		SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
+		SetHeading(Language.GetText("tModLoader.MenuModBrowser"));
 
 		// Remove old data
 		ModList.Clear();
@@ -237,7 +237,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		Task.Run(() => {
 			InnerPopulateModBrowser(uiOnly: uiOnly);
 			Loading = false;
-			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
+			_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));
 		});
 	}
 
@@ -283,7 +283,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void SetHeading(string heading)
+	private void SetHeading(LocalizedText heading)
 	{
 		HeaderTextPanel.SetText(heading, 0.8f, true);
 		HeaderTextPanel.Recalculate();
