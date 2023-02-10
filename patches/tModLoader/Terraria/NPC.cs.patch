@@ -1433,6 +1433,17 @@
  			switch (Type) {
  				case 583:
  				case 584:
+@@ -60465,8 +_,8 @@
+ 		if (tile == null || tile2 == null)
+ 			return false;
+ 
+-		if (tile.wall < 0 || tile.wall >= WallID.Count || !wallTypes[tile.wall]) {
++		if (tile.wall < 0 || tile.wall >= WallLoader.WallCount || !wallTypes[tile.wall]) {
+-			if (tile2.wall >= 0 && tile2.wall < WallID.Count)
++			if (tile2.wall >= 0 && tile2.wall < WallLoader.WallCount)
+ 				return wallTypes[tile2.wall];
+ 
+ 			return false;
 @@ -60513,6 +_,8 @@
  			}
  		}

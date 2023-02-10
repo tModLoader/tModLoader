@@ -26,6 +26,24 @@
  					break;
  				case 314:
  					if (providedInfo.player.gravDir == 1f)
+@@ -251,7 +_,7 @@
+ 			return;
+ 
+ 		int type = providedInfo.item.type;
+-		if (type < 0 || type >= ItemID.Count || !ItemID.Sets.GrassSeeds[type])
++		if (type < 0 || type >= ItemLoader.ItemCount || !ItemID.Sets.GrassSeeds[type])
+ 			return;
+ 
+ 		_targets.Clear();
+@@ -672,7 +_,7 @@
+ 	private static void Step_BlocksLines(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
+ 	{
+ 		int type = providedInfo.item.type;
+-		if (type < 0 || type >= ItemID.Count || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
++		if (type < 0 || type >= ItemLoader.ItemCount || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
+ 			return;
+ 
+ 		_targets.Clear();
 @@ -732,7 +_,7 @@
  
  	private static void Step_Boulders(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
@@ -92,6 +110,15 @@
  					switch (tile10.type) {
  						case 2:
  						case 23:
+@@ -2183,7 +_,7 @@
+ 			return;
+ 
+ 		int type = providedInfo.item.type;
+-		if (type < 0 || type >= ItemID.Count)
++		if (type < 0 || type >= ItemLoader.ItemCount)
+ 			return;
+ 
+ 		int reachableStartX = providedInfo.reachableStartX;
 @@ -2269,7 +_,7 @@
  		int reachableEndY = providedInfo.reachableEndY;
  		_ = providedInfo.screenTargetX;
