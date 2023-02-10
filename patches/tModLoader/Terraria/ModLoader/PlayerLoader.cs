@@ -671,10 +671,10 @@ public static class PlayerLoader
 		}
 	}
 
-	private delegate void DelegateModifyWeaponCrit(Item item, ref AddableFloat crit);
+	private delegate void DelegateModifyWeaponCrit(Item item, ref float crit);
 	private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(p => p.ModifyWeaponCrit);
 
-	public static void ModifyWeaponCrit(Player player, Item item, ref AddableFloat crit)
+	public static void ModifyWeaponCrit(Player player, Item item, ref float crit)
 	{
 		if (item.IsAir) return;
 		foreach (var modPlayer in HookModifyWeaponCrit.Enumerate(player.modPlayers)) {

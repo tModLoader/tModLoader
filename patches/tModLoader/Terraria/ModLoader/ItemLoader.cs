@@ -612,13 +612,13 @@ public static class ItemLoader
 	}
 
 
-	private delegate void DelegateModifyWeaponCrit(Item item, Player player, ref AddableFloat crit);
+	private delegate void DelegateModifyWeaponCrit(Item item, Player player, ref float crit);
 	private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(g => g.ModifyWeaponCrit);
 
 	/// <summary>
 	/// Calls ModItem.ModifyWeaponCrit, then all GlobalItem.ModifyWeaponCrit hooks.
 	/// </summary>
-	public static void ModifyWeaponCrit(Item item, Player player, ref AddableFloat crit)
+	public static void ModifyWeaponCrit(Item item, Player player, ref float crit)
 	{
 		if (item.IsAir)
 			return;

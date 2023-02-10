@@ -2,8 +2,6 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
-using Terraria.Map;
-using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader;
 
@@ -17,10 +15,8 @@ public static class CombinedHooks
 
 	public static void ModifyWeaponCrit(Player player, Item item, ref float crit)
 	{
-		AddableFloat critAdd = AddableFloat.Zero;
-		ItemLoader.ModifyWeaponCrit(item, player, ref critAdd);
-		PlayerLoader.ModifyWeaponCrit(player, item, ref critAdd);
-		crit += critAdd.Value;
+		ItemLoader.ModifyWeaponCrit(item, player, ref crit);
+		PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 	}
 
 	public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback)
