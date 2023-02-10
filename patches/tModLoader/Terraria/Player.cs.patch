@@ -203,19 +203,22 @@
  	public int[] buffType = new int[maxBuffs];
  	public int[] buffTime = new int[maxBuffs];
  	public bool[] buffImmune = new bool[BuffID.Count];
-@@ -961,7 +_,12 @@
+@@ -961,8 +_,14 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
 +
 +	/*
  	public int armorPenetration;
+-	public int statDefense;
 +	*/
 +	internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
 +
- 	public int statDefense;
++	public DefenseStat statDefense; // changed from int
++	public MultipliableFloat DefenseEffectiveness; // added by TML
  	public int statLifeMax = 100;
  	public int statLifeMax2 = 100;
+ 	public int statLife = 100;
 @@ -1194,21 +_,59 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
@@ -2183,7 +2186,7 @@
  		if (torchLuck < 0f)
  			torchLuck = 0f;
  
-@@ -14214,7 +_,9 @@
+@@ -14214,10 +_,16 @@
  		arcticDivingGear = false;
  		noBuilding = false;
  		strongBees = false;
@@ -2192,7 +2195,14 @@
 +		*/
  		ashWoodBonus = false;
  		shroomiteStealth = false;
++		/*
  		statDefense = 0;
++		*/
++		statDefense = DefenseStat.Default;
++		DefenseEffectiveness = MultipliableFloat.Default * VanillaBaseDefenseEffectiveness();
+ 		accWatch = 0;
+ 		accCompass = 0;
+ 		accDepthMeter = 0;
 @@ -14225,6 +_,9 @@
  		canFloatInWater = false;
  		lifeRegen = 0;
@@ -2937,7 +2947,7 @@
  		if (tileSpeed > 3f)
  			tileSpeed = 3f;
  
-@@ -20007,9 +_,12 @@
+@@ -20007,11 +_,18 @@
  			wallSpeed = 3f;
  
  		wallSpeed = 1f / wallSpeed;
@@ -2946,11 +2956,16 @@
 +		/*
  		if (statManaMax2 > 400)
  			statManaMax2 = 400;
--
 +		*/
+ 
++		// positive value capping builtin to DefenseStat
++		/*
  		if (statDefense < 0)
  			statDefense = 0;
++		*/
  
+ 		if (slowOgreSpit) {
+ 			moveSpeed /= 3f;
 @@ -20046,6 +_,9 @@
  			pickSpeed = 0.3f;
  
@@ -3679,19 +3694,17 @@
  			dead = false;
  			immuneTime = 0;
  		}
-@@ -29505,14 +_,46 @@
+@@ -29505,14 +_,44 @@
  			frostArmor = true;
  	}
  
 +	// Added to replace Main.CalculateDamagePlayersTake[InPvP]
-+	public static float GetBaseDefenseEffectiveness(bool pvp = false)
++	private static float VanillaBaseDefenseEffectiveness()
 +	{
-+		if (!pvp) {
-+			if (Main.masterMode)
-+				return 1;
-+			if (Main.expertMode)
-+				return 0.75f;
-+		}
++		if (Main.masterMode)
++			return 1;
++		if (Main.expertMode)
++			return 0.75f;
 +
 +		return 0.5f;
 +	}
@@ -3771,7 +3784,7 @@
 +			}
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
-+			info = modifiers.ToHurtInfo(Damage, statDefense, GetBaseDefenseEffectiveness(), knockback, noKnockback);
++			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
 +			Hurt(info);
 +			return info.Damage;
 +		}

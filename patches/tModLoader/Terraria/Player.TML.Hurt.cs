@@ -189,4 +189,30 @@ public partial class Player
 		/// </summary>
 		public bool SoundDisabled;
 	}
+
+	public struct DefenseStat
+	{
+		public static DefenseStat Default = new();
+
+		public int Positive { get; private set; } = 0;
+		public int Negative { get; private set; } = 0;
+
+		public AddableFloat AdditiveBonus = AddableFloat.Zero;
+		public MultipliableFloat FinalMultiplier = MultipliableFloat.Default;
+
+		public DefenseStat() { }
+
+		public static DefenseStat operator +(DefenseStat stat, int add) => add < 0 ? stat - (-add) : stat with { Positive = stat.Positive + add };
+		public static DefenseStat operator -(DefenseStat stat, int sub) => sub < 0 ? stat + (-sub) : stat with { Negative = stat.Negative + sub };
+
+		public static DefenseStat operator ++(DefenseStat stat) => stat+1;
+		public static DefenseStat operator --(DefenseStat stat) => stat-1;
+
+		public static DefenseStat operator *(DefenseStat stat, float mult) => stat with { FinalMultiplier = stat.FinalMultiplier * mult};
+		public static DefenseStat operator /(DefenseStat stat, float div) => stat with { FinalMultiplier = stat.FinalMultiplier / div};
+
+		public static implicit operator int(DefenseStat stat) => Math.Max((int)Math.Round((stat.Positive * (1 + stat.AdditiveBonus.Value) - stat.Negative) * stat.FinalMultiplier.Value), 0);
+
+		public override string ToString() => ((int)this).ToString();
+	}
 }
