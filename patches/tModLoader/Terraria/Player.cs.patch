@@ -2145,7 +2145,7 @@
  				if (tile == null)
  					return;
  
-+				if (tile.type > TileID.Count) {
++				if (tile.type >= TileID.Count) {
 +					if (tile.active() && TileID.Sets.Torch[tile.type])
 +						NearbyModTorch.Add(tile.type);
 +

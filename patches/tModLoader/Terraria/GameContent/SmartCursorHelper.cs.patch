@@ -26,6 +26,24 @@
  					break;
  				case 314:
  					if (providedInfo.player.gravDir == 1f)
+@@ -732,7 +_,7 @@
+ 
+ 	private static void Step_Boulders(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
+ 	{
+-		if (providedInfo.item.createTile <= -1 || providedInfo.item.createTile >= TileID.Count || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
++		if (providedInfo.item.createTile <= -1 || providedInfo.item.createTile >= TileLoader.TileCount || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
+ 			return;
+ 
+ 		_targets.Clear();
+@@ -875,7 +_,7 @@
+ 				for (int k = i; k <= i + 1; k++) {
+ 					for (int l = j - 1; l <= j; l++) {
+ 						Tile tile3 = Main.tile[k, l];
+-						if (tile3.active() && (tile3.type < 0 || tile3.type >= TileID.Count || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
++						if (tile3.active() && (tile3.type < 0 || tile3.type >= TileLoader.TileCount || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
+ 							flag = false;
+ 					}
+ 				}
 @@ -1654,11 +_,13 @@
  				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]) || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
  					continue;
