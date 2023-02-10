@@ -106,18 +106,6 @@
  		if (type == 160) {
  			if (!NPC.unlockedTruffleSpawn && (double)roomY2 > Main.worldSurface)
  				return false;
-@@ -1733,9 +_,9 @@
- 
- 	public static void CheckAchievement_RealEstateAndTownSlimes()
- 	{
--		bool[] array = new bool[NPCID.Count];
-+		bool[] array = new bool[NPCLoader.NPCCount];
- 		for (int i = 0; i < 200; i++) {
--			if (Main.npc[i].active && Main.npc[i].type >= 0 && Main.npc[i].type < NPCID.Count)
-+			if (Main.npc[i].active && Main.npc[i].type >= 0 && Main.npc[i].type < NPCLoader.NPCCount)
- 				array[Main.npc[i].type] = true;
- 		}
- 
 @@ -1932,7 +_,7 @@
  		int num = 0;
  		int num2 = 50;
