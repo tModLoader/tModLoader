@@ -942,6 +942,15 @@
  		if (myRect.Intersects(targetRect))
  			return true;
  
+@@ -12392,7 +_,7 @@
+ 		if (Main.netMode == 1 && (ProjectileID.Sets.IsAGolfBall[type] || type == 820)) {
+ 			int num = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
+-			if (Main.tile[num, num2] == null)
++			if (!Main.sectionManager.TileLoaded(num, num2))
+ 				return;
+ 		}
+ 
 @@ -12412,9 +_,16 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
