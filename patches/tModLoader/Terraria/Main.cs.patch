@@ -433,7 +433,7 @@
  
  	public static string playerPathName => ActivePlayerFileData.Path;
  
-@@ -2831,6 +_,8 @@
+@@ -2831,10 +_,13 @@
  		}
  
  		result.X = num;
@@ -442,7 +442,25 @@
  		return result;
  	}
  
-@@ -2848,6 +_,12 @@
++	// TML: Internal for vanilla content specifically, added count parameter to public method and removed tileMerge reset (handled by ResizeArrays)
+-	public static void SetupTileMerge()
++	internal static void SetupTileMerge()
+ 	{
+ 		int count = TileID.Count;
+ 		tileMerge = new bool[count][];
+@@ -2842,12 +_,23 @@
+ 			tileMerge[i] = new bool[count];
+ 		}
+ 
++		SetupTileMerge(count);
++	}
++
++	public static void SetupTileMerge(int count)
++	{
+-		for (int j = 0; j < TileID.Count; j++) {
++		for (int j = 0; j < count; j++) {
+ 			bool flag = j == 10 || j == 387 || j == 541;
+ 			TileID.Sets.BlockMergesWithMergeAllBlock[j] = !flag && tileSolid[j] && !tileSolidTop[j];
  		}
  	}
  

@@ -89,6 +89,7 @@ public static class TileLoader
 	private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
 	private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
+	private static Action[] HookPostSetupTileMerge;
 
 	internal static int ReserveTileID()
 	{
@@ -234,10 +235,17 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
+		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 
 		if (!unloading) {
 			loaded = true;
 		}
+	}
+
+	internal static void FinishSetup()
+	{
+		Main.SetupTileMerge(TileCount);
+		PostSetupTileMerge();
 	}
 
 	internal static void Unload()
@@ -1007,6 +1015,18 @@ public static class TileLoader
 		}
 
 		GetTile(type)?.PlaceInWorld(i, j, item);
+	}
+
+	public static void PostSetupTileMerge()
+	{
+		foreach (var hook in HookPostSetupTileMerge) {
+			hook();
+		}
+
+		for (int i = 0; i < tiles.Count; i++) {
+			ModTile modTile = tiles[i];
+			modTile.PostSetupTileMerge();
+		}
 	}
 
 	public static bool IsLockedChest(int i, int j, int type)

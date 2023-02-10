@@ -325,6 +325,7 @@ public static class ModContent
 		BuffLoader.FinishSetup();
 		ItemLoader.FinishSetup();
 		NPCLoader.FinishSetup();
+		TileLoader.FinishSetup();
 		PrefixLoader.FinishSetup();
 		ProjectileLoader.FinishSetup();
 		PylonLoader.FinishSetup();

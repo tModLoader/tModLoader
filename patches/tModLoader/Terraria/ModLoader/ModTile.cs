@@ -457,6 +457,14 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows you to set <see cref="TileID.Sets.BlockMergesWithMergeAllBlock"/> to false if you don't want your tile to merge with other tiles in <see cref="Main.tileBlendAll"/> (Echo Block does this).
+	/// <br/>Can be used to adjust other tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
+	/// </summary>
+	public virtual void PostSetupTileMerge()
+	{
+	}
+
+	/// <summary>
 	/// Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
