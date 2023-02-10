@@ -840,8 +840,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <br/>This is not called for coins in inventory/UI.
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
+	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStack(Item decrease)
+	public virtual bool CanStack(Item source)
 	{
 		return true;
 	}
@@ -850,32 +851,31 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <br/>This is only called when attempting to stack with an item of the same type.
 	/// </summary>
+	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item decrease)
+	public virtual bool CanStackInWorld(Item source)
 	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.<br/>
-	/// This item will have its stack increased that will have its stack increased.
+	/// This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
 	/// </summary>
-	/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
-	public virtual void OnStack(Item decrease, int numberToBeTransfered)
+	/// <param name="source">The item instance being stacked onto this item</param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	public virtual void OnStack(Item source, int numToTransfer)
 	{
-
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.<br/>
-	/// Item is always the new stack which is a clone of decrease.  Item.stack will always be 0.  It is increased after SplitStack.
+	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.<br/>
+	/// This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
 	/// </summary>
-	/// <param name="decrease">The original item that will have it's stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
-	public virtual void SplitStack(Item decrease, int numberToBeTransfered)
+	/// <param name="source">The original item that will have it's stack reduced.</param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	public virtual void SplitStack(Item source, int numToTransfer)
 	{
-
 	}
 
 	/// <summary>

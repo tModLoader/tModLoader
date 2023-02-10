@@ -727,6 +727,11 @@ Mods: {
 				DisplayName: Shimmer Showcase Custom Shimmer Result
 				Tooltip: ""
 			}
+
+			ShimmerShowcaseConditions: {
+				Tooltip: ""
+				DisplayName: Shimmer Showcase Conditions
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

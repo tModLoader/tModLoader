@@ -203,6 +203,38 @@
  	public int[] buffType = new int[maxBuffs];
  	public int[] buffTime = new int[maxBuffs];
  	public bool[] buffImmune = new bool[BuffID.Count];
+@@ -853,6 +_,7 @@
+ 	public int head = -1;
+ 	public int body = -1;
+ 	public int legs = -1;
++	/* sbyte -> int
+ 	public sbyte handon = -1;
+ 	public sbyte handoff = -1;
+ 	public sbyte back = -1;
+@@ -869,6 +_,23 @@
+ 	public sbyte faceFlower = -1;
+ 	public sbyte balloonFront = -1;
+ 	public sbyte beard = -1;
++	*/
++	public int handon = -1;
++	public int handoff = -1;
++	public int back = -1;
++	public int front = -1;
++	public int shoe = -1;
++	public int waist = -1;
++	public int shield = -1;
++	public int neck = -1;
++	public int face = -1;
++	public int balloon = -1;
++	public int backpack = -1;
++	public int tail = -1;
++	public int faceHead = -1;
++	public int faceFlower = -1;
++	public int balloonFront = -1;
++	public int beard = -1;
+ 	public bool[] hideVisibleAccessory = new bool[10];
+ 	public BitsByte hideMisc = (byte)0;
+ 	public Rectangle headFrame;
 @@ -961,8 +_,14 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
@@ -3513,6 +3545,24 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -27759,7 +_,7 @@
+ 			waist = 0;
+ 
+ 		if (!dead && body >= 0) {
+-			sbyte b = (sbyte)(Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
++			int b = (Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
+ 			if (b != -1) {
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[b]) {
+ 					backpack = b;
+@@ -27775,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			sbyte b2 = (sbyte)ArmorIDs.Body.Sets.IncludedCapeFront[body];
++			int b2 = ArmorIDs.Body.Sets.IncludedCapeFront[body];
+ 			if (b2 != -1 && front == -1) {
+ 				front = b2;
+ 				cFront = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -3550,6 +3600,15 @@
  		if (head > 0 && face > 0) {
  			if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
  				head = -1;
+@@ -27881,7 +_,7 @@
+ 		}
+ 
+ 		if (head > 0 && faceHead > 0 && ArmorIDs.Head.Sets.UseAltFaceHeadDraw[head]) {
+-			sbyte b3 = (sbyte)ArmorIDs.Face.Sets.AltFaceHead[faceHead];
++			int b3 = ArmorIDs.Face.Sets.AltFaceHead[faceHead];
+ 			if (b3 > 0)
+ 				faceHead = b3;
+ 		}
 @@ -27905,6 +_,9 @@
  			obj.shader = GameShaders.Armor.GetSecondaryShader(cBody, this);
  		}
@@ -3645,6 +3704,15 @@
  	{
  		if (item.stringColor > 0)
  			stringColor = item.stringColor;
+@@ -28608,7 +_,7 @@
+ 		if (item.shoeSlot > 0) {
+ 			shoe = item.shoeSlot;
+ 			if (!Male && ArmorIDs.Shoe.Sets.MaleToFemaleID[shoe] > 0)
+-				shoe = (sbyte)ArmorIDs.Shoe.Sets.MaleToFemaleID[shoe];
++				shoe = ArmorIDs.Shoe.Sets.MaleToFemaleID[shoe];
+ 		}
+ 
+ 		if (item.waistSlot > 0)
 @@ -28642,9 +_,13 @@
  		if (item.wingSlot > 0)
  			wings = item.wingSlot;

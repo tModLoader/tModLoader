@@ -5528,6 +5528,15 @@
  			}
  		}
  
+@@ -51852,6 +_,8 @@
+ 		instance.CameraModifiers.ApplyTo(ref screenPosition);
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
++		PlayerLoader.ModifyScreenPosition(LocalPlayer);
++		SystemLoader.ModifyScreenPosition();
+ 		ClampScreenPositionToWorld();
+ 	}
+ 
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)

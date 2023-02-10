@@ -241,7 +241,9 @@ function install_mods {
 	mkdir -p $mods_path
 
 	# If someone has .tmod files this will install them
-	if [[ -f "*.tmod" ]]; then
+	local count
+	count=$(ls -1 ./*.tmod 2>/dev/null | wc -l)
+	if [ $count != 0 ]; then
 		echo "Copying .tmod files to the mods directory"
 		cp ./*.tmod $mods_path
 	fi

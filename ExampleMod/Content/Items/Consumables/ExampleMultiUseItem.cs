@@ -78,19 +78,19 @@ namespace ExampleMod.Content.Items.Consumables
 				layerDepth: 0f);
 		}
 
-		public override void OnStack(Item decrease, int numberToBeTransfered) {
-			MergeUseCount(decrease, numberToBeTransfered);
+		public override void OnStack(Item source, int numToTransfer) {
+			MergeUseCount(source);
 		}
 
-		public override void SplitStack(Item decrease, int numberToBeTransfered) {
+		public override void SplitStack(Item source, int numToTransfer) {
 			//Item is a clone of decrease, but useCount should not be cloned, so set it to 0 for the new item.
 			useCount = 0;
 
-			MergeUseCount(decrease, numberToBeTransfered);
+			MergeUseCount(source);
 		}
 
-		private void MergeUseCount(Item decrease, int numberToBeTransfered) {
-			var incoming = (ExampleMultiUseItem)decrease.ModItem;
+		private void MergeUseCount(Item source) {
+			var incoming = (ExampleMultiUseItem)source.ModItem;
 			useCount += incoming.useCount;
 			if (useCount >= MaxUses) {
 				Item.stack--;
