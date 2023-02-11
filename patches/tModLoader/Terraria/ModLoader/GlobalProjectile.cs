@@ -424,4 +424,14 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY)
 	{
 	}
+
+	/// <summary>
+	/// Whether or not the grappling hook can latch onto the given position in tile coordinates.
+	/// <br/>This position may be air or an actuated tile!
+	/// <br/>Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default.
+	/// </summary>
+	public virtual bool? GrappleCanLatchOnTo(Projectile projectile, Player player, int x, int y)
+	{
+		return null;
+	}
 }
