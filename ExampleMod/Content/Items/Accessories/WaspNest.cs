@@ -21,7 +21,9 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// Try to find where 566 is placed onto the stack
 			if (!c.TryGotoNext(i => i.MatchLdcI4(566))) {
-				return; // Patch unable to be applied
+				// Patch unable to be applied, so we let people know with this method and exit the method
+				MonoModHooks.LogILPatchFailure(ModContent.GetInstance<ExampleMod>(), il, "Unable to locate 566 on the stack");
+				return;
 			}
 
 			// Move the cursor after 566 and onto the ret op.
