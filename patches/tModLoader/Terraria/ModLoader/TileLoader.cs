@@ -242,7 +242,7 @@ public static class TileLoader
 		}
 	}
 
-	internal static void FinishSetup()
+	internal static void PostSetupContent()
 	{
 		Main.SetupTileMerge(TileCount);
 		PostSetupTileMerge();
