@@ -457,6 +457,13 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
+	/// </summary>
+	public virtual void PostSetupTileMerge()
+	{
+	}
+
+	/// <summary>
 	/// Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
