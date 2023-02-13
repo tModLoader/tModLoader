@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -31,11 +32,11 @@ namespace ExampleMod.Content.Tiles
 		public override bool IsTileDangerous(int i, int j, Player player) => true;
 
 		// Because this tile does not use a TileObjectData, the correct item drop won't automatically be known, so we must use GetItemDrops to determine it. 
-		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
+		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			Tile t = Main.tile[i, j];
 			int style = t.TileFrameY / 18;
 			// It can be useful to share a single tile with multiple styles.
-			dropItem = Mod.Find<ModItem>(Items.Placeable.ExampleTrap.GetInternalNameFromStyle(style)).Type;
+			yield return new Item(Mod.Find<ModItem>(Items.Placeable.ExampleTrap.GetInternalNameFromStyle(style)).Type);
 		}
 
 		public override bool CreateDust(int i, int j, ref int type) {

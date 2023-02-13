@@ -565,13 +565,13 @@ public static class TileLoader
 		if (!needDrops) {
 			return;
 		}
-		// Automatic item derived from item.createTile and item.placeStyle
-		int style = 0;
-		if (tileData != null) {
-			style = TileObjectData.GetTileStyle(tileCache);
+
+		var itemDrops = modTile.GetItemDrops(x, y);
+		foreach (var item in itemDrops) {
+			item.Prefix(-1); // Assign a random prefix, as expected
+			int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
+			Main.item[num].TryCombiningIntoNearbyItems(num);
 		}
-		dropItem = GetItemDropFromTypeAndStyle(tileCache.type, style);
-		modTile.GetItemDrops(x, y, ref dropItem, ref dropItemStack);
 	}
 
 	public static int GetItemDropFromTypeAndStyle(int type, int style = 0, bool allowFallbackToStyleZero = true)

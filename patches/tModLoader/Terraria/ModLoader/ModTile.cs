@@ -192,19 +192,28 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize which item the tile at the given coordinates drops.
-	/// <br/> By default, <paramref name="dropItem"/> will be set to the <see cref="ModBlockType.ItemDrop"/> of this ModTile and <paramref name="dropItemStack"/> will be 1. Assign to these to customize the item that will drop.
-	/// <br/> For tiles with a <see cref="TileObjectData"/>, <paramref name="dropItem"/> will be set to the item type of the loaded item with <see cref="Item.createTile"/> set to this Tile and <see cref="Item.placeStyle"/> matching the style of the Tile. 
-	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles.
-	/// <br/> If this tile drops additional items, those can be spawned here. If the main item drop needs to be customized, spawn the item and set <paramref name="dropItem"/> to 0 to prevent the drop.
+	/// Allows you to customize the items the tile at the given coordinates drops.
+	/// <br/> By default, this method will intelligently decide on a single item drop based on <see cref="ModBlockType.ItemDrop"/> and associated <see cref="TileObjectData"/>.
+	/// <br/> For tiles with a <see cref="TileObjectData"/>, the dropped item will be item type of the loaded item with <see cref="Item.createTile"/> set to this Tile and <see cref="Item.placeStyle"/> matching the style of the Tile. If the specific <see cref="Item.placeStyle"/> is not found, the decision will fall back to a <see cref="Item.placeStyle"/> of 0.
+	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items or tiles dropping items with custom data.
+	/// <br/> For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. 
 	/// <br/> Use <see cref="CanDrop"/> to prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="dropItem">The Item type of the drop item.</param>
-	/// <param name="dropItemStack">The stack of the drop item. Defaults to 1.</param>
-	public virtual void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack)
+	public virtual IEnumerable<Item> GetItemDrops(int i, int j)
 	{
+		// Automatic item derived from item.createTile and item.placeStyle
+		Tile tile = Main.tile[i, j];
+		TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
+		int style = 0;
+		if (tileData != null) {
+			style = TileObjectData.GetTileStyle(tile);
+		}
+		int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.type, style);
+		if (dropItem > 0) {
+			yield return new Item(dropItem);
+		}
 	}
 
 	/// <summary>

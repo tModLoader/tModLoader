@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -60,16 +61,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		// This example shows using GetItemDrops to manually decide item drops. This example is for a tile with a TileObjectData.
-		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
+		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			int style = TileObjectData.GetTileStyle(tile);
 			if (style == 0) {
-				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+				yield return new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>());
 			}
 			if (style == 1) {
 				// Style 1 is ExampleChest when locked. We want that tile style to drop the ExampleChest item as well. Use the Chest Lock item to lock this chest.
 				// No item places ExampleChest in the locked style, so the automatic item drop is unknown, this is why GetItemDrops is necessary in this situation. 
-				dropItem = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
+				yield return new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>());
 			}
 		}
 

@@ -2,6 +2,7 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Metadata;
@@ -121,33 +122,35 @@ namespace ExampleMod.Content.Tiles
 			return true;
 		}
 
-		public override void GetItemDrops(int i, int j, ref int dropItem, ref int dropItemStack) {
+		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			PlantStage stage = GetStage(i, j);
 
 			Vector2 worldPosition = new Vector2(i, j).ToWorldCoordinates();
 			Player nearestPlayer = Main.player[Player.FindClosest(worldPosition, 16, 16)];
 
-			dropItem = ModContent.ItemType<ExampleItem>();
-			dropItemStack = 1;
+			int herbItemType = ModContent.ItemType<ExampleItem>();
+			int herbItemStack = 1;
 
 			int seedItemType = ModContent.ItemType<ExampleHerbSeeds>();
 			int seedItemStack = 1;
 
 			if (nearestPlayer.active && nearestPlayer.HeldItem.type == ItemID.StaffofRegrowth) {
 				// Increased yields with Staff of Regrowth, even when not fully grown
-				dropItemStack = Main.rand.Next(1, 3);
+				herbItemStack = Main.rand.Next(1, 3);
 				seedItemStack = Main.rand.Next(1, 6);
 			}
 			else if (stage == PlantStage.Grown) {
 				// Default yields, only when fully grown
-				dropItemStack = 1;
+				herbItemStack = 1;
 				seedItemStack = Main.rand.Next(1, 4);
 			}
 
-			// tModLoader code will handle spawning dropItem. seedItemType is an additional drop and is spawned here
-			var source = new EntitySource_TileBreak(i, j);
+			if (herbItemType > 0 && herbItemStack > 0) {
+				yield return new Item(herbItemType, herbItemStack);
+			}
+
 			if (seedItemType > 0 && seedItemStack > 0) {
-				Item.NewItem(source, worldPosition, seedItemType, seedItemStack);
+				yield return new Item(seedItemType, seedItemStack);
 			}
 		}
 
