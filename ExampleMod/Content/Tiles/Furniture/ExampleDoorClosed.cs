@@ -22,6 +22,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileSolid[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.BlockMergesWithMergeAllBlockOverride[Type] = false;
 			TileID.Sets.NotReallySolid[Type] = true;
 			TileID.Sets.DrawsWalls[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;

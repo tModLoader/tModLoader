@@ -448,7 +448,7 @@
  	{
  		int count = TileID.Count;
  		tileMerge = new bool[count][];
-@@ -2842,12 +_,23 @@
+@@ -2842,12 +_,29 @@
  			tileMerge[i] = new bool[count];
  		}
  
@@ -459,7 +459,13 @@
 +	{
 -		for (int j = 0; j < TileID.Count; j++) {
 +		for (int j = 0; j < count; j++) {
++			// TML: moved these cases into BlockMergesWithMergeAllBlockOverride
  			bool flag = j == 10 || j == 387 || j == 541;
++			if (TileID.Sets.BlockMergesWithMergeAllBlockOverride[j] is bool mergeOverride) {
++				TileID.Sets.BlockMergesWithMergeAllBlock[j] = mergeOverride;
++				continue;
++			}
++
  			TileID.Sets.BlockMergesWithMergeAllBlock[j] = !flag && tileSolid[j] && !tileSolidTop[j];
  		}
  	}
