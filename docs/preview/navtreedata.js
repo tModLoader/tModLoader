@@ -54,14 +54,14 @@ var NAVTREEINDEX =
 "class_mod_item.html#a7f1ab496eeef31e46ff6b028e979f0ec",
 "class_mod_player.html#a518fe106339dc4ed0d3b8de9a88e4973",
 "class_mod_system.html#a895054130daea8301afbd74af6168490",
-"class_n_p_c.html#a62b76723c81ba46dd6210c219769eaf6",
-"class_overlay.html",
-"class_proj_a_i_style_i_d.html#a142eae977096e1a0871a0a352d7e7cd4",
-"class_recipe.html#a3dff5481bb47513683cfdd8abec91a94",
-"class_tag_serializer.html#a38658fafb986bb6dcdbd8e6ac6224076",
-"class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461",
-"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb",
-"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc"
+"class_n_p_c.html#a627262bb1607a138395a60047001bc00",
+"class_one_from_options_not_scaled_with_luck_drop_rule.html",
+"class_proj_a_i_style_i_d.html#a0cdc0aee93975b88b07be63080021a54",
+"class_recipe.html#a201aa97265a199607d864e8fbe40dda6",
+"class_tag_i_o.html",
+"class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3",
+"interface_actions_1_1_players_1_1_i_player_action.html",
+"struct_pos_data.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

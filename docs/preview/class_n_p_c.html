@@ -100,8 +100,10 @@ $(document).ready(function(){initNavTree('class_n_p_c.html',''); initResizable()
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6519d87a1742abe76ac68c9396dfb117"><td class="memItemLeft" align="right" valign="top"><a id="a6519d87a1742abe76ac68c9396dfb117" name="a6519d87a1742abe76ac68c9396dfb117"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddBuff</b> (int type, int time, bool quiet=false)</td></tr>
+<tr class="memitem:a6519d87a1742abe76ac68c9396dfb117"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a6519d87a1742abe76ac68c9396dfb117">AddBuff</a> (int type, int time, bool quiet=false)</td></tr>
+<tr class="memdesc:a6519d87a1742abe76ac68c9396dfb117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives this <a class="el" href="class_n_p_c.html">NPC</a> the provided buff. This accounts for if the <a class="el" href="class_n_p_c.html">NPC</a> is immune to the buff. <br  />
+ If the <a class="el" href="class_n_p_c.html">NPC</a> already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using <a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837" title="Get the id (type) of a ModBuff by class. Assumes one instance per class.">ModContent.BuffType&lt;T&gt;</a>. <br  />
+ The quiet parameter will determine if the network sync message should happen. This should always stay false.  <a href="class_n_p_c.html#a6519d87a1742abe76ac68c9396dfb117">More...</a><br /></td></tr>
 <tr class="separator:a6519d87a1742abe76ac68c9396dfb117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17ed2c012faea9329e4ada130ed1ac5f"><td class="memItemLeft" align="right" valign="top"><a id="a17ed2c012faea9329e4ada130ed1ac5f" name="a17ed2c012faea9329e4ada130ed1ac5f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AI</b> ()</td></tr>
@@ -178,8 +180,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CloneDefaults</b> (in
 <tr class="memitem:abfe2c4b50da73c7a82e90ccd04b710d5"><td class="memItemLeft" align="right" valign="top"><a id="abfe2c4b50da73c7a82e90ccd04b710d5" name="abfe2c4b50da73c7a82e90ccd04b710d5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyInteractions</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="separator:abfe2c4b50da73c7a82e90ccd04b710d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb8a84720c0274214029182e64ddd60"><td class="memItemLeft" align="right" valign="top"><a id="a2fb8a84720c0274214029182e64ddd60" name="a2fb8a84720c0274214029182e64ddd60"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DelBuff</b> (int buffIndex)</td></tr>
+<tr class="memitem:a2fb8a84720c0274214029182e64ddd60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60">DelBuff</a> (int buffIndex)</td></tr>
+<tr class="memdesc:a2fb8a84720c0274214029182e64ddd60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. <br  />
+ Use <a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119" title="Removes the buff type and shuffles the remaining buff indexes down to fill the gap....">NPC.RequestBuffRemoval</a> if you only know the buff type.  <a href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60">More...</a><br /></td></tr>
 <tr class="separator:a2fb8a84720c0274214029182e64ddd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45e048ced0044b66940792d124879534"><td class="memItemLeft" align="right" valign="top"><a id="a45e048ced0044b66940792d124879534" name="a45e048ced0044b66940792d124879534"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DiscourageDespawn</b> (int despawnTime)</td></tr>
@@ -382,8 +385,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReflectProjectile</b>
 <tr class="memitem:a149431807fc97c5b9e3f71982a1c271a"><td class="memItemLeft" align="right" valign="top"><a id="a149431807fc97c5b9e3f71982a1c271a" name="a149431807fc97c5b9e3f71982a1c271a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ReflectProjectiles</b> (Rectangle myRect)</td></tr>
 <tr class="separator:a149431807fc97c5b9e3f71982a1c271a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="memItemLeft" align="right" valign="top"><a id="aa0030c39514c7cfce2a9ffcbbbd24119" name="aa0030c39514c7cfce2a9ffcbbbd24119"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RequestBuffRemoval</b> (int buffTypeToRemove)</td></tr>
+<tr class="memitem:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119">RequestBuffRemoval</a> (int buffTypeToRemove)</td></tr>
+<tr class="memdesc:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff type and shuffles the remaining buff indexes down to fill the gap. <br  />
+ Use <a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">NPC.DelBuff</a> if you only know the buff index.  <a href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119">More...</a><br /></td></tr>
 <tr class="separator:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aea95f3bc3ee888e1f4290ed23ad14e"><td class="memItemLeft" align="right" valign="top"><a id="a8aea95f3bc3ee888e1f4290ed23ad14e" name="a8aea95f3bc3ee888e1f4290ed23ad14e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RerollVariation</b> ()</td></tr>
@@ -1928,6 +1932,52 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <tr class="separator:a290f8dd9eb6b4266d50e275298c6b0b6 inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6519d87a1742abe76ac68c9396dfb117" name="a6519d87a1742abe76ac68c9396dfb117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6519d87a1742abe76ac68c9396dfb117">&#9670;&nbsp;</a></span>AddBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.AddBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>quiet</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gives this <a class="el" href="class_n_p_c.html">NPC</a> the provided buff. This accounts for if the <a class="el" href="class_n_p_c.html">NPC</a> is immune to the buff. <br  />
+ If the <a class="el" href="class_n_p_c.html">NPC</a> already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using <a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837" title="Get the id (type) of a ModBuff by class. Assumes one instance per class.">ModContent.BuffType&lt;T&gt;</a>. <br  />
+ The quiet parameter will determine if the network sync message should happen. This should always stay false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The buff type</td></tr>
+    <tr><td class="paramname">time</td><td>The desired buff time in ticks. 60 ticks is 1 second</td></tr>
+    <tr><td class="paramname">quiet</td><td>If true, the network sync message is skipped.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a64991e8657153fdce11c33746dc806fa" name="a64991e8657153fdce11c33746dc806fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64991e8657153fdce11c33746dc806fa">&#9670;&nbsp;</a></span>CheckCatchNPC()</h2>
 
@@ -1995,6 +2045,33 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not the <a class="el" href="class_n_p_c.html">NPC</a> was successfully caught.</dd></dl>
+
+</div>
+</div>
+<a id="a2fb8a84720c0274214029182e64ddd60" name="a2fb8a84720c0274214029182e64ddd60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fb8a84720c0274214029182e64ddd60">&#9670;&nbsp;</a></span>DelBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.DelBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. <br  />
+ Use <a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119" title="Removes the buff type and shuffles the remaining buff indexes down to fill the gap....">NPC.RequestBuffRemoval</a> if you only know the buff type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffIndex</td><td>The index of the buff to remove.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2392,6 +2469,33 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
  A short-hand for </p>
 <p ><code> Main.npc[NPC.NewNPC(...)] </code> </p>
+
+</div>
+</div>
+<a id="aa0030c39514c7cfce2a9ffcbbbd24119" name="aa0030c39514c7cfce2a9ffcbbbd24119"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0030c39514c7cfce2a9ffcbbbd24119">&#9670;&nbsp;</a></span>RequestBuffRemoval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.RequestBuffRemoval </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffTypeToRemove</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the buff type and shuffles the remaining buff indexes down to fill the gap. <br  />
+ Use <a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">NPC.DelBuff</a> if you only know the buff index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffTypeToRemove</td><td>The buff type</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

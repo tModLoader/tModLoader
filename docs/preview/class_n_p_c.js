@@ -1,6 +1,8 @@
 var class_n_p_c =
 [
+    [ "AddBuff", "class_n_p_c.html#a6519d87a1742abe76ac68c9396dfb117", null ],
     [ "CheckCatchNPC", "class_n_p_c.html#a64991e8657153fdce11c33746dc806fa", null ],
+    [ "DelBuff", "class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60", null ],
     [ "GetGlobalNPC< T >", "class_n_p_c.html#a36bb05e380e083a4c41f2a741cbe6b7f", null ],
     [ "GetGlobalNPC< T >", "class_n_p_c.html#ae160f9e9e481a06229d679a7ef5374f1", null ],
     [ "HasBuff", "class_n_p_c.html#aa8811fd936a1656a412d1367ec06e9cf", null ],
@@ -8,6 +10,7 @@ var class_n_p_c =
     [ "NewNPC", "class_n_p_c.html#a70912c867c179a198c4e0ab06e01996c", null ],
     [ "NewNPCDirect", "class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3", null ],
     [ "NewNPCDirect", "class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30", null ],
+    [ "RequestBuffRemoval", "class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119", null ],
     [ "SitDown", "class_n_p_c.html#a730d6d0e9d96e451fc08814adeb807ba", null ],
     [ "TryGetGlobalNPC< T >", "class_n_p_c.html#a619627b8b1c8fd973c5981a8e9cee9e6", null ],
     [ "TryGetGlobalNPC< T >", "class_n_p_c.html#a18f67f03259864860afd737f2cc7236d", null ],

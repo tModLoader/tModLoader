@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"interface_actions_1_1_players_1_1_i_player_action.html":[2,0,15,13,1],
+"interface_actions_1_1_sprites_1_1_i_sprite_action.html":[2,0,15,24,2],
+"interface_command_caller.html":[2,0,160],
 "interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[2,0,160,1],
 "interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[2,0,160,0],
 "interface_i_achievement_tracker.html":[2,0,465],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "struct_player_stats_snapshot.html#a16f610265315066a11771c0997eb8099":[2,0,935,1],
 "struct_player_stats_snapshot.html#a3c6d069841594f539f7663a68bff60a4":[2,0,935,0],
 "struct_point16.html":[2,0,939],
-"struct_portable_stool_usage.html":[2,0,942],
-"struct_pos_data.html":[2,0,944],
-"struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[2,0,944,3],
-"struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[2,0,944,6]
+"struct_portable_stool_usage.html":[2,0,942]
 };
