@@ -53,7 +53,7 @@
  			NPC nPC = new NPC();
  			nPC.SetDefaults(i);
  			NpcsByNetId[i] = nPC;
-@@ -750,20 +_,26 @@
+@@ -750,14 +_,14 @@
  
  		ModifyNPCIds();
  		ProjectilesByType.Clear();
@@ -70,18 +70,6 @@
  			Item item = new Item();
  			item.SetDefaults(k);
  			ItemsByType[k] = item;
- 			string name2 = ItemID.Search.GetName(item.netID);
- 			ItemPersistentIdsByNetIds[k] = name2;
- 			ItemNetIdsByPersistentIds[name2] = k;
-+			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
-+				if (item.createTile > -1)
-+					TileLoader.tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
-+				if (item.createWall > -1)
-+					WallLoader.wallTypeToItemType[item.createWall] = item.type;
-+			}
- 		}
- 
- 		foreach (int item3 in ItemID.Sets.ItemsThatAreProcessedAfterNormalContentSample) {
 @@ -955,7 +_,7 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];

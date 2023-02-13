@@ -327,4 +327,15 @@ public static class WallLoader
 
 		GetWall(type)?.PlaceInWorld(i, j, item);
 	}
+
+	internal static void FinishSetup()
+	{
+		for (int k = 0; k < ItemLoader.ItemCount; k++) {
+			Item item = ContentSamples.ItemsByType[k];
+			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
+				if (item.createWall > -1)
+					WallLoader.wallTypeToItemType[item.createWall] = item.type;
+			}
+		}
+	}
 }

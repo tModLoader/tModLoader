@@ -2096,10 +2096,11 @@
  		for (int k = 0; k < num16; k++) {
  			KillTile_MakeTileDust(i, j, tile);
  		}
-@@ -45756,9 +_,16 @@
+@@ -45756,9 +_,17 @@
  
  	private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
  
++	// made internal, added includeAllModdedLargeObjectDrops param
 -	private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
 +	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
  	{

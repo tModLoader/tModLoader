@@ -1155,4 +1155,15 @@ public static class TileLoader
 			metrics.JungleTileCount += tileCount * jungle;
 		}
 	}
+
+	internal static void FinishSetup()
+	{
+		for (int k = 0; k < ItemLoader.ItemCount; k++) {
+			Item item = ContentSamples.ItemsByType[k];
+			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
+				if (item.createTile > -1)
+					tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
+			}
+		}
+	}
 }
