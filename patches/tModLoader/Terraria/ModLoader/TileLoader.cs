@@ -244,7 +244,7 @@ public static class TileLoader
 
 	internal static void PostSetupContent()
 	{
-		Main.SetupTileMerge(TileCount);
+		Main.SetupAllBlockMerge();
 		PostSetupTileMerge();
 	}
 
@@ -377,18 +377,21 @@ public static class TileLoader
 		return -1;
 	}
 
+	/// <inheritdoc cref="IsClosedDoor(int)"/>
+	public static bool IsClosedDoor(Tile tile) => IsClosedDoor(tile.type);
+
 	/// <summary>
 	/// Returns true if the tile is a vanilla or modded closed door.
 	/// </summary>
-	public static bool IsClosedDoor(Tile tile)
+	public static bool IsClosedDoor(int type)
 	{
-		ModTile modTile = GetTile(tile.type);
+		ModTile modTile = GetTile(type);
 
 		if (modTile != null) {
 			return modTile.OpenDoorID > -1;
 		}
 
-		return tile.type == TileID.ClosedDoor;
+		return type == TileID.ClosedDoor;
 	}
 
 	public static string ContainerName(int type, int frameX, int frameY) => GetTile(type)?.ContainerName(frameY, frameY)?.Value ?? string.Empty;
@@ -1023,8 +1026,7 @@ public static class TileLoader
 			hook();
 		}
 
-		for (int i = 0; i < tiles.Count; i++) {
-			ModTile modTile = tiles[i];
+		foreach (var modTile in tiles) {
 			modTile.PostSetupTileMerge();
 		}
 	}

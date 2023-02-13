@@ -457,8 +457,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to set <see cref="TileID.Sets.BlockMergesWithMergeAllBlock"/> to false if you don't want your tile to merge with other tiles in <see cref="Main.tileBlendAll"/> (Echo Block does this).
-	/// <br/>Can be used to adjust other tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
+	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
 	/// </summary>
 	public virtual void PostSetupTileMerge()
 	{
