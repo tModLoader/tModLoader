@@ -6,6 +6,8 @@ var class_tile_i_d_1_1_sets =
     [ "TileCutIgnore", "class_tile_i_d_1_1_sets_1_1_tile_cut_ignore.html", null ],
     [ "AddCrimsonTile", "class_tile_i_d_1_1_sets.html#a6e90e60e288411145cd84e02487a69c5", null ],
     [ "AvoidedByMeteorLanding", "class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313", null ],
+    [ "BlockMergesWithMergeAllBlock", "class_tile_i_d_1_1_sets.html#a0c566028cc2f0e464e4f630bd73d20e4", null ],
+    [ "BlockMergesWithMergeAllBlockOverride", "class_tile_i_d_1_1_sets.html#ad263324405134e000e15ba050aeae0d7", null ],
     [ "CanBeClearedDuringOreRunner", "class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36", null ],
     [ "CanBeSloped", "class_tile_i_d_1_1_sets.html#a1358ffd200656f7e6cc8f472ac4f2409", null ],
     [ "Clock", "class_tile_i_d_1_1_sets.html#a4caff834296122a8aadb0b343003a793", null ],

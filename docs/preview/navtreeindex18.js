@@ -1,5 +1,10 @@
 var NAVTREEINDEX18 =
 {
+"struct_player_sitting_helper.html":[2,0,933],
+"struct_player_sleeping_helper.html":[2,0,934],
+"struct_player_stats_snapshot.html":[2,0,935],
+"struct_player_stats_snapshot.html#a16f610265315066a11771c0997eb8099":[2,0,935,1],
+"struct_player_stats_snapshot.html#a3c6d069841594f539f7663a68bff60a4":[2,0,935,0],
 "struct_point16.html":[2,0,939],
 "struct_portable_stool_usage.html":[2,0,942],
 "struct_pos_data.html":[2,0,944],

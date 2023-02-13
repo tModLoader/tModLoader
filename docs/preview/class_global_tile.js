@@ -17,6 +17,7 @@ var class_global_tile =
     [ "MouseOver", "class_global_tile.html#a41f5cd5d54215e2e41ff440f89340cc0", null ],
     [ "MouseOverFar", "class_global_tile.html#a86355a0bac4b8cfcc6e3d5990a4c82bf", null ],
     [ "NearbyEffects", "class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd", null ],
+    [ "PostSetupTileMerge", "class_global_tile.html#a7c20aceb0500f1518da17f0a9c29294b", null ],
     [ "PreHitWire", "class_global_tile.html#a9e1dd0f415df215847048a005719966c", null ],
     [ "Register", "class_global_tile.html#afe930e11a453ea3bac520f8c5b7a481d", null ],
     [ "RightClick", "class_global_tile.html#ab7419ebee394a8290e7731b86e47676f", null ],

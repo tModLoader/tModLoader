@@ -29,6 +29,7 @@ var class_mod_tile =
     [ "MouseOverFar", "class_mod_tile.html#a0724d779606ce78efa790344f8434678", null ],
     [ "NearbyEffects", "class_mod_tile.html#a5d51258e65d17bdb13cfe225fd44aea9", null ],
     [ "PostSetDefaults", "class_mod_tile.html#a225cb3ba315b70347fd305b049ffa497", null ],
+    [ "PostSetupTileMerge", "class_mod_tile.html#a3f80b7cf1635e81f45a31d7ca4d3d98a", null ],
     [ "Register", "class_mod_tile.html#aa7b627fa06aaaad657067d77870cbdba", null ],
     [ "RightClick", "class_mod_tile.html#a711f91bbf33368cbda6576a81aa6c56f", null ],
     [ "SetDrawPositions", "class_mod_tile.html#acb362facee6fb168a506e9d30bfe003e", null ],

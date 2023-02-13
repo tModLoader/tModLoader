@@ -1,5 +1,10 @@
 var NAVTREEINDEX16 =
 {
+"class_unified_random.html":[2,0,1325],
+"class_unified_random.html#a4040681602b93f1eed92662395230f13":[2,0,1325,0],
+"class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[2,0,1325,1],
+"class_unloaded_accessory_slot.html":[2,0,1326],
+"class_unloaded_accessory_slot.html#ac75289d3883f4ff618e28aa699243544":[2,0,1326,1],
 "class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[2,0,1326,0],
 "class_unloaded_chest.html":[2,0,1327],
 "class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[2,0,1327,1],
@@ -244,10 +249,5 @@ var NAVTREEINDEX16 =
 "functions_vars_w.html":[2,3,2,22],
 "functions_vars_x.html":[2,3,2,23],
 "functions_vars_y.html":[2,3,2,24],
-"functions_vars_z.html":[2,3,2,25],
-"functions_w.html":[2,3,0,22],
-"functions_x.html":[2,3,0,23],
-"functions_y.html":[2,3,0,24],
-"functions_z.html":[2,3,0,25],
-"hierarchy.html":[2,2]
+"functions_vars_z.html":[2,3,2,25]
 };

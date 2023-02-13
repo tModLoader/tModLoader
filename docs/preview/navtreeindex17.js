@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"functions_w.html":[2,3,0,22],
+"functions_x.html":[2,3,0,23],
+"functions_y.html":[2,3,0,24],
+"functions_z.html":[2,3,0,25],
+"hierarchy.html":[2,2],
 "index.html":[],
 "interface_actions_1_1_n_p_cs_1_1_i_n_p_c_action.html":[2,0,15,10,4],
 "interface_actions_1_1_players_1_1_i_player_action.html":[2,0,15,13,1],
@@ -244,10 +249,5 @@ var NAVTREEINDEX17 =
 "struct_player_eye_helper.html":[2,0,919],
 "struct_player_fishing_conditions.html":[2,0,921],
 "struct_player_interaction_anchor.html":[2,0,925],
-"struct_player_movement_accs_cache.html":[2,0,928],
-"struct_player_sitting_helper.html":[2,0,933],
-"struct_player_sleeping_helper.html":[2,0,934],
-"struct_player_stats_snapshot.html":[2,0,935],
-"struct_player_stats_snapshot.html#a16f610265315066a11771c0997eb8099":[2,0,935,1],
-"struct_player_stats_snapshot.html#a3c6d069841594f539f7663a68bff60a4":[2,0,935,0]
+"struct_player_movement_accs_cache.html":[2,0,928]
 };

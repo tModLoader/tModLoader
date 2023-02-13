@@ -9,7 +9,7 @@ var searchData=
   ['isanglerquestavailable_6',['IsAnglerQuestAvailable',['../class_global_item.html#acb62236f2d00dfefc651eb5bc00df252',1,'GlobalItem.IsAnglerQuestAvailable()'],['../class_mod_item.html#a1553fd4bd122b14ee7cd1d227e058ad0',1,'ModItem.IsAnglerQuestAvailable()']]],
   ['isarmorset_7',['IsArmorSet',['../class_global_item.html#a36d9e69d9571c38e679a4e99b6b26f38',1,'GlobalItem.IsArmorSet()'],['../class_mod_item.html#a145d9507c4258305d95f6f39a76070ae',1,'ModItem.IsArmorSet()']]],
   ['isbiomeactive_8',['IsBiomeActive',['../class_mod_biome.html#a440b792825b471829288a02628f58499',1,'ModBiome']]],
-  ['iscloseddoor_9',['IsClosedDoor',['../class_tile_loader.html#acf2cfd3a048f6b6c46ec666847aea14f',1,'TileLoader']]],
+  ['iscloseddoor_9',['IsClosedDoor',['../class_tile_loader.html#acf2cfd3a048f6b6c46ec666847aea14f',1,'TileLoader.IsClosedDoor(Tile tile)'],['../class_tile_loader.html#a6e0fd00883840882258124f98abb7eed',1,'TileLoader.IsClosedDoor(int type)']]],
   ['isenabled_10',['IsEnabled',['../class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba',1,'UnloadedAccessorySlot.IsEnabled()'],['../class_mod_accessory_slot.html#a5573b319736ba223bb829d5d3a0f5ca1',1,'ModAccessorySlot.IsEnabled()']]],
   ['ishidden_11',['IsHidden',['../class_mod_accessory_slot.html#acc2c2beed3a04e82ea640c7647b1e269',1,'ModAccessorySlot']]],
   ['isloadingenabled_12',['IsLoadingEnabled',['../interface_i_loadable.html#a92a6276a1235d57c8e834508ba16ece1',1,'ILoadable.IsLoadingEnabled()'],['../class_mod_tile_entity.html#a62fe77a359a49c0d9cd451747c6636ff',1,'ModTileEntity.IsLoadingEnabled()'],['../class_mod_type.html#a7bb167af87e2172181b8a139db58e063',1,'ModType.IsLoadingEnabled()']]],
