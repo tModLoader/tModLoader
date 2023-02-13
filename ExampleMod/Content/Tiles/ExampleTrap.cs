@@ -37,6 +37,10 @@ namespace ExampleMod.Content.Tiles
 			int style = t.TileFrameY / 18;
 			// It can be useful to share a single tile with multiple styles.
 			yield return new Item(Mod.Find<ModItem>(Items.Placeable.ExampleTrap.GetInternalNameFromStyle(style)).Type);
+
+			// Here is an alternate approach:
+			// int dropItem = TileLoader.GetItemDropFromTypeAndStyle(Type, style);
+			// yield return new Item(dropItem);
 		}
 
 		public override bool CreateDust(int i, int j, ref int type) {

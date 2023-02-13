@@ -942,14 +942,6 @@
  
  		if (type == 92)
  			Item.NewItem(GetItemSource_FromTileBreak(x, j), x * 16, j * 16, 32, 32, 341);
-@@ -27126,6 +_,7 @@
- 							break;
- 					}
- 					break;
-+					// Extra patch context.
- 			}
- 
- 			Item.NewItem(GetItemSource_FromTileBreak(x, j), x * 16, j * 16, 32, 32, type2);
 @@ -27239,6 +_,7 @@
  			return;
  
@@ -2109,7 +2101,7 @@
 +
  		KillTile_GetItemDrops(x, y, tileCache, out var dropItem, out var dropItemStack, out var secondaryItem, out var secondaryItemStack, includeLargeObjectDrops);
 +
-+		TileLoader.GetItemDrops(x, y, tileCache, ref dropItem, ref dropItemStack, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
++		TileLoader.GetItemDrops(x, y, tileCache, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
 +
 +		// TODO: support centering spawn location for multitiles? Vanilla code is inconsistent in doing this.
  		if (!Main.getGoodWorld || tileCache.active()) {

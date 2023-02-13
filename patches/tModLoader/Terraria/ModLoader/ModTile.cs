@@ -193,9 +193,11 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to customize the items the tile at the given coordinates drops.
-	/// <br/> By default, this method will intelligently decide on a single item drop based on <see cref="ModBlockType.ItemDrop"/> and associated <see cref="TileObjectData"/>.
-	/// <br/> For tiles with a <see cref="TileObjectData"/>, the dropped item will be item type of the loaded item with <see cref="Item.createTile"/> set to this Tile and <see cref="Item.placeStyle"/> matching the style of the Tile. If the specific <see cref="Item.placeStyle"/> is not found, the decision will fall back to a <see cref="Item.placeStyle"/> of 0.
-	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items or tiles dropping items with custom data.
+	/// <br/> By default, this method will intelligently decide on a single item drop based on <see cref="ModBlockType.ItemDrop"/>, the tile style, and associated <see cref="TileObjectData"/> if it exists.
+	/// <br/> If <see cref="ModBlockType.ItemDrop"/> has a non-zero value, it will be used as the item to drop.
+	/// <br/> Otherwise, the dropped item will be the item type of the loaded item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of the Tile. If the specific <see cref="Item.placeStyle"/> is not found, the decision will fall back to a <see cref="Item.placeStyle"/> of 0.
+	/// <br/> Detecting the tile style is only reliable for tiles with an associated <see cref="TileObjectData"/>, so tiles using a manual tile style approach need to override this method. Once the style is calculated from the tile frame data, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop. 
+	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.
 	/// <br/> For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. 
 	/// <br/> Use <see cref="CanDrop"/> to prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.
 	/// </summary>
@@ -205,10 +207,9 @@ public abstract class ModTile : ModBlockType
 	{
 		// Automatic item derived from item.createTile and item.placeStyle
 		Tile tile = Main.tile[i, j];
-		TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
-		int style = 0;
-		if (tileData != null) {
-			style = TileObjectData.GetTileStyle(tile);
+		int style = TileObjectData.GetTileStyle(tile);
+		if (style == -1) {
+			style = 0;
 		}
 		int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.type, style);
 		if (dropItem > 0) {

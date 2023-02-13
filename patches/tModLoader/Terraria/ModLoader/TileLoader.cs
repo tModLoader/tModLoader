@@ -535,7 +535,7 @@ public static class TileLoader
 		return true;
 	}
 
-	public static void GetItemDrops(int x, int y, Tile tileCache, ref int dropItem, ref int dropItemStack, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
+	public static void GetItemDrops(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
 	{
 		ModTile modTile = GetTile(tileCache.TileType);
 		if (modTile == null)
@@ -576,6 +576,11 @@ public static class TileLoader
 
 	public static int GetItemDropFromTypeAndStyle(int type, int style = 0, bool allowFallbackToStyleZero = true)
 	{
+		// Override
+		ModTile modTile = GetTile(type);
+		if (modTile?.ItemDrop > 0) {
+			return modTile.ItemDrop;
+		}
 		int dropItem = 0;
 		(int type, int style) key = (type, style);
 		if (tileTypeAndTileStyleToItemType.TryGetValue(key, out int value)) {
@@ -583,11 +588,6 @@ public static class TileLoader
 		}
 		else if (allowFallbackToStyleZero && tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out int fallbackValue)) {
 			dropItem = fallbackValue;
-		}
-		// Override
-		ModTile modTile = GetTile(type);
-		if (modTile?.ItemDrop > 0) {
-			dropItem = modTile.ItemDrop;
 		}
 		return dropItem;
 	}

@@ -26,7 +26,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item.
 	/// <br/> Only necessary if there is no item which places this tile (or one of its styles). Otherwise, a matching placeable item will be dropped automatically
 	/// <br/> If this tile/wall drops multiple items, set this to the default item.
-	/// <br/> For ModTile, use <see cref="ModTile.GetItemDrops(int, int, ref int, ref int)"/> to customize which item drops depending on tile style or other conditions.
+	/// <br/> For ModTile, use <see cref="ModTile.GetItemDrops"/> to customize which item drops depending on tile style or other conditions.
 	/// </summary>
 	public int ItemDrop { get; set; }
 
