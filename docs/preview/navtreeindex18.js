@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"struct_point16.html":[2,0,939],
+"struct_portable_stool_usage.html":[2,0,942],
 "struct_pos_data.html":[2,0,944],
 "struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[2,0,944,3],
 "struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[2,0,944,6],

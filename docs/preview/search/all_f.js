@@ -1,8 +1,8 @@
 var searchData=
 [
   ['packethistory_0',['PacketHistory',['../class_packet_history.html',1,'']]],
-  ['paint_1',['Paint',['../class_dust_i_d.html#a6dc00d9651fc67dd11c9c95195604e08',1,'DustID']]],
-  ['paint_2',['paint',['../class_item.html#a46323b4a0918abe281a296534a19f37f',1,'Item']]],
+  ['paint_1',['paint',['../class_item.html#a46323b4a0918abe281a296534a19f37f',1,'Item']]],
+  ['paint_2',['Paint',['../class_dust_i_d.html#a6dc00d9651fc67dd11c9c95195604e08',1,'DustID']]],
   ['paintcoatingid_3',['PaintCoatingID',['../class_paint_coating_i_d.html',1,'']]],
   ['painterneedsothernpcstomovein_4',['PainterNeedsOtherNPCsToMoveIn',['../class_game_tip_i_d.html#a95a459b52f25c093c8bda5e592610041',1,'GameTipID']]],
   ['paintid_5',['PaintID',['../class_paint_i_d.html',1,'']]],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"class_old_hook_exception.html":[2,0,871],
+"class_one_from_options_drop_rule.html":[2,0,872],
 "class_one_from_options_not_scaled_with_luck_drop_rule.html":[2,0,873],
 "class_one_from_rules_rule.html":[2,0,874],
 "class_option_strings_attribute.html":[2,0,875],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "class_proj_a_i_style_i_d.html#a056cae24aa3bb44e96479de2450ea6aa":[2,0,962,127],
 "class_proj_a_i_style_i_d.html#a05bd7489d6320c50dac053844aeeb0b2":[2,0,962,18],
 "class_proj_a_i_style_i_d.html#a06e3c5c9056be895592e0ca80e656bb8":[2,0,962,145],
-"class_proj_a_i_style_i_d.html#a0862170a50bd1645d3099ca389647700":[2,0,962,119],
-"class_proj_a_i_style_i_d.html#a08b2bffcb4d20a36bc52f3fe177d78c8":[2,0,962,30],
-"class_proj_a_i_style_i_d.html#a0b4f88287969d0ea06a15ad68fe73324":[2,0,962,123]
+"class_proj_a_i_style_i_d.html#a0862170a50bd1645d3099ca389647700":[2,0,962,119]
 };

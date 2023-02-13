@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"index.html":[],
+"interface_actions_1_1_n_p_cs_1_1_i_n_p_c_action.html":[2,0,15,10,4],
 "interface_actions_1_1_players_1_1_i_player_action.html":[2,0,15,13,1],
 "interface_actions_1_1_sprites_1_1_i_sprite_action.html":[2,0,15,24,2],
 "interface_command_caller.html":[2,0,160],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "struct_player_sleeping_helper.html":[2,0,934],
 "struct_player_stats_snapshot.html":[2,0,935],
 "struct_player_stats_snapshot.html#a16f610265315066a11771c0997eb8099":[2,0,935,1],
-"struct_player_stats_snapshot.html#a3c6d069841594f539f7663a68bff60a4":[2,0,935,0],
-"struct_point16.html":[2,0,939],
-"struct_portable_stool_usage.html":[2,0,942]
+"struct_player_stats_snapshot.html#a3c6d069841594f539f7663a68bff60a4":[2,0,935,0]
 };

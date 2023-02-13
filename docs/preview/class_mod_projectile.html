@@ -146,6 +146,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBehind</b
 virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlpha</b> (Color lightColor)</td></tr>
 <tr class="memdesc:a06bc673759fe0d67576f5e657e093e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. <br /></td></tr>
 <tr class="separator:a06bc673759fe0d67576f5e657e093e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeb70d196aa3088063b117bed4c2d6ff"><td class="memItemLeft" align="right" valign="top"><a id="aeeb70d196aa3088063b117bed4c2d6ff" name="aeeb70d196aa3088063b117bed4c2d6ff"></a>
+virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleCanLatchOnTo</b> (<a class="el" href="class_player.html">Player</a> player, int x, int y)</td></tr>
+<tr class="memdesc:aeeb70d196aa3088063b117bed4c2d6ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the grappling hook can latch onto the given position in tile coordinates. <br  />
+This position may be air or an actuated tile! <br  />
+Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default. <br /></td></tr>
+<tr class="separator:aeeb70d196aa3088063b117bed4c2d6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d4a446cf802064f0d5c27633d8baf96"><td class="memItemLeft" align="right" valign="top"><a id="a1d4a446cf802064f0d5c27633d8baf96" name="a1d4a446cf802064f0d5c27633d8baf96"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrapplePullSpeed</b> (<a class="el" href="class_player.html">Player</a> player, ref float speed)</td></tr>
 <tr class="memdesc:a1d4a446cf802064f0d5c27633d8baf96"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16. <br /></td></tr>

@@ -11,6 +11,7 @@ var class_global_projectile =
     [ "CutTiles", "class_global_projectile.html#aa280593fd4a5a8ae59c6155c7003b4ac", null ],
     [ "DrawBehind", "class_global_projectile.html#a1f9e00da967e11713bf0ddb174ace4cf", null ],
     [ "GetAlpha", "class_global_projectile.html#afc285f00d9b30c848c3a09bf72ab3e19", null ],
+    [ "GrappleCanLatchOnTo", "class_global_projectile.html#a8cff32f253b958654907864b83c1687c", null ],
     [ "GrapplePullSpeed", "class_global_projectile.html#a697d37549978cf832d78bbd33ed59985", null ],
     [ "GrappleRetreatSpeed", "class_global_projectile.html#a2063b0c6e9419e4f998bf424efe515ee", null ],
     [ "GrappleTargetPoint", "class_global_projectile.html#a9bca3eda926bf9c9f33709c29c974c99", null ],
