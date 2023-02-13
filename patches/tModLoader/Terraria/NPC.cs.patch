@@ -1711,6 +1711,21 @@
  	{
  		if (!active)
  			return;
+@@ -72191,6 +_,14 @@
+ 		return -1;
+ 	}
+ 
++	/// <summary>
++	/// Gives this NPC the provided buff. This accounts for if the NPC is immune to the buff.
++	/// <br/> If the NPC already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>.
++	/// <br/> The quiet parameter will determine if the network sync message should happen. This should always stay false.
++	/// </summary>
++	/// <param name="type">The buff type</param>
++	/// <param name="time">The desired buff time in ticks. 60 ticks is 1 second</param>
++	/// <param name="quiet">If true, the network sync message is skipped.</param>
+ 	public void AddBuff(int type, int time, bool quiet = false)
+ 	{
+ 		if (buffImmune[type])
 @@ -72206,6 +_,9 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
@@ -1721,8 +1736,15 @@
  				if (buffTime[i] < time)
  					buffTime[i] = time;
  
-@@ -72242,7 +_,7 @@
+@@ -72240,9 +_,14 @@
+ 		buffTime[num] = time;
+ 	}
  
++	/// <summary>
++	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap.
++	/// <br/> Use <see cref="NPC.DelBuff"/> if you only know the buff index.
++	/// </summary>
++	/// <param name="buffTypeToRemove">The buff type</param>
  	public void RequestBuffRemoval(int buffTypeToRemove)
  	{
 -		if (buffTypeToRemove < 0 || buffTypeToRemove >= BuffID.Count || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
@@ -1730,6 +1752,18 @@
  			return;
  
  		int num = FindBuffIndex(buffTypeToRemove);
+@@ -72253,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap.
++	/// <br/> Use <see cref="NPC.RequestBuffRemoval"/> if you only know the buff type.
++	/// </summary>
++	/// <param name="buffIndex">The index of the buff to remove.</param>
+ 	public void DelBuff(int buffIndex)
+ 	{
+ 		buffTime[buffIndex] = 0;
 @@ -72432,9 +_,19 @@
  	public void UpdateNPC(int i)
  	{

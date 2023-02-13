@@ -72,3 +72,15 @@
  		public static bool[] IgnoresNearbyHalfbricksWhenDrawn = Factory.CreateBoolSet(380, 476, 235, 138, 664, 137, 484, 421, 422);
  		public static bool[] SwaysInWindBasic = Factory.CreateBoolSet(3, 20, 24, 61, 71, 73, 74, 83, 84, 110, 113, 201, 227, 529, 590, 595, 615, 624, 656, 637);
  		public static int[] DrawFlipMode = Factory.CreateIntSet(0, 3, 1, 13, 1, 20, 1, 24, 1, 49, 1, 372, 1, 646, 1, 50, 1, 52, 1, 61, 1, 62, 1, 71, 1, 73, 1, 74, 1, 81, 1, 82, 1, 83, 1, 84, 1, 91, 1, 92, 1, 93, 1, 110, 1, 113, 1, 115, 1, 135, 1, 141, 1, 165, 1, 174, 1, 201, 1, 205, 1, 227, 1, 270, 1, 271, 1, 382, 1, 184, 2, 185, 3, 528, 1, 529, 1, 590, 1, 595, 1, 615, 1, 624, 1, 638, 1, 636, 1, 656, 1);
+@@ -248,6 +_,11 @@
+ 		public static bool[] TouchDamageBleeding = Factory.CreateBoolSet(48, 232);
+ 		public static int[] TouchDamageImmediate = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25);
+ 		public static bool[] Falling = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495);
++		// Conditions taken from Main.SetupTileMerge
++		/// <summary>
++		/// Set to true automatically for all tiles that are <see cref="Main.tileSolid"/> and not <see cref="Main.tileSolidTop"/>. These tiles will merge with other tiles that are <see cref="Main.tileBlendAll"/>.
++		/// <br/>You can force a value to be assigned using <see cref="BlockMergesWithMergeAllBlockOverride"/> in <see cref="ModType.SetStaticDefaults"/>, as this is set is populated afterwards, ignoring edits to it.
++		/// </summary>
+ 		public static bool[] BlockMergesWithMergeAllBlock = Factory.CreateBoolSet();
+ 		public static bool[] OreMergesWithMud = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223);
+ 		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);

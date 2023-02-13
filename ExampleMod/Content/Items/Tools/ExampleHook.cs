@@ -116,6 +116,23 @@ namespace ExampleMod.Content.Items.Tools
 			grappleY += dirToPlayer.Y * hangDist;
 		}
 
+		// Can customize what tiles this hook can latch onto, or force/prevent latching alltogether, like Squirrel Hook also latching to trees
+		public override bool? GrappleCanLatchOnTo(Player player, int x, int y) {
+			// By default, the hook returns null to apply the vanilla conditions for the given tile position (this tile position could be air or an actuated tile!)
+			// If you want to return true here, make sure to check for Main.tile[x, y].HasUnactuatedTile (and Main.tileSolid[Main.tile[x, y].TileType] and/or Main.tile[x, y].HasTile if needed)
+
+			// We make this hook latch onto trees just like Squirrel Hook
+
+			// Tree trunks cannot be actuated so we don't need to check for that here
+			Tile tile = Main.tile[x, y];
+			if (TileID.Sets.IsATreeTrunk[tile.TileType] || tile.TileType == TileID.PalmTree) {
+				return true;
+			}
+
+			// In any other case, behave like a normal hook
+			return null;
+		}
+
 		// Draws the grappling hook's chain.
 		public override bool PreDrawExtras() {
 			Vector2 playerCenter = Main.player[Projectile.owner].MountedCenter;

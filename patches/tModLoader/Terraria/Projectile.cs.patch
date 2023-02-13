@@ -1267,6 +1267,16 @@
  
  			Vector2 vector3 = base.Center - new Vector2(5f);
  			Vector2 vector4 = base.Center + new Vector2(5f);
+@@ -36334,7 +_,8 @@
+ 						continue;
+ 
+ 					Tile tile = Main.tile[l, m];
++					// TML: Moved nactive check into method, changed from tile to coords
+-					if (!tile.nactive() || !AI_007_GrapplingHooks_CanTileBeLatchedOnTo(tile) || list.Contains(new Point(l, m)) || (type == 403 && tile.type != 314) || Main.player[owner].IsBlacklistedForGrappling(new Point(l, m)))
++					if (!AI_007_GrapplingHooks_CanTileBeLatchedOnTo(l, m) || list.Contains(new Point(l, m)) || (type == 403 && tile.type != 314) || Main.player[owner].IsBlacklistedForGrappling(new Point(l, m)))
+ 						continue;
+ 
+ 					if (Main.player[owner].grapCount < 10) {
 @@ -36371,6 +_,8 @@
  						if (type >= 646 && type <= 649)
  							num17 = 4;
@@ -1285,6 +1295,40 @@
  			if (num3 < 24f)
  				Kill();
  
+@@ -36463,7 +_,8 @@
+ 				Main.tile[point4.X, point4.Y] = new Tile();
+ 
+ 			bool flag = true;
+-			if (Main.tile[point4.X, point4.Y].nactive() && AI_007_GrapplingHooks_CanTileBeLatchedOnTo(Main.tile[point4.X, point4.Y]))
++			// TML: Moved nactive check into method, changed from tile to coords
++			if (AI_007_GrapplingHooks_CanTileBeLatchedOnTo(point4.X, point4.Y))
+ 				flag = false;
+ 
+ 			if (flag) {
+@@ -36476,7 +_,23 @@
+ 		}
+ 	}
+ 
++	/*
+ 	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(Tile theTile) => Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
++	*/
++	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(int x, int y)
++	{
++		Tile theTile = Main.tile[x, y];
++		// Code taken 1:1 from the commented out method with the same name
++		bool vanilla = Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
++
++		// TML: Vanilla check modified by moving Tile.nactive() from its callsites into here to allow actuated or air to be grappled by mods
++		vanilla &= theTile.nactive();
++
++		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
++			return modOverride;
++
++		return vanilla;
++	}
+ 
+ 	private void AI_147_Celeb2Rocket()
+ 	{
 @@ -36660,7 +_,7 @@
  			return;
  		}

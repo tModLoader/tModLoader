@@ -790,6 +790,26 @@ public static class ProjectileLoader
 		}
 	}
 
+	private static HookList HookGrappleCanLatchOnTo = AddHook<Func<Projectile, Player, int, int, bool?>>(g => g.GrappleCanLatchOnTo);
+
+	public static bool? GrappleCanLatchOnTo(Projectile projectile, Player player, int x, int y)
+	{
+		bool? flag = projectile.ModProjectile?.GrappleCanLatchOnTo(player, x, y);
+
+		foreach (GlobalProjectile g in HookGrappleCanLatchOnTo.Enumerate(projectile.globalProjectiles)) {
+			bool? globalFlag = g.GrappleCanLatchOnTo(projectile, player, x, y);
+
+			if (globalFlag.HasValue) {
+				if (!globalFlag.Value)
+					return false;
+
+				flag = globalFlag;
+			}
+		}
+
+		return flag;
+	}
+
 	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
 
 	internal static void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

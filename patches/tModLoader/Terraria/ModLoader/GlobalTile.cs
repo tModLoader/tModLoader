@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -298,5 +299,11 @@ public abstract class GlobalTile : GlobalBlockType
 	public virtual bool CanReplace(int i, int j, int type, int tileTypeBeingPlaced)
 	{
 		return true;
+	}
+
+	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
+	/// </summary>
+	public virtual void PostSetupTileMerge()
+	{
 	}
 }
