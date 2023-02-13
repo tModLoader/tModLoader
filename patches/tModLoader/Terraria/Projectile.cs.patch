@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,271 @@
+@@ -66,70 +_,277 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -225,6 +225,12 @@
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
 +	/// </summary>
  	public bool hide;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this projectile will only deal damage if its owner has line of sight to the hit.
++	/// <br/> Useful for melee projectiles, such as spears and shortswords.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool ownerHitCheck;
  	public bool usesOwnerMeleeHitCD;
  	public int[] playerImmune = new int[255];

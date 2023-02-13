@@ -37,7 +37,78 @@
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -734,11 +_,14 @@
+@@ -719,26 +_,85 @@
+ 		public static int GetBestiaryStarsPriority(NPC npc) => NpcBestiaryRarityStars[npc.type];
+ 	}
+ 
++	/// <summary>
++	/// The default <see cref="NPC"/> for a given <see cref="NPCID"/>.
++	/// </summary>
+ 	public static Dictionary<int, NPC> NpcsByNetId = new Dictionary<int, NPC>();
++
++	/// <summary>
++	/// The default <see cref="Projectile"/> for a given <see cref="ProjectileID"/>.
++	/// </summary>
+ 	public static Dictionary<int, Projectile> ProjectilesByType = new Dictionary<int, Projectile>();
++
++	/// <summary>
++	/// The default <see cref="Item"/> for a given <see cref="ItemID"/>.
++	/// </summary>
+ 	public static Dictionary<int, Item> ItemsByType = new Dictionary<int, Item>();
++
++	/// <summary>
++	/// The <see cref="ItemID"/> for a given persistent ID.
++	/// <br/> Vanilla persistent IDs are the names in <see cref="ItemID"/>. Modded persistent IDs are in the format <c>"<see cref="ModType.Mod"/>/<see cref="ModType.Name"/>"</c>.
++	/// </summary>
++	/// <remarks>
++	/// You can get the persistent ID of a given <see cref="ItemID"/> using either <see cref="ItemPersistentIdsByNetIds"/> or <see cref="ItemID.Search"/>.
++	/// </remarks>
+ 	public static Dictionary<string, int> ItemNetIdsByPersistentIds = new Dictionary<string, int>();
++
++	/// <summary>
++	/// The persistent ID for a given <see cref="ItemID"/>.
++	/// </summary>
+ 	public static Dictionary<int, string> ItemPersistentIdsByNetIds = new Dictionary<int, string>();
++
++	/// <summary>
++	/// Associates an <see cref="ItemID"/> with the <see cref="ItemID"/> it shares research values with.
++	/// </summary>
+ 	public static Dictionary<int, int> CreativeResearchItemPersistentIdOverride = new Dictionary<int, int>();
++
++	/// <summary>
++	/// The <see cref="NPCID"/> for a given persistent ID.
++	/// <br/> Vanilla persistent IDs are the names in <see cref="NPCID"/>. Modded persistent IDs are in the format <c>"<see cref="ModType.Mod"/>/<see cref="ModType.Name"/>"</c>.
++	/// </summary>
++	/// <remarks>
++	/// You can get the persistent ID of a given <see cref="NPCID"/> using either <see cref="NpcPersistentIdsByNetIds"/> or <see cref="NPCID.Search"/>.
++	/// </remarks>
+ 	public static Dictionary<string, int> NpcNetIdsByPersistentIds = new Dictionary<string, int>();
++
++	/// <summary>
++	/// The persistent ID for a given <see cref="NPCID"/>.
++	/// </summary>
+ 	public static Dictionary<int, string> NpcPersistentIdsByNetIds = new Dictionary<int, string>();
++
++	/// <summary>
++	/// The entry number in the Bestiary for a given <see cref="NPCID"/>.
++	/// </summary>
+ 	public static Dictionary<int, int> NpcBestiarySortingId = new Dictionary<int, int>();
++
++	/// <summary>
++	/// The number of stars a given <see cref="NPCID"/> shows in the Bestiary.
++	/// <br/> Set in <see cref="ModNPC.SetBestiary(BestiaryDatabase, BestiaryEntry)"/> or <see cref="GlobalNPC.SetBestiary(NPC, BestiaryDatabase, BestiaryEntry)"/>.
++	/// </summary>
+ 	public static Dictionary<int, int> NpcBestiaryRarityStars = new Dictionary<int, int>();
++
++	/// <summary>
++	/// Associates an <see cref="NPCID"/> with the persistent ID of 
++	/// </summary>
+ 	public static Dictionary<int, string> NpcBestiaryCreditIdsByNpcNetIds = new Dictionary<int, string>();
++
++	/// <summary>
++	/// Associates an <see cref="ItemID"/> with its <see cref="CreativeHelper.ItemGroup"/> and sorting order in the Research menu.
++	/// </summary>
+ 	public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
  
  	public static void Initialize()
  	{

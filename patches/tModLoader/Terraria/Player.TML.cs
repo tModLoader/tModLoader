@@ -501,6 +501,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return num5 >= price;
 	}
 
+	/// <summary>
+	/// Calculates the mana needed to use the given item.
+	/// </summary>
+	/// <param name="item">The item to check.</param>
+	/// <returns>The amount of mana needed to use <paramref name="item"/>. Cannot be less than <c>0</c>.</returns>
 	public int GetManaCost(Item item)
 	{
 		float reduce = manaCost;
@@ -517,6 +522,15 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return mana >= 0 ? mana : 0;
 	}
 
+	/// <summary>
+	/// Determines if this player has enough mana to use an item.
+	/// <br/> If the player doesn't have enough mana and <paramref name="blockQuickMana"/> is <see langword="false"/>, the player will activate any missing mana effects they have and try again.
+	/// </summary>
+	/// <param name="item">The item to use.</param>
+	/// <param name="amount">The amount of mana needed. If <c>-1</c>, calculate using <see cref="GetManaCost(Item)"/>.</param>
+	/// <param name="pay">If <see langword="true"/>, actually use the mana requested.</param>
+	/// <param name="blockQuickMana">If <see langword="true"/>, prevent on missing mana effects like the Mana Flower from activating if the player doesn't have enough mana.</param>
+	/// <returns><see langword="true"/> if the player has enough mana to use the item, <see langword="false"/> otherwise.</returns>
 	public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false)
 	{
 		if (amount <= -1)
