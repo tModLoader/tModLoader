@@ -1305,7 +1305,7 @@
  				flag = false;
  
  			if (flag) {
-@@ -36476,7 +_,24 @@
+@@ -36476,7 +_,23 @@
  		}
  	}
  
@@ -1315,15 +1315,14 @@
 +	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(int x, int y)
 +	{
 +		Tile theTile = Main.tile[x, y];
++		// Code taken 1:1 from the commented out method with the same name
 +		bool vanilla = Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
 +
 +		// TML: Vanilla check modified by moving Tile.nactive() from its callsites into here to allow actuated or air to be grappled by mods
 +		vanilla &= theTile.nactive();
 +
-+		bool? modded = ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y);
-+
-+		if (modded.HasValue)
-+			return modded.Value;
++		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
++			return modOverride;
 +
 +		return vanilla;
 +	}
