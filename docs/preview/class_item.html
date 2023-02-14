@@ -1385,6 +1385,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>PaintOrCoating</b><co
 <tr class="memitem:ab7fcb405aa707d7031409bb397b39738"><td class="memItemLeft" align="right" valign="top"><a id="ab7fcb405aa707d7031409bb397b39738" name="ab7fcb405aa707d7031409bb397b39738"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ResearchUnlockCount</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:ab7fcb405aa707d7031409bb397b39738"><td class="mdescLeft">&#160;</td><td class="mdescRight">A utility property for easily geting or setting the amount of items required for this item's current type to be researched. <br  />
+ By default, all modded items will have this set to 1. Set to 0 for unresearchable items, such as items that disappear on pickup. The Journey Mode Research wiki pagelists values for various types of items, use it as a guide for consistency. <br  />
  <b>NOTE:</b> The accessed values are stored per item type, not per item instance. You're recommended to only use the setter in load-time hooks, like <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModType.SetStaticDefaults</a>. <br /></td></tr>
 <tr class="separator:ab7fcb405aa707d7031409bb397b39738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7cba0ef1318508a361b377e663e6f90"><td class="memItemLeft" align="right" valign="top"><a id="af7cba0ef1318508a361b377e663e6f90" name="af7cba0ef1318508a361b377e663e6f90"></a>

@@ -51,17 +51,17 @@ var NAVTREEINDEX =
 "class_i_p_c_client.html",
 "class_item_loader.html#a707a1a9f2047897d335563936b8d0f49",
 "class_mod.html#a724f996256e98a550dbf6358c3d9d4b9",
-"class_mod_item.html#a75ef9172b2dc32e5c68a98384f04fd80",
-"class_mod_player.html#a4fea8cca07ffc958393215da13f5c9ca",
-"class_mod_system.html#a70af7c348c20c25bcfc4fc15b9d648d1",
-"class_n_p_c.html#a4486d89ec8a00e29b6a993b1462df29e",
-"class_ogg_reader.html",
-"class_proj_a_i_style_i_d.html#a06e3c5c9056be895592e0ca80e656bb8",
-"class_recipe.html",
-"class_t_e_weapons_rack.html#aaa4875b78ecf4e734f17bfaecb1f2353",
-"class_unified_random.html",
-"functions_w.html",
-"struct_player_sitting_helper.html"
+"class_mod_item.html#a7a64c6e647ff86bfbceffc7c3e723347",
+"class_mod_player.html#a50b71076f90fd0a452ba4b15c7ed8716",
+"class_mod_system.html#a79d956b5c2e07667d9f8010e5a1bf06e",
+"class_n_p_c.html#a5317045721698157180fde89ab7abd68",
+"class_old_attribute.html",
+"class_proj_a_i_style_i_d.html#a0862170a50bd1645d3099ca389647700",
+"class_recipe.html#a15eaf435d1348b0e68a4865e08ee157c",
+"class_t_e_weapons_rack.html#ac4e0e7b7865af88f21cbfccda6320747",
+"class_unified_random.html#a4040681602b93f1eed92662395230f13",
+"functions_x.html",
+"struct_player_sleeping_helper.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
