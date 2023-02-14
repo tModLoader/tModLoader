@@ -2480,7 +2480,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -15863,21 +_,68 @@
+@@ -15863,21 +_,71 @@
  		return num;
  	}
  
@@ -2519,6 +2519,7 @@
  			damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
 +		*/
 +		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default);
++		PlayerLoader.ModifyHitNPC(this, npc, ref modifiers);
 +
 +		ApplyBannerOffenseBuff(npc, ref modifiers);
 +
@@ -2543,6 +2544,8 @@
  		NPCKillAttempt attempt = new NPCKillAttempt(npc);
 -		int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
 +		int dmg = npc.StrikeNPC(hit);
++		PlayerLoader.OnHitNPC(this, npc, hit, dmg);
++
  		if (accDreamCatcher)
  			addDPS(dmg);
  

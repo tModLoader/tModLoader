@@ -88,6 +88,16 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		}
 	}
 
+	public bool TryGetOwner(out Player player)
+	{
+		player = null;
+		if (npcProj || trap)
+			return false;
+
+		player = Main.player[owner];
+		return player.active;
+	}
+
 	/// <summary>
 	/// Will drop loot the same way as when <see cref="ProjectileID.Geode"/> is cracked open.
 	/// </summary>

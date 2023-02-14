@@ -425,7 +425,7 @@ public static class PlayerLoader
 
 	public static void OnHurt(Player player, Player.HurtInfo info)
 	{
-		if (info.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
+		if (player == Main.LocalPlayer && info.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
 			switch (sourceEntity)
 			{
 				case Projectile proj:
@@ -812,22 +812,22 @@ public static class PlayerLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, NPC target, ref NPC.HitModifiers modifiers);
+	private delegate void DelegateModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers)
+	public static void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitNPC(item, target, ref modifiers);
+			modPlayer.ModifyHitNPC(target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, NPC.HitInfo, int>>(p => p.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC.HitInfo, int>>(p => p.OnHitNPC);
 
-	public static void OnHitNPC(Player player, Item item, NPC target, in NPC.HitInfo hit, int damageDone)
+	public static void OnHitNPC(Player player, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
 		foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitNPC(item, target, hit, damageDone);
+			modPlayer.OnHitNPC(target, hit, damageDone);
 		}
 	}
 
@@ -850,33 +850,6 @@ public static class PlayerLoader
 			}
 		}
 		return flag;
-	}
-
-	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers);
-	private static HookList HookModifyHitNPCWithProj = AddHook<DelegateModifyHitNPCWithProj>(p => p.ModifyHitNPCWithProj);
-
-	public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
-	{
-		if (proj.npcProj || proj.trap) {
-			return;
-		}
-		Player player = Main.player[proj.owner];
-		foreach (var modPlayer in HookModifyHitNPCWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitNPCWithProj(proj, target, ref modifiers);
-		}
-	}
-
-	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, NPC.HitInfo, int>>(p => p.OnHitNPCWithProj);
-
-	public static void OnHitNPCWithProj(Projectile proj, NPC target, in NPC.HitInfo hit, int damageDone)
-	{
-		if (proj.npcProj || proj.trap) {
-			return;
-		}
-		Player player = Main.player[proj.owner];
-		foreach (var modPlayer in HookOnHitNPCWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitNPCWithProj(proj, target, hit, damageDone);
-		}
 	}
 
 	private static HookList HookCanHitPvp = AddHook<Func<Item, Player, bool>>(p => p.CanHitPvp);

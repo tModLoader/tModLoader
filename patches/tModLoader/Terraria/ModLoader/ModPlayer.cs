@@ -664,12 +664,11 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
+	/// Allows you to modify the damage, knockback, etc that this player does to an NPC.
 	/// </summary>
-	/// <param name="item"></param>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref NPC.HitModifiers modifiers)
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -680,7 +679,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>
-	public virtual void OnHitNPC(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -693,27 +692,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual bool? CanHitNPCWithProj(Projectile proj, NPC target)
 	{
 		return null;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that a projectile created by this player does to an NPC.
-	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="target"></param>
-	/// <param name="modifiers"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when a projectile created by this player hits an NPC (for example, inflicting debuffs).
-	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="target"></param>
-	/// <param name="hit"></param>
-	/// <param name="damageDone"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-	{
 	}
 
 	/// <summary>
