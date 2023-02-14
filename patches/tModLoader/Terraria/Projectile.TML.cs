@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -88,7 +89,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		}
 	}
 
-	public bool TryGetOwner(out Player player)
+	public bool TryGetOwner([NotNullWhen(true)] out Player? player)
 	{
 		player = null;
 		if (npcProj || trap)
