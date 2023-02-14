@@ -289,15 +289,18 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
 	/// </summary>
 	/// <param name="target">The target.</param>
+	/// <param name="modifiers">/param>
 	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this hostile projectile hits a player.
+	/// Allows you to create special effects when this hostile projectile hits a player. <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+	/// <param name="info"></param>
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo info)
 	{
 	}
 

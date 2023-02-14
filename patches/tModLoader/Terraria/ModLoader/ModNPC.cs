@@ -386,7 +386,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs).
+	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs). <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="target"></param>
 	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)

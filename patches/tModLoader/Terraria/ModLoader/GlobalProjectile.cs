@@ -266,16 +266,19 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
 	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits a player.
+	/// Allows you to create special effects when a hostile projectile hits a player. <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	public virtual void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo hurtInfo)
+	/// <param name="info"></param>
+	public virtual void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo info)
 	{
 	}
 

@@ -316,7 +316,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs).
+	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs). <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>

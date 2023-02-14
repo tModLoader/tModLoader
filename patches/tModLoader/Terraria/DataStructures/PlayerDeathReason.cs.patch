@@ -51,6 +51,18 @@
  	public bool TryGetCausingEntity(out Entity entity)
  	{
  		entity = null;
+@@ -33,6 +_,11 @@
+ 
+ 		if (Main.projectile.IndexInRange(_sourceProjectileLocalIndex)) {
+ 			entity = Main.projectile[_sourceProjectileLocalIndex];
++
++			// some extra safety for projectiles, because their ids are not sent across the network
++			if (Main.player.IndexInRange(_sourcePlayerIndex) && (_sourcePlayerIndex != Main.myPlayer || ((Projectile)entity).owner != _sourcePlayerIndex))
++				entity = Main.player[_sourcePlayerIndex];
++			
+ 			return true;
+ 		}
+ 
 @@ -72,18 +_,26 @@
  		};
  	}
