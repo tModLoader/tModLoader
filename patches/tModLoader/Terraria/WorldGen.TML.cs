@@ -21,15 +21,14 @@ public partial class WorldGen
 
 	internal static void ClearGenerationPasses() => _generator?._passes.Clear();
 
-	/*public static ReadOnlyCollection<GenPass> VanillaGenPasses = vanillaGenPasses_internal.AsReadOnly();
+	//public static ReadOnlyCollection<GenPass> VanillaGenPasses = vanillaGenPasses_internal.AsReadOnly();
 	internal static List<GenPass> vanillaGenPasses_internal = new List<GenPass>();
-
+	/*
 	internal static List<Tuple<PassLegacy, ILContext.Manipulator>> genPassILEdits;
 	internal static List<Tuple<PassLegacy, GenPassDetour>> genPassDetours;
 
 	public delegate void GenPassDetour(WorldGenLegacyMethod orig, GenerationProgress progress, GameConfiguration configuration);
 
-	// TODO: XML comments
 	// TODO: Add support for hardmode tasks
 	public static void ModifyTask(PassLegacy pass, ILContext.Manipulator callback)
 	{

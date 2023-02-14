@@ -1094,6 +1094,14 @@
  		musicFade[50] = 1f;
  		if (dedServ)
  			netMode = 2;
+@@ -5095,6 +_,7 @@
+ 			if (!dedServ)
+ 				Lighting.Clear();
+ 		};
++		WorldGen.AddGenPasses();
+ 
+ 		DontStarveSeed.Initialize();
+ 		ResourceSetsManager = new PlayerResourceSetsManager();
 @@ -5108,11 +_,20 @@
  		BindSettingsTo(Configuration);
  		if (dedServ) {

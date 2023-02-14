@@ -423,6 +423,27 @@
  		worldCleared = true;
  	}
  
+@@ -5231,17 +_,17 @@
+ 
+ 	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
+ 	{
+-		_generator.Append(new PassLegacy(name, method));
++		vanillaGenPasses_internal.Add(new PassLegacy(name, method));
+ 	}
+ 
+ 	private static void AddGenerationPass(GenPass pass)
+ 	{
+-		_generator.Append(pass);
++		vanillaGenPasses_internal.Add(pass);
+ 	}
+ 
+ 	private static void AddGenerationPass(string name, double weight, WorldGenLegacyMethod method)
+ 	{
+-		_generator.Append(new PassLegacy(name, method, weight));
++		vanillaGenPasses_internal.Add(new PassLegacy(name, method, weight));
+ 	}
+ 
+ 	public static bool checkUnderground(int x, int y)
 @@ -5970,8 +_,12 @@
  			GenVars.desertHiveRight = x;
  	}
@@ -461,11 +482,11 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
-+		AddGenPasses();
++		AddGenPassesFromLoadTime();
 +		GenerateWorld_RunTasksAndFinish(seed, generationStopwatch, customProgressObject);
 +	}
 +
-+	private static void AddGenPasses()
++	internal static void AddGenPasses()
 +	{
  		AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  			if (genRand.Next(2) == 0)
@@ -605,15 +626,22 @@
  				else if (getGoodWorldGen)
  					num36 *= 2.0;
  
-@@ -13849,12 +_,30 @@
+@@ -13849,12 +_,37 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
 +	}
 +
++	private static void AddGenPassesFromLoadTime()
++	{
++		foreach (var pass in vanillaGenPasses_internal) {
++			_generator.Append(pass);
++		}
++	}
++
 +	// TODO:
 +	// Method split [Done]
-+	// Making the GenPasses created at load time [TODO]
++	// Making the GenPasses created at load time [Done]
 +	// Allowing the GenPasses to be ILEdited [TODO]
 +	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
 +	{
