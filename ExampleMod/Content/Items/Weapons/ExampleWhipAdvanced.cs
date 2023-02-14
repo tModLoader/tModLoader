@@ -10,10 +10,6 @@ namespace ExampleMod.Content.Items.Weapons
 		// The texture doesn't have the same name as the item, so this property points to it.
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleWhip";
 
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			// Call this method to quickly set some of the properties below.
 			//Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectileAdvanced>(), 20, 2, 4);
