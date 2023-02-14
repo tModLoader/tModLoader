@@ -20,8 +20,10 @@ public class ModTileTest : ModTile
 		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 
-		DresserDrop = 0;
-		ChestDrop = 0;
+		ItemDrop = 0;
+		ItemDrop = 0;
+		ItemDrop = 2;
+		ItemDrop = 3;
 		CloseDoorID = 0;
 		OpenDoorID = 0;
 		MinPick = 0;
@@ -88,4 +90,6 @@ public class ModTileTest : ModTile
 	}
 
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) { /* comment */ }
+
+	public override bool Drop(int i, int j)/* tModPorter Note: Removed. Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether. */ { /* Empty */ }
 }
