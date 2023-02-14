@@ -2376,6 +2376,14 @@
  						case 21:
  						case 26:
  						case 77:
+@@ -58780,6 +_,7 @@
+ 							return false;
+ 					}
+ 				}
++				// TODO: I don't think this is correct, hammering tiles isn't killing them.
+ 				return CanKillTile(x, y);
+ 		}
+ 	}
 @@ -59247,7 +_,10 @@
  					Liquid.AddWater(i, j);
  

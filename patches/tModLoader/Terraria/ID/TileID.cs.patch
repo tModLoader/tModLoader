@@ -28,19 +28,21 @@
  		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);
  		public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
  		public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
-@@ -115,7 +_,17 @@
+@@ -115,7 +_,19 @@
  		public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
  		public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
  		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +		/// <summary>
 +		/// Prevents a tile immediately below a tile of this type from being mineable.
 +		/// <br/> Use <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/> or <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
++		/// <br/> To affect tile replace behavior in a similar manner, see <see cref="PreventsTileReplaceIfOnTopOfIt"/>
 +		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
 +		/// </summary>
  		public static bool[] PreventsTileRemovalIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634);
 +		/// <summary>
 +		/// Prevents a tile immediately below a tile of this type from being replaceable via the block swap feature.
 +		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
++		/// <br/> To affect tile mining behavior in a similar manner, see <see cref="PreventsTileRemovalIfOnTopOfIt"/>
 +		/// <br/> Used mostly by trees tiles.
 +		/// </summary>
  		public static bool[] PreventsTileReplaceIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);

@@ -586,7 +586,7 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, styke 0 will be checked as a fallback.
+	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, style 0 will be checked as a fallback.
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="style"></param>
