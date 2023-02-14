@@ -151,10 +151,6 @@ namespace ExampleMod.Content.Tiles
 
 	internal class ExampleAnimatedTileItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FireflyinaBottle);
 			Item.createTile = ModContent.TileType<ExampleAnimatedTile>();

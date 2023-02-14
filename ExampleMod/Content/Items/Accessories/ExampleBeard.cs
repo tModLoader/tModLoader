@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleBeard : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-
 			ArmorIDs.Beard.Sets.UseHairColor[Item.beardSlot] = true;
 		}
 

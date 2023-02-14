@@ -305,6 +305,7 @@ public static class ModContent
 		});
 
 		ContentSamples.Initialize();
+		TileLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {

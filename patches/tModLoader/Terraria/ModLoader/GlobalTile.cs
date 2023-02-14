@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -272,6 +273,13 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type"></param>
 	/// <param name="style"></param>
 	public virtual void ChangeWaterfallStyle(int type, ref int style)
+	{
+	}
+
+	/// <summary>
+	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
+	/// </summary>
+	public virtual void PostSetupTileMerge()
 	{
 	}
 }
