@@ -586,20 +586,19 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. 
+	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, styke 0 will be checked as a fallback.
 	/// </summary>
 	/// <param name="type"></param>
 	/// <param name="style"></param>
-	/// <param name="allowFallbackToStyleZero">When true, if the specified style is not found, the style of 0 will be used for looking up the item.</param>
 	/// <returns></returns>
-	public static int GetItemDropFromTypeAndStyle(int type, int style = 0, bool allowFallbackToStyleZero = true)
+	public static int GetItemDropFromTypeAndStyle(int type, int style = 0)
 	{
 		// Override
 		ModTile modTile = GetTile(type);
 		if (modTile?.ItemDrop > 0) 
 			return modTile.ItemDrop;
 
-		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || allowFallbackToStyleZero && tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out value))
+		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out value))
 			return value;
 
 		return 0;
