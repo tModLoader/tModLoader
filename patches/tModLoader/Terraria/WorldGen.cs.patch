@@ -448,7 +448,7 @@
  			GenVars.desertHiveRight = x;
  	}
  
-+	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), and GenerateWorld_RunTasksAndFinish
++	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), AddGenPassesFromLoadTime (the replacement for AddGenPasses in GenerateWorld), and GenerateWorld_RunTasksAndFinish
  	public static void GenerateWorld(int seed, GenerationProgress customProgressObject = null)
  	{
 +		// For timing logging, used below.
@@ -626,7 +626,7 @@
  				else if (getGoodWorldGen)
  					num36 *= 2.0;
  
-@@ -13849,12 +_,37 @@
+@@ -13849,12 +_,33 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
@@ -639,10 +639,6 @@
 +		}
 +	}
 +
-+	// TODO:
-+	// Method split [Done]
-+	// Making the GenPasses created at load time [Done]
-+	// Allowing the GenPasses to be ILEdited [TODO]
 +	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
 +	{
 +		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
