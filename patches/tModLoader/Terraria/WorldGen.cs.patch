@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
+@@ -4,6 +_,7 @@
+ using System.Threading;
+ using System.Threading.Tasks;
+ using Microsoft.Xna.Framework;
++using rail;
+ using ReLogic.Utilities;
+ using Terraria.Audio;
+ using Terraria.Chat;
 @@ -22,13 +_,15 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -415,8 +423,11 @@
  		worldCleared = true;
  	}
  
-@@ -5972,6 +_,9 @@
+@@ -5970,8 +_,12 @@
+ 			GenVars.desertHiveRight = x;
+ 	}
  
++	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), and GenerateWorld_RunTasksAndFinish
  	public static void GenerateWorld(int seed, GenerationProgress customProgressObject = null)
  	{
 +		// For timing logging, used below.
@@ -440,7 +451,7 @@
  		_lastSeed = seed;
  		_generator = new WorldGenerator(seed, GenVars.configuration);
  		_genRand = new UnifiedRandom(seed);
-@@ -6097,6 +_,9 @@
+@@ -6097,9 +_,18 @@
  		GenVars.logX = -1;
  		GenVars.logY = -1;
  		GenVars.dungeonLocation = 0;
@@ -450,6 +461,15 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
++		AddGenPasses();
++		GenerateWorld_RunTasksAndFinish(seed, generationStopwatch, customProgressObject);
++	}
++
++	private static void AddGenPasses()
++	{
+ 		AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 			if (genRand.Next(2) == 0)
+ 				GenVars.crimsonLeft = false;
 @@ -7904,7 +_,10 @@
  					}
  
@@ -585,18 +605,22 @@
  				else if (getGoodWorldGen)
  					num36 *= 2.0;
  
-@@ -13850,11 +_,26 @@
+@@ -13849,12 +_,30 @@
+ 			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
- 
-+		genPassILEdits = new();
-+		genPassDetours = new();
++	}
 +
++	// TODO:
++	// Method split [Done]
++	// Making the GenPasses created at load time [TODO]
++	// Allowing the GenPasses to be ILEdited [TODO]
++	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
++	{
 +		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
-+
+ 
  		_generator.GenerateWorld(customProgressObject);
  		ConsumePostGenActions(GenVars.structures);
-+		RemoveGenPassILEditsAndDetours();
 +
 +		SystemLoader.PostWorldGen();
 +

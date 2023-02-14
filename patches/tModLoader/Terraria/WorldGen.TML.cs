@@ -11,6 +11,7 @@ using Steamworks;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.IO;
+using System.Collections.ObjectModel;
 
 namespace Terraria;
 
@@ -20,21 +21,20 @@ public partial class WorldGen
 
 	internal static void ClearGenerationPasses() => _generator?._passes.Clear();
 
-	internal static List<Tuple<GenPass, ILContext.Manipulator>> genPassILEdits;
-	internal static List<Tuple<GenPass, GenPassDetour>> genPassDetours;
+	/*public static ReadOnlyCollection<GenPass> VanillaGenPasses = vanillaGenPasses_internal.AsReadOnly();
+	internal static List<GenPass> vanillaGenPasses_internal = new List<GenPass>();
+
+	internal static List<Tuple<PassLegacy, ILContext.Manipulator>> genPassILEdits;
+	internal static List<Tuple<PassLegacy, GenPassDetour>> genPassDetours;
 
 	public delegate void GenPassDetour(WorldGenLegacyMethod orig, GenerationProgress progress, GameConfiguration configuration);
 
-	/// <summary>
-	/// IL edits a PassLegacy during world generation. Use in ModifyWorldGenerationTasks or ModifyHardmodeTasks.
-	/// </summary>
-	/// <param name="task">The task to be IL edited</param>
-	/// <param name="callback">The method that IL edits the pass</param>
+	// TODO: XML comments
 	// TODO: Add support for hardmode tasks
-	public static void ModifyTask(GenPass task, ILContext.Manipulator callback)
+	public static void ModifyTask(PassLegacy pass, ILContext.Manipulator callback)
 	{
-		HookEndpointManager.Modify(GetGenPassMethod(task), callback);
-		genPassILEdits.Add(Tuple.Create(task, callback));
+		HookEndpointManager.Modify(GetGenPassMethod(pass), callback);
+		genPassILEdits.Add(Tuple.Create(pass, callback));
 	}
 
 	/// <summary>
@@ -43,10 +43,10 @@ public partial class WorldGen
 	/// <param name="task">The task to be detoured</param>
 	/// <param name="hookDelegate">The detour method</param>
 	// TODO: make detours work
-	public static void DetourTask(GenPass task, GenPassDetour hookDelegate)
+	public static void DetourTask(PassLegacy pass, GenPassDetour hookDelegate)
 	{
-		HookEndpointManager.Add(GetGenPassMethod(task), hookDelegate);
-		genPassDetours.Add(Tuple.Create(task, hookDelegate));
+		HookEndpointManager.Add(GetGenPassMethod(pass), hookDelegate);
+		genPassDetours.Add(Tuple.Create(pass, hookDelegate));
 	}
 
 	internal static void RemoveGenPassILEditsAndDetours()
@@ -60,39 +60,15 @@ public partial class WorldGen
 		}
 	}
 
-	// TODO: tidy up
-	internal static MethodInfo GetGenPassMethod(GenPass task)
+	internal static MethodInfo GetGenPassMethod(PassLegacy pass)
 	{
-		if (task is PassLegacy pass) {
-			var methodField = typeof(PassLegacy).GetField("_method", BindingFlags.NonPublic | BindingFlags.Instance);
-			object method = methodField.GetValue(pass);
-			if (method is WorldGenLegacyMethod legacyMethod) {
-				return legacyMethod.Method;
-			}
-			else {
-				throw new Exception("Method is not a WorldGenLegacyMethod");
-				return null;
-			}
+		var methodField = typeof(PassLegacy).GetField("_method", BindingFlags.NonPublic | BindingFlags.Instance);
+		object methodFieldValue = methodField.GetValue(pass);
+		if (methodFieldValue is WorldGenLegacyMethod legacyMethod) {
+			return legacyMethod.Method;
 		}
 		else {
-			throw new Exception("Task is not a PassLegacy");
-			return null;
+			throw new Exception("Method is not a WorldGenLegacyMethod");
 		}
-	}
-
-	// TODO: Remove after testing and create DumpHooks for detours
-	internal static void DumpILHooks()
-	{
-		var ilHookList = typeof(HookEndpointManager).GetField("ILHooks", BindingFlags.NonPublic | BindingFlags.Static);
-		var list = ilHookList.GetValue(null);
-		if (list is Dictionary<(MethodBase, Delegate), ILHook> dict) {
-			Logging.tML.Debug("ILHooks Dump:");
-			foreach (var item in dict) {
-				Logging.tML.Debug(item.Key + ": " + item.Value);
-			}
-		}
-		else {
-			throw new Exception($"Failed to get HookEndpointManager.ILHooks: Type is {list.GetType()}");
-		}
-	}
+	}*/
 }

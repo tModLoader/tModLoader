@@ -18,7 +18,7 @@ namespace ExampleMod.Common.Systems
 	// TODO: also make a wiki page and remove the old part about how to il edit worldgen
 	public class ExampleWorldGenHookingSystem : ModSystem
 	{
-		// TODO this is where world generation tasks are modified
+		/*/ TODO this is where world generation tasks are modified
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			var task = tasks.Find(t => t.Name == "Living Trees"); // Find the task we want to modify, in this case the "Living Trees" pass
 			WorldGen.ModifyTask(task, ModifyLivingTrees); // Then we call WorldGen.ModifyTask, which IL edits the pass
@@ -49,6 +49,6 @@ namespace ExampleMod.Common.Systems
 			progress.Message = "Skipped Shinies";
 			Thread.Sleep(5000);
 			//orig(progress, configuration);
-		}
+		}*/
 	}
 }
