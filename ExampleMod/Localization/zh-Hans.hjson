@@ -37,7 +37,12 @@ Mods: {
 		}
 
 		// Currencies.ExampleCustomCurrency: example items
-		// DamageClasses.ExampleDamageClass.DisplayName: example damage
+
+		DamageClasses: {
+			// ExampleDamageClass.DisplayName: example damage
+			// TestDamageClass.DisplayName: Test Damage Class
+		}
+
 		Keybinds.RandomBuff.DisplayName: 随机增益
 
 		NPCs: {
@@ -827,7 +832,11 @@ Mods: {
 		}
 
 		// RecipeConditions.Night: At Low Health
-		// ResourceDisplaySets.ExampleReversedBarsDisplay.DisplayName: Swapped Bars
+
+		ResourceDisplaySets: {
+			// ExampleReversedBarsDisplay.DisplayName: Swapped Bars
+			// TestModResourceDisplaySet.DisplayName: Test Mod Resource Display Set
+		}
 
 		Bestiary: {
 			// ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.
@@ -903,7 +912,22 @@ Mods: {
 			// DisabledExampleTip: This tip will be added but then disabled by Example Mod.
 		}
 
-		// InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
+		InfoDisplays: {
+			// ExampleInfoDisplay.DisplayName: Minion Count
+			// TestInfoDisplay.DisplayName: Test Info Display
+		}
+
+		LocalizedSystemCategory: {
+			LocalizedSystem: {
+				// SomethingInLocalizedSystem: Localized System
+				// SomethingElseInLocalizedSystem: ""
+			}
+		}
+
+		// DownedBossSystemTest1: Mods.ExampleMod.DownedBossSystemTest1
+		// DownedBossSystemTest3: Non Localized System
+		// DownedBossSystemTest4: ""
+		// Cat.DownedBossSystemTest5: ""
 	}
 }
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.

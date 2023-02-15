@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Hjson;
 using Newtonsoft.Json.Linq;
@@ -255,8 +256,24 @@ public static class LocalizationLoader
 
 	internal static void FinishSetup()
 	{
+		EnsureAllLocalizationPropertiesQueried();
 		UpdateLocalizationFiles();
 		SetupFileWatchers();
+	}
+
+	private static void EnsureAllLocalizationPropertiesQueried()
+	{
+		// Access all Getter only properties returning LocalizedText
+		foreach (var mod in ModLoader.Mods) {
+			foreach (var loadable in mod.content) {
+				var localizedTextProperties = loadable.GetType()
+					.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+					.Where(x => x.CanRead && !x.CanWrite && x.PropertyType == typeof(LocalizedText));
+				foreach (var localizedTextProperty in localizedTextProperties) {
+					localizedTextProperty.GetValue(loadable);
+				}
+			}
+		}
 	}
 
 	internal static void UpdateLocalizationFiles()
