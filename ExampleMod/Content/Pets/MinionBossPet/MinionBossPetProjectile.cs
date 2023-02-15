@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			Main.projPet[Projectile.type] = true;
 
 			// Basics of CharacterPreviewAnimations explained in ExamplePetProjectile
-			// Notice we define our own method to use in .WithCode() below
+			// Notice we define our own method to use in .WithCode() below. This technically allows us to animate the projectile manually using frameCounter and frame aswell
 			ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, Main.projFrames[Projectile.type], 5)
 				.WithOffset(-2, -22f)
 				.WithCode(CharacterPreviewCustomization);
