@@ -1,4 +1,5 @@
 using Terraria.Localization;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
@@ -38,8 +39,11 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// This is the value that will show up when viewing this display in normal play, right next to the icon.
+	/// <br/>Set <paramref name="displayColor"/> to <paramref name="inactiveColor"/> if your display value is "zero"/shows no valuable information.
 	/// </summary>
-	public abstract string DisplayValue();
+	/// <param name="displayColor">The color the text is displayed as.</param>
+	/// <param name="inactiveColor">The color assigned to <paramref name="displayColor"/> when no valuable information is displayed.</param>
+	public abstract string DisplayValue(ref Color displayColor, Color inactiveColor);
 
 	public sealed override void SetupContent()
 	{

@@ -1,11 +1,5 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.Localization;
-using Terraria.Map;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
 
@@ -16,7 +10,7 @@ public abstract class VanillaInfoDisplay : InfoDisplay
 
 	protected abstract string LangKey { get; }
 
-	public override string DisplayValue() => "";
+	public override string DisplayValue(ref Color displayColor, Color inactiveColor) => "";
 }
 
 public class WatchesInfoDisplay : VanillaInfoDisplay
