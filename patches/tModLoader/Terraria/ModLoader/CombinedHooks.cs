@@ -93,7 +93,7 @@ public static class CombinedHooks
 		bool? ret = null;
 		bool Update(bool? b) => (ret ??= b) is not false;
 
-		_ = Update(PlayerLoader.CanHitNPC(player, item, npc))
+		_ = Update(PlayerLoader.CanHitNPCWithItem(player, item, npc))
 			&& Update(ItemLoader.CanHitNPC(item, player, npc))
 			&& Update(NPCLoader.CanBeHitByItem(npc, player, item));
 		return ret;
@@ -103,14 +103,14 @@ public static class CombinedHooks
 	{
 		ItemLoader.ModifyHitNPC(sItem, player, nPC, ref modifiers);
 		NPCLoader.ModifyHitByItem(nPC, player, sItem, ref modifiers);
-		PlayerLoader.ModifyHitNPC(player, nPC, ref modifiers);
+		PlayerLoader.ModifyHitNPCWithItem(player, sItem, nPC, ref modifiers);
 	}
 
 	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in NPC.HitInfo hit, int damageDone)
 	{
 		ItemLoader.OnHitNPC(sItem, player, nPC, hit, damageDone);
 		NPCLoader.OnHitByItem(nPC, player, sItem, hit, damageDone);
-		PlayerLoader.OnHitNPC(player, nPC, hit, damageDone);
+		PlayerLoader.OnHitNPCWithItem(player, sItem, nPC, hit, damageDone);
 	}
 
 	public static bool CanHitPvp(Player player, Item sItem, Player target)
@@ -129,7 +129,7 @@ public static class CombinedHooks
 		bool? ret = null;
 		bool Update(bool? b) => (ret ??= b) is not false;
 
-		_ = Update(PlayerLoader.CanHitNPCWithProj(proj, npc))
+		_ = Update(proj.TryGetOwner(out var player) ? PlayerLoader.CanHitNPCWithProj(player, proj, npc) : null)
 			&& Update(ProjectileLoader.CanHitNPC(proj, npc))
 			&& Update(NPCLoader.CanBeHitByProjectile(npc, proj));
 		return ret;
@@ -141,7 +141,7 @@ public static class CombinedHooks
 		NPCLoader.ModifyHitByProjectile(nPC, projectile, ref modifiers);
 
 		if (projectile.TryGetOwner(out var player))
-			PlayerLoader.ModifyHitNPC(player, nPC, ref modifiers);
+			PlayerLoader.ModifyHitNPCWithProj(player, projectile, nPC, ref modifiers);
 	}
 
 	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in NPC.HitInfo hit, int damageDone)
@@ -150,7 +150,7 @@ public static class CombinedHooks
 		NPCLoader.OnHitByProjectile(nPC, projectile, hit, damageDone);
 
 		if (projectile.TryGetOwner(out var player))
-			PlayerLoader.OnHitNPC(player, nPC, hit, damageDone);
+			PlayerLoader.OnHitNPCWithProj(player, projectile, nPC, hit, damageDone);
 	}
 
 	public static bool CanBeHitByProjectile(Player player, Projectile projectile)

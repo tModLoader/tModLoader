@@ -653,14 +653,13 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// Allows you to determine whether a player can hit the given NPC. Returns true by default.
 	/// </summary>
-	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <returns></returns>
-	public virtual bool? CanHitNPC(Item item, NPC target)
+	/// <returns>True by default</returns>
+	public virtual bool CanHitNPC(NPC target)
 	{
-		return null;
+		return true;
 	}
 
 	/// <summary>
@@ -684,6 +683,38 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="target"></param>
+	/// <returns></returns>
+	public virtual bool? CanHitNPCWithItem(Item item, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to create special effects when this player hits an NPC by swinging a melee weapon (for example how the Pumpkin Sword creates pumpkin heads).
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="target"></param>
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="proj"></param>
@@ -692,6 +723,27 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual bool? CanHitNPCWithProj(Projectile proj, NPC target)
 	{
 		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that a projectile created by this player does to an NPC.
+	/// </summary>
+	/// <param name="proj"></param>
+	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to create special effects when a projectile created by this player hits an NPC (for example, inflicting debuffs).
+	/// </summary>
+	/// <param name="proj"></param>
+	/// <param name="target"></param>
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+	{
 	}
 
 	/// <summary>

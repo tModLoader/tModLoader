@@ -2480,7 +2480,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -15863,21 +_,71 @@
+@@ -15863,21 +_,74 @@
  		return num;
  	}
  
@@ -2513,6 +2513,9 @@
 -	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
 +	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, DamageClass? damageType = null, bool damageVariation = false)
  	{
++		if (!PlayerLoader.CanHitNPC(this, npc))
++			return;
++
 +		/*
  		int num = Item.NPCtoBanner(npc.BannerID());
  		if (num > 0 && HasNPCBannerBuff(num))
