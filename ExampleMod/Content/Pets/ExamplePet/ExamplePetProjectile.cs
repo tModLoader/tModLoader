@@ -10,9 +10,9 @@ namespace ExampleMod.Content.Pets.ExamplePet
 			Main.projFrames[Projectile.type] = 4;
 			Main.projPet[Projectile.type] = true;
 
-			// This code is needed to make the vanity pet display in the player select screen. Quick explanation:
+			// This code is needed to customize the vanity pet display in the player select screen. Quick explanation:
 			// * It uses fluent API syntax, just like Recipe
-			// * You start with ProjectileID.Sets.SimpleLoop, specifying the start and end frames aswell as the speed, and optionally if it should animate from the back after reaching the end once
+			// * You start with ProjectileID.Sets.SimpleLoop, specifying the start and end frames aswell as the speed, and optionally if it should animate from the end after reaching the end, effectively "bouncing"
 			// * (If your pet has a custom animation you want to use, you need to manually create a SettingsForCharacterPreview object, this is not covered here)
 			// * To stop the animation if the player is not highlighted/walking, as done by most grounded pets, add a .WhenNotSelected(0, 0) (you can customize it just like SimpleLoop)
 			// * To set offset and direction, use .WithOffset(x, y) and .WithSpriteDirection(-1)
