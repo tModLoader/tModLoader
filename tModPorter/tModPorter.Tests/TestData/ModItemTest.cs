@@ -79,4 +79,9 @@ public class ModItemTest : ModItem
 	public override TagCompound Save() => new TagCompound();
 
 	public override void ExtractinatorUse(ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) { }
+	public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) { }
+	public override void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) { }
+	public override void OnHitPvp(Player player, Player target, int damage, bool crit) { }
 }
