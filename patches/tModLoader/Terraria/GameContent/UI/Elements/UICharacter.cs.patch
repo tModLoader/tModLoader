@@ -5,7 +5,7 @@
  		if (!_player.hideMisc[0]) {
  			Item item = _player.miscEquips[0];
 -			if (!item.IsAir) {
-+			// TML: Retrict to items that are accepted by the vanity pet slot (conditions found in ItemSlot) to counteract unloaded item/modder changing the pet item to something else
++			// TML: Restrict to items that are accepted by the vanity pet slot (conditions found in ItemSlot) to counteract unloaded item/modder changing the pet item to something else
 +			if (!item.IsAir && item.buffType > 0 && Main.vanityPet[item.buffType] && !Main.lightPet[item.buffType]) {
  				int shoot = item.shoot;
  				_petProjectiles = new Projectile[1] {
