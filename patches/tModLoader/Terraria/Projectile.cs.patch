@@ -699,13 +699,12 @@
  							if (!flag9 && (Main.npc[i].noTileCollide || !ownerHitCheck || CanHitWithMeleeWeapon(Main.npc[i]))) {
  								bool flag10 = false;
  								if (Main.npc[i].type == 414) {
-@@ -9990,9 +_,19 @@
+@@ -9990,9 +_,18 @@
  									if (type == 604)
  										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
  
 +									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType);
 +									modifiers.ArmorPenetration += ArmorPenetration;
-+									ProjectileLoader.ModifyHit(this, ref modifiers);
 +									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
 +
  									float num3 = knockBack;

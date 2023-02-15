@@ -437,18 +437,6 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegateModifyHit(Projectile projectile, ref NPC.HitModifiers modifiers);
-	private static HookList HookModifyDamageStats = AddHook<DelegateModifyHit>(g => g.ModifyHit);
-
-	public static void ModifyHit(Projectile projectile, ref NPC.HitModifiers modifiers)
-	{
-		projectile.ModProjectile?.ModifyHit(ref modifiers);
-
-		foreach (GlobalProjectile g in HookModifyDamageStats.Enumerate(projectile.globalProjectiles)) {
-			g.ModifyHit(projectile, ref modifiers);
-		}
-	}
-
 	private static HookList HookCanHitNPC = AddHook<Func<Projectile, NPC, bool?>>(g => g.CanHitNPC);
 
 	public static bool? CanHitNPC(Projectile projectile, NPC target)
