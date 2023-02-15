@@ -1740,7 +1740,7 @@
 +
 +	public HitModifiers GetIncomingStrikeModifiers(DamageClass damageType, bool ignoreArmorDebuffs = false)
 +	{
-+		var modifiers = HitModifiers.Default;
++		var modifiers = new HitModifiers();
 +
 +		modifiers.FinalDamage *= takenDamageMultiplier;
 +

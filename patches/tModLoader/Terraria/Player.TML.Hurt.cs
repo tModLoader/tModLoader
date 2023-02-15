@@ -13,42 +13,42 @@ public partial class Player
 		/// The source of the strike. <br/>
 		/// Use <see cref="PlayerDeathReason.TryGetCausingEntity"/> to get the source of the strike (only safe to do when the target is the local player).
 		/// </summary>
-		public PlayerDeathReason DamageSource { get; init; }
+		public PlayerDeathReason DamageSource { get; init; } = default;
 
 		/// <summary>
 		/// Whether or not this strike came from another player. <br/>
 		/// Note that PvP support in Terraria is rudimentary and inconsistent, so careful research and testing may be required.
 		/// </summary>
-		public bool PvP { get; init; }
+		public bool PvP { get; init; } = default;
 
 		/// <summary>
 		/// The <see cref="ImmunityCooldownID"/> of the strike
 		/// </summary>
-		public int CooldownCounter { get; init; }
+		public int CooldownCounter { get; init; } = ImmunityCooldownID.General;
 
 		/// <summary>
 		/// Whether or not this strike was dodgeable.
 		/// </summary>
-		public bool Dodgeable { get; init; }
+		public bool Dodgeable { get; init; } = true;
 
 		/// <summary>
 		/// The direction to apply knockback. If 0, no knockback will be applied.
 		/// </summary>
-		public int HitDirection { get; init; }
+		public int HitDirection { get; init; } = default;
 
 		/// <summary>
 		/// Use this to enhance or scale the base damage of the NPC/projectile/hit. <br/>
 		/// <br/>
 		/// Not used by vanilla due to lack of proper pvp support. <br/>
-		/// Use cases are similar to <see cref="HitModifiers.SourceDamage"/> <br/>
+		/// Use cases are similar to <see cref="NPC.HitModifiers.SourceDamage"/> <br/>
 		/// </summary>
-		public StatModifier SourceDamage;
+		public StatModifier SourceDamage = new();
 
 		/// <summary>
 		/// Use this to reduce damage from certain sources before applying defense. <br/>
 		/// Used by vanilla for coldResist and banner damage reduction.
 		/// </summary>
-		public MultipliableFloat IncomingDamageMultiplier;
+		public MultipliableFloat IncomingDamageMultiplier = new();
 
 		/// <summary>
 		/// Applied to the final damage result. <br/>
@@ -57,28 +57,28 @@ public partial class Player
 		/// Multiply to grant damage reduction buffs (eg *0.9f for -10% damage taken). <br/>
 		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional damage, ignoring all resistances or multipliers. <br/>
 		/// </summary>
-		public StatModifier FinalDamage;
+		public StatModifier FinalDamage = new();
 
 		/// <summary>
 		/// Flat defense reduction. Applies after <see cref="ScalingArmorPenetration"/>. <br/>
 		/// <br/>
 		/// Consider supplying armorPenetration as an argument to <see cref="Player.Hurt"/> instead if possible.<br/>
 		/// </summary>
-		public AddableFloat ArmorPenetration;
+		public AddableFloat ArmorPenetration = new();
 
 		/// <summary>
 		/// Used to ignore a fraction of player defense. Applies before flat <see cref="ArmorPenetration"/>. <br/>
 		/// <br/>
 		/// At 1f, the attack will completely ignore all defense.
 		/// </summary>
-		public AddableFloat ScalingArmorPenetration;
+		public AddableFloat ScalingArmorPenetration = new();
 
 		/// <summary>
 		/// Modifiers to apply to the knockback.
 		/// Add to <see cref="StatModifier.Base"/> to increase the knockback of the strike.
 		/// Multiply to decrease or increase overall knockback susceptibility.
 		/// </summary>
-		public StatModifier Knockback;
+		public StatModifier Knockback = new();
 
 		/// <summary>
 		/// Use this to reduce the effectiveness of <see cref="Player.noKnockback"/> (cobalt shield accessory). <br/>
@@ -86,19 +86,21 @@ public partial class Player
 		/// Defaults to 1f (knockback immunity is 100% effective by default). <br/>
 		/// Used by vanilla for the ogre's launching attack. <br/>
 		/// </summary>
-		public MultipliableFloat KnockbackImmunityEffectiveness;
+		public MultipliableFloat KnockbackImmunityEffectiveness = new();
 
-		private bool _dustDisabled;
+		private bool _dustDisabled = default;
 		/// <summary>
 		/// Prevents dust from spawning
 		/// </summary>
 		public void DisableDust() => _dustDisabled = true;
 
-		private bool _soundDisabled;
+		private bool _soundDisabled = default;
 		/// <summary>
 		/// Prevents the hurt sound from playing
 		/// </summary>
 		public void DisableSound() => _soundDisabled = true;
+
+		public HurtModifiers() { }
 
 		public float GetDamage(float baseDamage, float defense, float defenseEffectiveness)
 		{
@@ -197,8 +199,8 @@ public partial class Player
 		public int Positive { get; private set; } = 0;
 		public int Negative { get; private set; } = 0;
 
-		public AddableFloat AdditiveBonus = AddableFloat.Zero;
-		public MultipliableFloat FinalMultiplier = MultipliableFloat.Default;
+		public AddableFloat AdditiveBonus = new();
+		public MultipliableFloat FinalMultiplier = new();
 
 		public DefenseStat() { }
 

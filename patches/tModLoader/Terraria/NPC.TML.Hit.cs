@@ -7,16 +7,6 @@ public partial class NPC
 {
 	public struct HitModifiers
 	{
-		public static HitModifiers Default = new() {
-			SourceDamage = StatModifier.Default,
-			Defense = StatModifier.Default,
-			DefenseEffectiveness = MultipliableFloat.Default * .5f,
-			DamageVariationScale = MultipliableFloat.Default,
-			CritDamage = StatModifier.Default + 1f,
-			FinalDamage = StatModifier.Default,
-			Knockback = StatModifier.Default,
-		};
-
 		/// <summary>
 		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
@@ -25,26 +15,26 @@ public partial class NPC
 		/// <br/>
 		/// Used by vanilla for weapons with unique scaling such as jousting lance, ham bat, breaker blade. And for accessories which enhance a projectile (strong bees)
 		/// </summary>
-		public StatModifier SourceDamage;
+		public StatModifier SourceDamage = new();
 
 		/// <summary>
 		/// Use this to add bonus damage to the hit, but not to on-hit effects. <br/>
 		/// <br/>
 		/// Used by vanilla for most summon tag damage.
 		/// </summary>
-		public AddableFloat FlatBonusDamage;
+		public AddableFloat FlatBonusDamage = new();
 
 		/// <summary>
 		/// Use this to add bonus <br/>
 		/// Used by vanilla for melee parry buff (+4f) and some summon tag damage.
 		/// </summary>
-		public AddableFloat ScalingBonusDamage;
+		public AddableFloat ScalingBonusDamage = new();
 
 		/// <summary>
 		/// Not recommended for modded use, consider multiplying <see cref="FinalDamage"/> instead. <br/>
 		/// Used by vanilla for banners, cultist projectile resistances, extra damage for stakes against vampires etc.
 		/// </summary>
-		public MultipliableFloat TargetDamageMultiplier;
+		public MultipliableFloat TargetDamageMultiplier = new();
 
 		/// <summary>
 		/// The defense of the receiver, including any temporary modifiers (buffs/debuffs). <br/>
@@ -54,7 +44,7 @@ public partial class NPC
 		/// Multiply for debuffs (eg *0.9f for -10% defense). <br/>
 		/// Decrease <see cref="StatModifier.Flat"/> to provide flat debuffs like ichor or betsys curse <br/>
 		/// </summary>
-		public StatModifier Defense;
+		public StatModifier Defense = new();
 
 		/// <summary>
 		/// Flat defense reduction. Applies after <see cref="ScalingArmorPenetration"/>. <br/>
@@ -63,7 +53,7 @@ public partial class NPC
 		/// <br/>
 		/// Used by the <see cref="Projectile.ArmorPenetration"/>, <see cref="Item.ArmorPenetration"/> and <see cref="Player.GetTotalArmorPenetration"/> stats.
 		/// </summary>
-		public AddableFloat ArmorPenetration;
+		public AddableFloat ArmorPenetration = new();
 
 		/// <summary>
 		/// Used to ignore a fraction of enemy armor. Applies before flat <see cref="ArmorPenetration"/>. <br/>
@@ -71,7 +61,7 @@ public partial class NPC
 		/// <br/>
 		/// At 1f, the attack will completely ignore all defense.
 		/// </summary>
-		public AddableFloat ScalingArmorPenetration;
+		public AddableFloat ScalingArmorPenetration = new();
 
 		/// <summary>
 		/// The conversion ratio between defense and damage reduction. Defaults to 0.5 for NPCs. Depends on difficulty for players. <br/>
@@ -80,7 +70,7 @@ public partial class NPC
 		/// Recommend only multiplication, no addition or subtraction. <br/>
 		/// Not recommended to for buffs/debuffs. Use for gamemode tweaks, or if an enemy revolves very heavily around armor penetration.
 		/// </summary>
-		public MultipliableFloat DefenseEffectiveness;
+		public MultipliableFloat DefenseEffectiveness = new();
 
 		/// <summary>
 		/// Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (+100% damage). <br/>
@@ -90,7 +80,7 @@ public partial class NPC
 		/// Multiplication not recommended for buffs. Could be used to decrease the effectiveness of crits on an enemy without disabling completely. <br/>
 		/// Use of <see cref="StatModifier.Base"/> also not recommended. <br/>
 		/// </summary>
-		public StatModifier CritDamage;
+		public StatModifier CritDamage = new();
 
 		/// <summary>
 		/// Applied to the final damage result. <br/>
@@ -100,7 +90,7 @@ public partial class NPC
 		/// Add to give 'bonus' post-mitigation damage. <br/>
 		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional bonus damage, ignoring all resistances or multipliers. <br/>
 		/// </summary>
-		public StatModifier FinalDamage;
+		public StatModifier FinalDamage = new();
 
 		/// <summary>
 		/// Multiply to adjust the damage variation of the hit. <br/>
@@ -108,9 +98,9 @@ public partial class NPC
 		/// Default damage variation is 15%, so maximum scale is ~6.67 <br/>
 		/// Only affects hits where damage variation is enabled (which is most projectile/item/NPC damage)
 		/// </summary>
-		public MultipliableFloat DamageVariationScale;
+		public MultipliableFloat DamageVariationScale = new();
 
-		private bool? _critOverride;
+		private bool? _critOverride = default;
 
 		/// <summary>
 		/// Disables <see cref="CritDamage"/> calculations, and clears <see cref="HitInfo.Crit"/> flag from the resulting hit.
@@ -133,23 +123,23 @@ public partial class NPC
 		/// <br/>
 		/// Knockback falloff still applies after this, so high knockback has diminishing returns. <br/>
 		/// </summary>
-		public StatModifier Knockback;
+		public StatModifier Knockback = new();
 
 		/// <summary>
 		/// Overrides the default hit direction logic. <br/>
 		/// If set by multiple mods, only the last override will apply. <br/>
 		/// Not recommended for use outside <see cref="ModProjectile.ModifyHit"/>
 		/// </summary>
-		public int? HitDirectionOverride;
+		public int? HitDirectionOverride { private get; set; } = default;
 
-		private bool _instantKill;
+		private bool _instantKill = default;
 		/// <summary>
 		/// Set to make the hit instantly kill the target, dealing as much damage as necessary. </br>
 		/// Combat text will not be shown.
 		/// </summary>
 		public void SetInstantKill() => _instantKill = true;
 
-		private bool _combatTextHidden;
+		private bool _combatTextHidden = default;
 		/// <summary>
 		/// Set to hide the damage number popup for this hit.
 		/// </summary>
@@ -158,7 +148,9 @@ public partial class NPC
 		/// <summary>
 		/// Used internally for calculating the equivalent vanilla hit damage for networking with vanilla clients
 		/// </summary>
-		private float _calculatedPostDefenseDamage;
+		private float _calculatedPostDefenseDamage = default;
+
+		public HitModifiers() { }
 
 		public int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 		{

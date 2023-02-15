@@ -2,9 +2,11 @@
 
 public readonly struct MultipliableFloat
 {
-	public static MultipliableFloat Default = new(1f);
+	public static MultipliableFloat One = new(1f);
 
-	public float Value { get; }
+	public float Value { get; } = 1f;
+
+	public MultipliableFloat() { }
 
 	private MultipliableFloat(float f)
 	{

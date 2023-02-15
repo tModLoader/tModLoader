@@ -1344,7 +1344,7 @@ public static class NPCLoader
 
 	public static bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
 	{
-		MultipliableFloat damageMult = MultipliableFloat.Default;
+		MultipliableFloat damageMult = MultipliableFloat.One;
 
 		bool result = true;
 		foreach (GlobalNPC g in HookModifyCollisionData.Enumerate(npc.globalNPCs)) {

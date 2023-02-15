@@ -2231,7 +2231,7 @@
  		statDefense = 0;
 +		*/
 +		statDefense = DefenseStat.Default;
-+		DefenseEffectiveness = MultipliableFloat.Default * VanillaBaseDefenseEffectiveness();
++		DefenseEffectiveness = MultipliableFloat.One * VanillaBaseDefenseEffectiveness();
  		accWatch = 0;
  		accCompass = 0;
  		accDepthMeter = 0;
@@ -3824,7 +3824,7 @@
  				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
  					NinjaDodge();
  					return 0.0;
-@@ -29545,24 +_,70 @@
+@@ -29545,24 +_,66 @@
  					ShadowDodge();
  					return 0.0;
  				}
@@ -3838,10 +3838,6 @@
 +				PvP = pvp,
 +				CooldownCounter = cooldownCounter,
 +				Dodgeable = dodgeable,
-+				SourceDamage = StatModifier.Default,
-+				IncomingDamageMultiplier = MultipliableFloat.Default,
-+				Knockback = StatModifier.Default,
-+				KnockbackImmunityEffectiveness = MultipliableFloat.Default
 +			};
 +			PlayerLoader.ModifyHurt(this, ref modifiers);
 +
