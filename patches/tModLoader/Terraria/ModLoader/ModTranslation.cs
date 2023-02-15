@@ -27,6 +27,10 @@ namespace Terraria.ModLoader
 			return translations.Select(x => GameCulture.FromLegacyId(x.Key));
 		}
 
+		public bool SupportsCulture(GameCulture culture) {
+			return translations.ContainsKey(culture.LegacyId);
+		}
+
 		public void SetDefault(string value) {
 			AddTranslation(fallback, value);
 		}

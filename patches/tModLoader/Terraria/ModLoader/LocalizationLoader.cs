@@ -389,7 +389,7 @@ namespace Terraria.ModLoader
 					if (entry.type == JsonType.String) {
 						string key = entry.key;
 						//var dotnetVersion = new Regex("([0-9.]+).*").Match(line).Groups[1].Value);
-						var match = new Regex($@"Mods\.{mod.Name}\.(\w+)\.(\w+)$").Match(key);
+						var match = new Regex($@"Mods\.{mod.Name}\.(\w+)\.(\w+)$").Match(key.Replace(".$parentVal", ""));
 						if (match.Success) {
 							if (NewLocalizationFormatMapping.TryGetValue(match.Groups[1].Value, out var mapping)) {
 								string newKey = $"Mods.{mod.Name}.{mapping.category}.{match.Groups[2].Value}.{mapping.dataName}";
@@ -503,9 +503,15 @@ namespace Terraria.ModLoader
 					legacyKey = legacyKey.Replace(".$parentVal", "");
 					string value = translations[legacyKey].GetTranslation(culture);
 					key = splitKey[^1];
+					/*
 					if (culture.Name != "en-US" && value == translations[legacyKey].GetDefault()) {
 						// This might be messing up Russian: OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 						//key = "# " + key; // doesn't work, escaped by escapeName
+						parent.CommentedOut.Add(finalKey);
+					}
+					*/
+
+					if (culture.Name != "en-US" && !translations[legacyKey].SupportsCulture(culture)) {
 						parent.CommentedOut.Add(finalKey);
 					}
 
