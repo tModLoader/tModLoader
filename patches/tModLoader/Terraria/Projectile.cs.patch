@@ -900,7 +900,7 @@
 +									modifiers.TargetDamageMultiplier *= num19 / 1000;
 +									if (num34 != null)
 +										modifiers.HitDirectionOverride = num34;
-+									var strike = modifiers.ToHitInfo(DamageType, damage, flag12, num3);
++									var strike = modifiers.ToHitInfo(damage, flag12, num3);
 +									num34 = strike.HitDirection;
 +
 +									goto VanillaOnHitEffectsStart;

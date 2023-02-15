@@ -8,6 +8,11 @@ public partial class NPC
 	public struct HitModifiers
 	{
 		/// <summary>
+		/// The DamageType of the hit.
+		/// </summary>
+		public DamageClass DamageType { get; init; } = DamageClass.Default;
+
+		/// <summary>
 		/// The direction to apply knockback. If 0, no knockback will be applied. </br>
 		/// Could potentially be used for directional resistances. </br>
 		/// Can be overridden by <see cref="HitDirectionOverride"/>
@@ -188,8 +193,8 @@ public partial class NPC
 
 		internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
 
-		public HitInfo ToHitInfo(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f) => new() {
-			DamageType = damageType,
+		public HitInfo ToHitInfo(float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f) => new() {
+			DamageType = DamageType ?? DamageClass.Default, // just in case
 			SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
 			Damage = _instantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),
 			Crit = _critOverride ?? crit,
@@ -203,7 +208,7 @@ public partial class NPC
 	public struct HitInfo
 	{
 		/// <summary>
-		/// The DamageType of the hit. Should not be null, but it may be a good idea to check just in-case a mod does something bad.
+		/// The DamageType of the hit.
 		/// </summary>
 		public DamageClass DamageType;
 

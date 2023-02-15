@@ -427,9 +427,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="damageType"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyIncomingHit(NPC npc, DamageClass damageType, ref NPC.HitModifiers modifiers)
+	public virtual void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
 	{
 	}
 

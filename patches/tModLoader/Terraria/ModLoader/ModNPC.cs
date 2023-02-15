@@ -486,9 +486,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// </summary>
-	/// <param name="damageType"></param>
 	/// <param name="modifiers"></param>
-	public virtual void ModifyIncomingHit(DamageClass damageType, ref NPC.HitModifiers modifiers)
+	public virtual void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
 	{
 	}
 
