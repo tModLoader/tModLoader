@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content
 {
@@ -14,11 +14,24 @@ namespace ExampleMod.Content
 		}
 
 		// Here we can change the value that will be displayed in the game
-		public override string DisplayValue() {
+		public override string DisplayValue(ref Color displayColor, Color inactiveColor) {
 			// Counting how many minions we have
-			int minionCount = Main.projectile.Count(x => x.active && x.minion && x.owner == Main.LocalPlayer.whoAmI);
 			// This is the value that will show up when viewing this display in normal play, right next to the icon
-			return minionCount > 0 ? $"{minionCount} minions." : "No minions";
+			int minionCount = 0;
+			for (int i = 0; i < Main.maxProjectiles; i++) {
+				Projectile proj = Main.projectile[i];
+				if (proj.active && proj.minion && proj.owner == Main.LocalPlayer.whoAmI) {
+					minionCount++;
+				}
+			}
+
+			bool noInfo = minionCount == 0;
+			if (noInfo) {
+				//If "No minions" will be displayed, grey out the text color, similar to DPS Meter or Radar
+				displayColor = inactiveColor;
+			}
+
+			return !noInfo ? $"{minionCount} minions." : "No minions";
 		}
 	}
 
