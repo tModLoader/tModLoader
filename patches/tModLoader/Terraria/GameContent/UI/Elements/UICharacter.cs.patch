@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
+@@ -45,7 +_,8 @@
+ 	{
+ 		if (!_player.hideMisc[0]) {
+ 			Item item = _player.miscEquips[0];
+-			if (!item.IsAir) {
++			// TML: Retrict to items that are accepted by the vanity pet slot (conditions found in ItemSlot) to counteract unloaded item/modder changing the pet item to something else
++			if (!item.IsAir && item.buffType > 0 && Main.vanityPet[item.buffType] && !Main.lightPet[item.buffType]) {
+ 				int shoot = item.shoot;
+ 				_petProjectiles = new Projectile[1] {
+ 					PreparePetProjectiles_CreatePetProjectileDummy(shoot)
 @@ -64,6 +_,9 @@
  
  	public override void Update(GameTime gameTime)
