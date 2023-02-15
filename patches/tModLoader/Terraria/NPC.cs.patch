@@ -1767,7 +1767,7 @@
 +	}
 +
 +	/// <summary>
-+	/// Runs <see cref="NPCLoader.ModifyIncomingStrike"/> hooks and and does the full damage calculations. <br/>
++	/// Runs <see cref="NPCLoader.ModifyIncomingHit"/> hooks and and does the full damage calculations. <br/>
 +	/// The result <see cref="HitInfo.Damage"/> will contain the health the NPC will lose when applied. <br/>
 +	/// </summary>
 +	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
@@ -2082,7 +2082,7 @@
  				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624) {
  					BeHurtByOtherNPC(i, nPC);
  					break;
-@@ -74098,15 +_,34 @@
+@@ -74098,15 +_,31 @@
  		if (type == 548)
  			num = 20;
  
@@ -2102,10 +2102,7 @@
 +		var strike = modifiers.ToHitInfo(thatNPC.damage, crit: false, num3, damageVariation: true);
 +		double num5 = StrikeNPC(strike, noPlayerInteraction: true);
 +		if (Main.netMode != 0) {
-+			if (ModNet.AllowVanillaClients)
-+				NetMessage.SendData(28, -1, -1, null, whoAmI, modifiers.GetVanillaDamage(defense), num3, num4);
-+			else
-+				NetMessage.SendStrikeNPC(this, strike);
++			NetMessage.SendStrikeNPC(this, strike);
 +		}
  
  		netUpdate = true;

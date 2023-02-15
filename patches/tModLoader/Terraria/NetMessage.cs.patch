@@ -160,7 +160,7 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
-@@ -710,15 +_,39 @@
+@@ -710,14 +_,38 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
@@ -172,17 +172,17 @@
  				}
  				case 28:
  					writer.Write((short)number);
-+					if (!ModNet.AllowVanillaClients)
-+						goto SendDirectStrike;
-+
++					/*
  					writer.Write((short)number2);
  					writer.Write(number3);
  					writer.Write((byte)(number4 + 1f));
  					writer.Write((byte)number5);
- 					break;
++					*/
 +
-+					SendDirectStrike:
 +					if (number2 < 0) {
++						if (Main.netMode != NetmodeID.Server)
++							throw new ArgumentException("Packet 28 (StrikeNPC) can only be sent with negative damage (silent insta-kill) from the server.");
++
 +						// send 'kill NPC' variant
 +						writer.Write7BitEncodedInt((int)number2);
 +						break;
@@ -196,10 +196,9 @@
 +					writer.Write(hit.KnockBack);
 +					var flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
 +					writer.Write(flags);
-+					break;
+ 					break;
  				case 29:
  					writer.Write((short)number);
- 					writer.Write((byte)number2);
 @@ -735,13 +_,21 @@
  					Item item7 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
@@ -581,7 +580,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2291,6 +_,26 @@
+@@ -2291,6 +_,23 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -598,9 +597,6 @@
 +	/// </summary>
 +	public static void SendStrikeNPC(NPC npc, in NPC.HitInfo hit)
 +	{
-+		if (ModNet.AllowVanillaClients)
-+			throw new NotSupportedException("Cannot send direct strike data when supporting vanilla clients");
-+
 +		_currentStrike = hit;
 +		SendData(28, -1, -1, null, npc.whoAmI, number7: 1);
 +	}

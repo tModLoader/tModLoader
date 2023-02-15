@@ -289,26 +289,19 @@
  				projectile.ProjectileFixDesperation();
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(27, -1, whoAmI, null, num38);
-@@ -1523,10 +_,37 @@
+@@ -1523,10 +_,29 @@
  			}
  			case 28: {
  				int num190 = reader.ReadInt16();
-+
-+				NPC.HitInfo hit = default;
-+				if (!ModNet.AllowVanillaClients)
-+					goto ModdedRead;
-+
++				/*
  				int num191 = reader.ReadInt16();
  				float num192 = reader.ReadSingle();
  				int num193 = reader.ReadByte() - 1;
  				byte b10 = reader.ReadByte();
-+				goto HandleStrikeNPC;
++				*/
 +
-+				ModdedRead:
-+				num191 = reader.Read7BitEncodedInt();
-+				num192 = 0;
-+				num193 = 0;
-+				b10 = 0;
++				var num191 = reader.Read7BitEncodedInt();
++				NPC.HitInfo hit = default;
 +				if (num191 >= 0) {
 +					hit = new NPC.HitInfo {
 +						Damage = num191,
@@ -323,7 +316,6 @@
 +					hit.HideCombatText = flags[2];
 +				}
 +
-+				HandleStrikeNPC:
  				if (Main.netMode == 2) {
  					if (num191 < 0)
  						num191 = 0;
@@ -331,11 +323,10 @@
  				}
  
  				if (num191 >= 0) {
-+					if (ModNet.AllowVanillaClients)
--					Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, noEffect: false, fromNet: true);
-+						Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, fromNet: true);
-+					else
-+						Main.npc[num190].StrikeNPC(hit, fromNet: true);
++					/*
+ 					Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, noEffect: false, fromNet: true);
++					*/
++					Main.npc[num190].StrikeNPC(hit, fromNet: true);
  				}
  				else {
  					Main.npc[num190].life = 0;
@@ -343,11 +334,10 @@
  				if (Main.netMode != 2)
  					break;
  
-+				if (ModNet.AllowVanillaClients)
--				NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
-+					NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
-+				else
-+					NetMessage.SendStrikeNPC(Main.npc[num190], hit);
++				/*
+ 				NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
++				*/
++				NetMessage.SendStrikeNPC(Main.npc[num190], hit);
 +
  				if (Main.npc[num190].life <= 0)
  					NetMessage.TrySendData(23, -1, -1, null, num190);

@@ -920,7 +920,7 @@
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
  
-@@ -10768,10 +_,16 @@
+@@ -10768,10 +_,13 @@
  										localAI[0] = 1f;
  
  									if (Main.netMode != 0) {
@@ -930,10 +930,7 @@
  										else
  											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
 +										*/
-+										if (ModNet.AllowVanillaClients)
-+											NetMessage.SendData(28, -1, -1, null, i, modifiers.GetVanillaDamage(nPC.defense), num3, num34.Value, strike.Crit ? 1 : 0);
-+										else
-+											NetMessage.SendStrikeNPC(nPC, strike);
++										NetMessage.SendStrikeNPC(nPC, strike);
  									}
  
  									if (type == 916)

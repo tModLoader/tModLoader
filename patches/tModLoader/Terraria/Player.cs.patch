@@ -2530,9 +2530,6 @@
 +		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
 +
 +		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
-+
-+		if (Main.netMode != 0 && ModNet.AllowVanillaClients) // send a vanilla strike packet instead.
-+			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, modifiers.GetVanillaDamage(npc.defense), knockback, direction, crit ? 1 : 0);
 +	}
 +
 +	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
@@ -2549,9 +2546,10 @@
  		if (accDreamCatcher)
  			addDPS(dmg);
  
--		if (Main.netMode != 0)
--			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, damage, knockback, direction, crit.ToInt());
-+		if (Main.netMode != 0 && !ModNet.AllowVanillaClients)
+ 		if (Main.netMode != 0)
++			/*
+ 			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, damage, knockback, direction, crit.ToInt());
++			*/
 +			NetMessage.SendStrikeNPC(npc, hit);
  
  		int num2 = Item.NPCtoBanner(npc.BannerID());
@@ -5029,7 +5027,7 @@
  			}
  
  			if (sItem.type == 3258) {
-@@ -34470,23 +_,45 @@
+@@ -34470,23 +_,41 @@
  			if (nPC.life > 5)
  				OnHit(nPC.Center.X, nPC.Center.Y, nPC);
  
@@ -5050,10 +5048,9 @@
  			ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, npcIndex, num6, dmgDone);
 +			*/
 +			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
-+			// num6 is post-variation and armor pen. Equivalent to modifiers.GetVanillaDamage(nPC.defense)
-+			// num6 is only used by bees and muramasa, but will probably result in them gaining double armor pen and damage variation in tML.
-+			// Would probably be better if they used strike.SourceDamage instead
-+			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.KnockBack, npcIndex, modifiers.GetVanillaDamage(nPC.defense), dmgDone);
++			// num6 is post-variation and armor pen, only used by bees and muramasa.
++			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.KnockBack, npcIndex, strike.SourceDamage, dmgDone);
  			int num7 = Item.NPCtoBanner(nPC.BannerID());
  			if (num7 >= 0)
  				lastCreatureHit = num7;
@@ -5065,10 +5062,7 @@
  				else
  					NetMessage.SendData(28, -1, -1, null, npcIndex, num6, knockBack, direction);
 +				*/
-+				if (ModNet.AllowVanillaClients) // take a stab at sending the right values for the vanilla computation :|
-+					NetMessage.SendData(28, -1, -1, null, npcIndex, modifiers.GetVanillaDamage(nPC.defense), knockBack, direction, strike.Crit ? 1 : 0);
-+				else
-+					NetMessage.SendStrikeNPC(nPC, strike);
++				NetMessage.SendStrikeNPC(nPC, strike);
  			}
  
  			if (accDreamCatcher)

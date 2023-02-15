@@ -158,11 +158,6 @@ public partial class NPC
 		/// </summary>
 		public void HideCombatText() => _combatTextHidden = true;
 
-		/// <summary>
-		/// Used internally for calculating the equivalent vanilla hit damage for networking with vanilla clients
-		/// </summary>
-		private float _calculatedPostDefenseDamage = default;
-
 		public HitModifiers() { }
 
 		public int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
@@ -181,7 +176,6 @@ public partial class NPC
 
 			float damageReduction = defense * DefenseEffectiveness.Value;
 			damage = Math.Max(damage - damageReduction, 1);
-			_calculatedPostDefenseDamage = damage;
 
 			if (_critOverride ?? crit)
 				damage = CritDamage.ApplyTo(damage);
@@ -190,8 +184,6 @@ public partial class NPC
 		}
 
 		public float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
-
-		internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
 
 		public HitInfo ToHitInfo(float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f) => new() {
 			DamageType = DamageType ?? DamageClass.Default, // just in case
