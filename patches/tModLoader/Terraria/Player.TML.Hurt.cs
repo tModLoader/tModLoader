@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,7 +32,9 @@ public partial class Player
 		public bool Dodgeable { get; init; } = true;
 
 		/// <summary>
-		/// The direction to apply knockback. If 0, no knockback will be applied.
+		/// The direction to apply knockback. If 0, no knockback will be applied. </br>
+		/// Could potentially be used for directional resistances. </br>
+		/// Can be overridden by <see cref="HitDirectionOverride"/>
 		/// </summary>
 		public int HitDirection { get; init; } = default;
 
@@ -79,6 +81,14 @@ public partial class Player
 		/// Multiply to decrease or increase overall knockback susceptibility.
 		/// </summary>
 		public StatModifier Knockback = new();
+
+		/// <summary>
+		/// Overrides the direction to apply knockback. <br/>
+		/// Will not affect <see cref="HitDirection"/>, only the final <see cref="HurtInfo.HitDirection"/><br/>
+		/// If set by multiple mods, only the last override will apply. <br/>
+		/// Intended for use by attacks which want to hit the player towards the source of the attack.
+		/// </summary>
+		public int? HitDirectionOverride { private get; set; } = default;
 
 		/// <summary>
 		/// Use this to reduce the effectiveness of <see cref="Player.noKnockback"/> (cobalt shield accessory). <br/>
@@ -128,7 +138,7 @@ public partial class Player
 			PvP = PvP,
 			CooldownCounter = CooldownCounter,
 			Dodgeable = Dodgeable,
-			HitDirection = HitDirection,
+			HitDirection = HitDirectionOverride ?? HitDirection,
 			SourceDamage = (int)SourceDamage.ApplyTo(damage),
 			Damage = (int)GetDamage(damage, defense, defenseEffectiveness),
 			Knockback = GetKnockback(knockback, knockbackImmune),

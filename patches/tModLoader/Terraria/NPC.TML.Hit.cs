@@ -8,6 +8,13 @@ public partial class NPC
 	public struct HitModifiers
 	{
 		/// <summary>
+		/// The direction to apply knockback. If 0, no knockback will be applied. </br>
+		/// Could potentially be used for directional resistances. </br>
+		/// Can be overridden by <see cref="HitDirectionOverride"/>
+		/// </summary>
+		public int HitDirection { get; init; } = default;
+
+		/// <summary>
 		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
 		/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
@@ -126,9 +133,10 @@ public partial class NPC
 		public StatModifier Knockback = new();
 
 		/// <summary>
-		/// Overrides the default hit direction logic. <br/>
+		/// Overrides the direction to apply knockback. <br/>
+		/// Will not affect <see cref="HitDirection"/>, only the final <see cref="HitInfo.HitDirection"/><br/>
 		/// If set by multiple mods, only the last override will apply. <br/>
-		/// Not recommended for use outside <see cref="ModProjectile.ModifyHit"/>
+		/// Intended for use by flails, or other projectiles which need to hit the NPC away from the player, even when striking from behind.
 		/// </summary>
 		public int? HitDirectionOverride { private get; set; } = default;
 
@@ -180,13 +188,13 @@ public partial class NPC
 
 		internal int GetVanillaDamage(int targetDefense) => (int)(_calculatedPostDefenseDamage + targetDefense / 2);
 
-		public HitInfo ToHitInfo(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, int hitDirection, bool damageVariation = false, float luck = 0f) => new() {
+		public HitInfo ToHitInfo(DamageClass damageType, float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f) => new() {
 			DamageType = damageType,
 			SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
 			Damage = _instantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),
 			Crit = _critOverride ?? crit,
 			KnockBack = GetKnockback(baseKnockback),
-			HitDirection = HitDirectionOverride ?? hitDirection,
+			HitDirection = HitDirectionOverride ?? HitDirection,
 			InstantKill = _instantKill,
 			HideCombatText = _combatTextHidden
 		};

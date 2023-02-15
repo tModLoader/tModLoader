@@ -703,7 +703,7 @@
  									if (type == 604)
  										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
  
-+									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType);
++									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType, direction);
 +									modifiers.ArmorPenetration += ArmorPenetration;
 +									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
 +
@@ -874,7 +874,7 @@
  									StatusNPC(i);
  									if (flag && nPC.life > 5)
  										TryDoingOnHitEffects(nPC);
-@@ -10611,11 +_,14 @@
+@@ -10611,12 +_,15 @@
  									if (ProjectileID.Sets.ImmediatelyUpdatesNPCBuffFlags[type])
  										nPC.UpdateNPC_BuffSetFlags(lowerBuffTime: false);
  
@@ -885,18 +885,23 @@
  									}
 +									goto PostModifyHit;
  
+-									int num34 = direction;
 +									VanillaOnHitEffectsEnd:
- 									int num34 = direction;
++									int? num34 = null;//direction;
  									switch (type) {
  										case 697:
-@@ -10639,11 +_,25 @@
+ 										case 699:
+@@ -10639,11 +_,28 @@
  											num3 *= 0.5f;
  									}
  
 +									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
 +									modifiers.Knockback *= num3 / knockBack;
 +									modifiers.TargetDamageMultiplier *= num19 / 1000;
-+									var strike = modifiers.ToHitInfo(DamageType, damage, flag12, num3, num34);
++									if (num34 != null)
++										modifiers.HitDirectionOverride = num34;
++									var strike = modifiers.ToHitInfo(DamageType, damage, flag12, num3);
++									num34 = strike.HitDirection;
 +
 +									goto VanillaOnHitEffectsStart;
 +
@@ -926,7 +931,7 @@
  											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
 +										*/
 +										if (ModNet.AllowVanillaClients)
-+											NetMessage.SendData(28, -1, -1, null, i, modifiers.GetVanillaDamage(nPC.defense), num3, num34, strike.Crit ? 1 : 0);
++											NetMessage.SendData(28, -1, -1, null, i, modifiers.GetVanillaDamage(nPC.defense), num3, num34.Value, strike.Crit ? 1 : 0);
 +										else
 +											NetMessage.SendStrikeNPC(nPC, strike);
  									}

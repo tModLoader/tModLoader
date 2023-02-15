@@ -2521,7 +2521,7 @@
  		if (num > 0 && HasNPCBannerBuff(num))
  			damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
 +		*/
-+		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default);
++		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default, direction);
 +		PlayerLoader.ModifyHitNPC(this, npc, ref modifiers);
 +
 +		ApplyBannerOffenseBuff(npc, ref modifiers);
@@ -2529,7 +2529,7 @@
 +		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
 +		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
 +
-+		StrikeNPCDirect(npc, modifiers.ToHitInfo(damageType ?? DamageClass.Default, damage, crit, knockback, direction, damageVariation, luck));
++		StrikeNPCDirect(npc, modifiers.ToHitInfo(damageType ?? DamageClass.Default, damage, crit, knockback, damageVariation, luck));
 +
 +		if (Main.netMode != 0 && ModNet.AllowVanillaClients) // send a vanilla strike packet instead.
 +			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, modifiers.GetVanillaDamage(npc.defense), knockback, direction, crit ? 1 : 0);
@@ -4992,7 +4992,7 @@
  
 +			skipVanillaHitChecks:
 +
-+			var modifiers = nPC.GetIncomingStrikeModifiers(sItem.DamageType);
++			var modifiers = nPC.GetIncomingStrikeModifiers(sItem.DamageType, direction);
 +			/*
  			int num = originalDamage;
 +			*/
@@ -5042,7 +5042,7 @@
 +			modifiers.ArmorPenetration += GetWeaponArmorPenetration(sItem);
 +			modifiers.ScalingArmorPenetration += armorPenetrationPercent;
 +			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref modifiers);
-+			var strike = modifiers.ToHitInfo(sItem.DamageType, originalDamage, flag3, knockBack, direction, damageVariation: true, luck);
++			var strike = modifiers.ToHitInfo(sItem.DamageType, originalDamage, flag3, knockBack, damageVariation: true, luck);
 +
  			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
 -			int dmgDone = (int)nPC.StrikeNPC(num6, knockBack, direction, flag3);
