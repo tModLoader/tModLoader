@@ -20,14 +20,14 @@ namespace ExampleMod.Content
 			int minionCount = 0;
 			for (int i = 0; i < Main.maxProjectiles; i++) {
 				Projectile proj = Main.projectile[i];
-				if (proj.active && proj.minion && proj.owner == Main.LocalPlayer.whoAmI) {
+				if (proj.active && proj.minion && proj.owner == Main.myPlayer) {
 					minionCount++;
 				}
 			}
 
 			bool noInfo = minionCount == 0;
 			if (noInfo) {
-				//If "No minions" will be displayed, grey out the text color, similar to DPS Meter or Radar
+				// If "No minions" will be displayed, grey out the text color, similar to DPS Meter or Radar
 				displayColor = inactiveColor;
 			}
 
