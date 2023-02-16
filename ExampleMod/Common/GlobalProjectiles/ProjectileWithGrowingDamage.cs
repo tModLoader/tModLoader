@@ -24,7 +24,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 			}
 		}
 
-		public override void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (sourceGlobalItem == null) {
 				return;
 			}
@@ -35,7 +35,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 			}
 
 			Player player = Main.player[owner];
-			sourceGlobalItem.OnHitNPCGeneral(player, target, damage, knockback, crit, projectile: projectile);
+			sourceGlobalItem.OnHitNPCGeneral(player, target, hit, projectile: projectile);
 		}
 	}
 }

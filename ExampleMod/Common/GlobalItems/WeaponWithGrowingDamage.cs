@@ -42,13 +42,13 @@ namespace ExampleMod.Common.GlobalItems
 			GainExperience(item, reader.ReadInt32());
 		}
 		
-		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
-			OnHitNPCGeneral(player, target, damage, knockBack, crit, item);
+		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+			OnHitNPCGeneral(player, target, hit, item);
 		}
 
-		public void OnHitNPCGeneral(Player player, NPC target, int damage, float knockBack, bool crit, Item item = null, Projectile projectile = null) {
+		public void OnHitNPCGeneral(Player player, NPC target, NPC.HitInfo hit, Item item = null, Projectile projectile = null) {
 			//The weapon gains experience when hitting an npc.
-			int xp = damage;
+			int xp = hit.Damage;
 			if (projectile != null) {
 				xp /= 2;
 			}

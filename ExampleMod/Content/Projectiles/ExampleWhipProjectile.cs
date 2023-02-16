@@ -58,7 +58,7 @@ namespace ExampleMod.Content.Projectiles
 			return false; // Prevent the vanilla whip AI from running.
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 		}

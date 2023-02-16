@@ -235,7 +235,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) {
 			// We can use ModifyCollisionData to customize collision damage.
 			// Here we double damage when this npc is in the falling state and the victim is almost directly below the npc
 			if (AI_State == (float)ActionState.Fall) {
