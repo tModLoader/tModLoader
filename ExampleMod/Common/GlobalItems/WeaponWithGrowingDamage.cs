@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader.IO;
 using System.IO;
 using ExampleMod.Content.NPCs;
+using ExampleMod.Common.Configs;
 
 //Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
@@ -19,6 +20,11 @@ namespace ExampleMod.Common.GlobalItems
 		public int level => experience / experiencePerLevel;
 
 		public override bool InstancePerEntity => true;
+
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
+		}
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 			//Apply to weapons
