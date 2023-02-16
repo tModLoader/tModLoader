@@ -133,9 +133,7 @@ namespace ExampleMod.Content.Projectiles
 		
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 			// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
-			if (modifiers.SourceDamage.Base > 0) {
-				modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
-			}
+			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
 
 			// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
 			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
