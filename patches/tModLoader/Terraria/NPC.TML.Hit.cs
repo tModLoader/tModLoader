@@ -95,7 +95,7 @@ public partial class NPC
 		/// Multiplication not recommended for buffs. Could be used to decrease the effectiveness of crits on an enemy without disabling completely. <br/>
 		/// Use of <see cref="StatModifier.Base"/> also not recommended. <br/>
 		/// </summary>
-		public StatModifier CritDamage = new();
+		public StatModifier CritDamage = new(2f, 1f);
 
 		/// <summary>
 		/// Applied to the final damage result. <br/>
