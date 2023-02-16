@@ -331,7 +331,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to dodge damage for a player.<br/>
 	/// Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br/>
-	/// For dodges which are 'free' and should be used before triggering consumables, use <see cref="ConsumableDodge"/> instead.<br/>
+	/// For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.<br/>
 	/// <br/>
 	/// Only runs on the local client of the player receiving the damage. <br/>
 	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>

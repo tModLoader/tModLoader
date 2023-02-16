@@ -5,6 +5,9 @@ namespace Terraria;
 
 public partial class NPC
 {
+	/// <summary>
+	/// Represents a damage calculation in the process of being calculated for damage to be applied to an NPC. The final damage calculation will be present in the resulting <see cref="HitInfo"/>.
+	/// </summary>
 	public struct HitModifiers
 	{
 		/// <summary>
@@ -197,6 +200,9 @@ public partial class NPC
 		};
 	}
 
+	/// <summary>
+	/// Represents a finalized damage calculation for damage about to be applied to an NPC. This is the result of the all modifications done previously in a <see cref="HitModifiers"/>.
+	/// </summary>
 	public struct HitInfo
 	{
 		/// <summary>
