@@ -30,6 +30,16 @@ if [ -d "$dotnet_dir" ]; then
 			rm -rf "$old_version"
 		fi
 	done
+	
+	# For some reason, sometimes the dotnet folder is missing some files, if so, delete it so it gets installed again
+	numberFilesInDotnetDir=`find "$install_dir" -type f | wc -l`
+	expectedFilesInDotnetDir=227
+	if [ "$numberFilesInDotnetDir" != "$expectedFilesInDotnetDir" ]
+	then
+		echo "Only found $numberFilesInDotnetDir files in $install_dir but expected $expectedFilesInDotnetDir, something is wrong, deleting."
+		rm -rf "$install_dir"
+		echo "Deleted $install_dir"
+	fi
 else
 	mkdir "$dotnet_dir"
 fi
