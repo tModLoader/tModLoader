@@ -147,7 +147,7 @@
 		"BuildErrorNoModClass": "Убедитесь, что в вашем проекте мода присутствует только один класс, наследующийся от класса Mod.",
 		"BuildErrorLoadingPrecompiled": "Не удалось загрузить заранее скомпилированную библиотеку {0}",
 		"BuildErrorFailedLoadBuildTxt": "Не удалось загрузить {0}",
-		"BuildWarningEACWindowsOnly": "Edit и Continue поддерживаются только на Windows.",
+		"BuildWarningEACWindowsOnly": "Функция 'Edit and Continue' поддерживается только на Windows.",
 		"LoadErrorTextureFailedToLoad": "Не удалось загрузить файл текстуры {0}",
 		"LoadErrorWavSoundFailedToLoad": "Не удалось загрузить wav аудио файл {0}",
 		"LoadErrorMP3SoundFailedToLoad": "Не удалось загрузить mp3 аудио файл {0}",
