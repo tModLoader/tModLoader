@@ -238,6 +238,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		_categoryButtons.Add(SearchFilterToggle);
 		upperMenuContainer.Append(SearchFilterToggle);
 
+		// TODO change string to UIText for localizaiton thing taht jopo fixed
 		buttonCL = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModConfiguration"));
 		buttonCL.CopyStyle(buttonOMF);
 		buttonCL.HAlign = 1f;

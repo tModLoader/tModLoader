@@ -134,7 +134,7 @@ internal class UIModConfigList : UIState
 		foreach (var item in ConfigManager.Configs) {
 			foreach (var config in item.Value) {
 				string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
-				var t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
+				var t = new UITextPanel<string>(item.Key.DisplayName + " - " + configDisplayName);
 
 				t.OnLeftClick += (a, b) => {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
