@@ -3,6 +3,7 @@ using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -90,7 +91,12 @@ internal class UIModConfigList : UIState
 		//Main.menuMode = 0;
 
 		//Main.menuMode = 1127;
-		IngameFancyUI.Close();
+		if (Main.gameMenu) {
+			Main.menuMode = Interface.modsMenuID;
+		}
+		else {
+			IngameFancyUI.Close();
+		}
 	}
 
 	/*
@@ -127,19 +133,18 @@ internal class UIModConfigList : UIState
 
 		foreach (var item in ConfigManager.Configs) {
 			foreach (var config in item.Value) {
-				/*
-				if (config.Mode != ConfigScope.ClientSide) {
-					continue;
-				}
-				*/
-
 				string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
 				var t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
-				//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
 
 				t.OnLeftClick += (a, b) => {
-					Interface.modConfig.SetMod(item.Key, config);
-					Main.InGameUI.SetState(Interface.modConfig);
+					SoundEngine.PlaySound(SoundID.MenuOpen);
+					Interface.modConfig.SetMod(item.Key, config, true);
+					if (Main.gameMenu) {
+						Main.menuMode = Interface.modConfigID;
+					}
+					else {
+						Main.InGameUI.SetState(Interface.modConfig);
+					}
 				};
 
 				t.WithFadedMouseOver();

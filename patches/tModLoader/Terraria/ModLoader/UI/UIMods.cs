@@ -41,7 +41,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<string> buttonRM;
 	private UIAutoScaleTextTextPanel<string> buttonB;
 	private UIAutoScaleTextTextPanel<string> buttonOMF;
-	private UIAutoScaleTextTextPanel<string> buttonMP;
+	private UIAutoScaleTextTextPanel<string> buttonCL;
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
@@ -238,12 +238,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		_categoryButtons.Add(SearchFilterToggle);
 		upperMenuContainer.Append(SearchFilterToggle);
 
-		buttonMP = new UIAutoScaleTextTextPanel<string>("TBD");
-		buttonMP.CopyStyle(buttonOMF);
-		buttonMP.HAlign = 1f;
-		buttonMP.WithFadedMouseOver();
-		buttonMP.OnLeftClick += null;
-		//uIElement.Append(buttonMP);
+		buttonCL = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModConfiguration"));
+		buttonCL.CopyStyle(buttonOMF);
+		buttonCL.HAlign = 1f;
+		buttonCL.WithFadedMouseOver();
+		buttonCL.OnLeftClick += GotoModConfigList;
+		uIElement.Append(buttonCL);
 
 		uIPanel.Append(upperMenuContainer);
 		Append(uIElement);
@@ -317,6 +317,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
+	}
+
+	private void GotoModConfigList(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10, -1, -1, 1);
+		Main.menuMode = Interface.modConfigListID;
 	}
 
 	public UIModItem FindUIModItem(string modName)

@@ -47,6 +47,7 @@ internal class UIModConfig : UIState
 	private ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
+	private bool openedFromConfigList = false;
 
 	public override void OnInitialize()
 	{
@@ -183,20 +184,13 @@ internal class UIModConfig : UIState
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.menuMode = Interface.modsMenuID;
 
-		//Main.menuMode = 1127;
-		if (!Main.gameMenu) {
+		if (Main.gameMenu) {
+			Main.menuMode = openedFromConfigList ? Interface.modConfigListID : Interface.modsMenuID;
+		}
+		else {
 			Main.InGameUI.SetState(Interface.modConfigList);
 		}
-
-		/*
-		IngameFancyUI.Close();
-
-		if (ConfigManager.ModNeedsReload(mod)) {
-			Main.menuMode = Interface.reloadModsID;
-		}
-		*/
 	}
 
 	internal void Unload()
@@ -407,8 +401,9 @@ internal class UIModConfig : UIState
 	// when we get new server configs from server...replace, don't save?
 	// reload manually, reload fresh server config?
 	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null)
+	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromConfigList = false)
 	{
+		this.openedFromConfigList = openedFromConfigList;
 		this.mod = mod;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
 			modConfigs = ConfigManager.Configs[mod];
