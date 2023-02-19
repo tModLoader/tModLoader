@@ -5146,7 +5146,7 @@
  
 -					vector2.X = (float)(num8 - screenWidth / 2) / 1.5f;
 -					vector2.Y = (float)(num9 - screenHeight / 2) / 1.5f;
-+					float zoom = 3f/2f;
++					float zoom = 2f / 3f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num8 - screenWidth / 2) * zoom;
 +					vector2.Y = (num9 - screenHeight / 2) * zoom;
@@ -5159,7 +5159,7 @@
  
 -					vector2.X = (float)(num10 - screenWidth / 2) / 1.5f;
 -					vector2.Y = (float)(num11 - screenHeight / 2) / 1.5f;
-+					float zoom = 3f/2f;
++					float zoom = 2f / 3f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
 +					vector2.X = (num10 - screenWidth / 2) * zoom;
 +					vector2.Y = (num11 - screenHeight / 2) * zoom;
