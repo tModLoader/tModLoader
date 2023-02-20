@@ -10,12 +10,20 @@ namespace Terraria.ModLoader.UI
 	{
 		public int modCount;
 
+		internal bool continueCurrentLoad;
+
 		private string stageText;
 
 		private CancellationTokenSource _cts;
 
 		public override void OnActivate() {
 			base.OnActivate();
+
+			if (continueCurrentLoad) {
+				continueCurrentLoad = false;
+				return;
+			}
+
 			_cts = new CancellationTokenSource();
 			OnCancel += () => {
 				SetLoadStage("Loading Cancelled");

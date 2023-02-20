@@ -45,6 +45,7 @@ namespace Terraria.ModLoader.UI
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
+		internal const int welcomeID = 10027;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
 		internal static UIModSources modSources = new UIModSources();
@@ -105,13 +106,13 @@ namespace Terraria.ModLoader.UI
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
-			if (Main.menuMode == loadModsID) {
+			if (Main.menuMode == welcomeID) {
 				if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
 
-				if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+				else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
 					ModLoader.WarnedFamilyShare = true;
 					infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 				}
@@ -181,6 +182,16 @@ namespace Terraria.ModLoader.UI
 
                     if (!string.IsNullOrWhiteSpace(message))
 	                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
+
+				if (Main.menuMode != infoMessageID) {
+					if (ModLoader.isLoading) {
+						Main.menuMode = loadModsID;
+						loadMods.continueCurrentLoad = true;
+					}
+					else {
+						Main.menuMode = 0;
+					}
 				}
 			}
 			if (Main.menuMode == modsMenuID) {
