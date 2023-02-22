@@ -106,5 +106,12 @@ namespace ExampleMod.Content.NPCs
 			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
 			target.AddBuff(buffType, timeToAdd);
 		}
+
+		public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
+			if (modifiers.DamageType.CountsAsClass(DamageClass.Magic)) {
+				// This example shows how PartyZombie reduces magic damage by 75%. We use FinalDamage here rather than SourceDamage since we are affecting how the npc reacts to the damage. Conceptually, the source dealing the damage isn't interpreted as stronger, but rather this NPC has a weakness to this damage source.
+				modifiers.FinalDamage *= 0.25f;
+			}
+		}
 	}
 }
