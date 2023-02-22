@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
+using System.Xml;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -7,90 +9,108 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
 internal class UIModConfigList : UIState
 {
-	//internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
-
 	private UIElement uIElement;
 	private UIPanel uIPanel;
+	private UITextPanel<LocalizedText> buttonBack;
 	private UIList modList;
-	private UITextPanel<string> buttonB;
-	//private bool needToRemoveLoading;
-	//private readonly List<UIModItem> items = new List<UIModItem>();
-	//private bool updateNeeded;
-	//private UITextPanel<string> buttonOMF;
+	private UIList configList;
+
+	public Mod selectedMod;
 
 	public override void OnInitialize()
 	{
-		uIElement = new UIElement();
-		uIElement.Width.Set(0f, 0.8f);
-		uIElement.MaxWidth.Set(600f, 0f);
-		uIElement.Top.Set(220f, 0f);
-		uIElement.Height.Set(-220f, 1f);
-		uIElement.HAlign = 0.5f;
+		uIElement = new UIElement {
+			Width = { Pixels = 0f, Percent = 0.8f },
+			MaxWidth = { Pixels = 800f, Percent = 0f },
+			Top = { Pixels = 220f, Percent = 0f },
+			Height = { Pixels = -220f, Percent = 1f },
+			HAlign = 0.5f
+		};
+		Append(uIElement);
 
-		uIPanel = new UIPanel();
-		uIPanel.Width.Set(0f, 1f);
-		uIPanel.Height.Set(-110f, 1f);
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-		uIPanel.PaddingTop = 0f;
+		uIPanel = new UIPanel {
+			Width = { Pixels = 0f, Percent = 1f },
+			Height = { Pixels = -110f, Percent = 1f},
+			BackgroundColor = UICommon.MainPanelBackground
+		};
 		uIElement.Append(uIPanel);
 
-		modList = new UIList();
-		modList.Width.Set(-25f, 1f);
-		modList.Height.Set(-50f, 1f);
-		modList.Top.Set(50f, 0f);
-		modList.ListPadding = 5f;
-		uIPanel.Append(modList);
+		var modListPanel = new UIPanel {
+			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
+			Height = { Pixels = 0f, Percent = 1f },
+			HAlign = 0f
+		};
+		uIPanel.Append(modListPanel);
 
-		UIScrollbar uIScrollbar = new UIScrollbar();
-		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(-50f, 1f);
-		uIScrollbar.Top.Set(50f, 0f);
-		uIScrollbar.HAlign = 1f;
-		uIPanel.Append(uIScrollbar);
+		var configListPanel = new UIPanel {
+			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
+			Height = { Pixels = 0f, Percent = 1f },
+			HAlign = 1f
+		};
+		uIPanel.Append(configListPanel);
 
-		modList.SetScrollbar(uIScrollbar);
+		modList = new UIList {
+			Width = { Pixels = -25f, Percent = 1f },
+			Height = { Pixels = 0f, Percent = 1f },
+			ListPadding = 5f,
+			HAlign = 1f
+		};
+		modListPanel.Append(modList);
 
-		UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfiguration"), 0.8f, true);
-		uIHeaderTexTPanel.HAlign = 0.5f;
-		uIHeaderTexTPanel.Top.Set(-35f, 0f);
-		uIHeaderTexTPanel.SetPadding(15f);
-		uIHeaderTexTPanel.BackgroundColor = UICommon.DefaultUIBlue;
-		uIElement.Append(uIHeaderTexTPanel);
+		configList = new UIList {
+			Width = { Pixels = -25f, Percent = 1f },
+			Height = { Pixels = 0f, Percent = 1f },
+			ListPadding = 5f,
+			HAlign = 0f
+		};
+		configListPanel.Append(configList);
 
-		buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, large: true);
-		buttonB.Width.Set(-10f, 0.5f);
-		buttonB.Height.Set(50f, 0f);
-		buttonB.VAlign = 1f;
-		buttonB.HAlign = 0.5f;
-		buttonB.Top.Set(-45f, 0f);
-		buttonB.WithFadedMouseOver();
-		buttonB.OnLeftClick += BackClick;
-		uIElement.Append(buttonB);
+		UIScrollbar modListScrollbar = new UIScrollbar {
+			Height = { Pixels = 0f, Percent = 1f },
+			HAlign = 0f
+		};
+		modListScrollbar.SetView(100f, 1000f);
+		modList.SetScrollbar(modListScrollbar);
+		modListPanel.Append(modListScrollbar);
 
-		/*
-		buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolders"), 1f, false);
-		buttonOMF.CopyStyle(buttonB);
-		buttonOMF.HAlign = 0.5f;
-		buttonOMF.OnMouseOver += UICommon.FadedMouseOver;
-		buttonOMF.OnMouseOut += UICommon.FadedMouseOut;
-		buttonOMF.OnLeftClick += OpenModsFolder;
-		uIElement.Append(buttonOMF);
-		*/
+		UIScrollbar configListScrollbar = new UIScrollbar {
+			Height = { Pixels = 0f, Percent = 1f },
+			HAlign = 1f
+		};
+		configListScrollbar.SetView(100f, 1000f);
+		configList.SetScrollbar(configListScrollbar);
+		configListPanel.Append(configListScrollbar);
 
-		Append(uIElement);
+		UITextPanel<LocalizedText> uIHeaderTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfiguration"), 0.8f, true) {
+			Top = { Pixels = -35f, Percent = 0f },
+			BackgroundColor = UICommon.DefaultUIBlue,
+			HAlign = 0.5f
+		};
+		uIHeaderTextPanel.SetPadding(15f);
+		uIElement.Append(uIHeaderTextPanel);
+
+		buttonBack = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true) {
+			Width = { Pixels = -10f, Percent = 0.5f },
+			Height = { Pixels = 50f, Percent = 0f },
+			Top = { Pixels = -45f, Percent = 0f },
+			VAlign = 1f,
+			HAlign = 0.5f
+		};
+		buttonBack.WithFadedMouseOver();
+		buttonBack.OnLeftClick += BackClick;
+		uIElement.Append(buttonBack);
 	}
 
 	private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(11, -1, -1, 1);
-		//Main.menuMode = 0;
 
-		//Main.menuMode = 1127;
 		if (Main.gameMenu) {
 			Main.menuMode = Interface.modsMenuID;
 		}
@@ -99,70 +119,74 @@ internal class UIModConfigList : UIState
 		}
 	}
 
-	/*
-	private static void OpenModsFolder(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(10, -1, -1, 1);
-		Directory.CreateDirectory(ModLoader.ModPath);
-		Process.Start(ModLoader.ModPath);
-	}
-
-	public override void Draw(SpriteBatch spriteBatch)
-	{
-		base.Draw(spriteBatch);
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
-	}
-	*/
-
 	internal void Unload()
 	{
 		modList?.Clear();
+		configList?.Clear();
+		selectedMod = null;
 	}
 
 	public override void OnActivate()
 	{
 		Main.clrInput();
 		modList.Clear();
-		//	items.Clear();
-		Populate();
+		configList?.Clear();
+		selectedMod = null;
+		PopulateMods();
 	}
 
-	internal void Populate()
+	// TODO improve
+	internal void PopulateMods()
 	{
-		int i = 0;
+		modList?.Clear();
 
-		foreach (var item in ConfigManager.Configs) {
-			foreach (var config in item.Value) {
-				string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
-				var t = new UITextPanel<string>(item.Key.DisplayName + " - " + configDisplayName);
+		foreach (var mod in ModLoader.Mods) {
+			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
+				string modName = mod.DisplayName;
 
-				t.OnLeftClick += (a, b) => {
+				var modPanel = new UITextPanel<string>(modName);
+				modPanel.HAlign = 0.5f;
+				modPanel.WithFadedMouseOver();
+				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
-					Interface.modConfig.SetMod(item.Key, config, true);
-					if (Main.gameMenu) {
-						Main.menuMode = Interface.modConfigID;
-					}
-					else {
-						Main.InGameUI.SetState(Interface.modConfig);
-					}
+					// TODO: selected indicator
+					selectedMod = mod;
+					PopulateConfigs();
 				};
 
-				t.WithFadedMouseOver();
-				t.HAlign = 0.5f;
-
-				UIElement container = new UISortableElement(i++);
-				container.Width.Set(0f, 1f);
-				container.Height.Set(40f, 0f);
-				container.HAlign = 1f;
-				container.Append(t);
-				modList.Add(container);
-
-				if (config.Mode == ConfigScope.ServerSide) {
-					t.BackgroundColor = Color.Pink * 0.7f;
-					t.OnMouseOver += (a, b) => t.BackgroundColor = Color.Pink;
-					t.OnMouseOut += (a, b) => t.BackgroundColor = Color.Pink * 0.7f;
-				}
+				modList.Add(modPanel);
 			}
+		}
+	}
+
+	// TODO improve
+	internal void PopulateConfigs()
+	{
+		configList?.Clear();
+
+		if (!ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
+			return;
+		
+		foreach (var config in configs) {
+			// TODO - properly allow no name
+			string configName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
+
+			var configPanel = new UITextPanel<string>(configName);
+			configPanel.HAlign = 0.5f;
+			configPanel.WithFadedMouseOver();
+			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+
+				Interface.modConfig.SetMod(selectedMod, config, true);
+				if (Main.gameMenu) {
+					Main.menuMode = Interface.modConfigID;
+				}
+				else {
+					Main.InGameUI.SetState(Interface.modConfig);
+				}
+			};
+
+			configList.Add(configPanel);
 		}
 	}
 }
