@@ -34,8 +34,6 @@ internal abstract class PatreonItem : ModLoaderModItem
 
 		DisplayName.SetDefault(displayName);
 		*/
-
-		Item.ResearchUnlockCount = 1;
 	}
 
 	public override void SetDefaults()

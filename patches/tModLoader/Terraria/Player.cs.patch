@@ -6279,9 +6279,10 @@
  		}
  
  		fileIO.Write(newPlayer.voidVaultInfo);
- 		for (int num5 = 0; num5 < maxBuffs; num5++) {
-+			//TML: Don't save buffs to vanilla player
+-		for (int num5 = 0; num5 < maxBuffs; num5++) {
 -			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
++		for (int num5 = 0; num5 < 44; num5++) {
++			//TML: Don't save buffs to vanilla player
 +			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
  				fileIO.Write(0);
  				fileIO.Write(0);

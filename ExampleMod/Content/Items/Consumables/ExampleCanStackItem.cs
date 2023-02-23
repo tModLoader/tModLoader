@@ -18,10 +18,6 @@ namespace ExampleMod.Content.Items.Consumables
 		// We set this when the item is crafted. In other contexts, this will be an empty string
 		public string craftedPlayerName = string.Empty;
 
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 3;
-		}
-
 		public override void SetDefaults() {
 			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
 			Item.consumable = true;

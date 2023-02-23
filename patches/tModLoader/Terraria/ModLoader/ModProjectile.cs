@@ -442,6 +442,16 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
+	/// Whether or not the grappling hook can latch onto the given position in tile coordinates.
+	/// <br/>This position may be air or an actuated tile!
+	/// <br/>Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default.
+	/// </summary>
+	public virtual bool? GrappleCanLatchOnTo(Player player, int x, int y)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// When used in conjunction with "Projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 	/// </summary>
 	public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

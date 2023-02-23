@@ -49,14 +49,6 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
-	// Deprecation date: 2022.12.XX
-	/// <inheritdoc cref="Item.ResearchUnlockCount"/>
-	[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.ResearchUnlockCount)} instead.", error: true)]
-	public int SacrificeTotal {
-		get => Item.ResearchUnlockCount;
-		set => Item.ResearchUnlockCount = value;
-	}
-
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
 
 	protected override void ValidateType()
@@ -131,6 +123,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 		if (ModContent.RequestIfExists<Texture2D>(Texture + "_Flame", out var flameTexture)) {
 			TextureAssets.ItemFlame[Item.type] = flameTexture;
 		}
+
+		Item.ResearchUnlockCount = 1;
 	}
 
 	/// <summary>
