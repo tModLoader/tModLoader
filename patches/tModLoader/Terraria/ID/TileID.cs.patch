@@ -23,7 +23,7 @@
 +		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then players will slip on that tile.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then players will slip on that tile.
 +		/// <br/> If players have Ice Skates (<see cref="Player.iceSkate"/>) equipped, however, they will be much faster on this tile.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
@@ -32,27 +32,27 @@
 +
 +		// TML: Why would someone want to set this? Maybe it's for 1x1 tile entities?
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then that tile can be compressed when syncing or saving the world.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be compressed when syncing or saving the world.
 +		/// <br/> Defaults to <see langword="true"/>.
 +		/// </summary>
  		public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then that tile is categorized as a Gem Tree.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a Gem Tree.
 +		/// <br/> Vanilla only uses this for displaying a special message when using Lucy the Axe.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then that tile is categorized as a tree trunk.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a tree trunk.
 +		/// <br/> Tree trunks are a type of tile anchor (<see cref="Enums.AnchorType.Tree"/>), targettable by axes, and are replanted when using the <see cref="ItemID.AcornAxe"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then that tile can be shaken on hit.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be shaken on hit.
 +		/// <br/> <strong>This set only applies to trees.</strong>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
@@ -65,13 +65,13 @@
  		public static bool[] CommonSapling = Factory.CreateBoolSet(false, 20, 590, 595, 615);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then that tile has smooth borders and is drawn differently when hammered to be a half-block.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile has smooth borders and is drawn differently when hammered to be a half-block.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] AllBlocksWithSmoothBordersToResolveHalfBlockIssue = Factory.CreateBoolSet(false, 321, 157, 208, 159, 190, 80, 251, 202, 229, 56, 38, 39, 152, 118, 151, 148, 206, 119, 175, 46, 176, 45, 140, 347, 370, 121, 122, 680, 681, 682, 685, 686, 346, 687, 688, 689, 690, 691, 692, 160, 226, 54, 156, 155, 153, 154, 150, 250, 198, 273, 274, 325, 284, 348, 385, 327, 326, 345, 328, 329, 357, 369, 268, 261, 262, 255, 267, 260, 265, 258, 266, 259, 264, 257, 263, 256, 311, 431, 426, 433, 430, 434, 432, 272, 145, 146, 350, 127, 472, 473, 477, 478, 479, 492, 496, 507, 508, 563, 618);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="TileID"/>, then that tile can be mined using a shovel.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be mined using a shovel.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633);
@@ -83,7 +83,7 @@
  		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
 +
 +		/// <summary>
-+		/// If <c>!= 0</c> for a given <see cref="TileID"/>, then that tile functions as a conveyor belt.
++		/// If <c>!= 0</c> for a given tile type (<see cref="Tile.TileType"/>), then that tile functions as a conveyor belt.
 +		/// <br/> A positive value pushes entities to the right, and a negative value to the left. The actual value does not matter, only the sign.
 +		/// <br/> Defaults to <c>0</c>.
 +		/// </summary>

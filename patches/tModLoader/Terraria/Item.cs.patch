@@ -787,11 +787,11 @@
  	}
  
 +	/// <summary>
-+	/// Begins caching items spawns for a given <see cref="ItemID"/>.
++	/// Begins caching items spawns for a given item type (<see cref="Item.type"/>).
 +	/// <br/> Cached item types will not be spawned into the world when created with Item.NewItem().
 +	/// <br/> Cache sizes can be checked by indexing <see cref="cachedItemSpawnsByType"/> and dropped using <see cref="DropCache(IEntitySource, Vector2, Vector2, int, bool)"/>.
 +	/// </summary>
-+	/// <param name="t">The <see cref="ItemID"/> to start caching.</param>
++	/// <param name="t">The item type to start caching.</param>
  	public static void StartCachingType(int t)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
@@ -805,8 +805,8 @@
 +	/// <param name="reason">The source of the dropped cache.</param>
 +	/// <param name="pos">The position to drop the cache in world coordinates.</param>
 +	/// <param name="spread">The random spread of the dropped items in world coordinates.</param>
-+	/// <param name="t">The <see cref="ItemID"/> to drop.</param>
-+	/// <param name="stopCaching">If <see langword="true"/>, then <see cref="ItemID"/> <paramref name="t"/> will no longer be cached, allowing future drops to spawn as normal.</param>
++	/// <param name="t">The item type (<see cref="Item.type"/>) to drop.</param>
++	/// <param name="stopCaching">If <see langword="true"/>, then <paramref name="t"/> will no longer be cached, allowing future drops to spawn as normal.</param>
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
@@ -1152,12 +1152,12 @@
  	}
  
 +	/// <summary>
-+	/// Converts a banner ID into the equivalent <see cref="ItemID"/>.
++	/// Converts a banner ID into the equivalent item type (<see cref="Item.type"/>).
 +	/// </summary>
 +	/// <param name="banner">The banner ID to convert.</param>
 +	/// <returns>
-+	/// The <see cref="ItemID"/> associated with the given banner ID.
-+	/// <br/> <strong>This method will return the wrong <see cref="ItemID"/> if <paramref name="banner"/> is not a valid banner ID.</strong>
++	/// The item type associated with the given banner ID.
++	/// <br/> <strong>This method will return the wrong item type if <paramref name="banner"/> is not a valid banner ID.</strong>
 +	/// </returns>
 +	/// <remarks>You can get the banner ID of an NPC using <see cref="NPCtoBanner(int)"/>.</remarks>
  	public static int BannerToItem(int banner)
@@ -1173,10 +1173,10 @@
  	}
  
 +	/// <summary>
-+	/// Converts an <see cref="NPCID"/> into the equivalent banner ID.
++	/// Converts an NPC type (<see cref="NPC.type"/>) into the equivalent banner ID.
 +	/// </summary>
-+	/// <param name="i">The <see cref="NPCID"/> to convert.</param>
-+	/// <returns>The banner ID associated with the given <see cref="NPCID"/>, or <c>0</c> if the NPC has no associated banner.</returns>
++	/// <param name="i">The NPC type to convert.</param>
++	/// <returns>The banner ID associated with the given NPC type, or <c>0</c> if the NPC type has no associated banner.</returns>
  	public static int NPCtoBanner(int i)
  	{
  		switch (i) {
@@ -1198,10 +1198,10 @@
  	}
  
 +	/// <summary>
-+	/// Converts a banner ID into the equivalent <see cref="NPCID"/>.
++	/// Converts a banner ID into the equivalent NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
 +	/// <param name="i">The banner ID to convert.</param>
-+	/// <returns>The <see cref="NPCID"/> associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
++	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
  	public static int BannerToNPC(int i)
  	{
  		switch (i) {

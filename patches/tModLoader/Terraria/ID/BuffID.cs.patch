@@ -18,7 +18,7 @@
  		public class BuffMountData
  		{
 +			/// <summary>
-+			/// The <see cref="MountID"/> associated with this <see cref="BuffID"/>.
++			/// The mount type (<see cref="Mount.Type"/>) associated with this <see cref="BuffID"/>.
 +			/// </summary>
  			public int mountID;
 +

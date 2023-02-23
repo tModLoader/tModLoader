@@ -3124,9 +3124,9 @@
  	}
  
 +	/// <summary>
-+	/// Gets the texture and frame of the given <see cref="ItemID"/>.
++	/// Gets the texture and frame of the given item type (<see cref="Item.type"/>).
 +	/// </summary>
-+	/// <param name="item">The <see cref="ItemID"/> to use.</param>
++	/// <param name="item">The item type to use.</param>
 +	/// <param name="itemTexture">The <see cref="Texture2D"/> in <see cref="TextureAssets.Item"/> of <paramref name="item"/>.</param>
 +	/// <param name="itemFrame">The <see cref="Rectangle"/> covering this item's current frame on <paramref name="itemTexture"/>.</param>
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)

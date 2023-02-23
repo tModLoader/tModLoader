@@ -13,7 +13,7 @@
 +		public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCHeadID"/>, then that NPC head will never be drawn in the housing UI.
++		/// If <see langword="true"/> for a given NPC head ID, then that NPC head will never be drawn in the housing UI.
 +		/// </summary>
 +		/// <remarks>
 +		/// <see cref="ModNPC"/>s with <see cref="ModNPC.TownNPCStayingHomeless"/> set to <see langword="true"/> will also not draw their heads in the housing UI.

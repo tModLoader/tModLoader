@@ -12,17 +12,17 @@ partial class AmmoID
 		// https://github.com/tModLoader/tModLoader/pull/2288
 
 		/// <summary>
-		/// If <see langword="true"/> for a given <see cref="AmmoID"/>, then items of that type are counted as arrows for the purposes of <see cref="Player.arrowDamage"/> and the <see cref="ItemID.MagicQuiver"/>.
+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as arrows for the purposes of <see cref="Player.arrowDamage"/> and the <see cref="ItemID.MagicQuiver"/>.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] IsArrow = Factory.CreateBoolSet(false, Arrow, Stake);
 		/// <summary>
-		/// If <see langword="true"/> for a given <see cref="AmmoID"/>, then items of that type are counted as bullets for the purposes of <see cref="Player.bulletDamage"/>.
+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as bullets for the purposes of <see cref="Player.bulletDamage"/>.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] IsBullet = Factory.CreateBoolSet(false, Bullet, CandyCorn);
 		/// <summary>
-		/// If <see langword="true"/> for a given <see cref="ItemID"/>, then items of that type are counted as arrows for the purposes of <see cref="Player.rocketDamage"/>.
+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as arrows for the purposes of <see cref="Player.rocketDamage"/>.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] IsRocket = Factory.CreateBoolSet(false, Rocket, StyngerBolt, JackOLantern, NailFriendly);

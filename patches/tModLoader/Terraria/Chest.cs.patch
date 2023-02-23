@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -8,31 +_,123 @@
+@@ -8,34 +_,129 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
@@ -15,7 +15,7 @@
  public class Chest : IFixLoadedData
  {
 +	/// <summary>
-+	/// The maximum diatnce, in world coordinates, that a player can quick-stack items into chests.
++	/// The maximum distance, in world coordinates, that a player can quick-stack items into chests.
 +	/// </summary>
  	public const float chestStackRange = 600f;
 +
@@ -25,13 +25,13 @@
  	public const int maxChestTypes = 52;
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Containers"/> style with the <see cref="ItemID"/> that is shown when the chest is moused over.
++	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over.
 +	/// <br/> <see cref="maxChestTypes"/> elements long.
 +	/// </summary>
  	public static int[] chestTypeToIcon = new int[52];
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Containers"/> style with the <see cref="ItemID"/> that is dropped when the chest is destroyed.
++	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
 +	/// <br/> <see cref="maxChestTypes"/> elements long.
 +	/// </summary>
  	public static int[] chestItemSpawn = new int[52];
@@ -42,13 +42,13 @@
  	public const int maxChestTypes2 = 17;
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Containers2"/> style with the <see cref="ItemID"/> that is shown when the chest is moused over.
++	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over.
 +	/// <br/> <see cref="maxChestTypes2"/> elements long.
 +	/// </summary>
  	public static int[] chestTypeToIcon2 = new int[17];
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Containers2"/> style with the <see cref="ItemID"/> that is dropped when the chest is destroyed.
++	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
 +	/// <br/> <see cref="maxChestTypes2"/> elements long.
 +	/// </summary>
  	public static int[] chestItemSpawn2 = new int[17];
@@ -59,13 +59,13 @@
  	public const int maxDresserTypes = 43;
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Dressers"/> style with the <see cref="ItemID"/> that is shown when the dresser is moused over.
++	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is shown when the dresser is moused over.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
  	public static int[] dresserTypeToIcon = new int[43];
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Dressers"/> style with the <see cref="ItemID"/> that is dropped when the dresser is destroyed.
++	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
  	public static int[] dresserItemSpawn = new int[43];
@@ -124,6 +124,22 @@
  	public int eatingAnimationTime;
  	private static HashSet<int> _chestInUse = new HashSet<int>();
  
++	/// <summary>
++	/// Create a new <see cref="Chest"/> with no name.
++	/// </summary>
+ 	public Chest(bool bank = false)
+ 	{
+ 		item = new Item[40];
+@@ -43,6 +_,9 @@
+ 		name = string.Empty;
+ 	}
+ 
++	/// <summary>
++	/// 
++	/// </summary>
+ 	public override string ToString()
+ 	{
+ 		int num = 0;
 @@ -195,6 +_,11 @@
  		return false;
  	}
@@ -637,7 +653,7 @@
 +	/// <summary>
 +	/// Sets up an NPC's shop.
 +	/// </summary>
-+	/// <param name="type">The ID of the shop to setup. <strong>This is not an <see cref="NPCID"/>.</strong></param>
++	/// <param name="type">The ID of the shop to setup. <strong>This is not an NPC type (<see cref="NPC.type"/>).</strong></param>
  	public void SetupShop(int type)
  	{
  		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;

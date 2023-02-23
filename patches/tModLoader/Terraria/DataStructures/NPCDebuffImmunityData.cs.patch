@@ -12,17 +12,17 @@
  public class NPCDebuffImmunityData
  {
 +	/// <summary>
-+	/// If <see langword="true"/>, this <see cref="NPCID"/> will be immune to all whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
++	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
 +	/// </summary>
  	public bool ImmuneToWhips;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, this <see cref="NPCID"/> will be immune to all non-whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
++	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all non-whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
 +	/// </summary>
  	public bool ImmuneToAllBuffsThatAreNotWhips;
 +
 +	/// <summary>
-+	/// This <see cref="NPCID"/> will be immune to all <see cref="BuffID"/>s in this array.
++	/// This NPC type (<see cref="NPC.type"/>) will be immune to all <see cref="BuffID"/>s in this array.
 +	/// </summary>
  	public int[] SpecificallyImmuneTo;
  

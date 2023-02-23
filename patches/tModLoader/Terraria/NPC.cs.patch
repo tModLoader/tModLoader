@@ -1303,9 +1303,9 @@
  	}
  
 +	/// <summary>
-+	/// Gets the <see cref="InvasionID"/> associated with the given <see cref="NPCID"/>.
++	/// Gets the <see cref="InvasionID"/> associated with the given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
-+	/// <param name="npcID">The <see cref="NPCID"/> to check.</param>
++	/// <param name="npcID">The NPC type to check.</param>
 +	/// <returns>
 +	/// <c>0</c> for NPCs not affiliated with any invasion.
 +	/// <br/> A positive <see cref="InvasionID"/> for NPCs affiliated with standard events, such as the Goblin Army.

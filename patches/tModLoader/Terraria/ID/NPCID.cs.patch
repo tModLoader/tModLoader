@@ -15,8 +15,8 @@
 +	public static partial class Sets
  	{
 +		/// <summary>
-+		/// Stores the draw parameters for an <see cref="NPCID"/> in the Bestiary.
-+		/// <br/> <strong>Do not use the parameterless constructor or <c>default</c> to create this struct.</strong> Use <see cref="NPCBestiaryDrawModifiers.NPCBestiaryDrawModifiers(int)"/> instead with any parameter -- it sets proper default values.
++		/// Stores the draw parameters for an NPC type (<see cref="NPC.type"/>) in the Bestiary.
++		/// <br/> <strong>Do not use the parameterless constructor or <c>default</c> to create this struct.</strong> Use <see cref="NPCBestiaryDrawModifiers(int)"/> instead with any parameter -- it sets proper default values.
 +		/// </summary>
  		public struct NPCBestiaryDrawModifiers
  		{
@@ -121,7 +121,7 @@
 +
 +		/// <summary>
 +		/// Determines the special spawning rules for an NPC to use when respawning using the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
-+		/// <br/> If <c>0</c> for a given <see cref="NPCID"/>, then <c><see cref="NPC.ai"/>[0]</c> and <c><see cref="NPC.ai"/>[1]</c> are set to this <see cref="NPC"/>'s position in tile coordinates.
++		/// <br/> If <c>0</c> for a given NPC type (<see cref="NPC.type"/>), then <c><see cref="NPC.ai"/>[0]</c> and <c><see cref="NPC.ai"/>[1]</c> are set to this <see cref="NPC"/>'s position in tile coordinates.
 +		/// </summary>
 +		/// <remarks>All vanilla entries in this set use <c>0</c>. All vanilla entries in this set are tethered to tiles (<see cref="ManEater"/>, <see cref="Snatcher"/>, etc.).</remarks>
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
@@ -133,12 +133,12 @@
  		};
 +
 +		/// <summary>
-+		/// The settings to use for a given <see cref="NPCID"/>'s Bestiary drawing.
++		/// The settings to use for a given NPC type's (<see cref="NPC.type"/>) Bestiary drawing.
 +		/// </summary>
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
-+		/// The default debuff immunities for a given <see cref="NPCID"/>.
++		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
  		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
@@ -150,7 +150,7 @@
  		};
 +
 +		/// <summary>
-+		/// The order of critter <see cref="NPCID"/>s in the Bestiary.
++		/// The order of critter NPC types (<see cref="NPC.type"/>) in the Bestiary.
 +		/// </summary>
  		public static List<int> NormalGoldCritterBestiaryPriority = new List<int> {
  			46,
@@ -161,7 +161,7 @@
  		};
 +
 +		/// <summary>
-+		/// The order of boss <see cref="NPCID"/>s in thhe Bestiary.
++		/// The order of boss NPC types (<see cref="NPC.type"/>) in thhe Bestiary.
 +		/// </summary>
  		public static List<int> BossBestiaryPriority = new List<int> {
  			664,
@@ -172,7 +172,7 @@
  		};
 +
 +		/// <summary>
-+		/// The order of town NPC <see cref="NPCID"/>s in the Bestiary.
++		/// The order of town NPC NPC types (<see cref="NPC.type"/>) in the Bestiary.
 +		/// </summary>
  		public static List<int> TownNPCBestiaryPriority = new List<int> {
  			22,
@@ -183,19 +183,19 @@
  		};
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will not have its stats increased in <see cref="Main.expertMode"/> or higher difficulties.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will not have its stats increased in <see cref="Main.expertMode"/> or higher difficulties.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DontDoHardmodeScaling = Factory.CreateBoolSet(5, 13, 14, 15, 267, 113, 114, 115, 116, 117, 118, 119, 658, 659, 660, 400, 522);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will reflect <see cref="ProjectileID.StarCannonStar"/> and <see cref="ProjectileID.SuperStar"/> on the "For the Worthy" secret seed.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will reflect <see cref="ProjectileID.StarCannonStar"/> and <see cref="ProjectileID.SuperStar"/> on the "For the Worthy" secret seed.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ReflectStarShotsInForTheWorthy = Factory.CreateBoolSet(4, 5, 13, 14, 15, 266, 267, 35, 36, 113, 114, 115, 116, 117, 118, 119, 125, 126, 134, 135, 136, 139, 127, 128, 131, 129, 130, 262, 263, 264, 245, 247, 248, 246, 249, 398, 400, 397, 396, 401);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is categorized as a town pet.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is categorized as a town pet.
 +		/// <br/> Town pets must have <c><see cref="NPC.aiStyle"/> == <see cref="NPCAIStyleID.Passive"/></c> to function properly.
 +		/// <br/> Town pets cannot party, can be pet, can be moved into valid rooms even if they contain a stinkbug, and "leave" on death.
 +		/// <br/> Defaults to <see langword="false"/>.
@@ -203,7 +203,7 @@
  		public static bool[] IsTownPet = Factory.CreateBoolSet(637, 638, 656, 670, 678, 679, 680, 681, 682, 683, 684);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is categorized as a town slime.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is categorized as a town slime.
 +		/// <br/> Town slimes must have <c><see cref="NPC.aiStyle"/> == <see cref="NPCAIStyleID.Passive"/></c> to function properly. Additionally, they should also be in the <see cref="IsTownPet"/> set.
 +		/// <br/> Town slimes cannot sit on chairs, will try to play their idle animations more often, and have horizontally flipped sprites compared to normal town NPCs.
 +		/// <br/> Defaults to <see langword="false"/>.
@@ -211,13 +211,13 @@
  		public static bool[] IsTownSlime = Factory.CreateBoolSet(670, 678, 679, 680, 681, 682, 683, 684);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC can pick up <see cref="ItemID.CopperShortsword"/> or <see cref="ItemID.CopperHelmet"/> to become <see cref="TownSlimeCopper"/>.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can pick up <see cref="ItemID.CopperShortsword"/> or <see cref="ItemID.CopperHelmet"/> to become <see cref="TownSlimeCopper"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanConvertIntoCopperSlimeTownNPC = Factory.CreateBoolSet(1, 302, 335, 336, 333, 334);
 +
 +		/// <summary>
-+		/// A list of all <see cref="NPCID"/>s categorized as gold critters.
++		/// A list of all NPC types (<see cref="NPC.type"/>) categorized as gold critters.
 +		/// <br/> If a gold critter shows up on the Lifeform Analyzer, its name will be gold (<see cref="Main.DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC, ref Color, ref Color)"/>).
 +		/// </summary>
  		public static List<int> GoldCrittersCollection = new List<int> {
@@ -229,21 +229,21 @@
  		};
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will damage the player when hit with a melee attack, a whip, certain <see cref="ProjAIStyleID"/>s (<see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.HeldProjectile"/>), or by any <see cref="ProjectileID"/> in the <see cref="ProjectileID.Sets.AllowsContactDamageFromJellyfish"/> or <see cref="ProjectileID.Sets.IsAWhip"/> sets.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will damage the player when hit with a melee attack, a whip, certain <see cref="ProjAIStyleID"/>s (<see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.HeldProjectile"/>), or by any projectile type (<see cref="Projectile.type"/>) in the <see cref="ProjectileID.Sets.AllowsContactDamageFromJellyfish"/> or <see cref="ProjectileID.Sets.IsAWhip"/> sets.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ZappingJellyfish = Factory.CreateBoolSet(63, 64, 103, 242);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC cannot pick up dropped coins in Expert Mode.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC cannot pick up dropped coins in Expert Mode.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CantTakeLunchMoney = Factory.CreateBoolSet(394, 393, 392, 492, 491, 662, 384, 478, 535, 658, 659, 660, 128, 131, 129, 130, 139, 267, 247, 248, 246, 249, 245, 409, 410, 397, 396, 401, 400, 440, 68, 534);
 +
 +		/// <summary>
-+		/// Associates an <see cref="NPCID"/> with the <see cref="NPCID"/> it respawns as from the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
-+		/// <br/> If an <see cref="NPCID"/> is not a key in this dictionary, then that NPC respawns as itself.
-+		/// <br/> If the value for an <see cref="NPCID"/> is <c>0</c>, then that NPC won't be cached (<see cref="GameContent.CoinLossRevengeSystem.CacheEnemy(NPC)"/>).
++		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it respawns as from the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
++		/// <br/> If an NPC type is not a key in this dictionary, then that NPC respawns as itself.
++		/// <br/> If the value for an NPC type is <c>0</c>, then that NPC won't be cached (<see cref="GameContent.CoinLossRevengeSystem.CacheEnemy(NPC)"/>).
 +		/// </summary>
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
@@ -255,7 +255,7 @@
 +
 +		// Should TML have a ModNPC that uses trails? ExampleBullet exists for ProjectileID.Sets.TrailingMode usage, but no equivalent NPC version exists.
 +		/// <summary>
-+		/// If <c>!= -1</c> for a given <see cref="NPCID"/>, then that NPC will store its past positions (and potentially more) for use in a trail.
++		/// If <c>!= -1</c> for a given NPC type (<see cref="NPC.type"/>), then that NPC will store its past positions (and potentially more) for use in a trail.
 +		/// <br/> A value of <c>0</c> will store the NPC's position in <see cref="NPC.oldPos"/> every three frames. <strong>Vanilla automatically uses <see cref="NPC.localAI"/>[3] to count frames for this, so make sure your code doesn't interfere with that.</strong>
 +		/// <br/> A value of <c>1</c>, <c>5</c>, or <c>6</c> will store the NPC's position in <see cref="NPC.oldPos"/> every frame.
 +		/// <br/> A value of <c>2</c> will store the NPC's position and rotation in <see cref="NPC.oldPos"/> and <see cref="NPC.oldRot"/> respectively every frame <strong>if</strong> <c><see cref="NPC.ai"/>[0] == 4 or 5 or 6</c>.
@@ -269,14 +269,14 @@
  		public static int[] TrailingMode = Factory.CreateIntSet(-1, 439, 0, 440, 0, 370, 1, 372, 1, 373, 1, 396, 1, 400, 1, 401, 1, 473, 2, 474, 2, 475, 2, 476, 2, 4, 3, 471, 3, 477, 3, 479, 3, 120, 4, 137, 4, 138, 4, 94, 5, 125, 6, 126, 6, 127, 6, 128, 6, 129, 6, 130, 6, 131, 6, 139, 6, 140, 6, 407, 6, 420, 6, 425, 6, 427, 6, 426, 6, 581, 6, 516, 6, 542, 6, 543, 6, 544, 6, 545, 6, 402, 7, 417, 7, 419, 7, 418, 7, 574, 7, 575, 7, 519, 7, 521, 7, 522, 7, 546, 7, 558, 7, 559, 7, 560, 7, 551, 7, 620, 7, 657, 6, 636, 7, 677, 7, 685, 7);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is categorized as a dragonfly.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is categorized as a dragonfly.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Vanilla only uses this set to ensure the <see cref="ItemID.DragonflyStatue"/> doesn't spawn too many dragonflies without checkng each type individually. It's still recommended to add your NPC to this set if it applies.</remarks>
  		public static bool[] IsDragonfly = Factory.CreateBoolSet(595, 596, 597, 598, 599, 600, 601);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC belongs to the Old One's Army event.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Old One's Army event.
 +		/// <br/> If any NPC in this set is alive, the OOA music will play. Additionally, all NPCs in this set will be erased when the OOA ends.
 +		/// <br/> NPCs in this set will target the <see cref="DD2EterniaCrystal"/> if it is alive (using <see cref="Utilities.NPCUtils.TargetClosestOldOnesInvasion(NPC, bool, Vector2?)"/>).
 +		/// <br/> Defaults to <see langword="false"/>.
@@ -284,7 +284,7 @@
  		public static bool[] BelongsToInvasionOldOnesArmy = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 548, 549, 564, 565, 574, 575, 551, 578);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC cannot be teleported using <see cref="TileID.Teleporter"/>s.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC cannot be teleported using <see cref="TileID.Teleporter"/>s.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -293,7 +293,7 @@
  		public static bool[] TeleportationImmune = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 548, 549, 564, 565, 574, 575, 551, 578);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC can target other NPCs.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can target other NPCs.
 +		/// <br/> This set does <strong>not</strong> automatically handle NPC targetting. You should use <see cref="Utilities.NPCUtils.SearchForTarget(NPC, Utilities.NPCUtils.TargetSearchFlag, Utilities.NPCUtils.SearchFilter{Player}, Utilities.NPCUtils.SearchFilter{NPC})"/> or any of its overloads to write your own targetting function.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
@@ -304,7 +304,7 @@
  		public static bool[] UsesNewTargetting = Factory.CreateBoolSet(547, 552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 564, 565, 574, 575, 551, 578, 210, 211, 620, 668);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC can take damage from hostile NPCs without being friendly.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can take damage from hostile NPCs without being friendly.
 +		/// <br/> Used in vanilla for critters and trapped town slimes.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
@@ -317,39 +317,39 @@
  		public static bool[] AllNPCs = Factory.CreateBoolSet(true);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is a bee that will hurt other non-bee NPCs on contact.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a bee that will hurt other non-bee NPCs on contact.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] HurtingBees = Factory.CreateBoolSet(210, 211, 222);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will have a special spawning animation when using <see cref="NPCAIStyleID.DD2Fighter"/>.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will have a special spawning animation when using <see cref="NPCAIStyleID.DD2Fighter"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] FighterUsesDD2PortalAppearEffect = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 576, 577, 568, 569, 570, 571, 572, 573, 564, 565);
 +
 +		/// <summary>
-+		/// If <c>!= -1f</c> for a given <see cref="NPCID"/>, then if that NPC was spawned from a statue (<see cref="NPC.SpawnedFromStatue"/>), it will have a (retrieved value)% chance to actually drop loot when killed.
++		/// If <c>!= -1f</c> for a given NPC type (<see cref="NPC.type"/>), then if that NPC was spawned from a statue (<see cref="NPC.SpawnedFromStatue"/>), it will have a (retrieved value)% chance to actually drop loot when killed.
 +		/// <br/> Defaults to <c>-1f</c>.
 +		/// </summary>
 +		/// <remarks>NPCs in this set will never drop loot unless interacted with by a player (<see cref="NPC.AnyInteractions"/>).</remarks>
  		public static float[] StatueSpawnedDropRarity = Factory.CreateCustomSet(-1f, (short)480, 0.05f, (short)82, 0.05f, (short)86, 0.05f, (short)48, 0.05f, (short)490, 0.05f, (short)489, 0.05f, (short)170, 0.05f, (short)180, 0.05f, (short)171, 0.05f, (short)167, 0.25f, (short)73, 0.01f, (short)24, 0.05f, (short)481, 0.05f, (short)42, 0.05f, (short)6, 0.05f, (short)2, 0.05f, (short)49, 0.2f, (short)3, 0.2f, (short)58, 0.2f, (short)21, 0.2f, (short)65, 0.2f, (short)449, 0.2f, (short)482, 0.2f, (short)103, 0.2f, (short)64, 0.2f, (short)63, 0.2f, (short)85, 0f);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then if that NPC was spawned from a statue (<see cref="NPC.SpawnedFromStatue"/>), it will not drop loot in pre-hardmode.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then if that NPC was spawned from a statue (<see cref="NPC.SpawnedFromStatue"/>), it will not drop loot in pre-hardmode.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] NoEarlymodeLootWhenSpawnedFromStatue = Factory.CreateBoolSet(480, 82, 86, 170, 180, 171);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will receive stat scaling in Expert Mode, even if its normal stats would prevent that.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will receive stat scaling in Expert Mode, even if its normal stats would prevent that.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>NPCs with less than 5 health are most prone to needing this set. The full scaling conditions can be found at the start of <see cref="NPC.ScaleStats(int?, GameModeData, float?)"/>.</remarks>
  		public static bool[] NeedsExpertScaling = Factory.CreateBoolSet(25, 30, 665, 33, 112, 666, 261, 265, 371, 516, 519, 397, 396, 398, 491);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is treated specially for difficulty scaling.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is treated specially for difficulty scaling.
 +		/// <br/> Projectile NPCs never scale their max health, defense, or value.
 +		/// <br/> Additionally, kills are not counted for NPCs in this set.
 +		/// <br/> Defaults to <see langword="false"/>.
@@ -361,41 +361,41 @@
 +		internal static bool[] SavesAndLoads = Factory.CreateBoolSet(422, 507, 517, 493);
 +
 +		/// <summary>
-+		/// The length of this <see cref="NPCID"/>'s <see cref="NPC.oldPos"/> and <see cref="NPC.oldRot"/> arrays.
++		/// The length of this NPC type's (<see cref="NPC.type"/>) <see cref="NPC.oldPos"/> and <see cref="NPC.oldRot"/> arrays.
 +		/// <br/> <strong>This set does nothing by itself.</strong> You will need to set <see cref="TrailingMode"/> in order to actually store values.
 +		/// <br/> Defaults to <c>10</c>.
 +		/// </summary>
  		public static int[] TrailCacheLength = Factory.CreateIntSet(10, 402, 36, 519, 20, 522, 20, 620, 20, 677, 60, 685, 10);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will sync more the closer it is to a player.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will sync more the closer it is to a player.
 +		/// <br/> Defaults to <see langword="true"/>.
 +		/// </summary>
  		public static bool[] UsesMultiplayerProximitySyncing = Factory.CreateBoolSet(true, 398, 397, 396);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will not smooth its visual position in multiplayer.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will not smooth its visual position in multiplayer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
-+		/// <remarks>To prevent smoothing by <see cref="NPCAIStyleID"/>, use <see cref="NoMultiplayerSmoothingByAI"/>.</remarks>
++		/// <remarks>To prevent smoothing by <see cref="NPCAIStyleID"/> (<see cref="NPC.aiStyle"/>), use <see cref="NoMultiplayerSmoothingByAI"/>.</remarks>
  		public static bool[] NoMultiplayerSmoothingByType = Factory.CreateBoolSet(113, 114, 50, 657, 120, 245, 247, 248, 246, 370, 222, 398, 397, 396, 400, 401, 668, 70);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <strong><see cref="NPCAIStyleID"/></strong>, then that AI style will not smooth its visual position in multiplayer.
++		/// If <see langword="true"/> for a given <strong><see cref="NPCAIStyleID"/></strong> (<see cref="NPC.aiStyle"/>), then that AI style will not smooth its visual position in multiplayer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
-+		/// <remarks>To prevent smoothing by <see cref="NPCID"/>, use <see cref="NoMultiplayerSmoothingByType"/>.</remarks>
++		/// <remarks>To prevent smoothing by NPC type (<see cref="NPC.type"/>), use <see cref="NoMultiplayerSmoothingByType"/>.</remarks>
  		public static bool[] NoMultiplayerSmoothingByAI = Factory.CreateBoolSet(6, 8, 37);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC can be summoned in multiplayer using <see cref="MessageID.SpawnBossUseLicenseStartEvent"/>.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can be summoned in multiplayer using <see cref="MessageID.SpawnBossUseLicenseStartEvent"/>.
 +		/// <br/> <strong>If you don't set this, your boss most likely won't work in multiplayer.</strong>
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] MPAllowedEnemies = Factory.CreateBoolSet(4, 13, 50, 126, 125, 134, 127, 128, 131, 129, 130, 222, 245, 266, 370, 657, 668);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is a critter that can spawn in towns.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a critter that can spawn in towns.
 +		/// <br/> Town critters use <see cref="NPCAIStyleID.Passive"/>.
 +		/// <br/> Defauts to <see langword="false"/>.
 +		/// </summary>
@@ -403,7 +403,7 @@
  		public static bool[] TownCritter = Factory.CreateBoolSet(46, 148, 149, 230, 299, 300, 303, 337, 361, 362, 364, 366, 367, 443, 445, 447, 538, 539, 540, 583, 584, 585, 592, 593, 602, 607, 608, 610, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 687);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is counted as a critter.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is counted as a critter.
 +		/// <br/> Critters cannot be damage by players with <see cref="Player.dontHurtCritters"/> set to <see langword="true"/>.
 +		/// <br/> Also, critters can't be used to summon Horseman's Blade projectiles, nor can they be chased by said projectiles.
 +		/// </summary>
@@ -411,7 +411,7 @@
 +
 +		/// <summary>
 +		/// <strong>Only applies to vanilla NPCs.</strong> Also only applies to town NPCs.
-+		/// <br/> If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC doesn't have any special dialogue for parties.
++		/// <br/> If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC doesn't have any special dialogue for parties.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] HasNoPartyText = Factory.CreateBoolSet(441, 453);
@@ -424,9 +424,9 @@
  		public static int[] HatOffsetY = Factory.CreateIntSet(0, 227, 4, 107, 2, 108, 2, 229, 4, 17, 2, 38, 8, 160, -10, 208, 2, 142, 2, 124, 2, 453, 2, 37, 4, 54, 4, 209, 4, 369, 6, 441, 6, 353, -2, 633, -2, 550, -2, 588, 2, 663, 2, 637, 0, 638, 0, 656, 4, 670, 0, 678, 0, 679, 0, 680, 0, 681, 0, 682, 0, 683, 0, 684, 0);
 +
 +		/// <summary>
-+		/// Associates a town NPC's <see cref="NPCID"/> with its corresponding <see cref="GameContent.UI.EmoteID"/>.
++		/// Associates a town NPC's NPC type (<see cref="NPC.type"/>) with its corresponding <see cref="GameContent.UI.EmoteID"/>.
 +		/// <br/> Town NPCs can emote using emotes in this set if the corresponding NPC is alive.
-+		/// <br/> If <c>0</c> for a given <see cref="NPCID"/>, then that NPC has no associated emote.
++		/// <br/> If <c>0</c> for a given NPC type, then that NPC has no associated emote.
 +		/// <br/> Defaults to <c>0</c>.
 +		/// </summary>
 +		/// <remarks>This only applies to town NPCs -- there isn't a set that associates, say, the Eye of Cthulhu to an associated emote.</remarks>
@@ -455,34 +455,34 @@
  		public static int[] DangerDetectRange = Factory.CreateIntSet(-1, 38, 300, 17, 320, 107, 300, 19, 900, 22, 700, 124, 800, 228, 800, 178, 900, 18, 300, 229, 1000, 209, 1000, 54, 700, 108, 700, 160, 700, 20, 1200, 369, 300, 453, 300, 368, 900, 207, 60, 227, 800, 208, 400, 142, 500, 441, 50, 353, 60, 633, 100, 550, 120, 588, 120, 663, 700, 638, 250, 637, 250, 656, 250, 670, 250, 678, 250, 679, 250, 680, 250, 681, 250, 682, 250, 683, 250, 684, 250);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is immune to the effects of the shimmer.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is immune to the effects of the shimmer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>To make an NPC ignore the player's shimmer invulnerabilty, use <see cref="CanHitPastShimmer"/> instead.</remarks>
  		public static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
 +
 +		/// <summary>
-+		/// If not <c>-1</c> for a given <see cref="NPCID"/>, then that NPC will transform into the retrieved <see cref="ItemID"/> when touching shimmer.
++		/// If not <c>-1</c> for a given NPC type (<see cref="NPC.type"/>), then that NPC will transform into the retrieved item type (<see cref="Item.type"/>) when touching shimmer.
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
 +		/// <remarks>The created item will always have a stack of 1.</remarks>
  		public static int[] ShimmerTransformToItem = Factory.CreateIntSet(-1, 651, 182, 644, 182, 650, 178, 643, 178, 649, 179, 642, 179, 648, 177, 641, 177, 640, 180, 647, 180, 646, 181, 639, 181, 652, 999, 645, 999, 448, 5341);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is a town NPC with an alternate shimmered texture.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a town NPC with an alternate shimmered texture.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ShimmerTownTransform = Factory.CreateBoolSet(22, 17, 18, 227, 207, 633, 588, 208, 369, 353, 38, 20, 550, 19, 107, 228, 54, 124, 441, 229, 160, 108, 178, 209, 142, 663, 37, 453, 368);
 +
 +		/// <summary>
-+		/// Associates an <see cref="NPCID"/> with the <see cref="NPCID"/> it will turn into when submerged in shimmer.
++		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it will turn into when submerged in shimmer.
 +		/// <br/> A value of<c>-1</c> means the given NPC won't transform.
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
  		public static int[] ShimmerTransformToNPC = Factory.CreateIntSet(-1, 3, 21, 132, 202, 186, 201, 187, 21, 188, 21, 189, 202, 200, 203, 590, 21, 1, 676, 302, 676, 335, 676, 336, 676, 334, 676, 333, 676, 225, 676, 141, 676, 16, 676, 147, 676, 184, 676, 537, 676, 204, 676, 81, 676, 183, 676, 138, 676, 121, 676, 591, 449, 430, 449, 436, 452, 432, 450, 433, 449, 434, 449, 435, 451, 614, 677, 74, 677, 297, 677, 298, 677, 673, 677, 672, 677, 671, 677, 675, 677, 674, 677, 362, 677, 363, 677, 364, 677, 365, 677, 608, 677, 609, 677, 602, 677, 603, 677, 611, 677, 148, 677, 149, 677, 46, 677, 303, 677, 337, 677, 299, 677, 538, 677, 55, 677, 607, 677, 615, 677, 625, 677, 626, 677, 361, 677, 687, 677, 484, 677, 604, 677, 358, 677, 355, 677, 616, 677, 617, 677, 654, 677, 653, 677, 655, 677, 585, 677, 584, 677, 583, 677, 595, 677, 596, 677, 600, 677, 597, 677, 598, 677, 599, 677, 357, 677, 377, 677, 606, 677, 359, 677, 360, 677, 367, 677, 366, 677, 300, 677, 610, 677, 612, 677, 487, 677, 486, 677, 485, 677, 669, 677, 356, 677, 661, 677, 374, 677, 442, 677, 443, 677, 444, 677, 601, 677, 445, 677, 592, 677, 446, 677, 605, 677, 447, 677, 627, 677, 539, 677, 613, 677);
 +
 +		/// <summary>
-+		/// The duration of this town NPC's attack aniamtion in ticks.
++		/// The duration of this town NPC's attack animation in ticks.
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
  		public static int[] AttackTime = Factory.CreateIntSet(-1, 38, 34, 17, 34, 107, 60, 19, 40, 22, 30, 124, 34, 228, 40, 178, 24, 18, 34, 229, 60, 209, 60, 54, 60, 108, 30, 160, 60, 20, 600, 369, 34, 453, 34, 368, 60, 207, 15, 227, 60, 208, 34, 142, 34, 441, 15, 353, 12, 633, 12, 550, 34, 588, 20, 663, 60, 638, -1, 637, -1, 656, -1, 670, -1, 678, -1, 679, -1, 680, -1, 681, -1, 682, -1, 683, -1, 684, -1);
@@ -495,7 +495,7 @@
  		public static int[] AttackAverageChance = Factory.CreateIntSet(1, 38, 40, 17, 30, 107, 60, 19, 30, 22, 30, 124, 30, 228, 50, 178, 50, 18, 60, 229, 40, 209, 30, 54, 30, 108, 30, 160, 60, 20, 60, 369, 50, 453, 30, 368, 40, 207, 1, 227, 30, 208, 50, 142, 50, 441, 1, 353, 1, 633, 1, 550, 40, 588, 20, 663, 1, 638, 1, 637, 1, 656, 1, 670, 1, 678, 1, 679, 1, 680, 1, 681, 1, 682, 1, 683, 1, 684, 1);
 +
 +		/// <summary>
-+		/// Determines how a town NPC with the given <see cref="NPCID"/> attacks.
++		/// Determines how a town NPC with the given NPC type (<see cref="NPC.type"/>) attacks.
 +		/// <br/> For <c>-1</c>, this NPC won't attack.
 +		/// <br/> For <c>0</c>, this NPC will throw a projectile.
 +		/// <br/> For <c>1</c>, this NPC will shoot a weapon.
@@ -523,27 +523,27 @@
 +
 +		/// <summary>
 +		/// <strong>Unused in vanilla.</strong>
-+		/// <br/> If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is a type of demon eye.
++		/// <br/> If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a type of demon eye.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DemonEyes = Factory.CreateBoolSet(2, 190, 192, 193, 191, 194, 317, 318);
 +
 +		/// <summary>
 +		/// <strong>Unused in vanilla.</strong>
-+		/// <br/> If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is a type of zombie.
++		/// <br/> If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a type of zombie.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] Zombies = Factory.CreateBoolSet(3, 132, 186, 187, 188, 189, 200, 223, 161, 254, 255, 52, 53, 536, 319, 320, 321, 332, 436, 431, 432, 433, 434, 435, 331, 430, 590);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is a type of skeleton.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a type of skeleton.
 +		/// <br/> Skeletons cannot huer the <see cref="SkeletonMerchant"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] Skeletons = Factory.CreateBoolSet(77, 449, 450, 451, 452, 481, 201, 202, 203, 21, 324, 110, 323, 293, 291, 322, 292, 197, 167, 44, 635);
 +
 +		/// <summary>
-+		/// Associates an <see cref="NPCID"/> with the index in <see cref="GameContent.TextureAssets.NpcHeadBoss"/> of its default map icon.
++		/// Associates an NPC type (<see cref="NPC.type"/>) with the index in <see cref="GameContent.TextureAssets.NpcHeadBoss"/> of its default map icon.
 +		/// <br/> Auto-set using <see cref="AutoloadBossHead"/>.
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
@@ -554,7 +554,7 @@
  		public static int[] BossHeadTextures = Factory.CreateIntSet(-1, 4, 0, 13, 2, 344, 3, 370, 4, 246, 5, 249, 5, 345, 6, 50, 7, 396, 8, 395, 9, 325, 10, 262, 11, 327, 13, 222, 14, 125, 15, 126, 20, 346, 17, 127, 18, 35, 19, 68, 19, 113, 22, 266, 23, 439, 24, 440, 24, 134, 25, 491, 26, 517, 27, 422, 28, 507, 29, 493, 30, 549, 35, 564, 32, 565, 32, 576, 33, 577, 33, 551, 34, 548, 36, 636, 37, 657, 38, 668, 39);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will not have its kills counted.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will not have its kills counted.
 +		/// <br/> Used in vanilla for special projectile-like NPCs (not found in <see cref="ProjectileNPC"/>), for NPCs that turn into another NPC on death, and for temporary NPCs, like the <see cref="MothronEgg"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
@@ -562,21 +562,21 @@
  		public static bool[] PositiveNPCTypesExcludedFromDeathTally = Factory.CreateBoolSet(121, 384, 478, 479, 410, 472, 378);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is sorted with bosses despite <see cref="NPC.boss"/> being <see langword="false"/>.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is sorted with bosses despite <see cref="NPC.boss"/> being <see langword="false"/>.
 +		/// <Br/> Used in vanilla for the Celestial Pillars, the Eater of Worlds' head, and the Torch God.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ShouldBeCountedAsBoss = Factory.CreateBoolSet(false, 517, 422, 507, 493, 13, 664);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC is considered dangerous without having <see cref="NPC.boss"/> set.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is considered dangerous without having <see cref="NPC.boss"/> set.
 +		/// <br/> <see cref="Main.CurrentFrameFlags.AnyActiveBossNPC"/> will be set to <see langword="true"/> if any NPC in this set is alive, and <see cref="NPC.AnyDanger(bool, bool)"/> will rturn <see langword="true"/> if any NPCs in this set are alive.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DangerThatPreventsOtherDangers = Factory.CreateBoolSet(517, 422, 507, 493, 399);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC will alays draw, even if its hitbox is off-screen.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will alays draw, even if its hitbox is off-screen.
 +		/// <br/> Default to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] MustAlwaysDraw = Factory.CreateBoolSet(113, 114, 115, 116, 126, 125);
@@ -590,13 +590,13 @@
  		public static int[] ExtraTextureCount = Factory.CreateIntSet(0, 38, 1, 17, 1, 107, 0, 19, 0, 22, 0, 124, 1, 228, 0, 178, 1, 18, 1, 229, 1, 209, 1, 54, 1, 108, 1, 160, 0, 20, 0, 369, 1, 453, 1, 368, 1, 207, 1, 227, 1, 208, 0, 142, 1, 441, 1, 353, 1, 633, 1, 550, 0, 588, 1, 633, 2, 663, 1, 638, 0, 637, 0, 656, 0, 670, 0, 678, 0, 679, 0, 680, 0, 681, 0, 682, 0, 683, 0, 684, 0);
 +
 +		/// <summary>
-+		/// The index for <see cref="TownNPCsFramingGroups"/> for a given <see cref="NPCID"/>. See <see cref="TownNPCsFramingGroups"/> for more info.
++		/// The index for <see cref="TownNPCsFramingGroups"/> for a given NPC type (<see cref="NPC.type"/>). See <see cref="TownNPCsFramingGroups"/> for more info.
 +		/// <br/> Defaults to <c>0</c>.
 +		/// </summary>
  		public static int[] NPCFramingGroup = Factory.CreateIntSet(0, 18, 1, 20, 1, 208, 1, 178, 1, 124, 1, 353, 1, 633, 1, 369, 2, 160, 3, 637, 4, 638, 5, 656, 6, 670, 7, 678, 7, 679, 7, 680, 7, 681, 7, 682, 7, 683, 7, 684, 7);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="NPCID"/>, then that NPC can players that are submerged in shimmer.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can players that are submerged in shimmer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Bosses (<see cref="NPC.boss"/>) and invasion enemies (<see cref="NPC.GetNPCInvasionGroup(int)"/>) can always hit shimmered players.</remarks>

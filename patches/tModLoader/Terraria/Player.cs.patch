@@ -398,7 +398,7 @@
  	public int lifeRegenCount;
 +
 +	/// <summary>
-+	/// How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases ove time.
++	/// How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases over time.
 +	/// <br/> Certain effects increase this value to increase
 +	/// </summary>
 +	/// <remarks>

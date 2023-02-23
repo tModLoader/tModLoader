@@ -124,7 +124,7 @@
  	public PopupTextContext context;
 +
 +	/// <summary>
-+	/// The <see cref="NPCID"/> this <see cref="PopupText"/> is bound to, or <c>0</c> if not bound to an NPC.
++	/// The NPC type (<see cref="NPC.type"/>) this <see cref="PopupText"/> is bound to, or <c>0</c> if not bound to an NPC.
 +	/// </summary>
  	public int npcNetID;
 +
@@ -281,10 +281,10 @@
 @@ -461,6 +_,9 @@
  		else if (master)
  			color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
- 
++
 +		if (rarity > ItemRarityID.Purple)
 +			color = RarityLoader.GetRarity(rarity).RarityColor;
-+
+ 
  		bool flag = false;
  		Vector2 textHitbox = GetTextHitbox();
  		Rectangle rectangle = new Rectangle((int)(position.X - textHitbox.X / 2f), (int)(position.Y - textHitbox.Y / 2f), (int)textHitbox.X, (int)textHitbox.Y);

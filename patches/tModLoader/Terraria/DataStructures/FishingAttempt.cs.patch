@@ -16,7 +16,7 @@
  	public int Y;
 +
 +	/// <summary>
-+	/// The <see cref="ID.ProjectileID"/> of this bobber.
++	/// The projectile type (<see cref="Projectile.type"/>) of this bobber.
 +	/// </summary>
  	public int bobberType;
 +
@@ -99,7 +99,7 @@
  	public float atmo;
 +
 +	/// <summary>
-+	/// The <see cref="ID.ItemID"/> of the quest fish the Angler wants, or <c>-1</c> if this player can't catch that fish today.
++	/// The item type (<see cref="Item.type"/>) of the quest fish the Angler wants, or <c>-1</c> if this player can't catch that fish today.
 +	/// </summary>
  	public int questFish;
 +
@@ -114,12 +114,12 @@
  	public int heightLevel;
 +
 +	/// <summary>
-+	/// The <see cref="ID.ItemID"/> of the caught item.
++	/// The item type (<see cref="Item.type"/>) of the caught item.
 +	/// </summary>
  	public int rolledItemDrop;
 +
 +	/// <summary>
-+	/// The <see cref="ID.NPCID"/> of the caught NPC.
++	/// The item type (<see cref="Item.type"/>) of the caught NPC.
 +	/// </summary>
  	public int rolledEnemySpawn;
  }

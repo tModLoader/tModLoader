@@ -11,7 +11,7 @@
 +	public partial class Sets
  	{
 +		/// <summary>
-+		/// Associates a launcher's <see cref="ItemID"/> and an ammo's <see cref="ItemID"/> to the <see cref="ProjectileID"/> they will shoot when used together.
++		/// Associates a launcher's item type (<see cref="Item.type"/>) and an ammo's item type (<see cref="Item.type"/>) to the projectile type (<see cref="Projectile.type"/>) they will shoot when used together.
 +		/// <br/> For example, a <see cref="ItemID.SnowmanCannon"/> used with a <see cref="ItemID.MiniNukeI"/> will fire the <see cref="ProjectileID.MiniNukeSnowmanRocketI"/>.
 +		/// </summary>
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
