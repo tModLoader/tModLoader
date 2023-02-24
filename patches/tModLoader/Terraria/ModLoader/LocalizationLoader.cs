@@ -397,14 +397,14 @@ public static class LocalizationLoader
 			}
 
 			foreach (var baseFile in baseLocalizationFiles) {
-				string hjsonContents = LocalizationFileToHjsonText(baseFile, localizationsForCulture);
+				string hjsonContents = LocalizationFileToHjsonText(baseFile, localizationsForCulture).ReplaceLineEndings(); // need to compare with same line endings, as Git and OS will affect actual line endings.
 				string outputFileName = GetPathForCulture(baseFile, culture);
 
 				// Only write if file doesn't exist or if file has changed and .tmod file is newer than existing file.
 				// File Modified date check allows edits to English files to be propagated with a build and reload without being accidentally reverted when tmod is launched.
 				var outputFilePath = Path.Combine(sourceFolder, outputFileName) /*+ ".new"*/;
 				DateTime dateTime = File.GetLastWriteTime(outputFilePath);
-				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents != hjsonContents && dateTime < modLastModified) {
+				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified) {
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
 

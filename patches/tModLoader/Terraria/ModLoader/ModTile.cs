@@ -53,6 +53,8 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
+	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
+	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name = null)
 	{
@@ -67,6 +69,8 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
+	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{

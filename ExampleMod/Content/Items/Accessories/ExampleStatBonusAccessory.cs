@@ -20,10 +20,6 @@ namespace ExampleMod.Content.Items.Accessories
 		// Insert the modifier values into the tooltip localization
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback);
 
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 40;
 			Item.height = 40;

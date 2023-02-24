@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true; // This prevents this item from being automatically dropped from ExampleHerb tile. 
-			Item.ResearchUnlockCount = 20;
+			Item.ResearchUnlockCount = 25;
 		}
 
 		public override void SetDefaults() {

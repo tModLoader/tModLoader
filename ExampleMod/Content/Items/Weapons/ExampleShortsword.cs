@@ -7,10 +7,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleShortsword : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.damage = 8;
 			Item.knockBack = 4f;
