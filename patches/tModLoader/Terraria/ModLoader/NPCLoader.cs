@@ -376,11 +376,21 @@ public static class NPCLoader
 		catch (IOException e) {
 			Logging.tML.Error(e.ToString());
 
-			string culprits = $"Above IOException error in NPC {(npc.ModNPC == null ? npc.TypeName : npc.ModNPC.FullName)} may be caused by one of these:";
+			string message = $"Above IOException error in NPC {(npc.ModNPC == null ? npc.TypeName : npc.ModNPC.FullName)} occured";
+
+			var culprits = new List<GlobalNPC>();
 			foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc.globalNPCs)) {
-				culprits += $"\n    {g.Name}";
+				culprits.Add(g);
 			}
-			Logging.tML.Error(culprits);
+
+			if (culprits.Count > 0) {
+				message += ", may be caused by one of these:";
+				foreach (GlobalNPC g in culprits) {
+					message += $"\n\t{g.FullName}";
+				}
+			}
+
+			Logging.tML.Error(message);
 		}
 	}
 
