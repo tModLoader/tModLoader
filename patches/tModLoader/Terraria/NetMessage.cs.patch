@@ -142,7 +142,7 @@
  					break;
  				}
  				case 24:
-@@ -673,12 +_,16 @@
+@@ -673,7 +_,7 @@
  					if (projectile.knockBack != 0f)
  						bitsByte23[5] = true;
  
@@ -151,15 +151,18 @@
  						bitsByte23[7] = true;
  
  					if (projectile.originalDamage != 0)
- 						bitsByte23[6] = true;
- 
-+					byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
-+					bool hasExtraAI = extraAI?.Length > 0;
-+					bitsByte23[2] = hasExtraAI; // This bit is unused by vanilla.
-+
+@@ -682,6 +_,11 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
++					byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
++					bool hasExtraAI = extraAI?.Length > 0;
++					bitsByte23[2] |= hasExtraAI; // This bit is used for continuation of sending BitsBytes.
++					bitsByte24[1] = hasExtraAI; // This bit is unused by vanilla, but this BitsByte is only sent if the bit in the BitsByte above is set
++
+ 					writer.Write(bitsByte23);
+ 					if (bitsByte23[2])
+ 						writer.Write(bitsByte24);
 @@ -710,11 +_,20 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
