@@ -18,7 +18,6 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.ownerHitCheck = true;
-			Projectile.netUpdate = true;
 			Projectile.aiStyle = -1; // Replace with 20 if you do not want custom code
 			Projectile.hide = true; // Hides the projectile, so it will draw in the player's hand when we set the player's heldProj to this one.
 		}
