@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.hide = true; //Hides the projectile, so it will draw in the player's hand when we set the player's heldProj to this one.
 		}
 
-		//This code is adapted from aiStyle 20 to use a different dust and more noises. If you want to use aiStyle 20, you do not need to do any of this.
+		//This code is adapted and simplified from aiStyle 20 to use a different dust and more noises. If you want to use aiStyle 20, you do not need to do any of this.
 		//It should be noted that this projectile has no effect on mining and is mostly visual.
 		public override void AI() {
 
@@ -38,29 +38,26 @@ namespace ExampleMod.Content.Projectiles
 
 			Vector2 myPosition = player.RotatedRelativePoint(player.MountedCenter);
 			if (player.channel) {
-				float num178 = player.inventory[player.selectedItem].shootSpeed * Projectile.scale;
-				float newVelocityX = Main.mouseX + Main.screenPosition.X - myPosition.X;
-				float newVelocityY = Main.mouseY + Main.screenPosition.Y - myPosition.Y;
-				if (player.gravDir == -1f)
-					newVelocityY = Main.screenHeight - Main.mouseY + Main.screenPosition.Y - myPosition.Y;
-
-				float num181 = (float)Math.Sqrt(newVelocityX * newVelocityX + newVelocityY * newVelocityY);
-				num181 = num178 / num181;
-				newVelocityX *= num181;
-				newVelocityY *= num181;
-				if (newVelocityX != Projectile.velocity.X || newVelocityY != Projectile.velocity.Y)
+				float speed = player.HeldItem.shootSpeed * Projectile.scale;
+				Vector2 newVelocity = Main.MouseWorld - myPosition;
+				float distanceLength = newVelocity.Length();
+				distanceLength = speed / distanceLength;
+				newVelocity *= distanceLength;
+				if (newVelocity.X != Projectile.velocity.X || newVelocity.Y != Projectile.velocity.Y)
 					Projectile.netUpdate = true;
 
-				Projectile.velocity.X = newVelocityX;
-				Projectile.velocity.Y = newVelocityY;
+				Projectile.velocity = newVelocity;
 			}
 			else
 				Projectile.Kill();
 
-			if (Projectile.velocity.X > 0f)
+			if (Projectile.velocity.X > 0f) {
 				player.ChangeDir(1);
-			else if (Projectile.velocity.X < 0f)
+			}			
+			else if (Projectile.velocity.X < 0f) {
 				player.ChangeDir(-1);
+			}
+				
 
 			Projectile.spriteDirection = Projectile.direction;
 			player.ChangeDir(Projectile.direction); //Change the player's direction based on the projectile's own
