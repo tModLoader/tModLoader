@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Items.Tools
 			Item.value = Item.buyPrice(gold: 1);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item23;
-			Item.shoot = ModContent.ProjectileType<ExampleDrillProjectile>(); //Create the drill projectile
+			Item.shoot = ModContent.ProjectileType<ExampleDrillProjectile>(); // Create the drill projectile
 			Item.shootSpeed = 32f;
 			Item.noMelee = true; // Turns off damage from the item itself, as we have a projectile
 			Item.noUseGraphic = true; // Stops the item from drawing in your hands, for the aforementioned reason
