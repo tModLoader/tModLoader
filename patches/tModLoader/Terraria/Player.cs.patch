@@ -4386,6 +4386,22 @@
  							if (inventory[num15].stack <= 0)
  								inventory[num15] = new Item();
  
+@@ -33732,6 +_,15 @@
+ 							flag6 = false;
+ 					}
+ 
++					// Copied as-is from 1.3
++					if (item.CountsAsClass(DamageClass.Throwing)) {
++						if (ThrownCost50 && Main.rand.Next(100) < 50)
++							flag6 = false;
++
++						if (ThrownCost33 && Main.rand.Next(100) < 33)
++							flag6 = false;
++					}
++
+ 					if (item.IsACoin)
+ 						flag6 = true;
+ 
 @@ -33739,7 +_,7 @@
  					if (flag7.HasValue)
  						flag6 = flag7.Value;
@@ -5938,9 +5954,10 @@
  		}
  
  		fileIO.Write(newPlayer.voidVaultInfo);
- 		for (int num5 = 0; num5 < maxBuffs; num5++) {
-+			//TML: Don't save buffs to vanilla player
+-		for (int num5 = 0; num5 < maxBuffs; num5++) {
 -			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
++		for (int num5 = 0; num5 < 44; num5++) {
++			//TML: Don't save buffs to vanilla player
 +			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
  				fileIO.Write(0);
  				fileIO.Write(0);

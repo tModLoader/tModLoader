@@ -8,10 +8,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleSword : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 40; // The item texture's width.
 			Item.height = 40; // The item texture's height.

@@ -68,10 +68,6 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
 
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);
 			Item.useAmmo = AmmoID.None;

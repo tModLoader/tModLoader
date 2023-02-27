@@ -36,13 +36,13 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
-			ExampleStatIncreasePlayer clone = targetCopy as ExampleStatIncreasePlayer;
+			ExampleStatIncreasePlayer clone = (ExampleStatIncreasePlayer)targetCopy;
 			clone.exampleLifeFruits = exampleLifeFruits;
 			clone.exampleManaCrystals = exampleManaCrystals;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			ExampleStatIncreasePlayer clone = clientPlayer as ExampleStatIncreasePlayer;
+			ExampleStatIncreasePlayer clone = (ExampleStatIncreasePlayer)clientPlayer;
 
 			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals)
 				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);

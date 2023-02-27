@@ -549,7 +549,7 @@ Mods: {
 
 			ExampleHookItem: {
 				// DisplayName: Example Hook
-				// Tooltip: ""
+				// Tooltip: Can grapple onto trees
 			}
 
 			ExampleMagicMirror: {
