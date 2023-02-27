@@ -53,7 +53,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			proj.position.Y += 0f - half + (float)(Math.Cos(timer * MathHelper.TwoPi * speed) * half * 2f);
 
 			// We are only using this method for one specific projectile, so it's fine to cast the ModProjectile directly like this
-			MinionBossPetProjectile minion = proj.ModProjectile as MinionBossPetProjectile;
+			MinionBossPetProjectile minion = (MinionBossPetProjectile)proj.ModProjectile;
 
 			// Need to set the alpha to 1f to hide the eyes that would normally draw and show the actual pet
 			minion.AlphaForVisuals = 1f;
