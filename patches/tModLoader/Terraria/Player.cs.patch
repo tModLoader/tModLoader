@@ -3376,7 +3376,7 @@
  		alchemyTable = false;
  		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
  		int num4 = (int)((position.Y + (float)height) / 16f);
-@@ -27610,16 +_,20 @@
+@@ -27610,16 +_,21 @@
  							alchemyTable = true;
  							break;
  					}
@@ -3395,6 +3395,7 @@
 -				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
  					adjLava = true;
++
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
 +					adjShimmer = true;
  			}

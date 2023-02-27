@@ -18,7 +18,7 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,56 @@
+@@ -15,40 +_,57 @@
  		public int stack;
  	}
  
@@ -49,6 +49,7 @@
 +	internal bool needWater;
 -	public bool needLava;
 +	internal bool needLava;
++	internal bool needShimmer;
 -	public bool anyWood;
 +	internal bool anyWood;
 -	public bool anyIronBar;
@@ -405,7 +406,7 @@
  			RequiredItemEntry requiredItemEntry = tempRec.requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup == 0)
  				break;
-@@ -441,7 +_,7 @@
+@@ -441,18 +_,19 @@
  
  	private static bool PlayerMeetsEnvironmentConditions(Player player, Recipe tempRec)
  	{
@@ -413,8 +414,16 @@
 +		bool num = !tempRec.needWater || player.adjWater /*|| player.adjTile[172]*/;
  		bool flag = !tempRec.needHoney || tempRec.needHoney == player.adjHoney;
  		bool flag2 = !tempRec.needLava || tempRec.needLava == player.adjLava;
- 		bool flag3 = !tempRec.needSnowBiome || player.ZoneSnow;
-@@ -452,7 +_,7 @@
++		bool flag3 = !tempRec.needShimmer || tempRec.needShimmer == player.adjShimmer;
+-		bool flag3 = !tempRec.needSnowBiome || player.ZoneSnow;
++		bool flag4 = !tempRec.needSnowBiome || player.ZoneSnow;
+-		bool flag4 = !tempRec.needGraveyardBiome || player.ZoneGraveyard;
++		bool flag5 = !tempRec.needGraveyardBiome || player.ZoneGraveyard;
+-		bool flag5 = !tempRec.needEverythingSeed || (Main.remixWorld && Main.getGoodWorld);
++		bool flag6 = !tempRec.needEverythingSeed || (Main.remixWorld && Main.getGoodWorld);
+-		return num && flag && flag2 && flag3 && flag4 && flag5;
++		return num && flag && flag2 && flag3 && flag4 && flag5 && flag6;
+ 	}
  
  	private static bool PlayerMeetsTileRequirements(Player player, Recipe tempRec)
  	{
@@ -767,7 +776,7 @@
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
-+		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearShimmer);
++		ReplaceCondition(ref currentRecipe.needShimmer, Condition.NearShimmer);
 +		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
