@@ -351,10 +351,10 @@
  				if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
  					projectile.timeLeft = 180;
 +
-+				// Copied from 1.3, adjusted to check for actual player (servers never shoot thrower projectiles)
++				// Copied from 1.3, moved from Shoot context to OnSpawn with matching logic
 +				if (Main.netMode != NetmodeID.Server) {
 +					Player throwingPlayer = Main.player[Owner];
-+					if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing))
++					if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing) && spawnSource is EntitySource_ItemUse_WithAmmo)
 +						projectile.noDropItem = true;
 +				}
  			}
