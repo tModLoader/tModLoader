@@ -560,6 +560,7 @@
 		"NearWater": "Wymaga Wody",
 		"NearLava": "Wymaga Lawy",
 		"NearHoney": "Miód jest niezbędny",
+		//"NearShimmer": "Needs shimmer",
 		"TimeDay": "Wymaga dnia",
 		"TimeNight": "Wymaga nocy",
 		"InDungeon": "Musi być w biomie Lochy",

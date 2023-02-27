@@ -560,6 +560,7 @@
 		"NearWater": "Precisa de água",
 		"NearLava": "Precisa de lava",
 		"NearHoney": "Precisa de mel",
+		//"NearShimmer": "Needs shimmer",
 		"TimeDay": "Precisa do dia",
 		"TimeNight": "Precisa da noite",
 		"InDungeon": "Precisa estar no bioma do Calabouço",

@@ -560,6 +560,7 @@
 		"NearWater": "Necesita agua",
 		"NearLava": "Necesita lava",
 		"NearHoney": "Necesita miel",
+		//"NearShimmer": "Needs shimmer",
 		"TimeDay": "Debe crearse de día",
 		"TimeNight": "Debe crearse de noche",
 		"InDungeon": "Debe crearse en la mazmorra",

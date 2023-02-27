@@ -729,7 +729,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,77 @@
+@@ -15821,12 +_,78 @@
  
  	private static void AddRecipe()
  	{
@@ -767,6 +767,7 @@
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearShimmer);
 +		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);

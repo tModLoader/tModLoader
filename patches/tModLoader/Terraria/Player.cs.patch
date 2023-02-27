@@ -308,10 +308,16 @@
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1243,12 +_,33 @@
+@@ -1239,16 +_,39 @@
+ 	public float runSlowdown = 0.2f;
+ 	public bool adjWater;
+ 	public bool adjHoney;
++	public bool adjShimmer;
+ 	public bool adjLava;
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
+    +	public bool oldAdjShimmer;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
 +
@@ -3361,7 +3367,16 @@
  			oldAdjTile[i] = adjTile[i];
  			adjTile[i] = false;
  		}
-@@ -27610,15 +_,17 @@
+@@ -27580,6 +_,8 @@
+ 		adjHoney = false;
+ 		oldAdjLava = adjLava;
+ 		adjLava = false;
++		oldAdjShimmer = adjShimmer;
++		adjShimmer = false;
+ 		alchemyTable = false;
+ 		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
+ 		int num4 = (int)((position.Y + (float)height) / 16f);
+@@ -27610,16 +_,20 @@
  							alchemyTable = true;
  							break;
  					}
@@ -3380,8 +3395,11 @@
 -				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
  					adjLava = true;
++				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
++					adjShimmer = true;
  			}
  		}
+ 
 @@ -27627,7 +_,7 @@
  			return;
  
