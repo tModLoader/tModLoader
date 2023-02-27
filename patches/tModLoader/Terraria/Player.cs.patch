@@ -317,9 +317,9 @@
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
-    +	public bool oldAdjShimmer;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
++	public bool oldAdjShimmer;
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	public bool[] adjTile {
@@ -3409,6 +3409,16 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -27643,6 +_,9 @@
+ 		if (adjLava != oldAdjLava)
+ 			flag = true;
+ 
++		if (adjShimmer != oldAdjShimmer)
++			flag = true;
++
+ 		if (flag)
+ 			Recipe.FindRecipes();
+ 	}
 @@ -27759,7 +_,7 @@
  			waist = 0;
  
