@@ -155,7 +155,7 @@
  
 +					byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
 +					bool hasExtraAI = extraAI?.Length > 0;
-+					bitsByte23[2] = hasExtraAI; // This bit is unused by vanilla.
++					bitsByte24[1] = hasExtraAI; // This bit is unused by vanilla
 +
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
