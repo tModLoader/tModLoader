@@ -13,7 +13,7 @@
  			return false;
  
 -		if (tile2.type < 0 || tile2.type >= TileID.Count)
-+		if (tile2.type < 0 || tile2.type >= TileLoader.TileCount)
++		if (tile2.type < 0)
  			return false;
  
  		if (Main.tileSolid[tile2.type] && !TileID.Sets.Platforms[tile2.type])

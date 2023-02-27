@@ -675,7 +675,7 @@
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && type < NPCLoader.NPCCount && Main.npcCatchable[type]) {
++		if (type >= 0 && Main.npcCatchable[type]) {
  			catchableNPCTempImmunityCounter = 90;
  			friendly = true;
  		}
@@ -699,7 +699,7 @@
  		else if (!unlockedSlimeCopperSpawn && Main.npc.IndexInRange(npcIndex)) {
  			NPC nPC = Main.npc[npcIndex];
 -			if (nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type]) {
-+			if (nPC.type >= 0 && nPC.type < NPCLoader.NPCCount && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type]) {
++			if (nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type]) {
  				unlockedSlimeCopperSpawn = true;
  				NetMessage.SendData(7);
  				Vector2 vector = nPC.velocity;
@@ -1438,9 +1438,9 @@
  			return false;
  
 -		if (tile.wall < 0 || tile.wall >= WallID.Count || !wallTypes[tile.wall]) {
-+		if (tile.wall < 0 || tile.wall >= WallLoader.WallCount || !wallTypes[tile.wall]) {
 -			if (tile2.wall >= 0 && tile2.wall < WallID.Count)
-+			if (tile2.wall >= 0 && tile2.wall < WallLoader.WallCount)
++		if (tile.wall < 0 || !wallTypes[tile.wall]) {
++			if (tile2.wall >= 0)
  				return wallTypes[tile2.wall];
  
  			return false;
@@ -1814,7 +1814,7 @@
  	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && type < NPCLoader.NPCCount && Main.npcCatchable[type]) {
++		if (type >= 0 && Main.npcCatchable[type]) {
  			if (releaseOwner != 255 || SpawnedFromStatue)
  				catchableNPCTempImmunityCounter = 0;
  

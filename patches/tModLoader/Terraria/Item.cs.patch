@@ -1728,7 +1728,7 @@
  		for (int j = 0; j < 200; j++) {
  			NPC nPC = Main.npc[j];
 -			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
-+			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCLoader.NPCCount && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
++			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
  				flag3 = true;
  				NPC.TransformCopperSlime(j);
  				break;

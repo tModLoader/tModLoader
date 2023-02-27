@@ -31,7 +31,7 @@
  
  		int type = providedInfo.item.type;
 -		if (type < 0 || type >= ItemID.Count || !ItemID.Sets.GrassSeeds[type])
-+		if (type < 0 || type >= ItemLoader.ItemCount || !ItemID.Sets.GrassSeeds[type])
++		if (type < 0 || !ItemID.Sets.GrassSeeds[type])
  			return;
  
  		_targets.Clear();
@@ -40,7 +40,7 @@
  	{
  		int type = providedInfo.item.type;
 -		if (type < 0 || type >= ItemID.Count || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
-+		if (type < 0 || type >= ItemLoader.ItemCount || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
++		if (type < 0 || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
  			return;
  
  		_targets.Clear();
@@ -49,7 +49,7 @@
  	private static void Step_Boulders(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{
 -		if (providedInfo.item.createTile <= -1 || providedInfo.item.createTile >= TileID.Count || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
-+		if (providedInfo.item.createTile <= -1 || providedInfo.item.createTile >= TileLoader.TileCount || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
++		if (providedInfo.item.createTile <= -1 || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
  			return;
  
  		_targets.Clear();
@@ -58,7 +58,7 @@
  					for (int l = j - 1; l <= j; l++) {
  						Tile tile3 = Main.tile[k, l];
 -						if (tile3.active() && (tile3.type < 0 || tile3.type >= TileID.Count || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
-+						if (tile3.active() && (tile3.type < 0 || tile3.type >= TileLoader.TileCount || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
++						if (tile3.active() && (tile3.type < 0 || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
  							flag = false;
  					}
  				}
@@ -115,7 +115,7 @@
  
  		int type = providedInfo.item.type;
 -		if (type < 0 || type >= ItemID.Count)
-+		if (type < 0 || type >= ItemLoader.ItemCount)
++		if (type < 0)
  			return;
  
  		int reachableStartX = providedInfo.reachableStartX;
