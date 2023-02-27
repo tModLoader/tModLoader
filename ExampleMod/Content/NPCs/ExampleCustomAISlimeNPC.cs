@@ -43,6 +43,8 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
+
 			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
