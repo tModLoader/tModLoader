@@ -14,7 +14,7 @@ namespace ExampleMod.Content
 		}
 
 		// Here we can change the value that will be displayed in the game
-		public override string DisplayValue(ref Color displayColor, Color inactiveColor) {
+		public override string DisplayValue(ref Color displayColor) {
 			// Counting how many minions we have
 			// This is the value that will show up when viewing this display in normal play, right next to the icon
 			int minionCount = 0;
@@ -28,7 +28,7 @@ namespace ExampleMod.Content
 			bool noInfo = minionCount == 0;
 			if (noInfo) {
 				// If "No minions" will be displayed, grey out the text color, similar to DPS Meter or Radar
-				displayColor = inactiveColor;
+				displayColor = InactiveInfoTextColor;
 			}
 
 			return !noInfo ? $"{minionCount} minions." : "No minions";

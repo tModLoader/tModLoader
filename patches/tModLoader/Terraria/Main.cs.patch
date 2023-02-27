@@ -4400,7 +4400,7 @@
  			}
 +			else {
 +				num = info.Type;
-+				text2 = info.DisplayValue(ref infoTextColor, color);
++				text2 = info.DisplayValue(ref infoTextColor);
 +				text3 = info.DisplayName.ToString();
 +			}
 +

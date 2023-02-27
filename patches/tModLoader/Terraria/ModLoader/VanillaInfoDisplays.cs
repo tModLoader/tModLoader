@@ -10,7 +10,7 @@ public abstract class VanillaInfoDisplay : InfoDisplay
 
 	protected abstract string LangKey { get; }
 
-	public override string DisplayValue(ref Color displayColor, Color inactiveColor) => "";
+	public override string DisplayValue(ref Color displayColor) => "";
 }
 
 public class WatchesInfoDisplay : VanillaInfoDisplay
