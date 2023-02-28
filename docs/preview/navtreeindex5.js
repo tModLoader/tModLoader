@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"class_i_p_c_base.html":[2,0,543],
 "class_i_p_c_client.html":[2,0,544],
 "class_i_p_c_content.html":[2,0,545],
 "class_i_p_c_message.html":[2,0,546],
@@ -22,11 +23,12 @@ var NAVTREEINDEX5 =
 "class_in_game_popups_1_1_player_wants_to_join_game_popup.html":[2,0,535,1],
 "class_increment_attribute.html":[2,0,526],
 "class_info_display.html":[2,0,530],
+"class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763":[2,0,530,5],
 "class_info_display.html#a3ec287f9bdc143eb8426b67dac705265":[2,0,530,2],
-"class_info_display.html#a4d8b0085e6917a73efa98be0950cd919":[2,0,530,1],
+"class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a":[2,0,530,1],
 "class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb":[2,0,530,3],
 "class_info_display.html#a7799c04325bac7bc63c691f08ad60992":[2,0,530,0],
-"class_info_display.html#ac53cc325cd4be38efbf6c00d972a9c4b":[2,0,530,5],
+"class_info_display.html#ac53cc325cd4be38efbf6c00d972a9c4b":[2,0,530,6],
 "class_info_display.html#ae84cd7f72e3961efdaa6b6e4b8d76983":[2,0,530,4],
 "class_info_display_loader.html":[2,0,531],
 "class_ingame_fancy_u_i.html":[2,0,532],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "class_item_loader.html#a63ab5851c7ca82709e87726764430b72":[2,0,592,24],
 "class_item_loader.html#a63b817ba951072bc20bb911f484be7fb":[2,0,592,35],
 "class_item_loader.html#a6558c311b2b25aa66ac2564bee5a016b":[2,0,592,73],
-"class_item_loader.html#a67bea91fc3e83d2dfd08a4fb2092a5f0":[2,0,592,37],
-"class_item_loader.html#a6ae0c041c68fd2ced44c5109c1bd87d2":[2,0,592,49],
-"class_item_loader.html#a6c0192d8bbc6f5b52eb648dcb28a18e9":[2,0,592,23]
+"class_item_loader.html#a67bea91fc3e83d2dfd08a4fb2092a5f0":[2,0,592,37]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"class_proj_a_i_style_i_d.html#a05bd7489d6320c50dac053844aeeb0b2":[2,0,962,18],
+"class_proj_a_i_style_i_d.html#a06e3c5c9056be895592e0ca80e656bb8":[2,0,962,145],
 "class_proj_a_i_style_i_d.html#a0862170a50bd1645d3099ca389647700":[2,0,962,119],
 "class_proj_a_i_style_i_d.html#a08b2bffcb4d20a36bc52f3fe177d78c8":[2,0,962,30],
 "class_proj_a_i_style_i_d.html#a0b4f88287969d0ea06a15ad68fe73324":[2,0,962,123],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "class_range_element.html":[2,0,983],
 "class_ranged_damage_class.html":[2,0,982],
 "class_rare_spawn_bestiary_info_element.html":[2,0,984],
-"class_rarity_loader.html":[2,0,985],
-"class_raw_img_reader.html":[2,0,986],
-"class_recipe.html":[2,0,987]
+"class_rarity_loader.html":[2,0,985]
 };

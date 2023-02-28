@@ -1,5 +1,8 @@
 var NAVTREEINDEX16 =
 {
+"class_underground_mushroom_shader.html":[2,0,1323],
+"class_underworld_shader.html":[2,0,1324],
+"class_unified_random.html":[2,0,1325],
 "class_unified_random.html#a4040681602b93f1eed92662395230f13":[2,0,1325,0],
 "class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[2,0,1325,1],
 "class_unloaded_accessory_slot.html":[2,0,1326],
@@ -68,7 +71,7 @@ var NAVTREEINDEX16 =
 "class_vanilla_content_validator.html":[2,0,1352],
 "class_vanilla_damage_class.html":[2,0,1353],
 "class_vanilla_info_display.html":[2,0,1354],
-"class_vanilla_info_display.html#a6b0d07a5d1fe9c51bb2bda1cf9a28286":[2,0,1354,0],
+"class_vanilla_info_display.html#ad7b52a0aaf6b6b0e2c63076b9cd8314c":[2,0,1354,0],
 "class_vector2_tag_serializer.html":[2,0,1355],
 "class_vector3_tag_serializer.html":[2,0,1356],
 "class_vertex_strip.html":[2,0,1358],
@@ -246,8 +249,5 @@ var NAVTREEINDEX16 =
 "functions_vars_u.html":[2,3,2,20],
 "functions_vars_v.html":[2,3,2,21],
 "functions_vars_w.html":[2,3,2,22],
-"functions_vars_x.html":[2,3,2,23],
-"functions_vars_y.html":[2,3,2,24],
-"functions_vars_z.html":[2,3,2,25],
-"functions_w.html":[2,3,0,22]
+"functions_vars_x.html":[2,3,2,23]
 };

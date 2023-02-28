@@ -15,6 +15,7 @@ var class_tile_i_d_1_1_sets =
     [ "CountsAsHoneySource", "class_tile_i_d_1_1_sets.html#a3f3e2e8c8926d9e5ad8c550b434659f3", null ],
     [ "CountsAsLavaSource", "class_tile_i_d_1_1_sets.html#a6330ee450e15a47d8d8fc6060523552f", null ],
     [ "CountsAsPylon", "class_tile_i_d_1_1_sets.html#aaac1f2ba72ffed98f68048c9d622a522", null ],
+    [ "CountsAsShimmerSource", "class_tile_i_d_1_1_sets.html#ad3bf813696faf1254e7ea2c5f7bd94ef", null ],
     [ "CountsAsWaterSource", "class_tile_i_d_1_1_sets.html#a304253e883fca925c1e09382f562b50d", null ],
     [ "DisableSmartCursor", "class_tile_i_d_1_1_sets.html#a7da83119b6b21aacc362bea87a4f9d95", null ],
     [ "DisableSmartInteract", "class_tile_i_d_1_1_sets.html#a6b8a111067f7850f85973d4f141cb324", null ],

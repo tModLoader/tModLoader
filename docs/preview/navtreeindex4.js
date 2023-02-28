@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"class_global_item.html#ac16308d540ff27d99cf838c3f4031d42":[2,0,421,86],
 "class_global_item.html#ac1f89045d16cd837b4c680785959f3f9":[2,0,421,64],
 "class_global_item.html#ac2f04a40a4dfa775c5629fbed02a16f3":[2,0,421,4],
 "class_global_item.html#ac36b6279fdb6326fc6e4109fddf2f88d":[2,0,421,19],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "class_i_enumerable.html":[2,0,501],
 "class_i_equatable.html":[2,0,502],
 "class_i_localized_mod_type_extensions.html":[2,0,518],
-"class_i_o_exception.html":[2,0,540],
-"class_i_p_c_base.html":[2,0,543]
+"class_i_o_exception.html":[2,0,540]
 };

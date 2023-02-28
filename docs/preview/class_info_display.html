@@ -102,9 +102,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7799c04325bac7bc63c691f08ad60992"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">Active</a> ()</td></tr>
 <tr class="memdesc:a7799c04325bac7bc63c691f08ad60992"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this info display should be active.  <a href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">More...</a><br /></td></tr>
 <tr class="separator:a7799c04325bac7bc63c691f08ad60992"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d8b0085e6917a73efa98be0950cd919"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a4d8b0085e6917a73efa98be0950cd919">DisplayValue</a> ()</td></tr>
-<tr class="memdesc:a4d8b0085e6917a73efa98be0950cd919"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when viewing this display in normal play, right next to the icon.  <a href="class_info_display.html#a4d8b0085e6917a73efa98be0950cd919">More...</a><br /></td></tr>
-<tr class="separator:a4d8b0085e6917a73efa98be0950cd919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68694249905ac8cc4b8e0988fed0c24a"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a">DisplayValue</a> (ref Color displayColor)</td></tr>
+<tr class="memdesc:a68694249905ac8cc4b8e0988fed0c24a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when viewing this display in normal play, right next to the icon. <br  />
+Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763" title="The color when no valuable information is displayed">InactiveInfoTextColor</a> if your display value is "zero"/shows no valuable information.  <a href="class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a">More...</a><br /></td></tr>
+<tr class="separator:a68694249905ac8cc4b8e0988fed0c24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76df1097e31d98a5588d42ae7ac6d1cb"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a76df1097e31d98a5588d42ae7ac6d1cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb">More...</a><br /></td></tr>
 <tr class="separator:a76df1097e31d98a5588d42ae7ac6d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,6 +225,10 @@ static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><t
 <tr class="memitem:a229a8cf2e80ec23bd19efbc2a7d12e89"><td class="memItemLeft" align="right" valign="top"><a id="a229a8cf2e80ec23bd19efbc2a7d12e89" name="a229a8cf2e80ec23bd19efbc2a7d12e89"></a>
 static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FishFinder</b> = new <a class="el" href="class_fish_finder_info_display.html">FishFinderInfoDisplay</a>()<code> [get]</code></td></tr>
 <tr class="separator:a229a8cf2e80ec23bd19efbc2a7d12e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3521473ab7aa1df4b5e1ec6757371763"><td class="memItemLeft" align="right" valign="top"><a id="a3521473ab7aa1df4b5e1ec6757371763" name="a3521473ab7aa1df4b5e1ec6757371763"></a>
+static Color&#160;</td><td class="memItemRight" valign="bottom"><b>InactiveInfoTextColor</b><code> [get]</code></td></tr>
+<tr class="memdesc:a3521473ab7aa1df4b5e1ec6757371763"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color when no valuable information is displayed <br /></td></tr>
+<tr class="separator:a3521473ab7aa1df4b5e1ec6757371763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e7c90486d6bd2218652d4c5dc179d6"><td class="memItemLeft" align="right" valign="top"><a id="aa5e7c90486d6bd2218652d4c5dc179d6" name="aa5e7c90486d6bd2218652d4c5dc179d6"></a>
 static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LifeformAnalyzer</b> = new <a class="el" href="class_lifeform_analyzer_info_display.html">LifeformAnalyzerInfoDisplay</a>()<code> [get]</code></td></tr>
 <tr class="separator:aa5e7c90486d6bd2218652d4c5dc179d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -348,8 +353,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="a4d8b0085e6917a73efa98be0950cd919" name="a4d8b0085e6917a73efa98be0950cd919"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d8b0085e6917a73efa98be0950cd919">&#9670;&nbsp;</a></span>DisplayValue()</h2>
+<a id="a68694249905ac8cc4b8e0988fed0c24a" name="a68694249905ac8cc4b8e0988fed0c24a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68694249905ac8cc4b8e0988fed0c24a">&#9670;&nbsp;</a></span>DisplayValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,7 +365,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="memname">abstract string InfoDisplay.DisplayValue </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>displayColor</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -371,9 +377,16 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>This is the value that will show up when viewing this display in normal play, right next to the icon. </p>
+<p>This is the value that will show up when viewing this display in normal play, right next to the icon. <br  />
+Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763" title="The color when no valuable information is displayed">InactiveInfoTextColor</a> if your display value is "zero"/shows no valuable information. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">displayColor</td><td>The color the text is displayed as.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Implemented in <a class="el" href="class_vanilla_info_display.html#a6b0d07a5d1fe9c51bb2bda1cf9a28286">VanillaInfoDisplay</a>.</p>
+<p>Implemented in <a class="el" href="class_vanilla_info_display.html#ad7b52a0aaf6b6b0e2c63076b9cd8314c">VanillaInfoDisplay</a>.</p>
 
 </div>
 </div>
