@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,271 @@
+@@ -66,70 +_,272 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -33,6 +33,7 @@
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
 +	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
++	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noDropItem;
@@ -577,10 +578,10 @@
  			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
  				projectile.timeLeft = 180;
 +
-+			// Copied from 1.3, adjusted to check for actual player (servers never shoot thrower projectiles)
++			// Copied from 1.3, moved from Shoot context to OnSpawn with matching logic
 +			if (Main.netMode != NetmodeID.Server) {
 +				Player throwingPlayer = Main.player[Owner];
-+				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing))
++				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing) && spawnSource is EntitySource_ItemUse_WithAmmo)
 +					projectile.noDropItem = true;
 +			}
  		}
@@ -941,6 +942,15 @@
 +
  		if (myRect.Intersects(targetRect))
  			return true;
+ 
+@@ -12392,7 +_,7 @@
+ 		if (Main.netMode == 1 && (ProjectileID.Sets.IsAGolfBall[type] || type == 820)) {
+ 			int num = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
+-			if (Main.tile[num, num2] == null)
++			if (!Main.sectionManager.TileLoaded(num, num2))
+ 				return;
+ 		}
  
 @@ -12412,9 +_,16 @@
  			if (!noEnchantmentVisuals)

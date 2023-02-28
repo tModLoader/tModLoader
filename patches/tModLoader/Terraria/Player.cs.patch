@@ -308,12 +308,18 @@
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1243,12 +_,33 @@
+@@ -1239,16 +_,39 @@
+ 	public float runSlowdown = 0.2f;
+ 	public bool adjWater;
+ 	public bool adjHoney;
++	public bool adjShimmer;
+ 	public bool adjLava;
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
++	public bool oldAdjShimmer;
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	public bool[] adjTile {
@@ -3361,7 +3367,16 @@
  			oldAdjTile[i] = adjTile[i];
  			adjTile[i] = false;
  		}
-@@ -27610,15 +_,17 @@
+@@ -27580,6 +_,8 @@
+ 		adjHoney = false;
+ 		oldAdjLava = adjLava;
+ 		adjLava = false;
++		oldAdjShimmer = adjShimmer;
++		adjShimmer = false;
+ 		alchemyTable = false;
+ 		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
+ 		int num4 = (int)((position.Y + (float)height) / 16f);
+@@ -27610,16 +_,21 @@
  							alchemyTable = true;
  							break;
  					}
@@ -3380,8 +3395,12 @@
 -				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
  					adjLava = true;
++
++				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
++					adjShimmer = true;
  			}
  		}
+ 
 @@ -27627,7 +_,7 @@
  			return;
  
@@ -3391,6 +3410,16 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -27643,6 +_,9 @@
+ 		if (adjLava != oldAdjLava)
+ 			flag = true;
+ 
++		if (adjShimmer != oldAdjShimmer)
++			flag = true;
++
+ 		if (flag)
+ 			Recipe.FindRecipes();
+ 	}
 @@ -27759,7 +_,7 @@
  			waist = 0;
  
@@ -4385,6 +4414,22 @@
 +
  							if (inventory[num15].stack <= 0)
  								inventory[num15] = new Item();
+ 
+@@ -33732,6 +_,15 @@
+ 							flag6 = false;
+ 					}
+ 
++					// Copied as-is from 1.3
++					if (item.CountsAsClass(DamageClass.Throwing)) {
++						if (ThrownCost50 && Main.rand.Next(100) < 50)
++							flag6 = false;
++
++						if (ThrownCost33 && Main.rand.Next(100) < 33)
++							flag6 = false;
++					}
++
+ 					if (item.IsACoin)
+ 						flag6 = true;
  
 @@ -33739,7 +_,7 @@
  					if (flag7.HasValue)

@@ -561,6 +561,7 @@
 		"NearWater": "Нужна вода",
 		"NearLava": "Нужна лава",
 		"NearHoney": "Нужен мёд",
+		//"NearShimmer": "Needs shimmer",
 		"TimeDay": "Только днём",
 		"TimeNight": "Только ночью",
 		"InDungeon": "Нужно находиться в Темнице",

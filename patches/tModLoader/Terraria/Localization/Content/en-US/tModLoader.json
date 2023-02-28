@@ -561,6 +561,7 @@
 		"NearWater": "Needs water",
 		"NearLava": "Needs lava",
 		"NearHoney": "Needs honey",
+		"NearShimmer": "Needs shimmer",
 		"TimeDay": "Needs day",
 		"TimeNight": "Needs night",
 		"InDungeon": "Needs to be in Dungeon Biome",

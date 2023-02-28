@@ -1696,6 +1696,15 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -48004,7 +_,7 @@
+ 		if (Main.netMode == 1) {
+ 			int num = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
+-			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && Main.tile[num, num2] == null) {
++			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && !Main.sectionManager.TileLoaded(num, num2)) {
+ 				gravity = 0f;
+ 				velocity.X = 0f;
+ 				velocity.Y = 0f;
 @@ -48124,6 +_,8 @@
  			timeSinceItemSpawned += num7;
  		}

@@ -262,7 +262,7 @@
  					num37 = -1;
  
  				array[2] = (bitsByte3[0] ? reader.ReadSingle() : 0f);
-+				byte[] extraAI = bitsByte3[2] ? ProjectileLoader.ReadExtraAI(reader) : null;
++				byte[] extraAI = bitsByte3[1] ? ProjectileLoader.ReadExtraAI(reader) : null;
 +
  				if (Main.netMode == 2) {
  					if (num36 == 949) {
