@@ -1,16 +1,9 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using MonoMod.Cil;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
 namespace ExampleMod.Common.Systems
@@ -23,14 +16,14 @@ namespace ExampleMod.Common.Systems
 		// Generation pass hooks are unloaded manually, so no Unload method is needed
 		public override void Load() {
 			// IL editing the pyramids pass
-			GenPass pyramidsPass = WorldGen.VanillaGenPasses.First(t => t.Name == "Pyramids");// Locate the generation pass
+			GenPass pyramidsPass = WorldGen.VanillaGenPasses.FirstOrDefault(t => t.Name == "Pyramids");// Locate the generation pass
 			if (pyramidsPass is PassLegacy pass1)// Check if the pass is a PassLegacy, since PassLegacys are the generation passes that can't normally be edited
 				WorldGen.ModifyPass(pass1, Modify_Pyramids);// IL edit the pass
 			else
 				Mod.Logger.Warn("Unable to modify pyramids pass");// Log an error if the pass can't be located
 
 			// Detouring the shinies pass (generates ore)
-			GenPass shiniesPass = WorldGen.VanillaGenPasses.First(t => t.Name == "Shinies");// Locate the generation pass
+			GenPass shiniesPass = WorldGen.VanillaGenPasses.FirstOrDefault(t => t.Name == "Shinies");// Locate the generation pass
 			if (shiniesPass is PassLegacy pass2)// Check if the pass is a PassLegacy, since PassLegacys are the generation passes that can't normally be edited
 				WorldGen.DetourPass(pass2, Detour_Shinies);// Detour the pass
 			else
