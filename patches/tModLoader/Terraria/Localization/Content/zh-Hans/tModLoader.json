@@ -561,7 +561,7 @@
 		"NearWater": "需要水",
 		"NearLava": "需要岩浆",
 		"NearHoney": "需要蜂蜜",
-		//"NearShimmer": "Needs shimmer",
+		"NearShimmer": "需要微光",
 		"TimeDay": "需要在白天",
 		"TimeNight": "需要在夜晚",
 		"InDungeon": "需要位于地牢环境",
