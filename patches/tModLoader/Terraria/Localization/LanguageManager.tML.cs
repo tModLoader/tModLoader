@@ -40,7 +40,7 @@ public partial class LanguageManager
 	{
 		// Matches {$key.subkey.etc}
 		// Optional @n for arg index remapping, eg {$key.subkey.etc@5} to add 5 to all format arg indices
-		Regex referenceRegex = new Regex(@"{\$([\w\.]+)(@\d+)?}", RegexOptions.Compiled);
+		Regex referenceRegex = new Regex(@"{\$([\w\.]+)(?:@(\d+))?}", RegexOptions.Compiled);
 		Regex argRemappingRegex = new Regex(@"{(\d+)}", RegexOptions.Compiled);
 
 		// Use depth first processing to handle recursive arg mapping substitutions more easily
