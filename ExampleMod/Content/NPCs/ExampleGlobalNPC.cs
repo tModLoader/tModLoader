@@ -56,11 +56,11 @@ namespace ExampleMod.Content.NPCs
 			shop.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), NPCShop.Condition.TimeDay);
 
 			// Hiding Copper Pickaxe and Copper Axe. They will never appear in Merchant shop anymore
-			shop.Hide(ItemID.CopperPickaxe);
-			shop.Hide(ItemID.CopperAxe);
+			shop.GetEntry(ItemID.CopperAxe).Disable();
+			shop.GetEntry(ItemID.CopperPickaxe).Disable();
 
 			// Adding new Condition to Blue Flare. Now it will appear just if player carries a Flare Gun in their inventory AND is in Snow biome
-			shop[ItemID.BlueFlare].AddCondition(NPCShop.Condition.InSnowBiome);
+			shop.GetEntry(ItemID.BlueFlare).AddCondition(NPCShop.Condition.InSnowBiome);
 
 			// Creaate a condition for later use.
 			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());

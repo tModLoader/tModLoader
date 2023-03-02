@@ -33,7 +33,7 @@ public sealed partial class NPCShop {
 		return items[items.FindIndex(x => x.item.type.Equals(item))];
 	}
 
-	public bool GetEntry(int item, out Entry entry)
+	public bool TryGetEntry(int item, out Entry entry)
 	{
 		int i = items.FindIndex(x => x.item.type.Equals(item));
 		if (i == -1) {
@@ -68,7 +68,7 @@ public sealed partial class NPCShop {
 	}
 
 	private NPCShop InsertAt(int targetItem, Item item, bool after, params ICondition[] condition) {
-		return InsertAt(this[targetItem], item, after, condition);
+		return InsertAt(GetEntry(targetItem), item, after, condition);
 	}
 
 	private NPCShop InsertAt(int targetItem, int item, bool after, params ICondition[] condition) {
@@ -89,15 +89,6 @@ public sealed partial class NPCShop {
 
 	public NPCShop InsertAfter(int targetItem, Item item, params ICondition[] condition) {
 		return InsertAt(targetItem, item, true, condition);
-	}
-
-	public NPCShop Hide(Entry entry) {
-		entry.Disable();
-		return this;
-	}
-
-	public NPCShop Hide(int item) {
-		return Hide(this[item]);
 	}
 
 	public Item[] Build() {
