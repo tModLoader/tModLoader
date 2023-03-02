@@ -696,25 +696,21 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this NPC's shop.
 	/// </summary>
 	/// <param name="firstButton"></param>
-	/// <param name="shop"></param>
+	/// <param name="shopName"></param>
 	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
 	{
 	}
 
-	public virtual void SetupShop()
+	public virtual void AddShops()
 	{
 	}
 
 	public virtual List<Item> SetupLootboxShop()
 	{
 		return null;
-	}
-
-	public virtual void PostSetupShop()
-	{
 	}
 
 	public virtual void ModifyActiveShop(string shopId, Item[] items)

@@ -332,12 +332,11 @@ public static class ModContent
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
+		TMLLootDatabase.Initialize();
 		SetupRecipes(token);
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		ItemLoader.ValidateGeodeDropsSet();
-
-		Main.TMLLootDB.Initialize();
 
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();

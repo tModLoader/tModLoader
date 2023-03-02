@@ -135,10 +135,10 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void SetupShop() {
-			new ChestLoot()
+		public override void AddShops() {
+			new NPCShop(Type)
 				.Add(ModContent.ItemType<ExampleItem>())
-				.RegisterShop(Type);
+				.Register();
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {

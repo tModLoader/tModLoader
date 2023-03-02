@@ -31,7 +31,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		//If the merchant has been hit by a player, they will double their sell price
-		public override void ModifyActiveShop(NPC npc, string shopId, Item[] items) {
+		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
 			if (!npc.GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
 				return;
 			}
@@ -43,40 +43,34 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Example of adding new items with complex conditions in the Merchant shop.
-		public override void SetupShop(string shopId, ChestLoot shopContents) {
+		public override void ModifyShop(NPCShop shop) {
 			// Style 1 check for application
-			if (shopId != TMLLootDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
+			if (shop.Name != TMLLootDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
 				return;
 
 			// Style 2 check for application
-			if (shopId != "Terraria/Merchant/Shop")
-				return;
-
-			// Creaate a condition for later use.
-			var redPotCondition = new ChestLoot.Condition(NetworkText.FromLiteral("Describe what your condition is!"), () => !ChestLoot.Condition.HappyWindyDay.IsAvailable() || !ChestLoot.Condition.HappyEnough.IsAvailable());
-
-			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
-			// If condition is fulfilled, add an item to the shop.
-			shopContents.Add(ModContent.ItemType<ExampleItem>(), ChestLoot.Condition.HappyWindyDay, ChestLoot.Condition.HappyEnough);
-
-			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
-			shopContents.Add(ItemID.RedPotion, redPotCondition, ChestLoot.Condition.ForTheWorthy);
-		}
-
-		// PostSetupShop hook is best when it comes to modifying existing items.
-		public override void PostSetupShop(string shopId, ChestLoot shopContents) {
-			if (shopId != TMLLootDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
+			if (shop.Name != "Terraria/Merchant/Shop")
 				return;
 
 			// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
-			shopContents.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), ChestLoot.Condition.TimeDay);
+			shop.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), NPCShop.Condition.TimeDay);
 
 			// Hiding Copper Pickaxe and Copper Axe. They will never appear in Merchant shop anymore
-			shopContents.Hide(ItemID.CopperPickaxe);
-			shopContents.Hide(ItemID.CopperAxe);
+			shop.Hide(ItemID.CopperPickaxe);
+			shop.Hide(ItemID.CopperAxe);
 
-			// Adding new Condition to Blue Flare. Now it appers just if player carries a Flare Gun in their inventory AND is in Snow biome
-			shopContents[ItemID.BlueFlare].AddCondition(ChestLoot.Condition.InSnowBiome);
+			// Adding new Condition to Blue Flare. Now it will appear just if player carries a Flare Gun in their inventory AND is in Snow biome
+			shop[ItemID.BlueFlare].AddCondition(NPCShop.Condition.InSnowBiome);
+
+			// Creaate a condition for later use.
+			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());
+
+			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
+			// If condition is fulfilled, add an item to the shop.
+			shop.Add(ModContent.ItemType<ExampleItem>(), NPCShop.Condition.HappyWindyDay, NPCShop.Condition.HappyEnough);
+
+			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
+			shop.Add(ItemID.RedPotion, redPotCondition, NPCShop.Condition.ForTheWorthy);
 		}
 
 		public override void SaveData(NPC npc, TagCompound tag) {

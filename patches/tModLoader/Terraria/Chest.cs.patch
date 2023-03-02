@@ -204,15 +204,15 @@
  	{
  		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
  		Item[] array = item;
-@@ -1175,7 +_,7 @@
+@@ -1174,7 +_,7 @@
+ 			array[i] = new Item();
  		}
  
- 		int num = 0;
--		switch (type) {
-+		/*switch (type) {
+-		int num = 0;
++		/*int num = 0;
+ 		switch (type) {
  			case 1: {
  				array[num].SetDefaults(88);
- 				num++;
 @@ -2313,12 +_,12 @@
  				num++;
  				array[num].SetDefaults(1979);
@@ -228,7 +228,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,45 @@
+@@ -2987,16 +_,46 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -238,6 +238,7 @@
  		}
 +		*/
  
++		int num = 0;
 +		if (type == 19) // Travelling Merchant, move in to the LootboxShop setup method
 +		{
 +			for (int num11 = 0; num11 < 40; num11++) {
@@ -250,13 +251,13 @@
 +		else {
 +			List<Item> lootbox = NPCLoader.SetupLootboxShop(type);
 +			if (lootbox == null) {
-+				var loot = Main.TMLLootDB.GetNPCShop(shop);
++				var loot = TMLLootDatabase.GetNPCShop(shop);
 +				if (loot != null)
 +					array = loot.Build(out num);
 +			}
 +			else {
-+				num = lootbox.Count;
-+				array = lootbox.ToArray();
++				num = System.Math.Min(lootbox.Count, 39);
++				array = lootbox.Take(num).ToArray();
 +			}
 +		}
 +

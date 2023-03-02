@@ -1150,17 +1150,17 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateSetupShop(string shopId, ChestLoot shopContents);
-	private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
+	private delegate void DelegateModifyShop(NPCShop shop);
+	private static HookList HookModifyShop = AddHook<DelegateModifyShop>(g => g.ModifyShop);
 
-	public static void SetupShop(int type) {
-		GetNPC(type)?.SetupShop();
+	public static void AddShops(int type) {
+		GetNPC(type)?.AddShops();
 	}
 
-	public static void SetupShop(string shopId, ChestLoot shopContents)
+	public static void ModifyShop(NPCShop shop)
 	{
-		foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
-			g.SetupShop(shopId, shopContents);
+		foreach (GlobalNPC g in HookModifyShop.Enumerate(globalNPCs)) {
+			g.ModifyShop(shop);
 		}
 	}
 
@@ -1179,29 +1179,14 @@ public static class NPCLoader
 		return items;
 	}
 
-	private delegate void DelegatePostSetupShop(string shopId, ChestLoot shopContents);
-	private static HookList HookPostSetupShop = AddHook<DelegatePostSetupShop>(g => g.PostSetupShop);
-
-	public static void PostSetupShop(int type)
-	{
-		GetNPC(type)?.PostSetupShop();
-	}
-
-	public static void PostSetupShop(string shopName, ChestLoot shopContents)
-	{
-		foreach (GlobalNPC g in HookPostSetupShop.Enumerate(globalNPCs)) {
-			g.PostSetupShop(shopName, shopContents);
-		}
-	}
-
 	private delegate void DelegateModifyActiveShop(NPC npc, string shopId, Item[] items);
 	private static HookList HookModifyActiveShop = AddHook<DelegateModifyActiveShop>(g => g.ModifyActiveShop);
 
-	public static void ModifyActiveShop(NPC npc, string shopId, Item[] shopContents)
+	public static void ModifyActiveShop(NPC npc, string shopName, Item[] shopContents)
 	{
-		GetNPC(npc.type)?.ModifyActiveShop(shopId, shopContents);
+		GetNPC(npc.type)?.ModifyActiveShop(shopName, shopContents);
 		foreach (GlobalNPC g in HookModifyActiveShop.Enumerate(globalNPCs)) {
-			g.ModifyActiveShop(npc, shopId, shopContents);
+			g.ModifyActiveShop(npc, shopName, shopContents);
 		}
 	}
 

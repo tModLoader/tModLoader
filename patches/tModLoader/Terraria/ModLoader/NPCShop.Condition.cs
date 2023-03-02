@@ -5,7 +5,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
-public partial class ChestLoot {
+public sealed partial class NPCShop {
 	public interface ICondition {
 		string Description { get; }
 

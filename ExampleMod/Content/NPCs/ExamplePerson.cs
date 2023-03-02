@@ -240,9 +240,9 @@ namespace ExampleMod.Content.NPCs
 
 		// Not completely finished, but below is what the NPC will sell
 
-		public override void SetupShop() {
-			var exampleGunBulletCondition = new ChestLoot.Condition(NetworkText.FromLiteral("If its third quarter or waning crescent moon"), () => Main.moonPhase >= 2 && Main.moonPhase < 4);
-			var chestLoot = new ChestLoot()
+		public override void AddShops() {
+			var exampleGunBulletCondition = new NPCShop.Condition(NetworkText.FromLiteral("If its third quarter or waning crescent moon"), () => Main.moonPhase >= 2 && Main.moonPhase < 4);
+			var chestLoot = new NPCShop(Type, "ExampliumShop")
 				.Add(ModContent.ItemType<ExampleItem>())
 				//.Add(ItemType<EquipMaterial>())
 				//.Add(ItemType<BossItem>())
@@ -253,16 +253,16 @@ namespace ExampleMod.Content.NPCs
 				.Add(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>())
 				.Add(ModContent.ItemType<Items.Tools.ExamplePickaxe>())
 				.Add(ModContent.ItemType<Items.Tools.ExampleHamaxe>())
-				.Add(ModContent.ItemType<Items.Consumables.ExampleHealingPotion>(), new ChestLoot.Condition(NetworkText.FromLiteral("If player has Lifeforce buff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
+				.Add(ModContent.ItemType<Items.Consumables.ExampleHealingPotion>(), new NPCShop.Condition(NetworkText.FromLiteral("If player has Lifeforce buff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
 				//.Add(ItemType<ExampleWings>(), new ChestLoot.Condition(NetworkText.FromLiteral("If player is in example biome and wings are not disabled", () => Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings)))
-				.Add(ModContent.ItemType<Items.Weapons.ExampleSword>(), new ChestLoot.Condition(NetworkText.FromLiteral("If its full or waning gibbous moon"), () => Main.moonPhase < 2))
+				.Add(ModContent.ItemType<Items.Weapons.ExampleSword>(), new NPCShop.Condition(NetworkText.FromLiteral("If its full or waning gibbous moon"), () => Main.moonPhase < 2))
 				//.Add(ItemType<ExampleGun>(), exampleGunBulletCondition)
 				.Add(ModContent.ItemType<Items.Ammo.ExampleBullet>(), exampleGunBulletCondition);
 				//.Add(ItemType<ExampleStaff>(), new ChestLoot.Condition(NetworkText.FromLiteral("If its new or waxing crescent moon", () => Main.moonPhase >= 4 && Main.moonPhase < 6)));
 			if (ModContent.TryFind<ModItem>("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
 		 	 	chestLoot.Add(bloodTalisman.Type);
 		 	}
-			chestLoot.RegisterShop(Type, "ExampliumShop"); // Name of this shop tab
+			chestLoot.Register(); // Name of this shop tab
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {

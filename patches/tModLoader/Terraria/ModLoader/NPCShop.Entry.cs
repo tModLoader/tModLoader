@@ -5,22 +5,21 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
-public partial class ChestLoot {
+public sealed partial class NPCShop {
 	private static Item EmptyInstance => new();
 
-	public class Entry {
+	public sealed class Entry {
 		internal readonly Item item;
 		private readonly List<ICondition> conditions;
-		private bool hide;
 
-		public (Entry target, bool after) Ordering { get; private set; } = (null, false);
-
+		internal (Entry target, bool after) Ordering { get; private set; } = (null, false);
+		public bool Disabled { get; private set; }
 		public Item Item => item;
 
-		public Entry(int item, params ICondition[] condition) : this(ContentSamples.ItemsByType[item], condition) { }
+		public Entry(int item, params ICondition[] condition) : this(new Item(item), condition) { }
 
 		public Entry(Item item, params ICondition[] condition) {
-			hide = false;
+			Disabled = false;
 			this.item = item;
 			conditions = condition.ToList();
 		}
@@ -45,25 +44,18 @@ public partial class ChestLoot {
 			return this;
 		}
 
-		public Entry Hide() {
-			hide = true;
+		public Entry Disable() {
+			Disabled = true;
 			return this;
 		}
 
-		public bool IsAvailable() {
+		public bool ConditionsMet() {
 			for (int i = 0; i < conditions.Count; i++) {
 				if (!conditions[i].IsAvailable()) {
 					return false;
 				}
 			}
 			return true;
-		}
-
-		public void Add(List<Item> items) {
-			if (hide || !IsAvailable()) {
-				return;
-			}
-			items.Add(item);
 		}
 	}
 
@@ -92,7 +84,7 @@ public partial class ChestLoot {
 			}
 		}
 
-		if (!sortBefore.Any() && !sortAfter.Any())
+		if ((sortBefore.Count + sortAfter.Count) == 0)
 			return;
 
 		void Sort(T r) {

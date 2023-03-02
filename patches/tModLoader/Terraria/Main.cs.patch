@@ -1115,16 +1115,7 @@
  		ClientInitialize();
  		base.Initialize();
  	}
-@@ -5179,6 +_,8 @@
- 		ItemDropsDB = itemDropDatabase;
- 		bestiaryDatabase.Merge(ItemDropsDB);
- 		bestiaryDatabaseNPCsPopulator.AddDropOverrides(bestiaryDatabase);
-+		TMLLootDB = new TMLLootDatabase();
-+		TMLLootDB.Initialize();
- 		PylonSystem = new TeleportPylonsSystem();
- 		ItemDropSolver = new ItemDropResolver(itemDropDatabase);
- 		ShopHelper = new ShopHelper();
-@@ -5242,7 +_,18 @@
+@@ -5242,7 +_,11 @@
  		Chest.SetupTravelShop();
  		for (int m = 1; m < 100; m++) {
  			shop[m] = new Chest();
@@ -1133,14 +1124,7 @@
 +			if (m >= NPCLoader.shopToNPC.Length)
 +				continue;
 +
-+			int npcType = NPCLoader.shopToNPC[m];
-+
-+			if (m == 25) { // Painter 2 Shop Special Case
-+				shop[m].SetupShop(TMLLootDatabase.GetNPCShopName(npcType, "Decor"), m);
-+				continue;
-+			}
-+
-+			shop[m].SetupShop(TMLLootDatabase.GetNPCShopName(npcType), m);
++			shop[m].SetupShop(TMLLootDatabase.GetNpcShopByIndex(m), m);
  		}
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
@@ -3664,21 +3648,13 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
-@@ -32406,7 +_,17 @@
+@@ -32406,7 +_,9 @@
  		stackSplit = 9999;
  		npcChatText = "";
  		SetNPCShopIndex(shopIndex);
 -		shop[npcShop].SetupShop(npcShop);
 +
-+		int npcType = NPCLoader.shopToNPC[npcShop];
-+
-+		if (npcShop == 25) { // Painter 2 Shop Special Case
-+			shop[npcShop].SetupShop(TMLLootDatabase.GetNPCShopName(npcType, "Decor"), npcShop);
-+			
-+		}
-+		else {
-+			shop[npcShop].SetupShop(TMLLootDatabase.GetNPCShopName(npcType), npcShop);
-+		}
++		shop[npcShop].SetupShop(TMLLootDatabase.GetNpcShopByIndex(npcShop), npcShop);
 +		
  		SoundEngine.PlaySound(12);
  	}

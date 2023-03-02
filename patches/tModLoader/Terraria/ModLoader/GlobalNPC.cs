@@ -627,7 +627,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	public virtual void SetupShop(string shopId, ChestLoot shopContents)
+	public virtual void ModifyShop(NPCShop shop)
 	{
 	}
 
@@ -635,11 +635,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	public virtual void PostSetupShop(string shopId, ChestLoot shopContents)
-	{
-	}
-
-	public virtual void ModifyActiveShop(NPC npc, string shopId, Item[] items)
+	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}
 

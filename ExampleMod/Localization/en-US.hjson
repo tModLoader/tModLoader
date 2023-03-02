@@ -186,5 +186,10 @@ Mods: {
 			ExampleTip2: "This is yet another tip added by Example Mod!"
 			DisabledExampleTip: "This tip will be added but then disabled by Example Mod."
 		}
+
+		#This is used for shop conditions.
+		ShopConditions: {
+			RedPotCondition: "Describe what your condition is!"
+		}
 	}
 }
