@@ -143,6 +143,7 @@ public partial class LanguageManager
 	private string ComputeBoundTextValue(TextBinding binding)
 	{
 		var value = GetTextValue(binding.key);
+		value = LocalizedText.ApplyPluralization(value, binding.args);
 
 		// TODO, consider if we should do partial binding, shifting the higher args down
 		return string.Format(value, binding.args);
