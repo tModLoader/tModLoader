@@ -420,19 +420,19 @@
  	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
  	{
 -		_generator.Append(new PassLegacy(name, method));
-+		_vanillaGenPasses.Add(new PassLegacy(name, method));
++		_vanillaGenPasses.Add(name, new PassLegacy(name, method));
  	}
  
  	private static void AddGenerationPass(GenPass pass)
  	{
 -		_generator.Append(pass);
-+		_vanillaGenPasses.Add(pass);
++		_vanillaGenPasses.Add(pass.Name, pass);
  	}
  
  	private static void AddGenerationPass(string name, double weight, WorldGenLegacyMethod method)
  	{
 -		_generator.Append(new PassLegacy(name, method, weight));
-+		_vanillaGenPasses.Add(new PassLegacy(name, method, weight));
++		_vanillaGenPasses.Add(name, new PassLegacy(name, method, weight));
  	}
  
  	public static bool checkUnderground(int x, int y)
@@ -627,7 +627,7 @@
 +	private static void AddGenPassesFromLoadTime()
 +	{
 +		foreach (var pass in _vanillaGenPasses) {
-+			_generator.Append(pass);
++			_generator.Append(pass.Value);
 +		}
 +	}
 +

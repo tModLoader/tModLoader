@@ -6,6 +6,7 @@ using System;
 using Terraria.GameContent.Generation;
 using Terraria.WorldBuilding;
 using Terraria.IO;
+using System.Collections.ObjectModel;
 
 namespace Terraria;
 
@@ -15,8 +16,8 @@ public partial class WorldGen
 
 	internal static void ClearGenerationPasses() => _generator?._passes.Clear();
 
-	internal static List<GenPass> _vanillaGenPasses = new();
-	public static IReadOnlyCollection<GenPass> VanillaGenPasses = _vanillaGenPasses.AsReadOnly();
+	internal static Dictionary<string, GenPass> _vanillaGenPasses = new();
+	public static IReadOnlyDictionary<string, GenPass> VanillaGenPasses = new ReadOnlyDictionary<string, GenPass>(_vanillaGenPasses);
 
 	public static void ModifyPass(PassLegacy pass, ILContext.Manipulator callback)
 	{
