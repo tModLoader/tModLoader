@@ -1141,7 +1141,7 @@ public static class NPCLoader
 				Main.playerInventory = true;
 				Main.npcChatText = "";
 				Main.npcShop = Main.MaxShopIDs - 1;
-				Main.instance.shop[Main.npcShop].SetupShop(TMLLootDatabase.GetNPCShopName(npc.type, shopName), npc.type);
+				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetNPCShopName(npc.type, shopName), npc.type);
 			}
 		}
 
@@ -1162,21 +1162,6 @@ public static class NPCLoader
 		foreach (GlobalNPC g in HookModifyShop.Enumerate(globalNPCs)) {
 			g.ModifyShop(shop);
 		}
-	}
-
-	private delegate void DelegateSetupLootboxShop(int type, List<Item> items);
-	private static HookList HookSetupLootboxShop = AddHook<DelegateSetupLootboxShop>(g => g.SetupLootboxShop);
-
-	public static List<Item> SetupLootboxShop(int type)
-	{
-		if (type < NPCID.Count) {
-			return null;
-		}
-		List<Item> items = GetNPC(type)?.SetupLootboxShop();
-		foreach (GlobalNPC g in HookSetupLootboxShop.Enumerate(globalNPCs)) {
-			g.SetupLootboxShop(type, items);
-		}
-		return items;
 	}
 
 	private delegate void DelegateModifyActiveShop(NPC npc, string shopId, Item[] items);

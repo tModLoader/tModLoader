@@ -1124,7 +1124,7 @@
 +			if (m >= NPCLoader.shopToNPC.Length)
 +				continue;
 +
-+			shop[m].SetupShop(TMLLootDatabase.GetNpcShopByIndex(m), m);
++			shop[m].SetupShop(NPCShopDatabase.GetNpcShopByIndex(m), m);
  		}
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
@@ -3654,7 +3654,7 @@
  		SetNPCShopIndex(shopIndex);
 -		shop[npcShop].SetupShop(npcShop);
 +
-+		shop[npcShop].SetupShop(TMLLootDatabase.GetNpcShopByIndex(npcShop), npcShop);
++		shop[npcShop].SetupShop(NPCShopDatabase.GetNpcShopByIndex(npcShop), npcShop);
 +		
  		SoundEngine.PlaySound(12);
  	}

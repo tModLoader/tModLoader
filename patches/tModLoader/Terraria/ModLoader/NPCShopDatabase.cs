@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
-public static class TMLLootDatabase
+public static class NPCShopDatabase
 {
 	private static Dictionary<string, NPCShop> npcShopByName = new();
 	private static List<NPCShop.Entry> globalNpcShopEntries = new();
@@ -17,6 +18,7 @@ public static class TMLLootDatabase
 	}
 
 	public static void RegisterGlobalNpcShop(NPCShop.Entry entry) => globalNpcShopEntries.Add(entry);
+	public static List<NPCShop.Entry> GetGlobalNpcShopEntries() => globalNpcShopEntries;
 
 	public static NPCShop GetNPCShop(string fullName) {
 		if (npcShopByName.TryGetValue(fullName, out NPCShop chestLoot))
@@ -41,12 +43,10 @@ public static class TMLLootDatabase
 	{
 		int npcType = NPCLoader.shopToNPC[index];
 		if (index == 25) { // Painter 2 Shop Special Case
-			return TMLLootDatabase.GetNPCShopName(npcType, "Decor");
+			return GetNPCShopName(npcType, "Decor");
 		}
-		return TMLLootDatabase.GetNPCShopName(npcType);
+		return GetNPCShopName(npcType);
 	}
-
-	public static List<NPCShop.Entry> GetGlobalNpcShopEntries() => globalNpcShopEntries;
 
 	public static void Initialize() {
 		npcShopByName.Clear();
@@ -919,8 +919,6 @@ public static class TMLLootDatabase
 			shopCustomPrice = 75,
 			shopSpecialCurrency = CustomCurrencyID.DefenderMedals
 		});
-		shop.LastEntry.item.shopCustomPrice = 75;
-		shop.LastEntry.item.shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
 
 		for (int i = 0; i < items.Length; i++) {
 			for (int j = 0; j < items[i].Length; j++) {

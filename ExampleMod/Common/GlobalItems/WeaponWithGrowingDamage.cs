@@ -145,7 +145,7 @@ namespace ExampleMod.Common.GlobalItems
 	public class SnowBallShop : GlobalNPC
 	{
 		public override void ModifyShop(NPCShop shop) {
-			if (shop.FullName != TMLLootDatabase.GetNPCShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
+			if (shop.FullName != NPCShopDatabase.GetNPCShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
 				return;
 			}
 
@@ -157,7 +157,7 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
-			if (shopName != TMLLootDatabase.GetNPCShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
+			if (shopName != NPCShopDatabase.GetNPCShopName(ModContent.NPCType<ExamplePerson>(), "ExampliumShop")) {
 				return;
 			}
 

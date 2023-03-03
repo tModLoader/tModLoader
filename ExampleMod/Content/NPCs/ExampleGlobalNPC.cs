@@ -45,7 +45,7 @@ namespace ExampleMod.Content.NPCs
 		// Example of adding new items with complex conditions in the Merchant shop.
 		public override void ModifyShop(NPCShop shop) {
 			// Style 1 check for application
-			if (shop.Name != TMLLootDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
+			if (shop.Name != NPCShopDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
 				return;
 
 			// Style 2 check for application
@@ -56,8 +56,13 @@ namespace ExampleMod.Content.NPCs
 			shop.InsertAfter(ItemID.Torch, ModContent.ItemType<Items.Placeable.ExampleTorch>(), NPCShop.Condition.TimeDay);
 
 			// Hiding Copper Pickaxe and Copper Axe. They will never appear in Merchant shop anymore
+			// However, this approach may fail if item doesn't exists in shop.
 			shop.GetEntry(ItemID.CopperAxe).Disable();
-			shop.GetEntry(ItemID.CopperPickaxe).Disable();
+
+			// Safer approach for disabling item
+			if (shop.TryGetEntry(ItemID.CopperPickaxe, out NPCShop.Entry entry)) {
+				entry.Disable();
+			}
 
 			// Adding new Condition to Blue Flare. Now it will appear just if player carries a Flare Gun in their inventory AND is in Snow biome
 			shop.GetEntry(ItemID.BlueFlare).AddCondition(NPCShop.Condition.InSnowBiome);

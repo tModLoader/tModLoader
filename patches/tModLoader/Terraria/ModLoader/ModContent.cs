@@ -332,7 +332,7 @@ public static class ModContent
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
-		TMLLootDatabase.Initialize();
+		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();

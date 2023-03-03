@@ -254,9 +254,10 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override List<Item> SetupLootboxShop() {
+		// TODO: add that method
+		/*public override List<Item> SetupLootboxShop() {
 			return shopItems;
-		}
+		}*/
 
 		public override void AI() {
 			NPC.homeless = true; // Make sure it stays homeless

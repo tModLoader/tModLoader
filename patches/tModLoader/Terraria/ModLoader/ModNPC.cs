@@ -708,11 +708,6 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 	}
 
-	public virtual List<Item> SetupLootboxShop()
-	{
-		return null;
-	}
-
 	public virtual void ModifyActiveShop(string shopId, Item[] items)
 	{
 	}

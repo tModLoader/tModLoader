@@ -12,7 +12,7 @@ public sealed partial class NPCShop {
 	public IReadOnlyList<Entry> Items => items;
 	public int NpcID => npcId;
 	public string Name => name;
-	public string FullName => TMLLootDatabase.GetNPCShopName(NpcID, Name);
+	public string FullName => NPCShopDatabase.GetNPCShopName(NpcID, Name);
 
 	public Entry this[int item] {
 		get {
@@ -45,7 +45,7 @@ public sealed partial class NPCShop {
 	}
 
 	public void Register() {
-		TMLLootDatabase.RegisterNpcShop(npcId, this, name);
+		NPCShopDatabase.RegisterNpcShop(npcId, this, name);
 	}
 
 	public NPCShop Add(params Entry[] entries) {

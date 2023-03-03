@@ -631,10 +631,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	public virtual void SetupLootboxShop(int type, List<Item> items)
-	{
-	}
-
 	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}
