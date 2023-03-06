@@ -718,23 +718,6 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private static HookList HookSingleGrappleHook = AddHook<Func<int, Player, bool?>>(g => g.SingleGrappleHook);
-
-	public static bool? SingleGrappleHook(int type, Player player)
-	{
-		bool? flag = GetProjectile(type)?.SingleGrappleHook(player);
-
-		foreach (GlobalProjectile g in HookSingleGrappleHook.Enumerate(globalProjectiles)) {
-			bool? singleHook = g.SingleGrappleHook(type, player);
-
-			if (singleHook.HasValue) {
-				flag = singleHook;
-			}
-		}
-
-		return flag;
-	}
-
 	private delegate void DelegateUseGrapple(Player player, ref int type);
 	private static HookList HookUseGrapple = AddHook<DelegateUseGrapple>(g => g.UseGrapple);
 

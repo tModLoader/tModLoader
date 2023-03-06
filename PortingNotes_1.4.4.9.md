@@ -23,7 +23,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## Player
 - Add hook for `RefreshInfoAccsFromItemType`
-- Replace `ProjectileLoader.SingleGrappleHook` with a `ProjectileID.Sets`
 - `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.
 - Add `ItemLoader.ConsumeItem` check to `QuickHeal` and `QuickMana`
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
