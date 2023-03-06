@@ -67,6 +67,9 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Use ContainerName.SetDefault() and TileID.Sets.BasicChest instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartInteract",	Removed("Use TileID.Sets.DisableSmartInteract instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartCursor",	Removed("Use TileID.Sets.DisableSmartCursor instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"OpenDoorID",	        Removed("Use TileID.Sets.OpenDoorID instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"CloseDoorID",	        Removed("Use TileID.Sets.CloseDoorID instead"));
+		RefactorInstanceMember("Terraria.ModLoader.NPCSpawnInfo",  "PlanteraDefeated",     Removed("Use (NPC.downedPlantBoss && Main.hardMode) instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModTree",			Removed("Assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModCactus",			Removed("Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModPalmTree",		Removed("Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead"));

@@ -28,6 +28,8 @@ public class ModTileTest : ModTile
 		AdjTiles = new int[0];
 
 #if COMPILE_ERROR
+		OpenDoorID/* tModPorter Note: Removed. Use TileID.Sets.OpenDoorID instead */ = 0;
+		CloseDoorID/* tModPorter Note: Removed. Use TileID.Sets.CloseDoorID instead */ = 0;
 		sapling/* tModPorter Note: Removed. Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
 		torch/* tModPorter Note: Removed. Use TileID.Sets.Torch instead */ = true;
 		bed/* tModPorter Note: Removed. Use TileID.Sets.CanBeSleptIn instead */ = true;

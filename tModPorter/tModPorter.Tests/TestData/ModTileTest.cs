@@ -19,6 +19,8 @@ public class ModTileTest : ModTile
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
 
+		OpenDoorID = 0;
+		CloseDoorID = 0;
 		sapling = true;
 		torch = true;
 		bed = true;
