@@ -80,4 +80,12 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 	/// Allows you to modify the sell price of the item based on the prefix or changes in custom data stats. This also influences the item's rarity.
 	/// </summary>
 	public virtual void ModifyValue(ref float valueMult) { }
+
+	/// <summary>
+	/// Use this to modify player stats (or any other applicable data) based on this ModPrefix being on the passed in Item, with the item being
+	/// a valid accessory.
+	/// </summary>
+	/// <param name="player"> The player gaining the benefits of this accessory. </param>
+	/// <param name="item"> The item with this prefix, providing the benefits to the given player. </param>
+	public virtual void GrantPrefixBenefits(Player player, Item item) { }
 }

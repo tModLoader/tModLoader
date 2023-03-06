@@ -1569,7 +1569,7 @@
 +			spawnInfo.SpiderCave = flag11;
 +			spawnInfo.PlayerInTown = flag12;
 +			spawnInfo.DesertCave = flag13;
-+			spawnInfo.PlanteraDefeated = flag14;
++			//spawnInfo.PlanteraDefeated = flag14;
 +			spawnInfo.SafeRangeX = flag15;
 +
  			int newNPC = 200;

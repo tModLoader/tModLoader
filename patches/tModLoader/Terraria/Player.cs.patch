@@ -1780,7 +1780,7 @@
  		if (item.prefix == 80)
  			meleeSpeed += 0.04f;
 +
-+		// TODO: PrefixLoader.GrantPrefixBenefits(item)
++		PrefixLoader.GrantPrefixBenefits(this, item);
  	}
  
  	private void SpawnHallucination(Item item)
