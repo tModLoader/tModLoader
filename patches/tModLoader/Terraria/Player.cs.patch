@@ -1347,6 +1347,15 @@
  		}
  
  		UpdateHungerBuffs();
+@@ -9354,6 +_,8 @@
+ 
+ 		if (accType == 3119 || accType == 3121 || accType == 3123 || accType == 3124 || accType == 5358 || accType == 5359 || accType == 5360 || accType == 5361)
+ 			accDreamCatcher = true;
++
++		PlayerLoader.UpdateInfoAccessory(this, accType);
+ 	}
+ 
+ 	public void RefreshMechanicalAccsFromItemType(int accType)
 @@ -9431,6 +_,9 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {

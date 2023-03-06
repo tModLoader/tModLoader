@@ -285,6 +285,12 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Called within Player.RefreshInfoAccsFromItemType. You should set any info accessory related fields to true based on the
+	/// passed in value in this hook.
+	/// </summary>
+	public virtual void UpdateInfoAccessory(int accessoryType) { }
+
+	/// <summary>
 	/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
 	/// </summary>
 	public virtual void FrameEffects()

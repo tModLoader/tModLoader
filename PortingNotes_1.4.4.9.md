@@ -22,7 +22,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 - Update `ArmorPenetration` vanilla values to match switch case after `int num6 = (int)Main.player[owner].armorPenetration`
 
 ## Player
-- Add hook for `RefreshInfoAccsFromItemType`
 - `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
 - Check all usages of void bag (`bank4`)
