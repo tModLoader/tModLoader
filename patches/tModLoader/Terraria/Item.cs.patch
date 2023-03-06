@@ -1732,6 +1732,15 @@
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
+@@ -48553,7 +_,7 @@
+ 		Rectangle hitbox = base.Hitbox;
+ 		for (int j = 0; j < 200; j++) {
+ 			NPC nPC = Main.npc[j];
+-			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
++			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
+ 				flag3 = true;
+ 				NPC.TransformCopperSlime(j);
+ 				break;
 @@ -48669,14 +_,26 @@
  				num2 *= 2;
  

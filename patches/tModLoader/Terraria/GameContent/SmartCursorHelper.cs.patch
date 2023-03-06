@@ -26,6 +26,42 @@
  					break;
  				case 314:
  					if (providedInfo.player.gravDir == 1f)
+@@ -251,7 +_,7 @@
+ 			return;
+ 
+ 		int type = providedInfo.item.type;
+-		if (type < 0 || type >= ItemID.Count || !ItemID.Sets.GrassSeeds[type])
++		if (type < 0 || !ItemID.Sets.GrassSeeds[type])
+ 			return;
+ 
+ 		_targets.Clear();
+@@ -672,7 +_,7 @@
+ 	private static void Step_BlocksLines(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
+ 	{
+ 		int type = providedInfo.item.type;
+-		if (type < 0 || type >= ItemID.Count || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
++		if (type < 0 || !Player.SmartCursorSettings.SmartBlocksEnabled || providedInfo.item.createTile <= -1 || type == 213 || type == 5295 || ItemID.Sets.GrassSeeds[type] || !Main.tileSolid[providedInfo.item.createTile] || Main.tileSolidTop[providedInfo.item.createTile] || Main.tileFrameImportant[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
+ 			return;
+ 
+ 		_targets.Clear();
+@@ -732,7 +_,7 @@
+ 
+ 	private static void Step_Boulders(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
+ 	{
+-		if (providedInfo.item.createTile <= -1 || providedInfo.item.createTile >= TileID.Count || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
++		if (providedInfo.item.createTile <= -1 || !TileID.Sets.Boulders[providedInfo.item.createTile] || focusedX != -1 || focusedY != -1)
+ 			return;
+ 
+ 		_targets.Clear();
+@@ -875,7 +_,7 @@
+ 				for (int k = i; k <= i + 1; k++) {
+ 					for (int l = j - 1; l <= j; l++) {
+ 						Tile tile3 = Main.tile[k, l];
+-						if (tile3.active() && (tile3.type < 0 || tile3.type >= TileID.Count || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
++						if (tile3.active() && (tile3.type < 0 || Main.tileSolid[tile3.type] || !WorldGen.CanCutTile(k, l, TileCuttingContext.TilePlacement)))
+ 							flag = false;
+ 					}
+ 				}
 @@ -1654,11 +_,13 @@
  				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]) || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
  					continue;
@@ -74,6 +110,15 @@
  					switch (tile10.type) {
  						case 2:
  						case 23:
+@@ -2183,7 +_,7 @@
+ 			return;
+ 
+ 		int type = providedInfo.item.type;
+-		if (type < 0 || type >= ItemID.Count)
++		if (type < 0)
+ 			return;
+ 
+ 		int reachableStartX = providedInfo.reachableStartX;
 @@ -2269,7 +_,7 @@
  		int reachableEndY = providedInfo.reachableEndY;
  		_ = providedInfo.screenTargetX;
