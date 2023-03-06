@@ -33,8 +33,9 @@ namespace ExampleMod.Common.Players
 			AdditiveCritDamageBonus = 0f;
 
 			exampleDodge = false;
-			if (exampleDodgeCooldown > 0)
+			if (exampleDodgeCooldown > 0) {
 				exampleDodgeCooldown--;
+			}
 
 			hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
@@ -121,12 +122,12 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
-			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage()) {
+			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI == Main.myPlayer && TeammateHasPaladinShieldAndCanTakeDamage()) {
 				modifiers.FinalDamage *= 1f - AbsorbTeamDamageBuff.TeamDamageAbsorptionPercent;
 			}
 		}
 
-		private bool TeammateHasPalidinShieldAndCanTakeDamage() {
+		private bool TeammateHasPaladinShieldAndCanTakeDamage() {
 			for (int i = 0; i < Main.maxPlayers; i++) {
 				Player otherPlayer = Main.player[i];
 				if (i != Main.myPlayer && IsCandidateForAbsorbingMyDamage(otherPlayer)) {

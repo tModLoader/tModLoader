@@ -38,12 +38,12 @@ namespace ExampleMod.Content.Items.Accessories
 
 				// Remember that UpdateAccessory runs for all players on all clients. This code gives the local player a buff if the player wearing this accessory is within 50 tiles and is on the same team.
 				if (player.whoAmI != Main.myPlayer && player.miscCounter % 10 == 0) {
-					Player LocalPlayer = Main.player[Main.myPlayer];
-					if (LocalPlayer.team == player.team && player.team != 0) {
-						float distanceInWorldCooridinates = player.Distance(LocalPlayer.Center);
+					Player localPlayer = Main.player[Main.myPlayer];
+					if (localPlayer.team == player.team && player.team != 0) {
+						float distanceInWorldCooridinates = player.Distance(localPlayer.Center);
 						// 50 tiles is 800 world units. (50 * 16 == 800)
 						if (distanceInWorldCooridinates < 800f) {
-							LocalPlayer.AddBuff(ModContent.BuffType<AbsorbTeamDamageBuff>(), 20);
+							localPlayer.AddBuff(ModContent.BuffType<AbsorbTeamDamageBuff>(), 20);
 						}
 					}
 				}
