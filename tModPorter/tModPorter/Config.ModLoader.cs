@@ -201,6 +201,8 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.ModProjectile", "SingleGrappleHook", "In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true");
+		HookRemoved("Terraria.ModLoader.GlobalProjectile", "SingleGrappleHook", "In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[type] = true if you previously had this method return true");
 
 		HookRemoved("Terraria.ModLoader.ModItem",		"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
