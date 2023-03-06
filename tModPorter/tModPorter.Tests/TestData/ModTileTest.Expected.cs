@@ -22,8 +22,6 @@ public class ModTileTest : ModTile
 
 		DresserDrop = 0;
 		ChestDrop = 0;
-		CloseDoorID = 0;
-		OpenDoorID = 0;
 		MinPick = 0;
 		MineResist = 0;
 		AnimationFrameHeight = 0;

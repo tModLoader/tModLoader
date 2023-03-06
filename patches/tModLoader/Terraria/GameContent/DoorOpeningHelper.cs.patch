@@ -15,7 +15,7 @@
  
 +			int originalClosedDoorType = TileID.ClosedDoor;
 +			ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
-+			if (modTile != null && modTile.OpenDoorID > 0)
++			if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
 +				originalClosedDoorType = modTile.Type;
 +
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
@@ -62,7 +62,7 @@
 -			return false;
 +		int type = tile.type;
 +		ModTile modTile = ModContent.GetModTile(type);
-+		if (modTile != null && modTile.OpenDoorID > 0)
++		if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
 +			type = TileID.ClosedDoor;
  
 -		return true;

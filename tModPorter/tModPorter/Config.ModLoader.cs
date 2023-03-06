@@ -287,8 +287,6 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "dresserDrop",			to: "DresserDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "chestDrop",			to: "ChestDrop");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "closeDoorID",			to: "CloseDoorID");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "openDoorID",			to: "OpenDoorID");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "minPick",				to: "MinPick");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "mineResist",			to: "MineResist");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "animationFrameHeight",	to: "AnimationFrameHeight");

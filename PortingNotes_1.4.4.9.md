@@ -38,7 +38,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.
-- Replace `ModTile.OpenDoorID` and `ClosedDoorID` with sets
 
 ## TileID.tML.cs
 - `CanBeSatOnForNPCs` -> `CanNPCsSitOn`
