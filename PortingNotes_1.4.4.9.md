@@ -18,9 +18,6 @@
 - Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
 Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
 
-## Projectile
-- Update `ArmorPenetration` vanilla values to match switch case after `int num6 = (int)Main.player[owner].armorPenetration`
-
 ## Player
 - `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.
 - Check `PlayerIO`, make sure `favourited` flag is saved in void vault
