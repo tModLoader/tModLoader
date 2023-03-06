@@ -1650,19 +1650,27 @@
  		int t = 200;
  		int num2 = 1;
  		if (num) {
-@@ -64338,9 +_,9 @@
+@@ -64338,14 +_,16 @@
  	private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC)
  	{
  		NPC nPC = Main.npc[nextNPC];
 -		if (nPC.isLikeATownNPC) {
 -			nPC.GivenName = getNewNPCName(Type);
 -			if (TownNPCProfiles.Instance.GetProfile(Type, out var profile)) {
-+		if (nPC.isLikeATownNPC || Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type]) {
++		// if (nPC.isLikeATownNPC || Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])
++		if (Type >= 0 && (nPC.isLikeATownNPC || NPCID.Sets.SpawnsWithCustomName[Type])) {
 +			nPC.GivenName = nPC.getNewNPCName();
 +			if (TownNPCProfiles.Instance.GetProfile(nPC, out var profile)) {
  				nPC.townNpcVariationIndex = profile.RollVariation();
  				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
+ 
+-			if (ShimmeredTownNPCs[Type])
++			// if (ShimmeredTownNPCs[Type])
++			if (NPCID.Sets.ShimmerTownTransform[Type] && ShimmeredTownNPCs[Type])
+ 				nPC.townNpcVariationIndex = 1;
+ 
+ 			nPC.needsUniqueInfoUpdate = true;
 @@ -64385,7 +_,7 @@
  
  	public bool RerollVariation()

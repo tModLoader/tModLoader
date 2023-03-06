@@ -34,10 +34,7 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 - `ModTile.ChestDrop` and `DresserDrop` code/patches are atrocious.
 
 ## TownNPCProfiles
-- Investigate with the new shimmer profiles. 
-	- Give ExampleNPC and ExampleTravellingMerchant a shimmer variant/texture
-	- Involves adding modded IO for NPC.ShimmeredTownNPCs
-	- Might be a good time to get rid of NPCHeadLoader? At least for town NPCs?
+- Might be a good time to get rid of NPCHeadLoader? At least for town NPCs?
 
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.
