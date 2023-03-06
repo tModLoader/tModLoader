@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/GameContent/Events/BirthdayParty.cs
++++ src/tModLoader/Terraria/GameContent/Events/BirthdayParty.cs
+@@ -138,7 +_,6 @@
+ 			GenuineParty = false;
+ 			PartyDaysOnCooldown = 0;
+ 			CelebratingNPCs.Clear();
+-			_wasCelebrating = false;
+ 		}
+ 
+ 		public static void UpdateTime() {
