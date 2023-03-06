@@ -1347,6 +1347,15 @@
  		}
  
  		UpdateHungerBuffs();
+@@ -9241,7 +_,7 @@
+ 		if (flag) {
+ 			for (int k = 0; k < 40; k++) {
+ 				int type3 = bank4.item[k].type;
+-				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
++				if (type3 < 0 || /*type3 > ItemID.Count ||*/ItemID.Sets.WorksInVoidBag[type3])
+ 					RefreshInfoAccsFromItemType(type3);
+ 			}
+ 		}
 @@ -9354,6 +_,8 @@
  
  		if (accType == 3119 || accType == 3121 || accType == 3123 || accType == 3124 || accType == 5358 || accType == 5359 || accType == 5360 || accType == 5361)
