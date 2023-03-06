@@ -67,9 +67,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 ## MessageID.cs
 - Convert all `Obsolete` (not `Old`) entries to tModPorter refactors and remove.
 
-## Item.cs
-- Make FindOwner code use Player.GetItemGrabRange
-
 ## Formatter
 - Not visiting into switch case blocks properly? See `ItemSlot.LeftClick`
 
