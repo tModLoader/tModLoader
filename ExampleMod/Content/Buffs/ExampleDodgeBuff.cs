@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Buffs
 	/// </summary>
 	internal class ExampleDodgeBuff : ModBuff
 	{
-		public override string Texture => "ExampleMod/Content/Buffs/DebuffTemplate";
-
 		public override void SetStaticDefaults() {
 			Main.buffNoSave[Type] = true;
 		}

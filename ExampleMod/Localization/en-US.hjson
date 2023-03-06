@@ -656,12 +656,22 @@ Mods: {
 
 			ExampleWhip: {
 				DisplayName: Example Whip
-				Tooltip: ""
+				Tooltip:
+					'''
+					{0} summon tag damage
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					'''
 			}
 
 			ExampleWhipAdvanced: {
 				DisplayName: Example Whip Advanced
-				Tooltip: ""
+				Tooltip:
+					'''
+					{0} summon tag damage
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					'''
 			}
 
 			ExampleYoyo: {
@@ -822,8 +832,8 @@ Mods: {
 			}
 
 			ExampleWhipDebuff: {
-				DisplayName: Mods.ExampleMod.BuffName.ExampleWhipDebuff
-				Description: Mods.ExampleMod.BuffDescription.ExampleWhipDebuff
+				DisplayName: Example Whip Debuff
+				Description: ""
 			}
 
 			ExampleLightPetBuff: {
@@ -849,6 +859,11 @@ Mods: {
 			AbsorbTeamDamageBuff: {
 				DisplayName: Absorb Team Damage Buff
 				Description: "{0}% of damage taken will be redirected to another player"
+			}
+
+			ExampleWhipAdvancedDebuff: {
+				DisplayName: Example Whip Advanced Debuff
+				Description: ""
 			}
 		}
 

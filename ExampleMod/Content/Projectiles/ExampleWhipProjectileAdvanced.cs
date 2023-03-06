@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
@@ -100,7 +101,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
+			target.AddBuff(ModContent.BuffType<ExampleWhipAdvancedDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 			Projectile.damage = (int)(Projectile.damage * 0.7f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
 		}

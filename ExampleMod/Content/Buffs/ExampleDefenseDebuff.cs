@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Buffs
 	/// </summary>
 	public class ExampleDefenseDebuff : ModBuff
 	{
-		public override string Texture => "ExampleMod/Content/Buffs/DebuffTemplate";
-
 		public override void Update(NPC npc, ref int buffIndex) {
 			npc.GetGlobalNPC<DamageModificationGlobalNPC>().exampleDefenseDebuff = true; 
 		}

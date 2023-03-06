@@ -1,6 +1,8 @@
-﻿using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Buffs;
+using ExampleMod.Content.Projectiles;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -9,6 +11,8 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		// The texture doesn't have the same name as the item, so this property points to it.
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleWhip";
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(ExampleWhipAdvancedDebuff.TagDamage);
 
 		public override void SetDefaults() {
 			// Call this method to quickly set some of the properties below.
