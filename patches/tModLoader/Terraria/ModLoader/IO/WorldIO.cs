@@ -169,7 +169,7 @@ internal static class WorldIO
 
 				tag = new TagCompound {
 					["mod"] = npc.ModNPC.Mod.Name,
-					["name"] = npc.ModNPC.Name,
+					["name"] = npc.ModNPC.Name
 				};
 
 				if (data.Count != 0) {
