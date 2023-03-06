@@ -47,7 +47,8 @@ namespace ExampleMod.Content.Buffs
 		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 			// Only player attacks should benefit from this buff, hence the NPC and trap checks.
 			if (tagBonusDamage > 0 && !projectile.npcProj && !projectile.trap && (projectile.minion || ProjectileID.Sets.MinionShot[projectile.type] || projectile.sentry || ProjectileID.Sets.SentryShot[projectile.type])) {
-				modifiers.FlatBonusDamage += tagBonusDamage;
+				// SummonTagDamageMultiplier scales down tag damage for some specific minion and sentry projectiles for balance purposes.
+				modifiers.FlatBonusDamage += (int)(tagBonusDamage * ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type]);
 			}
 		}
 	}
