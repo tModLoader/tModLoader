@@ -53,9 +53,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 ## TileID.tML.cs
 - `CanBeSatOnForNPCs` -> `CanNPCsSitOn`
 
-## NPC
-- Remove `NPCSpawnInfo.PlanteraDefeated`, replacement is `NPC.downedPlantBoss && Main.hardMode`
-
 ## Porting Notes:
 - `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
 - `ModWaterStyle` now requires an additional texture, `_Slope`. See `ExampleWaterStyle` for details.
