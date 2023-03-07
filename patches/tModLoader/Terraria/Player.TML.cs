@@ -525,6 +525,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Determines if this player has enough mana to use an item.
 	/// <br/> If the player doesn't have enough mana and <paramref name="blockQuickMana"/> is <see langword="false"/>, the player will activate any missing mana effects they have and try again.
+	/// <br/> The <paramref name="pay"/> parameter can be used to consume the mana amount.
 	/// </summary>
 	/// <param name="item">The item to use.</param>
 	/// <param name="amount">The amount of mana needed. If <c>-1</c>, calculate using <see cref="GetManaCost(Item)"/>.</param>

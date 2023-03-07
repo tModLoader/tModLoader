@@ -25,7 +25,7 @@
  	public const int maxChestTypes = 52;
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over.
++	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over. Differs from <see cref="chestItemSpawn"/> to show key items for locked chest styles.
 +	/// <br/> <see cref="maxChestTypes"/> elements long.
 +	/// </summary>
  	public static int[] chestTypeToIcon = new int[52];
@@ -43,7 +43,7 @@
 +
 +	/// <summary>
 +	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over.
-+	/// <br/> <see cref="maxChestTypes2"/> elements long.
++	/// <br/> <see cref="maxChestTypes2"/> elements long. Differs from <see cref="chestItemSpawn2"/> to show key items for locked chest styles.
 +	/// </summary>
  	public static int[] chestTypeToIcon2 = new int[17];
 +
@@ -71,7 +71,7 @@
  	public static int[] dresserItemSpawn = new int[43];
 +
 +	/// <summary>
-+	/// The maximum number of items this chest can contain.
++	/// The maximum number of items chests can contain.
 +	/// </summary>
  	public const int maxItems = 40;
 +
@@ -87,12 +87,12 @@
  	public Item[] item;
 +
 +	/// <summary>
-+	/// The x-coordinate of this chest in the world, in tile coordinates.
++	/// The x-coordinate of this chest in the world, in tile coordinates. (Top left corner tile)
 +	/// </summary>
  	public int x;
 +
 +	/// <summary>
-+	/// The y-coordinate of this chest in the world, in tile coordinates.
++	/// The y-coordinate of this chest in the world, in tile coordinates. (Top left corner tile)
 +	/// </summary>
  	public int y;
 +
@@ -130,16 +130,6 @@
  	public Chest(bool bank = false)
  	{
  		item = new Item[40];
-@@ -43,6 +_,9 @@
- 		name = string.Empty;
- 	}
- 
-+	/// <summary>
-+	/// 
-+	/// </summary>
- 	public override string ToString()
- 	{
- 		int num = 0;
 @@ -195,6 +_,11 @@
  		return false;
  	}

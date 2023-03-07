@@ -12,7 +12,7 @@
 +public partial class ItemID
  {
 +	/// <summary>
-+	/// Determines the strength an NPC's banner has on players' interactions with that NPC.
++	/// Determines the strength an NPC's banner has on players' interactions with that NPC. Used in <see cref="Sets.BannerStrength"/>
 +	/// </summary>
  	public struct BannerEffect
  	{
@@ -319,7 +319,7 @@
  		public static bool[] IgnoresEncumberingStone = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
 +
 +		/// <summary>
-+		/// If <c>!= 1f</c> for a given item type (<see cref="Item.type"/>), then that item will have the damage in its tooltip multiplied by the retrieved value.
++		/// If <c>!= 1f</c> for a given item type (<see cref="Item.type"/>), then that item will have the damage in its tooltip multiplied by the retrieved value. Useful for items with damage values that don't accurately convey the typical damage. Mainly used by flails to show the boosted damage in the launching forward state.
 +		/// <br/> Defaults to <c>1f</c>.
 +		/// </summary>
  		public static float[] ToolTipDamageMultiplier = Factory.CreateFloatSet(1f, 162f, 2f, 801f, 2f, 163f, 2f, 220f, 2f, 389f, 2f, 1259f, 2f, 4272f, 2f, 5011f, 2f, 5012f, 2f);
@@ -417,7 +417,7 @@
  		public static BannerEffect[] BannerStrength = Factory.CreateCustomSet(new BannerEffect(1f), (short)3838, DD2BannerEffect, (short)3845, DD2BannerEffect, (short)3837, DD2BannerEffect, (short)3844, DD2BannerEffect, (short)3843, DD2BannerEffect, (short)3839, DD2BannerEffect, (short)3840, DD2BannerEffect, (short)3842, DD2BannerEffect, (short)3841, DD2BannerEffect, (short)3846, DD2BannerEffect);
 +
 +		/// <summary>
-+		/// The default nummber of NPC kills requried to obtain the NPC's respective banner.
++		/// The default number of NPC kills requried to obtain the NPC's respective banner.
 +		/// </summary>
  		public static int DefaultKillsForBannerNeeded = 50;
 +

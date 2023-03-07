@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
-@@ -1,7 +_,10 @@
+@@ -1,10 +_,16 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -11,6 +11,12 @@
  
  namespace Terraria.ID;
  
++/// <summary>
++/// This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new Item instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way.
++/// </summary>
+ public static class ContentSamples
+ {
+ 	public static class CommonlyUsedContentSamples
 @@ -93,7 +_,15 @@
  			public ItemGroupAndOrderInGroup(Item item)
  			{

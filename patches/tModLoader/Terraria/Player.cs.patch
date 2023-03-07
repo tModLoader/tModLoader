@@ -241,7 +241,7 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
-@@ -781,9 +_,32 @@
+@@ -781,9 +_,34 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -256,6 +256,7 @@
 +	/// The <see cref="BuffID"/>s of all buffs this player has active.
 +	/// <br/> A value of <c>0</c> means that buff slot is empty.
 +	/// <br/> Buff times are stored with the same index in <see cref="buffTime"/>.
++	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
 +	/// </summary>
  	public int[] buffType = new int[maxBuffs];
 +
@@ -263,6 +264,7 @@
 +	/// The remaining durations in ticks of all buffs this player has active.
 +	/// <br/> A value of <c>0</c> means that buff slot is empty.
 +	/// <br/> Buff types are stored with the same index in <see cref="buffType"/>.
++	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
 +	/// </summary>
  	public int[] buffTime = new int[maxBuffs];
 +

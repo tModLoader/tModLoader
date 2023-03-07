@@ -229,7 +229,7 @@
  		};
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will damage the player when hit with a melee attack, a whip, certain <see cref="ProjAIStyleID"/>s (<see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.HeldProjectile"/>), or by any projectile type (<see cref="Projectile.type"/>) in the <see cref="ProjectileID.Sets.AllowsContactDamageFromJellyfish"/> or <see cref="ProjectileID.Sets.IsAWhip"/> sets.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC, if currently <see cref="NPC.dontTakeDamage"/>, will damage the player when hit with a melee attack, a whip, certain <see cref="ProjAIStyleID"/>s (<see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.HeldProjectile"/>), or by any projectile type (<see cref="Projectile.type"/>) in the <see cref="ProjectileID.Sets.AllowsContactDamageFromJellyfish"/> or <see cref="ProjectileID.Sets.IsAWhip"/> sets.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ZappingJellyfish = Factory.CreateBoolSet(63, 64, 103, 242);
