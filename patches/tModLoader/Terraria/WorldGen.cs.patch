@@ -2429,6 +2429,15 @@
  																					CheckChest(i, j, num);
  																					return;
  																				}
+@@ -59899,7 +_,7 @@
+ 																						CheckXmasTree(i, j);
+ 																						break;
+ 																					default:
+-																						if (!TileID.Sets.BasicChestFake[num] && num != 457) {
++																						if (!TileID.Sets.BasicChestFake[num] && num != 457 || num >= TileID.Count) {
+ 																							switch (num) {
+ 																								case 335:
+ 																								case 411:
 @@ -60128,14 +_,20 @@
  																													case 323:
  																														CheckPalmTree(i, j);
