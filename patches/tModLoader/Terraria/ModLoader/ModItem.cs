@@ -683,12 +683,20 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateInventory(Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	/// <param name="player"> The player to be affected the information accessory. </param>
+	public virtual void UpdateInfoAccessory(Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to this armor or accessory, such as increased damage.
