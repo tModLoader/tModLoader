@@ -1956,7 +1956,7 @@
  	{
  		if (context == ItemSerializationContext.SavingAndLoading) {
 -			writer.Write(netID);
-+			ItemIO.WriteShortVanillaID(this, writer);
++			writer.Write(netID >= ItemID.Count ? 0 : netID);
  			writer.Write(stack);
 -			writer.Write(prefix);
 +			ItemIO.WriteByteVanillaPrefix(this, writer);
