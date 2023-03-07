@@ -95,24 +95,38 @@ $(document).ready(function(){initNavTree('class_armor_i_ds_1_1_face_1_1_sets.htm
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ab85f6c8c60de33cdf58e7f3c132d7fd9"><td class="memItemLeft" align="right" valign="top"><a id="ab85f6c8c60de33cdf58e7f3c132d7fd9" name="ab85f6c8c60de33cdf58e7f3c132d7fd9"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>AltFaceHead</b> = Factory.CreateIntSet(-1, 12, 17, 10, 15, 13, 18, 11, 16)</td></tr>
+<tr class="memdesc:ab85f6c8c60de33cdf58e7f3c132d7fd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>!= -1</code> for a given <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a>, then that equip will be replaced with the retrieved <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a> equip if the player is wearing a <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a> in the <a class="el" href="class_armor_i_ds_1_1_head_1_1_sets.html#a12a3bb4e45f987968bc8330fba7e4f83" title="If true for a given Head, then that equip will force head-positioned face equips (Face....">Head.Sets.UseAltFaceHeadDraw</a> set. <br  />
+ Only applies to <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a> equips also in the <a class="el" href="class_armor_i_ds_1_1_face_1_1_sets.html#a4b04839c1f525d65b2b6128688a93586" title="If true for a given Face, then that equip will draw in the face head layer (Player....">DrawInFaceHeadLayer</a> set. <br  />
+ Defaults to <code>-1</code>. <br /></td></tr>
 <tr class="separator:ab85f6c8c60de33cdf58e7f3c132d7fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6a739ed3b5fc25da3e62a22420a6b79"><td class="memItemLeft" align="right" valign="top"><a id="ac6a739ed3b5fc25da3e62a22420a6b79" name="ac6a739ed3b5fc25da3e62a22420a6b79"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DrawInFaceFlowerLayer</b> = Factory.CreateBoolSet(false, 1, 6, 9, 8)</td></tr>
+<tr class="memdesc:ac6a739ed3b5fc25da3e62a22420a6b79"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a>, then that equip will draw in the face flower layer (Player.faceFlower, Player.cFaceFlower). <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ac6a739ed3b5fc25da3e62a22420a6b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b04839c1f525d65b2b6128688a93586"><td class="memItemLeft" align="right" valign="top"><a id="a4b04839c1f525d65b2b6128688a93586" name="a4b04839c1f525d65b2b6128688a93586"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DrawInFaceHeadLayer</b> = Factory.CreateBoolSet(false, 12, 10, 13, 11)</td></tr>
+<tr class="memdesc:a4b04839c1f525d65b2b6128688a93586"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a>, then that equip will draw in the face head layer (Player.faceHead, Player.cFaceHead). <br  />
+ If a <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a> equip in the <a class="el" href="class_armor_i_ds_1_1_head_1_1_sets.html#a12a3bb4e45f987968bc8330fba7e4f83" title="If true for a given Head, then that equip will force head-positioned face equips (Face....">Head.Sets.UseAltFaceHeadDraw</a> set is equipped, then this equip will be replaced with its value in <a class="el" href="class_armor_i_ds_1_1_face_1_1_sets.html#ab85f6c8c60de33cdf58e7f3c132d7fd9" title="If != -1 for a given Face, then that equip will be replaced with the retrieved Face equip if the play...">AltFaceHead</a> if one exists. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a4b04839c1f525d65b2b6128688a93586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd7d0c596544795aca55971bf3b6f176"><td class="memItemLeft" align="right" valign="top"><a id="abd7d0c596544795aca55971bf3b6f176" name="abd7d0c596544795aca55971bf3b6f176"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DrawInFaceUnderHairLayer</b> = Factory.CreateBoolSet(false, 5)</td></tr>
+<tr class="memdesc:abd7d0c596544795aca55971bf3b6f176"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a>, then that equip will draw under the player's hair. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:abd7d0c596544795aca55971bf3b6f176"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07c1dc72bbd78c82ab153379b2720a75"><td class="memItemLeft" align="right" valign="top"><a id="a07c1dc72bbd78c82ab153379b2720a75" name="a07c1dc72bbd78c82ab153379b2720a75"></a>
 static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(EquipLoader.nextEquip[EquipType.Face])</td></tr>
 <tr class="separator:a07c1dc72bbd78c82ab153379b2720a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9351883d09292f0e0bd384990ae6acbb"><td class="memItemLeft" align="right" valign="top"><a id="a9351883d09292f0e0bd384990ae6acbb" name="a9351883d09292f0e0bd384990ae6acbb"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>OverrideHelmet</b> = Factory.CreateBoolSet(false, 2, 3, 4, 19)</td></tr>
+<tr class="memdesc:a9351883d09292f0e0bd384990ae6acbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a>, then that equip will hide the player's <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a> when equipped. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a9351883d09292f0e0bd384990ae6acbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d5098312b4e6573d052bf432db8aff2"><td class="memItemLeft" align="right" valign="top"><a id="a0d5098312b4e6573d052bf432db8aff2" name="a0d5098312b4e6573d052bf432db8aff2"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventHairDraw</b> = Factory.CreateBoolSet(false, 2, 3, 4, 19)</td></tr>
+<tr class="memdesc:a0d5098312b4e6573d052bf432db8aff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_face.html">Face</a>, then that equip will completely hide the player's hair when equipped. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a0d5098312b4e6573d052bf432db8aff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

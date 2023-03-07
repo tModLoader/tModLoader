@@ -95,42 +95,141 @@ $(document).ready(function(){initNavTree('class_buff_i_d_1_1_sets.html',''); ini
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets_1_1_buff_mount_data.html">BuffMountData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores data for mount buffs.  <a href="class_buff_i_d_1_1_sets_1_1_buff_mount_data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a2303209da4da735b5c909e8475675a89"><td class="memItemLeft" align="right" valign="top"><a id="a2303209da4da735b5c909e8475675a89" name="a2303209da4da735b5c909e8475675a89"></a>
 static <a class="el" href="class_buff_i_d_1_1_sets_1_1_buff_mount_data.html">BuffMountData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>BasicMountData</b></td></tr>
+<tr class="memdesc:a2303209da4da735b5c909e8475675a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">If not <code>null</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is linked to a <a class="el" href="class_mount.html">Mount</a> and will forcibly mount the player if active. <br  />
+ All entries in this set should have <a class="el" href="class_main.html#ae81cfab1b6c394a567d7fcb42465b8ea" title="Prevents status effects which have their entries set to true from displaying the amount of time they ...">Main.buffNoTimeDisplay</a> and <a class="el" href="class_main.html#a37a50bf3ced9746a42bd06faf3ce79c6" title="Indexed by BuffID. If true for a given BuffID, then that buff will not be saved when exiting a world....">Main.buffNoSave</a> set to <code>true</code>. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:a2303209da4da735b5c909e8475675a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a350949b499fcca7db0c86d9aac40517d"><td class="memItemLeft" align="right" valign="top"><a id="a350949b499fcca7db0c86d9aac40517d" name="a350949b499fcca7db0c86d9aac40517d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeRemovedByNetMessage</b> = Factory.CreateBoolSet(313)</td></tr>
+<tr class="memdesc:a350949b499fcca7db0c86d9aac40517d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff can be removed from an <a class="el" href="class_n_p_c.html">NPC</a> using <a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119" title="Removes the buff type and shuffles the remaining buff indexes down to fill the gap....">NPC.RequestBuffRemoval(int)</a>. <br  />
+ Useful for "flag" buffs that should go away on hit, like the Firecracker'sFlameWhipEnemyDebuff. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a350949b499fcca7db0c86d9aac40517d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad03faf1fe541ee0e8767c9d1a3f4280a"><td class="memItemLeft" align="right" valign="top"><a id="ad03faf1fe541ee0e8767c9d1a3f4280a" name="ad03faf1fe541ee0e8767c9d1a3f4280a"></a>
 static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(BuffLoader.BuffCount)</td></tr>
 <tr class="separator:ad03faf1fe541ee0e8767c9d1a3f4280a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57199ee81be55d41be118c4ebfc836aa"><td class="memItemLeft" align="right" valign="top"><a id="a57199ee81be55d41be118c4ebfc836aa" name="a57199ee81be55d41be118c4ebfc836aa"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsAFlaskBuff</b> = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79)</td></tr>
+<tr class="memitem:a57199ee81be55d41be118c4ebfc836aa"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets.html#a57199ee81be55d41be118c4ebfc836aa">IsAFlaskBuff</a> = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79)</td></tr>
+<tr class="memdesc:a57199ee81be55d41be118c4ebfc836aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff corresponds to a flask item. <br  />
+ Flask items are categorized into the ContentSamples.CreativeHelper.ItemGroup.Flask group in Journey Mode. <br  />
+ Defaults to <code>false</code>.  <a href="class_buff_i_d_1_1_sets.html#a57199ee81be55d41be118c4ebfc836aa">More...</a><br /></td></tr>
 <tr class="separator:a57199ee81be55d41be118c4ebfc836aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8591b6facf84f64dad6a13a2750df97c"><td class="memItemLeft" align="right" valign="top"><a id="a8591b6facf84f64dad6a13a2750df97c" name="a8591b6facf84f64dad6a13a2750df97c"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsAnNPCWhipDebuff</b> = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340)</td></tr>
+<tr class="memitem:a8591b6facf84f64dad6a13a2750df97c"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c">IsAnNPCWhipDebuff</a> = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340)</td></tr>
+<tr class="memdesc:a8591b6facf84f64dad6a13a2750df97c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is a whip debuff and can be applied to NPCs that use DataStructures.NPCDebuffImmunityData.ImmuneToAllBuffsThatAreNotWhips. <br  />
+ Defaults to <code>false</code>.  <a href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c">More...</a><br /></td></tr>
 <tr class="separator:a8591b6facf84f64dad6a13a2750df97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a320a30f2a00aff56f251560af14522cb"><td class="memItemLeft" align="right" valign="top"><a id="a320a30f2a00aff56f251560af14522cb" name="a320a30f2a00aff56f251560af14522cb"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsFedState</b> = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334)</td></tr>
+<tr class="memdesc:a320a30f2a00aff56f251560af14522cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is related to player hunger. <br  />
+ Buffs in this set cannot be active at the same time. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a320a30f2a00aff56f251560af14522cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af367e708b85c1f573c454d587cd266a9"><td class="memItemLeft" align="right" valign="top"><a id="af367e708b85c1f573c454d587cd266a9" name="af367e708b85c1f573c454d587cd266a9"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsWellFed</b> = Factory.CreateBoolSet(26, 206, 207)</td></tr>
+<tr class="memdesc:af367e708b85c1f573c454d587cd266a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is some variation of WellFed. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:af367e708b85c1f573c454d587cd266a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4f088bc9099285398aa3ecc27a6a5ee"><td class="memItemLeft" align="right" valign="top"><a id="ad4f088bc9099285398aa3ecc27a6a5ee" name="ad4f088bc9099285398aa3ecc27a6a5ee"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>LongerExpertDebuff</b> = Factory.CreateBoolSet(20, 22, 23, 24, 30, 31, 32, 33, 35, 36, 39, 44, 46, 47, 69, 70, 80)</td></tr>
-<tr class="memdesc:ad4f088bc9099285398aa3ecc27a6a5ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set for debuffs. Causes debuffs to last twice as long on players in expert mode. Defaults to false. <br /></td></tr>
+<tr class="memitem:ad4f088bc9099285398aa3ecc27a6a5ee"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets.html#ad4f088bc9099285398aa3ecc27a6a5ee">LongerExpertDebuff</a> = Factory.CreateBoolSet(20, 22, 23, 24, 30, 31, 32, 33, 35, 36, 39, 44, 46, 47, 69, 70, 80)</td></tr>
+<tr class="memdesc:ad4f088bc9099285398aa3ecc27a6a5ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff will have a longer duration in Main.expertMode.  <a href="class_buff_i_d_1_1_sets.html#ad4f088bc9099285398aa3ecc27a6a5ee">More...</a><br /></td></tr>
 <tr class="separator:ad4f088bc9099285398aa3ecc27a6a5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade6dfddb5663e4c8e601ad077dc8e1f0"><td class="memItemLeft" align="right" valign="top"><a id="ade6dfddb5663e4c8e601ad077dc8e1f0" name="ade6dfddb5663e4c8e601ad077dc8e1f0"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NurseCannotRemoveDebuff</b> = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147)</td></tr>
+<tr class="memdesc:ade6dfddb5663e4c8e601ad077dc8e1f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that debuff cannot be removed by the Nurse. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ade6dfddb5663e4c8e601ad077dc8e1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a158f6f2a144fc1b0c1c73fdcd8a735fb"><td class="memItemLeft" align="right" valign="top"><a id="a158f6f2a144fc1b0c1c73fdcd8a735fb" name="a158f6f2a144fc1b0c1c73fdcd8a735fb"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TimeLeftDoesNotDecrease</b> = Factory.CreateBoolSet(28, 334, 29, 159, 150, 93, 348)</td></tr>
+<tr class="memdesc:a158f6f2a144fc1b0c1c73fdcd8a735fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff will never run out. <br  />
+ Useful for buffs that are conditionally removed. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a158f6f2a144fc1b0c1c73fdcd8a735fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a57199ee81be55d41be118c4ebfc836aa" name="a57199ee81be55d41be118c4ebfc836aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57199ee81be55d41be118c4ebfc836aa">&#9670;&nbsp;</a></span>IsAFlaskBuff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] BuffID.Sets.IsAFlaskBuff = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff corresponds to a flask item. <br  />
+ Flask items are categorized into the ContentSamples.CreativeHelper.ItemGroup.Flask group in Journey Mode. <br  />
+ Defaults to <code>false</code>. </p>
+<p >This set does <b>not</b> handle any logic for flasks. </p>
+
+</div>
+</div>
+<a id="a8591b6facf84f64dad6a13a2750df97c" name="a8591b6facf84f64dad6a13a2750df97c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8591b6facf84f64dad6a13a2750df97c">&#9670;&nbsp;</a></span>IsAnNPCWhipDebuff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] BuffID.Sets.IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is a whip debuff and can be applied to NPCs that use DataStructures.NPCDebuffImmunityData.ImmuneToAllBuffsThatAreNotWhips. <br  />
+ Defaults to <code>false</code>. </p>
+<p >NPCs can be made immune to whip debuffs using DataStructures.NPCDebuffImmunityData.ImmuneToWhips.</p>
+
+</div>
+</div>
+<a id="ad4f088bc9099285398aa3ecc27a6a5ee" name="ad4f088bc9099285398aa3ecc27a6a5ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4f088bc9099285398aa3ecc27a6a5ee">&#9670;&nbsp;</a></span>LongerExpertDebuff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] BuffID.Sets.LongerExpertDebuff = Factory.CreateBoolSet(20, 22, 23, 24, 30, 31, 32, 33, 35, 36, 39, 44, 46, 47, 69, 70, 80)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff will have a longer duration in Main.expertMode. </p>
+<p >The scale factor used is the debuff multiplier (DataStructures.GameModeData.DebuffTimeMultiplier) of Main.GameModeInfo. <br  />
+ Despite the name, this set applies to <em>all</em> buffs, not just debuffs. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -5,6 +5,7 @@ var class_n_p_c =
     [ "DelBuff", "class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60", null ],
     [ "GetGlobalNPC< T >", "class_n_p_c.html#a36bb05e380e083a4c41f2a741cbe6b7f", null ],
     [ "GetGlobalNPC< T >", "class_n_p_c.html#ae160f9e9e481a06229d679a7ef5374f1", null ],
+    [ "GetNPCInvasionGroup", "class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5", null ],
     [ "HasBuff", "class_n_p_c.html#aa8811fd936a1656a412d1367ec06e9cf", null ],
     [ "HasBuff< T >", "class_n_p_c.html#ad8bc6a8b5f4183c7ae3c0a45101f3eb2", null ],
     [ "NewNPC", "class_n_p_c.html#a70912c867c179a198c4e0ab06e01996c", null ],

@@ -611,7 +611,7 @@ virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b>
 <tr class="separator:a4451e8e94662601603427838e9a67ffd inherit properties_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa068daaeb7ca62b7783322205759af5d inherit properties_class_mod_item"><td class="memItemLeft" align="right" valign="top"><a id="aa068daaeb7ca62b7783322205759af5d" name="aa068daaeb7ca62b7783322205759af5d"></a>
 virtual <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tooltip</b><code> [get]</code></td></tr>
-<tr class="memdesc:aa068daaeb7ca62b7783322205759af5d inherit properties_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">r The translations for the tooltip of this item. <br /></td></tr>
+<tr class="memdesc:aa068daaeb7ca62b7783322205759af5d inherit properties_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">The translations for the tooltip of this item. <br /></td></tr>
 <tr class="separator:aa068daaeb7ca62b7783322205759af5d inherit properties_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ccba31e65aa5a486663c098135c54f8 inherit properties_class_mod_item"><td class="memItemLeft" align="right" valign="top"><a id="a1ccba31e65aa5a486663c098135c54f8" name="a1ccba31e65aa5a486663c098135c54f8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
@@ -771,7 +771,7 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
  Return true if the item actually did something, to force itemTime. <br  />
  Return false to keep itemTime at 0. <br  />
  Return null for vanilla behavior. Runs on all clients and server. Use </p>
-<p ><code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == <a class="el" href="class_netmode_i_d.html">NetmodeID</a>.??)</code> if appropriate. </p>
+<p ><code>if (player.whoAmI == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a>)</code> and <code>if (Main.netMode == <a class="el" href="class_netmode_i_d.html">NetmodeID</a>.??)</code> if appropriate. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>

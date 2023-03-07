@@ -97,19 +97,19 @@ $(document).ready(function(){initNavTree('class_mod_prefix.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a982d4cccbc57c2f302ea1597480efed9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_prefix.html#a982d4cccbc57c2f302ea1597480efed9">AllStatChangesHaveEffectOn</a> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+<tr class="memitem:a982d4cccbc57c2f302ea1597480efed9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_prefix.html#a982d4cccbc57c2f302ea1597480efed9">AllStatChangesHaveEffectOn</a> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:a982d4cccbc57c2f302ea1597480efed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to check whether modifiers to custom stats would be too small to have an effect after rounding, and prevent the prefix from being applied to the given item if there would be no change. Vanilla stat changes (</p><dl class="section see"><dt>See also</dt><dd>SetStats</dd></dl>
 <p>) are checked automatically, so there is no need to override this method to check them  <a href="class_mod_prefix.html#a982d4cccbc57c2f302ea1597480efed9">More...</a><br /></td></tr>
 <tr class="separator:a982d4cccbc57c2f302ea1597480efed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bfd97f29841bac5f8e5097b5405c6de"><td class="memItemLeft" align="right" valign="top"><a id="a1bfd97f29841bac5f8e5097b5405c6de" name="a1bfd97f29841bac5f8e5097b5405c6de"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Apply</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Apply</b> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:a1bfd97f29841bac5f8e5097b5405c6de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the custom data stats set in SetStats to the given item. <br /></td></tr>
 <tr class="separator:a1bfd97f29841bac5f8e5097b5405c6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac426d97eed3c809c999f6558695bffa0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_prefix.html#ac426d97eed3c809c999f6558695bffa0">ApplyAccessoryEffects</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ac426d97eed3c809c999f6558695bffa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to modify player stats (or any other applicable data) based on this <a class="el" href="class_mod_prefix.html">ModPrefix</a>.  <a href="class_mod_prefix.html#ac426d97eed3c809c999f6558695bffa0">More...</a><br /></td></tr>
 <tr class="separator:ac426d97eed3c809c999f6558695bffa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad54aa9109c293ee5d177f3d822ab6b5"><td class="memItemLeft" align="right" valign="top"><a id="aad54aa9109c293ee5d177f3d822ab6b5" name="aad54aa9109c293ee5d177f3d822ab6b5"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRoll</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRoll</b> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:aad54aa9109c293ee5d177f3d822ab6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if your <a class="el" href="class_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns RollChance(item) &gt; 0 <br /></td></tr>
 <tr class="separator:aad54aa9109c293ee5d177f3d822ab6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa93bf31f8cb0638457f6082bd516115b"><td class="memItemLeft" align="right" valign="top"><a id="aa93bf31f8cb0638457f6082bd516115b" name="aa93bf31f8cb0638457f6082bd516115b"></a>
@@ -117,7 +117,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyValue</
 <tr class="memdesc:aa93bf31f8cb0638457f6082bd516115b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the sell price of the item based on the prefix or changes in custom data stats. This also influences the item's rarity. <br /></td></tr>
 <tr class="separator:aa93bf31f8cb0638457f6082bd516115b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f82f439e83c620069eaaceab315abc"><td class="memItemLeft" align="right" valign="top"><a id="a77f82f439e83c620069eaaceab315abc" name="a77f82f439e83c620069eaaceab315abc"></a>
-virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>RollChance</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>RollChance</b> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:a77f82f439e83c620069eaaceab315abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The roll chance of your prefix relative to a vanilla prefix, 1f by default. <br /></td></tr>
 <tr class="separator:a77f82f439e83c620069eaaceab315abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcf9a5adab3b2b4a268d890d83d78bec"><td class="memItemLeft" align="right" valign="top"><a id="abcf9a5adab3b2b4a268d890d83d78bec" name="abcf9a5adab3b2b4a268d890d83d78bec"></a>

@@ -92,35 +92,48 @@ $(document).ready(function(){initNavTree('struct_wing_stats.html',''); initResiz
   <div class="headertitle"><div class="title">WingStats Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Stores the stats and settings for a ID.ArmorIDs.Wing equip.  
+ <a href="struct_wing_stats.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7c6c74b8ca48dd1da63b0540827ea91"><td class="memItemLeft" align="right" valign="top"><a id="aa7c6c74b8ca48dd1da63b0540827ea91" name="aa7c6c74b8ca48dd1da63b0540827ea91"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>WingStats</b> (int flyTime=100, float flySpeedOverride=-1f, float accelerationMultiplier=1f, bool hasHoldDownHoverFeatures=false, float hoverFlySpeedOverride=-1f, float hoverAccelerationMultiplier=1f)</td></tr>
+<tr class="memdesc:aa7c6c74b8ca48dd1da63b0540827ea91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <a class="el" href="struct_wing_stats.html" title="Stores the stats and settings for a ID.ArmorIDs.Wing equip.">WingStats</a> with the provided stats. <br /></td></tr>
 <tr class="separator:aa7c6c74b8ca48dd1da63b0540827ea91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b110ff1cc590cd4872ff84561ec9a75"><td class="memItemLeft" align="right" valign="top"><a id="a3b110ff1cc590cd4872ff84561ec9a75" name="a3b110ff1cc590cd4872ff84561ec9a75"></a>
-<a class="el" href="struct_wing_stats.html">WingStats</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WithSpeedBoost</b> (float multiplier)</td></tr>
+<tr class="memitem:a3b110ff1cc590cd4872ff84561ec9a75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_wing_stats.html">WingStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_wing_stats.html#a3b110ff1cc590cd4872ff84561ec9a75">WithSpeedBoost</a> (float multiplier)</td></tr>
+<tr class="memdesc:a3b110ff1cc590cd4872ff84561ec9a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="struct_wing_stats.html" title="Stores the stats and settings for a ID.ArmorIDs.Wing equip.">WingStats</a> with a speed multiplier applied to <a class="el" href="struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514" title="Overrides the value of Player.accRunSpeed while the player is in the air.   Only applies if this valu...">AccRunSpeedOverride</a> and <a class="el" href="struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436" title="Overrides the value of AccRunSpeedOverride if HasDownHoverStats is true and the player is hovering.">DownHoverSpeedOverride</a>.  <a href="struct_wing_stats.html#a3b110ff1cc590cd4872ff84561ec9a75">More...</a><br /></td></tr>
 <tr class="separator:a3b110ff1cc590cd4872ff84561ec9a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:afb5122ef5b805cf2a526235908bf7c29"><td class="memItemLeft" align="right" valign="top"><a id="afb5122ef5b805cf2a526235908bf7c29" name="afb5122ef5b805cf2a526235908bf7c29"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>AccRunAccelerationMult</b></td></tr>
+<tr class="memdesc:afb5122ef5b805cf2a526235908bf7c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">A multiplier applied to <a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3" title="The acceleration, in pixels/ticks^2, that this player experiences while running.">Player.runAcceleration</a> while the player is in the air. <br /></td></tr>
 <tr class="separator:afb5122ef5b805cf2a526235908bf7c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a075820d361f6d37b1532c6dd33957514"><td class="memItemLeft" align="right" valign="top"><a id="a075820d361f6d37b1532c6dd33957514" name="a075820d361f6d37b1532c6dd33957514"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>AccRunSpeedOverride</b></td></tr>
+<tr class="memdesc:a075820d361f6d37b1532c6dd33957514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of Player.accRunSpeed while the player is in the air. <br  />
+ Only applies if this value is greater than Player.accRunSpeed. <br  />
+ If <code>-1f</code>, then no effect. <br /></td></tr>
 <tr class="separator:a075820d361f6d37b1532c6dd33957514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b8bff142cb33bb76b8e718881bc91d6"><td class="memItemLeft" align="right" valign="top"><a id="a1b8bff142cb33bb76b8e718881bc91d6" name="a1b8bff142cb33bb76b8e718881bc91d6"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>DownHoverAccelerationMult</b></td></tr>
+<tr class="memdesc:a1b8bff142cb33bb76b8e718881bc91d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of <a class="el" href="struct_wing_stats.html#afb5122ef5b805cf2a526235908bf7c29" title="A multiplier applied to Player.runAcceleration while the player is in the air.">AccRunAccelerationMult</a> if <a class="el" href="struct_wing_stats.html#abf355405085b9afc488a708364c3f8d2" title="If true, then players can use these wings to hover.   When hovering, DownHoverSpeedOverride and DownH...">HasDownHoverStats</a> is <code>true</code> and the player is hovering. <br /></td></tr>
 <tr class="separator:a1b8bff142cb33bb76b8e718881bc91d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a709de783f972b7b80a357dca2ed0a436"><td class="memItemLeft" align="right" valign="top"><a id="a709de783f972b7b80a357dca2ed0a436" name="a709de783f972b7b80a357dca2ed0a436"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>DownHoverSpeedOverride</b></td></tr>
+<tr class="memdesc:a709de783f972b7b80a357dca2ed0a436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of <a class="el" href="struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514" title="Overrides the value of Player.accRunSpeed while the player is in the air.   Only applies if this valu...">AccRunSpeedOverride</a> if <a class="el" href="struct_wing_stats.html#abf355405085b9afc488a708364c3f8d2" title="If true, then players can use these wings to hover.   When hovering, DownHoverSpeedOverride and DownH...">HasDownHoverStats</a> is <code>true</code> and the player is hovering. <br /></td></tr>
 <tr class="separator:a709de783f972b7b80a357dca2ed0a436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee3e93f253426d74d7945285f6caba2"><td class="memItemLeft" align="right" valign="top"><a id="a6ee3e93f253426d74d7945285f6caba2" name="a6ee3e93f253426d74d7945285f6caba2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>FlyTime</b></td></tr>
+<tr class="memdesc:a6ee3e93f253426d74d7945285f6caba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time in ticks that a player can fly for. <br /></td></tr>
 <tr class="separator:a6ee3e93f253426d74d7945285f6caba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf355405085b9afc488a708364c3f8d2"><td class="memItemLeft" align="right" valign="top"><a id="abf355405085b9afc488a708364c3f8d2" name="abf355405085b9afc488a708364c3f8d2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasDownHoverStats</b></td></tr>
+<tr class="memdesc:abf355405085b9afc488a708364c3f8d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then players can use these wings to hover. <br  />
+ When hovering, <a class="el" href="struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436" title="Overrides the value of AccRunSpeedOverride if HasDownHoverStats is true and the player is hovering.">DownHoverSpeedOverride</a> and <a class="el" href="struct_wing_stats.html#a1b8bff142cb33bb76b8e718881bc91d6" title="Overrides the value of AccRunAccelerationMult if HasDownHoverStats is true and the player is hovering...">DownHoverAccelerationMult</a> apply instead of <a class="el" href="struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514" title="Overrides the value of Player.accRunSpeed while the player is in the air.   Only applies if this valu...">AccRunSpeedOverride</a> and <a class="el" href="struct_wing_stats.html#afb5122ef5b805cf2a526235908bf7c29" title="A multiplier applied to Player.runAcceleration while the player is in the air.">AccRunAccelerationMult</a>, respectively. <br /></td></tr>
 <tr class="separator:abf355405085b9afc488a708364c3f8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -129,6 +142,36 @@ Static Public Attributes</h2></td></tr>
 static readonly <a class="el" href="struct_wing_stats.html">WingStats</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Default</b></td></tr>
 <tr class="separator:afb9d8192a58e14421c4e30cffabadde8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Stores the stats and settings for a ID.ArmorIDs.Wing equip. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3b110ff1cc590cd4872ff84561ec9a75" name="a3b110ff1cc590cd4872ff84561ec9a75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b110ff1cc590cd4872ff84561ec9a75">&#9670;&nbsp;</a></span>WithSpeedBoost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_wing_stats.html">WingStats</a> WingStats.WithSpeedBoost </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>multiplier</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new <a class="el" href="struct_wing_stats.html" title="Stores the stats and settings for a ID.ArmorIDs.Wing equip.">WingStats</a> with a speed multiplier applied to <a class="el" href="struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514" title="Overrides the value of Player.accRunSpeed while the player is in the air.   Only applies if this valu...">AccRunSpeedOverride</a> and <a class="el" href="struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436" title="Overrides the value of AccRunSpeedOverride if HasDownHoverStats is true and the player is hovering.">DownHoverSpeedOverride</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">multiplier</td><td>The multiplier.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified <a class="el" href="struct_wing_stats.html" title="Stores the stats and settings for a ID.ArmorIDs.Wing equip.">WingStats</a>.</dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

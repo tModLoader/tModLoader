@@ -315,14 +315,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckIceBreak</b> ()<
 <tr class="memitem:ad78fd8bbfda86beb8287a87d22a867e6"><td class="memItemLeft" align="right" valign="top"><a id="ad78fd8bbfda86beb8287a87d22a867e6" name="ad78fd8bbfda86beb8287a87d22a867e6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckMana</b> (int amount, bool pay=false, bool blockQuickMana=false)</td></tr>
 <tr class="separator:ad78fd8bbfda86beb8287a87d22a867e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a782b58d9c3dfc2ce794de1d9c280f046"><td class="memItemLeft" align="right" valign="top"><a id="a782b58d9c3dfc2ce794de1d9c280f046" name="a782b58d9c3dfc2ce794de1d9c280f046"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckMana</b> (<a class="el" href="class_item.html">Item</a> item, int amount=-1, bool pay=false, bool blockQuickMana=false)</td></tr>
+<tr class="memitem:a782b58d9c3dfc2ce794de1d9c280f046"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a782b58d9c3dfc2ce794de1d9c280f046">CheckMana</a> (<a class="el" href="class_item.html">Item</a> item, int amount=-1, bool pay=false, bool blockQuickMana=false)</td></tr>
+<tr class="memdesc:a782b58d9c3dfc2ce794de1d9c280f046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if this player has enough mana to use an item. <br  />
+ If the player doesn't have enough mana and <em>blockQuickMana</em>  is <code>false</code>, the player will activate any missing mana effects they have and try again. <br  />
+ The <em>pay</em>  parameter can be used to consume the mana amount.  <a href="class_player.html#a782b58d9c3dfc2ce794de1d9c280f046">More...</a><br /></td></tr>
 <tr class="separator:a782b58d9c3dfc2ce794de1d9c280f046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a578a632a00be063b32a07d30e0f420fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a578a632a00be063b32a07d30e0f420fc">ChooseAmmo</a> (<a class="el" href="class_item.html">Item</a> weapon)</td></tr>
 <tr class="memdesc:a578a632a00be063b32a07d30e0f420fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.  <a href="class_player.html#a578a632a00be063b32a07d30e0f420fc">More...</a><br /></td></tr>
 <tr class="separator:a578a632a00be063b32a07d30e0f420fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4246123cbafbcbf002f8acfa06c03ea2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2">ClearBuff</a> (int type)</td></tr>
-<tr class="memdesc:a4246123cbafbcbf002f8acfa06c03ea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use Player.DelBuff(int) if you only know the buff index  <a href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2">More...</a><br /></td></tr>
+<tr class="memdesc:a4246123cbafbcbf002f8acfa06c03ea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c" title="Removes the buff at the provided index in buffType and buffTime and shuffles the remaining buff index...">Player.DelBuff(int)</a> if you only know the buff index  <a href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2">More...</a><br /></td></tr>
 <tr class="separator:a4246123cbafbcbf002f8acfa06c03ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2d7b002a2ac871ae9806a52196c3a0f"><td class="memItemLeft" align="right" valign="top"><a id="ae2d7b002a2ac871ae9806a52196c3a0f" name="ae2d7b002a2ac871ae9806a52196c3a0f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearGrapplingBlacklist</b> ()</td></tr>
@@ -369,8 +371,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DashMovement</b> ()</
 <tr class="memitem:a35b3d4e4f5240d83ca34ab41e4dafe91"><td class="memItemLeft" align="right" valign="top"><a id="a35b3d4e4f5240d83ca34ab41e4dafe91" name="a35b3d4e4f5240d83ca34ab41e4dafe91"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>DashStartAction</b> (int dashDirection)</td></tr>
 <tr class="separator:a35b3d4e4f5240d83ca34ab41e4dafe91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fef443273ca334f9b1cc6b7e341824c"><td class="memItemLeft" align="right" valign="top"><a id="a8fef443273ca334f9b1cc6b7e341824c" name="a8fef443273ca334f9b1cc6b7e341824c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DelBuff</b> (int b)</td></tr>
+<tr class="memitem:a8fef443273ca334f9b1cc6b7e341824c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c">DelBuff</a> (int b)</td></tr>
+<tr class="memdesc:a8fef443273ca334f9b1cc6b7e341824c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff at the provided index in <a class="el" href="class_player.html#a167e74e57e96b01416e55b17c21c7df3" title="The BuffIDs of all buffs this player has active.   A value of 0 means that buff slot is empty....">buffType</a> and <a class="el" href="class_player.html#ad65cbf630961d6c316fd46e0a23dced9" title="The remaining durations in ticks of all buffs this player has active.   A value of 0 means that buff ...">buffTime</a> and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">Player.ClearBuff(int)</a> if you only know the <a class="el" href="class_buff_i_d.html">BuffID</a>.  <a href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c">More...</a><br /></td></tr>
 <tr class="separator:a8fef443273ca334f9b1cc6b7e341824c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcd3084bde3068015d123e3dfe6ea759"><td class="memItemLeft" align="right" valign="top"><a id="afcd3084bde3068015d123e3dfe6ea759" name="afcd3084bde3068015d123e3dfe6ea759"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DemonConch</b> ()</td></tr>
@@ -412,7 +414,7 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>DropCoins</b> ()</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DropFromItem</b> (int itemType)</td></tr>
 <tr class="separator:a85f6a27528ee705b3ddb00ecf1834c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24fd951b633d47c5812fc58163cea6bf"><td class="memItemLeft" align="right" valign="top"><a id="a24fd951b633d47c5812fc58163cea6bf" name="a24fd951b633d47c5812fc58163cea6bf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DropItem</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 position, ref <a class="el" href="class_item.html">Item</a> item)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DropItem</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, ref <a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a24fd951b633d47c5812fc58163cea6bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drops the ref'd item from the player at the position, and than turns the ref'd <a class="el" href="class_item.html">Item</a> to air. <br /></td></tr>
 <tr class="separator:a24fd951b633d47c5812fc58163cea6bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a8d420627202775a384e2a2ff3bf0db"><td class="memItemLeft" align="right" valign="top"><a id="a2a8d420627202775a384e2a2ff3bf0db" name="a2a8d420627202775a384e2a2ff3bf0db"></a>
@@ -605,8 +607,8 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>GetLegsDrawOffset<
 <tr class="memitem:adebe4b910ec764b98d2648a07e46f7df"><td class="memItemLeft" align="right" valign="top"><a id="adebe4b910ec764b98d2648a07e46f7df" name="adebe4b910ec764b98d2648a07e46f7df"></a>
 <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetListOfProjectilesToInteractWithHack</b> ()</td></tr>
 <tr class="separator:adebe4b910ec764b98d2648a07e46f7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa509186d7b2da460b0a755f08c8ea2d9"><td class="memItemLeft" align="right" valign="top"><a id="aa509186d7b2da460b0a755f08c8ea2d9" name="aa509186d7b2da460b0a755f08c8ea2d9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetManaCost</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+<tr class="memitem:aa509186d7b2da460b0a755f08c8ea2d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#aa509186d7b2da460b0a755f08c8ea2d9">GetManaCost</a> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:aa509186d7b2da460b0a755f08c8ea2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the mana needed to use the given item.  <a href="class_player.html#aa509186d7b2da460b0a755f08c8ea2d9">More...</a><br /></td></tr>
 <tr class="separator:aa509186d7b2da460b0a755f08c8ea2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55a3e1f7654bcdb1eb261b332f9319c1"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a55a3e1f7654bcdb1eb261b332f9319c1">GetModPlayer&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a55a3e1f7654bcdb1eb261b332f9319c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the specified <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> type. This will throw exceptions on failure.  <a href="class_player.html#a55a3e1f7654bcdb1eb261b332f9319c1">More...</a><br /></td></tr>
@@ -1468,7 +1470,7 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestPla
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestRollLuck</b> (int x, int y, int range)</td></tr>
 <tr class="separator:aedb49ea92cefc2eaad067d447a155aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9994c76564455dc8eb061ea5f6ee0b3e"><td class="memItemLeft" align="right" valign="top"><a id="a9994c76564455dc8eb061ea5f6ee0b3e" name="a9994c76564455dc8eb061ea5f6ee0b3e"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestRollLuck</b> (Vector2 position, int range)</td></tr>
+static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestRollLuck</b> (Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, int range)</td></tr>
 <tr class="separator:a9994c76564455dc8eb061ea5f6ee0b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a528115f89cf9e7527ec153863a12a921"><td class="memItemLeft" align="right" valign="top"><a id="a528115f89cf9e7527ec153863a12a921" name="a528115f89cf9e7527ec153863a12a921"></a>
 static <a class="el" href="class_player_file_data.html">PlayerFileData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFileData</b> (string file, bool cloudSave)</td></tr>
@@ -1560,6 +1562,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFishingBobber</b><
 <tr class="separator:a5c26fe04d632f8660003617902b11794"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39a13c4eeca802d67f88f96ccb050844"><td class="memItemLeft" align="right" valign="top"><a id="a39a13c4eeca802d67f88f96ccb050844" name="a39a13c4eeca802d67f88f96ccb050844"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFishingLine</b></td></tr>
+<tr class="memdesc:a39a13c4eeca802d67f88f96ccb050844"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this player's fishing line will never break. <br /></td></tr>
 <tr class="separator:a39a13c4eeca802d67f88f96ccb050844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae24a96800734406d818eb5121aa21a6c"><td class="memItemLeft" align="right" valign="top"><a id="ae24a96800734406d818eb5121aa21a6c" name="ae24a96800734406d818eb5121aa21a6c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFlipper</b></td></tr>
@@ -1863,12 +1866,23 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>brokenArmor</b></td><
 <tr class="separator:aa2a26bc02e3e073d72f2009c460a9a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac060ab24f091f7549c6c8dbf56511ec0"><td class="memItemLeft" align="right" valign="top"><a id="ac060ab24f091f7549c6c8dbf56511ec0" name="ac060ab24f091f7549c6c8dbf56511ec0"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffImmune</b> = new bool[BuffID.Count]</td></tr>
+<tr class="memdesc:ac060ab24f091f7549c6c8dbf56511ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indexed by <a class="el" href="class_buff_i_d.html">BuffID</a>. If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then this player cannot be inflicted with that buff. <br  />
+ Additionally, if the player is inflicted with that buff and becomes immune to it, the buff will be cleared. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ac060ab24f091f7549c6c8dbf56511ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad65cbf630961d6c316fd46e0a23dced9"><td class="memItemLeft" align="right" valign="top"><a id="ad65cbf630961d6c316fd46e0a23dced9" name="ad65cbf630961d6c316fd46e0a23dced9"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffTime</b> = new int[maxBuffs]</td></tr>
+<tr class="memdesc:ad65cbf630961d6c316fd46e0a23dced9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The remaining durations in ticks of all buffs this player has active. <br  />
+ A value of <code>0</code> means that buff slot is empty. <br  />
+ Buff types are stored with the same index in <a class="el" href="class_player.html#a167e74e57e96b01416e55b17c21c7df3" title="The BuffIDs of all buffs this player has active.   A value of 0 means that buff slot is empty....">buffType</a>. <br  />
+ <a class="el" href="class_player.html#ac31b2c55747dc1b540e5b60282f58623" title="Gives the player the provided buff. This accounts for if the player is immune to the buff....">AddBuff(int, int, bool, bool)</a>, <a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">ClearBuff(int)</a>, and <a class="el" href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c" title="Removes the buff at the provided index in buffType and buffTime and shuffles the remaining buff index...">DelBuff(int)</a> should be used to manipulate player buffs. <br /></td></tr>
 <tr class="separator:ad65cbf630961d6c316fd46e0a23dced9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a167e74e57e96b01416e55b17c21c7df3"><td class="memItemLeft" align="right" valign="top"><a id="a167e74e57e96b01416e55b17c21c7df3" name="a167e74e57e96b01416e55b17c21c7df3"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffType</b> = new int[maxBuffs]</td></tr>
+<tr class="memdesc:a167e74e57e96b01416e55b17c21c7df3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_buff_i_d.html">BuffID</a>s of all buffs this player has active. <br  />
+ A value of <code>0</code> means that buff slot is empty. <br  />
+ Buff times are stored with the same index in <a class="el" href="class_player.html#ad65cbf630961d6c316fd46e0a23dced9" title="The remaining durations in ticks of all buffs this player has active.   A value of 0 means that buff ...">buffTime</a>. <br  />
+ <a class="el" href="class_player.html#ac31b2c55747dc1b540e5b60282f58623" title="Gives the player the provided buff. This accounts for if the player is immune to the buff....">AddBuff(int, int, bool, bool)</a>, <a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">ClearBuff(int)</a>, and <a class="el" href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c" title="Removes the buff at the provided index in buffType and buffTime and shuffles the remaining buff index...">DelBuff(int)</a> should be used to manipulate player buffs. <br /></td></tr>
 <tr class="separator:a167e74e57e96b01416e55b17c21c7df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1803f98e6e0f707bde36ae0e3ff4b43f"><td class="memItemLeft" align="right" valign="top"><a id="a1803f98e6e0f707bde36ae0e3ff4b43f" name="a1803f98e6e0f707bde36ae0e3ff4b43f"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>builderAccStatus</b> = new int[BuilderAccToggleIDs.Count]</td></tr>
@@ -2370,9 +2384,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>empressBrooch</b></td
 <tr class="separator:abbac44d17b6817b8edfb0fe66b2013fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a421762fe1d363e2a5fa1550c1d26b6"><td class="memItemLeft" align="right" valign="top"><a id="a6a421762fe1d363e2a5fa1550c1d26b6" name="a6a421762fe1d363e2a5fa1550c1d26b6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>enabledSuperCart</b> = true</td></tr>
+<tr class="memdesc:a6a421762fe1d363e2a5fa1550c1d26b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player has the effects of the Super Cart enabled. See <a class="el" href="class_player.html#ac5aa932525fd4a7e4725d75e93dc3591" title="If true, then any minecart (MountID.Sets.Cart) this player rides in will be significantly faster and ...">UsingSuperCart</a> for more info. <br /></td></tr>
 <tr class="separator:a6a421762fe1d363e2a5fa1550c1d26b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad894b33700110f81b725f018c821685"><td class="memItemLeft" align="right" valign="top"><a id="aad894b33700110f81b725f018c821685" name="aad894b33700110f81b725f018c821685"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>endurance</b></td></tr>
+<tr class="memdesc:aad894b33700110f81b725f018c821685"><td class="mdescLeft">&#160;</td><td class="mdescRight">The percent of damage this player should resist. <br  />
+ Has a soft cap of <code>1f</code>. Cannot reduce taken damage below <code>1</code>. <br /></td></tr>
 <tr class="separator:aad894b33700110f81b725f018c821685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5303b53e333730b0df9138cd71e89056"><td class="memItemLeft" align="right" valign="top"><a id="a5303b53e333730b0df9138cd71e89056" name="a5303b53e333730b0df9138cd71e89056"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>enemySpawns</b></td></tr>
@@ -2407,8 +2424,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>extraAccessory</b></t
 <tr class="memitem:a467bf52d787e6335e3575d8e8b776213"><td class="memItemLeft" align="right" valign="top"><a id="a467bf52d787e6335e3575d8e8b776213" name="a467bf52d787e6335e3575d8e8b776213"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>extraAccessorySlots</b> = 2</td></tr>
 <tr class="separator:a467bf52d787e6335e3575d8e8b776213"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23faed31e665fce3f3e2c418374b1eb5"><td class="memItemLeft" align="right" valign="top"><a id="a23faed31e665fce3f3e2c418374b1eb5" name="a23faed31e665fce3f3e2c418374b1eb5"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>extraFall</b></td></tr>
+<tr class="memitem:a23faed31e665fce3f3e2c418374b1eb5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a23faed31e665fce3f3e2c418374b1eb5">extraFall</a></td></tr>
+<tr class="memdesc:a23faed31e665fce3f3e2c418374b1eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of extra tiles this player can fall before they start taking fall damage.  <a href="class_player.html#a23faed31e665fce3f3e2c418374b1eb5">More...</a><br /></td></tr>
 <tr class="separator:a23faed31e665fce3f3e2c418374b1eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24f9f40e55e56327c8acfa97f09dd7c1"><td class="memItemLeft" align="right" valign="top"><a id="a24f9f40e55e56327c8acfa97f09dd7c1" name="a24f9f40e55e56327c8acfa97f09dd7c1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>eyebrellaCloud</b></td></tr>
@@ -2751,6 +2768,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>honey</b></td></tr>
 <tr class="separator:a919f2491ea589b564e2597f3f1ad75ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b4a5e4d390abd02a6ef49e543afa46b"><td class="memItemLeft" align="right" valign="top"><a id="a1b4a5e4d390abd02a6ef49e543afa46b" name="a1b4a5e4d390abd02a6ef49e543afa46b"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>honeyCombItem</b></td></tr>
+<tr class="memdesc:a1b4a5e4d390abd02a6ef49e543afa46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If not <code>null</code>, this player will create damaging bee projectiles when taking damage. <br /></td></tr>
 <tr class="separator:a1b4a5e4d390abd02a6ef49e543afa46b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb4559c0effa67a44d296790f81caff5"><td class="memItemLeft" align="right" valign="top"><a id="afb4559c0effa67a44d296790f81caff5" name="afb4559c0effa67a44d296790f81caff5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hornet</b></td></tr>
@@ -2925,6 +2943,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>jumpBoost</b></td></t
 <tr class="separator:a204587a627175d3db035ebceeac5f89a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d27319306da3d545130e171fc62bbf7"><td class="memItemLeft" align="right" valign="top"><a id="a8d27319306da3d545130e171fc62bbf7" name="a8d27319306da3d545130e171fc62bbf7"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>jumpSpeedBoost</b></td></tr>
+<tr class="memdesc:a8d27319306da3d545130e171fc62bbf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much to directly increase <a class="el" href="class_player.html#acdf8e12ddf06f366c080f718a62899d7" title="The speed, in pixels/tick, that this players jumps at.">jumpSpeed</a>, in pixels/tick. <br /></td></tr>
 <tr class="separator:a8d27319306da3d545130e171fc62bbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a443e5bc5ee940a698c90a09a1b2821fc"><td class="memItemLeft" align="right" valign="top"><a id="a443e5bc5ee940a698c90a09a1b2821fc" name="a443e5bc5ee940a698c90a09a1b2821fc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>JustDroppedAnItem</b></td></tr>
@@ -3036,12 +3055,20 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>lifeMagnet</b></td></
 <tr class="separator:a6923271bc6611398eea51a10480e5f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efd28012bb61ef7a84926505dd60105"><td class="memItemLeft" align="right" valign="top"><a id="a4efd28012bb61ef7a84926505dd60105" name="a4efd28012bb61ef7a84926505dd60105"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeRegen</b></td></tr>
+<tr class="memdesc:a4efd28012bb61ef7a84926505dd60105"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rate of this player's life regeneration in health/ticks, divided by <code>120</code>. <br  />
+ For example, adding <code>10</code> to this value regenerates <code>10 / 120</code> = <code>1/6</code> health per tick, or 5 health per second. <br  />
+ Life regeneration is accumulated every tick in <a class="el" href="class_player.html#acfe0a3f03c77b8bb752bff9f97d1d6fd" title="This player&#39;s accumulated life regeneration.   If this value reaches or exceeds 120,...">lifeRegenCount</a>. <br  />
+ This value should be subtracted from in <a class="el" href="class_mod_player.html#a3677653797230c347c635eff2ee5fdb5" title="Allows you to give the player a negative life regeneration based on its state (for example,...">ModPlayer.UpdateBadLifeRegen</a> and added to in <a class="el" href="class_mod_player.html#abec7a98339f8a6db3b98b2bf20f02c35" title="Allows you to increase the player&#39;s life regeneration based on its state. This can be done by increme...">ModPlayer.UpdateLifeRegen</a>. <br /></td></tr>
 <tr class="separator:a4efd28012bb61ef7a84926505dd60105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfe0a3f03c77b8bb752bff9f97d1d6fd"><td class="memItemLeft" align="right" valign="top"><a id="acfe0a3f03c77b8bb752bff9f97d1d6fd" name="acfe0a3f03c77b8bb752bff9f97d1d6fd"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeRegenCount</b></td></tr>
+<tr class="memdesc:acfe0a3f03c77b8bb752bff9f97d1d6fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This player's accumulated life regeneration. <br  />
+ If this value reaches or exceeds <code>120</code>, the player gains <code><a class="el" href="class_player.html#acfe0a3f03c77b8bb752bff9f97d1d6fd" title="This player&#39;s accumulated life regeneration.   If this value reaches or exceeds 120,...">lifeRegenCount</a> / 120</code> health and this value decreases until it no longer exceeds <code>120</code>. <br  />
+ If this value reaches or exceeds <code>-120</code>, the player loses health in the same way. <br /></td></tr>
 <tr class="separator:acfe0a3f03c77b8bb752bff9f97d1d6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1be5880dac0a14a8ac2987b19dcd3517"><td class="memItemLeft" align="right" valign="top"><a id="a1be5880dac0a14a8ac2987b19dcd3517" name="a1be5880dac0a14a8ac2987b19dcd3517"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>lifeRegenTime</b></td></tr>
+<tr class="memitem:a1be5880dac0a14a8ac2987b19dcd3517"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a1be5880dac0a14a8ac2987b19dcd3517">lifeRegenTime</a></td></tr>
+<tr class="memdesc:a1be5880dac0a14a8ac2987b19dcd3517"><td class="mdescLeft">&#160;</td><td class="mdescRight">How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases over time. <br  />
+ Certain effects increase this value to increase  <a href="class_player.html#a1be5880dac0a14a8ac2987b19dcd3517">More...</a><br /></td></tr>
 <tr class="separator:a1be5880dac0a14a8ac2987b19dcd3517"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06560cedfdbc69ce5d4dddbf4025fc6a"><td class="memItemLeft" align="right" valign="top"><a id="a06560cedfdbc69ce5d4dddbf4025fc6a" name="a06560cedfdbc69ce5d4dddbf4025fc6a"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>lifeSteal</b> = 99999f</td></tr>
@@ -3101,6 +3128,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>magmaStone</b></td></
 <tr class="separator:a818631d6725730153b46cc21e9330d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84ecdc865b978ddf64a31b67d2f7d092"><td class="memItemLeft" align="right" valign="top"><a id="a84ecdc865b978ddf64a31b67d2f7d092" name="a84ecdc865b978ddf64a31b67d2f7d092"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>manaCost</b> = 1f</td></tr>
+<tr class="memdesc:a84ecdc865b978ddf64a31b67d2f7d092"><td class="mdescLeft">&#160;</td><td class="mdescRight">The percent of mana actually used when mana is consumed. <br  />
+ Cannot reduce an item's mana cost below <code>0</code>. <br /></td></tr>
 <tr class="separator:a84ecdc865b978ddf64a31b67d2f7d092"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23687cdbea7052f49a524f51f56d556e"><td class="memItemLeft" align="right" valign="top"><a id="a23687cdbea7052f49a524f51f56d556e" name="a23687cdbea7052f49a524f51f56d556e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>manaFlower</b></td></tr>
@@ -3155,12 +3184,14 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>maxFallSpeed</b> = 1
 <tr class="separator:a3af10e017321b238e052d2b2234ae55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf3e81ffc3ac75480fa380568cef9756"><td class="memItemLeft" align="right" valign="top"><a id="adf3e81ffc3ac75480fa380568cef9756" name="adf3e81ffc3ac75480fa380568cef9756"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>maxMinions</b> = 1</td></tr>
+<tr class="memdesc:adf3e81ffc3ac75480fa380568cef9756"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum value of minions this player can have summoned at once. <br  />
+ A minion's value is stored as <a class="el" href="class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53" title="Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summo...">Projectile.minionSlots</a>. <br /></td></tr>
 <tr class="separator:adf3e81ffc3ac75480fa380568cef9756"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adae9df93b313071f522f1a92e8077b3f"><td class="memItemLeft" align="right" valign="top"><a id="adae9df93b313071f522f1a92e8077b3f" name="adae9df93b313071f522f1a92e8077b3f"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>maxRegenDelay</b></td></tr>
 <tr class="separator:adae9df93b313071f522f1a92e8077b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a398564ff7e39b984e797dc78b5cda8"><td class="memItemLeft" align="right" valign="top"><a id="a4a398564ff7e39b984e797dc78b5cda8" name="a4a398564ff7e39b984e797dc78b5cda8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>maxRunSpeed</b> = 3f</td></tr>
+<tr class="memitem:a4a398564ff7e39b984e797dc78b5cda8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8">maxRunSpeed</a> = 3f</td></tr>
+<tr class="memdesc:a4a398564ff7e39b984e797dc78b5cda8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum speed, in pixels/tick, that this player can reach by just running.  <a href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8">More...</a><br /></td></tr>
 <tr class="separator:a4a398564ff7e39b984e797dc78b5cda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30be644a8aa902a3e60a116a4ac5b607"><td class="memItemLeft" align="right" valign="top"><a id="a30be644a8aa902a3e60a116a4ac5b607" name="a30be644a8aa902a3e60a116a4ac5b607"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>maxTurrets</b> = 1</td></tr>
@@ -3227,6 +3258,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>moonLordMonolithShade
 <tr class="separator:a27c8faed9946990a90c531f04a6ab8a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e30147feb0b6e19d26e518939c3381b"><td class="memItemLeft" align="right" valign="top"><a id="a6e30147feb0b6e19d26e518939c3381b" name="a6e30147feb0b6e19d26e518939c3381b"></a>
 <a class="el" href="class_mount.html">Mount</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mount</b></td></tr>
+<tr class="memdesc:a6e30147feb0b6e19d26e518939c3381b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This player's <a class="el" href="class_mount.html">Mount</a>. <br  />
+ <b>Do not overwrite this value.</b> Instead, call Mount.SetMount(int, Player, bool) or Mount.Dismount(Player) on it. <br /></td></tr>
 <tr class="separator:a6e30147feb0b6e19d26e518939c3381b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33e2343b5ad31c0bd4a634550fb3fa81"><td class="memItemLeft" align="right" valign="top"><a id="a33e2343b5ad31c0bd4a634550fb3fa81" name="a33e2343b5ad31c0bd4a634550fb3fa81"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>MountFishronSpecialCounter</b></td></tr>
@@ -3239,6 +3272,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mouseInterface</b></t
 <tr class="separator:a335a4709d5eec6aca2c78acfd51d4bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af75dce28d0c467e06f984717a283ebcb"><td class="memItemLeft" align="right" valign="top"><a id="af75dce28d0c467e06f984717a283ebcb" name="af75dce28d0c467e06f984717a283ebcb"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>moveSpeed</b> = 1f</td></tr>
+<tr class="memdesc:af75dce28d0c467e06f984717a283ebcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The multiplier on this player's <a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running.">maxRunSpeed</a> and <a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3" title="The acceleration, in pixels/ticks^2, that this player experiences while running.">runAcceleration</a>. <br /></td></tr>
 <tr class="separator:af75dce28d0c467e06f984717a283ebcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0001ed0b6bda554ae87f8256d8777103"><td class="memItemLeft" align="right" valign="top"><a id="a0001ed0b6bda554ae87f8256d8777103" name="a0001ed0b6bda554ae87f8256d8777103"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mushroomDelayTime</b> = <a class="el" href="class_item.html#afe89f43c2dab80619ef8867972f333cf">Item.mushroomDelay</a></td></tr>
@@ -3248,6 +3282,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>musicDist</b></td></
 <tr class="separator:a57d178fc44bbc8fc7f8d5fa49017ada7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8bcb50bf826874dfa2d162af367d013"><td class="memItemLeft" align="right" valign="top"><a id="ac8bcb50bf826874dfa2d162af367d013" name="ac8bcb50bf826874dfa2d162af367d013"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> = &quot;&quot;</td></tr>
+<tr class="memdesc:ac8bcb50bf826874dfa2d162af367d013"><td class="mdescLeft">&#160;</td><td class="mdescRight">This player's displayed name. <br  />
+ Usually capped at 20 characters. <br /></td></tr>
 <tr class="separator:ac8bcb50bf826874dfa2d162af367d013"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f561320008c7a527b6b6c5f7159aecd"><td class="memItemLeft" align="right" valign="top"><a id="a7f561320008c7a527b6b6c5f7159aecd" name="a7f561320008c7a527b6b6c5f7159aecd"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>nearbyActiveNPCs</b></td></tr>
@@ -3299,6 +3335,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>noBuilding</b></td></
 <tr class="separator:ab98951c35afcbbdf6f85bceda744d1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a0e46984916ed72788c5be69a464cd2"><td class="memItemLeft" align="right" valign="top"><a id="a1a0e46984916ed72788c5be69a464cd2" name="a1a0e46984916ed72788c5be69a464cd2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noFallDmg</b></td></tr>
+<tr class="memdesc:a1a0e46984916ed72788c5be69a464cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this player will take no fall damage. <br /></td></tr>
 <tr class="separator:a1a0e46984916ed72788c5be69a464cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb714314eee507cd3c917e6b1425320"><td class="memItemLeft" align="right" valign="top"><a id="afeb714314eee507cd3c917e6b1425320" name="afeb714314eee507cd3c917e6b1425320"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noItems</b></td></tr>
@@ -3695,6 +3732,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>remoteVisionForDrone<
 <tr class="separator:a698ab2fdb94434b44951761761dcbebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35399bea3ca0caff04615abdc7889d6f"><td class="memItemLeft" align="right" valign="top"><a id="a35399bea3ca0caff04615abdc7889d6f" name="a35399bea3ca0caff04615abdc7889d6f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>resistCold</b></td></tr>
+<tr class="memdesc:a35399bea3ca0caff04615abdc7889d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this player will take 30% less damage from any <a class="el" href="class_n_p_c.html">NPC</a> with <a class="el" href="class_n_p_c.html#a11f38df335d64fa48937b5fb7b2df48a" title="Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion....">NPC.coldDamage</a> set and any projectile with Projectile.coldDamage set. <br /></td></tr>
 <tr class="separator:a35399bea3ca0caff04615abdc7889d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a15148dacc30a8e8684df38f94ecb4a"><td class="memItemLeft" align="right" valign="top"><a id="a6a15148dacc30a8e8684df38f94ecb4a" name="a6a15148dacc30a8e8684df38f94ecb4a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>respawnTimer</b></td></tr>
@@ -3744,8 +3782,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>rulerGrid</b></td></t
 <tr class="memitem:a5e2be113bc5c12fd6acd244ba9b62da1"><td class="memItemLeft" align="right" valign="top"><a id="a5e2be113bc5c12fd6acd244ba9b62da1" name="a5e2be113bc5c12fd6acd244ba9b62da1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>rulerLine</b></td></tr>
 <tr class="separator:a5e2be113bc5c12fd6acd244ba9b62da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="memItemLeft" align="right" valign="top"><a id="ac1bad9de388fc5f76bd1bdf1837dfbd3" name="ac1bad9de388fc5f76bd1bdf1837dfbd3"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>runAcceleration</b> = 0.08f</td></tr>
+<tr class="memitem:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3">runAcceleration</a> = 0.08f</td></tr>
+<tr class="memdesc:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The acceleration, in pixels/ticks^2, that this player experiences while running.  <a href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3">More...</a><br /></td></tr>
 <tr class="separator:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99e2ef1cd00046df1f16291965cea776"><td class="memItemLeft" align="right" valign="top"><a id="a99e2ef1cd00046df1f16291965cea776" name="a99e2ef1cd00046df1f16291965cea776"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>runningOnSand</b></td></tr>
@@ -3782,6 +3820,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>setApprenticeT3</b></
 <tr class="separator:ad68f09b4a0132f5128957de6ff406ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac7534f273ac452bf83c0f6087926480"><td class="memItemLeft" align="right" valign="top"><a id="aac7534f273ac452bf83c0f6087926480" name="aac7534f273ac452bf83c0f6087926480"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>setBonus</b> = &quot;&quot;</td></tr>
+<tr class="memdesc:aac7534f273ac452bf83c0f6087926480"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text that is shown on armor (<a class="el" href="class_item.html#adbb756f77ffaa0ff6a047213b317e120" title="If true, then this item is in the local player&#39;s armor slots.  This causes the item to gain the set b...">Item.wornArmor</a>) with an active set bonus. <br /></td></tr>
 <tr class="separator:aac7534f273ac452bf83c0f6087926480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3a06d746e92617d3aca19a788bc846b"><td class="memItemLeft" align="right" valign="top"><a id="ae3a06d746e92617d3aca19a788bc846b" name="ae3a06d746e92617d3aca19a788bc846b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>setForbidden</b></td></tr>
@@ -4084,23 +4123,31 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>starving</b></td></tr
 <tr class="memitem:aa906f50db1be5fa45e880eaad41f5fa3"><td class="memItemLeft" align="right" valign="top"><a id="aa906f50db1be5fa45e880eaad41f5fa3" name="aa906f50db1be5fa45e880eaad41f5fa3"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>statDefense</b></td></tr>
 <tr class="separator:aa906f50db1be5fa45e880eaad41f5fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="memItemLeft" align="right" valign="top"><a id="a9b28a808c81cd0f90ae16efbe196f0d1" name="a9b28a808c81cd0f90ae16efbe196f0d1"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>statLife</b> = 100</td></tr>
+<tr class="memitem:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a9b28a808c81cd0f90ae16efbe196f0d1">statLife</a> = 100</td></tr>
+<tr class="memdesc:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current health of this player. Capped at <a class="el" href="class_player.html#a6d60c82c9303000b6b36720705290b5a" title="The maximum health this player can have, adjusted by buffs and equipment.">statLifeMax2</a>. <br  />
+ If you increase this value, be sure to respect the cap.  <a href="class_player.html#a9b28a808c81cd0f90ae16efbe196f0d1">More...</a><br /></td></tr>
 <tr class="separator:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0b5807df1985ec9f310ebc512516f83"><td class="memItemLeft" align="right" valign="top"><a id="af0b5807df1985ec9f310ebc512516f83" name="af0b5807df1985ec9f310ebc512516f83"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>statLifeMax</b> = 100</td></tr>
+<tr class="memdesc:af0b5807df1985ec9f310ebc512516f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum health this player can have without adjustment. <br  />
+ You should <b>not</b> modify this value. If you need to increase max health for equipment, modify <a class="el" href="class_player.html#a6d60c82c9303000b6b36720705290b5a" title="The maximum health this player can have, adjusted by buffs and equipment.">statLifeMax2</a>. If you need to increase max health for a permanent stat boost, use <a class="el" href="class_mod_player.html#a2134b2388035bcfaa29dd7e9426c5560" title="Allows you to modify the player&#39;s max stats. This hook runs after vanilla increases from the Life Cry...">ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)</a>. <br /></td></tr>
 <tr class="separator:af0b5807df1985ec9f310ebc512516f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d60c82c9303000b6b36720705290b5a"><td class="memItemLeft" align="right" valign="top"><a id="a6d60c82c9303000b6b36720705290b5a" name="a6d60c82c9303000b6b36720705290b5a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>statLifeMax2</b> = 100</td></tr>
+<tr class="memdesc:a6d60c82c9303000b6b36720705290b5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum health this player can have, adjusted by buffs and equipment. <br /></td></tr>
 <tr class="separator:a6d60c82c9303000b6b36720705290b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0ceee81c432120bde935869d62f944e"><td class="memItemLeft" align="right" valign="top"><a id="aa0ceee81c432120bde935869d62f944e" name="aa0ceee81c432120bde935869d62f944e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>statMana</b></td></tr>
+<tr class="memitem:aa0ceee81c432120bde935869d62f944e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#aa0ceee81c432120bde935869d62f944e">statMana</a></td></tr>
+<tr class="memdesc:aa0ceee81c432120bde935869d62f944e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current mana of this player. Capped at <a class="el" href="class_player.html#a5f1e87241c154367d12fddf7f847d068" title="The maximum mana this player can have, adjusted by buffs and equipment.">statManaMax2</a>. <br  />
+ If you increase this value, be sure to respect the cap.  <a href="class_player.html#aa0ceee81c432120bde935869d62f944e">More...</a><br /></td></tr>
 <tr class="separator:aa0ceee81c432120bde935869d62f944e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a799cbcdc21d08eac0c878578b5bb1d26"><td class="memItemLeft" align="right" valign="top"><a id="a799cbcdc21d08eac0c878578b5bb1d26" name="a799cbcdc21d08eac0c878578b5bb1d26"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>statManaMax</b></td></tr>
+<tr class="memdesc:a799cbcdc21d08eac0c878578b5bb1d26"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum mana this player can have without adjustment. <br  />
+ You should <b>not</b> modify this value. If you need to increase max mana for equipment, modify <a class="el" href="class_player.html#a5f1e87241c154367d12fddf7f847d068" title="The maximum mana this player can have, adjusted by buffs and equipment.">statManaMax2</a>. If you need to increase max mana for a permanent stat boost, use <a class="el" href="class_mod_player.html#a2134b2388035bcfaa29dd7e9426c5560" title="Allows you to modify the player&#39;s max stats. This hook runs after vanilla increases from the Life Cry...">ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)</a>. <br /></td></tr>
 <tr class="separator:a799cbcdc21d08eac0c878578b5bb1d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f1e87241c154367d12fddf7f847d068"><td class="memItemLeft" align="right" valign="top"><a id="a5f1e87241c154367d12fddf7f847d068" name="a5f1e87241c154367d12fddf7f847d068"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>statManaMax2</b></td></tr>
+<tr class="memdesc:a5f1e87241c154367d12fddf7f847d068"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum mana this player can have, adjusted by buffs and equipment. <br /></td></tr>
 <tr class="separator:a5f1e87241c154367d12fddf7f847d068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a62e1c917aecc9311fcee0dd845e790"><td class="memItemLeft" align="right" valign="top"><a id="a3a62e1c917aecc9311fcee0dd845e790" name="a3a62e1c917aecc9311fcee0dd845e790"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>stealth</b> = 1f</td></tr>
@@ -4134,6 +4181,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>stringColor</b></td></
 <tr class="separator:a4dd94f891c8ce3dea6a7f5232c74f3f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affe1d691bd3a8fbeb795d6d8aa204b7c"><td class="memItemLeft" align="right" valign="top"><a id="affe1d691bd3a8fbeb795d6d8aa204b7c" name="affe1d691bd3a8fbeb795d6d8aa204b7c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>strongBees</b></td></tr>
+<tr class="memdesc:affe1d691bd3a8fbeb795d6d8aa204b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then the bees created by <a class="el" href="class_player.html#a1b4a5e4d390abd02a6ef49e543afa46b" title="If not null, this player will create damaging bee projectiles when taking damage.">honeyCombItem</a> have a chance to be stronger. <br /></td></tr>
 <tr class="separator:affe1d691bd3a8fbeb795d6d8aa204b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad4dfe614abd1bfcead236c44fc7aceb"><td class="memItemLeft" align="right" valign="top"><a id="aad4dfe614abd1bfcead236c44fc7aceb" name="aad4dfe614abd1bfcead236c44fc7aceb"></a>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>suffocateDelay</b></td></tr>
@@ -4222,6 +4270,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>torchLuck</b></td></
 <tr class="separator:a15aea41571cc88c9786e4477d1668035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee9d98c144ee9a447cd87169f8f5e0c9"><td class="memItemLeft" align="right" valign="top"><a id="aee9d98c144ee9a447cd87169f8f5e0c9" name="aee9d98c144ee9a447cd87169f8f5e0c9"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>townNPCs</b></td></tr>
+<tr class="memdesc:aee9d98c144ee9a447cd87169f8f5e0c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of the <a class="el" href="class_n_p_c.html#ae1c91873c3b58b70afca2cfe7ddc8355" title="Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flys ha...">NPC.npcSlots</a> of all town NPCs near this player. <br  />
+ If <code><a class="el" href="class_player.html#aee9d98c144ee9a447cd87169f8f5e0c9" title="The sum of the NPC.npcSlots of all town NPCs near this player.   If townNPCs &gt; 2f,...">townNPCs</a> &gt; 2f</code>, then this player is in a town. <br /></td></tr>
 <tr class="separator:aee9d98c144ee9a447cd87169f8f5e0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c973d7d5a97c9f04c37d9fd0f31d5ea"><td class="memItemLeft" align="right" valign="top"><a id="a3c973d7d5a97c9f04c37d9fd0f31d5ea" name="a3c973d7d5a97c9f04c37d9fd0f31d5ea"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>trackBoost</b></td></tr>
@@ -4270,6 +4320,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>unlockedBiomeTorches<
 <tr class="separator:ad5eb63557a056538ba4ef22cf2346452"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81a2cc4182eff665fb6d85365ea79f88"><td class="memItemLeft" align="right" valign="top"><a id="a81a2cc4182eff665fb6d85365ea79f88" name="a81a2cc4182eff665fb6d85365ea79f88"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>unlockedSuperCart</b></td></tr>
+<tr class="memdesc:a81a2cc4182eff665fb6d85365ea79f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player has permanently buffed their minecarts. See <a class="el" href="class_player.html#ac5aa932525fd4a7e4725d75e93dc3591" title="If true, then any minecart (MountID.Sets.Cart) this player rides in will be significantly faster and ...">UsingSuperCart</a> for more info. <br /></td></tr>
 <tr class="separator:a81a2cc4182eff665fb6d85365ea79f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb5117fede4d775c11dd1f24922e36b"><td class="memItemLeft" align="right" valign="top"><a id="a8eb5117fede4d775c11dd1f24922e36b" name="a8eb5117fede4d775c11dd1f24922e36b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>usedAegisCrystal</b></td></tr>
@@ -4431,6 +4482,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>direction</b> = 1</td>
 <tr class="separator:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aeb2eecb2f55bd15f630e2d8e1bb6cad1" name="aeb2eecb2f55bd15f630e2d8e1bb6cad1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<tr class="memdesc:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of this <a class="el" href="class_entity.html">Entity</a>'s hitbox, in pixels. <br /></td></tr>
 <tr class="separator:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46b480ae46ca0522308412c1418e3f6f inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a46b480ae46ca0522308412c1418e3f6f" name="a46b480ae46ca0522308412c1418e3f6f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>honeyWet</b></td></tr>
@@ -4449,12 +4501,14 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>oldVelocity</b></t
 <tr class="separator:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aea6af1b1841c5129ac2ddce832b53075" name="aea6af1b1841c5129ac2ddce832b53075"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<tr class="memdesc:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of this <a class="el" href="class_entity.html">Entity</a> in world coordinates. <br /></td></tr>
 <tr class="separator:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bcf83f80dd7e4b185ab6e997a0de5f inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a03bcf83f80dd7e4b185ab6e997a0de5f" name="a03bcf83f80dd7e4b185ab6e997a0de5f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>shimmerWet</b></td></tr>
 <tr class="separator:a03bcf83f80dd7e4b185ab6e997a0de5f inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbdd2cc8ea46cd4425aeb185a1ac6168 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="adbdd2cc8ea46cd4425aeb185a1ac6168" name="adbdd2cc8ea46cd4425aeb185a1ac6168"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
+<tr class="memdesc:adbdd2cc8ea46cd4425aeb185a1ac6168 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The velocity of this <a class="el" href="class_entity.html">Entity</a> in world coordinates per tick. <br /></td></tr>
 <tr class="separator:adbdd2cc8ea46cd4425aeb185a1ac6168 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e50cbf5d9dc0e20b5a152dbfa17e022 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a2e50cbf5d9dc0e20b5a152dbfa17e022" name="a2e50cbf5d9dc0e20b5a152dbfa17e022"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>wet</b></td></tr>
@@ -4474,6 +4528,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>whoAmI</b></td></tr>
 <tr class="separator:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa687666b6a0f25fe0115c0ac6aa6aca5" name="aa687666b6a0f25fe0115c0ac6aa6aca5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+<tr class="memdesc:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of this <a class="el" href="class_entity.html">Entity</a>'s hitbox, in pixels. <br /></td></tr>
 <tr class="separator:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -4528,6 +4583,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>jumpHeight</b> 
 <tr class="separator:abe5844a686c3a7a49f682919d9268a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdf8e12ddf06f366c080f718a62899d7"><td class="memItemLeft" align="right" valign="top"><a id="acdf8e12ddf06f366c080f718a62899d7" name="acdf8e12ddf06f366c080f718a62899d7"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>jumpSpeed</b> = 5.01f</td></tr>
+<tr class="memdesc:acdf8e12ddf06f366c080f718a62899d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed, in pixels/tick, that this players jumps at. <br /></td></tr>
 <tr class="separator:acdf8e12ddf06f366c080f718a62899d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d9ba007d0d0cf103b12f4ca88237b12"><td class="memItemLeft" align="right" valign="top"><a id="a7d9ba007d0d0cf103b12f4ca88237b12" name="a7d9ba007d0d0cf103b12f4ca88237b12"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>lastPound</b> = true</td></tr>
@@ -4826,6 +4882,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingBiomeTorches</b>
 <tr class="separator:a52b4430a2626256819d88cc7a53bf36f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5aa932525fd4a7e4725d75e93dc3591"><td class="memItemLeft" align="right" valign="top"><a id="ac5aa932525fd4a7e4725d75e93dc3591" name="ac5aa932525fd4a7e4725d75e93dc3591"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingSuperCart</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac5aa932525fd4a7e4725d75e93dc3591"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then any minecart (<a class="el" href="class_mount_i_d_1_1_sets.html#a2e47d31a77713b82883c46ac7b5bf093" title="If true for a given MountID, then that mount is categorized as a minecart.   Minecarts have a dedicat...">MountID.Sets.Cart</a>) this player rides in will be significantly faster and fire lasers. <br  />
+ Cannot be <code>true</code> if <a class="el" href="class_player.html#a81a2cc4182eff665fb6d85365ea79f88" title="If true, then this player has permanently buffed their minecarts. See UsingSuperCart for more info.">unlockedSuperCart</a> is <code>false</code>. <br /></td></tr>
 <tr class="separator:ac5aa932525fd4a7e4725d75e93dc3591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a88d814151ebf5e64704080719da198"><td class="memItemLeft" align="right" valign="top"><a id="a7a88d814151ebf5e64704080719da198" name="a7a88d814151ebf5e64704080719da198"></a>
 override Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosition</b><code> [get]</code></td></tr>
@@ -4844,6 +4902,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneDesert</b><code> 
 <tr class="separator:a23f3890449e61a7db6b2cf2c3160b487"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f1f02597994e231d481badbf5cc5475"><td class="memItemLeft" align="right" valign="top"><a id="a2f1f02597994e231d481badbf5cc5475" name="a2f1f02597994e231d481badbf5cc5475"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneDirtLayerHeight</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2f1f02597994e231d481badbf5cc5475"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player is underground (<a class="el" href="class_main.html#aa44e433e53a98400dacd5260313d7b2b" title="The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0&#39; on the Depth Me...">Main.worldSurface</a>) but above the Caverns layer (<a class="el" href="class_main.html#a879663e005dab5ec98f1e90ebb7236d8" title="The y-coordinate of the top of the caverns layer, in tile coordinates.">Main.rockLayer</a>). <br /></td></tr>
 <tr class="separator:a2f1f02597994e231d481badbf5cc5475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc4867f7082d2c741e3daed94882c418"><td class="memItemLeft" align="right" valign="top"><a id="abc4867f7082d2c741e3daed94882c418" name="abc4867f7082d2c741e3daed94882c418"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneDungeon</b><code> [get, set]</code></td></tr>
@@ -4895,6 +4954,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneOldOneArmy</b><co
 <tr class="separator:a9bb86df09bd87bc1878357674179908b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23880d0a0daf12f5af1ad5c20e96c1af"><td class="memItemLeft" align="right" valign="top"><a id="a23880d0a0daf12f5af1ad5c20e96c1af" name="a23880d0a0daf12f5af1ad5c20e96c1af"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneOverworldHeight</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a23880d0a0daf12f5af1ad5c20e96c1af"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player is above ground (<a class="el" href="class_main.html#aa44e433e53a98400dacd5260313d7b2b" title="The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0&#39; on the Depth Me...">Main.worldSurface</a>) but not in space (<a class="el" href="class_player.html#a85d6a80501542f22189cc8fa6dcfa9d4" title="If true, then this player is the top 35% of the world.   NOTE: Vanilla uses a lot of different condit...">ZoneSkyHeight</a>). <br /></td></tr>
 <tr class="separator:a23880d0a0daf12f5af1ad5c20e96c1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c9c9666e5a2a2f2948668c57dde0f20"><td class="memItemLeft" align="right" valign="top"><a id="a6c9c9666e5a2a2f2948668c57dde0f20" name="a6c9c9666e5a2a2f2948668c57dde0f20"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZonePeaceCandle</b><code> [get, set]</code></td></tr>
@@ -4908,6 +4968,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneRain</b><code> [g
 <tr class="separator:adabcab3fff19376d5efe26e0370f3488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e5fcca923e4a7cd9a16f0e061c3fe35"><td class="memItemLeft" align="right" valign="top"><a id="a1e5fcca923e4a7cd9a16f0e061c3fe35" name="a1e5fcca923e4a7cd9a16f0e061c3fe35"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneRockLayerHeight</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1e5fcca923e4a7cd9a16f0e061c3fe35"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player is in the Caverns layer (<a class="el" href="class_main.html#a879663e005dab5ec98f1e90ebb7236d8" title="The y-coordinate of the top of the caverns layer, in tile coordinates.">Main.rockLayer</a>) but not in the Underworld (<a class="el" href="class_main.html#a5a6cd4c5371efa7554d382b3ea72aebc" title="The y-coordinate of the top of the underworld, in tile coordinates.">Main.UnderworldLayer</a>). <br /></td></tr>
 <tr class="separator:a1e5fcca923e4a7cd9a16f0e061c3fe35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dafb1b6d23001165b3fe56c553acefb"><td class="memItemLeft" align="right" valign="top"><a id="a2dafb1b6d23001165b3fe56c553acefb" name="a2dafb1b6d23001165b3fe56c553acefb"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneSandstorm</b><code> [get, set]</code></td></tr>
@@ -4920,6 +4981,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneShimmer</b><code>
 <tr class="separator:ad08aead270af357e932391a105d734f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85d6a80501542f22189cc8fa6dcfa9d4"><td class="memItemLeft" align="right" valign="top"><a id="a85d6a80501542f22189cc8fa6dcfa9d4" name="a85d6a80501542f22189cc8fa6dcfa9d4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneSkyHeight</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a85d6a80501542f22189cc8fa6dcfa9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player is the top 35% of the world. <br  />
+ <b>NOTE:</b> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logc behind it is used for <a class="el" href="class_n_p_c.html">NPC</a> shops and enemy spawns. <br /></td></tr>
 <tr class="separator:a85d6a80501542f22189cc8fa6dcfa9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a502c26fdf3c82cb0cab042f7ce6ae2"><td class="memItemLeft" align="right" valign="top"><a id="a0a502c26fdf3c82cb0cab042f7ce6ae2" name="a0a502c26fdf3c82cb0cab042f7ce6ae2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneSnow</b><code> [get, set]</code></td></tr>
@@ -4941,6 +5004,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneUndergroundDesert
 <tr class="separator:a21c3fa5a93c52ee14d1ddaeb02af511e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af09e18a476d1507dba5e7cc80aa4cf26"><td class="memItemLeft" align="right" valign="top"><a id="af09e18a476d1507dba5e7cc80aa4cf26" name="af09e18a476d1507dba5e7cc80aa4cf26"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneUnderworldHeight</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:af09e18a476d1507dba5e7cc80aa4cf26"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, then this player is in the Underworld (<a class="el" href="class_main.html#a5a6cd4c5371efa7554d382b3ea72aebc" title="The y-coordinate of the top of the underworld, in tile coordinates.">Main.UnderworldLayer</a>). <br /></td></tr>
 <tr class="separator:af09e18a476d1507dba5e7cc80aa4cf26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa96d748604265eefa82e8bcfc9d0d49"><td class="memItemLeft" align="right" valign="top"><a id="aaa96d748604265eefa82e8bcfc9d0d49" name="aaa96d748604265eefa82e8bcfc9d0d49"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ZoneWaterCandle</b><code> [get, set]</code></td></tr>
@@ -5076,6 +5140,60 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a782b58d9c3dfc2ce794de1d9c280f046" name="a782b58d9c3dfc2ce794de1d9c280f046"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a782b58d9c3dfc2ce794de1d9c280f046">&#9670;&nbsp;</a></span>CheckMana()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Player.CheckMana </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>amount</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>pay</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>blockQuickMana</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines if this player has enough mana to use an item. <br  />
+ If the player doesn't have enough mana and <em>blockQuickMana</em>  is <code>false</code>, the player will activate any missing mana effects they have and try again. <br  />
+ The <em>pay</em>  parameter can be used to consume the mana amount. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to use.</td></tr>
+    <tr><td class="paramname">amount</td><td>The amount of mana needed. If <code>-1</code>, calculate using <a class="el" href="class_player.html#aa509186d7b2da460b0a755f08c8ea2d9" title="Calculates the mana needed to use the given item.">GetManaCost(Item)</a>.</td></tr>
+    <tr><td class="paramname">pay</td><td>If <code>true</code>, actually use the mana requested.</td></tr>
+    <tr><td class="paramname">blockQuickMana</td><td>If <code>true</code>, prevent on missing mana effects like the Mana Flower from activating if the player doesn't have enough mana.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the player has enough mana to use the item, <code>false</code> otherwise.</dd></dl>
+
+</div>
+</div>
 <a id="a578a632a00be063b32a07d30e0f420fc" name="a578a632a00be063b32a07d30e0f420fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a578a632a00be063b32a07d30e0f420fc">&#9670;&nbsp;</a></span>ChooseAmmo()</h2>
 
@@ -5119,10 +5237,36 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use Player.DelBuff(int) if you only know the buff index </p>
+<p>Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c" title="Removes the buff at the provided index in buffType and buffTime and shuffles the remaining buff index...">Player.DelBuff(int)</a> if you only know the buff index </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">type</td><td>The buff type</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8fef443273ca334f9b1cc6b7e341824c" name="a8fef443273ca334f9b1cc6b7e341824c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fef443273ca334f9b1cc6b7e341824c">&#9670;&nbsp;</a></span>DelBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Player.DelBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the buff at the provided index in <a class="el" href="class_player.html#a167e74e57e96b01416e55b17c21c7df3" title="The BuffIDs of all buffs this player has active.   A value of 0 means that buff slot is empty....">buffType</a> and <a class="el" href="class_player.html#ad65cbf630961d6c316fd46e0a23dced9" title="The remaining durations in ticks of all buffs this player has active.   A value of 0 means that buff ...">buffTime</a> and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">Player.ClearBuff(int)</a> if you only know the <a class="el" href="class_buff_i_d.html">BuffID</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The index in <a class="el" href="class_player.html#a167e74e57e96b01416e55b17c21c7df3" title="The BuffIDs of all buffs this player has active.   A value of 0 means that buff slot is empty....">buffType</a> of the buff to remove.</td></tr>
   </table>
   </dd>
 </dl>
@@ -5332,6 +5476,33 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="aa509186d7b2da460b0a755f08c8ea2d9" name="aa509186d7b2da460b0a755f08c8ea2d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa509186d7b2da460b0a755f08c8ea2d9">&#9670;&nbsp;</a></span>GetManaCost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Player.GetManaCost </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the mana needed to use the given item. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to check.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The amount of mana needed to use <em>item</em> . Cannot be less than <code>0</code>.</dd></dl>
 
 </div>
 </div>
@@ -6150,6 +6321,41 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a23faed31e665fce3f3e2c418374b1eb5" name="a23faed31e665fce3f3e2c418374b1eb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23faed31e665fce3f3e2c418374b1eb5">&#9670;&nbsp;</a></span>extraFall</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Player.extraFall</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The number of extra tiles this player can fall before they start taking fall damage. </p>
+<p >If you want to prevent fall damage entirely, use <a class="el" href="class_player.html#a1a0e46984916ed72788c5be69a464cd2" title="If true, this player will take no fall damage.">noFallDmg</a>. </p>
+
+</div>
+</div>
+<a id="a1be5880dac0a14a8ac2987b19dcd3517" name="a1be5880dac0a14a8ac2987b19dcd3517"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1be5880dac0a14a8ac2987b19dcd3517">&#9670;&nbsp;</a></span>lifeRegenTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Player.lifeRegenTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases over time. <br  />
+ Certain effects increase this value to increase </p>
+<p >Use <a class="el" href="class_mod_player.html#ad969633975a989204416f706ffae44b2" title="Allows you to modify the power of the player&#39;s natural life regeneration. This can be done by multipl...">ModPlayer.NaturalLifeRegen(ref float)</a> to directly modify natural life regeneration. </p>
+
+</div>
+</div>
 <a id="adb3a624fc0a3887a1d0240a576572383" name="adb3a624fc0a3887a1d0240a576572383"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb3a624fc0a3887a1d0240a576572383">&#9670;&nbsp;</a></span>Loadouts</h2>
 
@@ -6168,6 +6374,77 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 <div class="line">    }</div>
 <div class="ttc" id="aclass_equipment_loadout_html"><div class="ttname"><a href="class_equipment_loadout.html">EquipmentLoadout</a></div><div class="ttdef"><b>Definition:</b> EquipmentLoadout.cs:7</div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a4a398564ff7e39b984e797dc78b5cda8" name="a4a398564ff7e39b984e797dc78b5cda8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a398564ff7e39b984e797dc78b5cda8">&#9670;&nbsp;</a></span>maxRunSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Player.maxRunSpeed = 3f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The maximum speed, in pixels/tick, that this player can reach by just running. </p>
+<p >To apply a global run speed modifier, use <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration.">moveSpeed</a>.</p>
+
+</div>
+</div>
+<a id="ac1bad9de388fc5f76bd1bdf1837dfbd3" name="ac1bad9de388fc5f76bd1bdf1837dfbd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1bad9de388fc5f76bd1bdf1837dfbd3">&#9670;&nbsp;</a></span>runAcceleration</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Player.runAcceleration = 0.08f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The acceleration, in pixels/ticks^2, that this player experiences while running. </p>
+<p >To apply a global run speed modifier, use <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration.">moveSpeed</a>.</p>
+
+</div>
+</div>
+<a id="a9b28a808c81cd0f90ae16efbe196f0d1" name="a9b28a808c81cd0f90ae16efbe196f0d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b28a808c81cd0f90ae16efbe196f0d1">&#9670;&nbsp;</a></span>statLife</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Player.statLife = 100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The current health of this player. Capped at <a class="el" href="class_player.html#a6d60c82c9303000b6b36720705290b5a" title="The maximum health this player can have, adjusted by buffs and equipment.">statLifeMax2</a>. <br  />
+ If you increase this value, be sure to respect the cap. </p>
+<p >If you want to heal the player with the green text effect, use <a class="el" href="class_player.html#af7afcea2d9b372abfd6486a008738526" title="Heals the player for a certain amount.">Player.Heal(int)</a>. <br  />
+ If you want to hurt the player, use Hurt. </p>
+
+</div>
+</div>
+<a id="aa0ceee81c432120bde935869d62f944e" name="aa0ceee81c432120bde935869d62f944e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0ceee81c432120bde935869d62f944e">&#9670;&nbsp;</a></span>statMana</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Player.statMana</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The current mana of this player. Capped at <a class="el" href="class_player.html#a5f1e87241c154367d12fddf7f847d068" title="The maximum mana this player can have, adjusted by buffs and equipment.">statManaMax2</a>. <br  />
+ If you increase this value, be sure to respect the cap. </p>
+<p >If you want to use mana, use <a class="el" href="class_player.html#a782b58d9c3dfc2ce794de1d9c280f046" title="Determines if this player has enough mana to use an item.   If the player doesn&#39;t have enough mana an...">Player.CheckMana(Item, int, bool, bool)</a> or its overload. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>

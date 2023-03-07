@@ -91,25 +91,60 @@ $(document).ready(function(){initNavTree('class_n_p_c_debuff_immunity_data.html'
   <div class="headertitle"><div class="title">NPCDebuffImmunityData Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Determines the default debuff immunities of an <a class="el" href="class_n_p_c.html">NPC</a>.  
+ <a href="class_n_p_c_debuff_immunity_data.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a52610200cee3fe8d9f11f17b4e02b407"><td class="memItemLeft" align="right" valign="top"><a id="a52610200cee3fe8d9f11f17b4e02b407" name="a52610200cee3fe8d9f11f17b4e02b407"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyToNPC</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
+<tr class="memitem:a52610200cee3fe8d9f11f17b4e02b407"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_debuff_immunity_data.html#a52610200cee3fe8d9f11f17b4e02b407">ApplyToNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
+<tr class="memdesc:a52610200cee3fe8d9f11f17b4e02b407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Make the NPC immune to buffs/debuffs. Example: NPC.buffImmune[BuffID.OnFire] = true;">NPC.buffImmune</a> to be immune to the stored buffs.  <a href="class_n_p_c_debuff_immunity_data.html#a52610200cee3fe8d9f11f17b4e02b407">More...</a><br /></td></tr>
 <tr class="separator:a52610200cee3fe8d9f11f17b4e02b407"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a09c62858d2383537df08de4da51bed9b"><td class="memItemLeft" align="right" valign="top"><a id="a09c62858d2383537df08de4da51bed9b" name="a09c62858d2383537df08de4da51bed9b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ImmuneToAllBuffsThatAreNotWhips</b></td></tr>
+<tr class="memdesc:a09c62858d2383537df08de4da51bed9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) will be immune to all non-whip debuffs (<a class="el" href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c" title="If true for a given BuffID, then that buff is a whip debuff and can be applied to NPCs that use DataS...">BuffID.Sets.IsAnNPCWhipDebuff</a>). <br /></td></tr>
 <tr class="separator:a09c62858d2383537df08de4da51bed9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a164ab7150ef00bc2a2786c38a8da1afa"><td class="memItemLeft" align="right" valign="top"><a id="a164ab7150ef00bc2a2786c38a8da1afa" name="a164ab7150ef00bc2a2786c38a8da1afa"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ImmuneToWhips</b></td></tr>
+<tr class="memdesc:a164ab7150ef00bc2a2786c38a8da1afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) will be immune to all whip debuffs (<a class="el" href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c" title="If true for a given BuffID, then that buff is a whip debuff and can be applied to NPCs that use DataS...">BuffID.Sets.IsAnNPCWhipDebuff</a>). <br /></td></tr>
 <tr class="separator:a164ab7150ef00bc2a2786c38a8da1afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8dcac94d27dcef250f549ad877f3717"><td class="memItemLeft" align="right" valign="top"><a id="ae8dcac94d27dcef250f549ad877f3717" name="ae8dcac94d27dcef250f549ad877f3717"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>SpecificallyImmuneTo</b></td></tr>
+<tr class="memdesc:ae8dcac94d27dcef250f549ad877f3717"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) will be immune to all <a class="el" href="class_buff_i_d.html">BuffID</a>s in this array. <br /></td></tr>
 <tr class="separator:ae8dcac94d27dcef250f549ad877f3717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Determines the default debuff immunities of an <a class="el" href="class_n_p_c.html">NPC</a>. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a52610200cee3fe8d9f11f17b4e02b407" name="a52610200cee3fe8d9f11f17b4e02b407"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52610200cee3fe8d9f11f17b4e02b407">&#9670;&nbsp;</a></span>ApplyToNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPCDebuffImmunityData.ApplyToNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Make the NPC immune to buffs/debuffs. Example: NPC.buffImmune[BuffID.OnFire] = true;">NPC.buffImmune</a> to be immune to the stored buffs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_n_p_c.html">NPC</a> to apply immunities to.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

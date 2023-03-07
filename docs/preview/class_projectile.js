@@ -37,6 +37,7 @@ var class_projectile =
     [ "oldRot", "class_projectile.html#af13b8c2eca21e7745473cff173eeddd6", null ],
     [ "oldSpriteDirection", "class_projectile.html#abf4cdfa42fb235343e30a60054e4d5fb", null ],
     [ "owner", "class_projectile.html#aab5b090f7428f4d974921a807149e991", null ],
+    [ "ownerHitCheck", "class_projectile.html#a5ffe8b63be7cd588f1fc8782a46e99de", null ],
     [ "penetrate", "class_projectile.html#a94391ca36fc93547aba841b6fc4af5a0", null ],
     [ "rotation", "class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf", null ],
     [ "scale", "class_projectile.html#a70e6ef8c8986be5cca4335001e4fcb8d", null ],

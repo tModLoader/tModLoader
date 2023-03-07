@@ -91,55 +91,139 @@ $(document).ready(function(){initNavTree('struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_be
   <div class="headertitle"><div class="title">NPCID.Sets.NPCBestiaryDrawModifiers Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Stores the draw parameters for an <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) in the Bestiary. <br  />
+ <b>Do not use the parameterless constructor or <code>default</code> to create this struct.</b> Use <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134" title="Creates a new NPCBestiaryDrawModifiers with default values.">NPCBestiaryDrawModifiers(int)</a> instead with any parameter &ndash; it sets proper default values.  
+ <a href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5cd6fd4218c34220e1f8196e38e2134"><td class="memItemLeft" align="right" valign="top"><a id="ae5cd6fd4218c34220e1f8196e38e2134" name="ae5cd6fd4218c34220e1f8196e38e2134"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>NPCBestiaryDrawModifiers</b> (int seriouslyWhyCantStructsHaveParameterlessConstructors)</td></tr>
+<tr class="memitem:ae5cd6fd4218c34220e1f8196e38e2134"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134">NPCBestiaryDrawModifiers</a> (int seriouslyWhyCantStructsHaveParameterlessConstructors)</td></tr>
+<tr class="memdesc:ae5cd6fd4218c34220e1f8196e38e2134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html" title="Stores the draw parameters for an NPC type (NPC.type) in the Bestiary.   Do not use the parameterless...">NPCBestiaryDrawModifiers</a> with default values.  <a href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134">More...</a><br /></td></tr>
 <tr class="separator:ae5cd6fd4218c34220e1f8196e38e2134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9ec84c3e6c2315ee515307a0385c4ba0"><td class="memItemLeft" align="right" valign="top"><a id="a9ec84c3e6c2315ee515307a0385c4ba0" name="a9ec84c3e6c2315ee515307a0385c4ba0"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>CustomTexturePath</b></td></tr>
+<tr class="memdesc:a9ec84c3e6c2315ee515307a0385c4ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path to the custom texture to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image. <br  />
+ If <code>null</code>, then this <a class="el" href="class_n_p_c.html">NPC</a>'s default texture is used. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:a9ec84c3e6c2315ee515307a0385c4ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1157bb63c84598316b2032d993c88bd7"><td class="memItemLeft" align="right" valign="top"><a id="a1157bb63c84598316b2032d993c88bd7" name="a1157bb63c84598316b2032d993c88bd7"></a>
 int?&#160;</td><td class="memItemRight" valign="bottom"><b>Direction</b></td></tr>
+<tr class="memdesc:a1157bb63c84598316b2032d993c88bd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The specific Entity.direction to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image. <br  />
+ If <code>null</code>, then <code>-1</code> is used. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:a1157bb63c84598316b2032d993c88bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b1897baaae40a4669246c5b5ef7f1e9"><td class="memItemLeft" align="right" valign="top"><a id="a0b1897baaae40a4669246c5b5ef7f1e9" name="a0b1897baaae40a4669246c5b5ef7f1e9"></a>
 int?&#160;</td><td class="memItemRight" valign="bottom"><b>Frame</b></td></tr>
+<tr class="memdesc:a0b1897baaae40a4669246c5b5ef7f1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The specific vertical frame to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a> in the Bestiary. <br  />
+ If <code>null</code>, then this <a class="el" href="class_n_p_c.html">NPC</a> will play a default walking animation. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:a0b1897baaae40a4669246c5b5ef7f1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca2018cb7d55f11b1ca6329943acbede"><td class="memItemLeft" align="right" valign="top"><a id="aca2018cb7d55f11b1ca6329943acbede" name="aca2018cb7d55f11b1ca6329943acbede"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Hide</b></td></tr>
+<tr class="memdesc:aca2018cb7d55f11b1ca6329943acbede"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this <a class="el" href="class_n_p_c.html">NPC</a> will never show up in the Bestiary. <br  />
+ Useful for multi-segment <a class="el" href="class_n_p_c.html">NPC</a>s. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aca2018cb7d55f11b1ca6329943acbede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51fcb2adc165dc222462218057f2f013"><td class="memItemLeft" align="right" valign="top"><a id="a51fcb2adc165dc222462218057f2f013" name="a51fcb2adc165dc222462218057f2f013"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsWet</b></td></tr>
+<tr class="memdesc:a51fcb2adc165dc222462218057f2f013"><td class="mdescLeft">&#160;</td><td class="mdescRight">The specific <a class="el" href="class_entity.html#a2e50cbf5d9dc0e20b5a152dbfa17e022" title="The Entity is currently in water.   Projectile: Affects movement speed and some projectiles die when ...">Entity.wet</a> to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image. <br  />
+ Useful for <a class="el" href="class_n_p_c.html">NPC</a>s that draw differently when wet. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a51fcb2adc165dc222462218057f2f013"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0b33faedea8c33fee13c458daa839cb"><td class="memItemLeft" align="right" valign="top"><a id="af0b33faedea8c33fee13c458daa839cb" name="af0b33faedea8c33fee13c458daa839cb"></a>
 float?&#160;</td><td class="memItemRight" valign="bottom"><b>PortraitPositionXOverride</b></td></tr>
+<tr class="memdesc:af0b33faedea8c33fee13c458daa839cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom value for <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc" title="The offset of this NPC&#39;s Bestiary image in pixels.   Defaults to Vector2.Zero.">Position</a>.X to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary portrait. If <code>null</code>, then do not override the value. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:af0b33faedea8c33fee13c458daa839cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ff35be7d2fdfcf8ce1f0f4d06366b7e"><td class="memItemLeft" align="right" valign="top"><a id="a7ff35be7d2fdfcf8ce1f0f4d06366b7e" name="a7ff35be7d2fdfcf8ce1f0f4d06366b7e"></a>
 float?&#160;</td><td class="memItemRight" valign="bottom"><b>PortraitPositionYOverride</b></td></tr>
+<tr class="memdesc:a7ff35be7d2fdfcf8ce1f0f4d06366b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom value for <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc" title="The offset of this NPC&#39;s Bestiary image in pixels.   Defaults to Vector2.Zero.">Position</a>.Y to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary portrait. If <code>null</code>, then do not override the value. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:a7ff35be7d2fdfcf8ce1f0f4d06366b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab37e0dec9a2bd97ee5f958acc3693a1d"><td class="memItemLeft" align="right" valign="top"><a id="ab37e0dec9a2bd97ee5f958acc3693a1d" name="ab37e0dec9a2bd97ee5f958acc3693a1d"></a>
 float?&#160;</td><td class="memItemRight" valign="bottom"><b>PortraitScale</b></td></tr>
+<tr class="memdesc:ab37e0dec9a2bd97ee5f958acc3693a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom value for <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#adf25ec146a82217bac9b73889d94395f" title="The visual scale of this NPC&#39;s Bestiary image.   Defaults to 1f.">Scale</a> to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary portrait. If <code>null</code>, then do not override the value. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:ab37e0dec9a2bd97ee5f958acc3693a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51c13a147aead481edca993a701ca0cc"><td class="memItemLeft" align="right" valign="top"><a id="a51c13a147aead481edca993a701ca0cc" name="a51c13a147aead481edca993a701ca0cc"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Position</b></td></tr>
+<tr class="memdesc:a51c13a147aead481edca993a701ca0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset of this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image in pixels. <br  />
+ Defaults to Vector2.Zero. <br /></td></tr>
 <tr class="separator:a51c13a147aead481edca993a701ca0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add971e3648283efa627838b0b8964e39"><td class="memItemLeft" align="right" valign="top"><a id="add971e3648283efa627838b0b8964e39" name="add971e3648283efa627838b0b8964e39"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Rotation</b></td></tr>
+<tr class="memdesc:add971e3648283efa627838b0b8964e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">The clockwise rotation of this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image in radians. <br  />
+ Defaults to <code>0f</code>. <br /></td></tr>
 <tr class="separator:add971e3648283efa627838b0b8964e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf25ec146a82217bac9b73889d94395f"><td class="memItemLeft" align="right" valign="top"><a id="adf25ec146a82217bac9b73889d94395f" name="adf25ec146a82217bac9b73889d94395f"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Scale</b></td></tr>
+<tr class="memdesc:adf25ec146a82217bac9b73889d94395f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visual scale of this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image. <br  />
+ Defaults to <code>1f</code>. <br /></td></tr>
 <tr class="separator:adf25ec146a82217bac9b73889d94395f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf36dfbc571b7354203881c28d01a192"><td class="memItemLeft" align="right" valign="top"><a id="acf36dfbc571b7354203881c28d01a192" name="acf36dfbc571b7354203881c28d01a192"></a>
 int?&#160;</td><td class="memItemRight" valign="bottom"><b>SpriteDirection</b></td></tr>
+<tr class="memdesc:acf36dfbc571b7354203881c28d01a192"><td class="mdescLeft">&#160;</td><td class="mdescRight">The specific NPC.spriteDirection to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image. <br  />
+ If <code>null</code>, then the value of <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7" title="The specific Entity.direction to use when drawing this NPC&#39;s Bestiary image.   If null,...">Direction</a> is used. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:acf36dfbc571b7354203881c28d01a192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53f0e730271b23e614707e8d55cf796c"><td class="memItemLeft" align="right" valign="top"><a id="a53f0e730271b23e614707e8d55cf796c" name="a53f0e730271b23e614707e8d55cf796c"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Velocity</b></td></tr>
+<tr class="memitem:a53f0e730271b23e614707e8d55cf796c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a53f0e730271b23e614707e8d55cf796c">Velocity</a></td></tr>
+<tr class="memdesc:a53f0e730271b23e614707e8d55cf796c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The magnitude of <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">Entity.velocity</a>.X to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image, either when in Portrait mode or when hovered. <br  />
+ Defaults to <code>0f</code>.  <a href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a53f0e730271b23e614707e8d55cf796c">More...</a><br /></td></tr>
 <tr class="separator:a53f0e730271b23e614707e8d55cf796c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Stores the draw parameters for an <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) in the Bestiary. <br  />
+ <b>Do not use the parameterless constructor or <code>default</code> to create this struct.</b> Use <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134" title="Creates a new NPCBestiaryDrawModifiers with default values.">NPCBestiaryDrawModifiers(int)</a> instead with any parameter &ndash; it sets proper default values. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae5cd6fd4218c34220e1f8196e38e2134" name="ae5cd6fd4218c34220e1f8196e38e2134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5cd6fd4218c34220e1f8196e38e2134">&#9670;&nbsp;</a></span>NPCBestiaryDrawModifiers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NPCID.Sets.NPCBestiaryDrawModifiers.NPCBestiaryDrawModifiers </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>seriouslyWhyCantStructsHaveParameterlessConstructors</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html" title="Stores the draw parameters for an NPC type (NPC.type) in the Bestiary.   Do not use the parameterless...">NPCBestiaryDrawModifiers</a> with default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">seriouslyWhyCantStructsHaveParameterlessConstructors</td><td>Unused.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a53f0e730271b23e614707e8d55cf796c" name="a53f0e730271b23e614707e8d55cf796c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53f0e730271b23e614707e8d55cf796c">&#9670;&nbsp;</a></span>Velocity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float NPCID.Sets.NPCBestiaryDrawModifiers.Velocity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The magnitude of <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">Entity.velocity</a>.X to use when drawing this <a class="el" href="class_n_p_c.html">NPC</a>'s Bestiary image, either when in Portrait mode or when hovered. <br  />
+ Defaults to <code>0f</code>. </p>
+<p >This value is only used if <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9" title="The specific vertical frame to use when drawing this NPC in the Bestiary.   If null,...">Frame</a> is <code>null</code>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -617,7 +617,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncoura
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle3_Fighters_CanBeBusyWithAction</b> (int npcID)</td></tr>
 <tr class="separator:ac8ffa11d5ece8b27af99f5bbbfe394cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80a7585fe48195d5bc9d660e9db3f728"><td class="memItemLeft" align="right" valign="top"><a id="a80a7585fe48195d5bc9d660e9db3f728" name="a80a7585fe48195d5bc9d660e9db3f728"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle3_Fighters_NotDiscouraged</b> (int npcID, Vector2 position, <a class="el" href="class_n_p_c.html">NPC</a> npcInstance)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle3_Fighters_NotDiscouraged</b> (int npcID, Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, <a class="el" href="class_n_p_c.html">NPC</a> npcInstance)</td></tr>
 <tr class="separator:a80a7585fe48195d5bc9d660e9db3f728"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecb2edd1922386e455f3b93911069ef2"><td class="memItemLeft" align="right" valign="top"><a id="aecb2edd1922386e455f3b93911069ef2" name="aecb2edd1922386e455f3b93911069ef2"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FairyEffects</b> (Vector2 Position, int type)</td></tr>
@@ -664,8 +664,8 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetFullnameB
 <tr class="memitem:a163958cc85ca081ca66b0ec7a5b58f72"><td class="memItemLeft" align="right" valign="top"><a id="a163958cc85ca081ca66b0ec7a5b58f72" name="a163958cc85ca081ca66b0ec7a5b58f72"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetMeleeCollisionData</b> (Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect)</td></tr>
 <tr class="separator:a163958cc85ca081ca66b0ec7a5b58f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4489312fd829c0cdf3947d195d7150a5"><td class="memItemLeft" align="right" valign="top"><a id="a4489312fd829c0cdf3947d195d7150a5" name="a4489312fd829c0cdf3947d195d7150a5"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNPCInvasionGroup</b> (int npcID)</td></tr>
+<tr class="memitem:a4489312fd829c0cdf3947d195d7150a5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5">GetNPCInvasionGroup</a> (int npcID)</td></tr>
+<tr class="memdesc:a4489312fd829c0cdf3947d195d7150a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="class_invasion_i_d.html">InvasionID</a> associated with the given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type).  <a href="class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5">More...</a><br /></td></tr>
 <tr class="separator:a4489312fd829c0cdf3947d195d7150a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a390ce47c456270f54c4468740aea1ad3"><td class="memItemLeft" align="right" valign="top"><a id="a390ce47c456270f54c4468740aea1ad3" name="a390ce47c456270f54c4468740aea1ad3"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetNPCLocation</b> (int i, bool seekHead, bool averageDirection, out int index, out Vector2 pos)</td></tr>
@@ -715,7 +715,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearSpikeBall<
 This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. <br  />
  A short-hand for  <a href="class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3">More...</a><br /></td></tr>
 <tr class="separator:a9e06da30b864a0cefc43ca3762d013e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a835e0dd6969506583b01b698b5b53f30"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 position, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="memitem:a835e0dd6969506583b01b698b5b53f30"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
 <tr class="memdesc:a835e0dd6969506583b01b698b5b53f30"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
@@ -1336,6 +1336,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>direction</b> = 1</td>
 <tr class="separator:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aeb2eecb2f55bd15f630e2d8e1bb6cad1" name="aeb2eecb2f55bd15f630e2d8e1bb6cad1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<tr class="memdesc:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of this <a class="el" href="class_entity.html">Entity</a>'s hitbox, in pixels. <br /></td></tr>
 <tr class="separator:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46b480ae46ca0522308412c1418e3f6f inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a46b480ae46ca0522308412c1418e3f6f" name="a46b480ae46ca0522308412c1418e3f6f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>honeyWet</b></td></tr>
@@ -1354,12 +1355,14 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>oldVelocity</b></t
 <tr class="separator:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aea6af1b1841c5129ac2ddce832b53075" name="aea6af1b1841c5129ac2ddce832b53075"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<tr class="memdesc:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of this <a class="el" href="class_entity.html">Entity</a> in world coordinates. <br /></td></tr>
 <tr class="separator:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bcf83f80dd7e4b185ab6e997a0de5f inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a03bcf83f80dd7e4b185ab6e997a0de5f" name="a03bcf83f80dd7e4b185ab6e997a0de5f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>shimmerWet</b></td></tr>
 <tr class="separator:a03bcf83f80dd7e4b185ab6e997a0de5f inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbdd2cc8ea46cd4425aeb185a1ac6168 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="adbdd2cc8ea46cd4425aeb185a1ac6168" name="adbdd2cc8ea46cd4425aeb185a1ac6168"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
+<tr class="memdesc:adbdd2cc8ea46cd4425aeb185a1ac6168 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The velocity of this <a class="el" href="class_entity.html">Entity</a> in world coordinates per tick. <br /></td></tr>
 <tr class="separator:adbdd2cc8ea46cd4425aeb185a1ac6168 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e50cbf5d9dc0e20b5a152dbfa17e022 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a2e50cbf5d9dc0e20b5a152dbfa17e022" name="a2e50cbf5d9dc0e20b5a152dbfa17e022"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>wet</b></td></tr>
@@ -1379,6 +1382,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>whoAmI</b></td></tr>
 <tr class="separator:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa687666b6a0f25fe0115c0ac6aa6aca5" name="aa687666b6a0f25fe0115c0ac6aa6aca5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+<tr class="memdesc:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of this <a class="el" href="class_entity.html">Entity</a>'s hitbox, in pixels. <br /></td></tr>
 <tr class="separator:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -2164,6 +2168,43 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a4489312fd829c0cdf3947d195d7150a5" name="a4489312fd829c0cdf3947d195d7150a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4489312fd829c0cdf3947d195d7150a5">&#9670;&nbsp;</a></span>GetNPCInvasionGroup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int NPC.GetNPCInvasionGroup </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>npcID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the <a class="el" href="class_invasion_i_d.html">InvasionID</a> associated with the given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npcID</td><td>The <a class="el" href="class_n_p_c.html">NPC</a> type to check.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>0</code> for NPCs not affiliated with any invasion. <br  />
+ A positive <a class="el" href="class_invasion_i_d.html">InvasionID</a> for NPCs affiliated with standard events, such as the Goblin Army. <br  />
+ A negative <a class="el" href="class_invasion_i_d.html">InvasionID</a> for NPCs affiliated with a wave-based event, such as the Pumpkin Moon. Wave-based events are prefixed with "Cached" in <a class="el" href="class_invasion_i_d.html">InvasionID</a>. </dd></dl>
 
 </div>
 </div>

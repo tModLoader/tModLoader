@@ -96,10 +96,39 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:af073408afe2933a9b7762654612f2572"><td class="memItemLeft" align="right" valign="top"><a id="af073408afe2933a9b7762654612f2572" name="af073408afe2933a9b7762654612f2572"></a>
 static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(EquipLoader.nextEquip[EquipType.Beard])</td></tr>
 <tr class="separator:af073408afe2933a9b7762654612f2572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f51c2f1f24afcd89f03f8de57e130ee"><td class="memItemLeft" align="right" valign="top"><a id="a8f51c2f1f24afcd89f03f8de57e130ee" name="a8f51c2f1f24afcd89f03f8de57e130ee"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>UseHairColor</b> = Factory.CreateBoolSet(false, 2, 3, 4)</td></tr>
+<tr class="memitem:a8f51c2f1f24afcd89f03f8de57e130ee"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_armor_i_ds_1_1_beard_1_1_sets.html#a8f51c2f1f24afcd89f03f8de57e130ee">UseHairColor</a> = Factory.CreateBoolSet(false, 2, 3, 4)</td></tr>
+<tr class="memdesc:a8f51c2f1f24afcd89f03f8de57e130ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_beard.html">Beard</a>, then that equip will be colored in the same way the player's hair is. <br  />
+ Defaults to <code>false</code>.  <a href="class_armor_i_ds_1_1_beard_1_1_sets.html#a8f51c2f1f24afcd89f03f8de57e130ee">More...</a><br /></td></tr>
 <tr class="separator:a8f51c2f1f24afcd89f03f8de57e130ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8f51c2f1f24afcd89f03f8de57e130ee" name="a8f51c2f1f24afcd89f03f8de57e130ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f51c2f1f24afcd89f03f8de57e130ee">&#9670;&nbsp;</a></span>UseHairColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] ArmorIDs.Beard.Sets.UseHairColor = Factory.CreateBoolSet(false, 2, 3, 4)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_beard.html">Beard</a>, then that equip will be colored in the same way the player's hair is. <br  />
+ Defaults to <code>false</code>. </p>
+<p >Equips in this set should be grayscale, similar to the player's textures. <br  />
+ Beards in this set are <b>not</b> dyed using Player.hairDye, but instead use Player.cBeard like other equips. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

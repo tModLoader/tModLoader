@@ -94,24 +94,29 @@ $(document).ready(function(){initNavTree('class_chest.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 
+<p>Represents a non-<a class="el" href="class_player.html">Player</a> inventory, such as chests, portable storage, or <a class="el" href="class_n_p_c.html">NPC</a> shops.  
+ <a href="class_chest.html#details">More...</a></p>
+
 <p>Inherits IFixLoadedData.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7f2301e8961ff97a88380400a09d31ef"><td class="memItemLeft" align="right" valign="top"><a id="a7f2301e8961ff97a88380400a09d31ef" name="a7f2301e8961ff97a88380400a09d31ef"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Chest</b> (bool bank=false)</td></tr>
+<tr class="memdesc:a7f2301e8961ff97a88380400a09d31ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> with no name. <br /></td></tr>
 <tr class="separator:a7f2301e8961ff97a88380400a09d31ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a551628b11c152dfb770da372234f7b4b"><td class="memItemLeft" align="right" valign="top"><a id="a551628b11c152dfb770da372234f7b4b" name="a551628b11c152dfb770da372234f7b4b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>AddItemToShop</b> (<a class="el" href="class_item.html">Item</a> newItem)</td></tr>
+<tr class="memitem:a551628b11c152dfb770da372234f7b4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a551628b11c152dfb770da372234f7b4b">AddItemToShop</a> (<a class="el" href="class_item.html">Item</a> newItem)</td></tr>
+<tr class="memdesc:a551628b11c152dfb770da372234f7b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an item to the first empty slot in this shop.  <a href="class_chest.html#a551628b11c152dfb770da372234f7b4b">More...</a><br /></td></tr>
 <tr class="separator:a551628b11c152dfb770da372234f7b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4f8acb91f0ca6940cd54522ce55d4e8"><td class="memItemLeft" align="right" valign="top"><a id="af4f8acb91f0ca6940cd54522ce55d4e8" name="af4f8acb91f0ca6940cd54522ce55d4e8"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
 <tr class="separator:af4f8acb91f0ca6940cd54522ce55d4e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80c90d1bd1100e8103dc9ce9c754df85"><td class="memItemLeft" align="right" valign="top"><a id="a80c90d1bd1100e8103dc9ce9c754df85" name="a80c90d1bd1100e8103dc9ce9c754df85"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FixLoadedData</b> ()</td></tr>
+<tr class="memdesc:a80c90d1bd1100e8103dc9ce9c754df85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls Item.FixAgainstExploit on all of this chest's items. <br /></td></tr>
 <tr class="separator:a80c90d1bd1100e8103dc9ce9c754df85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb05eb9f1c36dc31ab70d7731222ab0f"><td class="memItemLeft" align="right" valign="top"><a id="afb05eb9f1c36dc31ab70d7731222ab0f" name="afb05eb9f1c36dc31ab70d7731222ab0f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupShop</b> (int type)</td></tr>
+<tr class="memitem:afb05eb9f1c36dc31ab70d7731222ab0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#afb05eb9f1c36dc31ab70d7731222ab0f">SetupShop</a> (int type)</td></tr>
+<tr class="memdesc:afb05eb9f1c36dc31ab70d7731222ab0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up an <a class="el" href="class_n_p_c.html">NPC</a>'s shop.  <a href="class_chest.html#afb05eb9f1c36dc31ab70d7731222ab0f">More...</a><br /></td></tr>
 <tr class="separator:afb05eb9f1c36dc31ab70d7731222ab0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10b8d1881ab62c0fcf0c70f755cf53ef"><td class="memItemLeft" align="right" valign="top"><a id="a10b8d1881ab62c0fcf0c70f755cf53ef" name="a10b8d1881ab62c0fcf0c70f755cf53ef"></a>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
@@ -119,59 +124,62 @@ override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af43b708d6ba8a4550490ec034d49a7e2"><td class="memItemLeft" align="right" valign="top"><a id="af43b708d6ba8a4550490ec034d49a7e2" name="af43b708d6ba8a4550490ec034d49a7e2"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>AfterPlacement_Hook</b> (int x, int y, int type=21, int style=0, int direction=1, int alternate=0)</td></tr>
+<tr class="memitem:af43b708d6ba8a4550490ec034d49a7e2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#af43b708d6ba8a4550490ec034d49a7e2">AfterPlacement_Hook</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, int type=21, int style=0, int direction=1, int alternate=0)</td></tr>
+<tr class="memdesc:af43b708d6ba8a4550490ec034d49a7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a placed chest into the world.  <a href="class_chest.html#af43b708d6ba8a4550490ec034d49a7e2">More...</a><br /></td></tr>
 <tr class="separator:af43b708d6ba8a4550490ec034d49a7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fde03aca6496fbeee84a1aef5fd1ec8"><td class="memItemLeft" align="right" valign="top"><a id="a2fde03aca6496fbeee84a1aef5fd1ec8" name="a2fde03aca6496fbeee84a1aef5fd1ec8"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>AskForChestToEatItem</b> (Vector2 worldPosition, int duration)</td></tr>
+<tr class="memitem:a2fde03aca6496fbeee84a1aef5fd1ec8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a2fde03aca6496fbeee84a1aef5fd1ec8">AskForChestToEatItem</a> (Vector2 worldPosition, int duration)</td></tr>
+<tr class="memdesc:a2fde03aca6496fbeee84a1aef5fd1ec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visually opens the chest at <em>worldPosition</em>  for <em>duration</em>  ticks.  <a href="class_chest.html#a2fde03aca6496fbeee84a1aef5fd1ec8">More...</a><br /></td></tr>
 <tr class="separator:a2fde03aca6496fbeee84a1aef5fd1ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61e8c0f57ef8644435a86ddceefed55c"><td class="memItemLeft" align="right" valign="top"><a id="a61e8c0f57ef8644435a86ddceefed55c" name="a61e8c0f57ef8644435a86ddceefed55c"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDestroyChest</b> (int X, int Y)</td></tr>
+<tr class="memitem:a61e8c0f57ef8644435a86ddceefed55c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a61e8c0f57ef8644435a86ddceefed55c">CanDestroyChest</a> (int X, int Y)</td></tr>
+<tr class="memdesc:a61e8c0f57ef8644435a86ddceefed55c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the chest at (<em>X</em> , <em>Y</em> ) can be destroyed.  <a href="class_chest.html#a61e8c0f57ef8644435a86ddceefed55c">More...</a><br /></td></tr>
 <tr class="separator:a61e8c0f57ef8644435a86ddceefed55c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44ce32eb9d46ee93f81fd89a04a1faed"><td class="memItemLeft" align="right" valign="top"><a id="a44ce32eb9d46ee93f81fd89a04a1faed" name="a44ce32eb9d46ee93f81fd89a04a1faed"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>CreateChest</b> (int X, int Y, int id=-1)</td></tr>
+<tr class="memitem:a44ce32eb9d46ee93f81fd89a04a1faed"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a44ce32eb9d46ee93f81fd89a04a1faed">CreateChest</a> (int X, int Y, int id=-1)</td></tr>
+<tr class="memdesc:a44ce32eb9d46ee93f81fd89a04a1faed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and registers a new chest into the world.  <a href="class_chest.html#a44ce32eb9d46ee93f81fd89a04a1faed">More...</a><br /></td></tr>
 <tr class="separator:a44ce32eb9d46ee93f81fd89a04a1faed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1963f9c91e0b0381f0b362d540f93adf"><td class="memItemLeft" align="right" valign="top"><a id="a1963f9c91e0b0381f0b362d540f93adf" name="a1963f9c91e0b0381f0b362d540f93adf"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DestroyChest</b> (int X, int Y)</td></tr>
+<tr class="memitem:a1963f9c91e0b0381f0b362d540f93adf"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a1963f9c91e0b0381f0b362d540f93adf">DestroyChest</a> (int X, int Y)</td></tr>
+<tr class="memdesc:a1963f9c91e0b0381f0b362d540f93adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to destroy the chest at (<em>X</em> , <em>Y</em> ).  <a href="class_chest.html#a1963f9c91e0b0381f0b362d540f93adf">More...</a><br /></td></tr>
 <tr class="separator:a1963f9c91e0b0381f0b362d540f93adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab13ea598b3604132fc4fafcf0444f8c0"><td class="memItemLeft" align="right" valign="top"><a id="ab13ea598b3604132fc4fafcf0444f8c0" name="ab13ea598b3604132fc4fafcf0444f8c0"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>DestroyChestDirect</b> (int X, int Y, int id)</td></tr>
+<tr class="memitem:ab13ea598b3604132fc4fafcf0444f8c0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#ab13ea598b3604132fc4fafcf0444f8c0">DestroyChestDirect</a> (int X, int Y, int id)</td></tr>
+<tr class="memdesc:ab13ea598b3604132fc4fafcf0444f8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forcibly destroys the chest at (<em>X</em> , <em>Y</em> ) with ID <em>id</em>  if it exists. <br  />
+ <b>Warning: This will destroy any items contained within the chest.</b>  <a href="class_chest.html#ab13ea598b3604132fc4fafcf0444f8c0">More...</a><br /></td></tr>
 <tr class="separator:ab13ea598b3604132fc4fafcf0444f8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e280040b65cdfe6cfc47c496793eb16"><td class="memItemLeft" align="right" valign="top"><a id="a6e280040b65cdfe6cfc47c496793eb16" name="a6e280040b65cdfe6cfc47c496793eb16"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>FindChest</b> (int X, int Y)</td></tr>
+<tr class="memitem:a6e280040b65cdfe6cfc47c496793eb16"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16">FindChest</a> (int X, int Y)</td></tr>
+<tr class="memdesc:a6e280040b65cdfe6cfc47c496793eb16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find a <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> located at (<em>X</em> , <em>Y</em> ) (tile coordinates).  <a href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16">More...</a><br /></td></tr>
 <tr class="separator:a6e280040b65cdfe6cfc47c496793eb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125cbf85ec36e84c0ed021cf32b69e27"><td class="memItemLeft" align="right" valign="top"><a id="a125cbf85ec36e84c0ed021cf32b69e27" name="a125cbf85ec36e84c0ed021cf32b69e27"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>FindChestByGuessing</b> (int X, int Y)</td></tr>
+<tr class="memitem:a125cbf85ec36e84c0ed021cf32b69e27"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27">FindChestByGuessing</a> (int X, int Y)</td></tr>
+<tr class="memdesc:a125cbf85ec36e84c0ed021cf32b69e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find the <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> associated with the tile at (<em>X</em> , <em>Y</em> ) (tile coordinates).  <a href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27">More...</a><br /></td></tr>
 <tr class="separator:a125cbf85ec36e84c0ed021cf32b69e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b7fd27494e9acb186fb520bcb0967a"><td class="memItemLeft" align="right" valign="top"><a id="ab1b7fd27494e9acb186fb520bcb0967a" name="ab1b7fd27494e9acb186fb520bcb0967a"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>FindEmptyChest</b> (int x, int y, int type=21, int style=0, int direction=1, int alternate=0)</td></tr>
+<tr class="memitem:ab1b7fd27494e9acb186fb520bcb0967a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a">FindEmptyChest</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, int type=21, int style=0, int direction=1, int alternate=0)</td></tr>
+<tr class="memdesc:ab1b7fd27494e9acb186fb520bcb0967a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a new chest can exist at tile coordinates (<em>x</em> , <em>y</em> ).  <a href="class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a">More...</a><br /></td></tr>
 <tr class="separator:ab1b7fd27494e9acb186fb520bcb0967a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af472089cc3be2021460571973f7247b0"><td class="memItemLeft" align="right" valign="top"><a id="af472089cc3be2021460571973f7247b0" name="af472089cc3be2021460571973f7247b0"></a>
-static <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentlyOpenChests</b> ()</td></tr>
+<tr class="memitem:af472089cc3be2021460571973f7247b0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#af472089cc3be2021460571973f7247b0">GetCurrentlyOpenChests</a> ()</td></tr>
+<tr class="memdesc:af472089cc3be2021460571973f7247b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a list of currently-open chests in the world. <br  />
+ Never called on NetmodeID.MultiplayerClient.  <a href="class_chest.html#af472089cc3be2021460571973f7247b0">More...</a><br /></td></tr>
 <tr class="separator:af472089cc3be2021460571973f7247b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14641c8837034b9a32409cd22810525e"><td class="memItemLeft" align="right" valign="top"><a id="a14641c8837034b9a32409cd22810525e" name="a14641c8837034b9a32409cd22810525e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
 <tr class="separator:a14641c8837034b9a32409cd22810525e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75f37e006b29fbe41a80ff133148c4ab"><td class="memItemLeft" align="right" valign="top"><a id="a75f37e006b29fbe41a80ff133148c4ab" name="a75f37e006b29fbe41a80ff133148c4ab"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLocked</b> (int x, int y)</td></tr>
+<tr class="memitem:a75f37e006b29fbe41a80ff133148c4ab"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a75f37e006b29fbe41a80ff133148c4ab">IsLocked</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>)</td></tr>
+<tr class="memdesc:a75f37e006b29fbe41a80ff133148c4ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the chest at Main.tile[<em>x</em> , <em>y</em> ] is locked.  <a href="class_chest.html#a75f37e006b29fbe41a80ff133148c4ab">More...</a><br /></td></tr>
 <tr class="separator:a75f37e006b29fbe41a80ff133148c4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa6986a12ce0446c55388cf0384cd190"><td class="memItemLeft" align="right" valign="top"><a id="afa6986a12ce0446c55388cf0384cd190" name="afa6986a12ce0446c55388cf0384cd190"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLocked</b> (int x, int y, <a class="el" href="struct_tile.html">Tile</a> t)</td></tr>
+<tr class="memitem:afa6986a12ce0446c55388cf0384cd190"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#afa6986a12ce0446c55388cf0384cd190">IsLocked</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, <a class="el" href="struct_tile.html">Tile</a> t)</td></tr>
 <tr class="separator:afa6986a12ce0446c55388cf0384cd190"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a499c34127ff2d90fcd2c23c586c4a032"><td class="memItemLeft" align="right" valign="top"><a id="a499c34127ff2d90fcd2c23c586c4a032" name="a499c34127ff2d90fcd2c23c586c4a032"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Lock</b> (int X, int Y)</td></tr>
+<tr class="memitem:a499c34127ff2d90fcd2c23c586c4a032"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a499c34127ff2d90fcd2c23c586c4a032">Lock</a> (int X, int Y)</td></tr>
+<tr class="memdesc:a499c34127ff2d90fcd2c23c586c4a032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks an unlocked chest.  <a href="class_chest.html#a499c34127ff2d90fcd2c23c586c4a032">More...</a><br /></td></tr>
 <tr class="separator:a499c34127ff2d90fcd2c23c586c4a032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3aca32be5751472f3ef9636328ca6fc0"><td class="memItemLeft" align="right" valign="top"><a id="a3aca32be5751472f3ef9636328ca6fc0" name="a3aca32be5751472f3ef9636328ca6fc0"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearOtherChests</b> (int x, int y)</td></tr>
+<tr class="memitem:a3aca32be5751472f3ef9636328ca6fc0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a3aca32be5751472f3ef9636328ca6fc0">NearOtherChests</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>)</td></tr>
+<tr class="memdesc:a3aca32be5751472f3ef9636328ca6fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if there are any chests near the tile coordinates (<em>x</em> , <em>y</em> ).  <a href="class_chest.html#a3aca32be5751472f3ef9636328ca6fc0">More...</a><br /></td></tr>
 <tr class="separator:a3aca32be5751472f3ef9636328ca6fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac79cdc8a35dcf2ff97ed321ef84ae4c9"><td class="memItemLeft" align="right" valign="top"><a id="ac79cdc8a35dcf2ff97ed321ef84ae4c9" name="ac79cdc8a35dcf2ff97ed321ef84ae4c9"></a>
-static <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PutItemInNearbyChest</b> (<a class="el" href="class_item.html">Item</a> item, Vector2 position)</td></tr>
+<tr class="memitem:ac79cdc8a35dcf2ff97ed321ef84ae4c9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#ac79cdc8a35dcf2ff97ed321ef84ae4c9">PutItemInNearbyChest</a> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, Vector2 position)</td></tr>
+<tr class="memdesc:ac79cdc8a35dcf2ff97ed321ef84ae4c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to move the given item into any chests near the given position. Cannot place items into a chest if IsPlayerInChest(int) or if that chest <a class="el" href="class_chest.html#a75f37e006b29fbe41a80ff133148c4ab" title="Determines if the chest at Main.tile[x , y ] is locked.">IsLocked(int, int)</a>  <a href="class_chest.html#ac79cdc8a35dcf2ff97ed321ef84ae4c9">More...</a><br /></td></tr>
 <tr class="separator:ac79cdc8a35dcf2ff97ed321ef84ae4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4bb4252641967d5dffc40ff57679e02"><td class="memItemLeft" align="right" valign="top"><a id="ab4bb4252641967d5dffc40ff57679e02" name="ab4bb4252641967d5dffc40ff57679e02"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ServerPlaceItem</b> (int plr, int slot)</td></tr>
+<tr class="memitem:ab4bb4252641967d5dffc40ff57679e02"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#ab4bb4252641967d5dffc40ff57679e02">ServerPlaceItem</a> (int plr, int slot)</td></tr>
+<tr class="memdesc:ab4bb4252641967d5dffc40ff57679e02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to move the item in <em>plr</em> 's inventory or Void Vault into nearby chests. <br  />
+ Only called on NetmodeID.Server.  <a href="class_chest.html#ab4bb4252641967d5dffc40ff57679e02">More...</a><br /></td></tr>
 <tr class="separator:ab4bb4252641967d5dffc40ff57679e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79210594ca053d26d5311a60d959a37c"><td class="memItemLeft" align="right" valign="top"><a id="a79210594ca053d26d5311a60d959a37c" name="a79210594ca053d26d5311a60d959a37c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupTravelShop</b> ()</td></tr>
+<tr class="memdesc:a79210594ca053d26d5311a60d959a37c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the NPCID.TravellingMerchant's shop. <br /></td></tr>
 <tr class="separator:a79210594ca053d26d5311a60d959a37c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af466e91e63bc1feee38040f0e1510735"><td class="memItemLeft" align="right" valign="top"><a id="af466e91e63bc1feee38040f0e1510735" name="af466e91e63bc1feee38040f0e1510735"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupTravelShop_AddToShop</b> (int it, ref int added, ref int count)</td></tr>
@@ -188,88 +196,1174 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupTravelSho
 <tr class="memitem:a8ad27697f3edc32021907ab665f117ad"><td class="memItemLeft" align="right" valign="top"><a id="a8ad27697f3edc32021907ab665f117ad" name="a8ad27697f3edc32021907ab665f117ad"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupTravelShop_GetPainting</b> (<a class="el" href="class_player.html">Player</a> playerWithHighestLuck, int[] rarity, ref int it, int minimumRarity=0)</td></tr>
 <tr class="separator:a8ad27697f3edc32021907ab665f117ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e10d44ebeadf0a05a146f8f6cf691a6"><td class="memItemLeft" align="right" valign="top"><a id="a1e10d44ebeadf0a05a146f8f6cf691a6" name="a1e10d44ebeadf0a05a146f8f6cf691a6"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Unlock</b> (int X, int Y)</td></tr>
+<tr class="memitem:a1e10d44ebeadf0a05a146f8f6cf691a6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a1e10d44ebeadf0a05a146f8f6cf691a6">Unlock</a> (int X, int Y)</td></tr>
+<tr class="memdesc:a1e10d44ebeadf0a05a146f8f6cf691a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks a locked chest.  <a href="class_chest.html#a1e10d44ebeadf0a05a146f8f6cf691a6">More...</a><br /></td></tr>
 <tr class="separator:a1e10d44ebeadf0a05a146f8f6cf691a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d0df9024707905cced22ff229efb5a6"><td class="memItemLeft" align="right" valign="top"><a id="a2d0df9024707905cced22ff229efb5a6" name="a2d0df9024707905cced22ff229efb5a6"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateChestFrames</b> ()</td></tr>
+<tr class="memdesc:a2d0df9024707905cced22ff229efb5a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visually updates all chests' frames. <br  />
+ Chests that are being used (<a class="el" href="class_chest.html#af472089cc3be2021460571973f7247b0" title="Gets a list of currently-open chests in the world.   Never called on NetmodeID.MultiplayerClient.">GetCurrentlyOpenChests</a>) or eating an item (<a class="el" href="class_chest.html#acfa3198c087d37caa2d3b6f410778c18" title="The duration of this chest&#39;s eating animation in ticks.   The eating animation plays when an item is ...">eatingAnimationTime</a>) will not be opened. <br /></td></tr>
 <tr class="separator:a2d0df9024707905cced22ff229efb5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad5fa639cd4c18d6febf3c86ad790d61"><td class="memItemLeft" align="right" valign="top"><a id="aad5fa639cd4c18d6febf3c86ad790d61" name="aad5fa639cd4c18d6febf3c86ad790d61"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>UsingChest</b> (int i)</td></tr>
+<tr class="memitem:aad5fa639cd4c18d6febf3c86ad790d61"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#aad5fa639cd4c18d6febf3c86ad790d61">UsingChest</a> (int i)</td></tr>
+<tr class="memdesc:aad5fa639cd4c18d6febf3c86ad790d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="class_player.html">Player</a> currently using the given chest, if any.  <a href="class_chest.html#aad5fa639cd4c18d6febf3c86ad790d61">More...</a><br /></td></tr>
 <tr class="separator:aad5fa639cd4c18d6febf3c86ad790d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0552d8bbc380ed4de61442883b28e25d"><td class="memItemLeft" align="right" valign="top"><a id="a0552d8bbc380ed4de61442883b28e25d" name="a0552d8bbc380ed4de61442883b28e25d"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>VisualizeChestTransfer</b> (Vector2 position, Vector2 chestPosition, <a class="el" href="class_item.html">Item</a> item, int amountMoved)</td></tr>
+<tr class="memitem:a0552d8bbc380ed4de61442883b28e25d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a0552d8bbc380ed4de61442883b28e25d">VisualizeChestTransfer</a> (Vector2 position, Vector2 chestPosition, <a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, int amountMoved)</td></tr>
+<tr class="memdesc:a0552d8bbc380ed4de61442883b28e25d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visually moves <em>item</em>  from <em>position</em>  to <em>chestPosition</em> . <br  />
+ If called on NetmodeID.MultiplayerClient, sync the transfer to all clients.  <a href="class_chest.html#a0552d8bbc380ed4de61442883b28e25d">More...</a><br /></td></tr>
 <tr class="separator:a0552d8bbc380ed4de61442883b28e25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4a800e9561e005d3e658d13ee1852e2"><td class="memItemLeft" align="right" valign="top"><a id="ad4a800e9561e005d3e658d13ee1852e2" name="ad4a800e9561e005d3e658d13ee1852e2"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>VisualizeChestTransfer_CoinsBatch</b> (Vector2 position, Vector2 chestPosition, long coinsMoved)</td></tr>
+<tr class="memitem:ad4a800e9561e005d3e658d13ee1852e2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#ad4a800e9561e005d3e658d13ee1852e2">VisualizeChestTransfer_CoinsBatch</a> (Vector2 position, Vector2 chestPosition, long coinsMoved)</td></tr>
+<tr class="memdesc:ad4a800e9561e005d3e658d13ee1852e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visually moves <em>coinsMoved</em>  worth of coins from <em>position</em>  to <em>chestPosition</em> . <br  />
+ If called on NetmodeID.MultiplayerClient, sync the transfer to all clients.  <a href="class_chest.html#ad4a800e9561e005d3e658d13ee1852e2">More...</a><br /></td></tr>
 <tr class="separator:ad4a800e9561e005d3e658d13ee1852e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a8d221519826fec73084a56e1e98b4f09"><td class="memItemLeft" align="right" valign="top"><a id="a8d221519826fec73084a56e1e98b4f09" name="a8d221519826fec73084a56e1e98b4f09"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>bankChest</b></td></tr>
+<tr class="memdesc:a8d221519826fec73084a56e1e98b4f09"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Unused.</b> <br  />
+ If <code>true</code>, this chest is a portable storage (such as ItemID.PiggyBank) linked to a player. <br /></td></tr>
 <tr class="separator:a8d221519826fec73084a56e1e98b4f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfa3198c087d37caa2d3b6f410778c18"><td class="memItemLeft" align="right" valign="top"><a id="acfa3198c087d37caa2d3b6f410778c18" name="acfa3198c087d37caa2d3b6f410778c18"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>eatingAnimationTime</b></td></tr>
+<tr class="memdesc:acfa3198c087d37caa2d3b6f410778c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">The duration of this chest's eating animation in ticks. <br  />
+ The eating animation plays when an item is quick-stacked into this chest. <br /></td></tr>
 <tr class="separator:acfa3198c087d37caa2d3b6f410778c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae76d638726f49cd5ace0826598ece9d9"><td class="memItemLeft" align="right" valign="top"><a id="ae76d638726f49cd5ace0826598ece9d9" name="ae76d638726f49cd5ace0826598ece9d9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>frame</b></td></tr>
+<tr class="memdesc:ae76d638726f49cd5ace0826598ece9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current frame of this chest's animation. <br /></td></tr>
 <tr class="separator:ae76d638726f49cd5ace0826598ece9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c2a8ab4d3868cf3a8a4f127af8fd4c1"><td class="memItemLeft" align="right" valign="top"><a id="a8c2a8ab4d3868cf3a8a4f127af8fd4c1" name="a8c2a8ab4d3868cf3a8a4f127af8fd4c1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>frameCounter</b></td></tr>
+<tr class="memdesc:a8c2a8ab4d3868cf3a8a4f127af8fd4c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of ticks this chest has been on its current <a class="el" href="class_chest.html#ae76d638726f49cd5ace0826598ece9d9" title="The current frame of this chest&#39;s animation.">frame</a> value. <br /></td></tr>
 <tr class="separator:a8c2a8ab4d3868cf3a8a4f127af8fd4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68292840161efcf35daf6cb246f90280"><td class="memItemLeft" align="right" valign="top"><a id="a68292840161efcf35daf6cb246f90280" name="a68292840161efcf35daf6cb246f90280"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>item</b></td></tr>
+<tr class="memdesc:a68292840161efcf35daf6cb246f90280"><td class="mdescLeft">&#160;</td><td class="mdescRight">The items this chest contains. <br  />
+ <a class="el" href="class_chest.html#a280de54d02a7a112028080b80d14812d" title="The maximum number of items chests can contain.">maxItems</a> elements long. <br /></td></tr>
 <tr class="separator:a68292840161efcf35daf6cb246f90280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36fff2ef1f14fb62a0776989eb387f47"><td class="memItemLeft" align="right" valign="top"><a id="a36fff2ef1f14fb62a0776989eb387f47" name="a36fff2ef1f14fb62a0776989eb387f47"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="memdesc:a36fff2ef1f14fb62a0776989eb387f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player-assigned name of this chest. May not exceed <a class="el" href="class_chest.html#a161ec797dcaee5bb81ce41c464237526" title="The maximum length that name is allowed to be.">MaxNameLength</a> characters in length. <br /></td></tr>
 <tr class="separator:a36fff2ef1f14fb62a0776989eb387f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af522167a0a0219d36dd3a933cc1624f5"><td class="memItemLeft" align="right" valign="top"><a id="af522167a0a0219d36dd3a933cc1624f5" name="af522167a0a0219d36dd3a933cc1624f5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
+<tr class="memdesc:af522167a0a0219d36dd3a933cc1624f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x-coordinate of this chest in the world, in tile coordinates. (Top left corner tile) <br /></td></tr>
 <tr class="separator:af522167a0a0219d36dd3a933cc1624f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3156e68c6284abd05b66e276113665"><td class="memItemLeft" align="right" valign="top"><a id="aed3156e68c6284abd05b66e276113665" name="aed3156e68c6284abd05b66e276113665"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>y</b></td></tr>
+<tr class="memdesc:aed3156e68c6284abd05b66e276113665"><td class="mdescLeft">&#160;</td><td class="mdescRight">The y-coordinate of this chest in the world, in tile coordinates. (Top left corner tile) <br /></td></tr>
 <tr class="separator:aed3156e68c6284abd05b66e276113665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a1554a691ee80c709efd75e0e483e532c"><td class="memItemLeft" align="right" valign="top"><a id="a1554a691ee80c709efd75e0e483e532c" name="a1554a691ee80c709efd75e0e483e532c"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>chestItemSpawn</b> = new int[52]</td></tr>
+<tr class="memdesc:a1554a691ee80c709efd75e0e483e532c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a TileID.Containers style with the item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) that is dropped when the chest is destroyed. <br  />
+ <a class="el" href="class_chest.html#aceaa9be6a10bf1b4f399b7d605143b9c" title="The number of vanilla chest styles contained in TileID.Containers.">maxChestTypes</a> elements long. <br /></td></tr>
 <tr class="separator:a1554a691ee80c709efd75e0e483e532c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7241e8496fec9b9a9d207bca72650736"><td class="memItemLeft" align="right" valign="top"><a id="a7241e8496fec9b9a9d207bca72650736" name="a7241e8496fec9b9a9d207bca72650736"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>chestItemSpawn2</b> = new int[17]</td></tr>
+<tr class="memdesc:a7241e8496fec9b9a9d207bca72650736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a TileID.Containers2 style with the item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) that is dropped when the chest is destroyed. <br  />
+ <a class="el" href="class_chest.html#a30836bb920b9b900f77eaa01dd08e72e" title="The number of vanilla chest styles contained in TileID.Containers2.">maxChestTypes2</a> elements long. <br /></td></tr>
 <tr class="separator:a7241e8496fec9b9a9d207bca72650736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed32f84f966cbe8498d11288a500859f"><td class="memItemLeft" align="right" valign="top"><a id="aed32f84f966cbe8498d11288a500859f" name="aed32f84f966cbe8498d11288a500859f"></a>
 const float&#160;</td><td class="memItemRight" valign="bottom"><b>chestStackRange</b> = 600f</td></tr>
+<tr class="memdesc:aed32f84f966cbe8498d11288a500859f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum distance, in world coordinates, that a player can quick-stack items into chests. <br /></td></tr>
 <tr class="separator:aed32f84f966cbe8498d11288a500859f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1825be96b2c982af076f4601052a8a6"><td class="memItemLeft" align="right" valign="top"><a id="ab1825be96b2c982af076f4601052a8a6" name="ab1825be96b2c982af076f4601052a8a6"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>chestTypeToIcon</b> = new int[52]</td></tr>
+<tr class="memdesc:ab1825be96b2c982af076f4601052a8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a TileID.Containers style with the item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) that is shown when the chest is moused over. Differs from <a class="el" href="class_chest.html#a1554a691ee80c709efd75e0e483e532c" title="Associates a TileID.Containers style with the item type (Item.type) that is dropped when the chest is...">chestItemSpawn</a> to show key items for locked chest styles. <br  />
+ <a class="el" href="class_chest.html#aceaa9be6a10bf1b4f399b7d605143b9c" title="The number of vanilla chest styles contained in TileID.Containers.">maxChestTypes</a> elements long. <br /></td></tr>
 <tr class="separator:ab1825be96b2c982af076f4601052a8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4184d8cf906cc1cdecd3e6250995354a"><td class="memItemLeft" align="right" valign="top"><a id="a4184d8cf906cc1cdecd3e6250995354a" name="a4184d8cf906cc1cdecd3e6250995354a"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>chestTypeToIcon2</b> = new int[17]</td></tr>
+<tr class="memdesc:a4184d8cf906cc1cdecd3e6250995354a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a TileID.Containers2 style with the item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) that is shown when the chest is moused over. <br  />
+ <a class="el" href="class_chest.html#a30836bb920b9b900f77eaa01dd08e72e" title="The number of vanilla chest styles contained in TileID.Containers2.">maxChestTypes2</a> elements long. Differs from <a class="el" href="class_chest.html#a7241e8496fec9b9a9d207bca72650736" title="Associates a TileID.Containers2 style with the item type (Item.type) that is dropped when the chest i...">chestItemSpawn2</a> to show key items for locked chest styles. <br /></td></tr>
 <tr class="separator:a4184d8cf906cc1cdecd3e6250995354a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3826461015d76ef43c1c8b982f7e4e46"><td class="memItemLeft" align="right" valign="top"><a id="a3826461015d76ef43c1c8b982f7e4e46" name="a3826461015d76ef43c1c8b982f7e4e46"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>dresserItemSpawn</b> = new int[43]</td></tr>
+<tr class="memdesc:a3826461015d76ef43c1c8b982f7e4e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a TileID.Dressers style with the item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) that is dropped when the dresser is destroyed. <br  />
+ <a class="el" href="class_chest.html#a9912d3d671b5d1ef8c11f55f365a0a2b" title="The number of vanilla dresser styles contained in TileID.Dressers.">maxDresserTypes</a> elements long. <br /></td></tr>
 <tr class="separator:a3826461015d76ef43c1c8b982f7e4e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d94cd7f3379a4448752f7b51938b838"><td class="memItemLeft" align="right" valign="top"><a id="a7d94cd7f3379a4448752f7b51938b838" name="a7d94cd7f3379a4448752f7b51938b838"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>dresserTypeToIcon</b> = new int[43]</td></tr>
+<tr class="memdesc:a7d94cd7f3379a4448752f7b51938b838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a TileID.Dressers style with the item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) that is shown when the dresser is moused over. <br  />
+ <a class="el" href="class_chest.html#a9912d3d671b5d1ef8c11f55f365a0a2b" title="The number of vanilla dresser styles contained in TileID.Dressers.">maxDresserTypes</a> elements long. <br /></td></tr>
 <tr class="separator:a7d94cd7f3379a4448752f7b51938b838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aceaa9be6a10bf1b4f399b7d605143b9c"><td class="memItemLeft" align="right" valign="top"><a id="aceaa9be6a10bf1b4f399b7d605143b9c" name="aceaa9be6a10bf1b4f399b7d605143b9c"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxChestTypes</b> = 52</td></tr>
+<tr class="memdesc:aceaa9be6a10bf1b4f399b7d605143b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of vanilla chest styles contained in TileID.Containers. <br /></td></tr>
 <tr class="separator:aceaa9be6a10bf1b4f399b7d605143b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30836bb920b9b900f77eaa01dd08e72e"><td class="memItemLeft" align="right" valign="top"><a id="a30836bb920b9b900f77eaa01dd08e72e" name="a30836bb920b9b900f77eaa01dd08e72e"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxChestTypes2</b> = 17</td></tr>
+<tr class="memdesc:a30836bb920b9b900f77eaa01dd08e72e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of vanilla chest styles contained in TileID.Containers2. <br /></td></tr>
 <tr class="separator:a30836bb920b9b900f77eaa01dd08e72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9912d3d671b5d1ef8c11f55f365a0a2b"><td class="memItemLeft" align="right" valign="top"><a id="a9912d3d671b5d1ef8c11f55f365a0a2b" name="a9912d3d671b5d1ef8c11f55f365a0a2b"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxDresserTypes</b> = 43</td></tr>
+<tr class="memdesc:a9912d3d671b5d1ef8c11f55f365a0a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of vanilla dresser styles contained in TileID.Dressers. <br /></td></tr>
 <tr class="separator:a9912d3d671b5d1ef8c11f55f365a0a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a280de54d02a7a112028080b80d14812d"><td class="memItemLeft" align="right" valign="top"><a id="a280de54d02a7a112028080b80d14812d" name="a280de54d02a7a112028080b80d14812d"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxItems</b> = 40</td></tr>
+<tr class="memdesc:a280de54d02a7a112028080b80d14812d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of items chests can contain. <br /></td></tr>
 <tr class="separator:a280de54d02a7a112028080b80d14812d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a161ec797dcaee5bb81ce41c464237526"><td class="memItemLeft" align="right" valign="top"><a id="a161ec797dcaee5bb81ce41c464237526" name="a161ec797dcaee5bb81ce41c464237526"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b> = 20</td></tr>
+<tr class="memdesc:a161ec797dcaee5bb81ce41c464237526"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum length that <a class="el" href="class_chest.html#a36fff2ef1f14fb62a0776989eb387f47" title="The player-assigned name of this chest. May not exceed MaxNameLength characters in length.">name</a> is allowed to be. <br /></td></tr>
 <tr class="separator:a161ec797dcaee5bb81ce41c464237526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents a non-<a class="el" href="class_player.html">Player</a> inventory, such as chests, portable storage, or <a class="el" href="class_n_p_c.html">NPC</a> shops. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a551628b11c152dfb770da372234f7b4b" name="a551628b11c152dfb770da372234f7b4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a551628b11c152dfb770da372234f7b4b">&#9670;&nbsp;</a></span>AddItemToShop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Chest.AddItemToShop </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>newItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds an item to the first empty slot in this shop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newItem</td><td>The item to add.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>0</code> if the item could not be added to the shop, or the index in <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280" title="The items this chest contains.   maxItems elements long.">item</a> if the item was successfully added.</dd></dl>
+
+</div>
+</div>
+<a id="af43b708d6ba8a4550490ec034d49a7e2" name="af43b708d6ba8a4550490ec034d49a7e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af43b708d6ba8a4550490ec034d49a7e2">&#9670;&nbsp;</a></span>AfterPlacement_Hook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Chest.AfterPlacement_Hook </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em> = <code>21</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>style</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>direction</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>alternate</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a placed chest into the world. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type of the placed chest.</td></tr>
+    <tr><td class="paramname">style</td><td>The tile style of the placed chest.</td></tr>
+    <tr><td class="paramname">direction</td><td>Unused, but required for use with PlacementHook.hook.</td></tr>
+    <tr><td class="paramname">alternate</td><td>Unused, but required for use with PlacementHook.hook.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if there exists a chest in Main.chest at the coordinates (<em>x</em> , <em>y</em> ), or if Main.chest contains no <code>null</code> elements. <br  />
+ Otherwise, the index in Main.chest of the newly-created chest. </dd></dl>
+
+</div>
+</div>
+<a id="a2fde03aca6496fbeee84a1aef5fd1ec8" name="a2fde03aca6496fbeee84a1aef5fd1ec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fde03aca6496fbeee84a1aef5fd1ec8">&#9670;&nbsp;</a></span>AskForChestToEatItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Chest.AskForChestToEatItem </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>worldPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>duration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Visually opens the chest at <em>worldPosition</em>  for <em>duration</em>  ticks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">worldPosition</td><td>The position of the chest to ask, in tile coordinates.</td></tr>
+    <tr><td class="paramname">duration</td><td>The duration of the eating animation in ticks.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a61e8c0f57ef8644435a86ddceefed55c" name="a61e8c0f57ef8644435a86ddceefed55c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61e8c0f57ef8644435a86ddceefed55c">&#9670;&nbsp;</a></span>CanDestroyChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.CanDestroyChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if the chest at (<em>X</em> , <em>Y</em> ) can be destroyed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code> if a chest exists at (<em>X</em> , <em>Y</em> ) and if any element in that chest's <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280" title="The items this chest contains.   maxItems elements long.">item</a> array is not Item.IsAir. Otherwise, returns <code>true</code>.</dd></dl>
+
+</div>
+</div>
+<a id="a44ce32eb9d46ee93f81fd89a04a1faed" name="a44ce32eb9d46ee93f81fd89a04a1faed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44ce32eb9d46ee93f81fd89a04a1faed">&#9670;&nbsp;</a></span>CreateChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Chest.CreateChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates and registers a new chest into the world. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">id</td><td>The index in Main.chest that this chest should use. If <code><em>id</em>  != -1</code>, placement cannot fail.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if <code><em>id</em>  == -1</code> and <a class="el" href="class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a" title="Determines if a new chest can exist at tile coordinates (x , y ).">FindEmptyChest(int, int, int, int, int, int)</a> returns <code>-1</code>. <br  />
+ Otherwise, the index in Main.chest of the newly-created chest. </dd></dl>
+<p >It is recommended to use WorldGen.PlaceChest(int, int, ushort, bool, int) to place chests into the world. </p>
+
+</div>
+</div>
+<a id="a1963f9c91e0b0381f0b362d540f93adf" name="a1963f9c91e0b0381f0b362d540f93adf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1963f9c91e0b0381f0b362d540f93adf">&#9670;&nbsp;</a></span>DestroyChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.DestroyChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to destroy the chest at (<em>X</em> , <em>Y</em> ). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>false</code> if a chest exists at (<em>X</em> , <em>Y</em> ) and if any element in that chest's <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280" title="The items this chest contains.   maxItems elements long.">item</a> array is not Item.IsAir. Otherwise, returns <code>true</code>.</dd></dl>
+
+</div>
+</div>
+<a id="ab13ea598b3604132fc4fafcf0444f8c0" name="ab13ea598b3604132fc4fafcf0444f8c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab13ea598b3604132fc4fafcf0444f8c0">&#9670;&nbsp;</a></span>DestroyChestDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Chest.DestroyChestDirect </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Forcibly destroys the chest at (<em>X</em> , <em>Y</em> ) with ID <em>id</em>  if it exists. <br  />
+ <b>Warning: This will destroy any items contained within the chest.</b> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">id</td><td>The index in Main.chest of the chest to destroy.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6e280040b65cdfe6cfc47c496793eb16" name="a6e280040b65cdfe6cfc47c496793eb16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e280040b65cdfe6cfc47c496793eb16">&#9670;&nbsp;</a></span>FindChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Chest.FindChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tries to find a <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> located at (<em>X</em> , <em>Y</em> ) (tile coordinates). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index in Main.chest of the chest at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
+<p >If you don't have the top-left corner of the chest tile, use <a class="el" href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27" title="Tries to find the Chest associated with the tile at (X , Y ) (tile coordinates).">FindChestByGuessing(int, int)</a>. </p>
+
+</div>
+</div>
+<a id="a125cbf85ec36e84c0ed021cf32b69e27" name="a125cbf85ec36e84c0ed021cf32b69e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a125cbf85ec36e84c0ed021cf32b69e27">&#9670;&nbsp;</a></span>FindChestByGuessing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Chest.FindChestByGuessing </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tries to find the <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> associated with the tile at (<em>X</em> , <em>Y</em> ) (tile coordinates). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index in Main.chest of the chest associated with the tile at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
+<p >If you have the top-left corner of the chest tile, use <a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16" title="Tries to find a Chest located at (X , Y ) (tile coordinates).">FindChest(int, int)</a>. </p>
+
+</div>
+</div>
+<a id="ab1b7fd27494e9acb186fb520bcb0967a" name="ab1b7fd27494e9acb186fb520bcb0967a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1b7fd27494e9acb186fb520bcb0967a">&#9670;&nbsp;</a></span>FindEmptyChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Chest.FindEmptyChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em> = <code>21</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>style</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>direction</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>alternate</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if a new chest can exist at tile coordinates (<em>x</em> , <em>y</em> ). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>Unused, but required for use with PlacementHook.hook.</td></tr>
+    <tr><td class="paramname">style</td><td>Unused, but required for use with PlacementHook.hook.</td></tr>
+    <tr><td class="paramname">direction</td><td>Unused, but required for use with PlacementHook.hook.</td></tr>
+    <tr><td class="paramname">alternate</td><td>Unused, but required for use with PlacementHook.hook.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if there exists a chest in Main.chest at the coordinates (<em>x</em> , <em>y</em> ), or if Main.chest contains no <code>null</code> elements. <br  />
+ Otherwise, the index in Main.chest of the first <code>null</code> element. </dd></dl>
+
+</div>
+</div>
+<a id="af472089cc3be2021460571973f7247b0" name="af472089cc3be2021460571973f7247b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af472089cc3be2021460571973f7247b0">&#9670;&nbsp;</a></span>GetCurrentlyOpenChests()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_list.html">List</a>&lt; int &gt; Chest.GetCurrentlyOpenChests </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets a list of currently-open chests in the world. <br  />
+ Never called on NetmodeID.MultiplayerClient. </p>
+<dl class="section return"><dt>Returns</dt><dd>A List&lt;T&gt; containing the indicies in Main.chest of all chests any active <a class="el" href="class_player.html">Player</a> has open.</dd></dl>
+
+</div>
+</div>
+<a id="a75f37e006b29fbe41a80ff133148c4ab" name="a75f37e006b29fbe41a80ff133148c4ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75f37e006b29fbe41a80ff133148c4ab">&#9670;&nbsp;</a></span>IsLocked() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.IsLocked </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if the chest at Main.tile[<em>x</em> , <em>y</em> ] is locked. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The x-coordinate of the chest to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">y</td><td>The y-coordinate of the chest to check, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the chest is locked, <code>false</code> otherwise.</dd></dl>
+
+</div>
+</div>
+<a id="afa6986a12ce0446c55388cf0384cd190" name="afa6986a12ce0446c55388cf0384cd190"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa6986a12ce0446c55388cf0384cd190">&#9670;&nbsp;</a></span>IsLocked() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.IsLocked </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_tile.html">Tile</a>&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramname">t</td><td>The <a class="el" href="struct_tile.html">Tile</a> at Main.tile[<em>x</em> , <em>y</em> ]</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a499c34127ff2d90fcd2c23c586c4a032" name="a499c34127ff2d90fcd2c23c586c4a032"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a499c34127ff2d90fcd2c23c586c4a032">&#9670;&nbsp;</a></span>Lock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.Lock </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Locks an unlocked chest. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate of the unlocked chest, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate of the unlocked chest, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the chest successfully locked, <code>false</code> otherwise.</dd></dl>
+
+</div>
+</div>
+<a id="a3aca32be5751472f3ef9636328ca6fc0" name="a3aca32be5751472f3ef9636328ca6fc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aca32be5751472f3ef9636328ca6fc0">&#9670;&nbsp;</a></span>NearOtherChests()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.NearOtherChests </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if there are any chests near the tile coordinates (<em>x</em> , <em>y</em> ). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
+    <tr><td class="paramname">y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if any position in Main.tile within [-25, 25) tiles horizontally and [-8, 8) tiles vertically has a tile (Tile.HasTile) and if that tile's Tile.TileType is in TileID.Sets.BasicChest. Otherwise, returns <code>false</code>.</dd></dl>
+
+</div>
+</div>
+<a id="ac79cdc8a35dcf2ff97ed321ef84ae4c9" name="ac79cdc8a35dcf2ff97ed321ef84ae4c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac79cdc8a35dcf2ff97ed321ef84ae4c9">&#9670;&nbsp;</a></span>PutItemInNearbyChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_item.html">Item</a> Chest.PutItemInNearbyChest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to move the given item into any chests near the given position. Cannot place items into a chest if IsPlayerInChest(int) or if that chest <a class="el" href="class_chest.html#a75f37e006b29fbe41a80ff133148c4ab" title="Determines if the chest at Main.tile[x , y ] is locked.">IsLocked(int, int)</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to attempt moving.</td></tr>
+    <tr><td class="paramname">position</td><td>The position to attempt moving from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If on NetmodeID.MultiplayerClient, <em>item</em>  without modification. <br  />
+ Otherwise, <em>item</em>  after being quick-stacked into any nearby chests. May be Item.IsAir. </dd></dl>
+
+</div>
+</div>
+<a id="ab4bb4252641967d5dffc40ff57679e02" name="ab4bb4252641967d5dffc40ff57679e02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4bb4252641967d5dffc40ff57679e02">&#9670;&nbsp;</a></span>ServerPlaceItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Chest.ServerPlaceItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>plr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>slot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to move the item in <em>plr</em> 's inventory or Void Vault into nearby chests. <br  />
+ Only called on NetmodeID.Server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">plr</td><td>The index of the <a class="el" href="class_player.html">Player</a> in Main.player to try moving an item for.</td></tr>
+    <tr><td class="paramname">slot</td><td>The <a class="el" href="class_player_item_slot_i_d.html">PlayerItemSlotID</a> to move an item from. <br  />
+ If <code><em>slot</em>  &lt; 58</code>, then that slot of <em>plr</em> 's inventory is moved. <br  />
+ If <code><em>slot</em>  &gt;= PlayerItemSlotID.Bank4_0 &amp;&amp; <em>slot</em>  &lt; PlayerItemSlotID.Bank4_0 + 40</code>, then that slot (minus PlayerItemSlotID.Bank4_0) of <em>plr</em> 's Void Vault is moved. <br  />
+ Otherwise, no item is moved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p >It's recommended to use Player.QuickStackAllChests to handle this automatically. </p>
+
+</div>
+</div>
+<a id="afb05eb9f1c36dc31ab70d7731222ab0f" name="afb05eb9f1c36dc31ab70d7731222ab0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb05eb9f1c36dc31ab70d7731222ab0f">&#9670;&nbsp;</a></span>SetupShop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chest.SetupShop </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up an <a class="el" href="class_n_p_c.html">NPC</a>'s shop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The ID of the shop to setup. <b>This is not an <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type).</b></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1e10d44ebeadf0a05a146f8f6cf691a6" name="a1e10d44ebeadf0a05a146f8f6cf691a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e10d44ebeadf0a05a146f8f6cf691a6">&#9670;&nbsp;</a></span>Unlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Chest.Unlock </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unlocks a locked chest. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>The x-coordinate of the locked chest, in tile coordinates.</td></tr>
+    <tr><td class="paramname">Y</td><td>The y-coordinate of the locked chest, in tile coordinates.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the chest successfully unlocked, <code>false</code> otherwise.</dd></dl>
+
+</div>
+</div>
+<a id="aad5fa639cd4c18d6febf3c86ad790d61" name="aad5fa639cd4c18d6febf3c86ad790d61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad5fa639cd4c18d6febf3c86ad790d61">&#9670;&nbsp;</a></span>UsingChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Chest.UsingChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the <a class="el" href="class_player.html">Player</a> currently using the given chest, if any. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The index of the chest in Main.chest to check.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index in Main.player of the <a class="el" href="class_player.html">Player</a> using this chest, or <code>-1</code> if no player is using this chest.</dd></dl>
+
+</div>
+</div>
+<a id="a0552d8bbc380ed4de61442883b28e25d" name="a0552d8bbc380ed4de61442883b28e25d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0552d8bbc380ed4de61442883b28e25d">&#9670;&nbsp;</a></span>VisualizeChestTransfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Chest.VisualizeChestTransfer </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>chestPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>amountMoved</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Visually moves <em>item</em>  from <em>position</em>  to <em>chestPosition</em> . <br  />
+ If called on NetmodeID.MultiplayerClient, sync the transfer to all clients. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>The original position of <em>item</em>  in world coordinates.</td></tr>
+    <tr><td class="paramname">chestPosition</td><td>The position of the destination chest in world coordinates.</td></tr>
+    <tr><td class="paramname">item</td><td>The item to move. Only <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a> is read.</td></tr>
+    <tr><td class="paramname">amountMoved</td><td><b>Unused.</b></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad4a800e9561e005d3e658d13ee1852e2" name="ad4a800e9561e005d3e658d13ee1852e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4a800e9561e005d3e658d13ee1852e2">&#9670;&nbsp;</a></span>VisualizeChestTransfer_CoinsBatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Chest.VisualizeChestTransfer_CoinsBatch </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>chestPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>coinsMoved</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Visually moves <em>coinsMoved</em>  worth of coins from <em>position</em>  to <em>chestPosition</em> . <br  />
+ If called on NetmodeID.MultiplayerClient, sync the transfer to all clients. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>The original position of the coins in world coordinates.</td></tr>
+    <tr><td class="paramname">chestPosition</td><td>The position of the destination chest in world coordinates.</td></tr>
+    <tr><td class="paramname">coinsMoved</td><td>The value of the coins moved in copper coins.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_content_samples.html',''); initR
   <div class="headertitle"><div class="title">ContentSamples Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new <a class="el" href="class_item.html">Item</a> instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way.  
+ <a href="class_content_samples.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -121,41 +124,109 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>RebuildItemCre
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a02d880d240eb241e8f4f43151ae306d9"><td class="memItemLeft" align="right" valign="top"><a id="a02d880d240eb241e8f4f43151ae306d9" name="a02d880d240eb241e8f4f43151ae306d9"></a>
 static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CreativeResearchItemPersistentIdOverride</b> = new Dictionary&lt;int, int&gt;()</td></tr>
+<tr class="memdesc:a02d880d240eb241e8f4f43151ae306d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates an item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) with the item type it shares research values with. <br /></td></tr>
 <tr class="separator:a02d880d240eb241e8f4f43151ae306d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6fd569f4f0876f1567b7f30fdee86cb"><td class="memItemLeft" align="right" valign="top"><a id="ac6fd569f4f0876f1567b7f30fdee86cb" name="ac6fd569f4f0876f1567b7f30fdee86cb"></a>
 static Dictionary&lt; int, <a class="el" href="struct_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html">CreativeHelper.ItemGroupAndOrderInGroup</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCreativeSortingId</b> = new Dictionary&lt;int, <a class="el" href="struct_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html">CreativeHelper.ItemGroupAndOrderInGroup</a>&gt;()</td></tr>
+<tr class="memdesc:ac6fd569f4f0876f1567b7f30fdee86cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates an item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) with its CreativeHelper.ItemGroup and sorting order in the Research menu. <br /></td></tr>
 <tr class="separator:ac6fd569f4f0876f1567b7f30fdee86cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0436d4c4434a13c690c2738ccb60df44"><td class="memItemLeft" align="right" valign="top"><a id="a0436d4c4434a13c690c2738ccb60df44" name="a0436d4c4434a13c690c2738ccb60df44"></a>
-static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ItemNetIdsByPersistentIds</b> = new Dictionary&lt;string, int&gt;()</td></tr>
+<tr class="memitem:a0436d4c4434a13c690c2738ccb60df44"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_content_samples.html#a0436d4c4434a13c690c2738ccb60df44">ItemNetIdsByPersistentIds</a> = new Dictionary&lt;string, int&gt;()</td></tr>
+<tr class="memdesc:a0436d4c4434a13c690c2738ccb60df44"><td class="mdescLeft">&#160;</td><td class="mdescRight">The item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) for a given persistent ID. <br  />
+ Vanilla persistent IDs are the names in <a class="el" href="class_item_i_d.html">ItemID</a>. Modded persistent IDs are the value of <a class="el" href="class_game_tip_data.html#ace0ad14115406b96f30d890445ec5b97" title="Retrieves the FULL &quot;name&quot; of this GameTip, which includes the Mod and this tip&#39;s Name....">ModType.FullName</a>.  <a href="class_content_samples.html#a0436d4c4434a13c690c2738ccb60df44">More...</a><br /></td></tr>
 <tr class="separator:a0436d4c4434a13c690c2738ccb60df44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa134b4e4260f0b3845dfa7b11f9973ee"><td class="memItemLeft" align="right" valign="top"><a id="aa134b4e4260f0b3845dfa7b11f9973ee" name="aa134b4e4260f0b3845dfa7b11f9973ee"></a>
 static Dictionary&lt; int, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ItemPersistentIdsByNetIds</b> = new Dictionary&lt;int, string&gt;()</td></tr>
+<tr class="memdesc:aa134b4e4260f0b3845dfa7b11f9973ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The persistent ID for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>). <br /></td></tr>
 <tr class="separator:aa134b4e4260f0b3845dfa7b11f9973ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa84d888ec52caceb7c7cb4bd5d470b7e"><td class="memItemLeft" align="right" valign="top"><a id="aa84d888ec52caceb7c7cb4bd5d470b7e" name="aa84d888ec52caceb7c7cb4bd5d470b7e"></a>
 static Dictionary&lt; int, <a class="el" href="class_item.html">Item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ItemsByType</b> = new Dictionary&lt;int, <a class="el" href="class_item.html">Item</a>&gt;()</td></tr>
+<tr class="memdesc:aa84d888ec52caceb7c7cb4bd5d470b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default <a class="el" href="class_item.html">Item</a> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>). <br /></td></tr>
 <tr class="separator:aa84d888ec52caceb7c7cb4bd5d470b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad872604e39c536e4c801821e7a481736"><td class="memItemLeft" align="right" valign="top"><a id="ad872604e39c536e4c801821e7a481736" name="ad872604e39c536e4c801821e7a481736"></a>
 static Dictionary&lt; int, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcBestiaryCreditIdsByNpcNetIds</b> = new Dictionary&lt;int, string&gt;()</td></tr>
+<tr class="memdesc:ad872604e39c536e4c801821e7a481736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates an <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) with the persistent ID used for the Bestiary. <br /></td></tr>
 <tr class="separator:ad872604e39c536e4c801821e7a481736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13377377fd758f4b74973c4c1a4ef1c0"><td class="memItemLeft" align="right" valign="top"><a id="a13377377fd758f4b74973c4c1a4ef1c0" name="a13377377fd758f4b74973c4c1a4ef1c0"></a>
 static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcBestiaryRarityStars</b> = new Dictionary&lt;int, int&gt;()</td></tr>
+<tr class="memdesc:a13377377fd758f4b74973c4c1a4ef1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of stars a given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) shows in the Bestiary. <br  />
+ Set in <a class="el" href="class_mod_n_p_c.html#aef1c1d0e88ce5d8532b64723dc2acbfd" title="Allows you to set an NPC&#39;s information in the Bestiary.">ModNPC.SetBestiary(BestiaryDatabase, BestiaryEntry)</a> or GlobalNPC.SetBestiary(NPC, BestiaryDatabase, BestiaryEntry). <br /></td></tr>
 <tr class="separator:a13377377fd758f4b74973c4c1a4ef1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44014f952ed912dc44add4f3ad41d49e"><td class="memItemLeft" align="right" valign="top"><a id="a44014f952ed912dc44add4f3ad41d49e" name="a44014f952ed912dc44add4f3ad41d49e"></a>
 static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcBestiarySortingId</b> = new Dictionary&lt;int, int&gt;()</td></tr>
+<tr class="memdesc:a44014f952ed912dc44add4f3ad41d49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entry number in the Bestiary for a given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type). <br /></td></tr>
 <tr class="separator:a44014f952ed912dc44add4f3ad41d49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a452457312e68e2eb03d26ad9de75264a"><td class="memItemLeft" align="right" valign="top"><a id="a452457312e68e2eb03d26ad9de75264a" name="a452457312e68e2eb03d26ad9de75264a"></a>
-static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcNetIdsByPersistentIds</b> = new Dictionary&lt;string, int&gt;()</td></tr>
+<tr class="memitem:a452457312e68e2eb03d26ad9de75264a"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_content_samples.html#a452457312e68e2eb03d26ad9de75264a">NpcNetIdsByPersistentIds</a> = new Dictionary&lt;string, int&gt;()</td></tr>
+<tr class="memdesc:a452457312e68e2eb03d26ad9de75264a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) for a given persistent ID. <br  />
+ Vanilla persistent IDs are the names in <a class="el" href="class_n_p_c_i_d.html">NPCID</a>. Modded persistent IDs are the value of <a class="el" href="class_game_tip_data.html#ace0ad14115406b96f30d890445ec5b97" title="Retrieves the FULL &quot;name&quot; of this GameTip, which includes the Mod and this tip&#39;s Name....">ModType.FullName</a>.  <a href="class_content_samples.html#a452457312e68e2eb03d26ad9de75264a">More...</a><br /></td></tr>
 <tr class="separator:a452457312e68e2eb03d26ad9de75264a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af79d86f1de1ba3cd9a8dd5a87e18f0da"><td class="memItemLeft" align="right" valign="top"><a id="af79d86f1de1ba3cd9a8dd5a87e18f0da" name="af79d86f1de1ba3cd9a8dd5a87e18f0da"></a>
 static Dictionary&lt; int, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcPersistentIdsByNetIds</b> = new Dictionary&lt;int, string&gt;()</td></tr>
+<tr class="memdesc:af79d86f1de1ba3cd9a8dd5a87e18f0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The persistent ID for a given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type). <br /></td></tr>
 <tr class="separator:af79d86f1de1ba3cd9a8dd5a87e18f0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="memItemLeft" align="right" valign="top"><a id="a793a5e2f47721ef9ad5bb343e700d0a3" name="a793a5e2f47721ef9ad5bb343e700d0a3"></a>
 static Dictionary&lt; int, <a class="el" href="class_n_p_c.html">NPC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcsByNetId</b> = new Dictionary&lt;int, <a class="el" href="class_n_p_c.html">NPC</a>&gt;()</td></tr>
+<tr class="memdesc:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default <a class="el" href="class_n_p_c.html">NPC</a> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type). <br /></td></tr>
 <tr class="separator:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a765028f028e8967d2caaaf41c6d067ad"><td class="memItemLeft" align="right" valign="top"><a id="a765028f028e8967d2caaaf41c6d067ad" name="a765028f028e8967d2caaaf41c6d067ad"></a>
 static Dictionary&lt; int, <a class="el" href="class_projectile.html">Projectile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ProjectilesByType</b> = new Dictionary&lt;int, <a class="el" href="class_projectile.html">Projectile</a>&gt;()</td></tr>
+<tr class="memdesc:a765028f028e8967d2caaaf41c6d067ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default <a class="el" href="class_projectile.html">Projectile</a> for a given projectile type (<a class="el" href="class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c" title="The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectil...">Projectile.type</a>). <br /></td></tr>
 <tr class="separator:a765028f028e8967d2caaaf41c6d067ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new <a class="el" href="class_item.html">Item</a> instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0436d4c4434a13c690c2738ccb60df44" name="a0436d4c4434a13c690c2738ccb60df44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0436d4c4434a13c690c2738ccb60df44">&#9670;&nbsp;</a></span>ItemNetIdsByPersistentIds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;string, int&gt; ContentSamples.ItemNetIdsByPersistentIds = new Dictionary&lt;string, int&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) for a given persistent ID. <br  />
+ Vanilla persistent IDs are the names in <a class="el" href="class_item_i_d.html">ItemID</a>. Modded persistent IDs are the value of <a class="el" href="class_game_tip_data.html#ace0ad14115406b96f30d890445ec5b97" title="Retrieves the FULL &quot;name&quot; of this GameTip, which includes the Mod and this tip&#39;s Name....">ModType.FullName</a>. </p>
+<p >You can get the persistent ID of a given item type using either <a class="el" href="class_content_samples.html#aa134b4e4260f0b3845dfa7b11f9973ee" title="The persistent ID for a given item type (Item.type).">ItemPersistentIdsByNetIds</a> or ItemID.Search. </p>
+
+</div>
+</div>
+<a id="a452457312e68e2eb03d26ad9de75264a" name="a452457312e68e2eb03d26ad9de75264a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a452457312e68e2eb03d26ad9de75264a">&#9670;&nbsp;</a></span>NpcNetIdsByPersistentIds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;string, int&gt; ContentSamples.NpcNetIdsByPersistentIds = new Dictionary&lt;string, int&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type) for a given persistent ID. <br  />
+ Vanilla persistent IDs are the names in <a class="el" href="class_n_p_c_i_d.html">NPCID</a>. Modded persistent IDs are the value of <a class="el" href="class_game_tip_data.html#ace0ad14115406b96f30d890445ec5b97" title="Retrieves the FULL &quot;name&quot; of this GameTip, which includes the Mod and this tip&#39;s Name....">ModType.FullName</a>. </p>
+<p >You can get the persistent ID of a given <a class="el" href="class_n_p_c.html">NPC</a> type using either <a class="el" href="class_content_samples.html#af79d86f1de1ba3cd9a8dd5a87e18f0da" title="The persistent ID for a given NPC type (NPC.type).">NpcPersistentIdsByNetIds</a> or NPCID.Search. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
