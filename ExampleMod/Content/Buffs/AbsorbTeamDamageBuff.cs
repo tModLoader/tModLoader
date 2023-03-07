@@ -7,10 +7,10 @@ namespace ExampleMod.Content.Buffs
 {
 	public class AbsorbTeamDamageBuff : ModBuff
 	{
-		public static readonly int TeamDamageAbsorption = 30;
-		public static float TeamDamageAbsorptionPercent => TeamDamageAbsorption / 100f;
+		public static readonly int TeamDamageAbsorptionPercent = 30;
+		public static float TeamDamageAbsorptionMultiplier => TeamDamageAbsorptionPercent / 100f;
 
-		public override LocalizedText Description => base.Description.WithFormatArgs(TeamDamageAbsorption);
+		public override LocalizedText Description => base.Description.WithFormatArgs(TeamDamageAbsorptionPercent);
 
 		public override void SetStaticDefaults() {
 			Main.buffNoSave[Type] = true;

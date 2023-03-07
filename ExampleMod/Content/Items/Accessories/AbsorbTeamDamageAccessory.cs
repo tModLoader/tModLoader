@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public static readonly int DamageAbsorptionAbilityLifeThresholdPercent = 50;
 		public static float DamageAbsorptionAbilityLifeThreshold => DamageAbsorptionAbilityLifeThresholdPercent / 100f;
 
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AbsorbTeamDamageBuff.TeamDamageAbsorption, DamageAbsorptionAbilityLifeThresholdPercent);
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AbsorbTeamDamageBuff.TeamDamageAbsorptionPercent, DamageAbsorptionAbilityLifeThresholdPercent);
 
 		public override void SetDefaults() {
 			Item.width = 24;

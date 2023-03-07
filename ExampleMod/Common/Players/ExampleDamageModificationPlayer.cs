@@ -123,7 +123,7 @@ namespace ExampleMod.Common.Players
 
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
 			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI == Main.myPlayer && TeammateHasPaladinShieldAndCanTakeDamage()) {
-				modifiers.FinalDamage *= 1f - AbsorbTeamDamageBuff.TeamDamageAbsorptionPercent;
+				modifiers.FinalDamage *= 1f - AbsorbTeamDamageBuff.TeamDamageAbsorptionMultiplier;
 			}
 		}
 
@@ -167,7 +167,7 @@ namespace ExampleMod.Common.Players
 					// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
 					// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
 					// Working throught the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
-					float percent = AbsorbTeamDamageBuff.TeamDamageAbsorptionPercent;
+					float percent = AbsorbTeamDamageBuff.TeamDamageAbsorptionMultiplier;
 					int damage = (int)(info.Damage * (percent / (1 - percent)));
 					localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
 				}
