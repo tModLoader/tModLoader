@@ -1150,12 +1150,12 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateModifyShop(NPCShop shop);
-	private static HookList HookModifyShop = AddHook<DelegateModifyShop>(g => g.ModifyShop);
-
 	public static void AddShops(int type) {
 		GetNPC(type)?.AddShops();
 	}
+
+	private delegate void DelegateModifyShop(NPCShop shop);
+	private static HookList HookModifyShop = AddHook<DelegateModifyShop>(g => g.ModifyShop);
 
 	public static void ModifyShop(NPCShop shop)
 	{

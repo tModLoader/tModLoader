@@ -627,10 +627,20 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
+	/// <summary>
+	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
+	/// </summary>
+	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
 	public virtual void ModifyShop(NPCShop shop)
 	{
 	}
 
+	/// <summary>
+	/// Allows you to modify shop whenever player opens it.
+	/// </summary>
+	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
+	/// <param name="shopName">A name of shop.</param>
+	/// <param name="items">Items in the shop including blank slots.</param>
 	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}

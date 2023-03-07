@@ -45,11 +45,15 @@ namespace ExampleMod.Content.NPCs
 		// Example of adding new items with complex conditions in the Merchant shop.
 		public override void ModifyShop(NPCShop shop) {
 			// Style 1 check for application
-			if (shop.Name != NPCShopDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
+			if (shop.FullName != NPCShopDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
 				return;
 
 			// Style 2 check for application
-			if (shop.Name != "Terraria/Merchant/Shop")
+			if (shop.NpcType == NPCID.Merchant && shop.Name != "Shop")
+				return;
+
+			// Style 3 check for application (works just if NPC has one shop)
+			if (shop.NpcType == NPCID.Merchant)
 				return;
 
 			// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
@@ -67,7 +71,7 @@ namespace ExampleMod.Content.NPCs
 			// Adding new Condition to Blue Flare. Now it will appear just if player carries a Flare Gun in their inventory AND is in Snow biome
 			shop.GetEntry(ItemID.BlueFlare).AddCondition(NPCShop.Condition.InSnowBiome);
 
-			// Creaate a condition for later use.
+			// Custom condition, opposite of conditions for ExampleItem above.
 			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());
 
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)

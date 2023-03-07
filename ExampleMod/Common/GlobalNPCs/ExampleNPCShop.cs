@@ -8,7 +8,7 @@ namespace ExampleMod.Common.GlobalNPCs
 	class ExampleNPCShop : GlobalNPC
 	{
 		public override void ModifyShop(NPCShop shop) {
-			if (shop.FullName == NPCShopDatabase.GetNPCShopName(NPCID.Dryad)) {
+			if (shop.NpcType == NPCID.Dryad) {
 				// Adding an item to a vanilla NPC is easy:
 				// This item sells for the normal price.
 				shop.Add(ModContent.ItemType<ExampleMountItem>());
@@ -28,10 +28,10 @@ namespace ExampleMod.Common.GlobalNPCs
 					shopSpecialCurrency = ExampleMod.ExampleCustomCurrencyId
 				});
 			}
-			else if (shop.FullName == NPCShopDatabase.GetNPCShopName(NPCID.Wizard)) {
+			else if (shop.NpcType == NPCID.Wizard) {
 				// shopContents.Add(ModContent.ItemType<Infinity>(), ChestLoot.Condition.InExpertMode);
 			}
-			else if (shop.FullName == NPCShopDatabase.GetNPCShopName(NPCID.Stylist)) {
+			else if (shop.NpcType == NPCID.Stylist) {
 				shop.Add(ModContent.ItemType<ExampleHairDye>());
 			}
 		}

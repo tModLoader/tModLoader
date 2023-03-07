@@ -1124,7 +1124,7 @@
 +			if (m >= NPCLoader.shopToNPC.Length)
 +				continue;
 +
-+			shop[m].SetupShop(NPCShopDatabase.GetNpcShopByIndex(m), m);
++			shop[m] = new Chest();
  		}
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;

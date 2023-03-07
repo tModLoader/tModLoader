@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
@@ -10,17 +9,9 @@ public sealed partial class NPCShop {
 	private readonly string name;
 
 	public IReadOnlyList<Entry> Items => items;
-	public int NpcID => npcId;
+	public int NpcType => npcId;
 	public string Name => name;
-	public string FullName => NPCShopDatabase.GetNPCShopName(NpcID, Name);
-
-	public Entry this[int item] {
-		get {
-			int index = items.FindIndex(x => x.item.type.Equals(item));
-			bool hasInNormal = index != -1;
-			return items[index];
-		}
-	}
+	public string FullName => NPCShopDatabase.GetNPCShopName(NpcType, Name);
 
 	public NPCShop(int npcId, string name = "Shop") {
 		items = new();
@@ -91,35 +82,31 @@ public sealed partial class NPCShop {
 		return InsertAt(targetItem, item, true, condition);
 	}
 
-	public Item[] Build() {
-		return Build(out _);
-	}
-
-	public Item[] Build(out int slots) {
-		List<Item> array = new();
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="itemArray">Array to be filled.</param>
+	/// <param name="overflow">Equals to true if amount of added items is greater than 39.</param>
+	public void Build(Item[] itemArray, out bool overflow) {
+		List<Item> newItems = new();
 		List<Entry> oldEntries = new(items);
 
+		overflow = false;
 		SortBeforeAfter(oldEntries, r => r.Ordering);
 		foreach (Entry group in oldEntries) {
 			if (group.Disabled || !group.ConditionsMet()) {
 				continue;
 			}
-			array.Add(group.Item);
+
+			newItems.Add(group.Item);
+			if (newItems.Count < 40) {
+				continue;
+			}
+			newItems[^1] = new();
+			overflow = true;
+			break;
 		}
 
-		slots = array.Count;
-		int limit = 39;
-		if (array.Count > limit) {
-			Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
-			Logging.tML.Warn($"Unable to fit all item in the shop {name}");
-			slots = limit;
-		}
-		for (int i = array.Count; i < 40; i++) {
-			array.Add(EmptyInstance);
-		}
-		array = array.Take(40).ToList();
-		array[^1] = EmptyInstance;
-
-		return array.ToArray();
+		newItems.CopyTo(itemArray);
 	}
 }
