@@ -763,8 +763,8 @@
  				textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
-+				Console.WriteLine("m\t\tMods Menu");
-+				Console.WriteLine("b\t\tMod Browser");
++				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
++				Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModsBrowser"));
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
