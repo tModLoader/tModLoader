@@ -21,6 +21,8 @@ namespace ExampleMod.Content.NPCs
 	/// </summary>
 	public class ExampleBoneMerchant : ModNPC
 	{
+		private static Profiles.StackedNPCProfile NPCProfile;
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 
@@ -53,6 +55,11 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, -1),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", -1)
+			);
 		}
 
 		public override void SetDefaults() {
@@ -98,10 +105,32 @@ namespace ExampleMod.Content.NPCs
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				// Normal variant. Not shimmered and not a party.
+				string headGore = "ExampleMod/ExampleBoneMerchant_Gore";
+				string armGore = "ExampleMod/ExampleBoneMerchant_Gore";
+				string legGore = "ExampleMod/ExampleBoneMerchant_Gore";
+				if (NPC.IsShimmerVariant) {
+					// Shimmered
+					headGore += "_Shimmer_Head";
+					armGore += "_Shimmer_Arm";
+					legGore += "_Shimmer_Leg";
+				}
+				else {
+					headGore += "_Head";
+					armGore += "_Arm";
+					legGore += "_Leg";
+				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(headGore).Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(armGore).Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(legGore).Type, 1f);
+			}
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
-			return new ExampleBoneMerchantProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -162,23 +191,5 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
-	}
-
-	public class ExampleBoneMerchantProfile : ITownNPCProfile
-	{
-		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn) // For the Bestiary
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleBoneMerchant");
-
-			if (npc.IsShimmerVariant) // Shimmered
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleBoneMerchant_Shimmered");
-
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleBoneMerchant");
-		}
-
-		public int GetHeadTextureIndex(NPC npc) => 0; // No head texture
 	}
 }

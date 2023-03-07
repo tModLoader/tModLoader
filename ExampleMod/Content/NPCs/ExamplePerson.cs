@@ -80,7 +80,7 @@ namespace ExampleMod.Content.NPCs
 			// This creates a "profile" for ExamplePerson, which allows for different textures during a party and/or while the NPC is shimmered.
 			NPCProfile = new Profiles.StackedNPCProfile(
 				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
-				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Party")
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
 			);
 		}
 
@@ -137,6 +137,38 @@ namespace ExampleMod.Content.NPCs
 
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				if (NPC.IsShimmerVariant) {
+					if (NPC.altTexture == 1) {
+						// Shimmered and during a party.
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Party_Head").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Party_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Party_Leg").Type, 1f);
+					}
+					else {
+						// Shimmered and not during a party.
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Head").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Leg").Type, 1f);
+					}
+				}
+				else {
+					if (NPC.altTexture == 1) {
+						// Not shimmered but during a party.
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Party_Head").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Party_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Party_Leg").Type, 1f);
+					}
+					else {
+						// Normal variant. Not shimmered and not a party.
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Head").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Leg").Type, 1f);
+					}
+				}
 			}
 		}
 

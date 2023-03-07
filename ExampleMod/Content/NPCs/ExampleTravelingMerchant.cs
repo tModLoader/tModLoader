@@ -180,9 +180,17 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
 			NPCID.Sets.ShimmerTownTransform[Type] = true;
 
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Velocity = 2f, // Draws the NPC in the bestiary as if its walking +2 tiles in the x direction
+				Direction = -1 // -1 is left and 1 is right.
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
 			NPCProfile = new Profiles.StackedNPCProfile(
-				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture)),
-				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex)
+				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
 			);
 		}
 
@@ -221,6 +229,34 @@ namespace ExampleMod.Content.NPCs
 			int num = NPC.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				// Normal variant. Not shimmered and not a party.
+				int headGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Head").Type;
+				int armGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Arm").Type;
+				int legGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Leg").Type;
+				if (NPC.IsShimmerVariant) {
+					if (NPC.altTexture != 1) {
+						// Shimmered and not during a party.
+						// Only drop the hat gore when a party is not active.
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Hat").Type, 1f);
+					}
+					// Shimmered
+					headGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Head").Type;
+					armGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Arm").Type;
+					legGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Leg").Type;
+				}
+				else {
+					if (NPC.altTexture != 1) {
+						// Not shimmered and not during a party.
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Hat").Type, 1f);
+					}
+				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, armGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, legGore, 1f);
 			}
 		}
 
