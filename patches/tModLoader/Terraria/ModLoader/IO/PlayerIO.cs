@@ -353,7 +353,7 @@ internal static class PlayerIO
 	{
 		TagCompound loadouts = new();
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < equipLoadouts.Length; i++) {
 			loadouts[$"loadout{i}Armor"] = SaveInventory(equipLoadouts[i].Armor);
 			loadouts[$"loadout{i}Dye"] = SaveInventory(equipLoadouts[i].Dye);
 		}
@@ -368,7 +368,7 @@ internal static class PlayerIO
 			return;
 		}
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < loadouts.Length; i++) {
 			LoadInventory(loadouts[i].Armor, loadoutTag.GetList<TagCompound>($"loadout{i}Armor"));
 			LoadInventory(loadouts[i].Dye, loadoutTag.GetList<TagCompound>($"loadout{i}Dye"));
 		}
