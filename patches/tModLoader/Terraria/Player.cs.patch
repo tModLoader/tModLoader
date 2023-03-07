@@ -1350,8 +1350,13 @@
  		}
  
  		UpdateHungerBuffs();
-@@ -9228,23 +_,25 @@
+@@ -9226,23 +_,26 @@
+ 		accStopwatch = false;
+ 		accOreFinder = false;
  		accDreamCatcher = false;
++
++		PlayerLoader.ResetInfoAccessories(this);
++
  		for (int i = 0; i < 58; i++) {
  			int type = inventory[i].type;
 -			RefreshInfoAccsFromItemType(type);
@@ -1375,11 +1380,7 @@
 +					RefreshInfoAccsFromItemType(bank4.item[k]);
  			}
  		}
-+
-+		PlayerLoader.ResetInfoAccessories(this);
  
- 		RefreshInfoAccsFromTeamPlayers();
- 	}
 @@ -9301,8 +_,17 @@
  
  				if (Main.player[i].hasLuck_LuckyCoin)
