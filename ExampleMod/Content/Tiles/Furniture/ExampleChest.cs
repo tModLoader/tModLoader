@@ -27,6 +27,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.IsAContainer[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
@@ -75,6 +76,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = dustType;
 			return true;
+		}
+
+		public override bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) {
+			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
+			// We need to return true only if the tile style is the unlocked variant of a chest that supports locking. 
+			if(style == 0) {
+				// We can check other conditions as well, such as how biome chests can't be locked until Plantera is defeated
+				return true;
+			}
+			return false;
 		}
 
 		public static string MapChestName(string name, int i, int j) {

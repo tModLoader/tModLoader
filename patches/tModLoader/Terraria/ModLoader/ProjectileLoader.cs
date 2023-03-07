@@ -272,11 +272,21 @@ public static class ProjectileLoader
 		catch (IOException e) {
 			Logging.tML.Error(e.ToString());
 
-			string culprits = $"Above IOException error in projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} may be caused by one of these:";
+			string message = $"Above IOException error in Projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} occured";
+
+			var culprits = new List<GlobalProjectile>();
 			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
-				culprits += $"\n    {g.Name}";
+				culprits.Add(g);
 			}
-			Logging.tML.Error(culprits);
+
+			if (culprits.Count > 0) {
+				message += ", may be caused by one of these:";
+				foreach (GlobalProjectile g in culprits) {
+					message += $"\n\t{g.FullName}";
+				}
+			}
+
+			Logging.tML.Error(message);
 		}
 	}
 
@@ -708,23 +718,6 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private static HookList HookSingleGrappleHook = AddHook<Func<int, Player, bool?>>(g => g.SingleGrappleHook);
-
-	public static bool? SingleGrappleHook(int type, Player player)
-	{
-		bool? flag = GetProjectile(type)?.SingleGrappleHook(player);
-
-		foreach (GlobalProjectile g in HookSingleGrappleHook.Enumerate(globalProjectiles)) {
-			bool? singleHook = g.SingleGrappleHook(type, player);
-
-			if (singleHook.HasValue) {
-				flag = singleHook;
-			}
-		}
-
-		return flag;
-	}
-
 	private delegate void DelegateUseGrapple(Player player, ref int type);
 	private static HookList HookUseGrapple = AddHook<DelegateUseGrapple>(g => g.UseGrapple);
 
@@ -788,6 +781,26 @@ public static class ProjectileLoader
 		foreach (GlobalProjectile g in HookGrappleTargetPoint.Enumerate(projectile.globalProjectiles)) {
 			g.GrappleTargetPoint(projectile, player, ref grappleX, ref grappleY);
 		}
+	}
+
+	private static HookList HookGrappleCanLatchOnTo = AddHook<Func<Projectile, Player, int, int, bool?>>(g => g.GrappleCanLatchOnTo);
+
+	public static bool? GrappleCanLatchOnTo(Projectile projectile, Player player, int x, int y)
+	{
+		bool? flag = projectile.ModProjectile?.GrappleCanLatchOnTo(player, x, y);
+
+		foreach (GlobalProjectile g in HookGrappleCanLatchOnTo.Enumerate(projectile.globalProjectiles)) {
+			bool? globalFlag = g.GrappleCanLatchOnTo(projectile, player, x, y);
+
+			if (globalFlag.HasValue) {
+				if (!globalFlag.Value)
+					return false;
+
+				flag = globalFlag;
+			}
+		}
+
+		return flag;
 	}
 
 	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);

@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Items.Armor
 	public class ExampleHelmet : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 3;
-
 			// If your head equipment should draw hair while drawn, use one of the following:
 			// ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
 			// ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat

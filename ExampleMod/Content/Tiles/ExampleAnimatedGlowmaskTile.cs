@@ -85,10 +85,6 @@ namespace ExampleMod.Content.Tiles
 
 	internal class ExampleAnimatedGlowmaskTileItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.VoidMonolith);
 			Item.createTile = ModContent.TileType<ExampleAnimatedGlowmaskTile>();

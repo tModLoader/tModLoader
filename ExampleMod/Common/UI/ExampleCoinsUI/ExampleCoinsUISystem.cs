@@ -1,5 +1,4 @@
-﻿using ExampleMod.Common.UI;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,6 +6,7 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
+	[Autoload(Side = ModSide.Client)] // This attribute makes this class only load on a particular side. Naturally this makes sense here since UI should only be a thing clientside. Be wary though that accessing this class serverside will error
 	public class ExampleCoinsUISystem : ModSystem
 	{
 		private UserInterface exampleCoinUserInterface;

@@ -442,7 +442,30 @@
  		return result;
  	}
  
-@@ -2848,6 +_,12 @@
+@@ -2842,12 +_,34 @@
+ 			tileMerge[i] = new bool[count];
+ 		}
+ 
++		SetupAllBlockMerge();
++	}
++
++	// internal split to be called by TileLoader, to avoid tileMerge reset (handled by ResizeArrays)
++	internal static void SetupAllBlockMerge()
++	{
+-		for (int j = 0; j < TileID.Count; j++) {
++		for (int j = 0; j < TileLoader.TileCount; j++) {
++			// TML: moved these cases into BlockMergesWithMergeAllBlockOverride
+ 			bool flag = j == 10 || j == 387 || j == 541;
++			if (TileID.Sets.BlockMergesWithMergeAllBlockOverride[j] is bool mergeOverride) {
++				TileID.Sets.BlockMergesWithMergeAllBlock[j] = mergeOverride;
++				continue;
++			}
++
++			// TML: 10 is the closed door tile, so make modded closed doors also match. This code runs after they have set their OpenDoorID
++			if (TileLoader.IsClosedDoor(j))
++				flag = true;
++
+ 			TileID.Sets.BlockMergesWithMergeAllBlock[j] = !flag && tileSolid[j] && !tileSolidTop[j];
  		}
  	}
  
@@ -4394,18 +4417,19 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,46 @@
+@@ -38346,27 +_,47 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
 +			else {
 +				num = info.Type;
-+				text2 = info.DisplayValue();
++				text2 = info.DisplayValue(ref infoTextColor);
 +				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
++			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor);
  
  			if (!(text2 != ""))
  				continue;
@@ -5527,6 +5551,15 @@
 +				}
  			}
  		}
+ 
+@@ -51852,6 +_,8 @@
+ 		instance.CameraModifiers.ApplyTo(ref screenPosition);
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
++		PlayerLoader.ModifyScreenPosition(LocalPlayer);
++		SystemLoader.ModifyScreenPosition();
+ 		ClampScreenPositionToWorld();
+ 	}
  
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);

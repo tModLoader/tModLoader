@@ -11,10 +11,6 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		private int exampleResourceCost; // Add our custom resource cost
 
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.damage = 130;
 			Item.DamageType = DamageClass.Magic;

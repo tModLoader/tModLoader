@@ -308,12 +308,18 @@
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1243,12 +_,33 @@
+@@ -1239,16 +_,39 @@
+ 	public float runSlowdown = 0.2f;
+ 	public bool adjWater;
+ 	public bool adjHoney;
++	public bool adjShimmer;
+ 	public bool adjLava;
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
++	public bool oldAdjShimmer;
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	public bool[] adjTile {
@@ -685,31 +691,33 @@
  		if (item.shoot == 73) {
  			int num2 = 0;
  			for (int i = 0; i < 1000; i++) {
-@@ -3630,11 +_,24 @@
+@@ -3630,11 +_,13 @@
  		float shootSpeed = item.shootSpeed;
  		int damage = item.damage;
  		float knockBack = item.knockBack;
+-		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
 +
-+		bool vanillaSingleHook = false;
- 		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
-+			vanillaSingleHook = true;
-+		}
-+
-+		if (ProjectileLoader.SingleGrappleHook(num7, this) ?? vanillaSingleHook) {
++		if (ProjectileID.Sets.SingleGrappleHook[num7]) {
  			grappling[0] = -1;
  			grapCount = 0;
  			for (int num8 = 0; num8 < 1000; num8++) {
  				if (Main.projectile[num8].active && Main.projectile[num8].owner == whoAmI) {
-+					if (ProjectileLoader.SingleGrappleHook(Main.projectile[num8].type, this) is bool modSingleHook2) {
-+						if (modSingleHook2)
-+							Main.projectile[num8].Kill();
-+
-+						continue;
-+					}
-+
++					/*
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
+@@ -3651,6 +_,11 @@
+ 							Main.projectile[num8].Kill();
+ 							break;
+ 					}
++					*/
++					if (!ProjectileID.Sets.SingleGrappleHook[num8])
++						continue;
++
++					Main.projectile[num8].Kill();
+ 				}
+ 			}
+ 		}
 @@ -3721,11 +_,14 @@
  					break;
  				case -1:
@@ -1342,6 +1350,15 @@
  		}
  
  		UpdateHungerBuffs();
+@@ -9241,7 +_,7 @@
+ 		if (flag) {
+ 			for (int k = 0; k < 40; k++) {
+ 				int type3 = bank4.item[k].type;
+-				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
++				if (type3 < 0 || ItemID.Sets.WorksInVoidBag[type3])
+ 					RefreshInfoAccsFromItemType(type3);
+ 			}
+ 		}
 @@ -9431,6 +_,9 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
@@ -1774,7 +1791,7 @@
  		if (item.prefix == 80)
  			meleeSpeed += 0.04f;
 +
-+		// TODO: PrefixLoader.GrantPrefixBenefits(item)
++		PrefixLoader.ApplyAccessoryEffects(this, item);
  	}
  
  	private void SpawnHallucination(Item item)
@@ -2145,7 +2162,7 @@
  				if (tile == null)
  					return;
  
-+				if (tile.type > TileID.Count) {
++				if (tile.type >= TileID.Count) {
 +					if (tile.active() && TileID.Sets.Torch[tile.type])
 +						NearbyModTorch.Add(tile.type);
 +
@@ -3361,7 +3378,16 @@
  			oldAdjTile[i] = adjTile[i];
  			adjTile[i] = false;
  		}
-@@ -27610,15 +_,17 @@
+@@ -27580,6 +_,8 @@
+ 		adjHoney = false;
+ 		oldAdjLava = adjLava;
+ 		adjLava = false;
++		oldAdjShimmer = adjShimmer;
++		adjShimmer = false;
+ 		alchemyTable = false;
+ 		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
+ 		int num4 = (int)((position.Y + (float)height) / 16f);
+@@ -27610,16 +_,21 @@
  							alchemyTable = true;
  							break;
  					}
@@ -3380,8 +3406,12 @@
 -				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
  					adjLava = true;
++
++				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
++					adjShimmer = true;
  			}
  		}
+ 
 @@ -27627,7 +_,7 @@
  			return;
  
@@ -3391,6 +3421,16 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -27643,6 +_,9 @@
+ 		if (adjLava != oldAdjLava)
+ 			flag = true;
+ 
++		if (adjShimmer != oldAdjShimmer)
++			flag = true;
++
+ 		if (flag)
+ 			Recipe.FindRecipes();
+ 	}
 @@ -27759,7 +_,7 @@
  			waist = 0;
  
@@ -4385,6 +4425,22 @@
 +
  							if (inventory[num15].stack <= 0)
  								inventory[num15] = new Item();
+ 
+@@ -33732,6 +_,15 @@
+ 							flag6 = false;
+ 					}
+ 
++					// Copied as-is from 1.3
++					if (item.CountsAsClass(DamageClass.Throwing)) {
++						if (ThrownCost50 && Main.rand.Next(100) < 50)
++							flag6 = false;
++
++						if (ThrownCost33 && Main.rand.Next(100) < 33)
++							flag6 = false;
++					}
++
+ 					if (item.IsACoin)
+ 						flag6 = true;
  
 @@ -33739,7 +_,7 @@
  					if (flag7.HasValue)
@@ -5938,9 +5994,10 @@
  		}
  
  		fileIO.Write(newPlayer.voidVaultInfo);
- 		for (int num5 = 0; num5 < maxBuffs; num5++) {
-+			//TML: Don't save buffs to vanilla player
+-		for (int num5 = 0; num5 < maxBuffs; num5++) {
 -			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
++		for (int num5 = 0; num5 < 44; num5++) {
++			//TML: Don't save buffs to vanilla player
 +			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
  				fileIO.Write(0);
  				fileIO.Write(0);

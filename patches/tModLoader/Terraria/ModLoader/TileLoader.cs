@@ -89,6 +89,7 @@ public static class TileLoader
 	private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
 	private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
+	private static Action[] HookPostSetupTileMerge;
 
 	internal static int ReserveTileID()
 	{
@@ -234,10 +235,17 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
+		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 
 		if (!unloading) {
 			loaded = true;
 		}
+	}
+
+	internal static void PostSetupContent()
+	{
+		Main.SetupAllBlockMerge();
+		PostSetupTileMerge();
 	}
 
 	internal static void Unload()
@@ -343,7 +351,7 @@ public static class TileLoader
 	{
 		ModTile modTile = GetTile(tile.type);
 		if (modTile != null) {
-			return modTile.OpenDoorID;
+			return TileID.Sets.OpenDoorID[modTile.Type];
 		}
 		if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
 			return TileID.OpenDoor;
@@ -359,7 +367,7 @@ public static class TileLoader
 		ModTile modTile = GetTile(tile.type);
 
 		if (modTile != null) {
-			return modTile.CloseDoorID;
+			return TileID.Sets.CloseDoorID[modTile.Type];
 		}
 
 		if (tile.type == TileID.OpenDoor) {
@@ -369,18 +377,21 @@ public static class TileLoader
 		return -1;
 	}
 
+	/// <inheritdoc cref="IsClosedDoor(int)"/>
+	public static bool IsClosedDoor(Tile tile) => IsClosedDoor(tile.type);
+
 	/// <summary>
 	/// Returns true if the tile is a vanilla or modded closed door.
 	/// </summary>
-	public static bool IsClosedDoor(Tile tile)
+	public static bool IsClosedDoor(int type)
 	{
-		ModTile modTile = GetTile(tile.type);
+		ModTile modTile = GetTile(type);
 
 		if (modTile != null) {
-			return modTile.OpenDoorID > -1;
+			return TileID.Sets.OpenDoorID[type] > -1;
 		}
 
-		return tile.type == TileID.ClosedDoor;
+		return type == TileID.ClosedDoor;
 	}
 
 	public static string ContainerName(int type, int frameX, int frameY) => GetTile(type)?.ContainerName(frameY, frameY)?.Value ?? string.Empty;
@@ -1009,6 +1020,17 @@ public static class TileLoader
 		GetTile(type)?.PlaceInWorld(i, j, item);
 	}
 
+	public static void PostSetupTileMerge()
+	{
+		foreach (var hook in HookPostSetupTileMerge) {
+			hook();
+		}
+
+		foreach (var modTile in tiles) {
+			modTile.PostSetupTileMerge();
+		}
+	}
+
 	public static bool IsLockedChest(int i, int j, int type)
 	{
 		return GetTile(type)?.IsLockedChest(i, j) ?? false;
@@ -1017,6 +1039,11 @@ public static class TileLoader
 	public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual)
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
+	}
+  
+	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
+	{
+		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;
 	}
 
 	public static void RecountTiles(SceneMetrics metrics)

@@ -9,10 +9,6 @@ namespace ExampleMod.Content.Items.Accessories
 	[AutoloadEquip(EquipType.Shield)] // Load the spritesheet you create as a shield for the player when it is equipped.
 	public class ExampleShield : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 24;
 			Item.height = 28;
