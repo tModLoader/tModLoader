@@ -311,6 +311,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
 	public virtual void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
@@ -321,6 +322,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
+	/// <param name="hurtInfo"></param>
 	public virtual void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
 	{
 	}

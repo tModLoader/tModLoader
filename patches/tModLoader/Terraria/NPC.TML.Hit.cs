@@ -16,8 +16,8 @@ public partial class NPC
 		public DamageClass DamageType { get; init; } = DamageClass.Default;
 
 		/// <summary>
-		/// The direction to apply knockback. If 0, no knockback will be applied. </br>
-		/// Could potentially be used for directional resistances. </br>
+		/// The direction to apply knockback. If 0, no knockback will be applied. <br/>
+		/// Could potentially be used for directional resistances. <br/>
 		/// Can be overridden by <see cref="HitDirectionOverride"/>
 		/// </summary>
 		public int HitDirection { get; init; } = default;
@@ -150,7 +150,7 @@ public partial class NPC
 
 		private bool _instantKill = default;
 		/// <summary>
-		/// Set to make the hit instantly kill the target, dealing as much damage as necessary. </br>
+		/// Set to make the hit instantly kill the target, dealing as much damage as necessary. <br/>
 		/// Combat text will not be shown.
 		/// </summary>
 		public void SetInstantKill() => _instantKill = true;

@@ -32,8 +32,8 @@ public partial class Player
 		public bool Dodgeable { get; init; } = true;
 
 		/// <summary>
-		/// The direction to apply knockback. If 0, no knockback will be applied. </br>
-		/// Could potentially be used for directional resistances. </br>
+		/// The direction to apply knockback. If 0, no knockback will be applied. <br/>
+		/// Could potentially be used for directional resistances. <br/>
 		/// Can be overridden by <see cref="HitDirectionOverride"/>
 		/// </summary>
 		public int HitDirection { get; init; } = default;

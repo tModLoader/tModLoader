@@ -674,7 +674,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to create special effects when this player hits an NPC by swinging a melee weapon (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	/// <param name="item"></param>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
 	/// <param name="damageDone"></param>

@@ -281,7 +281,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="modifiers">/param>
+	/// <param name="modifiers"></param>
 	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}

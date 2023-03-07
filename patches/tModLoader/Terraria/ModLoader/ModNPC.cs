@@ -381,6 +381,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to modify the damage, etc., that this NPC does to a player.
 	/// </summary>
 	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
 	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
@@ -390,6 +391,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="target"></param>
+	/// <param name="hurtInfo"></param>
 	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 	{
 	}
