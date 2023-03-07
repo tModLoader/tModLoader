@@ -4065,7 +4065,7 @@
  
  					NetMessage.SendData(16, -1, -1, null, whoAmI);
 -					NetMessage.SendPlayerHurt(whoAmI, damageSource, Damage, hitDirection, Crit, pvp, hitContext);
-+					NetMessage.SendPlayerHurt(whoAmI, info, remoteClient: -1, ignoreClient: -1);
++					NetMessage.SendPlayerHurt(whoAmI, info);
  				}
 +
 +				PlayerLoader.OnHurt(this, info);

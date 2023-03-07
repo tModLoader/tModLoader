@@ -337,7 +337,7 @@
 +				/*
  				NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
 +				*/
-+				NetMessage.SendStrikeNPC(Main.npc[num190], hit);
++				NetMessage.SendStrikeNPC(Main.npc[num190], hit, ignoreClient: whoAmI);
 +
  				if (Main.npc[num190].life <= 0)
  					NetMessage.TrySendData(23, -1, -1, null, num190);
@@ -671,7 +671,7 @@
 +					};
 +					Main.player[num234].Hurt(args, quiet: true);
 +					if (Main.netMode == 2)
-+						NetMessage.SendPlayerHurt(num234, args, -1, whoAmI);
++						NetMessage.SendPlayerHurt(num234, args, ignoreClient: whoAmI);
  				}
  
  				break;

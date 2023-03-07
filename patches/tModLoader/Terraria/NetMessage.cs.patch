@@ -571,10 +571,10 @@
  
 +	// Added by TML
 +	private static Player.HurtInfo _currentPlayerHurtInfo;
-+	public static void SendPlayerHurt(int playerTargetIndex, Player.HurtInfo info, int remoteClient, int ignoreClient)
++	public static void SendPlayerHurt(int playerTargetIndex, Player.HurtInfo info, int ignoreClient = -1)
 +	{
 +		_currentPlayerHurtInfo = info;
-+		SendData(117, remoteClient, ignoreClient, number: playerTargetIndex, number7: 1);
++		SendData(117, -1, ignoreClient, number: playerTargetIndex, number7: 1);
 +	}
 +
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
@@ -595,10 +595,10 @@
 +	/// <summary>
 +	/// Use this to synchronize damage strikes against NPCs!
 +	/// </summary>
-+	public static void SendStrikeNPC(NPC npc, in NPC.HitInfo hit)
++	public static void SendStrikeNPC(NPC npc, in NPC.HitInfo hit, int ignoreClient = -1)
 +	{
 +		_currentStrike = hit;
-+		SendData(28, -1, -1, null, npc.whoAmI, number7: 1);
++		SendData(28, -1, ignoreClient, null, npc.whoAmI, number7: 1);
 +	}
 +
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
