@@ -33,6 +33,14 @@ namespace ExampleMod.Content.NPCs
 	{
 		public int NumberOfTimesTalkedTo = 0;
 
+		private static int ShimmerHeadIndex;
+		private static Profiles.StackedNPCProfile NPCProfile;
+
+		public override void Load() {
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
+		}
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 
@@ -43,6 +51,8 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+
+			NPCID.Sets.ShimmerTownTransform[Type] = true; // Allows for this NPC to have a different texture after touching the Shimmer liquid.
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -65,6 +75,12 @@ namespace ExampleMod.Content.NPCs
 				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
 				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
 			; // < Mind the semicolon!
+
+			// This creates a "profile" for ExamplePerson, which allows for different textures during a party and/or while the NPC is shimmered.
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Party")
+			);
 		}
 
 		public override void SetDefaults() {
@@ -159,7 +175,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
-			return new ExamplePersonProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -354,23 +370,5 @@ namespace ExampleMod.Content.NPCs
 		public override void SaveData(TagCompound tag) {
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
 		}
-	}
-
-	public class ExamplePersonProfile : ITownNPCProfile
-	{
-		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
-
-			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
-
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
-		}
-
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
 	}
 }

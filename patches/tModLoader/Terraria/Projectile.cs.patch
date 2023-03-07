@@ -378,6 +378,15 @@
  		ownerHitCheck = false;
  		hide = false;
  		lavaWet = false;
+@@ -1167,6 +_,8 @@
+ 			magic = true;
+ 		}
+ 		else if (type == 85) {
++			ArmorPenetration = 15; // Added by tML.
++
+ 			width = 6;
+ 			height = 6;
+ 			aiStyle = 193;
 @@ -1859,6 +_,8 @@
  			ignoreWater = true;
  		}
@@ -387,15 +396,26 @@
  			width = 28;
  			height = 28;
  			aiStyle = 4;
-@@ -2200,6 +_,8 @@
+@@ -2200,6 +_,10 @@
  			trap = true;
  		}
  		else if (type == 189) {
++			// This value should be 15 if (!npcProj && !trap && Main.player[owner].strongBees). However, there's no way to know if those fields
++			// will set be to the proper values in SetDefaults. How should this be approached? Leaving as 10 for now. - Mutant
 +			ArmorPenetration = 10; // Added by TML.
 +
  			width = 8;
  			height = 8;
  			aiStyle = 36;
+@@ -4473,6 +_,8 @@
+ 			tileCollide = false;
+ 		}
+ 		else if (type == 442) {
++			ArmorPenetration = Main.remixWorld ? 20 : ArmorPenetration; // Added by tML.
++
+ 			width = 14;
+ 			height = 14;
+ 			aiStyle = 1;
 @@ -4960,6 +_,8 @@
  			netImportant = true;
  		}
@@ -445,7 +465,7 @@
  				coldDamage = true;
  		}
  		else if (type == 916) {
-+			ArmorPenetration = 25; // Added by TML.
++			ArmorPenetration = 50; // Added by TML.
 +
  			width = 18;
  			height = 18;
@@ -477,6 +497,33 @@
  			width = 56;
  			height = 64;
  			aiStyle = 177;
+@@ -8224,6 +_,8 @@
+ 			hide = true;
+ 		}
+ 		else if (type == 977) {
++			ArmorPenetration = 5; // Added by tML.
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
+@@ -8250,6 +_,8 @@
+ 			coldDamage = true;
+ 		}
+ 		else if (type == 974) {
++			ArmorPenetration = 5; // Added by tML.
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 188;
+@@ -8279,6 +_,8 @@
+ 			timeLeft = 30;
+ 		}
+ 		else if (type == 976) {
++			ArmorPenetration = 20; // Added by tML.
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
 @@ -8643,9 +_,17 @@
  			friendly = true;
  			penetrate = -1;

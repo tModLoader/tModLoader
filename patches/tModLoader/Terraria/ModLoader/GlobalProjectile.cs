@@ -383,14 +383,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
-	/// </summary>
-	public virtual bool? SingleGrappleHook(int type, Player player)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 	/// </summary>
 	public virtual void UseGrapple(Player player, ref int type)

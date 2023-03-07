@@ -39,6 +39,13 @@ namespace ExampleMod.Content.Items.Tools
 			chainTexture = null;
 		}
 
+		/*
+		public override void SetStaticDefaults() {
+			// If you wish for your hook projectile to have ONE copy of it PER player, uncomment this section.
+			ProjectileID.Sets.SingleGrappleHook[Type] = true;
+		}
+		*/
+
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
 		}
@@ -54,12 +61,6 @@ namespace ExampleMod.Content.Items.Tools
 
 			return hooksOut <= 2;
 		}
-
-		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
-		// public override bool? SingleGrappleHook(Player player)
-		// {
-		//	return true;
-		// }
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook

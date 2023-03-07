@@ -32,4 +32,6 @@ public class ModProjectileTest : ModProjectile
 		drawCacheProjsBehindProjectiles.Add(index);
 		drawCacheProjsOverWiresUI.Add(index);
 	}
+
+	public override bool? SingleGrappleHook(Player player) { return null; }
 }
