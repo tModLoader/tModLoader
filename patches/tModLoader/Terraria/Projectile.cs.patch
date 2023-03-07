@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,277 @@
+@@ -66,70 +_,278 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;

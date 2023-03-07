@@ -512,7 +512,7 @@
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1231,8 +_,22 @@
+@@ -1231,24 +_,61 @@
  	public static int tileTargetY;
  	public static float defaultGravity = 0.4f;
  	public static int jumpHeight = 15;
@@ -535,7 +535,6 @@
 +	/// </summary>
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
-@@ -1239,16 +_,39 @@
  	public float runSlowdown = 0.2f;
  	public bool adjWater;
  	public bool adjHoney;
