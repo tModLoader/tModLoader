@@ -990,7 +990,8 @@ public static class ItemLoader
 	private static HookList HookOnHitPvp = AddHook<Action<Item, Player, Player, Player.HurtInfo>>(g => g.OnHitPvp);
 
 	/// <summary>
-	/// Calls ModItem.OnHitPvp and all GlobalItem.OnHitPvp hooks.
+	/// Calls ModItem.OnHitPvp and all GlobalItem.OnHitPvp hooks. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	public static void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{

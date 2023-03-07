@@ -643,7 +643,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.
+	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center. <br/>
+	/// Called on the local client. <br/>
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
@@ -663,7 +664,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc that this player does to an NPC.
+	/// Allows you to modify the damage, knockback, etc that this player does to an NPC. <br/>
+	/// This method is only called on the on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -693,7 +695,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
+	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -779,14 +782,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that an NPC does to this player.
+	/// Allows you to modify the damage, etc., that an NPC does to this player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs).
+	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs). <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 	{
@@ -803,14 +808,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player.
+	/// Allows you to create special effects when a hostile projectile hits this player.br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
 	{

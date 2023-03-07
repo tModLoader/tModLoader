@@ -254,8 +254,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
-	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. <br/> 
+	/// This hook is client side, and will run on all clients. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (NPC.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
 	public virtual void HitEffect(NPC.HitInfo hit)
 	{
@@ -378,7 +378,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this NPC does to a player.
+	/// Allows you to modify the damage, etc., that this NPC does to a player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -388,7 +389,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs). <br/>
-	/// Only runs on the local client in multiplayer.
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hurtInfo"></param>
@@ -407,7 +408,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC.
+	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
+	/// Runs in single player or on the server. <br/>
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -416,7 +418,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a friendly NPC.
+	/// Allows you to create special effects when this NPC hits a friendly NPC. <br/>
+	/// Runs in single player or on the server. <br/>
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
@@ -436,7 +439,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon.
+	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
@@ -446,7 +450,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC is hit by a melee weapon.
+	/// Allows you to create special effects when this NPC is hit by a melee weapon. <br/>
+	/// Runs on the client or server doing the damage. <br/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>

@@ -175,7 +175,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
-	/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// <br/> This hook is client side, and will run on all clients. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
 	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
@@ -371,7 +371,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon.
+	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
