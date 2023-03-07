@@ -706,12 +706,14 @@
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
-@@ -3651,6 +_,9 @@
+@@ -3651,6 +_,11 @@
  							Main.projectile[num8].Kill();
  							break;
  					}
 +					*/
-+					if (!ProjectileID.Sets.SingleGrappleHook[num8]) continue;
++					if (!ProjectileID.Sets.SingleGrappleHook[num8])
++						continue;
++
 +					Main.projectile[num8].Kill();
  				}
  			}

@@ -16,7 +16,7 @@ public partial class Profiles
 		protected Asset<Texture2D> defaultTexture;
 		protected Asset<Texture2D> partyTexture;
 
-		public DefaultNPCProfile(string texturePath, int headSlot, string partTexturePath = null)
+		public DefaultNPCProfile(string texturePath, int headSlot, string partyTexturePath = null)
 		{
 			currentHeadSlot = headSlot;
 
@@ -25,7 +25,7 @@ public partial class Profiles
 			}
 
 			defaultTexture = ModContent.Request<Texture2D>(texturePath);
-			partyTexture = !string.IsNullOrEmpty(partTexturePath) ? ModContent.Request<Texture2D>(partTexturePath) : defaultTexture;
+			partyTexture = !string.IsNullOrEmpty(partyTexturePath) ? ModContent.Request<Texture2D>(partyTexturePath) : defaultTexture;
 		}
 
 		public int RollVariation() => 0;
