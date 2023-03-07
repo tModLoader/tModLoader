@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient<ExampleItem>(100);
-			(recipe.createItem.ModItem as ExampleDataItem).timer = 300;
+			((ExampleDataItem)recipe.createItem.ModItem).timer = 300;
 			recipe.Register();
 		}
 	}

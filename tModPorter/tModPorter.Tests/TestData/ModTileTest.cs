@@ -14,13 +14,13 @@ public class ModTileTest : ModTile
 
 		dresserDrop = 0;
 		chestDrop = 0;
-		closeDoorID = 0;
-		openDoorID = 0;
 		minPick = 0;
 		mineResist = 0;
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
 
+		OpenDoorID = 0;
+		CloseDoorID = 0;
 		sapling = true;
 		torch = true;
 		bed = true;

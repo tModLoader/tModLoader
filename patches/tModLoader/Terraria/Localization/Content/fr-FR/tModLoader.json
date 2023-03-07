@@ -560,6 +560,7 @@
 		"NearWater": "Besoins d’eau",
 		"NearLava": "Besoins de lave",
 		"NearHoney": "Besoins de miel",
+		//"NearShimmer": "Needs shimmer",
 		"TimeDay": "Besoins de jour",
 		"TimeNight": "Besoin de nuit",
 		"InDungeon": "Doit être dans le Biome du Donjon",

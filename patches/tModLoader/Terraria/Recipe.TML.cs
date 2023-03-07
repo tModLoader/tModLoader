@@ -27,6 +27,7 @@ public partial class Recipe
 		public static readonly Condition NearWater = new Condition(NetworkText.FromKey("RecipeConditions.NearWater"), _ => Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[TileID.Sinks]);
 		public static readonly Condition NearLava = new Condition(NetworkText.FromKey("RecipeConditions.NearLava"), _ => Main.LocalPlayer.adjLava);
 		public static readonly Condition NearHoney = new Condition(NetworkText.FromKey("RecipeConditions.NearHoney"), _ => Main.LocalPlayer.adjHoney);
+		public static readonly Condition NearShimmer = new Condition(NetworkText.FromKey("RecipeConditions.NearShimmer"), _ => Main.LocalPlayer.adjShimmer);
 		//Time
 		public static readonly Condition TimeDay = new Condition(NetworkText.FromKey("RecipeConditions.TimeDay"), _ => Main.dayTime);
 		public static readonly Condition TimeNight = new Condition(NetworkText.FromKey("RecipeConditions.TimeNight"), _ => !Main.dayTime);

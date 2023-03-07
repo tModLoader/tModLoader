@@ -182,6 +182,8 @@ internal static class WorldIO
 					tag["homeless"] = npc.homeless;
 					tag["homeTileX"] = npc.homeTileX;
 					tag["homeTileY"] = npc.homeTileY;
+					tag["isShimmered"] = NPC.ShimmeredTownNPCs[npc.type];
+					tag["npcTownVariationIndex"] = npc.townNpcVariationIndex;
 				}
 			}
 			else if (globalData.Count != 0) {
@@ -267,6 +269,9 @@ internal static class WorldIO
 					npc.homeless = tag.GetBool("homeless");
 					npc.homeTileX = (int)tag["homeTileX"];
 					npc.homeTileY = (int)tag["homeTileY"];
+
+					NPC.ShimmeredTownNPCs[modNpc.Type] = tag.GetBool("isShimmered");
+					npc.townNpcVariationIndex = (int)tag["npcTownVariationIndex"];
 				}
 
 				if (tag.ContainsKey("data")) {
