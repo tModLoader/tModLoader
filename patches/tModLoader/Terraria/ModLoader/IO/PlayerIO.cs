@@ -44,6 +44,7 @@ internal static class PlayerIO
 		return new TagCompound {
 			["armor"] = SaveInventory(player.armor),
 			["dye"] = SaveInventory(player.dye),
+			["loadouts"] = SaveLoadouts(player.Loadouts),
 			["inventory"] = SaveInventory(player.inventory),
 			["miscEquips"] = SaveInventory(player.miscEquips),
 			["miscDyes"] = SaveInventory(player.miscDyes),
@@ -67,6 +68,7 @@ internal static class PlayerIO
 	{
 		LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 		LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
+		LoadLoadouts(player.Loadouts, tag);
 		LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
 		LoadInventory(player.miscEquips, tag.GetList<TagCompound>("miscEquips"));
 		LoadInventory(player.miscDyes, tag.GetList<TagCompound>("miscDyes"));
@@ -345,6 +347,31 @@ internal static class PlayerIO
 	internal static string SaveUsedModPack(Player player)
 	{
 		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+	}
+
+	internal static TagCompound SaveLoadouts(EquipmentLoadout[] equipLoadouts)
+	{
+		TagCompound loadouts = new();
+
+		for (int i = 0; i < 3; i++) {
+			loadouts[$"loadout{i}Armor"] = SaveInventory(equipLoadouts[i].Armor);
+			loadouts[$"loadout{i}Dye"] = SaveInventory(equipLoadouts[i].Dye);
+		}
+
+		return loadouts;
+	}
+
+	internal static void LoadLoadouts(EquipmentLoadout[] loadouts, TagCompound fullSavedCompound)
+	{
+		if (!fullSavedCompound.TryGet("loadouts", out TagCompound loadoutTag)) {
+			// This indicates that this player was created before 1.4.4, and thus has no loadouts; so nothing to load here.
+			return;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			LoadInventory(loadouts[i].Armor, loadoutTag.GetList<TagCompound>($"loadout{i}Armor"));
+			LoadInventory(loadouts[i].Dye, loadoutTag.GetList<TagCompound>($"loadout{i}Dye"));
+		}
 	}
 
 	//add to end of Terraria.IO.PlayerFileData.MoveToCloud
