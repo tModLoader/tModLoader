@@ -1313,6 +1313,22 @@
  		if (type == 13 || type == 14 || type == 15) {
  			DropEoWLoot();
  		}
+@@ -58799,6 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Gets the <see cref="InvasionID"/> associated with the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="npcID">The NPC type to check.</param>
++	/// <returns>
++	/// <c>0</c> for NPCs not affiliated with any invasion.
++	/// <br/> A positive <see cref="InvasionID"/> for NPCs affiliated with standard events, such as the Goblin Army.
++	/// <br/> A negative <see cref="InvasionID"/> for NPCs affiliated with a wave-based event, such as the Pumpkin Moon. Wave-based events are prefixed with "Cached" in <see cref="InvasionID"/>.
++	/// </returns>
+ 	public static int GetNPCInvasionGroup(int npcID)
+ 	{
+ 		int result = 0;
 @@ -59211,7 +_,7 @@
  
  	public static void ResetKillCount()

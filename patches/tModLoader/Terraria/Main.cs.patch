@@ -84,10 +84,15 @@
  	public static FileMetadata WorldFileMetadata;
  	public static FileMetadata MapFileMetadata;
  	public static PingMapLayer Pings = new PingMapLayer();
-@@ -487,12 +_,12 @@
+@@ -487,12 +_,17 @@
  	public static bool showSplash = true;
  	public static bool ignoreErrors = true;
  	public static string defaultIP = "";
++
++	/// <summary>
++	/// The rate at which <see cref="time"/> updates per tick.
++	/// <br/> Can be modified using <see cref="ModSystem.ModifyTimeRate(ref double, ref double, ref double)"/>. Capped at <c>86,400.0</c>.
++	/// </summary>
 -	public static int dayRate = 1;
 +	public static double dayRate = 1;
 -	public static int desiredWorldTilesUpdateRate = 1;
@@ -100,9 +105,15 @@
  	public static float iS = 1f;
  	public static bool render;
  	public static int qaStyle;
-@@ -502,12 +_,46 @@
+@@ -501,13 +_,58 @@
+ 	public static float musicPitch = 0f;
  	public static bool[] projHostile = new bool[ProjectileID.Count];
  	public static bool[] projHook = new bool[ProjectileID.Count];
++
++	/// <summary>
++	/// Indexed by <see cref="BuffID"/>. If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff can be applied to players by other players in PvP.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public static bool[] pvpBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
@@ -138,6 +149,12 @@
 +	/// Defaults to false; all vanilla debuffs have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] debuff = new bool[BuffID.Count];
++
++	/// <summary>
++	/// Indexed by <see cref="BuffID"/>. If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will not be saved when exiting a world.
++	/// <br/> Vanilla sets this for DoT effects (<see cref="BuffID.Poisoned"/>), short item buffs (<see cref="BuffID.Panic"/>), mount buffs, and conditionally-applied buffs (<see cref="BuffID.Campfire"/>, <see cref="BuffID.Werewolf"/>).
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public static bool[] buffNoSave = new bool[BuffID.Count];
 +
 +	/// <summary>
@@ -204,6 +221,22 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
+@@ -671,7 +_,15 @@
+ 	public static float rightWorld = 134400f;
+ 	public static float topWorld = 0f;
+ 	public static float bottomWorld = 38400f;
++
++	/// <summary>
++	/// The width of the currently-loaded world in tiles.
++	/// </summary>
+ 	public static int maxTilesX = (int)rightWorld / 16 + 1;
++
++	/// <summary>
++	/// The height of the currently-loaded world in tiles.
++	/// </summary>
+ 	public static int maxTilesY = (int)bottomWorld / 16 + 1;
+ 	public const int sectionWidth = 200;
+ 	public const int sectionHeight = 150;
 @@ -687,7 +_,7 @@
  	public const int maxItems = 400;
  	public const int maxProjectiles = 1000;
@@ -213,7 +246,7 @@
  	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
-@@ -743,7 +_,17 @@
+@@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -232,6 +265,37 @@
  	public static string worldName = "";
  	public static int worldID;
  	public static int background;
+ 	public static int caveBackground = 0;
+ 	public static float ugBackTransition;
+ 	public static Microsoft.Xna.Framework.Color tileColor;
++
++	/// <summary>
++	/// The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0' on the Depth Meter.
++	/// </summary>
++	/// <remarks>Players under the surface will have <see cref="Player.ZoneDirtLayerHeight"/> set to <see langword="true"/>.</remarks>
+ 	public static double worldSurface;
++
++	/// <summary>
++	/// The y-coordinate of the top of the caverns layer, in tile coordinates.
++	/// </summary>
++	/// <remarks>Players in this layer will have <see cref="Player.ZoneRockLayerHeight"/> set to <see langword="true"/>.</remarks>
+ 	public static double rockLayer;
+ 	public static Microsoft.Xna.Framework.Color[] teamColor = new Microsoft.Xna.Framework.Color[6];
+ 	public const double dayLength = 54000.0;
+ 	public const double nightLength = 32400.0;
+ 	public static bool dayTime = true;
++
++	/// <summary>
++	/// The time that has passed since it last became day/night.
++	/// <br/> Increased by <see cref="dayRate"/> every tick.
++	/// <br/> If it is <see cref="dayTime"/>, this caps at <see cref="dayLength"/>. Otherwise, this caps at <see cref="nightLength"/>.
++	/// </summary>
++	/// <remarks>
++	/// If you need 24-hour time, use <see cref="Utils.GetDayTimeAs24FloatStartingFromMidnight"/>.
++	/// </remarks>
+ 	public static double time = 13500.0;
+ 	public static double timeForVisualEffects;
+ 	public static int moonPhase;
 @@ -768,7 +_,7 @@
  	public static float cloudAlpha;
  	public static float maxRaining;
@@ -272,6 +336,25 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
+@@ -829,7 +_,18 @@
+ 	public static float ambientVolume = 1f;
+ 	public static float soundVolume = 1f;
+ 	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
++
++	/// <summary>
++	/// Indexed by <see cref="TileID"/>. If <see langword="true"/> for a given <see cref="TileID"/>, then that tile produces light.
++	/// <br/> You can set the light color for tile using <see cref="ModBlockType.ModifyLight(int, int, ref float, ref float, ref float)"/> or <see cref="GlobalBlockType.ModifyLight(int, int, int, ref float, ref float, ref float)"/>.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public static bool[] tileLighted = new bool[TileID.Count];
++
++	/// <summary>
++	/// Indexed by <see cref="TileID"/>. If <see langword="true"/> for a given <see cref="TileID"/>, then that tile has frames for merging with <see cref="TileID.Dirt"/>.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public static bool[] tileMergeDirt = new bool[TileID.Count];
+ 	public static bool[] tileCut = new bool[TileID.Count];
+ 	public static bool[] tileAlch = new bool[TileID.Count];
 @@ -942,6 +_,12 @@
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
@@ -296,6 +379,18 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -1026,6 +_,11 @@
+ 	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
+ 	public static int numAvailableRecipes;
+ 	public static int focusRecipe;
++
++	/// <summary>
++	/// The index in <see cref="player"/> of this client's Player.
++	/// <br/> If this is <c>255</c>, this client is the server.
++	/// </summary>
+ 	public static int myPlayer;
+ 	public static Player[] player = new Player[256];
+ 	public static Player[] playerVisualClone = new Player[256];
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -424,7 +519,22 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
-@@ -2319,7 +_,7 @@
+@@ -2311,15 +_,22 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The y-coordinate of the top of the underworld, in tile coordinates.
++	/// </summary>
++	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworld"/> set to <see langword="true"/>.</remarks>
+ 	public static int UnderworldLayer => maxTilesY - 200;
+ 
+ 	public static float WindForVisuals => windSpeedCurrent;
+ 
++	/// <summary>
++	/// Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.
++	/// </summary>
+ 	public static Player LocalPlayer => player[myPlayer];
  
  	public static CreativeUnlocksTracker LocalPlayerCreativeTracker => player[myPlayer].creativeTracker;
  
@@ -2924,7 +3034,7 @@
  				}
  			}
  		}
-@@ -17350,24 +_,30 @@
+@@ -17350,30 +_,51 @@
  			if (!gore[i].active || gore[i].type <= 0)
  				continue;
  
@@ -2956,6 +3066,27 @@
  			}
  		}
  
+ 		TimeLogger.DetailedDrawTime(24);
+ 	}
+ 
++	/// <summary>
++	/// Draws a small health bar.
++	/// <br/> <see cref="spriteBatch"/> should <strong>already be started</strong> before calling this method.
++	/// </summary>
++	/// <param name="X">The x-coordinate of the health bar in world coordinates.</param>
++	/// <param name="Y">The y-coordinate of the health bar in world coordinates.</param>
++	/// <param name="Health">
++	/// The current health displayed. The health bar is drawn <c><paramref name="Health"/> / <paramref name="MaxHealth"/></c> percent full.
++	/// <br/> If <c><paramref name="Health"/> &lt;= 0</c>, no health bar is drawn.
++	/// <br/> If <c><paramref name="Health"/> &gt; <paramref name="MaxHealth"/></c>, the health bar will not exceed max capacity.
++	/// </param>
++	/// <param name="MaxHealth">The maximum health displayed. The health bar is drawn <c><paramref name="Health"/> / <paramref name="MaxHealth"/></c> percent full.</param>
++	/// <param name="alpha">The opacity of the healthbar, where <c>0f</c> is transparent and <c>1f</c> is opaque.</param>
++	/// <param name="scale">The visual scale of the health bar.</param>
++	/// <param name="noFlip">If <see langword="true"/>, then the health bar will not adjust its y-position for players with reversed gravity.</param>
+ 	public void DrawHealthBar(float X, float Y, int Health, int MaxHealth, float alpha, float scale = 1f, bool noFlip = false)
+ 	{
+ 		if (Health <= 0)
 @@ -17456,6 +_,8 @@
  		float num = 0f;
  		if (theNPC.type == 125)
@@ -3010,6 +3141,19 @@
  		npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  		if (type == 50) {
  			Vector2 zero = Vector2.Zero;
+@@ -21675,6 +_,12 @@
+ 		spriteBatch.Draw(itemTexture, new Vector2(rCurrentNPC.Center.X - screenPosition.X + num8, rCurrentNPC.Center.Y - screenPosition.Y + rCurrentNPC.gfxOffY + num9), rectangle, npcColor, num11, rectangle.Size() / 2f, num2, SpriteEffects.None, 0f);
+ 	}
+ 
++	/// <summary>
++	/// Gets the texture and frame of the given item type (<see cref="Item.type"/>).
++	/// </summary>
++	/// <param name="item">The item type to use.</param>
++	/// <param name="itemTexture">The <see cref="Texture2D"/> in <see cref="TextureAssets.Item"/> of <paramref name="item"/>.</param>
++	/// <param name="itemFrame">The <see cref="Rectangle"/> covering this item's current frame on <paramref name="itemTexture"/>.</param>
+ 	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
+ 	{
+ 		instance.LoadItem(item);
 @@ -21985,10 +_,13 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
@@ -5966,7 +6110,7 @@
  				num40++;
  			}
  		}
-@@ -54517,6 +_,8 @@
+@@ -54517,8 +_,20 @@
  
  			WorldGen.prioritizedTownNPCType = num42;
  		}
@@ -5974,7 +6118,19 @@
 +		NPCLoader.CanTownNPCSpawn(num40);
  	}
  
++	/// <summary>
++	/// Multiplies the input damage by a random value between <c>0.85f</c> and <c>1.15f</c>.
++	/// </summary>
++	/// <param name="dmg">The damage to vary.</param>
++	/// <param name="luck">
++	/// How lucky the damager is, in the range [-1f, 1f].
++	/// <br/> If <c><paramref name="luck"/> &gt; 0f</c>, there is a <c><paramref name="luck"/></c>% chance that damage variation is rerolled, with the higher value being used.
++	/// <br/> If <c><paramref name="luck"/> &lt; 0f</c>, there is a <c>-<paramref name="luck"/></c>% chance that damage variation is rerolled, with the lower value being used.
++	/// </param>
++	/// <returns>The varied damage value, rounded to the nearest integer.</returns>
  	public static int DamageVar(float dmg, float luck = 0f)
+ 	{
+ 		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
 @@ -54625,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)

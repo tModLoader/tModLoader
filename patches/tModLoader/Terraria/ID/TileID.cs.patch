@@ -15,15 +15,81 @@
  	{
  		public static class Conversion
  		{
-@@ -106,7 +_,7 @@
+@@ -106,19 +_,60 @@
  			};
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then players will slip on that tile.
++		/// <br/> If players have Ice Skates (<see cref="Player.iceSkate"/>) equipped, however, they will be much faster on this tile.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IceSkateSlippery = Factory.CreateBoolSet(161, 162, 127, 163, 164, 200, 659);
  		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);
++
++		// TML: Why would someone want to set this? Maybe it's for 1x1 tile entities?
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be compressed when syncing or saving the world.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// </summary>
  		public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a Gem Tree.
++		/// <br/> Vanilla only uses this for displaying a special message when using Lucy the Axe.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a tree trunk.
++		/// <br/> Tree trunks are a type of tile anchor (<see cref="Enums.AnchorType.Tree"/>), targettable by axes, and are replanted when using the <see cref="ItemID.AcornAxe"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be shaken on hit.
++		/// <br/> <strong>This set only applies to trees.</strong>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
++
+ 		public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] PreventsTileRemovalIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634);
+ 		public static bool[] PreventsTileReplaceIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] CommonSapling = Factory.CreateBoolSet(false, 20, 590, 595, 615);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile has smooth borders and is drawn differently when hammered to be a half-block.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] AllBlocksWithSmoothBordersToResolveHalfBlockIssue = Factory.CreateBoolSet(false, 321, 157, 208, 159, 190, 80, 251, 202, 229, 56, 38, 39, 152, 118, 151, 148, 206, 119, 175, 46, 176, 45, 140, 347, 370, 121, 122, 680, 681, 682, 685, 686, 346, 687, 688, 689, 690, 691, 692, 160, 226, 54, 156, 155, 153, 154, 150, 250, 198, 273, 274, 325, 284, 348, 385, 327, 326, 345, 328, 329, 357, 369, 268, 261, 262, 255, 267, 260, 265, 258, 266, 259, 264, 257, 263, 256, 311, 431, 426, 433, 430, 434, 432, 272, 145, 146, 350, 127, 472, 473, 477, 478, 479, 492, 496, 507, 508, 563, 618);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be mined using a shovel.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633);
+ 		public static bool[] NonSolidSaveSlopes = Factory.CreateBoolSet(false, 131, 351);
+ 		public static bool[] ResetsHalfBrickPlacementAttempt = Factory.CreateBoolSet(true, 2, 23, 661, 60, 70, 199, 662, 109, 477, 492, 179, 512, 180, 513, 181, 514, 182, 515, 183, 516, 381, 517, 534, 535, 536, 537, 539, 540, 625, 626, 627, 628, 633);
+@@ -159,6 +_,12 @@
+ 		public static bool[] DrawsWalls = Factory.CreateBoolSet(10, 54, 138, 664, 484, 388, 191, 137, 328, 162, 387, 48, 232, 127, 459, 541, 546);
+ 		public static ushort[] GemsparkFramingTypes = Factory.CreateUshortSet(0, 265, 265, 258, 258, 264, 264, 257, 257, 267, 267, 260, 260, 266, 266, 259, 259, 263, 263, 256, 256, 262, 262, 255, 255, 268, 268, 261, 261, 385, 385, 446, 446, 447, 447, 448, 448);
+ 		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
++
++		/// <summary>
++		/// If <c>!= 0</c> for a given tile type (<see cref="Tile.TileType"/>), then that tile functions as a conveyor belt.
++		/// <br/> A positive value pushes entities to the right, and a negative value to the left. The actual value does not matter, only the sign.
++		/// <br/> Defaults to <c>0</c>.
++		/// </summary>
+ 		public static int[] ConveyorDirection = Factory.CreateIntSet(0, 421, 1, 422, -1);
+ 		public static bool[] VineThreads = Factory.CreateBoolSet(382, 62, 115, 205, 52, 528, 636, 638);
+ 		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
 @@ -248,6 +_,11 @@
  		public static bool[] TouchDamageBleeding = Factory.CreateBoolSet(48, 232);
  		public static int[] TouchDamageImmediate = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25);
