@@ -68,7 +68,7 @@ internal static class PlayerIO
 	{
 		LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 		LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
-		LoadLoadouts(player.Loadouts, tag);
+		LoadLoadouts(player.Loadouts, tag.GetCompound("loadouts"));
 		LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
 		LoadInventory(player.miscEquips, tag.GetList<TagCompound>("miscEquips"));
 		LoadInventory(player.miscDyes, tag.GetList<TagCompound>("miscDyes"));
@@ -361,13 +361,8 @@ internal static class PlayerIO
 		return loadouts;
 	}
 
-	internal static void LoadLoadouts(EquipmentLoadout[] loadouts, TagCompound fullSavedCompound)
+	internal static void LoadLoadouts(EquipmentLoadout[] loadouts, TagCompound loadoutTag)
 	{
-		if (!fullSavedCompound.TryGet("loadouts", out TagCompound loadoutTag)) {
-			// This indicates that this player was created before 1.4.4, and thus has no loadouts; so nothing to load here.
-			return;
-		}
-
 		for (int i = 0; i < loadouts.Length; i++) {
 			LoadInventory(loadouts[i].Armor, loadoutTag.GetList<TagCompound>($"loadout{i}Armor"));
 			LoadInventory(loadouts[i].Dye, loadoutTag.GetList<TagCompound>($"loadout{i}Dye"));
