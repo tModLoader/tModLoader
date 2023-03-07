@@ -20,9 +20,7 @@ using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
-using Terraria.DataStructures;
 using System.Collections.Generic;
-using ReLogic.Content;
 using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.NPCs

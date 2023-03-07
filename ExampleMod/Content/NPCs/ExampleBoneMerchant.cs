@@ -9,8 +9,6 @@ using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
 using Terraria.GameContent;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 
 namespace ExampleMod.Content.NPCs
 {
