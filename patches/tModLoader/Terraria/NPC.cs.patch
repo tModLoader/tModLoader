@@ -1595,7 +1595,7 @@
 +			spawnInfo.SpiderCave = flag11;
 +			spawnInfo.PlayerInTown = flag12;
 +			spawnInfo.DesertCave = flag13;
-+			spawnInfo.PlanteraDefeated = flag14;
++			//spawnInfo.PlanteraDefeated = flag14;
 +			spawnInfo.SafeRangeX = flag15;
 +
  			int newNPC = 200;
@@ -1676,13 +1676,14 @@
  		int t = 200;
  		int num2 = 1;
  		if (num) {
-@@ -64338,9 +_,9 @@
+@@ -64338,9 +_,10 @@
  	private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC)
  	{
  		NPC nPC = Main.npc[nextNPC];
 -		if (nPC.isLikeATownNPC) {
 -			nPC.GivenName = getNewNPCName(Type);
 -			if (TownNPCProfiles.Instance.GetProfile(Type, out var profile)) {
++		// if (nPC.isLikeATownNPC) {
 +		if (nPC.isLikeATownNPC || Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type]) {
 +			nPC.GivenName = nPC.getNewNPCName();
 +			if (TownNPCProfiles.Instance.GetProfile(nPC, out var profile)) {

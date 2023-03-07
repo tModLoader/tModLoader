@@ -29,12 +29,6 @@ public abstract class ModTile : ModBlockType
 	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
 	public int[] AdjTiles { get; set; } = new int[0];
 
-	/// <summary> The ID of the tile that this door transforms into when it is closed. Defaults to -1, which means this tile isn't a door. </summary>
-	public int CloseDoorID { get; set; } = -1;
-
-	/// <summary> The ID of the tile that this door transforms into when it is opened. Defaults to -1, which means this tile isn't a door. </summary>
-	public int OpenDoorID { get; set; } = -1;
-
 	/// <summary> The ID of the item that drops when this chest is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 	public int ChestDrop { get; set; }
 
@@ -46,7 +40,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
 	public virtual string HighlightTexture => Texture + "_Highlight";
 
-	public bool IsDoor => OpenDoorID != -1 || CloseDoorID != -1;
+	public bool IsDoor => TileID.Sets.OpenDoorID[Type] != -1 || TileID.Sets.CloseDoorID[Type] != -1;
 
 	/// <summary>
 	/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.

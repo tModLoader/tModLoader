@@ -1875,29 +1875,24 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -49240,16 +_,21 @@
+@@ -49240,8 +_,9 @@
  					continue;
  
  				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
 -				if (player.CanPullItem(Main.item[whoAmI], status)) {
 +				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
  					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
-+
-+					int grabRange = Player.defaultItemGrabRange;
++					/*
  					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
--						num3 -= (float)manaGrabRange;
-+						grabRange += manaGrabRange;
+ 						num3 -= (float)manaGrabRange;
  
- 					if (player.lifeMagnet && (type == 58 || type == 1734 || type == 1867))
--						num3 -= (float)lifeGrabRange;
-+						grabRange += lifeGrabRange;
+@@ -49250,6 +_,9 @@
  
  					if (type == 4143)
--						num3 -= (float)manaGrabRange;
-+						grabRange += manaGrabRange;
-+
-+					ItemLoader.GrabRange(Main.item[whoAmI], player, ref grabRange);
-+					num3 -= grabRange;
+ 						num3 -= (float)manaGrabRange;
++					*/
++					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
++					num3 -= player.GetItemGrabRange(Main.item[whoAmI]);
  
  					if (num2 > num3) {
  						num2 = num3;
@@ -1956,9 +1951,12 @@
  	}
  
  	public void OnPurchase(Item item)
-@@ -49332,7 +_,7 @@
+@@ -49330,9 +_,9 @@
+ 	public void Serialize(BinaryWriter writer, ItemSerializationContext context)
+ 	{
  		if (context == ItemSerializationContext.SavingAndLoading) {
- 			writer.Write(netID);
+-			writer.Write(netID);
++			writer.Write(netID >= ItemID.Count ? 0 : netID);
  			writer.Write(stack);
 -			writer.Write(prefix);
 +			ItemIO.WriteByteVanillaPrefix(this, writer);

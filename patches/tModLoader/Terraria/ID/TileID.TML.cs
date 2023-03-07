@@ -99,6 +99,16 @@ partial class TileID
 		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
 
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is CLOSED. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] OpenDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is OPEN. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
+
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)
 		{

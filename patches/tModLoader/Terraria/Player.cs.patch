@@ -691,31 +691,33 @@
  		if (item.shoot == 73) {
  			int num2 = 0;
  			for (int i = 0; i < 1000; i++) {
-@@ -3630,11 +_,24 @@
+@@ -3630,11 +_,13 @@
  		float shootSpeed = item.shootSpeed;
  		int damage = item.damage;
  		float knockBack = item.knockBack;
+-		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
 +
-+		bool vanillaSingleHook = false;
- 		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
-+			vanillaSingleHook = true;
-+		}
-+
-+		if (ProjectileLoader.SingleGrappleHook(num7, this) ?? vanillaSingleHook) {
++		if (ProjectileID.Sets.SingleGrappleHook[num7]) {
  			grappling[0] = -1;
  			grapCount = 0;
  			for (int num8 = 0; num8 < 1000; num8++) {
  				if (Main.projectile[num8].active && Main.projectile[num8].owner == whoAmI) {
-+					if (ProjectileLoader.SingleGrappleHook(Main.projectile[num8].type, this) is bool modSingleHook2) {
-+						if (modSingleHook2)
-+							Main.projectile[num8].Kill();
-+
-+						continue;
-+					}
-+
++					/*
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
+@@ -3651,6 +_,11 @@
+ 							Main.projectile[num8].Kill();
+ 							break;
+ 					}
++					*/
++					if (!ProjectileID.Sets.SingleGrappleHook[num8])
++						continue;
++
++					Main.projectile[num8].Kill();
+ 				}
+ 			}
+ 		}
 @@ -3721,11 +_,14 @@
  					break;
  				case -1:
@@ -1348,6 +1350,15 @@
  		}
  
  		UpdateHungerBuffs();
+@@ -9241,7 +_,7 @@
+ 		if (flag) {
+ 			for (int k = 0; k < 40; k++) {
+ 				int type3 = bank4.item[k].type;
+-				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
++				if (type3 < 0 || ItemID.Sets.WorksInVoidBag[type3])
+ 					RefreshInfoAccsFromItemType(type3);
+ 			}
+ 		}
 @@ -9431,6 +_,9 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
@@ -1780,7 +1791,7 @@
  		if (item.prefix == 80)
  			meleeSpeed += 0.04f;
 +
-+		// TODO: PrefixLoader.GrantPrefixBenefits(item)
++		PrefixLoader.ApplyAccessoryEffects(this, item);
  	}
  
  	private void SpawnHallucination(Item item)
