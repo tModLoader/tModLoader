@@ -1691,7 +1691,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,109 @@
+@@ -64591,26 +_,110 @@
  
  		return armorPenetration / 2;
  	}
@@ -1776,9 +1776,10 @@
 +	/// <param name="knockBack">Defaults to 0</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
-+	public HitInfo SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false) {
-+		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation);
++	public HitInfo SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
++		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}
 +
 +	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false)
