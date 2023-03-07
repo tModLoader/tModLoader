@@ -12,22 +12,20 @@ public partial class Profiles
 	/// </summary>
 	public class DefaultNPCProfile : ITownNPCProfile
 	{
-		protected string rootFilePath;
-		protected int npcVariationHeadSlot;
-		protected Asset<Texture2D> defaultNoAlt;
-		protected Asset<Texture2D> defaultParty;
+		protected int currentHeadSlot;
+		protected Asset<Texture2D> defaultTexture;
+		protected Asset<Texture2D> partyTexture;
 
-		public DefaultNPCProfile(string npcTexturePath, int npcHeadSlot, string npcPartyTexturePath = null)
+		public DefaultNPCProfile(string texturePath, int headSlot, string partTexturePath = null)
 		{
-			rootFilePath = npcTexturePath;
-			npcVariationHeadSlot = npcHeadSlot;
+			currentHeadSlot = headSlot;
 
 			if (Main.dedServ) {
 				return;
 			}
 
-			defaultNoAlt = ModContent.Request<Texture2D>(npcTexturePath);
-			defaultParty = !string.IsNullOrEmpty(npcPartyTexturePath) ? ModContent.Request<Texture2D>(npcPartyTexturePath) : defaultNoAlt;
+			defaultTexture = ModContent.Request<Texture2D>(texturePath);
+			partyTexture = !string.IsNullOrEmpty(partTexturePath) ? ModContent.Request<Texture2D>(partTexturePath) : defaultTexture;
 		}
 
 		public int RollVariation() => 0;
@@ -36,12 +34,12 @@ public partial class Profiles
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn) {
-				return defaultNoAlt;
+				return defaultTexture;
 			}
 
-			return npc.altTexture == 1 ? defaultParty : defaultNoAlt;
+			return npc.altTexture == 1 ? partyTexture : defaultTexture;
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => npcVariationHeadSlot;
+		public int GetHeadTextureIndex(NPC npc) => currentHeadSlot;
 	}
 }

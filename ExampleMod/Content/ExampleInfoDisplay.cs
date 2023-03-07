@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.ID;
 
 namespace ExampleMod.Content
 {
@@ -45,11 +44,10 @@ namespace ExampleMod.Content
 			showMinionCount = false;
 		}
 
-		public override void UpdateInfoAccessory(int accessoryType) {
-			// The minion count is only shown when the radar is equipped.
-			if (accessoryType == ItemID.Radar) {
+		public override void UpdateEquips() {
+			// The information display is only activated when a Radar is present
+			if (Player.accThirdEye)
 				showMinionCount = true;
-			}
 		}
 	}
 }

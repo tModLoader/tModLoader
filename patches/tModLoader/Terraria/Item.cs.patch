@@ -1877,11 +1877,12 @@
  					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
  						num3 -= (float)manaGrabRange;
  
-@@ -49250,6 +_,8 @@
+@@ -49250,6 +_,9 @@
  
  					if (type == 4143)
  						num3 -= (float)manaGrabRange;
 +					*/
++					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
 +					num3 -= player.GetItemGrabRange(Main.item[whoAmI]);
  
  					if (num2 > num3) {

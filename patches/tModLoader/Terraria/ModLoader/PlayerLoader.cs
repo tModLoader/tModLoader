@@ -354,15 +354,6 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookUpdateInfoAccessory = AddHook<Action<int>>(p => p.UpdateInfoAccessory);
-
-	public static void UpdateInfoAccessory(Player player, int accessoryType)
-	{
-		foreach (var modPlayer in HookUpdateInfoAccessory.Enumerate(player.modPlayers)) {
-			modPlayer.UpdateInfoAccessory(accessoryType);
-		}
-	}
-
 	private static HookList HookFrameEffects = AddHook<Action>(p => p.FrameEffects);
 
 	public static void FrameEffects(Player player)

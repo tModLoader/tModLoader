@@ -706,11 +706,12 @@
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
-@@ -3651,6 +_,8 @@
+@@ -3651,6 +_,9 @@
  							Main.projectile[num8].Kill();
  							break;
  					}
 +					*/
++					if (!ProjectileID.Sets.SingleGrappleHook[num8]) continue;
 +					Main.projectile[num8].Kill();
  				}
  			}
@@ -1352,19 +1353,10 @@
  			for (int k = 0; k < 40; k++) {
  				int type3 = bank4.item[k].type;
 -				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
-+				if (type3 < 0 || /*type3 > ItemID.Count ||*/ItemID.Sets.WorksInVoidBag[type3])
++				if (type3 < 0 || ItemID.Sets.WorksInVoidBag[type3])
  					RefreshInfoAccsFromItemType(type3);
  			}
  		}
-@@ -9354,6 +_,8 @@
- 
- 		if (accType == 3119 || accType == 3121 || accType == 3123 || accType == 3124 || accType == 5358 || accType == 5359 || accType == 5360 || accType == 5361)
- 			accDreamCatcher = true;
-+
-+		PlayerLoader.UpdateInfoAccessory(this, accType);
- 	}
- 
- 	public void RefreshMechanicalAccsFromItemType(int accType)
 @@ -9431,6 +_,9 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
@@ -1797,7 +1789,7 @@
  		if (item.prefix == 80)
  			meleeSpeed += 0.04f;
 +
-+		PrefixLoader.GrantPrefixBenefits(this, item);
++		PrefixLoader.ApplyAccessoryEffects(this, item);
  	}
  
  	private void SpawnHallucination(Item item)
