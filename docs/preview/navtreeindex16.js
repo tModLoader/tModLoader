@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_underground_hallow_shader.html":[2,0,1322],
 "class_underground_mushroom_shader.html":[2,0,1323],
 "class_underworld_shader.html":[2,0,1324],
 "class_unified_random.html":[2,0,1325],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "functions_vars_t.html":[2,3,2,19],
 "functions_vars_u.html":[2,3,2,20],
 "functions_vars_v.html":[2,3,2,21],
-"functions_vars_w.html":[2,3,2,22],
-"functions_vars_x.html":[2,3,2,23]
+"functions_vars_w.html":[2,3,2,22]
 };

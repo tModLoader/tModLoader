@@ -105,6 +105,9 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Apply</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a1bfd97f29841bac5f8e5097b5405c6de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the custom data stats set in SetStats to the given item. <br /></td></tr>
 <tr class="separator:a1bfd97f29841bac5f8e5097b5405c6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac426d97eed3c809c999f6558695bffa0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_prefix.html#ac426d97eed3c809c999f6558695bffa0">ApplyAccessoryEffects</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:ac426d97eed3c809c999f6558695bffa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to modify player stats (or any other applicable data) based on this <a class="el" href="class_mod_prefix.html">ModPrefix</a>.  <a href="class_mod_prefix.html#ac426d97eed3c809c999f6558695bffa0">More...</a><br /></td></tr>
+<tr class="separator:ac426d97eed3c809c999f6558695bffa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad54aa9109c293ee5d177f3d822ab6b5"><td class="memItemLeft" align="right" valign="top"><a id="aad54aa9109c293ee5d177f3d822ab6b5" name="aad54aa9109c293ee5d177f3d822ab6b5"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRoll</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:aad54aa9109c293ee5d177f3d822ab6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if your <a class="el" href="class_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns RollChance(item) &gt; 0 <br /></td></tr>
@@ -323,6 +326,40 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <p>Use this to check whether modifiers to custom stats would be too small to have an effect after rounding, and prevent the prefix from being applied to the given item if there would be no change. Vanilla stat changes (</p><dl class="section see"><dt>See also</dt><dd>SetStats</dd></dl>
 <p>) are checked automatically, so there is no need to override this method to check them </p>
 <dl class="section return"><dt>Returns</dt><dd>false to prevent the prefix from being applied</dd></dl>
+
+</div>
+</div>
+<a id="ac426d97eed3c809c999f6558695bffa0" name="ac426d97eed3c809c999f6558695bffa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac426d97eed3c809c999f6558695bffa0">&#9670;&nbsp;</a></span>ApplyAccessoryEffects()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModPrefix.ApplyAccessoryEffects </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Use this to modify player stats (or any other applicable data) based on this <a class="el" href="class_mod_prefix.html">ModPrefix</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player gaining the benefits of this accessory. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -130,7 +130,7 @@ var searchData=
   ['clonenewinstances_127',['CloneNewInstances',['../class_global_type.html#a3edb6a3637f175e4c77aeb823449d40f',1,'GlobalType.CloneNewInstances()'],['../class_mod_type.html#a33a9306160c2e6230f83d052ad863a68',1,'ModType.CloneNewInstances()']]],
   ['cloning_128',['Cloning',['../class_cloning.html',1,'']]],
   ['close_129',['Close',['../class_mod.html#a724f996256e98a550dbf6358c3d9d4b9',1,'Mod']]],
-  ['closedoorid_130',['CloseDoorID',['../class_mod_tile.html#a366d38c640a3b41d6d8a430d0969802b',1,'ModTile']]],
+  ['closedoorid_130',['CloseDoorID',['../class_tile_i_d_1_1_sets.html#ac8773c92c420ba16ba27aae76375f64b',1,'TileID::Sets']]],
   ['cloud_131',['Cloud',['../class_cloud.html',1,'']]],
   ['cloudid_132',['CloudID',['../class_cloud_i_d.html',1,'']]],
   ['cloudinaballooncrafting_133',['CloudInABalloonCrafting',['../class_game_tip_i_d.html#a56d5c151445c8dbdabc69ee3914e397f',1,'GameTipID']]],

@@ -43,10 +43,8 @@ var class_mod_tile =
     [ "AdjTiles", "class_mod_tile.html#a0ac0b849d7787ee3ca125ff576e12c5a", null ],
     [ "AnimationFrameHeight", "class_mod_tile.html#a147087fb6dd795d857cf099fa06f009f", null ],
     [ "ChestDrop", "class_mod_tile.html#abd11756bebc095cf7a390923781eccf7", null ],
-    [ "CloseDoorID", "class_mod_tile.html#a366d38c640a3b41d6d8a430d0969802b", null ],
     [ "DresserDrop", "class_mod_tile.html#ad69d74a85fd15009735ced23e6fec8f0", null ],
     [ "HighlightTexture", "class_mod_tile.html#ae12810d265c604e5a4941b299859fa85", null ],
     [ "MineResist", "class_mod_tile.html#a36cfe4b7996be9bf5d5fa83cd3fbfea2", null ],
-    [ "MinPick", "class_mod_tile.html#ac2edba54b94a6177676a99d37f512f57", null ],
-    [ "OpenDoorID", "class_mod_tile.html#a7fe821f0f4d7f0c1beb2b5912992351e", null ]
+    [ "MinPick", "class_mod_tile.html#ac2edba54b94a6177676a99d37f512f57", null ]
 ];

@@ -24,6 +24,6 @@ var searchData=
   ['rocketscienceandboots_21',['RocketScienceAndBoots',['../class_game_tip_i_d.html#a197fc13f7365984ca2fe5e9036f03586',1,'GameTipID']]],
   ['ropeandropecoils_22',['RopeAndRopeCoils',['../class_game_tip_i_d.html#afe382fb98e83c14d647d00a7497698e0',1,'GameTipID']]],
   ['ropecoil_23',['RopeCoil',['../class_proj_a_i_style_i_d.html#ab57e6475f3ad4c4b0bad4cfbd063a0cd',1,'ProjAIStyleID']]],
-  ['rotation_24',['rotation',['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile']]],
-  ['rotation_25',['Rotation',['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine']]]
+  ['rotation_24',['Rotation',['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine']]],
+  ['rotation_25',['rotation',['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile']]]
 ];

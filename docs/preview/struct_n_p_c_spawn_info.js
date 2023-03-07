@@ -5,7 +5,6 @@ var struct_n_p_c_spawn_info =
     [ "Invasion", "struct_n_p_c_spawn_info.html#aa7fb95941b585bc29e71980a239b538a", null ],
     [ "Lihzahrd", "struct_n_p_c_spawn_info.html#a772a64f16b785d7abc7d272c20b8b265", null ],
     [ "Marble", "struct_n_p_c_spawn_info.html#aa8b82a3a8f539dd1e07ebac9e6bc3bf3", null ],
-    [ "PlanteraDefeated", "struct_n_p_c_spawn_info.html#a0b78b290b0475ba65dad65a0209c3743", null ],
     [ "Player", "struct_n_p_c_spawn_info.html#a7d41785192c2cd08b34bd2b684965dc0", null ],
     [ "PlayerFloorX", "struct_n_p_c_spawn_info.html#aaa6ce5f9353060ed67a94e191d7f2204", null ],
     [ "PlayerFloorY", "struct_n_p_c_spawn_info.html#aaf0e8b9ae69407893dd839e3ccecb155", null ],

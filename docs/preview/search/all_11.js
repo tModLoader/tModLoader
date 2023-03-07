@@ -111,8 +111,8 @@ var searchData=
   ['roomneeds_108',['RoomNeeds',['../class_tile_i_d_1_1_sets_1_1_room_needs.html',1,'TileID::Sets']]],
   ['ropeandropecoils_109',['RopeAndRopeCoils',['../class_game_tip_i_d.html#afe382fb98e83c14d647d00a7497698e0',1,'GameTipID']]],
   ['ropecoil_110',['RopeCoil',['../class_proj_a_i_style_i_d.html#ab57e6475f3ad4c4b0bad4cfbd063a0cd',1,'ProjAIStyleID']]],
-  ['rotation_111',['rotation',['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile']]],
-  ['rotation_112',['Rotation',['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine']]],
+  ['rotation_111',['Rotation',['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine']]],
+  ['rotation_112',['rotation',['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile']]],
   ['runonmainthread_113',['RunOnMainThread',['../class_main.html#a4523d4baa024b72951881722004207b2',1,'Main']]],
   ['runonmainthread_3c_20t_20_3e_114',['RunOnMainThread&lt; T &gt;',['../class_main.html#a9b43ba6a62eef2a91a16433fca565626',1,'Main']]]
 ];

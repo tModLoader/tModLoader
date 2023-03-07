@@ -116,7 +116,7 @@ var NAVTREEINDEX4 =
 "class_global_projectile.html#a1c55cf1e52b090382507fa515d8b3712":[2,0,424,28],
 "class_global_projectile.html#a1f9e00da967e11713bf0ddb174ace4cf":[2,0,424,9],
 "class_global_projectile.html#a2063b0c6e9419e4f998bf424efe515ee":[2,0,424,13],
-"class_global_projectile.html#a24da8a1d31d232c090607771aa3c655b":[2,0,424,42],
+"class_global_projectile.html#a24da8a1d31d232c090607771aa3c655b":[2,0,424,41],
 "class_global_projectile.html#a267a74b8f38e1055900ce61370ea71ee":[2,0,424,34],
 "class_global_projectile.html#a29b87a7d0521e450674cd8ac4ed3a381":[2,0,424,39],
 "class_global_projectile.html#a32403844bf9abd2722168323ede74e23":[2,0,424,23],
@@ -140,13 +140,12 @@ var NAVTREEINDEX4 =
 "class_global_projectile.html#aa280593fd4a5a8ae59c6155c7003b4ac":[2,0,424,8],
 "class_global_projectile.html#ab21080e5af32913cf71abc24ab41f1d3":[2,0,424,18],
 "class_global_projectile.html#abaa872793884f17cc67625c89a6a84cd":[2,0,424,35],
-"class_global_projectile.html#ac6487b2ce0035d009cf1018e63c49bfc":[2,0,424,40],
 "class_global_projectile.html#ac78cad6eb87a2801a722a7175d535a09":[2,0,424,31],
 "class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859":[2,0,424,1],
 "class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468":[2,0,424,36],
 "class_global_projectile.html#ae382cd43946d98f63705ba53f11e95c4":[2,0,424,0],
 "class_global_projectile.html#ae3f6f7c6000a47df386f81a4c8471372":[2,0,424,21],
-"class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242":[2,0,424,41],
+"class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242":[2,0,424,40],
 "class_global_projectile.html#ae4e3fb5b0443409c939380583100fcae":[2,0,424,25],
 "class_global_projectile.html#ae8e35ed4da134f82eb1497e1f25f7ebe":[2,0,424,27],
 "class_global_projectile.html#af8e38afc00e36505e5ed3eb5dc0a5c97":[2,0,424,19],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "class_i_enumerable.html":[2,0,501],
 "class_i_equatable.html":[2,0,502],
 "class_i_localized_mod_type_extensions.html":[2,0,518],
-"class_i_o_exception.html":[2,0,540]
+"class_i_o_exception.html":[2,0,540],
+"class_i_p_c_base.html":[2,0,543]
 };

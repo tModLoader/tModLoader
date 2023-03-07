@@ -40,7 +40,6 @@ var class_global_projectile =
     [ "SetDefaults", "class_global_projectile.html#a06e8e2bcfa5ef9d59cc6e90245eef449", null ],
     [ "SetupContent", "class_global_projectile.html#a868df7036d919181c61c707d7fa8ff3e", null ],
     [ "ShouldUpdatePosition", "class_global_projectile.html#a29b87a7d0521e450674cd8ac4ed3a381", null ],
-    [ "SingleGrappleHook", "class_global_projectile.html#ac6487b2ce0035d009cf1018e63c49bfc", null ],
     [ "TileCollideStyle", "class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242", null ],
     [ "UseGrapple", "class_global_projectile.html#a24da8a1d31d232c090607771aa3c655b", null ]
 ];

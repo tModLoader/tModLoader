@@ -1,8 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"class_ocean_biome.html":[2,0,867],
-"class_ogg_reader.html":[2,0,869],
-"class_old_attribute.html":[2,0,870],
 "class_old_hook_exception.html":[2,0,871],
 "class_one_from_options_drop_rule.html":[2,0,872],
 "class_one_from_options_not_scaled_with_luck_drop_rule.html":[2,0,873],
@@ -230,10 +227,11 @@ var NAVTREEINDEX12 =
 "class_pretty_sparkle_particle.html":[2,0,957],
 "class_primitive_range_element.html":[2,0,958],
 "class_profiles.html":[2,0,959],
-"class_profiles_1_1_legacy_n_p_c_profile.html":[2,0,959,0],
-"class_profiles_1_1_stacked_n_p_c_profile.html":[2,0,959,1],
-"class_profiles_1_1_transformable_n_p_c_profile.html":[2,0,959,2],
-"class_profiles_1_1_variant_n_p_c_profile.html":[2,0,959,3],
+"class_profiles_1_1_default_n_p_c_profile.html":[2,0,959,0],
+"class_profiles_1_1_legacy_n_p_c_profile.html":[2,0,959,1],
+"class_profiles_1_1_stacked_n_p_c_profile.html":[2,0,959,2],
+"class_profiles_1_1_transformable_n_p_c_profile.html":[2,0,959,3],
+"class_profiles_1_1_variant_n_p_c_profile.html":[2,0,959,4],
 "class_program.html":[2,0,960],
 "class_progression_event_condition.html":[2,0,961],
 "class_proj_a_i_style_i_d.html":[2,0,962],
@@ -249,5 +247,7 @@ var NAVTREEINDEX12 =
 "class_proj_a_i_style_i_d.html#a041a44a823e39a153d53416b80cbd51c":[2,0,962,133],
 "class_proj_a_i_style_i_d.html#a043a66d71e4ae7268a4cd8befdb89ffa":[2,0,962,88],
 "class_proj_a_i_style_i_d.html#a05516dcd02b572cc179530a1edc995d7":[2,0,962,31],
-"class_proj_a_i_style_i_d.html#a056cae24aa3bb44e96479de2450ea6aa":[2,0,962,127]
+"class_proj_a_i_style_i_d.html#a056cae24aa3bb44e96479de2450ea6aa":[2,0,962,127],
+"class_proj_a_i_style_i_d.html#a05bd7489d6320c50dac053844aeeb0b2":[2,0,962,18],
+"class_proj_a_i_style_i_d.html#a06e3c5c9056be895592e0ca80e656bb8":[2,0,962,145]
 };

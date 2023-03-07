@@ -2,6 +2,7 @@ var class_mod_prefix =
 [
     [ "AllStatChangesHaveEffectOn", "class_mod_prefix.html#a982d4cccbc57c2f302ea1597480efed9", null ],
     [ "Apply", "class_mod_prefix.html#a1bfd97f29841bac5f8e5097b5405c6de", null ],
+    [ "ApplyAccessoryEffects", "class_mod_prefix.html#ac426d97eed3c809c999f6558695bffa0", null ],
     [ "CanRoll", "class_mod_prefix.html#aad54aa9109c293ee5d177f3d822ab6b5", null ],
     [ "ModifyValue", "class_mod_prefix.html#aa93bf31f8cb0638457f6082bd516115b", null ],
     [ "Register", "class_mod_prefix.html#a7ff30b256ac6d593778113e632389a50", null ],

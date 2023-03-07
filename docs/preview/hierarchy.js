@@ -1886,6 +1886,7 @@ var hierarchy =
       [ "WallTypeData", "struct_wall_type_data.html", null ]
     ] ],
     [ "ITownNPCProfile", "interface_i_town_n_p_c_profile.html", [
+      [ "Profiles.DefaultNPCProfile", "class_profiles_1_1_default_n_p_c_profile.html", null ],
       [ "Profiles.LegacyNPCProfile", "class_profiles_1_1_legacy_n_p_c_profile.html", null ],
       [ "Profiles.StackedNPCProfile", "class_profiles_1_1_stacked_n_p_c_profile.html", null ],
       [ "Profiles.TransformableNPCProfile", "class_profiles_1_1_transformable_n_p_c_profile.html", null ],
