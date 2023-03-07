@@ -640,8 +640,8 @@
  	public static string GetPlayerPathFromName(string playerName, bool cloudSave)
  	{
 +		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
-+		if (Regex.IsMatch(worldName, invalidFilePattern, RegexOptions.IgnoreCase)) {
-+			worldName += "_";
++		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) {
++			playerName += "_";
 +		}
  		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
  		string text = "";
