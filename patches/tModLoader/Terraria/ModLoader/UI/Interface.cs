@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -14,6 +18,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.ModLoader.Config;
 using Terraria.Social.Steam;
 using Terraria.UI;
 
@@ -379,6 +384,7 @@ internal static class Interface
 			}
 			Console.WriteLine("e\t\t" + Language.GetTextValue("tModLoader.ModsEnableAll"));
 			Console.WriteLine("d\t\t" + Language.GetTextValue("tModLoader.ModsDisableAll"));
+			Console.WriteLine("c <number>\t" + Language.GetTextValue("tModLoader.ModConfigModConfig"));
 			Console.WriteLine("r\t\t" + Language.GetTextValue("tModLoader.ModsReloadAndReturn"));
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForModIndex"));
 			Console.WriteLine();
@@ -404,8 +410,72 @@ internal static class Interface
 				reloadMods = true;
 				exit = true;
 			}
+			else if (command.StartsWith("c")) {
+				int modIndex = Convert.ToInt32(command[2..]) - 1;
+				if (modIndex < mods.Length && ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod) &&
+				    ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs)) {
+						ConfigureMod(configs);
+				}
+			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
 				mods[value - 1].Enabled ^= true;
+			}
+		}
+	}
+
+	internal static void ConfigureMod(List<ModConfig> configs)
+	{
+		Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties = new();
+		int index = 1;
+		foreach (ModConfig config in configs)
+		{
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
+				if (variable.IsProperty && variable.Name == "Mode")
+					continue;
+
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+					continue;
+
+				properties.Add(index++, (variable, config));
+			}
+		}
+
+		while (true) {
+			foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties)
+			{
+				string text = (variable.Name + " :");
+				int size = text.Length;
+				text = key + "\t" + text + new string('\t', (31 - size) / 8);
+				text += variable.GetValue(config);
+				Console.WriteLine(text);
+			}
+			Console.WriteLine("m <number> <new config> :\tEdit configuration");
+			Console.WriteLine("r <number> :\t\t\tReset configuration");
+			Console.WriteLine("e :\t\t\t\tExit");
+
+			Console.WriteLine();
+			Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
+			string command = Console.ReadLine();
+			Console.Clear();
+			command ??= "";
+			command = command.ToLower();
+
+			Match match = new Regex("m ([0-9]*) (.*)").Match(command);
+			if (match.Success) { //Edit command
+				int configIndex = Convert.ToInt32(match.Groups[1].Value);
+				if (properties.TryGetValue(configIndex, out (PropertyFieldWrapper, ModConfig) value)) {
+					try {
+						object parsedValue = Convert.ChangeType(match.Groups[2].Value, ((FieldInfo) value.Item1.MemberInfo).FieldType);
+						value.Item1.SetValue(value.Item2, parsedValue);
+						ConfigManager.Save(value.Item2);
+					}
+					catch {
+						Console.WriteLine("Invalid value");
+					}
+				}
+			}
+			else if (command == "e") {
+				break;
 			}
 		}
 	}
