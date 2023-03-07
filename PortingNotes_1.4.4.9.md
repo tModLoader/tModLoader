@@ -21,9 +21,6 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 ## Player
 - Add hook for `RefreshInfoAccsFromItemType`
 - `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.
-- Check `PlayerIO`, make sure `favourited` flag is saved in void vault
-- Check all usages of void bag (`bank4`)
-- Make sure loadout serialization doesn't save modded data to the vanilla .plr
 - Reapply patch for `sItem.useStyle == 13` and `sItem.useStyle == 5`? Do we still want this now that `NetMessage.SendData(13` is sent as well?
 ```patch
 +				// Added by TML. #ItemTimeOnAllClients

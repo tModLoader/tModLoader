@@ -1942,9 +1942,12 @@
  	}
  
  	public void OnPurchase(Item item)
-@@ -49332,7 +_,7 @@
+@@ -49330,9 +_,9 @@
+ 	public void Serialize(BinaryWriter writer, ItemSerializationContext context)
+ 	{
  		if (context == ItemSerializationContext.SavingAndLoading) {
- 			writer.Write(netID);
+-			writer.Write(netID);
++			ItemIO.WriteShortVanillaID(this, writer);
  			writer.Write(stack);
 -			writer.Write(prefix);
 +			ItemIO.WriteByteVanillaPrefix(this, writer);
