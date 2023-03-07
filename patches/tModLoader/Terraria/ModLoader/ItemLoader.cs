@@ -145,12 +145,25 @@ public static class ItemLoader
 		}
 
 		ValidateGeodeDropsSet();
+		ValidateSlimeOreDropsSet();
 	}
 
 	internal static void ValidateGeodeDropsSet()
 	{
 		foreach (var pair in ItemID.Sets.GeodeDrops) {
 			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.GeodeDrops)}'";
+			if (pair.Value.minStack < 1)
+				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
+
+			if (pair.Value.maxStack <= pair.Value.minStack)
+				throw new Exception($"{exceptionCommon} must have maxStack bigger than minStack");
+		}
+	}
+
+	internal static void ValidateSlimeOreDropsSet()
+	{
+		foreach (var pair in ItemID.Sets.OreDropsFromSlime) {
+			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.OreDropsFromSlime)}'";
 			if (pair.Value.minStack < 1)
 				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
 
