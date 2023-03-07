@@ -32,10 +32,9 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			// player.noKnockback = true; could be used here if this accessory prevented knockback.
 
-			if (player.statLife > player.statLifeMax2 * DamageAbsorptionAbilityLifeThreshold) {
-				// The wearer only has this effect if health is high enough.
-				player.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect = true;
+			player.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect = true;
 
+			if (player.statLife > player.statLifeMax2 * DamageAbsorptionAbilityLifeThreshold) {
 				// Remember that UpdateAccessory runs for all players on all clients. This code gives the local player a buff if the player wearing this accessory is within 50 tiles and is on the same team.
 				if (player.whoAmI != Main.myPlayer && player.miscCounter % 10 == 0) {
 					Player localPlayer = Main.player[Main.myPlayer];

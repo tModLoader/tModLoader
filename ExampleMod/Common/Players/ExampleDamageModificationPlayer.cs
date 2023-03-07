@@ -24,7 +24,7 @@ namespace ExampleMod.Common.Players
 		// Controls the intensity of the visual effect of the dodge.
 		public int exampleDodgeVisualCounter;
 
-		// If this player has an accessory which gives this effect and has enough health
+		// If this player has an accessory which gives this effect
 		public bool hasAbsorbTeamDamageEffect;
 		// If the player is currently in range of a player with hasAbsorbTeamDamageEffect
 		public bool defendedByAbsorbTeamDamageEffect;
@@ -130,31 +130,31 @@ namespace ExampleMod.Common.Players
 		private bool TeammateHasPaladinShieldAndCanTakeDamage() {
 			for (int i = 0; i < Main.maxPlayers; i++) {
 				Player otherPlayer = Main.player[i];
-				if (i != Main.myPlayer && IsCandidateForAbsorbingMyDamage(otherPlayer)) {
+				if (i != Main.myPlayer && IsCandidateForAbsorbingDamage(otherPlayer, Player.team)) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		private bool IsCandidateForAbsorbingMyDamage(Player otherPlayer) {
-			return otherPlayer.active && !otherPlayer.dead && !otherPlayer.immune && otherPlayer.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect && otherPlayer.team == Player.team && otherPlayer.statLife > otherPlayer.statLifeMax2 * AbsorbTeamDamageAccessory.DamageAbsorptionAbilityLifeThreshold;
+		private static bool IsCandidateForAbsorbingDamage(Player otherPlayer, int team) {
+			return otherPlayer.active && !otherPlayer.dead && !otherPlayer.immune && otherPlayer.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect && otherPlayer.team == team && otherPlayer.statLife > otherPlayer.statLifeMax2 * AbsorbTeamDamageAccessory.DamageAbsorptionAbilityLifeThreshold;
 		}
 
 		public override void OnHurt(Player.HurtInfo info) {
 			// On Hurt is used in this example to act upon another player being hurt.
 			Player localPlayer = Main.player[Main.myPlayer];
-			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI != Main.myPlayer && localPlayer.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect && localPlayer.team == Player.team && Player.team != 0) {
+			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI != Main.myPlayer && IsCandidateForAbsorbingDamage(localPlayer, Player.team)) {
 				// This code finds the closest player wearing AbsorbTeamDamageAccessory. 
 				float distance = localPlayer.Distance(Player.Center);
-				bool localPlayerIsClosestPaladinShiledWearer = distance < 800f;
-				if (localPlayerIsClosestPaladinShiledWearer) {
+				bool localPlayerIsClosestPaladinShieldWearer = distance < 800f;
+				if (localPlayerIsClosestPaladinShieldWearer) {
 					for (int i = 0; i < Main.maxPlayers; i++) {
 						Player otherPlayer = Main.player[i];
-						if (i != Main.myPlayer && IsCandidateForAbsorbingMyDamage(otherPlayer)) {
+						if (i != Main.myPlayer && IsCandidateForAbsorbingDamage(otherPlayer, Player.team)) {
 							float otherPlayerDistance = otherPlayer.Distance(Player.Center);
 							if (distance > otherPlayerDistance || (distance == otherPlayerDistance && i < Main.myPlayer)) {
-								localPlayerIsClosestPaladinShiledWearer = false;
+								localPlayerIsClosestPaladinShieldWearer = false;
 								break;
 							}
 						}
@@ -162,7 +162,7 @@ namespace ExampleMod.Common.Players
 				}
 
 				// If the closest player wearing AbsorbTeamDamageAccessory happens to be the local player, then this code will run, hurting the player.
-				if (localPlayerIsClosestPaladinShiledWearer) {
+				if (localPlayerIsClosestPaladinShieldWearer) {
 					// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
 					// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
 					// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
