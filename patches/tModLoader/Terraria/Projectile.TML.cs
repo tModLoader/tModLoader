@@ -149,5 +149,8 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
-	
+	/// <summary>
+	/// Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br/>
+	/// </summary>
+	public bool IsMinionOrSentryRelated => minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type];
 }

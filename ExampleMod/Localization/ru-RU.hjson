@@ -662,7 +662,7 @@ Mods: {
 				// DisplayName: Example Whip
 				/* Tooltip:
 					'''
-					{0} summon tag damage
+					{$CommonItemTooltip.SummonTagDamage}
 					{$CommonItemTooltip.Whips}
 					Hold for longer reach
 					''' */
@@ -672,7 +672,7 @@ Mods: {
 				// DisplayName: Example Whip Advanced
 				/* Tooltip:
 					'''
-					{0} summon tag damage
+					{$CommonItemTooltip.SummonTagDamage}
 					{$CommonItemTooltip.Whips}
 					Hold for longer reach
 					''' */
