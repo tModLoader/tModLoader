@@ -39,7 +39,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
-	/// <summary>r
+	/// <summary>
 	/// The translations for the tooltip of this item.
 	/// </summary>
 	public virtual LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");

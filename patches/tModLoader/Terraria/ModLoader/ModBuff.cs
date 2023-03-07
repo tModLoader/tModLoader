@@ -55,6 +55,8 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	/// <summary>
 	/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.
 	/// </summary>
+	/// <param name="player">The player to update this buff on.</param>
+	/// <param name="buffIndex">The index in <see cref="Player.buffType"/> and <see cref="Player.buffType"/> of this buff. For use with <see cref="Player.DelBuff(int)"/>.</param>
 	public virtual void Update(Player player, ref int buffIndex)
 	{
 	}
