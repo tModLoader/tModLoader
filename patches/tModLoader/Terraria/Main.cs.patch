@@ -745,14 +745,15 @@
  			LoadWorlds();
  		}
  		catch {
-@@ -3830,6 +_,10 @@
+@@ -3830,6 +_,11 @@
  
  	public static string GetPlayerPathFromName(string playerName, bool cloudSave)
  	{
 +		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
-+		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) {
++		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) { // Resolves #3298
 +			playerName += "_";
 +		}
++
  		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
  		string text = "";
  		playerName = playerName.Replace(".", "_");
