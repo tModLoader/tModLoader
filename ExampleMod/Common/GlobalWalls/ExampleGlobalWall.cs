@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Walls
 	{
 		public override bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber) {
 			// This example shows adding additional visual effects to wall framing.
-			if(Main.rand.NextBool(20)) {
+			if (Main.rand.NextBool(20)) {
 				Dust.NewDustPerfect(new Vector2(i * 16 + 8, j * 16 + 8), ModContent.DustType<Sparkle>(), Vector2.Zero);
 			}
 			

@@ -42,7 +42,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			if(AdditiveCritDamageBonus > 0) {
+			if (AdditiveCritDamageBonus > 0) {
 				modifiers.CritDamage += AdditiveCritDamageBonus;
 			}
 		}
@@ -50,7 +50,7 @@ namespace ExampleMod.Common.Players
 		public override void PostUpdateEquips() {
 			// If the conditions for the player having the buff are no longer true, remove the buff.
 			// This could could techinically go in ExampleDodgeBuff.Update, but typically these effects are given by armor or accessories, so showing this example here is more useful.
-			if(exampleDodge && Player.HeldItem.type != ModContent.ItemType<HitModifiersShowcase>()) {
+			if (exampleDodge && Player.HeldItem.type != ModContent.ItemType<HitModifiersShowcase>()) {
 				Player.ClearBuff(ModContent.BuffType<ExampleDodgeBuff>());
 			}
 			
