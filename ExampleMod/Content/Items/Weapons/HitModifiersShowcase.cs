@@ -101,6 +101,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			// These effects act on a hit happening, so they should go here.
+			// Buffs added locally are automatically synced to the server and other players in multiplayer
 			if (mode == 5) {
 				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600);
 			}
