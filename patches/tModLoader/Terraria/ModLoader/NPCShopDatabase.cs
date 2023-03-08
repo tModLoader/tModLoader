@@ -142,19 +142,19 @@ public static class NPCShopDatabase
 			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
 				array[num++].SetDefaults(4921);
 		}*/
-		var pylonMainCondition = new NPCShop.Condition(NetworkText.FromLiteral("When happy enough to sell pylons"), () =>
+		var pylonMainCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () =>
 			Main.LocalPlayer.talkNPC != -1 && Main.npc[Main.LocalPlayer.talkNPC].type != NPCLoader.shopToNPC[19] && Main.npc[Main.LocalPlayer.talkNPC].type != NPCLoader.shopToNPC[20]
 			&& (Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421 || Main.remixWorld)
 			&& TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16())
 			&& !Main.LocalPlayer.ZoneCorrupt && !Main.LocalPlayer.ZoneCrimson
 			);
-		var purityPylonCondition = new NPCShop.Condition(NetworkText.FromLiteral(""), () => { // im having struggles localizing these
+		var purityPylonCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.InPurity"), () => { // im having struggles localizing these
 			if (Main.remixWorld) {
 				return Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350;
 			}
 			return Main.LocalPlayer.Center.Y / 16.0 < Main.worldSurface;
 		});
-		var cavernPylonCondition = new NPCShop.Condition(NetworkText.FromLiteral(""), () => {
+		var cavernPylonCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.InRockLayerHeight"), () => {
 			return !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
 			&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
 			&& !Main.LocalPlayer.ZoneHallow && (!Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
@@ -169,7 +169,7 @@ public static class NPCShopDatabase
 			}
 			return flag4;
 		});
-		var glowshroomPylonCondtiion = new NPCShop.Condition(NetworkText.FromLiteral("Underground, when in remix world"),
+		var glowshroomPylonCondtiion = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.UndergroundOrRemix"),
 			() => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200);
 
 		List<NPCShop.Entry> entries = new() {
@@ -186,9 +186,9 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterMerchant() {
-		var flareGunCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.FlareGun)), () => Main.LocalPlayer.HasItem(ItemID.FlareGun));
-		var drumSetCondition = new NPCShop.Condition(NetworkText.FromLiteral("When either the Eater of Worlds, Brain of Cthulhu, Skeletron, or Wall of Flesh have been defeated"), () => NPC.downedBoss2 || NPC.downedBoss3 || Main.hardMode);
-		var nailGunCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.NailGun)), () => Main.LocalPlayer.HasItem(ItemID.NailGun));
+		var flareGunCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.FlareGun);
+		var drumSetCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DownedB2B3HM"), () => NPC.downedBoss2 || NPC.downedBoss3 || Main.hardMode);
+		var nailGunCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.NailGun);
 
 		new NPCShop(NPCID.Merchant)
 			.Add(ItemID.MiningHelmet)
@@ -224,14 +224,14 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterArmsDealer() {
-		var silverBulletCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Blood Moon, in a world with Silver Ore. (Always available in Hardmode)"), () => (Main.bloodMoon || Main.hardMode) && WorldGen.SavedOreTiers.Silver == TileID.Silver);
-		var tungstenBulletCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Blood Moon, in a world with Tungsten Ore. (Always available in Hardmode)"), () => (Main.bloodMoon || Main.hardMode) && WorldGen.SavedOreTiers.Silver == TileID.Tungsten);
-		var unholyArrowCondition = new NPCShop.Condition(NetworkText.FromLiteral("During the night after defeating the Eater of Worlds or Brain of Cthulhu. (Always available in Hardmode)"), () => (NPC.downedBoss2 && !Main.dayTime) || Main.hardMode);
-		var styngerCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.Stynger)), () => Main.LocalPlayer.HasItem(ItemID.Stynger));
-		var stakeCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.StakeLauncher)), () => Main.LocalPlayer.HasItem(ItemID.StakeLauncher));
-		var nailCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.NailGun)), () => Main.LocalPlayer.HasItem(ItemID.NailGun));
-		var candyCornCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.CandyCornRifle)), () => Main.LocalPlayer.HasItem(ItemID.CandyCornRifle));
-		var jackCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.JackOLantern)), () => Main.LocalPlayer.HasItem(ItemID.JackOLanternLauncher));
+		var silverBulletCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.BloodOrHMInSilver"), () => (Main.bloodMoon || Main.hardMode) && WorldGen.SavedOreTiers.Silver == TileID.Silver);
+		var tungstenBulletCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.BloodOrHMInTungst"), () => (Main.bloodMoon || Main.hardMode) && WorldGen.SavedOreTiers.Silver == TileID.Tungsten);
+		var unholyArrowCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NightAfterEvil"), () => (NPC.downedBoss2 && !Main.dayTime) || Main.hardMode);
+		var styngerCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.Stynger);
+		var stakeCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.StakeLauncher);
+		var nailCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.NailGun);
+		var candyCornCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.CandyCornRifle);
+		var jackCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.JackOLanternLauncher);
 
 		new NPCShop(NPCID.ArmsDealer)
 			.Add(ItemID.MusketBall)
@@ -258,12 +258,12 @@ public static class NPCShopDatabase
 
 	private static void RegisterDryad() {
 		var shop = new NPCShop(NPCID.Dryad);
-		var mp1_2 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFullWaningGibbous"), () => Main.moonPhase / 2 == 0);
-		var mp3_4 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringThirdQuarterWaningCrescent"), () => Main.moonPhase / 2 == 1);
-		var mp5_6 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringNewWaxingCrescent"), () => Main.moonPhase / 2 == 2);
-		var mp7_8 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFirstQuarterWaxingGibbous"), () => Main.moonPhase / 2 == 3);
-		var corruptSeedsCondition = new NPCShop.Condition(NetworkText.FromLiteral("In Corruption world or in Graveyrad in Crimson world"), () => !WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && WorldGen.crimson);
-		var crimsonSeedsCondition = new NPCShop.Condition(NetworkText.FromLiteral("In Crimson world or in Graveyrad in Corruption world"), () => WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && !WorldGen.crimson);
+		var mp1_2 = NPCShop.Condition.IsMoonPhasesQuarter0;
+		var mp3_4 = NPCShop.Condition.IsMoonPhasesQuarter1;
+		var mp5_6 = NPCShop.Condition.IsMoonPhasesQuarter2;
+		var mp7_8 = NPCShop.Condition.IsMoonPhasesQuarter3;
+		var corruptSeedsCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.CorruOrGravCrim"), () => !WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && WorldGen.crimson);
+		var crimsonSeedsCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.CrimOrGravCorru"), () => WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && !WorldGen.crimson);
 
 		shop.Add(ItemID.VilePowder,			NPCShop.Condition.BloodMoon, NPCShop.Condition.CrimsonWorld, NPCShop.Condition.NotRemixWorld)
 			.Add(ItemID.ViciousPowder,		NPCShop.Condition.BloodMoon, NPCShop.Condition.CorruptionWorld, NPCShop.Condition.NotRemixWorld)
@@ -319,10 +319,10 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterBombGuy() {
-		var dryBombCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.DryBomb)), () => Main.LocalPlayer.HasItem(ItemID.DryBomb));
-		var wetBombCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.WetBomb)), () => Main.LocalPlayer.HasItem(ItemID.WetBomb));
-		var lavaBombCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.LavaBomb)), () => Main.LocalPlayer.HasItem(ItemID.LavaBomb));
-		var honeyBombCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.HoneyBomb)), () => Main.LocalPlayer.HasItem(ItemID.HoneyBomb));
+		var dryBombCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.DryBomb);
+		var wetBombCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.WetBomb);
+		var lavaBombCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.LavaBatBanner);
+		var honeyBombCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.HoneyBomb);
 
 		new NPCShop(NPCID.Demolitionist)
 			.Add(ItemID.Grenade)
@@ -339,8 +339,8 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterClothier() {
-		var taxCollectorPresent = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(NPCID.TaxCollector)), () => NPC.AnyNPCs(NPCID.TaxCollector));
-		var golfScoreOf2000 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.GolfScoreOver", 2000), () => Main.LocalPlayer.golferScoreAccumulated >= 2000);
+		var taxCollectorPresent = NPCShop.Condition.NpcIsPresent(NPCID.TaxCollector);
+		var golfScoreOf2000 = NPCShop.Condition.GolfScoreOver(2000);
 
 		new NPCShop(NPCID.Clothier)
 			.Add(ItemID.BlackThread)
@@ -433,7 +433,7 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterMechanic() {
-		var mechanicsRodCondition = new NPCShop.Condition(NetworkText.FromLiteral("During Moon Phases 2, 4, 6, and 8"), () => Main.moonPhase % 2 == 1);
+		var mechanicsRodCondition = NPCShop.Condition.IsMoonPhasesOddQuarters;
 
 		new NPCShop(NPCID.Merchant)
 			.Add(ItemID.Wrench)
@@ -460,7 +460,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.MechanicalLens)
 			.Add(ItemID.EngineeringHelmet)
 			.Add(ItemID.WireBulb)
-			.Add(ItemID.MechanicsRod,		new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(NPCID.Angler)), () => NPC.AnyNPCs(NPCID.Angler)), mechanicsRodCondition)
+			.Add(ItemID.MechanicsRod,		NPCShop.Condition.NpcIsPresent(NPCID.Angler), mechanicsRodCondition)
 			.Add(ItemID.Timer1Second)
 			.Add(ItemID.Timer3Second)
 			.Add(ItemID.Timer5Second)
@@ -497,12 +497,12 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterSteampunker() {
-		var firstFourPhases = new NPCShop.Condition(NetworkText.FromLiteral("During a Full, Waning Gibbous, Third Quarter or Waning Crescent moon phase"), () => Main.moonPhase < 4);
-		var secondFourPhases = new NPCShop.Condition(NetworkText.FromLiteral("During a New, Waxing Crescent, First Quarter, Waxing Gibbous moon phase"), () => Main.moonPhase >= 4);
-		var livingWoodWandInInv = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.LivingWoodWand)), () => Main.LocalPlayer.HasItem(ItemID.LivingWoodWand));
-		var eclipseOrBloodMoon = new NPCShop.Condition(NetworkText.FromLiteral("During a Blood Moon or Solar Eclipse"), () => Main.bloodMoon || Main.eclipse);
-		var notEclipseOrBloodMoon = new NPCShop.Condition(NetworkText.FromLiteral("During a not Blood Moon and Solar Eclipse"), () => !Main.bloodMoon && !Main.eclipse);
-		var blendOMaticCondition = new NPCShop.Condition(NetworkText.FromLiteral("In Hardmode or in not For the Worthy world"), () => Main.hardMode || !Main.getGoodWorld);
+		var firstFourPhases = NPCShop.Condition.IsMoonPhasesHalf0;
+		var secondFourPhases = NPCShop.Condition.IsMoonPhasesHalf1;
+		var livingWoodWandInInv = NPCShop.Condition.PlayerCarriesItem(ItemID.LivingWoodWand);
+		var eclipseOrBloodMoon = NPCShop.Condition.EclipseOrBloodMoon;
+		var notEclipseOrBloodMoon = NPCShop.Condition.NotEclipseAndNotBloodMoon;
+		var blendOMaticCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.HardmodeFTW"), () => Main.hardMode || !Main.getGoodWorld);
 
 		new NPCShop(NPCID.Steampunker)
 			.Add(ItemID.Clentaminator,		NPCShop.Condition.NotRemixWorld)
@@ -545,7 +545,7 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterDyeTrader() {
-		var mpServer = new NPCShop.Condition(NetworkText.FromLiteral("ShopConditions.MultiplayerServer"), () => Main.netMode == NetmodeID.MultiplayerClient);
+		var mpServer = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.MultiplayerServer"), () => Main.netMode == NetmodeID.MultiplayerClient);
 
 		new NPCShop(NPCID.DyeTrader)
 			.Add(ItemID.DyeVat)
@@ -562,9 +562,9 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterPartyGirl() {
-		var happyGrenadesInInv = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.PartyGirlGrenade)), () => Main.LocalPlayer.HasItem(ItemID.PartyGirlGrenade));
-		var scoreOver500 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.GolfScoreOver", 500), () => Main.LocalPlayer.golferScoreAccumulated > 500);
-		var piratePresent = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(NPCID.Pirate)), () => NPC.AnyNPCs(NPCID.Pirate));
+		var happyGrenadesInInv = NPCShop.Condition.PlayerCarriesItem(ItemID.PartyGirlGrenade);
+		var scoreOver500 = NPCShop.Condition.GolfScoreOver(500);
+		var piratePresent = NPCShop.Condition.NpcIsPresent(NPCID.Pirate);
 
 		new NPCShop(NPCID.PartyGirl)
 			.Add(ItemID.ConfettiGun)
@@ -611,8 +611,8 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterCyborg() {
-		var rocker3Cond = new NPCShop.Condition(NetworkText.FromLiteral("At night or during Solar Eclipse"), () => !Main.dayTime || Main.eclipse);
-		var clustRocketCond = new NPCShop.Condition(NetworkText.FromLiteral("During a Blood Moon or Solar Eclipse"), () => Main.bloodMoon || Main.eclipse);
+		var rocker3Cond = NPCShop.Condition.EclipseOrNight;
+		var clustRocketCond = NPCShop.Condition.EclipseOrBloodMoon;
 		var portalGunStation = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem2", Lang.GetItemName(ItemID.PortalGun), Lang.GetItemName(ItemID.PortalGunStation)),
 			() => Main.LocalPlayer.HasItem(ItemID.PortalGun) || Main.LocalPlayer.HasItem(ItemID.PortalGunStation));
 
@@ -640,10 +640,10 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterPainter() {
-		var moonIsFullOrWaningGibbous = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFullWaningGibbous"), () => Main.moonPhase <= 1);
-		var moonIsThirdOrWaningCrescent = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringThirdQuarterWaningCrescent"), () => Main.moonPhase >= 2 && Main.moonPhase <= 3);
-		var moonIsNewOrWaxingCrescent = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringNewWaxingCrescent"), () => Main.moonPhase >= 4 && Main.moonPhase <= 5);
-		var moonIsFirstOrWaxingGibbous = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFirstQuarterWaxingGibbous"), () => Main.moonPhase >= 6);
+		var moonIsFullOrWaningGibbous = NPCShop.Condition.IsMoonPhasesQuarter0;
+		var moonIsThirdOrWaningCrescent = NPCShop.Condition.IsMoonPhasesQuarter1;
+		var moonIsNewOrWaxingCrescent = NPCShop.Condition.IsMoonPhasesQuarter2;
+		var moonIsFirstOrWaxingGibbous = NPCShop.Condition.IsMoonPhasesQuarter3;
 
 		new NPCShop(NPCID.Painter) // Default shop
 			.Add(ItemID.Paintbrush)
@@ -719,9 +719,9 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterWitchDoctor() {
-		var styngerBoltCond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.Stynger)), () => Main.LocalPlayer.HasItem(ItemID.Stynger));
-		var stakeCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(ItemID.StakeLauncher)), () => Main.LocalPlayer.HasItem(ItemID.StakeLauncher));
-		var wizardCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(NPCID.Wizard)), () => NPC.AnyNPCs(NPCID.Wizard));
+		var styngerBoltCond = NPCShop.Condition.PlayerCarriesItem(ItemID.Stynger);
+		var stakeCondition = NPCShop.Condition.PlayerCarriesItem(ItemID.StakeLauncher);
+		var wizardCondition = NPCShop.Condition.NpcIsPresent(NPCID.Wizard);
 
 		new NPCShop(NPCID.WitchDoctor)
 			.Add(ItemID.ImbuingStation)
@@ -763,7 +763,7 @@ public static class NPCShopDatabase
 				int num7 = (int)((Main.screenPosition.X + Main.screenWidth / 2) / 16f);
 				return (double)(Main.screenPosition.Y / 16.0) < Main.worldSurface + 10.0 && (num7 < 380 || num7 > Main.maxTilesX - 380);
 			}))
-			.Add(ItemID.BunnyCannon,		new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(NPCID.PartyGirl)), () => NPC.AnyNPCs(NPCID.PartyGirl)),
+			.Add(ItemID.BunnyCannon,		NPCShop.Condition.NpcIsPresent(NPCID.PartyGirl),
 											NPCShop.Condition.Hardmode,
 											NPCShop.Condition.DownedMechBossAny)
 			.Register();
@@ -789,8 +789,8 @@ public static class NPCShopDatabase
 			}
 			return false;
 		});
-		var timeHair = new NPCShop.Condition(NetworkText.FromLiteral("During the night and following day of moon phases Waning Gibbous, Waning Crescent, Waxing Crescent, Waxing Gibbous"), () => Main.moonPhase % 2 == (!Main.dayTime).ToInt());
-		var teamHair = new NPCShop.Condition(NetworkText.FromLiteral("If the player is on a team in multiplayer"), () => Main.LocalPlayer.team != 0);
+		var timeHair = new NPCShop.Condition(NetworkText.FromKey("ShopCondition.StyleMoon"), () => Main.moonPhase % 2 == (!Main.dayTime).ToInt());
+		var teamHair = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.OnTeam"), () => Main.LocalPlayer.team != 0);
 		var partyHair = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(NPCID.PartyGirl)), () => NPC.AnyNPCs(NPCID.PartyGirl));
 
 		new NPCShop(NPCID.Stylist)
@@ -813,23 +813,20 @@ public static class NPCShopDatabase
 
 	private static void RegisterSkeletonMerchant() {
 		NPCShop.Condition[] wandOfSparkingCondition = { NPCShop.Condition.IsMoonThirdQuarter, NPCShop.Condition.NotRemixWorld };
-		var magicDaggerCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Third Quarter moon in Don't dig up and Get fixed boi worlds"), () => Main.moonPhase == 2 && Main.remixWorld);
-		var lesHealPotCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Waning Gibbous, Waning Crescent, Waxing Crescent or Waxing Gibbous moon"), () => Main.moonPhase % 2 == 0);
-		var strangeBrewCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Full, Third Quarter, New or First Quarter moon"), () => Main.moonPhase % 2 != 0);
-		var spelunkerGlowCondition = new NPCShop.Condition(NetworkText.FromLiteral("At night, or all day during a Full Moon"), () => !Main.dayTime || Main.moonPhase == 0);
-		var spelunkerFlareCondition = new NPCShop.Condition(NetworkText.FromLiteral("When the player has a Flare Gun in their inventory at night, or all day during a Full Moon"), () => (!Main.dayTime || Main.moonPhase == 0) && Main.LocalPlayer.HasItem(ItemID.FlareGun));
-		var glowstickCondition = new NPCShop.Condition(NetworkText.FromLiteral("At daytime, during any moon phase except full"), () => Main.dayTime && Main.moonPhase != 0);
+		NPCShop.Condition[] magicDaggerCondition = { NPCShop.Condition.IsMoonThirdQuarter, NPCShop.Condition.RemixWorld };
+		var lesHealPotCondition = NPCShop.Condition.IsMoonPhasesOdd;
+		var strangeBrewCondition = NPCShop.Condition.IsMoonPhasesEven;
+		var spelunkerGlowCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NightDayFullMoon"), () => !Main.dayTime || Main.moonPhase == 0);
+		var glowstickCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DaytimeSkinnyMoon"), () => Main.dayTime && Main.moonPhase != 0);
 		var boneTorchCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.FirstHalfSecond"), () => Main.time % 60.0 * 60.0 * 6.0 <= 10800.0);
 		var torchCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.SecondHalfSecond"), () => Main.time % 60.0 * 60.0 * 6.0 > 10800.0);
-		var boneArrowCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Full, Waning Gibbous, New or Waxing Crescent moon"), () => Main.moonPhase == 0 || Main.moonPhase == 1 || Main.moonPhase == 4 || Main.moonPhase == 5);
-		var woodArrowCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Third Quarter, Waning Crescent, First Quarter or Waxing Gibbous moon"), () => Main.moonPhase == 2 || Main.moonPhase == 3 || Main.moonPhase == 6 || Main.moonPhase == 7);
-		var blueCounterCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Full or New moon"), () => Main.moonPhase % 4 == 0);
-		var redCounterCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Waning Gibbous or Waxing Crescent moon"), () => Main.moonPhase % 4 == 1);
-		var purpleCounterCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Third Quarter or First Quarter moon"), () => Main.moonPhase % 4 == 2);
-		var greenCounterCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Waning Crescent or Waxing Gibbous moon"), () => Main.moonPhase % 4 == 3);
-		var gradientCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a Full, Waning Gibbous, Third Quarter or Waning Crescent moon"), () => Main.moonPhase < 4);
-		var formatcCondition = new NPCShop.Condition(NetworkText.FromLiteral("During a New, Waxing Crescent, First Quarter or Waxing Gibbous moon"), () => Main.moonPhase >= 4);
-		var artisanCondition = new NPCShop.Condition(NetworkText.FromLiteral("If the player has not consumed an Artisan Loaf before, during the Waning Crescent, New or Waxing Crescent moon phase"), () => !Main.LocalPlayer.ateArtisanBread && Main.moonPhase >= 3 && Main.moonPhase <= 5);
+		var boneArrowCondition = NPCShop.Condition.IsMoonPhasesEvenQuarters;
+		var woodArrowCondition = NPCShop.Condition.IsMoonPhasesOddQuarters;
+		var blueCounterCondition = NPCShop.Condition.IsMoonPhases04;
+		var redCounterCondition = NPCShop.Condition.IsMoonPhases15;
+		var purpleCounterCondition = NPCShop.Condition.IsMoonPhases26;
+		var greenCounterCondition = NPCShop.Condition.IsMoonPhases37;
+		var artisanCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NoAteLoaf"), () => !Main.LocalPlayer.ateArtisanBread);
 
 		new NPCShop(NPCID.SkeletonMerchant)
 			.Add(ItemID.WoodenBoomerang,	NPCShop.Condition.IsMoonFull)
@@ -845,7 +842,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.LesserHealingPotion,lesHealPotCondition)
 			.Add(ItemID.HealingPotion,		NPCShop.Condition.Hardmode, lesHealPotCondition)
 			.Add(ItemID.SpelunkerGlowstick, spelunkerGlowCondition)
-			.Add(ItemID.SpelunkerFlare,		spelunkerFlareCondition)
+			.Add(ItemID.SpelunkerFlare,		spelunkerGlowCondition, NPCShop.Condition.PlayerCarriesItem(ItemID.FlareGun))
 			.Add(ItemID.Glowstick,			glowstickCondition)
 			.Add(ItemID.BoneTorch,			boneTorchCondition)
 			.Add(ItemID.Torch,				torchCondition)
@@ -857,12 +854,12 @@ public static class NPCShopDatabase
 			.Add(ItemID.GreenCounterweight, greenCounterCondition)
 			.Add(ItemID.Bomb)
 			.Add(ItemID.Rope)
-			.Add(ItemID.Gradient,			NPCShop.Condition.Hardmode, gradientCondition)
-			.Add(ItemID.FormatC,			NPCShop.Condition.Hardmode, formatcCondition)
+			.Add(ItemID.Gradient,			NPCShop.Condition.Hardmode, NPCShop.Condition.IsMoonPhasesHalf0)
+			.Add(ItemID.FormatC,			NPCShop.Condition.Hardmode, NPCShop.Condition.IsMoonPhasesHalf1)
 			.Add(ItemID.YoYoGlove,			NPCShop.Condition.Hardmode)
 			.Add(ItemID.SlapHand,			NPCShop.Condition.Hardmode, NPCShop.Condition.BloodMoon)
 			.Add(ItemID.MagicLantern,		NPCShop.Condition.TimeNight, NPCShop.Condition.IsMoonFull)
-			.Add(ItemID.ArtisanLoaf,		artisanCondition)
+			.Add(ItemID.ArtisanLoaf,		artisanCondition, NPCShop.Condition.IsMoonPhasesNearNew)
 			.Register();
 	}
 
@@ -899,8 +896,8 @@ public static class NPCShopDatabase
 		shop.Add(353);
 
 		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(gold: 4) }, NPCShop.Condition.DownedGolem, NPCShop.Condition.DownedMechBossAny);
-		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(gold: 1) }, new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NotDownedGolem"), () => !NPC.downedGolemBoss), NPCShop.Condition.DownedMechBossAny);
-		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(silver: 25) }, new NPCShop.Condition(NetworkText.FromKey("ShopConditions.NotDownedGolem"), () => !NPC.downedGolemBoss && !NPC.downedMechBossAny));
+		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(gold: 1) }, NPCShop.Condition.NotDownedGolem, NPCShop.Condition.DownedMechBossAny);
+		shop.Add(new Item(3828) { shopCustomPrice = Item.buyPrice(silver: 25) }, NPCShop.Condition.NotDownedMechBossAny);
 
 		shop.Add(3816);
 		shop.Add(new Item(3813) {
@@ -932,13 +929,13 @@ public static class NPCShopDatabase
 	}
 
 	private static void RegisterGolfer() {
-		var scoreOver500 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.GolfScoreOver", 500), () => Main.LocalPlayer.golferScoreAccumulated > 500);
-		var scoreOver1000 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.GolfScoreOver", 1000), () => Main.LocalPlayer.golferScoreAccumulated > 1000);
-		var scoreOver2000 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.GolfScoreOver", 2000), () => Main.LocalPlayer.golferScoreAccumulated > 2000);
-		var painting1Cond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFullWaningGibbous"), () => Main.moonPhase / 2 == 0);
-		var painting2Cond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringThirdQuarterWaningCrescent"), () => Main.moonPhase / 2 == 1);
-		var painting3Cond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringNewWaxingCrescent"), () => Main.moonPhase / 2 == 2);
-		var painting4Cond = new NPCShop.Condition(NetworkText.FromKey("ShopConiditions.DuringFirstQuarterWaxingGibbous"), () => Main.moonPhase / 2 == 3);
+		var scoreOver500 = NPCShop.Condition.GolfScoreOver(500);
+		var scoreOver1000 = NPCShop.Condition.GolfScoreOver(1000);
+		var scoreOver2000 = NPCShop.Condition.GolfScoreOver(2000);
+		var painting1Cond = NPCShop.Condition.IsMoonPhasesQuarter0;
+		var painting2Cond = NPCShop.Condition.IsMoonPhasesQuarter1;
+		var painting3Cond = NPCShop.Condition.IsMoonPhasesQuarter2;
+		var painting4Cond = NPCShop.Condition.IsMoonPhasesQuarter3;
 
 		new NPCShop(NPCID.Golfer)
 			.Add(ItemID.GolfClubStoneIron)                                                                      // Worn Golf Club (Iron)
@@ -988,12 +985,12 @@ public static class NPCShopDatabase
 
 	private static void RegisterZoologist() {
 		var fairyGlowstick = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.BestiaryWinx"), () => Chest.BestiaryGirl_IsFairyTorchAvailable());
-		var solarPillarDead = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DownedSolarPillar"), () => NPC.downedTowerSolar);
+		var solarPillarDead = NPCShop.Condition.DownedSolarPillar;
 
-		var moonIsFullOrWaningGibbous = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFullWaningGibbous"), () => Main.moonPhase <= 1);
-		var moonIsThirdOrWaningCrescent = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringThirdQuarterWaningCrescent"), () => Main.moonPhase >= 2 && Main.moonPhase <= 3);
-		var moonIsNewOrWaxingCrescent = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringNewWaxingCrescent"), () => Main.moonPhase >= 4 && Main.moonPhase <= 5);
-		var moonIsFirstOrWaxingGibbous = new NPCShop.Condition(NetworkText.FromKey("ShopConiditions.DuringFirstQuarterWaxingGibbous"), () => Main.moonPhase >= 6);
+		var moonIsFullOrWaningGibbous = NPCShop.Condition.IsMoonPhasesQuarter0;
+		var moonIsThirdOrWaningCrescent = NPCShop.Condition.IsMoonPhasesQuarter1;
+		var moonIsNewOrWaxingCrescent = NPCShop.Condition.IsMoonPhasesQuarter2;
+		var moonIsFirstOrWaxingGibbous = NPCShop.Condition.IsMoonPhasesQuarter3;
 
 		var bestiaryFilledBy10 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.BestiaryPercentage", 10), () => Main.GetBestiaryProgressReport().CompletionPercent >= 0.1f);
 		var bestiaryFilledBy25 = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.BestiaryPercentage", 25), () => Main.GetBestiaryProgressReport().CompletionPercent >= 0.25f);
@@ -1047,10 +1044,10 @@ public static class NPCShopDatabase
 
 	private static void RegisterPrincess() {
 		var goodsCondition = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.InCelebrationMk10"), () => Main.tenthAnniversaryWorld);
-		var pirateStaffCond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringFullWaningGibbous"), () => Main.moonPhase / 2 == 0);
-		var discountCardCond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringThirdQuarterWaningCrescent"), () => Main.moonPhase / 2 == 1);
-		var luckyCoinCond = new NPCShop.Condition(NetworkText.FromKey("ShopConditions.DuringNewWaxingCrescent"), () => Main.moonPhase / 2 == 2);
-		var coinGunCond = new NPCShop.Condition(NetworkText.FromKey("ShopConiditions.DuringFirstQuarterWaxingGibbous"), () => Main.moonPhase / 2 == 3);
+		var pirateStaffCond = NPCShop.Condition.IsMoonPhasesQuarter0;
+		var discountCardCond = NPCShop.Condition.IsMoonPhasesQuarter1;
+		var luckyCoinCond = NPCShop.Condition.IsMoonPhasesQuarter2;
+		var coinGunCond = NPCShop.Condition.IsMoonPhasesQuarter3;
 
 		var shop = new NPCShop(NPCID.Princess)
 			.Add(ItemID.RoyalTiara)
