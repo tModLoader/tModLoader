@@ -62,7 +62,7 @@ public sealed partial class NPCShop {
 		}
 	}
 
-	private static IEnumerable<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
+	internal static IEnumerable<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
 		var baseOrder = new List<T>();
 		var sortBefore = new Dictionary<T, List<T>>();
 		var sortAfter = new Dictionary<T, List<T>>();

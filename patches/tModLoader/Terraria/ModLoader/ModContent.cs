@@ -334,6 +334,7 @@ public static class ModContent
 		SetupBestiary();
 		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
+		NPCShopDatabase.SortAllShops();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		ItemLoader.ValidateGeodeDropsSet();

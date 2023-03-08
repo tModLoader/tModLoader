@@ -172,30 +172,16 @@ public static class NPCShopDatabase
 		var glowshroomPylonCondtiion = new NPCShop.Condition(NetworkText.FromLiteral("Underground, when in remix world"),
 			() => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200);
 
-		List<NPCShop.Entry> entries = new();
-		entries.Add(new(ItemID.TeleportationPylonPurity,		pylonMainCondition, NPCShop.Condition.InPurityBiome, purityPylonCondition));
-		entries.Add(new(ItemID.TeleportationPylonSnow,			pylonMainCondition, NPCShop.Condition.InSnowBiome));
-		entries.Add(new(ItemID.TeleportationPylonDesert,		pylonMainCondition, NPCShop.Condition.InDesertBiome));
-		entries.Add(new(ItemID.TeleportationPylonUnderground,	pylonMainCondition, cavernPylonCondition));
-		entries.Add(new(ItemID.TeleportationPylonOcean,			pylonMainCondition, oceanPylonCondition));
-		entries.Add(new(ItemID.TeleportationPylonJungle,		pylonMainCondition, NPCShop.Condition.InJungleBiome));
-		entries.Add(new(ItemID.TeleportationPylonHallow,		pylonMainCondition, NPCShop.Condition.InHallowBiome));
-		entries.Add(new(ItemID.TeleportationPylonMushroom,		pylonMainCondition, NPCShop.Condition.InGlowshroomBiome, glowshroomPylonCondtiion));
-
-		foreach (ModPylon pylon in PylonLoader.modPylons) {
-			if (pylon.ItemDrop == 0) {
-				continue;
-			}
-
-			entries.Add(new NPCShop.Entry(pylon.ItemDrop, new NPCShop.Condition(NetworkText.Empty, () =>
-				Main.LocalPlayer.talkNPC != -1 &&
-				pylon.IsPylonForSale(
-					Main.npc[Main.LocalPlayer.talkNPC].type,
-					Main.LocalPlayer,
-					Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421
-				).HasValue
-				)));
-		}
+		List<NPCShop.Entry> entries = new() {
+			new(ItemID.TeleportationPylonPurity,		pylonMainCondition, NPCShop.Condition.InPurityBiome, purityPylonCondition),
+			new(ItemID.TeleportationPylonSnow,			pylonMainCondition, NPCShop.Condition.InSnowBiome),
+			new(ItemID.TeleportationPylonDesert,		pylonMainCondition, NPCShop.Condition.InDesertBiome),
+			new(ItemID.TeleportationPylonUnderground,	pylonMainCondition, cavernPylonCondition),
+			new(ItemID.TeleportationPylonOcean,			pylonMainCondition, oceanPylonCondition),
+			new(ItemID.TeleportationPylonJungle,		pylonMainCondition, NPCShop.Condition.InJungleBiome),
+			new(ItemID.TeleportationPylonHallow,		pylonMainCondition, NPCShop.Condition.InHallowBiome),
+			new(ItemID.TeleportationPylonMushroom,		pylonMainCondition, NPCShop.Condition.InGlowshroomBiome, glowshroomPylonCondtiion)
+		};
 		return entries;
 	}
 
@@ -1088,5 +1074,20 @@ public static class NPCShopDatabase
 			.Add(ItemID.LuckyCoin,			luckyCoinCond)
 			.Add(ItemID.CoinGun,			coinGunCond)
 			.Register();
+	}
+
+	internal static void SortAllShops()
+	{
+		foreach (var shop in npcShopByName) {
+			var entries = new List<NPCShop.Entry>(shop.Value.items);
+			entries = NPCShop.SortBeforeAfter(entries, r => r.Ordering).ToList();
+
+			var toBeLast = entries.Where(x => x.OrdersLast).ToList();
+			entries.RemoveAll(x => x.OrdersLast);
+			entries.AddRange(toBeLast);
+
+			shop.Value.items.Clear();
+			shop.Value.items.AddRange(entries);
+		}
 	}
 }
