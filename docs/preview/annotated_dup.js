@@ -209,7 +209,7 @@ var annotated_dup =
     [ "CultistShader", "class_cultist_shader.html", null ],
     [ "CursorOverrideID", "class_cursor_override_i_d.html", "class_cursor_override_i_d" ],
     [ "CustomCurrencyID", "class_custom_currency_i_d.html", null ],
-    [ "CustomCurrencyManager", "class_custom_currency_manager.html", null ],
+    [ "CustomCurrencyManager", "class_custom_currency_manager.html", "class_custom_currency_manager" ],
     [ "CustomCurrencySingleCoin", "class_custom_currency_single_coin.html", null ],
     [ "CustomCurrencySystem", "class_custom_currency_system.html", null ],
     [ "CustomEntryIcon", "class_custom_entry_icon.html", null ],

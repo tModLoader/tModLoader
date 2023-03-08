@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"interface_i_have_back_button_command.html":[2,0,506],
 "interface_i_in_game_notification.html":[2,0,508],
 "interface_i_indexed.html":[2,0,507],
 "interface_i_item_bestiary_info_element.html":[2,0,509],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_player_1_1_rabbit_order_frame_helper.html":[2,0,909,7],
 "struct_player_1_1_set_match_request.html":[2,0,909,11],
 "struct_player_draw_set.html":[2,0,918],
-"struct_player_eye_helper.html":[2,0,919],
-"struct_player_fishing_conditions.html":[2,0,921]
+"struct_player_eye_helper.html":[2,0,919]
 };

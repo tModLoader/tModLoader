@@ -74,6 +74,7 @@ var NAVTREEINDEX2 =
 "class_cursor_override_i_d.html#aef5fee08207a456ee95aa6bba52926ee":[2,0,207,14],
 "class_custom_currency_i_d.html":[2,0,208],
 "class_custom_currency_manager.html":[2,0,209],
+"class_custom_currency_manager.html#ac9cce8c2c6368a25845ff02238618de2":[2,0,209,0],
 "class_custom_currency_single_coin.html":[2,0,210],
 "class_custom_currency_system.html":[2,0,211],
 "class_custom_entry_icon.html":[2,0,212],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_entity_source___tile_entity.html":[2,0,317],
 "class_entity_source___tile_interaction.html":[2,0,318],
 "class_entity_source___tile_update.html":[2,0,319],
-"class_entity_source___wiring.html":[2,0,320],
-"class_entity_source___world_event.html":[2,0,321]
+"class_entity_source___wiring.html":[2,0,320]
 };

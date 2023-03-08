@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_resource_display_set_loader.html":[2,0,1004],
 "class_resource_load_exception.html":[2,0,1006],
 "class_resource_overlay_loader.html":[2,0,1008],
 "class_resource_overlay_loader.html#a6551c6239e6df82eb715e9674a7d7616":[2,0,1008,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_tile_entity_i_d.html":[2,0,1167],
 "class_tile_entry.html":[2,0,1168],
 "class_tile_font.html":[2,0,1169],
-"class_tile_golf_physics.html":[2,0,1170],
-"class_tile_i_d.html":[2,0,1171]
+"class_tile_golf_physics.html":[2,0,1170]
 };

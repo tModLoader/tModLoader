@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_entity_source___world_event.html":[2,0,321],
 "class_entity_source___world_gen.html":[2,0,322],
 "class_entry_filterer.html":[2,0,323],
 "class_entry_sorter.html":[2,0,325],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_generic_damage_class.html#a80cc5db3b859ee58bdc0a731c87ce8fa":[2,0,406,1],
 "class_get_loadable_types_exception.html":[2,0,415],
 "class_global_background_style.html":[2,0,416],
-"class_global_background_style.html#a4aab20162a51b29a26aeba11e630a1f6":[2,0,416,0],
-"class_global_background_style.html#a4e10989bb5b9defbd8ae1778c191a1a6":[2,0,416,2]
+"class_global_background_style.html#a4aab20162a51b29a26aeba11e630a1f6":[2,0,416,0]
 };

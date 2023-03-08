@@ -114,7 +114,57 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCustomCurren
 <tr class="memitem:a8c7ecdf43870c9a16a86414d80ef8f47"><td class="memItemLeft" align="right" valign="top"><a id="a8c7ecdf43870c9a16a86414d80ef8f47" name="a8c7ecdf43870c9a16a86414d80ef8f47"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterCurrency</b> (<a class="el" href="class_custom_currency_system.html">CustomCurrencySystem</a> collection)</td></tr>
 <tr class="separator:a8c7ecdf43870c9a16a86414d80ef8f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9cce8c2c6368a25845ff02238618de2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_custom_currency_manager.html#ac9cce8c2c6368a25845ff02238618de2">TryGetCurrencySystem</a> (int id, out <a class="el" href="class_custom_currency_system.html">CustomCurrencySystem</a> system)</td></tr>
+<tr class="memdesc:ac9cce8c2c6368a25845ff02238618de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to retrieve a <a class="el" href="class_custom_currency_system.html">CustomCurrencySystem</a> object with the specified id from the _currencies dictionary.  <a href="class_custom_currency_manager.html#ac9cce8c2c6368a25845ff02238618de2">More...</a><br /></td></tr>
+<tr class="separator:ac9cce8c2c6368a25845ff02238618de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac9cce8c2c6368a25845ff02238618de2" name="ac9cce8c2c6368a25845ff02238618de2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9cce8c2c6368a25845ff02238618de2">&#9670;&nbsp;</a></span>TryGetCurrencySystem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool CustomCurrencyManager.TryGetCurrencySystem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out <a class="el" href="class_custom_currency_system.html">CustomCurrencySystem</a>&#160;</td>
+          <td class="paramname"><em>system</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to retrieve a <a class="el" href="class_custom_currency_system.html">CustomCurrencySystem</a> object with the specified id from the _currencies dictionary. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The id of the currency system to retrieve.</td></tr>
+    <tr><td class="paramname">system</td><td>When this method returns, contains the retrieved <a class="el" href="class_custom_currency_system.html">CustomCurrencySystem</a> object, or null if the retrieval failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the retrieval was successful; otherwise, false.</dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

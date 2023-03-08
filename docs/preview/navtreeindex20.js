@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"struct_player_fishing_conditions.html":[2,0,921],
 "struct_player_interaction_anchor.html":[2,0,925],
 "struct_player_movement_accs_cache.html":[2,0,928],
 "struct_player_sitting_helper.html":[2,0,933],
