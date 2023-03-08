@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
-using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop {
-	private static Item EmptyInstance => new();
-
 	public sealed class Entry {
 		internal readonly Item item;
 		private readonly List<ICondition> conditions;
 
 		internal (Entry target, bool after) Ordering { get; private set; } = (null, false);
 		public bool Disabled { get; private set; }
+		public bool OrdersLast { get; private set; }
 		public Item Item => item;
 
 		public Entry(int item, params ICondition[] condition) : this(new Item(item), condition) { }
@@ -44,6 +42,11 @@ public sealed partial class NPCShop {
 			return this;
 		}
 
+		public Entry OrderLast() {
+			OrdersLast = true;
+			return this;
+		}
+
 		public Entry Disable() {
 			Disabled = true;
 			return this;
@@ -59,7 +62,7 @@ public sealed partial class NPCShop {
 		}
 	}
 
-	private static void SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
+	private static IEnumerable<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
 		var baseOrder = new List<T>();
 		var sortBefore = new Dictionary<T, List<T>>();
 		var sortAfter = new Dictionary<T, List<T>>();
@@ -85,7 +88,7 @@ public sealed partial class NPCShop {
 		}
 
 		if ((sortBefore.Count + sortAfter.Count) == 0)
-			return;
+			return values;
 
 		void Sort(T r) {
 			if (sortBefore.TryGetValue(r, out var before))
@@ -100,5 +103,7 @@ public sealed partial class NPCShop {
 		foreach (var r in baseOrder) {
 			Sort(r);
 		}
+
+		return baseOrder;
 	}
 }

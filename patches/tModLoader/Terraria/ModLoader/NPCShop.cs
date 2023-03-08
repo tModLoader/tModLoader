@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
@@ -92,7 +93,11 @@ public sealed partial class NPCShop {
 		List<Entry> oldEntries = new(items);
 
 		overflow = false;
-		SortBeforeAfter(oldEntries, r => r.Ordering);
+		oldEntries = SortBeforeAfter(oldEntries, r => r.Ordering).ToList();
+		var toBeLast = oldEntries.Where(x => x.OrdersLast).ToList();
+		oldEntries.RemoveAll(x => x.OrdersLast);
+		oldEntries.AddRange(toBeLast);
+
 		foreach (Entry group in oldEntries) {
 			if (group.Disabled || !group.ConditionsMet()) {
 				continue;

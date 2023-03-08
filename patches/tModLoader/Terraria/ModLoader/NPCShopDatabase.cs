@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -10,15 +8,13 @@ namespace Terraria.ModLoader;
 
 public static class NPCShopDatabase
 {
-	private static Dictionary<string, NPCShop> npcShopByName = new();
-	private static List<NPCShop.Entry> globalNpcShopEntries = new();
+	private static readonly Dictionary<string, NPCShop> npcShopByName = new();
+
+	public static readonly Dictionary<string, bool> NoPylons = new();
 
 	public static void RegisterNpcShop(int npcId, NPCShop chestLoot, string shopName = "Shop") {
 		npcShopByName.Add(GetNPCShopName(npcId, shopName), chestLoot);
 	}
-
-	public static void RegisterGlobalNpcShop(NPCShop.Entry entry) => globalNpcShopEntries.Add(entry);
-	public static List<NPCShop.Entry> GetGlobalNpcShopEntries() => globalNpcShopEntries;
 
 	public static NPCShop GetNPCShop(string fullName) {
 		if (npcShopByName.TryGetValue(fullName, out NPCShop chestLoot))
@@ -33,7 +29,7 @@ public static class NPCShopDatabase
 
 	public static Dictionary<string, NPCShop> GetNpcShopsOf(int npcId) {
 		return npcShopByName.Where(x => {
-			var split = x.Key.Split('/');
+			string[] split = x.Key.Split('/');
 			return split[0] == (npcId < NPCID.Count ? "Terraria" : NPCLoader.GetNPC(npcId).Mod.Name)
 			&& split[1] == (npcId < NPCID.Count ? NPCID.Search.GetName(npcId) : NPCLoader.GetNPC(npcId).Name);
 		}).ToDictionary(x => x.Key, x => x.Value);
@@ -50,12 +46,14 @@ public static class NPCShopDatabase
 
 	public static void Initialize() {
 		npcShopByName.Clear();
-		globalNpcShopEntries.Clear();
+		NoPylons.Clear();
 
 		NPCShops();
 	}
 
 	public static void NPCShops() {
+		NoPylons[GetNPCShopName(NPCID.SkeletonMerchant)] = true;
+
 		RegisterMerchant();
 		RegisterArmsDealer();
 		RegisterDryad();
@@ -87,15 +85,16 @@ public static class NPCShopDatabase
 			NPCLoader.ModifyShop(shop.Value);
 		}
 
-		RegisterGlobalNpcShop();
-
-		var globalShopEntries = GetGlobalNpcShopEntries().ToArray();
+		var pylonEntries = GetPylonEntries().ToArray();
 		foreach (var shop in npcShopByName) {
-			shop.Value.Add(globalShopEntries);
+			if (NoPylons.ContainsKey(shop.Key)) {
+				continue;
+			}
+			shop.Value.Add(pylonEntries);
 		}
 	}
 
-	private static void RegisterGlobalNpcShop() {
+	private static List<NPCShop.Entry> GetPylonEntries() {
 		/*
 		bool num12 = type != 19 && type != 20;
 		bool flag3 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
@@ -173,21 +172,22 @@ public static class NPCShopDatabase
 		var glowshroomPylonCondtiion = new NPCShop.Condition(NetworkText.FromLiteral("Underground, when in remix world"),
 			() => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200);
 
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonPurity,	pylonMainCondition, NPCShop.Condition.InPurityBiome, purityPylonCondition));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonSnow,	pylonMainCondition, NPCShop.Condition.InSnowBiome));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonDesert,	pylonMainCondition, NPCShop.Condition.InDesertBiome));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonUnderground, pylonMainCondition, cavernPylonCondition));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonOcean, pylonMainCondition, oceanPylonCondition));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonJungle, pylonMainCondition, NPCShop.Condition.InJungleBiome));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonHallow, pylonMainCondition, NPCShop.Condition.InHallowBiome));
-		RegisterGlobalNpcShop(new(ItemID.TeleportationPylonMushroom, pylonMainCondition, NPCShop.Condition.InGlowshroomBiome, glowshroomPylonCondtiion));
+		List<NPCShop.Entry> entries = new();
+		entries.Add(new(ItemID.TeleportationPylonPurity,		pylonMainCondition, NPCShop.Condition.InPurityBiome, purityPylonCondition));
+		entries.Add(new(ItemID.TeleportationPylonSnow,			pylonMainCondition, NPCShop.Condition.InSnowBiome));
+		entries.Add(new(ItemID.TeleportationPylonDesert,		pylonMainCondition, NPCShop.Condition.InDesertBiome));
+		entries.Add(new(ItemID.TeleportationPylonUnderground,	pylonMainCondition, cavernPylonCondition));
+		entries.Add(new(ItemID.TeleportationPylonOcean,			pylonMainCondition, oceanPylonCondition));
+		entries.Add(new(ItemID.TeleportationPylonJungle,		pylonMainCondition, NPCShop.Condition.InJungleBiome));
+		entries.Add(new(ItemID.TeleportationPylonHallow,		pylonMainCondition, NPCShop.Condition.InHallowBiome));
+		entries.Add(new(ItemID.TeleportationPylonMushroom,		pylonMainCondition, NPCShop.Condition.InGlowshroomBiome, glowshroomPylonCondtiion));
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
 			if (pylon.ItemDrop == 0) {
 				continue;
 			}
 
-			RegisterGlobalNpcShop(new NPCShop.Entry(pylon.ItemDrop, new NPCShop.Condition(NetworkText.Empty, () =>
+			entries.Add(new NPCShop.Entry(pylon.ItemDrop, new NPCShop.Condition(NetworkText.Empty, () =>
 				Main.LocalPlayer.talkNPC != -1 &&
 				pylon.IsPylonForSale(
 					Main.npc[Main.LocalPlayer.talkNPC].type,
@@ -196,6 +196,7 @@ public static class NPCShopDatabase
 				).HasValue
 				)));
 		}
+		return entries;
 	}
 
 	private static void RegisterMerchant() {
