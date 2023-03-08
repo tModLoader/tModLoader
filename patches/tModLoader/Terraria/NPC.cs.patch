@@ -1412,20 +1412,18 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);
  		}
-@@ -59944,7 +_,7 @@
+@@ -59944,6 +_,7 @@
  			}
  		}
  	}
--
 +	/*
+ 
  	public static int GetStackForSlimeItemDrop(int item)
  	{
- 		int num = 1;
-@@ -59978,7 +_,7 @@
- 
+@@ -59979,6 +_,7 @@
  		return num;
  	}
--
+ 
 +	*/
  	public bool ExcludedFromDeathTally()
  	{
