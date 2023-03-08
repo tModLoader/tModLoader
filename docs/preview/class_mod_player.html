@@ -435,10 +435,16 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PreUpdateMove
 <tr class="memitem:a8e944fb688c4303197cc0b5d463448ea"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a8e944fb688c4303197cc0b5d463448ea">ProcessTriggers</a> (<a class="el" href="class_triggers_set.html">TriggersSet</a> triggersSet)</td></tr>
 <tr class="memdesc:a8e944fb688c4303197cc0b5d463448ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.  <a href="class_mod_player.html#a8e944fb688c4303197cc0b5d463448ea">More...</a><br /></td></tr>
 <tr class="separator:a8e944fb688c4303197cc0b5d463448ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07262283140e5f0b7977051b678b26b1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a07262283140e5f0b7977051b678b26b1">RefreshInfoAccessoriesFromTeamPlayers</a> (<a class="el" href="class_player.html">Player</a> otherPlayer)</td></tr>
+<tr class="memdesc:a07262283140e5f0b7977051b678b26b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you set any fields related to INFORMATION accessories based on the passed in player argument. Note that this hook is only called if all of the requirements for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code:  <a href="class_mod_player.html#a07262283140e5f0b7977051b678b26b1">More...</a><br /></td></tr>
+<tr class="separator:a07262283140e5f0b7977051b678b26b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aa636ee49c91545612dafb6c4e15a99"><td class="memItemLeft" align="right" valign="top"><a id="a4aa636ee49c91545612dafb6c4e15a99" name="a4aa636ee49c91545612dafb6c4e15a99"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetEffects</b> ()</td></tr>
 <tr class="memdesc:a4aa636ee49c91545612dafb6c4e15a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you reset any fields you add to your <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied. <br /></td></tr>
 <tr class="separator:a4aa636ee49c91545612dafb6c4e15a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a451293b92456f5d1f5b68bf46c9f1e81"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a451293b92456f5d1f5b68bf46c9f1e81">ResetInfoAccessories</a> ()</td></tr>
+<tr class="memdesc:a451293b92456f5d1f5b68bf46c9f1e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you reset any fields related to INFORMATION accessories to their "default" states. This is identical to <a class="el" href="class_mod_player.html#a4aa636ee49c91545612dafb6c4e15a99" title="This is where you reset any fields you add to your ModPlayer subclass to their default states....">ResetEffects()</a>; but should ONLY be used to reset info accessories. It will cause unintended side-effects if used with other fields.  <a href="class_mod_player.html#a451293b92456f5d1f5b68bf46c9f1e81">More...</a><br /></td></tr>
+<tr class="separator:a451293b92456f5d1f5b68bf46c9f1e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaf390061d5840291f92c6fd929dc599"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#aeaf390061d5840291f92c6fd929dc599">SaveData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:aeaf390061d5840291f92c6fd929dc599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this player. <br  />
  <br  />
@@ -4338,6 +4344,35 @@ Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278
 
 </div>
 </div>
+<a id="a07262283140e5f0b7977051b678b26b1" name="a07262283140e5f0b7977051b678b26b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07262283140e5f0b7977051b678b26b1">&#9670;&nbsp;</a></span>RefreshInfoAccessoriesFromTeamPlayers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModPlayer.RefreshInfoAccessoriesFromTeamPlayers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>otherPlayer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is where you set any fields related to INFORMATION accessories based on the passed in player argument. Note that this hook is only called if all of the requirements for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code: </p>
+<p ><code>(Main.player[i].Center - base.Center).Length() &lt; 800f</code> </p>
+
+</div>
+</div>
 <a id="a46b584fef319d058a1d0beeed1265a6f" name="a46b584fef319d058a1d0beeed1265a6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46b584fef319d058a1d0beeed1265a6f">&#9670;&nbsp;</a></span>Register()</h2>
 
@@ -4364,6 +4399,35 @@ Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278
 <p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override. </p>
 
 <p>Implements <a class="el" href="class_mod_type.html#ab0f9ad250e4d99c4830b609cc4db2881">ModType&lt; Player, ModPlayer &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a451293b92456f5d1f5b68bf46c9f1e81" name="a451293b92456f5d1f5b68bf46c9f1e81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a451293b92456f5d1f5b68bf46c9f1e81">&#9670;&nbsp;</a></span>ResetInfoAccessories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModPlayer.ResetInfoAccessories </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is where you reset any fields related to INFORMATION accessories to their "default" states. This is identical to <a class="el" href="class_mod_player.html#a4aa636ee49c91545612dafb6c4e15a99" title="This is where you reset any fields you add to your ModPlayer subclass to their default states....">ResetEffects()</a>; but should ONLY be used to reset info accessories. It will cause unintended side-effects if used with other fields. </p>
+<p >This method is called in tandem with </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_mod_player.html#a4aa636ee49c91545612dafb6c4e15a99" title="This is where you reset any fields you add to your ModPlayer subclass to their default states....">ResetEffects</a>, Player.RefreshInfoAccs</dd></dl>
+<p>, but it also called in  even when the game is paused; this allows for info accessories to keep properly updating while the game is paused, a feature/fix added in 1.4.4. </p>
 
 </div>
 </div>

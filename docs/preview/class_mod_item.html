@@ -487,8 +487,12 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReforgePrice<
 <tr class="memitem:aba46b7861cb531ddf4e9aeaea3f827ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#aba46b7861cb531ddf4e9aeaea3f827ba">UpdateEquip</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:aba46b7861cb531ddf4e9aeaea3f827ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give effects to this armor or accessory, such as increased damage.  <a href="class_mod_item.html#aba46b7861cb531ddf4e9aeaea3f827ba">More...</a><br /></td></tr>
 <tr class="separator:aba46b7861cb531ddf4e9aeaea3f827ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd4a163e45cdcffc20d171c58622e607"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#abd4a163e45cdcffc20d171c58622e607">UpdateInfoAccessory</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:abd4a163e45cdcffc20d171c58622e607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.  <a href="class_mod_item.html#abd4a163e45cdcffc20d171c58622e607">More...</a><br /></td></tr>
+<tr class="separator:abd4a163e45cdcffc20d171c58622e607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa964705f9fb8a709a1525c29e0a75bfc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc">UpdateInventory</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:aa964705f9fb8a709a1525c29e0a75bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display).  <a href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc">More...</a><br /></td></tr>
+<tr class="memdesc:aa964705f9fb8a709a1525c29e0a75bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories; use </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_mod_item.html#abd4a163e45cdcffc20d171c58622e607" title="Allows you to set information accessory fields with the passed in player argument....">UpdateInfoAccessory</a></dd></dl>
+<p>for those instead.  <a href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc">More...</a><br /></td></tr>
 <tr class="separator:aa964705f9fb8a709a1525c29e0a75bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afec64f5296b792ff3dd2982642384489"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#afec64f5296b792ff3dd2982642384489">UpdateVanity</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:afec64f5296b792ff3dd2982642384489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags  <a href="class_mod_item.html#afec64f5296b792ff3dd2982642384489">More...</a><br /></td></tr>
@@ -4828,6 +4832,40 @@ Can be called on both server and client. </p>
 
 </div>
 </div>
+<a id="abd4a163e45cdcffc20d171c58622e607" name="abd4a163e45cdcffc20d171c58622e607"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd4a163e45cdcffc20d171c58622e607">&#9670;&nbsp;</a></span>UpdateInfoAccessory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModItem.UpdateInfoAccessory </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player to be affected the information accessory. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa964705f9fb8a709a1525c29e0a75bfc" name="aa964705f9fb8a709a1525c29e0a75bfc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa964705f9fb8a709a1525c29e0a75bfc">&#9670;&nbsp;</a></span>UpdateInventory()</h2>
 
@@ -4852,7 +4890,8 @@ Can be called on both server and client. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display). </p>
+<p>Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories; use </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_mod_item.html#abd4a163e45cdcffc20d171c58622e607" title="Allows you to set information accessory fields with the passed in player argument....">UpdateInfoAccessory</a></dd></dl>
+<p>for those instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>

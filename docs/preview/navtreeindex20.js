@@ -1,5 +1,10 @@
 var NAVTREEINDEX20 =
 {
+"struct_player_1_1_overhead_message.html":[2,0,909,6],
+"struct_player_1_1_rabbit_order_frame_helper.html":[2,0,909,7],
+"struct_player_1_1_set_match_request.html":[2,0,909,11],
+"struct_player_draw_set.html":[2,0,918],
+"struct_player_eye_helper.html":[2,0,919],
 "struct_player_fishing_conditions.html":[2,0,921],
 "struct_player_interaction_anchor.html":[2,0,925],
 "struct_player_movement_accs_cache.html":[2,0,928],

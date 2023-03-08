@@ -99,6 +99,7 @@ var class_global_item =
     [ "UpdateAccessory", "class_global_item.html#ac64c4da124b7424d68a2529df568ebba", null ],
     [ "UpdateArmorSet", "class_global_item.html#ae36823f3885c4a292bce445f1db9a044", null ],
     [ "UpdateEquip", "class_global_item.html#ad562bf64d6639a7fc19954c2a9f44a68", null ],
+    [ "UpdateInfoAccessory", "class_global_item.html#aad604c87cdef9ccedcd0a2ce84c2f615", null ],
     [ "UpdateInventory", "class_global_item.html#acad819426cd8c7c8eb79c2068e33741b", null ],
     [ "UpdateVanity", "class_global_item.html#a90c60db7791add50d60ec5f5bca4b3ed", null ],
     [ "UpdateVanitySet", "class_global_item.html#a8dd38bb447f0935759e88d4883afb5b8", null ],

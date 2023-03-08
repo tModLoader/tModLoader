@@ -108,6 +108,7 @@ var class_mod_item =
     [ "UpdateAccessory", "class_mod_item.html#ac7af055d3befc9d7cd9bab9d63ad0b94", null ],
     [ "UpdateArmorSet", "class_mod_item.html#a8b8e94031f1cf69ff70dc8c5ccdcb92d", null ],
     [ "UpdateEquip", "class_mod_item.html#aba46b7861cb531ddf4e9aeaea3f827ba", null ],
+    [ "UpdateInfoAccessory", "class_mod_item.html#abd4a163e45cdcffc20d171c58622e607", null ],
     [ "UpdateInventory", "class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc", null ],
     [ "UpdateVanity", "class_mod_item.html#afec64f5296b792ff3dd2982642384489", null ],
     [ "UpdateVanitySet", "class_mod_item.html#a69e69842eca65851268cb20c8583b96b", null ],
