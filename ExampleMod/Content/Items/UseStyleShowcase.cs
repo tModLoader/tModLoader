@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items
 					Item.useStyle = ItemUseStyleID.Swing;
 				}
 				Main.NewText($"Switching to ItemUseStyleID #{Item.useStyle}");
-				// This line will trigger NetSend, allowing the changes to mode to be in sync
+				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync. 
 				Item.NetStateChanged();
 			}
 			else {

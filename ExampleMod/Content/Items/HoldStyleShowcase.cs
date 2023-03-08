@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Items
 					Item.holdStyle = ItemHoldStyleID.None;
 				}
 				Main.NewText($"Switching to ItemHoldStyleID #{Item.holdStyle}");
-				// This line will trigger NetSend, allowing the changes to mode to be in sync
+				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to holdStyle to be in sync. 
 				Item.NetStateChanged();
 			}
 			else {

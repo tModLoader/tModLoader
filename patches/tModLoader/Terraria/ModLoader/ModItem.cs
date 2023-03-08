@@ -600,7 +600,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
+	/// Allows you to modify the damage, etc., that this melee weapon does to a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
