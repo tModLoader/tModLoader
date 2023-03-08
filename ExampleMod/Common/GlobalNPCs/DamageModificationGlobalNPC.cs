@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -15,8 +16,8 @@ namespace ExampleMod.Common.GlobalNPCs
 
 		public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers) {
 			if (exampleDefenseDebuff) {
-				// By convention, defense debuffs should be multiplicative 
-				modifiers.Defense *= .75f;
+				// For best results, defense debuffs should be multiplicative
+				modifiers.Defense *= ExampleDefenseDebuff.DefenseMultiplier;
 			}
 		}
 

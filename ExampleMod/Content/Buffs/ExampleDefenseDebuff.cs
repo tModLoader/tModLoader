@@ -10,6 +10,9 @@ namespace ExampleMod.Content.Buffs
 	/// </summary>
 	public class ExampleDefenseDebuff : ModBuff
 	{
+		public const int DefenseReductionPercent = 25;
+		public static float DefenseMultiplier = 1 - DefenseReductionPercent / 100f;
+
 		public override void Update(NPC npc, ref int buffIndex) {
 			npc.GetGlobalNPC<DamageModificationGlobalNPC>().exampleDefenseDebuff = true; 
 		}
