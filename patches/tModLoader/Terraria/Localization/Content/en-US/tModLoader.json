@@ -666,7 +666,27 @@
 		"DownedClown": "Needs Clown to be slain",
 		"DownedPirates": "Needs Pirates to be defeated",
 		"DownedMartians": "Needs Martians to be defeated",
-		"DownedFrost": "Needs Frost Legion to be defeated"
+		"DownedFrost": "Needs Frost Legion to be defeated",
+		"DownedSolarPillar": "Needs Solar Pillar to be defeated",
+		"NotDownedGolem": "Needs Golem to not be slain",
+		"PlayerCarriesItem": "When the player carries a {0} in their inventory",
+		"PlayerCarriesItem2": "When the player has a {0} or {1} in the inventory",
+		"NpcIsPresent": "If the {0} is present",
+		"AtleastXHealth": "If the player has at least {0} maximum life",
+		"AtleastXMana": "If the player has at least {0} maximum mana",
+		"PlatinumCoin": "If the player has at least 1 platinum coin in their inventory.",
+		"GolfScoreOver": "Golf score over {0}",
+		"BestiaryPercentage": "When the Bestiary has been filled to at least {0}%",
+		"BestiaryFull": "When the Bestiary has been filled completely",
+		"BestiaryWinx": "Once the player fills out all three Fairies in the Bestiary",
+		"CelebrationMk10": "In Celebrationmk10 and Get fixed boi worlds.",
+		"DuringFullWaningGibbous": "During the Full or Waning Gibbous moon phase",
+		"DuringThirdQuarterWaningCrescent": "During the Third Quarter or Waning Crescent moon phase",
+		"DuringNewWaxingCrescent": "During the New or Waxing Crescent moon phase",
+		"DuringFirstQuarterWaxingGibbous": "During the First Quarter or Waxing Gibbous moon phase",
+		"MultiplayerServer": "On a multiplayer server",
+		"FirstHalfSecond": "During the first half of every in game minute (every real life second)",
+		"SecondHalfSecond": "During the second half of every in game minute (every real life second)"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

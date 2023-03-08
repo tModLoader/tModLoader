@@ -636,17 +636,27 @@
  	public static void SetupTravelShop()
  	{
  		for (int i = 0; i < 40; i++) {
-@@ -1166,6 +_,10 @@
+@@ -1166,14 +_,18 @@
  		}
  	}
  
+-	public void SetupShop(int type)
 +	/// <summary>
 +	/// Sets up an NPC's shop.
 +	/// </summary>
 +	/// <param name="type">The ID of the shop to setup. <strong>This is not an NPC type (<see cref="NPC.type"/>).</strong></param>
- 	public void SetupShop(int type)
++	public void SetupShop(string shop, int type) // TML: shop parameter
  	{
  		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
+ 		Item[] array = item;
+ 		for (int i = 0; i < 40; i++) {
+ 			array[i] = new Item();
+ 		}
+-
++		/*
+ 		int num = 0;
+ 		switch (type) {
+ 			case 1: {
 @@ -2313,12 +_,12 @@
  				num++;
  				array[num].SetDefaults(1979);
@@ -662,7 +672,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,10 +_,13 @@
+@@ -2987,16 +_,41 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -672,10 +682,40 @@
  		}
  
 +		NPCLoader.SetupShop(type, this, ref num);
++		*/
 +
- 		for (int num15 = 0; num15 < num; num15++) {
++		if (type == 19) {
++			int i = 0;
++			for (int num11 = 0; num11 < 40; num11++) {
++				if (Main.travelShop[num11] != 0) {
++					array[i++].netDefaults(Main.travelShop[num11]);
++				}
++			}
++		}
++		else {
++			var loot = NPCShopDatabase.GetNPCShop(shop);
++			bool overflow = false;
++			loot?.Build(array, out overflow);
++			if (overflow) {
++				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
++				Logging.tML.Warn($"Unable to fit all item in the shop {name}");
++			}
++		}
++		
++		if ((Main.LocalPlayer?.talkNPC ?? -1) != -1) {
++			NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shop, array);
++		}
+-		for (int num15 = 0; num15 < num; num15++) {
++		for (int num15 = 0; num15 < array.Length; num15++) {
  			array[num15].isAShopItem = true;
  		}
+ 	}
+ 
+-	private static bool BestiaryGirl_IsFairyTorchAvailable()
++	internal static bool BestiaryGirl_IsFairyTorchAvailable() // TML: Made internal instead of private.
+ 	{
+ 		if (!DidDiscoverBestiaryEntry(585))
+ 			return false;
 @@ -3012,6 +_,11 @@
  
  	private static bool DidDiscoverBestiaryEntry(int npcId) => Main.BestiaryDB.FindEntryByNPCID(npcId).UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0;
