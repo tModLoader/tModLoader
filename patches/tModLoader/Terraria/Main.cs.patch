@@ -745,26 +745,29 @@
  			LoadWorlds();
  		}
  		catch {
-@@ -3830,6 +_,11 @@
+@@ -3830,6 +_,12 @@
  
  	public static string GetPlayerPathFromName(string playerName, bool cloudSave)
  	{
++		// #3298
 +		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
-+		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) { // Resolves #3298
++		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) {
 +			playerName += "_";
 +		}
 +
  		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
  		string text = "";
  		playerName = playerName.Replace(".", "_");
-@@ -3856,6 +_,10 @@
+@@ -3856,6 +_,12 @@
  
  	public static string GetWorldPathFromName(string worldName, bool cloudSave)
  	{
++		// #3298
 +		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
 +		if (Regex.IsMatch(worldName, invalidFilePattern, RegexOptions.IgnoreCase)) {
 +			worldName += "_";
 +		}
++
  		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
  		string text = "";
  		foreach (char c in worldName) {
