@@ -29,25 +29,18 @@ public abstract class ModTile : ModBlockType
 	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
 	public int[] AdjTiles { get; set; } = new int[0];
 
-	/// <summary> The ID of the tile that this door transforms into when it is closed. Defaults to -1, which means this tile isn't a door. </summary>
-	public int CloseDoorID { get; set; } = -1;
-
-	/// <summary> The ID of the tile that this door transforms into when it is opened. Defaults to -1, which means this tile isn't a door. </summary>
-	public int OpenDoorID { get; set; } = -1;
-
 	/// <summary> The ID of the item that drops when this chest is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 	public int ChestDrop { get; set; }
 
 	/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
 	public int DresserDrop { get; set; }
 
-	/// <summary> The translations for the name that is displayed when this tile is opened as a chest or dresser. This won't be used if you don't add your tile to <see cref="TileID.Sets.BasicChest"/> or <see cref="TileID.Sets.BasicDresser"/>. </summary>
-	public ModTranslation ContainerName { get; internal set; }
+	public override string LocalizationCategory => "Tiles";
 
 	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
 	public virtual string HighlightTexture => Texture + "_Highlight";
 
-	public bool IsDoor => OpenDoorID != -1 || CloseDoorID != -1;
+	public bool IsDoor => TileID.Sets.OpenDoorID[Type] != -1 || TileID.Sets.CloseDoorID[Type] != -1;
 
 	/// <summary>
 	/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
@@ -60,6 +53,8 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
+	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
+	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name = null)
 	{
@@ -73,21 +68,9 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-	public void AddMapEntry(Color color, ModTranslation name)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
-	}
-
-	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
+	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
@@ -100,28 +83,10 @@ public abstract class ModTile : ModBlockType
 		}
 	}
 
-	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
-	/// </summary>
-	public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
-	}
-
 	protected sealed override void Register()
 	{
-		ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
-
 		ModTypeLookup<ModTile>.Register(this);
-
 		Type = (ushort)TileLoader.ReserveTileID();
-
 		TileLoader.tiles.Add(this);
 	}
 
@@ -490,6 +455,13 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
+	/// </summary>
+	public virtual void PostSetupTileMerge()
+	{
+	}
+
+	/// <summary>
 	/// Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -510,4 +482,19 @@ public abstract class ModTile : ModBlockType
 	/// <param name="manual">Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</param>
 	/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
 	public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
+
+	/// <summary>
+	/// Allows customization of how locking a chest is accomplished. By default, frameXAdjustment will be 36, shifting the frameX over to the right
+	/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly.
+	/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.
+	/// Make sure that the logic is consistent and not dependent on local player data.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="frameXAdjustment">The adjustment made to each Tile.frameX, defaults to 36</param>
+	/// <param name="manual">Set this to true to bypass the code playing the lock sound and adjusting the tile frame. Network syncing will still happen.</param>
+	/// <returns>Return true if this tile truly is an unlocked chest and the chest can be locked</returns>
+	public virtual bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) => false;
+
+	public virtual LocalizedText ContainerName(int frameX, int frameY) => null;
 }

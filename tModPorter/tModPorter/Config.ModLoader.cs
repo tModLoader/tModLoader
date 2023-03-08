@@ -67,6 +67,9 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Use ContainerName.SetDefault() and TileID.Sets.BasicChest instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartInteract",	Removed("Use TileID.Sets.DisableSmartInteract instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartCursor",	Removed("Use TileID.Sets.DisableSmartCursor instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"OpenDoorID",	        Removed("Use TileID.Sets.OpenDoorID instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"CloseDoorID",	        Removed("Use TileID.Sets.CloseDoorID instead"));
+		RefactorInstanceMember("Terraria.ModLoader.NPCSpawnInfo",  "PlanteraDefeated",     Removed("Use (NPC.downedPlantBoss && Main.hardMode) instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModTree",			Removed("Assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModCactus",			Removed("Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModPalmTree",		Removed("Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead"));
@@ -198,6 +201,8 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.ModProjectile", "SingleGrappleHook", "In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true");
+		HookRemoved("Terraria.ModLoader.GlobalProjectile", "SingleGrappleHook", "In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[type] = true if you previously had this method return true");
 
 		HookRemoved("Terraria.ModLoader.ModItem",		"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
@@ -237,6 +242,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipeGroups",			"Use ModSystem.AddRecipeGroups");
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
 		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
+
+		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization");
+		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
@@ -284,8 +292,6 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "dresserDrop",			to: "DresserDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "chestDrop",			to: "ChestDrop");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "closeDoorID",			to: "CloseDoorID");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "openDoorID",			to: "OpenDoorID");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "minPick",				to: "MinPick");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "mineResist",			to: "MineResist");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "animationFrameHeight",	to: "AnimationFrameHeight");
@@ -329,8 +335,6 @@ public static partial class Config
 		//RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent, and same as Mod.GetGoreSlot
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "RegisterHotKey",		ToStaticMethodCall("Terraria.ModLoader.KeybindLoader",				"RegisterKeybind",		targetBecomesFirstArg: true));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddTranslation",		ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"AddTranslation",		targetBecomesFirstArg: false));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation",	ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"CreateTranslation",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddBackgroundTexture",ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"AddBackgroundTexture",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetBackgroundSlot",	ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"GetBackgroundSlot",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipTexture",		targetBecomesFirstArg: true));
@@ -404,5 +408,21 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
+
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
+
+		// 1.4.3 -> 1.4.4
+		RenameType(from: "Terraria.ModLoader.ModTranslation", to: "Terraria.Localization.LocalizedText");
+		RefactorInstanceMethodCall(	"Terraria.ModLoader.Mod",					"AddTranslation", Removed("Use Language.GetOrRegister"));
+		RefactorStaticMethodCall(	"Terraria.ModLoader.LocalizationLoader",	"AddTranslation", Removed("Use Language.GetOrRegister"));
+
+		RenameMethod("Terraria.ModLoader.LocalizationLoader", "CreateTranslation",		"GetOrRegister", newType: "Terraria.Localization.Language");
+		RenameMethod("Terraria.ModLoader.LocalizationLoader", "GetOrCreateTranslation", "GetOrRegister", newType: "Terraria.Localization.Language");
+
+		RefactorInstanceMethodCall("Terraria.Localization.LocalizedText", "SetDefault", CommentOut);
+		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
+		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
+
+		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
 	}
 }

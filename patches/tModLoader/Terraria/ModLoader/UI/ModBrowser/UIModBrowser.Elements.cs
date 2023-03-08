@@ -15,14 +15,14 @@ internal partial class UIModBrowser
 	private UILoaderAnimatedImage _loaderElement;
 	public UIList ModList;
 	public UIText NoModsFoundText;
-	public UITextPanel<string> HeaderTextPanel;
+	public UITextPanel<LocalizedText> HeaderTextPanel;
 	private UIElement _upperMenuContainer;
 	internal readonly List<UICycleImage> CategoryButtons = new List<UICycleImage>();
-	private UITextPanel<string> _reloadButton;
-	private UITextPanel<string> _backButton;
+	private UITextPanel<LocalizedText> _reloadButton;
+	private UITextPanel<LocalizedText> _backButton;
 	private UITextPanel<string> _clearButton;
-	private UITextPanel<string> _downloadAllButton;
-	private UITextPanel<string> _updateAllButton;
+	private UITextPanel<LocalizedText> _downloadAllButton;
+	private UITextPanel<LocalizedText> _updateAllButton;
 	private UIPanel _filterTextBoxBackground;
 	internal UIInputTextField FilterTextBox;
 
@@ -96,21 +96,21 @@ internal partial class UIModBrowser
 		_backgroundElement.Append(ModList);
 		ModList.SetScrollbar(listScrollbar);
 
-		HeaderTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.MenuModBrowser"), 0.8f, true) {
+		HeaderTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MenuModBrowser"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue
 		}.WithPadding(15f);
 		_backgroundElement.Append(HeaderTextPanel);
 
-		_reloadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBGettingData")) {
+		_reloadButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBGettingData")) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 25 },
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 
-		_backButton = new UITextPanel<string>(Language.GetTextValue("UI.Back")) {
+		_backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back")) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 25 },
 			VAlign = 1f,
@@ -126,7 +126,7 @@ internal partial class UIModBrowser
 			BackgroundColor = Color.Purple * 0.7f
 		}.WithFadedMouseOver(Color.Purple, Color.Purple * 0.7f);
 
-		_updateAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBUpdateAll")) {
+		_updateAllButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBUpdateAll")) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 25 },
 			HAlign = 1f,
@@ -135,7 +135,7 @@ internal partial class UIModBrowser
 			BackgroundColor = Color.Orange * 0.7f
 		}.WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 
-		_downloadAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.MBDownloadAll")) {
+		_downloadAllButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBDownloadAll")) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 25 },
 			HAlign = 1f,

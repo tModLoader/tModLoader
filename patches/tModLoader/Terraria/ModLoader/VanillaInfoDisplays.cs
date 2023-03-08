@@ -1,22 +1,16 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.Localization;
-using Terraria.Map;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
 
 [Autoload(false)]
 public abstract class VanillaInfoDisplay : InfoDisplay
 {
-	private protected sealed override string DisplayNameInternal => Language.GetTextValue(LangKey);
+	public override LocalizedText DisplayName => Language.GetText(LangKey);
 
 	protected abstract string LangKey { get; }
 
-	public override string DisplayValue() => "";
+	public override string DisplayValue(ref Color displayColor) => "";
 }
 
 public class WatchesInfoDisplay : VanillaInfoDisplay

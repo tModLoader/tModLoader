@@ -16,10 +16,6 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded wing.");
-
-			Item.ResearchUnlockCount = 1;
-
 			// These wings use the same values as the solar wings
 			// Fly time: 180 ticks = 3 seconds
 			// Fly speed: 9

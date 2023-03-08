@@ -22,4 +22,6 @@ public class GlobalProjectileTest : GlobalProjectile
 		drawCacheProjsBehindProjectiles.Add(index);
 		drawCacheProjsOverWiresUI.Add(index);
 	}
+
+	public override bool? SingleGrappleHook(int type, Player player) { return null; }
 }

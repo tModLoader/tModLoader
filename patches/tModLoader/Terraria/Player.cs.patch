@@ -85,8 +85,15 @@
  	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
  	public long lostCoins;
  	public string lostCoinString = "";
-@@ -498,8 +_,11 @@
+@@ -496,10 +_,18 @@
+ 	private static float _blizzardSoundVolume;
+ 	private static SlotId _strongBlizzardSound = SlotId.Invalid;
  	private static SlotId _insideBlizzardSound = SlotId.Invalid;
++
++	/// <summary>
++	/// This player's displayed name.
++	/// <br/> Usually capped at 20 characters.
++	/// </summary>
  	public string name = "";
  	public int taxMoney;
 +
@@ -179,8 +186,15 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
-@@ -637,7 +_,9 @@
+@@ -635,11 +_,22 @@
+ 	public bool dangerSense;
+ 	public byte luckPotion;
  	public byte oldLuckPotion;
++
++	/// <summary>
++	/// The percent of damage this player should resist.
++	/// <br/> Has a soft cap of <c>1f</c>. Cannot reduce taken damage below <c>1</c>.
++	/// </summary>
  	public float endurance;
  	public float whipRangeMultiplier;
 +	/*
@@ -188,8 +202,46 @@
 +	*/
  	public bool loveStruck;
  	public bool stinky;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player will take 30% less damage from any NPC with <see cref="NPC.coldDamage"/> set and any projectile with <see cref="Projectile.coldDamage"/> set.
++	/// </summary>
  	public bool resistCold;
-@@ -781,7 +_,13 @@
+ 	public bool electrified;
+ 	public bool dryadWard;
+@@ -664,10 +_,19 @@
+ 	public int fishingSkill;
+ 	public bool cratePotion;
+ 	public bool sonarPotion;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player's fishing line will never break.
++	/// </summary>
+ 	public bool accFishingLine;
+ 	public bool accFishingBobber;
+ 	public bool accTackleBox;
+ 	public bool accLavaFishing;
++
++	/// <summary>
++	/// The maximum value of minions this player can have summoned at once.
++	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
++	/// </summary>
+ 	public int maxMinions = 1;
+ 	public int numMinions;
+ 	public float slotsMinions;
+@@ -731,6 +_,11 @@
+ 	public bool defendedByPaladin;
+ 	public bool hasPaladinShield;
+ 	public float[] speedSlice = new float[60];
++
++	/// <summary>
++	/// The sum of the <see cref="NPC.npcSlots"/> of all town NPCs near this player.
++	/// <br/> If <c><see cref="townNPCs"/> &gt; 2f</c>, then this player is in a town.
++	/// </summary>
+ 	public float townNPCs;
+ 	public double headFrameCounter;
+ 	public double bodyFrameCounter;
+@@ -781,9 +_,34 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -200,10 +252,86 @@
 +	internal static int maxBuffs => 44 + BuffLoader.extraPlayerBuffCount;
 +	public static int MaxBuffs => maxBuffs;
 +
++	/// <summary>
++	/// The <see cref="BuffID"/>s of all buffs this player has active.
++	/// <br/> A value of <c>0</c> means that buff slot is empty.
++	/// <br/> Buff times are stored with the same index in <see cref="buffTime"/>.
++	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// </summary>
  	public int[] buffType = new int[maxBuffs];
++
++	/// <summary>
++	/// The remaining durations in ticks of all buffs this player has active.
++	/// <br/> A value of <c>0</c> means that buff slot is empty.
++	/// <br/> Buff types are stored with the same index in <see cref="buffType"/>.
++	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// </summary>
  	public int[] buffTime = new int[maxBuffs];
++
++	/// <summary>
++	/// Indexed by <see cref="BuffID"/>. If <see langword="true"/> for a given <see cref="BuffID"/>, then this player cannot be inflicted with that buff.
++	/// <br/> Additionally, if the player is inflicted with that buff and becomes immune to it, the buff will be cleared.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool[] buffImmune = new bool[BuffID.Count];
-@@ -961,7 +_,12 @@
+ 	public int heldProj = -1;
+ 	public int breathCD;
+@@ -813,6 +_,10 @@
+ 	public bool isHatRackDoll;
+ 	public bool isFirstFractalAfterImage;
+ 	public float firstFractalAfterImageOpacity;
++
++	/// <summary>
++	/// The text that is shown on armor (<see cref="Item.wornArmor"/>) with an active set bonus.
++	/// </summary>
+ 	public string setBonus = "";
+ 	public Item[] inventory = new Item[59];
+ 	public bool[] inventoryChestStack = new bool[59];
+@@ -853,6 +_,7 @@
+ 	public int head = -1;
+ 	public int body = -1;
+ 	public int legs = -1;
++	/* sbyte -> int
+ 	public sbyte handon = -1;
+ 	public sbyte handoff = -1;
+ 	public sbyte back = -1;
+@@ -869,6 +_,23 @@
+ 	public sbyte faceFlower = -1;
+ 	public sbyte balloonFront = -1;
+ 	public sbyte beard = -1;
++	*/
++	public int handon = -1;
++	public int handoff = -1;
++	public int back = -1;
++	public int front = -1;
++	public int shoe = -1;
++	public int waist = -1;
++	public int shield = -1;
++	public int neck = -1;
++	public int face = -1;
++	public int balloon = -1;
++	public int backpack = -1;
++	public int tail = -1;
++	public int faceHead = -1;
++	public int faceFlower = -1;
++	public int balloonFront = -1;
++	public int beard = -1;
+ 	public bool[] hideVisibleAccessory = new bool[10];
+ 	public BitsByte hideMisc = (byte)0;
+ 	public Rectangle headFrame;
+@@ -943,6 +_,11 @@
+ 	public Vector2[] shadowOrigin = new Vector2[3];
+ 	public int[] shadowDirection = new int[3];
+ 	public int shadowCount;
++
++	/// <summary>
++	/// The percent of mana actually used when mana is consumed.
++	/// <br/> Cannot reduce an item's mana cost below <c>0</c>.
++	/// </summary>
+ 	public float manaCost = 1f;
+ 	public bool fireWalk;
+ 	public bool channel;
+@@ -961,16 +_,77 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -214,9 +342,113 @@
 +	internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
 +
  	public int statDefense;
++
++	/// <summary>
++	/// The maximum health this player can have without adjustment.
++	/// <br/> You should <strong>not</strong> modify this value. If you need to increase max health for equipment, modify <see cref="statLifeMax2"/>. If you need to increase max health for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
++	/// </summary>
  	public int statLifeMax = 100;
++
++	/// <summary>
++	/// The maximum health this player can have, adjusted by buffs and equipment.
++	/// </summary>
  	public int statLifeMax2 = 100;
-@@ -1194,21 +_,59 @@
++
++	/// <summary>
++	/// The current health of this player. Capped at <see cref="statLifeMax2"/>.
++	/// <br/> If you increase this value, be sure to respect the cap.
++	/// </summary>
++	/// <remarks>
++	/// If you want to heal the player with the green text effect, use <see cref="Player.Heal(int)"/>.
++	/// <br/> If you want to hurt the player, use <see cref="Hurt"/>.
++	/// </remarks>
+ 	public int statLife = 100;
++
++	/// <summary>
++	/// The current mana of this player. Capped at <see cref="statManaMax2"/>.
++	/// <br/> If you increase this value, be sure to respect the cap.
++	/// </summary>
++	/// <remarks>
++	/// If you want to use mana, use <see cref="Player.CheckMana(Item, int, bool, bool)"/> or its overload.
++	/// </remarks>
+ 	public int statMana;
++
++	/// <summary>
++	/// The maximum mana this player can have without adjustment.
++	/// <br/> You should <strong>not</strong> modify this value. If you need to increase max mana for equipment, modify <see cref="statManaMax2"/>. If you need to increase max mana for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
++	/// </summary>
+ 	public int statManaMax;
++
++	/// <summary>
++	/// The maximum mana this player can have, adjusted by buffs and equipment.
++	/// </summary>
+ 	public int statManaMax2;
++
++	/// <summary>
++	/// The rate of this player's life regeneration in health/ticks, divided by <c>120</c>.
++	/// <br/> For example, adding <c>10</c> to this value regenerates <c>10 / 120</c> = <c>1/6</c> health per tick, or 5 health per second.
++	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
++	/// <br/> This value should be subtracted from in <see cref="ModPlayer.UpdateBadLifeRegen"/> and added to in <see cref="ModPlayer.UpdateLifeRegen"/>.
++	/// </summary>
+ 	public int lifeRegen;
++
++	/// <summary>
++	/// This player's accumulated life regeneration.
++	/// <br/> If this value reaches or exceeds <c>120</c>, the player gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
++	/// <br/> If this value reaches or exceeds <c>-120</c>, the player loses health in the same way.
++	/// </summary>
+ 	public int lifeRegenCount;
++
++	/// <summary>
++	/// How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases over time.
++	/// <br/> Certain effects increase this value to increase
++	/// </summary>
++	/// <remarks>
++	/// Use <see cref="ModPlayer.NaturalLifeRegen(ref float)"/> to directly modify natural life regeneration.
++	/// </remarks>
+ 	public float lifeRegenTime;
+ 	public int manaRegen;
+ 	public int manaRegenCount;
+@@ -993,6 +_,10 @@
+ 	public bool ammoBox;
+ 	public bool ammoPotion;
+ 	public bool chaosState;
++
++	/// <summary>
++	/// If <see langword="true"/>, then the bees created by <see cref="honeyCombItem"/> have a chance to be stronger.
++	/// </summary>
+ 	public bool strongBees;
+ 	public bool sporeSac;
+ 	public bool shinyStone;
+@@ -1019,7 +_,15 @@
+ 	public int overrideFishingBobber = -1;
+ 	public bool unlockedBiomeTorches;
+ 	public bool ateArtisanBread;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this player has permanently buffed their minecarts. See <see cref="UsingSuperCart"/> for more info.
++	/// </summary>
+ 	public bool unlockedSuperCart;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this player has the effects of the Super Cart enabled. See <see cref="UsingSuperCart"/> for more info.
++	/// </summary>
+ 	public bool enabledSuperCart = true;
+ 	public bool suspiciouslookingTentacle;
+ 	public bool crimsonHeart;
+@@ -1053,6 +_,11 @@
+ 	public bool cartFlip;
+ 	public float trackBoost;
+ 	public Vector2 lastBoost = Vector2.Zero;
++
++	/// <summary>
++	/// This player's <see cref="Mount"/>.
++	/// <br/> <strong>Do not overwrite this value.</strong> Instead, call <see cref="Mount.SetMount(int, Player, bool)"/> or <see cref="Mount.Dismount(Player)"/> on it.
++	/// </summary>
+ 	public Mount mount;
+ 	public bool blackCat;
+ 	public bool spider;
+@@ -1194,21 +_,63 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -273,15 +505,47 @@
 +	*/
 +	internal ref float summonerWeaponSpeedBonus => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
 +
++	// TML: Should these be StatModifiers?
++	/// <summary>
++	/// The multiplier on this player's <see cref="maxRunSpeed"/> and <see cref="runAcceleration"/>.
++	/// </summary>
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1243,12 +_,33 @@
+@@ -1231,24 +_,61 @@
+ 	public static int tileTargetY;
+ 	public static float defaultGravity = 0.4f;
+ 	public static int jumpHeight = 15;
++
++	/// <summary>
++	/// The speed, in pixels/tick, that this players jumps at.
++	/// </summary>
+ 	public static float jumpSpeed = 5.01f;
+ 	public float gravity = defaultGravity;
+ 	public float maxFallSpeed = 10f;
++
++	/// <summary>
++	/// The maximum speed, in pixels/tick, that this player can reach by just running.
++	/// </summary>
++	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
+ 	public float maxRunSpeed = 3f;
++
++	/// <summary>
++	/// The acceleration, in pixels/ticks^2, that this player experiences while running.
++	/// </summary>
++	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
+ 	public float runAcceleration = 0.08f;
+ 	public float runSlowdown = 0.2f;
+ 	public bool adjWater;
+ 	public bool adjHoney;
++	public bool adjShimmer;
+ 	public bool adjLava;
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
++	public bool oldAdjShimmer;
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	public bool[] adjTile {
@@ -313,6 +577,47 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
+@@ -1330,7 +_,18 @@
+ 	public bool isPerformingPogostickTricks;
+ 	public bool autoJump;
+ 	public bool justJumped;
++
++	/// <summary>
++	/// How much to directly increase <see cref="jumpSpeed"/>, in pixels/tick.
++	/// </summary>
+ 	public float jumpSpeedBoost;
++
++	/// <summary>
++	/// The number of extra tiles this player can fall before they start taking fall damage.
++	/// </summary>
++	/// <remarks>
++	/// If you want to prevent fall damage entirely, use <see cref="noFallDmg"/>.
++	/// </remarks>
+ 	public int extraFall;
+ 	public bool canFloatInWater;
+ 	public bool hasFloatingTube;
+@@ -1351,6 +_,10 @@
+ 	public int vanityRocketBoots;
+ 	public bool canRocket;
+ 	public bool jumpBoost;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player will take no fall damage.
++	/// </summary>
+ 	public bool noFallDmg;
+ 	public int swimTime;
+ 	public bool killGuide;
+@@ -1397,6 +_,10 @@
+ 	public int forcedGravity;
+ 	public bool gravControl;
+ 	public bool gravControl2;
++
++	/// <summary>
++	/// If not <see langword="null"/>, this player will create damaging bee projectiles when taking damage.
++	/// </summary>
+ 	public Item honeyCombItem;
+ 	public int wireOperationsCooldown;
+ 	public int lastChest;
 @@ -1507,7 +_,7 @@
  	private int[] unlitTorchY = new int[maxTorchAttacks];
  	private static int[] _torchAttackPosX = new int[400];
@@ -331,6 +636,68 @@
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
  	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
+@@ -1823,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is the top 35% of the world.
++	/// <br/> <strong>NOTE:</strong> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logc behind it is used for NPC shops and enemy spawns.
++	/// </summary>
+ 	public bool ZoneSkyHeight {
+ 		get {
+ 			return zone3[0];
+@@ -1832,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is above ground (<see cref="Main.worldSurface"/>) but not in space (<see cref="ZoneSkyHeight"/>).
++	/// </summary>
+ 	public bool ZoneOverworldHeight {
+ 		get {
+ 			return zone3[1];
+@@ -1841,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is underground (<see cref="Main.worldSurface"/>) but above the Caverns layer (<see cref="Main.rockLayer"/>).
++	/// </summary>
+ 	public bool ZoneDirtLayerHeight {
+ 		get {
+ 			return zone3[2];
+@@ -1850,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is in the Caverns layer (<see cref="Main.rockLayer"/>) but not in the Underworld (<see cref="Main.UnderworldLayer"/>).
++	/// </summary>
+ 	public bool ZoneRockLayerHeight {
+ 		get {
+ 			return zone3[3];
+@@ -1859,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is in the Underworld (<see cref="Main.UnderworldLayer"/>).
++	/// </summary>
+ 	public bool ZoneUnderworldHeight {
+ 		get {
+ 			return zone3[4];
+@@ -2085,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then any minecart (<see cref="MountID.Sets.Cart"/>) this player rides in will be significantly faster and fire lasers.
++	/// <br/> Cannot be <see langword="true"/> if <see cref="unlockedSuperCart"/> is <see langword="false"/>.
++	/// </summary>
+ 	public bool UsingSuperCart {
+ 		get {
+ 			if (!unlockedSuperCart)
 @@ -2097,11 +_,13 @@
  		}
  	}
@@ -499,6 +866,17 @@
  			float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
  			if (Main.GameModeInfo.IsJourneyMode) {
  				if (Main.masterMode)
+@@ -3054,6 +_,10 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Removes the buff at the provided index in <see cref="buffType"/> and <see cref="buffTime"/> and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.ClearBuff(int)"/> if you only know the <see cref="BuffID"/>.
++	/// </summary>
++	/// <param name="b">The index in <see cref="buffType"/> of the buff to remove.</param>
+ 	public void DelBuff(int b)
+ 	{
+ 		buffTime[b] = 0;
 @@ -3073,8 +_,16 @@
  		}
  	}
@@ -653,31 +1031,33 @@
  		if (item.shoot == 73) {
  			int num2 = 0;
  			for (int i = 0; i < 1000; i++) {
-@@ -3630,11 +_,24 @@
+@@ -3630,11 +_,13 @@
  		float shootSpeed = item.shootSpeed;
  		int damage = item.damage;
  		float knockBack = item.knockBack;
+-		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
 +
-+		bool vanillaSingleHook = false;
- 		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
-+			vanillaSingleHook = true;
-+		}
-+
-+		if (ProjectileLoader.SingleGrappleHook(num7, this) ?? vanillaSingleHook) {
++		if (ProjectileID.Sets.SingleGrappleHook[num7]) {
  			grappling[0] = -1;
  			grapCount = 0;
  			for (int num8 = 0; num8 < 1000; num8++) {
  				if (Main.projectile[num8].active && Main.projectile[num8].owner == whoAmI) {
-+					if (ProjectileLoader.SingleGrappleHook(Main.projectile[num8].type, this) is bool modSingleHook2) {
-+						if (modSingleHook2)
-+							Main.projectile[num8].Kill();
-+
-+						continue;
-+					}
-+
++					/*
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
+@@ -3651,6 +_,11 @@
+ 							Main.projectile[num8].Kill();
+ 							break;
+ 					}
++					*/
++					if (!ProjectileID.Sets.SingleGrappleHook[num8])
++						continue;
++
++					Main.projectile[num8].Kill();
+ 				}
+ 			}
+ 		}
 @@ -3721,11 +_,14 @@
  					break;
  				case -1:
@@ -1310,27 +1690,84 @@
  		}
  
  		UpdateHungerBuffs();
-@@ -9431,6 +_,9 @@
+@@ -9226,23 +_,26 @@
+ 		accStopwatch = false;
+ 		accOreFinder = false;
+ 		accDreamCatcher = false;
++
++		PlayerLoader.ResetInfoAccessories(this);
++
+ 		for (int i = 0; i < 58; i++) {
+ 			int type = inventory[i].type;
+-			RefreshInfoAccsFromItemType(type);
++			RefreshInfoAccsFromItemType(inventory[i]);
+ 			if (type == 4131)
+ 				flag = true;
+ 		}
+ 
+ 		for (int j = 0; j < 10; j++) {
+ 			int type2 = armor[j].type;
+-			RefreshInfoAccsFromItemType(type2);
++			RefreshInfoAccsFromItemType(armor[j]);
+ 		}
+ 
+ 		if (flag) {
+ 			for (int k = 0; k < 40; k++) {
+ 				int type3 = bank4.item[k].type;
+-				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
+-					RefreshInfoAccsFromItemType(type3);
++				if (type3 < 0 || ItemID.Sets.WorksInVoidBag[type3])
++					RefreshInfoAccsFromItemType(bank4.item[k]);
+ 			}
+ 		}
+ 
+@@ -9301,11 +_,20 @@
+ 
+ 				if (Main.player[i].hasLuck_LuckyCoin)
+ 					hasLuck_LuckyCoin = true;
++
++				PlayerLoader.RefreshInfoAccessoriesFromTeamPlayers(this, Main.player[i]);
+ 			}
+ 		}
+ 	}
+ 
++	// Added by tML.
++	public void RefreshInfoAccsFromItemType(Item item)
++	{
++		RefreshInfoAccsFromItemType(item.type);
++		ItemLoader.UpdateInfoAccessory(item, this);
++	}
++
+-	public void RefreshInfoAccsFromItemType(int accType)
++	private void RefreshInfoAccsFromItemType(int accType)
+ 	{
+ 		if ((accType == 15 || accType == 707) && accWatch < 1)
+ 			accWatch = 1;
+@@ -9431,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
  			int type = inventory[j].type;
+-			RefreshInfoAccsFromItemType(type);
 +
 +			ItemLoader.UpdateInventory(inventory[j], this);
 +
- 			RefreshInfoAccsFromItemType(type);
++			RefreshInfoAccsFromItemType(inventory[j]);
  			RefreshMechanicalAccsFromItemType(type);
  			if (type == 4743)
-@@ -9456,7 +_,9 @@
+ 				hasFootball = true;
+@@ -9456,8 +_,10 @@
  		if (flag) {
  			for (int l = 0; l < 40; l++) {
  				int type2 = bank4.item[l].type;
 -				if (type2 < 0 || type2 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type2]) {
+-					RefreshInfoAccsFromItemType(type2);
 +				if (ItemID.Sets.WorksInVoidBag[type2]) {
 +					ItemLoader.UpdateInventory(bank4.item[l], this);
 +
- 					RefreshInfoAccsFromItemType(type2);
++					RefreshInfoAccsFromItemType(bank4.item[l]);
  					RefreshMechanicalAccsFromItemType(type2);
  				}
+ 			}
 @@ -9471,8 +_,14 @@
  
  		for (int m = 3; m < 10; m++) {
@@ -1385,7 +1822,7 @@
  
  		for (int num = 13; num < 20; num++) {
  			if (IsItemSlotUnlockedAndUsable(num))
-@@ -9562,7 +_,7 @@
+@@ -9562,10 +_,10 @@
  		}
  	}
  
@@ -1393,7 +1830,11 @@
 +	public void GrantArmorBenefits(Item armorPiece)
  	{
  		int type = armorPiece.type;
- 		RefreshInfoAccsFromItemType(type);
+-		RefreshInfoAccsFromItemType(type);
++		RefreshInfoAccsFromItemType(armorPiece);
+ 		RefreshMechanicalAccsFromItemType(type);
+ 		if (armorPiece.type == 3017 || armorPiece.type == 3993) {
+ 			flowerBoots = true;
 @@ -9737,6 +_,9 @@
  			armorPenetration += 5;
  
@@ -1742,7 +2183,7 @@
  		if (item.prefix == 80)
  			meleeSpeed += 0.04f;
 +
-+		// TODO: PrefixLoader.GrantPrefixBenefits(item)
++		PrefixLoader.ApplyAccessoryEffects(this, item);
  	}
  
  	private void SpawnHallucination(Item item)
@@ -2113,7 +2554,7 @@
  				if (tile == null)
  					return;
  
-+				if (tile.type > TileID.Count) {
++				if (tile.type >= TileID.Count) {
 +					if (tile.active() && TileID.Sets.Torch[tile.type])
 +						NearbyModTorch.Add(tile.type);
 +
@@ -2253,7 +2694,7 @@
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
-@@ -14652,18 +_,22 @@
+@@ -14652,18 +_,23 @@
  			}
  		}
  
@@ -2262,6 +2703,7 @@
  		mount.CheckMountBuff(this);
 +
 +		PlayerLoader.ResetEffects(this);
++		PlayerLoader.ResetInfoAccessories(this);
  	}
  
  	private void UpdateLadyBugLuckTime()
@@ -3329,7 +3771,16 @@
  			oldAdjTile[i] = adjTile[i];
  			adjTile[i] = false;
  		}
-@@ -27610,15 +_,17 @@
+@@ -27580,6 +_,8 @@
+ 		adjHoney = false;
+ 		oldAdjLava = adjLava;
+ 		adjLava = false;
++		oldAdjShimmer = adjShimmer;
++		adjShimmer = false;
+ 		alchemyTable = false;
+ 		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
+ 		int num4 = (int)((position.Y + (float)height) / 16f);
+@@ -27610,16 +_,21 @@
  							alchemyTable = true;
  							break;
  					}
@@ -3348,8 +3799,12 @@
 -				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
  					adjLava = true;
++
++				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
++					adjShimmer = true;
  			}
  		}
+ 
 @@ -27627,7 +_,7 @@
  			return;
  
@@ -3359,6 +3814,34 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -27643,6 +_,9 @@
+ 		if (adjLava != oldAdjLava)
+ 			flag = true;
+ 
++		if (adjShimmer != oldAdjShimmer)
++			flag = true;
++
+ 		if (flag)
+ 			Recipe.FindRecipes();
+ 	}
+@@ -27759,7 +_,7 @@
+ 			waist = 0;
+ 
+ 		if (!dead && body >= 0) {
+-			sbyte b = (sbyte)(Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
++			int b = (Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
+ 			if (b != -1) {
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[b]) {
+ 					backpack = b;
+@@ -27775,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			sbyte b2 = (sbyte)ArmorIDs.Body.Sets.IncludedCapeFront[body];
++			int b2 = ArmorIDs.Body.Sets.IncludedCapeFront[body];
+ 			if (b2 != -1 && front == -1) {
+ 				front = b2;
+ 				cFront = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -3396,6 +3879,15 @@
  		if (head > 0 && face > 0) {
  			if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
  				head = -1;
+@@ -27881,7 +_,7 @@
+ 		}
+ 
+ 		if (head > 0 && faceHead > 0 && ArmorIDs.Head.Sets.UseAltFaceHeadDraw[head]) {
+-			sbyte b3 = (sbyte)ArmorIDs.Face.Sets.AltFaceHead[faceHead];
++			int b3 = ArmorIDs.Face.Sets.AltFaceHead[faceHead];
+ 			if (b3 > 0)
+ 				faceHead = b3;
+ 		}
 @@ -27905,6 +_,9 @@
  			obj.shader = GameShaders.Armor.GetSecondaryShader(cBody, this);
  		}
@@ -3491,6 +3983,15 @@
  	{
  		if (item.stringColor > 0)
  			stringColor = item.stringColor;
+@@ -28608,7 +_,7 @@
+ 		if (item.shoeSlot > 0) {
+ 			shoe = item.shoeSlot;
+ 			if (!Male && ArmorIDs.Shoe.Sets.MaleToFemaleID[shoe] > 0)
+-				shoe = (sbyte)ArmorIDs.Shoe.Sets.MaleToFemaleID[shoe];
++				shoe = ArmorIDs.Shoe.Sets.MaleToFemaleID[shoe];
+ 		}
+ 
+ 		if (item.waistSlot > 0)
 @@ -28642,9 +_,13 @@
  		if (item.wingSlot > 0)
  			wings = item.wingSlot;
@@ -4318,6 +4819,22 @@
  							if (inventory[num15].stack <= 0)
  								inventory[num15] = new Item();
  
+@@ -33732,6 +_,15 @@
+ 							flag6 = false;
+ 					}
+ 
++					// Copied as-is from 1.3
++					if (item.CountsAsClass(DamageClass.Throwing)) {
++						if (ThrownCost50 && Main.rand.Next(100) < 50)
++							flag6 = false;
++
++						if (ThrownCost33 && Main.rand.Next(100) < 33)
++							flag6 = false;
++					}
++
+ 					if (item.IsACoin)
+ 						flag6 = true;
+ 
 @@ -33739,7 +_,7 @@
  					if (flag7.HasValue)
  						flag6 = flag7.Value;
@@ -4984,7 +5501,7 @@
 +		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay:!flag2))
 +			canUse = false;
 +
-+		return canUse; //TODO: Explain this in a comment.
++		return canUse; // TML: The below code was moved to CheckMana and GetManaCost in Player.TML.
 +
  		if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  			if (statMana >= num) {
@@ -5870,9 +6387,10 @@
  		}
  
  		fileIO.Write(newPlayer.voidVaultInfo);
- 		for (int num5 = 0; num5 < maxBuffs; num5++) {
-+			//TML: Don't save buffs to vanilla player
+-		for (int num5 = 0; num5 < maxBuffs; num5++) {
 -			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
++		for (int num5 = 0; num5 < 44; num5++) {
++			//TML: Don't save buffs to vanilla player
 +			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
  				fileIO.Write(0);
  				fileIO.Write(0);

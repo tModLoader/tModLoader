@@ -86,6 +86,24 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookResetInfoAccessories = AddHook<Action>(p => p.ResetInfoAccessories);
+
+	public static void ResetInfoAccessories(Player player)
+	{
+		foreach (var modPlayer in HookResetInfoAccessories.Enumerate(player.modPlayers)) {
+			modPlayer.ResetInfoAccessories();
+		}
+	}
+
+	private static HookList HookRefreshInfoAccessoriesFromTeamPlayers = AddHook<Action<Player>>(p => p.RefreshInfoAccessoriesFromTeamPlayers);
+
+	public static void RefreshInfoAccessoriesFromTeamPlayers(Player player, Player otherPlayer)
+	{
+		foreach (var modPlayer in HookRefreshInfoAccessoriesFromTeamPlayers.Enumerate(player.modPlayers)) {
+			modPlayer.RefreshInfoAccessoriesFromTeamPlayers(otherPlayer);
+		}
+	}
+
 	/// <summary>
 	/// Resets <see cref="Player.statLifeMax"/> and <see cref="Player.statManaMax"/> to their expected values by vanilla
 	/// </summary>
@@ -1325,5 +1343,18 @@ public static class PlayerLoader
 			.OrderBy(kv => kv.Key == "Terraria" ? "" : kv.Key)
 			.SelectMany(kv => kv.Value)
 			.ToList();
+	}
+
+	private delegate IEnumerable<Item> DelegateFindMaterialsFrom(out ModPlayer.ItemConsumedCallback onUsedForCrafting);
+	private static HookList HookAddCraftingMaterials = AddHook<DelegateFindMaterialsFrom>(p => p.AddMaterialsForCrafting);
+
+	public static IEnumerable<(IEnumerable<Item>, ModPlayer.ItemConsumedCallback)> GetModdedCraftingMaterials(Player player)
+	{
+		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path. 
+		foreach (var modPlayer in HookAddCraftingMaterials.EnumerateSlow(player.modPlayers)) {
+			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
+			if (items != null)
+				yield return (items, onUsedForCrafting);
+		}
 	}
 }

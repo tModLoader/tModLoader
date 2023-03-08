@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,271 @@
+@@ -66,70 +_,278 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -33,6 +33,7 @@
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
 +	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
++	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noDropItem;
@@ -225,6 +226,12 @@
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
 +	/// </summary>
  	public bool hide;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this projectile will only deal damage if its owner has line of sight to the hit.
++	/// <br/> Useful for melee projectiles, such as spears and shortswords.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool ownerHitCheck;
  	public bool usesOwnerMeleeHitCD;
  	public int[] playerImmune = new int[255];
@@ -377,6 +384,15 @@
  		ownerHitCheck = false;
  		hide = false;
  		lavaWet = false;
+@@ -1167,6 +_,8 @@
+ 			magic = true;
+ 		}
+ 		else if (type == 85) {
++			ArmorPenetration = 15; // Added by tML.
++
+ 			width = 6;
+ 			height = 6;
+ 			aiStyle = 193;
 @@ -1859,6 +_,8 @@
  			ignoreWater = true;
  		}
@@ -386,15 +402,26 @@
  			width = 28;
  			height = 28;
  			aiStyle = 4;
-@@ -2200,6 +_,8 @@
+@@ -2200,6 +_,10 @@
  			trap = true;
  		}
  		else if (type == 189) {
++			// This value should be 15 if (!npcProj && !trap && Main.player[owner].strongBees). However, there's no way to know if those fields
++			// will set be to the proper values in SetDefaults. How should this be approached? Leaving as 10 for now. - Mutant
 +			ArmorPenetration = 10; // Added by TML.
 +
  			width = 8;
  			height = 8;
  			aiStyle = 36;
+@@ -4473,6 +_,8 @@
+ 			tileCollide = false;
+ 		}
+ 		else if (type == 442) {
++			ArmorPenetration = Main.remixWorld ? 20 : ArmorPenetration; // Added by tML.
++
+ 			width = 14;
+ 			height = 14;
+ 			aiStyle = 1;
 @@ -4960,6 +_,8 @@
  			netImportant = true;
  		}
@@ -444,7 +471,7 @@
  				coldDamage = true;
  		}
  		else if (type == 916) {
-+			ArmorPenetration = 25; // Added by TML.
++			ArmorPenetration = 50; // Added by TML.
 +
  			width = 18;
  			height = 18;
@@ -476,6 +503,33 @@
  			width = 56;
  			height = 64;
  			aiStyle = 177;
+@@ -8224,6 +_,8 @@
+ 			hide = true;
+ 		}
+ 		else if (type == 977) {
++			ArmorPenetration = 5; // Added by tML.
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
+@@ -8250,6 +_,8 @@
+ 			coldDamage = true;
+ 		}
+ 		else if (type == 974) {
++			ArmorPenetration = 5; // Added by tML.
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 188;
+@@ -8279,6 +_,8 @@
+ 			timeLeft = 30;
+ 		}
+ 		else if (type == 976) {
++			ArmorPenetration = 20; // Added by tML.
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
 @@ -8643,9 +_,17 @@
  			friendly = true;
  			penetrate = -1;
@@ -515,12 +569,12 @@
  	public static int NewProjectile(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f) => NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
  
  	public static int FindOldestProjectile()
-@@ -8709,6 +_,24 @@
+@@ -8709,6 +_,25 @@
  		return result;
  	}
  
 +	/// <summary>
-+	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0 and ai1 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 +	/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
 +	/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
 +	/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
@@ -536,6 +590,7 @@
 +	/// <param name="Owner"></param>
 +	/// <param name="ai0"></param>
 +	/// <param name="ai1"></param>
++	/// <param name="ai2"></param>
 +	/// <returns></returns>
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
  	{
@@ -577,10 +632,10 @@
  			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
  				projectile.timeLeft = 180;
 +
-+			// Copied from 1.3, adjusted to check for actual player (servers never shoot thrower projectiles)
++			// Copied from 1.3, moved from Shoot context to OnSpawn with matching logic
 +			if (Main.netMode != NetmodeID.Server) {
 +				Player throwingPlayer = Main.player[Owner];
-+				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing))
++				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing) && spawnSource is EntitySource_ItemUse_WithAmmo)
 +					projectile.noDropItem = true;
 +			}
  		}
@@ -942,6 +997,15 @@
  		if (myRect.Intersects(targetRect))
  			return true;
  
+@@ -12392,7 +_,7 @@
+ 		if (Main.netMode == 1 && (ProjectileID.Sets.IsAGolfBall[type] || type == 820)) {
+ 			int num = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
+-			if (Main.tile[num, num2] == null)
++			if (!Main.sectionManager.TileLoaded(num, num2))
+ 				return;
+ 		}
+ 
 @@ -12412,9 +_,16 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
@@ -1267,6 +1331,16 @@
  
  			Vector2 vector3 = base.Center - new Vector2(5f);
  			Vector2 vector4 = base.Center + new Vector2(5f);
+@@ -36334,7 +_,8 @@
+ 						continue;
+ 
+ 					Tile tile = Main.tile[l, m];
++					// TML: Moved nactive check into method, changed from tile to coords
+-					if (!tile.nactive() || !AI_007_GrapplingHooks_CanTileBeLatchedOnTo(tile) || list.Contains(new Point(l, m)) || (type == 403 && tile.type != 314) || Main.player[owner].IsBlacklistedForGrappling(new Point(l, m)))
++					if (!AI_007_GrapplingHooks_CanTileBeLatchedOnTo(l, m) || list.Contains(new Point(l, m)) || (type == 403 && tile.type != 314) || Main.player[owner].IsBlacklistedForGrappling(new Point(l, m)))
+ 						continue;
+ 
+ 					if (Main.player[owner].grapCount < 10) {
 @@ -36371,6 +_,8 @@
  						if (type >= 646 && type <= 649)
  							num17 = 4;
@@ -1285,6 +1359,40 @@
  			if (num3 < 24f)
  				Kill();
  
+@@ -36463,7 +_,8 @@
+ 				Main.tile[point4.X, point4.Y] = new Tile();
+ 
+ 			bool flag = true;
+-			if (Main.tile[point4.X, point4.Y].nactive() && AI_007_GrapplingHooks_CanTileBeLatchedOnTo(Main.tile[point4.X, point4.Y]))
++			// TML: Moved nactive check into method, changed from tile to coords
++			if (AI_007_GrapplingHooks_CanTileBeLatchedOnTo(point4.X, point4.Y))
+ 				flag = false;
+ 
+ 			if (flag) {
+@@ -36476,7 +_,23 @@
+ 		}
+ 	}
+ 
++	/*
+ 	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(Tile theTile) => Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
++	*/
++	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(int x, int y)
++	{
++		Tile theTile = Main.tile[x, y];
++		// Code taken 1:1 from the commented out method with the same name
++		bool vanilla = Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
++
++		// TML: Vanilla check modified by moving Tile.nactive() from its callsites into here to allow actuated or air to be grappled by mods
++		vanilla &= theTile.nactive();
++
++		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
++			return modOverride;
++
++		return vanilla;
++	}
+ 
+ 	private void AI_147_Celeb2Rocket()
+ 	{
 @@ -36660,7 +_,7 @@
  			return;
  		}

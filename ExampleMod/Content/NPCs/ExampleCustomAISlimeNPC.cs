@@ -41,8 +41,9 @@ namespace ExampleMod.Content.NPCs
 		public ref float AI_FlutterTime => ref NPC.ai[2];
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Flutter Slime"); // Automatic from localization files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
+
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
 
 			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {

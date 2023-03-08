@@ -27,21 +27,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.IsAContainer[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
 			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
-			// Names
-			ContainerName.SetDefault("Example Chest");
-
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Chest");
-			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
-
-			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
-			name.SetDefault("Locked Example Chest");
-			AddMapEntry(new Color(0, 141, 63), name, MapChestName);
+			// Other tiles with just one map entry use CreateMapEntryName() to use the default translationkey, "MapEntry"
+			// Since ExampleChest needs multiple, we register our own MapEntry keys
+			AddMapEntry(new Color(200, 200, 200), this.GetLocalization("MapEntry0"), MapChestName);
+			AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -60,6 +55,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			return (ushort)(Main.tile[i, j].TileFrameX / 36);
 		}
 
+		public override LocalizedText ContainerName(int frameX, int frameY) {
+			int option = frameX / 36;
+			return this.GetLocalization("MapEntry" + option);
+		}
+
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return true;
 		}
@@ -76,6 +76,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = dustType;
 			return true;
+		}
+
+		public override bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) {
+			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
+			// We need to return true only if the tile style is the unlocked variant of a chest that supports locking. 
+			if(style == 0) {
+				// We can check other conditions as well, such as how biome chests can't be locked until Plantera is defeated
+				return true;
+			}
+			return false;
 		}
 
 		public static string MapChestName(string name, int i, int j) {
@@ -202,7 +212,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Language.GetTextValue("LegacyChestType.0");
 			}
 			else {
-				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.ContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName) {
 					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();

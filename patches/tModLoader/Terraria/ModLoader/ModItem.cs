@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -19,7 +20,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 /// </summary>
-public abstract class ModItem : ModType<Item, ModItem>
+public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 {
 	/// <summary>
 	/// The item object that this ModItem controls.
@@ -31,28 +32,22 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// </summary>
 	public int Type => Item.type;
 
+	public string LocalizationCategory => "Items";
+
 	/// <summary>
 	/// The translations for the display name of this item.
 	/// </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The translations for the tooltip of this item.
 	/// </summary>
-	public ModTranslation Tooltip { get; internal set; }
+	public virtual LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
-
-	// Deprecation date: 2022.12.XX
-	/// <inheritdoc cref="Item.ResearchUnlockCount"/>
-	[Obsolete($"Use {nameof(Item)}.{nameof(Terraria.Item.ResearchUnlockCount)} instead.", error: true)]
-	public int SacrificeTotal {
-		get => Item.ResearchUnlockCount;
-		set => Item.ResearchUnlockCount = value;
-	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
 
@@ -67,9 +62,6 @@ public abstract class ModItem : ModType<Item, ModItem>
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModItem>.Register(this);
-
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
-		Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
 
 		Item.ResetStats(ItemLoader.ReserveItemID());
 		Item.ModItem = this;
@@ -132,8 +124,7 @@ public abstract class ModItem : ModType<Item, ModItem>
 			TextureAssets.ItemFlame[Item.type] = flameTexture;
 		}
 
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+		Item.ResearchUnlockCount = 1;
 	}
 
 	/// <summary>
@@ -692,12 +683,20 @@ public abstract class ModItem : ModType<Item, ModItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateInventory(Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	/// <param name="player"> The player to be affected the information accessory. </param>
+	public virtual void UpdateInfoAccessory(Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to this armor or accessory, such as increased damage.
@@ -850,8 +849,9 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// <br/>This is not called for coins in inventory/UI.
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
+	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStack(Item decrease)
+	public virtual bool CanStack(Item source)
 	{
 		return true;
 	}
@@ -860,32 +860,31 @@ public abstract class ModItem : ModType<Item, ModItem>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <br/>This is only called when attempting to stack with an item of the same type.
 	/// </summary>
+	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item decrease)
+	public virtual bool CanStackInWorld(Item source)
 	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.<br/>
-	/// This item will have its stack increased that will have its stack increased.
+	/// This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
 	/// </summary>
-	/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
-	public virtual void OnStack(Item decrease, int numberToBeTransfered)
+	/// <param name="source">The item instance being stacked onto this item</param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	public virtual void OnStack(Item source, int numToTransfer)
 	{
-
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.<br/>
-	/// Item is always the new stack which is a clone of decrease.  Item.stack will always be 0.  It is increased after SplitStack.
+	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.<br/>
+	/// This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
 	/// </summary>
-	/// <param name="decrease">The original item that will have it's stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to this item.</param>
-	public virtual void SplitStack(Item decrease, int numberToBeTransfered)
+	/// <param name="source">The original item that will have it's stack reduced.</param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	public virtual void SplitStack(Item source, int numToTransfer)
 	{
-
 	}
 
 	/// <summary>

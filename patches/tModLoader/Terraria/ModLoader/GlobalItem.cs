@@ -571,11 +571,18 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when an item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	public virtual void UpdateInventory(Item item, Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	public virtual void UpdateInfoAccessory(Item item, Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to armors and accessories, such as increased damage.
@@ -729,8 +736,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <br/>This is usually not called for coins and ammo in the inventory/UI.
 	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public virtual bool CanStack(Item increase, Item decrease)
+	public virtual bool CanStack(Item destination, Item source)
 	{
 		return true;
 	}
@@ -739,32 +748,36 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to prevent items from stacking in the world.
 	/// <br/>This is only called when two items of the same type attempt to stack.
 	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item increase, Item decrease)
+	public virtual bool CanStackInWorld(Item destination, Item source)
 	{
 		return true;
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when items stack together.
+	/// Allows you to make things happen when items stack together.<br/>
+	/// This hook is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
 	/// </summary>
-	/// <param name="increase">The item that will have its stack increased.</param>
-	/// <param name="decrease">The item that will be removed or have its stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to increase.</param>
-	public virtual void OnStack(Item increase, Item decrease, int numberToBeTransfered)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	public virtual void OnStack(Item destination, Item source, int numToTransfer)
 	{
-		
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  Usually transfers 1 and only occurs with the first transfer.  Split stack is called before the stack values are modified.
+	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.
 	/// </summary>
-	/// <param name="increase">The new item which is a clone of decrease.  increase.stack will always be 0.  It is increased after SplitStack.</param>
-	/// <param name="decrease">The original item that will have it's stack reduced.</param>
-	/// <param name="numberToBeTransfered">The number that will be transfered from decrease to increase.</param>
-	public virtual void SplitStack(Item increase, Item decrease, int numberToBeTransfered)
+	/// <param name="destination">
+	/// The item instance that <paramref name="source"/> will transfer items to, and is usually a clone of <paramref name="source"/>.<br/>
+	/// This parameter's stack will always be zero.
+	/// </param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to to <paramref name="destination"/></param>
+	public virtual void SplitStack(Item destination, Item source, int numToTransfer)
 	{
-
 	}
 
 	/// <summary>

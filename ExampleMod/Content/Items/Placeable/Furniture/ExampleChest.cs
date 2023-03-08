@@ -6,12 +6,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleChest : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded chest.");
-
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleChest>());
 			// Item.placeStyle = 1; // Use this to place the chest in its locked style

@@ -241,6 +241,32 @@ public partial class InvokeRewriter : BaseRewriter
 
 		return invoke;
 	};
+
+	public static RewriteInvoke CommentOut => (rw, invoke, methodName) => {
+		// This doesn't actually do the right thing, which would be to remove the entire StatementSyntax from the block, and then add the comment trivia in the right spot to the previous node, but that's really hard...
+		// So instead, we just chuck some line comment trivia in front of this and hope no-one else gets too confused
+		if (invoke.Parent is StatementSyntax stmt)
+			rw.RegisterAction(stmt, CommentOutNode);
+
+		return invoke;
+	};
+
+	private static SyntaxNode CommentOutNode(SyntaxNode node) {
+
+		var t = node.GetLeadingTrivia();
+		if (t.LastOrDefault().Kind() is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.MultiLineCommentTrivia)
+			return node; // prevents infinite recursion
+
+		bool multiline = node.WithoutTrivia().DescendantTrivia().Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia));
+		if (multiline) {
+			return node
+				.WithLeadingTrivia(t.Add(Comment("/* ")))
+				.WithTrailingTrivia(node.GetTrailingTrivia().Insert(0, Comment(" */")));
+		}
+		else {
+			return node.WithLeadingTrivia(t.Add(Comment("// ")));
+		}
+	}
 	#endregion
 }
 

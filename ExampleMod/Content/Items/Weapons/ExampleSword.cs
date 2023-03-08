@@ -8,12 +8,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleSword : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded sword."); // The (English) text shown below your weapon's name.
-
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 40; // The item texture's width.
 			Item.height = 40; // The item texture's height.

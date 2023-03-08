@@ -17,7 +17,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 /// </summary>
-public abstract class ModNPC : ModType<NPC, ModNPC>
+public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 {
 	/// <summary> The NPC object that this ModNPC controls. </summary>
 	public NPC NPC => Entity;
@@ -25,8 +25,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	/// <summary> Shorthand for NPC.type; </summary>
 	public int Type => NPC.type;
 
+	public string LocalizationCategory => "NPCs";
+
 	/// <summary> The translations for the display name of this NPC. </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.
@@ -79,10 +81,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModNPC>.Register(this);
-
 		NPC.type = NPCLoader.ReserveNPCID();
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"NPCName.{Name}");
-
 		NPCLoader.npcs.Add(this);
 
 		Type type = GetType();
@@ -138,9 +137,6 @@ public abstract class ModNPC : ModType<NPC, ModNPC>
 		else {
 			Main.npcLifeBytes[NPC.type] = 1;
 		}
-
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}
 
 	/// <summary>

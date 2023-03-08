@@ -47,6 +47,8 @@ public partial class Mod
 	/// </summary>
 	public virtual Version Version => File.Version;
 
+	public List<string> TranslationForMods { get; internal set; }
+
 	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
@@ -166,6 +168,8 @@ public partial class Mod
 	/// <summary> Safely attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
+
+	public string GetLocalizationKey(string suffix) => $"Mods.{Name}.{suffix}";
 
 	/// <summary>
 	/// Assigns a head texture to the given town NPC type.

@@ -33,10 +33,6 @@ namespace ExampleMod.Content.Projectiles
 
 	public class ExamplePiercingProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Piercing Projectile"); // The name of the projectile(it can be appeared in chat)
-		}
-
 		public override void SetDefaults() {
 			Projectile.width = 12; // The width of projectile hitbox
 			Projectile.height = 12; // The height of projectile hitbox
@@ -71,10 +67,6 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExamplePiercingProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
-
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);

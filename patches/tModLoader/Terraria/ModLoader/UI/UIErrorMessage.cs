@@ -37,19 +37,25 @@ internal class UIErrorMessage : UIState
 			HAlign = 0.5f
 		};
 
-		messageBox = new UIMessageBox("") {
+		var uIPanel = new UIPanel {
 			Width = { Percent = 1f },
 			Height = { Pixels = -110, Percent = 1f },
-			HAlign = 0.5f
+			BackgroundColor = UICommon.MainPanelBackground
 		};
-		area.Append(messageBox);
+		area.Append(uIPanel);
+
+		messageBox = new UIMessageBox(string.Empty) {
+			Width = { Pixels = -25, Percent = 1f },
+			Height = { Percent = 1f }
+		};
+		uIPanel.Append(messageBox);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = { Pixels = -115, Percent = 1f },
-			//VAlign = 0.5f,
+			Height = { Pixels = -12, Percent = 1f },
+			VAlign = 0.5f,
 			HAlign = 1f
 		}.WithView(100f, 1000f);
-		area.Append(uIScrollbar);
+		uIPanel.Append(uIScrollbar);
 
 		messageBox.SetScrollbar(uIScrollbar);
 

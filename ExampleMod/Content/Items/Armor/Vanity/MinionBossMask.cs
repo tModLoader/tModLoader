@@ -9,12 +9,6 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 	[AutoloadEquip(EquipType.Head)]
 	public class MinionBossMask : ModItem
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Mask");
-
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 22;
 			Item.height = 28;

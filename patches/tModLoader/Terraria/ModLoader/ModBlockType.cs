@@ -1,13 +1,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// This is the superclass for ModTile and ModWall, combining common code
 /// </summary>
-public abstract class ModBlockType : ModTexturedType
+public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The internal ID of this type of tile/wall. </summary>
 	public ushort Type { get; internal set; }
@@ -27,18 +28,13 @@ public abstract class ModBlockType : ModTexturedType
 	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
+	public abstract string LocalizationCategory { get; }
+
 	/// <summary>
-	/// Creates a ModTranslation object that you can use in AddMapEntry.
+	/// Legacy helper method for creating a localization sub-key MapEntry
 	/// </summary>
-	/// <param name="key">The key for the ModTranslation. The full key will be MapObject.ModName.key</param>
 	/// <returns></returns>
-	public ModTranslation CreateMapEntryName(string key = null)
-	{
-		if (string.IsNullOrEmpty(key)) {
-			key = Name;
-		}
-		return LocalizationLoader.GetOrCreateTranslation(Mod, $"MapObject.{key}");
-	}
+	public LocalizedText CreateMapEntryName() => this.GetLocalization("MapEntry", PrettyPrintName);
 
 	/// <summary>
 	/// Allows you to modify the properties after initial loading has completed.
@@ -93,7 +89,6 @@ public abstract class ModBlockType : ModTexturedType
 	/// <param name="type">The dust type that will be spawned by the calling code</param>
 	public virtual bool CreateDust(int i, int j, ref int type)
 	{
-		type = DustType; // TODO: this is strange
 		return true;
 	}
 

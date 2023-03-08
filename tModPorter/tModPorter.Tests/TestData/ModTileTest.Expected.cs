@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,14 +22,14 @@ public class ModTileTest : ModTile
 
 		DresserDrop = 0;
 		ChestDrop = 0;
-		CloseDoorID = 0;
-		OpenDoorID = 0;
 		MinPick = 0;
 		MineResist = 0;
 		AnimationFrameHeight = 0;
 		AdjTiles = new int[0];
 
 #if COMPILE_ERROR
+		OpenDoorID/* tModPorter Note: Removed. Use TileID.Sets.OpenDoorID instead */ = 0;
+		CloseDoorID/* tModPorter Note: Removed. Use TileID.Sets.CloseDoorID instead */ = 0;
 		sapling/* tModPorter Note: Removed. Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
 		torch/* tModPorter Note: Removed. Use TileID.Sets.Torch instead */ = true;
 		bed/* tModPorter Note: Removed. Use TileID.Sets.CanBeSleptIn instead */ = true;
@@ -41,6 +42,10 @@ public class ModTileTest : ModTile
 		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead */;
 		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead */;
 #endif
+
+		LocalizedText name = CreateMapEntryName();
+		// name.SetDefault("Test");
+		AddMapEntry(new Color(200, 200, 200), name);
 	}
 
 	public override void SetStaticDefaults() {

@@ -5,12 +5,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleBed : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded bed.");
-
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleBed>());
 			Item.width = 28;

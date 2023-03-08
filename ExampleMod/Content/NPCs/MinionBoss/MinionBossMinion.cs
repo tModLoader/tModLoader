@@ -37,7 +37,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Minion");
 			Main.npcFrameCount[Type] = 1;
 
 			// By default enemies gain health and attack if hardmode is reached. this NPC should not be affected by that

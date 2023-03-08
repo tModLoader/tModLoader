@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -13,7 +14,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile">Basic Projectile Guide</see> teaches the basics of making a modded projectile.
 /// </summary>
-public abstract class ModProjectile : ModType<Projectile, ModProjectile>
+public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocalizedModType
 {
 	/// <summary> The projectile object that this ModProjectile controls. </summary>
 	public Projectile Projectile => Entity;
@@ -21,8 +22,10 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 	/// <summary>  Shorthand for Projectile.type; </summary>
 	public int Type => Projectile.type;
 
+	public string LocalizationCategory => "Projectiles";
+
 	/// <summary> The translations for the display name of this projectile. </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 	public int AIType { get; set; }
@@ -55,10 +58,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModProjectile>.Register(this);
-
 		Projectile.type = ProjectileLoader.ReserveProjectileID();
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
-
 		ProjectileLoader.projectiles.Add(this);
 	}
 
@@ -98,8 +98,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 		if (Projectile.aiStyle == 7) {
 			Main.projHook[Projectile.type] = true;
 		}
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}
 
 	/// <summary>
@@ -393,14 +391,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 	}
 
 	/// <summary>
-	/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
-	/// </summary>
-	public virtual bool? SingleGrappleHook(Player player)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 	/// </summary>
 	public virtual void UseGrapple(Player player, ref int type)
@@ -441,6 +431,16 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 	/// </summary>
 	public virtual void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY)
 	{
+	}
+
+	/// <summary>
+	/// Whether or not the grappling hook can latch onto the given position in tile coordinates.
+	/// <br/>This position may be air or an actuated tile!
+	/// <br/>Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default.
+	/// </summary>
+	public virtual bool? GrappleCanLatchOnTo(Player player, int x, int y)
+	{
+		return null;
 	}
 
 	/// <summary>

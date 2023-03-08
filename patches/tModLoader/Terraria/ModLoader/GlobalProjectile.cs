@@ -383,14 +383,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
-	/// </summary>
-	public virtual bool? SingleGrappleHook(int type, Player player)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 	/// </summary>
 	public virtual void UseGrapple(Player player, ref int type)
@@ -423,5 +415,15 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	public virtual void GrappleTargetPoint(Projectile projectile, Player player, ref float grappleX, ref float grappleY)
 	{
+	}
+
+	/// <summary>
+	/// Whether or not the grappling hook can latch onto the given position in tile coordinates.
+	/// <br/>This position may be air or an actuated tile!
+	/// <br/>Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default.
+	/// </summary>
+	public virtual bool? GrappleCanLatchOnTo(Projectile projectile, Player player, int x, int y)
+	{
+		return null;
 	}
 }

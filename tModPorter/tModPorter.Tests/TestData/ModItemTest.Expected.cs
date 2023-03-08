@@ -24,6 +24,13 @@ public class ModItemTest : ModItem
 		Item.ResearchUnlockCount = 1;
 	}
 
+	public override void SetStaticDefaults()
+	{
+		/* Tooltip.SetDefault(
+			"This tooltip\n" +
+			"Has multiple lines"); */
+	}
+
 #if COMPILE_ERROR
 	public override bool IgnoreDamageModifiers/* tModPorter Note: Removed. If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance */ => false;
 

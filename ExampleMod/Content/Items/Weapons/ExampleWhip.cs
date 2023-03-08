@@ -7,10 +7,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleWhip : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			// This method quickly sets the whip's properties.
 			// Mouse over to see its parameters.

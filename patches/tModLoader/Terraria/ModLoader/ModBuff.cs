@@ -2,31 +2,30 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class serves as a place for you to define a new buff and how that buff behaves.
 /// </summary>
-public abstract class ModBuff : ModTexturedType
+public abstract class ModBuff : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The buff id of this buff. </summary>
 	public int Type { get; internal set; }
 
+	public string LocalizationCategory => "Buffs";
+
 	/// <summary> The translations of this buff's display name. </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary> The translations of this buff's description. </summary>
-	public ModTranslation Description { get; internal set; }
+	public virtual LocalizedText Description => this.GetLocalization(nameof(Description));
 
 	protected override sealed void Register()
 	{
 		ModTypeLookup<ModBuff>.Register(this);
-
 		Type = BuffLoader.ReserveBuffID();
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffName.{Name}");
-		Description = LocalizationLoader.GetOrCreateTranslation(Mod, $"BuffDescription.{Name}");
-
 		BuffLoader.buffs.Add(this);
 	}
 
@@ -56,6 +55,8 @@ public abstract class ModBuff : ModTexturedType
 	/// <summary>
 	/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.
 	/// </summary>
+	/// <param name="player">The player to update this buff on.</param>
+	/// <param name="buffIndex">The index in <see cref="Player.buffType"/> and <see cref="Player.buffType"/> of this buff. For use with <see cref="Player.DelBuff(int)"/>.</param>
 	public virtual void Update(Player player, ref int buffIndex)
 	{
 	}

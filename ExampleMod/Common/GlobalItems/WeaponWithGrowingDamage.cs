@@ -111,34 +111,34 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		public override void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
+		public override void OnStack(Item destination, Item source, int numToTransfer) {
+			if (!source.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
 				return;
 			}
 
-			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
+			TransferExperience(destination, source, weapon2, numToTransfer);
 		}
 
-		public override void SplitStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
+		public override void SplitStack(Item destination, Item source, int numToTransfer) {
+			if (!source.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
 				return;
 			}
 
 			//Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
 			experience = 0;
 
-			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
+			TransferExperience(destination, source, weapon2, numToTransfer);
 		}
 
-		private void TransferExperience(Item increase, Item decrease, WeaponWithGrowingDamage weapon2, int numberToBeTransfered) {
+		private void TransferExperience(Item destination, Item source, WeaponWithGrowingDamage weapon2, int numToTransfer) {
 			//Transfer experience and value to increase.
 			experience += weapon2.experience;
-			UpdateValue(increase, numberToBeTransfered);
+			UpdateValue(destination, numToTransfer);
 
-			if (decrease.stack > numberToBeTransfered) {
+			if (source.stack > numToTransfer) {
 				//Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
 				weapon2.experience = 0;
-				weapon2.UpdateValue(decrease, -numberToBeTransfered);
+				weapon2.UpdateValue(source, -numToTransfer);
 			}
 		}
 	}

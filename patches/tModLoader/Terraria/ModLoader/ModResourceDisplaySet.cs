@@ -12,7 +12,7 @@ namespace Terraria.ModLoader;
 /// For modifying parts of the vanilla display sets, use <see cref="ModResourceOverlay"/>.
 /// </summary>
 [Autoload(true, Side = ModSide.Client)]
-public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySet, IConfigKeyHolder
+public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySet, IConfigKeyHolder, ILocalizedModType
 {
 	public int Type { get; internal set; }
 
@@ -21,7 +21,7 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// <summary>
 	/// Gets the name for this resource display set based on its DisplayName and the current culture
 	/// </summary>
-	public string DisplayedName => DisplayName.GetTranslation(Language.ActiveCulture);
+	public string DisplayedName => DisplayName.Value;
 
 	/// <summary>
 	/// Included only for completion's sake.  Returns DisplayName.Key
@@ -33,10 +33,12 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	/// </summary>
 	public string ConfigKey => FullName;
 
+	public string LocalizationCategory => "ResourceDisplaySets";
+
 	/// <summary>
 	/// The translations for the display name of this item.
 	/// </summary>
-	public ModTranslation DisplayName { get; internal set; }
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
 	/// The current snapshot of the life and mana stats for Main.LocalPlayer
@@ -46,26 +48,10 @@ public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySe
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModResourceDisplaySet>.Register(this);
-
-		DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ResourceDisplaySet.{Name}");
-
 		Type = ResourceDisplaySetLoader.Add(this);
 	}
 
-	public sealed override void SetupContent()
-	{
-		AutoStaticDefaults();
-		SetStaticDefaults();
-	}
-
-	/// <summary>
-	/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
-	/// </summary>
-	public virtual void AutoStaticDefaults()
-	{
-		if (DisplayName.IsDefault())
-			DisplayName.SetDefault(Regex.Replace(DisplayedName, "([A-Z])", " $1").Trim());
-	}
+	public sealed override void SetupContent() => SetStaticDefaults();
 
 	public void Draw()
 	{
