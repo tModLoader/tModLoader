@@ -3850,7 +3850,7 @@
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
 +			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
-+			Hurt(info);
++			Hurt(info, quiet);
 +			return info.Damage;
 +		}
 +
