@@ -1412,22 +1412,22 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);
  		}
-@@ -59944,6 +_,7 @@
- 			}
+@@ -59945,6 +_,7 @@
  		}
  	}
-+	/*
  
++	/*
  	public static int GetStackForSlimeItemDrop(int item)
  	{
-@@ -59979,6 +_,7 @@
+ 		int num = 1;
+@@ -59978,6 +_,7 @@
+ 
  		return num;
  	}
- 
 +	*/
+ 
  	public bool ExcludedFromDeathTally()
  	{
- 		if (netID < 0) {
 @@ -60090,7 +_,8 @@
  		return false;
  	}
