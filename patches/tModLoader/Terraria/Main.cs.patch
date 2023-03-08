@@ -745,6 +745,29 @@
  			LoadWorlds();
  		}
  		catch {
+@@ -3830,6 +_,11 @@
+ 
+ 	public static string GetPlayerPathFromName(string playerName, bool cloudSave)
+ 	{
++		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
++		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) { // Resolves #3298
++			playerName += "_";
++		}
++
+ 		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+ 		string text = "";
+ 		playerName = playerName.Replace(".", "_");
+@@ -3856,6 +_,10 @@
+ 
+ 	public static string GetWorldPathFromName(string worldName, bool cloudSave)
+ 	{
++		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
++		if (Regex.IsMatch(worldName, invalidFilePattern, RegexOptions.IgnoreCase)) {
++			worldName += "_";
++		}
+ 		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+ 		string text = "";
+ 		foreach (char c in worldName) {
 @@ -3933,8 +_,10 @@
  						new FileInfo(text2);
  						autoGenFileLocation = text2;
