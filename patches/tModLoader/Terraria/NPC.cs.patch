@@ -1172,16 +1172,16 @@
  								bool flag26 = WorldGen.OpenDoor(num194, num195 - 1, direction);
  								if (!flag26) {
  									ai[3] = num56;
-@@ -45741,9 +_,10 @@
+@@ -45741,9 +_,12 @@
  						return 58;
  				}
  			case 2:
 +				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
--				if (Main.rand.Next(2) == 0)
-+				/*if (Main.rand.Next(2) == 0)
++				/*
+ 				if (Main.rand.Next(2) == 0)
  					return Main.rand.Next(11, 15);
--				return Main.rand.Next(699, 703);
-+				return Main.rand.Next(699, 703);*/
+ 				return Main.rand.Next(699, 703);
++				*/
  			default:
  				switch (Main.rand.Next(3)) {
  					case 0:
@@ -1412,21 +1412,23 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);
  		}
-@@ -59957,10 +_,13 @@
+@@ -59957,11 +_,16 @@
  		else if (item == 965) {
  			num = Main.rand.Next(20, 46);
  		}
--		else if ((item >= 11 && item <= 14) || (item >= 699 && item <= 702)) {
-+		/*else if ((item >= 11 && item <= 14) || (item >= 699 && item <= 702)) {
++		/*
+ 		else if ((item >= 11 && item <= 14) || (item >= 699 && item <= 702)) {
  			num = Main.rand.Next(3, 9);
  			if (Main.rand.Next(2) == 0)
  				num += 5;
-+		}*/
+ 		}
++		*/
 +		else if (ItemID.Sets.OreDropsFromSlime.TryGetValue(item, out var minMaxStack)) {
 +			num = Main.rand.Next(minMaxStack.minStack, minMaxStack.maxStack + 1);
- 		}
++		}
  		else {
  			switch (item) {
+ 				case 71:
 @@ -60090,7 +_,8 @@
  		return false;
  	}
