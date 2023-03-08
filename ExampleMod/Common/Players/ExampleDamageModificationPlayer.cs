@@ -122,56 +122,67 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
-			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI == Main.myPlayer && TeammateHasPaladinShieldAndCanTakeDamage()) {
-				modifiers.FinalDamage *= 1f - AbsorbTeamDamageBuff.TeamDamageAbsorptionMultiplier;
+			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && TeammateCanAbsorbDamage()) {
+				modifiers.FinalDamage *= 1f - AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 			}
 		}
 
-		private bool TeammateHasPaladinShieldAndCanTakeDamage() {
+		public override void OnHurt(Player.HurtInfo info) {
+			// On Hurt is used in this example to act upon another player being hurt.
+			// if the player who was hurt was defended, check if the local player should take the remaining damage for them
+			Player localPlayer = Main.LocalPlayer;
+			if (defendedByAbsorbTeamDamageEffect && Player != localPlayer && IsClosestShieldWearerInRange(localPlayer, Player.Center, Player.team)) {
+				// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
+				// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
+				// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
+				// Working throught the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
+				float percent = AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
+				int damage = (int)(info.Damage * (percent / (1 - percent)));
+				localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
+			}
+		}
+
+		private bool TeammateCanAbsorbDamage() {
 			for (int i = 0; i < Main.maxPlayers; i++) {
 				Player otherPlayer = Main.player[i];
-				if (i != Main.myPlayer && IsCandidateForAbsorbingDamage(otherPlayer, Player.team)) {
+				if (i != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, Player.team)) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		private static bool IsCandidateForAbsorbingDamage(Player otherPlayer, int team) {
-			return otherPlayer.active && !otherPlayer.dead && !otherPlayer.immune && otherPlayer.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect && otherPlayer.team == team && otherPlayer.statLife > otherPlayer.statLifeMax2 * AbsorbTeamDamageAccessory.DamageAbsorptionAbilityLifeThreshold;
+		private static bool IsAbleToAbsorbDamageForTeammate(Player player, int team) {
+			return player.active
+				&& !player.dead
+				&& !player.immune // This check can be removed, allowing players to take hits for team-mates in quick succession. Removing it can also help with de-syncs where the player getting hurt thinks there is no-one to tank the damage, but by the time the hit arrives on the player with the shield, they take extra damage
+				&& player.GetModPlayer<ExampleDamageModificationPlayer>().hasAbsorbTeamDamageEffect
+				&& player.team == team
+				&& player.statLife > player.statLifeMax2 * AbsorbTeamDamageAccessory.DamageAbsorptionAbilityLifeThreshold;
 		}
 
-		public override void OnHurt(Player.HurtInfo info) {
-			// On Hurt is used in this example to act upon another player being hurt.
-			Player localPlayer = Main.player[Main.myPlayer];
-			if (defendedByAbsorbTeamDamageEffect && Player.whoAmI != Main.myPlayer && IsCandidateForAbsorbingDamage(localPlayer, Player.team)) {
-				// This code finds the closest player wearing AbsorbTeamDamageAccessory. 
-				float distance = localPlayer.Distance(Player.Center);
-				bool localPlayerIsClosestPaladinShieldWearer = distance < 800f;
-				if (localPlayerIsClosestPaladinShieldWearer) {
-					for (int i = 0; i < Main.maxPlayers; i++) {
-						Player otherPlayer = Main.player[i];
-						if (i != Main.myPlayer && IsCandidateForAbsorbingDamage(otherPlayer, Player.team)) {
-							float otherPlayerDistance = otherPlayer.Distance(Player.Center);
-							if (distance > otherPlayerDistance || (distance == otherPlayerDistance && i < Main.myPlayer)) {
-								localPlayerIsClosestPaladinShieldWearer = false;
-								break;
-							}
-						}
+		// This code finds the closest player wearing AbsorbTeamDamageAccessory. 
+		private static bool IsClosestShieldWearerInRange(Player player, Vector2 target, int team) {
+			if (!IsAbleToAbsorbDamageForTeammate(player, team)) {
+				return false;
+			}
+
+			float distance = player.Distance(target);
+			if (distance > AbsorbTeamDamageAccessory.DamageAbsorbtionRange) {
+				return false; // player we're out of range, so can't take the hit
+			}
+
+			for (int i = 0; i < Main.maxPlayers; i++) {
+				Player otherPlayer = Main.player[i];
+				if (i != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, team)) {
+					float otherPlayerDistance = otherPlayer.Distance(target);
+					if (distance > otherPlayerDistance || (distance == otherPlayerDistance && i < Main.myPlayer)) {
+						return false;
 					}
 				}
-
-				// If the closest player wearing AbsorbTeamDamageAccessory happens to be the local player, then this code will run, hurting the player.
-				if (localPlayerIsClosestPaladinShieldWearer) {
-					// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
-					// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
-					// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
-					// Working throught the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
-					float percent = AbsorbTeamDamageBuff.TeamDamageAbsorptionMultiplier;
-					int damage = (int)(info.Damage * (percent / (1 - percent)));
-					localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
-				}
 			}
+
+			return true;
 		}
 	}
 }
