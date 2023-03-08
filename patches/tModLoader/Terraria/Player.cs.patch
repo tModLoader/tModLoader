@@ -1381,7 +1381,7 @@
  			}
  		}
  
-@@ -9301,8 +_,17 @@
+@@ -9301,11 +_,20 @@
  
  				if (Main.player[i].hasLuck_LuckyCoin)
  					hasLuck_LuckyCoin = true;
@@ -1389,16 +1389,20 @@
 +				PlayerLoader.RefreshInfoAccessoriesFromTeamPlayers(this, Main.player[i]);
  			}
  		}
-+	}
-+
+ 	}
+ 
 +	// Added by tML.
 +	public void RefreshInfoAccsFromItemType(Item item)
 +	{
 +		RefreshInfoAccsFromItemType(item.type);
 +		ItemLoader.UpdateInfoAccessory(item, this);
- 	}
- 
- 	public void RefreshInfoAccsFromItemType(int accType)
++	}
++
+-	public void RefreshInfoAccsFromItemType(int accType)
++	private void RefreshInfoAccsFromItemType(int accType)
+ 	{
+ 		if ((accType == 15 || accType == 707) && accWatch < 1)
+ 			accWatch = 1;
 @@ -9431,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {

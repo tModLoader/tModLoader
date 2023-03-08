@@ -12,6 +12,13 @@ namespace ExampleMod.Content.Items.Accessories
 	/// </summary>
 	public class ExampleInfoAccessory : ModItem
 	{
+        public override void SetStaticDefaults() {
+			// We want the information benefits of this accessory to work while in the void bag in order to keep
+			// it in line with the vanilla accessories; this is what this set is used for.
+			// If you DON'T want your info accessory to work in the void bag, then don't add this line.
+			ItemID.Sets.WorksInVoidBag[Type] = true;
+        }
+
 		public override void SetDefaults() {
 			// We don't need to add anything particularly unique for the stats of this item; so let's just clone the Radar.
 			Item.CloneDefaults(ItemID.Radar);
