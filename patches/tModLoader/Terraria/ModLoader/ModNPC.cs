@@ -255,7 +255,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. <br/> 
-	/// This hook is client side, and will run on all clients. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (NPC.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// Called on local, server and remote clients. <br/> 
+	/// Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (NPC.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
 	/// </summary>
 	public virtual void HitEffect(NPC.HitInfo hit)
 	{

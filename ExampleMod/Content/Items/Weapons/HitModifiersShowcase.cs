@@ -112,5 +112,22 @@ namespace ExampleMod.Content.Items.Weapons
 				}
 			}
 		}
+
+		public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) {
+			// The effects of this weapon should only run on the player damaging another, this check does that.
+			if (player.whoAmI != Main.myPlayer)
+				return;
+
+			if (mode == 5) {
+				// This AddBuff is not quite because it is affecting another player. This allows it to broadcast to all players that the target has a buff.
+				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600, quiet: false);
+			}
+			else if (mode == 6) {
+				var damageModificationPlayer = player.GetModPlayer<ExampleDamageModificationPlayer>();
+				if (damageModificationPlayer.exampleDodgeCooldown == 0) {
+					player.AddBuff(ModContent.BuffType<ExampleDodgeBuff>(), 1800);
+				}
+			}
+		}
 	}
 }

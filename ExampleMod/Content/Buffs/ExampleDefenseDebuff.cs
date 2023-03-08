@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.GlobalNPCs;
+using ExampleMod.Common.Players;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -14,8 +15,17 @@ namespace ExampleMod.Content.Buffs
 		public const int DefenseReductionPercent = 25;
 		public static float DefenseMultiplier = 1 - DefenseReductionPercent / 100f;
 
+		public override void SetStaticDefaults() {
+			Main.pvpBuff[Type] = true; // This buff can be applied by other players in Pvp, so we need this to be true.
+		}
+
 		public override void Update(NPC npc, ref int buffIndex) {
 			npc.GetGlobalNPC<DamageModificationGlobalNPC>().exampleDefenseDebuff = true; 
+		}
+
+		public override void Update(Player player, ref int buffIndex) {
+			player.GetModPlayer<ExampleDamageModificationPlayer>().exampleDefenseDebuff = true;
+			player.statDefense *= DefenseMultiplier;
 		}
 	}
 }

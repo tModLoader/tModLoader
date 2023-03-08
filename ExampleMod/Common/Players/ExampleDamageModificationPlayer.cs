@@ -29,16 +29,24 @@ namespace ExampleMod.Common.Players
 		// If the player is currently in range of a player with hasAbsorbTeamDamageEffect
 		public bool defendedByAbsorbTeamDamageEffect;
 
+		public bool exampleDefenseDebuff;
+
+		public override void PreUpdate() {
+			// Timers and cooldowns should be adjusted in PreUpdate
+			if (exampleDodgeCooldown > 0) {
+				exampleDodgeCooldown--;
+			}
+		}
+
 		public override void ResetEffects() {
 			AdditiveCritDamageBonus = 0f;
 
 			exampleDodge = false;
-			if (exampleDodgeCooldown > 0) {
-				exampleDodgeCooldown--;
-			}
 
 			hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
+
+			exampleDefenseDebuff = false;
 		}
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
@@ -62,6 +70,12 @@ namespace ExampleMod.Common.Players
 			// exampleDodgeVisualCounter helps fade the color effect in and out.
 			if (exampleDodgeVisualCounter > 0) {
 				g = Math.Max(0, g - exampleDodgeVisualCounter * 0.03f);
+			}
+
+			if (exampleDefenseDebuff) {
+				// These color adjustments match the withered armor debuff visuals.
+				g *= 0.5f;
+				r *= 0.75f;
 			}
 		}
 

@@ -187,7 +187,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This is called at the beginning of every tick update for this player, after checking whether the player exists.
+	/// This is called at the beginning of every tick update for this player, after checking whether the player exists. <br/>
+	/// This can be used to adjust timers and cooldowns.
 	/// </summary>
 	public virtual void PreUpdate()
 	{
