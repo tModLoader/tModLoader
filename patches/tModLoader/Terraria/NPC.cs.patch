@@ -1172,6 +1172,19 @@
  								bool flag26 = WorldGen.OpenDoor(num194, num195 - 1, direction);
  								if (!flag26) {
  									ai[3] = num56;
+@@ -45741,9 +_,12 @@
+ 						return 58;
+ 				}
+ 			case 2:
++				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
++				/*
+ 				if (Main.rand.Next(2) == 0)
+ 					return Main.rand.Next(11, 15);
+ 				return Main.rand.Next(699, 703);
++				*/
+ 			default:
+ 				switch (Main.rand.Next(3)) {
+ 					case 0:
 @@ -46035,7 +_,7 @@
  							Tile tileSafely = Framing.GetTileSafely(i, j);
  							bool flag2 = tileSafely.active() && Main.tileSolid[tileSafely.type] && !Main.tileFrameImportant[tileSafely.type];
@@ -1415,6 +1428,22 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);
  		}
+@@ -59945,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/*
+ 	public static int GetStackForSlimeItemDrop(int item)
+ 	{
+ 		int num = 1;
+@@ -59978,6 +_,7 @@
+ 
+ 		return num;
+ 	}
++	*/
+ 
+ 	public bool ExcludedFromDeathTally()
+ 	{
 @@ -60090,7 +_,8 @@
  		return false;
  	}
