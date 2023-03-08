@@ -1690,36 +1690,84 @@
  		}
  
  		UpdateHungerBuffs();
-@@ -9241,7 +_,7 @@
+@@ -9226,23 +_,26 @@
+ 		accStopwatch = false;
+ 		accOreFinder = false;
+ 		accDreamCatcher = false;
++
++		PlayerLoader.ResetInfoAccessories(this);
++
+ 		for (int i = 0; i < 58; i++) {
+ 			int type = inventory[i].type;
+-			RefreshInfoAccsFromItemType(type);
++			RefreshInfoAccsFromItemType(inventory[i]);
+ 			if (type == 4131)
+ 				flag = true;
+ 		}
+ 
+ 		for (int j = 0; j < 10; j++) {
+ 			int type2 = armor[j].type;
+-			RefreshInfoAccsFromItemType(type2);
++			RefreshInfoAccsFromItemType(armor[j]);
+ 		}
+ 
  		if (flag) {
  			for (int k = 0; k < 40; k++) {
  				int type3 = bank4.item[k].type;
 -				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
+-					RefreshInfoAccsFromItemType(type3);
 +				if (type3 < 0 || ItemID.Sets.WorksInVoidBag[type3])
- 					RefreshInfoAccsFromItemType(type3);
++					RefreshInfoAccsFromItemType(bank4.item[k]);
  			}
  		}
-@@ -9431,6 +_,9 @@
+ 
+@@ -9301,11 +_,20 @@
+ 
+ 				if (Main.player[i].hasLuck_LuckyCoin)
+ 					hasLuck_LuckyCoin = true;
++
++				PlayerLoader.RefreshInfoAccessoriesFromTeamPlayers(this, Main.player[i]);
+ 			}
+ 		}
+ 	}
+ 
++	// Added by tML.
++	public void RefreshInfoAccsFromItemType(Item item)
++	{
++		RefreshInfoAccsFromItemType(item.type);
++		ItemLoader.UpdateInfoAccessory(item, this);
++	}
++
+-	public void RefreshInfoAccsFromItemType(int accType)
++	private void RefreshInfoAccsFromItemType(int accType)
+ 	{
+ 		if ((accType == 15 || accType == 707) && accWatch < 1)
+ 			accWatch = 1;
+@@ -9431,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
  			int type = inventory[j].type;
+-			RefreshInfoAccsFromItemType(type);
 +
 +			ItemLoader.UpdateInventory(inventory[j], this);
 +
- 			RefreshInfoAccsFromItemType(type);
++			RefreshInfoAccsFromItemType(inventory[j]);
  			RefreshMechanicalAccsFromItemType(type);
  			if (type == 4743)
-@@ -9456,7 +_,9 @@
+ 				hasFootball = true;
+@@ -9456,8 +_,10 @@
  		if (flag) {
  			for (int l = 0; l < 40; l++) {
  				int type2 = bank4.item[l].type;
 -				if (type2 < 0 || type2 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type2]) {
+-					RefreshInfoAccsFromItemType(type2);
 +				if (ItemID.Sets.WorksInVoidBag[type2]) {
 +					ItemLoader.UpdateInventory(bank4.item[l], this);
 +
- 					RefreshInfoAccsFromItemType(type2);
++					RefreshInfoAccsFromItemType(bank4.item[l]);
  					RefreshMechanicalAccsFromItemType(type2);
  				}
+ 			}
 @@ -9471,8 +_,14 @@
  
  		for (int m = 3; m < 10; m++) {
@@ -1774,7 +1822,7 @@
  
  		for (int num = 13; num < 20; num++) {
  			if (IsItemSlotUnlockedAndUsable(num))
-@@ -9562,7 +_,7 @@
+@@ -9562,10 +_,10 @@
  		}
  	}
  
@@ -1782,7 +1830,11 @@
 +	public void GrantArmorBenefits(Item armorPiece)
  	{
  		int type = armorPiece.type;
- 		RefreshInfoAccsFromItemType(type);
+-		RefreshInfoAccsFromItemType(type);
++		RefreshInfoAccsFromItemType(armorPiece);
+ 		RefreshMechanicalAccsFromItemType(type);
+ 		if (armorPiece.type == 3017 || armorPiece.type == 3993) {
+ 			flowerBoots = true;
 @@ -9737,6 +_,9 @@
  			armorPenetration += 5;
  
@@ -2642,7 +2694,7 @@
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
-@@ -14652,18 +_,22 @@
+@@ -14652,18 +_,23 @@
  			}
  		}
  
@@ -2651,6 +2703,7 @@
  		mount.CheckMountBuff(this);
 +
 +		PlayerLoader.ResetEffects(this);
++		PlayerLoader.ResetInfoAccessories(this);
  	}
  
  	private void UpdateLadyBugLuckTime()

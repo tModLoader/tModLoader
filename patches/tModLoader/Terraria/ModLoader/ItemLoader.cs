@@ -1149,6 +1149,23 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateInfoAccessory = AddHook<Action<Item, Player>>(g => g.UpdateInfoAccessory);
+
+	/// <summary>
+	/// Calls ModItem.UpdateInfoAccessory and all GlobalItem.UpdateInfoAccessory hooks.
+	/// </summary>
+	public static void UpdateInfoAccessory(Item item, Player player)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateInfoAccessory(player);
+
+		foreach (var g in HookUpdateInfoAccessory.Enumerate(item.globalItems)) {
+			g.UpdateInfoAccessory(item, player);
+		}
+	}
+
 	private static HookList HookUpdateEquip = AddHook<Action<Item, Player>>(g => g.UpdateEquip);
 
 	/// <summary>
