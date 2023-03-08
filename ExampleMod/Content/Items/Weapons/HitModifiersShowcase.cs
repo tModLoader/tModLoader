@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Common.Players;
 using ExampleMod.Content.Buffs;
 using Microsoft.Xna.Framework;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,6 +40,14 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.crit = 10;
 		}
 
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write((byte)mode);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			mode = reader.ReadByte();
+		}
+
 		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
@@ -49,7 +58,9 @@ namespace ExampleMod.Content.Items.Weapons
 				if (mode >= numberOfModes) {
 					mode = 0;
 				}
-				Main.NewText($"Switching to m #{mode}: {GetMessageForMode()}");
+				Main.NewText($"Switching to mode #{mode}: {GetMessageForMode()}");
+				// This line will trigger NetSend, allowing the changes to mode to be in sync
+				Item.NetStateChanged();
 			}
 			else {
 				Main.NewText($"Mode #{mode}: {GetMessageForMode()}");
@@ -115,11 +126,13 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) {
 			// The effects of this weapon should only run on the player damaging another, this check does that.
-			if (player.whoAmI != Main.myPlayer)
+			if (player != Main.LocalPlayer)
 				return;
 
+			// Due to how pvp damage works, only these 2 examples work for pvp.
 			if (mode == 5) {
 				// This AddBuff is not quite because it is affecting another player. This allows it to broadcast to all players that the target has a buff.
+				// note that in PvP, it is possible to attack a player and see them take damage, but by the time the hit message arrives on the target client, they may have recharged a dodge. In this case, the target will not actually take damage, and their health will appear to restore. Because the attacking player applies the debuff, the target will receive the debuff regardless
 				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600, quiet: false);
 			}
 			else if (mode == 6) {

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.IO;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,6 +24,14 @@ namespace ExampleMod.Content.Items
 			Item.UseSound = SoundID.Item1;
 		}
 
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write((byte)Item.useStyle);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			Item.useStyle = reader.ReadByte();
+		}
+
 		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
@@ -34,6 +43,8 @@ namespace ExampleMod.Content.Items
 					Item.useStyle = ItemUseStyleID.Swing;
 				}
 				Main.NewText($"Switching to ItemUseStyleID #{Item.useStyle}");
+				// This line will trigger NetSend, allowing the changes to mode to be in sync
+				Item.NetStateChanged();
 			}
 			else {
 				Main.NewText($"This is ItemUseStyleID #{Item.useStyle}");
