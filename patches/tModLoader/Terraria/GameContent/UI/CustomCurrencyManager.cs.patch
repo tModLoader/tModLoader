@@ -8,3 +8,17 @@
  		CustomCurrencyID.DefenderMedals = RegisterCurrency(new CustomCurrencySingleCoin(3817, 999L));
  	}
  
+@@ -138,4 +_,13 @@
+ 	{
+ 		_currencies[item.shopSpecialCurrency].GetItemExpectedPrice(item, out calcForSelling, out calcForBuying);
+ 	}
++
++	/// <summary>
++	/// Attempts to retrieve a CustomCurrencySystem object with the specified id from the _currencies dictionary.
++	/// </summary>
++	/// <param name="id">The id of the currency system to retrieve.</param>
++	/// <param name="system">When this method returns, contains the retrieved CustomCurrencySystem object, or null if the retrieval failed.</param>
++	/// <returns>true if the retrieval was successful; otherwise, false.</returns>
++	public static bool TryGetCurrencySystem(int id, out CustomCurrencySystem system) => _currencies.TryGetValue(id, out system); // Resolves #3133
++	
+ }
