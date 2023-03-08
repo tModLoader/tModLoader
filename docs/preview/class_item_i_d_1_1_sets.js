@@ -60,6 +60,7 @@ var class_item_i_d_1_1_sets =
     [ "NeverAppearsAsNewInInventory", "class_item_i_d_1_1_sets.html#accd781ef85c4ce3a4f35d74329dee26e", null ],
     [ "NonColorfulDyeItems", "class_item_i_d_1_1_sets.html#af868278c5e77f39d0359397b14ef4d74", null ],
     [ "OpenableBag", "class_item_i_d_1_1_sets.html#ae31b2005741ded7a4eeb856768730929", null ],
+    [ "OreDropsFromSlime", "class_item_i_d_1_1_sets.html#a43be23e2badafc2d71fce3a2393625fc", null ],
     [ "OverflowProtectionTimeOffset", "class_item_i_d_1_1_sets.html#a6915023f572009c72d09f2fdf23768c8", null ],
     [ "PreHardmodeLikeBossBag", "class_item_i_d_1_1_sets.html#a5d22b90bb38304f28c7c571b3df882b1", null ],
     [ "ShimmerCountsAsItem", "class_item_i_d_1_1_sets.html#ac3bafb524ae086b100e220ec7cee2df7", null ],

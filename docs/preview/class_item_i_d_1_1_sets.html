@@ -390,6 +390,10 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NeverAppears
 <tr class="memdesc:ae31b2005741ded7a4eeb856768730929"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item can be right-clicked in the inventory. <br  />
  Defaults to <code>false</code>.  <a href="class_item_i_d_1_1_sets.html#ae31b2005741ded7a4eeb856768730929">More...</a><br /></td></tr>
 <tr class="separator:ae31b2005741ded7a4eeb856768730929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43be23e2badafc2d71fce3a2393625fc"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; int,(int minStack, int maxStack)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a43be23e2badafc2d71fce3a2393625fc">OreDropsFromSlime</a></td></tr>
+<tr class="memdesc:a43be23e2badafc2d71fce3a2393625fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive). <br  />
+Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.  <a href="class_item_i_d_1_1_sets.html#a43be23e2badafc2d71fce3a2393625fc">More...</a><br /></td></tr>
+<tr class="separator:a43be23e2badafc2d71fce3a2393625fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6915023f572009c72d09f2fdf23768c8"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a6915023f572009c72d09f2fdf23768c8">OverflowProtectionTimeOffset</a> = Factory.CreateIntSet(0, 2, 200, 3, 150, 61, 150, 836, 150, 409, 150, 593, 200, 664, 100, 834, 100, 833, 100, 835, 100, 169, 100, 370, 100, 1246, 100, 408, 100, 3271, 150, 3277, 150, 3339, 150, 3276, 150, 3272, 150, 3274, 150, 3275, 150, 3338, 150, 176, 100, 172, 200, 424, 50, 1103, 50, 3087, 100, 3066, 100)</td></tr>
 <tr class="memdesc:a6915023f572009c72d09f2fdf23768c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>!= 0</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will spawn with <a class="el" href="class_item.html#a549134a7774b4ee9ad6143b571808472" title="A value that increases every tick an item is in the world.  Defaults to the value in ItemID....">Item.timeSinceItemSpawned</a> set to the retrieved value. <br  />
  If <code>== 0</code> for a given item type, then that item is eligible for spawn protection, which massively decreases <a class="el" href="class_item.html#a549134a7774b4ee9ad6143b571808472" title="A value that increases every tick an item is in the world.  Defaults to the value in ItemID....">Item.timeSinceItemSpawned</a> to prevent natural despawning. <br  />
@@ -1204,6 +1208,41 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
  Defaults to <code>false</code>. </p>
 <p >For <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>s, you can simply use <a class="el" href="class_mod_item.html#a24d2dd68899f67623d34662f8f564e74" title="Returns whether or not this item does something when it is right-clicked in the inventory....">ModItem.CanRightClick</a> or <a class="el" href="class_item_loader.html#aa9cb3bbebf369d5a91e8d16829fecffb" title="Calls ModItem.CanRightClick, then all GlobalItem.CanRightClick hooks, until one of the returns true....">GlobalItem.CanRightClick(Item)</a> instead of this set. <br  />
  If you need to check if any item is right-clickable, use <a class="el" href="class_item_loader.html#aa9cb3bbebf369d5a91e8d16829fecffb" title="Calls ModItem.CanRightClick, then all GlobalItem.CanRightClick hooks, until one of the returns true....">ItemLoader.CanRightClick(Item)</a>. </p>
+
+</div>
+</div>
+<a id="a43be23e2badafc2d71fce3a2393625fc" name="a43be23e2badafc2d71fce3a2393625fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43be23e2badafc2d71fce3a2393625fc">&#9670;&nbsp;</a></span>OreDropsFromSlime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;int, (int minStack, int maxStack)&gt; ItemID.Sets.OreDropsFromSlime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span>() {</div>
+<div class="line">            { CopperOre, (3, 13) },</div>
+<div class="line">            { TinOre, (3, 13) },</div>
+<div class="line">            { IronOre, (3, 13) },</div>
+<div class="line">            { LeadOre, (3, 13) },</div>
+<div class="line">            { SilverOre, (3, 13) },</div>
+<div class="line">            { TungstenOre, (3, 13) },</div>
+<div class="line">            { GoldOre, (3, 13) },</div>
+<div class="line">            { PlatinumOre, (3, 13) },</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive). <br  />
+Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown. </p>
 
 </div>
 </div>
