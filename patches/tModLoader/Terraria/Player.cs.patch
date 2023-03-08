@@ -501,12 +501,13 @@
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num3, 1f);
-@@ -2923,6 +_,13 @@
+@@ -2923,6 +_,14 @@
  		return -1;
  	}
  
 +	/// <summary>
-+	/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
++	/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
++	/// <br/> If applying a buff to a player other than the local player in pvp, quiet should be false and the buff must be true in <see cref="Main.pvpBuff"/> to properly sync.
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
 +	/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>

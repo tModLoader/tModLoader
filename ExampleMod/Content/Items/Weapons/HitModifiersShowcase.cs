@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Weapons
 	/// This item can help conceptualize various damage modification concepts. <br/>
 	/// The Item.damage of this weapon is 100 so the math is easy to follow. Damage variation is disabled for all modes except the 1st mode for the same reason. <br/>
 	/// When testing this weapon the first time, it is recommended to disable other mods and to remove all damage boosting accessories, as they will complicate the math being taught. <br/>
-	/// Testing against <see cref="NPCID.ArmoredSkeleton"/> is recommended as it has good defense, some knockback resistance, and enough health for a few hits.
+	/// Testing against <see cref="NPCID.BlueArmoredBonesNoPants"/> is recommended as it has high defense (50), good knockback resistance, and enough health for a few hits. Having 50 defense makes the math for defense and armor penetration easy to follow.
 	/// <br/>
 	/// The math taught in this example also assumes the player is in a normal world. <br/> 
 	/// Use right click to switch modes.<br/>
@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword";
 
-		private const int numberOfModes = 7;
+		private const int numberOfModes = 8;
 		private int mode = 0;
 
 		public override void SetDefaults() {
@@ -87,8 +87,11 @@ namespace ExampleMod.Content.Items.Weapons
 				case 4:
 					return "10 extra armor penetration. Test against high defense enemy";
 				case 5:
-					return "Will apply ExampleDefenseDebuff, reducing defense by 25%";
+					// This is similar to the Lightning Aura and Flymeal weapon effects
+					return "50% extra armor penetration. Ignores 50% of enemy defense";
 				case 6:
+					return "Will apply ExampleDefenseDebuff, reducing defense by 25%";
+				case 7:
 					return "On hit, gives player ExampleDodgeBuff to dodge the next hit";
 			}
 			return "Unknown mode";
@@ -108,15 +111,18 @@ namespace ExampleMod.Content.Items.Weapons
 			else if (mode == 4) {
 				modifiers.ArmorPenetration += 10f;
 			}
+			else if (mode == 5) {
+				modifiers.ScalingArmorPenetration += 0.5f;
+			}
 		}
 
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			// These effects act on a hit happening, so they should go here.
 			// Buffs added locally are automatically synced to the server and other players in multiplayer
-			if (mode == 5) {
+			if (mode == 6) {
 				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600);
 			}
-			else if (mode == 6) {
+			else if (mode == 7) {
 				var damageModificationPlayer = player.GetModPlayer<ExampleDamageModificationPlayer>();
 				if (damageModificationPlayer.exampleDodgeCooldown == 0) {
 					player.AddBuff(ModContent.BuffType<ExampleDodgeBuff>(), 1800);
@@ -133,6 +139,9 @@ namespace ExampleMod.Content.Items.Weapons
 			else if (mode == 4) {
 				modifiers.ArmorPenetration += 10f;
 			}
+			else if (mode == 5) {
+				modifiers.ScalingArmorPenetration += 0.5f;
+			}
 		}
 
 		public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) {
@@ -140,12 +149,12 @@ namespace ExampleMod.Content.Items.Weapons
 			if (player != Main.LocalPlayer)
 				return;
 
-			if (mode == 5) {
-				// This AddBuff is not quite because it is affecting another player. This allows it to broadcast to all players that the target has a buff.
+			if (mode == 6) {
+				// This AddBuff is not quiet because it is affecting another player. This allows it to broadcast to all players that the target has a buff. (Main.pvpBuff must be set to true for other players to be able to give buffs to a player)
 				// Note that in PvP, it is possible to attack a player and see them take damage, but by the time the hit message arrives on the target client, they may have recharged a dodge. In this case, the target will not actually take damage, and their health will appear to restore. Because the attacking player applies the debuff, the target will receive the debuff regardless
 				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600, quiet: false);
 			}
-			else if (mode == 6) {
+			else if (mode == 7) {
 				var damageModificationPlayer = player.GetModPlayer<ExampleDamageModificationPlayer>();
 				if (damageModificationPlayer.exampleDodgeCooldown == 0) {
 					player.AddBuff(ModContent.BuffType<ExampleDodgeBuff>(), 1800);
