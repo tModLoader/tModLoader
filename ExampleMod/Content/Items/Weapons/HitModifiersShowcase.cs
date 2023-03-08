@@ -124,15 +124,25 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 		}
 
+		// Due to the differences in pvp damage calculations, only some of the effects of this weapon work in pvp.
+		public override void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers) {
+			// Unlike the effects in OnHitPvp, these specific effects need to run on all clients to keep things in sync, so there is no check for local player.
+			if (mode == 2) {
+				modifiers.Knockback += .5f;
+			}
+			else if (mode == 4) {
+				modifiers.ArmorPenetration += 10f;
+			}
+		}
+
 		public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) {
-			// The effects of this weapon should only run on the player damaging another, this check does that.
+			// These effects of this weapon should only run on the player damaging another, this check does that.
 			if (player != Main.LocalPlayer)
 				return;
 
-			// Due to how pvp damage works, only these 2 examples work for pvp.
 			if (mode == 5) {
 				// This AddBuff is not quite because it is affecting another player. This allows it to broadcast to all players that the target has a buff.
-				// note that in PvP, it is possible to attack a player and see them take damage, but by the time the hit message arrives on the target client, they may have recharged a dodge. In this case, the target will not actually take damage, and their health will appear to restore. Because the attacking player applies the debuff, the target will receive the debuff regardless
+				// Note that in PvP, it is possible to attack a player and see them take damage, but by the time the hit message arrives on the target client, they may have recharged a dodge. In this case, the target will not actually take damage, and their health will appear to restore. Because the attacking player applies the debuff, the target will receive the debuff regardless
 				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600, quiet: false);
 			}
 			else if (mode == 6) {
