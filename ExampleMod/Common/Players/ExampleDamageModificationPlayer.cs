@@ -92,7 +92,7 @@ namespace ExampleMod.Common.Players
 
 			// Clearing the buff and assigning the cooldown time
 			Player.ClearBuff(ModContent.BuffType<ExampleDodgeBuff>());
-			exampleDodgeCooldown = 120; // 3 second cooldown before the buff can be given again.
+			exampleDodgeCooldown = 180; // 3 second cooldown before the buff can be given again.
 
 			if (Main.netMode != NetmodeID.SinglePlayer) {
 				SendExampleDodgeMessage(Player.whoAmI);
