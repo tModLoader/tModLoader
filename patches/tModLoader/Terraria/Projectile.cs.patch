@@ -413,15 +413,17 @@
  			width = 8;
  			height = 8;
  			aiStyle = 36;
-@@ -4473,6 +_,8 @@
- 			tileCollide = false;
+@@ -4245,6 +_,10 @@
+ 			ignoreWater = true;
  		}
- 		else if (type == 442) {
-+			ArmorPenetration = Main.remixWorld ? 20 : ArmorPenetration; // Added by tML.
+ 		else if (type == 410) {
++			// Added by TML.
++			if (Main.remixWorld)
++				ArmorPenetration = 20;
 +
  			width = 14;
  			height = 14;
- 			aiStyle = 1;
+ 			aiStyle = 72;
 @@ -4960,6 +_,8 @@
  			netImportant = true;
  		}
