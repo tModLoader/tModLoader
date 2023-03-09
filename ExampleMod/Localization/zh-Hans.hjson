@@ -668,7 +668,7 @@ Mods: {
 				// DisplayName: Example Whip Advanced
 				/* Tooltip:
 					'''
-					{$CommonItemTooltip.SummonTagDamage}
+					{0}% summon tag damage to the next minion or sentry hit
 					{$CommonItemTooltip.Whips}
 					Hold for longer reach
 					''' */

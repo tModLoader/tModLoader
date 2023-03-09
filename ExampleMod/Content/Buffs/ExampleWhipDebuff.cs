@@ -13,42 +13,38 @@ namespace ExampleMod.Content.Buffs
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
-		public override void Update(NPC npc, ref int buffIndex) {
-			npc.GetGlobalNPC<ExampleWhipDebuffNPC>().tagBonusDamage += TagDamage;
-		}
 	}
 
-	// Each whip debuff has different tag damage values. ExampleWhipAdvanced applies this debuff instead.
 	public class ExampleWhipAdvancedDebuff : ModBuff
 	{
-		public static readonly int TagDamage = 10;
+		public static readonly int TagDamagePercent = 30;
+		public static readonly float TagDamageMultiplier = TagDamagePercent / 100f;
 
 		public override void SetStaticDefaults() {
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
-		}
-
-		public override void Update(NPC npc, ref int buffIndex) {
-			npc.GetGlobalNPC<ExampleWhipDebuffNPC>().tagBonusDamage += TagDamage;
 		}
 	}
 
 	public class ExampleWhipDebuffNPC : GlobalNPC
 	{
-		// This is required to store information on entities that isn't shared between them.
-		public override bool InstancePerEntity => true;
-
-		public int tagBonusDamage;
-
-		public override void ResetEffects(NPC npc) {
-			tagBonusDamage = 0;
-		}
-
 		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 			// Only player attacks should benefit from this buff, hence the NPC and trap checks.
-			if (tagBonusDamage > 0 && !projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
-				// SummonTagDamageMultiplier scales down tag damage for some specific minion and sentry projectiles for balance purposes.
-				modifiers.FlatBonusDamage += (int)(tagBonusDamage * ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type]);
+			if (projectile.npcProj || projectile.trap || !projectile.IsMinionOrSentryRelated)
+				return;
+
+
+			// SummonTagDamageMultiplier scales down tag damage for some specific minion and sentry projectiles for balance purposes.
+			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
+			if (npc.HasBuff<ExampleWhipDebuff>()) {
+				// Apply a flat bonus to every hit
+				modifiers.FlatBonusDamage += ExampleWhipDebuff.TagDamage * projTagMultiplier;
+			}
+
+			// if you have a lot of buffs in your mod, it might be faster to loop over the NPC.buffType and buffTime arrays once, and track the buffs you find, rather than calling HasBuff many times
+			if (npc.HasBuff<ExampleWhipAdvancedDebuff>()) {
+				// Apply the scaling bonus to the next hit, and then remove the buff, like the vanilla firecracker
+				modifiers.ScalingBonusDamage += ExampleWhipAdvancedDebuff.TagDamageMultiplier * projTagMultiplier;
+				npc.RequestBuffRemoval(ModContent.BuffType<ExampleWhipAdvancedDebuff>());
 			}
 		}
 	}
