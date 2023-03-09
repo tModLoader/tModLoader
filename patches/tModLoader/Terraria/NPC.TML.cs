@@ -24,6 +24,15 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	public bool ShowNameOnHover { get; set; }
 
 	/// <summary>
+	/// Helper property for defense >= 9999. Extremely high defense is interpreted as 'super armor' where attacks will only do 1 damage (or 2 for crits), no matter how strong they are. <br/>
+	/// Passed to <see cref="HitModifiers.SuperArmor"/> when doing damage calculations. See the docs there for more info.
+	/// </summary>
+	public bool SuperArmor {
+		get => defense >= 9999;
+		set => defense = value ? 9999 : 0;
+	}
+
+	/// <summary>
 	/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
 	/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
 	/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>

@@ -23,6 +23,13 @@ public partial class NPC
 		public int HitDirection { get; init; } = default;
 
 		/// <summary>
+		/// If true, no amount of damage can get through the defense of this NPC. <see cref="Defense"/> modifiers and <see cref="ArmorPenetration"/> will be ignored. <br/>
+		/// Defense will reduce the damage to 1, but <see cref="CritDamage"/> and <see cref="FinalDamage"/> modifiers will still apply. <br/>
+		/// If an effect applies <see cref="FinalDamage"/>, you may want to disable the effect if the enemy has Super Armor.
+		/// </summary>
+		public bool SuperArmor { get; init; } = false;
+
+		/// <summary>
 		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
 		/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
@@ -104,6 +111,8 @@ public partial class NPC
 		/// Multiply to make your enemy more susceptible or resistant to damage. <br/>
 		/// Add to give 'bonus' post-mitigation damage. <br/>
 		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional bonus damage, ignoring all resistances or multipliers. <br/>
+		/// <br/>
+		/// Applies regardless of <see cref="SuperArmor"/> so consider checking before applying damage modifiers.
 		/// </summary>
 		public StatModifier FinalDamage = new();
 
@@ -179,6 +188,9 @@ public partial class NPC
 
 			float damageReduction = defense * DefenseEffectiveness.Value;
 			damage = Math.Max(damage - damageReduction, 1);
+
+			if (SuperArmor) // ignore everything above, and reduce damage to 1
+				damage = 1;
 
 			if (_critOverride ?? crit)
 				damage = CritDamage.ApplyTo(damage);

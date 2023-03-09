@@ -1691,7 +1691,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,110 @@
+@@ -64591,26 +_,111 @@
  
  		return armorPenetration / 2;
  	}
@@ -1742,7 +1742,8 @@
 +	{
 +		var modifiers = new HitModifiers() with {
 +			DamageType = damageType,
-+			HitDirection = hitDirection
++			HitDirection = hitDirection,
++			SuperArmor = SuperArmor
 +		};
 +
 +		modifiers.FinalDamage *= takenDamageMultiplier;
