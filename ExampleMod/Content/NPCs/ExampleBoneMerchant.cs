@@ -108,7 +108,8 @@ namespace ExampleMod.Content.NPCs
 			// Create gore when the NPC is killed.
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
 				// Retrieve the gore types. This NPC only has shimmer variants. (6 total gores)
-				string variant = $"{(NPC.IsShimmerVariant ? "_Shimmer" : "")}";
+				string variant = "";
+				if (NPC.IsShimmerVariant) variant += "_Shimmer";
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
 				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;

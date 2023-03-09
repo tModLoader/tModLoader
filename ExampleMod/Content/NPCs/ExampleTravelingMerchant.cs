@@ -238,7 +238,8 @@ namespace ExampleMod.Content.NPCs
 				if (hatGore == 0 && !NPC.IsShimmerVariant) {
 					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
 				}
-				string variant = $"{(NPC.IsShimmerVariant ? "_Shimmer" : "")}";
+				string variant = "";
+				if (NPC.IsShimmerVariant) variant += "_Shimmer";
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
 				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
