@@ -148,4 +148,31 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 			return true;
 		}
 	}
+
+	/// <summary>
+	/// Returns the gore type of the party hat this NPC is currently wearing. If the NPC isn't wearing a party hat, 0 is returned.
+	/// </summary>
+	/// <returns></returns>
+	public int GetPartyHatGore()
+	{
+		int num = 926;
+		switch (GetPartyHatColor()) {
+			case PartyHatColor.Cyan:
+				num = 940;
+				break;
+			case PartyHatColor.Pink:
+				num = 939;
+				break;
+			case PartyHatColor.Purple:
+				num = 941;
+				break;
+			case PartyHatColor.White:
+				num = 942;
+				break;
+			case PartyHatColor.None: // TML: added so method can be used without checking UsesPartyHat first
+				num = 0;
+				break;
+		}
+		return num;
+	}
 }
