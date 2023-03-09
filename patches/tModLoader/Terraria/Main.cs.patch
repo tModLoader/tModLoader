@@ -3853,12 +3853,11 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
-@@ -32406,7 +_,9 @@
+@@ -32406,7 +_,8 @@
  		stackSplit = 9999;
  		npcChatText = "";
  		SetNPCShopIndex(shopIndex);
 -		shop[npcShop].SetupShop(npcShop);
-+
 +		shop[npcShop].SetupShop(NPCShopDatabase.GetNpcShopByIndex(npcShop), npcShop);
 +		
  		SoundEngine.PlaySound(12);
@@ -3999,7 +3998,7 @@
  				if ((num50 == 8 && !flag5) || (num50 == 9 && !flag6))
  					continue;
  
-@@ -33323,9 +_,25 @@
+@@ -33323,6 +_,20 @@
  			}
  
  			inventoryBack = color;
@@ -4020,11 +4019,6 @@
  			inventoryScale = num36;
  		}
  
-+		LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
-+
- 		int num54 = (screenHeight - 600) / 2;
- 		int num55 = (int)((float)screenHeight / 600f * 250f);
- 		if (screenHeight < 700) {
 @@ -33369,11 +_,22 @@
  				string text = Lang.inter[46].Value + ": ";
  				if (reforgeItem.type > 0) {
@@ -4113,6 +4107,15 @@
  		if (recBigList && !flag10) {
  			UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  			UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
+@@ -33845,6 +_,8 @@
+ 			Recipe.FindRecipes();
+ 		}
+ 
++		LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
++
+ 		int offsetDown = 0;
+ 		UIVirtualKeyboard.ShouldHideText = !PlayerInput.SettingsForUI.ShowGamepadHints;
+ 		if (!PlayerInput.UsingGamepad)
 @@ -33990,8 +_,11 @@
  
  		for (int j = 0; j < 200; j++) {
