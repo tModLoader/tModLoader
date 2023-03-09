@@ -435,7 +435,7 @@ public static class NPCShopDatabase
 	private static void RegisterMechanic() {
 		var mechanicsRodCondition = NPCShop.Condition.IsMoonPhasesOddQuarters;
 
-		new NPCShop(NPCID.Merchant)
+		new NPCShop(NPCID.Mechanic)
 			.Add(ItemID.Wrench)
 			.Add(ItemID.BlueWrench)
 			.Add(ItemID.GreenWrench)
