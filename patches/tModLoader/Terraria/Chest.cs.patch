@@ -672,7 +672,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,41 @@
+@@ -2987,16 +_,43 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -695,7 +695,9 @@
 +		else {
 +			var loot = NPCShopDatabase.GetNPCShop(shop);
 +			bool overflow = false;
-+			loot?.Build(array, out overflow);
++			if (loot != null) {
++				loot.Build(array, out overflow);
++			}
 +			if (overflow) {
 +				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
 +				Logging.tML.Warn($"Unable to fit all item in the shop {name}");

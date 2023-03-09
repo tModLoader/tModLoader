@@ -1274,16 +1274,17 @@
  		ClientInitialize();
  		base.Initialize();
  	}
-@@ -5242,7 +_,11 @@
+@@ -5242,7 +_,12 @@
  		Chest.SetupTravelShop();
  		for (int m = 1; m < 100; m++) {
  			shop[m] = new Chest();
--			shop[m].SetupShop(m);
 +
 +			if (m >= NPCLoader.shopToNPC.Length)
 +				continue;
 +
-+			shop[m] = new Chest();
++			var name = NPCShopDatabase.GetNpcShopByIndex(m);
+-			shop[m].SetupShop(m);
++			shop[m].SetupShop(name, m);
  		}
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
