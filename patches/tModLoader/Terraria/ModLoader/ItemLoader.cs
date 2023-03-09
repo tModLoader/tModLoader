@@ -144,13 +144,22 @@ public static class ItemLoader
 			ContentSamples.ItemsByType[item.Type].RebuildTooltip();
 		}
 
-		ValidateGeodeDropsSet();
+		ValidateDropsSet();
 	}
 
-	internal static void ValidateGeodeDropsSet()
+	internal static void ValidateDropsSet()
 	{
 		foreach (var pair in ItemID.Sets.GeodeDrops) {
 			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.GeodeDrops)}'";
+			if (pair.Value.minStack < 1)
+				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
+
+			if (pair.Value.maxStack <= pair.Value.minStack)
+				throw new Exception($"{exceptionCommon} must have maxStack bigger than minStack");
+		}
+
+		foreach (var pair in ItemID.Sets.OreDropsFromSlime) {
+			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.OreDropsFromSlime)}'";
 			if (pair.Value.minStack < 1)
 				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
 
@@ -1146,6 +1155,23 @@ public static class ItemLoader
 
 		foreach (var g in HookUpdateInventory.Enumerate(item.globalItems)) {
 			g.UpdateInventory(item, player);
+		}
+	}
+
+	private static HookList HookUpdateInfoAccessory = AddHook<Action<Item, Player>>(g => g.UpdateInfoAccessory);
+
+	/// <summary>
+	/// Calls ModItem.UpdateInfoAccessory and all GlobalItem.UpdateInfoAccessory hooks.
+	/// </summary>
+	public static void UpdateInfoAccessory(Item item, Player player)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateInfoAccessory(player);
+
+		foreach (var g in HookUpdateInfoAccessory.Enumerate(item.globalItems)) {
+			g.UpdateInfoAccessory(item, player);
 		}
 	}
 

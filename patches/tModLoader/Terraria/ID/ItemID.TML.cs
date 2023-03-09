@@ -74,5 +74,20 @@ partial class ItemID
 			{ Diamond, (3, 7) },
 			{ Amber, (3, 7) }
 		};
+
+		/// <summary>
+		/// Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive).
+		/// <br/>Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.
+		/// </summary>
+		public static Dictionary<int, (int minStack, int maxStack)> OreDropsFromSlime = new() {
+			{ CopperOre, (3, 13) },
+			{ TinOre, (3, 13) },
+			{ IronOre, (3, 13) },
+			{ LeadOre, (3, 13) },
+			{ SilverOre, (3, 13) },
+			{ TungstenOre, (3, 13) },
+			{ GoldOre, (3, 13) },
+			{ PlatinumOre, (3, 13) },
+		};
 	}
 }

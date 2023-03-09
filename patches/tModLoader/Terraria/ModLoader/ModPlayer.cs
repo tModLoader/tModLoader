@@ -69,6 +69,23 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// This is where you reset any fields related to INFORMATION accessories to their "default" states. This is identical to ResetEffects(); but should ONLY be used to
+	/// reset info accessories. It will cause unintended side-effects if used with other fields.
+	/// </summary>
+	/// <remarks>
+	/// This method is called in tandem with <seealso cref="ResetEffects"/>, but it also called in <seealso cref="Player.RefreshInfoAccs"/> even when the game is paused;
+	/// this allows for info accessories to keep properly updating while the game is paused, a feature/fix added in 1.4.4.
+	/// </remarks>
+	public virtual void ResetInfoAccessories() { }
+
+	/// <summary>
+	/// This is where you set any fields related to INFORMATION accessories based on the passed in player argument. Note that this hook is only called if all of the requirements
+	/// for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code:
+	/// <code>(Main.player[i].Center - base.Center).Length() &lt; 800f</code>
+	/// </summary>
+	public virtual void RefreshInfoAccessoriesFromTeamPlayers(Player otherPlayer) { }
+
+	/// <summary>
 	/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied<br/>
 	/// <b>NOTE:</b> You should NOT modify <see cref="Player.statLifeMax"/> nor <see cref="Player.statManaMax"/> here.  Use the <paramref name="health"/> and <paramref name="mana"/> parameters.
 	/// </summary>

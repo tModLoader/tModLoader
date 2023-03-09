@@ -1,12 +1,16 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.Players;
+using ExampleMod.Content.Items.Accessories;
+using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content
 {
-	// This example show how to create new informational display (like Radar, Watches, etc.)
-	// Take a look at the ExampleInfoDisplayPlayer at the end of the file to see how to use it
-	class ExampleInfoDisplay : InfoDisplay
+	/// <summary>
+	/// InfoDisplay that is coupled with <seealso cref="ExampleInfoAccessory"/> and <seealso cref="ExampleInfoDisplayPlayer"/> to show
+	/// off how to add a new info accessory (such as a Radar, Lifeform Analyzer, etc.)
+	/// </summary>
+	public class ExampleInfoDisplay : InfoDisplay
 	{
 		// This dictates whether or not this info display should be active
 		public override bool Active() {
@@ -35,19 +39,4 @@ namespace ExampleMod.Content
 		}
 	}
 
-	public class ExampleInfoDisplayPlayer : ModPlayer
-	{
-		// Flag checking when information display should be activated
-		public bool showMinionCount;
-
-		public override void ResetEffects() {
-			showMinionCount = false;
-		}
-
-		public override void UpdateEquips() {
-			// The information display is only activated when a Radar is present
-			if (Player.accThirdEye)
-				showMinionCount = true;
-		}
-	}
 }

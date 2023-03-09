@@ -1,0 +1,61 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/WingStats.cs
++++ src/tModLoader/Terraria/DataStructures/WingStats.cs
+@@ -1,15 +_,47 @@
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Stores the stats and settings for a <see cref="ID.ArmorIDs.Wing"/> equip.
++/// </summary>
+ public struct WingStats
+ {
+ 	public static readonly WingStats Default;
++	/// <summary>
++	/// The time in ticks that a player can fly for.
++	/// </summary>
+ 	public int FlyTime;
++
++	/// <summary>
++	/// Overrides the value of <see cref="Player.accRunSpeed"/> while the player is in the air.
++	/// <br/> Only applies if this value is greater than <see cref="Player.accRunSpeed"/>.
++	/// <br/> If <c>-1f</c>, then no effect.
++	/// </summary>
+ 	public float AccRunSpeedOverride;
++
++	/// <summary>
++	/// A multiplier applied to <see cref="Player.runAcceleration"/> while the player is in the air.
++	/// </summary>
+ 	public float AccRunAccelerationMult;
++
++	/// <summary>
++	/// If <see langword="true"/>, then players can use these wings to hover.
++	/// <br/> When hovering, <see cref="DownHoverSpeedOverride"/> and <see cref="DownHoverAccelerationMult"/> apply instead of <see cref="AccRunSpeedOverride"/> and <see cref="AccRunAccelerationMult"/>, respectively.
++	/// </summary>
+ 	public bool HasDownHoverStats;
++
++	/// <summary>
++	/// Overrides the value of <see cref="AccRunSpeedOverride"/> if <see cref="HasDownHoverStats"/> is <see langword="true"/> and the player is hovering.
++	/// </summary>
+ 	public float DownHoverSpeedOverride;
++
++	/// <summary>
++	/// Overrides the value of <see cref="AccRunAccelerationMult"/> if <see cref="HasDownHoverStats"/> is <see langword="true"/> and the player is hovering.
++	/// </summary>
+ 	public float DownHoverAccelerationMult;
+ 
++	/// <summary>
++	/// Create a new <see cref="WingStats"/> with the provided stats.
++	/// </summary>
+ 	public WingStats(int flyTime = 100, float flySpeedOverride = -1f, float accelerationMultiplier = 1f, bool hasHoldDownHoverFeatures = false, float hoverFlySpeedOverride = -1f, float hoverAccelerationMultiplier = 1f)
+ 	{
+ 		FlyTime = flyTime;
+@@ -20,5 +_,10 @@
+ 		DownHoverAccelerationMult = hoverAccelerationMultiplier;
+ 	}
+ 
++	/// <summary>
++	/// Creates a new <see cref="WingStats"/> with a speed multiplier applied to <see cref="AccRunSpeedOverride"/> and <see cref="DownHoverSpeedOverride"/>.
++	/// </summary>
++	/// <param name="multiplier">The multiplier.</param>
++	/// <returns>The modified <see cref="WingStats"/>.</returns>
+ 	public WingStats WithSpeedBoost(float multiplier) => new WingStats(FlyTime, AccRunSpeedOverride * multiplier, AccRunAccelerationMult, HasDownHoverStats, DownHoverSpeedOverride * multiplier, DownHoverAccelerationMult);
+ }
