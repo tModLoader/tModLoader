@@ -27,6 +27,7 @@ public partial class Recipe
 		public static readonly Condition NearWater = new Condition(NetworkText.FromKey("RecipeConditions.NearWater"), _ => Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[TileID.Sinks]);
 		public static readonly Condition NearLava = new Condition(NetworkText.FromKey("RecipeConditions.NearLava"), _ => Main.LocalPlayer.adjLava);
 		public static readonly Condition NearHoney = new Condition(NetworkText.FromKey("RecipeConditions.NearHoney"), _ => Main.LocalPlayer.adjHoney);
+		public static readonly Condition NearShimmer = new Condition(NetworkText.FromKey("RecipeConditions.NearShimmer"), _ => Main.LocalPlayer.adjShimmer);
 		//Time
 		public static readonly Condition TimeDay = new Condition(NetworkText.FromKey("RecipeConditions.TimeDay"), _ => Main.dayTime);
 		public static readonly Condition TimeNight = new Condition(NetworkText.FromKey("RecipeConditions.TimeNight"), _ => !Main.dayTime);
@@ -171,7 +172,9 @@ public partial class Recipe
 		=> AddIngredient(ModContent.ItemType<T>(), stack);
 
 	/// <summary>
-	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size. Vanilla recipe groups consist of "Wood", "IronBar", "PresurePlate", "Sand", and "Fragment".
+	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size.
+	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
+	/// <br/> To use a vanilla recipe group, use <see cref="AddRecipeGroup(int, int)"/> using a <see cref="RecipeGroupID"/> entry instead.
 	/// </summary>
 	/// <param name="name">The name.</param>
 	/// <param name="stack">The stack.</param>
@@ -191,7 +194,9 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size. Vanilla recipe group IDs can be found in Terraria.ID.RecipeGroupID and modded recipe group IDs will be returned from RecipeGroup.RegisterGroup.
+	/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size.
+	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the <see cref="RecipeGroupID.IronBar"/> group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
+	/// <br/> Vanilla recipe group IDs can be found in <see cref="RecipeGroupID"/> and modded recipe group IDs will be returned from <see cref="RecipeGroup.RegisterGroup(string, RecipeGroup)"/>. <see cref="AddRecipeGroup(string, int)"/> can be used instead if the ID number is not known but the name is known.
 	/// </summary>
 	/// <param name="recipeGroupId">The RecipeGroupID.</param>
 	/// <param name="stack">The stack.</param>

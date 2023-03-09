@@ -272,11 +272,21 @@ public static class ProjectileLoader
 		catch (IOException e) {
 			Logging.tML.Error(e.ToString());
 
-			string culprits = $"Above IOException error in projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} may be caused by one of these:";
+			string message = $"Above IOException error in Projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} occured";
+
+			var culprits = new List<GlobalProjectile>();
 			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
-				culprits += $"\n    {g.Name}";
+				culprits.Add(g);
 			}
-			Logging.tML.Error(culprits);
+
+			if (culprits.Count > 0) {
+				message += ", may be caused by one of these:";
+				foreach (GlobalProjectile g in culprits) {
+					message += $"\n\t{g.FullName}";
+				}
+			}
+
+			Logging.tML.Error(message);
 		}
 	}
 
@@ -667,23 +677,6 @@ public static class ProjectileLoader
 
 			if (canGrapple.HasValue) {
 				flag = canGrapple;
-			}
-		}
-
-		return flag;
-	}
-
-	private static HookList HookSingleGrappleHook = AddHook<Func<int, Player, bool?>>(g => g.SingleGrappleHook);
-
-	public static bool? SingleGrappleHook(int type, Player player)
-	{
-		bool? flag = GetProjectile(type)?.SingleGrappleHook(player);
-
-		foreach (GlobalProjectile g in HookSingleGrappleHook.Enumerate(globalProjectiles)) {
-			bool? singleHook = g.SingleGrappleHook(type, player);
-
-			if (singleHook.HasValue) {
-				flag = singleHook;
 			}
 		}
 

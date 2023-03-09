@@ -464,11 +464,25 @@
  				Item item = recipe.requiredItem[j];
  				if (item.type == 0)
  					break;
-@@ -613,6 +_,8 @@
+@@ -603,16 +_,17 @@
+ 		RecipeGroupID.Fruit = RecipeGroup.RegisterGroup("Fruit", rec);
+ 		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Language.GetTextValue("Misc.Balloon"), 3738, 3736, 3737);
+ 		RecipeGroupID.Balloons = RecipeGroup.RegisterGroup("Balloons", rec);
+-		rec = new RecipeGroup(() => "replaceme wood", 9, 619, 620, 621, 911, 1729, 2504, 2503, 5215);
++		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.Wood), 9, 619, 620, 621, 911, 1729, 2504, 2503, 5215);
+ 		RecipeGroupID.Wood = RecipeGroup.RegisterGroup("Wood", rec);
+-		rec = new RecipeGroup(() => "replaceme sand", 169, 408, 1246, 370, 3272, 3338, 3274, 3275);
++		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.SandBlock), 169, 408, 1246, 370, 3272, 3338, 3274, 3275);
+ 		RecipeGroupID.Sand = RecipeGroup.RegisterGroup("Sand", rec);
+-		rec = new RecipeGroup(() => "replaceme ironbar", 22, 704);
++		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.IronBar), 22, 704);
+ 		RecipeGroupID.IronBar = RecipeGroup.RegisterGroup("IronBar", rec);
+-		rec = new RecipeGroup(() => "replaceme fragment", 3458, 3456, 3457, 3459);
++		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[51].Value, 3458, 3456, 3457, 3459);
  		RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
- 		rec = new RecipeGroup(() => "replaceme pressureplate", 852, 543, 542, 541, 1151, 529, 853, 4261);
+-		rec = new RecipeGroup(() => "replaceme pressureplate", 852, 543, 542, 541, 1151, 529, 853, 4261);
++		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[38].Value, 852, 543, 542, 541, 1151, 529, 853, 4261);
  		RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PressurePlate", rec);
-+		RecipeGroupHelper.AddOldVanillaGroups();
 +		RecipeGroupHelper.AddRecipeGroups();
  	}
  
@@ -516,7 +530,7 @@
  		currentRecipe.anyIronBar = true;
  		AddRecipe();
  		currentRecipe.createItem.SetDefaults(557);
-@@ -14518,10 +_,18 @@
+@@ -14518,10 +_,20 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
  		CreateReversePlatformRecipes();
@@ -528,14 +542,21 @@
  		UpdateWhichItemsAreMaterials();
  		UpdateWhichItemsAreCrafted();
  		UpdateMaterialFieldForAllRecipes();
++		/* TML: Done during AddRecipe instead
  		ReplaceItemUseFlagsWithRecipeGroups();
++		*/
 +
 +		FixRecipeGroups();
 +
  		CreateRequiredItemQuickLookups();
  		ShimmerTransforms.UpdateRecipeSets();
  	}
-@@ -14546,22 +_,17 @@
+@@ -14542,26 +_,22 @@
+ 	{
+ 		if (flag)
+ 			RequireGroup(groupId);
++		flag = false; // TML: wasn't being cleared
+ 	}
  
  	private static void CreateRequiredItemQuickLookups()
  	{
@@ -708,7 +729,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,71 @@
+@@ -15821,12 +_,77 @@
  
  	private static void AddRecipe()
  	{
@@ -750,6 +771,12 @@
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
 +		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);
++
++		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyWood, RecipeGroupID.Wood);
++		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anySand, RecipeGroupID.Sand);
++		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyPressurePlate, RecipeGroupID.PressurePlate);
++		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyIronBar, RecipeGroupID.IronBar);
++		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyFragment, RecipeGroupID.Fragment);
 +
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);

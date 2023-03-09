@@ -33,6 +33,9 @@ namespace ExampleMod.Content.NPCs
 		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
 		public List<Item> shopItems = new List<Item>();
 
+		private static int ShimmerHeadIndex;
+		private static Profiles.StackedNPCProfile NPCProfile;
+
 		public override bool PreAI() {
 			if ((!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(NPC.Center)) // If it's past the despawn time and the NPC isn't onscreen
 			{
@@ -160,6 +163,11 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
+		public override void Load() {
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
+		}
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[NPC.type] = 25;
 			NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
@@ -169,6 +177,12 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[NPC.type] = 90;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.ShimmerTownTransform[Type] = true;
+
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture)),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex)
+			);
 		}
 
 		public override void SetDefaults() {
@@ -208,7 +222,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
-			return new ExampleTravelingMerchantProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -292,23 +306,5 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
-	}
-
-	public class ExampleTravelingMerchantProfile : ITownNPCProfile
-	{
-		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
-
-			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
-
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
-		}
-
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Head");
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -22,6 +22,8 @@ public class GlobalProjectileTest : GlobalProjectile
 		drawCacheProjsBehindProjectiles.Add(index);
 		drawCacheProjsOverWiresUI.Add(index);
 	}
+
+	public override bool? SingleGrappleHook(int type, Player player) { return null; }
 
 	public override void ModifyDamageScaling(Projectile projectile, ref float damageScale) { }
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) { }

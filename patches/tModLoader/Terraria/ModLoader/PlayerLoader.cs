@@ -86,6 +86,24 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookResetInfoAccessories = AddHook<Action>(p => p.ResetInfoAccessories);
+
+	public static void ResetInfoAccessories(Player player)
+	{
+		foreach (var modPlayer in HookResetInfoAccessories.Enumerate(player.modPlayers)) {
+			modPlayer.ResetInfoAccessories();
+		}
+	}
+
+	private static HookList HookRefreshInfoAccessoriesFromTeamPlayers = AddHook<Action<Player>>(p => p.RefreshInfoAccessoriesFromTeamPlayers);
+
+	public static void RefreshInfoAccessoriesFromTeamPlayers(Player player, Player otherPlayer)
+	{
+		foreach (var modPlayer in HookRefreshInfoAccessoriesFromTeamPlayers.Enumerate(player.modPlayers)) {
+			modPlayer.RefreshInfoAccessoriesFromTeamPlayers(otherPlayer);
+		}
+	}
+
 	/// <summary>
 	/// Resets <see cref="Player.statLifeMax"/> and <see cref="Player.statManaMax"/> to their expected values by vanilla
 	/// </summary>

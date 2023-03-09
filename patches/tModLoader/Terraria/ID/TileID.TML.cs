@@ -48,6 +48,9 @@ partial class TileID
 		/// <summary> Whether or not this tile counts as a lava source for crafting purposes. </summary>
 		public static bool[] CountsAsLavaSource = Factory.CreateBoolSet();
 
+		/// <summary> Whether or not this tile counts as a shimmer source for crafting purposes. </summary>
+		public static bool[] CountsAsShimmerSource = Factory.CreateBoolSet();
+
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530, 637, 655);
 
@@ -95,6 +98,16 @@ partial class TileID
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
 		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is CLOSED. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] OpenDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is OPEN. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)

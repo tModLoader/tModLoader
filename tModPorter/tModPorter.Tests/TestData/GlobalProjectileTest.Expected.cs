@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -30,6 +30,10 @@ public class GlobalProjectileTest : GlobalProjectile
 		drawCacheProjsOverWiresUI.Add(index);
 #endif
 	}
+
+#if COMPILE_ERROR
+	public override bool? SingleGrappleHook(int type, Player player)/* Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[type] = true if you previously had this method return true */ { return null; }
+#endif
 
 #if COMPILE_ERROR // duplicate method
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) { }

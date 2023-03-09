@@ -560,6 +560,7 @@
 		"NearWater": "Braucht Wasser",
 		"NearLava": "Braucht Lava",
 		"NearHoney": "Braucht Honig",
+		//"NearShimmer": "Needs shimmer",
 		"TimeDay": "Braucht Tag",
 		"TimeNight": "Braucht Nacht",
 		"InDungeon": "Muss im Verlies-Biom sein",
