@@ -1783,6 +1783,23 @@
  	{
  		if (!active)
  			return;
+@@ -64952,6 +_,8 @@
+ 			}
+ 
+ 			if (flag) {
++				int num = GetPartyHatGore();
++				/*
+ 				int num = 926;
+ 				switch (GetPartyHatColor()) {
+ 					case PartyHatColor.Cyan:
+@@ -64967,6 +_,7 @@
+ 						num = 942;
+ 						break;
+ 				}
++				*/
+ 
+ 				Gore.NewGore(position, velocity, num);
+ 			}
 @@ -72191,6 +_,14 @@
  		return -1;
  	}

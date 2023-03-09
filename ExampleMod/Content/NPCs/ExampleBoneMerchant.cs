@@ -9,6 +9,7 @@ using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
 using Terraria.GameContent;
+using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -106,24 +107,18 @@ namespace ExampleMod.Content.NPCs
 
 			// Create gore when the NPC is killed.
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
-				// Normal variant. Not shimmered and not a party.
-				string headGore = "ExampleMod/ExampleBoneMerchant_Gore";
-				string armGore = "ExampleMod/ExampleBoneMerchant_Gore";
-				string legGore = "ExampleMod/ExampleBoneMerchant_Gore";
-				if (NPC.IsShimmerVariant) {
-					// Shimmered
-					headGore += "_Shimmer_Head";
-					armGore += "_Shimmer_Arm";
-					legGore += "_Shimmer_Leg";
-				}
-				else {
-					headGore += "_Head";
-					armGore += "_Arm";
-					legGore += "_Leg";
-				}
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(headGore).Type, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(armGore).Type, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(legGore).Type, 1f);
+				// Retrieve the gore types. This NPC only has shimmer variants. (6 total gores)
+				string variant = $"{(NPC.IsShimmerVariant ? "_Shimmer" : "")}";
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
 			}
 		}
 

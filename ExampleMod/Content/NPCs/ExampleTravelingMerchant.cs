@@ -188,7 +188,7 @@ namespace ExampleMod.Content.NPCs
 
 			NPCProfile = new Profiles.StackedNPCProfile(
 				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
-				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex)
 			);
 		}
 
@@ -231,31 +231,36 @@ namespace ExampleMod.Content.NPCs
 
 			// Create gore when the NPC is killed.
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
-				// Normal variant. Not shimmered and not a party.
-				int headGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Head").Type;
-				int armGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Arm").Type;
-				int legGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Leg").Type;
-				if (NPC.IsShimmerVariant) {
-					if (NPC.altTexture != 1) {
-						// Shimmered and not during a party.
-						// Only drop the hat gore when a party is not active.
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Hat").Type, 1f);
-					}
-					// Shimmered
-					headGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Head").Type;
-					armGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Arm").Type;
-					legGore = ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Shimmer_Leg").Type;
+				// Retrieve the gore types. This NPC has shimmer variants for head, arm, and leg gore. It also has a custom hat gore. (7 gores)
+				// This NPC will spawn either the assigned party hat or a custom hat gore when not shimmered. When shimmered the top hat is part of the head and no hat gore is spawned.
+				int hatGore = NPC.GetPartyHatGore();
+				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore 
+				if (hatGore == 0 && !NPC.IsShimmerVariant) {
+					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
 				}
-				else {
-					if (NPC.altTexture != 1) {
-						// Not shimmered and not during a party.
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExampleTravelingMerchant_Gore_Hat").Type, 1f);
-					}
+				string variant = $"{(NPC.IsShimmerVariant ? "_Shimmer" : "")}";
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				if (hatGore > 0) {
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, hatGore);
 				}
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, armGore, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, legGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
 			}
+		}
+
+		public override bool UsesPartyHat() {
+			// ExampleTravelingMerchant likes to keep his hat on while shimmered.
+			if (NPC.IsShimmerVariant) {
+				return false;
+			}
+			return true;
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) {

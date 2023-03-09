@@ -139,34 +139,22 @@ namespace ExampleMod.Content.NPCs
 
 			// Create gore when the NPC is killed.
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
-				if (NPC.IsShimmerVariant) {
-					if (NPC.altTexture == 1) {
-						// Shimmered and during a party.
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Party_Head").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Party_Arm").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Party_Leg").Type, 1f);
-					}
-					else {
-						// Shimmered and not during a party.
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Head").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Arm").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Shimmer_Leg").Type, 1f);
-					}
+				// Retrieve the gore types. This NPC has shimmer and party variants for head, arm, and leg gore. (12 total gores)
+				string variant = $"{(NPC.IsShimmerVariant ? "_Shimmer" : "")}{(NPC.altTexture == 1 ? "_Party" : "")}";
+				int hatGore = NPC.GetPartyHatGore();
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				if (hatGore > 0) {
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, hatGore);
 				}
-				else {
-					if (NPC.altTexture == 1) {
-						// Not shimmered but during a party.
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Party_Head").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Party_Arm").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Party_Leg").Type, 1f);
-					}
-					else {
-						// Normal variant. Not shimmered and not a party.
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Head").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Arm").Type, 1f);
-						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("ExampleMod/ExamplePerson_Gore_Leg").Type, 1f);
-					}
-				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
 			}
 		}
 
