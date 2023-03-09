@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"interface_i_entity_with_instances.html":[2,0,497],
 "interface_i_entry_filter.html":[2,0,498],
 "interface_i_entry_icon.html":[2,0,499],
 "interface_i_entry_sort_step.html":[2,0,500],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_particle_renderer_settings.html":[2,0,888],
 "struct_placement_hook.html":[2,0,903],
 "struct_player_1_1_composite_arm_data.html":[2,0,909,1],
-"struct_player_1_1_directional_input_sync_cache.html":[2,0,909,2],
-"struct_player_1_1_item_check_context.html":[2,0,909,4]
+"struct_player_1_1_directional_input_sync_cache.html":[2,0,909,2]
 };

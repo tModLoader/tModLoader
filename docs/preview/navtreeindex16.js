@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_rejection_menu_info.html":[2,0,997],
 "class_reload_required_attribute.html":[2,0,998],
 "class_remade_chat_monitor.html":[2,0,999],
 "class_remote_address.html":[2,0,1000],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_tile_entities_manager.html#a9c183807509ec3f8559bcb777e6c732b":[2,0,1165,1],
 "class_tile_entities_manager.html#acce9e0b7fa32ed7b97ce52d78c4cd370":[2,0,1165,0],
 "class_tile_entity.html":[2,0,1166],
-"class_tile_entity.html#a2799ce9901b2c8efdb060491ea78869f":[2,0,1166,3],
-"class_tile_entity.html#a55d31824ac839a08c69b4c9e7c04c486":[2,0,1166,1]
+"class_tile_entity.html#a2799ce9901b2c8efdb060491ea78869f":[2,0,1166,3]
 };

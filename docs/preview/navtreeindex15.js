@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"class_proj_a_i_style_i_d.html#a7e941c87f2d39bb3bd2d7d9195f6aeb2":[2,0,962,51],
 "class_proj_a_i_style_i_d.html#a7ff603f23aa13a69f5902b05592d3056":[2,0,962,65],
 "class_proj_a_i_style_i_d.html#a8099d001e3ba4374090c963d08f229e1":[2,0,962,11],
 "class_proj_a_i_style_i_d.html#a824694a0b45c58c808221508fec0f4e7":[2,0,962,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "class_recipe_loader.html#aeaaa89370b17536181962f67826a9a96":[2,0,992,2],
 "class_rectangle_serializer.html":[2,0,993],
 "class_ref.html":[2,0,994],
-"class_reflective_armor_shader_data.html":[2,0,995],
-"class_rejection_menu_info.html":[2,0,997]
+"class_reflective_armor_shader_data.html":[2,0,995]
 };
