@@ -12,6 +12,8 @@ public static class NPCShopDatabase
 
 	public static readonly Dictionary<string, bool> NoPylons = new();
 
+	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
+
 	public static void RegisterNpcShop(int npcId, NPCShop chestLoot, string shopName = "Shop") {
 		npcShopByName.Add(GetNPCShopName(npcId, shopName), chestLoot);
 	}
@@ -27,15 +29,7 @@ public static class NPCShopDatabase
 		return $"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}";
 	}
 
-	public static Dictionary<string, NPCShop> GetNpcShopsOf(int npcId) {
-		return npcShopByName.Where(x => {
-			string[] split = x.Key.Split('/');
-			return split[0] == (npcId < NPCID.Count ? "Terraria" : NPCLoader.GetNPC(npcId).Mod.Name)
-			&& split[1] == (npcId < NPCID.Count ? NPCID.Search.GetName(npcId) : NPCLoader.GetNPC(npcId).Name);
-		}).ToDictionary(x => x.Key, x => x.Value);
-	}
-
-	public static string GetNpcShopByIndex(int index)
+	public static string GetVanillaShop(int index)
 	{
 		int npcType = NPCLoader.shopToNPC[index];
 		if (index == 25) { // Painter 2 Shop Special Case
@@ -53,6 +47,7 @@ public static class NPCShopDatabase
 
 	public static void NPCShops() {
 		NoPylons[GetNPCShopName(NPCID.SkeletonMerchant)] = true;
+		NoPylons[GetNPCShopName(NPCID.DD2Bartender)] = true;
 
 		RegisterMerchant();
 		RegisterArmsDealer();
@@ -274,6 +269,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.CrimsonSeeds,		NPCShop.Condition.BloodMoon, crimsonSeedsCondition)
 			.Add(ItemID.Sunflower,			NPCShop.Condition.NotBloodMoon)
 			.Add(ItemID.Acorn)
+			.Add(ItemID.DontHurtNatureBook)																	// Guide to Environmental Preservation
 			.Add(ItemID.DirtRod)
 			.Add(ItemID.PumpkinSeed)
 			.Add(ItemID.CorruptGrassEcho,	NPCShop.Condition.BloodMoon, NPCShop.Condition.CorruptionWorld) // Crimosn Grass Wall
@@ -294,15 +290,15 @@ public static class NPCShopDatabase
 			.Add(ItemID.WaterleafPlanterBox, NPCShop.Condition.DownedSkeletron)
 			.Add(ItemID.ShiverthornPlanterBox, NPCShop.Condition.DownedSkeletron)
 			.Add(ItemID.FireBlossomPlanterBox, NPCShop.Condition.Hardmode)
-			.Add(ItemID.FlowerPacketWhite)																		// White Flower Seeds
-			.Add(ItemID.FlowerPacketYellow)																		// Yellows Flower Seeds
-			.Add(ItemID.FlowerPacketRed)																		// Red Flower Seeds
-			.Add(ItemID.FlowerPacketPink)																		// Pink Flower Seeds
-			.Add(ItemID.FlowerPacketMagenta)																	// Magenta Flower Seeds
-			.Add(ItemID.FlowerPacketViolet)																		// Violet Flower Seeds
-			.Add(ItemID.FlowerPacketBlue)																		// Blue Flower Seeds
-			.Add(ItemID.FlowerPacketWild)																		// Wild Flower Seeds
-			.Add(ItemID.FlowerPacketTallGrass)																	// Tall Grass Seeds
+			.Add(ItemID.FlowerPacketWhite)																	// White Flower Seeds
+			.Add(ItemID.FlowerPacketYellow)																	// Yellows Flower Seeds
+			.Add(ItemID.FlowerPacketRed)																	// Red Flower Seeds
+			.Add(ItemID.FlowerPacketPink)																	// Pink Flower Seeds
+			.Add(ItemID.FlowerPacketMagenta)																// Magenta Flower Seeds
+			.Add(ItemID.FlowerPacketViolet)																	// Violet Flower Seeds
+			.Add(ItemID.FlowerPacketBlue)																	// Blue Flower Seeds
+			.Add(ItemID.FlowerPacketWild)																	// Wild Flower Seeds
+			.Add(ItemID.FlowerPacketTallGrass)																// Tall Grass Seeds
 			.Add(ItemID.PottedForestCedar,	NPCShop.Condition.Hardmode, mp1_2)
 			.Add(ItemID.PottedJungleCedar,	NPCShop.Condition.Hardmode, mp1_2)
 			.Add(ItemID.PottedHallowCedar,	NPCShop.Condition.Hardmode, mp1_2)
@@ -345,7 +341,7 @@ public static class NPCShopDatabase
 		new NPCShop(NPCID.Clothier)
 			.Add(ItemID.BlackThread)
 			.Add(ItemID.PinkThread)
-			.Add(ItemID.PlacePainting)																			// r/Terraria
+			.Add(ItemID.PlacePainting)																		// r/Terraria
 			.Add(ItemID.SummerHat,			NPCShop.Condition.TimeDay)
 			.Add(ItemID.PlumbersShirt,		NPCShop.Condition.IsMoonFull)
 			.Add(ItemID.PlumbersPants,		NPCShop.Condition.IsMoonFull)
@@ -453,7 +449,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.OrangePressurePlate)
 			.Add(ItemID.ProjectilePressurePad)
 			.Add(ItemID.BoosterTrack)
-			.Add(ItemID.ActuationAccessory)
+			.Add(ItemID.Actuator)
 			.Add(ItemID.Teleporter)
 			.Add(ItemID.WirePipe)                                                                               // Junction Box
 			.Add(ItemID.LaserRuler)                                                                             // Mechanical Ruler
@@ -466,6 +462,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.Timer5Second)
 			.Add(ItemID.TimerOneHalfSecond)
 			.Add(ItemID.TimerOneFourthSecond)
+			.Add(ItemID.PixelBox)
 			.Register();
 	}
 
@@ -664,6 +661,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.BlackPaint)
 			.Add(ItemID.GrayPaint)
 			.Add(ItemID.WhitePaint)
+			.Add(ItemID.BrownPaint)
 			.Add(ItemID.ShadowPaint,		NPCShop.Condition.Hardmode)
 			.Add(ItemID.NegativePaint,		NPCShop.Condition.Hardmode)
 			.Add(ItemID.GlowPaint,			NPCShop.Condition.InGraveyard)									// Illuminant Coating
@@ -1053,7 +1051,7 @@ public static class NPCShopDatabase
 			.Add(ItemID.RoyalTiara)
 			.Add(ItemID.RoyalDressTop)																			// Royal Blouse
 			.Add(ItemID.RoyalDressBottom);																		// Royal Dress
-		for (int i = 5076; i < 5087; i++) {
+		for (int i = 5076; i <= 5087; i++) {
 			shop.Add(i);
 		}
 		shop.Add(ItemID.PrincessStyle)
