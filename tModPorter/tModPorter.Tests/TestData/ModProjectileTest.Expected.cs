@@ -43,7 +43,7 @@ public class ModProjectileTest : ModProjectile
 	}
 
 #if COMPILE_ERROR
-	public override bool? SingleGrappleHook(Player player)/* Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true */ { return null; }
+	public override bool? SingleGrappleHook(Player player)/* tModPorter Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true */ { return null; }
 #endif
 
 #if COMPILE_ERROR // duplicate method

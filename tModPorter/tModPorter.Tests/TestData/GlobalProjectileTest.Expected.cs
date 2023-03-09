@@ -32,7 +32,7 @@ public class GlobalProjectileTest : GlobalProjectile
 	}
 
 #if COMPILE_ERROR
-	public override bool? SingleGrappleHook(int type, Player player)/* Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[type] = true if you previously had this method return true */ { return null; }
+	public override bool? SingleGrappleHook(int type, Player player)/* tModPorter Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[type] = true if you previously had this method return true */ { return null; }
 #endif
 
 #if COMPILE_ERROR // duplicate method
