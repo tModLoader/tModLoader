@@ -167,9 +167,17 @@ public partial class NPC
 		/// </summary>
 		public void HideCombatText() => _combatTextHidden = true;
 
+		public delegate void HitInfoModifier(ref HitInfo info);
+		/// <summary>
+		/// Really really not recommended for use!!<br/>
+		/// Can be used to register a callback to freely modify the <see cref="HitInfo"/> produced by <see cref="ToHitInfo(float, bool, float, bool, float)"/> before it is returned<br/>
+		/// If multiple mods register different callbacks which modify the hit info in different ways the results could be a mess!
+		/// </summary>
+		public HitInfoModifier ModifyHitInfo = null;
+
 		public HitModifiers() { }
 
-		public int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
+		public readonly int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 		{
 			if (SuperArmor) {
 				float dmg = 1;
@@ -200,18 +208,26 @@ public partial class NPC
 			return Math.Max((int)FinalDamage.ApplyTo(damage), 1);
 		}
 
-		public float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
+		public readonly float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
 
-		public HitInfo ToHitInfo(float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f) => new() {
-			DamageType = DamageType ?? DamageClass.Default, // just in case
-			SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
-			Damage = _instantKill ? 1 : GetDamage(baseDamage, crit, damageVariation, luck),
-			Crit = _critOverride ?? crit,
-			KnockBack = GetKnockback(baseKnockback),
-			HitDirection = HitDirectionOverride ?? HitDirection,
-			InstantKill = _instantKill,
-			HideCombatText = _combatTextHidden
-		};
+		public HitInfo ToHitInfo(float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f)
+		{
+			var hitInfo = new HitInfo() {
+				DamageType = DamageType ?? DamageClass.Default, // just in case
+				SourceDamage = Math.Max((int)SourceDamage.ApplyTo(baseDamage), 1),
+				Damage = _instantKill ? 1 : GetDamage(baseDamage, crit, damageVariation, luck),
+				Crit = _critOverride ?? crit,
+				KnockBack = GetKnockback(baseKnockback),
+				HitDirection = HitDirectionOverride ?? HitDirection,
+				InstantKill = _instantKill,
+				HideCombatText = _combatTextHidden
+			};
+
+			// good for one use only. Structs can be copied so this doesn't prevent misuse, but one can hope.
+			ModifyHitInfo?.Invoke(ref hitInfo);
+			ModifyHitInfo = null;
+			return hitInfo;
+		}
 	}
 
 	/// <summary>
@@ -222,24 +238,34 @@ public partial class NPC
 		/// <summary>
 		/// The DamageType of the hit.
 		/// </summary>
-		public DamageClass DamageType;
+		public DamageClass DamageType = DamageClass.Default;
 
+		private int _sourceDamage = 1;
 		/// <summary>
 		/// The amount of damage 'dealt' to the NPC, before incoming damage multipliers, armor, critical strikes etc.<br/>
 		/// Use this to trigger effects which scale based on damage dealt, and also deal damage.<br/>
+		/// Cannot be set to less than 1.<br/>
 		/// <br/>
 		/// Using this instead of <see cref="Damage"/> can prevent diminishing returns from NPC defense, double crits, or excessively strong effects if the NPC has a vulnerability to the weapon/projectile (like vampires and stakes).
 		/// <br/>
 		/// Used by vanilla for dryad ward retaliation, and many sword on-hit projectiles like volcano and beekeepr
 		/// </summary>
-		public int SourceDamage = 0;
+		public int SourceDamage {
+			readonly get => _sourceDamage;
+			set => _sourceDamage = Math.Max(value, 1);
+		}
 
+		private int _damage = 1;
 		/// <summary>
 		/// The amount of damage received by the NPC. How much life the NPC will lose. <br/>
 		/// Is NOT capped at the NPC's current life. <br/>
 		/// Will be 1 if <see cref="InstantKill"/> is set. <br/>
+		/// Cannot be set to less than 1.
 		/// </summary>
-		public int Damage = 0;
+		public int Damage {
+			readonly get => _damage;
+			set => _damage = Math.Max(value, 1);
+		}
 
 		/// <summary>
 		/// Whether or not the hit is a crit
@@ -268,9 +294,6 @@ public partial class NPC
 		/// </summary>
 		public bool HideCombatText = false;
 
-		public HitInfo()
-		{
-			DamageType = DamageClass.Default;
-		}
+		public HitInfo() { }
 	}
 }

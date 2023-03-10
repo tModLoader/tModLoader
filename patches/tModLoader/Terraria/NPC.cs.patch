@@ -1765,7 +1765,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,121 @@
+@@ -64591,26 +_,120 @@
  
  		return armorPenetration / 2;
  	}
@@ -1836,7 +1836,6 @@
 +
 +		modifiers.Knockback *= knockBackResist;
 +
-+		damageType ??= DamageClass.Default; // just in case people forget
 +		NPCLoader.ModifyIncomingHit(this, ref modifiers);
 +		return modifiers;
 +	}
