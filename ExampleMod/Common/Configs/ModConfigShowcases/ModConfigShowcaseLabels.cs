@@ -10,21 +10,16 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(154, 152, 181)]
-	[Label("ModConfig Showcase C: Labels")]
 	public class ModConfigShowcaseLabels : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		// Without a Label attribute, config items will display as field identifiers. Using Label will make your Config appealing.
 		// Use Tooltip to convey additional information about the config item.
-		[Label("This is a float")]
-		[Tooltip("This text will show when hovered")]
 		[SliderColor(255, 0, 127)]
 		public float SomeFloat;
 
 		// Using localization keys will help make your config readable in multiple languages. See ExampleMod/Localization/en-US.lang
-		[Label("$Mods.ExampleMod.Common.LocalizedLabel")]
-		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
 		// TODO: Not working. Code missing from ExampleMod.cs
@@ -51,7 +46,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.
 		[BackgroundColor(85, 107, 47)]
-		[Label("OverridenColor SimpleData")]
 		public SimpleData simpleDataExample2 = new SimpleData();
 	}
 }

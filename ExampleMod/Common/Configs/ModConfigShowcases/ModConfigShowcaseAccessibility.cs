@@ -12,7 +12,6 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(164, 153, 190)]
-	[Label("ModConfig Showcase F: Accessibility")]
 	public class ModConfigShowcaseAccessibility : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
