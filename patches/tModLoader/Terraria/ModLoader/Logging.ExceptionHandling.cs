@@ -8,14 +8,23 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
-using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
 public static partial class Logging
 {
-	private static readonly ThreadLocal<bool> handlerActive = new(() => false);
+	public readonly ref struct QuietExceptionHandle
+	{
+		public QuietExceptionHandle() { quietExceptionCount++; }
+		public readonly void Dispose() => quietExceptionCount--;
+	}
+
+	[ThreadStatic]
+	private static int quietExceptionCount;
 	private static readonly HashSet<string> pastExceptions = new();
+	private static readonly HashSet<string> ignoreTypes = new() {
+		"ReLogic.Peripherals.RGB.DeviceInitializationException",
+	};
 	private static readonly HashSet<string> ignoreSources = new() {
 		"MP3Sharp",
 	};
@@ -28,8 +37,6 @@ public static partial class Logging
 		"Convert.ToInt32..Terraria.Main.DedServ_PostModLoad", // bad user input in ded-serv console
 		"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 		"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
-		"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
-		"Terraria.ModLoader.Engine.TMLContentManager.OpenStream", // TML content manager delegating to vanilla dir
 		"UwUPnP", // UPnP does a lot of trial and error
 	};
 	// There are a couple of annoying messages that happen during cancellation of asynchronous downloads, and they have no other useful info to suppress by
@@ -73,21 +80,21 @@ public static partial class Logging
 
 	private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
 	{
-		if (handlerActive.Value)
+		if (quietExceptionCount > 0)
 			return;
 
-		bool oom = args.Exception is OutOfMemoryException;
+		using var _ = new QuietExceptionHandle();
 
+		bool oom = args.Exception is OutOfMemoryException;
 		if (oom) {
 			TryFreeingMemory();
 		}
 
 		try {
-			handlerActive.Value = true;
-
 			if (!oom) {
 				if (args.Exception == previousException
 				|| args.Exception is ThreadAbortException
+				|| ignoreTypes.Contains(args.Exception.GetType().FullName)
 				|| ignoreSources.Contains(args.Exception.Source)
 				|| ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false)
 				|| ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false)) {
@@ -132,9 +139,6 @@ public static partial class Logging
 		}
 		catch (Exception e) {
 			tML.Warn("FirstChanceExceptionHandler exception", e);
-		}
-		finally {
-			handlerActive.Value = false;
 		}
 	}
 
