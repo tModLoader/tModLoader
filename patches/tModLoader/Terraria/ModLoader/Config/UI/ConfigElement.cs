@@ -41,6 +41,7 @@ public abstract class ConfigElement : UIElement
 	protected IList List { get; set; }
 	// Attributes
 	protected LabelAttribute LabelAttribute;
+	protected string Label;
 	protected TooltipAttribute TooltipAttribute;
 	protected BackgroundColorAttribute BackgroundColorAttribute;
 	protected RangeAttribute RangeAttribute;
@@ -72,17 +73,14 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		TextDisplayFunction = () => MemberInfo.Name;
 		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
-
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label;
-		}
+		Label = ConfigManager.GetLocalizedLabel(LabelAttribute, MemberInfo);
+		TextDisplayFunction = () => Label;
 
 		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(MemberInfo, Item, List);
-
-		if (TooltipAttribute != null) {
-			TooltipFunction = () => TooltipAttribute.Tooltip;
+		string tooltip = ConfigManager.GetLocalizedTooltip(TooltipAttribute, MemberInfo);
+		if (tooltip != null) {
+			TooltipFunction = () => tooltip;
 		}
 
 		BackgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(MemberInfo, Item, List);

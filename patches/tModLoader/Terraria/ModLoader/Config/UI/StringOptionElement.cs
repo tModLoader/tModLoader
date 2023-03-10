@@ -42,8 +42,8 @@ internal class StringOptionElement : RangeElement
 			TextDisplayFunction = () => Index + 1 + ": " + StringList[Index];
 		}
 
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label + ": " + getValue();
+		if (Label != null) {
+			TextDisplayFunction = () => Label + ": " + getValue();
 		}
 	}
 

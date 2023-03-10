@@ -52,8 +52,8 @@ internal class EnumElement : RangeElement
 		}
 		*/
 
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label + ": " + _getValueString();
+		if (Label != null) {
+			TextDisplayFunction = () => Label + ": " + _getValueString();
 		}
 	}
 

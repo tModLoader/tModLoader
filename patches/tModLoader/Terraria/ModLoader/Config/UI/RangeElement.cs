@@ -26,8 +26,8 @@ public abstract class PrimitiveRangeElement<T> : RangeElement where T : ICompara
 			TextDisplayFunction = () => Index + 1 + ": " + TList[Index];
 		}
 
-		if (LabelAttribute != null) { // Problem with Lists using ModConfig Label.
-			TextDisplayFunction = () => LabelAttribute.Label + ": " + GetValue();
+		if (Label != null) { // Problem with Lists using ModConfig Label.
+			TextDisplayFunction = () => Label + ": " + GetValue();
 		}
 
 		if (RangeAttribute != null && RangeAttribute.Min is T && RangeAttribute.Max is T) {

@@ -59,7 +59,7 @@ internal class ObjectElement : ConfigElement<object>
 			bool hasToString = MemberInfo.Type.GetMethod("ToString", Array.Empty<Type>()).DeclaringType != typeof(object);
 
 			if (hasToString) {
-				TextDisplayFunction = () => (LabelAttribute == null ? MemberInfo.Name : LabelAttribute.Label) + (Value == null ? "" : ": " + Value.ToString());
+				TextDisplayFunction = () => Label + (Value == null ? "" : ": " + Value.ToString());
 				AbridgedTextDisplayFunction = () => Value?.ToString() ?? "";
 			}
 		}

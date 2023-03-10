@@ -16,7 +16,7 @@ internal class ColorElement : ConfigElement
 
 		internal Color current;
 
-		[Label("Red")]
+		[Label("$LegacyMenu.95")]
 		public byte R {
 			get => current.R;
 			set {
@@ -25,7 +25,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("Green")]
+		[Label("$LegacyMenu.96")]
 		public byte G {
 			get => current.G;
 			set {
@@ -34,7 +34,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("Blue")]
+		[Label("$LegacyMenu.97")]
 		public byte B {
 			get => current.B;
 			set {

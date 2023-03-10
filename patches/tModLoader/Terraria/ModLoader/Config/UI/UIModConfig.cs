@@ -44,7 +44,7 @@ internal class UIModConfig : UIState
 	private Mod mod;
 	private List<ModConfig> modConfigs;
 	private ModConfig modConfig; // This is from ConfigManager.Configs
-	private ModConfig pendingConfig; // the clone we modify.
+	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
 
@@ -437,7 +437,7 @@ internal class UIModConfig : UIState
 
 		SetMessage("", Color.White);
 
-		string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
+		string configDisplayName = ConfigManager.GetModConfigDisplayName(modConfig);
 
 		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + ": " + configDisplayName);
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);

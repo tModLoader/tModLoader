@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
@@ -70,6 +71,27 @@ public static class ConfigManager
 		if (!loadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig> configList2))
 			loadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
 		configList2.Add(GeneratePopulatedClone(config));
+	}
+
+	internal static void FinishSetup()
+	{
+		// Register localization for all fields and properties that should show
+		//this.GetLocalization(nameof(Tooltip), () => "");
+		foreach (var activeConfigs in ConfigManager.Configs) {
+			foreach (var config in activeConfigs.Value) {
+				Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName"), () => "");
+				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
+					if (variable.IsProperty && variable.Name == "Mode")
+						continue;
+
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+						continue;
+
+					Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Label"), () => "");
+					Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Tooltip"), () => "");
+				}
+			}
+		}
 	}
 
 	// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
@@ -355,6 +377,56 @@ public static class ConfigManager
 			hasNextB = enumeratorB.MoveNext();
 		}
 		return !hasNextA && !hasNextB;
+	}
+
+	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
+		var config = Interface.modConfig.pendingConfig;
+		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Label");
+		if (Language.Exists(labelKey)) {
+			string labelLocalization = Language.GetTextValue(labelKey);
+			if (!string.IsNullOrEmpty(labelLocalization))
+				return labelLocalization;
+		}
+
+		if (labelAttribute != null) {
+			return labelAttribute.Label;
+		}
+		
+		return memberInfo.Name;
+	}
+
+	internal static string GetLocalizedTooltip(TooltipAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
+	{
+		var config = Interface.modConfig.pendingConfig;
+		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
+		if (Language.Exists(labelKey)) {
+			string labelLocalization = Language.GetTextValue(labelKey);
+			if (!string.IsNullOrEmpty(labelLocalization))
+				return labelLocalization;
+		}
+
+		if (tooltipAttribute != null) {
+			return tooltipAttribute.Tooltip;
+		}
+
+		return null;
+	}
+
+	internal static string GetModConfigDisplayName(ModConfig config)
+	{
+		string key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
+		if (Language.Exists(key)) {
+			string displayName = Language.GetTextValue(key);
+			if (!string.IsNullOrEmpty(displayName))
+				return displayName;
+		}
+
+		var label = (LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute));
+		if (label != null) {
+			return label.Label;
+		}
+
+		return config.Name;
 	}
 }
 

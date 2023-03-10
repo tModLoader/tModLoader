@@ -133,7 +133,7 @@ internal class UIModConfigList : UIState
 				}
 				*/
 
-				string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
+				string configDisplayName = ConfigManager.GetModConfigDisplayName(config);
 				var t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
 				//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
 
