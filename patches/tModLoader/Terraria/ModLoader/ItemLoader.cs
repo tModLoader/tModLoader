@@ -163,8 +163,8 @@ public static class ItemLoader
 			if (pair.Value.minStack < 1)
 				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
 
-			if (pair.Value.maxStack <= pair.Value.minStack)
-				throw new Exception($"{exceptionCommon} must have maxStack bigger than minStack");
+			if (pair.Value.maxStack < pair.Value.minStack)
+				throw new Exception($"{exceptionCommon} must have maxStack bigger than or equal to minStack");
 		}
 	}
 
