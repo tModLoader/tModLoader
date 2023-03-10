@@ -613,6 +613,13 @@ public static class LocalizationLoader
 				levelFound = level;
 				best = file;
 			}
+			if (!string.IsNullOrWhiteSpace(file.prefix)) {
+				level = file.prefix.Split(".").Length;
+				if (level > levelFound) {
+					levelFound = level;
+					best = file;
+				}
+			}
 		}
 
 		if (best == null) {
