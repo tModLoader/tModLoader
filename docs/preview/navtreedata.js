@@ -51,19 +51,19 @@ var NAVTREEINDEX =
 "class_global_projectile.html#a5e5a20d5923e842b14cfe959ca515138",
 "class_item.html#a87032523d0721bc622ae3d37452f78b8",
 "class_item_loader.html#aa006913902010bfb48f013e20ff40e07",
-"class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc",
-"class_mod_item.html#a59992ebf427ec1163fc4fd81eaa4a8f7",
-"class_mod_player.html#a3ba7a3d76cdbcbe43566e9b4fb051334",
-"class_mod_system.html#a40c60741a007b1f5a69facc175c0614e",
-"class_n_p_c.html#a19671fea508f786929fb6b46b35d94cc",
-"class_n_p_c_i_d_1_1_sets.html#a80165edcb902e866f3f756b4c5afe100",
-"class_player_draw_layer_1_1_between.html",
-"class_proj_a_i_style_i_d.html#a7e941c87f2d39bb3bd2d7d9195f6aeb2",
-"class_rejection_menu_info.html",
-"class_tile_entity.html#a55d31824ac839a08c69b4c9e7c04c486",
-"class_unloaded_system.html#a2e1d5a525659cd8b49d4fc286299dc92",
-"interface_i_entity_with_instances.html",
-"struct_player_1_1_directional_input_sync_cache.html"
+"class_mod.html#a0336ef4f24454d009a80fa4ebf2bc4fc",
+"class_mod_item.html#a58947194035a754982f2025aefd232e1",
+"class_mod_player.html#a3b4238ff5f74b99b28bd583e80303bf0",
+"class_mod_system.html#a39ee613c122bcd72a15d00d35dbccbd5",
+"class_n_p_c.html#a18f67f03259864860afd737f2cc7236d",
+"class_n_p_c_i_d_1_1_sets.html#a7f752a893020dca9a88c513d4b5b1c03",
+"class_player_draw_layer_1_1_before_parent.html",
+"class_proj_a_i_style_i_d.html#a7e90cbd6c84f2cc5fc74d4633c230e6e",
+"class_reflective_armor_shader_data.html",
+"class_tile_entity.html#a2799ce9901b2c8efdb060491ea78869f",
+"class_unloaded_system.html",
+"interface_i_entity_with_globals.html",
+"struct_player_1_1_composite_arm_data.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

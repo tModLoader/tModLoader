@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_player_draw_layer_1_1_before_parent.html":[2,0,914,1],
 "class_player_draw_layer_1_1_between.html":[2,0,914,2],
 "class_player_draw_layer_1_1_multiple.html":[2,0,914,3],
 "class_player_draw_layer_1_1_position.html":[2,0,914,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_proj_a_i_style_i_d.html#a792085eaf0e7ecbfeb4974c62f9899be":[2,0,962,5],
 "class_proj_a_i_style_i_d.html#a79e679f9cb279fbc58074fcc3d0613f3":[2,0,962,148],
 "class_proj_a_i_style_i_d.html#a7a87a130c289eda7019d7c3c6da20ec3":[2,0,962,61],
-"class_proj_a_i_style_i_d.html#a7aba00fe32d8df938fddac49807caef3":[2,0,962,16],
-"class_proj_a_i_style_i_d.html#a7e90cbd6c84f2cc5fc74d4633c230e6e":[2,0,962,94]
+"class_proj_a_i_style_i_d.html#a7aba00fe32d8df938fddac49807caef3":[2,0,962,16]
 };

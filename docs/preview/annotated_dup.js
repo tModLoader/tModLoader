@@ -676,7 +676,7 @@ var annotated_dup =
     [ "LoaderUtils", "class_loader_utils.html", "class_loader_utils" ],
     [ "Lobby", "class_lobby.html", null ],
     [ "LocalizationLoader", "class_localization_loader.html", "class_localization_loader" ],
-    [ "LocalizedText", "class_localized_text.html", null ],
+    [ "LocalizedText", "class_localized_text.html", "class_localized_text" ],
     [ "LockOnHelper", "class_lock_on_helper.html", null ],
     [ "Logging", "class_logging.html", "class_logging" ],
     [ "LootSimulationItemCounter", "class_loot_simulation_item_counter.html", null ],

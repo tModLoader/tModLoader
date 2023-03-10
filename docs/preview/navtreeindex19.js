@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"interface_i_entity_with_globals.html":[2,0,496],
 "interface_i_entity_with_instances.html":[2,0,497],
 "interface_i_entry_filter.html":[2,0,498],
 "interface_i_entry_icon.html":[2,0,499],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_painting_entry.html":[2,0,883],
 "struct_particle_orchestra_settings.html":[2,0,884],
 "struct_particle_renderer_settings.html":[2,0,888],
-"struct_placement_hook.html":[2,0,903],
-"struct_player_1_1_composite_arm_data.html":[2,0,909,1]
+"struct_placement_hook.html":[2,0,903]
 };

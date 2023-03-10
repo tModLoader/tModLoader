@@ -115,8 +115,11 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FormatWith</b> (obj
 <tr class="memitem:a42546cf6fcc0148fa3a9ccedf5e0e2d9"><td class="memItemLeft" align="right" valign="top"><a id="a42546cf6fcc0148fa3a9ccedf5e0e2d9" name="a42546cf6fcc0148fa3a9ccedf5e0e2d9"></a>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
 <tr class="separator:a42546cf6fcc0148fa3a9ccedf5e0e2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="memItemLeft" align="right" valign="top"><a id="a04e42d4ecba4a9f205cb72d26f23dd06" name="a04e42d4ecba4a9f205cb72d26f23dd06"></a>
-<a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WithFormatArgs</b> (params object[] args)</td></tr>
+<tr class="memitem:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localized_text.html#a04e42d4ecba4a9f205cb72d26f23dd06">WithFormatArgs</a> (params object[] args)</td></tr>
+<tr class="memdesc:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="class_localized_text.html">LocalizedText</a> with the supplied arguments formatted into the value (via string.Format(string, object?[]))<br  />
+ Will automatically update to re-format the string with cached args when language changes. <br  />
+ br/&gt; The resulting <a class="el" href="class_localized_text.html">LocalizedText</a> should be stored statically. Should not be used to create 'throwaway' <a class="el" href="class_localized_text.html">LocalizedText</a> instances. <br  />
+ Use Format(object[]) instead for repeated on-demand formatting with different args.  <a href="class_localized_text.html#a04e42d4ecba4a9f205cb72d26f23dd06">More...</a><br /></td></tr>
 <tr class="separator:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -152,6 +155,37 @@ Properties</h2></td></tr>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Value</b><code> [get]</code></td></tr>
 <tr class="separator:ac00724fa218d8c72912eb3b5eb4ab514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a04e42d4ecba4a9f205cb72d26f23dd06" name="a04e42d4ecba4a9f205cb72d26f23dd06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04e42d4ecba4a9f205cb72d26f23dd06">&#9670;&nbsp;</a></span>WithFormatArgs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_localized_text.html">LocalizedText</a> LocalizedText.WithFormatArgs </td>
+          <td>(</td>
+          <td class="paramtype">params object[]&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new <a class="el" href="class_localized_text.html">LocalizedText</a> with the supplied arguments formatted into the value (via string.Format(string, object?[]))<br  />
+ Will automatically update to re-format the string with cached args when language changes. <br  />
+ br/&gt; The resulting <a class="el" href="class_localized_text.html">LocalizedText</a> should be stored statically. Should not be used to create 'throwaway' <a class="el" href="class_localized_text.html">LocalizedText</a> instances. <br  />
+ Use Format(object[]) instead for repeated on-demand formatting with different args. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>The substitution args</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
