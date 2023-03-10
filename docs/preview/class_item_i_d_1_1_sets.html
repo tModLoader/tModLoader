@@ -391,7 +391,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NeverAppears
  Defaults to <code>false</code>.  <a href="class_item_i_d_1_1_sets.html#ae31b2005741ded7a4eeb856768730929">More...</a><br /></td></tr>
 <tr class="separator:ae31b2005741ded7a4eeb856768730929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43be23e2badafc2d71fce3a2393625fc"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; int,(int minStack, int maxStack)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a43be23e2badafc2d71fce3a2393625fc">OreDropsFromSlime</a></td></tr>
-<tr class="memdesc:a43be23e2badafc2d71fce3a2393625fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive). <br  />
+<tr class="memdesc:a43be23e2badafc2d71fce3a2393625fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (inclusive). <br  />
 Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.  <a href="class_item_i_d_1_1_sets.html#a43be23e2badafc2d71fce3a2393625fc">More...</a><br /></td></tr>
 <tr class="separator:a43be23e2badafc2d71fce3a2393625fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6915023f572009c72d09f2fdf23768c8"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a6915023f572009c72d09f2fdf23768c8">OverflowProtectionTimeOffset</a> = Factory.CreateIntSet(0, 2, 200, 3, 150, 61, 150, 836, 150, 409, 150, 593, 200, 664, 100, 834, 100, 833, 100, 835, 100, 169, 100, 370, 100, 1246, 100, 408, 100, 3271, 150, 3277, 150, 3339, 150, 3276, 150, 3272, 150, 3274, 150, 3275, 150, 3338, 150, 176, 100, 172, 200, 424, 50, 1103, 50, 3087, 100, 3066, 100)</td></tr>
@@ -1241,7 +1241,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 <div class="line">            { PlatinumOre, (3, 13) },</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
-<p>Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive). <br  />
+<p>Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (inclusive). <br  />
 Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown. </p>
 
 </div>
