@@ -143,7 +143,7 @@ namespace ExampleMod.Common.Players
 
 		public override void OnHurt(Player.HurtInfo info) {
 			// On Hurt is used in this example to act upon another player being hurt.
-			// if the player who was hurt was defended, check if the local player should take the remaining damage for them
+			// If the player who was hurt was defended, check if the local player should take the remaining damage for them
 			Player localPlayer = Main.LocalPlayer;
 			if (defendedByAbsorbTeamDamageEffect && Player != localPlayer && IsClosestShieldWearerInRange(localPlayer, Player.Center, Player.team)) {
 				// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
@@ -152,7 +152,11 @@ namespace ExampleMod.Common.Players
 				// Working throught the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
 				float percent = AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 				int damage = (int)(info.Damage * (percent / (1 - percent)));
-				localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
+
+				// Don't bother pinging the defending player and upsetting their immunity frames if the portion of damage we're taking rounds down to 0
+				if (damage > 0) {
+					localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
+				}
 			}
 		}
 
