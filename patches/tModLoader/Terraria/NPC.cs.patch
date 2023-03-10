@@ -1763,7 +1763,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,111 @@
+@@ -64591,26 +_,121 @@
  
  		return armorPenetration / 2;
  	}
@@ -1850,11 +1850,21 @@
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
-+	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
 +	public HitInfo SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}
 +
++	/// <summary>
++	/// Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the provided <see cref="HitInfo"/><br/>
++	/// Calls <see cref="HitEffect(HitInfo)"/> and associated hooks after dealing damage.<br/>
++	/// Calls <see cref="checkDead"/><br/>
++	/// Does not automatically send packets. Use <see cref="NetMessage.SendStrikeNPC(NPC, in HitInfo, int)"/> to synchronize hits.
++	/// </summary>
++	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="SimpleStrike"/></param>
++	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
 +	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false)
  	{
  		bool flag = Main.netMode == 0;

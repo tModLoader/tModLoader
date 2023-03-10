@@ -23,9 +23,8 @@ public partial class NPC
 		public int HitDirection { get; init; } = default;
 
 		/// <summary>
-		/// If true, no amount of damage can get through the defense of this NPC. <see cref="Defense"/> modifiers and <see cref="ArmorPenetration"/> will be ignored. <br/>
-		/// Defense will reduce the damage to 1, but <see cref="CritDamage"/> and <see cref="FinalDamage"/> modifiers will still apply. <br/>
-		/// If an effect applies <see cref="FinalDamage"/>, you may want to disable the effect if the enemy has Super Armor.
+		/// If true, no amount of damage can get through the defense of this NPC, damage will be reduced to 1. <br/>
+		/// <see cref="CritDamage"/> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 10. <br/>
 		/// </summary>
 		public bool SuperArmor { get; init; } = false;
 
@@ -110,9 +109,7 @@ public partial class NPC
 		/// <br/>
 		/// Multiply to make your enemy more susceptible or resistant to damage. <br/>
 		/// Add to give 'bonus' post-mitigation damage. <br/>
-		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional bonus damage, ignoring all resistances or multipliers. <br/>
-		/// <br/>
-		/// Applies regardless of <see cref="SuperArmor"/> so consider checking before applying damage modifiers.
+		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional bonus damage, ignoring all resistances or multipliers (except <see cref="SuperArmor"/>).
 		/// </summary>
 		public StatModifier FinalDamage = new();
 
@@ -174,6 +171,14 @@ public partial class NPC
 
 		public int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 		{
+			if (SuperArmor) {
+				float dmg = 1;
+				if (_critOverride ?? crit)
+					dmg *= CritDamage.Additive * CritDamage.Multiplicative;
+
+				return Math.Clamp((int)dmg, 1, 10);
+			}
+
 			float damage = SourceDamage.ApplyTo(baseDamage);
 			damage += FlatBonusDamage.Value + ScalingBonusDamage.Value * damage;
 			damage *= TargetDamageMultiplier.Value;
@@ -189,9 +194,6 @@ public partial class NPC
 			float damageReduction = defense * DefenseEffectiveness.Value;
 			damage = Math.Max(damage - damageReduction, 1);
 
-			if (SuperArmor) // ignore everything above, and reduce damage to 1
-				damage = 1;
-
 			if (_critOverride ?? crit)
 				damage = CritDamage.ApplyTo(damage);
 
@@ -203,7 +205,7 @@ public partial class NPC
 		public HitInfo ToHitInfo(float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f) => new() {
 			DamageType = DamageType ?? DamageClass.Default, // just in case
 			SourceDamage = Math.Max((int) SourceDamage.ApplyTo(baseDamage), 1),
-			Damage = _instantKill ? 0 : GetDamage(baseDamage, crit, damageVariation, luck),
+			Damage = _instantKill ? 1 : GetDamage(baseDamage, crit, damageVariation, luck),
 			Crit = _critOverride ?? crit,
 			KnockBack = GetKnockback(baseKnockback),
 			HitDirection = HitDirectionOverride ?? HitDirection,
@@ -235,7 +237,7 @@ public partial class NPC
 		/// <summary>
 		/// The amount of damage received by the NPC. How much life the NPC will lose. <br/>
 		/// Is NOT capped at the NPC's current life. <br/>
-		/// Will be 0 if <see cref="InstantKill"/> is set. <br/>
+		/// Will be 1 if <see cref="InstantKill"/> is set. <br/>
 		/// </summary>
 		public int Damage = 0;
 
@@ -251,7 +253,7 @@ public partial class NPC
 
 		/// <summary>
 		/// The amount of knockback to apply. Should always be >= 0. <br/>
-		/// Note that <see cref="NPC.StrikeNPC"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
+		/// Note that <see cref="NPC.StrikeNPC(HitInfo, bool, bool)"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
 		/// </summary>
 		public float KnockBack = 0;
 

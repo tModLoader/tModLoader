@@ -25,7 +25,8 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 	/// <summary>
 	/// Helper property for defense >= 9999. Extremely high defense is interpreted as 'super armor' where attacks will only do 1 damage (or 2 for crits), no matter how strong they are. <br/>
-	/// Passed to <see cref="HitModifiers.SuperArmor"/> when doing damage calculations. See the docs there for more info.
+	/// Passed to <see cref="HitModifiers.SuperArmor"/> when doing damage calculations. See the docs there for more info. <br/>
+	/// The only way to bypass super armor is to call <see cref="StrikeNPC(HitInfo, bool, bool)"/>, or set NPC life directly.
 	/// </summary>
 	public bool SuperArmor {
 		get => defense >= 9999;
