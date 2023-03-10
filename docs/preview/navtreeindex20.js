@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"struct_player_1_1_directional_input_sync_cache.html":[2,0,909,2],
 "struct_player_1_1_item_check_context.html":[2,0,909,4],
 "struct_player_1_1_item_space_status.html":[2,0,909,5],
 "struct_player_1_1_overhead_message.html":[2,0,909,6],

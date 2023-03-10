@@ -63,7 +63,7 @@ var NAVTREEINDEX =
 "class_tile_entity.html#a55d31824ac839a08c69b4c9e7c04c486",
 "class_unloaded_system.html#a2e1d5a525659cd8b49d4fc286299dc92",
 "interface_i_entity_with_instances.html",
-"struct_player_1_1_item_check_context.html"
+"struct_player_1_1_directional_input_sync_cache.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

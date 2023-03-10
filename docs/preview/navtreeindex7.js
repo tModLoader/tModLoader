@@ -155,7 +155,7 @@ var NAVTREEINDEX7 =
 "class_localized_text.html":[2,0,676],
 "class_lock_on_helper.html":[2,0,677],
 "class_logging.html":[2,0,678],
-"class_logging.html#a3523d3f02e86b1b4e0366c0b3b929a2e":[2,0,678,0],
+"class_logging.html#a3523d3f02e86b1b4e0366c0b3b929a2e":[2,0,678,1],
 "class_loot_simulation_item_counter.html":[2,0,679],
 "class_loot_simulator.html":[2,0,680],
 "class_low_life_shader.html":[2,0,681],

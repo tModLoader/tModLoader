@@ -2125,6 +2125,7 @@ var hierarchy =
     [ "PropertyFieldWrapper", "class_property_field_wrapper.html", null ],
     [ "WorkshopHelper.UGCBased.PublishedItemsFinder", "class_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html", null ],
     [ "PylonLoader", "class_pylon_loader.html", null ],
+    [ "Logging.QuietExceptionHandle", "struct_logging_1_1_quiet_exception_handle.html", null ],
     [ "Player.RabbitOrderFrameHelper", "struct_player_1_1_rabbit_order_frame_helper.html", null ],
     [ "Rain", "class_rain.html", null ],
     [ "RainbowRodDrawer", "struct_rainbow_rod_drawer.html", null ],

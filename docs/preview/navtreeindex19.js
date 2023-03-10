@@ -195,6 +195,7 @@ var NAVTREEINDEX19 =
 "struct_light_disc_drawer.html":[2,0,655],
 "struct_line_segment.html":[2,0,659],
 "struct_liquid_data.html":[2,0,663],
+"struct_logging_1_1_quiet_exception_handle.html":[2,0,678,0],
 "struct_magic_missile_drawer.html":[2,0,686],
 "struct_main_1_1_current_player_override.html":[2,0,689,1],
 "struct_main_1_1_info_to_set_back_color.html":[2,0,689,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_particle_orchestra_settings.html":[2,0,884],
 "struct_particle_renderer_settings.html":[2,0,888],
 "struct_placement_hook.html":[2,0,903],
-"struct_player_1_1_composite_arm_data.html":[2,0,909,1],
-"struct_player_1_1_directional_input_sync_cache.html":[2,0,909,2]
+"struct_player_1_1_composite_arm_data.html":[2,0,909,1]
 };
