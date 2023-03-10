@@ -34,6 +34,12 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	}
 
 	/// <summary>
+	/// If true, damage combat text will not be shown by <see cref="StrikeNPC(HitInfo, bool, bool)"/> and dps meter will not record damage against this NPC. <br/>
+	/// Recommended for use with <see cref="NPC.immortal"/>
+	/// </summary>
+	public bool HideStrikeDamage { get; set; }
+
+	/// <summary>
 	/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
 	/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
 	/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>

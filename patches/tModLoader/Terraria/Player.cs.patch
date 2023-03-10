@@ -2950,10 +2950,11 @@
 +		*/
  		NPCKillAttempt attempt = new NPCKillAttempt(npc);
 -		int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
+-		if (accDreamCatcher)
 +		int dmg = npc.StrikeNPC(hit);
 +		PlayerLoader.OnHitNPC(this, npc, hit, dmg);
 +
- 		if (accDreamCatcher)
++		if (accDreamCatcher && !npc.HideStrikeDamage)
  			addDPS(dmg);
  
  		if (Main.netMode != 0)
@@ -5515,8 +5516,9 @@
 +				NetMessage.SendStrikeNPC(nPC, strike);
  			}
  
- 			if (accDreamCatcher)
+-			if (accDreamCatcher)
 -				addDPS(num6);
++			if (accDreamCatcher && !nPC.HideStrikeDamage)
 +				addDPS(dmgDone); // Intentionally changed from num6 (strike damage)
  
  			SetMeleeHitCooldown(npcIndex, itemAnimation);

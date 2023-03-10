@@ -631,12 +631,14 @@
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
-@@ -2156,6 +_,10 @@
+@@ -2156,6 +_,12 @@
  			return;
  		}
  
 +		ModNPC = null;
 +		ShowNameOnHover = true;
++		HideStrikeDamage = false;
++		BossBar = null;
 +		globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
 +
  		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
@@ -1895,7 +1897,7 @@
  
  		if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
 +		*/
-+		if (!hit.HideCombatText && !hit.InstantKill && lifeMax > 1) {
++		if (!hit.HideCombatText && !hit.InstantKill && lifeMax > 1 && !HideStrikeDamage) {
  			if (friendly) {
  				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
  				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);

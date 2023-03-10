@@ -900,7 +900,7 @@
  									switch (type) {
  										case 697:
  										case 699:
-@@ -10639,11 +_,29 @@
+@@ -10639,15 +_,33 @@
  											num3 *= 0.5f;
  									}
  
@@ -930,6 +930,11 @@
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
  
+-									if (flag && Main.player[owner].accDreamCatcher)
++									if (flag && Main.player[owner].accDreamCatcher && !nPC.HideStrikeDamage)
+ 										Main.player[owner].addDPS(num35);
+ 
+ 									bool flag23 = !nPC.immortal;
 @@ -10768,10 +_,13 @@
  										localAI[0] = 1f;
  
