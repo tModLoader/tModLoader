@@ -389,10 +389,7 @@ internal static class Interface
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForModIndex"));
 			Console.WriteLine();
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
-			string command = Console.ReadLine();
-			if (command == null) {
-				command = "";
-			}
+			string command = Console.ReadLine() ?? "";
 			command = command.ToLower();
 			Console.Clear();
 			if (command == "e") {
@@ -412,9 +409,21 @@ internal static class Interface
 			}
 			else if (command.StartsWith("c")) {
 				int modIndex = Convert.ToInt32(command[2..]) - 1;
-				if (modIndex < mods.Length && ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod) &&
-				    ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs)) {
-						ConfigureMod(configs);
+				if (modIndex < mods.Length) {
+					if (ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod)) {
+						if (ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs)) {
+							ConfigureMod(configs);
+						}
+						else {
+							Console.WriteLine("This mod does not have any config");
+						}
+					}
+					else {
+						Console.WriteLine("Mod not enabled, please enable it and reload");
+					}
+				}
+				else {
+					Console.WriteLine("Mod index out of bounds");
 				}
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
@@ -450,7 +459,7 @@ internal static class Interface
 				Console.WriteLine(text);
 			}
 			Console.WriteLine("m <number> <new config> :\tEdit configuration");
-			Console.WriteLine("r <number> :\t\t\tReset configuration");
+			Console.WriteLine("d :\t\t\t\tRestore configuration to default");
 			Console.WriteLine("e :\t\t\t\tExit");
 
 			Console.WriteLine();
@@ -472,6 +481,13 @@ internal static class Interface
 					catch {
 						Console.WriteLine("Invalid value");
 					}
+				}
+			}
+			else if (command == "d") {
+				foreach (ModConfig config in configs)
+				{
+					ConfigManager.Reset(config);
+					ConfigManager.Save(config);
 				}
 			}
 			else if (command == "e") {
