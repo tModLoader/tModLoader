@@ -33,6 +33,9 @@ public abstract class ModTileEntity : TileEntity, IModType
 
 	public string FullName => $"{Mod.Name}/{Name}";
 
+	/// <inheritdoc cref="IModType.LegacyNames"/>
+	public virtual string[] LegacyNames => Array.Empty<string>();
+
 	/// <summary>
 	/// The numeric type used to identify this kind of tile entity.
 	/// </summary>

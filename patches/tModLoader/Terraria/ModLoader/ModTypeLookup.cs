@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
@@ -24,8 +25,8 @@ public static class ModTypeLookup<T> where T : IModType
 	{
 		RegisterWithName(instance, instance.Name, instance.FullName);
 
-		//Add legacy aliases, if the type has any.
-		foreach (string legacyName in LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType())) {
+		// Add legacy aliases, if it has any.
+		foreach (string legacyName in GetLegacyNames(instance)) {
 			RegisterWithName(instance, legacyName, $"{instance.Mod?.Name ?? "Terraria"}/{legacyName}");
 		}
 	}
@@ -43,6 +44,16 @@ public static class ModTypeLookup<T> where T : IModType
 			tieredDict[modName] = subDictionary = new Dictionary<string, T>();
 
 		subDictionary[name] = instance;
+	}
+
+	public static IEnumerable<string> GetLegacyNames(T instance)
+	{
+		var fromAttribute = LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType());
+
+		if (instance.LegacyNames is string[] fromInstance)
+			return fromAttribute.Concat(fromInstance);
+
+		return fromAttribute;
 	}
 
 	internal static T Get(string fullName) => dict[fullName];
