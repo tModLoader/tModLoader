@@ -16,8 +16,8 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 			// Common Properties
-			Item.width = 40; // Hitbox width of item
-			Item.height = 40; // Hitbox height of item
+			Item.width = 46; // Hitbox width of item
+			Item.height = 48; // Hitbox height of item
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
 			Item.rare = ItemRarityID.Green;
 
@@ -49,7 +49,6 @@ namespace ExampleMod.Content.Items.Weapons
 			return false; // return false to prevent original projectile from being shot
 		}
 
-
 		public override void UpdateInventory(Player player) {
 			if (comboExpireTimer++ >= 120) // after 120 ticks (== 2 seconds) in inventory, reset the attack pattern
 				attackType = 0;
@@ -57,6 +56,13 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override bool MeleePrefix() {
 			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
+		}
+
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.Register();
 		}
 	}
 }

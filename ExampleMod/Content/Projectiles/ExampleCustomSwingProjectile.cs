@@ -1,12 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using static Terraria.Player;
 
 namespace ExampleMod.Content.Projectiles
@@ -14,6 +12,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleCustomSwingProjectile : ModProjectile
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleCustomSwingSword"; // Use texture of item as projectile texture
+		private Player owner => Main.player[Projectile.owner];
 
 		private enum AttackType // Which attack is being performed
 		{
@@ -25,10 +24,10 @@ namespace ExampleMod.Content.Projectiles
 			Spin,
 		}
 
-		private enum AttackStage // What stage of the attack is being executed
+		private enum AttackStage // What stage of the attack is being executed, see functions found in AI for description
 		{
 			Prepare,
-			Release,
+			Execute,
 			Unwind
 		}
 
@@ -46,13 +45,32 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		private ref float timer => ref Projectile.ai[1]; // Timer to keep track of progression of each stage
-		private ref float targetAngle => ref Projectile.ai[2]; // Angle aimed in (with constraints)
-		Player owner => Main.player[Projectile.owner];
+		// Variables to keep track of during runtime
+		private ref float targetAngle => ref Projectile.ai[1]; // Angle aimed in (with constraints)
+		private ref float timer => ref Projectile.ai[2]; // Timer to keep track of progression of each stage
+		private ref float progress => ref Projectile.localAI[1]; // Position of sword relative to initial angle
+		private ref float size => ref Projectile.localAI[2]; // Size of sword
+
+		// We define some constants that determine the swing range of the sword
+		// Not that we use multipliers a here since that simplifies the amount of tweaks for these interactions
+		// You could change the values or even replace them entirely, but they are tweaked with looks in mind
+		private const float swingRange = 1.67f * (float)Math.PI; // The angle a swing attack covers (300 deg)
+		private const float firsthalfSwing = 0.45f; // How much of the swing happens before it reaches the target angle (in relation to swingRange)
+		private const float spinRange = 3.5f * (float)Math.PI; // The angle a spin attack covers (540 degrees)
+		private const float preStrikeWind = 0.15f; // How far back the player's hand goes when winding their attack (in relation to swingRange)
+		private const float postStrikeUnwind = 0.4f; // When should the sword start disappearing
+
+		// We define timing functions for each stage, taking into account melee attack speed
+		// Since execTime and hideTime happen to be the same as prepTime, we make them return the same value
+		// Note that you can change this to suit the need of your projectile
+		private float prepTime => 12f / owner.GetTotalAttackSpeed<MeleeDamageClass>();
+		private float execTime => prepTime;
+		private float hideTime => prepTime;
+		private const float spinTime = 2.5f; // How much longer a spin is than a swing
 
 		public override void SetDefaults() {
-			Projectile.width = 40; // Hitbox width of projectile
-			Projectile.height = 40; // Hitbox height of projectile
+			Projectile.width = 46; // Hitbox width of projectile
+			Projectile.height = 48; // Hitbox height of projectile
 			Projectile.friendly = true; // Projectile hits enemies
 			Projectile.timeLeft = 10000; // Time it takes for projectile to expire
 			Projectile.penetrate = -1; // Projectile pierces infinitely
@@ -86,29 +104,6 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void AI() {
-			// We define some constants that we can use later on to prevent confusion and unify location of values
-			// Not that we use multipliers a here since that simplifies the amount of tweaks for these interactions
-			// You could change the values or even replace them entirely, but they are tweaked with looks in mind
-			float swingRange = 1.67f * (float)Math.PI; // The angle a swing attack covers (300 deg)
-			float spinRange = 3.5f * (float)Math.PI; // The angle a spin attack covers (540 degrees)
-			float firsthalfSwing = 0.45f; // How much of the swing happens before it reaches the target angle (in relation to swingRange)
-			float preStrikeWind = 0.15f; // How far back the player's hand goes when winding their attack (in relation to swingRange)
-			float postStrikeUnwind = 0.4f; // When should the sword start disappearing
-			float spinTime = 2.5f; // How much longer a spin is than a swing
-			float initialAngle = 0; // Initial rotation of projectile
-
-			if (CurrentAttack == AttackType.Spin) {
-				initialAngle = (float)(-Math.PI / 2 - Math.PI * 1 / 3 * Projectile.spriteDirection); // For the spin, starting angle is designated based on direction of hit
-			}
-			else {
-				initialAngle = targetAngle - firsthalfSwing * swingRange * Projectile.spriteDirection; // Otherwise, we calculate the angle
-			}
-
-			// We set the use time of each stage based on some number, taking into account melee attack speed 
-			float prepTime = 12f / owner.GetTotalAttackSpeed<MeleeDamageClass>();
-			float execTime = 12f / owner.GetTotalAttackSpeed<MeleeDamageClass>();
-			float hideTime = 12f / owner.GetTotalAttackSpeed<MeleeDamageClass>();
-
 			// Extend use animation until projectile is killed
 			owner.itemAnimation = 2;
 			owner.itemTime = 2;
@@ -119,72 +114,37 @@ namespace ExampleMod.Content.Projectiles
 				return;
 			}
 
-			float progress;
-			float size;
-
 			// AI depends on stage and attack
 			switch (CurrentStage) {
 				case AttackStage.Prepare:
-					progress = preStrikeWind * swingRange * (1f - timer / prepTime); // Calculates rotation from initial angle
-					size = MathHelper.SmoothStep(0, 1, timer / prepTime); // Make sword slowly increase in size as we prepare to strike until it reaches max
-
-					setSwordPosition(initialAngle + Projectile.spriteDirection * progress, size);
-
-					if (timer >= prepTime) {
-						SoundEngine.PlaySound(SoundID.Item1); // Play sword sound here since playing it on spawn is too early
-						CurrentStage = AttackStage.Release; // If attack is over prep time, we go to next stage
-					}
+					PrepareStrike();
 					break;
-				case AttackStage.Release:
-					if (CurrentAttack == AttackType.Swing) {
-						progress = MathHelper.SmoothStep(0, swingRange, (1f - postStrikeUnwind) * timer / execTime);
-						setSwordPosition(initialAngle + Projectile.spriteDirection * progress);
-
-						if (timer >= execTime) {
-							CurrentStage = AttackStage.Unwind;
-						}
-					}
-					else {
-						progress = MathHelper.SmoothStep(0, spinRange, (1f - postStrikeUnwind / 2) * timer / (execTime * spinTime));
-						setSwordPosition(initialAngle + Projectile.spriteDirection * progress);
-
-						if (timer == (int)(execTime * spinTime * 3 / 4)) {
-							SoundEngine.PlaySound(SoundID.Item1); // Play sword sound again
-							Projectile.ResetLocalNPCHitImmunity(); // Reset the local npc hit immunity for second half of spin
-						}
-
-						if (timer >= execTime * spinTime) {
-							CurrentStage = AttackStage.Unwind;
-						}
-					}
+				case AttackStage.Execute:
+					ExecuteStrike();
 					break;
 				default:
-					if (CurrentAttack == AttackType.Swing) {
-						progress = MathHelper.SmoothStep(0, swingRange, (1f - postStrikeUnwind) + postStrikeUnwind * timer / hideTime);
-						size = 1f - MathHelper.SmoothStep(0, 1, timer / hideTime); // Make sword slowly decrease in size as we end the swing to make a smooth hiding animation
-						setSwordPosition(initialAngle + Projectile.spriteDirection * progress, size);
-
-						if (timer >= hideTime) {
-							Projectile.Kill();
-						}
-					}
-					else {
-						progress = MathHelper.SmoothStep(0, spinRange, (1f - postStrikeUnwind / 2) + postStrikeUnwind / 2 * timer / (hideTime * spinTime / 2));
-						size = 1f - MathHelper.SmoothStep(0, 1, timer / (hideTime * spinTime / 2));
-						setSwordPosition(initialAngle + Projectile.spriteDirection * progress, size);
-
-						if (timer >= hideTime * spinTime / 2) {
-							Projectile.Kill();
-						}
-					}
+					UnwindStrike();
 					break;
 			}
+			SetSwordPosition();
 			timer++;
 		}
 
+		// Calculate rotation based on progress of swing
+		public float GetRotation() {
+			float initialAngle = 0; // Initial rotation of projectile
+			if (CurrentAttack == AttackType.Spin) {
+				initialAngle = (float)(-Math.PI / 2 - Math.PI * 1 / 3 * Projectile.spriteDirection); // For the spin, starting angle is designated based on direction of hit
+			}
+			else {
+				initialAngle = targetAngle - firsthalfSwing * swingRange * Projectile.spriteDirection; // Otherwise, we calculate the angle
+			}
+			return initialAngle + Projectile.spriteDirection * progress;
+		}
+
 		// Function to easily set projectile and arm position
-		public void setSwordPosition(float rotation, float size = 1) {
-			owner.heldProj = Projectile.whoAmI; // set held projectile to this projectile
+		public void SetSwordPosition() {
+			float rotation = GetRotation();
 
 			// Set composite arm allows you to set the state of the front and back arms independently
 			// This also allows for setting the rotation of the arm and the stretch amount independently
@@ -195,7 +155,6 @@ namespace ExampleMod.Content.Projectiles
 			armPosition.Y -= owner.gfxOffY;
 			Projectile.position = armPosition; // Set projectile to arm position
 			Projectile.position.Y -= (float)(Projectile.height / 2);
-
 			Projectile.scale = size * 1.2f * owner.GetAdjustedItemScale(owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers
 			Projectile.rotation = rotation + (float)Math.PI / 4; // Set projectile rotation (45 degrees offset since sword is already rotated -45 deg)
 
@@ -204,25 +163,79 @@ namespace ExampleMod.Content.Projectiles
 				Projectile.position.X -= Projectile.width;
 				Projectile.rotation += (float)Math.PI / 2;
 			}
+
+			owner.heldProj = Projectile.whoAmI; // set held projectile to this projectile
 		}
 
-		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			// Find the start and end of the sword and use a line collider to check for collision with enemies
-			Vector2 start = owner.MountedCenter;
+		// Function facilitating the taking out of the sword
+		private void PrepareStrike() {
+			progress = preStrikeWind * swingRange * (1f - timer / prepTime); // Calculates rotation from initial angle
+			size = MathHelper.SmoothStep(0, 1, timer / prepTime); // Make sword slowly increase in size as we prepare to strike until it reaches max
 
-			// Since we rotated the projectile when the direction is reverse, it messes up the angles so we offset it back 
-			float angle = Projectile.spriteDirection == 1 ? Projectile.rotation : Projectile.rotation - (float)Math.PI / 2;
+			if (timer >= prepTime) {
+				SoundEngine.PlaySound(SoundID.Item1); // Play sword sound here since playing it on spawn is too early
+				CurrentStage = AttackStage.Execute; // If attack is over prep time, we go to next stage
+			}
+		}
+
+		// Function facilitating the first half of the swing
+		private void ExecuteStrike() {
+			if (CurrentAttack == AttackType.Swing) {
+				progress = MathHelper.SmoothStep(0, swingRange, (1f - postStrikeUnwind) * timer / execTime);
+
+				if (timer >= execTime) {
+					CurrentStage = AttackStage.Unwind;
+				}
+			}
+			else {
+				progress = MathHelper.SmoothStep(0, spinRange, (1f - postStrikeUnwind / 2) * timer / (execTime * spinTime));
+
+				if (timer == (int)(execTime * spinTime * 3 / 4)) {
+					SoundEngine.PlaySound(SoundID.Item1); // Play sword sound again
+					Projectile.ResetLocalNPCHitImmunity(); // Reset the local npc hit immunity for second half of spin
+				}
+
+				if (timer >= execTime * spinTime) {
+					CurrentStage = AttackStage.Unwind;
+				}
+			}
+		}
+
+		// Function facilitating the latter half of the swing where the sword disappears
+		private void UnwindStrike() {
+			if (CurrentAttack == AttackType.Swing) {
+				progress = MathHelper.SmoothStep(0, swingRange, (1f - postStrikeUnwind) + postStrikeUnwind * timer / hideTime);
+				size = 1f - MathHelper.SmoothStep(0, 1, timer / hideTime); // Make sword slowly decrease in size as we end the swing to make a smooth hiding animation
+
+				if (timer >= hideTime) {
+					Projectile.Kill();
+				}
+			}
+			else {
+				progress = MathHelper.SmoothStep(0, spinRange, (1f - postStrikeUnwind / 2) + postStrikeUnwind / 2 * timer / (hideTime * spinTime / 2));
+				size = 1f - MathHelper.SmoothStep(0, 1, timer / (hideTime * spinTime / 2));
+
+				if (timer >= hideTime * spinTime / 2) {
+					Projectile.Kill();
+				}
+			}
+		}
+
+		// Find the start and end of the sword and use a line collider to check for collision with enemies
+		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
+			Vector2 start = owner.MountedCenter;
+			float angle = GetRotation();
 			Vector2 end = start + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * ((Projectile.Size.Length()) * Projectile.scale);
 			float collisionPoint = 0f;
-			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 20f * Projectile.scale, ref collisionPoint);
+			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 15f * Projectile.scale, ref collisionPoint);
 		}
 
+		// Do a similar collision check for tiles
 		public override void CutTiles() {
-			// Do a similar collision check for tiles
 			Vector2 start = owner.MountedCenter;
-			float angle = Projectile.spriteDirection == 1 ? Projectile.rotation : Projectile.rotation - (float)Math.PI / 2;
+			float angle = GetRotation();
 			Vector2 end = start + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * ((Projectile.Size.Length()) * Projectile.scale);
-			Utils.PlotTileLine(start, end, (Projectile.width + 16) * Projectile.scale, DelegateMethods.CutTiles);
+			Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
 		}
 
 		// We make it so that the projectile can only do damage in its release and unwind phases
@@ -236,7 +249,7 @@ namespace ExampleMod.Content.Projectiles
 			// Make knockback go away from player
 			hitDirection = target.position.X > owner.position.X ? 1 : -1;
 
-			// If the NPC is hit by the swing, increas knockback slightly
+			// If the NPC is hit by the spin attack, increase knockback slightly
 			if (CurrentAttack == AttackType.Spin)
 				knockback++;
 		}
