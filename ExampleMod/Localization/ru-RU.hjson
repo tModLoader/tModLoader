@@ -151,6 +151,11 @@ Mods: {
 					''' */
 			}
 
+			ExampleInfoAccessory: {
+				// DisplayName: Example Info Accessory
+				// Tooltip: Displays how many minions you have summoned
+			}
+
 			ExampleShield: {
 				// DisplayName: Example Shield
 				// Tooltip: This is a modded shield.
@@ -736,6 +741,11 @@ Mods: {
 				// Tooltip: ""
 				// DisplayName: Shimmer Showcase Conditions
 			}
+
+			ExampleCustomSwingSword: {
+				// DisplayName: Example Custom Swing Sword
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -766,6 +776,7 @@ Mods: {
 			// MinionBossEye.DisplayName: Minion Boss Eye
 			// ExampleSimpleMinion.DisplayName: Example Minion
 			// SparklingBall.DisplayName: Sparkling Ball
+			// ExampleCustomSwingProjectile.DisplayName: Example Custom Swing Projectile
 		}
 
 		Buffs: {
