@@ -740,7 +740,11 @@ Mods: {
 
 			ExampleCustomSwingSword: {
 				// DisplayName: Example Custom Swing Sword
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					This is a sword with a custom swinging animation made with projectiles
+					Use more than once to cycle through attacks
+					''' */
 			}
 		}
 
