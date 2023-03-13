@@ -24,9 +24,6 @@ public abstract class ModType : IModType
 	/// </summary>
 	public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
-	/// <inheritdoc cref="IModType.LegacyNames"/>
-	public virtual string[] LegacyNames => Array.Empty<string>();
-
 	void ILoadable.Load(Mod mod)
 	{
 		if (!LoaderUtils.IsValidated(GetType()))
