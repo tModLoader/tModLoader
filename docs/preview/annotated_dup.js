@@ -445,6 +445,7 @@ var annotated_dup =
     [ "GraniteBiome", "class_granite_biome.html", null ],
     [ "GraniteHouseBuilder", "class_granite_house_builder.html", null ],
     [ "GroupOptionButton", "class_group_option_button.html", null ],
+    [ "HairID", "class_hair_i_d.html", "class_hair_i_d" ],
     [ "HairShaderData", "class_hair_shader_data.html", null ],
     [ "HairShaderDataSet", "class_hair_shader_data_set.html", null ],
     [ "HairstyleUnlocksHelper", "class_hairstyle_unlocks_helper.html", null ],

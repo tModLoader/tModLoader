@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"class_boss_bar_loader.html#a14f46ce35973cb73308ca5c49f4c424d":[2,0,101,2],
 "class_boss_bar_loader.html#ac043304c2915d51833b6cab542153466":[2,0,101,0],
 "class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99":[2,0,101,1],
 "class_boss_bestiary_info_element.html":[2,0,102],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "class_content_samples.html#a452457312e68e2eb03d26ad9de75264a":[2,0,182,11],
 "class_content_samples.html#a765028f028e8967d2caaaf41c6d067ad":[2,0,182,14],
 "class_content_samples.html#a793a5e2f47721ef9ad5bb343e700d0a3":[2,0,182,13],
-"class_content_samples.html#aa134b4e4260f0b3845dfa7b11f9973ee":[2,0,182,6]
+"class_content_samples.html#aa134b4e4260f0b3845dfa7b11f9973ee":[2,0,182,6],
+"class_content_samples.html#aa84d888ec52caceb7c7cb4bd5d470b7e":[2,0,182,7]
 };

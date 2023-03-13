@@ -1,6 +1,5 @@
 var class_armor_i_ds_1_1_head_1_1_sets =
 [
-    [ "DrawBackHair", "class_armor_i_ds_1_1_head_1_1_sets.html#a49f53c69340f0c1ea0ca97fb2ac25c9f", null ],
     [ "DrawFullHair", "class_armor_i_ds_1_1_head_1_1_sets.html#a5aeb9c95307281b94cca054604f20bd0", null ],
     [ "DrawHatHair", "class_armor_i_ds_1_1_head_1_1_sets.html#a9e0067d4f06b7c56c83acff36b29a176", null ],
     [ "DrawHead", "class_armor_i_ds_1_1_head_1_1_sets.html#a8aba7bf788732a72ee34cb92c52b5c32", null ],

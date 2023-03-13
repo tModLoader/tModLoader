@@ -180,7 +180,7 @@ var searchData=
   ['drawanimation_177',['DrawAnimation',['../class_draw_animation.html',1,'']]],
   ['drawanimationvertical_178',['DrawAnimationVertical',['../class_draw_animation_vertical.html',1,'']]],
   ['drawarmorcolor_179',['DrawArmorColor',['../class_equip_texture.html#acd6a3d341737350f209ecbff250c60b5',1,'EquipTexture.DrawArmorColor()'],['../class_global_item.html#ab3f639e44c40a17fdc7977187a67eede',1,'GlobalItem.DrawArmorColor()'],['../class_item_loader.html#a77890141db188252b92a7bf7cfe81caa',1,'ItemLoader.DrawArmorColor()'],['../class_mod_item.html#a0d18ae390c56e83f9dd2fcd283af7cb3',1,'ModItem.DrawArmorColor()']]],
-  ['drawbackhair_180',['DrawBackHair',['../class_armor_i_ds_1_1_head_1_1_sets.html#a49f53c69340f0c1ea0ca97fb2ac25c9f',1,'ArmorIDs::Head::Sets']]],
+  ['drawbackhair_180',['DrawBackHair',['../class_hair_i_d_1_1_sets.html#a3572d25190356ece1c2d1a46b5d766f6',1,'HairID::Sets']]],
   ['drawbehind_181',['DrawBehind',['../class_gore_i_d_1_1_sets.html#a454d906cd24814cb95860c82c81c9d96',1,'GoreID.Sets.DrawBehind()'],['../class_global_n_p_c.html#a61ee977e2671b3ab46f74ec1bb44735e',1,'GlobalNPC.DrawBehind()'],['../class_global_projectile.html#a1f9e00da967e11713bf0ddb174ace4cf',1,'GlobalProjectile.DrawBehind()'],['../class_mod_n_p_c.html#a38e287cc0b3e5c7f972fb78749e83e8d',1,'ModNPC.DrawBehind()'],['../class_mod_projectile.html#ac731237c8770d1ac6f67ac5c22558d59',1,'ModProjectile.DrawBehind()']]],
   ['drawbufficon_182',['DrawBuffIcon',['../class_main.html#af23ea00e4170728943478ab8a741893c',1,'Main']]],
   ['drawcolor_183',['DrawColor',['../struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4',1,'BuffDrawParams']]],

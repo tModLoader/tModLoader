@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"class_content_samples.html#aa84d888ec52caceb7c7cb4bd5d470b7e":[2,0,182,7],
 "class_content_samples.html#ac6fd569f4f0876f1567b7f30fdee86cb":[2,0,182,4],
 "class_content_samples.html#ad872604e39c536e4c801821e7a481736":[2,0,182,8],
 "class_content_samples.html#af79d86f1de1ba3cd9a8dd5a87e18f0da":[2,0,182,12],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "class_entity_source___tile_entity.html":[2,0,317],
 "class_entity_source___tile_interaction.html":[2,0,318],
 "class_entity_source___tile_update.html":[2,0,319],
-"class_entity_source___wiring.html":[2,0,320]
+"class_entity_source___wiring.html":[2,0,320],
+"class_entity_source___world_event.html":[2,0,321]
 };

@@ -94,7 +94,7 @@ var searchData=
   ['downhoverspeedoverride_91',['DownHoverSpeedOverride',['../struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436',1,'WingStats']]],
   ['dragonfly_92',['Dragonfly',['../class_n_p_c_a_i_style_i_d.html#a11432c0b7c238da049bd33ea221523fe',1,'NPCAIStyleID']]],
   ['drakomiteflare_93',['DrakomiteFlare',['../class_proj_a_i_style_i_d.html#af562d5c694ac85b222c293477a6f82c5',1,'ProjAIStyleID']]],
-  ['drawbackhair_94',['DrawBackHair',['../class_armor_i_ds_1_1_head_1_1_sets.html#a49f53c69340f0c1ea0ca97fb2ac25c9f',1,'ArmorIDs::Head::Sets']]],
+  ['drawbackhair_94',['DrawBackHair',['../class_hair_i_d_1_1_sets.html#a3572d25190356ece1c2d1a46b5d766f6',1,'HairID::Sets']]],
   ['drawbehind_95',['DrawBehind',['../class_gore_i_d_1_1_sets.html#a454d906cd24814cb95860c82c81c9d96',1,'GoreID::Sets']]],
   ['drawcolor_96',['DrawColor',['../struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4',1,'BuffDrawParams']]],
   ['drawfullhair_97',['DrawFullHair',['../class_armor_i_ds_1_1_head_1_1_sets.html#a5aeb9c95307281b94cca054604f20bd0',1,'ArmorIDs::Head::Sets']]],
