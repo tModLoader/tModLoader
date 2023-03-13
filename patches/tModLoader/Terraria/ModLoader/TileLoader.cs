@@ -578,10 +578,12 @@ public static class TileLoader
 		}
 
 		var itemDrops = modTile.GetItemDrops(x, y);
-		foreach (var item in itemDrops) {
-			item.Prefix(-1); // Assign a random prefix, as expected
-			int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
-			Main.item[num].TryCombiningIntoNearbyItems(num);
+		if (itemDrops != null) {
+			foreach (var item in itemDrops) {
+				item.Prefix(-1); // Assign a random prefix, as expected
+				int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
+				Main.item[num].TryCombiningIntoNearbyItems(num);
+			}
 		}
 	}
 

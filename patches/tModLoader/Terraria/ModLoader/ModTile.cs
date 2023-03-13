@@ -217,8 +217,9 @@ public abstract class ModTile : ModBlockType
 		}
 		int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.type, style);
 		if (dropItem > 0) {
-			yield return new Item(dropItem);
+			return new[] { new Item(dropItem) };
 		}
+		return null;
 	}
 
 	/// <summary>
