@@ -27,4 +27,18 @@ public class GlobalNPCTest : GlobalNPC
 	public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
 	{
 	}
+
+	public override void HitEffect(NPC npc, int hitDirection, double damage) { }
+	public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit) { }
+	public override void OnHitPlayer(NPC npc, Player target, int damage, bool crit) { }
+	public override void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit) { }
+	public override void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) { }
+	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit) { }
+	public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) { }
+	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) { }
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) { }
+	public override bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
+		return false;
+	}
+	public override bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) => false;
 }

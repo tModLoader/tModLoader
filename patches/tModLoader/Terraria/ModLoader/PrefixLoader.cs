@@ -141,4 +141,13 @@ public static class PrefixLoader
 	}
 
 	public static bool IsWeaponSubCategory(PrefixCategory category) => category is PrefixCategory.Melee || category is PrefixCategory.Ranged || category is PrefixCategory.Magic;
+
+	public static void ApplyAccessoryEffects(Player player, Item item)
+	{
+		if (GetPrefix(item.prefix) is ModPrefix prefix) {
+			prefix.ApplyAccessoryEffects(player);
+		}
+
+		// Should there be more here for tooltips? Not entirely sure how that's handled in tML. - Mutant
+	}
 }

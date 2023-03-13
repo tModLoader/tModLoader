@@ -254,10 +254,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
-	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. <br/> 
+	/// Called on local, server and remote clients. <br/> 
+	/// Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (NPC.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
 	/// </summary>
-	public virtual void HitEffect(int hitDirection, double damage)
+	public virtual void HitEffect(NPC.HitInfo hit)
 	{
 	}
 
@@ -378,22 +379,22 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this NPC does to a player.
+	/// Allows you to modify the damage, etc., that this NPC does to a player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs).
+	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs). <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -408,24 +409,22 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC.
+	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
+	/// Runs in single player or on the server. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a friendly NPC.
+	/// Allows you to create special effects when this NPC hits a friendly NPC. <br/>
+	/// Runs in single player or on the server. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit)
 	{
 	}
 
@@ -441,26 +440,25 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon.
+	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC is hit by a melee weapon.
+	/// Allows you to create special effects when this NPC is hit by a melee weapon. <br/>
+	/// Runs on the client or server doing the damage. <br/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -478,11 +476,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -490,25 +485,18 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to create special effects when this NPC is hit by a projectile.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.
+	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// </summary>
-	/// <param name="damage"></param>
-	/// <param name="defense"></param>
-	/// <param name="knockback"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <returns></returns>
-	public virtual bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
 	{
-		return true;
 	}
 
 	/// <summary>
@@ -818,7 +806,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="damageMultiplier"></param>
 	/// <param name="npcHitbox"></param>
 	/// <returns></returns>
-	public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
+	public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
 	{
 		return true;
 	}

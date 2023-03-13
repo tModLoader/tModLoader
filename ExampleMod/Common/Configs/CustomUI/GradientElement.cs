@@ -47,8 +47,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			var hitbox = GetInnerDimensions().ToRectangle();
-			var g = MemberInfo.GetValue(Item) as Gradient;
-			if (g != null) {
+			if (MemberInfo.GetValue(Item) is Gradient g) {
 				int left = (hitbox.Left + hitbox.Right) / 2;
 				int right = hitbox.Right;
 				int steps = right - left;

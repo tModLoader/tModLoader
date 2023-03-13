@@ -365,7 +365,7 @@ public static class TileLoader
 	{
 		ModTile modTile = GetTile(tile.type);
 		if (modTile != null) {
-			return modTile.OpenDoorID;
+			return TileID.Sets.OpenDoorID[modTile.Type];
 		}
 		if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
 			return TileID.OpenDoor;
@@ -381,7 +381,7 @@ public static class TileLoader
 		ModTile modTile = GetTile(tile.type);
 
 		if (modTile != null) {
-			return modTile.CloseDoorID;
+			return TileID.Sets.CloseDoorID[modTile.Type];
 		}
 
 		if (tile.type == TileID.OpenDoor) {
@@ -402,7 +402,7 @@ public static class TileLoader
 		ModTile modTile = GetTile(type);
 
 		if (modTile != null) {
-			return modTile.OpenDoorID > -1;
+			return TileID.Sets.OpenDoorID[type] > -1;
 		}
 
 		return type == TileID.ClosedDoor;

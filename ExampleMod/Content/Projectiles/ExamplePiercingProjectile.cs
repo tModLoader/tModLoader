@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// See comments at the beginning of the class
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// 3a: target.immune[Projectile.owner] = 20;
 			// 3b: target.immune[Projectile.owner] = 5;
 		}

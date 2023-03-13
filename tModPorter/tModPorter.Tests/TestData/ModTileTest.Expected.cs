@@ -24,14 +24,14 @@ public class ModTileTest : ModTile
 		ItemDrop = 0;
 		ItemDrop = 2;
 		ItemDrop = 3;
-		CloseDoorID = 0;
-		OpenDoorID = 0;
 		MinPick = 0;
 		MineResist = 0;
 		AnimationFrameHeight = 0;
 		AdjTiles = new int[0];
 
 #if COMPILE_ERROR
+		OpenDoorID/* tModPorter Note: Removed. Use TileID.Sets.OpenDoorID instead */ = 0;
+		CloseDoorID/* tModPorter Note: Removed. Use TileID.Sets.CloseDoorID instead */ = 0;
 		sapling/* tModPorter Note: Removed. Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
 		torch/* tModPorter Note: Removed. Use TileID.Sets.Torch instead */ = true;
 		bed/* tModPorter Note: Removed. Use TileID.Sets.CanBeSleptIn instead */ = true;

@@ -23,6 +23,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HousingWalls[Type] = true; // needed for non-solid blocks to count as walls
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
