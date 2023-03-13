@@ -1,5 +1,17 @@
 var NAVTREEINDEX19 =
 {
+"interface_i_audio_track.html":[2,0,472],
+"interface_i_ball_contact_listener.html":[2,0,473],
+"interface_i_bestiary_background_image_path_and_color_provider.html":[2,0,474],
+"interface_i_bestiary_background_overlay_and_color_provider.html":[2,0,475],
+"interface_i_bestiary_entry_display_index.html":[2,0,476],
+"interface_i_bestiary_entry_filter.html":[2,0,477],
+"interface_i_bestiary_info_element.html":[2,0,478],
+"interface_i_bestiary_prioritized_element.html":[2,0,479],
+"interface_i_bestiary_sort_step.html":[2,0,480],
+"interface_i_bestiary_u_i_collection_info_provider.html":[2,0,481],
+"interface_i_big_progress_bar.html":[2,0,482],
+"interface_i_camera_modifier.html":[2,0,483],
 "interface_i_chat_command.html":[2,0,486],
 "interface_i_chat_monitor.html":[2,0,487],
 "interface_i_chat_processor.html":[2,0,488],
@@ -237,17 +249,5 @@ var NAVTREEINDEX19 =
 "struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e":[2,0,840,1,6],
 "struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8":[2,0,840,1,11],
 "struct_n_p_c_1_1_hit_modifiers.html#a9bdd0084aeb8144cca1b18a374db2780":[2,0,840,1,10],
-"struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf":[2,0,840,1,19],
-"struct_n_p_c_1_1_hit_modifiers.html#ab4296e1f49756d599c976b1000f6528c":[2,0,840,1,12],
-"struct_n_p_c_1_1_hit_modifiers.html#ab92ee61bb3c9bc7ee1ebbde65cbc15ff":[2,0,840,1,13],
-"struct_n_p_c_1_1_hit_modifiers.html#ae4b8ed585bcf70d7bacc6cc0e56ae34f":[2,0,840,1,15],
-"struct_n_p_c_1_1_hit_modifiers.html#af77c582a376918753e76b24f4fda031c":[2,0,840,1,20],
-"struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f":[2,0,840,1,7],
-"struct_n_p_c_1_1_hit_modifiers.html#afadf0c41e3043a05af10804e0f33d24a":[2,0,840,1,16],
-"struct_n_p_c_1_1_hit_modifiers.html#afcdafff52439ec0ee8e40df10db8f16b":[2,0,840,1,14],
-"struct_n_p_c_aimed_target.html":[2,0,841],
-"struct_n_p_c_happiness.html":[2,0,846],
-"struct_n_p_c_happiness.html#a561736ffe7f94e4f7b18efd48adf5b6d":[2,0,846,0],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[2,0,851,0,0],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[2,0,851,0,0,3]
+"struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf":[2,0,840,1,19]
 };

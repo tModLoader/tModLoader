@@ -3552,6 +3552,8 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrameCoun
 <tr class="separator:a1f3d919e18f0c4f182b462a2c8092210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae49a753c6a45feca9bacc58d520efc1a"><td class="memItemLeft" align="right" valign="top"><a id="ae49a753c6a45feca9bacc58d520efc1a" name="ae49a753c6a45feca9bacc58d520efc1a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrameImportant</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:ae49a753c6a45feca9bacc58d520efc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a <a class="el" href="class_tile_object_data.html">TileObjectData</a>. <br  />
+ All non-1x1 tiles should set this to true. All 1x1 tiles that have a <a class="el" href="class_tile_object_data.html">TileObjectData</a> or that shoud preserve frame data should set this to true. <br /></td></tr>
 <tr class="separator:ae49a753c6a45feca9bacc58d520efc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d76914db6aad6e3500711979e49976d"><td class="memItemLeft" align="right" valign="top"><a id="a3d76914db6aad6e3500711979e49976d" name="a3d76914db6aad6e3500711979e49976d"></a>
 static ulong&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrameSeed</b> = (ulong)Guid.NewGuid().GetHashCode()</td></tr>

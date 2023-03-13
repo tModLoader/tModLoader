@@ -127,6 +127,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanKillTile</b
 <tr class="memitem:a904da78972c399ab88fbd17649288c52"><td class="memItemLeft" align="right" valign="top"><a id="a904da78972c399ab88fbd17649288c52" name="a904da78972c399ab88fbd17649288c52"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPlace</b> (int i, int j, int type)</td></tr>
 <tr class="separator:a904da78972c399ab88fbd17649288c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a961c65b2e1f09a55301438e7e48a238a"><td class="memItemLeft" align="right" valign="top"><a id="a961c65b2e1f09a55301438e7e48a238a" name="a961c65b2e1f09a55301438e7e48a238a"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanReplace</b> (int i, int j, int type, int tileTypeBeingPlaced)</td></tr>
+<tr class="separator:a961c65b2e1f09a55301438e7e48a238a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeff094d85c43d99a861dfa184c14a82c"><td class="memItemLeft" align="right" valign="top"><a id="aeff094d85c43d99a861dfa184c14a82c" name="aeff094d85c43d99a861dfa184c14a82c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeWaterfallStyle</b> (int type, ref int style)</td></tr>
 <tr class="separator:aeff094d85c43d99a861dfa184c14a82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,9 +148,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDust</b>
 <tr class="memitem:a7831168f4466a503baf3e7464cd48093"><td class="memItemLeft" align="right" valign="top"><a id="a7831168f4466a503baf3e7464cd48093" name="a7831168f4466a503baf3e7464cd48093"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawEffects</b> (int i, int j, int type, SpriteBatch spriteBatch, ref <a class="el" href="class_tile_draw_info.html">TileDrawInfo</a> drawData)</td></tr>
 <tr class="separator:a7831168f4466a503baf3e7464cd48093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e727930c6fec9229837375f3cef7c59"><td class="memItemLeft" align="right" valign="top"><a id="a1e727930c6fec9229837375f3cef7c59" name="a1e727930c6fec9229837375f3cef7c59"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, int type)</td></tr>
-<tr class="separator:a1e727930c6fec9229837375f3cef7c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f1123181ad82397d18a571b50ca43e0"><td class="memItemLeft" align="right" valign="top"><a id="a6f1123181ad82397d18a571b50ca43e0" name="a6f1123181ad82397d18a571b50ca43e0"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, int type, bool includeLargeObjectDrops=true)</td></tr>
+<tr class="separator:a6f1123181ad82397d18a571b50ca43e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10048a64772ac0963f3a85a215742ed7"><td class="memItemLeft" align="right" valign="top"><a id="a10048a64772ac0963f3a85a215742ed7" name="a10048a64772ac0963f3a85a215742ed7"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DropCritterChance</b> (int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="separator:a10048a64772ac0963f3a85a215742ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,6 +166,13 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FloorVisuals</
 <tr class="memitem:a71811364046fd13c75fe079526a4b698"><td class="memItemLeft" align="right" valign="top"><a id="a71811364046fd13c75fe079526a4b698" name="a71811364046fd13c75fe079526a4b698"></a>
 static Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>GetCactusTexture</b> (int type)</td></tr>
 <tr class="separator:a71811364046fd13c75fe079526a4b698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8236777f81075fbafb4005dafc07aef"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_loader.html#aa8236777f81075fbafb4005dafc07aef">GetItemDropFromTypeAndStyle</a> (int type, int style=0)</td></tr>
+<tr class="memdesc:aa8236777f81075fbafb4005dafc07aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <a class="el" href="class_mod_tile.html#afcc3bd178d7d93e906f8c65e4112699b" title="Allows you to customize the items the tile at the given coordinates drops.   By default,...">ModTile.GetItemDrops(int, int)</a> for tiles that have custom tile style logic. If the specified style is not found, style 0 will be checked as a fallback. <br  />
+ A return of 0 indicates that no item would drop from the tile.  <a href="class_tile_loader.html#aa8236777f81075fbafb4005dafc07aef">More...</a><br /></td></tr>
+<tr class="separator:aa8236777f81075fbafb4005dafc07aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed3a78d5cf88583f328e5c30b74d1f0d"><td class="memItemLeft" align="right" valign="top"><a id="aed3a78d5cf88583f328e5c30b74d1f0d" name="aed3a78d5cf88583f328e5c30b74d1f0d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemDrops</b> (int x, int y, <a class="el" href="struct_tile.html">Tile</a> tileCache, bool includeLargeObjectDrops=false, bool includeAllModdedLargeObjectDrops=false)</td></tr>
+<tr class="separator:aed3a78d5cf88583f328e5c30b74d1f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7538e67b4dca6b9aa9505afbf94a7486"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mod_tile.html">ModTile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_loader.html#a7538e67b4dca6b9aa9505afbf94a7486">GetTile</a> (int type)</td></tr>
 <tr class="memdesc:a7538e67b4dca6b9aa9505afbf94a7486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a> instance with the given type. If no <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a> with the given type exists, returns null.  <a href="class_tile_loader.html#a7538e67b4dca6b9aa9505afbf94a7486">More...</a><br /></td></tr>
 <tr class="separator:a7538e67b4dca6b9aa9505afbf94a7486"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,6 +317,53 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileCount</b><c
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This serves as the central class from which tile-related functions are supported and carried out. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa8236777f81075fbafb4005dafc07aef" name="aa8236777f81075fbafb4005dafc07aef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8236777f81075fbafb4005dafc07aef">&#9670;&nbsp;</a></span>GetItemDropFromTypeAndStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int TileLoader.GetItemDropFromTypeAndStyle </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>style</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <a class="el" href="class_mod_tile.html#afcc3bd178d7d93e906f8c65e4112699b" title="Allows you to customize the items the tile at the given coordinates drops.   By default,...">ModTile.GetItemDrops(int, int)</a> for tiles that have custom tile style logic. If the specified style is not found, style 0 will be checked as a fallback. <br  />
+ A return of 0 indicates that no item would drop from the tile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">style</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a7538e67b4dca6b9aa9505afbf94a7486" name="a7538e67b4dca6b9aa9505afbf94a7486"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7538e67b4dca6b9aa9505afbf94a7486">&#9670;&nbsp;</a></span>GetTile()</h2>
 

@@ -229,7 +229,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>DustType</b><code> [ge
 <tr class="separator:aaf6985e10e0ba2cc9e28729604013f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a349d8595e8fdd60d75b2b3a72514850b"><td class="memItemLeft" align="right" valign="top"><a id="a349d8595e8fdd60d75b2b3a72514850b" name="a349d8595e8fdd60d75b2b3a72514850b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemDrop</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:a349d8595e8fdd60d75b2b3a72514850b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item. <br /></td></tr>
+<tr class="memdesc:a349d8595e8fdd60d75b2b3a72514850b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item specified. <br  />
+ Only necessary if there is no item which places this tile (or one of its styles). Otherwise, a matching placeable item will be dropped automatically <br  />
+ If this tile/wall drops multiple items, set this to the default item. <br  />
+ For <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>, use ModTile.GetItemDrops to customize which item drops depending on tile style or other conditions. <br  />
+ Set to -1 to indicate that this tile/wall shouldn't drop items ever. Use <a class="el" href="class_mod_tile.html#a3a175f2697b58caf2e226fde00cbbca6" title="Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop...">ModTile.CanDrop(int, int)</a> or <a class="el" href="class_mod_wall.html#a9f0546972f19658b7c7e55b557df2024" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">ModWall.Drop(int, int, ref int)</a> to conditionally prevent drops. <br /></td></tr>
 <tr class="separator:a349d8595e8fdd60d75b2b3a72514850b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22f06da30041acfeb85eb671ebc59497"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_block_type.html#a22f06da30041acfeb85eb671ebc59497">LocalizationCategory</a><code> [get]</code></td></tr>
 <tr class="separator:a22f06da30041acfeb85eb671ebc59497"><td class="memSeparator" colspan="2">&#160;</td></tr>

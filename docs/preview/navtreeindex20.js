@@ -1,5 +1,17 @@
 var NAVTREEINDEX20 =
 {
+"struct_n_p_c_1_1_hit_modifiers.html#ab4296e1f49756d599c976b1000f6528c":[2,0,840,1,12],
+"struct_n_p_c_1_1_hit_modifiers.html#ab92ee61bb3c9bc7ee1ebbde65cbc15ff":[2,0,840,1,13],
+"struct_n_p_c_1_1_hit_modifiers.html#ae4b8ed585bcf70d7bacc6cc0e56ae34f":[2,0,840,1,15],
+"struct_n_p_c_1_1_hit_modifiers.html#af77c582a376918753e76b24f4fda031c":[2,0,840,1,20],
+"struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f":[2,0,840,1,7],
+"struct_n_p_c_1_1_hit_modifiers.html#afadf0c41e3043a05af10804e0f33d24a":[2,0,840,1,16],
+"struct_n_p_c_1_1_hit_modifiers.html#afcdafff52439ec0ee8e40df10db8f16b":[2,0,840,1,14],
+"struct_n_p_c_aimed_target.html":[2,0,841],
+"struct_n_p_c_happiness.html":[2,0,846],
+"struct_n_p_c_happiness.html#a561736ffe7f94e4f7b18efd48adf5b6d":[2,0,846,0],
+"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[2,0,851,0,0],
+"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[2,0,851,0,0,3],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7":[2,0,851,0,0,2],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc":[2,0,851,0,0,9],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51fcb2adc165dc222462218057f2f013":[2,0,851,0,0,5],

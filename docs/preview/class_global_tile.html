@@ -112,19 +112,31 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimateTile</
 <tr class="memitem:a9eeb8c9743872de44d296a76c8dc85a6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a9eeb8c9743872de44d296a76c8dc85a6">AutoSelect</a> (int i, int j, int type, <a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:a9eeb8c9743872de44d296a76c8dc85a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the given item can become selected when the cursor is hovering over a tile and the auto selection keybind is pressed.  <a href="class_global_tile.html#a9eeb8c9743872de44d296a76c8dc85a6">More...</a><br /></td></tr>
 <tr class="separator:a9eeb8c9743872de44d296a76c8dc85a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="memItemLeft" align="right" valign="top"><a id="a7fc9c3291213b13ae2bddb0d81dd720f" name="a7fc9c3291213b13ae2bddb0d81dd720f"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDrop</b> (int i, int j, int type)</td></tr>
+<tr class="memdesc:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. Use <a class="el" href="class_global_wall.html#a4c68c359fda675d590609b2de070af91" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">Drop</a> to spawn additional items. <br /></td></tr>
+<tr class="separator:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fcb4b3d2f73067fef7211f9320e876b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a1fcb4b3d2f73067fef7211f9320e876b">CanKillTile</a> (int i, int j, int type, ref bool blockDamaged)</td></tr>
 <tr class="memdesc:a1fcb4b3d2f73067fef7211f9320e876b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not the tile at the given coordinates can be hit by anything. Returns true by default. blockDamaged currently has no use.  <a href="class_global_tile.html#a1fcb4b3d2f73067fef7211f9320e876b">More...</a><br /></td></tr>
 <tr class="separator:a1fcb4b3d2f73067fef7211f9320e876b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af524918ae55b890402dae31df61825db"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#af524918ae55b890402dae31df61825db">CanReplace</a> (int i, int j, int type, int tileTypeBeingPlaced)</td></tr>
+<tr class="memdesc:af524918ae55b890402dae31df61825db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop a tile at the given coordinates from being replaced via the block swap feature. The tileTypeBeingPlaced parameter is the tile type that will replace the current tile. The type parameter is the tile type currently at the coordinates. <br  />
+ This method is called on the local client. This method is only called if the local player has sufficient pickaxe power to mine the existing tile. <br  />
+ Return false to block the tile from being replaced. Returns true by default. <br  />
+ Use this for dynamic logic. ID.TileID.Sets.DoesntGetReplacedWithTileReplacement, ID.TileID.Sets.DoesntPlaceWithTileReplacement, and ID.TileID.Sets.PreventsTileReplaceIfOnTopOfIt cover the most common use cases and should be used instead if possible.  <a href="class_global_tile.html#af524918ae55b890402dae31df61825db">More...</a><br /></td></tr>
+<tr class="separator:af524918ae55b890402dae31df61825db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc7f9d3882d68ea2cb10f583bba375d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#adc7f9d3882d68ea2cb10f583bba375d3">ChangeWaterfallStyle</a> (int type, ref int style)</td></tr>
 <tr class="memdesc:adc7f9d3882d68ea2cb10f583bba375d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the style of waterfall that passes through or over any tile.  <a href="class_global_tile.html#adc7f9d3882d68ea2cb10f583bba375d3">More...</a><br /></td></tr>
 <tr class="separator:adc7f9d3882d68ea2cb10f583bba375d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea84cf25c26547b18259d51b979397f1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#aea84cf25c26547b18259d51b979397f1">DrawEffects</a> (int i, int j, int type, SpriteBatch spriteBatch, ref <a class="el" href="class_tile_draw_info.html">TileDrawInfo</a> drawData)</td></tr>
 <tr class="memdesc:aea84cf25c26547b18259d51b979397f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in. SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.  <a href="class_global_tile.html#aea84cf25c26547b18259d51b979397f1">More...</a><br /></td></tr>
 <tr class="separator:aea84cf25c26547b18259d51b979397f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25321148b0bf9713f3223fcec642bd29"><td class="memItemLeft" align="right" valign="top"><a id="a25321148b0bf9713f3223fcec642bd29" name="a25321148b0bf9713f3223fcec642bd29"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, int type)</td></tr>
-<tr class="memdesc:a25321148b0bf9713f3223fcec642bd29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which items the tile at the given coordinates drops. Return false to stop the game from dropping the tile's default item. Returns true by default. <br /></td></tr>
-<tr class="separator:a25321148b0bf9713f3223fcec642bd29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bbde788cba66acfd18f62fec2b139af"><td class="memItemLeft" align="right" valign="top"><a id="a7bbde788cba66acfd18f62fec2b139af" name="a7bbde788cba66acfd18f62fec2b139af"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, int type)</td></tr>
+<tr class="memdesc:a7bbde788cba66acfd18f62fec2b139af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to spawn additional items when the tile at the given coordinates drops. <br  />
+ This hook is called once for multitiles. Trees or Cactus call this method for every individual tile. <br  />
+ For multitiles, the coordinates correspond to the tile that triggered this multitile to drop, so if checking Tile.TileFrameX and Tile.TileFrameY, be aware that the coordinates won't necessarily be the top left corner or origin of the multitile. Also be aware that some parts of the multitile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in. <br /></td></tr>
+<tr class="separator:a7bbde788cba66acfd18f62fec2b139af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0">DropCritterChance</a> (int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="memdesc:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0">More...</a><br /></td></tr>
 <tr class="separator:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,9 +168,7 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <tr class="memitem:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd">NearbyEffects</a> (int i, int j, int type, bool closer)</td></tr>
 <tr class="memdesc:a1173ef4323d9e01a36b5c909f1d348fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.  <a href="class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd">More...</a><br /></td></tr>
 <tr class="separator:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c20aceb0500f1518da17f0a9c29294b"><td class="memItemLeft" align="right" valign="top"><a id="a7c20aceb0500f1518da17f0a9c29294b" name="a7c20aceb0500f1518da17f0a9c29294b"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTileMerge</b> ()</td></tr>
-<tr class="memdesc:a7c20aceb0500f1518da17f0a9c29294b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to adjust tile merge related things that are not possible to do in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModBlockType.SetStaticDefaults</a> due to timing. <br /></td></tr>
+<tr class="memitem:a7c20aceb0500f1518da17f0a9c29294b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a7c20aceb0500f1518da17f0a9c29294b">PostSetupTileMerge</a> ()</td></tr>
 <tr class="separator:a7c20aceb0500f1518da17f0a9c29294b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e1dd0f415df215847048a005719966c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">PreHitWire</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a9e1dd0f415df215847048a005719966c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the vanilla HitWire code and the HitWire hook is allowed to run. Useful for overriding vanilla behavior by returning false. Returns true by default.  <a href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">More...</a><br /></td></tr>
@@ -555,6 +565,69 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td>The tile type</td></tr>
     <tr><td class="paramname">blockDamaged</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="af524918ae55b890402dae31df61825db" name="af524918ae55b890402dae31df61825db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af524918ae55b890402dae31df61825db">&#9670;&nbsp;</a></span>CanReplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool GlobalTile.CanReplace </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileTypeBeingPlaced</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to stop a tile at the given coordinates from being replaced via the block swap feature. The tileTypeBeingPlaced parameter is the tile type that will replace the current tile. The type parameter is the tile type currently at the coordinates. <br  />
+ This method is called on the local client. This method is only called if the local player has sufficient pickaxe power to mine the existing tile. <br  />
+ Return false to block the tile from being replaced. Returns true by default. <br  />
+ Use this for dynamic logic. ID.TileID.Sets.DoesntGetReplacedWithTileReplacement, ID.TileID.Sets.DoesntPlaceWithTileReplacement, and ID.TileID.Sets.PreventsTileReplaceIfOnTopOfIt cover the most common use cases and should be used instead if possible. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">tileTypeBeingPlaced</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -1191,6 +1264,32 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7c20aceb0500f1518da17f0a9c29294b" name="a7c20aceb0500f1518da17f0a9c29294b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c20aceb0500f1518da17f0a9c29294b">&#9670;&nbsp;</a></span>PostSetupTileMerge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void GlobalTile.PostSetupTileMerge </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Can be used to adjust tile merge related things that are not possible to do in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModBlockType.SetStaticDefaults</a> due to timing. </p>
 
 </div>
 </div>

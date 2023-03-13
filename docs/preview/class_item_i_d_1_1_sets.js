@@ -15,6 +15,7 @@ var class_item_i_d_1_1_sets =
     [ "CraftingRecipeIndices", "class_item_i_d_1_1_sets.html#a2292fa1f1cba386cc058689056163bcd", null ],
     [ "DefaultKillsForBannerNeeded", "class_item_i_d_1_1_sets.html#a9fcd6cfb35dad45b9166ed4597892bf6", null ],
     [ "Deprecated", "class_item_i_d_1_1_sets.html#a386900e682737ef0afe553c09f470333", null ],
+    [ "DisableAutomaticPlaceableDrop", "class_item_i_d_1_1_sets.html#a6ead921d2646f54442ddc30dc4d320a0", null ],
     [ "DrawUnsafeIndicator", "class_item_i_d_1_1_sets.html#a02b6f4761f0bf05e4b5592d2cab258f2", null ],
     [ "DrinkParticleColors", "class_item_i_d_1_1_sets.html#ada6351fa7cff484ac94cd268c9a1fb01", null ],
     [ "ExoticPlantsForDyeTrade", "class_item_i_d_1_1_sets.html#acfbbf6149ab9b530243b438002903fa4", null ],
