@@ -53,6 +53,10 @@ public sealed partial class NPCShop {
 		return Add(new Entry(item, condition));
 	}
 
+	public NPCShop Add<T>(params ICondition[] condition) where T : ModItem {
+		return Add(ModContent.ItemType<T>(), condition);
+	}
+
 	private NPCShop InsertAt(Entry targetEntry, Item item, bool after, params ICondition[] condition) {
 		var orderEntry = new Entry(item, condition);
 		orderEntry.Target(targetEntry, after);

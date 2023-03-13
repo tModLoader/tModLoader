@@ -27,4 +27,6 @@ public class GlobalNPCTest : GlobalNPC
 	public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
 	{
 	}
+
+	public override void ModifyShop(NPCShop shop) { /* Empty */ }
 }

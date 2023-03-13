@@ -79,4 +79,6 @@ public class ModItemTest : ModItem
 	public override TagCompound Save() => new TagCompound();
 
 	public override void ExtractinatorUse(ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void OnChatButtonClicked(bool firstButton, ref bool shop) { /* Empty */ }
 }

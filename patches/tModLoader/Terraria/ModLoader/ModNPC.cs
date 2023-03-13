@@ -700,10 +700,18 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
+	/// <summary>
+	/// Allows you to add shops to this NPC.
+	/// </summary>
 	public virtual void AddShops()
 	{
 	}
 
+	/// <summary>
+	/// Allows you to modify shop whenever player opens it.
+	/// </summary>
+	/// <param name="shopId"></param>
+	/// <param name="items"></param>
 	public virtual void ModifyActiveShop(string shopId, Item[] items)
 	{
 	}

@@ -96,4 +96,6 @@ public class ModItemTest : ModItem
 #endif
 
 	public override void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
 }

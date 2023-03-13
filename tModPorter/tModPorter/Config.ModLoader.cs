@@ -424,5 +424,11 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
 
 		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
+
+		RenameMethod("Terraria.ModLoader.ModNPC", from: "SetupShop", to: "AddShops");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "AddShops");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked");
+		RenameMethod("Terraria.ModLoader.GlobalNPC", from: "SetupShop",	to: "ModifyShop");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyShop");
 	}
 }
