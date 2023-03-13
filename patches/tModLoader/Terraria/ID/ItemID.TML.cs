@@ -76,7 +76,7 @@ partial class ItemID
 		};
 
 		/// <summary>
-		/// Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive).
+		/// Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (inclusive).
 		/// <br/>Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.
 		/// </summary>
 		public static Dictionary<int, (int minStack, int maxStack)> OreDropsFromSlime = new() {
