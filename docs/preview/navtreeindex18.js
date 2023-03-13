@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_unloaded_player.html#a4637432a257bc6911b04d249db218047":[2,0,1336,2],
+"class_unloaded_player.html#a7beac9d6257cf485971120a8e75b639c":[2,0,1336,0],
 "class_unloaded_semi_solid_tile.html":[2,0,1337],
 "class_unloaded_semi_solid_tile.html#a405369d429d59cc76994c7a4de65e76b":[2,0,1337,0],
 "class_unloaded_solid_tile.html":[2,0,1338],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "interface_i_bestiary_sort_step.html":[2,0,480],
 "interface_i_bestiary_u_i_collection_info_provider.html":[2,0,481],
 "interface_i_big_progress_bar.html":[2,0,482],
-"interface_i_camera_modifier.html":[2,0,483],
-"interface_i_chat_command.html":[2,0,486],
-"interface_i_chat_monitor.html":[2,0,487]
+"interface_i_camera_modifier.html":[2,0,483]
 };

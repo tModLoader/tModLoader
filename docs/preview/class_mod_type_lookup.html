@@ -90,14 +90,35 @@ $(document).ready(function(){initNavTree('class_mod_type_lookup.html',''); initR
   <div class="headertitle"><div class="title">ModTypeLookup&lt; T &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Enables content instances to register with <a class="el" href="class_mod_type_lookup.html#af5fcd10e0309589052f5d492086aeb51" title="Registers the instance towards lookup via ModContent.Find&lt;T&gt;(string) and similar methods....">Register(T)</a> towards retrieval via <a class="el" href="class_mod_content.html#affc0d221807d3aaba139988257cd5ca4" title="Attempts to find the template instance with the specified full name (not the clone/new instance which...">ModContent.Find&lt;T&gt;(string)</a> and similar methods.  
+ <a href="class_mod_type_lookup.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af5fcd10e0309589052f5d492086aeb51"><td class="memItemLeft" align="right" valign="top"><a id="af5fcd10e0309589052f5d492086aeb51" name="af5fcd10e0309589052f5d492086aeb51"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Register</b> (T instance)</td></tr>
+<tr class="memdesc:af5fcd10e0309589052f5d492086aeb51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the instance towards lookup via <a class="el" href="class_mod_content.html#affc0d221807d3aaba139988257cd5ca4" title="Attempts to find the template instance with the specified full name (not the clone/new instance which...">ModContent.Find&lt;T&gt;(string)</a> and similar methods. <br  />
+Should only be called once per instance. Registers legacy names specified via <a class="el" href="class_legacy_name_attribute.html" title="Allows for types to be registered with legacy/alias names for lookup via ModContent....">LegacyNameAttribute</a> on the instance's type automatically. <br /></td></tr>
 <tr class="separator:af5fcd10e0309589052f5d492086aeb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7fc5bf5e342298586a64f81f5cc5727"><td class="memItemLeft" align="right" valign="top"><a id="ac7fc5bf5e342298586a64f81f5cc5727" name="ac7fc5bf5e342298586a64f81f5cc5727"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterLegacyNames</b> (T instance, params string[] legacyNames)</td></tr>
+<tr class="memdesc:ac7fc5bf5e342298586a64f81f5cc5727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the instance towards lookup via <a class="el" href="class_mod_content.html#affc0d221807d3aaba139988257cd5ca4" title="Attempts to find the template instance with the specified full name (not the clone/new instance which...">ModContent.Find&lt;T&gt;(string)</a> and similar methods using any number of specified <em>legacyNames</em> . <br  />
+Also see </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_legacy_name_attribute.html" title="Allows for types to be registered with legacy/alias names for lookup via ModContent....">LegacyNameAttribute</a></dd></dl>
+<p>which may be more convenient. <br /></td></tr>
+<tr class="separator:ac7fc5bf5e342298586a64f81f5cc5727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Enables content instances to register with <a class="el" href="class_mod_type_lookup.html#af5fcd10e0309589052f5d492086aeb51" title="Registers the instance towards lookup via ModContent.Find&lt;T&gt;(string) and similar methods....">Register(T)</a> towards retrieval via <a class="el" href="class_mod_content.html#affc0d221807d3aaba139988257cd5ca4" title="Attempts to find the template instance with the specified full name (not the clone/new instance which...">ModContent.Find&lt;T&gt;(string)</a> and similar methods. </p>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="interface_i_mod_type.html">IModType</a></em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

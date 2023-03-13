@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"interface_i_chat_command.html":[2,0,486],
+"interface_i_chat_monitor.html":[2,0,487],
 "interface_i_chat_processor.html":[2,0,488],
 "interface_i_colorable.html":[2,0,490],
 "interface_i_config_key_holder.html":[2,0,493],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_n_p_c_happiness.html":[2,0,846],
 "struct_n_p_c_happiness.html#a561736ffe7f94e4f7b18efd48adf5b6d":[2,0,846,0],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[2,0,851,0,0],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[2,0,851,0,0,3],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7":[2,0,851,0,0,2],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc":[2,0,851,0,0,9]
+"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[2,0,851,0,0,3]
 };

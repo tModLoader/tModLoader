@@ -778,7 +778,7 @@ var annotated_dup =
     [ "ModTileEntity", "class_mod_tile_entity.html", "class_mod_tile_entity" ],
     [ "ModTree", "class_mod_tree.html", "class_mod_tree" ],
     [ "ModType", "class_mod_type.html", "class_mod_type" ],
-    [ "ModTypeLookup", "class_mod_type_lookup.html", null ],
+    [ "ModTypeLookup", "class_mod_type_lookup.html", "class_mod_type_lookup" ],
     [ "ModUndergroundBackgroundStyle", "class_mod_underground_background_style.html", "class_mod_underground_background_style" ],
     [ "ModWall", "class_mod_wall.html", "class_mod_wall" ],
     [ "ModWaterfallStyle", "class_mod_waterfall_style.html", "class_mod_waterfall_style" ],

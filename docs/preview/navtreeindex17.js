@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"class_tile_drawing.html#a86bf3a6bcd0fc5ccc57622c2d8ab7557":[2,0,1166,6],
+"class_tile_drawing.html#aa6e95bf8aaced1dd91bc75f266b7727c":[2,0,1166,8],
 "class_tile_drawing.html#abe15be9a969503e07756f13a89d5923e":[2,0,1166,4],
 "class_tile_drawing.html#af6b0020a25d865cef73b65a1085f0a7c":[2,0,1166,7],
 "class_tile_entities_manager.html":[2,0,1168],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "class_unloaded_non_solid_tile.html#aae5bc2c98b0a722a2c6bc4e8d1d64ab1":[2,0,1335,0],
 "class_unloaded_player.html":[2,0,1336],
 "class_unloaded_player.html#a0274f0c5d4b9f37fbd3c3dacc7c755de":[2,0,1336,3],
-"class_unloaded_player.html#a2c8656d7f772a35fbda3f625ddd36c40":[2,0,1336,1],
-"class_unloaded_player.html#a4637432a257bc6911b04d249db218047":[2,0,1336,2],
-"class_unloaded_player.html#a7beac9d6257cf485971120a8e75b639c":[2,0,1336,0]
+"class_unloaded_player.html#a2c8656d7f772a35fbda3f625ddd36c40":[2,0,1336,1]
 };

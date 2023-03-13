@@ -55,15 +55,15 @@ var NAVTREEINDEX =
 "class_mod_item.html#a59992ebf427ec1163fc4fd81eaa4a8f7",
 "class_mod_player.html#a39df162046cb4bb32a18631bf4a2343d",
 "class_mod_system.html#a43b9677e636951b1b9cdff7e101623bc",
-"class_n_p_c.html#a19671fea508f786929fb6b46b35d94cc",
-"class_n_p_c_i_d_1_1_sets.html#a7a50a440d271579d51a575d2f68793cb",
-"class_player_draw_layer.html#aa1621b2c94333b9f9f928bcad59c7af5",
-"class_proj_a_i_style_i_d.html#a792085eaf0e7ecbfeb4974c62f9899be",
-"class_recipe_loader.html#a9fbc49b0d67cab5ad394254ac71ace11",
-"class_tile_drawing.html#abe15be9a969503e07756f13a89d5923e",
-"class_unloaded_semi_solid_tile.html",
-"interface_i_chat_processor.html",
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51fcb2adc165dc222462218057f2f013"
+"class_n_p_c.html#a17789b5f468fa0d79b787e3285c297a9",
+"class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73",
+"class_player_draw_layer.html#a7fafe8d9378958d03cac0fa5f13a4a61",
+"class_proj_a_i_style_i_d.html#a7842c249c7f6bf34a366e11740dddd98",
+"class_recipe_loader.html",
+"class_tile_drawing.html#a86bf3a6bcd0fc5ccc57622c2d8ab7557",
+"class_unloaded_player.html#a4637432a257bc6911b04d249db218047",
+"interface_i_chat_command.html",
+"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
