@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AdjTiles = new int[] { TileID.OpenDoor };
 			// Tiles usually drop their corresponding item automatically, but ItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
 			ItemDrop = ModContent.ItemType<ExampleDoor>();
-			CloseDoorID = ModContent.TileType<ExampleDoorClosed>();
+			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 
 			// Names
 			LocalizedText name = CreateMapEntryName();

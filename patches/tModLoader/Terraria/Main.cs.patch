@@ -336,15 +336,6 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -862,6 +_,8 @@
- 	public static bool[] tileNoFail = new bool[TileID.Count];
- 	public static bool[] tileCracked = new bool[TileID.Count];
- 	public static bool[] tileObsidianKill = new bool[TileID.Count];
-+	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
-+	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
- 	public static bool[] tileFrameImportant = new bool[TileID.Count];
- 	public static bool[] tilePile = new bool[TileID.Count];
- 	public static bool[] tileBlendAll = new bool[TileID.Count];
 @@ -829,7 +_,18 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
@@ -364,6 +355,15 @@
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
+@@ -862,6 +_,8 @@
+ 	public static bool[] tileNoFail = new bool[TileID.Count];
+ 	public static bool[] tileCracked = new bool[TileID.Count];
+ 	public static bool[] tileObsidianKill = new bool[TileID.Count];
++	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
+ 	public static bool[] tileFrameImportant = new bool[TileID.Count];
+ 	public static bool[] tilePile = new bool[TileID.Count];
+ 	public static bool[] tileBlendAll = new bool[TileID.Count];
 @@ -942,6 +_,12 @@
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];

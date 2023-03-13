@@ -1197,14 +1197,6 @@
  
  		switch (type) {
  			case 42: {
-@@ -31804,11 +_,13 @@
- 			frameX = Main.tile[num + 1, y].frameX;
- 
- 		destroyObject = true;
-+		bool drop = TileLoader.Drop(i, y, type);
- 		if (Main.tile[num, y].type == type)
- 			KillTile(num, y);
- 
 @@ -31653,7 +_,7 @@
  
  			int num = tile.frameX / 18;
@@ -1223,7 +1215,14 @@
  					continue;
  
  				ushort type2 = tile2.type;
-@@ -31810,6 +_,9 @@
+@@ -31804,11 +_,13 @@
+ 			frameX = Main.tile[num + 1, y].frameX;
+ 
+ 		destroyObject = true;
++		bool drop = TileLoader.Drop(i, y, type);
+ 		if (Main.tile[num, y].type == type)
+ 			KillTile(num, y);
+ 
  		if (Main.tile[num + 1, y].type == type)
  			KillTile(num + 1, y);
 +		using var _disableNewItem = new Item.DisableNewItemMethod(!drop);

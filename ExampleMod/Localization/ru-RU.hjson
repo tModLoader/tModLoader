@@ -762,6 +762,7 @@ Mods: {
 			ExampleTrapChlorophyteBullet: {
 				// DisplayName: Example Trap - {$ItemName.ChlorophyteBullet}
 				// Tooltip: ""
+			}
 
 			HitModifiersShowcase: {
 				// DisplayName: Hit Modifiers Showcase
