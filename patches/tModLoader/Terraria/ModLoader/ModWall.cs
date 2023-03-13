@@ -90,6 +90,7 @@ public abstract class ModWall : ModBlockType
 
 	/// <summary>
 	/// Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default.
+	/// <br/> The <paramref name="type"/> passed in is the item type of the loaded item with <see cref="Item.createWall"/> matching the type of this Wall. If <see cref="ModBlockType.ItemDrop"/> is set, it will override that value.
 	/// </summary>
 	public virtual bool Drop(int i, int j, ref int type)
 	{
