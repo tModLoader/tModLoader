@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,448 @@
+@@ -37,78 +_,449 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -298,6 +298,7 @@
 +	/// </summary>
  	public int useStyle;
 +
++	/// <summary>
 +	/// Used for items that have special behavior when the attack button is held.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>

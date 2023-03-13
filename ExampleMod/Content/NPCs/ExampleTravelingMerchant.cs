@@ -223,7 +223,7 @@ namespace ExampleMod.Content.NPCs
 			shopItems = tag.Get<List<Item>>("shopItems");
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			int num = NPC.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());

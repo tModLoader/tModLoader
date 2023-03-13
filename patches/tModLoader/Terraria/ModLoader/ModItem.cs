@@ -564,26 +564,25 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC.
+	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockBack">The knock back.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	/// <param name="modifiers">The strike.</param>
+	public virtual void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
+	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads). <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockBack">The knock back.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+	/// <param name="hit">The strike.</param>
+	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
+	public virtual void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -601,24 +600,24 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
+	/// Allows you to modify the damage, etc., that this melee weapon does to a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits a player.
+	/// Allows you to create special effects when this melee weapon hits a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitPvp(Player player, Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

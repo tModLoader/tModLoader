@@ -53,6 +53,7 @@ public static class ModNet
 		public override string ToString() => $"{modname}:{configname} {json}";
 	}
 
+	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
 	internal static bool onlyDownloadSignedMods = false;

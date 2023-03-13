@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -88,6 +89,16 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		}
 	}
 
+	public bool TryGetOwner([NotNullWhen(true)] out Player? player)
+	{
+		player = null;
+		if (npcProj || trap)
+			return false;
+
+		player = Main.player[owner];
+		return player.active;
+	}
+
 	/// <summary>
 	/// Will drop loot the same way as when <see cref="ProjectileID.Geode"/> is cracked open.
 	/// </summary>
@@ -138,5 +149,8 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
-	
+	/// <summary>
+	/// Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br/>
+	/// </summary>
+	public bool IsMinionOrSentryRelated => minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type];
 }

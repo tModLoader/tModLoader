@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
@@ -203,7 +204,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This is called at the beginning of every tick update for this player, after checking whether the player exists.
+	/// This is called at the beginning of every tick update for this player, after checking whether the player exists. <br/>
+	/// This can be used to adjust timers and cooldowns.
 	/// </summary>
 	public virtual void PreUpdate()
 	{
@@ -309,59 +311,86 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called before every time the player takes damage. The pvp parameter is whether the damage was from another player. The quiet parameter determines whether the damage will be communicated to the server. The damage, hitDirection, and crit parameters can be modified. Set the customDamage parameter to true if you want to use your own damage formula (this parameter will disable automatically subtracting the player's defense from the damage). Set the playSound parameter to false to disable the player's hurt sound, and the genGore parameter to false to disable the dust particles that spawn. (These are useful for creating your own sound or gore.) The deathText parameter can be modified to change the player's death message if the player dies. Return false to stop the player from taking damage. Returns true by default.
+	/// Allows you to make a player immune to damage from a certain source, or at a certain time. <br/>
+	/// Vanilla examples include shimmer and journey god mode.<br/>
+	/// <br/>
+	/// Runs before dodges are used, or any damage calculations are performed. <br/>
+	/// Runs on all players, on all clients, so checking Player == Main.LocalPlayer is advisable. <br/>
+	/// If immunity is determined on the local player, the hit will not be sent across the network. <br/>
+	/// <br/>
+	/// In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.
 	/// </summary>
-	/// <param name="pvp"></param>
-	/// <param name="quiet"></param>
-	/// <param name="damage"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <param name="customDamage"></param>
-	/// <param name="playSound"></param>
-	/// <param name="genGore"></param>
-	/// <param name="damageSource"></param>
-	/// <param name="cooldownCounter"></param>
-	/// <returns></returns>
-	public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-		ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
+	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
+	/// <param name="dodgeable">Whether the hit is dodgeable</param>
+	/// <returns>True to completely ignore the hit</returns>
+	public virtual bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
 	{
-		return true;
+		return false;
 	}
-
-	[Obsolete("Parameters changed, run tModPorter", true)]
-	public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
 
 	/// <summary>
-	/// Allows you to make anything happen right before damage is subtracted from the player's health.
+	/// Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br/>
+	/// Vanilla example is black belt.<br/>
+	/// For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.<br/>
+	/// <br/>
+	/// Only runs on the local client of the player receiving the damage. <br/>
+	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
+	/// If visual indication of the dodge is required on remote clients, you will need to send your own packet.
 	/// </summary>
-	/// <param name="pvp"></param>
-	/// <param name="quiet"></param>
-	/// <param name="damage"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <param name="cooldownCounter"></param>
-	public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
+	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
+	/// <returns>True to completely ignore the hit</returns>
+	public virtual bool FreeDodge(PlayerDeathReason damageSource, int cooldownCounter)
 	{
+		return false;
 	}
-
-	[Obsolete("Parameters changed, run tModPorter", true)]
-	public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 	/// <summary>
-	/// Allows you to make anything happen when the player takes damage.
+	/// Allows you to dodge damage for a player.<br/>
+	/// Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br/>
+	/// For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.<br/>
+	/// <br/>
+	/// Only runs on the local client of the player receiving the damage. <br/>
+	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
+	/// You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
 	/// </summary>
-	/// <param name="pvp"></param>
-	/// <param name="quiet"></param>
-	/// <param name="damage"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <param name="cooldownCounter"></param>
-	public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
+	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
+	/// <returns>True to completely ignore the hit</returns>
+	public virtual bool ConsumableDodge(PlayerDeathReason damageSource, int cooldownCounter)
+	{
+		return false;
+	}
+
+	/// <summary>
+	/// Allows you to adjust an instance of player taking damage. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
+	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
+	/// The player will always take at least 1 damage. To prevent damage <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// </summary>
+	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
 	{
 	}
 
-	[Obsolete("Parameters changed, run tModPorter", true)]
-	public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
+	/// <summary>
+	/// Allows you to make anything happen when the player takes damage. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Called right before health is reduced.
+	/// </summary>
+	public virtual void OnHurt(Player.HurtInfo info)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to make anything happen when the player takes damage. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Only called if the player survives the hit.
+	/// </summary>
+	public virtual void PostHurt(Player.HurtInfo info)
+	{
+	}
 
 	/// <summary>
 	/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
@@ -632,7 +661,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.
+	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center. <br/>
+	/// Called on the local client. <br/>
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
@@ -642,25 +672,54 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a player can hit the given NPC. Returns true by default.
+	/// </summary>
+	/// <param name="target"></param>
+	/// <returns>True by default</returns>
+	public virtual bool CanHitNPC(NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc that this player does to an NPC. <br/>
+	/// This method is only called on the on the local client. <br/>
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to create special effects when this player hits an NPC by swinging a melee weapon (for example how the Pumpkin Sword creates pumpkin heads).
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	public virtual bool? CanHitNPC(Item item, NPC target)
+	public virtual bool? CanHitNPCWithItem(Item item, NPC target)
 	{
 		return null;
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
+	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -669,10 +728,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -692,11 +750,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -705,10 +760,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -724,28 +778,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a melee weapon swung by this player does to an opponent player.
-	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Item item, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when this player's melee weapon hits an opponent player.
-	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Item item, Player target, int damage, bool crit)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.
 	/// </summary>
 	/// <param name="proj"></param>
@@ -754,28 +786,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual bool CanHitPvpWithProj(Projectile proj, Player target)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, etc., that a projectile created by this player does to an opponent player.
-	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when a projectile created by this player hits an opponent player.
-	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
-	{
 	}
 
 	/// <summary>
@@ -790,22 +800,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that an NPC does to this player.
+	/// Allows you to modify the damage, etc., that an NPC does to this player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+	public virtual void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs).
+	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs). <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByNPC(NPC npc, int damage, bool crit)
+	public virtual void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -820,22 +826,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
+	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player.
+	/// Allows you to create special effects when a hostile projectile hits this player.br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(Projectile proj, int damage, bool crit)
+	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
 	{
 	}
 
