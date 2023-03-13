@@ -120,7 +120,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanHitPastSh
 <tr class="separator:aad62152f56e8850ca231e3ec5ec84e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a1c5b6980f119d3166f62f417361383"><td class="memItemLeft" align="right" valign="top"><a id="a2a1c5b6980f119d3166f62f417361383" name="a2a1c5b6980f119d3166f62f417361383"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CultistIsResistantTo</b> = Factory.CreateBoolSet(207, 182, 338, 339, 340, 341, 266, 390, 391, 392, 307, 316, 190, 227, 255, 297, 317, 321, 356, 407, 376, 374, 379, 408, 389, 388, 405, 409, 535, 536, 484, 477, 16, 34, 79, 634, 635, 616, 189, 181, 566, 837, 659, 803, 804, 805, 806, 807, 808, 809, 810, 856, 931, 248, 393, 394, 395, 378, 379, 664, 666, 668, 680, 625, 626, 627, 628, 613, 614, 309, 195, 433, 755, 864, 758, 759, 832, 833, 834, 835, 951, 644, 642, 946, 930, 937, 225, 285, 917, 700, 916, 640, 221, 606, 567, 568, 569, 570, 571, 617, 618, 619, 620, 963, 967)</td></tr>
-<tr class="memdesc:a2a1c5b6980f119d3166f62f417361383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that the Lunatic Cultist takes 75% damage from this projectile. All projectiles in this set are homing projectiles, so this set can be seen as an indicator that this projectile homes in on the target. Use this set in <a class="el" href="class_mod_n_p_c.html#a7be3cc71a74003e6820407f4d2df9208" title="Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile....">ModNPC.ModifyHitByProjectile</a> and adjust the <code>damage</code> parameter to implement a similar penalty for homing projectiles. <br /></td></tr>
+<tr class="memdesc:a2a1c5b6980f119d3166f62f417361383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that the Lunatic Cultist takes 75% damage from this projectile. All projectiles in this set are homing projectiles, so this set can be seen as an indicator that this projectile homes in on the target. Use this set in <a class="el" href="class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30" title="Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile....">ModNPC.ModifyHitByProjectile</a> and adjust the <code>damage</code> parameter to implement a similar penalty for homing projectiles. <br /></td></tr>
 <tr class="separator:a2a1c5b6980f119d3166f62f417361383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a869092048447a3e8e237ec4981754090"><td class="memItemLeft" align="right" valign="top"><a id="a869092048447a3e8e237ec4981754090" name="a869092048447a3e8e237ec4981754090"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DismountsPlayersOnHit</b> = Factory.CreateBoolSet(877, 878, 879)</td></tr>
@@ -288,6 +288,9 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>StormTiger</
 <tr class="separator:a3ee6a6692c03f4760a451b4ef1a42103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35c96b5997f5c0daa355ad7936248723"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile_i_d_1_1_sets.html#a35c96b5997f5c0daa355ad7936248723">StormTigerIds</a></td></tr>
 <tr class="separator:a35c96b5997f5c0daa355ad7936248723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaba86d4c655f38cb9623fd11df144204"><td class="memItemLeft" align="right" valign="top">static float[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile_i_d_1_1_sets.html#aaba86d4c655f38cb9623fd11df144204">SummonTagDamageMultiplier</a></td></tr>
+<tr class="memdesc:aaba86d4c655f38cb9623fd11df144204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to scale down summon tag damage for fast hitting minions and sentries.  <a href="class_projectile_i_d_1_1_sets.html#aaba86d4c655f38cb9623fd11df144204">More...</a><br /></td></tr>
+<tr class="separator:aaba86d4c655f38cb9623fd11df144204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fb1255b117b4126d431066578112795"><td class="memItemLeft" align="right" valign="top"><a id="a2fb1255b117b4126d431066578112795" name="a2fb1255b117b4126d431066578112795"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>TrailCacheLength</b> = Factory.CreateIntSet(10, 466, 20, 502, 25, 580, 20, 636, 20, 640, 20, 686, 20, 711, 20, 715, 20, 716, 20, 717, 20, 718, 20, 261, 20, 721, 20, 729, 20, 731, 20, 739, 20, 740, 20, 741, 20, 742, 20, 743, 20, 744, 20, 745, 20, 746, 20, 747, 20, 748, 20, 749, 20, 750, 20, 751, 20, 752, 20, 766, 60, 767, 60, 768, 60, 769, 60, 770, 60, 771, 80, 814, 40, 822, 80, 823, 80, 824, 60, 826, 60, 827, 65, 828, 60, 829, 60, 830, 80, 838, 80, 839, 60, 840, 60, 843, 60, 844, 65, 845, 80, 846, 80, 850, 80, 852, 60, 853, 60, 856, 2, 857, 2, 864, 60, 873, 60, 872, 120, 833, 20, 834, 20, 835, 20, 818, 20, 883, 41, 887, 51, 893, 71, 894, 10, 909, 5, 916, 20, 34, 30, 16, 30, 79, 60, 931, 20, 933, 60, 946, 20, 977, 30, 976, 60, 973, 20, 106, 15, 85, 60, 1001, 12, 1020, 20)</td></tr>
 <tr class="memdesc:a2fb1255b117b4126d431066578112795"><td class="mdescLeft">&#160;</td><td class="mdescRight">The length of the the trail to store. Each projectile type defaults to 10. Use for drawing trails. Must be used with <a class="el" href="class_projectile_i_d_1_1_sets.html#a89d12d510e9b6479e20ec4a40680675f" title="Determines what data will be remembered for projectile trails. Each projectile type defaults to -1,...">ProjectileID.Sets.TrailingMode</a> to be used properly. <br /></td></tr>
@@ -507,6 +510,37 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>YoyosTopSpe
 <div class="line">            835</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="aaba86d4c655f38cb9623fd11df144204" name="aaba86d4c655f38cb9623fd11df144204"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaba86d4c655f38cb9623fd11df144204">&#9670;&nbsp;</a></span>SummonTagDamageMultiplier</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float [] ProjectileID.Sets.SummonTagDamageMultiplier</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= Factory.CreateFloatSet(1f,</div>
+<div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.Smolstar, 0.75f,</div>
+<div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.DD2LightningAuraT1, 0.5f,</div>
+<div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.DD2LightningAuraT2, 0.5f,</div>
+<div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.DD2LightningAuraT3, 0.5f</div>
+<div class="line">        )</div>
+<div class="ttc" id="aclass_projectile_i_d_html"><div class="ttname"><a href="class_projectile_i_d.html">ProjectileID</a></div><div class="ttdef"><b>Definition:</b> ProjectileID.cs:10</div></div>
+</div><!-- fragment -->
+<p>Used to scale down summon tag damage for fast hitting minions and sentries. </p>
+
 </div>
 </div>
 <a id="a58749ed3656fb709a9c286cd8604dc83" name="a58749ed3656fb709a9c286cd8604dc83"></a>

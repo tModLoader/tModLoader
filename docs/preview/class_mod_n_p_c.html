@@ -196,33 +196,44 @@ Return true to allow this <a class="el" href="class_n_p_c.html">NPC</a> to fall 
 <tr class="memitem:a89a98a8894fe9bbf1cfa5da5e5676d43"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a89a98a8894fe9bbf1cfa5da5e5676d43">GetChat</a> ()</td></tr>
 <tr class="memdesc:a89a98a8894fe9bbf1cfa5da5e5676d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this <a class="el" href="class_n_p_c.html">NPC</a> a chat message when a player talks to it. By default returns something embarrassing.  <a href="class_mod_n_p_c.html#a89a98a8894fe9bbf1cfa5da5e5676d43">More...</a><br /></td></tr>
 <tr class="separator:a89a98a8894fe9bbf1cfa5da5e5676d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aa12ef332f101e2b88bd4f9e4b8640f"><td class="memItemLeft" align="right" valign="top"><a id="a2aa12ef332f101e2b88bd4f9e4b8640f" name="a2aa12ef332f101e2b88bd4f9e4b8640f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b> (int hitDirection, double damage)</td></tr>
-<tr class="memdesc:a2aa12ef332f101e2b88bd4f9e4b8640f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever this <a class="el" href="class_n_p_c.html">NPC</a> is hit, such as creating dust or gores. <br  />
- This hook is client side. Usually when something happens when an <a class="el" href="class_n_p_c.html">NPC</a> dies such as item spawning, you use <a class="el" href="struct_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (<a class="el" href="class_n_p_c.html#a067a1a8a65adff35ccb1d12cd1a2c04a" title="The current life of the NPC. Automatically set to the value of lifeMax at the end of SetDefaults.">NPC.life</a> &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds. <br /></td></tr>
-<tr class="separator:a2aa12ef332f101e2b88bd4f9e4b8640f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ac8099138100a46319697f4aa247e41"><td class="memItemLeft" align="right" valign="top"><a id="a9ac8099138100a46319697f4aa247e41" name="a9ac8099138100a46319697f4aa247e41"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b> (<a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit)</td></tr>
+<tr class="memdesc:a9ac8099138100a46319697f4aa247e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever this <a class="el" href="class_n_p_c.html">NPC</a> is hit, such as creating dust or gores. <br  />
+ Called on local, server and remote clients. <br  />
+ Usually when something happens when an <a class="el" href="class_n_p_c.html">NPC</a> dies such as item spawning, you use <a class="el" href="struct_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (<a class="el" href="class_n_p_c.html#a067a1a8a65adff35ccb1d12cd1a2c04a" title="The current life of the NPC. Automatically set to the value of lifeMax at the end of SetDefaults.">NPC.life</a> &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds. <br  />
+ <br /></td></tr>
+<tr class="separator:a9ac8099138100a46319697f4aa247e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc8f409acec8b46fed06244d8c9ce686"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#afc8f409acec8b46fed06244d8c9ce686">LoadData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:afc8f409acec8b46fed06244d8c9ce686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this npc.  <a href="class_mod_n_p_c.html#afc8f409acec8b46fed06244d8c9ce686">More...</a><br /></td></tr>
 <tr class="separator:afc8f409acec8b46fed06244d8c9ce686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc1756362f5bb6278417f79885063a00"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#adc1756362f5bb6278417f79885063a00">ModifyCollisionData</a> (Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)</td></tr>
-<tr class="memdesc:adc1756362f5bb6278417f79885063a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the npc's </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_immunity_cooldown_i_d.html">ImmunityCooldownID</a></dd></dl>
-<p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.  <a href="class_mod_n_p_c.html#adc1756362f5bb6278417f79885063a00">More...</a><br /></td></tr>
-<tr class="separator:adc1756362f5bb6278417f79885063a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a490a8f2a66a637e6cd524b279d446f9d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a490a8f2a66a637e6cd524b279d446f9d">ModifyHitByItem</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref int damage, ref float knockback, ref bool crit)</td></tr>
-<tr class="memdesc:a490a8f2a66a637e6cd524b279d446f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon.  <a href="class_mod_n_p_c.html#a490a8f2a66a637e6cd524b279d446f9d">More...</a><br /></td></tr>
-<tr class="separator:a490a8f2a66a637e6cd524b279d446f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be3cc71a74003e6820407f4d2df9208"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a7be3cc71a74003e6820407f4d2df9208">ModifyHitByProjectile</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
-<tr class="memdesc:a7be3cc71a74003e6820407f4d2df9208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_n_p_c.html#a7be3cc71a74003e6820407f4d2df9208">More...</a><br /></td></tr>
-<tr class="separator:a7be3cc71a74003e6820407f4d2df9208"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83dea25164eb2b592fb28f554f455edc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a83dea25164eb2b592fb28f554f455edc">ModifyHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, ref int damage, ref float knockback, ref bool crit)</td></tr>
-<tr class="memdesc:a83dea25164eb2b592fb28f554f455edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_mod_n_p_c.html#a83dea25164eb2b592fb28f554f455edc">More...</a><br /></td></tr>
-<tr class="separator:a83dea25164eb2b592fb28f554f455edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa28be35dbd3e2e24a398660ed4d35d67"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#aa28be35dbd3e2e24a398660ed4d35d67">ModifyHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
-<tr class="memdesc:aa28be35dbd3e2e24a398660ed4d35d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player.  <a href="class_mod_n_p_c.html#aa28be35dbd3e2e24a398660ed4d35d67">More...</a><br /></td></tr>
-<tr class="separator:aa28be35dbd3e2e24a398660ed4d35d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">ModifyCollisionData</a> (Rectangle victimHitbox, ref int immunityCooldownSlot, ref <a class="el" href="struct_multipliable_float.html">MultipliableFloat</a> damageMultiplier, ref Rectangle npcHitbox)</td></tr>
+<tr class="memdesc:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the npc's </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_immunity_cooldown_i_d.html">ImmunityCooldownID</a></dd></dl>
+<p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.  <a href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">More...</a><br /></td></tr>
+<tr class="separator:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8fbc2330dc5ccf91b253860794ae804"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">ModifyHitByItem</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:ae8fbc2330dc5ccf91b253860794ae804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. <br  />
+ Runs on the local client. <br  />
+  <a href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">More...</a><br /></td></tr>
+<tr class="separator:ae8fbc2330dc5ccf91b253860794ae804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d683ec6c2d648e94be20243cf6dc30"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30">ModifyHitByProjectile</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:a05d683ec6c2d648e94be20243cf6dc30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30">More...</a><br /></td></tr>
+<tr class="separator:a05d683ec6c2d648e94be20243cf6dc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a276c35b263374a49f86344cd647b8d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a9a276c35b263374a49f86344cd647b8d">ModifyHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:a9a276c35b263374a49f86344cd647b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+ Runs in single player or on the server. <br  />
+  <a href="class_mod_n_p_c.html#a9a276c35b263374a49f86344cd647b8d">More...</a><br /></td></tr>
+<tr class="separator:a9a276c35b263374a49f86344cd647b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a70e7d66c1426ca13bbc5a70b59de4a95">ModifyHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. <br  />
+ Runs on the local client. <br  />
+  <a href="class_mod_n_p_c.html#a70e7d66c1426ca13bbc5a70b59de4a95">More...</a><br /></td></tr>
+<tr class="separator:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4e1b38634e000d79d027008f301f91"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">ModifyHoverBoundingBox</a> (ref Rectangle boundingBox)</td></tr>
 <tr class="memdesc:a5b4e1b38634e000d79d027008f301f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the bounding box for hovering over this <a class="el" href="class_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed).  <a href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">More...</a><br /></td></tr>
 <tr class="separator:a5b4e1b38634e000d79d027008f301f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a440518cbf4705dd06498ebe6ba6d1e62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">ModifyIncomingHit</a> (ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:a440518cbf4705dd06498ebe6ba6d1e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.  <a href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">More...</a><br /></td></tr>
+<tr class="separator:a440518cbf4705dd06498ebe6ba6d1e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1363bd911d2f60b9f52eb224db2fc304"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304">ModifyNPCLoot</a> (<a class="el" href="struct_n_p_c_loot.html">NPCLoot</a> npcLoot)</td></tr>
 <tr class="memdesc:a1363bd911d2f60b9f52eb224db2fc304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify <a class="el" href="class_n_p_c.html">NPC</a> loot tables to drop on death and to appear in the Bestiary.<br  />
  The Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify <a class="el" href="class_n_p_c.html">NPC</a> loot. <br  />
@@ -247,18 +258,24 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>NeedSaving</b
 <tr class="memitem:a2b7f108608af16299c62fd6c7c624ee9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a2b7f108608af16299c62fd6c7c624ee9">OnGoToStatue</a> (bool toKingStatue)</td></tr>
 <tr class="memdesc:a2b7f108608af16299c62fd6c7c624ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this <a class="el" href="class_n_p_c.html">NPC</a> teleports to a King or Queen statue. This method is only called server side.  <a href="class_mod_n_p_c.html#a2b7f108608af16299c62fd6c7c624ee9">More...</a><br /></td></tr>
 <tr class="separator:a2b7f108608af16299c62fd6c7c624ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0351b66ae5267e6a4dac75ec951fb763"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a0351b66ae5267e6a4dac75ec951fb763">OnHitByItem</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, int damage, float knockback, bool crit)</td></tr>
-<tr class="memdesc:a0351b66ae5267e6a4dac75ec951fb763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> is hit by a melee weapon.  <a href="class_mod_n_p_c.html#a0351b66ae5267e6a4dac75ec951fb763">More...</a><br /></td></tr>
-<tr class="separator:a0351b66ae5267e6a4dac75ec951fb763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e7afc8bd7c2cc96aaf5683a60a62f54"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a7e7afc8bd7c2cc96aaf5683a60a62f54">OnHitByProjectile</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int damage, float knockback, bool crit)</td></tr>
-<tr class="memdesc:a7e7afc8bd7c2cc96aaf5683a60a62f54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> is hit by a projectile.  <a href="class_mod_n_p_c.html#a7e7afc8bd7c2cc96aaf5683a60a62f54">More...</a><br /></td></tr>
-<tr class="separator:a7e7afc8bd7c2cc96aaf5683a60a62f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76501cc48d2236de94353c5aa4f4dea8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a76501cc48d2236de94353c5aa4f4dea8">OnHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, int damage, float knockback, bool crit)</td></tr>
-<tr class="memdesc:a76501cc48d2236de94353c5aa4f4dea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a friendly <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_mod_n_p_c.html#a76501cc48d2236de94353c5aa4f4dea8">More...</a><br /></td></tr>
-<tr class="separator:a76501cc48d2236de94353c5aa4f4dea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d66b4fe0b65810e69663dfb9e84711b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a1d66b4fe0b65810e69663dfb9e84711b">OnHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, int damage, bool crit)</td></tr>
-<tr class="memdesc:a1d66b4fe0b65810e69663dfb9e84711b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a player (for example, inflicting debuffs).  <a href="class_mod_n_p_c.html#a1d66b4fe0b65810e69663dfb9e84711b">More...</a><br /></td></tr>
-<tr class="separator:a1d66b4fe0b65810e69663dfb9e84711b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefdef952cf25966e70860e2282964293"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#aefdef952cf25966e70860e2282964293">OnHitByItem</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
+<tr class="memdesc:aefdef952cf25966e70860e2282964293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> is hit by a melee weapon. <br  />
+ Runs on the client or server doing the damage. <br  />
+  <a href="class_mod_n_p_c.html#aefdef952cf25966e70860e2282964293">More...</a><br /></td></tr>
+<tr class="separator:aefdef952cf25966e70860e2282964293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac02eeaa56ba249e0a000e367c7e93733"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ac02eeaa56ba249e0a000e367c7e93733">OnHitByProjectile</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
+<tr class="memdesc:ac02eeaa56ba249e0a000e367c7e93733"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> is hit by a projectile.  <a href="class_mod_n_p_c.html#ac02eeaa56ba249e0a000e367c7e93733">More...</a><br /></td></tr>
+<tr class="separator:ac02eeaa56ba249e0a000e367c7e93733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4546b8dfc1dea380d37c79628ecc9ab3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a4546b8dfc1dea380d37c79628ecc9ab3">OnHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit)</td></tr>
+<tr class="memdesc:a4546b8dfc1dea380d37c79628ecc9ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a friendly <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+ Runs in single player or on the server. <br  />
+  <a href="class_mod_n_p_c.html#a4546b8dfc1dea380d37c79628ecc9ab3">More...</a><br /></td></tr>
+<tr class="separator:a4546b8dfc1dea380d37c79628ecc9ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58ae99ead1ed73f15da32317d262176b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a58ae99ead1ed73f15da32317d262176b">OnHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, <a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> hurtInfo)</td></tr>
+<tr class="memdesc:a58ae99ead1ed73f15da32317d262176b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a player (for example, inflicting debuffs). <br  />
+ Runs on the local client. <br  />
+  <a href="class_mod_n_p_c.html#a58ae99ead1ed73f15da32317d262176b">More...</a><br /></td></tr>
+<tr class="separator:a58ae99ead1ed73f15da32317d262176b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c1ad109db9314006a395886a967fe07"><td class="memItemLeft" align="right" valign="top"><a id="a2c1ad109db9314006a395886a967fe07" name="a2c1ad109db9314006a395886a967fe07"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKill</b> ()</td></tr>
 <tr class="memdesc:a2c1ad109db9314006a395886a967fe07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this <a class="el" href="class_n_p_c.html">NPC</a> dies (for example, dropping items and setting <a class="el" href="class_mod_system.html" title="ModSystem is an abstract class that your classes can derive from. It contains general-use hooks,...">ModSystem</a> fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect <br /></td></tr>
@@ -332,9 +349,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</
 <tr class="memitem:aedb1620c9d5caaf9c855929d7bc30332"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#aedb1620c9d5caaf9c855929d7bc30332">SpecialOnKill</a> ()</td></tr>
 <tr class="memdesc:aedb1620c9d5caaf9c855929d7bc30332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to call OnKill on your own when the <a class="el" href="class_n_p_c.html">NPC</a> dies, rather then letting vanilla call it on its own. Returns false by default.  <a href="class_mod_n_p_c.html#aedb1620c9d5caaf9c855929d7bc30332">More...</a><br /></td></tr>
 <tr class="separator:aedb1620c9d5caaf9c855929d7bc30332"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c8be650c9c4037ce33dfd1025a4cfb4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a6c8be650c9c4037ce33dfd1025a4cfb4">StrikeNPC</a> (ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)</td></tr>
-<tr class="memdesc:a6c8be650c9c4037ce33dfd1025a4cfb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.  <a href="class_mod_n_p_c.html#a6c8be650c9c4037ce33dfd1025a4cfb4">More...</a><br /></td></tr>
-<tr class="separator:a6c8be650c9c4037ce33dfd1025a4cfb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ba71dd6a9f8afb8f5b177deffc7db62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a9ba71dd6a9f8afb8f5b177deffc7db62">TownNPCAttackCooldown</a> (ref int cooldown, ref int randExtraCooldown)</td></tr>
 <tr class="memdesc:a9ba71dd6a9f8afb8f5b177deffc7db62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the cooldown between each of this town <a class="el" href="class_n_p_c.html">NPC</a>'s attack. The cooldown will be a number greater than or equal to the first parameter, and less then the sum of the two parameters.  <a href="class_mod_n_p_c.html#a9ba71dd6a9f8afb8f5b177deffc7db62">More...</a><br /></td></tr>
 <tr class="separator:a9ba71dd6a9f8afb8f5b177deffc7db62"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1556,8 +1570,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="adc1756362f5bb6278417f79885063a00" name="adc1756362f5bb6278417f79885063a00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc1756362f5bb6278417f79885063a00">&#9670;&nbsp;</a></span>ModifyCollisionData()</h2>
+<a id="a095f3b4ae89e2e981da4d9fe9b62afde" name="a095f3b4ae89e2e981da4d9fe9b62afde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a095f3b4ae89e2e981da4d9fe9b62afde">&#9670;&nbsp;</a></span>ModifyCollisionData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1580,7 +1594,7 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref float&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_multipliable_float.html">MultipliableFloat</a>&#160;</td>
           <td class="paramname"><em>damageMultiplier</em>, </td>
         </tr>
         <tr>
@@ -1617,8 +1631,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="a490a8f2a66a637e6cd524b279d446f9d" name="a490a8f2a66a637e6cd524b279d446f9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a490a8f2a66a637e6cd524b279d446f9d">&#9670;&nbsp;</a></span>ModifyHitByItem()</h2>
+<a id="ae8fbc2330dc5ccf91b253860794ae804" name="ae8fbc2330dc5ccf91b253860794ae804"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8fbc2330dc5ccf91b253860794ae804">&#9670;&nbsp;</a></span>ModifyHitByItem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1641,20 +1655,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1669,22 +1671,22 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. </p>
+<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. <br  />
+ Runs on the local client. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td></td></tr>
     <tr><td class="paramname">item</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">modifiers</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a7be3cc71a74003e6820407f4d2df9208" name="a7be3cc71a74003e6820407f4d2df9208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7be3cc71a74003e6820407f4d2df9208">&#9670;&nbsp;</a></span>ModifyHitByProjectile()</h2>
+<a id="a05d683ec6c2d648e94be20243cf6dc30" name="a05d683ec6c2d648e94be20243cf6dc30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05d683ec6c2d648e94be20243cf6dc30">&#9670;&nbsp;</a></span>ModifyHitByProjectile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1701,26 +1703,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>hitDirection</em>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1739,18 +1723,15 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
-    <tr><td class="paramname">hitDirection</td><td></td></tr>
+    <tr><td class="paramname">modifiers</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a83dea25164eb2b592fb28f554f455edc" name="a83dea25164eb2b592fb28f554f455edc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83dea25164eb2b592fb28f554f455edc">&#9670;&nbsp;</a></span>ModifyHitNPC()</h2>
+<a id="a9a276c35b263374a49f86344cd647b8d" name="a9a276c35b263374a49f86344cd647b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a276c35b263374a49f86344cd647b8d">&#9670;&nbsp;</a></span>ModifyHitNPC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1767,20 +1748,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1795,21 +1764,21 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. </p>
+<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+ Runs in single player or on the server. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">modifiers</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aa28be35dbd3e2e24a398660ed4d35d67" name="aa28be35dbd3e2e24a398660ed4d35d67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa28be35dbd3e2e24a398660ed4d35d67">&#9670;&nbsp;</a></span>ModifyHitPlayer()</h2>
+<a id="a70e7d66c1426ca13bbc5a70b59de4a95" name="a70e7d66c1426ca13bbc5a70b59de4a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70e7d66c1426ca13bbc5a70b59de4a95">&#9670;&nbsp;</a></span>ModifyHitPlayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1826,14 +1795,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1848,12 +1811,13 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. </p>
+<p>Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. <br  />
+ Runs on the local client. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">modifiers</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -1888,6 +1852,40 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">boundingBox</td><td>The bounding box used for determining whether or not the <a class="el" href="class_n_p_c.html">NPC</a> counts as being hovered over.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a440518cbf4705dd06498ebe6ba6d1e62" name="a440518cbf4705dd06498ebe6ba6d1e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a440518cbf4705dd06498ebe6ba6d1e62">&#9670;&nbsp;</a></span>ModifyIncomingHit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModNPC.ModifyIncomingHit </td>
+          <td>(</td>
+          <td class="paramtype">ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modifiers</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -2061,8 +2059,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="a0351b66ae5267e6a4dac75ec951fb763" name="a0351b66ae5267e6a4dac75ec951fb763"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0351b66ae5267e6a4dac75ec951fb763">&#9670;&nbsp;</a></span>OnHitByItem()</h2>
+<a id="aefdef952cf25966e70860e2282964293" name="aefdef952cf25966e70860e2282964293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefdef952cf25966e70860e2282964293">&#9670;&nbsp;</a></span>OnHitByItem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2085,20 +2083,14 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a>&#160;</td>
+          <td class="paramname"><em>hit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramname"><em>damageDone</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2113,22 +2105,23 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> is hit by a melee weapon. </p>
+<p>Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> is hit by a melee weapon. <br  />
+ Runs on the client or server doing the damage. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td></td></tr>
     <tr><td class="paramname">item</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">hit</td><td></td></tr>
+    <tr><td class="paramname">damageDone</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a7e7afc8bd7c2cc96aaf5683a60a62f54" name="a7e7afc8bd7c2cc96aaf5683a60a62f54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e7afc8bd7c2cc96aaf5683a60a62f54">&#9670;&nbsp;</a></span>OnHitByProjectile()</h2>
+<a id="ac02eeaa56ba249e0a000e367c7e93733" name="ac02eeaa56ba249e0a000e367c7e93733"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac02eeaa56ba249e0a000e367c7e93733">&#9670;&nbsp;</a></span>OnHitByProjectile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2145,20 +2138,14 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a>&#160;</td>
+          <td class="paramname"><em>hit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramname"><em>damageDone</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2177,17 +2164,16 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">hit</td><td></td></tr>
+    <tr><td class="paramname">damageDone</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a76501cc48d2236de94353c5aa4f4dea8" name="a76501cc48d2236de94353c5aa4f4dea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76501cc48d2236de94353c5aa4f4dea8">&#9670;&nbsp;</a></span>OnHitNPC()</h2>
+<a id="a4546b8dfc1dea380d37c79628ecc9ab3" name="a4546b8dfc1dea380d37c79628ecc9ab3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4546b8dfc1dea380d37c79628ecc9ab3">&#9670;&nbsp;</a></span>OnHitNPC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2204,20 +2190,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a>&#160;</td>
+          <td class="paramname"><em>hit</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2232,21 +2206,21 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a friendly <a class="el" href="class_n_p_c.html">NPC</a>. </p>
+<p>Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a friendly <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+ Runs in single player or on the server. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">hit</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a1d66b4fe0b65810e69663dfb9e84711b" name="a1d66b4fe0b65810e69663dfb9e84711b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d66b4fe0b65810e69663dfb9e84711b">&#9670;&nbsp;</a></span>OnHitPlayer()</h2>
+<a id="a58ae99ead1ed73f15da32317d262176b" name="a58ae99ead1ed73f15da32317d262176b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58ae99ead1ed73f15da32317d262176b">&#9670;&nbsp;</a></span>OnHitPlayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2263,14 +2237,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a>&#160;</td>
+          <td class="paramname"><em>hurtInfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2285,12 +2253,13 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a player (for example, inflicting debuffs). </p>
+<p>Allows you to create special effects when this <a class="el" href="class_n_p_c.html">NPC</a> hits a player (for example, inflicting debuffs). <br  />
+ Runs on the local client. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">hurtInfo</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -2896,73 +2865,6 @@ Only called on the server. </p>
 
 <p>Allows you to call OnKill on your own when the <a class="el" href="class_n_p_c.html">NPC</a> dies, rather then letting vanilla call it on its own. Returns false by default. </p>
 <dl class="section return"><dt>Returns</dt><dd>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</dd></dl>
-
-</div>
-</div>
-<a id="a6c8be650c9c4037ce33dfd1025a4cfb4" name="a6c8be650c9c4037ce33dfd1025a4cfb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c8be650c9c4037ce33dfd1025a4cfb4">&#9670;&nbsp;</a></span>StrikeNPC()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool ModNPC.StrikeNPC </td>
-          <td>(</td>
-          <td class="paramtype">ref double&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>defense</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>hitDirection</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">damage</td><td></td></tr>
-    <tr><td class="paramname">defense</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
-    <tr><td class="paramname">hitDirection</td><td></td></tr>
-    <tr><td class="paramname">crit</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

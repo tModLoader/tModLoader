@@ -39,6 +39,7 @@ var hierarchy =
     ] ],
     [ "Actions", "class_actions.html", null ],
     [ "ActiveSound", "class_active_sound.html", null ],
+    [ "AddableFloat", "struct_addable_float.html", null ],
     [ "AdvancedPopupRequest", "struct_advanced_popup_request.html", null ],
     [ "AggregateException", "class_aggregate_exception.html", [
       [ "MultipleException", "class_multiple_exception.html", null ]
@@ -334,6 +335,7 @@ var hierarchy =
     [ "DamageClassLoader", "class_damage_class_loader.html", null ],
     [ "DD2Event", "class_d_d2_event.html", null ],
     [ "DefaultContractResolver", "class_default_contract_resolver.html", null ],
+    [ "Player.DefenseStat", "struct_player_1_1_defense_stat.html", null ],
     [ "DelegateMethods", "class_delegate_methods.html", null ],
     [ "CommonConditions.Depth", "class_common_conditions_1_1_depth.html", null ],
     [ "DesertDescription", "class_desert_description.html", null ],
@@ -631,6 +633,8 @@ var hierarchy =
     [ "HatRackSlot", "class_hat_rack_slot.html", null ],
     [ "ArmorIDs.Head", "class_armor_i_ds_1_1_head.html", null ],
     [ "HelperInfo", "struct_helper_info.html", null ],
+    [ "NPC.HitInfo", "struct_n_p_c_1_1_hit_info.html", null ],
+    [ "NPC.HitModifiers", "struct_n_p_c_1_1_hit_modifiers.html", null ],
     [ "HitTile", "class_hit_tile.html", null ],
     [ "HitTile.HitTileObject", "class_hit_tile_1_1_hit_tile_object.html", null ],
     [ "HjsonExtensions.HjsonStyle", "struct_hjson_extensions_1_1_hjson_style.html", null ],
@@ -649,6 +653,8 @@ var hierarchy =
     [ "HouseBuilderContext", "class_house_builder_context.html", null ],
     [ "HouseUtils", "class_house_utils.html", null ],
     [ "HousingCategoryID", "class_housing_category_i_d.html", null ],
+    [ "Player.HurtInfo", "struct_player_1_1_hurt_info.html", null ],
+    [ "Player.HurtModifiers", "struct_player_1_1_hurt_modifiers.html", null ],
     [ "Collision.HurtTile", "struct_collision_1_1_hurt_tile.html", null ],
     [ "IAchievementTracker", "interface_i_achievement_tracker.html", [
       [ "AchievementTracker< T >", "class_achievement_tracker.html", null ]
@@ -1982,6 +1988,7 @@ var hierarchy =
     [ "Mount.MountDelegatesData", "class_mount_1_1_mount_delegates_data.html", null ],
     [ "MountID", "class_mount_i_d.html", null ],
     [ "MountLoader", "class_mount_loader.html", null ],
+    [ "MultipliableFloat", "struct_multipliable_float.html", null ],
     [ "MusicCueHolder", "class_music_cue_holder.html", null ],
     [ "MusicID", "class_music_i_d.html", null ],
     [ "MysticLogFairiesEvent", "class_mystic_log_fairies_event.html", null ],

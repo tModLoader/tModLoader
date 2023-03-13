@@ -105,9 +105,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_composite_arm_data.html">CompositeArmData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_defense_stat.html">DefenseStat</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_directional_input_sync_cache.html">DirectionalInputSyncCache</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player_1_1_hooks.html">Hooks</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_hurt_info.html">HurtInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_hurt_modifiers.html">HurtModifiers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_1_1_item_check_context.html">ItemCheckContext</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,7 +151,8 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AccumulateGolfingScore</b> (int score)</td></tr>
 <tr class="separator:a4b8bba304f50ac2bd23cdb5f0dd1947b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac31b2c55747dc1b540e5b60282f58623"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ac31b2c55747dc1b540e5b60282f58623">AddBuff</a> (int type, int timeToAdd, bool quiet=true, bool foodHack=false)</td></tr>
-<tr class="memdesc:ac31b2c55747dc1b540e5b60282f58623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using <a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837" title="Get the id (type) of a ModBuff by class. Assumes one instance per class.">ModContent.BuffType&lt;T&gt;</a>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.  <a href="class_player.html#ac31b2c55747dc1b540e5b60282f58623">More...</a><br /></td></tr>
+<tr class="memdesc:ac31b2c55747dc1b540e5b60282f58623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using <a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837" title="Get the id (type) of a ModBuff by class. Assumes one instance per class.">ModContent.BuffType&lt;T&gt;</a>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code. <br  />
+ If applying a buff to a player other than the local player in pvp, quiet should be false and the buff must be true in <a class="el" href="class_main.html#acdf515b495d7cd84bdb2142e67afcc19" title="Indexed by BuffID. If true for a given BuffID, then that buff can be applied to players by other play...">Main.pvpBuff</a> to properly sync.  <a href="class_player.html#ac31b2c55747dc1b540e5b60282f58623">More...</a><br /></td></tr>
 <tr class="separator:ac31b2c55747dc1b540e5b60282f58623"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa91cdc3c28bc576666d3a6307afa431e"><td class="memItemLeft" align="right" valign="top"><a id="aa91cdc3c28bc576666d3a6307afa431e" name="aa91cdc3c28bc576666d3a6307afa431e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddCoinLuck</b> (Vector2 coinPosition, int coinAmount)</td></tr>
@@ -168,9 +175,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyAttackCooldown</
 <tr class="memitem:a0e7ab0450d73594f0a578caaffbc386e"><td class="memItemLeft" align="right" valign="top"><a id="a0e7ab0450d73594f0a578caaffbc386e" name="a0e7ab0450d73594f0a578caaffbc386e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyAttackCooldown</b> (int frames)</td></tr>
 <tr class="separator:a0e7ab0450d73594f0a578caaffbc386e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01d9cda78bea3ec94b22018f72271553"><td class="memItemLeft" align="right" valign="top"><a id="a01d9cda78bea3ec94b22018f72271553" name="a01d9cda78bea3ec94b22018f72271553"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyDamageToNPC</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int direction, bool crit)</td></tr>
-<tr class="separator:a01d9cda78bea3ec94b22018f72271553"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ecc1a5b8ce158152120f9c02247ad4a"><td class="memItemLeft" align="right" valign="top"><a id="a8ecc1a5b8ce158152120f9c02247ad4a" name="a8ecc1a5b8ce158152120f9c02247ad4a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerDefenseBuff</b> (int bannerId, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
+<tr class="separator:a8ecc1a5b8ce158152120f9c02247ad4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3e19969f895226ea60d9381a35e3eb7"><td class="memItemLeft" align="right" valign="top"><a id="af3e19969f895226ea60d9381a35e3eb7" name="af3e19969f895226ea60d9381a35e3eb7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerDefenseBuff</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
+<tr class="separator:af3e19969f895226ea60d9381a35e3eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8166bfd2e67ebc128f67ed0ef1c3823"><td class="memItemLeft" align="right" valign="top"><a id="af8166bfd2e67ebc128f67ed0ef1c3823" name="af8166bfd2e67ebc128f67ed0ef1c3823"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuff</b> (int bannerId, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="separator:af8166bfd2e67ebc128f67ed0ef1c3823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa10790d4d3b5b448ab842361895c5926"><td class="memItemLeft" align="right" valign="top"><a id="aa10790d4d3b5b448ab842361895c5926" name="aa10790d4d3b5b448ab842361895c5926"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuff</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="separator:aa10790d4d3b5b448ab842361895c5926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa819bb312ed50678d3bc23840ce460b6"><td class="memItemLeft" align="right" valign="top"><a id="aa819bb312ed50678d3bc23840ce460b6" name="aa819bb312ed50678d3bc23840ce460b6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyDamageToNPC</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int direction, bool crit, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null, bool damageVariation=false)</td></tr>
+<tr class="separator:aa819bb312ed50678d3bc23840ce460b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae96b0bccb55bee8c4ce574a1072f5752"><td class="memItemLeft" align="right" valign="top"><a id="ae96b0bccb55bee8c4ce574a1072f5752" name="ae96b0bccb55bee8c4ce574a1072f5752"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyEquipFunctional</b> (<a class="el" href="class_item.html">Item</a> currentItem, bool hideVisual)</td></tr>
 <tr class="separator:ae96b0bccb55bee8c4ce574a1072f5752"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -341,9 +360,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CloseSign</b> ()</td>
 <tr class="memitem:a3e636097898d1385ec0454fa396b0dfe"><td class="memItemLeft" align="right" valign="top"><a id="a3e636097898d1385ec0454fa396b0dfe" name="a3e636097898d1385ec0454fa396b0dfe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CollectTaxes</b> ()</td></tr>
 <tr class="separator:a3e636097898d1385ec0454fa396b0dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5dd5f98cd35aca06ac630ac7d9e3d2"><td class="memItemLeft" align="right" valign="top"><a id="a2c5dd5f98cd35aca06ac630ac7d9e3d2" name="a2c5dd5f98cd35aca06ac630ac7d9e3d2"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>CollideWithNPCs</b> (Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime)</td></tr>
-<tr class="separator:a2c5dd5f98cd35aca06ac630ac7d9e3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a529429258bb56bdaa66c9dda85b33482"><td class="memItemLeft" align="right" valign="top"><a id="a529429258bb56bdaa66c9dda85b33482" name="a529429258bb56bdaa66c9dda85b33482"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>CollideWithNPCs</b> (Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null)</td></tr>
+<tr class="separator:a529429258bb56bdaa66c9dda85b33482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memItemLeft" align="right" valign="top"><a id="a95cb58122a6654bfc0a5d4e5a504905a" name="a95cb58122a6654bfc0a5d4e5a504905a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CommandForbiddenStorm</b> ()</td></tr>
 <tr class="separator:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -743,9 +762,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HorizontalMovement</b
 <tr class="memitem:a17d7bb6db114547625ea671bf66c3a93"><td class="memItemLeft" align="right" valign="top"><a id="a17d7bb6db114547625ea671bf66c3a93" name="a17d7bb6db114547625ea671bf66c3a93"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>HorsemansBlade_SpawnPumpkin</b> (int npcIndex, int dmg, float kb)</td></tr>
 <tr class="separator:a17d7bb6db114547625ea671bf66c3a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae72adfa2629944993bb7879475b9c941"><td class="memItemLeft" align="right" valign="top"><a id="ae72adfa2629944993bb7879475b9c941" name="ae72adfa2629944993bb7879475b9c941"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>Hurt</b> (<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a> damageSource, int Damage, int hitDirection, bool pvp=false, bool quiet=false, bool Crit=false, int cooldownCounter=-1, bool dodgeable=true)</td></tr>
-<tr class="separator:ae72adfa2629944993bb7879475b9c941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af488c482e3946bb580058a8c38e895b4"><td class="memItemLeft" align="right" valign="top"><a id="af488c482e3946bb580058a8c38e895b4" name="af488c482e3946bb580058a8c38e895b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Hurt</b> (<a class="el" href="struct_player_1_1_hurt_info.html">HurtInfo</a> info, bool quiet=false)</td></tr>
+<tr class="separator:af488c482e3946bb580058a8c38e895b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5deeab7e14ed041fcff6a1b302fc1ceb"><td class="memItemLeft" align="right" valign="top"><a id="a5deeab7e14ed041fcff6a1b302fc1ceb" name="a5deeab7e14ed041fcff6a1b302fc1ceb"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>Hurt</b> (<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a> damageSource, int Damage, int hitDirection, bool pvp=false, bool quiet=false, int cooldownCounter=-1, bool dodgeable=true, float armorPenetration=0, float scalingArmorPenetration=0, float knockback=4.5f)</td></tr>
+<tr class="separator:a5deeab7e14ed041fcff6a1b302fc1ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a996a3e2aeca79c7eae1bd9e15b0c40fb"><td class="memItemLeft" align="right" valign="top"><a id="a996a3e2aeca79c7eae1bd9e15b0c40fb" name="a996a3e2aeca79c7eae1bd9e15b0c40fb"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>Hurt</b> (<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a> damageSource, int Damage, int hitDirection, out <a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> info, bool pvp=false, bool quiet=false, int cooldownCounter=-1, bool dodgeable=true, float armorPenetration=0, float scalingArmorPenetration=0, float knockback=4.5f)</td></tr>
+<tr class="separator:a996a3e2aeca79c7eae1bd9e15b0c40fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a70a976f2445ef83c9b35000549df65"><td class="memItemLeft" align="right" valign="top"><a id="a8a70a976f2445ef83c9b35000549df65" name="a8a70a976f2445ef83c9b35000549df65"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>InInteractionRange</b> (int interactX, int interactY, <a class="el" href="struct_tile_reach_check_settings.html">TileReachCheckSettings</a> settings)</td></tr>
 <tr class="separator:a8a70a976f2445ef83c9b35000549df65"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1161,6 +1186,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StickyMovement</b> ()
 <tr class="memitem:a3a4160de9a4e478262a9ba25b33cd03a"><td class="memItemLeft" align="right" valign="top"><a id="a3a4160de9a4e478262a9ba25b33cd03a" name="a3a4160de9a4e478262a9ba25b33cd03a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StopVanityActions</b> (bool multiplayerBroadcast=true)</td></tr>
 <tr class="separator:a3a4160de9a4e478262a9ba25b33cd03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5747bc3c4c71944001372293befb3fd"><td class="memItemLeft" align="right" valign="top"><a id="aa5747bc3c4c71944001372293befb3fd" name="aa5747bc3c4c71944001372293befb3fd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StrikeNPCDirect</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit)</td></tr>
+<tr class="separator:aa5747bc3c4c71944001372293befb3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7c45999862391dc1fdd3f9a8cf24c4c"><td class="memItemLeft" align="right" valign="top"><a id="ad7c45999862391dc1fdd3f9a8cf24c4c" name="ad7c45999862391dc1fdd3f9a8cf24c4c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SummonItemCheck</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="separator:ad7c45999862391dc1fdd3f9a8cf24c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2277,6 +2305,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>DeadlySphereMinion</b
 <tr class="memitem:a84cf2db75e8544f88f76ef69a1b05e0d"><td class="memItemLeft" align="right" valign="top"><a id="a84cf2db75e8544f88f76ef69a1b05e0d" name="a84cf2db75e8544f88f76ef69a1b05e0d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>defendedByPaladin</b></td></tr>
 <tr class="separator:a84cf2db75e8544f88f76ef69a1b05e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c361255efc711c3b823a59c6d5b8327"><td class="memItemLeft" align="right" valign="top"><a id="a3c361255efc711c3b823a59c6d5b8327" name="a3c361255efc711c3b823a59c6d5b8327"></a>
+<a class="el" href="struct_multipliable_float.html">MultipliableFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DefenseEffectiveness</b></td></tr>
+<tr class="separator:a3c361255efc711c3b823a59c6d5b8327"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2223941cda50ce05a8715e9b3cee216"><td class="memItemLeft" align="right" valign="top"><a id="aa2223941cda50ce05a8715e9b3cee216" name="aa2223941cda50ce05a8715e9b3cee216"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>delayUseItem</b></td></tr>
 <tr class="separator:aa2223941cda50ce05a8715e9b3cee216"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4120,9 +4151,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>stardustMonolithShade
 <tr class="memitem:a2670cd1e9798b7cb6c11e3075ed1c088"><td class="memItemLeft" align="right" valign="top"><a id="a2670cd1e9798b7cb6c11e3075ed1c088" name="a2670cd1e9798b7cb6c11e3075ed1c088"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>starving</b></td></tr>
 <tr class="separator:a2670cd1e9798b7cb6c11e3075ed1c088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa906f50db1be5fa45e880eaad41f5fa3"><td class="memItemLeft" align="right" valign="top"><a id="aa906f50db1be5fa45e880eaad41f5fa3" name="aa906f50db1be5fa45e880eaad41f5fa3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>statDefense</b></td></tr>
-<tr class="separator:aa906f50db1be5fa45e880eaad41f5fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77d899015e43c0583996a1774c760ec8"><td class="memItemLeft" align="right" valign="top"><a id="a77d899015e43c0583996a1774c760ec8" name="a77d899015e43c0583996a1774c760ec8"></a>
+<a class="el" href="struct_player_1_1_defense_stat.html">DefenseStat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>statDefense</b></td></tr>
+<tr class="separator:a77d899015e43c0583996a1774c760ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a9b28a808c81cd0f90ae16efbe196f0d1">statLife</a> = 100</td></tr>
 <tr class="memdesc:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current health of this player. Capped at <a class="el" href="class_player.html#a6d60c82c9303000b6b36720705290b5a" title="The maximum health this player can have, adjusted by buffs and equipment.">statLifeMax2</a>. <br  />
  If you increase this value, be sure to respect the cap.  <a href="class_player.html#a9b28a808c81cd0f90ae16efbe196f0d1">More...</a><br /></td></tr>
@@ -5090,7 +5121,8 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using <a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837" title="Get the id (type) of a ModBuff by class. Assumes one instance per class.">ModContent.BuffType&lt;T&gt;</a>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code. </p>
+<p>Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using <a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837" title="Get the id (type) of a ModBuff by class. Assumes one instance per class.">ModContent.BuffType&lt;T&gt;</a>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code. <br  />
+ If applying a buff to a player other than the local player in pvp, quiet should be false and the buff must be true in <a class="el" href="class_main.html#acdf515b495d7cd84bdb2142e67afcc19" title="Indexed by BuffID. If true for a given BuffID, then that buff can be applied to players by other play...">Main.pvpBuff</a> to properly sync. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">type</td><td>The buff type</td></tr>

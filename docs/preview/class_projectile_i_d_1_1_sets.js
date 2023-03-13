@@ -32,6 +32,7 @@ var class_projectile_i_d_1_1_sets =
     [ "RocketsSkipDamageForPlayers", "class_projectile_i_d_1_1_sets.html#aafd3ad11f973341222a7e8e4cdba8988", null ],
     [ "SentryShot", "class_projectile_i_d_1_1_sets.html#a0582b37e0bc2b5a0fd1c96fbaabf075c", null ],
     [ "SingleGrappleHook", "class_projectile_i_d_1_1_sets.html#a64a00183a609a4e93a50adf75ac41724", null ],
+    [ "SummonTagDamageMultiplier", "class_projectile_i_d_1_1_sets.html#aaba86d4c655f38cb9623fd11df144204", null ],
     [ "TrailCacheLength", "class_projectile_i_d_1_1_sets.html#a2fb1255b117b4126d431066578112795", null ],
     [ "TrailingMode", "class_projectile_i_d_1_1_sets.html#a89d12d510e9b6479e20ec4a40680675f", null ],
     [ "TurretFeature", "class_projectile_i_d_1_1_sets.html#a9b198deaa42177d92c97866b91141149", null ],

@@ -1,5 +1,7 @@
 var class_n_p_c =
 [
+    [ "HitInfo", "struct_n_p_c_1_1_hit_info.html", "struct_n_p_c_1_1_hit_info" ],
+    [ "HitModifiers", "struct_n_p_c_1_1_hit_modifiers.html", "struct_n_p_c_1_1_hit_modifiers" ],
     [ "AddBuff", "class_n_p_c.html#a6519d87a1742abe76ac68c9396dfb117", null ],
     [ "CheckCatchNPC", "class_n_p_c.html#a64991e8657153fdce11c33746dc806fa", null ],
     [ "DelBuff", "class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60", null ],
@@ -13,7 +15,9 @@ var class_n_p_c =
     [ "NewNPCDirect", "class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3", null ],
     [ "NewNPCDirect", "class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30", null ],
     [ "RequestBuffRemoval", "class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119", null ],
+    [ "SimpleStrike", "class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66", null ],
     [ "SitDown", "class_n_p_c.html#a730d6d0e9d96e451fc08814adeb807ba", null ],
+    [ "StrikeNPC", "class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79", null ],
     [ "TryGetGlobalNPC< T >", "class_n_p_c.html#a619627b8b1c8fd973c5981a8e9cee9e6", null ],
     [ "TryGetGlobalNPC< T >", "class_n_p_c.html#a18f67f03259864860afd737f2cc7236d", null ],
     [ "aiStyle", "class_n_p_c.html#aaf900063a620a46f2408436b8ab1bbdb", null ],
@@ -79,5 +83,7 @@ var class_n_p_c =
     [ "GivenOrTypeName", "class_n_p_c.html#ad62c146792525fde1c1fe891da3941a2", null ],
     [ "Happiness", "class_n_p_c.html#a389ec7ffed5231b9500e1ed6cd974aee", null ],
     [ "HasGivenName", "class_n_p_c.html#a2fbcfc2c2f29806bbf34cafa24910cfb", null ],
+    [ "HideStrikeDamage", "class_n_p_c.html#ab1718bfe78a370411b1108fb52b909a3", null ],
+    [ "SuperArmor", "class_n_p_c.html#a75a027c492c900d13ee9d1eea8dad690", null ],
     [ "TypeName", "class_n_p_c.html#a09c175501070c7191444ec85c132280e", null ]
 ];

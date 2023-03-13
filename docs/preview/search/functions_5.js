@@ -13,5 +13,6 @@ var searchData=
   ['findtargetwithlineofsight_10',['FindTargetWithLineOfSight',['../class_projectile.html#a780516db1f9ddea8551003ad41b9adbc',1,'Projectile']]],
   ['fixloadeddata_11',['FixLoadedData',['../class_chest.html#a80c90d1bd1100e8103dc9ce9c754df85',1,'Chest']]],
   ['floorvisuals_12',['FloorVisuals',['../class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320',1,'GlobalTile.FloorVisuals()'],['../class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a',1,'ModTile.FloorVisuals()']]],
-  ['frameeffects_13',['FrameEffects',['../class_equip_texture.html#afa1857188c214545b261d4a4836b6666',1,'EquipTexture.FrameEffects()'],['../class_mod_player.html#a4c43f816c48cdfdfab5ffe524f27ec3e',1,'ModPlayer.FrameEffects()']]]
+  ['frameeffects_13',['FrameEffects',['../class_equip_texture.html#afa1857188c214545b261d4a4836b6666',1,'EquipTexture.FrameEffects()'],['../class_mod_player.html#a4c43f816c48cdfdfab5ffe524f27ec3e',1,'ModPlayer.FrameEffects()']]],
+  ['freedodge_14',['FreeDodge',['../class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503',1,'ModPlayer']]]
 ];

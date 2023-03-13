@@ -49,5 +49,6 @@ var class_projectile =
     [ "ContinuouslyUpdateDamage", "class_projectile.html#ab9f6c227fecdc1271b3adde2ca8a68b6", null ],
     [ "CritChance", "class_projectile.html#a56758a1e35c234345b4507b36c0e8088", null ],
     [ "DamageType", "class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4", null ],
+    [ "IsMinionOrSentryRelated", "class_projectile.html#a0b34b3b9b56439acfc13ebba50455ca6", null ],
     [ "ModProjectile", "class_projectile.html#acf73b38dd6006395707713d1afb995ea", null ]
 ];

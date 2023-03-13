@@ -125,8 +125,8 @@ var searchData=
   ['roomneeds_122',['RoomNeeds',['../class_tile_i_d_1_1_sets_1_1_room_needs.html',1,'TileID::Sets']]],
   ['ropeandropecoils_123',['RopeAndRopeCoils',['../class_game_tip_i_d.html#afe382fb98e83c14d647d00a7497698e0',1,'GameTipID']]],
   ['ropecoil_124',['RopeCoil',['../class_proj_a_i_style_i_d.html#ab57e6475f3ad4c4b0bad4cfbd063a0cd',1,'ProjAIStyleID']]],
-  ['rotation_125',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
-  ['rotation_126',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
+  ['rotation_125',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
+  ['rotation_126',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
   ['runacceleration_127',['runAcceleration',['../class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3',1,'Player']]],
   ['runonmainthread_128',['RunOnMainThread',['../class_main.html#a4523d4baa024b72951881722004207b2',1,'Main']]],
   ['runonmainthread_3c_20t_20_3e_129',['RunOnMainThread&lt; T &gt;',['../class_main.html#a9b43ba6a62eef2a91a16433fca565626',1,'Main']]]

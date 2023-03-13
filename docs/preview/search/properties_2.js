@@ -14,10 +14,11 @@ var searchData=
   ['consumedmanacrystals_11',['ConsumedManaCrystals',['../class_player.html#aea15e151924b16ef09be8a53aecf0fe1',1,'Player']]],
   ['contentautoloadingenabled_12',['ContentAutoloadingEnabled',['../class_mod.html#a5fd3e08f3ff975febcc71d8bab11e614',1,'Mod']]],
   ['continuouslyupdatedamage_13',['ContinuouslyUpdateDamage',['../class_projectile.html#ab9f6c227fecdc1271b3adde2ca8a68b6',1,'Projectile']]],
-  ['cooldownslot_14',['CooldownSlot',['../class_mod_projectile.html#a52704ee431cce07114d30042224ae148',1,'ModProjectile']]],
-  ['countsastreetype_15',['CountsAsTreeType',['../class_mod_tree.html#a4818542047c5ac5de8d3d5dd3bb65120',1,'ModTree.CountsAsTreeType()'],['../class_mod_palm_tree.html#a065b51f1c5e0961763f86ede00558a1c',1,'ModPalmTree.CountsAsTreeType()']]],
-  ['critchance_16',['CritChance',['../class_projectile.html#a56758a1e35c234345b4507b36c0e8088',1,'Projectile']]],
-  ['current_17',['Current',['../class_mod_keybind.html#a2157486299d4dfcfdd1dec9ed8c6bb34',1,'ModKeybind']]],
-  ['currentplayer_18',['CurrentPlayer',['../class_main.html#ab60656fb0e91b1cbec3a13882f999cae',1,'Main']]],
-  ['currentsceneeffect_19',['CurrentSceneEffect',['../class_player.html#a9bd3daa67441cd8f838e1420ecabb1d1',1,'Player']]]
+  ['cooldowncounter_14',['CooldownCounter',['../struct_player_1_1_hurt_modifiers.html#abf162277c97c930f388a61d09ea165da',1,'Player::HurtModifiers']]],
+  ['cooldownslot_15',['CooldownSlot',['../class_mod_projectile.html#a52704ee431cce07114d30042224ae148',1,'ModProjectile']]],
+  ['countsastreetype_16',['CountsAsTreeType',['../class_mod_tree.html#a4818542047c5ac5de8d3d5dd3bb65120',1,'ModTree.CountsAsTreeType()'],['../class_mod_palm_tree.html#a065b51f1c5e0961763f86ede00558a1c',1,'ModPalmTree.CountsAsTreeType()']]],
+  ['critchance_17',['CritChance',['../class_projectile.html#a56758a1e35c234345b4507b36c0e8088',1,'Projectile']]],
+  ['current_18',['Current',['../class_mod_keybind.html#a2157486299d4dfcfdd1dec9ed8c6bb34',1,'ModKeybind']]],
+  ['currentplayer_19',['CurrentPlayer',['../class_main.html#ab60656fb0e91b1cbec3a13882f999cae',1,'Main']]],
+  ['currentsceneeffect_20',['CurrentSceneEffect',['../class_player.html#a9bd3daa67441cd8f838e1420ecabb1d1',1,'Player']]]
 ];

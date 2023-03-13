@@ -132,30 +132,24 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b>
 <tr class="memitem:a78cb5ece8027ad6dcd0cb629b9630a0d"><td class="memItemLeft" align="right" valign="top"><a id="a78cb5ece8027ad6dcd0cb629b9630a0d" name="a78cb5ece8027ad6dcd0cb629b9630a0d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>MeleeEffects</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, Rectangle itemRectangle)</td></tr>
 <tr class="separator:a78cb5ece8027ad6dcd0cb629b9630a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d4d97c0ca1278c19d896ef19c2adb84"><td class="memItemLeft" align="right" valign="top"><a id="a2d4d97c0ca1278c19d896ef19c2adb84" name="a2d4d97c0ca1278c19d896ef19c2adb84"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitByProjectile</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_projectile.html">Projectile</a> projectile, ref int damage, ref bool crit)</td></tr>
-<tr class="separator:a2d4d97c0ca1278c19d896ef19c2adb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac63eb8ea1df9282684e908242a9457d5"><td class="memItemLeft" align="right" valign="top"><a id="ac63eb8ea1df9282684e908242a9457d5" name="ac63eb8ea1df9282684e908242a9457d5"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitNPCWithProj</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> nPC, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
-<tr class="separator:ac63eb8ea1df9282684e908242a9457d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0431cc3f67380a931096648b5e5d119"><td class="memItemLeft" align="right" valign="top"><a id="ad0431cc3f67380a931096648b5e5d119" name="ad0431cc3f67380a931096648b5e5d119"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitPvp</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, <a class="el" href="class_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
-<tr class="separator:ad0431cc3f67380a931096648b5e5d119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a537815c17122a5e08a91abeb9eda004e"><td class="memItemLeft" align="right" valign="top"><a id="a537815c17122a5e08a91abeb9eda004e" name="a537815c17122a5e08a91abeb9eda004e"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitPvpWithProj</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
-<tr class="separator:a537815c17122a5e08a91abeb9eda004e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb87c5074ebaba1ff94b3d547eac3784"><td class="memItemLeft" align="right" valign="top"><a id="aeb87c5074ebaba1ff94b3d547eac3784" name="aeb87c5074ebaba1ff94b3d547eac3784"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitByNPC</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> nPC, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
+<tr class="separator:aeb87c5074ebaba1ff94b3d547eac3784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c7c72e7073fba4a3856948535e3100f"><td class="memItemLeft" align="right" valign="top"><a id="a1c7c72e7073fba4a3856948535e3100f" name="a1c7c72e7073fba4a3856948535e3100f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitByProjectile</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_projectile.html">Projectile</a> projectile, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
+<tr class="separator:a1c7c72e7073fba4a3856948535e3100f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066d84d3fbb9ba8e051cf3662214cb76"><td class="memItemLeft" align="right" valign="top"><a id="a066d84d3fbb9ba8e051cf3662214cb76" name="a066d84d3fbb9ba8e051cf3662214cb76"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitNPCWithProj</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> nPC, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="separator:a066d84d3fbb9ba8e051cf3662214cb76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ac332a10e7c144371cda09ee212e9c4"><td class="memItemLeft" align="right" valign="top"><a id="a9ac332a10e7c144371cda09ee212e9c4" name="a9ac332a10e7c144371cda09ee212e9c4"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyItemScale</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref float scale)</td></tr>
 <tr class="separator:a9ac332a10e7c144371cda09ee212e9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a347c93f9190148eca5b838baa15b2722"><td class="memItemLeft" align="right" valign="top"><a id="a347c93f9190148eca5b838baa15b2722" name="a347c93f9190148eca5b838baa15b2722"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyManaCost</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref float reduce, ref float mult)</td></tr>
 <tr class="separator:a347c93f9190148eca5b838baa15b2722"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdee5c843fdefd9904a8a2a9e7413294"><td class="memItemLeft" align="right" valign="top"><a id="acdee5c843fdefd9904a8a2a9e7413294" name="acdee5c843fdefd9904a8a2a9e7413294"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyNPCHitPlayer</b> (<a class="el" href="class_n_p_c.html">NPC</a> nPC, <a class="el" href="class_player.html">Player</a> player, ref int damage, ref bool crit)</td></tr>
-<tr class="separator:acdee5c843fdefd9904a8a2a9e7413294"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add8de8b2c9aa19f3d20bc1c565bd1d39"><td class="memItemLeft" align="right" valign="top"><a id="add8de8b2c9aa19f3d20bc1c565bd1d39" name="add8de8b2c9aa19f3d20bc1c565bd1d39"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyPlayerHitNPCWithItem</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, <a class="el" href="class_n_p_c.html">NPC</a> nPC, ref int damage, ref float knockBack, ref bool crit)</td></tr>
-<tr class="separator:add8de8b2c9aa19f3d20bc1c565bd1d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3edaab0c250b3806bd46b7ba3bd6f60"><td class="memItemLeft" align="right" valign="top"><a id="ab3edaab0c250b3806bd46b7ba3bd6f60" name="ab3edaab0c250b3806bd46b7ba3bd6f60"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyPlayerHitNPCWithItem</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, <a class="el" href="class_n_p_c.html">NPC</a> nPC, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="separator:ab3edaab0c250b3806bd46b7ba3bd6f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a868ac5c6ca298feb60abfda9924db1b5"><td class="memItemLeft" align="right" valign="top"><a id="a868ac5c6ca298feb60abfda9924db1b5" name="a868ac5c6ca298feb60abfda9924db1b5"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyShootStats</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)</td></tr>
 <tr class="separator:a868ac5c6ca298feb60abfda9924db1b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,27 +171,21 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnConsumeAmmo<
 <tr class="memitem:abd699f19ff3336aa385c0a6407b94cff"><td class="memItemLeft" align="right" valign="top"><a id="abd699f19ff3336aa385c0a6407b94cff" name="abd699f19ff3336aa385c0a6407b94cff"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnConsumeMana</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, int manaConsumed)</td></tr>
 <tr class="separator:abd699f19ff3336aa385c0a6407b94cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24b062225f5cbb8c463228ab6a268074"><td class="memItemLeft" align="right" valign="top"><a id="a24b062225f5cbb8c463228ab6a268074" name="a24b062225f5cbb8c463228ab6a268074"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitByProjectile</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_projectile.html">Projectile</a> projectile, int realDamage, bool crit)</td></tr>
-<tr class="separator:a24b062225f5cbb8c463228ab6a268074"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac976e34dd48ccf4ab6b3c9a56bad6d2c"><td class="memItemLeft" align="right" valign="top"><a id="ac976e34dd48ccf4ab6b3c9a56bad6d2c" name="ac976e34dd48ccf4ab6b3c9a56bad6d2c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitNPCWithProj</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> nPC, int knockback, float crit, bool hitDirection)</td></tr>
-<tr class="separator:ac976e34dd48ccf4ab6b3c9a56bad6d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b8a462e7613e41312b247ec9462b656"><td class="memItemLeft" align="right" valign="top"><a id="a7b8a462e7613e41312b247ec9462b656" name="a7b8a462e7613e41312b247ec9462b656"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitPvp</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, <a class="el" href="class_player.html">Player</a> target, int damage, bool crit)</td></tr>
-<tr class="separator:a7b8a462e7613e41312b247ec9462b656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2bbec18af6ddb8b0be3b2a29afb076a"><td class="memItemLeft" align="right" valign="top"><a id="ad2bbec18af6ddb8b0be3b2a29afb076a" name="ad2bbec18af6ddb8b0be3b2a29afb076a"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitPvpWithProj</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> target, int damage, bool crit)</td></tr>
-<tr class="separator:ad2bbec18af6ddb8b0be3b2a29afb076a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a29eef35d54a4dbf5ab41f08baf091"><td class="memItemLeft" align="right" valign="top"><a id="ad6a29eef35d54a4dbf5ab41f08baf091" name="ad6a29eef35d54a4dbf5ab41f08baf091"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitByNPC</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> nPC, in <a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> hurtInfo)</td></tr>
+<tr class="separator:ad6a29eef35d54a4dbf5ab41f08baf091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5aa618e3bfd15a20f5de0caabbdba1d"><td class="memItemLeft" align="right" valign="top"><a id="ad5aa618e3bfd15a20f5de0caabbdba1d" name="ad5aa618e3bfd15a20f5de0caabbdba1d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitByProjectile</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_projectile.html">Projectile</a> projectile, in <a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> hurtInfo)</td></tr>
+<tr class="separator:ad5aa618e3bfd15a20f5de0caabbdba1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a957183745a01fb10415621e69618f019"><td class="memItemLeft" align="right" valign="top"><a id="a957183745a01fb10415621e69618f019" name="a957183745a01fb10415621e69618f019"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitNPCWithProj</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> nPC, in <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
+<tr class="separator:a957183745a01fb10415621e69618f019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acac7c92b3a7fe082d98a9ec49f5552e2"><td class="memItemLeft" align="right" valign="top"><a id="acac7c92b3a7fe082d98a9ec49f5552e2" name="acac7c92b3a7fe082d98a9ec49f5552e2"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMissingMana</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, int neededMana)</td></tr>
 <tr class="separator:acac7c92b3a7fe082d98a9ec49f5552e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a0055f860f60843aa26ca5cafae0f4b"><td class="memItemLeft" align="right" valign="top"><a id="a1a0055f860f60843aa26ca5cafae0f4b" name="a1a0055f860f60843aa26ca5cafae0f4b"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnNPCHitPlayer</b> (<a class="el" href="class_n_p_c.html">NPC</a> nPC, <a class="el" href="class_player.html">Player</a> player, int damage, bool crit)</td></tr>
-<tr class="separator:a1a0055f860f60843aa26ca5cafae0f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a320a1ccd42799e9d7ca434e03f7e6d"><td class="memItemLeft" align="right" valign="top"><a id="a8a320a1ccd42799e9d7ca434e03f7e6d" name="a8a320a1ccd42799e9d7ca434e03f7e6d"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnPlayerHitNPCWithItem</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, <a class="el" href="class_n_p_c.html">NPC</a> nPC, int dmgDone, float knockBack, bool crit)</td></tr>
-<tr class="separator:a8a320a1ccd42799e9d7ca434e03f7e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dea3805d14f3de6a8bd24e9b933b8a0"><td class="memItemLeft" align="right" valign="top"><a id="a7dea3805d14f3de6a8bd24e9b933b8a0" name="a7dea3805d14f3de6a8bd24e9b933b8a0"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnPlayerHitNPCWithItem</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> sItem, <a class="el" href="class_n_p_c.html">NPC</a> nPC, in <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
+<tr class="separator:a7dea3805d14f3de6a8bd24e9b933b8a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f2242a09d4ccf334d41f34eaf4ea8a9"><td class="memItemLeft" align="right" valign="top"><a id="a6f2242a09d4ccf334d41f34eaf4ea8a9" name="a6f2242a09d4ccf334d41f34eaf4ea8a9"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerFrameEffects</b> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a6f2242a09d4ccf334d41f34eaf4ea8a9"><td class="memSeparator" colspan="2">&#160;</td></tr>

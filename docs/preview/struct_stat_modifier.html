@@ -146,28 +146,28 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab3d983cd1869c9321e7687820bc6d3c5"><td class="memItemLeft" align="right" valign="top"><a id="ab3d983cd1869c9321e7687820bc6d3c5" name="ab3d983cd1869c9321e7687820bc6d3c5"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Base</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>Base</b> = 0f</td></tr>
 <tr class="memdesc:ab3d983cd1869c9321e7687820bc6d3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase to the base value of the stat. Directly added to the stat before multipliers are applied. <br /></td></tr>
 <tr class="separator:ab3d983cd1869c9321e7687820bc6d3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14552167c70f616d8656bd50b67354b"><td class="memItemLeft" align="right" valign="top"><a id="ad14552167c70f616d8656bd50b67354b" name="ad14552167c70f616d8656bd50b67354b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Flat</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>Flat</b> = 0f</td></tr>
 <tr class="memdesc:ad14552167c70f616d8656bd50b67354b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase to the final value of the stat. Directly added to the stat after multipliers are applied. <br /></td></tr>
 <tr class="separator:ad14552167c70f616d8656bd50b67354b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:adc714d560844a88e122b0d24922bb981"><td class="memItemLeft" align="right" valign="top"><a id="adc714d560844a88e122b0d24922bb981" name="adc714d560844a88e122b0d24922bb981"></a>
-static readonly <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Default</b> = new <a class="el" href="struct_stat_modifier.html">StatModifier</a>(1f, 1f, 0f, 0f)</td></tr>
+static readonly <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Default</b> = new()</td></tr>
 <tr class="separator:adc714d560844a88e122b0d24922bb981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a96742c794c135ab7ac993549e2e5f091"><td class="memItemLeft" align="right" valign="top"><a id="a96742c794c135ab7ac993549e2e5f091" name="a96742c794c135ab7ac993549e2e5f091"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Additive</b><code> [get]</code></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>Additive</b> = 1f<code> [get]</code></td></tr>
 <tr class="memdesc:a96742c794c135ab7ac993549e2e5f091"><td class="mdescLeft">&#160;</td><td class="mdescRight">The combination of all additive multipliers. Starts at 1 <br /></td></tr>
 <tr class="separator:a96742c794c135ab7ac993549e2e5f091"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc7b82c5191a1aeb5578bc0550f95602"><td class="memItemLeft" align="right" valign="top"><a id="acc7b82c5191a1aeb5578bc0550f95602" name="acc7b82c5191a1aeb5578bc0550f95602"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Multiplicative</b><code> [get]</code></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>Multiplicative</b> = 1f<code> [get]</code></td></tr>
 <tr class="memdesc:acc7b82c5191a1aeb5578bc0550f95602"><td class="mdescLeft">&#160;</td><td class="mdescRight">The combination of all multiplicative multipliers. Starts at 1. Applies 'after' all additive bonuses have been accumulated. <br /></td></tr>
 <tr class="separator:acc7b82c5191a1aeb5578bc0550f95602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

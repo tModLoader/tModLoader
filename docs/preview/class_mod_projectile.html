@@ -179,34 +179,26 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MinionContact
 <tr class="memitem:a35179410325aca3d1066c580bef14b73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a35179410325aca3d1066c580bef14b73">ModifyDamageHitbox</a> (ref Rectangle hitbox)</td></tr>
 <tr class="memdesc:a35179410325aca3d1066c580bef14b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by this projectile for damaging players and NPCs.  <a href="class_mod_projectile.html#a35179410325aca3d1066c580bef14b73">More...</a><br /></td></tr>
 <tr class="separator:a35179410325aca3d1066c580bef14b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc0212228f062a0213d997d27c3e3641"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#afc0212228f062a0213d997d27c3e3641">ModifyDamageScaling</a> (ref float damageScale)</td></tr>
-<tr class="memdesc:afc0212228f062a0213d997d27c3e3641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.  <a href="class_mod_projectile.html#afc0212228f062a0213d997d27c3e3641">More...</a><br /></td></tr>
-<tr class="separator:afc0212228f062a0213d997d27c3e3641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#ad01bc2ad1152af50e0a6d07d8b8e4af8">ModifyFishingLine</a> (ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
 <tr class="memdesc:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this projectile is a bobber, allows you to modify the origin of the fisihing line that's connecting to the fishing pole, as well as the fishing line's color.  <a href="class_mod_projectile.html#ad01bc2ad1152af50e0a6d07d8b8e4af8">More...</a><br /></td></tr>
 <tr class="separator:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a852eab98ae5b005fead1a2059ba0e68d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a852eab98ae5b005fead1a2059ba0e68d">ModifyHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
-<tr class="memdesc:a852eab98ae5b005fead1a2059ba0e68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_projectile.html#a852eab98ae5b005fead1a2059ba0e68d">More...</a><br /></td></tr>
-<tr class="separator:a852eab98ae5b005fead1a2059ba0e68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f1d48d63ee6c1dcdfbc5d9edbf5964c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a0f1d48d63ee6c1dcdfbc5d9edbf5964c">ModifyHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
-<tr class="memdesc:a0f1d48d63ee6c1dcdfbc5d9edbf5964c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this hostile projectile does to a player.  <a href="class_mod_projectile.html#a0f1d48d63ee6c1dcdfbc5d9edbf5964c">More...</a><br /></td></tr>
-<tr class="separator:a0f1d48d63ee6c1dcdfbc5d9edbf5964c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a478a03fcaff187be7a72f83bd2a1ee87"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a478a03fcaff187be7a72f83bd2a1ee87">ModifyHitPvp</a> (<a class="el" href="class_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
-<tr class="memdesc:a478a03fcaff187be7a72f83bd2a1ee87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this projectile does to an opponent player.  <a href="class_mod_projectile.html#a478a03fcaff187be7a72f83bd2a1ee87">More...</a><br /></td></tr>
-<tr class="separator:a478a03fcaff187be7a72f83bd2a1ee87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0240acbb5cefa33c5de34c04904e9fb1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a0240acbb5cefa33c5de34c04904e9fb1">ModifyHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:a0240acbb5cefa33c5de34c04904e9fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_projectile.html#a0240acbb5cefa33c5de34c04904e9fb1">More...</a><br /></td></tr>
+<tr class="separator:a0240acbb5cefa33c5de34c04904e9fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07636759f66e88a6d4b8d832a5700a6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a07636759f66e88a6d4b8d832a5700a6a">ModifyHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
+<tr class="memdesc:a07636759f66e88a6d4b8d832a5700a6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this hostile projectile does to a player.  <a href="class_mod_projectile.html#a07636759f66e88a6d4b8d832a5700a6a">More...</a><br /></td></tr>
+<tr class="separator:a07636759f66e88a6d4b8d832a5700a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a3d5cffc4eebfe0398e7dd29c4b3d54"><td class="memItemLeft" align="right" valign="top"><a id="a4a3d5cffc4eebfe0398e7dd29c4b3d54" name="a4a3d5cffc4eebfe0398e7dd29c4b3d54"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NumGrappleHooks</b> (<a class="el" href="class_player.html">Player</a> player, ref int numHooks)</td></tr>
 <tr class="memdesc:a4a3d5cffc4eebfe0398e7dd29c4b3d54"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3. <br /></td></tr>
 <tr class="separator:a4a3d5cffc4eebfe0398e7dd29c4b3d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd11ef15c7f96c57bdf776418d38c2a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#afd11ef15c7f96c57bdf776418d38c2a8">OnHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, int damage, float knockback, bool crit)</td></tr>
-<tr class="memdesc:afd11ef15c7f96c57bdf776418d38c2a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this projectile hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_projectile.html#afd11ef15c7f96c57bdf776418d38c2a8">More...</a><br /></td></tr>
-<tr class="separator:afd11ef15c7f96c57bdf776418d38c2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1b9d5c85e3e176c1cdefed2c4fa14e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a0c1b9d5c85e3e176c1cdefed2c4fa14e">OnHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, int damage, bool crit)</td></tr>
-<tr class="memdesc:a0c1b9d5c85e3e176c1cdefed2c4fa14e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this hostile projectile hits a player.  <a href="class_mod_projectile.html#a0c1b9d5c85e3e176c1cdefed2c4fa14e">More...</a><br /></td></tr>
-<tr class="separator:a0c1b9d5c85e3e176c1cdefed2c4fa14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dc5dad977baa20d1f1d27d7106be06f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a9dc5dad977baa20d1f1d27d7106be06f">OnHitPvp</a> (<a class="el" href="class_player.html">Player</a> target, int damage, bool crit)</td></tr>
-<tr class="memdesc:a9dc5dad977baa20d1f1d27d7106be06f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this projectile hits an opponent player.  <a href="class_mod_projectile.html#a9dc5dad977baa20d1f1d27d7106be06f">More...</a><br /></td></tr>
-<tr class="separator:a9dc5dad977baa20d1f1d27d7106be06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e39495240159fe43cdb5191716842a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#af1e39495240159fe43cdb5191716842a">OnHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
+<tr class="memdesc:af1e39495240159fe43cdb5191716842a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this projectile hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_projectile.html#af1e39495240159fe43cdb5191716842a">More...</a><br /></td></tr>
+<tr class="separator:af1e39495240159fe43cdb5191716842a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae787b0649576c7134952c1f9b962c3d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#ae787b0649576c7134952c1f9b962c3d3">OnHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, <a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> info)</td></tr>
+<tr class="memdesc:ae787b0649576c7134952c1f9b962c3d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this hostile projectile hits a player. <br  />
+ Only runs on the local client in multiplayer.  <a href="class_mod_projectile.html#ae787b0649576c7134952c1f9b962c3d3">More...</a><br /></td></tr>
+<tr class="separator:ae787b0649576c7134952c1f9b962c3d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab15bdf7d367d10003312746be807c5fa"><td class="memItemLeft" align="right" valign="top"><a id="ab15bdf7d367d10003312746be807c5fa" name="ab15bdf7d367d10003312746be807c5fa"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:ab15bdf7d367d10003312746be807c5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when your projectiles spawns in world <br /></td></tr>
@@ -625,40 +617,6 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="afc0212228f062a0213d997d27c3e3641" name="afc0212228f062a0213d997d27c3e3641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc0212228f062a0213d997d27c3e3641">&#9670;&nbsp;</a></span>ModifyDamageScaling()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModProjectile.ModifyDamageScaling </td>
-          <td>(</td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>damageScale</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">damageScale</td><td>The damage scaling</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="ad01bc2ad1152af50e0a6d07d8b8e4af8" name="ad01bc2ad1152af50e0a6d07d8b8e4af8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad01bc2ad1152af50e0a6d07d8b8e4af8">&#9670;&nbsp;</a></span>ModifyFishingLine()</h2>
 
@@ -704,8 +662,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="a852eab98ae5b005fead1a2059ba0e68d" name="a852eab98ae5b005fead1a2059ba0e68d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a852eab98ae5b005fead1a2059ba0e68d">&#9670;&nbsp;</a></span>ModifyHitNPC()</h2>
+<a id="a0240acbb5cefa33c5de34c04904e9fb1" name="a0240acbb5cefa33c5de34c04904e9fb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0240acbb5cefa33c5de34c04904e9fb1">&#9670;&nbsp;</a></span>ModifyHitNPC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -722,26 +680,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>hitDirection</em>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -760,18 +700,15 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target.</td></tr>
-    <tr><td class="paramname">damage</td><td>The modifiable damage.</td></tr>
-    <tr><td class="paramname">knockback</td><td>The modifiable knockback.</td></tr>
-    <tr><td class="paramname">crit</td><td>The modifiable crit.</td></tr>
-    <tr><td class="paramname">hitDirection</td><td>The modifiable hit direction.</td></tr>
+    <tr><td class="paramname">modifiers</td><td>The modifiers for this strike.</td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a0f1d48d63ee6c1dcdfbc5d9edbf5964c" name="a0f1d48d63ee6c1dcdfbc5d9edbf5964c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f1d48d63ee6c1dcdfbc5d9edbf5964c">&#9670;&nbsp;</a></span>ModifyHitPlayer()</h2>
+<a id="a07636759f66e88a6d4b8d832a5700a6a" name="a07636759f66e88a6d4b8d832a5700a6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07636759f66e88a6d4b8d832a5700a6a">&#9670;&nbsp;</a></span>ModifyHitPlayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -788,14 +725,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a>&#160;</td>
+          <td class="paramname"><em>modifiers</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -814,68 +745,15 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target.</td></tr>
-    <tr><td class="paramname">damage</td><td>The modifiable damage.</td></tr>
-    <tr><td class="paramname">crit</td><td>The modifiable crit.</td></tr>
+    <tr><td class="paramname">modifiers</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a478a03fcaff187be7a72f83bd2a1ee87" name="a478a03fcaff187be7a72f83bd2a1ee87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a478a03fcaff187be7a72f83bd2a1ee87">&#9670;&nbsp;</a></span>ModifyHitPvp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModProjectile.ModifyHitPvp </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to modify the damage, etc., that this projectile does to an opponent player. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">target</td><td>The target.</td></tr>
-    <tr><td class="paramname">damage</td><td>The modifiable damage.</td></tr>
-    <tr><td class="paramname">crit</td><td>The modifiable crit.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="afd11ef15c7f96c57bdf776418d38c2a8" name="afd11ef15c7f96c57bdf776418d38c2a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd11ef15c7f96c57bdf776418d38c2a8">&#9670;&nbsp;</a></span>OnHitNPC()</h2>
+<a id="af1e39495240159fe43cdb5191716842a" name="af1e39495240159fe43cdb5191716842a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e39495240159fe43cdb5191716842a">&#9670;&nbsp;</a></span>OnHitNPC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -892,20 +770,14 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a>&#160;</td>
+          <td class="paramname"><em>hit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramname"><em>damageDone</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -924,17 +796,16 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target.</td></tr>
-    <tr><td class="paramname">damage</td><td>The damage.</td></tr>
-    <tr><td class="paramname">knockback</td><td>The knockback.</td></tr>
-    <tr><td class="paramname">crit</td><td>The critical hit.</td></tr>
+    <tr><td class="paramname">hit</td><td>The damage.</td></tr>
+    <tr><td class="paramname">damageDone</td><td>The actual damage dealt to/taken by the <a class="el" href="class_n_p_c.html">NPC</a>.</td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a0c1b9d5c85e3e176c1cdefed2c4fa14e" name="a0c1b9d5c85e3e176c1cdefed2c4fa14e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c1b9d5c85e3e176c1cdefed2c4fa14e">&#9670;&nbsp;</a></span>OnHitPlayer()</h2>
+<a id="ae787b0649576c7134952c1f9b962c3d3" name="ae787b0649576c7134952c1f9b962c3d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae787b0649576c7134952c1f9b962c3d3">&#9670;&nbsp;</a></span>OnHitPlayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -951,14 +822,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a>&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -973,64 +838,12 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when this hostile projectile hits a player. </p>
+<p>Allows you to create special effects when this hostile projectile hits a player. <br  />
+ Only runs on the local client in multiplayer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target.</td></tr>
-    <tr><td class="paramname">damage</td><td>The damage.</td></tr>
-    <tr><td class="paramname">crit</td><td>The critical hit.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a9dc5dad977baa20d1f1d27d7106be06f" name="a9dc5dad977baa20d1f1d27d7106be06f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9dc5dad977baa20d1f1d27d7106be06f">&#9670;&nbsp;</a></span>OnHitPvp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModProjectile.OnHitPvp </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to create special effects when this projectile hits an opponent player. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">target</td><td>The target.</td></tr>
-    <tr><td class="paramname">damage</td><td>The damage.</td></tr>
-    <tr><td class="paramname">crit</td><td>The critical hit.</td></tr>
+    <tr><td class="paramname">info</td><td></td></tr>
   </table>
   </dd>
 </dl>

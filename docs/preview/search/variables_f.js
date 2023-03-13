@@ -34,8 +34,8 @@ var searchData=
   ['portraitpositionxoverride_31',['PortraitPositionXOverride',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#af0b33faedea8c33fee13c458daa839cb',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
   ['portraitpositionyoverride_32',['PortraitPositionYOverride',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a7ff35be7d2fdfcf8ce1f0f4d06366b7e',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
   ['portraitscale_33',['PortraitScale',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ab37e0dec9a2bd97ee5f958acc3693a1d',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
-  ['position_34',['position',['../class_popup_text.html#a92c515d76c829c0de164e1e4c92c752a',1,'PopupText.position()'],['../class_entity.html#aea6af1b1841c5129ac2ddce832b53075',1,'Entity.position()']]],
-  ['position_35',['Position',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Position()'],['../struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033',1,'BuffDrawParams.Position()']]],
+  ['position_34',['Position',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Position()'],['../struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033',1,'BuffDrawParams.Position()']]],
+  ['position_35',['position',['../class_popup_text.html#a92c515d76c829c0de164e1e4c92c752a',1,'PopupText.position()'],['../class_entity.html#aea6af1b1841c5129ac2ddce832b53075',1,'Entity.position()']]],
   ['positivenpctypesexcludedfromdeathtally_36',['PositiveNPCTypesExcludedFromDeathTally',['../class_n_p_c_i_d_1_1_sets.html#afdc23a61d8661a464b33d5a404facebd',1,'NPCID::Sets']]],
   ['potion_37',['potion',['../class_item.html#aed70ad8fd98d49df20a70d26c9c2e56d',1,'Item']]],
   ['potioncraftingwithbottle_38',['PotionCraftingWithBottle',['../class_game_tip_i_d.html#a5af84f9d8422bb48c8a8286264796824',1,'GameTipID']]],
@@ -62,6 +62,7 @@ var searchData=
   ['pumpkingmoonstarting_59',['PumpkingMoonStarting',['../class_game_tip_i_d.html#ab4916e55fbc854fed1033610af7c498b',1,'GameTipID']]],
   ['pumpkingscythe_60',['PumpkingScythe',['../class_n_p_c_a_i_style_i_d.html#accdcb50e769fafd8a21744873928ffdd',1,'NPCAIStyleID']]],
   ['purple_61',['Purple',['../class_item_rarity_i_d.html#af0ab2b06b23ed7fb48c1276073b03966',1,'ItemRarityID']]],
-  ['pvpbuff_62',['pvpBuff',['../class_main.html#acdf515b495d7cd84bdb2142e67afcc19',1,'Main']]],
-  ['pwnhammerforaltars_63',['PwnHammerForAltars',['../class_game_tip_i_d.html#a29fe6b9e8b383be7385cec87ebf3b1dc',1,'GameTipID']]]
+  ['pvp_62',['PvP',['../struct_player_1_1_hurt_info.html#a223f4407c111b66c39b1181faea167d4',1,'Player::HurtInfo']]],
+  ['pvpbuff_63',['pvpBuff',['../class_main.html#acdf515b495d7cd84bdb2142e67afcc19',1,'Main']]],
+  ['pwnhammerforaltars_64',['PwnHammerForAltars',['../class_game_tip_i_d.html#a29fe6b9e8b383be7385cec87ebf3b1dc',1,'GameTipID']]]
 ];

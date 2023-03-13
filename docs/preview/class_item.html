@@ -145,7 +145,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CloneDefaults</b> (in
 <tr class="memitem:a3cc4bce9d2b8ac615ad7460925df5ae4"><td class="memItemLeft" align="right" valign="top"><a id="a3cc4bce9d2b8ac615ad7460925df5ae4" name="a3cc4bce9d2b8ac615ad7460925df5ae4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyNetStateTo</b> (<a class="el" href="class_item.html">Item</a> target)</td></tr>
 <tr class="memdesc:a3cc4bce9d2b8ac615ad7460925df5ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this instead of Clone for much faster state snapshotting and change sync detection.<br  />
- Note!! SetDefaults will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion <br /></td></tr>
+ Note!! SetDefaults(int) will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion <br /></td></tr>
 <tr class="separator:a3cc4bce9d2b8ac615ad7460925df5ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa18d73137643eeff54c636e6728f6a9"><td class="memItemLeft" align="right" valign="top"><a id="afa18d73137643eeff54c636e6728f6a9" name="afa18d73137643eeff54c636e6728f6a9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsClass</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
@@ -295,7 +295,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetStateDifferent</
 <tr class="memitem:a2bc596de801f19e604933d65acf61392"><td class="memItemLeft" align="right" valign="top"><a id="a2bc596de801f19e604933d65acf61392" name="a2bc596de801f19e604933d65acf61392"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNotSameTypePrefixAndStack</b> (<a class="el" href="class_item.html">Item</a> compareItem)</td></tr>
 <tr class="memdesc:a2bc596de801f19e604933d65acf61392"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns false if and only if type, stack and prefix match<br  />
- </p><dl class="section see"><dt>See also</dt><dd>IsNetStateEquivalent(Item)</dd></dl>
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_item.html#a48869b79002273c02f07e3b1c788bcd0" title="Returns true if these items are different and there is a need to re-sync them">IsNetStateDifferent(Item)</a></dd></dl>
 <br /></td></tr>
 <tr class="separator:a2bc596de801f19e604933d65acf61392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3db72b1d5030690f9ab2c2c066580708"><td class="memItemLeft" align="right" valign="top"><a id="a3db72b1d5030690f9ab2c2c066580708" name="a3db72b1d5030690f9ab2c2c066580708"></a>
@@ -654,7 +654,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>buyOnce</b></td></tr>
 <tr class="memitem:a4f94b3e02853338b448e30a72b8e6c7c"><td class="memItemLeft" align="right" valign="top"><a id="a4f94b3e02853338b448e30a72b8e6c7c" name="a4f94b3e02853338b448e30a72b8e6c7c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>cartTrack</b></td></tr>
 <tr class="separator:a4f94b3e02853338b448e30a72b8e6c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74aac6f77dfaf0d7ce28ee534968fb09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a74aac6f77dfaf0d7ce28ee534968fb09">channel</a></td></tr>
+<tr class="memitem:a74aac6f77dfaf0d7ce28ee534968fb09"><td class="memItemLeft" align="right" valign="top"><a id="a74aac6f77dfaf0d7ce28ee534968fb09" name="a74aac6f77dfaf0d7ce28ee534968fb09"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b></td></tr>
+<tr class="memdesc:a74aac6f77dfaf0d7ce28ee534968fb09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for items that have special behavior when the attack button is held. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a74aac6f77dfaf0d7ce28ee534968fb09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4218e4b45bb9a6a9b08ba87420e22436"><td class="memItemLeft" align="right" valign="top"><a id="a4218e4b45bb9a6a9b08ba87420e22436" name="a4218e4b45bb9a6a9b08ba87420e22436"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>chlorophyteExtractinatorConsumable</b></td></tr>
@@ -3792,22 +3795,6 @@ Otherwise, return <code>true</code>. </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a74aac6f77dfaf0d7ce28ee534968fb09" name="a74aac6f77dfaf0d7ce28ee534968fb09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74aac6f77dfaf0d7ce28ee534968fb09">&#9670;&nbsp;</a></span>channel</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Item.channel</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Used for items that have special behavior when the attack button is held. <br  />
- Defaults to <code>false</code>. </p>
-
-</div>
-</div>
 <a id="a721ada78521fd509b1a073844e797cb0" name="a721ada78521fd509b1a073844e797cb0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a721ada78521fd509b1a073844e797cb0">&#9670;&nbsp;</a></span>instanced</h2>
 

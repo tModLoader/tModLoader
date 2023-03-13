@@ -2,8 +2,11 @@ var class_player =
 [
     [ "BuilderAccToggleIDs", "class_player_1_1_builder_acc_toggle_i_ds.html", null ],
     [ "CompositeArmData", "struct_player_1_1_composite_arm_data.html", null ],
+    [ "DefenseStat", "struct_player_1_1_defense_stat.html", null ],
     [ "DirectionalInputSyncCache", "struct_player_1_1_directional_input_sync_cache.html", null ],
     [ "Hooks", "class_player_1_1_hooks.html", null ],
+    [ "HurtInfo", "struct_player_1_1_hurt_info.html", "struct_player_1_1_hurt_info" ],
+    [ "HurtModifiers", "struct_player_1_1_hurt_modifiers.html", "struct_player_1_1_hurt_modifiers" ],
     [ "ItemCheckContext", "struct_player_1_1_item_check_context.html", null ],
     [ "ItemSpaceStatus", "struct_player_1_1_item_space_status.html", null ],
     [ "OverheadMessage", "struct_player_1_1_overhead_message.html", null ],

@@ -12,5 +12,6 @@ var searchData=
   ['priority_9',['Priority',['../class_mod_scene_effect.html#ae41db4c5059325def708737f3cc07384',1,'ModSceneEffect']]],
   ['projectile_10',['Projectile',['../class_mod_projectile.html#a3dc7232386718dacd571cf54b990315d',1,'ModProjectile']]],
   ['publiclogger_11',['PublicLogger',['../class_logging.html#a3523d3f02e86b1b4e0366c0b3b929a2e',1,'Logging']]],
-  ['pylontype_12',['PylonType',['../class_mod_pylon.html#af904ea05fe76856174712f05baa50a25',1,'ModPylon']]]
+  ['pvp_12',['PvP',['../struct_player_1_1_hurt_modifiers.html#acc6458994f221c568588dfaf15d91ba3',1,'Player::HurtModifiers']]],
+  ['pylontype_13',['PylonType',['../class_mod_pylon.html#af904ea05fe76856174712f05baa50a25',1,'ModPylon']]]
 ];
