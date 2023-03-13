@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
@@ -98,11 +99,21 @@ public sealed partial class NPCShop {
 
 		overflow = false;
 		foreach (Entry group in oldEntries) {
+			Item item = null;
+
 			if (group.Disabled || !group.ConditionsMet()) {
-				continue;
+				if (group.Reverse) {
+					item = new(0);
+				}
+				goto Check;
+			}
+			item = group.Item;
+
+			Check:
+			if (item != null) {
+				newItems.Add(item);
 			}
 
-			newItems.Add(group.Item);
 			if (newItems.Count < 40) {
 				continue;
 			}

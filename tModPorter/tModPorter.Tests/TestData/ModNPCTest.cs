@@ -46,4 +46,6 @@ public class ModNPCTest : ModNPC
 	public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
 	{
 	}
+
+	public override void OnChatButtonClicked(bool firstButton, ref bool shop) { /* Empty */ }
 }

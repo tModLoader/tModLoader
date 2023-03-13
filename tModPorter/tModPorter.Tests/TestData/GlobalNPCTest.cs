@@ -28,5 +28,5 @@ public class GlobalNPCTest : GlobalNPC
 	{
 	}
 
-	public override void ModifyShop(NPCShop shop) { /* Empty */ }
+	public override void SetupShop(int type, Chest shop, ref int nextSlot) { /* Empty */ }
 }

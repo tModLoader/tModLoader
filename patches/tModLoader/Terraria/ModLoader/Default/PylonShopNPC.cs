@@ -9,6 +9,8 @@ public sealed class PylonShopNPC : GlobalNPC
 {
 	public override void ModifyShop(NPCShop shop)
 	{
+		shop.Add(NPCShopDatabase.GetVanillaPylonEntries());
+
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
 			if (pylon.ItemDrop == 0) {
 				continue;

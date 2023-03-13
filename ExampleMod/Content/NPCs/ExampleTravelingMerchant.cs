@@ -37,6 +37,7 @@ namespace ExampleMod.Content.NPCs
 		private static Profiles.StackedNPCProfile NPCProfile;
 
 		public override bool PreAI() {
+			return true;
 			if ((!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(NPC.Center)) // If it's past the despawn time and the NPC isn't onscreen
 			{
 				// Here we despawn the NPC and send a message stating that the NPC has despawned
@@ -88,6 +89,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		private static bool CanSpawnNow() {
+			return true;
 			// can't spawn if any events are running
 			if (Main.eclipse || Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0)
 				return false;
@@ -271,7 +273,10 @@ namespace ExampleMod.Content.NPCs
 		public override void ModifyActiveShop(string shopId, Item[] items) {
 			int i = 0;
 			foreach (var shopItem in shopItems) {
-				// Add each item in the shop.
+				// We don't want "empty" items and unloaded items to appear
+				if (shopItem == null || shopItem.type == ItemID.None)
+					continue;
+
 				items[i] = shopItem;
 				i++;
 			}

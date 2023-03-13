@@ -428,7 +428,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModNPC", from: "SetupShop", to: "AddShops");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "AddShops");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked");
-		RenameMethod("Terraria.ModLoader.GlobalNPC", from: "SetupShop",	to: "ModifyShop");
-		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyShop");
+		RenameMethod("Terraria.ModLoader.GlobalNPC", from: "SetupShop",	to: "ModifyActiveShop");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 	}
 }
