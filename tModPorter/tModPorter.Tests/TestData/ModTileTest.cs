@@ -14,6 +14,8 @@ public class ModTileTest : ModTile
 
 		dresserDrop = 0;
 		chestDrop = 0;
+		ChestDrop = 2;
+		DresserDrop = 3;
 		minPick = 0;
 		mineResist = 0;
 		animationFrameHeight = 0;
@@ -64,4 +66,6 @@ public class ModTileTest : ModTile
 	}
 
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
+
+	public override bool Drop(int i, int j) { /* Empty */ }
 }

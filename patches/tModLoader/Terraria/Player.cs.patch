@@ -3840,15 +3840,15 @@
  			noThrow = 2;
  			cursorItemIconEnabled = true;
  			cursorItemIconID = inventory[selectedItem].type;
-@@ -26828,6 +_,8 @@
+@@ -26824,6 +_,8 @@
+ 			noThrow = 2;
+ 		}
+ 
++		TileLoader.MouseOver(myX, myY);
++
+ 		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
- 		}
-+
-+		TileLoader.MouseOver(myX, myY);
- 	}
- 
- 	public Color ChatColor()
 @@ -26967,11 +_,23 @@
  			if (!item.active || item.shimmerTime != 0f || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item) || (item.shimmered && !((double)item.velocity.Length() < 0.2)))
  				continue;
@@ -4798,10 +4798,13 @@
  			if (overrideCanPlace.HasValue) {
  				canPlace = overrideCanPlace.Value;
  			}
-@@ -30757,9 +_,12 @@
+@@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
  
++			if (!TileLoader.CanReplace(tileTargetX, tileTargetY, tile.type, HeldItem.createTile))
++				return false;
++
 +			if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
 +				return false;
 +
@@ -4812,6 +4815,24 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
+@@ -30833,8 +_,17 @@
+ 		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
+ 			return tile.frameY != num * 18;
+ 
++		if (TileID.Sets.Torch[tile.type] && TileID.Sets.Torch[createTile]) {
++			if (tile.frameY == num * 22)
++				return tile.type != createTile;
++
++			return true;
++		}
++
++		/*
+ 		if (tile.type == 4 && tile.type == createTile)
+ 			return tile.frameY != num * 22;
++		*/
+ 
+ 		if (tile.type == 215 && tile.type == createTile)
+ 			return tile.frameX / 54 != num;
 @@ -30964,8 +_,12 @@
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();

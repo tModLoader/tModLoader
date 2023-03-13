@@ -1616,7 +1616,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -46939,11 +_,29 @@
+@@ -46939,11 +_,30 @@
  		useTime = 10;
  	}
  
@@ -1634,7 +1634,8 @@
 +	/// width = 14;
 +	/// height = 14;
 +	/// useStyle = <see cref="ItemUseStyleID.Swing"/>;
-+	/// useAnimation = 15; useTime = 10;<br/>
++	/// useAnimation = 15;
++	/// useTime = 10;
 +	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// useTurn = true;
 +	/// autoReuse = true;
@@ -2028,7 +2029,7 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
-+		if (NPCLoader.blockLoot.Contains(Type))
++		if (NPCLoader.blockLoot.Contains(Type) || newItemDisabled)
 +			return Main.maxItems;
 +
  		if (Main.tenthAnniversaryWorld) {

@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -27,11 +28,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.AvoidedByNPCs[Type] = true;
+			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
+			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ChestDrop = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 
 			// Other tiles with just one map entry use CreateMapEntryName() to use the default translationkey, "MapEntry"
 			// Since ExampleChest needs multiple, we register our own MapEntry keys
@@ -44,11 +47,31 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(Chest.FindEmptyChest, -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(Chest.AfterPlacement_Hook, -1, 0, false);
-			TileObjectData.newTile.AnchorInvalidTiles = new int[] { TileID.MagicalIceBlock };
+			TileObjectData.newTile.AnchorInvalidTiles = new int[] {
+				TileID.MagicalIceBlock,
+				TileID.Boulder,
+				TileID.BouncyBoulder,
+				TileID.LifeCrystalBoulder,
+				TileID.RollingCactus
+			};
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
+		}
+
+		// This example shows using GetItemDrops to manually decide item drops. This example is for a tile with a TileObjectData.
+		public override IEnumerable<Item> GetItemDrops(int i, int j) {
+			Tile tile = Main.tile[i, j];
+			int style = TileObjectData.GetTileStyle(tile);
+			if (style == 0) {
+				yield return new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>());
+			}
+			if (style == 1) {
+				// Style 1 is ExampleChest when locked. We want that tile style to drop the ExampleChest item as well. Use the Chest Lock item to lock this chest.
+				// No item places ExampleChest in the locked style, so the automatic item drop is unknown, this is why GetItemDrops is necessary in this situation. 
+				yield return new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>());
+			}
 		}
 
 		public override ushort GetMapOption(int i, int j) {
@@ -81,7 +104,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) {
 			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
 			// We need to return true only if the tile style is the unlocked variant of a chest that supports locking. 
-			if(style == 0) {
+			if (style == 0) {
 				// We can check other conditions as well, such as how biome chests can't be locked until Plantera is defeated
 				return true;
 			}
@@ -117,7 +140,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ChestDrop);
+			// We override KillMultiTile to handle additional logic other than the item drop. In this case, unregistering the Chest from the world
 			Chest.DestroyChest(i, j);
 		}
 
@@ -152,7 +175,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			bool isLocked = Chest.IsLocked(left, top);
 			if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked) {
-				if (left == player.chestX && top == player.chestY && player.chest >= 0) {
+				if (left == player.chestX && top == player.chestY && player.chest != -1) {
 					player.chest = -1;
 					Recipe.FindRecipes();
 					SoundEngine.PlaySound(SoundID.MenuClose);
@@ -166,7 +189,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				if (isLocked) {
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<ExampleChestKey>();
-					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
+					if (player.ConsumeItem(key, includeVoidBag: true) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
 							NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 						}
@@ -174,7 +197,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				}
 				else {
 					int chest = Chest.FindChest(left, top);
-					if (chest >= 0) {
+					if (chest != -1) {
 						Main.stackSplit = 600;
 						if (chest == player.chest) {
 							player.chest = -1;
