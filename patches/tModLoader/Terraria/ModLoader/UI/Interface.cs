@@ -415,15 +415,21 @@ internal static class Interface
 							ConfigureMod(configs);
 						}
 						else {
+							Console.ForegroundColor = ConsoleColor.Yellow;
 							Console.WriteLine("This mod does not have any config");
+							Console.ResetColor();
 						}
 					}
 					else {
+						Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.WriteLine("Mod not enabled, please enable it and reload");
+						Console.ResetColor();
 					}
 				}
 				else {
+					Console.ForegroundColor = ConsoleColor.Yellow;
 					Console.WriteLine("Mod index out of bounds");
+					Console.ResetColor();
 				}
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
@@ -452,15 +458,17 @@ internal static class Interface
 		while (true) {
 			foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties)
 			{
-				string text = (variable.Name + " :");
+				LabelAttribute labelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(variable, null, null); //I don't know what the item and array variables are for and they are unused
+				string text = labelAttribute?.Label ?? variable.Name;
+				text += " :";
 				int size = text.Length;
-				text = key + "\t" + text + new string('\t', (31 - size) / 8);
+				text = key + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 0));
 				text += variable.GetValue(config);
 				Console.WriteLine(text);
 			}
-			Console.WriteLine("m <number> <new config> :\tEdit configuration");
-			Console.WriteLine("d :\t\t\t\tRestore configuration to default");
-			Console.WriteLine("e :\t\t\t\tExit");
+			Console.WriteLine("m <number> <new config> :\t\t\t\tModify configuration");
+			Console.WriteLine("d :\t\t\t\t\t\t\tRestore configuration to default");
+			Console.WriteLine("e :\t\t\t\t\t\t\tExit");
 
 			Console.WriteLine();
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
@@ -475,11 +483,38 @@ internal static class Interface
 				if (properties.TryGetValue(configIndex, out (PropertyFieldWrapper, ModConfig) value)) {
 					try {
 						object parsedValue = Convert.ChangeType(match.Groups[2].Value, ((FieldInfo) value.Item1.MemberInfo).FieldType);
-						value.Item1.SetValue(value.Item2, parsedValue);
-						ConfigManager.Save(value.Item2);
+
+						//Validate value
+						OptionStringsAttribute optionStringsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(value.Item1, null, null);
+						RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(value.Item1, null, null);
+						if (optionStringsAttribute != null &&
+						    !optionStringsAttribute.OptionLabels.Any(s => s.Equals(parsedValue))) {
+							string text = "The only possible values are : ";
+							//I'll assume the list isn't empty since it would be dumb otherwise
+							text += optionStringsAttribute.OptionLabels[0];
+							for (int i = 1; i < optionStringsAttribute.OptionLabels.Length; i++) {
+								text += ", " + optionStringsAttribute.OptionLabels[i];
+							}
+							Console.ForegroundColor = ConsoleColor.Yellow;
+							Console.WriteLine(text);
+							Console.ResetColor();
+						}
+						else if (rangeAttribute != null && parsedValue is IComparable comparable &&
+						         (comparable.CompareTo(rangeAttribute.Min) < 0 ||
+						          comparable.CompareTo(rangeAttribute.Max) > 0)) {
+							Console.ForegroundColor = ConsoleColor.Yellow;
+							Console.WriteLine($"The value must be between {rangeAttribute.Min} and {rangeAttribute.Max}");
+							Console.ResetColor();
+						}
+						else {
+							value.Item1.SetValue(value.Item2, parsedValue);
+							ConfigManager.Save(value.Item2);
+						}
 					}
 					catch {
+						Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.WriteLine("Invalid value");
+						Console.ResetColor();
 					}
 				}
 			}
