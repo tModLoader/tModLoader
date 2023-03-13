@@ -57,14 +57,15 @@ public partial class Player
 		/// Used by <see cref="Player.endurance" /> to reduce overall incoming damage. <br/>
 		/// <br/>
 		/// Multiply to grant damage reduction buffs (eg *0.9f for -10% damage taken). <br/>
-		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional damage, ignoring all resistances or multipliers. <br/>
+		/// Add to <see cref="StatModifier.Base"/> to deal damage which ignores armor, but still respects scaling damage reduction like endurance or paladins shield. <br/>
+		/// Adding to <see cref="StatModifier.Flat"/> will ignore all reductions or increases to deal unconditional damage. Not recommended due to potential compatibility issues with accessories like paladin's shield, use <see cref="StatModifier.Base"/> instead.
 		/// </summary>
 		public StatModifier FinalDamage = new();
 
 		/// <summary>
 		/// Flat defense reduction. Applies after <see cref="ScalingArmorPenetration"/>. <br/>
 		/// <br/>
-		/// Consider supplying armorPenetration as an argument to <see cref="Player.Hurt"/> instead if possible.<br/>
+		/// Consider supplying armorPenetration as an argument to <see cref="Player.Hurt(PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float)"/> instead if possible.<br/>
 		/// </summary>
 		public AddableFloat ArmorPenetration = new();
 

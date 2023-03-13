@@ -52,7 +52,7 @@ public partial class NPC
 		public AddableFloat ScalingBonusDamage = new();
 
 		/// <summary>
-		/// Not recommended for modded use, consider multiplying <see cref="FinalDamage"/> instead. <br/>
+		/// Not recommended for modded use due to difficulty balancing around defense, consider multiplying <see cref="FinalDamage"/> instead. <br/>
 		/// Used by vanilla for banners, cultist projectile resistances, extra damage for stakes against vampires etc.
 		/// </summary>
 		public MultipliableFloat TargetDamageMultiplier = new();
@@ -109,7 +109,8 @@ public partial class NPC
 		/// <br/>
 		/// Multiply to make your enemy more susceptible or resistant to damage. <br/>
 		/// Add to give 'bonus' post-mitigation damage. <br/>
-		/// Adding to <see cref="StatModifier.Flat"/> will grant unconditional bonus damage, ignoring all resistances or multipliers (except <see cref="SuperArmor"/>).
+		/// Add to <see cref="StatModifier.Base"/> to deal damage which ignores armor, but still respects scaling damage reductions or increases. <br/>
+		/// Adding to <see cref="StatModifier.Flat"/> will ignore all reductions or increases to deal unconditional damage. Not recommended due to potential compatibility issues with enemy or player damage reduction effects, use <see cref="StatModifier.Base"/> instead.
 		/// </summary>
 		public StatModifier FinalDamage = new();
 
