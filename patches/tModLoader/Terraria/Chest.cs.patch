@@ -636,23 +636,21 @@
  	public static void SetupTravelShop()
  	{
  		for (int i = 0; i < 40; i++) {
-@@ -1166,14 +_,18 @@
- 		}
- 	}
+@@ -1168,12 +_,18 @@
  
--	public void SetupShop(int type)
-+	/// <summary>
-+	/// Sets up an NPC's shop.
-+	/// </summary>
-+	/// <param name="type">The ID of the shop to setup. <strong>This is not an NPC type (<see cref="NPC.type"/>).</strong></param>
-+	public void SetupShop(string shop, int type) // TML: shop parameter
+ 	public void SetupShop(int type)
  	{
++		SetupShop(NPCShopDatabase.GetNPCShopNameFromVanillaIndex(type));
++	}
++
++	public void SetupShop(string shopName) // TML: shop parameter
++	{
  		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
  		Item[] array = item;
  		for (int i = 0; i < 40; i++) {
  			array[i] = new Item();
  		}
--
+ 
 +		/*
  		int num = 0;
  		switch (type) {
@@ -672,7 +670,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,44 @@
+@@ -2987,16 +_,43 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -685,7 +683,7 @@
 +		*/
 +
 +		bool isTalkingToNpc = (Main.LocalPlayer?.talkNPC ?? -1) != -1;
-+		if (type == 19) {
++		if (shopName == NPCShopDatabase.GetNPCShopNameFromVanillaIndex(19)) {
 +			int i = 0;
 +			for (int num11 = 0; num11 < 40; num11++) {
 +				if (Main.travelShop[num11] != 0) {
@@ -694,19 +692,18 @@
 +			}
 +		}
 +		else {
-+			var loot = NPCShopDatabase.GetNPCShop(shop);
-+			bool overflow = false;
++			var loot = NPCShopDatabase.GetNPCShop(shopName);
 +			if (loot != null && isTalkingToNpc) {
-+				loot.Build(array, Main.npc[Main.LocalPlayer.talkNPC], out overflow);
-+			}
-+			if (overflow) {
-+				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
-+				Logging.tML.Warn($"Unable to fit all item in the shop {name}");
++				loot.Build(array, Main.npc[Main.LocalPlayer.talkNPC], out bool overflow);
++				if (overflow) {
++					Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
++					Logging.tML.Warn($"Unable to fit all item in the shop {name}");
++				}
 +			}
 +		}
 +		
 +		if (isTalkingToNpc) {
-+			NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shop, array);
++			NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shopName, array);
 +		}
 -		for (int num15 = 0; num15 < num; num15++) {
 +		for (int num15 = 0; num15 < array.Length; num15++) {

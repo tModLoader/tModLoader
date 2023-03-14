@@ -1283,7 +1283,7 @@
  		ClientInitialize();
  		base.Initialize();
  	}
-@@ -5242,7 +_,12 @@
+@@ -5242,6 +_,10 @@
  		Chest.SetupTravelShop();
  		for (int m = 1; m < 100; m++) {
  			shop[m] = new Chest();
@@ -1291,12 +1291,9 @@
 +			if (m >= NPCLoader.shopToNPC.Length)
 +				continue;
 +
-+			var name = NPCShopDatabase.GetVanillaShop(m);
--			shop[m].SetupShop(m);
-+			shop[m].SetupShop(name, m);
+ 			shop[m].SetupShop(m);
  		}
  
- 		teamColor[0] = Microsoft.Xna.Framework.Color.White;
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -3862,12 +3859,10 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
-@@ -32406,7 +_,8 @@
- 		stackSplit = 9999;
+@@ -32407,6 +_,7 @@
  		npcChatText = "";
  		SetNPCShopIndex(shopIndex);
--		shop[npcShop].SetupShop(npcShop);
-+		shop[npcShop].SetupShop(NPCShopDatabase.GetVanillaShop(npcShop), npcShop);
+ 		shop[npcShop].SetupShop(npcShop);
 +		
  		SoundEngine.PlaySound(12);
  	}

@@ -37,7 +37,7 @@ public static class NPCShopDatabase
 		return $"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}";
 	}
 
-	public static string GetVanillaShop(int index)
+	public static string GetNPCShopNameFromVanillaIndex(int index)
 	{
 		int npcType = NPCLoader.shopToNPC[index];
 		if (index == 25) { // Painter 2 Shop Special Case
