@@ -12,7 +12,7 @@ public sealed partial class NPCShop {
 		internal (Entry target, bool after) Ordering { get; private set; } = (null, false);
 		public bool Disabled { get; private set; }
 		public bool OrdersLast { get; private set; }
-		public bool Reverse { get; private set; }
+		public bool SlotReserved { get; private set; }
 		public Item Item => item;
 
 		public Entry(int item, params ICondition[] condition) : this(new Item(item), condition) { }
@@ -53,8 +53,8 @@ public sealed partial class NPCShop {
 			return this;
 		}
 
-		public Entry ReverseSlot() {
-			Reverse = true;
+		public Entry ReserveSlot() {
+			SlotReserved = true;
 			return this;
 		}
 
