@@ -829,7 +829,7 @@ public static class NPCShopDatabase
 
 		// 1st row
 		shop.Add(ItemID.Ale);
-		shop.Add(new Entry(ItemID.DD2ElderCrystal).OnShopOpened((item, npc) => {        // Eternia Crystal
+		shop.Add(new Entry(ItemID.DD2ElderCrystal).AddShopOpenedCallback((item, npc) => {        // Eternia Crystal
 			if (NPC.downedGolemBoss) {
 				item.shopCustomPrice = Item.buyPrice(gold: 4);
 			}

@@ -89,11 +89,11 @@ public sealed partial class NPCShop {
 	}
 
 	/// <summary>
-	/// 
+	/// Fills a shop array with the contents of this shop, evaluating conditions and running callbacks.
 	/// </summary>
 	/// <param name="items">Array to be filled.</param>
-	/// <param name="npc">The NPC the player is talking to.</param>
-	/// <param name="overflow">Equals to true if amount of added items is greater than 39.</param>
+	/// <param name="npc">The NPC the player is talking to, for <see cref="Entry.OnShopOpen(Item, NPC)"/> calls.</param>
+	/// <param name="overflow">True if some items were unable to fit in the provided array.</param>
 	public void Build(Item[] items, NPC npc, out bool overflow) {
 		overflow = false;
 
@@ -107,7 +107,7 @@ public sealed partial class NPCShop {
 			if (entry.Disabled) // Note, disabled entries can't reserve slots
 				continue;
 
-			var item = entry.Item.Clone();
+			Item item;
 			if (!entry.ConditionsMet()) {
 				if (!entry.SlotReserved)
 					continue;
@@ -115,6 +115,7 @@ public sealed partial class NPCShop {
 				item = new Item(0);
 			}
 			else {
+				item = entry.Item.Clone();
 				entry.OnShopOpen(item, npc);
 			}
 

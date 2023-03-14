@@ -8,7 +8,7 @@ public sealed partial class NPCShop {
 	public sealed class Entry {
 		internal readonly Item item;
 		private readonly List<ICondition> conditions;
-		private event Action<Item, Player> onOpened;
+		private Action<Item, NPC> shopOpenedHooks;
 
 		internal (Entry target, bool after) Ordering { get; private set; } = (null, false);
 		public bool Disabled { get; private set; }
@@ -62,15 +62,15 @@ public sealed partial class NPCShop {
 			return this;
 		}
 
-		public Entry OnShopOpened(Action<Item, NPC> onShopOpened)
+		public Entry AddShopOpenedCallback(Action<Item, NPC> callback)
 		{
-			onOpened += onShopOpened;
+			shopOpenedHooks += callback;
 			return this;
 		}
 
 		public void OnShopOpen(Item item, NPC npc)
 		{
-			onOpened(item, npc);
+			shopOpenedHooks?.Invoke(item, npc);
 		}
 
 		public bool ConditionsMet() {
