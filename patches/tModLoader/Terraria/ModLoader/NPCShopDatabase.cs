@@ -963,15 +963,15 @@ public static class NPCShopDatabase
 	internal static void SortAllShops()
 	{
 		foreach (var shop in npcShopByName) {
-			var entries = new List<NPCShop.Entry>(shop.Value.items);
+			var entries = new List<NPCShop.Entry>(shop.Value.entries);
 			entries = NPCShop.SortBeforeAfter(entries, r => r.Ordering).ToList();
 
 			var toBeLast = entries.Where(x => x.OrdersLast).ToList();
 			entries.RemoveAll(x => x.OrdersLast);
 			entries.AddRange(toBeLast);
 
-			shop.Value.items.Clear();
-			shop.Value.items.AddRange(entries);
+			shop.Value.entries.Clear();
+			shop.Value.entries.AddRange(entries);
 		}
 	}
 }

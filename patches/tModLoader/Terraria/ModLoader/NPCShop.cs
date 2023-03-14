@@ -6,34 +6,34 @@ using Terraria.ID;
 namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop {
-	internal readonly List<Entry> items;
+	internal readonly List<Entry> entries;
 	private readonly int npcId;
 	private readonly string name;
 
-	public IReadOnlyList<Entry> Items => items;
+	public IReadOnlyList<Entry> Entries => entries;
 	public int NpcType => npcId;
 	public string Name => name;
 	public string FullName => NPCShopDatabase.GetNPCShopName(NpcType, Name);
 
 	public NPCShop(int npcId, string name = "Shop") {
-		items = new();
+		entries = new();
 		this.name = name;
 		this.npcId = npcId;
 	}
 
 	public Entry GetEntry(int item)
 	{
-		return items[items.FindIndex(x => x.item.type.Equals(item))];
+		return entries[entries.FindIndex(x => x.item.type.Equals(item))];
 	}
 
 	public bool TryGetEntry(int item, out Entry entry)
 	{
-		int i = items.FindIndex(x => x.item.type.Equals(item));
+		int i = entries.FindIndex(x => x.item.type.Equals(item));
 		if (i == -1) {
 			entry = null;
 			return false;
 		}
-		entry = items[i];
+		entry = entries[i];
 		return true;
 	}
 
@@ -42,7 +42,7 @@ public sealed partial class NPCShop {
 	}
 
 	public NPCShop Add(params Entry[] entries) {
-		items.AddRange(entries);
+		this.entries.AddRange(entries);
 		return this;
 	}
 
@@ -95,19 +95,19 @@ public sealed partial class NPCShop {
 	/// <param name="overflow">Equals to true if amount of added items is greater than 39.</param>
 	public void Build(Item[] itemArray, out bool overflow) {
 		List<Item> newItems = new();
-		List<Entry> oldEntries = new(items);
+		List<Entry> oldEntries = new(this.entries);
 
 		overflow = false;
-		foreach (Entry group in oldEntries) {
+		foreach (Entry entry in oldEntries) {
 			Item item = null;
 
-			if (group.Disabled || !group.ConditionsMet()) {
-				if (group.Reverse) {
+			if (entry.Disabled || !entry.ConditionsMet()) {
+				if (entry.SlotReserved) {
 					item = new(0);
 				}
 				goto Check;
 			}
-			item = group.Item;
+			item = entry.Item;
 
 			Check:
 			if (item != null) {
