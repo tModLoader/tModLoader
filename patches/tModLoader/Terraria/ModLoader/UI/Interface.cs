@@ -478,6 +478,12 @@ internal static class Interface
 					Console.WriteLine("<not supported>");
 					Console.ResetColor();
 				}
+				TooltipAttribute tooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(variable, null, null);
+				if (tooltipAttribute != null) {
+					Console.ForegroundColor = ConsoleColor.Cyan;
+					Console.WriteLine("\t" + tooltipAttribute.Tooltip);
+					Console.ResetColor();
+				}
 			}
 			Console.WriteLine("m <number> <new config> :\t\t\t\tModify configuration");
 			Console.WriteLine("d :\t\t\t\t\t\t\tRestore configuration to default");
