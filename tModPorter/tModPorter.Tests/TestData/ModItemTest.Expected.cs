@@ -96,4 +96,9 @@ public class ModItemTest : ModItem
 #endif
 
 	public override void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) { }
 }

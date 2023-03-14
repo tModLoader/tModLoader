@@ -232,14 +232,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
-	/// </summary>
-	/// <param name="damageScale">The damage scaling</param>
-	public virtual void ModifyDamageScaling(ref float damageScale)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether this projectile can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="target">The target.</param>
@@ -252,11 +244,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="knockback">The modifiable knockback.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	/// <param name="hitDirection">The modifiable hit direction.</param>
-	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers">The modifiers for this strike.</param>
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -264,10 +253,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockback">The knockback.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit">The damage.</param>
+	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -278,26 +266,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual bool CanHitPvp(Player target)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, etc., that this projectile does to an opponent player.
-	/// </summary>
-	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	public virtual void ModifyHitPvp(Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when this projectile hits an opponent player.
-	/// </summary>
-	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitPvp(Player target, int damage, bool crit)
-	{
 	}
 
 	/// <summary>
@@ -313,19 +281,18 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this hostile projectile hits a player.
+	/// Allows you to create special effects when this hostile projectile hits a player. <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	/// <param name="info"></param>
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo info)
 	{
 	}
 

@@ -1,4 +1,4 @@
-﻿using static tModPorter.Rewriters.RenameRewriter;
+using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.HookRewriter;
@@ -163,9 +163,6 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
-		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PreHurt");
-		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"Hurt");
-		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PostHurt");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"AddStartingItems", comment: "Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PlayerConnect");
@@ -185,6 +182,76 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"IsLoadingEnabled");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"CloneNewInstances"); // public -> protected
 		ChangeHookSignature("Terraria.ModLoader.ModBossBar",		"ModifyInfo", comment: "Note: life and shield current and max values are now separate to allow for hp/shield number text draw");
+
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ModifyHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ModifyHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"OnHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"OnHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ModifyHitPvp");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ModifyHitPvp");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"OnHitPvp");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"OnHitPvp");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"HitEffect");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"HitEffect");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ModifyHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ModifyHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"OnHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"OnHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ModifyHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ModifyHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"OnHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"OnHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ModifyHitByItem");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ModifyHitByItem");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"OnHitByItem");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"OnHitByItem");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ModifyHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ModifyHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"OnHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"OnHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ModifyIncomingHit");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ModifyIncomingHit");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ModifyCollisionData");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ModifyCollisionData");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"ModifyHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"ModifyHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"OnHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"OnHitNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"ModifyHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"ModifyHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"OnHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"OnHitPlayer");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHurt");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHurt");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PostHurt");
+
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHitNPCWithItem", comment: "If you don't need the Item, consider using ModifyHitNPC instead");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitNPCWithItem",		comment: "If you don't need the Item, consider using OnHitNPC instead");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHitNPCWithProj", comment: "If you don't need the Projectile, consider using ModifyHitNPC instead");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitNPCWithProj",		comment: "If you don't need the Projectile, consider using OnHitNPC instead");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHitByNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitByNPC");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitByProjectile");
+
+		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "CanHitNPC",				to: "CanHitNPCWithItem");
+		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "ModifyHitNPC",			to: "ModifyHitNPCWithItem");
+		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "OnHitNPC",				to: "OnHitNPCWithItem");
+		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "PreHurt",				to: "ModifyHurt").FollowBy(AddCommentToOverride("Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage"));
+		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "Hurt",					to: "OnHurt");
+		RenameMethod("Terraria.ModLoader.ModNPC",			from: "StrikeNPC",				to: "ModifyIncomingHit");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",		from: "StrikeNPC",				to: "ModifyIncomingHit");
+		RenameMethod("Terraria.ModLoader.ModProjectile",	from: "ModifyDamageScaling",	to: "ModifyHitNPC");
+		RenameMethod("Terraria.ModLoader.GlobalProjectile",	from: "ModifyDamageScaling",	to: "ModifyHitNPC");
+
+		HookRemoved("Terraria.ModLoader.ModPlayer",			"ModifyHitPvp",				"Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player");
+		HookRemoved("Terraria.ModLoader.ModPlayer",			"ModifyHitPvpWithProj",		"Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player");
+		HookRemoved("Terraria.ModLoader.ModPlayer",			"OnHitPvp",					"Use OnHurt on the receiving player and check info.PvP. Use info.DamageSource.SourcePlayerIndex to get the attacking player");
+		HookRemoved("Terraria.ModLoader.ModPlayer",			"OnHitPvpWithProj",			"Use OnHurt on the receiving player and check info.PvP. Use info.DamageSource.SourcePlayerIndex to get the attacking player");
+		HookRemoved("Terraria.ModLoader.ModProjectile",		"ModifyHitPvp",				"Use ModifyHitPlayer and check modifiers.PvP");
+		HookRemoved("Terraria.ModLoader.GlobalProjectile",	"ModifyHitPvp",				"Use ModifyHitPlayer and check modifiers.PvP");
+		HookRemoved("Terraria.ModLoader.ModProjectile",		"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
+		HookRemoved("Terraria.ModLoader.GlobalProjectile",	"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
@@ -408,7 +475,6 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
-
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
 
 		// 1.4.3 -> 1.4.4
@@ -422,8 +488,12 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Localization.LocalizedText", "SetDefault", CommentOut);
 		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
 		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
-
 		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
+
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile", "Drop", comment: "Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation.");
+		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
 
 		RenameMethod("Terraria.ModLoader.ModNPC", from: "SetupShop", to: "AddShops");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "AddShops");

@@ -14,7 +14,6 @@ namespace ExampleMod.Content.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleBlock>();
 
 			AddMapEntry(new Color(200, 200, 200));
 		}

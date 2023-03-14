@@ -158,7 +158,7 @@
 		"LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
 
 		"LoadErrorNotLoading": "Mod.AddContent can only be called during loading",
-		"LoadErrorDuplicateName": "Cannot add two {0} with the same name: {1}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddContent with 2 {0} of the same name.",
+		"LoadErrorDuplicateName": "Cannot add two {0} with the same name: {1}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddContent with 2 {0} of the same name, or maybe there is a duplicate/already in use legacyname",
 
 		"LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",

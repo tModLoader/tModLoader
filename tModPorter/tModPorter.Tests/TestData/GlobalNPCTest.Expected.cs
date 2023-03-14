@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -37,4 +37,20 @@ public class GlobalNPCTest : GlobalNPC
 	}
 
 	public override void ModifyShop(NPCShop shop) { /* Empty */ }
+
+	public override void HitEffect(NPC npc, NPC.HitInfo hit) { }
+	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) { }
+	public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit) { }
+	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers) {
+#if COMPILE_ERROR
+		return false;
+#endif
+	}
+	public override bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) => false;
 }

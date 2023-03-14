@@ -20,13 +20,13 @@ namespace ExampleMod.Content.NPCs
 			return lateInstantiation && entity.townNPC;
 		}
 
-		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
+		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 			if (projectile.owner != 255) {
 				HasBeenHitByPlayer = true;
 			}
 		}
 
-		public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
+		public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 			HasBeenHitByPlayer = true;
 		}
 

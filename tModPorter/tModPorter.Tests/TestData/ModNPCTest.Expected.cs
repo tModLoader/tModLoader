@@ -66,4 +66,20 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
+
+	public override void HitEffect(NPC.HitInfo hit) { }
+	public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) { }
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit) { }
+	public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
+#if COMPILE_ERROR
+		return false;
+#endif
+	}
+	public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) => false;
 }

@@ -355,6 +355,15 @@
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
+@@ -862,6 +_,8 @@
+ 	public static bool[] tileNoFail = new bool[TileID.Count];
+ 	public static bool[] tileCracked = new bool[TileID.Count];
+ 	public static bool[] tileObsidianKill = new bool[TileID.Count];
++	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
+ 	public static bool[] tileFrameImportant = new bool[TileID.Count];
+ 	public static bool[] tilePile = new bool[TileID.Count];
+ 	public static bool[] tileBlendAll = new bool[TileID.Count];
 @@ -942,6 +_,12 @@
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
@@ -6138,7 +6147,7 @@
  				num40++;
  			}
  		}
-@@ -54517,8 +_,20 @@
+@@ -54517,20 +_,38 @@
  
  			WorldGen.prioritizedTownNPCType = num42;
  		}
@@ -6146,6 +6155,7 @@
 +		NPCLoader.CanTownNPCSpawn(num40);
  	}
  
++	public static int DefaultDamageVariationPercent = 15;
 +	/// <summary>
 +	/// Multiplies the input damage by a random value between <c>0.85f</c> and <c>1.15f</c>.
 +	/// </summary>
@@ -6158,7 +6168,45 @@
 +	/// <returns>The varied damage value, rounded to the nearest integer.</returns>
  	public static int DamageVar(float dmg, float luck = 0f)
  	{
- 		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++		return DamageVar(dmg, DefaultDamageVariationPercent, luck);
++	}
++	
++	public static int DamageVar(float dmg, int percent, float luck = 0f)
++	{
+-		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++		float num = dmg * (1f + (float)rand.Next(-percent, percent+1) * 0.01f);
+ 		if (luck > 0f) {
+ 			if (rand.NextFloat() < luck) {
+-				float num2 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++				float num2 = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
+ 				if (num2 > num)
+ 					num = num2;
+ 			}
+ 		}
+ 		else if (luck < 0f && rand.NextFloat() < 0f - luck) {
+-			float num3 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++			float num3 = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
+ 			if (num3 < num)
+ 				num = num3;
+ 		}
+@@ -54538,7 +_,8 @@
+ 		return (int)Math.Round(num);
+ 	}
+ 
++	/*
+-	public static double CalculateDamageNPCsTake(int Damage, int Defense)
++	public static double CalculateDamageNPCsTake(double Damage, int Defense)
+ 	{
+ 		double num = (double)Damage - (double)Defense * 0.5;
+ 		if (num < 1.0)
+@@ -54569,6 +_,7 @@
+ 
+ 		return num;
+ 	}
++	*/
+ 
+ 	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)
+ 	{
 @@ -54625,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)

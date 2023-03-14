@@ -381,86 +381,98 @@ public static class PlayerLoader
 		}
 	}
 
-	private delegate bool DelegatePreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection,
-		ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter);
-	private static HookList HookPreHurt = AddHook<DelegatePreHurt>(p => p.PreHurt);
-
-	public static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
-		ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+	private static HookList HookImmuneTo = AddHook<Func<PlayerDeathReason, int, bool, bool>>(p => p.ImmuneTo);
+	public static bool ImmuneTo(Player player, PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
 	{
-		PreHurt_Obsolete(player, pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
-		bool flag = true;
-		foreach (var modPlayer in HookPreHurt.Enumerate(player.modPlayers)) {
-			if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-					ref playSound, ref genGore, ref damageSource, ref cooldownCounter)) {
-				flag = false;
-			}
+		foreach (var modPlayer in HookImmuneTo.Enumerate(player.modPlayers)) {
+			if (modPlayer.ImmuneTo(damageSource, cooldownCounter, dodgeable))
+				return true;
 		}
-		return flag;
+
+		return false;
 	}
 
-	private static HookList HookHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.Hurt);
-
-	public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	private static HookList HookFreeDodge = AddHook<Func<PlayerDeathReason, int, bool>>(p => p.FreeDodge);
+	public static bool FreeDodge(Player player, PlayerDeathReason damageSource, int cooldownCounter)
 	{
-		Hurt_Obsolete(player, pvp, quiet, damage, hitDirection, crit);
+		foreach (var modPlayer in HookFreeDodge.Enumerate(player.modPlayers)) {
+			if (modPlayer.FreeDodge(damageSource, cooldownCounter))
+				return true;
+		}
+
+		return false;
+	}
+
+	private static HookList HookConsumableDodge = AddHook<Func<PlayerDeathReason, int, bool>>(p => p.ConsumableDodge);
+	public static bool ConsumableDodge(Player player, PlayerDeathReason damageSource, int cooldownCounter)
+	{
+		foreach (var modPlayer in HookConsumableDodge.Enumerate(player.modPlayers)) {
+			if (modPlayer.ConsumableDodge(damageSource, cooldownCounter))
+				return true;
+		}
+
+		return false;
+	}
+
+	private delegate void DelegateModifyHurt(ref Player.HurtModifiers modifiers);
+	private static HookList HookModifyHurt = AddHook<DelegateModifyHurt>(p => p.ModifyHurt);
+
+	public static void ModifyHurt(Player player, ref Player.HurtModifiers modifiers)
+	{
+		// safe to get source entity, as hurt is not synchronized across the net
+		if (modifiers.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
+			switch (sourceEntity)
+			{
+				case Projectile proj:
+					CombinedHooks.ModifyHitByProjectile(player, proj, ref modifiers);
+					break;
+				case NPC npc:
+					CombinedHooks.ModifyHitByNPC(player, npc, ref modifiers);
+					break;
+				case Player sourcePlayer when modifiers.DamageSource.SourceItem is Item item && modifiers.PvP:
+					ItemLoader.ModifyHitPvp(item, sourcePlayer, player, ref modifiers);
+					break;
+			}
+		}
+
+		foreach (var modPlayer in HookModifyHurt.Enumerate(player.modPlayers)) {
+			modPlayer.ModifyHurt(ref modifiers);
+		}
+	}
+
+	private static HookList HookHurt = AddHook<Action<Player.HurtInfo>>(p => p.OnHurt);
+
+	public static void OnHurt(Player player, Player.HurtInfo info)
+	{
+		// source entity is only safe to retrieve if the hit is happening 'locally'
+		if (info.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
+			switch (sourceEntity)
+			{
+				case Projectile proj when player == Main.LocalPlayer:
+					CombinedHooks.OnHitByProjectile(player, proj, info);
+					break;
+				case NPC npc when player == Main.LocalPlayer:
+					CombinedHooks.OnHitByNPC(player, npc, info);
+					break;
+				case Player sourcePlayer when info.DamageSource.SourceItem is Item item && info.PvP:
+					ItemLoader.OnHitPvp(item, sourcePlayer, player, info);
+					break;
+			}
+		}
+
 		foreach (var modPlayer in HookHurt.Enumerate(player.modPlayers)) {
-			modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
+			modPlayer.OnHurt(info);
 		}
 	}
 
-	private static HookList HookPostHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.PostHurt);
+	private static HookList HookPostHurt = AddHook<Action<Player.HurtInfo>>(p => p.PostHurt);
 
-	public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	public static void PostHurt(Player player, Player.HurtInfo info)
 	{
-		PostHurt_Obsolete(player, pvp, quiet, damage, hitDirection, crit);
 		foreach (var modPlayer in HookPostHurt.Enumerate(player.modPlayers)) {
-			modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
+			modPlayer.PostHurt(info);
 		}
 	}
-
-#region Legacy
-	private delegate bool DelegatePreHurt_Obsolete(bool pvp, bool quiet, ref int damage, ref int hitDirection,
-		ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
-	[Obsolete]
-	private static HookList HookPreHurt_Obsolete = AddHook<DelegatePreHurt_Obsolete>(p => p.PreHurt);
-
-	[Obsolete]
-	private static bool PreHurt_Obsolete(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
-		ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
-	{
-		bool flag = true;
-		foreach (var modPlayer in HookPreHurt_Obsolete.Enumerate(player.modPlayers)) {
-			if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-					ref playSound, ref genGore, ref damageSource)) {
-				flag = false;
-			}
-		}
-		return flag;
-	}
-
-	[Obsolete]
-	private static HookList HookHurt_Obsolete = AddHook<Action<bool, bool, double, int, bool>>(p => p.Hurt);
-
-	[Obsolete]
-	private static void Hurt_Obsolete(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
-	{
-		foreach (var modPlayer in HookHurt_Obsolete.Enumerate(player.modPlayers)) {
-			modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit);
-		}
-	}
-
-	[Obsolete]
-	private static HookList HookPostHurt_Obsolete = AddHook<Action<bool, bool, double, int, bool>>(p => p.PostHurt);
-
-	[Obsolete]
-	private static void PostHurt_Obsolete(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit)
-	{
-		foreach (var modPlayer in HookPostHurt_Obsolete.Enumerate(player.modPlayers)) {
-			modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit);
-		}
-	}
-#endregion
 
 	private delegate bool DelegatePreKill(double damage, int hitDirection, bool pvp, ref bool playSound,
 		ref bool genGore, ref PlayerDeathReason damageSource);
@@ -799,91 +811,112 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookCanHitNPC = AddHook<Func<Item, NPC, bool?>>(p => p.CanHitNPC);
-
-	public static bool? CanHitNPC(Player player, Item item, NPC target)
+	private static HookList HookCanHitNPC = AddHook<Func<NPC, bool>>(p => p.CanHitNPC);
+	public static bool CanHitNPC(Player player, NPC target)
 	{
-		bool? flag = null;
+		foreach (var modPlayer in HookCanHitNPC.Enumerate(player.modPlayers))
+			if (!modPlayer.CanHitNPC(target))
+				return false;
 
-		foreach (var modPlayer in HookCanHitNPC.Enumerate(player.modPlayers)) {
-			bool? canHit = modPlayer.CanHitNPC(item, target);
+		return true;
+	}
 
-			if (canHit.HasValue) {
-				if (!canHit.Value) {
+	private delegate void DelegateModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers);
+	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
+
+	public static void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
+	{
+		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
+			modPlayer.ModifyHitNPC(target, ref modifiers);
+		}
+	}
+
+	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC.HitInfo, int>>(p => p.OnHitNPC);
+
+	public static void OnHitNPC(Player player, NPC target, in NPC.HitInfo hit, int damageDone)
+	{
+		foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
+			modPlayer.OnHitNPC(target, hit, damageDone);
+		}
+	}
+
+	private static HookList HookCanHitNPCWithItem = AddHook<Func<Item, NPC, bool?>>(p => p.CanHitNPCWithItem);
+	public static bool? CanHitNPCWithItem(Player player, Item item, NPC target)
+	{
+		if (!CanHitNPC(player, target))
+			return false;
+
+		bool? ret = null;
+		foreach (var modPlayer in HookCanHitNPCWithItem.Enumerate(player.modPlayers)) {
+			if (modPlayer.CanHitNPCWithItem(item, target) is bool b) {
+				if (!b)
 					return false;
-				}
 
-				flag = true;
+				ret = true;
 			}
 		}
 
-		return flag;
+		return ret;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit);
-	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
+	private delegate void DelegateModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers);
+	private static HookList HookModifyHitNPCWithItem = AddHook<DelegateModifyHitNPCWithItem>(p => p.ModifyHitNPCWithItem);
 
-	public static void ModifyHitNPC(Player player, Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+	public static void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers)
 	{
-		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+		ModifyHitNPC(player, target, ref modifiers);
+		foreach (var modPlayer in HookModifyHitNPCWithItem.Enumerate(player.modPlayers)) {
+			modPlayer.ModifyHitNPCWithItem(item, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, NPC, int, float, bool>>(p => p.OnHitNPC);
+	private static HookList HookOnHitNPCWithItem = AddHook<Action<Item, NPC, NPC.HitInfo, int>>(p => p.OnHitNPCWithItem);
 
-	public static void OnHitNPC(Player player, Item item, NPC target, int damage, float knockback, bool crit)
+	public static void OnHitNPCWithItem(Player player, Item item, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
-		foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitNPC(item, target, damage, knockback, crit);
+		OnHitNPC(player, target, hit, damageDone);
+		foreach (var modPlayer in HookOnHitNPCWithItem.Enumerate(player.modPlayers)) {
+			modPlayer.OnHitNPCWithItem(item, target, hit, damageDone);
 		}
 	}
 
 	private static HookList HookCanHitNPCWithProj = AddHook<Func<Projectile, NPC, bool?>>(p => p.CanHitNPCWithProj);
 
-	public static bool? CanHitNPCWithProj(Projectile proj, NPC target)
+	public static bool? CanHitNPCWithProj(Player player, Projectile proj, NPC target)
 	{
-		if (proj.npcProj || proj.trap) {
-			return null;
-		}
-		Player player = Main.player[proj.owner];
-		bool? flag = null;
+		if (!CanHitNPC(player, target))
+			return false;
+
+		bool? ret = null;
 		foreach (var modPlayer in HookCanHitNPCWithProj.Enumerate(player.modPlayers)) {
-			bool? canHit = modPlayer.CanHitNPCWithProj(proj, target);
-			if (canHit.HasValue && !canHit.Value) {
-				return false;
-			}
-			if (canHit.HasValue) {
-				flag = canHit.Value;
+			if (modPlayer.CanHitNPCWithProj(proj, target) is bool b) {
+				if (!b)
+					return false;
+
+				ret = true;
 			}
 		}
-		return flag;
+		return ret;
 	}
 
-	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
+	private delegate void DelegateModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPCWithProj = AddHook<DelegateModifyHitNPCWithProj>(p => p.ModifyHitNPCWithProj);
 
-	public static void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	public static void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
 	{
-		if (proj.npcProj || proj.trap) {
-			return;
-		}
-		Player player = Main.player[proj.owner];
+		ModifyHitNPC(player, target, ref modifiers);
 		foreach (var modPlayer in HookModifyHitNPCWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+			modPlayer.ModifyHitNPCWithProj(proj, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, int, float, bool>>(p => p.OnHitNPCWithProj);
+	private static HookList HookOnHitNPCWithProj = AddHook<Action<Projectile, NPC, NPC.HitInfo, int>>(p => p.OnHitNPCWithProj);
 
-	public static void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+	public static void OnHitNPCWithProj(Player player, Projectile proj, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
-		if (proj.npcProj || proj.trap) {
-			return;
-		}
-		Player player = Main.player[proj.owner];
+		OnHitNPC(player, target, hit, damageDone);
 		foreach (var modPlayer in HookOnHitNPCWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitNPCWithProj(proj, target, damage, knockback, crit);
+			modPlayer.OnHitNPCWithProj(proj, target, hit, damageDone);
 		}
 	}
 
@@ -899,25 +932,6 @@ public static class PlayerLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitPvp(Item item, Player target, ref int damage, ref bool crit);
-	private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(p => p.ModifyHitPvp);
-
-	public static void ModifyHitPvp(Player player, Item item, Player target, ref int damage, ref bool crit)
-	{
-		foreach (var modPlayer in HookModifyHitPvp.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitPvp(item, target, ref damage, ref crit);
-		}
-	}
-
-	private static HookList HookOnHitPvp = AddHook<Action<Item, Player, int, bool>>(p => p.OnHitPvp);
-
-	public static void OnHitPvp(Player player, Item item, Player target, int damage, bool crit)
-	{
-		foreach (var modPlayer in HookOnHitPvp.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitPvp(item, target, damage, crit);
-		}
-	}
-
 	private static HookList HookCanHitPvpWithProj = AddHook<Func<Projectile, Player, bool>>(p => p.CanHitPvpWithProj);
 
 	public static bool CanHitPvpWithProj(Projectile proj, Player target)
@@ -929,27 +943,6 @@ public static class PlayerLoader
 			}
 		}
 		return true;
-	}
-
-	private delegate void DelegateModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit);
-	private static HookList HookModifyHitPvpWithProj = AddHook<DelegateModifyHitPvpWithProj>(p => p.ModifyHitPvpWithProj);
-
-	public static void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
-	{
-		Player player = Main.player[proj.owner];
-		foreach (var modPlayer in HookModifyHitPvpWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitPvpWithProj(proj, target, ref damage, ref crit);
-		}
-	}
-
-	private static HookList HookOnHitPvpWithProj = AddHook<Action<Projectile, Player, int, bool>>(p => p.OnHitPvpWithProj);
-
-	public static void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
-	{
-		Player player = Main.player[proj.owner];
-		foreach (var modPlayer in HookOnHitPvpWithProj.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitPvpWithProj(proj, target, damage, crit);
-		}
 	}
 
 	private delegate bool DelegateCanBeHitByNPC(NPC npc, ref int cooldownSlot);
@@ -965,22 +958,22 @@ public static class PlayerLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitByNPC(NPC npc, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitByNPC = AddHook<DelegateModifyHitByNPC>(p => p.ModifyHitByNPC);
 
-	public static void ModifyHitByNPC(Player player, NPC npc, ref int damage, ref bool crit)
+	public static void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers)
 	{
 		foreach (var modPlayer in HookModifyHitByNPC.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitByNPC(npc, ref damage, ref crit);
+			modPlayer.ModifyHitByNPC(npc, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitByNPC = AddHook<Action<NPC, int, bool>>(p => p.OnHitByNPC);
+	private static HookList HookOnHitByNPC = AddHook<Action<NPC, Player.HurtInfo>>(p => p.OnHitByNPC);
 
-	public static void OnHitByNPC(Player player, NPC npc, int damage, bool crit)
+	public static void OnHitByNPC(Player player, NPC npc, in Player.HurtInfo hurtInfo)
 	{
 		foreach (var modPlayer in HookOnHitByNPC.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitByNPC(npc, damage, crit);
+			modPlayer.OnHitByNPC(npc, hurtInfo);
 		}
 	}
 
@@ -996,22 +989,22 @@ public static class PlayerLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitByProjectile = AddHook<DelegateModifyHitByProjectile>(p => p.ModifyHitByProjectile);
 
-	public static void ModifyHitByProjectile(Player player, Projectile proj, ref int damage, ref bool crit)
+	public static void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers)
 	{
 		foreach (var modPlayer in HookModifyHitByProjectile.Enumerate(player.modPlayers)) {
-			modPlayer.ModifyHitByProjectile(proj, ref damage, ref crit);
+			modPlayer.ModifyHitByProjectile(proj, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitByProjectile = AddHook<Action<Projectile, int, bool>>(p => p.OnHitByProjectile);
+	private static HookList HookOnHitByProjectile = AddHook<Action<Projectile, Player.HurtInfo>>(p => p.OnHitByProjectile);
 
-	public static void OnHitByProjectile(Player player, Projectile proj, int damage, bool crit)
+	public static void OnHitByProjectile(Player player, Projectile proj, in Player.HurtInfo hurtInfo)
 	{
 		foreach (var modPlayer in HookOnHitByProjectile.Enumerate(player.modPlayers)) {
-			modPlayer.OnHitByProjectile(proj, damage, crit);
+			modPlayer.OnHitByProjectile(proj, hurtInfo);
 		}
 	}
 
@@ -1024,7 +1017,7 @@ public static class PlayerLoader
 			modPlayer.ModifyFishingAttempt(ref attempt);
 		}
 
-		attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this 
+		attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this
 	}
 
 	private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
@@ -1290,7 +1283,7 @@ public static class PlayerLoader
 	}
 
 	private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
-	
+
 	private static readonly HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 
 	public static bool ModifyNurseHeal(Player player, NPC npc, ref int health, ref bool removeDebuffs, ref string chat)
@@ -1350,7 +1343,7 @@ public static class PlayerLoader
 
 	public static IEnumerable<(IEnumerable<Item>, ModPlayer.ItemConsumedCallback)> GetModdedCraftingMaterials(Player player)
 	{
-		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path. 
+		// unfortunately we can't use a lot of nice ref struct syntax with enumerators, so we have to enumerate on the slow path.
 		foreach (var modPlayer in HookAddCraftingMaterials.EnumerateSlow(player.modPlayers)) {
 			var items = modPlayer.AddMaterialsForCrafting(out var onUsedForCrafting);
 			if (items != null)

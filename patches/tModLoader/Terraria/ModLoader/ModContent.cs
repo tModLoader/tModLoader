@@ -329,6 +329,8 @@ public static class ModContent
 		PrefixLoader.FinishSetup();
 		ProjectileLoader.FinishSetup();
 		PylonLoader.FinishSetup();
+		TileLoader.FinishSetup();
+		WallLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();

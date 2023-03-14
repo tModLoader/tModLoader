@@ -66,15 +66,21 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		if (specialKind != SyntaxKind.None)
 			return PredefinedType(Token(specialKind));
 
-		if (sym.ContainingNamespace != null) {
+		if (sym.ContainingNamespace != null)
 			UsingNamespace(sym.ContainingNamespace);
-		}
 
-		if (sym.TypeArguments.Length > 0) {
-			return GenericName(Identifier(sym.Name), TypeArgumentList(sym.TypeArguments.Select(UseType)));
-		}
+		return Name(sym);
+	}
 
-		return IdentifierName(sym.Name);
+	private NameSyntax Name(INamedTypeSymbol sym)
+	{
+		SimpleNameSyntax name = sym.TypeArguments.Length > 0
+			? GenericName(Identifier(sym.Name), TypeArgumentList(sym.TypeArguments.Select(UseType)))
+			: IdentifierName(sym.Name);
+
+		return sym.ContainingType != null
+			? QualifiedName(Name(sym.ContainingType), name)
+			: name;
 	}
 
 	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
