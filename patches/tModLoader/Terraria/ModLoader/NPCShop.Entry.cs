@@ -23,7 +23,7 @@ public sealed partial class NPCShop {
 			conditions = condition.ToList();
 		}
 
-		private Entry SetOrdering(Entry entry, bool after = false) {
+		internal Entry SetOrdering(Entry entry, bool after = false) {
 			ArgumentNullException.ThrowIfNull(entry, nameof(entry));
 			Ordering = (entry, after);
 
@@ -71,7 +71,7 @@ public sealed partial class NPCShop {
 		}
 	}
 
-	internal static IEnumerable<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
+	internal static List<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
 		var baseOrder = new List<T>();
 		var sortBefore = new Dictionary<T, List<T>>();
 		var sortAfter = new Dictionary<T, List<T>>();
@@ -97,7 +97,7 @@ public sealed partial class NPCShop {
 		}
 
 		if ((sortBefore.Count + sortAfter.Count) == 0)
-			return values;
+			return values.ToList();
 
 		void Sort(T r) {
 			if (sortBefore.TryGetValue(r, out var before))

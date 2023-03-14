@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop {
-	internal readonly List<Entry> entries;
+	private List<Entry> entries;
 	private readonly int npcId;
 	private readonly string name;
 
@@ -116,5 +115,15 @@ public sealed partial class NPCShop {
 
 			items[i++] = item;
 		}
+	}
+
+	internal void Sort()
+	{
+		// process 'OrdersLast' first, so an entry which sorts after an 'OrdersLast' entry is still placed in the correct position
+		var toBeLast = entries.Where(x => x.OrdersLast).ToList();
+		entries.RemoveAll(x => x.OrdersLast);
+		entries.AddRange(toBeLast);
+
+		entries = SortBeforeAfter(entries, r => r.Ordering);
 	}
 }
