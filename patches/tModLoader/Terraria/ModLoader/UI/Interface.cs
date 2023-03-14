@@ -411,7 +411,7 @@ internal static class Interface
 				int modIndex = Convert.ToInt32(command[2..]) - 1;
 				if (modIndex < mods.Length) {
 					if (ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod)) {
-						if (ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs)) {
+						if (ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs) && configs.Any(config => config.Mode == ConfigScope.ServerSide)) {
 							ConfigureMod(configs);
 						}
 						else {
@@ -444,14 +444,19 @@ internal static class Interface
 		int index = 1;
 		foreach (ModConfig config in configs)
 		{
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
-				if (variable.IsProperty && variable.Name == "Mode")
-					continue;
+			if (config.Mode == ConfigScope.ServerSide) {
+				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
+					if (variable.IsProperty && variable.Name == "Mode")
+						continue;
 
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
-					continue;
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute))) // TODO, appropriately named attribute
+						continue;
 
-				properties.Add(index++, (variable, config));
+					if (variable.Type.IsAssignableTo(typeof(IConvertible)))
+						properties.Add(index++, (variable, config));
+					else
+						properties.Add(index++, (variable, null)); //Not convertible aren't supported, this is remembered by a null config
+				}
 			}
 		}
 
@@ -463,8 +468,16 @@ internal static class Interface
 				text += " :";
 				int size = text.Length;
 				text = key + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 0));
-				text += variable.GetValue(config);
-				Console.WriteLine(text);
+				if (config != null) {
+					text += variable.GetValue(config);
+					Console.WriteLine(text);
+				}
+				else {
+					Console.Write(text);
+					Console.ForegroundColor = ConsoleColor.Yellow;
+					Console.WriteLine("<not supported>");
+					Console.ResetColor();
+				}
 			}
 			Console.WriteLine("m <number> <new config> :\t\t\t\tModify configuration");
 			Console.WriteLine("d :\t\t\t\t\t\t\tRestore configuration to default");
