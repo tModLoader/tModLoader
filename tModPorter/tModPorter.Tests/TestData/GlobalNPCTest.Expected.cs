@@ -36,7 +36,7 @@ public class GlobalNPCTest : GlobalNPC
 	{
 	}
 
-	public override void ModifyShop(NPCShop shop) { /* Empty */ }
+	public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) { /* Empty */ }
 
 	public override void HitEffect(NPC npc, NPC.HitInfo hit) { }
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) { }

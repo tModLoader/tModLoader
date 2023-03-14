@@ -495,10 +495,10 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
 
-		RenameMethod("Terraria.ModLoader.ModNPC", from: "SetupShop", to: "AddShops");
-		ChangeHookSignature("Terraria.ModLoader.ModNPC", "AddShops");
-		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked");
-		RenameMethod("Terraria.ModLoader.GlobalNPC", from: "SetupShop",	to: "ModifyActiveShop");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"OnChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 	}
 }
