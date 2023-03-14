@@ -148,6 +148,11 @@ Mods: {
 					''' */
 			}
 
+			ExampleInfoAccessory: {
+				// DisplayName: Example Info Accessory
+				// Tooltip: Displays how many minions you have summoned
+			}
+
 			ExampleShield: {
 				// DisplayName: Example Shield
 				// Tooltip: This is a modded shield.
