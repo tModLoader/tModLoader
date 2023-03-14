@@ -91,37 +91,30 @@ public sealed partial class NPCShop {
 	/// <summary>
 	/// 
 	/// </summary>
-	/// <param name="itemArray">Array to be filled.</param>
+	/// <param name="items">Array to be filled.</param>
 	/// <param name="overflow">Equals to true if amount of added items is greater than 39.</param>
-	public void Build(Item[] itemArray, out bool overflow) {
-		List<Item> newItems = new();
-		List<Entry> oldEntries = new(this.entries);
-
+	public void Build(Item[] items, out bool overflow) {
 		overflow = false;
-		foreach (Entry entry in oldEntries) {
-			Item item = null;
 
-			if (entry.Disabled || !entry.ConditionsMet()) {
-				if (entry.SlotReserved) {
-					item = new(0);
-				}
-				goto Check;
-			}
-			item = entry.Item;
-
-			Check:
-			if (item != null) {
-				newItems.Add(item);
-			}
-
-			if (newItems.Count < 40) {
+		int i = 0;
+		foreach (Entry entry in entries) {
+			if (entry.Disabled) // Note, disabled entries can't reserve slots
 				continue;
-			}
-			newItems[^1] = new();
-			overflow = true;
-			break;
-		}
 
-		newItems.CopyTo(itemArray);
+			var item = entry.Item;
+			if (!entry.ConditionsMet()) {
+				if (!entry.SlotReserved)
+					continue;
+
+				item = new Item(0);
+			}
+
+			if (i == items.Length) {
+				overflow = true;
+				return;
+			}
+
+			items[i++] = item;
+		}
 	}
 }
