@@ -400,6 +400,15 @@
  	public static int myPlayer;
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
+@@ -1045,7 +_,7 @@
+ 	public static bool npcChatFocus4;
+ 	public static int oldNPCShop;
+ 	public static int npcChatCornerItem;
+-	public Chest[] shop = new Chest[100];
++	public Chest[] shop = new Chest[2]; // technically only need a single Chest for the shop, but npcShop 0 is used for 'no shop' and we don't want to patch 20 places
+ 	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
+ 	public static int[] travelShop = new int[40];
+ 	public static List<string> anglerWhoFinishedToday = new List<string>();
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -1283,8 +1292,13 @@
  		ClientInitialize();
  		base.Initialize();
  	}
-@@ -5242,6 +_,10 @@
+@@ -5239,11 +_,18 @@
+ 		}
+ 
+ 		shop[0] = new Chest();
++		shop[1] = new Chest(); // Added by tML, only 1 shop actually needed
  		Chest.SetupTravelShop();
++		/*
  		for (int m = 1; m < 100; m++) {
  			shop[m] = new Chest();
 +
@@ -1293,7 +1307,10 @@
 +
  			shop[m].SetupShop(m);
  		}
++		*/
  
+ 		teamColor[0] = Microsoft.Xna.Framework.Color.White;
+ 		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -3859,10 +3876,14 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
-@@ -32407,6 +_,7 @@
+@@ -32405,8 +_,9 @@
+ 		playerInventory = true;
+ 		stackSplit = 9999;
  		npcChatText = "";
- 		SetNPCShopIndex(shopIndex);
- 		shop[npcShop].SetupShop(npcShop);
+-		SetNPCShopIndex(shopIndex);
++		SetNPCShopIndex(1);
+-		shop[npcShop].SetupShop(npcShop);
++		shop[npcShop].SetupShop(shopIndex);
 +		
  		SoundEngine.PlaySound(12);
  	}

@@ -1,5 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Terraria.Audio;
 @@ -8,34 +_,129 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
@@ -640,15 +645,16 @@
  
  	public void SetupShop(int type)
  	{
-+		SetupShop(NPCShopDatabase.GetNPCShopNameFromVanillaIndex(type));
++		SetupShop(NPCShopDatabase.GetNPCShopNameFromVanillaIndex(type), Main.npc[Main.LocalPlayer.talkNPC]);
 +	}
 +
-+	public void SetupShop(string shopName) // TML: shop parameter
++	public void SetupShop(string shopName, NPC npc) // TML: shop parameter
 +	{
  		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
  		Item[] array = item;
  		for (int i = 0; i < 40; i++) {
- 			array[i] = new Item();
+-			array[i] = new Item();
++			array[i] = null;//new Item();
  		}
  
 +		/*
@@ -670,7 +676,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,43 @@
+@@ -2987,6 +_,7 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -678,37 +684,34 @@
  			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
  				array[num++].SetDefaults(4921);
  		}
- 
-+		NPCLoader.SetupShop(type, this, ref num);
+@@ -2994,9 +_,33 @@
+ 		for (int num15 = 0; num15 < num; num15++) {
+ 			array[num15].isAShopItem = true;
+ 		}
 +		*/
 +
-+		bool isTalkingToNpc = (Main.LocalPlayer?.talkNPC ?? -1) != -1;
 +		if (shopName == NPCShopDatabase.GetNPCShopNameFromVanillaIndex(19)) {
 +			int i = 0;
 +			for (int num11 = 0; num11 < 40; num11++) {
 +				if (Main.travelShop[num11] != 0) {
-+					array[i++].netDefaults(Main.travelShop[num11]);
++					array[i++] = new Item(Main.travelShop[num11]);
 +				}
 +			}
 +		}
-+		else {
-+			var loot = NPCShopDatabase.GetNPCShop(shopName);
-+			if (loot != null && isTalkingToNpc) {
-+				loot.Build(array, Main.npc[Main.LocalPlayer.talkNPC], out bool overflow);
-+				if (overflow) {
-+					Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
-+					Logging.tML.Warn($"Unable to fit all item in the shop {name}");
-+				}
++		else if (NPCShopDatabase.GetNPCShop(shopName) is NPCShop shop) {
++			shop.Build(array, npc, out bool overflow);
++			if (overflow) {
++				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
++				Logging.tML.Warn($"Unable to fit all item in the shop {name}");
 +			}
 +		}
 +		
-+		if (isTalkingToNpc) {
-+			NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shopName, array);
++		NPCLoader.ModifyActiveShop(npc, shopName, array);
++
++		foreach (ref var item in array.AsSpan()) {
++			item ??= new Item();
++			item.isAShopItem = true;
 +		}
--		for (int num15 = 0; num15 < num; num15++) {
-+		for (int num15 = 0; num15 < array.Length; num15++) {
- 			array[num15].isAShopItem = true;
- 		}
  	}
  
 -	private static bool BestiaryGirl_IsFairyTorchAvailable()

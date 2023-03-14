@@ -1148,10 +1148,12 @@ public static class NPCLoader
 			SoundEngine.PlaySound(SoundID.MenuTick);
 
 			if (shopName != null) {
+				// Copied from Main.OpenShop
 				Main.playerInventory = true;
+				Main.stackSplit = 9999;
 				Main.npcChatText = "";
-				Main.npcShop = Main.MaxShopIDs - 1;
-				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetNPCShopName(npc.type, shopName));
+				Main.SetNPCShopIndex(1);
+				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetNPCShopName(npc.type, shopName), npc);
 			}
 		}
 
