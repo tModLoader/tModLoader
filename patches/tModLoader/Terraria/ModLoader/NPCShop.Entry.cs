@@ -99,10 +99,13 @@ public sealed partial class NPCShop {
 		if ((sortBefore.Count + sortAfter.Count) == 0)
 			return values.ToList();
 
+		var sorted = new List<T>();
 		void Sort(T r) {
 			if (sortBefore.TryGetValue(r, out var before))
 				foreach (var c in before)
 					Sort(c);
+
+			sorted.Add(r);
 
 			if (sortAfter.TryGetValue(r, out var after))
 				foreach (var c in after)
@@ -113,6 +116,6 @@ public sealed partial class NPCShop {
 			Sort(r);
 		}
 
-		return baseOrder;
+		return sorted;
 	}
 }
