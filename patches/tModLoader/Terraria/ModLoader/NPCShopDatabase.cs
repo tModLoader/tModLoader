@@ -83,8 +83,8 @@ public static class NPCShopDatabase
 		for (int i = 0; i < NPCLoader.NPCCount; i++) {
 			NPCLoader.AddShops(i);
 		}
-		foreach (var shop in npcShopByName) {
-			NPCLoader.ModifyShop(shop.Value);
+		foreach (var shop in AllShops) {
+			NPCLoader.ModifyShop(shop);
 		}
 	}
 
