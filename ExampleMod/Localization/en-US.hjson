@@ -71,7 +71,6 @@ Mods: {
 			ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
-				ContainerName: Example Chest
 				MapEntry0: Example Chest
 				MapEntry1: Locked Example Chest
 			}
