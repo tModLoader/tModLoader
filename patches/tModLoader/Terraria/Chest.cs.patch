@@ -672,7 +672,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2987,16 +_,43 @@
+@@ -2987,16 +_,44 @@
  			if (Main.player[Main.myPlayer].ZoneHallow && num < 39)
  				array[num++].SetDefaults(4916);
  
@@ -684,6 +684,7 @@
 +		NPCLoader.SetupShop(type, this, ref num);
 +		*/
 +
++		bool isTalkingToNpc = (Main.LocalPlayer?.talkNPC ?? -1) != -1;
 +		if (type == 19) {
 +			int i = 0;
 +			for (int num11 = 0; num11 < 40; num11++) {
@@ -695,8 +696,8 @@
 +		else {
 +			var loot = NPCShopDatabase.GetNPCShop(shop);
 +			bool overflow = false;
-+			if (loot != null) {
-+				loot.Build(array, out overflow);
++			if (loot != null && isTalkingToNpc) {
++				loot.Build(array, Main.npc[Main.LocalPlayer.talkNPC], out overflow);
 +			}
 +			if (overflow) {
 +				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
@@ -704,7 +705,7 @@
 +			}
 +		}
 +		
-+		if ((Main.LocalPlayer?.talkNPC ?? -1) != -1) {
++		if (isTalkingToNpc) {
 +			NPCLoader.ModifyActiveShop(Main.npc[Main.LocalPlayer.talkNPC], shop, array);
 +		}
 -		for (int num15 = 0; num15 < num; num15++) {

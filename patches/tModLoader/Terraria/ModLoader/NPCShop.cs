@@ -92,8 +92,9 @@ public sealed partial class NPCShop {
 	/// 
 	/// </summary>
 	/// <param name="items">Array to be filled.</param>
+	/// <param name="npc">The NPC the player is talking to.</param>
 	/// <param name="overflow">Equals to true if amount of added items is greater than 39.</param>
-	public void Build(Item[] items, out bool overflow) {
+	public void Build(Item[] items, NPC npc, out bool overflow) {
 		overflow = false;
 
 		int i = 0;
@@ -112,6 +113,9 @@ public sealed partial class NPCShop {
 					continue;
 
 				item = new Item(0);
+			}
+			else {
+				entry.OnShopOpen(item, npc);
 			}
 
 			items[i++] = item;
