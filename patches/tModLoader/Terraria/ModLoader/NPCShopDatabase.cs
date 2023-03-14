@@ -25,6 +25,13 @@ public static class NPCShopDatabase
 		return null;
 	}
 
+	/// <summary>
+	/// Gets a shop name (identifier) in the format matching <see cref="NPCShop.FullName"/> <br/>
+	/// Can be used with <see cref="GetNPCShop(string)"/> and <see cref="GlobalNPC.ModifyActiveShop(NPC, string, Item[])"/>
+	/// </summary>
+	/// <param name="npcId"></param>
+	/// <param name="shopName"></param>
+	/// <returns></returns>
 	public static string GetNPCShopName(int npcId, string shopName = "Shop") {
 		return $"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}";
 	}

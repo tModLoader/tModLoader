@@ -317,7 +317,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void ModifyActiveShop(string shopId, Item[] items) {
+		public override void ModifyActiveShop(string shopName, Item[] items) {
 			int i = 0;
 			foreach (var shopItem in shopItems) {
 				// We don't want "empty" items and unloaded items to appear

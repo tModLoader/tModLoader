@@ -689,18 +689,21 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to add shops to this NPC.
+	/// Allows you to add shops to this NPC, similar to adding recipes for items. <br/>
+	/// Make a new <see cref="NPCShop"/>, and items to it, and call <see cref="NPCShop.Register"/>
 	/// </summary>
 	public virtual void AddShops()
 	{
 	}
 
 	/// <summary>
-	/// Allows you to modify shop whenever player opens it.
+	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
+	/// To create a shop, use <see cref="AddShops"/> <br/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
 	/// </summary>
-	/// <param name="shopId"></param>
-	/// <param name="items"></param>
-	public virtual void ModifyActiveShop(string shopId, Item[] items)
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetNPCShopName"/> for the format. </param>
+	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
+	public virtual void ModifyActiveShop(string shopName, Item[] items)
 	{
 	}
 

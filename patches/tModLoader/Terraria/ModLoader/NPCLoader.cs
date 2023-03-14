@@ -1174,7 +1174,7 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateModifyActiveShop(NPC npc, string shopId, Item[] items);
+	private delegate void DelegateModifyActiveShop(NPC npc, string shopName, Item[] items);
 	private static HookList HookModifyActiveShop = AddHook<DelegateModifyActiveShop>(g => g.ModifyActiveShop);
 
 	public static void ModifyActiveShop(NPC npc, string shopName, Item[] shopContents)
