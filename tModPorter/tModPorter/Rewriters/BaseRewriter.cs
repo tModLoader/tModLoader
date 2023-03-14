@@ -53,10 +53,11 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		usings = usings.WithUsingNamespace(ns.ToString());
 	}
 
-	public TypeSyntax UseType(ITypeSymbol sym) =>
-		sym is INamedTypeSymbol named ?
-			UseType(named) :
-			IdentifierName(sym.ToString());
+	public TypeSyntax UseType(ITypeSymbol sym) => sym switch {
+		INamedTypeSymbol named => UseType(named),
+		IArrayTypeSymbol array => UseType(array),
+		_ => IdentifierName(sym.ToString())
+	};
 
 	public TypeSyntax UseType(INamedTypeSymbol sym) {
 		if (sym.ConstructedFrom is INamedTypeSymbol genericTemplate && genericTemplate.SpecialType == SpecialType.System_Nullable_T)
@@ -84,6 +85,8 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	}
 
 	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
+
+	public TypeSyntax UseType(IArrayTypeSymbol arrayType) => ArrayTypeRank1(UseType(arrayType.ElementType));
 
 	public bool IsUsingNamespace(string @namespace) => usings.Contains(@namespace);
 
