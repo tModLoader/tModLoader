@@ -964,11 +964,12 @@ public static class NPCShopDatabase
 	{
 		foreach (var shop in npcShopByName) {
 			var entries = new List<NPCShop.Entry>(shop.Value.entries);
-			entries = NPCShop.SortBeforeAfter(entries, r => r.Ordering).ToList();
 
 			var toBeLast = entries.Where(x => x.OrdersLast).ToList();
 			entries.RemoveAll(x => x.OrdersLast);
 			entries.AddRange(toBeLast);
+
+			entries = NPCShop.SortBeforeAfter(entries, r => r.Ordering).ToList();
 
 			shop.Value.entries.Clear();
 			shop.Value.entries.AddRange(entries);
