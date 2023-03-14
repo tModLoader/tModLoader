@@ -3900,7 +3900,7 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
-@@ -33145,17 +_,25 @@
+@@ -33145,17 +_,26 @@
  					if (num34 == 147)
  						bannerMouseOver = true;
  
@@ -3914,7 +3914,8 @@
 +					if (meleeBuff[num34])
 +						rare = -10;
 +
-+					BuffLoader.ModifyBuffTip(num34, ref buffTooltip, ref rare);
++					// BuffLoader.ModifyBuffTip(num34, ref buffTooltip, ref rare);
++					BuffLoader.ModifyBuffText(num34, ref buffName, ref rare, ref buffTooltip);
 +					MouseTextHackZoom(buffName, rare, diff: 0, buffTooltip);
  				}
  			}
@@ -4245,7 +4246,7 @@
  						Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)(player.position.X + (float)(player.width / 2) - (float)(Player.tileRangeX * 16)), (int)(player.position.Y + (float)(player.height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  						Microsoft.Xna.Framework.Rectangle value2 = new Microsoft.Xna.Framework.Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  						if (rectangle.Intersects(value2))
-@@ -35027,10 +_,18 @@
+@@ -35027,10 +_,19 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
  
@@ -4259,7 +4260,8 @@
 +			if (meleeBuff[num5])
 +				rare = -10;
 +
-+			BuffLoader.ModifyBuffTip(num5, ref buffTooltip, ref rare);
++			// BuffLoader.ModifyBuffTip(num5, ref buffTooltip, ref rare);
++			BuffLoader.ModifyBuffText(num5, ref buffName, ref rare, ref buffTooltip);
 +			MouseTextHackZoom(buffName, rare, 0, buffTooltip);
  		}
  	}
