@@ -49,11 +49,11 @@ namespace ExampleMod.Content.NPCs
 				return;
 
 			// Style 2 check for application
-			if (shop.NpcType == NPCID.Merchant && shop.Name != "Shop")
+			if (shop.NpcType != NPCID.Merchant || shop.Name != "Shop")
 				return;
 
 			// Style 3 check for application (works just if NPC has one shop)
-			if (shop.NpcType == NPCID.Merchant)
+			if (shop.NpcType != NPCID.Merchant)
 				return;
 
 			// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
