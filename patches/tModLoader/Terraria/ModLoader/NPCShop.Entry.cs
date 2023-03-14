@@ -23,7 +23,7 @@ public sealed partial class NPCShop {
 			conditions = condition.ToList();
 		}
 
-		public Entry Target(Entry entry, bool after = false) {
+		private Entry SetOrdering(Entry entry, bool after = false) {
 			ArgumentNullException.ThrowIfNull(entry, nameof(entry));
 			Ordering = (entry, after);
 
@@ -36,6 +36,9 @@ public sealed partial class NPCShop {
 			} while (target != null);
 			return this;
 		}
+
+		public Entry SortBefore(Entry target) => SetOrdering(target, after: false);
+		public Entry SortAfter(Entry target) => SetOrdering(target, after: true);
 
 		public Entry AddCondition(ICondition condition) {
 			ArgumentNullException.ThrowIfNull(condition, nameof(condition));

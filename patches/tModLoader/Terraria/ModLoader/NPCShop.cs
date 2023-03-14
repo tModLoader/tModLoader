@@ -60,7 +60,7 @@ public sealed partial class NPCShop {
 
 	private NPCShop InsertAt(Entry targetEntry, Item item, bool after, params ICondition[] condition) {
 		var orderEntry = new Entry(item, condition);
-		orderEntry.Target(targetEntry, after);
+		orderEntry.SetOrdering(targetEntry, after);
 		return Add(orderEntry);
 	}
 
