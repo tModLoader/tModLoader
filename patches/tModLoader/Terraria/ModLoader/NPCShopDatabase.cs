@@ -829,17 +829,26 @@ public static class NPCShopDatabase
 
 		// 1st row
 		shop.Add(ItemID.Ale);
-		// See BartenderShopNPC for the price modification of elder crystal based on difficulty
-		shop.Add(ItemID.DD2ElderCrystal);                                                // Eternia Crystal
-		shop.Add(ItemID.DD2ElderCrystalStand);                                           // Eternia Crystal Stand
+		shop.Add(new Entry(ItemID.DD2ElderCrystal).OnShopOpened((item, npc) => {        // Eternia Crystal
+			if (NPC.downedGolemBoss) {
+				item.shopCustomPrice = Item.buyPrice(gold: 4);
+			}
+			else if (NPC.downedMechBossAny) {
+				item.shopCustomPrice = Item.buyPrice(gold: 1);
+			}
+			else {
+				item.shopCustomPrice = Item.buyPrice(silver: 25);
+			}
+		}));
+		shop.Add(ItemID.DD2ElderCrystalStand);                                          // Eternia Crystal Stand
 		AddEntry(ItemID.DefendersForge, 50);
 
 		AddEntry(ItemID.SquireGreatHelm,			15,	Condition.DownedMechBossAny);
 		AddEntry(ItemID.SquirePlating,				15,	Condition.DownedMechBossAny);
 		AddEntry(ItemID.SquireGreaves,				15,	Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquireAltHead,				50,	Condition.DownedGolem);              // Valhalla Knight's Helm
-		AddEntry(ItemID.SquireAltShirt,				50,	Condition.DownedGolem);              // Valhalla Knight's Breastplate
-		AddEntry(ItemID.SquireAltPants,				50,	Condition.DownedGolem);              // Valhalla Knight's Greaves
+		AddEntry(ItemID.SquireAltHead,				50,	Condition.DownedGolem);          // Valhalla Knight's Helm
+		AddEntry(ItemID.SquireAltShirt,				50,	Condition.DownedGolem);          // Valhalla Knight's Breastplate
+		AddEntry(ItemID.SquireAltPants,				50,	Condition.DownedGolem);          // Valhalla Knight's Greaves
 
 		// 2nd row
 		AddEntry(ItemID.DD2FlameburstTowerT1Popper,	5);                                  // Flameburst Rod

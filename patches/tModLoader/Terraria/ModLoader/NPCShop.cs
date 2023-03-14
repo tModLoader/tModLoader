@@ -98,20 +98,20 @@ public sealed partial class NPCShop {
 
 		int i = 0;
 		foreach (Entry entry in entries) {
+			if (i == items.Length) {
+				overflow = true;
+				return;
+			}
+
 			if (entry.Disabled) // Note, disabled entries can't reserve slots
 				continue;
 
-			var item = entry.Item;
+			var item = entry.Item.Clone();
 			if (!entry.ConditionsMet()) {
 				if (!entry.SlotReserved)
 					continue;
 
 				item = new Item(0);
-			}
-
-			if (i == items.Length) {
-				overflow = true;
-				return;
 			}
 
 			items[i++] = item;
