@@ -35,8 +35,8 @@ public class ModTileTest : ModTile
 		sapling/* tModPorter Note: Removed. Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
 		torch/* tModPorter Note: Removed. Use TileID.Sets.Torch instead */ = true;
 		bed/* tModPorter Note: Removed. Use TileID.Sets.CanBeSleptIn instead */ = true;
-		dresser/* tModPorter Note: Removed. Override ContainerName and use TileID.Sets.BasicDresser instead */ = "";
-		chest/* tModPorter Note: Removed. Override ContainerName and use TileID.Sets.BasicChest instead */ = "";
+		dresser/* tModPorter Note: Removed. Override DefaultContainerName and use TileID.Sets.BasicDresser instead */ = "";
+		chest/* tModPorter Note: Removed. Override DefaultContainerName and use TileID.Sets.BasicChest instead */ = "";
 		disableSmartInteract/* tModPorter Note: Removed. Use TileID.Sets.DisableSmartInteract instead */ = true;
 		disableSmartCursor/* tModPorter Note: Removed. Use TileID.Sets.DisableSmartCursor instead */ = true;
 
