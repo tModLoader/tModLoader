@@ -168,7 +168,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void AddShops() {
 			new NPCShop(Type)
-				.Add(ModContent.ItemType<ExampleItem>())
+				.Add<ExampleItem>()
 				.Register();
 		}
 

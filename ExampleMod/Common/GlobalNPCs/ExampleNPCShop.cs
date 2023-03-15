@@ -12,7 +12,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			if (shop.NpcType == NPCID.Dryad) {
 				// Adding an item to a vanilla NPC is easy:
 				// This item sells for the normal price.
-				shop.Add(ModContent.ItemType<ExampleMountItem>());
+				shop.Add<ExampleMountItem>();
 
 				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
 				// Editing item.value in SetupShop is an incorrect approach.
@@ -33,7 +33,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				// shopContents.Add(ModContent.ItemType<Infinity>(), ChestLoot.Condition.InExpertMode);
 			}
 			else if (shop.NpcType == NPCID.Stylist) {
-				shop.Add(ModContent.ItemType<ExampleHairDye>());
+				shop.Add<ExampleHairDye>();
 			}
 
 			// Example of adding new items with complex conditions in the Merchant shop.
@@ -66,7 +66,7 @@ namespace ExampleMod.Common.GlobalNPCs
 
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
 			// If condition is fulfilled, add an item to the shop.
-			shop.Add(ModContent.ItemType<ExampleItem>(), NPCShop.Condition.HappyWindyDay, NPCShop.Condition.HappyEnough);
+			shop.Add<ExampleItem>(NPCShop.Condition.HappyWindyDay, NPCShop.Condition.HappyEnough);
 
 			// Custom condition, opposite of conditions for ExampleItem above.
 			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());

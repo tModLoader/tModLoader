@@ -280,25 +280,26 @@ namespace ExampleMod.Content.NPCs
 
 		public override void AddShops() {
 			var npcShop = new NPCShop(Type, ShopName)
-				.Add(ModContent.ItemType<ExampleItem>())
-				//.Add(ItemType<EquipMaterial>())
-				//.Add(ItemType<BossItem>())
-				.Add(ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>())
-				.Add(ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>())
-				.Add(ModContent.ItemType<Items.Placeable.Furniture.ExampleDoor>())
-				.Add(ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>())
-				.Add(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>())
-				.Add(ModContent.ItemType<Items.Tools.ExamplePickaxe>())
-				.Add(ModContent.ItemType<Items.Tools.ExampleHamaxe>())
-				.Add(ModContent.ItemType<Items.Consumables.ExampleHealingPotion>(), new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerHasLifeforceBuff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
-				.Add(ModContent.ItemType<Items.Weapons.ExampleSword>(), NPCShop.Condition.IsMoonPhasesQuarter0)
-				//.Add(ItemType<ExampleGun>(), NPCShop.Condition.IsMoonPhasesQuarter1)
-				.Add(ModContent.ItemType<Items.Ammo.ExampleBullet>(), NPCShop.Condition.IsMoonPhasesQuarter1)
-				//.Add(ItemType<ExampleStaff>(), NPCShop.Condition.IsMoonPhasesQuarter2)
-				.Add(ModContent.ItemType<Items.Weapons.ExampleYoyo>(), NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
+				.Add<ExampleItem>()
+				//.Add<EquipMaterial>()
+				//.Add<BossItem>()
+				.Add<Items.Placeable.Furniture.ExampleWorkbench>()
+				.Add<Items.Placeable.Furniture.ExampleChair>()
+				.Add<Items.Placeable.Furniture.ExampleDoor>()
+				.Add<Items.Placeable.Furniture.ExampleBed>()
+				.Add<Items.Placeable.Furniture.ExampleChest>()
+				.Add<Items.Tools.ExamplePickaxe>()
+				.Add<Items.Tools.ExampleHamaxe>()
+				.Add<Items.Consumables.ExampleHealingPotion>(new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerHasLifeforceBuff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
+				.Add<Items.Weapons.ExampleSword>(NPCShop.Condition.IsMoonPhasesQuarter0)
+				//.Add<ExampleGun>(NPCShop.Condition.IsMoonPhasesQuarter1)
+				.Add<Items.Ammo.ExampleBullet>(NPCShop.Condition.IsMoonPhasesQuarter1)
+				//.Add<ExampleStaff>(NPCShop.Condition.IsMoonPhasesQuarter2)
+				.Add<Items.Weapons.ExampleYoyo>(NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
-			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle)
+			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
 				npcShop.Add<ExampleWings>(new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.InExampleBiome"), () => Main.LocalPlayer.InModBiome<ExampleSurfaceBiome>() || Main.LocalPlayer.InModBiome<ExampleUndergroundBiome>()));
+			}
 
 			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
 		 	 	npcShop.Add(bloodTalisman.Type);
