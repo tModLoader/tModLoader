@@ -543,12 +543,7 @@
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
  
-@@ -1394,25 +_,40 @@
- 					SoundEngine.PlaySound(18);
- 				else
- 					SoundEngine.PlaySound(7);
-+
-+				PlayerLoader.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
+@@ -1397,22 +_,35 @@
  			}
  
  			if (Main.mouseItem.type == 0) {
