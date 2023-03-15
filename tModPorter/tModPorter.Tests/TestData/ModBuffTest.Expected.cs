@@ -11,5 +11,5 @@ public class ModBuffTest : ModBuff
 #endif
 	}
 
-	public override void ModifyBuffText(ref string buffName, ref int rare, ref string tip) { }
+	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) { }
 }
