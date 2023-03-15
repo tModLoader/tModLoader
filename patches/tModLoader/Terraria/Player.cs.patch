@@ -805,6 +805,17 @@
  	}
  
  	public void MatchItemTimeToItemAnimation()
+@@ -2407,6 +_,10 @@
+ 
+ 	public bool TeamChangeAllowed() => true;
+ 
++	/// <summary>
++	/// Spawns a <see cref="CombatText"/> indicating the player healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true. <br/>
++	/// Note that this doesn't actually heal the player, it only spawns the floating text. The <see cref="Heal(int)"/> method heals the player and calls this method and is more commonly used.
++	/// </summary>
+ 	public void HealEffect(int healAmount, bool broadcast = true)
+ 	{
+ 		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
