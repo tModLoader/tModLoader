@@ -28,7 +28,7 @@ public static class NPCShopDatabase
 	}
 
 	/// <summary>
-	/// Gets a shop name (identifier) in the format matching <see cref="FullName"/> <br/>
+	/// Gets a shop name (identifier) in the format matching <see cref="NPCShop.FullName"/> <br/>
 	/// Can be used with <see cref="GetNPCShop(string)"/> and <see cref="GlobalNPC.ModifyActiveShop(NPC, string, Item[])"/>
 	/// </summary>
 	/// <param name="npcType"></param>
