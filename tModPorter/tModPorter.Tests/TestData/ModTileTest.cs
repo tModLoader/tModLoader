@@ -35,7 +35,8 @@ public class ModTileTest : ModTile
 		SetModCactus(new ExampleCactus());
 		SetModPalmTree(new ExamplePalmTree());
 
-		ContainerName = CreateMapEntryName();
+		ContainerName.SetDefault("Some Container");
+		string containerName = TileLoader.ContainerName(13);
 
 		ModTranslation name = CreateMapEntryName();
 		name.SetDefault("Test");

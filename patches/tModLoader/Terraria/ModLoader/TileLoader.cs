@@ -409,7 +409,7 @@ public static class TileLoader
 	}
 
 	/// <summary> Returns the default name for a modded chest or dresser with the provided FrameX and FrameY values. </summary>
-	public static string ContainerName(int type, int frameX, int frameY) => GetTile(type)?.ContainerName(frameX, frameY)?.Value ?? string.Empty;
+	public static string DefaultContainerName(int type, int frameX, int frameY) => GetTile(type)?.DefaultContainerName(frameX, frameY)?.Value ?? string.Empty;
 
 	public static bool IsModMusicBox(Tile tile)
 	{

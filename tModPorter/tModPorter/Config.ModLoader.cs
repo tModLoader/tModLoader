@@ -495,6 +495,8 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
 		// TODO: Not working.
-		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override ContainerName instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
+		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
+		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
 	}
 }

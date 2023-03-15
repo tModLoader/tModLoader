@@ -44,7 +44,8 @@ public class ModTileTest : ModTile
 		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead */;
 		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead */;
 
-		ContainerName.SetDefault("Some Container");/* tModPorter Note: Removed. Override ContainerName instead */;
+		ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Some Container");
+		string containerName = TileLoader.DefaultContainerName(13)/* tModPorter Note: new method takes in FrameX and FrameY */;
 #endif
 
 		LocalizedText name = CreateMapEntryName();

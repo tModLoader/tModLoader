@@ -522,7 +522,7 @@ public abstract class ModTile : ModBlockType
 	/// A typical implementation of a tile with only a single name might return <c>CreateMapEntryName()</c> <br/>
 	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries.
 	/// </summary>
-	public virtual LocalizedText ContainerName(int frameX, int frameY)
+	public virtual LocalizedText DefaultContainerName(int frameX, int frameY)
 	{
 		return null;
 	}
