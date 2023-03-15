@@ -701,7 +701,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// To create a shop, use <see cref="AddShops"/> <br/>
 	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
 	/// </summary>
-	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetNPCShopName"/> for the format. </param>
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
 	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
 	public virtual void ModifyActiveShop(string shopName, Item[] items)
 	{

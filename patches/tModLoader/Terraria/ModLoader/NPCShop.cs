@@ -6,41 +6,39 @@ using Terraria.ID;
 namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop {
-	private List<Entry> entries;
-	private readonly int npcId;
-	private readonly string name;
+	private List<Entry> _entries;
 
-	public IReadOnlyList<Entry> Entries => entries;
-	public int NpcType => npcId;
-	public string Name => name;
-	public string FullName => NPCShopDatabase.GetNPCShopName(NpcType, Name);
+	public IReadOnlyList<Entry> Entries => _entries;
+	public int NpcType { get; private init; }
+	public string Name { get; private init; }
+	public string FullName => NPCShopDatabase.GetShopName(NpcType, Name);
 
 	public bool FillLastSlot { get; private set; }
 
-	public NPCShop(int npcId, string name = "Shop") {
-		entries = new();
-		this.name = name;
-		this.npcId = npcId;
+	public NPCShop(int npcType, string name = "Shop") {
+		_entries = new();
+		NpcType = npcType;
+		Name = name;
 	}
 
 	public Entry GetEntry(int item)
 	{
-		return entries[entries.FindIndex(x => x.item.type.Equals(item))];
+		return _entries.First(x => x.Item.type == item);
 	}
 
 	public bool TryGetEntry(int item, out Entry entry)
 	{
-		int i = entries.FindIndex(x => x.item.type.Equals(item));
+		int i = _entries.FindIndex(x => x.Item.type == item);
 		if (i == -1) {
 			entry = null;
 			return false;
 		}
-		entry = entries[i];
+		entry = _entries[i];
 		return true;
 	}
 
 	public void Register() {
-		NPCShopDatabase.RegisterNpcShop(npcId, this, name);
+		NPCShopDatabase.AddShop(this);
 	}
 
 	public NPCShop AllowFillingLastSlot()
@@ -50,7 +48,7 @@ public sealed partial class NPCShop {
 	}
 
 	public NPCShop Add(params Entry[] entries) {
-		this.entries.AddRange(entries);
+		_entries.AddRange(entries);
 		return this;
 	}
 
@@ -109,7 +107,7 @@ public sealed partial class NPCShop {
 
 		int limit = FillLastSlot ? items.Length : items.Length - 1;
 		int i = 0;
-		foreach (Entry entry in entries) {
+		foreach (Entry entry in _entries) {
 			if (entry.Disabled) // Note, disabled entries can't reserve slots
 				continue;
 
@@ -138,11 +136,11 @@ public sealed partial class NPCShop {
 	internal void Sort()
 	{
 		// process 'OrdersLast' first, so an entry which sorts after an 'OrdersLast' entry is still placed in the correct position
-		var toBeLast = entries.Where(x => x.OrdersLast).ToList();
-		entries.RemoveAll(x => x.OrdersLast);
-		entries.AddRange(toBeLast);
+		var toBeLast = _entries.Where(x => x.OrdersLast).ToList();
+		_entries.RemoveAll(x => x.OrdersLast);
+		_entries.AddRange(toBeLast);
 
-		entries = SortBeforeAfter(entries, r => r.Ordering);
+		_entries = SortBeforeAfter(_entries, r => r.Ordering);
 	}
 
 	internal static List<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {

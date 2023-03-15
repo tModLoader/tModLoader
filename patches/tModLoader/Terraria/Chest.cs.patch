@@ -645,7 +645,7 @@
  
  	public void SetupShop(int type)
  	{
-+		SetupShop(NPCShopDatabase.GetNPCShopNameFromVanillaIndex(type), Main.npc[Main.LocalPlayer.talkNPC]);
++		SetupShop(NPCShopDatabase.GetShopNameFromVanillaIndex(type), Main.npc[Main.LocalPlayer.talkNPC]);
 +	}
 +
 +	public void SetupShop(string shopName, NPC npc) // TML: shop parameter
@@ -690,7 +690,7 @@
  		}
 +		*/
 +
-+		if (shopName == NPCShopDatabase.GetNPCShopNameFromVanillaIndex(19)) {
++		if (shopName == NPCShopDatabase.GetShopNameFromVanillaIndex(19)) {
 +			int i = 0;
 +			for (int num11 = 0; num11 < 40; num11++) {
 +				if (Main.travelShop[num11] != 0) {

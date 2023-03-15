@@ -6,25 +6,28 @@ namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop {
 	public sealed class Entry {
-		internal readonly Item item;
+		public Item Item { get; private init; }
+
 		private readonly List<ICondition> conditions;
+		public IReadOnlyList<ICondition> Conditions => conditions;
+
 		private Action<Item, NPC> shopOpenedHooks;
 
 		internal (Entry target, bool after) Ordering { get; private set; } = (null, false);
+
 		public bool Disabled { get; private set; }
 		public bool OrdersLast { get; private set; }
 		public bool SlotReserved { get; private set; }
-		public Item Item => item;
 
 		public Entry(int item, params ICondition[] condition) : this(new Item(item), condition) { }
 
 		public Entry(Item item, params ICondition[] condition) {
 			Disabled = false;
-			this.item = item;
+			Item = item;
 			conditions = condition.ToList();
 		}
 
-		internal Entry SetOrdering(Entry entry, bool after = false) {
+		internal Entry SetOrdering(Entry entry, bool after) {
 			ArgumentNullException.ThrowIfNull(entry, nameof(entry));
 			Ordering = (entry, after);
 

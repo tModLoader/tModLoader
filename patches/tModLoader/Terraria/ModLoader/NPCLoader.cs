@@ -1153,7 +1153,7 @@ public static class NPCLoader
 				Main.stackSplit = 9999;
 				Main.npcChatText = "";
 				Main.SetNPCShopIndex(1);
-				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetNPCShopName(npc.type, shopName), npc);
+				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
 			}
 		}
 

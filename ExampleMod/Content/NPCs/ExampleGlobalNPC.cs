@@ -45,7 +45,7 @@ namespace ExampleMod.Content.NPCs
 		// Example of adding new items with complex conditions in the Merchant shop.
 		public override void ModifyShop(NPCShop shop) {
 			// Style 1 check for application
-			if (shop.FullName != NPCShopDatabase.GetNPCShopName(NPCID.Merchant, "Shop"))
+			if (shop.FullName != NPCShopDatabase.GetShopName(NPCID.Merchant, "Shop"))
 				return;
 
 			// Style 2 check for application

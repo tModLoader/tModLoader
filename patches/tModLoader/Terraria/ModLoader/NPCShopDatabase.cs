@@ -15,13 +15,13 @@ public static class NPCShopDatabase
 
 	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
 
-	public static void RegisterNpcShop(int npcId, NPCShop chestLoot, string shopName = "Shop") {
-		npcShopByName.Add(GetNPCShopName(npcId, shopName), chestLoot);
+	internal static void AddShop(NPCShop shop) {
+		npcShopByName.Add(shop.FullName, shop);
 	}
 
 	public static NPCShop GetNPCShop(string fullName) {
-		if (npcShopByName.TryGetValue(fullName, out NPCShop chestLoot))
-			return chestLoot;
+		if (npcShopByName.TryGetValue(fullName, out NPCShop shop))
+			return shop;
 
 		return null;
 	}
@@ -30,20 +30,20 @@ public static class NPCShopDatabase
 	/// Gets a shop name (identifier) in the format matching <see cref="FullName"/> <br/>
 	/// Can be used with <see cref="GetNPCShop(string)"/> and <see cref="GlobalNPC.ModifyActiveShop(NPC, string, Item[])"/>
 	/// </summary>
-	/// <param name="npcId"></param>
+	/// <param name="npcType"></param>
 	/// <param name="shopName"></param>
 	/// <returns></returns>
-	public static string GetNPCShopName(int npcId, string shopName = "Shop") {
-		return $"{(npcId < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcId)}" : NPCLoader.GetNPC(npcId).FullName)}/{shopName}";
+	public static string GetShopName(int npcType, string shopName = "Shop") {
+		return $"{(npcType < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcType)}" : NPCLoader.GetNPC(npcType).FullName)}/{shopName}";
 	}
 
-	public static string GetNPCShopNameFromVanillaIndex(int index)
+	public static string GetShopNameFromVanillaIndex(int index)
 	{
 		int npcType = NPCLoader.shopToNPC[index];
 		if (index == 25) { // Painter 2 Shop Special Case
-			return GetNPCShopName(npcType, "Decor");
+			return GetShopName(npcType, "Decor");
 		}
-		return GetNPCShopName(npcType);
+		return GetShopName(npcType);
 	}
 
 	public static void Initialize() {
@@ -54,8 +54,8 @@ public static class NPCShopDatabase
 	}
 
 	public static void NPCShops() {
-		NoPylons[GetNPCShopName(NPCID.SkeletonMerchant)] = true;
-		NoPylons[GetNPCShopName(NPCID.DD2Bartender)] = true;
+		NoPylons[GetShopName(NPCID.SkeletonMerchant)] = true;
+		NoPylons[GetShopName(NPCID.DD2Bartender)] = true;
 
 		RegisterMerchant();
 		RegisterArmsDealer();
