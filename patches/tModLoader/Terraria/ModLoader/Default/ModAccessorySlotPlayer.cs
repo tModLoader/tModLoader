@@ -52,6 +52,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 	public override void SaveData(TagCompound tag)
 	{
+		// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded. Otherwise old unloaded slots just bloat the array with empty entries forever
 		tag["order"] = slots.Keys.ToList();
 		tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
 		tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
