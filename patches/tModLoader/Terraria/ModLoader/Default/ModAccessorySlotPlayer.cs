@@ -23,8 +23,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 	internal int scrollbarSlotPosition;
 
 	public int SlotCount => slots.Count;
-	public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
-	public int UnloadedSlotCount { get; private set; } = 0;
+	public int LoadedSlotCount => Loader.TotalCount;
 
 	public ModAccessorySlotPlayer()
 	{
@@ -64,10 +63,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 		// Scan the saved slot names and add ids for any unloaded slots
 		var order = tag.GetList<string>("order").ToList();
 		foreach (var name in order) {
-			if (!slots.ContainsKey(name)) {
+			if (!slots.ContainsKey(name))
 				slots.Add(name, slots.Count);
-				UnloadedSlotCount++;
-			}
 		}
 
 		ResetAndSizeAccessoryArrays();
@@ -163,7 +160,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	// The following netcode is adapted from ChickenBone's UtilitySlots:
+	// The following netcode is adapted from ChickenBones' UtilitySlots:
 	public override void CopyClientState(ModPlayer targetCopy)
 	{
 		var defaultInv = (ModAccessorySlotPlayer)targetCopy;
