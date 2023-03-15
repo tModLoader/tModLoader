@@ -48,21 +48,6 @@ namespace ExampleMod.Common.GlobalBuffs
 			return true;
 		}
 
-		//public override void ModifyBuffTip(int type, ref string tip, ref int rare) {
-		//	// This code adds a more extensible remaining time tooltip for suitable buffs
-		//	Player player = Main.LocalPlayer;
-
-		//	int buffIndex = player.FindBuffIndex(type);
-		//	if (buffIndex < 0 || buffIndex >= player.buffTime.Length) {
-		//		return;
-		//	}
-
-		//	if (Main.TryGetBuffTime(buffIndex, out int buffTimeValue) && buffTimeValue > 2) {
-		//		string text = Lang.LocalizedDuration(new System.TimeSpan(0, 0, buffTimeValue / 60), abbreviated: false, showAllAvailableUnits: true);
-		//		tip += $"\n[{nameof(ExampleGlobalBuff)}] Remaining time: " + text;
-		//	}
-		//}
-
 		public override void ModifyBuffText(int type, ref string buffName, ref int rare, ref string tip) {
 			// This code adds a more extensible remaining time tooltip for suitable buffs
 			Player player = Main.LocalPlayer;
