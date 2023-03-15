@@ -15,11 +15,13 @@ public static class NPCShopDatabase
 
 	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
 
-	internal static void AddShop(NPCShop shop) {
+	internal static void AddShop(NPCShop shop)
+	{
 		npcShopByName.Add(shop.FullName, shop);
 	}
 
-	public static NPCShop GetNPCShop(string fullName) {
+	public static NPCShop GetNPCShop(string fullName)
+	{
 		if (npcShopByName.TryGetValue(fullName, out NPCShop shop))
 			return shop;
 
@@ -33,7 +35,8 @@ public static class NPCShopDatabase
 	/// <param name="npcType"></param>
 	/// <param name="shopName"></param>
 	/// <returns></returns>
-	public static string GetShopName(int npcType, string shopName = "Shop") {
+	public static string GetShopName(int npcType, string shopName = "Shop")
+	{
 		return $"{(npcType < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcType)}" : NPCLoader.GetNPC(npcType).FullName)}/{shopName}";
 	}
 
@@ -46,14 +49,16 @@ public static class NPCShopDatabase
 		return GetShopName(npcType);
 	}
 
-	public static void Initialize() {
+	public static void Initialize()
+	{
 		npcShopByName.Clear();
 		NoPylons.Clear();
 
 		NPCShops();
 	}
 
-	public static void NPCShops() {
+	public static void NPCShops()
+	{
 		NoPylons[GetShopName(NPCID.SkeletonMerchant)] = true;
 		NoPylons[GetShopName(NPCID.DD2Bartender)] = true;
 
@@ -89,7 +94,8 @@ public static class NPCShopDatabase
 		}
 	}
 
-	public static Entry[] GetVanillaPylonEntries() {
+	public static Entry[] GetVanillaPylonEntries()
+	{
 		/*
 		bool num12 = type != 19 && type != 20;
 		bool flag3 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
@@ -179,7 +185,8 @@ public static class NPCShopDatabase
 		};
 	}
 
-	private static void RegisterMerchant() {
+	private static void RegisterMerchant()
+	{
 		var flareGunCondition = Condition.PlayerCarriesItem(ItemID.FlareGun);
 		var drumSetCondition = new Condition(NetworkText.FromKey("ShopConditions.DownedB2B3HM"), () => NPC.downedBoss2 || NPC.downedBoss3 || Main.hardMode);
 		
@@ -216,7 +223,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterArmsDealer() {
+	private static void RegisterArmsDealer()
+	{
 		var silverBulletCondition = new Condition(NetworkText.FromKey("ShopConditions.BloodOrHMInSilver"), () => (Main.bloodMoon || Main.hardMode) && WorldGen.SavedOreTiers.Silver == TileID.Silver);
 		var tungstenBulletCondition = new Condition(NetworkText.FromKey("ShopConditions.BloodOrHMInTungst"), () => (Main.bloodMoon || Main.hardMode) && WorldGen.SavedOreTiers.Silver == TileID.Tungsten);
 		var unholyArrowCondition = new Condition(NetworkText.FromKey("ShopConditions.NightAfterEvil"), () => (NPC.downedBoss2 && !Main.dayTime) || Main.hardMode);
@@ -244,7 +252,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterDryad() {
+	private static void RegisterDryad()
+	{
 		var shop = new NPCShop(NPCID.Dryad);
 		var corruptSeedsCondition = new Condition(NetworkText.FromKey("ShopConditions.CorruOrGravCrim"), () => !WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && WorldGen.crimson);
 		var crimsonSeedsCondition = new Condition(NetworkText.FromKey("ShopConditions.CrimOrGravCorru"), () => WorldGen.crimson || Main.LocalPlayer.ZoneGraveyard && !WorldGen.crimson);
@@ -303,7 +312,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterBombGuy() {
+	private static void RegisterBombGuy()
+	{
 		new NPCShop(NPCID.Demolitionist)
 			.Add(ItemID.Grenade)
 			.Add(ItemID.Bomb)
@@ -318,7 +328,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterClothier() {
+	private static void RegisterClothier()
+	{
 		var taxCollectorPresent = Condition.NpcIsPresent(NPCID.TaxCollector);
 
 		new NPCShop(NPCID.Clothier)
@@ -383,7 +394,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterGoblin() {
+	private static void RegisterGoblin()
+	{
 		new NPCShop(NPCID.GoblinTinkerer)
 			.Add(ItemID.RocketBoots)
 			.Add(ItemID.Ruler)
@@ -411,7 +423,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterMechanic() {
+	private static void RegisterMechanic()
+	{
 		new NPCShop(NPCID.Mechanic)
 			.Add(ItemID.Wrench)
 			.Add(ItemID.BlueWrench)
@@ -447,7 +460,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterSantaClaws() {
+	private static void RegisterSantaClaws()
+	{
 		var shop = new NPCShop(NPCID.SantaClaus)
 			.Add(ItemID.SantaHat)
 			.Add(ItemID.SantaShirt)
@@ -474,7 +488,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterSteampunker() {
+	private static void RegisterSteampunker()
+	{
 		var eclipseOrBloodMoon = Condition.EclipseOrBloodMoon;
 		var notEclipseOrBloodMoon = Condition.NotEclipseAndNotBloodMoon;
 		var blendOMaticCondition = new Condition(NetworkText.FromKey("ShopConditions.HardmodeFTW"), () => Main.hardMode || !Main.getGoodWorld);
@@ -519,7 +534,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterDyeTrader() {
+	private static void RegisterDyeTrader()
+	{
 		var mpServer = new Condition(NetworkText.FromKey("ShopConditions.MultiplayerServer"), () => Main.netMode == NetmodeID.MultiplayerClient);
 
 		new NPCShop(NPCID.DyeTrader)
@@ -536,7 +552,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterPartyGirl() {
+	private static void RegisterPartyGirl()
+	{
 		new NPCShop(NPCID.PartyGirl)
 			.Add(ItemID.ConfettiGun)
 			.Add(ItemID.Confetti)
@@ -581,7 +598,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterCyborg() {
+	private static void RegisterCyborg()
+	{
 		var portalGunStation = new Condition(NetworkText.FromKey("ShopConditions.PlayerCarriesItem2", Lang.GetItemName(ItemID.PortalGun), Lang.GetItemName(ItemID.PortalGunStation)),
 			() => Main.LocalPlayer.HasItem(ItemID.PortalGun) || Main.LocalPlayer.HasItem(ItemID.PortalGunStation));
 
@@ -608,7 +626,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterPainter() {
+	private static void RegisterPainter()
+	{
 		new NPCShop(NPCID.Painter) // Default shop
 			.Add(ItemID.Paintbrush)
 			.Add(ItemID.PaintRoller)
@@ -683,7 +702,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterWitchDoctor() {
+	private static void RegisterWitchDoctor()
+	{
 		new NPCShop(NPCID.WitchDoctor)
 			.Add(ItemID.ImbuingStation)
 			.Add(ItemID.Blowgun)
@@ -712,7 +732,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterPirate() {
+	private static void RegisterPirate()
+	{
 		new NPCShop(NPCID.Pirate)
 			.Add(ItemID.Cannon)
 			.Add(ItemID.Cannonball)
@@ -730,7 +751,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterStylist() {
+	private static void RegisterStylist()
+	{
 		var maxLife = new Condition(NetworkText.FromKey("ShopConditions.AtleastXHealth", 400), () => Main.LocalPlayer.ConsumedLifeCrystals == Player.LifeCrystalMax);
 		var maxMana = new Condition(NetworkText.FromKey("ShopConditions.AtleastXHealth", 200), () => Main.LocalPlayer.ConsumedManaCrystals == Player.ManaCrystalMax);
 		var moneyHair = new Condition(NetworkText.FromKey("ShopConditions.PlatinumCoin"), () => {
@@ -772,7 +794,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterSkeletonMerchant() {
+	private static void RegisterSkeletonMerchant()
+	{
 		Condition[] wandOfSparkingCondition = { Condition.IsMoonThirdQuarter, Condition.NotRemixWorld };
 		Condition[] magicDaggerCondition = { Condition.IsMoonThirdQuarter, Condition.RemixWorld };
 		var spelunkerGlowCondition = new Condition(NetworkText.FromKey("ShopConditions.NightDayFullMoon"), () => !Main.dayTime || Main.moonPhase == 0);
@@ -889,7 +912,8 @@ public static class NPCShopDatabase
 		shop.Register();
 	}
 
-	private static void RegisterGolfer() {
+	private static void RegisterGolfer()
+	{
 		var scoreOver500 = Condition.GolfScoreOver(500);
 		var scoreOver1000 = Condition.GolfScoreOver(1000);
 		var scoreOver2000 = Condition.GolfScoreOver(2000);
@@ -940,7 +964,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterZoologist() {
+	private static void RegisterZoologist()
+	{
 		var fairyGlowstick = new Condition(NetworkText.FromKey("ShopConditions.BestiaryWinx"), () => Chest.BestiaryGirl_IsFairyTorchAvailable());
 		var solarPillarDead = Condition.DownedSolarPillar;
 
@@ -999,7 +1024,8 @@ public static class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterPrincess() {
+	private static void RegisterPrincess()
+	{
 		var goodsCondition = new Condition(NetworkText.FromKey("ShopConditions.InCelebrationMk10"), () => Main.tenthAnniversaryWorld);
 
 		var shop = new NPCShop(NPCID.Princess)

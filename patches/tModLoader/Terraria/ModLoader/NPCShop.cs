@@ -5,7 +5,8 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
-public sealed partial class NPCShop {
+public sealed partial class NPCShop
+{
 	private List<Entry> _entries;
 
 	public IReadOnlyList<Entry> Entries => _entries;
@@ -15,7 +16,8 @@ public sealed partial class NPCShop {
 
 	public bool FillLastSlot { get; private set; }
 
-	public NPCShop(int npcType, string name = "Shop") {
+	public NPCShop(int npcType, string name = "Shop")
+	{
 		_entries = new();
 		NpcType = npcType;
 		Name = name;
@@ -37,7 +39,8 @@ public sealed partial class NPCShop {
 		return true;
 	}
 
-	public void Register() {
+	public void Register()
+	{
 		NPCShopDatabase.AddShop(this);
 	}
 
@@ -47,7 +50,8 @@ public sealed partial class NPCShop {
 		return this;
 	}
 
-	public NPCShop Add(params Entry[] entries) {
+	public NPCShop Add(params Entry[] entries)
+	{
 		_entries.AddRange(entries);
 		return this;
 	}
@@ -76,7 +80,8 @@ public sealed partial class NPCShop {
 	/// <param name="items">Array to be filled.</param>
 	/// <param name="npc">The NPC the player is talking to, for <see cref="Entry.OnShopOpen(Item, NPC)"/> calls.</param>
 	/// <param name="overflow">True if some items were unable to fit in the provided array.</param>
-	public void Build(Item[] items, NPC npc, out bool overflow) {
+	public void Build(Item[] items, NPC npc, out bool overflow)
+	{
 		overflow = false;
 
 		int limit = FillLastSlot ? items.Length : items.Length - 1;
@@ -117,7 +122,8 @@ public sealed partial class NPCShop {
 		_entries = SortBeforeAfter(_entries, r => r.Ordering);
 	}
 
-	internal static List<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func) {
+	internal static List<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func)
+	{
 		var baseOrder = new List<T>();
 		var sortBefore = new Dictionary<T, List<T>>();
 		var sortAfter = new Dictionary<T, List<T>>();
@@ -146,7 +152,8 @@ public sealed partial class NPCShop {
 			return values.ToList();
 
 		var sorted = new List<T>();
-		void Sort(T r) {
+		void Sort(T r)
+		{
 			if (sortBefore.TryGetValue(r, out var before))
 				foreach (var c in before)
 					Sort(c);

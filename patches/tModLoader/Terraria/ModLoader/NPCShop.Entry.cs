@@ -4,8 +4,10 @@ using System;
 
 namespace Terraria.ModLoader;
 
-public sealed partial class NPCShop {
-	public sealed class Entry {
+public sealed partial class NPCShop
+{
+	public sealed class Entry
+	{
 		public Item Item { get; private init; }
 
 		private readonly List<ICondition> conditions;
@@ -21,13 +23,15 @@ public sealed partial class NPCShop {
 
 		public Entry(int item, params ICondition[] condition) : this(new Item(item), condition) { }
 
-		public Entry(Item item, params ICondition[] condition) {
+		public Entry(Item item, params ICondition[] condition)
+		{
 			Disabled = false;
 			Item = item;
 			conditions = condition.ToList();
 		}
 
-		internal Entry SetOrdering(Entry entry, bool after) {
+		internal Entry SetOrdering(Entry entry, bool after)
+		{
 			ArgumentNullException.ThrowIfNull(entry, nameof(entry));
 			Ordering = (entry, after);
 
@@ -44,23 +48,27 @@ public sealed partial class NPCShop {
 		public Entry SortBefore(Entry target) => SetOrdering(target, after: false);
 		public Entry SortAfter(Entry target) => SetOrdering(target, after: true);
 
-		public Entry AddCondition(ICondition condition) {
+		public Entry AddCondition(ICondition condition)
+		{
 			ArgumentNullException.ThrowIfNull(condition, nameof(condition));
 			conditions.Add(condition);
 			return this;
 		}
 
-		public Entry OrderLast() {
+		public Entry OrderLast()
+		{
 			OrdersLast = true;
 			return this;
 		}
 
-		public Entry Disable() {
+		public Entry Disable()
+		{
 			Disabled = true;
 			return this;
 		}
 
-		public Entry ReserveSlot() {
+		public Entry ReserveSlot()
+		{
 			SlotReserved = true;
 			return this;
 		}
@@ -76,7 +84,8 @@ public sealed partial class NPCShop {
 			shopOpenedHooks?.Invoke(item, npc);
 		}
 
-		public bool ConditionsMet() {
+		public bool ConditionsMet()
+		{
 			for (int i = 0; i < conditions.Count; i++) {
 				if (!conditions[i].IsAvailable()) {
 					return false;
