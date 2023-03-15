@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['damage_0',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()']]],
-  ['damage_1',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()'],['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()']]],
+  ['damage_0',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()'],['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()']]],
+  ['damage_1',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()']]],
   ['damageclass_2',['DamageClass',['../class_damage_class.html',1,'']]],
   ['damageclassdata_3',['DamageClassData',['../class_damage_class_data.html',1,'']]],
   ['damageclassloader_4',['DamageClassLoader',['../class_damage_class_loader.html',1,'']]],

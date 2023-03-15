@@ -129,13 +129,13 @@ $(document).ready(function(){initNavTree('md__github_workspace_src_t_mod_loader_
 <p >To install and run the container:</p><ul>
 <li>Ensure <code>docker</code> and <code>docker-compose</code> are installed. They can be installed from your package manager or <a href="https://docs.docker.com/engine/install/">Docker's Documentation</a></li>
 <li>Download <a href="https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/docker-compose.yml">docker-compose.yml</a> and the <a href="https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Dockerfile">Dockerfile</a>.</li>
-<li>Next to those docker files, create a folder named <code>Terraria</code>, and place <code>enabled.json</code>, install.txt, serverconfig.txt, your worlds, and any <code>.tmod</code> files inside.</li>
+<li>Next to those docker files, create a folder named <code><a class="el" href="namespace_terraria.html">Terraria</a></code>, and place <code>enabled.json</code>, install.txt, serverconfig.txt, your worlds, and any <code>.tmod</code> files inside.</li>
 <li>Edit <code>docker-compose.yml</code> with your GID and UID. These can be found by running <code>id</code>.</li>
 <li>Run <code>docker-compose build</code></li>
 <li>Run <code>docker-compose up</code></li>
 </ul>
 <p >The server will be available on port 7777.</p>
-<p >To run without any interactivity, use <code>docker-compose up -d</code>, and include serverconfig.txt in the <code>Terraria</code> directory.</p>
+<p >To run without any interactivity, use <code>docker-compose up -d</code>, and include serverconfig.txt in the <code><a class="el" href="namespace_terraria.html">Terraria</a></code> directory.</p>
 <h1>Autostarting On Boot</h1>
 <p >When using <code>manage-tModLoaderServer.sh</code>, refer to your distro's documentation. You can likely use a startup script with your init system.</p>
 <p >When using the Docker container, add <code>restart: always</code> within <code>services.tml</code> inside of <code>docker-compose.yml</code>, then rebuild with <code>docker-compose build</code>. </p>

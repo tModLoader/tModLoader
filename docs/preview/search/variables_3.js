@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['damage_0',['damage',['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()']]],
+  ['damage_0',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item']]],
   ['damage_1',['Damage',['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player::HurtInfo']]],
-  ['damage_2',['damage',['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile']]],
+  ['damage_2',['damage',['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()']]],
   ['damagesource_3',['DamageSource',['../struct_player_1_1_hurt_info.html#afbda1d7dc60e1d31b1d34848bf657399',1,'Player::HurtInfo']]],
   ['damagetype_4',['DamageType',['../struct_n_p_c_1_1_hit_info.html#a50b2b8b4f089677bd4af9b36adb7cc25',1,'NPC::HitInfo']]],
   ['damagevariationscale_5',['DamageVariationScale',['../struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e',1,'NPC::HitModifiers']]],
