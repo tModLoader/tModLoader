@@ -3774,8 +3774,8 @@
  				num16 = 1;
  
 +			reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
-+			PlayerLoader.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num16);
++			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
++			PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref num16);
 +
  			if (num16 < 0)
  				num16 = 0;
@@ -3860,7 +3860,7 @@
  						}
 +
 +						SkipDebuffRemoval:
-+						PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num5);
++						PlayerLoader.PostNurseHeal(LocalPlayer, LocalPlayer.TalkNPC, health, removeDebuffs, num5);
  					}
  					else {
  						int num26 = rand.Next(3);

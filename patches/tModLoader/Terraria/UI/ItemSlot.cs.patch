@@ -255,7 +255,7 @@
  				HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
  				break;
  			case 4: {
-+				if (!PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, inv, Main.mouseItem))
 +					break;
 +
  				Chest chest = Main.instance.shop[Main.npcShop];
@@ -266,7 +266,7 @@
  					SoundEngine.PlaySound(18);
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  				else if (Main.mouseItem.value == 0) {
 -					chest.AddItemToShop(Main.mouseItem);
@@ -275,7 +275,7 @@
  					SoundEngine.PlaySound(7);
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  
  				Recipe.FindRecipes();
@@ -310,7 +310,7 @@
  		if (Main.npcShop > 0 && !inv[slot].favorited) {
  			Chest chest = Main.instance.shop[Main.npcShop];
  			if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (!PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) { } else				
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else				
  				if (player.SellItem(inv[slot])) {
 +					// Moved below AnnounceTransfer
 +					/*
@@ -322,7 +322,7 @@
  					SoundEngine.PlaySound(18);
  					Recipe.FindRecipes();
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  				else if (inv[slot].value == 0) {
 +					// Moved below AnnounceTransfer
@@ -335,7 +335,7 @@
  					SoundEngine.PlaySound(7);
  					Recipe.FindRecipes();
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  			}
  		}
@@ -537,7 +537,7 @@
  		int num = Main.superFastStack + 1;
  		Player localPlayer = Main.LocalPlayer;
  		for (int i = 0; i < num; i++) {
-+			if (!PlayerLoader.CanBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, inv[slot]))
++			if (!PlayerLoader.CanBuyItem(localPlayer, localPlayer.TalkNPC, inv, inv[slot]))
 +				continue;
 +
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
@@ -575,7 +575,7 @@
  
  			AnnounceTransfer(new ItemTransferInfo(Main.mouseItem, 15, 21));
 +
-+			PlayerLoader.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
++			PlayerLoader.PostBuyItem(localPlayer, localPlayer.TalkNPC, inv, Main.mouseItem);
  		}
  	}
  

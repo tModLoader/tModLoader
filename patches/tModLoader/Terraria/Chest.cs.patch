@@ -645,7 +645,7 @@
  
  	public void SetupShop(int type)
  	{
-+		SetupShop(NPCShopDatabase.GetShopNameFromVanillaIndex(type), Main.npc[Main.LocalPlayer.talkNPC]);
++		SetupShop(NPCShopDatabase.GetShopNameFromVanillaIndex(type), Main.LocalPlayer.TalkNPC);
 +	}
 +
 +	public void SetupShop(string shopName, NPC npc) // TML: shop parameter

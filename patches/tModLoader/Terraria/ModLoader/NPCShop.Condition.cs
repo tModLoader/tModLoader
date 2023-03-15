@@ -124,7 +124,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition EclipseOrBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.BloodOrSun"), () => Main.bloodMoon || Main.eclipse);
 		public static readonly Condition NotEclipseAndNotBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.NotBloodOrSun"), () => !Main.bloodMoon && !Main.eclipse);
 		public static readonly Condition EclipseOrNight = new Condition(NetworkText.FromKey("ShopConditions.NightOrSun"), () => !Main.dayTime || Main.eclipse);
-		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.npc[Main.LocalPlayer.talkNPC].IsShimmerVariant);
+		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 
 		// Moon phases :( thanks to Chicken Bones for help with those
 		public static readonly Condition IsMoonFull = new(NetworkText.FromKey("ShopConditions.FullMoon"), () => Main.GetMoonPhase() == MoonPhase.Full);

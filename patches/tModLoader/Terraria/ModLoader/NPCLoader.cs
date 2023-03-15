@@ -1081,17 +1081,14 @@ public static class NPCLoader
 
 	public static void SetChatButtons(ref string button, ref string button2)
 	{
-		if (Main.player[Main.myPlayer].talkNPC >= 0) {
-			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			npc.ModNPC?.SetChatButtons(ref button, ref button2);
-		}
+		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
 	}
 
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
 
 	public static bool PreChatButtonClicked(bool firstButton)
 	{
-		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+		NPC npc = Main.LocalPlayer.TalkNPC;
 
 		bool result = true;
 		foreach (GlobalNPC g in HookPreChatButtonClicked.Enumerate(npc.globalNPCs)) {
@@ -1111,7 +1108,7 @@ public static class NPCLoader
 
 	public static void OnChatButtonClicked(bool firstButton)
 	{
-		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+		NPC npc = Main.LocalPlayer.TalkNPC;
 		string shopName = null;
 
 		if (npc.ModNPC != null) {

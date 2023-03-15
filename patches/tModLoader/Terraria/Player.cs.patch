@@ -714,6 +714,18 @@
  
  	public bool ShouldNotDraw {
  		get {
+@@ -2118,6 +_,11 @@
+ 
+ 	public int talkNPC { get; private set; }
+ 
++	/// <summary>
++	/// The NPC instance the player is talking to, or null if <see cref="talkNPC"/> is -1
++	/// </summary>
++	public NPC TalkNPC => talkNPC >= 0 ? Main.npc[talkNPC] : null;
++
+ 	public bool isLockedToATile {
+ 		get {
+ 			if (!sitting.isSitting)
 @@ -2155,7 +_,10 @@
  
  	public bool ItemTimeIsZero => itemTime == 0;
