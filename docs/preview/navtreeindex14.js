@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_player_death_reason.html#a6171817be69d166d82feaf78b89954c6":[2,0,914,0],
 "class_player_difficulty_i_d.html":[2,0,915],
 "class_player_draw_helper.html":[2,0,916],
 "class_player_draw_layer.html":[2,0,917],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_proj_a_i_style_i_d.html#a684922187f1cdda7ea074d5c8abba521":[2,0,965,160],
 "class_proj_a_i_style_i_d.html#a695a2c88492693db4ee1cb6fe9144bac":[2,0,965,144],
 "class_proj_a_i_style_i_d.html#a69c9e9775cddbae4bfe200b4e7518ccb":[2,0,965,149],
-"class_proj_a_i_style_i_d.html#a6a765a2726ee1f8a0ec945324f2a3a22":[2,0,965,7],
-"class_proj_a_i_style_i_d.html#a6c7d44b7228392724f7ece235537e987":[2,0,965,163]
+"class_proj_a_i_style_i_d.html#a6a765a2726ee1f8a0ec945324f2a3a22":[2,0,965,7]
 };

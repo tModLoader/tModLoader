@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_recipe_group.html":[2,0,992],
 "class_recipe_group_i_d.html":[2,0,993],
 "class_recipe_item_creation_context.html":[2,0,994],
 "class_recipe_item_creation_context.html#a60773124af2c51df837b7691e6d393d3":[2,0,994,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_tile_draw_info.html":[2,0,1165],
 "class_tile_draw_sorter.html":[2,0,1167],
 "class_tile_draw_sorter_1_1_custom_comparer.html":[2,0,1167,0],
-"class_tile_drawing.html":[2,0,1166],
-"class_tile_drawing.html#a02189b771b065777d7952f6713cdca80":[2,0,1166,0]
+"class_tile_drawing.html":[2,0,1166]
 };

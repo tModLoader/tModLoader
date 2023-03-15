@@ -1,5 +1,8 @@
 var NAVTREEINDEX18 =
 {
+"class_unloaded_global_item.html#abdbdf089a40637872b52fbaba9462fab":[2,0,1332,0],
+"class_unloaded_global_n_p_c.html":[2,0,1333],
+"class_unloaded_global_n_p_c.html#a8fcbb5c6f276252463ebc4a7546fd0fb":[2,0,1333,0],
 "class_unloaded_item.html":[2,0,1334],
 "class_unloaded_item.html#a32c75795f5ea1a8fa4d5f9f6c886ce57":[2,0,1334,2],
 "class_unloaded_item.html#a32f67545a6e45160419b6606ef71e06b":[2,0,1334,0],
@@ -137,8 +140,8 @@ var NAVTREEINDEX18 =
 "class_wsc_json_object.html":[2,0,1422],
 "classes.html":[2,1],
 "classnativefiledialog.html":[2,0,808],
-"functions.html":[2,3,0,0],
 "functions.html":[2,3,0],
+"functions.html":[2,3,0,0],
 "functions_b.html":[2,3,0,1],
 "functions_c.html":[2,3,0,2],
 "functions_d.html":[2,3,0,3],
@@ -178,8 +181,8 @@ var NAVTREEINDEX18 =
 "functions_n.html":[2,3,0,13],
 "functions_o.html":[2,3,0,14],
 "functions_p.html":[2,3,0,15],
-"functions_prop.html":[2,3,3],
 "functions_prop.html":[2,3,3,0],
+"functions_prop.html":[2,3,3],
 "functions_prop_b.html":[2,3,3,1],
 "functions_prop_c.html":[2,3,3,2],
 "functions_prop_d.html":[2,3,3,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX18 =
 "interface_command_caller.html":[2,0,161],
 "interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[2,0,161,1],
 "interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[2,0,161,0],
-"interface_i_achievement_tracker.html":[2,0,467],
-"interface_i_animation_segment.html":[2,0,468],
-"interface_i_animation_segment_action.html":[2,0,469],
-"interface_i_audio_system.html":[2,0,471]
+"interface_i_achievement_tracker.html":[2,0,467]
 };

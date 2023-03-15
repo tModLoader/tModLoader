@@ -1,5 +1,8 @@
 var NAVTREEINDEX20 =
 {
+"struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8":[2,0,840,1,11],
+"struct_n_p_c_1_1_hit_modifiers.html#a9bdd0084aeb8144cca1b18a374db2780":[2,0,840,1,10],
+"struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf":[2,0,840,1,19],
 "struct_n_p_c_1_1_hit_modifiers.html#ab4296e1f49756d599c976b1000f6528c":[2,0,840,1,12],
 "struct_n_p_c_1_1_hit_modifiers.html#ab92ee61bb3c9bc7ee1ebbde65cbc15ff":[2,0,840,1,13],
 "struct_n_p_c_1_1_hit_modifiers.html#ae4b8ed585bcf70d7bacc6cc0e56ae34f":[2,0,840,1,15],

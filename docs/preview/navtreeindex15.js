@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"class_proj_a_i_style_i_d.html#a6c7d44b7228392724f7ece235537e987":[2,0,965,163],
 "class_proj_a_i_style_i_d.html#a6e299ef8350af66665e48e5e8899c355":[2,0,965,26],
 "class_proj_a_i_style_i_d.html#a71be348da1a0d95025d99c7c16db91a5":[2,0,965,17],
 "class_proj_a_i_style_i_d.html#a7415656f9dbd5d91462fa1016f348b2c":[2,0,965,152],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "class_recipe_1_1_condition.html":[2,0,990,0],
 "class_recipe_1_1_consumption_rules.html":[2,0,990,1],
 "class_recipe_1_1_consumption_rules.html#aa41abac62905fc8fdc98b6c82a41ec0e":[2,0,990,1,0],
-"class_recipe_exception.html":[2,0,991],
-"class_recipe_group.html":[2,0,992]
+"class_recipe_exception.html":[2,0,991]
 };

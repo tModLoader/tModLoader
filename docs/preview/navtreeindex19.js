@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"interface_i_animation_segment.html":[2,0,468],
+"interface_i_animation_segment_action.html":[2,0,469],
+"interface_i_audio_system.html":[2,0,471],
 "interface_i_audio_track.html":[2,0,472],
 "interface_i_ball_contact_listener.html":[2,0,473],
 "interface_i_bestiary_background_image_path_and_color_provider.html":[2,0,474],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1":[2,0,840,1,5],
 "struct_n_p_c_1_1_hit_modifiers.html#a5391fd24824e040dc7dc7931c3b01ed9":[2,0,840,1,18],
 "struct_n_p_c_1_1_hit_modifiers.html#a5cd98f3779db944a0599ac1ebbe8be4a":[2,0,840,1,4],
-"struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e":[2,0,840,1,6],
-"struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8":[2,0,840,1,11],
-"struct_n_p_c_1_1_hit_modifiers.html#a9bdd0084aeb8144cca1b18a374db2780":[2,0,840,1,10],
-"struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf":[2,0,840,1,19]
+"struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e":[2,0,840,1,6]
 };

@@ -10,6 +10,7 @@ var class_mod_tile =
     [ "CanKillTile", "class_mod_tile.html#aa30e725d1f6f14c2df4f763a8ef87667", null ],
     [ "CanReplace", "class_mod_tile.html#a93d10894495c872dabd58621bdd6bad8", null ],
     [ "ChangeWaterfallStyle", "class_mod_tile.html#aa7cbe122fd4aaa4b620a65b327dc8aff", null ],
+    [ "DefaultContainerName", "class_mod_tile.html#a17cbd651fec01999f1512cf6c67b5c2d", null ],
     [ "DrawEffects", "class_mod_tile.html#a9b1842f84cdb2c437e63a5b790a1b79d", null ],
     [ "DropCritterChance", "class_mod_tile.html#a9f0e8a447a5448628b3cfc7ef76a4d76", null ],
     [ "FloorVisuals", "class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a", null ],
