@@ -74,10 +74,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 		for (int i = 0; i < order.Count; i++) {
 			// Try finding the slot item goes in to
 			if (!slots.TryGetValue(order[i], out int type)) {
-				var unloaded = new UnloadedAccessorySlot(Loader.list.Count + UnloadedSlotCount++, order[i]);
-
-				slots.Add(unloaded.Name, unloaded.Type);
-				type = unloaded.Type;
+				type = Loader.list.Count + UnloadedSlotCount++;
+				slots.Add(order[i], type);
 			}
 
 			// Place loaded items in to the correct slot
