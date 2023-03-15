@@ -51,7 +51,7 @@ public abstract class GlobalBuff : ModType
 	/// <summary>
 	/// Allows you to modify the name and tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
 	/// </summary>
-	public virtual void ModifyBuffText(int type, ref string buffName, ref int rare, ref string tip)
+	public virtual void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare)
 	{
 	}
 

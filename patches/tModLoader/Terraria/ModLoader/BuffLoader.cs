@@ -27,7 +27,7 @@ public static class BuffLoader
 	private static DelegateUpdateNPC[] HookUpdateNPC;
 	private static Func<int, Player, int, int, bool>[] HookReApplyPlayer;
 	private static Func<int, NPC, int, int, bool>[] HookReApplyNPC;
-	private delegate void DelegateModifyBuffText(int type, ref string buffName, ref int rare, ref string tip);
+	private delegate void DelegateModifyBuffText(int type, ref string buffName, ref string tip, ref int rare);
 	private static DelegateModifyBuffText[] HookModifyBuffText;
 	private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 	private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
@@ -166,13 +166,13 @@ public static class BuffLoader
 		return false;
 	}
 
-	public static void ModifyBuffText(int buff, ref string buffName, ref int rare, ref string tip)
+	public static void ModifyBuffText(int buff, ref string buffName, ref string tip, ref int rare)
 	{
 		if (IsModBuff(buff)) {
-			GetBuff(buff).ModifyBuffText(ref buffName, ref rare, ref tip);
+			GetBuff(buff).ModifyBuffText(ref buffName, ref tip, ref rare);
 		}
 		foreach (var hook in HookModifyBuffText) {
-			hook(buff, ref buffName, ref rare, ref tip);
+			hook(buff, ref buffName, ref tip, ref rare);
 		}
 	}
 

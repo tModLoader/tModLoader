@@ -48,7 +48,7 @@ namespace ExampleMod.Common.GlobalBuffs
 			return true;
 		}
 
-		public override void ModifyBuffText(int type, ref string buffName, ref int rare, ref string tip) {
+		public override void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare) {
 			// This code adds a more extensible remaining time tooltip for suitable buffs
 			Player player = Main.LocalPlayer;
 
