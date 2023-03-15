@@ -143,9 +143,9 @@ public sealed partial class NPCShop {
 		public static readonly Condition IsMoonPhasesHalf1 = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesHalf1"), () => Main.moonPhase / 4 == 1);
 		public static readonly Condition IsMoonPhasesEven = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesEven"), () => Main.moonPhase % 2 == 0);
 		public static readonly Condition IsMoonPhasesOdd = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesOdd"), () => Main.moonPhase % 2 == 1);
-		public static readonly Condition IsMoonPhasesNearNew = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesNearNew"), () => Main.moonPhase >= 3 && Main.moonPhase < 6);
-		public static readonly Condition IsMoonPhasesEvenQuarters = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesEvenQuarters"), () => Main.moonPhase <= 1 || Main.moonPhase == 4 || Main.moonPhase == 5);
-		public static readonly Condition IsMoonPhasesOddQuarters = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesOddQuarters"), () => Main.moonPhase == 2 || Main.moonPhase == 3 || Main.moonPhase >= 7);
+		public static readonly Condition IsMoonPhasesNearNew = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesNearNew"), () => Main.moonPhase >= 3 && Main.moonPhase <= 5);
+		public static readonly Condition IsMoonPhasesEvenQuarters = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesEvenQuarters"), () => Main.moonPhase / 2 % 2 == 0);
+		public static readonly Condition IsMoonPhasesOddQuarters = new(NetworkText.FromKey("ShopConditions.IsMoonPhasesOddQuarters"), () => Main.moonPhase / 2 % 2 == 1);
 		public static readonly Condition IsMoonPhases04 = new(NetworkText.FromKey("ShopConditions.IsMoonPhases04"), () => Main.moonPhase % 4 == 0);
 		public static readonly Condition IsMoonPhases15 = new(NetworkText.FromKey("ShopConditions.IsMoonPhases15"), () => Main.moonPhase % 4 == 1);
 		public static readonly Condition IsMoonPhases26 = new(NetworkText.FromKey("ShopConditions.IsMoonPhases26"), () => Main.moonPhase % 4 == 2);
