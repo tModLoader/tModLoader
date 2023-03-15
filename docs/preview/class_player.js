@@ -43,6 +43,7 @@ var class_player =
     [ "HasBuff", "class_player.html#a76372478cf660458c1b639299cf8a293", null ],
     [ "HasBuff< T >", "class_player.html#a091a5da6140410a25c68973feb010d89", null ],
     [ "Heal", "class_player.html#af7afcea2d9b372abfd6486a008738526", null ],
+    [ "HealEffect", "class_player.html#ad5922ca66e5256559454706dcd24fbd8", null ],
     [ "InModBiome", "class_player.html#a8aee29310b1e77c9622864af40461cf6", null ],
     [ "InModBiome< T >", "class_player.html#aeb3e797505b429254401b0393eaed24f", null ],
     [ "InZonePurity", "class_player.html#a0c46a44deab1a9bfff82bebc009e29e9", null ],

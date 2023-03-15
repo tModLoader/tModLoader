@@ -94,6 +94,12 @@ $(document).ready(function(){initNavTree('class_combat_text.html',''); initResiz
   <div class="headertitle"><div class="title">CombatText Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents floating text in the game world most typically used for damage numbers and healing numbers. <br  />
+ For non-overlapping in-game text, such as reforge messages, use <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> instead. Use the NewText(Rectangle, Color, int, bool, bool) or NewText(Rectangle, Color, string, bool, bool) methods to create a new instance. <br  />
+ In multiplayer, ID.MessageID.CombatTextInt and ID.MessageID.CombatTextString network messages can be used to sync a combat text if manually spawned. <br  />
+   
+ <a href="class_combat_text.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -194,7 +200,12 @@ Properties</h2></td></tr>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>TargetScale</b><code> [get]</code></td></tr>
 <tr class="separator:aa8a863465d183f2a3963e4c7deba3ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents floating text in the game world most typically used for damage numbers and healing numbers. <br  />
+ For non-overlapping in-game text, such as reforge messages, use <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> instead. Use the NewText(Rectangle, Color, int, bool, bool) or NewText(Rectangle, Color, string, bool, bool) methods to create a new instance. <br  />
+ In multiplayer, ID.MessageID.CombatTextInt and ID.MessageID.CombatTextString network messages can be used to sync a combat text if manually spawned. <br  />
+  </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
