@@ -29,13 +29,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 	public ModAccessorySlotPlayer()
 	{
 		foreach (var slot in Loader.list) {
-			if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase)) {
-				slots.Add(slot.FullName, slot.Type);
-			}
-			else {
-				UnloadedSlotCount++;
-				slots.Add(slot.Name, slot.Type);
-			}
+			slots.Add(slot.FullName, slot.Type);
 		}
 
 		ResizeAccesoryArrays(slots.Count);
@@ -80,12 +74,10 @@ public class ModAccessorySlotPlayer : ModPlayer
 		for (int i = 0; i < order.Count; i++) {
 			// Try finding the slot item goes in to
 			if (!slots.TryGetValue(order[i], out int type)) {
-				var unloaded = new UnloadedAccessorySlot(Loader.list.Count, order[i]);
+				var unloaded = new UnloadedAccessorySlot(Loader.list.Count + UnloadedSlotCount++, order[i]);
 
 				slots.Add(unloaded.Name, unloaded.Type);
-				Loader.list.Add(unloaded);
 				type = unloaded.Type;
-				UnloadedSlotCount++;
 			}
 
 			// Place loaded items in to the correct slot
@@ -268,6 +260,8 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 		private static void HandleVisualState(BinaryReader r, int fromWho)
 		{
+			// Does this receiving need to factor in difference between LoadedCount and Total?
+			// Shouldn't?
 			if (Main.netMode == Client)
 				fromWho = r.ReadByte();
 
