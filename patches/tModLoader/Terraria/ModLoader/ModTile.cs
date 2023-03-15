@@ -517,7 +517,15 @@ public abstract class ModTile : ModBlockType
 	/// <returns>Return true if this tile truly is an unlocked chest and the chest can be locked</returns>
 	public virtual bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) => false;
 
-	public virtual LocalizedText ContainerName(int frameX, int frameY) => null;
+	/// <summary>
+	/// Returns the default name for a chest or dresser with the provided FrameX and FrameY values. <br/>
+	/// A typical implementation of a tile with only a single name might return <c>CreateMapEntryName()</c> <br/>
+	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries.
+	/// </summary>
+	public virtual LocalizedText DefaultContainerName(int frameX, int frameY)
+	{
+		return null;
+	}
 
 	/// <summary>
 	/// Allows you to stop this tile at the given coordinates from being replaced via the block swap feature. The tileTypeBeingPlaced parameter is the tile type that will replace the current tile.

@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
-		public override LocalizedText ContainerName(int frameX, int frameY) {
+		public override LocalizedText DefaultContainerName(int frameX, int frameY) {
 			return CreateMapEntryName();
 		}
 
@@ -149,7 +149,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Language.GetTextValue("LegacyDresserType.0");
 			}
 			else {
-				string defaultName = TileLoader.ContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
 
 				if (Main.chest[chestIndex].name != "") {
 					player.cursorItemIconText = Main.chest[chestIndex].name;

@@ -35,14 +35,17 @@ public class ModTileTest : ModTile
 		sapling/* tModPorter Note: Removed. Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
 		torch/* tModPorter Note: Removed. Use TileID.Sets.Torch instead */ = true;
 		bed/* tModPorter Note: Removed. Use TileID.Sets.CanBeSleptIn instead */ = true;
-		dresser/* tModPorter Note: Removed. Use ContainerName.SetDefault() and TileID.Sets.BasicDresser instead */ = "";
-		chest/* tModPorter Note: Removed. Use ContainerName.SetDefault() and TileID.Sets.BasicChest instead */ = "";
+		dresser/* tModPorter Note: Removed. Override ContainerName and use TileID.Sets.BasicDresser instead */ = "";
+		chest/* tModPorter Note: Removed. Override ContainerName and use TileID.Sets.BasicChest instead */ = "";
 		disableSmartInteract/* tModPorter Note: Removed. Use TileID.Sets.DisableSmartInteract instead */ = true;
 		disableSmartCursor/* tModPorter Note: Removed. Use TileID.Sets.DisableSmartCursor instead */ = true;
 
 		SetModTree(new ExampleTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults instead */;
 		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead */;
 		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead */;
+
+		ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Some Container");
+		string containerName = TileLoader.DefaultContainerName(13)/* tModPorter Note: new method takes in FrameX and FrameY */;
 #endif
 
 		LocalizedText name = CreateMapEntryName();
