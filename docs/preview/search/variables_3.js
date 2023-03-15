@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['damage_0',['damage',['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()']]],
+  ['damage_0',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item']]],
   ['damage_1',['Damage',['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player::HurtInfo']]],
-  ['damage_2',['damage',['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile']]],
+  ['damage_2',['damage',['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()']]],
   ['damagesource_3',['DamageSource',['../struct_player_1_1_hurt_info.html#afbda1d7dc60e1d31b1d34848bf657399',1,'Player::HurtInfo']]],
   ['damagetype_4',['DamageType',['../struct_n_p_c_1_1_hit_info.html#a50b2b8b4f089677bd4af9b36adb7cc25',1,'NPC::HitInfo']]],
   ['damagevariationscale_5',['DamageVariationScale',['../struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e',1,'NPC::HitModifiers']]],
@@ -39,8 +39,8 @@ var searchData=
   ['defaultkillsforbannerneeded_36',['DefaultKillsForBannerNeeded',['../class_item_i_d_1_1_sets.html#a9fcd6cfb35dad45b9166ed4597892bf6',1,'ItemID::Sets']]],
   ['defdamage_37',['defDamage',['../class_n_p_c.html#ad7691fdbe3843bfc6604a4bdba3e2707',1,'NPC']]],
   ['defdefense_38',['defDefense',['../class_n_p_c.html#acaa2249bf787bcd07a672eaaaa6e3066',1,'NPC']]],
-  ['defense_39',['defense',['../class_item.html#af408dfdaffd7c3e1920615c9ad124079',1,'Item.defense()'],['../class_n_p_c.html#ab16ba6496d54d7e4080fbd11d11540ba',1,'NPC.defense()']]],
-  ['defense_40',['Defense',['../struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f',1,'NPC::HitModifiers']]],
+  ['defense_39',['Defense',['../struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f',1,'NPC::HitModifiers']]],
+  ['defense_40',['defense',['../class_item.html#af408dfdaffd7c3e1920615c9ad124079',1,'Item.defense()'],['../class_n_p_c.html#ab16ba6496d54d7e4080fbd11d11540ba',1,'NPC.defense()']]],
   ['defenseeffectiveness_41',['DefenseEffectiveness',['../struct_n_p_c_1_1_hit_modifiers.html#a00625b9d69366bef28de62b6b15e1804',1,'NPC::HitModifiers']]],
   ['demolitionistneedsexplosivestomovein_42',['DemolitionistNeedsExplosivesToMoveIn',['../class_game_tip_i_d.html#a5cd444642e0fb0a9a629f3a22051da80',1,'GameTipID']]],
   ['demoneye_43',['DemonEye',['../class_n_p_c_a_i_style_i_d.html#a09334a58d73868ef8d72b3b033d73c8d',1,'NPCAIStyleID']]],
