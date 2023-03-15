@@ -63,8 +63,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"sapling",				Removed("Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"torch",				Removed("Use TileID.Sets.Torch instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"bed",					Removed("Use TileID.Sets.CanBeSleptIn instead"));
-		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"dresser",				Removed("Override ContainerName and use TileID.Sets.BasicDresser instead"));
-		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Override ContainerName and use TileID.Sets.BasicChest instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"dresser",				Removed("Override DefaultContainerName and use TileID.Sets.BasicDresser instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Override DefaultContainerName and use TileID.Sets.BasicChest instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartInteract",	Removed("Use TileID.Sets.DisableSmartInteract instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartCursor",	Removed("Use TileID.Sets.DisableSmartCursor instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"OpenDoorID",	        Removed("Use TileID.Sets.OpenDoorID instead"));
