@@ -10,4 +10,6 @@ public class ModBuffTest : ModBuff
 		bool a = BuffLoader.CanBeCleared(0)/* tModPorter Note: Removed. Use !BuffID.Sets.NurseCannotRemoveDebuff instead */;
 #endif
 	}
+
+	public override void ModifyBuffText(ref string buffName, ref int rare, ref string tip) { }
 }

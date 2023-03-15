@@ -494,5 +494,10 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
+
+		RenameMethod("Terraria.ModLoader.ModBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
+		RenameMethod("Terraria.ModLoader.GlobalBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
+		ChangeHookSignature("Terraria.ModLoader.ModBuff", "ModifyBuffText");
+		ChangeHookSignature("Terraria.ModLoader.GlobalBuff", "ModifyBuffText");
 	}
 }
