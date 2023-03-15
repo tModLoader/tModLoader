@@ -258,8 +258,6 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 		private static void HandleVisualState(BinaryReader r, int fromWho)
 		{
-			// Does this receiving need to factor in difference between LoadedCount and Total?
-			// Shouldn't?
 			if (Main.netMode == Client)
 				fromWho = r.ReadByte();
 
