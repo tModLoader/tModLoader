@@ -22,6 +22,8 @@ using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using System.Collections.Generic;
 using Terraria.ModLoader.IO;
+using ExampleMod.Common.Configs;
+using ExampleMod.Common;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -277,7 +279,6 @@ namespace ExampleMod.Content.NPCs
 		// Not completely finished, but below is what the NPC will sell
 
 		public override void AddShops() {
-			var exampleGunBulletCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.ThirdQuarterOrWaningCrescentMoon"), () => Main.moonPhase >= 2 && Main.moonPhase < 4);
 			var npcShop = new NPCShop(Type, ShopName)
 				.Add(ModContent.ItemType<ExampleItem>())
 				//.Add(ItemType<EquipMaterial>())
@@ -290,14 +291,16 @@ namespace ExampleMod.Content.NPCs
 				.Add(ModContent.ItemType<Items.Tools.ExamplePickaxe>())
 				.Add(ModContent.ItemType<Items.Tools.ExampleHamaxe>())
 				.Add(ModContent.ItemType<Items.Consumables.ExampleHealingPotion>(), new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerHasLifeforceBuff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
-				//.Add(ItemType<ExampleWings>(), new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerInExampleBiomeAndWingsNotDisabled"), () => Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings)))
 				.Add(ModContent.ItemType<Items.Weapons.ExampleSword>(), NPCShop.Condition.IsMoonPhasesQuarter0)
-				//.Add(ItemType<ExampleGun>(), exampleGunBulletCondition)
-				.Add(ModContent.ItemType<Items.Ammo.ExampleBullet>(), exampleGunBulletCondition)
+				//.Add(ItemType<ExampleGun>(), NPCShop.Condition.IsMoonPhasesQuarter1)
+				.Add(ModContent.ItemType<Items.Ammo.ExampleBullet>(), NPCShop.Condition.IsMoonPhasesQuarter1)
 				//.Add(ItemType<ExampleStaff>(), NPCShop.Condition.IsMoonPhasesQuarter2)
 				.Add(ModContent.ItemType<Items.Weapons.ExampleYoyo>(), NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
-			if (ModContent.TryFind<ModItem>("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
+			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle)
+				npcShop.Add<ExampleWings>(new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.InExampleBiome"), () => Main.LocalPlayer.InModBiome<ExampleSurfaceBiome>() || Main.LocalPlayer.InModBiome<ExampleUndergroundBiome>()));
+
+			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
 		 	 	npcShop.Add(bloodTalisman.Type);
 		 	}
 			npcShop.Register(); // Name of this shop tab

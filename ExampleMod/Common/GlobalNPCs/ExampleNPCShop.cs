@@ -64,13 +64,12 @@ namespace ExampleMod.Common.GlobalNPCs
 			// Adding new Condition to Blue Flare. Now it will appear just if player carries a Flare Gun in their inventory AND is in Snow biome
 			shop.GetEntry(ItemID.BlueFlare).AddCondition(NPCShop.Condition.InSnowBiome);
 
-			// Custom condition, opposite of conditions for ExampleItem above.
-			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());
-
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
 			// If condition is fulfilled, add an item to the shop.
 			shop.Add(ModContent.ItemType<ExampleItem>(), NPCShop.Condition.HappyWindyDay, NPCShop.Condition.HappyEnough);
 
+			// Custom condition, opposite of conditions for ExampleItem above.
+			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());
 			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
 			shop.Add(ItemID.RedPotion, redPotCondition, NPCShop.Condition.ForTheWorthy);
 		}
