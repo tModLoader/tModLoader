@@ -195,14 +195,14 @@ public static class NPCShopDatabase
 			() => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200);
 
 		return new Entry[] {
-			new(ItemID.TeleportationPylonPurity,        pylonMainCondition, Condition.InPurityBiome, purityPylonCondition),
-			new(ItemID.TeleportationPylonSnow,          pylonMainCondition, Condition.InSnowBiome),
-			new(ItemID.TeleportationPylonDesert,        pylonMainCondition, Condition.InDesertBiome),
-			new(ItemID.TeleportationPylonUnderground,   pylonMainCondition, cavernPylonCondition),
-			new(ItemID.TeleportationPylonOcean,         pylonMainCondition, oceanPylonCondition),
-			new(ItemID.TeleportationPylonJungle,        pylonMainCondition, Condition.InJungleBiome),
-			new(ItemID.TeleportationPylonHallow,        pylonMainCondition, Condition.InHallowBiome),
-			new(ItemID.TeleportationPylonMushroom,      pylonMainCondition, Condition.InGlowshroomBiome, glowshroomPylonCondtiion)
+			new Entry(ItemID.TeleportationPylonPurity,        pylonMainCondition, Condition.InPurityBiome, purityPylonCondition).OrderLast(),
+			new Entry(ItemID.TeleportationPylonSnow,          pylonMainCondition, Condition.InSnowBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonDesert,        pylonMainCondition, Condition.InDesertBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonUnderground,   pylonMainCondition, cavernPylonCondition).OrderLast(),
+			new Entry(ItemID.TeleportationPylonOcean,         pylonMainCondition, oceanPylonCondition).OrderLast(),
+			new Entry(ItemID.TeleportationPylonJungle,        pylonMainCondition, Condition.InJungleBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonHallow,        pylonMainCondition, Condition.InHallowBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonMushroom,      pylonMainCondition, Condition.InGlowshroomBiome, glowshroomPylonCondtiion).OrderLast()
 		};
 	}
 
