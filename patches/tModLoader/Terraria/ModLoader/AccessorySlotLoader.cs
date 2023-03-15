@@ -25,7 +25,9 @@ namespace Terraria.ModLoader
 
 		public AccessorySlotLoader() => Initialize(0);
 
-		public ModAccessorySlot Get(int id, Player player) => list[id % ModSlotPlayer(player).SlotCount];
+		// Note: Because of the weird nuance of both vanity and functional being in same array, we have to reduce down to half the size
+		private ModAccessorySlot GetIdCorrected(int id) => (id >= list.Count) ? new UnloadedAccessorySlot(id, "TEMP'd") : list[id];
+		public ModAccessorySlot Get(int id, Player player) => GetIdCorrected(id % ModSlotPlayer(player).SlotCount);
 		public ModAccessorySlot Get(int id) => Get(id, Player);
 
 		public const int MaxVanillaSlotCount = 2 + 5;
@@ -58,19 +60,19 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			for (int modSlot = 0; modSlot < list.Count; modSlot++) {
+			for (int modSlot = 0; modSlot < ModSlotPlayer(Player).SlotCount; modSlot++) {
 				if (!Draw(skip, true, modSlot, color))
 					skip++;
 			}
 
 			// there are no slots to be drawn by us.
-			if (skip == MaxVanillaSlotCount + list.Count) {
+			if (skip == MaxVanillaSlotCount + ModSlotPlayer(Player).SlotCount) {
 				ModSlotPlayer(Player).scrollbarSlotPosition = 0;
 				return;
 			}
 
 			int accessoryPerColumn = GetAccessorySlotPerColumn();
-			int slotsToRender = list.Count + MaxVanillaSlotCount - skip;
+			int slotsToRender = ModSlotPlayer(Player).SlotCount + MaxVanillaSlotCount - skip;
 			int scrollIncrement = slotsToRender - accessoryPerColumn;
 
 			if (scrollIncrement < 0) {
@@ -184,7 +186,7 @@ namespace Terraria.ModLoader
 			bool customLoc = false;
 
 			if (modded) {
-				ModAccessorySlot mAccSlot = list[slot];
+				ModAccessorySlot mAccSlot = Get(slot);
 				customLoc = mAccSlot.CustomLocation.HasValue;
 				if (!customLoc && Main.EquipPage != 0)
 					return false;
@@ -204,7 +206,7 @@ namespace Terraria.ModLoader
 					Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 				}
 				if (thisSlot.DrawVanitySlot)
-					DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -11, slot + list.Count, flag3, xLoc, yLoc);
+					DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -11, slot + ModSlotPlayer(Player).SlotCount, flag3, xLoc, yLoc);
 				if (thisSlot.DrawDyeSlot)
 					DrawSlot(ModSlotPlayer(Player).exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}

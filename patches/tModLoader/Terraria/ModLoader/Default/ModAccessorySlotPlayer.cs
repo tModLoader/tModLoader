@@ -13,9 +13,9 @@ namespace Terraria.ModLoader.Default
 		internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
 		// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
-		internal Item[] exAccessorySlot = new Item[2];
-		internal Item[] exDyesAccessory = new Item[1];
-		internal bool[] exHideAccessory = new bool[1];
+		internal Item[] exAccessorySlot;
+		internal Item[] exDyesAccessory;
+		internal bool[] exHideAccessory;
 		internal Dictionary<string, int> slots = new Dictionary<string, int>();
 
 		// Setting toggle for stack or scroll accessories/npcHousing
@@ -23,33 +23,23 @@ namespace Terraria.ModLoader.Default
 		internal int scrollbarSlotPosition;
 
 		public int SlotCount => slots.Count;
-		public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
-		public int UnloadedSlotCount { get; private set; } = 0;
+		public int LoadedSlotCount => Loader.TotalCount;
 
 		public ModAccessorySlotPlayer() {
 			foreach (var slot in Loader.list) {
-				if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase)) {
-					slots.Add(slot.FullName, slot.Type);
-				}
-				else {
-					UnloadedSlotCount++;
-					slots.Add(slot.Name, slot.Type);
-				}
+				slots.Add(slot.FullName, slot.Type);
 			}
 
-			ResizeAccesoryArrays(slots.Count);
+			ResetAndSizeAccessoryArrays();
 		}
 
-		internal void ResizeAccesoryArrays(int newSize) {
-			if (newSize < slots.Count) {
-				return;
-			}
+		internal void ResetAndSizeAccessoryArrays() {
+			int size = slots.Count;
+			exAccessorySlot = new Item[2 * size];
+			exDyesAccessory = new Item[size];
+			exHideAccessory = new bool[size];
 
-			Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
-			Array.Resize<Item>(ref exDyesAccessory, newSize);
-			Array.Resize<bool>(ref exHideAccessory, newSize);
-
-			for (int i = 0; i < newSize; i++) {
+			for (int i = 0; i < size; i++) {
 				exDyesAccessory[i] = new Item();
 				exHideAccessory[i] = false;
 
@@ -59,6 +49,7 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void SaveData(TagCompound tag) {
+			// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded. Otherwise old unloaded slots just bloat the array with empty entries forever
 			tag["order"] = slots.Keys.ToList();
 			tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
 			tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
@@ -66,29 +57,28 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void LoadData(TagCompound tag) {
+			// Scan the saved slot names and add ids for any unloaded slots
 			var order = tag.GetList<string>("order").ToList();
+			foreach (var name in order) {
+				if (!slots.ContainsKey(name))
+					slots.Add(name, slots.Count);
+			}
+
+			ResetAndSizeAccessoryArrays();
+
+
 			var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
 			var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
 			var visible = tag.GetList<bool>("visible").ToList();
 
-			ResizeAccesoryArrays(order.Count);
-
 			for (int i = 0; i < order.Count; i++) {
-				// Try finding the slot item goes in to
-				if (!slots.TryGetValue(order[i], out int type)) {
-					var unloaded = new UnloadedAccessorySlot(Loader.list.Count, order[i]);
-
-					slots.Add(unloaded.Name, unloaded.Type);
-					Loader.list.Add(unloaded);
-					type = unloaded.Type;
-					UnloadedSlotCount++;
-				}
+				int type = slots[order[i]];
 
 				// Place loaded items in to the correct slot
 				exDyesAccessory[type] = dyes[i];
 				exHideAccessory[type] = visible[i];
 				exAccessorySlot[type] = items[i];
-				exAccessorySlot[type + order.Count] = items[i + order.Count];
+				exAccessorySlot[type + SlotCount] = items[i + order.Count];
 			}
 		}
 
