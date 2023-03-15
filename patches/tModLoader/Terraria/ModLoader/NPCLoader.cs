@@ -56,35 +56,6 @@ public static class NPCLoader
 		return hook;
 	}
 
-	static NPCLoader()
-	{
-		shopToNPC[1] = NPCID.Merchant;
-		shopToNPC[2] = NPCID.ArmsDealer;
-		shopToNPC[3] = NPCID.Dryad;
-		shopToNPC[4] = NPCID.Demolitionist;
-		shopToNPC[5] = NPCID.Clothier;
-		shopToNPC[6] = NPCID.GoblinTinkerer;
-		shopToNPC[7] = NPCID.Wizard;
-		shopToNPC[8] = NPCID.Mechanic;
-		shopToNPC[9] = NPCID.SantaClaus;
-		shopToNPC[10] = NPCID.Truffle;
-		shopToNPC[11] = NPCID.Steampunker;
-		shopToNPC[12] = NPCID.DyeTrader;
-		shopToNPC[13] = NPCID.PartyGirl;
-		shopToNPC[14] = NPCID.Cyborg;
-		shopToNPC[15] = NPCID.Painter;
-		shopToNPC[16] = NPCID.WitchDoctor;
-		shopToNPC[17] = NPCID.Pirate;
-		shopToNPC[18] = NPCID.Stylist;
-		shopToNPC[19] = NPCID.TravellingMerchant;
-		shopToNPC[20] = NPCID.SkeletonMerchant;
-		shopToNPC[21] = NPCID.DD2Bartender;
-		shopToNPC[22] = NPCID.Golfer;
-		shopToNPC[23] = NPCID.BestiaryGirl;
-		shopToNPC[24] = NPCID.Princess;
-		shopToNPC[25] = NPCID.Painter;
-	}
-
 	internal static int ReserveNPCID()
 	{
 		if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");

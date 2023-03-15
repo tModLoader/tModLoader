@@ -10,10 +10,9 @@ namespace Terraria.ModLoader;
 public static class NPCShopDatabase
 {
 	private static readonly Dictionary<string, NPCShop> npcShopByName = new();
+	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
 
 	public static readonly Dictionary<string, bool> NoPylons = new();
-
-	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
 
 	internal static void AddShop(NPCShop shop)
 	{
@@ -40,24 +39,46 @@ public static class NPCShopDatabase
 		return $"{(npcType < NPCID.Count ? $"Terraria/{NPCID.Search.GetName(npcType)}" : NPCLoader.GetNPC(npcType).FullName)}/{shopName}";
 	}
 
-	public static string GetShopNameFromVanillaIndex(int index)
-	{
-		int npcType = NPCLoader.shopToNPC[index];
-		if (index == 25) { // Painter 2 Shop Special Case
-			return GetShopName(npcType, "Decor");
-		}
-		return GetShopName(npcType);
-	}
+	private static string[] _vanillaShopNames = new[] {
+		null,
+		GetShopName(NPCID.Merchant),
+		GetShopName(NPCID.ArmsDealer),
+		GetShopName(NPCID.Dryad),
+		GetShopName(NPCID.Demolitionist),
+		GetShopName(NPCID.Clothier),
+		GetShopName(NPCID.GoblinTinkerer),
+		GetShopName(NPCID.Wizard),
+		GetShopName(NPCID.Mechanic),
+		GetShopName(NPCID.SantaClaus),
+		GetShopName(NPCID.Truffle),
+		GetShopName(NPCID.Steampunker),
+		GetShopName(NPCID.DyeTrader),
+		GetShopName(NPCID.PartyGirl),
+		GetShopName(NPCID.Cyborg),
+		GetShopName(NPCID.Painter),
+		GetShopName(NPCID.WitchDoctor),
+		GetShopName(NPCID.Pirate),
+		GetShopName(NPCID.Stylist),
+		GetShopName(NPCID.TravellingMerchant),
+		GetShopName(NPCID.SkeletonMerchant),
+		GetShopName(NPCID.DD2Bartender),
+		GetShopName(NPCID.Golfer),
+		GetShopName(NPCID.BestiaryGirl),
+		GetShopName(NPCID.Princess),
+		GetShopName(NPCID.Painter, "Decor"),
+	};
+
+	public static string GetShopNameFromVanillaIndex(int index) => _vanillaShopNames[index];
 
 	public static void Initialize()
 	{
 		npcShopByName.Clear();
 		NoPylons.Clear();
 
-		NPCShops();
+		RegisterVanillaNPCShops();
 	}
 
-	public static void NPCShops()
+	private static void RegisterVanillaNPCShops()
 	{
 		NoPylons[GetShopName(NPCID.SkeletonMerchant)] = true;
 		NoPylons[GetShopName(NPCID.DD2Bartender)] = true;
