@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"class_unloaded_chest.html":[3,0,1330],
+"class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51":[3,0,1330,0],
+"class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[3,0,1330,2],
+"class_unloaded_chest.html#aedbfa84a1f9064e56981b813926cf047":[3,0,1330,1],
+"class_unloaded_dresser.html":[3,0,1331],
+"class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461":[3,0,1331,0],
+"class_unloaded_global_item.html":[3,0,1332],
+"class_unloaded_global_item.html#a4924c96de0a247d8e257958023cbbd2c":[3,0,1332,1],
 "class_unloaded_global_item.html#abdbdf089a40637872b52fbaba9462fab":[3,0,1332,0],
 "class_unloaded_global_n_p_c.html":[3,0,1333],
 "class_unloaded_global_n_p_c.html#a8fcbb5c6f276252463ebc4a7546fd0fb":[3,0,1333,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX18 =
 "functions_x.html":[3,3,0,23],
 "functions_y.html":[3,3,0,24],
 "functions_z.html":[3,3,0,25],
-"hierarchy.html":[3,2],
-"index.html":[],
-"interface_actions_1_1_n_p_cs_1_1_i_n_p_c_action.html":[3,0,15,10,4],
-"interface_actions_1_1_players_1_1_i_player_action.html":[3,0,15,13,1],
-"interface_actions_1_1_sprites_1_1_i_sprite_action.html":[3,0,15,24,2],
-"interface_command_caller.html":[3,0,161],
-"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[3,0,161,1],
-"interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[3,0,161,0],
-"interface_i_achievement_tracker.html":[3,0,467]
+"hierarchy.html":[3,2]
 };

@@ -366,8 +366,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CollideWithNPCs</b> (R
 <tr class="memitem:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memItemLeft" align="right" valign="top"><a id="a95cb58122a6654bfc0a5d4e5a504905a" name="a95cb58122a6654bfc0a5d4e5a504905a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CommandForbiddenStorm</b> ()</td></tr>
 <tr class="separator:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8894857f3ee4202362ac2d3947fc7e84"><td class="memItemLeft" align="right" valign="top"><a id="a8894857f3ee4202362ac2d3947fc7e84" name="a8894857f3ee4202362ac2d3947fc7e84"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumeItem</b> (int type, bool reverseOrder=false, bool includeVoidBag=false)</td></tr>
+<tr class="memitem:a8894857f3ee4202362ac2d3947fc7e84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a8894857f3ee4202362ac2d3947fc7e84">ConsumeItem</a> (int type, bool reverseOrder=false, bool includeVoidBag=false)</td></tr>
+<tr class="memdesc:a8894857f3ee4202362ac2d3947fc7e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to consume a single item. The item does not have to be <a class="el" href="class_item.html#ac6ff27af31d1bf259434de86917579fb" title="Whether the item is consumed after use. If consumed, the item stack will decrease by 1....">Item.consumable</a>. <br  />
+ Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the inventory by 1. <br  />
+ Respects <a class="el" href="class_item_loader.html#af34577b89d0660a6b252315cb49f0521" title="If ModItem.ConsumeItem or any of the GlobalItem.ConsumeItem hooks returns false, sets consume to fals...">ItemLoader.ConsumeItem(Item, Player)</a>, so the item won't necessarily be consumed. <br  />
+ To consume multiple of the item, first check <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem</a> to ensure that there are enough of the item, then use a for loop to call this method many times. <br  />
+  <a href="class_player.html#a8894857f3ee4202362ac2d3947fc7e84">More...</a><br /></td></tr>
 <tr class="separator:a8894857f3ee4202362ac2d3947fc7e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80fafa27128e821de4ff4532461fd0c8"><td class="memItemLeft" align="right" valign="top"><a id="a80fafa27128e821de4ff4532461fd0c8" name="a80fafa27128e821de4ff4532461fd0c8"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumeSolarFlare</b> ()</td></tr>
@@ -381,8 +385,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CountBuffs</b> ()</td>
 <tr class="memitem:a56a8375d038bcc5fe522b5e5d13bac1a"><td class="memItemLeft" align="right" valign="top"><a id="a56a8375d038bcc5fe522b5e5d13bac1a" name="a56a8375d038bcc5fe522b5e5d13bac1a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Counterweight</b> (Vector2 hitPos, int dmg, float kb)</td></tr>
 <tr class="separator:a56a8375d038bcc5fe522b5e5d13bac1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20ef75ff3d503eb08673d5048e653858"><td class="memItemLeft" align="right" valign="top"><a id="a20ef75ff3d503eb08673d5048e653858" name="a20ef75ff3d503eb08673d5048e653858"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>CountItem</b> (int type, int stopCountingAt=0)</td></tr>
+<tr class="memitem:a20ef75ff3d503eb08673d5048e653858"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858">CountItem</a> (int type, int stopCountingAt=0)</td></tr>
+<tr class="memdesc:a20ef75ff3d503eb08673d5048e653858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts the total stack of the specified item type in this players inventory. <br  />
+ Does not check Void Bag. <br  />
+ Use <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">Player.HasItem(int)</a> to check if the player has the item at all. <br  />
+  <a href="class_player.html#a20ef75ff3d503eb08673d5048e653858">More...</a><br /></td></tr>
 <tr class="separator:a20ef75ff3d503eb08673d5048e653858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52b0bd9966db87a27d6fa46fa1177840"><td class="memItemLeft" align="right" valign="top"><a id="a52b0bd9966db87a27d6fa46fa1177840" name="a52b0bd9966db87a27d6fa46fa1177840"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DashMovement</b> ()</td></tr>
@@ -726,17 +733,22 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasBuff</b> (int type
 <tr class="memitem:a5e07c64c086c69b720beaf6cee7299d1"><td class="memItemLeft" align="right" valign="top"><a id="a5e07c64c086c69b720beaf6cee7299d1" name="a5e07c64c086c69b720beaf6cee7299d1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasEnoughPickPowerToHurtTile</b> (int x, int y)</td></tr>
 <tr class="separator:a5e07c64c086c69b720beaf6cee7299d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memItemLeft" align="right" valign="top"><a id="ab7ab9a131fdae7b983e6fbd30ca602d9" name="ab7ab9a131fdae7b983e6fbd30ca602d9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItem</b> (int type)</td></tr>
+<tr class="memitem:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9">HasItem</a> (int type)</td></tr>
+<tr class="memdesc:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player has the specified item in their inventory. <br  />
+ Does not check Void Bag. <br  />
+ Use <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem(int, int)</a> instead to count the total amount if needed. <br  />
+  <a href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9">More...</a><br /></td></tr>
 <tr class="separator:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344519dc47381dd60771d75cb7660260"><td class="memItemLeft" align="right" valign="top"><a id="a344519dc47381dd60771d75cb7660260" name="a344519dc47381dd60771d75cb7660260"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItem</b> (int type, <a class="el" href="class_item.html">Item</a>[] collection)</td></tr>
+<tr class="memdesc:a344519dc47381dd60771d75cb7660260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">HasItem(int)</a>, but checks the provided <a class="el" href="class_item.html">Item</a>[] <em>collection</em>  for items instad. Useful for checking other <a class="el" href="class_item.html">Item</a> arrays, such as Player.armor or Player.bank. <br /></td></tr>
 <tr class="separator:a344519dc47381dd60771d75cb7660260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bcd44e0fa2eacc3800a0f3c20e7330"><td class="memItemLeft" align="right" valign="top"><a id="a44bcd44e0fa2eacc3800a0f3c20e7330" name="a44bcd44e0fa2eacc3800a0f3c20e7330"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItemInAnyInventory</b> (int type)</td></tr>
 <tr class="separator:a44bcd44e0fa2eacc3800a0f3c20e7330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b1f18a7795a870bbd130ee923f6b13e"><td class="memItemLeft" align="right" valign="top"><a id="a3b1f18a7795a870bbd130ee923f6b13e" name="a3b1f18a7795a870bbd130ee923f6b13e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItemInInventoryOrOpenVoidBag</b> (int type)</td></tr>
+<tr class="memdesc:a3b1f18a7795a870bbd130ee923f6b13e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">HasItem(int)</a>, but also checks the Void Bag. <br /></td></tr>
 <tr class="separator:a3b1f18a7795a870bbd130ee923f6b13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72d65c98251c64fbc760a4fa064c275e"><td class="memItemLeft" align="right" valign="top"><a id="a72d65c98251c64fbc760a4fa064c275e" name="a72d65c98251c64fbc760a4fa064c275e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasLockedInventory</b> ()</td></tr>
@@ -752,6 +764,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasUnityPotion</b> ()
 <tr class="separator:af7afcea2d9b372abfd6486a008738526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5922ca66e5256559454706dcd24fbd8"><td class="memItemLeft" align="right" valign="top"><a id="ad5922ca66e5256559454706dcd24fbd8" name="ad5922ca66e5256559454706dcd24fbd8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>HealEffect</b> (int healAmount, bool broadcast=true)</td></tr>
+<tr class="memdesc:ad5922ca66e5256559454706dcd24fbd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> indicating the player healed <em>healAmount</em>  life and syncs it if <em>broadcast</em>  is true. <br  />
+ Note that this doesn't actually heal the player, it only spawns the floating text. The <a class="el" href="class_player.html#af7afcea2d9b372abfd6486a008738526" title="Heals the player for a certain amount.">Heal(int)</a> method heals the player and calls this method and is more commonly used. <br /></td></tr>
 <tr class="separator:ad5922ca66e5256559454706dcd24fbd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f78c2ae163c890b234649fa0b45516"><td class="memItemLeft" align="right" valign="top"><a id="a77f78c2ae163c890b234649fa0b45516" name="a77f78c2ae163c890b234649fa0b45516"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>HoneyCollision</b> (bool fallThrough, bool ignorePlats)</td></tr>
@@ -5279,6 +5293,96 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a8894857f3ee4202362ac2d3947fc7e84" name="a8894857f3ee4202362ac2d3947fc7e84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8894857f3ee4202362ac2d3947fc7e84">&#9670;&nbsp;</a></span>ConsumeItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Player.ConsumeItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseOrder</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeVoidBag</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use to consume a single item. The item does not have to be <a class="el" href="class_item.html#ac6ff27af31d1bf259434de86917579fb" title="Whether the item is consumed after use. If consumed, the item stack will decrease by 1....">Item.consumable</a>. <br  />
+ Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the inventory by 1. <br  />
+ Respects <a class="el" href="class_item_loader.html#af34577b89d0660a6b252315cb49f0521" title="If ModItem.ConsumeItem or any of the GlobalItem.ConsumeItem hooks returns false, sets consume to fals...">ItemLoader.ConsumeItem(Item, Player)</a>, so the item won't necessarily be consumed. <br  />
+ To consume multiple of the item, first check <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem</a> to ensure that there are enough of the item, then use a for loop to call this method many times. <br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The item type to consume</td></tr>
+    <tr><td class="paramname">reverseOrder</td><td>If true, the search for the item will start at the end of the player inventory</td></tr>
+    <tr><td class="paramname">includeVoidBag</td><td>If true, the void bag, if open, will also be considered for finding an item to consume</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the item was found and attempted to be consumed</dd></dl>
+
+</div>
+</div>
+<a id="a20ef75ff3d503eb08673d5048e653858" name="a20ef75ff3d503eb08673d5048e653858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20ef75ff3d503eb08673d5048e653858">&#9670;&nbsp;</a></span>CountItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Player.CountItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>stopCountingAt</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Counts the total stack of the specified item type in this players inventory. <br  />
+ Does not check Void Bag. <br  />
+ Use <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">Player.HasItem(int)</a> to check if the player has the item at all. <br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The item type to count</td></tr>
+    <tr><td class="paramname">stopCountingAt</td><td>When to stop counting, useful to avoid unneccessary calculations</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The total amount counted</dd></dl>
+
+</div>
+</div>
 <a id="a8fef443273ca334f9b1cc6b7e341824c" name="a8fef443273ca334f9b1cc6b7e341824c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8fef443273ca334f9b1cc6b7e341824c">&#9670;&nbsp;</a></span>DelBuff()</h2>
 
@@ -5823,6 +5927,36 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="ab7ab9a131fdae7b983e6fbd30ca602d9" name="ab7ab9a131fdae7b983e6fbd30ca602d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7ab9a131fdae7b983e6fbd30ca602d9">&#9670;&nbsp;</a></span>HasItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Player.HasItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the player has the specified item in their inventory. <br  />
+ Does not check Void Bag. <br  />
+ Use <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem(int, int)</a> instead to count the total amount if needed. <br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The item type to count</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the player has the item</dd></dl>
 
 </div>
 </div>

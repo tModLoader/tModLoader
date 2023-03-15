@@ -54,19 +54,19 @@ var NAVTREEINDEX =
 "class_global_projectile.html#a697d37549978cf832d78bbd33ed59985",
 "class_item.html#a86469ef0a3430e374432380a649bbfc3",
 "class_item_loader.html#a96f09be3aef82ed03e450cb74979ecde",
-"class_mod.html",
-"class_mod_item.html#a4dbbce9d4b781213f61a938e16e61669",
-"class_mod_player.html#a33be7355e232a4123421d13d7caf9940",
-"class_mod_system.html#a34f633de003062a2842c2d68110d6639",
-"class_n_p_c.html#a09c175501070c7191444ec85c132280e",
-"class_n_p_c_i_d_1_1_sets.html#a6d4762220953e215ac78bdd23196342a",
-"class_player_death_reason.html#a6171817be69d166d82feaf78b89954c6",
-"class_proj_a_i_style_i_d.html#a6c7d44b7228392724f7ece235537e987",
-"class_recipe_group.html",
-"class_tile_drawing.html#a02189b771b065777d7952f6713cdca80",
-"class_unloaded_global_item.html#abdbdf089a40637872b52fbaba9462fab",
-"interface_i_animation_segment.html",
-"struct_n_p_c_1_1_hit_modifiers.html#a48d9a5e8569df3d0f5fed4c428cf2321"
+"class_missing_effect_exception.html",
+"class_mod_item.html#a495f88a149980511c598b049a11d6290",
+"class_mod_player.html#a30ab09c83949610bf3601f8e0310f93c",
+"class_mod_system.html#a342b61155bcc6b2a3832d4298ecffa11",
+"class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66",
+"class_n_p_c_i_d_1_1_sets.html#a6a0e509ad970d78790a989d877edfea4",
+"class_player_1_1_hooks.html",
+"class_proj_a_i_style_i_d.html#a640c04f3bd84166611d90537e6cbf461",
+"class_recipe.html#ae9bf3267c476541e9827aab485a3e244",
+"class_throwing_damage_class.html",
+"class_unloaded_chest.html",
+"index.html",
+"struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
