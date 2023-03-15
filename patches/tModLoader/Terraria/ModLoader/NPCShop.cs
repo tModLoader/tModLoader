@@ -15,6 +15,8 @@ public sealed partial class NPCShop {
 	public string Name => name;
 	public string FullName => NPCShopDatabase.GetNPCShopName(NpcType, Name);
 
+	public bool FillLastSlot { get; private set; }
+
 	public NPCShop(int npcId, string name = "Shop") {
 		entries = new();
 		this.name = name;
@@ -39,6 +41,12 @@ public sealed partial class NPCShop {
 
 	public void Register() {
 		NPCShopDatabase.RegisterNpcShop(npcId, this, name);
+	}
+
+	public NPCShop AllowFillingLastSlot()
+	{
+		FillLastSlot = true;
+		return this;
 	}
 
 	public NPCShop Add(params Entry[] entries) {
@@ -89,7 +97,9 @@ public sealed partial class NPCShop {
 	}
 
 	/// <summary>
-	/// Fills a shop array with the contents of this shop, evaluating conditions and running callbacks.
+	/// Fills a shop array with the contents of this shop, evaluating conditions and running callbacks. <br/>
+	/// Does not fill the entire array if there are insufficient entries. <br/>
+	/// The last slot will be kept empty (null) if <see cref="FillLastSlot"/> is false
 	/// </summary>
 	/// <param name="items">Array to be filled.</param>
 	/// <param name="npc">The NPC the player is talking to, for <see cref="Entry.OnShopOpen(Item, NPC)"/> calls.</param>
@@ -97,26 +107,28 @@ public sealed partial class NPCShop {
 	public void Build(Item[] items, NPC npc, out bool overflow) {
 		overflow = false;
 
+		int limit = FillLastSlot ? items.Length : items.Length - 1;
 		int i = 0;
 		foreach (Entry entry in entries) {
-			if (i == items.Length) {
+			if (entry.Disabled) // Note, disabled entries can't reserve slots
+				continue;
+
+			bool conditionsMet = entry.ConditionsMet();
+			if (!conditionsMet && !entry.SlotReserved)
+				continue;
+
+			if (i == limit) {
 				overflow = true;
 				return;
 			}
 
-			if (entry.Disabled) // Note, disabled entries can't reserve slots
-				continue;
-
 			Item item;
-			if (!entry.ConditionsMet()) {
-				if (!entry.SlotReserved)
-					continue;
-
-				item = new Item(0);
-			}
-			else {
+			if (conditionsMet) {
 				item = entry.Item.Clone();
 				entry.OnShopOpen(item, npc);
+			}
+			else {
+				item = new Item(0);
 			}
 
 			items[i++] = item;

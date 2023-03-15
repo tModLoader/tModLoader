@@ -818,7 +818,7 @@ public static class NPCShopDatabase
 
 	private static void RegisterBartender()
 	{
-		var shop = new NPCShop(NPCID.DD2Bartender);
+		var shop = new NPCShop(NPCID.DD2Bartender).AllowFillingLastSlot();
 
 		void AddEntry(int id, int price, params Condition[] conditions) =>
 			shop.Add(
