@@ -971,8 +971,6 @@ Mods: {
 			ThirdQuarterOrWaningCrescentMoon: If its third quarter or waning crescent moon
 			PlayerHasLifeforceBuff: If player has Lifeforce buff
 			PlayerInExampleBiomeAndWingsNotDisabled: If player is in example biome and wings are not disabled
-			FullOrWaningGibbousMoon: If its full or waning gibbous moon
-			NewOrWaxingCrescentMoon: If its new or waxing crescent moon
 		}
 
 		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count

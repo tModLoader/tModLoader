@@ -290,15 +290,32 @@ namespace ExampleMod.Content.NPCs
 				.Add(ModContent.ItemType<Items.Tools.ExamplePickaxe>())
 				.Add(ModContent.ItemType<Items.Tools.ExampleHamaxe>())
 				.Add(ModContent.ItemType<Items.Consumables.ExampleHealingPotion>(), new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerHasLifeforceBuff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
-				//.Add(ItemType<ExampleWings>(), new ChestLoot.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerInExampleBiomeAndWingsNotDisabled"), () => Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings)))
-				.Add(ModContent.ItemType<Items.Weapons.ExampleSword>(), new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.FullOrWaningGibbousMoon"), () => Main.moonPhase < 2))
+				//.Add(ItemType<ExampleWings>(), new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerInExampleBiomeAndWingsNotDisabled"), () => Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings)))
+				.Add(ModContent.ItemType<Items.Weapons.ExampleSword>(), NPCShop.Condition.IsMoonPhasesQuarter0)
 				//.Add(ItemType<ExampleGun>(), exampleGunBulletCondition)
-				.Add(ModContent.ItemType<Items.Ammo.ExampleBullet>(), exampleGunBulletCondition);
-			//.Add(ItemType<ExampleStaff>(), new ChestLoot.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.NewOrWaxingCrescentMoon"), () => Main.moonPhase >= 4 && Main.moonPhase < 6)));
+				.Add(ModContent.ItemType<Items.Ammo.ExampleBullet>(), exampleGunBulletCondition)
+				//.Add(ItemType<ExampleStaff>(), NPCShop.Condition.IsMoonPhasesQuarter2)
+				.Add(ModContent.ItemType<Items.Weapons.ExampleYoyo>(), NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
+
 			if (ModContent.TryFind<ModItem>("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
 		 	 	npcShop.Add(bloodTalisman.Type);
 		 	}
 			npcShop.Register(); // Name of this shop tab
+		}
+
+		public override void ModifyActiveShop(string shopName, Item[] items) {
+			foreach (Item item in items) {
+				// Skip 'air' items and null items.
+				if (item == null || item.type == ItemID.None) {
+					continue;
+				}
+
+				// If NPC is shimmered then reduce all prices by 50%.
+				if (NPC.IsShimmerVariant) {
+					int value = item.shopCustomPrice ?? item.value;
+					item.shopCustomPrice = value / 2;
+				}
+			}
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {

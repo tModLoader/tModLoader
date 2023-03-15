@@ -116,6 +116,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition NotDownedMartians = new(NetworkText.FromKey("ShopConditions.NotDownedMartians"), () => !NPC.downedMartians);
 		public static readonly Condition NotDownedFrost = new(NetworkText.FromKey("ShopConditions.NotDownedFrostLegion"), () => !NPC.downedFrost);
 		public static readonly Condition NotDownedSolarPillar = new(NetworkText.FromKey("ShopConditions.NotDownedSolarPillar"), () => !NPC.downedTowerSolar);
+
 		// Misc (can't fit in any other category)
 		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
 		public static readonly Condition InExpertMode = new(NetworkText.FromKey("ShopConditions.InExpertMode"), () => Main.expertMode);
@@ -123,6 +124,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition EclipseOrBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.BloodOrSun"), () => Main.bloodMoon || Main.eclipse);
 		public static readonly Condition NotEclipseAndNotBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.NotBloodOrSun"), () => !Main.bloodMoon && !Main.eclipse);
 		public static readonly Condition EclipseOrNight = new Condition(NetworkText.FromKey("ShopConditions.NightOrSun"), () => !Main.dayTime || Main.eclipse);
+		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.npc[Main.LocalPlayer.talkNPC].IsShimmerVariant);
 
 		// Moon phases :( thanks to Chicken Bones for help with those
 		public static readonly Condition IsMoonFull = new(NetworkText.FromKey("ShopConditions.FullMoon"), () => Main.GetMoonPhase() == MoonPhase.Full);
