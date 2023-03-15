@@ -10,8 +10,6 @@ var class_main =
     [ "DrawHealthBar", "class_main.html#aa82ef182eb900b40f557dee09347103e", null ],
     [ "GetItemDrawFrame", "class_main.html#ac41141bb762df80522765eb5e7d44020", null ],
     [ "IsTileSpelunkable", "class_main.html#af632a20e0c6ec7f274f4e63a8e0e0353", null ],
-    [ "NewText", "class_main.html#a2335d9663703c85c735a940d7b498f06", null ],
-    [ "NewText", "class_main.html#a4b57a708788344d768b0cfc846b5dd6c", null ],
     [ "RegisterItemAnimation", "class_main.html#a630750960449c333490e2326060524c5", null ],
     [ "RunOnMainThread", "class_main.html#a4523d4baa024b72951881722004207b2", null ],
     [ "RunOnMainThread< T >", "class_main.html#a9b43ba6a62eef2a91a16433fca565626", null ],

@@ -1,8 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"class_recipe_1_1_consumption_rules.html":[3,0,990,1],
-"class_recipe_1_1_consumption_rules.html#aa41abac62905fc8fdc98b6c82a41ec0e":[3,0,990,1,0],
-"class_recipe_exception.html":[3,0,991],
 "class_recipe_group.html":[3,0,992],
 "class_recipe_group_i_d.html":[3,0,993],
 "class_recipe_item_creation_context.html":[3,0,994],
@@ -249,5 +246,8 @@ var NAVTREEINDEX16 =
 "class_tile_batch.html":[3,0,1161],
 "class_tile_data_packing.html":[3,0,1163],
 "class_tile_destroyed_condition.html":[3,0,1164],
-"class_tile_draw_info.html":[3,0,1165]
+"class_tile_draw_info.html":[3,0,1165],
+"class_tile_draw_sorter.html":[3,0,1167],
+"class_tile_draw_sorter_1_1_custom_comparer.html":[3,0,1167,0],
+"class_tile_drawing.html":[3,0,1166]
 };

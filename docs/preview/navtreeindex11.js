@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"class_mod_system.html#a342b61155bcc6b2a3832d4298ecffa11":[3,0,772,41],
-"class_mod_system.html#a34b46991115342da339cd0bb25b540fb":[3,0,772,47],
 "class_mod_system.html#a34f633de003062a2842c2d68110d6639":[3,0,772,48],
 "class_mod_system.html#a3854f5e76062bd736d3090cd19222300":[3,0,772,32],
 "class_mod_system.html#a39ee613c122bcd72a15d00d35dbccbd5":[3,0,772,49],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "class_music_loader.html#abc925a072f8fd0f7c2e6c80080d961ba":[3,0,803,6],
 "class_mystic_log_fairies_event.html":[3,0,804],
 "class_n_p_c.html":[3,0,840],
-"class_n_p_c.html#a047b63009e7540f701f56fda88feeb74":[3,0,840,25]
+"class_n_p_c.html#a047b63009e7540f701f56fda88feeb74":[3,0,840,25],
+"class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66":[3,0,840,15],
+"class_n_p_c.html#a067a1a8a65adff35ccb1d12cd1a2c04a":[3,0,840,68]
 };

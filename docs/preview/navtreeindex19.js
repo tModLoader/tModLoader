@@ -1,8 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[3,0,161,1],
-"interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[3,0,161,0],
-"interface_i_achievement_tracker.html":[3,0,467],
 "interface_i_animation_segment.html":[3,0,468],
 "interface_i_animation_segment_action.html":[3,0,469],
 "interface_i_audio_system.html":[3,0,471],
@@ -249,5 +246,8 @@ var NAVTREEINDEX19 =
 "struct_n_p_c_1_1_hit_modifiers.html":[3,0,840,1],
 "struct_n_p_c_1_1_hit_modifiers.html#a00625b9d69366bef28de62b6b15e1804":[3,0,840,1,8],
 "struct_n_p_c_1_1_hit_modifiers.html#a05bb280b449f6b6caced58296875901b":[3,0,840,1,3],
-"struct_n_p_c_1_1_hit_modifiers.html#a1002e87a8ffb6ac37e486edb9b9e9f9a":[3,0,840,1,9]
+"struct_n_p_c_1_1_hit_modifiers.html#a1002e87a8ffb6ac37e486edb9b9e9f9a":[3,0,840,1,9],
+"struct_n_p_c_1_1_hit_modifiers.html#a1877b3584118b32c9ad35e504bf67161":[3,0,840,1,2],
+"struct_n_p_c_1_1_hit_modifiers.html#a2a299a33d0fbe711818cf22c6d561fec":[3,0,840,1,0],
+"struct_n_p_c_1_1_hit_modifiers.html#a3559cbc95072314a723c58c10e014a0f":[3,0,840,1,1]
 };
