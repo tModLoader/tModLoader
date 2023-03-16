@@ -47,10 +47,11 @@ public sealed partial class NPCShop {
 		public static readonly Condition InUnderworld = new(NetworkText.FromKey("RecipeConditions.InUnderworldHeight"), () => Main.LocalPlayer.ZoneUnderworldHeight);
 		public static readonly Condition InDungeonBiome = new(NetworkText.FromKey("RecipeConditions.InDungeon"), () => Main.LocalPlayer.ZoneDungeon);
 		public static readonly Condition InSpace = new(NetworkText.FromKey("RecipeConditions.InSkyHeight"), () => Main.LocalPlayer.ZoneSkyHeight);
-
 		public static readonly Condition InEvilBiome = new(NetworkText.FromKey("ShopConditions.InEvilBiome"), () => Main.LocalPlayer.ZoneCrimson || Main.LocalPlayer.ZoneCorrupt);
+
 		public static readonly Condition NotInEvilBiome = new(NetworkText.FromKey("ShopConditions.NotInEvilBiome"), () => !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt);
 		public static readonly Condition NotInHallowBiome = new(NetworkText.FromKey("ShopConditions.NotInHallowBiome"), () => !Main.LocalPlayer.ZoneHallow);
+		public static readonly Condition NotInGraveyard = new(NetworkText.FromKey("ShopConditions.NotInGraveyard"), () => !Main.LocalPlayer.ZoneGraveyard);
 
 		// World States
 		public static readonly Condition Hardmode = new(NetworkText.FromKey("ShopConditions.InHardmode"), () => Main.hardMode);

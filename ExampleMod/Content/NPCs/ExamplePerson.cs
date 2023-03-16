@@ -277,7 +277,6 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Not completely finished, but below is what the NPC will sell
-
 		public override void AddShops() {
 			var npcShop = new NPCShop(Type, ShopName)
 				.Add<ExampleItem>()
@@ -292,9 +291,9 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Tools.ExampleHamaxe>()
 				.Add<Items.Consumables.ExampleHealingPotion>(new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerHasLifeforceBuff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
 				.Add<Items.Weapons.ExampleSword>(NPCShop.Condition.MoonPhasesQuarter0)
-				//.Add<ExampleGun>(NPCShop.Condition.IsMoonPhasesQuarter1)
+				//.Add<ExampleGun>(NPCShop.Condition.MoonPhasesQuarter1)
 				.Add<Items.Ammo.ExampleBullet>(NPCShop.Condition.MoonPhasesQuarter1)
-				//.Add<ExampleStaff>(NPCShop.Condition.IsMoonPhasesQuarter2)
+				//.Add<ExampleStaff>(NPCShop.Condition.MoonPhasesQuarter2)
 				.Add<Items.Weapons.ExampleYoyo>(NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
 			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
