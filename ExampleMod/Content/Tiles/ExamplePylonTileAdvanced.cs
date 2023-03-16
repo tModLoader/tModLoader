@@ -68,9 +68,9 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(Color.Black, pylonName);
 		}
 
-		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+		public override NPCShop.Entry GetNPCShopEntry(NPCShop.Condition happinessCondition, NPCShop.Condition anotherNpcNearby, NPCShop.Condition nonEvilBiome) {
 			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
-			return ModContent.ItemType<ExamplePylonItemAdvanced>();
+			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {

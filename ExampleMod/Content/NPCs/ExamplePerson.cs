@@ -298,7 +298,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Weapons.ExampleYoyo>(NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
 			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
-				npcShop.Add<ExampleWings>(new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.InExampleBiome"), () => Main.LocalPlayer.InModBiome<ExampleSurfaceBiome>() || Main.LocalPlayer.InModBiome<ExampleUndergroundBiome>()));
+				npcShop.Add<ExampleWings>(ExampleConditions.InExampleBiome);
 			}
 
 			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {

@@ -115,7 +115,7 @@ public static partial class NPCShopDatabase
 		RegisterPrincess();
 	}
 
-	public static Entry[] GetVanillaPylonEntries()
+	public static IEnumerable<Entry> GetPylonEntries()
 	{
 		/*
 		bool num12 = type != 19 && type != 20;
@@ -196,16 +196,22 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition(NetworkText.FromKey("RecipeConditions.InGlowshroom"), () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
-		return new Entry[] {
-			new Entry(ItemID.TeleportationPylonPurity,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, forestPylonCondition).OrderLast(),
-			new Entry(ItemID.TeleportationPylonSnow,          pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InSnowBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonDesert,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InDesertBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonUnderground,   pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, cavernPylonCondition).OrderLast(),
-			new Entry(ItemID.TeleportationPylonOcean,         pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, oceanPylonCondition).OrderLast(),
-			new Entry(ItemID.TeleportationPylonJungle,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InJungleBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonHallow,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InHallowBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonMushroom,      pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, mushroomPylonCondition).OrderLast()
-		};
+	
+		yield return new Entry(ItemID.TeleportationPylonPurity,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, forestPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonSnow,          pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InSnowBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonDesert,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InDesertBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderground,   pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, cavernPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonOcean,         pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, oceanPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonJungle,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InJungleBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonHallow,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InHallowBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonMushroom,      pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, mushroomPylonCondition).OrderLast();
+
+
+		foreach (ModPylon pylon in PylonLoader.modPylons) {
+			var entry = pylon.GetNPCShopEntry(pylonHappinessCondition, anotherNpcNearby, nonEvilBiome);
+			if (entry != null)
+				yield return entry.OrderLast();
+		}
 	}
 
 	private static void RegisterMerchant()
