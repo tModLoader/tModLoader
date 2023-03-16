@@ -164,26 +164,26 @@ public static class NPCShopDatabase
 			if (Main.player[Main.myPlayer].ZoneGlowshroom && (!Main.remixWorld || Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 200)) && num < 39)
 				array[num++].SetDefaults(4921);
 		}*/
-		var pylonMainCondition = new Condition(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () =>
-			&& (Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421 || Main.remixWorld)
-			&& TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16())
-			&& !Main.LocalPlayer.ZoneCorrupt && !Main.LocalPlayer.ZoneCrimson
-			);
-		var purityPylonCondition = new Condition(NetworkText.FromKey("ShopConditions.InPurity"), () => { // im having struggles localizing these
+
+		var pylonHappinessCondition = new Condition(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421 || Main.remixWorld);
+		var anotherNpcNearby = new Condition(NetworkText.FromKey("ShopConditions.AnotherTownNPCNearby"), () => TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()));
+		var nonEvilBiome = new Condition(NetworkText.FromKey("ShopConditions.NotInEvilBiome"), () => !Main.LocalPlayer.ZoneCorrupt && !Main.LocalPlayer.ZoneCrimson);
+
+		// These zones/pylons have extra conditions beyond just being in a certain biome. 
+		var forestPylonCondition = new Condition(NetworkText.FromKey("ShopConditions.ForestPylon"), () => { // im having struggles localizing these
 			if (Main.LocalPlayer.ZoneSnow || Main.LocalPlayer.ZoneDesert || Main.LocalPlayer.ZoneBeach || Main.LocalPlayer.ZoneJungle || Main.LocalPlayer.ZoneHallow || Main.LocalPlayer.ZoneGlowshroom)
 				return false;
 
-			if (Main.remixWorld) {
-				return Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350;
-			}
-			return Main.LocalPlayer.Center.Y / 16.0 < Main.worldSurface;
+			return Main.remixWorld
+				? Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350
+				: Main.LocalPlayer.Center.Y / 16.0 < Main.worldSurface;
 		});
-		var cavernPylonCondition = new Condition(NetworkText.FromKey("ShopConditions.InRockLayerHeight"), () => {
-			return !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
-			&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
-			&& !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
-			&& (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface;
-		});
+
+		var cavernPylonCondition = new Condition(NetworkText.FromKey("ShopConditions.UndergroundPylon"), () =>
+			!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle && !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
+			&& Main.LocalPlayer.Center.Y / 16.0 >= Main.worldSurface
+		);
+
 		var oceanPylonCondition = new Condition(NetworkText.FromKey("RecipeConditions.InBeach"), () => {
 			bool flag4 = Main.LocalPlayer.ZoneBeach && Main.LocalPlayer.position.Y < Main.worldSurface * 16.0;
 			if (Main.remixWorld) {
@@ -193,24 +193,23 @@ public static class NPCShopDatabase
 			}
 			return flag4;
 		});
-		var glowshroomPylonCondtiion = new Condition(NetworkText.FromKey("ShopConditions.UndergroundOrRemix"),
-			() => !Main.remixWorld || Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 200);
+
+		var mushroomPylonCondition = new Condition(NetworkText.FromKey("RecipeConditions.InGlowshroom"), () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
 		return new Entry[] {
-			new Entry(ItemID.TeleportationPylonPurity,        pylonMainCondition, Condition.InPurityBiome, purityPylonCondition).OrderLast(),
-			new Entry(ItemID.TeleportationPylonSnow,          pylonMainCondition, Condition.InSnowBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonDesert,        pylonMainCondition, Condition.InDesertBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonUnderground,   pylonMainCondition, cavernPylonCondition).OrderLast(),
-			new Entry(ItemID.TeleportationPylonOcean,         pylonMainCondition, oceanPylonCondition).OrderLast(),
-			new Entry(ItemID.TeleportationPylonJungle,        pylonMainCondition, Condition.InJungleBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonHallow,        pylonMainCondition, Condition.InHallowBiome).OrderLast(),
-			new Entry(ItemID.TeleportationPylonMushroom,      pylonMainCondition, Condition.InGlowshroomBiome, glowshroomPylonCondtiion).OrderLast()
+			new Entry(ItemID.TeleportationPylonPurity,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, forestPylonCondition).OrderLast(),
+			new Entry(ItemID.TeleportationPylonSnow,          pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InSnowBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonDesert,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InDesertBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonUnderground,   pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, cavernPylonCondition).OrderLast(),
+			new Entry(ItemID.TeleportationPylonOcean,         pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, oceanPylonCondition).OrderLast(),
+			new Entry(ItemID.TeleportationPylonJungle,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InJungleBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonHallow,        pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, Condition.InHallowBiome).OrderLast(),
+			new Entry(ItemID.TeleportationPylonMushroom,      pylonHappinessCondition, anotherNpcNearby, nonEvilBiome, mushroomPylonCondition).OrderLast()
 		};
 	}
 
 	private static void RegisterMerchant()
 	{
-		var flareGunCondition = Condition.PlayerCarriesItem(ItemID.FlareGun);
 		var drumSetCondition = new Condition(NetworkText.FromKey("ShopConditions.DownedB2B3HM"), () => NPC.downedBoss2 || NPC.downedBoss3 || Main.hardMode);
 		
 		new NPCShop(NPCID.Merchant)
@@ -236,8 +235,8 @@ public static class NPCShopDatabase
 			.Add(ItemID.SharpeningStation,	Condition.Hardmode)
 			.Add(ItemID.Safe,				Condition.DownedSkeletron)
 			.Add(ItemID.DiscoBall,			Condition.Hardmode)
-			.Add(ItemID.Flare,				flareGunCondition)
-			.Add(ItemID.BlueFlare,			flareGunCondition)
+			.Add(ItemID.Flare,				Condition.PlayerCarriesItem(ItemID.FlareGun))
+			.Add(ItemID.BlueFlare,			Condition.PlayerCarriesItem(ItemID.FlareGun))
 			.Add(ItemID.Sickle)
 			.Add(ItemID.GoldDust,			Condition.Hardmode)
 			.Add(ItemID.DrumSet,			drumSetCondition)

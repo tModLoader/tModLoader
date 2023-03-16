@@ -622,9 +622,10 @@
 		"NotSolarEclipse": "Needs no Solar Eclipse",
 		"NotBloodMoon": "Needs no Blood Moon",
 		"HappyEnough": "Needs to be happy enough",
+
 		"InForest": "Needs to be in Forest Biome",
-		"InPurity": "Needs to be in Pure Biome",
 		"InGraveyard": "Needs to be in Graveyard",
+		"InEvilBiome": "Needs to be in a corruption or crimson",
 		"NotInForest": "Needs to be not in Forest Biome",
 		"NotInPurity": "Needs to be not in Pure Biome",
 		"NotInDungeon": "Needs to be not in Dungeon Biome",
@@ -639,6 +640,8 @@
 		"NotInBeach": "Needs to be not in Ocean Biome",
 		"NotInSkyHeight": "Needs to be not in Sky",
 		"NotInUnderworldHeight": "Needs to be not in Underworld",
+		"NotInEvilBiome": "Needs to not be in an evil biome",
+
 		"DownedKingSlime": "Needs King Slime to be slain",
 		"DownedEyeOfCthulhu": "Needs Eye of Cthulhu to be slain",
 		"DownedBoss2": "Needs Boss of main Evil to be slain",
@@ -695,7 +698,6 @@
 		"MultiplayerServer": "On a multiplayer server",
 		"FirstHalfSecond": "During the first half of every in game minute (every real life second)",
 		"SecondHalfSecond": "During the second half of every in game minute (every real life second)",
-		"HappyEnoughForPylons": "When happy enough to sell pylons",
 		"OnTeam": "If the player is on a team in multiplayer",
 		"StyleMoon": "During the night and following day of moon phases Waning Gibbous, Waning Crescent, Waxing Crescent, Waxing Gibbous",
 		"UndergroundOrRemix": "Underground, when in remix world",
@@ -713,7 +715,11 @@
 		"BloodOrHMInTungst": "During a Blood Moon, in a world with Tungsten Ore. (Always available in Hardmode)",
 		"NightAfterEvil": "During the night after defeating the Eater of Worlds or Brain of Cthulhu. (Always available in Hardmode)",
 
-		// The Moon is Earth's only natural satellite. It is the fifth largest satellite in the Solar System and the largest and most massive relative to its parent planet,[f] with a diameter about one-quarter that of Earth (comparable to the width of Australia).[16] The Moon is a planetary-mass object with a differentiated rocky body, making it a satellite planet under the geophysical definitions of the term and larger than all known dwarf planets of the Solar System.[17] It lacks any significant atmosphere, hydrosphere, or magnetic field. Its surface gravity is about one-sixth of Earth's at 0.1654 g, with Jupiter's moon Io being the only satellite in the Solar System known to have a higher surface gravity and density. The Moon orbits Earth at an average distance of 384,400 km (238,900 mi), or about 30 times Earth's diameter. Its gravitational influence is the main driver of Earth's tides and very slowly lengthens Earth's day. The Moon's orbit around Earth has a sidereal period of 27.3 days. During each synodic period of 29.5 days, the amount of visible surface illuminated by the Sun varies from none up to 100%, resulting in lunar phases that form the basis for the months of a lunar calendar. The Moon is tidally locked to Earth, which means that the length of a full rotation of the Moon on its own axis causes its same side (the near side) to always face Earth, and the somewhat longer lunar day is the same as the synodic period. However, 59% of the total lunar surface can be seen from Earth through cyclical shifts in perspective known as libration. The most widely accepted origin explanation posits that the Moon formed 4.51 billion years ago, not long after Earth, out of the debris from a giant impact between the planet and a hypothesized Mars-sized body called Theia. It then receded to a wider orbit because of tidal interaction with the Earth. The near side of the Moon is marked by dark volcanic maria ("seas"), which fill the spaces between bright ancient crustal highlands and prominent impact craters. Most of the large impact basins and mare surfaces were in place by the end of the Imbrian period, some three billion years ago. The lunar surface is fairly non-reflective, with the reflectance of lunar soil being comparable to that of asphalt. However, due to its large angular diameter, the full moon is the brightest celestial object in the night sky. The Moon's apparent size is nearly the same as that of the Sun, allowing it to cover the Sun almost completely during a total solar eclipse. Both the Moon's prominence in Earth's sky and its regular cycle of phases have provided cultural references and influences for human societies throughout history. Such influences can be found in language, calendar systems, art, and mythology. The first artificial object to reach the Moon was the Soviet Union's Luna 2 uncrewed spacecraft in 1959; this was followed by the first successful soft landing by Luna 9 in 1966. The only human lunar missions to date have been those of the United States' Apollo program, which landed twelve men on the surface between 1969 and 1972. These and later uncrewed missions returned lunar rocks that have been used to develop a detailed geological understanding of the Moon's origins, internal structure, and subsequent history. The Moon is the only celestial body visited by humans.
+		"HappyEnoughForPylons": "When vendor is happy enough to sell pylons",
+		"AnotherTownNPCNearby": "When vendor has another Town NPC nearby",
+		"ForestPylon": "Needs to be on the surface and not in another pylon biome",
+		"UndergroundPylon": "Needs to be below the surface and not in another pylon biome",
+
 		"FullMoon": "During Full moon phase",
 		"WaningGibbousMoon": "During Waning Gibbous moon phase",
 		"ThirdQuarterMoon": "During Third Quarter moon phase",
