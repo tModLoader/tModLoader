@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using static Terraria.ModLoader.NPCShop;
 
 namespace Terraria.ModLoader;
@@ -33,6 +34,7 @@ public static partial class NPCShopDatabase
 		if (!TestingEnabled)
 			return;
 
+		tests.Clear();
 		foreach (var shop in AllShops) {
 			foreach (var entry in shop.Entries) {
 				var test = new ConditionTest(entry.Conditions);
@@ -58,21 +60,15 @@ public static partial class NPCShopDatabase
 		if (!TestingEnabled || (int)Main.time % 30 == 0)
 			return;
 
-		var playerPosition = Main.LocalPlayer.position;
-		try {
-			// Vanilla shop code uses player position directly for zone checks, while tML code uses the ZoneSkyHeight etc flags
-			// The zone flags are calculated based on a tile rounded position, so there is a mismatch
-			// Because we don't care about <1 tile of rounding, we set the player to an exact tile position, to hopefully get the vanilla checks to line up with the Zone based ones
-			Main.LocalPlayer.position -= (Main.LocalPlayer.Center - Main.LocalPlayer.Center.ToTileCoordinates().ToWorldCoordinates());
-			Test_Inner();
-		}
-		finally {
-			Main.LocalPlayer.position = playerPosition;
-		}
-	}
+		// Some known issues:
+		//   Golf score exactly 500/1000/2000, some vanilla conditions use > and some use >=. tML can just use >=
+		//   Player y zone hight. Some vanilla conditions use player.position.Y, others use player.center.Y and others use ZoneSkyHeight etc
+		//     minor differences between these are fine to ignore
 
-	private static void Test_Inner()
-	{
+		// Some helper codes
+		// Main.moonPhase = (Main.moonPhase + 1) % 8;
+		// Main.LocalPlayer.golferScoreAccumulated = 2001;
+
 		var chest = new Chest();
 		string ChestToString() => string.Join(" ", chest.item.Select(item => item.type));
 
