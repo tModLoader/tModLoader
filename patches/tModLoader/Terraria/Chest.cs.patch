@@ -668,7 +668,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2996,7 +_,37 @@
+@@ -2996,7 +_,38 @@
  		}
  	}
  
@@ -692,8 +692,9 @@
 +				Logging.tML.Warn($"Unable to fit all item in the shop {name}");
 +			}
 +		}
-+		
-+		NPCLoader.ModifyActiveShop(npc, shopName, item);
++
++		if (npc != null) // not that it's valid to call SetupShop without an npc, except when testing
++			NPCLoader.ModifyActiveShop(npc, shopName, item);
 +
 +		foreach (ref var item in item.AsSpan()) {
 +			item ??= new Item();

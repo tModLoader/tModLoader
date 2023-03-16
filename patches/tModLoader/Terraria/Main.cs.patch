@@ -1986,11 +1986,12 @@
  				syncedAnyInventoryContents = true;
  				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
  			}
-@@ -14156,6 +_,9 @@
+@@ -14156,6 +_,10 @@
  	{
  		UpdateParticleSystems();
  		tileSolid[379] = false;
 +
++		NPCShopDatabase.Test();
 +		SystemLoader.PreUpdatePlayers();
 +
  		int num = 0;

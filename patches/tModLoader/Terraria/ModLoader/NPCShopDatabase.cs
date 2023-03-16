@@ -7,7 +7,7 @@ using static Terraria.ModLoader.NPCShop;
 
 namespace Terraria.ModLoader;
 
-public static class NPCShopDatabase
+public static partial class NPCShopDatabase
 {
 	private static readonly Dictionary<string, NPCShop> npcShopByName = new();
 	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
@@ -1061,5 +1061,7 @@ public static class NPCShopDatabase
 		foreach (var shop in AllShops) {
 			shop.Sort();
 		}
+
+		InitShopTestSystem();
 	}
 }
