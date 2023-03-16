@@ -153,7 +153,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition MoonPhases37 = new(NetworkText.FromKey("ShopConditions.MoonPhases37"), () => Main.moonPhase % 4 == 3);
 
 		public static Condition PlayerCarriesItem(int itemId) => new(NetworkText.FromKey("ShopConditions.PlayerCarriesItem", Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
-		public static Condition GolfScoreOver(int score) => new(NetworkText.FromKey("ShopConditions.GolfScoreOver", score), () => Main.LocalPlayer.golferScoreAccumulated > score);
+		public static Condition GolfScoreOver(int score) => new(NetworkText.FromKey("ShopConditions.GolfScoreOver", score), () => Main.LocalPlayer.golferScoreAccumulated >= score);
 		public static Condition NpcIsPresent(int npcId) => new(NetworkText.FromKey("ShopConditions.NpcIsPresent", Lang.GetNPCName(npcId)), () => NPC.AnyNPCs(npcId));
 		#endregion
 
