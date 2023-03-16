@@ -58,6 +58,21 @@ public static partial class NPCShopDatabase
 		if (!TestingEnabled || (int)Main.time % 30 == 0)
 			return;
 
+		var playerPosition = Main.LocalPlayer.position;
+		try {
+			// Vanilla shop code uses player position directly for zone checks, while tML code uses the ZoneSkyHeight etc flags
+			// The zone flags are calculated based on a tile rounded position, so there is a mismatch
+			// Because we don't care about <1 tile of rounding, we set the player to an exact tile position, to hopefully get the vanilla checks to line up with the Zone based ones
+			Main.LocalPlayer.position -= (Main.LocalPlayer.Center - Main.LocalPlayer.Center.ToTileCoordinates().ToWorldCoordinates());
+			Test_Inner();
+		}
+		finally {
+			Main.LocalPlayer.position = playerPosition;
+		}
+	}
+
+	private static void Test_Inner()
+	{
 		var chest = new Chest();
 		string ChestToString() => string.Join(" ", chest.item.Select(item => item.type));
 
