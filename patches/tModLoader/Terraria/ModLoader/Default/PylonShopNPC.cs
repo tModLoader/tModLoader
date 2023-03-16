@@ -15,7 +15,7 @@ public sealed class PylonShopNPC : GlobalNPC
 	{
 		_pylonEntries ??= NPCShopDatabase.GetPylonEntries().ToList();
 
-		if (NPCShopDatabase.NoPylons[shop.NpcType]) {
+		if (NPCShopDatabase.NoPylons[shop.FullName]) {
 			return;
 		}
 		foreach (var entry in _pylonEntries) {
