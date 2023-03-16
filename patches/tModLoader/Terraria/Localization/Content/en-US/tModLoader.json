@@ -711,6 +711,7 @@
 		"AnotherTownNPCNearby": "If the vendor has another Town NPC nearby",
 		"ForestPylon": "On the surface and not in another pylon biome",
 		"UndergroundPylon": "Below the surface and not in another pylon biome",
+		"MoonPhasesHalf0OrPreHardmode": "Anytime before hardmode, or during a full, waning gibbous, third quarter or waning crescent moon",
 
 		"FullMoon": "During a full moon",
 		"WaningGibbousMoon": "During a waning gibbous moon",

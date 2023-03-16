@@ -512,11 +512,12 @@ public static partial class NPCShopDatabase
 
 	private static void RegisterSteampunker()
 	{
+		var steampunkerOutfitCondition = new Condition(NetworkText.FromKey("ShopConditions.MoonPhasesHalf0OrPreHardmode"), () => Condition.PreHardmode.IsAvailable() || Condition.MoonPhasesHalf0.IsAvailable());
 		new NPCShop(NPCID.Steampunker)
 			.Add(ItemID.Clentaminator,		Condition.NotRemixWorld)
-			.Add(ItemID.SteampunkHat,		Condition.MoonPhasesHalf0)
-			.Add(ItemID.SteampunkShirt,		Condition.MoonPhasesHalf0)
-			.Add(ItemID.SteampunkPants,		Condition.MoonPhasesHalf0)
+			.Add(ItemID.SteampunkHat,		steampunkerOutfitCondition)
+			.Add(ItemID.SteampunkShirt,		steampunkerOutfitCondition)
+			.Add(ItemID.SteampunkPants,		steampunkerOutfitCondition)
 			.Add(ItemID.Jetpack,			Condition.Hardmode, Condition.MoonPhasesHalf1)
 			.Add(ItemID.SteampunkWings,		Condition.DownedGolem)
 			.Add(ItemID.StaticHook,			Condition.Hardmode)
