@@ -1,6 +1,6 @@
 var class_mod_buff =
 [
-    [ "ModifyBuffTip", "class_mod_buff.html#af22f1a134767667138f12cce5a448ace", null ],
+    [ "ModifyBuffText", "class_mod_buff.html#af671e12140513ca09b843ef929a5a436", null ],
     [ "PostDraw", "class_mod_buff.html#a34a27da0dc567fbf43a29cbd0d0f97ce", null ],
     [ "PreDraw", "class_mod_buff.html#a51562666279935ba264ab0caaaaa427a", null ],
     [ "ReApply", "class_mod_buff.html#aca27d4d85cb271bfa3ce08cf396ebabb", null ],

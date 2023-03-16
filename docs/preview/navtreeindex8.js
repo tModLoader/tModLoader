@@ -125,7 +125,7 @@ var NAVTREEINDEX8 =
 "class_mod_buff.html#a7d05874981d9ca1744d8ef19112c66e8":[3,0,738,9],
 "class_mod_buff.html#aca27d4d85cb271bfa3ce08cf396ebabb":[3,0,738,3],
 "class_mod_buff.html#ae34c447843fdcf24ea8cd77aac57a298":[3,0,738,5],
-"class_mod_buff.html#af22f1a134767667138f12cce5a448ace":[3,0,738,0],
+"class_mod_buff.html#af671e12140513ca09b843ef929a5a436":[3,0,738,0],
 "class_mod_cactus.html":[3,0,739],
 "class_mod_cactus.html#ab7babf50b1a6e74b1f2809d21f354ff4":[3,0,739,0],
 "class_mod_command.html":[3,0,740],

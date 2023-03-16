@@ -5,7 +5,7 @@ var searchData=
   ['meleeprefix_2',['MeleePrefix',['../class_mod_item.html#a9b1eec50a051b0a48bdd0d7bf0a33194',1,'ModItem']]],
   ['midupdate_3',['MidUpdate',['../class_mod_dust.html#aed67ef75e580b2cc786a05a398d1e1c0',1,'ModDust']]],
   ['minioncontactdamage_4',['MinionContactDamage',['../class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f',1,'GlobalProjectile.MinionContactDamage()'],['../class_mod_projectile.html#a9eef794425555cac0923f6a5bde993d1',1,'ModProjectile.MinionContactDamage()']]],
-  ['modifybufftip_5',['ModifyBuffTip',['../class_global_buff.html#a4a6238d31d13864a0765ce086b05fd28',1,'GlobalBuff.ModifyBuffTip()'],['../class_mod_buff.html#af22f1a134767667138f12cce5a448ace',1,'ModBuff.ModifyBuffTip()']]],
+  ['modifybufftext_5',['ModifyBuffText',['../class_global_buff.html#a98554b45f24035467aa90e35ec52c5e6',1,'GlobalBuff.ModifyBuffText()'],['../class_mod_buff.html#af671e12140513ca09b843ef929a5a436',1,'ModBuff.ModifyBuffText()']]],
   ['modifycaughtfish_6',['ModifyCaughtFish',['../class_mod_player.html#a3b4238ff5f74b99b28bd583e80303bf0',1,'ModPlayer']]],
   ['modifycollisiondata_7',['ModifyCollisionData',['../class_global_n_p_c.html#a841136ffed6b0a17595b4ea11200407e',1,'GlobalNPC.ModifyCollisionData()'],['../class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde',1,'ModNPC.ModifyCollisionData()']]],
   ['modifydamagehitbox_8',['ModifyDamageHitbox',['../class_global_projectile.html#a95833a5b7ef90ea821dba19c39cf498c',1,'GlobalProjectile.ModifyDamageHitbox()'],['../class_mod_projectile.html#a35179410325aca3d1066c580bef14b73',1,'ModProjectile.ModifyDamageHitbox()']]],
