@@ -89,6 +89,8 @@ public static partial class NPCShopDatabase
 	{
 		NoPylons.Add(GetShopName(NPCID.TravellingMerchant));
 		NoPylons.Add(GetShopName(NPCID.SkeletonMerchant));
+		NoPylons.Add(GetShopName(NPCID.DD2Bartender)); // Bartender sometimes can't fit pylons, but sometimes can. Special hack in PylonShopNPC to match vanilla for this
+		NoPylons.Add(GetShopName(NPCID.SantaClaus)); // Got no space
 
 		RegisterMerchant();
 		RegisterArmsDealer();
