@@ -76,6 +76,13 @@ public static class NPCShopDatabase
 		NoPylons.Clear();
 
 		RegisterVanillaNPCShops();
+
+		for (int i = 0; i < NPCLoader.NPCCount; i++) {
+			NPCLoader.AddShops(i);
+		}
+		foreach (var shop in AllShops) {
+			NPCLoader.ModifyShop(shop);
+		}
 	}
 
 	private static void RegisterVanillaNPCShops()
@@ -106,13 +113,6 @@ public static class NPCShopDatabase
 		RegisterGolfer();
 		RegisterZoologist();
 		RegisterPrincess();
-
-		for (int i = 0; i < NPCLoader.NPCCount; i++) {
-			NPCLoader.AddShops(i);
-		}
-		foreach (var shop in AllShops) {
-			NPCLoader.ModifyShop(shop);
-		}
 	}
 
 	public static Entry[] GetVanillaPylonEntries()

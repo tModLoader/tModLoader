@@ -1,4 +1,5 @@
-﻿using Terraria.Localization;
+﻿using System.Collections.Generic;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default;
 
@@ -7,16 +8,27 @@ namespace Terraria.ModLoader.Default;
 /// </summary>
 public sealed class PylonShopNPC : GlobalNPC
 {
+	private static List<NPCShop.Entry> _pylonEntries;
+
 	public override void ModifyShop(NPCShop shop)
 	{
-		shop.Add(NPCShopDatabase.GetVanillaPylonEntries());
+		if (_pylonEntries == null)
+			GetAndCacheAllPylonEntries();
+
+		foreach (var entry in _pylonEntries) {
+			shop.Add(entry);
+		}
+	}
+
+	private void GetAndCacheAllPylonEntries()
+	{
+		_pylonEntries = new(NPCShopDatabase.GetVanillaPylonEntries());
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
-			if (pylon.ItemDrop == 0) {
+			if (pylon.ItemDrop == 0)
 				continue;
-			}
 
-			shop.Add(new NPCShop.Entry(pylon.ItemDrop, new NPCShop.Condition(NetworkText.Empty, () =>
+			_pylonEntries.Add(new NPCShop.Entry(pylon.ItemDrop, new NPCShop.Condition(NetworkText.Empty, () =>
 				Main.LocalPlayer.talkNPC != -1 &&
 				pylon.IsPylonForSale(
 					Main.npc[Main.LocalPlayer.talkNPC].type,
