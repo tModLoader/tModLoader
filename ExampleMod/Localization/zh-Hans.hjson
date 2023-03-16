@@ -773,6 +773,11 @@ Mods: {
 				// DisplayName: Absorb Team Damage Accessory
 				// Tooltip: Absorbs {0}% of damage done to players on your team when above {1}% life
 			}
+
+			ExampleDrill: {
+				// DisplayName: Example Drill
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -803,6 +808,7 @@ Mods: {
 			// MinionBossEye.DisplayName: Minion Boss Eye
 			// ExampleSimpleMinion.DisplayName: Example Minion
 			// SparklingBall.DisplayName: Sparkling Ball
+			// ExampleDrillProjectile.DisplayName: Example Drill Projectile
 		}
 
 		Buffs: {
