@@ -1043,7 +1043,7 @@ public static partial class NPCShopDatabase
 		shop.Add(ItemID.PrincessStyle)
 			.Add(ItemID.SuspiciouslySparkly)
 			.Add(ItemID.TerraBladeChronicles)
-			.Add(ItemID.RoyalRomance,		Condition.DownedKingSlime, Condition.DownedKingSlime)
+			.Add(ItemID.RoyalRomance,		Condition.DownedKingSlime, Condition.DownedQueenSlime)
 			.Add(ItemID.MusicBoxCredits,	Condition.Hardmode, Condition.DownedMoonLord)
 			.Add(ItemID.SlimeStaff,			Condition.TenthAnniversary)
 			.Add(ItemID.HeartLantern,		Condition.TenthAnniversary)
