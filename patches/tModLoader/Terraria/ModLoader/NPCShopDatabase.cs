@@ -315,18 +315,18 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.FlowerPacketBlue)
 			.Add(ItemID.FlowerPacketWild)
 			.Add(ItemID.FlowerPacketTallGrass)
-			.Add(ItemID.PottedForestCedar,				Condition.Hardmode, Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.PottedJungleCedar,				Condition.Hardmode, Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.PottedHallowCedar,				Condition.Hardmode, Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.PottedForestTree,				Condition.Hardmode, Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.PottedJungleTree,				Condition.Hardmode, Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.PottedHallowTree,				Condition.Hardmode, Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.PottedForestPalm,				Condition.Hardmode, Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.PottedJunglePalm,				Condition.Hardmode, Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.PottedHallowPalm,				Condition.Hardmode, Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.PottedForestBamboo,				Condition.Hardmode, Condition.IsMoonPhasesQuarter3)
-			.Add(ItemID.PottedJungleBamboo,				Condition.Hardmode, Condition.IsMoonPhasesQuarter3)
-			.Add(ItemID.PottedHallowBamboo,				Condition.Hardmode, Condition.IsMoonPhasesQuarter3)
+			.Add(ItemID.PottedForestCedar,				Condition.Hardmode, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.PottedJungleCedar,				Condition.Hardmode, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.PottedHallowCedar,				Condition.Hardmode, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.PottedForestTree,				Condition.Hardmode, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.PottedJungleTree,				Condition.Hardmode, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.PottedHallowTree,				Condition.Hardmode, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.PottedForestPalm,				Condition.Hardmode, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.PottedJunglePalm,				Condition.Hardmode, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.PottedHallowPalm,				Condition.Hardmode, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.PottedForestBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.PottedJungleBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.PottedHallowBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
 			.Register();
 	}
 
@@ -352,12 +352,12 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.BlackThread)
 			.Add(ItemID.PinkThread)
 			.Add(ItemID.SummerHat,						Condition.TimeDay)
-			.Add(ItemID.PlumbersShirt,					Condition.IsMoonFull)
-			.Add(ItemID.PlumbersPants,					Condition.IsMoonFull)
-			.Add(ItemID.WhiteTuxedoShirt,				Condition.IsMoonFull, Condition.TimeNight)
-			.Add(ItemID.WhiteTuxedoPants,				Condition.IsMoonFull, Condition.TimeNight)
-			.Add(ItemID.TheDoctorsShirt,				Condition.IsMoonWaningGibbous)
-			.Add(ItemID.TheDoctorsPants,				Condition.IsMoonWaningGibbous)
+			.Add(ItemID.PlumbersShirt,					Condition.MoonPhaseFull)
+			.Add(ItemID.PlumbersPants,					Condition.MoonPhaseFull)
+			.Add(ItemID.WhiteTuxedoShirt,				Condition.MoonPhaseFull, Condition.TimeNight)
+			.Add(ItemID.WhiteTuxedoPants,				Condition.MoonPhaseFull, Condition.TimeNight)
+			.Add(ItemID.TheDoctorsShirt,				Condition.MoonPhaseWaningGibbous)
+			.Add(ItemID.TheDoctorsPants,				Condition.MoonPhaseWaningGibbous)
 			.Add(ItemID.FamiliarShirt)
 			.Add(ItemID.FamiliarPants)
 			.Add(ItemID.FamiliarWig)
@@ -384,18 +384,18 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.VictorianGothDress,				Condition.InGraveyard)
 			.Add(ItemID.Beanie,							Condition.InSnowBiome)
 			.Add(ItemID.GuyFawkesMask,					Condition.Halloween)
-			.Add(ItemID.TamOShanter,					Condition.Hardmode, Condition.IsMoonThirdQuarter)
-			.Add(ItemID.GraduationCapBlue,				Condition.Hardmode, Condition.IsMoonWaningCrescent)
-			.Add(ItemID.GraduationGownBlue,				Condition.Hardmode, Condition.IsMoonWaningCrescent)
-			.Add(ItemID.Tiara,							Condition.Hardmode, Condition.IsMoonNew)
-			.Add(ItemID.PrincessDress,					Condition.Hardmode, Condition.IsMoonNew)
-			.Add(ItemID.GraduationCapMaroon,			Condition.Hardmode, Condition.IsMoonWaxingCrescent)
-			.Add(ItemID.GraduationGownMaroon,			Condition.Hardmode, Condition.IsMoonWaxingCrescent)
-			.Add(ItemID.CowboyHat,						Condition.Hardmode, Condition.IsMoonFirstQuarter)
-			.Add(ItemID.CowboyJacket,					Condition.Hardmode, Condition.IsMoonFirstQuarter)
-			.Add(ItemID.CowboyPants,					Condition.Hardmode, Condition.IsMoonFirstQuarter)
-			.Add(ItemID.GraduationCapBlack,				Condition.Hardmode, Condition.IsMoonWaxingGibbous)
-			.Add(ItemID.GraduationGownBlack,			Condition.Hardmode, Condition.IsMoonWaxingGibbous)
+			.Add(ItemID.TamOShanter,					Condition.Hardmode, Condition.MoonPhaseThirdQuarter)
+			.Add(ItemID.GraduationCapBlue,				Condition.Hardmode, Condition.MoonPhaseWaningCrescent)
+			.Add(ItemID.GraduationGownBlue,				Condition.Hardmode, Condition.MoonPhaseWaningCrescent)
+			.Add(ItemID.Tiara,							Condition.Hardmode, Condition.MoonPhaseNew)
+			.Add(ItemID.PrincessDress,					Condition.Hardmode, Condition.MoonPhaseNew)
+			.Add(ItemID.GraduationCapMaroon,			Condition.Hardmode, Condition.MoonPhaseWaxingCrescent)
+			.Add(ItemID.GraduationGownMaroon,			Condition.Hardmode, Condition.MoonPhaseWaxingCrescent)
+			.Add(ItemID.CowboyHat,						Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.CowboyJacket,					Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.CowboyPants,					Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.GraduationCapBlack,				Condition.Hardmode, Condition.MoonPhaseWaxingGibbous)
+			.Add(ItemID.GraduationGownBlack,			Condition.Hardmode, Condition.MoonPhaseWaxingGibbous)
 			.Add(ItemID.BallaHat,						Condition.DownedFrostLegion)
 			.Add(ItemID.GangstaHat,						Condition.DownedFrostLegion)
 			.Add(ItemID.ClothierJacket,					Condition.Halloween)
@@ -467,7 +467,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.MechanicalLens)
 			.Add(ItemID.EngineeringHelmet)
 			.Add(ItemID.WireBulb)
-			.Add(ItemID.MechanicsRod,		Condition.NpcIsPresent(NPCID.Angler), Condition.IsMoonPhasesOddQuarters)
+			.Add(ItemID.MechanicsRod,		Condition.NpcIsPresent(NPCID.Angler), Condition.MoonPhasesOddQuarters)
 			.Add(ItemID.Timer5Second)
 			.Add(ItemID.Timer3Second)
 			.Add(ItemID.Timer1Second)
@@ -510,10 +510,10 @@ public static partial class NPCShopDatabase
 	{
 		new NPCShop(NPCID.Steampunker)
 			.Add(ItemID.Clentaminator,		Condition.NotRemixWorld)
-			.Add(ItemID.SteampunkHat,		Condition.IsMoonPhasesHalf0)
-			.Add(ItemID.SteampunkShirt,		Condition.IsMoonPhasesHalf0)
-			.Add(ItemID.SteampunkPants,		Condition.IsMoonPhasesHalf0)
-			.Add(ItemID.Jetpack,			Condition.Hardmode, Condition.IsMoonPhasesHalf1)
+			.Add(ItemID.SteampunkHat,		Condition.MoonPhasesHalf0)
+			.Add(ItemID.SteampunkShirt,		Condition.MoonPhasesHalf0)
+			.Add(ItemID.SteampunkPants,		Condition.MoonPhasesHalf0)
+			.Add(ItemID.Jetpack,			Condition.Hardmode, Condition.MoonPhasesHalf1)
 			.Add(ItemID.SteampunkWings,		Condition.DownedGolem)
 			.Add(ItemID.StaticHook,			Condition.Hardmode)
 			.Add(ItemID.LogicGate_AND)
@@ -558,8 +558,8 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.TeamDye,			new Condition(NetworkText.FromKey("ShopConditions.InMultiplayer"), () => Main.netMode == NetmodeID.MultiplayerClient))
 			.Add(ItemID.DyeTraderRobe,		Condition.Halloween)
 			.Add(ItemID.DyeTraderTurban,	Condition.Halloween)
-			.Add(ItemID.ShadowDye,			Condition.IsMoonFull)
-			.Add(ItemID.NegativeDye,		Condition.IsMoonFull)
+			.Add(ItemID.ShadowDye,			Condition.MoonPhaseFull)
+			.Add(ItemID.NegativeDye,		Condition.MoonPhaseFull)
 			.Add(ItemID.BloodbathDye,		Condition.BloodMoon)
 			.Add(ItemID.FogboundDye,		Condition.InGraveyard)
 			.Register();
@@ -679,10 +679,10 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.SparkleStoneWallpaper)
 			.Add(ItemID.StarlitHeavenWallpaper)
 			.Add(ItemID.Daylight)
-			.Add(ItemID.FirstEncounter,				Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.GoodMorning,				Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.UndergroundReward,			Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.ThroughtheWindow,			Condition.IsMoonPhasesQuarter3)
+			.Add(ItemID.FirstEncounter,				Condition.MoonPhasesQuarter0)
+			.Add(ItemID.GoodMorning,				Condition.MoonPhasesQuarter1)
+			.Add(ItemID.UndergroundReward,			Condition.MoonPhasesQuarter2)
+			.Add(ItemID.ThroughtheWindow,			Condition.MoonPhasesQuarter3)
 			.Add(ItemID.Purity,						Condition.InShoppingForestBiome)
 			.Add(ItemID.DeadlandComesAlive,			Condition.InCrimsonBiome)
 			.Add(ItemID.LightlessChasms,			Condition.InCorruptBiome)
@@ -747,7 +747,7 @@ public static partial class NPCShopDatabase
 
 	private static void RegisterPirate()
 	{
-		var beachCondition = new Condition(NetworkText.FromLiteral("RecipeConditions.InBeach"), () => {
+		var beachCondition = new Condition(NetworkText.FromKey("RecipeConditions.InBeach"), () => {
 			int num6 = (int)((Main.screenPosition.X + Main.screenWidth / 2) / 16f);
 			return (double)(Main.screenPosition.Y / 16f) < Main.worldSurface + 10.0 && (num6 < 380 || num6 > Main.maxTilesX - 380);
 		});
@@ -785,7 +785,7 @@ public static partial class NPCShopDatabase
 			}
 			return false;
 		});
-		var timeHair = new Condition(NetworkText.FromKey("ShopCondition.StyleMoon"), () => Main.moonPhase % 2 == (!Main.dayTime).ToInt());
+		var timeHair = new Condition(NetworkText.FromKey("ShopConditions.StyleMoon"), () => Main.moonPhase % 2 == (!Main.dayTime).ToInt());
 		var teamHair = new Condition(NetworkText.FromKey("ShopConditions.OnTeam"), () => Main.LocalPlayer.team != 0);
 
 		new NPCShop(NPCID.Stylist)
@@ -817,37 +817,37 @@ public static partial class NPCShopDatabase
 		var torchCondition = new Condition(NetworkText.FromKey("ShopConditions.Periodically"), () => Main.time % 60 > 30);
 
 		new NPCShop(NPCID.SkeletonMerchant)
-			.Add(ItemID.WoodenBoomerang,		Condition.IsMoonFull)
-			.Add(ItemID.Umbrella,				Condition.IsMoonWaningGibbous)
-			.Add(ItemID.WandofSparking,			Condition.IsMoonThirdQuarter, Condition.NotRemixWorld)
-			.Add(ItemID.MagicDagger,			Condition.IsMoonThirdQuarter, Condition.RemixWorld)
-			.Add(ItemID.PortableStool,			Condition.IsMoonWaningCrescent)
-			.Add(ItemID.Aglet,					Condition.IsMoonNew)
-			.Add(ItemID.ClimbingClaws,			Condition.IsMoonWaxingCrescent)
-			.Add(ItemID.CordageGuide,			Condition.IsMoonFirstQuarter)
-			.Add(ItemID.Radar,					Condition.IsMoonWaxingGibbous)
-			.Add(ItemID.StrangeBrew,			Condition.IsMoonPhasesEven)
-			.Add(ItemID.LesserHealingPotion,	Condition.IsMoonPhasesOdd)
-			.Add(ItemID.HealingPotion,			Condition.Hardmode, Condition.IsMoonPhasesOdd)
+			.Add(ItemID.WoodenBoomerang,		Condition.MoonPhaseFull)
+			.Add(ItemID.Umbrella,				Condition.MoonPhaseWaningGibbous)
+			.Add(ItemID.WandofSparking,			Condition.MoonPhaseThirdQuarter, Condition.NotRemixWorld)
+			.Add(ItemID.MagicDagger,			Condition.MoonPhaseThirdQuarter, Condition.RemixWorld)
+			.Add(ItemID.PortableStool,			Condition.MoonPhaseWaningCrescent)
+			.Add(ItemID.Aglet,					Condition.MoonPhaseNew)
+			.Add(ItemID.ClimbingClaws,			Condition.MoonPhaseWaxingCrescent)
+			.Add(ItemID.CordageGuide,			Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.Radar,					Condition.MoonPhaseWaxingGibbous)
+			.Add(ItemID.StrangeBrew,			Condition.MoonPhasesEven)
+			.Add(ItemID.LesserHealingPotion,	Condition.MoonPhasesOdd)
+			.Add(ItemID.HealingPotion,			Condition.Hardmode, Condition.MoonPhasesOdd)
 			.Add(ItemID.SpelunkerGlowstick,		spelunkerGlowCondition)
 			.Add(ItemID.SpelunkerFlare,			spelunkerGlowCondition, Condition.PlayerCarriesItem(ItemID.FlareGun))
 			.Add(ItemID.Glowstick,				glowstickCondition)
 			.Add(ItemID.BoneTorch,				boneTorchCondition)
 			.Add(ItemID.Torch,					torchCondition)
-			.Add(ItemID.BoneArrow,				Condition.IsMoonPhasesEvenQuarters)
-			.Add(ItemID.WoodenArrow,			Condition.IsMoonPhasesOddQuarters)
-			.Add(ItemID.BlueCounterweight,		Condition.IsMoonPhases04)
-			.Add(ItemID.RedCounterweight,		Condition.IsMoonPhases15)
-			.Add(ItemID.PurpleCounterweight,	Condition.IsMoonPhases26)
-			.Add(ItemID.GreenCounterweight,		Condition.IsMoonPhases37)
+			.Add(ItemID.BoneArrow,				Condition.MoonPhasesEvenQuarters)
+			.Add(ItemID.WoodenArrow,			Condition.MoonPhasesOddQuarters)
+			.Add(ItemID.BlueCounterweight,		Condition.MoonPhases04)
+			.Add(ItemID.RedCounterweight,		Condition.MoonPhases15)
+			.Add(ItemID.PurpleCounterweight,	Condition.MoonPhases26)
+			.Add(ItemID.GreenCounterweight,		Condition.MoonPhases37)
 			.Add(ItemID.Bomb)
 			.Add(ItemID.Rope)
-			.Add(ItemID.Gradient,				Condition.Hardmode, Condition.IsMoonPhasesHalf0)
-			.Add(ItemID.FormatC,				Condition.Hardmode, Condition.IsMoonPhasesHalf1)
+			.Add(ItemID.Gradient,				Condition.Hardmode, Condition.MoonPhasesHalf0)
+			.Add(ItemID.FormatC,				Condition.Hardmode, Condition.MoonPhasesHalf1)
 			.Add(ItemID.YoYoGlove,				Condition.Hardmode)
 			.Add(ItemID.SlapHand,				Condition.Hardmode, Condition.BloodMoon)
-			.Add(ItemID.MagicLantern,			Condition.TimeNight, Condition.IsMoonFull)
-			.Add(ItemID.ArtisanLoaf,			artisanCondition, Condition.IsMoonPhasesNearNew)
+			.Add(ItemID.MagicLantern,			Condition.TimeNight, Condition.MoonPhaseFull)
+			.Add(ItemID.ArtisanLoaf,			artisanCondition, Condition.MoonPhasesNearNew)
 			.Register();
 	}
 
@@ -953,10 +953,10 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.GolfPants)                                                                              // Country Club Trousers
 			.Add(ItemID.LawnMower)
 			.Add(ItemID.GolfCart,					scoreOver2000, Condition.DownedSkeletron)					// Golf Cart Keys
-			.Add(ItemID.GolfPainting1,				scoreOver2000, Condition.IsMoonPhasesQuarter0)				// The Rolling Greens
-			.Add(ItemID.GolfPainting2,				scoreOver2000, Condition.IsMoonPhasesQuarter1)				// Study of a Ball at Rest
-			.Add(ItemID.GolfPainting3,				scoreOver2000, Condition.IsMoonPhasesQuarter2)				// Fore!
-			.Add(ItemID.GolfPainting4,				scoreOver2000, Condition.IsMoonPhasesQuarter3)				// The Duplicity of Reflections
+			.Add(ItemID.GolfPainting1,				scoreOver2000, Condition.MoonPhasesQuarter0)				// The Rolling Greens
+			.Add(ItemID.GolfPainting2,				scoreOver2000, Condition.MoonPhasesQuarter1)				// Study of a Ball at Rest
+			.Add(ItemID.GolfPainting3,				scoreOver2000, Condition.MoonPhasesQuarter2)				// Fore!
+			.Add(ItemID.GolfPainting4,				scoreOver2000, Condition.MoonPhasesQuarter3)				// The Duplicity of Reflections
 			.Add(ItemID.GolfClubIron,				scoreOver500)                                               // Golf Club (Iron)
 			.Add(ItemID.GolfClubDriver,				scoreOver500)                                               // Golf Club (Driver)
 			.Add(ItemID.GolfClubWedge,				scoreOver500)                                               // Golf Club (Wedge)
@@ -993,7 +993,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.FairyGlowstick,				fairyGlowstick)
 			.Add(ItemID.DontHurtCrittersBook)
 			.Add(ItemID.SquirrelHook)
-			.Add(ItemID.TheWerewolf,				Condition.IsMoonFull, Condition.TimeNight)
+			.Add(ItemID.TheWerewolf,				Condition.MoonPhaseFull, Condition.TimeNight)
 			.Add(ItemID.BlandWhip,					bestiaryFilledBy10)
 			.Add(ItemID.LicenseCat)
 			.Add(ItemID.LicenseDog,					bestiaryFilledBy25)
@@ -1018,14 +1018,14 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LightningCarrot,			bestiaryFilledBy50)
 			.Add(ItemID.BallOfFuseWire,				bestiaryFilledBy70)
 			.Add(ItemID.TeleportationPylonVictory,	bestiaryFilledBy100)
-			.Add(ItemID.DogEars,					Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.DogTail,					Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.FoxEars,					Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.FoxTail,					Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.LizardEars,					Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.LizardTail,					Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.BunnyEars,					Condition.IsMoonPhasesQuarter3)
-			.Add(ItemID.BunnyTail,					Condition.IsMoonPhasesQuarter3)
+			.Add(ItemID.DogEars,					Condition.MoonPhasesQuarter0)
+			.Add(ItemID.DogTail,					Condition.MoonPhasesQuarter0)
+			.Add(ItemID.FoxEars,					Condition.MoonPhasesQuarter1)
+			.Add(ItemID.FoxTail,					Condition.MoonPhasesQuarter1)
+			.Add(ItemID.LizardEars,					Condition.MoonPhasesQuarter2)
+			.Add(ItemID.LizardTail,					Condition.MoonPhasesQuarter2)
+			.Add(ItemID.BunnyEars,					Condition.MoonPhasesQuarter3)
+			.Add(ItemID.BunnyTail,					Condition.MoonPhasesQuarter3)
 			.Register();
 	}
 
@@ -1049,10 +1049,10 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.FlaskofParty,		Condition.TenthAnniversary)
 			.Add(ItemID.SandstorminaBottle, Condition.TenthAnniversary, Condition.InDesertBiome)
 			.Add(ItemID.Terragrim,			Condition.TenthAnniversary, Condition.BloodMoon)
-			.Add(ItemID.PirateStaff,		Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.DiscountCard,		Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.LuckyCoin,			Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.CoinGun,			Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter3)
+			.Add(ItemID.PirateStaff,		Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.DiscountCard,		Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.LuckyCoin,			Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.CoinGun,			Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter3)
 			.Register();
 	}
 
