@@ -638,6 +638,16 @@
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
  	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
+@@ -1640,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjuction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// </summary>
+ 	public Vector2 MountedCenter {
+ 		get {
+ 			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
 @@ -1823,6 +_,10 @@
  		}
  	}
@@ -738,6 +748,20 @@
  
  	public float NormalizedLuck {
  		get {
+@@ -2228,6 +_,13 @@
+ 		return pos + vector;
+ 	}
+ 
++	/// <summary>
++	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br/>
++	/// </summary>
++	/// <param name="pos"></param>
++	/// <param name="reverseRotation"></param>
++	/// <param name="addGfxOffY"></param>
++	/// <returns></returns>
+ 	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true)
+ 	{
+ 		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
 @@ -2328,6 +_,7 @@
  	{
  		talkNPC = npcIndex;
@@ -817,6 +841,17 @@
  	}
  
  	public void MatchItemTimeToItemAnimation()
+@@ -2407,6 +_,10 @@
+ 
+ 	public bool TeamChangeAllowed() => true;
+ 
++	/// <summary>
++	/// Spawns a <see cref="CombatText"/> indicating the player healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true. <br/>
++	/// Note that this doesn't actually heal the player, it only spawns the floating text. The <see cref="Heal(int)"/> method heals the player and calls this method and is more commonly used.
++	/// </summary>
+ 	public void HealEffect(int healAmount, bool broadcast = true)
+ 	{
+ 		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
@@ -1200,7 +1235,7 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
  		bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  		switch (crateItemID) {
-@@ -6465,10 +_,12 @@
+@@ -6465,12 +_,22 @@
  					break;
  			}
  
@@ -1212,7 +1247,34 @@
 +		*/
  	}
  
++	/// <summary>
++	/// Counts the total stack of the specified item type in this players <see cref="inventory"/>. <br/>
++	/// Does not check Void Bag. <br/>
++	/// Use <see cref="Player.HasItem(int)"/> to check if the player has the item at all. <br/>
++	/// </summary>
++	/// <param name="type">The item type to count</param>
++	/// <param name="stopCountingAt">When to stop counting, useful to avoid unneccessary calculations</param>
++	/// <returns>The total amount counted</returns>
  	public int CountItem(int type, int stopCountingAt = 0)
+ 	{
+ 		int num = 0;
+@@ -6485,6 +_,16 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Use to consume a single item. The item does not have to be <see cref="Item.consumable"/>. <br/>
++	/// Attempts to reduce the <see cref="Item.stack"/> of the first <see cref="Item"/> found in the <see cref="inventory"/> by 1. <br/>
++	/// Respects <see cref="ItemLoader.ConsumeItem(Item, Player)"/>, so the item won't necessarily be consumed. <br/>
++	/// To consume multiple of the item, first check <see cref="Player.CountItem"/> to ensure that there are enough of the item, then use a for loop to call this method many times. <br/>
++	/// </summary>
++	/// <param name="type">The item type to consume</param>
++	/// <param name="reverseOrder">If true, the search for the item will start at the end of the player inventory</param>
++	/// <param name="includeVoidBag">If true, the void bag, if open, will also be considered for finding an item to consume</param>
++	/// <returns>True if the item was found and attempted to be consumed</returns>
+ 	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
+ 	{
+ 		int num = 0;
 @@ -6498,7 +_,9 @@
  
  		for (int i = num; i != num2; i += num3) {
@@ -7114,6 +7176,40 @@
  			}
  
  			return playerFileData;
+@@ -42907,6 +_,13 @@
+ 		return GameShaders.Hair.GetColor(hairDye, this, useLighting ? color : Color.White);
+ 	}
+ 
++	/// <summary>
++	/// Checks if the player has the specified item in their <see cref="inventory"/>. <br/>
++	/// Does not check Void Bag. <br/>
++	/// Use <see cref="Player.CountItem(int, int)"/> instead to count the total amount if needed. <br/>
++	/// </summary>
++	/// <param name="type">The item type to count</param>
++	/// <returns>True if the player has the item</returns>
+ 	public bool HasItem(int type)
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+@@ -42917,6 +_,9 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instad. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
++	/// </summary>
+ 	public bool HasItem(int type, Item[] collection)
+ 	{
+ 		for (int i = 0; i < collection.Length; i++) {
+@@ -42927,6 +_,9 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="HasItem(int)"/>, but also checks the Void Bag.
++	/// </summary>
+ 	public bool HasItemInInventoryOrOpenVoidBag(int type)
+ 	{
+ 		if (!HasItem(type)) {
 @@ -43028,6 +_,17 @@
  
  	public Player()

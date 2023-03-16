@@ -5950,17 +5950,23 @@
  					Netplay.Clients[k].PendingTerminationApproved = true;
  				}
  			}
-@@ -53384,6 +_,13 @@
+@@ -53384,6 +_,19 @@
  		}
  	}
  
 +	// Overload added by TML.
++	/// <inheritdoc cref="NewText(string, byte, byte, byte)"/>
 +	public static void NewText(object o, Color? color = null)
 +	{
 +		var c = color ?? Color.White;
 +		NewText(o.ToString(), c.R, c.G, c.B);
 +	}
 +
++	/// <summary>
++	/// Spawns chat text on the local client. Does nothing on the server. <br/>
++	/// For floating text, such as damage, see <see cref="CombatText"/> <br/>
++	/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
++	/// </summary>
  	public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue)
  	{
  		chatMonitor.NewText(newText, R, G, B);

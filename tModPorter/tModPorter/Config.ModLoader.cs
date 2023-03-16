@@ -63,8 +63,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"sapling",				Removed("Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"torch",				Removed("Use TileID.Sets.Torch instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"bed",					Removed("Use TileID.Sets.CanBeSleptIn instead"));
-		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"dresser",				Removed("Use ContainerName.SetDefault() and TileID.Sets.BasicDresser instead"));
-		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Use ContainerName.SetDefault() and TileID.Sets.BasicChest instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"dresser",				Removed("Override DefaultContainerName and use TileID.Sets.BasicDresser instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Override DefaultContainerName and use TileID.Sets.BasicChest instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartInteract",	Removed("Use TileID.Sets.DisableSmartInteract instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartCursor",	Removed("Use TileID.Sets.DisableSmartCursor instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"OpenDoorID",	        Removed("Use TileID.Sets.OpenDoorID instead"));
@@ -494,6 +494,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
+		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
+		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
+		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
 
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
