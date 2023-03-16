@@ -170,6 +170,9 @@ public static class NPCShopDatabase
 			&& !Main.LocalPlayer.ZoneCorrupt && !Main.LocalPlayer.ZoneCrimson
 			);
 		var purityPylonCondition = new Condition(NetworkText.FromKey("ShopConditions.InPurity"), () => { // im having struggles localizing these
+			if (Main.LocalPlayer.ZoneSnow || Main.LocalPlayer.ZoneDesert || Main.LocalPlayer.ZoneBeach || Main.LocalPlayer.ZoneJungle || Main.LocalPlayer.ZoneHallow || Main.LocalPlayer.ZoneGlowshroom)
+				return false;
+
 			if (Main.remixWorld) {
 				return Main.LocalPlayer.Center.Y / 16.0 > Main.rockLayer && Main.LocalPlayer.Center.Y / 16f < Main.maxTilesY - 350;
 			}
@@ -178,7 +181,7 @@ public static class NPCShopDatabase
 		var cavernPylonCondition = new Condition(NetworkText.FromKey("ShopConditions.InRockLayerHeight"), () => {
 			return !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert
 			&& !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle
-			&& !Main.LocalPlayer.ZoneHallow && (!Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
+			&& !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
 			&& (double)(Main.LocalPlayer.Center.Y / 16f) >= Main.worldSurface;
 		});
 		var oceanPylonCondition = new Condition(NetworkText.FromKey("RecipeConditions.InBeach"), () => {
