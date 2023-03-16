@@ -5,10 +5,11 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
-@@ -8,34 +_,129 @@
+@@ -8,34 +_,130 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
++using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.ObjectData;
  
@@ -688,7 +689,7 @@
 +		else if (NPCShopDatabase.GetNPCShop(shopName) is NPCShop shop) {
 +			shop.Build(item, npc, out bool overflow);
 +			if (overflow) {
-+				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
++				Main.NewText(Language.GetTextValue("tModLoader.ShopOverflow"), Color.Orange);
 +				Logging.tML.Warn($"Unable to fit all item in the shop {shopName}");
 +			}
 +		}
