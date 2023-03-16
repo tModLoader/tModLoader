@@ -12,7 +12,7 @@ public static partial class NPCShopDatabase
 	private static readonly Dictionary<string, NPCShop> npcShopByName = new();
 	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
 
-	public static readonly Dictionary<string, bool> NoPylons = new();
+	public static readonly ISet<string> NoPylons = new HashSet<string>();
 
 	internal static void AddShop(NPCShop shop)
 	{
@@ -87,8 +87,8 @@ public static partial class NPCShopDatabase
 
 	private static void RegisterVanillaNPCShops()
 	{
-		NoPylons[GetShopName(NPCID.TravellingMerchant)] = true;
-		NoPylons[GetShopName(NPCID.SkeletonMerchant)] = true;
+		NoPylons.Add(GetShopName(NPCID.TravellingMerchant));
+		NoPylons.Add(GetShopName(NPCID.SkeletonMerchant));
 
 		RegisterMerchant();
 		RegisterArmsDealer();
