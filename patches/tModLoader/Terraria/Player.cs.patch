@@ -638,6 +638,16 @@
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
  	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
+@@ -1640,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjuction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// </summary>
+ 	public Vector2 MountedCenter {
+ 		get {
+ 			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
 @@ -1823,6 +_,10 @@
  		}
  	}
@@ -726,6 +736,20 @@
  
  	public float NormalizedLuck {
  		get {
+@@ -2228,6 +_,13 @@
+ 		return pos + vector;
+ 	}
+ 
++	/// <summary>
++	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br/>
++	/// </summary>
++	/// <param name="pos"></param>
++	/// <param name="reverseRotation"></param>
++	/// <param name="addGfxOffY"></param>
++	/// <returns></returns>
+ 	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true)
+ 	{
+ 		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
 @@ -2328,6 +_,7 @@
  	{
  		talkNPC = npcIndex;
