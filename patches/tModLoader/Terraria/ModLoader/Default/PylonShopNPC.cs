@@ -22,4 +22,9 @@ public sealed class PylonShopNPC : GlobalNPC
 			shop.Add(entry);
 		}
 	}
+
+	public override void Unload()
+	{
+		_pylonEntries?.Clear();
+	}
 }
