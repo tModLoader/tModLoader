@@ -52,6 +52,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition NotInEvilBiome = new(NetworkText.FromKey("ShopConditions.NotInEvilBiome"), () => !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt);
 		public static readonly Condition NotInHallowBiome = new(NetworkText.FromKey("ShopConditions.NotInHallowBiome"), () => !Main.LocalPlayer.ZoneHallow);
 		public static readonly Condition NotInGraveyard = new(NetworkText.FromKey("ShopConditions.NotInGraveyard"), () => !Main.LocalPlayer.ZoneGraveyard);
+		public static readonly Condition NotInUnderworld = new(NetworkText.FromKey("ShopConditions.NotInUnderworld"), () => !Main.LocalPlayer.ZoneUnderworldHeight);
 
 		// World States
 		public static readonly Condition Hardmode = new(NetworkText.FromKey("ShopConditions.InHardmode"), () => Main.hardMode);
@@ -124,7 +125,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.9);
 		public static readonly Condition HappyEnoughToSellPylons = new(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () => Main.remixWorld || HappyEnough.IsAvailable());
 		public static readonly Condition AnotherTownNPCNearby = new(NetworkText.FromKey("ShopConditions.AnotherTownNPCNearby"), () => TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()));
-		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
+		public static readonly Condition IsNpcShimmered = new(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 
 		// Moon phases :( thanks to Chicken Bones for help with those
 		public static readonly Condition MoonPhaseFull = new(NetworkText.FromKey("ShopConditions.FullMoon"), () => Main.GetMoonPhase() == MoonPhase.Full);

@@ -14,6 +14,10 @@ public sealed class PylonShopNPC : GlobalNPC
 	public override void ModifyShop(NPCShop shop)
 	{
 		_pylonEntries ??= NPCShopDatabase.GetPylonEntries().ToList();
+
+		if (NPCShopDatabase.NoPylons[shop.NpcType]) {
+			return;
+		}
 		foreach (var entry in _pylonEntries) {
 			shop.Add(entry);
 		}

@@ -295,7 +295,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.HallowedSeeds,					Condition.Hardmode)
 			.Add(ItemID.HallowedGrassEcho,				Condition.Hardmode)
 			.Add(ItemID.AshGrassSeeds,					Condition.InUnderworld)
-			.Add(ItemID.MushroomGrassSeeds,				Condition.InGlowshroomBiome)
+			.Add(ItemID.MushroomGrassSeeds,				Condition.NotInUnderworld, Condition.InGlowshroomBiome)
 			.Add(ItemID.DryadCoverings,					Condition.Halloween)
 			.Add(ItemID.DryadLoincloth,					Condition.Halloween)
 			.Add(ItemID.DayBloomPlanterBox,				Condition.DownedKingSlime)
@@ -866,7 +866,7 @@ public static partial class NPCShopDatabase
 
 		// 1st row
 		shop.Add(ItemID.Ale);
-		shop.Add(new Entry(ItemID.DD2ElderCrystal).AddShopOpenedCallback((item, npc) => { // Eternia Crystal
+		shop.Add(new Entry(ItemID.DD2ElderCrystal).AddShopOpenedCallback((item, npc) => {					// Eternia Crystal
 			if (NPC.downedGolemBoss) {
 				item.shopCustomPrice = Item.buyPrice(gold: 4);
 			}
@@ -877,51 +877,51 @@ public static partial class NPCShopDatabase
 				item.shopCustomPrice = Item.buyPrice(silver: 25);
 			}
 		}));
-		shop.Add(ItemID.DD2ElderCrystalStand);                                          // Eternia Crystal Stand
+		shop.Add(ItemID.DD2ElderCrystalStand);																// Eternia Crystal Stand
 		AddEntry(ItemID.DefendersForge, 50);
 
-		AddEntry(ItemID.SquireGreatHelm,			15,	Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquirePlating,				15,	Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquireGreaves,				15,	Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquireAltHead,				50,	Condition.DownedGolem);          // Valhalla Knight's Helm
-		AddEntry(ItemID.SquireAltShirt,				50,	Condition.DownedGolem);          // Valhalla Knight's Breastplate
-		AddEntry(ItemID.SquireAltPants,				50,	Condition.DownedGolem);          // Valhalla Knight's Greaves
+		AddEntry(ItemID.SquireGreatHelm,			15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.SquirePlating,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.SquireGreaves,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.SquireAltHead,				50, Condition.Hardmode, Condition.DownedGolem);			// Valhalla Knight's Helm
+		AddEntry(ItemID.SquireAltShirt,				50, Condition.Hardmode, Condition.DownedGolem);         // Valhalla Knight's Breastplate
+		AddEntry(ItemID.SquireAltPants,				50, Condition.Hardmode, Condition.DownedGolem);         // Valhalla Knight's Greaves
 
 		// 2nd row
-		AddEntry(ItemID.DD2FlameburstTowerT1Popper,	5);                                  // Flameburst Rod
-		AddEntry(ItemID.DD2BallistraTowerT1Popper,	5);                                  // Ballista Rod
-		AddEntry(ItemID.DD2ExplosiveTrapT1Popper,	5);                                  // Explosive Trap Rod
-		AddEntry(ItemID.DD2LightningAuraT1Popper,	5);                                  // Lightning Aura Rod
-		AddEntry(ItemID.ApprenticeHat,				15, Condition.DownedMechBossAny);
-		AddEntry(ItemID.ApprenticeRobe,				15, Condition.DownedMechBossAny);
-		AddEntry(ItemID.ApprenticeTrousers,			15, Condition.DownedMechBossAny);
-		AddEntry(ItemID.ApprenticeAltHead,			50, Condition.DownedGolem);          // Dark Atrist's Hat
-		AddEntry(ItemID.ApprenticeAltShirt,			50, Condition.DownedGolem);          // Dark Atrist's Robes
-		AddEntry(ItemID.ApprenticeAltPants,			50, Condition.DownedGolem);          // Dark Atrist's Leggings
+		AddEntry(ItemID.DD2FlameburstTowerT1Popper,	5);														// Flameburst Rod
+		AddEntry(ItemID.DD2BallistraTowerT1Popper,	5);														// Ballista Rod
+		AddEntry(ItemID.DD2ExplosiveTrapT1Popper,	5);														// Explosive Trap Rod
+		AddEntry(ItemID.DD2LightningAuraT1Popper,	5);														// Lightning Aura Rod
+		AddEntry(ItemID.ApprenticeHat,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.ApprenticeRobe,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.ApprenticeTrousers,			15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.ApprenticeAltHead,			50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Hat
+		AddEntry(ItemID.ApprenticeAltShirt,			50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Robes
+		AddEntry(ItemID.ApprenticeAltPants,			50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Leggings
 
 		// 3rd row
-		AddEntry(ItemID.DD2FlameburstTowerT2Popper, 15, Condition.DownedMechBossAny);    // Flameburst Cane
-		AddEntry(ItemID.DD2BallistraTowerT2Popper,	15, Condition.DownedMechBossAny);    // Ballista Cane
-		AddEntry(ItemID.DD2ExplosiveTrapT2Popper,	15, Condition.DownedMechBossAny);    // Explosive Trap Cane
-		AddEntry(ItemID.DD2LightningAuraT2Popper,	15, Condition.DownedMechBossAny);    // Lightning Aura Cane
-		AddEntry(ItemID.HuntressWig,				15, Condition.DownedMechBossAny);
-		AddEntry(ItemID.HuntressJerkin,				15, Condition.DownedMechBossAny);
-		AddEntry(ItemID.HuntressPants,				15, Condition.DownedMechBossAny);
-		AddEntry(ItemID.HuntressAltHead,			50, Condition.DownedGolem);          // Red Riding Hood
-		AddEntry(ItemID.HuntressAltShirt,			50, Condition.DownedGolem);          // Red Riding Dress
-		AddEntry(ItemID.HuntressAltPants,			50, Condition.DownedGolem);          // Red Riding Leggings
+		AddEntry(ItemID.DD2FlameburstTowerT2Popper, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Flameburst Cane
+		AddEntry(ItemID.DD2BallistraTowerT2Popper,	15, Condition.Hardmode, Condition.DownedMechBossAny);   // Ballista Cane
+		AddEntry(ItemID.DD2ExplosiveTrapT2Popper,	15, Condition.Hardmode, Condition.DownedMechBossAny);   // Explosive Trap Cane
+		AddEntry(ItemID.DD2LightningAuraT2Popper,	15, Condition.Hardmode, Condition.DownedMechBossAny);   // Lightning Aura Cane
+		AddEntry(ItemID.HuntressWig,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.HuntressJerkin,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.HuntressPants,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.HuntressAltHead,			50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Hood
+		AddEntry(ItemID.HuntressAltShirt,			50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Dress
+		AddEntry(ItemID.HuntressAltPants,			50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Leggings
 
 		// 4th row
-		AddEntry(ItemID.DD2FlameburstTowerT3Popper, 60, Condition.DownedGolem);          // Flameburst Staff
-		AddEntry(ItemID.DD2BallistraTowerT3Popper,	60, Condition.DownedGolem);          // Ballista Staff
-		AddEntry(ItemID.DD2ExplosiveTrapT3Popper,	60, Condition.DownedGolem);          // Explosive Trap Staff
-		AddEntry(ItemID.DD2LightningAuraT3Popper,	60, Condition.DownedGolem);          // Lightning Aura Staff
-		AddEntry(ItemID.MonkBrows,					15, Condition.DownedMechBossAny);    // Monk's Bushy Brow Bald Cap
-		AddEntry(ItemID.MonkShirt,					15, Condition.DownedMechBossAny);    // Monk's Shirt
-		AddEntry(ItemID.MonkPants,					15, Condition.DownedMechBossAny);    // Monk's Pants
-		AddEntry(ItemID.MonkAltHead,				50, Condition.DownedGolem);          // Shinobi Infiltrator's Helmet
-		AddEntry(ItemID.MonkAltShirt,				50, Condition.DownedGolem);          // Shinobi Infiltrator's Torso
-		AddEntry(ItemID.MonkAltPants,				50, Condition.DownedGolem);          // Shinobi Infiltrator's Pants
+		AddEntry(ItemID.DD2FlameburstTowerT3Popper, 60, Condition.Hardmode, Condition.DownedGolem);         // Flameburst Staff
+		AddEntry(ItemID.DD2BallistraTowerT3Popper,	60, Condition.Hardmode, Condition.DownedGolem);         // Ballista Staff
+		AddEntry(ItemID.DD2ExplosiveTrapT3Popper,	60, Condition.Hardmode, Condition.DownedGolem);         // Explosive Trap Staff
+		AddEntry(ItemID.DD2LightningAuraT3Popper,	60, Condition.Hardmode, Condition.DownedGolem);         // Lightning Aura Staff
+		AddEntry(ItemID.MonkBrows,					15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Bushy Brow Bald Cap
+		AddEntry(ItemID.MonkShirt,					15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Shirt
+		AddEntry(ItemID.MonkPants,					15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Pants
+		AddEntry(ItemID.MonkAltHead,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Helmet
+		AddEntry(ItemID.MonkAltShirt,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Torso
+		AddEntry(ItemID.MonkAltPants,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Pants
 
 		shop.Register();
 	}

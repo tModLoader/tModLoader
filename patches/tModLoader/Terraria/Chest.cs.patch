@@ -687,7 +687,7 @@
 +		}
 +		else if (NPCShopDatabase.GetNPCShop(shopName) is NPCShop shop) {
 +			shop.Build(item, npc, out bool overflow);
-+			if (overflow) {
++			if (!NPCShopDatabase.TestingEnabled && overflow) {
 +				Main.NewText("Not all items could fit in the shop!", 255, 0, 0);
 +				Logging.tML.Warn($"Unable to fit all item in the shop {name}");
 +			}

@@ -7,7 +7,7 @@ namespace Terraria.ModLoader;
 
 public static partial class NPCShopDatabase
 {
-	private const bool TestingEnabled = true;
+	internal const bool TestingEnabled = true;
 
 	private class ConditionTest
 	{
