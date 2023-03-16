@@ -54,10 +54,11 @@ public sealed class PylonShopNPC : GlobalNPC
 			items[slot] = entry.Item.Clone();
 			entry.OnShopOpen(items[slot], npc);
 
-			while (true) {
-				if (++slot >= items.Length || !items[slot].IsAir)
+			do {
+				if (++slot >= items.Length)
 					return;
 			}
+			while (!items[slot].IsAir);
 		}
 	}
 }
