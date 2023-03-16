@@ -24,6 +24,8 @@ public sealed partial class NPCShop {
 		public static readonly Condition NotBloodMoon = new(NetworkText.FromKey("ShopConditions.NotBloodMoon"), () => !Main.bloodMoon);
 		public static readonly Condition Eclipse = new(NetworkText.FromKey("ShopConditions.SolarEclipse"), () => Main.eclipse);
 		public static readonly Condition NotEclipse = new(NetworkText.FromKey("ShopConditions.NotSolarEclipse"), () => !Main.eclipse);
+		public static readonly Condition EclipseOrBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.BloodOrSun"), () => Main.bloodMoon || Main.eclipse);
+		public static readonly Condition NotEclipseAndNotBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.NotBloodOrSun"), () => !Main.bloodMoon && !Main.eclipse);
 		public static readonly Condition Thunderstorm = new(NetworkText.FromKey("ShopConditions.Thunderstorm"), () => Main.IsItStorming);
 		public static readonly Condition BirthdayPartyIsUp = new(NetworkText.FromLiteral("During birthday party"), () => BirthdayParty.PartyIsUp);
 		public static readonly Condition NightLanternsUp = new(NetworkText.FromKey("ShopConditions.NightLanterns"), () => LanternNight.LanternsUp);
@@ -118,11 +120,10 @@ public sealed partial class NPCShop {
 		public static readonly Condition NotDownedSolarPillar = new(NetworkText.FromKey("ShopConditions.NotDownedSolarPillar"), () => !NPC.downedTowerSolar);
 
 		// Misc (can't fit in any other category)
+		public static readonly Condition BloodMoonOrHardmode = new(NetworkText.FromKey("ShopConditions.BloodMoonOrHardmode"), () => Main.bloodMoon || Main.hardMode);
 		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
 		public static readonly Condition InExpertMode = new(NetworkText.FromKey("ShopConditions.InExpertMode"), () => Main.expertMode);
 		public static readonly Condition InMasterMode = new(NetworkText.FromKey("ShopConditions.InMasterMode"), () => Main.masterMode);
-		public static readonly Condition EclipseOrBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.BloodOrSun"), () => Main.bloodMoon || Main.eclipse);
-		public static readonly Condition NotEclipseAndNotBloodMoon = new Condition(NetworkText.FromKey("ShopConditions.NotBloodOrSun"), () => !Main.bloodMoon && !Main.eclipse);
 		public static readonly Condition EclipseOrNight = new Condition(NetworkText.FromKey("ShopConditions.NightOrSun"), () => !Main.dayTime || Main.eclipse);
 		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 
