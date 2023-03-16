@@ -80,8 +80,8 @@ public static class NPCShopDatabase
 
 	private static void RegisterVanillaNPCShops()
 	{
+		NoPylons[GetShopName(NPCID.TravellingMerchant)] = true;
 		NoPylons[GetShopName(NPCID.SkeletonMerchant)] = true;
-		NoPylons[GetShopName(NPCID.DD2Bartender)] = true;
 
 		RegisterMerchant();
 		RegisterArmsDealer();
