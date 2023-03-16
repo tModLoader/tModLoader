@@ -624,7 +624,7 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.Cyborg)
 			.Add(ItemID.RocketI)
 			.Add(ItemID.RocketII,				Condition.BloodMoon)
-			.Add(ItemID.RocketIII,				Condition.EclipseOrNight)
+			.Add(ItemID.RocketIII,				Condition.NightOrEclipse)
 			.Add(ItemID.RocketIV,				Condition.Eclipse)
 			.Add(ItemID.ClusterRocketI,			Condition.DownedMartians)
 			.Add(ItemID.ClusterRocketII,		Condition.DownedMartians, Condition.EclipseOrBloodMoon)
@@ -1036,8 +1036,6 @@ public static partial class NPCShopDatabase
 
 	private static void RegisterPrincess()
 	{
-		var goodsCondition = new Condition(NetworkText.FromKey("ShopConditions.InCelebrationMk10"), () => Main.tenthAnniversaryWorld);
-
 		var shop = new NPCShop(NPCID.Princess)
 			.Add(ItemID.RoyalTiara)
 			.Add(ItemID.RoyalDressTop)
@@ -1051,15 +1049,15 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.BerniePetItem)
 			.Add(ItemID.RoyalRomance,		Condition.DownedKingSlime, Condition.DownedKingSlime)
 			.Add(ItemID.MusicBoxCredits,	Condition.Hardmode, Condition.DownedMoonLord)
-			.Add(ItemID.SlimeStaff,			goodsCondition)
-			.Add(ItemID.HeartLantern,		goodsCondition)
-			.Add(ItemID.FlaskofParty,		goodsCondition)
-			.Add(ItemID.SandstorminaBottle, goodsCondition, Condition.InDesertBiome)
-			.Add(ItemID.Terragrim,			goodsCondition, Condition.BloodMoon)
-			.Add(ItemID.PirateStaff,		goodsCondition, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter0)
-			.Add(ItemID.DiscountCard,		goodsCondition, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter1)
-			.Add(ItemID.LuckyCoin,			goodsCondition, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter2)
-			.Add(ItemID.CoinGun,			goodsCondition, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter3)
+			.Add(ItemID.SlimeStaff,			Condition.TenthAnniversary)
+			.Add(ItemID.HeartLantern,		Condition.TenthAnniversary)
+			.Add(ItemID.FlaskofParty,		Condition.TenthAnniversary)
+			.Add(ItemID.SandstorminaBottle, Condition.TenthAnniversary, Condition.InDesertBiome)
+			.Add(ItemID.Terragrim,			Condition.TenthAnniversary, Condition.BloodMoon)
+			.Add(ItemID.PirateStaff,		Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter0)
+			.Add(ItemID.DiscountCard,		Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter1)
+			.Add(ItemID.LuckyCoin,			Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter2)
+			.Add(ItemID.CoinGun,			Condition.TenthAnniversary, Condition.Hardmode, Condition.DownedPirates, Condition.IsMoonPhasesQuarter3)
 			.Register();
 	}
 

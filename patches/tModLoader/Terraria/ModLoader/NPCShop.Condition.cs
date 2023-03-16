@@ -31,9 +31,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition NightLanternsUp = new(NetworkText.FromKey("ShopConditions.NightLanterns"), () => LanternNight.LanternsUp);
 		public static readonly Condition HappyWindyDay = new(NetworkText.FromKey("ShopConditions.HappyWindyDay"), () => Main.IsItAHappyWindyDay);
 		// Biomes
-		public static readonly Condition InShoppingForestBiome = new(NetworkText.FromKey("ShopConditions.InForest"), () => Main.LocalPlayer.ShoppingZone_Forest);
-		public static readonly Condition InForestBiome = new(NetworkText.FromKey("ShopConditions.InForest"), () => Main.LocalPlayer.ZoneForest);
-		public static readonly Condition InPurityBiome = new(NetworkText.FromKey("ShopConditions.InPurity"), () => Main.LocalPlayer.ZonePurity);
+		public static readonly Condition InShoppingForestBiome = new(NetworkText.FromKey("ShopConditions.InShoppingForest"), () => Main.LocalPlayer.ShoppingZone_Forest);
 		public static readonly Condition InSnowBiome = new(NetworkText.FromKey("RecipeConditions.InSnow"), () => Main.LocalPlayer.ZoneSnow);
 		public static readonly Condition InJungleBiome = new(NetworkText.FromKey("RecipeConditions.InJungle"), () => Main.LocalPlayer.ZoneJungle);
 		public static readonly Condition InCorruptBiome = new(NetworkText.FromKey("RecipeConditions.InCorrupt"), () => Main.LocalPlayer.ZoneCorrupt);
@@ -48,8 +46,6 @@ public sealed partial class NPCShop {
 		public static readonly Condition InSpace = new(NetworkText.FromKey("RecipeConditions.InSkyHeight"), () => Main.LocalPlayer.ZoneSkyHeight);
 
 		public static readonly Condition NotInShoppingForestBiome = new(NetworkText.FromKey("ShopConditions.NotInForest"), () => !Main.LocalPlayer.ShoppingZone_Forest);
-		public static readonly Condition NotInForestBiome = new(NetworkText.FromKey("ShopConditions.NotInForest"), () => !Main.LocalPlayer.ZoneForest);
-		public static readonly Condition NotInPurityBiome = new(NetworkText.FromKey("ShopConditions.NotInPurity"), () => !Main.LocalPlayer.ZonePurity);
 		public static readonly Condition NotInSnowBiome = new(NetworkText.FromKey("ShopConditions.NotInSnow"), () => !Main.LocalPlayer.ZoneSnow);
 		public static readonly Condition NotInJungleBiome = new(NetworkText.FromKey("ShopConditions.NotInJungle"), () => !Main.LocalPlayer.ZoneJungle);
 		public static readonly Condition NotInCorruptBiome = new(NetworkText.FromKey("ShopConditions.NotInCorrupt"), () => !Main.LocalPlayer.ZoneCorrupt);
@@ -124,7 +120,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
 		public static readonly Condition InExpertMode = new(NetworkText.FromKey("ShopConditions.InExpertMode"), () => Main.expertMode);
 		public static readonly Condition InMasterMode = new(NetworkText.FromKey("ShopConditions.InMasterMode"), () => Main.masterMode);
-		public static readonly Condition EclipseOrNight = new Condition(NetworkText.FromKey("ShopConditions.NightOrSun"), () => !Main.dayTime || Main.eclipse);
+		public static readonly Condition NightOrEclipse = new Condition(NetworkText.FromKey("ShopConditions.NightOrEclipse"), () => !Main.dayTime || Main.eclipse);
 		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 
 		// Moon phases :( thanks to Chicken Bones for help with those
