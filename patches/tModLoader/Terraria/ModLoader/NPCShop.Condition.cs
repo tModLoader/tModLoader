@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria.Enums;
+using Terraria.GameContent;
 using Terraria.GameContent.Events;
 using Terraria.Localization;
 
@@ -17,6 +18,7 @@ public sealed partial class NPCShop {
 		// Time
 		public static readonly Condition TimeDay = new(NetworkText.FromKey("RecipeConditions.TimeDay"), () => Main.dayTime);
 		public static readonly Condition TimeNight = new(NetworkText.FromKey("RecipeConditions.TimeNight"), () => !Main.dayTime);
+
 		// Events
 		public static readonly Condition Christmas = new(NetworkText.FromKey("ShopConditions.Christmas"), () => Main.xMas);
 		public static readonly Condition Halloween = new(NetworkText.FromKey("ShopConditions.Halloween"), () => Main.halloween);
@@ -30,6 +32,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition BirthdayPartyIsUp = new(NetworkText.FromLiteral("During birthday party"), () => BirthdayParty.PartyIsUp);
 		public static readonly Condition NightLanternsUp = new(NetworkText.FromKey("ShopConditions.NightLanterns"), () => LanternNight.LanternsUp);
 		public static readonly Condition HappyWindyDay = new(NetworkText.FromKey("ShopConditions.HappyWindyDay"), () => Main.IsItAHappyWindyDay);
+
 		// Biomes
 		public static readonly Condition InShoppingForestBiome = new(NetworkText.FromKey("ShopConditions.InShoppingForest"), () => Main.LocalPlayer.ShoppingZone_Forest);
 		public static readonly Condition InSnowBiome = new(NetworkText.FromKey("RecipeConditions.InSnow"), () => Main.LocalPlayer.ZoneSnow);
@@ -45,19 +48,10 @@ public sealed partial class NPCShop {
 		public static readonly Condition InDungeonBiome = new(NetworkText.FromKey("RecipeConditions.InDungeon"), () => Main.LocalPlayer.ZoneDungeon);
 		public static readonly Condition InSpace = new(NetworkText.FromKey("RecipeConditions.InSkyHeight"), () => Main.LocalPlayer.ZoneSkyHeight);
 
-		public static readonly Condition NotInShoppingForestBiome = new(NetworkText.FromKey("ShopConditions.NotInForest"), () => !Main.LocalPlayer.ShoppingZone_Forest);
-		public static readonly Condition NotInSnowBiome = new(NetworkText.FromKey("ShopConditions.NotInSnow"), () => !Main.LocalPlayer.ZoneSnow);
-		public static readonly Condition NotInJungleBiome = new(NetworkText.FromKey("ShopConditions.NotInJungle"), () => !Main.LocalPlayer.ZoneJungle);
-		public static readonly Condition NotInCorruptBiome = new(NetworkText.FromKey("ShopConditions.NotInCorrupt"), () => !Main.LocalPlayer.ZoneCorrupt);
-		public static readonly Condition NotInCrimsonBiome = new(NetworkText.FromKey("ShopConditions.NotInCrimson"), () => !Main.LocalPlayer.ZoneCrimson);
-		public static readonly Condition NotInHallowBiome = new(NetworkText.FromKey("ShopConditions.NotInHallow"), () => !Main.LocalPlayer.ZoneHallow);
-		public static readonly Condition NotInDesertBiome = new(NetworkText.FromKey("ShopConditions.NotInDesert"), () => !Main.LocalPlayer.ZoneDesert);
-		public static readonly Condition NotInGraveyard = new(NetworkText.FromKey("ShopConditions.NotInGraveyard"), () => !Main.LocalPlayer.ZoneGraveyard);
-		public static readonly Condition NotInGlowshroomBiome = new(NetworkText.FromKey("ShopConditions.NotInGlowshroom"), () => !Main.LocalPlayer.ZoneGlowshroom);
-		public static readonly Condition NotInBeachBiome = new(NetworkText.FromKey("ShopConditions.NotInBeach"), () => !Main.LocalPlayer.ZoneBeach);
-		public static readonly Condition NotInUnderworld = new(NetworkText.FromKey("ShopConditions.NotInUnderworldHeight"), () => !Main.LocalPlayer.ZoneUnderworldHeight);
-		public static readonly Condition NotInDungeonBiome = new(NetworkText.FromKey("ShopConditions.NotInDungeon"), () => !Main.LocalPlayer.ZoneDungeon);
-		public static readonly Condition NotInSpace = new(NetworkText.FromKey("ShopConditions.NotInSkyHeight"), () => Main.LocalPlayer.ZoneSkyHeight);
+		public static readonly Condition InEvilBiome = new(NetworkText.FromKey("ShopConditions.InEvilBiome"), () => Main.LocalPlayer.ZoneCrimson || Main.LocalPlayer.ZoneCorrupt);
+		public static readonly Condition NotInEvilBiome = new(NetworkText.FromKey("ShopConditions.NotInEvilBiome"), () => !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt);
+		public static readonly Condition NotInHallowBiome = new(NetworkText.FromKey("ShopConditions.NotInHallowBiome"), () => !Main.LocalPlayer.ZoneHallow);
+
 		// World States
 		public static readonly Condition Hardmode = new(NetworkText.FromKey("ShopConditions.InHardmode"), () => Main.hardMode);
 		public static readonly Condition PreHardmode = new(NetworkText.FromKey("ShopConditions.NotInHardmode"), () => !Main.hardMode);
@@ -69,6 +63,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition NotForTheWorthy = new(NetworkText.FromKey("ShopConditions.WorldNotForTheWorthy"), () => !Main.getGoodWorld);
 		public static readonly Condition NotRemixWorld = new(NetworkText.FromKey("ShopConditions.WorldNotRemix"), () => !Main.remixWorld);
 		public static readonly Condition NotTenthAnniversary = new(NetworkText.FromKey("ShopConditions.WorldNotAnniversary"), () => !Main.tenthAnniversaryWorld);
+
 		// Bosses
 		public static readonly Condition DownedKingSlime = new(NetworkText.FromKey("ShopConditions.DownedKingSlime"), () => NPC.downedSlimeKing);
 		public static readonly Condition DownedEyeOfCthulhu = new(NetworkText.FromKey("ShopConditions.DownedEyeOfCthulhu"), () => NPC.downedBoss1);
@@ -90,8 +85,12 @@ public sealed partial class NPCShop {
 		public static readonly Condition DownedClown = new(NetworkText.FromKey("ShopConditions.DownedClown"), () => NPC.downedClown);
 		public static readonly Condition DownedPirates = new(NetworkText.FromKey("ShopConditions.DownedPirates"), () => NPC.downedPirates);
 		public static readonly Condition DownedMartians = new(NetworkText.FromKey("ShopConditions.DownedMartians"), () => NPC.downedMartians);
-		public static readonly Condition DownedFrost = new(NetworkText.FromKey("ShopConditions.DownedFrostLegion"), () => NPC.downedFrost);
+		public static readonly Condition DownedFrostLegion = new(NetworkText.FromKey("ShopConditions.DownedFrostLegion"), () => NPC.downedFrost);
 		public static readonly Condition DownedSolarPillar = new(NetworkText.FromKey("ShopConditions.DownedSolarPillar"), () => NPC.downedTowerSolar);
+		public static readonly Condition DownedVortexPillar = new(NetworkText.FromKey("ShopConditions.DownedVortexPillar"), () => NPC.downedTowerVortex);
+		public static readonly Condition DownedNebulaPillar = new(NetworkText.FromKey("ShopConditions.DownedNebulaPillar"), () => NPC.downedTowerNebula);
+		public static readonly Condition DownedStardustPillar = new(NetworkText.FromKey("ShopConditions.DownedStardustPillar"), () => NPC.downedTowerStardust);
+
 		public static readonly Condition NotDownedKingSlime = new(NetworkText.FromKey("ShopConditions.NotNotDownedKingSlime"), () => !NPC.downedSlimeKing);
 		public static readonly Condition NotDownedEyeOfCthulhu = new(NetworkText.FromKey("ShopConditions.NotDownedEyeOfCthulhu"), () => !NPC.downedBoss1);
 		public static readonly Condition NotDownedEowOrBoc = new(NetworkText.FromKey("ShopConditions.NotDownedBoss2"), () => !NPC.downedBoss2);
@@ -112,15 +111,18 @@ public sealed partial class NPCShop {
 		public static readonly Condition NotDownedClown = new(NetworkText.FromKey("ShopConditions.NotDownedClown"), () => !NPC.downedClown);
 		public static readonly Condition NotDownedPirates = new(NetworkText.FromKey("ShopConditions.NotDownedPirates"), () => !NPC.downedPirates);
 		public static readonly Condition NotDownedMartians = new(NetworkText.FromKey("ShopConditions.NotDownedMartians"), () => !NPC.downedMartians);
-		public static readonly Condition NotDownedFrost = new(NetworkText.FromKey("ShopConditions.NotDownedFrostLegion"), () => !NPC.downedFrost);
-		public static readonly Condition NotDownedSolarPillar = new(NetworkText.FromKey("ShopConditions.NotDownedSolarPillar"), () => !NPC.downedTowerSolar);
+		public static readonly Condition NotDownedFrostLegin = new(NetworkText.FromKey("ShopConditions.NotDownedFrostLegion"), () => !NPC.downedFrost);
 
-		// Misc (can't fit in any other category)
+		// Misc
 		public static readonly Condition BloodMoonOrHardmode = new(NetworkText.FromKey("ShopConditions.BloodMoonOrHardmode"), () => Main.bloodMoon || Main.hardMode);
-		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
+		public static readonly Condition NightOrEclipse = new Condition(NetworkText.FromKey("ShopConditions.NightOrEclipse"), () => !Main.dayTime || Main.eclipse);
+
 		public static readonly Condition InExpertMode = new(NetworkText.FromKey("ShopConditions.InExpertMode"), () => Main.expertMode);
 		public static readonly Condition InMasterMode = new(NetworkText.FromKey("ShopConditions.InMasterMode"), () => Main.masterMode);
-		public static readonly Condition NightOrEclipse = new Condition(NetworkText.FromKey("ShopConditions.NightOrEclipse"), () => !Main.dayTime || Main.eclipse);
+
+		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.9);
+		public static readonly Condition HappyEnoughForPylons = new(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () => Main.remixWorld || HappyEnough.IsAvailable());
+		public static readonly Condition AnotherTownNPCNearby = new(NetworkText.FromKey("ShopConditions.AnotherTownNPCNearby"), () => TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()));
 		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 
 		// Moon phases :( thanks to Chicken Bones for help with those
