@@ -86,9 +86,6 @@ namespace ExampleMod.Content.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			// We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
 			ModContent.GetInstance<SimplePylonTileEntity>().Kill(i, j);
-
-			// Also, like other pylons, breaking it simply drops the item once again. Pretty straight-forward.
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 2, 3, ModContent.ItemType<ExamplePylonItem>());
 		}
 
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {

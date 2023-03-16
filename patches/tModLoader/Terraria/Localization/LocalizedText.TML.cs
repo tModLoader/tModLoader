@@ -67,27 +67,13 @@ public partial class LocalizedText
 
 	public static string ApplyPluralization(string value, params object[] args)
 	{
-		if (!AnyInts(args))
-			return value;
-
 		return PluralizationPatternRegex.Replace(value, delegate (Match match) {
 			int argIndex = Convert.ToInt32(match.Groups[1].Value);
-			if (args[argIndex] is not int count)
-				return match.ToString();
-			
 			string[] options = match.Groups[2].Value.Split(';');
+			int count = Convert.ToInt32(args[argIndex]);			
 			int rule = CardinalPluralRule(Language.ActiveCulture, count);
 			return options[Math.Min(rule, options.Length-1)];
 		});
-	}
-
-	private static bool AnyInts(object[] args)
-	{
-		foreach (var arg in args)
-			if (arg is int)
-				return true;
-
-		return false;
 	}
 
 	public string Format(params object[] args)
@@ -99,5 +85,14 @@ public partial class LocalizedText
 		return string.Format(value, args);
 	}
 
+	/// <summary>
+	/// Creates a new LocalizedText with the supplied arguments formatted into the value (via <see cref="string.Format(string, object?[])"/>)<br/>
+	/// Will automatically update to re-format the string with cached args when language changes. <br/>
+	///<br/>
+	/// The resulting LocalizedText should be stored statically. Should not be used to create 'throwaway' LocalizedText instances. <br/>
+	/// Use <see cref="Format(object[])"/> instead for repeated on-demand formatting with different args.
+	/// </summary>
+	/// <param name="args">The substitution args</param>
+	/// <returns></returns>
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
 }

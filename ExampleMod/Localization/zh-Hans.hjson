@@ -71,7 +71,6 @@ Mods: {
 			// ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
-				// ContainerName: Example Chest
 				// MapEntry0: Example Chest
 				// MapEntry1: Locked Example Chest
 			}
@@ -81,6 +80,7 @@ Mods: {
 			// ExampleTable.MapEntry: Table
 			// ExampleWorkbench.MapEntry: Work Bench
 			// ExampleSapling.MapEntry: Example Sapling
+			// ExampleDresser.MapEntry: Example Dresser
 		}
 
 		Items: {
@@ -147,6 +147,11 @@ Mods: {
 					''' */
 			}
 
+			ExampleInfoAccessory: {
+				// DisplayName: Example Info Accessory
+				// Tooltip: Displays how many minions you have summoned
+			}
+
 			ExampleShield: {
 				// DisplayName: Example Shield
 				// Tooltip: This is a modded shield.
@@ -161,9 +166,10 @@ Mods: {
 					Increases base damage for all weapons by {2}
 					Increases total damage for all weapons by {3}
 					{$CommonItemTooltip.PercentIncreasedMeleeCritChance@4}
-					{5}% increased example knockback
+					Increases ranged firing speed by {5}%
 					{6} magic armor penetration
-					Increases ranged firing speed by {7}%
+					{7}% increased example knockback
+					{8}% increased crit damage
 					''' */
 			}
 
@@ -655,12 +661,22 @@ Mods: {
 
 			ExampleWhip: {
 				// DisplayName: Example Whip
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					''' */
 			}
 
 			ExampleWhipAdvanced: {
 				// DisplayName: Example Whip Advanced
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					{0}% summon tag damage to the next minion or sentry hit
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					''' */
 			}
 
 			ExampleYoyo: {
@@ -732,6 +748,31 @@ Mods: {
 				// Tooltip: ""
 				// DisplayName: Shimmer Showcase Conditions
 			}
+
+			ExampleDresser: {
+				// DisplayName: Example Dresser
+				// Tooltip: This is a modded dresser.
+			}
+
+			ExampleTrapIchorBullet: {
+				// DisplayName: Example Trap - {$ItemName.IchorBullet}
+				// Tooltip: ""
+			}
+
+			ExampleTrapChlorophyteBullet: {
+				// DisplayName: Example Trap - {$ItemName.ChlorophyteBullet}
+				// Tooltip: ""
+			}
+
+			HitModifiersShowcase: {
+				// DisplayName: Hit Modifiers Showcase
+				// Tooltip: ""
+			}
+
+			AbsorbTeamDamageAccessory: {
+				// DisplayName: Absorb Team Damage Accessory
+				// Tooltip: Absorbs {0}% of damage done to players on your team when above {1}% life
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -795,6 +836,11 @@ Mods: {
 				// Description: "{$CommonItemTooltip.IncreasesDefenseBy}"
 			}
 
+			ExampleDefenseDebuff: {
+				// DisplayName: Defensive Debuff
+				// Description: "{$BuffDescription.Ichor}"
+			}
+
 			ExampleLifeRegenDebuff: {
 				// DisplayName: Fire debuff
 				// Description: Losing life
@@ -806,8 +852,8 @@ Mods: {
 			}
 
 			ExampleWhipDebuff: {
-				// DisplayName: Mods.ExampleMod.BuffName.ExampleWhipDebuff
-				// Description: Mods.ExampleMod.BuffDescription.ExampleWhipDebuff
+				// DisplayName: Example Whip Debuff
+				// Description: ""
 			}
 
 			ExampleLightPetBuff: {
@@ -823,6 +869,21 @@ Mods: {
 			ExampleSimpleMinionBuff: {
 				// DisplayName: Example Minion
 				// Description: The example minion will fight for you
+			}
+
+			ExampleDodgeBuff: {
+				// DisplayName: Example Dodge Buff
+				// Description: You will dodge the next attack
+			}
+
+			AbsorbTeamDamageBuff: {
+				// DisplayName: Absorb Team Damage Buff
+				// Description: "{0}% of damage taken will be redirected to another player"
+			}
+
+			ExampleWhipAdvancedDebuff: {
+				// DisplayName: Example Whip Advanced Debuff
+				// Description: ""
 			}
 		}
 

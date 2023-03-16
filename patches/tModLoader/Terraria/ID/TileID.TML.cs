@@ -7,6 +7,8 @@ partial class TileID
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
 		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
+		/// <summary> Tiles within this set are multi-tiles that don't have a TileObjectData. This is only used to prevent TileLoader.Drop from being called multiple times when breaking these tiles, as might be expected. Trees and Cactus are not included in this, since each of those tiles drop items. </summary>
+		public static bool[] IsMultitile = Factory.CreateBoolSet(Pots, ShadowOrbs, PlantDetritus, LifeFruit, PlanteraBulb, OasisPlants); // 165, 185, 201: Have 1x1 and multitiles in same tile, ignore.
 
 		/// <summary> Tiles within this set are allowed to be replaced by generating ore. </summary>
 		public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234, 396, 397, 401, 403, 400, 398, 399, 402);
@@ -98,6 +100,16 @@ partial class TileID
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
 		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is CLOSED. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] OpenDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is OPEN. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)

@@ -487,16 +487,17 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
+	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
-	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	public virtual void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
+	public virtual void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -511,14 +512,15 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
 	/// </summary>
-	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a melee weapon hits a player.
+	/// Allows you to create special effects when a melee weapon hits a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
-	public virtual void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -571,11 +573,18 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when an item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	public virtual void UpdateInventory(Item item, Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	public virtual void UpdateInfoAccessory(Item item, Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to armors and accessories, such as increased damage.

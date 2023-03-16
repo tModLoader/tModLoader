@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.DamageClasses;
+﻿using ExampleMod.Common.Players;
+using ExampleMod.Content.DamageClasses;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -16,9 +17,10 @@ namespace ExampleMod.Content.Items.Accessories
 		public static readonly int RangedAttackSpeedBonus = 15;
 		public static readonly int MagicArmorPenetration = 5;
 		public static readonly int ExampleKnockback = 100;
+		public static readonly int AdditiveCritDamageBonus = 20;
 
 		// Insert the modifier values into the tooltip localization
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback);
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback, AdditiveCritDamageBonus);
 
 		public override void SetDefaults() {
 			Item.width = 40;
@@ -61,6 +63,8 @@ namespace ExampleMod.Content.Items.Accessories
 			// GetKnockback is functionally identical to GetDamage, but for the knockback stat instead.
 			// In this case, we're adding 100% knockback additively, but only for our custom example DamageClass (as such, only our example class weapons will receive this bonus).
 			player.GetKnockback<ExampleDamageClass>() += ExampleKnockback / 100f;
+
+			player.GetModPlayer<ExampleDamageModificationPlayer>().AdditiveCritDamageBonus += AdditiveCritDamageBonus / 100f;
 		}
 	}
 }

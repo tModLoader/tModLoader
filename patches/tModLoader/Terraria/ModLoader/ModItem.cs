@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -39,13 +40,15 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
-	/// <summary>r
+	/// <summary>
 	/// The translations for the tooltip of this item.
 	/// </summary>
 	public virtual LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
 	/// <summary>
-	/// The file name of this type's texture file in the mod loader's file space.
+	/// The file name of this type's texture file in the mod loader's file space. <br/>
+	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Item"/> indexed by <see cref="Type"/> if needed. <br/>
+	/// You can use a vanilla texture by returning <c>$"Terraria/Images/Item_{ItemID.ItemNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
@@ -564,26 +567,25 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC.
+	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockBack">The knock back.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	/// <param name="modifiers">The strike.</param>
+	public virtual void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
+	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads). <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockBack">The knock back.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+	/// <param name="hit">The strike.</param>
+	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
+	public virtual void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -601,24 +603,24 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
+	/// Allows you to modify the damage, etc., that this melee weapon does to a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits a player.
+	/// Allows you to create special effects when this melee weapon hits a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitPvp(Player player, Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -683,12 +685,20 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateInventory(Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	/// <param name="player"> The player to be affected the information accessory. </param>
+	public virtual void UpdateInfoAccessory(Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to this armor or accessory, such as increased damage.

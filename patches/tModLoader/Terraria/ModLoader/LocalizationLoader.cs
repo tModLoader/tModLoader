@@ -193,7 +193,13 @@ public static class LocalizationLoader
 				}
 
 				// Parse HJSON and convert to standard JSON
-				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
+  				string jsonString;
+				try {
+					jsonString = HjsonValue.Parse(translationFileContents).ToString();
+				}
+				catch (Exception e) {
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+				}
 
 				// Parse JSON
 				var jsonObject = JObject.Parse(jsonString);
@@ -263,7 +269,13 @@ public static class LocalizationLoader
 	{
 		// For each mod with mod sources
 		foreach (var mod in ModLoader.Mods) {
-			UpdateLocalizationFilesForMod(mod);
+			try {
+				UpdateLocalizationFilesForMod(mod);
+			}
+			catch (Exception e) {
+				e.Data["mod"] = mod.Name;
+				throw;
+			}
 		}
 	}
 
@@ -341,7 +353,14 @@ public static class LocalizationLoader
 					// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
 				}
 
-				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+				JsonValue jsonValueEng;
+				try {
+					jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+				}
+				catch (Exception e) {
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+				}
+				
 				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
 				if (!fileList.Any(x => x.path == fixedFileName))

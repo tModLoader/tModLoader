@@ -37,6 +37,21 @@
  				writer.Write((short)item2.stack);
  			}
  		}
+@@ -187,11 +_,14 @@
+ 			return;
+ 
+ 		Kill(num, num2);
++		if (!TileLoader.Drop(callX, callY, 470))
++			goto skipDrops;
+ 		if (Main.tile[callX, callY].frameX / 72 != 1)
+ 			Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 32, 48, 498);
+ 		else
+ 			Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 32, 48, 1989);
+ 
++		skipDrops:
+ 		WorldGen.destroyObject = true;
+ 		for (int k = num; k < num + 2; k++) {
+ 			for (int l = num2; l < num2 + 3; l++) {
 @@ -468,6 +_,11 @@
  		if (dye)
  			item = _dyes[itemIndex];
