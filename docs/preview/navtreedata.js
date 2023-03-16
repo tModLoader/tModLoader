@@ -60,13 +60,13 @@ var NAVTREEINDEX =
 "class_mod_system.html#a342b61155bcc6b2a3832d4298ecffa11",
 "class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66",
 "class_n_p_c_i_d_1_1_sets.html#a6a0e509ad970d78790a989d877edfea4",
-"class_player_1_1_hooks.html",
-"class_proj_a_i_style_i_d.html#a640c04f3bd84166611d90537e6cbf461",
-"class_recipe.html#ae9bf3267c476541e9827aab485a3e244",
-"class_throwing_damage_class.html",
-"class_unloaded_chest.html",
-"index.html",
-"struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886"
+"class_player.html#affe1d691bd3a8fbeb795d6d8aa204b7c",
+"class_proj_a_i_style_i_d.html#a5fad6c0143970cc3b392b8d9033e27fc",
+"class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f",
+"class_texture_pack_workshop_entry.html",
+"class_unloaded_accessory_slot.html#ac75289d3883f4ff618e28aa699243544",
+"functions_z.html",
+"struct_n_p_c_1_1_hit_info.html#ab9260c7cbef7fa28576ac191ece076ea"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

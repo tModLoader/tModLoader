@@ -1092,8 +1092,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetVisibleAccessori
 <tr class="memitem:a8bbd745484e89c34db2e47b0bd291606"><td class="memItemLeft" align="right" valign="top"><a id="a8bbd745484e89c34db2e47b0bd291606" name="a8bbd745484e89c34db2e47b0bd291606"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>RollLuck</b> (int range)</td></tr>
 <tr class="separator:a8bbd745484e89c34db2e47b0bd291606"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d51c1bc55b3d00e19042581d56e2dab"><td class="memItemLeft" align="right" valign="top"><a id="a4d51c1bc55b3d00e19042581d56e2dab" name="a4d51c1bc55b3d00e19042581d56e2dab"></a>
-Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>RotatedRelativePoint</b> (Vector2 pos, bool reverseRotation=false, bool addGfxOffY=true)</td></tr>
+<tr class="memitem:a4d51c1bc55b3d00e19042581d56e2dab"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a4d51c1bc55b3d00e19042581d56e2dab">RotatedRelativePoint</a> (Vector2 pos, bool reverseRotation=false, bool addGfxOffY=true)</td></tr>
+<tr class="memdesc:a4d51c1bc55b3d00e19042581d56e2dab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br  />
+  <a href="class_player.html#a4d51c1bc55b3d00e19042581d56e2dab">More...</a><br /></td></tr>
 <tr class="separator:a4d51c1bc55b3d00e19042581d56e2dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1b1726aeb5cee5596dbb2040957ff10"><td class="memItemLeft" align="right" valign="top"><a id="af1b1726aeb5cee5596dbb2040957ff10" name="af1b1726aeb5cee5596dbb2040957ff10"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>RotatedRelativePointOld</b> (Vector2 pos, bool rotateForward=true)</td></tr>
@@ -4851,6 +4852,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>miscCounterNormalize
 <tr class="separator:af71eeffcf80caa2d897dd4999145bdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb16534ae211b195f04bf6303a06711"><td class="memItemLeft" align="right" valign="top"><a id="a1fb16534ae211b195f04bf6303a06711" name="a1fb16534ae211b195f04bf6303a06711"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MountedCenter</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1fb16534ae211b195f04bf6303a06711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the player's center adjusted for mount and step stool usage. Typically used in conjuction with <a class="el" href="class_player.html#a4d51c1bc55b3d00e19042581d56e2dab" title="Takes an input position and returns the position adjusted to the players visual rotation and offset....">RotatedRelativePoint(Vector2, bool, bool)</a> to retrieve a suitable position for positioning items and effects originating from the player. <br /></td></tr>
 <tr class="separator:a1fb16534ae211b195f04bf6303a06711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8e260e5257e51adb97b56e3f5a8bbc7"><td class="memItemLeft" align="right" valign="top"><a id="ac8e260e5257e51adb97b56e3f5a8bbc7" name="ac8e260e5257e51adb97b56e3f5a8bbc7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>MountFishronSpecial</b><code> [get]</code></td></tr>
@@ -6412,6 +6414,52 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 
 <p></p>
 <dl class="section return"><dt>Returns</dt><dd>Returns the <a class="el" href="class_item.html">Item</a> instance</dd></dl>
+
+</div>
+</div>
+<a id="a4d51c1bc55b3d00e19042581d56e2dab" name="a4d51c1bc55b3d00e19042581d56e2dab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d51c1bc55b3d00e19042581d56e2dab">&#9670;&nbsp;</a></span>RotatedRelativePoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Player.RotatedRelativePoint </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseRotation</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>addGfxOffY</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td></td></tr>
+    <tr><td class="paramname">reverseRotation</td><td></td></tr>
+    <tr><td class="paramname">addGfxOffY</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

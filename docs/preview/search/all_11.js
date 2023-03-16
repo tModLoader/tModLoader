@@ -56,7 +56,7 @@ var searchData=
   ['ref_3c_20int_20_3e_53',['Ref&lt; int &gt;',['../class_ref.html',1,'']]],
   ['reflectivearmorshaderdata_54',['ReflectiveArmorShaderData',['../class_reflective_armor_shader_data.html',1,'']]],
   ['reflectstarshotsinfortheworthy_55',['ReflectStarShotsInForTheWorthy',['../class_n_p_c_i_d_1_1_sets.html#a6a7937913da86eec03303da2dc5f6f6a',1,'NPCID::Sets']]],
-  ['reforgeprice_56',['ReforgePrice',['../class_mod_item.html#a1210a73f18135d114a722c4a0e2f0f63',1,'ModItem.ReforgePrice()'],['../class_item_loader.html#ac8b18ec09a7dc4cd8d064d0e1641280c',1,'ItemLoader.ReforgePrice()'],['../class_global_item.html#ac16308d540ff27d99cf838c3f4031d42',1,'GlobalItem.ReforgePrice()']]],
+  ['reforgeprice_56',['ReforgePrice',['../class_mod_item.html#a1210a73f18135d114a722c4a0e2f0f63',1,'ModItem.ReforgePrice()'],['../class_global_item.html#ac16308d540ff27d99cf838c3f4031d42',1,'GlobalItem.ReforgePrice()'],['../class_item_loader.html#ac8b18ec09a7dc4cd8d064d0e1641280c',1,'ItemLoader.ReforgePrice()']]],
   ['refreadonlyarray_57',['RefReadOnlyArray',['../struct_ref_read_only_array.html',1,'']]],
   ['refreshinfoaccessoriesfromteamplayers_58',['RefreshInfoAccessoriesFromTeamPlayers',['../class_mod_player.html#a07262283140e5f0b7977051b678b26b1',1,'ModPlayer']]],
   ['regexes_59',['Regexes',['../class_chat_manager_1_1_regexes.html',1,'ChatManager']]],
@@ -126,9 +126,10 @@ var searchData=
   ['roomneeds_123',['RoomNeeds',['../class_tile_i_d_1_1_sets_1_1_room_needs.html',1,'TileID::Sets']]],
   ['ropeandropecoils_124',['RopeAndRopeCoils',['../class_game_tip_i_d.html#afe382fb98e83c14d647d00a7497698e0',1,'GameTipID']]],
   ['ropecoil_125',['RopeCoil',['../class_proj_a_i_style_i_d.html#ab57e6475f3ad4c4b0bad4cfbd063a0cd',1,'ProjAIStyleID']]],
-  ['rotation_126',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
-  ['rotation_127',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
-  ['runacceleration_128',['runAcceleration',['../class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3',1,'Player']]],
-  ['runonmainthread_129',['RunOnMainThread',['../class_main.html#a4523d4baa024b72951881722004207b2',1,'Main']]],
-  ['runonmainthread_3c_20t_20_3e_130',['RunOnMainThread&lt; T &gt;',['../class_main.html#a9b43ba6a62eef2a91a16433fca565626',1,'Main']]]
+  ['rotatedrelativepoint_126',['RotatedRelativePoint',['../class_player.html#a4d51c1bc55b3d00e19042581d56e2dab',1,'Player']]],
+  ['rotation_127',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
+  ['rotation_128',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
+  ['runacceleration_129',['runAcceleration',['../class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3',1,'Player']]],
+  ['runonmainthread_130',['RunOnMainThread',['../class_main.html#a4523d4baa024b72951881722004207b2',1,'Main']]],
+  ['runonmainthread_3c_20t_20_3e_131',['RunOnMainThread&lt; T &gt;',['../class_main.html#a9b43ba6a62eef2a91a16433fca565626',1,'Main']]]
 ];

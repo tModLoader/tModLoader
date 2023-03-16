@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_unloaded_accessory_slot.html#ac75289d3883f4ff618e28aa699243544":[3,0,1329,1],
+"class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[3,0,1329,0],
 "class_unloaded_chest.html":[3,0,1330],
 "class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51":[3,0,1330,0],
 "class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[3,0,1330,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "functions_vars_z.html":[3,3,2,25],
 "functions_w.html":[3,3,0,22],
 "functions_x.html":[3,3,0,23],
-"functions_y.html":[3,3,0,24],
-"functions_z.html":[3,3,0,25],
-"hierarchy.html":[3,2]
+"functions_y.html":[3,3,0,24]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"class_texture_pack_workshop_entry.html":[3,0,1157],
+"class_thin_ice_biome.html":[3,0,1158],
 "class_throwing_damage_class.html":[3,0,1159],
 "class_tile_batch.html":[3,0,1161],
 "class_tile_data_packing.html":[3,0,1163],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "class_unified_random.html":[3,0,1328],
 "class_unified_random.html#a4040681602b93f1eed92662395230f13":[3,0,1328,0],
 "class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[3,0,1328,1],
-"class_unloaded_accessory_slot.html":[3,0,1329],
-"class_unloaded_accessory_slot.html#ac75289d3883f4ff618e28aa699243544":[3,0,1329,1],
-"class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[3,0,1329,0]
+"class_unloaded_accessory_slot.html":[3,0,1329]
 };

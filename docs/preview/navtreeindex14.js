@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"class_player.html#affe1d691bd3a8fbeb795d6d8aa204b7c":[3,0,912,103],
+"class_player_1_1_builder_acc_toggle_i_ds.html":[3,0,912,0],
 "class_player_1_1_hooks.html":[3,0,912,4],
 "class_player_1_1_random_teleportation_attempt_settings.html":[3,0,912,11],
 "class_player_1_1_saved_player_data_with_annoying_rules.html":[3,0,912,12],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "class_proj_a_i_style_i_d.html#a56f3b0e441ef10a9989d5b5630c0da53":[3,0,965,109],
 "class_proj_a_i_style_i_d.html#a5768b12b922f6b0dfb0da8cf7d2b5b31":[3,0,965,89],
 "class_proj_a_i_style_i_d.html#a5ac1cc25e3d4b591ca0424d6f58bbd6d":[3,0,965,46],
-"class_proj_a_i_style_i_d.html#a5bce806d6d86f1cbbca94bc9831b6e35":[3,0,965,100],
-"class_proj_a_i_style_i_d.html#a5fad6c0143970cc3b392b8d9033e27fc":[3,0,965,24],
-"class_proj_a_i_style_i_d.html#a61dcbe99c1ddaef1d18a7a3baaf78f28":[3,0,965,82]
+"class_proj_a_i_style_i_d.html#a5bce806d6d86f1cbbca94bc9831b6e35":[3,0,965,100]
 };
