@@ -69,13 +69,17 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(Color.White, pylonName);
 		}
 
-		public override NPCShop.Entry GetNPCShopEntry(NPCShop.Condition happinessCondition, NPCShop.Condition anotherNpcNearby, NPCShop.Condition nonEvilBiome) {
+		public override NPCShop.Entry GetNPCShopEntry() {
 			// return a new NPCShop.Entry with the desired conditions for sale.
 
 			// As an example, if we want to sell the pylon if we're in the example surface, or example underground, when there is another NPC nearby.
 			// Lets assume we don't care about happiness or crimson or corruption, so we won't include those conditions
 			// This does not affect the teleport conditions, only the sale conditions
-			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItem>(), anotherNpcNearby, ExampleConditions.InExampleBiome);
+			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItem>(), NPCShop.Condition.AnotherTownNPCNearby, ExampleConditions.InExampleBiome);
+
+			// Other standard pylon conditions are:
+			// NPCShop.Condition.HappyEnoughToSellPylons
+			// NPCShop.Condition.NotInEvilBiome
 		}
 
 		public override void MouseOver(int i, int j) {

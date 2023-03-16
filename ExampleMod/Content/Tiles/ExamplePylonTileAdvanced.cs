@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(Color.Black, pylonName);
 		}
 
-		public override NPCShop.Entry GetNPCShopEntry(NPCShop.Condition happinessCondition, NPCShop.Condition anotherNpcNearby, NPCShop.Condition nonEvilBiome) {
+		public override NPCShop.Entry GetNPCShopEntry() {
 			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
 			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}

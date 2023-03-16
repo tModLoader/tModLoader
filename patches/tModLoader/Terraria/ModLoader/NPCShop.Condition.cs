@@ -121,7 +121,7 @@ public sealed partial class NPCShop {
 		public static readonly Condition InMasterMode = new(NetworkText.FromKey("ShopConditions.InMasterMode"), () => Main.masterMode);
 
 		public static readonly Condition HappyEnough = new(NetworkText.FromKey("ShopConditions.HappyEnough"), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.9);
-		public static readonly Condition HappyEnoughForPylons = new(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () => Main.remixWorld || HappyEnough.IsAvailable());
+		public static readonly Condition HappyEnoughToSellPylons = new(NetworkText.FromKey("ShopConditions.HappyEnoughForPylons"), () => Main.remixWorld || HappyEnough.IsAvailable());
 		public static readonly Condition AnotherTownNPCNearby = new(NetworkText.FromKey("ShopConditions.AnotherTownNPCNearby"), () => TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()));
 		public static readonly Condition IsNpcShimmered = new Condition(NetworkText.FromKey("ShopConditions.IsNpcShimmered"), () => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 

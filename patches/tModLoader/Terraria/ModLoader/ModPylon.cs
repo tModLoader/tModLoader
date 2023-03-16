@@ -82,17 +82,16 @@ public abstract class ModPylon : ModTile
 	/// Creates the npc shop entry which will be registered to the shops of all NPCs which can sell pylons. <br/>
 	/// Override this to change the sold item type, or alter the conditions of sale. <br/>
 	/// Return null to prevent automatically registering this pylon in shops. <br/>
-	/// By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero <see cref="ItemDrop"/>
+	/// By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero <see cref="ModBlockType.ItemDrop"/> <br/>
+	/// <br/>
+	/// The standard pylon conditions are <see cref="NPCShop.Condition.HappyEnoughToSellPylons"/>, <see cref="NPCShop.Condition.AnotherTownNPCNearby"/>, <see cref="NPCShop.Condition.NotInEvilBiome"/>
 	/// </summary>
-	/// <param name="happinessCondition">Typical pylon condition, NPC is happy enough to sell pylons (10% discount or more in shops)</param>
-	/// <param name="anotherNpcNearby">Typical pylon condition, at least one other NPC nearby</param>
-	/// <param name="nonEvilBiome">Typical pylon condition, not in a crismon or corruption biome</param>
-	public virtual NPCShop.Entry GetNPCShopEntry(NPCShop.Condition happinessCondition, NPCShop.Condition anotherNpcNearby, NPCShop.Condition nonEvilBiome)
+	public virtual NPCShop.Entry GetNPCShopEntry()
 	{
 		if (ItemDrop == 0)
 			return null;
 
-		return new NPCShop.Entry(ItemDrop, happinessCondition, anotherNpcNearby, nonEvilBiome);
+		return new NPCShop.Entry(ItemDrop, NPCShop.Condition.HappyEnoughToSellPylons, NPCShop.Condition.AnotherTownNPCNearby, NPCShop.Condition.NotInEvilBiome);
 	}
 
 	/// <summary>

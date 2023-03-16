@@ -192,19 +192,18 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition(NetworkText.FromKey("RecipeConditions.InGlowshroom"), () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 			
-		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnowBiome).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesertBiome).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungleBiome).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallowBiome).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnowBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesertBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungleBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallowBiome).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
 
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
-			var entry = pylon.GetNPCShopEntry(Condition.HappyEnoughForPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome);
-			if (entry != null)
+			if (pylon.GetNPCShopEntry() is { } entry)
 				yield return entry.OrderLast();
 		}
 	}
