@@ -157,7 +157,7 @@
  		public static bool?[] ForcePlateDetection = Factory.CreateCustomSet<bool?>(null, new object[70] {
  			(short)397,
  			true,
-@@ -241,17 +_,83 @@
+@@ -241,17 +_,84 @@
  			(short)1014,
  			false
  		});
@@ -182,7 +182,8 @@
  		public static bool[] LightPet = Factory.CreateBoolSet(18, 500, 72, 87, 86, 211, 492, 650, 702, 891, 896, 895);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will not be visually offset by <see cref="Player.gfxOffY"/>.l
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will not be visually offset by <see cref="Player.gfxOffY"/>.
++		/// <br/> Set to true for held projectiles that are already accounting for <see cref="Player.gfxOffY"/> in their position. If the held projectile doesn't follow the players position, then set to true.
 +		/// <br/> Used in vanilla for flails.
 +		/// <br/> Defaults to <see langword="false"/>,
 +		/// </summary>

@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			return (ushort)(Main.tile[i, j].TileFrameX / 36);
 		}
 
-		public override LocalizedText ContainerName(int frameX, int frameY) {
+		public override LocalizedText DefaultContainerName(int frameX, int frameY) {
 			int option = frameX / 36;
 			return this.GetLocalization("MapEntry" + option);
 		}
@@ -235,7 +235,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Language.GetTextValue("LegacyChestType.0");
 			}
 			else {
-				string defaultName = TileLoader.ContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName) {
 					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();

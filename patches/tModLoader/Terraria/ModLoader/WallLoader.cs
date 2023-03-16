@@ -203,7 +203,7 @@ public static class WallLoader
 			dropType = value;
 		}
 		ModWall modWall = GetWall(type);
-		if (modWall?.ItemDrop != 0) {
+		if (modWall != null && modWall.ItemDrop != 0) {
 			dropType = modWall.ItemDrop;
 		}
 		return modWall?.Drop(i, j, ref dropType) ?? true;

@@ -43,6 +43,8 @@ namespace ExampleMod.Content.Projectiles
 			// These lines facilitate the trail drawing
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -128,7 +130,7 @@ namespace ExampleMod.Content.Projectiles
 						if (offsetFromPlayer.Y * player.gravDir > 0f) {
 							offsetFromPlayer.Y *= 0.5f;
 						}
-						Projectile.Center = mountedCenter + offsetFromPlayer * 30f;
+						Projectile.Center = mountedCenter + offsetFromPlayer * 30f + new Vector2(0, player.gfxOffY);
 						Projectile.velocity = Vector2.Zero;
 						Projectile.localNPCHitCooldown = spinHitCooldown; // set the hit speed to the spinning hit speed
 						break;
