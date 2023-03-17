@@ -8,4 +8,6 @@ public class ModBuffTest : ModBuff
 
 		bool a = BuffLoader.CanBeCleared(0);
 	}
+
+	public override void ModifyBuffTip(ref string tip, ref int rare) { }
 }

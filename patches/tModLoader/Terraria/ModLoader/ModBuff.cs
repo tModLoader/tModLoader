@@ -85,9 +85,9 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
+	/// Allows you to modify the name and tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
 	/// </summary>
-	public virtual void ModifyBuffTip(ref string tip, ref int rare)
+	public virtual void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 	{
 	}
 

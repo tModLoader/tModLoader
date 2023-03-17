@@ -3955,7 +3955,7 @@
 +					if (meleeBuff[num34])
 +						rare = -10;
 +
-+					BuffLoader.ModifyBuffTip(num34, ref buffTooltip, ref rare);
++					BuffLoader.ModifyBuffText(num34, ref buffName, ref buffTooltip, ref rare);
 +					MouseTextHackZoom(buffName, rare, diff: 0, buffTooltip);
  				}
  			}
@@ -4300,7 +4300,7 @@
 +			if (meleeBuff[num5])
 +				rare = -10;
 +
-+			BuffLoader.ModifyBuffTip(num5, ref buffTooltip, ref rare);
++			BuffLoader.ModifyBuffText(num5, ref buffName, ref buffTooltip, ref rare);
 +			MouseTextHackZoom(buffName, rare, 0, buffTooltip);
  		}
  	}
