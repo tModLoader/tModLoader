@@ -11,6 +11,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	internal class xAqult_Head : PatreonItem
     {
 		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
 
@@ -26,6 +27,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	internal class xAqult_Body : PatreonItem
 	{
 		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
 
@@ -79,6 +81,7 @@ namespace Terraria.ModLoader.Default.Patreon
 		}
 
 		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
 			ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[Item.faceSlot] = true;
 			ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face)] = true;
 		}
