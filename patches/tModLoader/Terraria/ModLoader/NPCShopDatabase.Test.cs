@@ -8,7 +8,7 @@ namespace Terraria.ModLoader;
 
 public static partial class NPCShopDatabase
 {
-	internal const bool TestingEnabled = true;
+	internal const bool TestingEnabled = false;
 
 	private class ConditionTest
 	{
@@ -84,7 +84,7 @@ public static partial class NPCShopDatabase
 				var header = $"Shop mismatch! {_vanillaShopNames[i]}";
 				var msg = $"{header}\nVanilla: {vanillaString}\nTML:     {tMLString}";
 				if (mismatches.Add(msg)) {
-					Main.NewText(header, Microsoft.Xna.Framework.Color.Orange);
+					Main.NewText(header, Color.Orange);
 					Logging.tML.Warn(msg);
 				}
 				allPass = false;
