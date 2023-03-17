@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalBuffs
@@ -11,6 +12,12 @@ namespace ExampleMod.Common.GlobalBuffs
 	// Showcases how to work with all buffs
 	public class ExampleGlobalBuff : GlobalBuff
 	{
+		public static LocalizedText RemainingTimeText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			RemainingTimeText = Language.GetOrRegister(Mod.GetLocalizationKey($"{nameof(ExampleGlobalBuff)}.RemainingTime"));
+		}
+
 		public override void Update(int type, Player player, ref int buffIndex) {
 			// If the player gets the Chilled debuff while he already has more than 5 other buffs/debuffs, limit the max duration to 3 seconds
 			if (type == BuffID.Chilled && buffIndex >= 5) {
@@ -62,7 +69,7 @@ namespace ExampleMod.Common.GlobalBuffs
 
 			if (Main.TryGetBuffTime(buffIndex, out int buffTimeValue) && buffTimeValue > 2) {
 				string text = Lang.LocalizedDuration(new System.TimeSpan(0, 0, buffTimeValue / 60), abbreviated: false, showAllAvailableUnits: true);
-				tip += $"\n[{nameof(ExampleGlobalBuff)}] Remaining time: " + text;
+				tip += "\n" + RemainingTimeText.Format(text);
 			}
 
 			// This code showcases adjusting buffName. Try it out by activating a Slice of Cake block
