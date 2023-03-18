@@ -188,15 +188,19 @@ namespace Terraria.ModLoader
 			if (modded) {
 				ModAccessorySlot mAccSlot = Get(slot);
 				customLoc = mAccSlot.CustomLocation.HasValue;
-				if (!customLoc && Main.EquipPage != 0)
+				if (!customLoc && Main.EquipPage != 0) {
+					Main.inventoryBack = color;
 					return false;
+				}
 
 				if (customLoc) {
 					xLoc = (int)mAccSlot.CustomLocation?.X;
 					yLoc = (int)mAccSlot.CustomLocation?.Y;
 				}
-				else if (!SetDrawLocation(slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc))
+				else if (!SetDrawLocation(slot + Player.dye.Length - 3, skip, ref xLoc, ref yLoc)) {
+					Main.inventoryBack = color;
 					return true;
+				}
 
 				var thisSlot = Get(slot);
 
@@ -211,10 +215,15 @@ namespace Terraria.ModLoader
 					DrawSlot(ModSlotPlayer(Player).exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 			}
 			else {
-				if (!customLoc && Main.EquipPage != 0)
+				if (!customLoc && Main.EquipPage != 0) {
+					Main.inventoryBack = color;
 					return false;
-				if (!SetDrawLocation(slot - 3, skip, ref xLoc, ref yLoc))
+				}
+
+				if (!SetDrawLocation(slot - 3, skip, ref xLoc, ref yLoc)) {
+					Main.inventoryBack = color;
 					return true;
+				}
 
 				bool skipMouse = DrawVisibility(ref Player.hideVisibleAccessory[slot], 10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
 				DrawSlot(Player.armor, 10, slot, flag3, xLoc, yLoc, skipMouse);
