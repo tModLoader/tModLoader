@@ -14,6 +14,7 @@ namespace Terraria.Audio
 	{
 		IgnoreNew,
 		ReplaceOldest,
+		Unlimited,
 	}
 
 	// Completely reimplemented by TML.
