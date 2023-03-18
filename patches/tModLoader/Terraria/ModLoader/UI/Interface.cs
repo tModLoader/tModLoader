@@ -416,19 +416,19 @@ internal static class Interface
 						}
 						else {
 							Console.ForegroundColor = ConsoleColor.Yellow;
-							Console.WriteLine("This mod does not have any config");
+							Console.WriteLine(Language.GetTextValue("tModLoader.DedErrorNoConfig"));
 							Console.ResetColor();
 						}
 					}
 					else {
 						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.WriteLine("Mod not enabled, please enable it and reload");
+						Console.WriteLine(Language.GetTextValue("tModLoader.DedErrorNotEnabled"));
 						Console.ResetColor();
 					}
 				}
 				else {
 					Console.ForegroundColor = ConsoleColor.Yellow;
-					Console.WriteLine("Mod index out of bounds");
+					Console.WriteLine(Language.GetTextValue("tModLoader.DedErrorModOOB"));
 					Console.ResetColor();
 				}
 			}
@@ -449,7 +449,7 @@ internal static class Interface
 					if (variable.IsProperty && variable.Name == "Mode")
 						continue;
 
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute))) // TODO, appropriately named attribute
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
 						continue;
 
 					if (variable.Type.IsAssignableTo(typeof(IConvertible)))
@@ -475,7 +475,7 @@ internal static class Interface
 				else {
 					Console.Write(text);
 					Console.ForegroundColor = ConsoleColor.Yellow;
-					Console.WriteLine("<not supported>");
+					Console.WriteLine(Language.GetTextValue("tModLoader.DedConfigNotSupported"));
 					Console.ResetColor();
 				}
 				TooltipAttribute tooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(variable, null, null);
@@ -485,9 +485,10 @@ internal static class Interface
 					Console.ResetColor();
 				}
 			}
-			Console.WriteLine("m <number> <new config> :\t\t\t\tModify configuration");
-			Console.WriteLine("d :\t\t\t\t\t\t\tRestore configuration to default");
-			Console.WriteLine("e :\t\t\t\t\t\t\tExit");
+
+			Console.WriteLine("m <number> <new config> :\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigEditConfig"));
+			Console.WriteLine("d :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigRestoreConfig"));
+			Console.WriteLine("e :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigExit"));
 
 			Console.WriteLine();
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
@@ -508,7 +509,7 @@ internal static class Interface
 						RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(value.Item1, null, null);
 						if (optionStringsAttribute != null &&
 						    !optionStringsAttribute.OptionLabels.Any(s => s.Equals(parsedValue))) {
-							string text = "The only possible values are : ";
+							string text = Language.GetTextValue("tModLoader.DedConfigErrorOutOfOptionStrings");
 							//I'll assume the list isn't empty since it would be dumb otherwise
 							text += optionStringsAttribute.OptionLabels[0];
 							for (int i = 1; i < optionStringsAttribute.OptionLabels.Length; i++) {
@@ -522,7 +523,7 @@ internal static class Interface
 						         (comparable.CompareTo(rangeAttribute.Min) < 0 ||
 						          comparable.CompareTo(rangeAttribute.Max) > 0)) {
 							Console.ForegroundColor = ConsoleColor.Yellow;
-							Console.WriteLine($"The value must be between {rangeAttribute.Min} and {rangeAttribute.Max}");
+							Console.WriteLine(Language.GetTextValue("tModLoader.DedConfigErrorOutOfRange", rangeAttribute.Min, rangeAttribute.Max));
 							Console.ResetColor();
 						}
 						else {
@@ -532,7 +533,7 @@ internal static class Interface
 					}
 					catch {
 						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.WriteLine("Invalid value");
+						Console.WriteLine(Language.GetTextValue("tModLoader.DedConfigErrorNotParsable"));
 						Console.ResetColor();
 					}
 				}
