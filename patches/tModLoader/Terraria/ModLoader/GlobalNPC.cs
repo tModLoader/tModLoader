@@ -759,7 +759,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="itemSize"></param>
 	/// <param name="scale"></param>
 	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	public virtual void DrawTownAttackSwing(NPC npc, ref int item, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 

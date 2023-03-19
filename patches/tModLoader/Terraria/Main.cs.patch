@@ -3181,6 +3181,15 @@
  			Vector2 vector4 = DrawPlayerItemPos(1f, itemtype);
  			GetItemDrawFrame(itemtype, out var itemTexture, out var value2);
  			int num12 = (int)vector4.X - num11;
+@@ -22027,7 +_,7 @@
+ 			int num13 = 32;
+ 			float num14 = 0f;
+ 			Vector2 zero = Vector2.Zero;
+-			short num15 = 4;
++			int num15 = 4; // TML: Changed short to int.
+ 			if (n.type == 207) {
+ 				num15 = 3349;
+ 				num14 = 0.15f;
 @@ -22048,6 +_,7 @@
  			}
  			else if (n.type == 441) {
@@ -3192,9 +3201,9 @@
 @@ -22058,6 +_,9 @@
  			}
  
- 			GetItemDrawFrame(num15, out var itemTexture2, out var rectangle3);
++			NPCLoader.DrawTownAttackSwing(n, ref num15, ref num13, ref num14, ref zero);
 +
-+			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref num13, ref num14, ref zero);
+ 			GetItemDrawFrame(num15, out var itemTexture2, out var rectangle3);
 +
  			Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num13, num13);
  			Vector2 vector6 = swingStats.Item1 + (swingStats.Item1 - n.Center) * num14 + zero;
