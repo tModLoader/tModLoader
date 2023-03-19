@@ -794,7 +794,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="itemSize"></param>
 	/// <param name="scale"></param>
 	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	public virtual void DrawTownAttackSwing(ref int item, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 
