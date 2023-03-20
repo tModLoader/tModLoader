@@ -85,10 +85,6 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			if (Main.netMode == NetmodeID.Server) {
-				return;
-			}
-
 			ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[Item.faceSlot] = true;
 			ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face)] = true;
 		}
