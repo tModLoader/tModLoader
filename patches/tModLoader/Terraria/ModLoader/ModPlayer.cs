@@ -682,6 +682,21 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a player melee attack can collide the given NPC by swinging a melee weapon. <br/>
+	/// Use <see cref="CanHitNPCWithItem(Item, NPC)"/> instead for Guide Voodoo Doll-type effects.
+	/// </summary>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>>
+	/// <param name="target">The target npc.</param>
+	/// <returns>
+	/// Return true to allow colliding the target, return false to block the player weapon from colliding the target, and return null to use the vanilla code for whether the target can be colliding by melee weapon. Returns null by default.
+	/// </returns>
+	public virtual bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc that this player does to an NPC. <br/>
 	/// This method is only called on the on the local client. <br/>
 	/// </summary>

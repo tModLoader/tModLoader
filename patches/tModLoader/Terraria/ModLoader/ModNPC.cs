@@ -440,6 +440,21 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung. <br/>
+	/// Use <see cref="CanBeHitByItem(Player, Item)"/> instead for Guide Voodoo Doll-type effects.
+	/// </summary>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <returns>
+	/// Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the NPC, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanBeCollidedWithPlayerMeleeAttack(Player player, Item item, Rectangle meleeAttackHitbox)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>

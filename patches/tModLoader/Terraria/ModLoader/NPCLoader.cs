@@ -702,6 +702,36 @@ public static class NPCLoader
 		return flag;
 	}
 
+	private static HookList HookCanBeCollidedWithPlayerMeleeAttack = AddHook<Func<NPC, Player, Item, Rectangle, bool?>>(g => g.CanBeCollidedWithPlayerMeleeAttack);
+	public static bool? CanBeCollidedWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+	{
+		bool? flag = null;
+		foreach (GlobalNPC g in HookCanBeCollidedWithPlayerMeleeAttack.Enumerate(npc.globalNPCs)) {
+			bool? canCollide = g.CanBeCollidedWithPlayerMeleeAttack(npc, player, item, meleeAttackHitbox);
+			if (canCollide.HasValue) {
+				if (!canCollide.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		if (npc.ModNPC != null) {
+			bool? canHit = npc.ModNPC.CanBeCollidedWithPlayerMeleeAttack(player, item, meleeAttackHitbox);
+
+			if (canHit.HasValue) {
+				if (!canHit.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		return flag;
+	}
+
 	private delegate void DelegateModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitByItem = AddHook<DelegateModifyHitByItem>(g => g.ModifyHitByItem);
 

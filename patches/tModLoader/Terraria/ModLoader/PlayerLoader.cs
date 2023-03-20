@@ -821,6 +821,27 @@ public static class PlayerLoader
 		return true;
 	}
 
+	private static HookList HookCanCollideNPCWithItem = AddHook<Func<Item, Rectangle, NPC, bool?>>(p => p.CanMeleeAttackCollideWithNPC);
+
+	public static bool? CanMeleeAttackCollideWithNPC(Player player, Item item, Rectangle meleeAttackHitbox, NPC target)
+	{
+		bool? flag = null;
+
+		foreach (var modPlayer in HookCanCollideNPCWithItem.Enumerate(player.modPlayers)) {
+			bool? canHit = modPlayer.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, target);
+
+			if (canHit.HasValue) {
+				if (!canHit.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		return flag;
+	}
+
 	private delegate void DelegateModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(p => p.ModifyHitNPC);
 
