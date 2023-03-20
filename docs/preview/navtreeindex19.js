@@ -1,5 +1,10 @@
 var NAVTREEINDEX19 =
 {
+"functions_vars_y.html":[3,3,2,24],
+"functions_vars_z.html":[3,3,2,25],
+"functions_w.html":[3,3,0,22],
+"functions_x.html":[3,3,0,23],
+"functions_y.html":[3,3,0,24],
 "functions_z.html":[3,3,0,25],
 "hierarchy.html":[3,2],
 "index.html":[],
@@ -244,10 +249,5 @@ var NAVTREEINDEX19 =
 "struct_map_overlay_draw_context_1_1_draw_result.html":[3,0,696,0],
 "struct_map_tile.html":[3,0,697],
 "struct_multipliable_float.html":[3,0,798],
-"struct_n_p_c_1_1_hit_info.html":[3,0,840,0],
-"struct_n_p_c_1_1_hit_info.html#a16c23b1dcd8362b8dbbb9fc9ea6b4658":[3,0,840,0,2],
-"struct_n_p_c_1_1_hit_info.html#a50b2b8b4f089677bd4af9b36adb7cc25":[3,0,840,0,1],
-"struct_n_p_c_1_1_hit_info.html#a64a141aaff6e37f74cfd7fc42ce8537b":[3,0,840,0,7],
-"struct_n_p_c_1_1_hit_info.html#a71c50577f292eee3ca2ff89df2af5f3d":[3,0,840,0,3],
-"struct_n_p_c_1_1_hit_info.html#aa17b4ebc2f49a721af3c5db1a155c675":[3,0,840,0,5]
+"struct_n_p_c_1_1_hit_info.html":[3,0,840,0]
 };

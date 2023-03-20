@@ -17,6 +17,7 @@ var class_global_item =
     [ "CanEquipAccessory", "class_global_item.html#a4a35d433d04dc625d40bdbf0ff9bc5ff", null ],
     [ "CanHitNPC", "class_global_item.html#acb88ba12f8befe863f93bc2e15324b8e", null ],
     [ "CanHitPvp", "class_global_item.html#a58d25e1a950abbe3671f1a1e6b59bdd1", null ],
+    [ "CanMeleeAttackCollideWithNPC", "class_global_item.html#a154b871aa480a8550ac81df75df73b9c", null ],
     [ "CanPickup", "class_global_item.html#aa4eb37d1ca50c0f798470faf344806d8", null ],
     [ "CanResearch", "class_global_item.html#a85aa9a75402379f875fd343f99558929", null ],
     [ "CanRightClick", "class_global_item.html#ac36b6279fdb6326fc6e4109fddf2f88d", null ],

@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"class_terrain_pass.html":[3,0,1150],
+"class_test_high_f_p_s_issues.html":[3,0,1151],
+"class_text_snippet.html":[3,0,1155],
+"class_texture_assets.html":[3,0,1156],
+"class_texture_assets_1_1_render_targets.html":[3,0,1156,0],
 "class_texture_pack_workshop_entry.html":[3,0,1157],
 "class_thin_ice_biome.html":[3,0,1158],
 "class_throwing_damage_class.html":[3,0,1159],
@@ -244,10 +249,5 @@ var NAVTREEINDEX17 =
 "class_underground_biome.html":[3,0,1323],
 "class_underground_corruption_shader.html":[3,0,1324],
 "class_underground_hallow_shader.html":[3,0,1325],
-"class_underground_mushroom_shader.html":[3,0,1326],
-"class_underworld_shader.html":[3,0,1327],
-"class_unified_random.html":[3,0,1328],
-"class_unified_random.html#a4040681602b93f1eed92662395230f13":[3,0,1328,0],
-"class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[3,0,1328,1],
-"class_unloaded_accessory_slot.html":[3,0,1329]
+"class_underground_mushroom_shader.html":[3,0,1326]
 };

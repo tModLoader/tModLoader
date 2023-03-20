@@ -15,6 +15,7 @@ var class_mod_player =
     [ "CanHitNPCWithProj", "class_mod_player.html#aec757640731bed87dd2dfdfd3e4782ff", null ],
     [ "CanHitPvp", "class_mod_player.html#a4224153f1acaee9df4196565e2710feb", null ],
     [ "CanHitPvpWithProj", "class_mod_player.html#aa54bae011b5b6e7b662d01435ae29c2e", null ],
+    [ "CanMeleeAttackCollideWithNPC", "class_mod_player.html#abd37fd16b8d1c336ad14c91af10c848d", null ],
     [ "CanSellItem", "class_mod_player.html#a4af73652b2691c5b47a94d7ec0a362ab", null ],
     [ "CanShoot", "class_mod_player.html#a4fea8cca07ffc958393215da13f5c9ca", null ],
     [ "CanUseItem", "class_mod_player.html#a06d300d3a15d328a3a504e100318efc5", null ],

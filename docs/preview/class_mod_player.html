@@ -157,6 +157,10 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memitem:aa54bae011b5b6e7b662d01435ae29c2e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#aa54bae011b5b6e7b662d01435ae29c2e">CanHitPvpWithProj</a> (<a class="el" href="class_projectile.html">Projectile</a> proj, <a class="el" href="class_player.html">Player</a> target)</td></tr>
 <tr class="memdesc:aa54bae011b5b6e7b662d01435ae29c2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a projectile created by this player can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.  <a href="class_mod_player.html#aa54bae011b5b6e7b662d01435ae29c2e">More...</a><br /></td></tr>
 <tr class="separator:aa54bae011b5b6e7b662d01435ae29c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd37fd16b8d1c336ad14c91af10c848d"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#abd37fd16b8d1c336ad14c91af10c848d">CanMeleeAttackCollideWithNPC</a> (<a class="el" href="class_item.html">Item</a> item, Rectangle meleeAttackHitbox, <a class="el" href="class_n_p_c.html">NPC</a> target)</td></tr>
+<tr class="memdesc:abd37fd16b8d1c336ad14c91af10c848d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a player melee attack can collide the given <a class="el" href="class_n_p_c.html">NPC</a> by swinging a melee weapon. <br  />
+ Use <a class="el" href="class_mod_player.html#a0b4366d1ba7df8a0ead2b44e5baaa8c2" title="Allows you to determine whether a player can hit the given NPC by swinging a melee weapon....">CanHitNPCWithItem(Item, NPC)</a> instead for Guide Voodoo Doll-type effects.  <a href="class_mod_player.html#abd37fd16b8d1c336ad14c91af10c848d">More...</a><br /></td></tr>
+<tr class="separator:abd37fd16b8d1c336ad14c91af10c848d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4af73652b2691c5b47a94d7ec0a362ab"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a4af73652b2691c5b47a94d7ec0a362ab">CanSellItem</a> (<a class="el" href="class_n_p_c.html">NPC</a> vendor, <a class="el" href="class_item.html">Item</a>[] shopInventory, <a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a4af73652b2691c5b47a94d7ec0a362ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return false to prevent a transaction. Called before the transaction.  <a href="class_mod_player.html#a4af73652b2691c5b47a94d7ec0a362ab">More...</a><br /></td></tr>
 <tr class="separator:a4af73652b2691c5b47a94d7ec0a362ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1307,6 +1311,65 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="abd37fd16b8d1c336ad14c91af10c848d" name="abd37fd16b8d1c336ad14c91af10c848d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd37fd16b8d1c336ad14c91af10c848d">&#9670;&nbsp;</a></span>CanMeleeAttackCollideWithNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool ModPlayer.CanMeleeAttackCollideWithNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>meleeAttackHitbox</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether a player melee attack can collide the given <a class="el" href="class_n_p_c.html">NPC</a> by swinging a melee weapon. <br  />
+ Use <a class="el" href="class_mod_player.html#a0b4366d1ba7df8a0ead2b44e5baaa8c2" title="Allows you to determine whether a player can hit the given NPC by swinging a melee weapon....">CanHitNPCWithItem(Item, NPC)</a> instead for Guide Voodoo Doll-type effects. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The weapon item the player is holding.</td></tr>
+    <tr><td class="paramname">meleeAttackHitbox</td><td>Hitbox of melee attack.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>&gt; </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target npc.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return true to allow colliding the target, return false to block the player weapon from colliding the target, and return null to use the vanilla code for whether the target can be colliding by melee weapon. Returns null by default. </dd></dl>
 
 </div>
 </div>

@@ -7,6 +7,7 @@ var class_global_n_p_c =
     [ "BossHeadSpriteEffects", "class_global_n_p_c.html#a01b00fea7c53919930daa172299190d2", null ],
     [ "BuffTownNPC", "class_global_n_p_c.html#a9a2c4748629a5ab96841d881cd59b0af", null ],
     [ "CanBeCaughtBy", "class_global_n_p_c.html#a194e835eb133064af83b2fd0a61feb4c", null ],
+    [ "CanBeCollidedWithPlayerMeleeAttack", "class_global_n_p_c.html#a925bf6a00ea92b4715b4fffdaae49ebf", null ],
     [ "CanBeHitByItem", "class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5", null ],
     [ "CanBeHitByProjectile", "class_global_n_p_c.html#ae895bfd6332e1d2fadeab187867730dc", null ],
     [ "CanChat", "class_global_n_p_c.html#a6a7ca2ff222fff84f88a66d94e6237d1", null ],

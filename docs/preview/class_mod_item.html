@@ -183,6 +183,10 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memitem:a8a49bd88f42ef5c4e8da03f5312a0547"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a8a49bd88f42ef5c4e8da03f5312a0547">CanHitPvp</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_player.html">Player</a> target)</td></tr>
 <tr class="memdesc:a8a49bd88f42ef5c4e8da03f5312a0547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this melee weapon can hit the given opponent player when swung. Return false to block this weapon from hitting the target. Returns true by default.  <a href="class_mod_item.html#a8a49bd88f42ef5c4e8da03f5312a0547">More...</a><br /></td></tr>
 <tr class="separator:a8a49bd88f42ef5c4e8da03f5312a0547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99dda61351d34ac3bbe64273d19a4e46"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a99dda61351d34ac3bbe64273d19a4e46">CanMeleeAttackCollideWithNPC</a> (Rectangle meleeAttackHitbox, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> target)</td></tr>
+<tr class="memdesc:a99dda61351d34ac3bbe64273d19a4e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a melee weapon can collide with the given <a class="el" href="class_n_p_c.html">NPC</a> when swung. <br  />
+ Use <a class="el" href="class_mod_item.html#a3823d2bb5f2e5dd6f747ac26c77c6865" title="Allows you to determine whether this melee weapon can hit the given NPC when swung....">CanHitNPC(Player, NPC)</a> instead for Flymeal-type effects.  <a href="class_mod_item.html#a99dda61351d34ac3bbe64273d19a4e46">More...</a><br /></td></tr>
+<tr class="separator:a99dda61351d34ac3bbe64273d19a4e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50028cc3352564a003aa64f147c33bb3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a50028cc3352564a003aa64f147c33bb3">CanPickup</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a50028cc3352564a003aa64f147c33bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not the item can be picked up  <a href="class_mod_item.html#a50028cc3352564a003aa64f147c33bb3">More...</a><br /></td></tr>
 <tr class="separator:a50028cc3352564a003aa64f147c33bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1392,6 +1396,60 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if this instance [can hit PVP] the specified player; otherwise, <code>false</code>. </dd></dl>
+
+</div>
+</div>
+<a id="a99dda61351d34ac3bbe64273d19a4e46" name="a99dda61351d34ac3bbe64273d19a4e46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99dda61351d34ac3bbe64273d19a4e46">&#9670;&nbsp;</a></span>CanMeleeAttackCollideWithNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool ModItem.CanMeleeAttackCollideWithNPC </td>
+          <td>(</td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>meleeAttackHitbox</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether a melee weapon can collide with the given <a class="el" href="class_n_p_c.html">NPC</a> when swung. <br  />
+ Use <a class="el" href="class_mod_item.html#a3823d2bb5f2e5dd6f747ac26c77c6865" title="Allows you to determine whether this melee weapon can hit the given NPC when swung....">CanHitNPC(Player, NPC)</a> instead for Flymeal-type effects. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">meleeAttackHitbox</td><td>Hitbox of melee attack.</td></tr>
+    <tr><td class="paramname">player</td><td>The player wielding this item.</td></tr>
+    <tr><td class="paramname">target</td><td>The target npc.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default. </dd></dl>
 
 </div>
 </div>

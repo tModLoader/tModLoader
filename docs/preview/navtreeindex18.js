@@ -1,5 +1,10 @@
 var NAVTREEINDEX18 =
 {
+"class_underworld_shader.html":[3,0,1327],
+"class_unified_random.html":[3,0,1328],
+"class_unified_random.html#a4040681602b93f1eed92662395230f13":[3,0,1328,0],
+"class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[3,0,1328,1],
+"class_unloaded_accessory_slot.html":[3,0,1329],
 "class_unloaded_accessory_slot.html#ac75289d3883f4ff618e28aa699243544":[3,0,1329,1],
 "class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[3,0,1329,0],
 "class_unloaded_chest.html":[3,0,1330],
@@ -244,10 +249,5 @@ var NAVTREEINDEX18 =
 "functions_vars_u.html":[3,3,2,20],
 "functions_vars_v.html":[3,3,2,21],
 "functions_vars_w.html":[3,3,2,22],
-"functions_vars_x.html":[3,3,2,23],
-"functions_vars_y.html":[3,3,2,24],
-"functions_vars_z.html":[3,3,2,25],
-"functions_w.html":[3,3,0,22],
-"functions_x.html":[3,3,0,23],
-"functions_y.html":[3,3,0,24]
+"functions_vars_x.html":[3,3,2,23]
 };
