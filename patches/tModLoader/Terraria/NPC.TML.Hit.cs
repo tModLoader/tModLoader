@@ -170,11 +170,11 @@ public partial class NPC
 
 		public delegate void HitInfoModifier(ref HitInfo info);
 		/// <summary>
-		/// Really really not recommended for use!!<br/>
-		/// Can be used to register a callback to freely modify the <see cref="HitInfo"/> produced by <see cref="ToHitInfo(float, bool, float, bool, float)"/> before it is returned<br/>
+		/// Use with caution and consider other alternatives first.<br/>
+		/// Can be used to register a callback to freely modify the <see cref="HitInfo"/> produced by <see cref="ToHitInfo"/> before it is returned<br/>
 		/// If multiple mods register different callbacks which modify the hit info in different ways the results could be a mess!
 		/// </summary>
-		public HitInfoModifier ModifyHitInfo = null;
+		public event HitInfoModifier ModifyHitInfo = null;
 
 		public HitModifiers() { }
 
@@ -224,7 +224,7 @@ public partial class NPC
 				HideCombatText = _combatTextHidden
 			};
 
-			// good for one use only. Structs can be copied so this doesn't prevent misuse, but one can hope.
+			// Good for one use only just to be safe. Structs can be copied so this doesn't prevent misuse, but one can hope.
 			ModifyHitInfo?.Invoke(ref hitInfo);
 			ModifyHitInfo = null;
 			return hitInfo;

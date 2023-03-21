@@ -111,6 +111,14 @@ public partial class Player
 		/// </summary>
 		public void DisableSound() => _soundDisabled = true;
 
+		public delegate void HurtInfoModifier(ref HurtInfo info);
+		/// <summary>
+		/// Use with caution and consider other alternatives first.<br/>
+		/// Can be used to register a callback to freely modify the <see cref="HurtInfo"/> produced by <see cref="ToHurtInfo"/> before it is returned<br/>
+		/// If multiple mods register different callbacks which modify the hurt info in different ways the results could be a mess!
+		/// </summary>
+		public event HurtInfoModifier ModifyHurtInfo = null;
+
 		public HurtModifiers() { }
 
 		public float GetDamage(float baseDamage, float defense, float defenseEffectiveness)
@@ -134,16 +142,25 @@ public partial class Player
 			return knockback;
 		}
 
-		public HurtInfo ToHurtInfo(int damage, int defense, float defenseEffectiveness, float knockback, bool knockbackImmune) => new() {
-			DamageSource = DamageSource,
-			PvP = PvP,
-			CooldownCounter = CooldownCounter,
-			Dodgeable = Dodgeable,
-			HitDirection = HitDirectionOverride ?? HitDirection,
-			SourceDamage = (int)SourceDamage.ApplyTo(damage),
-			Damage = (int)GetDamage(damage, defense, defenseEffectiveness),
-			Knockback = GetKnockback(knockback, knockbackImmune),
-		};
+		public HurtInfo ToHurtInfo(int damage, int defense, float defenseEffectiveness, float knockback, bool knockbackImmune)
+		{
+			var hurtInfo = new HurtInfo() {
+				DamageSource = DamageSource,
+				PvP = PvP,
+				CooldownCounter = CooldownCounter,
+				Dodgeable = Dodgeable,
+				HitDirection = HitDirectionOverride ?? HitDirection,
+				SourceDamage = (int)SourceDamage.ApplyTo(damage),
+				Damage = (int)GetDamage(damage, defense, defenseEffectiveness),
+				Knockback = GetKnockback(knockback, knockbackImmune),
+			};
+
+
+			// Good for one use only just to be safe. Structs can be copied so this doesn't prevent misuse, but one can hope.
+			ModifyHurtInfo?.Invoke(ref hurtInfo);
+			ModifyHurtInfo = null;
+			return hurtInfo;
+		}
 	}
 
 	public struct HurtInfo
@@ -151,56 +168,68 @@ public partial class Player
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.DamageSource"/>
 		/// </summary>
-		public PlayerDeathReason DamageSource;
+		public PlayerDeathReason DamageSource = null;
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.PvP"/>
 		/// </summary>
-		public bool PvP;
+		public bool PvP = false;
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.CooldownCounter"/>
 		/// </summary>
-		public int CooldownCounter;
+		public int CooldownCounter = -1;
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.Dodgeable"/>
 		/// </summary>
-		public bool Dodgeable;
+		public bool Dodgeable = true;
 
+		private int _sourceDamage = 1;
 		/// <summary>
 		/// The amount of damage 'dealt' to the player, before incoming damage multipliers, armor, damage reduction.<br/>
 		/// Use this to trigger effects which scale based on how 'hard' the player was hit rather than how much life was lost.<br/>
+		/// Cannot be set to less than 1.<br/>
 		/// <br/>
 		/// Using this instead of <see cref="Damage"/> can prevent diminishing returns damage mitigation, when adding beneficial effects like retaliatory damage.
 		/// </summary>
-		public int SourceDamage;
+		public int SourceDamage {
+			readonly get => _sourceDamage;
+			set => _sourceDamage = Math.Max(value, 1);
+		}
 
+		private int _damage = 1;
 		/// <summary>
 		/// The amount of damage received by the player. How much life the player will lose. <br/>
-		/// Is NOT capped at the player's current life.
+		/// Is NOT capped at the player's current life.<br/>
+		/// Cannot be set to less than 1.
 		/// </summary>
-		public int Damage;
+		public int Damage {
+			readonly get => _damage;
+			set => _damage = Math.Max(value, 1);
+		}
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.HitDirection"/>
 		/// </summary>
-		public int HitDirection;
+		public int HitDirection = 0;
 
 		/// <summary>
 		/// The amount of knockback to apply. Should always be >= 0.
 		/// </summary>
-		public float Knockback;
+		public float Knockback = 0;
 
 		/// <summary>
 		/// If true, dust will not spawn
 		/// </summary>
-		public bool DustDisabled;
+		public bool DustDisabled = false;
 
 		/// <summary>
 		/// If true, sound will not play
 		/// </summary>
-		public bool SoundDisabled;
+		public bool SoundDisabled = false;
+
+		public HurtInfo() { }
 	}
 
 	public struct DefenseStat
