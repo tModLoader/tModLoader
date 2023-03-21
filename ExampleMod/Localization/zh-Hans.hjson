@@ -778,6 +778,11 @@ Mods: {
 				// DisplayName: Example Drill
 				// Tooltip: ""
 			}
+
+			ExampleExplosive: {
+				// DisplayName: Example Explosive
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -809,6 +814,7 @@ Mods: {
 			// ExampleSimpleMinion.DisplayName: Example Minion
 			// SparklingBall.DisplayName: Sparkling Ball
 			// ExampleDrillProjectile.DisplayName: Example Drill Projectile
+			// ExampleExplosive.DisplayName: Example Explosive
 		}
 
 		Buffs: {
