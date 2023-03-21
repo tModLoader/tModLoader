@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 
@@ -149,7 +148,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			foreach (string modRef in buildData["modreferences"].Split(",")) {
-				var temp = WorkshopHelper.QueryHelper.FindModDownloadItem(modRef);
+				var temp = ModLoader.UI.Interface.modBrowser.SocialBackend.FindDownloadItem(modRef);
 
 				if (temp != null)
 					workshopDeps += temp.PublishId + ",";

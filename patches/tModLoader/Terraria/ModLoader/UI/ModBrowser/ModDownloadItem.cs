@@ -38,11 +38,11 @@ public class ModDownloadItem
 	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage)
 	{
 		// Check against installed mods for updates
-		Installed = Interface.modBrowser.currentSocialBackend.IsItemInstalled(name);
-		bool update = Installed != null && Interface.modBrowser.currentSocialBackend.DoesItemNeedUpdate(publishId, Installed, new System.Version(version));
+		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(name);
+		bool update = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(publishId, Installed, new System.Version(version));
 
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
-		bool needsRestart = Installed == null && Interface.modBrowser.currentSocialBackend.DoesAppNeedRestartToReinstallItem(publishId);
+		bool needsRestart = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(publishId);
 
 		ModName = name;
 		DisplayName = displayName;
@@ -77,13 +77,13 @@ public class ModDownloadItem
 		var downloads = new HashSet<ModDownloadItem>() { this };
 		downloads.Add(this);
 		GetDependenciesRecursive(this, ref downloads);
-		return WorkshopHelper.SetupDownload(downloads.ToList(), Interface.modBrowserID);
+		return Interface.modBrowser.SocialBackend.SetupDownload(downloads.ToList(), Interface.modBrowserID);
 	}
 
 	private IEnumerable<ModDownloadItem> GetDependencies()
 	{
 		return ModReferences.Split(',')
-			.Select(WorkshopHelper.QueryHelper.FindModDownloadItem)
+			.Select(Interface.modBrowser.SocialBackend.FindDownloadItem)
 			.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)));
 	}
 

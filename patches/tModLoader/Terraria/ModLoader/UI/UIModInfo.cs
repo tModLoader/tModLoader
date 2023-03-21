@@ -221,7 +221,7 @@ internal class UIModInfo : UIState
 		SoundEngine.PlaySound(SoundID.MenuClose);
 
 		ModOrganizer.DeleteMod(_localMod);
-		ModBrowser.UIModBrowser.CleanupDeletedItem(_modName);
+		Interface.modBrowser.CleanupDeletedItem(_modName);
 
 		Main.menuMode = _gotoMenu;
 	}

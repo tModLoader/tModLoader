@@ -178,7 +178,7 @@ internal static class Interface
                     Action downloadAction = () => {
                     if (promptDepDownloads) {
 						//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
-						WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
+						modBrowser.SocialBackend.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
 					}
                     };
 
