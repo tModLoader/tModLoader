@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ public interface SocialBrowserModule
 	/////// Informed of Local Install ///////////////////////////////////////////
 
 	//TODO: This would need to be public for a mod to add a backend
-	internal List<LocalMod> GetInstalledItems();
+	internal IReadOnlyList<LocalMod> GetInstalledItems();
 
 	internal LocalMod IsItemInstalled(string modSlug)
 	{

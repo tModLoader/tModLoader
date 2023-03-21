@@ -214,10 +214,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		Main.clrInput();
 		if (!Loading && _items.Count <= 0) {
-			if (SocialBackend.Items.Count == 0)
-				PopulateModBrowser(uiOnly: false);
-			else
-				PopulateModBrowser(uiOnly: true);
+			PopulateModBrowser(uiOnly: false);
 		}
 	}
 

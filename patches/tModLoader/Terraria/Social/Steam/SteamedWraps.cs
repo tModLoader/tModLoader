@@ -19,7 +19,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	private PublishedFileId_t GetId(string modId) => new PublishedFileId_t(ulong.Parse(modId));
 
-	public List<ModDownloadItem> Items { get; set; }
+	public List<ModDownloadItem> Items { get; set; } = new List<ModDownloadItem>();
 	public IReadOnlyList<LocalMod> InstalledItems { get; set; }
 
 	public bool GetModIdFromLocalFiles(TmodFile modFile, out string modId) {
@@ -39,7 +39,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
 	}
 
-	public List<LocalMod> GetInstalledItems() => (List<LocalMod>)ModOrganizer.FindWorkshopMods();
+	public IReadOnlyList<LocalMod> GetInstalledItems() => ModOrganizer.FindWorkshopMods();
 
 	public bool DoesItemNeedUpdate(string modId, LocalMod installed, System.Version webVersion)
 	{
