@@ -504,5 +504,6 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalBuff", "ModifyBuffText");
 
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "DrawTownAttackSwing");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "DrawTownAttackSwing");
 	}
 }

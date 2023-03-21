@@ -751,15 +751,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	/// <summary>
-	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is swinging it (the NPC must have an attack type of 3). Item is the Texture2D instance of the item to be drawn (use Main.itemTexture[id of item]), itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="item"></param>
-	/// <param name="itemSize"></param>
-	/// <param name="scale"></param>
-	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(NPC npc, ref int item, ref int itemSize, ref float scale, ref Vector2 offset)
+
+	/// <inheritdoc cref="ModNPC.DrawTownAttackSwing" />
+	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 

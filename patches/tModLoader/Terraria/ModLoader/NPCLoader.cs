@@ -1337,15 +1337,15 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateDrawTownAttackSwing(NPC npc, ref int item, ref int itemSize, ref float scale, ref Vector2 offset);
+	private delegate void DelegateDrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset);
 	private static HookList HookDrawTownAttackSwing = AddHook<DelegateDrawTownAttackSwing>(g => g.DrawTownAttackSwing);
 
-	public static void DrawTownAttackSwing(NPC npc, ref int item, ref int itemSize, ref float scale, ref Vector2 offset)
+	public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
-		npc.ModNPC?.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
+		npc.ModNPC?.DrawTownAttackSwing(ref item, ref itemFrame, ref itemSize, ref scale, ref offset);
 
 		foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
-			g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
+			g.DrawTownAttackSwing(npc, ref item, ref itemFrame, ref itemSize, ref scale, ref offset);
 		}
 	}
 

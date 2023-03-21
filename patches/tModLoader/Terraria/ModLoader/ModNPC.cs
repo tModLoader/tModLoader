@@ -788,13 +788,14 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type of 3). Item is the ID of the item to be drawn, itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position.
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type of 3). <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, <paramref name="itemSize"/> is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), <paramref name="scale"/> is the multiplier for the item's drawing size, and <paramref name="offset"/> is the offset from which to draw the item from its normal position. The item texture can be any texture, but if it is an item texture you can use  <see cref="Main.GetItemDrawFrame(int, out Texture2D, out Rectangle)"/> to set <paramref name="item"/> and <paramref name="itemFrame"/> easily.
 	/// </summary>
 	/// <param name="item"></param>
+	/// <param name="itemFrame"></param>
 	/// <param name="itemSize"></param>
 	/// <param name="scale"></param>
 	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(ref int item, ref int itemSize, ref float scale, ref Vector2 offset)
+	public virtual void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 
