@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -163,7 +164,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		try {
 			Directory.CreateDirectory(ModCompile.ModSourcePath);
 			Utils.OpenFolder(ModCompile.ModSourcePath);
-		} catch(Exception e) {
+		}
+		catch (Exception e) {
 			Logging.tML.Error(e);
 		}
 	}
@@ -199,7 +201,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		Vector2 sizes = font.MeasureString(versionUpgradeMessage);
 		Vector2 origin = sizes;
 		Color color = Color.IndianRed;
-		if(sizes.X > 430) {
+		if (sizes.X > 430) {
 			scale = 430 / sizes.X;
 			sizes.X *= scale;
 		}
@@ -249,7 +251,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return true;
 		}
 
-		if (!CheckDotnet()) {
+		if (!IsCompatibleDotnetSdkAviable()) {
 			ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
 			return true;
 		}
@@ -266,14 +268,56 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	private bool CheckDotnet()
+	string GetCommandToFindPathOfExecutable()
+	{
+		;
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			return "where";
+
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
+		   RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ||
+		   RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+			return "which";
+
+		Logging.tML.Debug("Getting command for finding path of the executable failed due to an unsupported operating system");
+
+		return null;
+	}
+
+	string GetSystemDotnetPath()
+	{
+		string commandToFindPathOfExecutable = GetCommandToFindPathOfExecutable();
+		if (commandToFindPathOfExecutable == null)
+			return null;
+
+		try {
+			return Process.Start(new ProcessStartInfo {
+				FileName = commandToFindPathOfExecutable,
+				Arguments = "dotnet",
+				UseShellExecute = false,
+				RedirectStandardOutput = true
+			}).StandardOutput.ReadToEnd().Trim();
+		}
+		catch (Exception e) {
+			Logging.tML.Debug("Finding SystemDotnetPath failed: ", e);
+		}
+
+		return null;
+	}
+
+	bool IsCompatibleDotnetSdkAviable()
 	{
 		if (dotnetSDKFound)
 			return true;
 
+		string dotnetPath = GetSystemDotnetPath();
+		if (dotnetPath == null)
+			return false;
+
+
 		try {
 			string output = Process.Start(new ProcessStartInfo {
-				FileName = "dotnet",
+				FileName = dotnetPath,
 				Arguments = "--list-sdks",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
@@ -284,7 +328,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				var dotnetVersion = new Version(new Regex("([0-9.]+).*").Match(line).Groups[1].Value);
 				if (dotnetVersion.Major == Environment.Version.Major) {
 					dotnetSDKFound = true;
-					break;
+					return true;
 				}
 			}
 		}
@@ -311,7 +355,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
-		if (!_updateNeeded) return;
+		if (!_updateNeeded)
+			return;
 		_updateNeeded = false;
 		_uIPanel.RemoveChild(_uiLoader);
 		_modList.Clear();
