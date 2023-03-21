@@ -9,7 +9,7 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
-internal class ModDownloadItem
+public class ModDownloadItem
 {
 	public readonly string ModName;
 	public readonly string DisplayName;
@@ -19,7 +19,7 @@ internal class ModDownloadItem
 	public readonly bool UpdateIsDowngrade;
 
 	internal bool NeedsGameRestart;
-	public LocalMod Installed { get; internal set; }
+	internal LocalMod Installed { get; set; }
 	public readonly string Version;
 
 	internal readonly string Author;
@@ -35,8 +35,15 @@ internal class ModDownloadItem
 
 	private bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, bool needsRestart)
+	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage)
 	{
+		// Check against installed mods for updates
+		Installed = Interface.modBrowser.currentSocialBackend.IsItemInstalled(name);
+		bool update = Installed != null && Interface.modBrowser.currentSocialBackend.DoesItemNeedUpdate(publishId, Installed, new System.Version(version));
+
+		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
+		bool needsRestart = Installed == null && Interface.modBrowser.currentSocialBackend.DoesAppNeedRestartToReinstallItem(publishId);
+
 		ModName = name;
 		DisplayName = displayName;
 		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
@@ -50,10 +57,9 @@ internal class ModDownloadItem
 		Hot = hot;
 		Homepage = homepage;
 		TimeStamp = timeStamp;
-		HasUpdate = hasUpdate;
-		UpdateIsDowngrade = updateIsDowngrade;
+		HasUpdate = update;
+		UpdateIsDowngrade = false;
 		NeedsGameRestart = needsRestart;
-		Installed = installed;
 		Version = version;
 		ModloaderVersion = modloaderversion;
 	}

@@ -22,6 +22,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public UIModDownloadItem SelectedItem;
 
+	// Used for swapping backend hosting
+	public SocialBrowserModule currentSocialBackend;
+
 	// TODO maybe we can refactor this as a "BrowserState" enum
 	public bool Loading;
 	public bool anEnabledModUpdated;
@@ -211,7 +214,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		Main.clrInput();
 		if (!Loading && _items.Count <= 0) {
-			if (WorkshopHelper.QueryHelper.Items.Count == 0)
+			if (currentSocialBackend.Items.Count == 0)
 				PopulateModBrowser(uiOnly: false);
 			else
 				PopulateModBrowser(uiOnly: true);
@@ -246,10 +249,12 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (!uiOnly)
 			modBrowserPages.Clear();
 
-		if (!uiOnly && !WorkshopHelper.QueryHelper.QueryWorkshop())
+		var stats = currentSocialBackend.QueryBrowser(new QueryParameters());
+
+		if (!uiOnly && !stats.success)
 			return false;
 
-		foreach (var item in WorkshopHelper.QueryHelper.Items) {
+		foreach (var item in currentSocialBackend.Items) {
 			_items.Add(new UIModDownloadItem(item));
 		}
 
@@ -278,7 +283,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		var downloads = new List<ModDownloadItem>();
 
 		foreach (string desiredMod in modNames) {
-			var mod = WorkshopHelper.QueryHelper.Items.FirstOrDefault(x => x.ModName == desiredMod);
+			var mod = currentSocialBackend.Items.FirstOrDefault(x => x.ModName == desiredMod);
 
 			if (mod == null) { // Not found on the browser
 				_missingMods.Add(desiredMod);
@@ -292,7 +297,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (downloads.Count <= 0)
 			return;
 
-		WorkshopHelper.SetupDownload(downloads, Interface.modBrowserID);
+		currentSocialBackend.SetupDownload(downloads, Interface.modBrowserID);
 
 		if (_missingMods.Count > 0) {
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
@@ -311,11 +316,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
 	}
 
-	internal static void CleanupDeletedItem(string modName)
+	internal void CleanupDeletedItem(string modName)
 	{
-		if (WorkshopHelper.QueryHelper.Items.Count > 0) {
-			WorkshopHelper.QueryHelper.FindModDownloadItem(modName).Installed = null;
-			WorkshopHelper.QueryHelper.FindModDownloadItem(modName).NeedsGameRestart = true;
+		if (currentSocialBackend.Items.Count > 0) {
+			currentSocialBackend.FindDownloadItem(modName).Installed = null;
+			currentSocialBackend.FindDownloadItem(modName).NeedsGameRestart = true;
 			Task.Run(() => { Interface.modBrowser.PopulateModBrowser(uiOnly: true); });
 			Interface.modBrowser.UpdateNeeded = true;
 		}

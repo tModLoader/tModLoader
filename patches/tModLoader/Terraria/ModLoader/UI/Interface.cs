@@ -412,6 +412,8 @@ internal static class Interface
 
 	internal static void ServerModBrowserMenu()
 	{
+		//TODO: Broke this, again. I don't think ever really worked in 1.4
+		/*
 		bool exit = false;
 		Console.Clear();
 		while (!exit) {
@@ -444,5 +446,6 @@ internal static class Interface
 			}
 		}
 		//Console.Clear();
+		*/
 	}
 }

@@ -5,7 +5,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
-internal class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
+public class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 {
 	private static Asset<Texture2D> Texture => UICommon.ModBrowserIconsTexture;
 

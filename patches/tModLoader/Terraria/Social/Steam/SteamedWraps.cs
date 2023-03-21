@@ -7,9 +7,69 @@ using System.IO;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
 
 namespace Terraria.Social.Steam;
+
+internal class WorkshopBrowserModule : SocialBrowserModule
+{
+	public static WorkshopBrowserModule Instance = new WorkshopBrowserModule(); 
+
+	private PublishedFileId_t GetId(string modId) => new PublishedFileId_t(ulong.Parse(modId));
+
+	public List<ModDownloadItem> Items { get; set; }
+	public IReadOnlyList<LocalMod> InstalledItems { get; set; }
+
+	public bool GetModIdFromLocalFiles(TmodFile modFile, out string modId) {
+		bool success = WorkshopHelper.GetPublishIdLocal(modFile, out ulong publishId);
+
+		modId = publishId.ToString();
+		return success;
+	}
+
+	public void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress)
+	{
+		var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
+		bool forceUpdate = item.HasUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
+
+		uiProgress?.PrepUIForDownload(item.DisplayName);
+		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
+		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
+	}
+
+	public List<LocalMod> GetInstalledItems() => (List<LocalMod>)ModOrganizer.FindWorkshopMods();
+
+	public bool DoesItemNeedUpdate(string modId, LocalMod installed, System.Version webVersion)
+	{
+		if (installed.properties.version < webVersion)
+			return true;
+
+		if (SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
+			return true;
+
+		return false;
+	}
+
+	public bool DoesAppNeedRestartToReinstallItem(string modId) => SteamedWraps.IsWorkshopItemInstalled(GetId(modId));
+
+	//TODO: Work In Progress
+	public QueryConfirmation QueryBrowser(QueryParameters queryParams)
+	{
+		InstalledItems = GetInstalledItems();
+
+		QueryConfirmation info = new QueryConfirmation();
+		info.success = WorkshopHelper.QueryHelper.QueryWorkshop();
+		info.totalItems = 0;
+		info.pageSize = 50;
+
+		InstalledItems = null;
+
+		return info;
+	}
+}
+
 
 public static class SteamedWraps
 {

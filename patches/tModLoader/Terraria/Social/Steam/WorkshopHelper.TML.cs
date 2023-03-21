@@ -34,6 +34,7 @@ public partial class WorkshopHelper
 		protected override void PrepareContentForUpdate() { }
 	}
 
+	// Workshop Files Management
 	public static string GetWorkshopFolder(AppId_t app)
 	{
 		if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
@@ -57,6 +58,7 @@ public partial class WorkshopHelper
 		return Path.Combine("steamapps", "workshop");
 	}
 
+	// Should this be in SteamedWraps or here?
 	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId)
 	{
 		publishId = 0;
@@ -67,6 +69,7 @@ public partial class WorkshopHelper
 		return true;
 	}
 
+	// Workshop Publishing Module
 	internal static void PublishMod(LocalMod mod, string iconPath)
 	{
 		var modFile = mod.modFile;
@@ -128,66 +131,6 @@ public partial class WorkshopHelper
 		}
 	}
 
-	/// <summary>
-	/// Downloads all UIModDownloadItems provided.
-	/// </summary>
-	internal static Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
-	{
-		//Set UIWorkshopDownload
-		UIWorkshopDownload uiProgress = null;
-
-		// Can't update enabled items due to in-use file access constraints
-		var needFreeInUseMods = items.Any(item => item.Installed != null && item.Installed.Enabled);
-		if (needFreeInUseMods)
-			ModLoader.ModLoader.Unload();
-
-		if (!Main.dedServ) {
-			uiProgress = new UIWorkshopDownload(previousMenuId);
-			Main.MenuUI.SetState(uiProgress);
-		}
-
-		return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
-	}
-
-	private static void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
-	{
-		foreach (var item in items) {
-			var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
-			bool forceUpdate = item.HasUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
-
-			uiProgress?.PrepUIForDownload(item.DisplayName);
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
-			SteamedWraps.Download(publishId, uiProgress, forceUpdate);
-
-			// Due to issues with Steam moving files from downloading folder to installed folder,
-			// there can be some latency in detecting it's installed. - Solxan
-			Thread.Sleep(1000);
-
-			// Add installed info to the downloaded item
-			var localMod = ModOrganizer.FindWorkshopMods().FirstOrDefault(m => m.Name == item.ModName);
-			QueryHelper.FindModDownloadItem(item.ModName).Installed = localMod;
-		}
-
-		Interface.modBrowser.PopulateModBrowser(uiOnly: true);
-		Interface.modBrowser.UpdateNeeded = true;
-
-		uiProgress?.Leave(refreshBrowser: true);
-
-		if (reloadWhenDone)
-			ModLoader.ModLoader.Reload();
-	}
-
-	internal static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t id, LocalMod installed, System.Version mbVersion)
-	{
-		if (installed.properties.version < mbVersion)
-			return true;
-
-		if (SteamedWraps.DoesWorkshopItemNeedUpdate(id))
-			return true;
-
-		return false;
-	}
-
 	internal static class QueryHelper
 	{
 		internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
@@ -195,18 +138,15 @@ public partial class WorkshopHelper
 		internal static int HiddenModCount;
 		internal static uint TotalItemsQueried;
 
-		internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
+		internal static List<ModDownloadItem> Items => WorkshopBrowserModule.Instance.Items;
+		internal static IReadOnlyList<LocalMod> InstalledMods => WorkshopBrowserModule.Instance.InstalledItems;
 
-		internal static ModDownloadItem FindModDownloadItem(string modName)
-		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
 		internal static bool QueryWorkshop()
 		{
 			HiddenModCount = IncompleteModCount = 0;
 			TotalItemsQueried = 0;
 			Items.Clear();
-
-			AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
 			if (!SteamedWraps.SteamAvailable) {
 				if (!SteamedWraps.TryInitViaGameServer()) {
@@ -223,7 +163,6 @@ public partial class WorkshopHelper
 			if (!new AQueryInstance().QueryAllWorkshopItems())
 				return false;
 
-			AQueryInstance.InstalledMods = null;
 			return true;
 		}
 
@@ -340,8 +279,6 @@ public partial class WorkshopHelper
 			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
 			internal bool stopCurrentQuery = false;
-
-			internal static IReadOnlyList<LocalMod> InstalledMods;
 
 			internal AQueryInstance()
 			{
@@ -529,17 +466,7 @@ public partial class WorkshopHelper
 					// Item Statistics
 					SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-					// Check against installed mods for updates
-
-					bool updateIsDowngrade = false;
-
-					var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
-					bool update = installed != null && DoesWorkshopItemNeedUpdate(id, installed, cVersion.modV);
-
-					// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
-					bool needsRestart = installed == null && SteamedWraps.IsWorkshopItemInstalled(id);
-
-					Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, cVersion.tmlV, metadata["homepage"], needsRestart));
+					Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"]));
 				}
 			}
 		}
