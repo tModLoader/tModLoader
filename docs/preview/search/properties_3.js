@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['damage_0',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC::HitInfo']]],
+  ['damage_0',['Damage',['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()'],['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()']]],
   ['damagesource_1',['DamageSource',['../struct_player_1_1_hurt_modifiers.html#ad1fc5a57a28b9b5ac20822156c001262',1,'Player::HurtModifiers']]],
   ['damagetype_2',['DamageType',['../class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1',1,'Item.DamageType()'],['../struct_n_p_c_1_1_hit_modifiers.html#a48d9a5e8569df3d0f5fed4c428cf2321',1,'NPC.HitModifiers.DamageType()'],['../class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4',1,'Projectile.DamageType()']]],
   ['default_3',['Default',['../class_damage_class.html#aeb1da59c707bbc5621253ac7c15ad56f',1,'DamageClass']]],

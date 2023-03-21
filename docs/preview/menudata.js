@@ -132,4 +132,5 @@ var menudata={children:[
 {text:"u",url:"functions_prop_u.html#index_u"},
 {text:"v",url:"functions_prop_v.html#index_v"},
 {text:"w",url:"functions_prop_w.html#index_w"},
-{text:"z",url:"functions_prop_z.html#index_z"}]}]}]}]}
+{text:"z",url:"functions_prop_z.html#index_z"}]},
+{text:"Events",url:"functions_evnt.html"}]}]}]}

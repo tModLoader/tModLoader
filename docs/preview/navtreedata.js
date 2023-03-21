@@ -38,7 +38,8 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
-        [ "Properties", "functions_prop.html", "functions_prop" ]
+        [ "Properties", "functions_prop.html", "functions_prop" ],
+        [ "Events", "functions_evnt.html", null ]
       ] ]
     ] ]
   ] ]
@@ -62,11 +63,11 @@ var NAVTREEINDEX =
 "class_n_p_c_i_d_1_1_sets.html#a5e93d8d8defe9742f308d2151c57e2d4",
 "class_player.html#af09e18a476d1507dba5e7cc80aa4cf26",
 "class_proj_a_i_style_i_d.html#a525acc528c7c82aee71ea07ed6d6ea68",
-"class_recipe.html#aaf2ce910bb8fc35fb9ec7fb195a242c2",
-"class_terrain_pass.html",
-"class_underworld_shader.html",
-"functions_vars_y.html",
-"struct_n_p_c_1_1_hit_info.html#a16c23b1dcd8362b8dbbb9fc9ea6b4658"
+"class_recipe.html#a80a75313e584f7c91e3dc0e02c594708",
+"class_teleport_pylons_system.html",
+"class_underground_corruption_shader.html",
+"functions_vars_u.html",
+"struct_map_overlay_draw_context_1_1_draw_result.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

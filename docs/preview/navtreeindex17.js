@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"class_teleport_pylons_system.html":[3,0,1146],
+"class_teleportation_style_i_d.html":[3,0,1142],
+"class_temple_shader.html":[3,0,1149],
 "class_terrain_pass.html":[3,0,1150],
 "class_test_high_f_p_s_issues.html":[3,0,1151],
 "class_text_snippet.html":[3,0,1155],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_pn_p_n_a_t.html":[3,0,1349],
 "class_u_short_tag_serializer.html":[3,0,1353],
 "class_underground_background_styles_loader.html":[3,0,1322],
-"class_underground_biome.html":[3,0,1323],
-"class_underground_corruption_shader.html":[3,0,1324],
-"class_underground_hallow_shader.html":[3,0,1325],
-"class_underground_mushroom_shader.html":[3,0,1326]
+"class_underground_biome.html":[3,0,1323]
 };

@@ -1,5 +1,9 @@
 var NAVTREEINDEX19 =
 {
+"functions_vars_u.html":[3,3,2,20],
+"functions_vars_v.html":[3,3,2,21],
+"functions_vars_w.html":[3,3,2,22],
+"functions_vars_x.html":[3,3,2,23],
 "functions_vars_y.html":[3,3,2,24],
 "functions_vars_z.html":[3,3,2,25],
 "functions_w.html":[3,3,0,22],
@@ -245,9 +249,5 @@ var NAVTREEINDEX19 =
 "struct_main_1_1_current_player_override.html":[3,0,691,1],
 "struct_main_1_1_info_to_set_back_color.html":[3,0,691,2],
 "struct_main_1_1_scene_area.html":[3,0,691,3],
-"struct_map_overlay_draw_context.html":[3,0,696],
-"struct_map_overlay_draw_context_1_1_draw_result.html":[3,0,696,0],
-"struct_map_tile.html":[3,0,697],
-"struct_multipliable_float.html":[3,0,798],
-"struct_n_p_c_1_1_hit_info.html":[3,0,840,0]
+"struct_map_overlay_draw_context.html":[3,0,696]
 };

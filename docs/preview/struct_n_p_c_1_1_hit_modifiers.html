@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('struct_n_p_c_1_1_hit_modifiers.html','
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="struct_n_p_c_1_1_hit_modifiers-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">NPC.HitModifiers Struct Reference</div></div>
 </div><!--header-->
@@ -201,12 +202,6 @@ Public Attributes</h2></td></tr>
  Knockback falloff still applies after this, so high knockback has diminishing returns. <br  />
  <br /></td></tr>
 <tr class="separator:a8e131f3a414af1f3a4502d517f724cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4296e1f49756d599c976b1000f6528c"><td class="memItemLeft" align="right" valign="top"><a id="ab4296e1f49756d599c976b1000f6528c" name="ab4296e1f49756d599c976b1000f6528c"></a>
-HitInfoModifier&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitInfo</b> = null</td></tr>
-<tr class="memdesc:ab4296e1f49756d599c976b1000f6528c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Really really not recommended for use!!<br  />
- Can be used to register a callback to freely modify the <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a> produced by ToHitInfo(float, bool, float, bool, float) before it is returned<br  />
- If multiple mods register different callbacks which modify the hit info in different ways the results could be a mess! <br /></td></tr>
-<tr class="separator:ab4296e1f49756d599c976b1000f6528c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab92ee61bb3c9bc7ee1ebbde65cbc15ff"><td class="memItemLeft" align="right" valign="top"><a id="ab92ee61bb3c9bc7ee1ebbde65cbc15ff" name="ab92ee61bb3c9bc7ee1ebbde65cbc15ff"></a>
 <a class="el" href="struct_addable_float.html">AddableFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ScalingArmorPenetration</b> = new()</td></tr>
 <tr class="memdesc:ab92ee61bb3c9bc7ee1ebbde65cbc15ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to ignore a fraction of enemy armor. Applies before flat <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a5cd98f3779db944a0599ac1ebbe8be4a" title="Flat defense reduction. Applies after ScalingArmorPenetration.   Add to give bonus flat armor penetra...">ArmorPenetration</a>. <br  />
@@ -259,6 +254,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SuperArmor</b> = fals
  <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1" title="Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (...">CritDamage</a> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 10. <br  />
  <br /></td></tr>
 <tr class="separator:af77c582a376918753e76b24f4fda031c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:ab4296e1f49756d599c976b1000f6528c"><td class="memItemLeft" align="right" valign="top"><a id="ab4296e1f49756d599c976b1000f6528c" name="ab4296e1f49756d599c976b1000f6528c"></a>
+HitInfoModifier&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitInfo</b> = null</td></tr>
+<tr class="memdesc:ab4296e1f49756d599c976b1000f6528c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use with caution and consider other alternatives first.<br  />
+ Can be used to register a callback to freely modify the <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a> produced by ToHitInfo before it is returned<br  />
+ If multiple mods register different callbacks which modify the hit info in different ways the results could be a mess! <br /></td></tr>
+<tr class="separator:ab4296e1f49756d599c976b1000f6528c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Represents a damage calculation in the process of being calculated for damage to be applied to an <a class="el" href="class_n_p_c.html">NPC</a>. The final damage calculation will be present in the resulting <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a>. </p>

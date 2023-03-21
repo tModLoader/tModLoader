@@ -23,10 +23,11 @@ var searchData=
   ['resetnearbytileeffects_20',['ResetNearbyTileEffects',['../class_mod_system.html#a652c4e0c15bd065e016bb0c741334a49',1,'ModSystem']]],
   ['resetstaticmembers_21',['ResetStaticMembers',['../class_loader_utils.html#abccf9481f860222fd5a35111fb8f1f15',1,'LoaderUtils']]],
   ['resettext_22',['ResetText',['../class_popup_text.html#ad351317c371e8417e29a871d2633f222',1,'PopupText']]],
-  ['resourceoverlaydrawcontext_23',['ResourceOverlayDrawContext',['../struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34',1,'ResourceOverlayDrawContext']]],
-  ['rightclick_24',['RightClick',['../class_start_bag.html#aadef83babd0c863dd99419562830ed96',1,'StartBag.RightClick()'],['../class_mod_tile.html#a711f91bbf33368cbda6576a81aa6c56f',1,'ModTile.RightClick()'],['../class_mod_pylon.html#aab02798fe46a0bab7aa64e4b13157e17',1,'ModPylon.RightClick()'],['../class_mod_item.html#a17850c01503e738807b32a40b440c8eb',1,'ModItem.RightClick()'],['../class_mod_buff.html#a2f05597c6e5cfbd997af60679d3ab5cf',1,'ModBuff.RightClick()'],['../class_item_loader.html#a2047df0baf55a797a9cade5696bead61',1,'ItemLoader.RightClick()'],['../class_global_tile.html#ab7419ebee394a8290e7731b86e47676f',1,'GlobalTile.RightClick()'],['../class_global_item.html#ab14e7d42a15f6c95181eaadaca97176a',1,'GlobalItem.RightClick()'],['../class_global_buff.html#a4d3411a0590fcdfc0b55e7da5f2dbfc1',1,'GlobalBuff.RightClick()']]],
-  ['rollchance_25',['RollChance',['../class_mod_prefix.html#a77f82f439e83c620069eaaceab315abc',1,'ModPrefix']]],
-  ['rotatedrelativepoint_26',['RotatedRelativePoint',['../class_player.html#a4d51c1bc55b3d00e19042581d56e2dab',1,'Player']]],
-  ['runonmainthread_27',['RunOnMainThread',['../class_main.html#a4523d4baa024b72951881722004207b2',1,'Main']]],
-  ['runonmainthread_3c_20t_20_3e_28',['RunOnMainThread&lt; T &gt;',['../class_main.html#a9b43ba6a62eef2a91a16433fca565626',1,'Main']]]
+  ['resize_23',['Resize',['../class_projectile.html#a8072b57da2e5bf37a03de842c2d60058',1,'Projectile']]],
+  ['resourceoverlaydrawcontext_24',['ResourceOverlayDrawContext',['../struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34',1,'ResourceOverlayDrawContext']]],
+  ['rightclick_25',['RightClick',['../class_start_bag.html#aadef83babd0c863dd99419562830ed96',1,'StartBag.RightClick()'],['../class_mod_tile.html#a711f91bbf33368cbda6576a81aa6c56f',1,'ModTile.RightClick()'],['../class_mod_pylon.html#aab02798fe46a0bab7aa64e4b13157e17',1,'ModPylon.RightClick()'],['../class_mod_item.html#a17850c01503e738807b32a40b440c8eb',1,'ModItem.RightClick()'],['../class_mod_buff.html#a2f05597c6e5cfbd997af60679d3ab5cf',1,'ModBuff.RightClick()'],['../class_item_loader.html#a2047df0baf55a797a9cade5696bead61',1,'ItemLoader.RightClick()'],['../class_global_tile.html#ab7419ebee394a8290e7731b86e47676f',1,'GlobalTile.RightClick()'],['../class_global_item.html#ab14e7d42a15f6c95181eaadaca97176a',1,'GlobalItem.RightClick()'],['../class_global_buff.html#a4d3411a0590fcdfc0b55e7da5f2dbfc1',1,'GlobalBuff.RightClick()']]],
+  ['rollchance_26',['RollChance',['../class_mod_prefix.html#a77f82f439e83c620069eaaceab315abc',1,'ModPrefix']]],
+  ['rotatedrelativepoint_27',['RotatedRelativePoint',['../class_player.html#a4d51c1bc55b3d00e19042581d56e2dab',1,'Player']]],
+  ['runonmainthread_28',['RunOnMainThread',['../class_main.html#a4523d4baa024b72951881722004207b2',1,'Main']]],
+  ['runonmainthread_3c_20t_20_3e_29',['RunOnMainThread&lt; T &gt;',['../class_main.html#a9b43ba6a62eef2a91a16433fca565626',1,'Main']]]
 ];

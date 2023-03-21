@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('struct_player_1_1_hurt_modifiers.html'
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="struct_player_1_1_hurt_modifiers-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Player.HurtModifiers Struct Reference</div></div>
 </div><!--header-->
@@ -109,6 +110,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>GetDamage</b> (float
 <tr class="memitem:a0e7289841819be68c0222996eb6f456b"><td class="memItemLeft" align="right" valign="top"><a id="a0e7289841819be68c0222996eb6f456b" name="a0e7289841819be68c0222996eb6f456b"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>GetKnockback</b> (float baseKnockback, bool knockbackImmune)</td></tr>
 <tr class="separator:a0e7289841819be68c0222996eb6f456b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf90d9336cb21361b1c3009528078ee4"><td class="memItemLeft" align="right" valign="top"><a id="acf90d9336cb21361b1c3009528078ee4" name="acf90d9336cb21361b1c3009528078ee4"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>HurtInfoModifier</b> (ref <a class="el" href="struct_player_1_1_hurt_info.html">HurtInfo</a> info)</td></tr>
+<tr class="separator:acf90d9336cb21361b1c3009528078ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a642b51fa0b78fbc8209798c355494605"><td class="memItemLeft" align="right" valign="top"><a id="a642b51fa0b78fbc8209798c355494605" name="a642b51fa0b78fbc8209798c355494605"></a>
 <a class="el" href="struct_player_1_1_hurt_info.html">HurtInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ToHurtInfo</b> (int damage, int defense, float defenseEffectiveness, float knockback, bool knockbackImmune)</td></tr>
 <tr class="separator:a642b51fa0b78fbc8209798c355494605"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +200,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>PvP</b> = default<cod
 <tr class="memdesc:acc6458994f221c568588dfaf15d91ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this strike came from another player. <br  />
  Note that PvP support in <a class="el" href="namespace_terraria.html">Terraria</a> is rudimentary and inconsistent, so careful research and testing may be required. <br /></td></tr>
 <tr class="separator:acc6458994f221c568588dfaf15d91ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a0a923ca8e55f3480471ef0e4de14af57"><td class="memItemLeft" align="right" valign="top"><a id="a0a923ca8e55f3480471ef0e4de14af57" name="a0a923ca8e55f3480471ef0e4de14af57"></a>
+HurtInfoModifier&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHurtInfo</b> = null</td></tr>
+<tr class="memdesc:a0a923ca8e55f3480471ef0e4de14af57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use with caution and consider other alternatives first.<br  />
+ Can be used to register a callback to freely modify the <a class="el" href="struct_player_1_1_hurt_info.html">HurtInfo</a> produced by ToHurtInfo before it is returned<br  />
+ If multiple mods register different callbacks which modify the hurt info in different ways the results could be a mess! <br /></td></tr>
+<tr class="separator:a0a923ca8e55f3480471ef0e4de14af57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

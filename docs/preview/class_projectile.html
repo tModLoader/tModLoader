@@ -178,6 +178,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ExplodeCrackedTiles</
 <tr class="separator:a950102069b0188eadb3bab914754c239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fa09ccd0992ece8ebbf73faa03e50ee"><td class="memItemLeft" align="right" valign="top"><a id="a6fa09ccd0992ece8ebbf73faa03e50ee" name="a6fa09ccd0992ece8ebbf73faa03e50ee"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ExplodeTiles</b> (Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ, bool wallSplode)</td></tr>
+<tr class="memdesc:a6fa09ccd0992ece8ebbf73faa03e50ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explodes tiles within a radius of the given position and within the bounds passed in. The <em>wallSplode</em>  parameter should be the result of <a class="el" href="class_projectile.html#aa22d8ce26a8c760798a497deff8e968d" title="Determines if walls should be exploded by checking if there is an empty wall within the specified rad...">ShouldWallExplode(Vector2, int, int, int, int, int)</a> and dictates if walls will also be destroyed. This method honors the tile and wall explosion conditions. <br /></td></tr>
 <tr class="separator:a6fa09ccd0992ece8ebbf73faa03e50ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87374217a8ca033ffa3481b9975111b1"><td class="memItemLeft" align="right" valign="top"><a id="a87374217a8ca033ffa3481b9975111b1" name="a87374217a8ca033ffa3481b9975111b1"></a>
 <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindTargetWithinRange</b> (float maxRange, bool checkCanHit=false)</td></tr>
@@ -259,6 +260,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetLocalNPCHitImmun
 <tr class="separator:adc313fb3a5b2ccdf4e8140d9de4724af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8072b57da2e5bf37a03de842c2d60058"><td class="memItemLeft" align="right" valign="top"><a id="a8072b57da2e5bf37a03de842c2d60058" name="a8072b57da2e5bf37a03de842c2d60058"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Resize</b> (int newWidth, int newHeight)</td></tr>
+<tr class="memdesc:a8072b57da2e5bf37a03de842c2d60058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the <a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">Entity.width</a> and <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">Entity.height</a> of the projectile while preserving the Entity.Center. Useful for explosive projectiles that expand their hitbox while exploding. <br /></td></tr>
 <tr class="separator:a8072b57da2e5bf37a03de842c2d60058"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a496f50c24246d9cae663f49e84bbff57"><td class="memItemLeft" align="right" valign="top"><a id="a496f50c24246d9cae663f49e84bbff57" name="a496f50c24246d9cae663f49e84bbff57"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</b> (int Type)</td></tr>
@@ -268,6 +270,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldUseWindPhysics<
 <tr class="separator:a125eb1e32b729fac125b15eadb39ebf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22d8ce26a8c760798a497deff8e968d"><td class="memItemLeft" align="right" valign="top"><a id="aa22d8ce26a8c760798a497deff8e968d" name="aa22d8ce26a8c760798a497deff8e968d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldWallExplode</b> (Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)</td></tr>
+<tr class="memdesc:aa22d8ce26a8c760798a497deff8e968d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjuction with <a class="el" href="class_projectile.html#a6fa09ccd0992ece8ebbf73faa03e50ee" title="Explodes tiles within a radius of the given position and within the bounds passed in....">ExplodeTiles</a>. <br /></td></tr>
 <tr class="separator:aa22d8ce26a8c760798a497deff8e968d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a1fd05a3d5c0e74af464eab36890dfb"><td class="memItemLeft" align="right" valign="top"><a id="a9a1fd05a3d5c0e74af464eab36890dfb" name="a9a1fd05a3d5c0e74af464eab36890dfb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StatusNPC</b> (int i)</td></tr>

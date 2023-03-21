@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('struct_player_1_1_hurt_info.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="struct_player_1_1_hurt_info-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Player.HurtInfo Struct Reference</div></div>
 </div><!--header-->
@@ -94,41 +95,46 @@ $(document).ready(function(){initNavTree('struct_player_1_1_hurt_info.html','');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab45ce066eaadcc876fa4ff86490f7e08"><td class="memItemLeft" align="right" valign="top"><a id="ab45ce066eaadcc876fa4ff86490f7e08" name="ab45ce066eaadcc876fa4ff86490f7e08"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>CooldownCounter</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>CooldownCounter</b> = -1</td></tr>
 <tr class="separator:ab45ce066eaadcc876fa4ff86490f7e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a774b81521a19a1eafe2153e7fa3e9cdb"><td class="memItemLeft" align="right" valign="top"><a id="a774b81521a19a1eafe2153e7fa3e9cdb" name="a774b81521a19a1eafe2153e7fa3e9cdb"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Damage</b></td></tr>
-<tr class="memdesc:a774b81521a19a1eafe2153e7fa3e9cdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of damage received by the player. How much life the player will lose. <br  />
- Is NOT capped at the player's current life. <br /></td></tr>
-<tr class="separator:a774b81521a19a1eafe2153e7fa3e9cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbda1d7dc60e1d31b1d34848bf657399"><td class="memItemLeft" align="right" valign="top"><a id="afbda1d7dc60e1d31b1d34848bf657399" name="afbda1d7dc60e1d31b1d34848bf657399"></a>
-<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DamageSource</b></td></tr>
+<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DamageSource</b> = null</td></tr>
 <tr class="separator:afbda1d7dc60e1d31b1d34848bf657399"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a932995c5c67ad2875496015ab83c0893"><td class="memItemLeft" align="right" valign="top"><a id="a932995c5c67ad2875496015ab83c0893" name="a932995c5c67ad2875496015ab83c0893"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Dodgeable</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>Dodgeable</b> = true</td></tr>
 <tr class="separator:a932995c5c67ad2875496015ab83c0893"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a603b4682ffb76da1f6baa70147d9ed04"><td class="memItemLeft" align="right" valign="top"><a id="a603b4682ffb76da1f6baa70147d9ed04" name="a603b4682ffb76da1f6baa70147d9ed04"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>DustDisabled</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>DustDisabled</b> = false</td></tr>
 <tr class="memdesc:a603b4682ffb76da1f6baa70147d9ed04"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, dust will not spawn <br /></td></tr>
 <tr class="separator:a603b4682ffb76da1f6baa70147d9ed04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e1a388c6c0a6f0ffacea98b29231e3c"><td class="memItemLeft" align="right" valign="top"><a id="a6e1a388c6c0a6f0ffacea98b29231e3c" name="a6e1a388c6c0a6f0ffacea98b29231e3c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>HitDirection</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>HitDirection</b> = 0</td></tr>
 <tr class="separator:a6e1a388c6c0a6f0ffacea98b29231e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a385a782077b2fc03ef6c72dc7a0fd3dc"><td class="memItemLeft" align="right" valign="top"><a id="a385a782077b2fc03ef6c72dc7a0fd3dc" name="a385a782077b2fc03ef6c72dc7a0fd3dc"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Knockback</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>Knockback</b> = 0</td></tr>
 <tr class="memdesc:a385a782077b2fc03ef6c72dc7a0fd3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of knockback to apply. Should always be &gt;= 0. <br /></td></tr>
 <tr class="separator:a385a782077b2fc03ef6c72dc7a0fd3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a223f4407c111b66c39b1181faea167d4"><td class="memItemLeft" align="right" valign="top"><a id="a223f4407c111b66c39b1181faea167d4" name="a223f4407c111b66c39b1181faea167d4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>PvP</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>PvP</b> = false</td></tr>
 <tr class="separator:a223f4407c111b66c39b1181faea167d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41eee83d32d4ec3a401a607533e84064"><td class="memItemLeft" align="right" valign="top"><a id="a41eee83d32d4ec3a401a607533e84064" name="a41eee83d32d4ec3a401a607533e84064"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SoundDisabled</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SoundDisabled</b> = false</td></tr>
 <tr class="memdesc:a41eee83d32d4ec3a401a607533e84064"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, sound will not play <br /></td></tr>
 <tr class="separator:a41eee83d32d4ec3a401a607533e84064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a774b81521a19a1eafe2153e7fa3e9cdb"><td class="memItemLeft" align="right" valign="top"><a id="a774b81521a19a1eafe2153e7fa3e9cdb" name="a774b81521a19a1eafe2153e7fa3e9cdb"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Damage</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a774b81521a19a1eafe2153e7fa3e9cdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of damage received by the player. How much life the player will lose. <br  />
+ Is NOT capped at the player's current life.<br  />
+ Cannot be set to less than 1. <br /></td></tr>
+<tr class="separator:a774b81521a19a1eafe2153e7fa3e9cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b963c7867ccb5300ec1014b4ffbf599"><td class="memItemLeft" align="right" valign="top"><a id="a0b963c7867ccb5300ec1014b4ffbf599" name="a0b963c7867ccb5300ec1014b4ffbf599"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>SourceDamage</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>SourceDamage</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a0b963c7867ccb5300ec1014b4ffbf599"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of damage 'dealt' to the player, before incoming damage multipliers, armor, damage reduction.<br  />
  Use this to trigger effects which scale based on how 'hard' the player was hit rather than how much life was lost.<br  />
+ Cannot be set to less than 1.<br  />
  <br  />
  Using this instead of <a class="el" href="struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb" title="The amount of damage received by the player. How much life the player will lose.   Is NOT capped at t...">Damage</a> can prevent diminishing returns damage mitigation, when adding beneficial effects like retaliatory damage. <br /></td></tr>
 <tr class="separator:a0b963c7867ccb5300ec1014b4ffbf599"><td class="memSeparator" colspan="2">&#160;</td></tr>

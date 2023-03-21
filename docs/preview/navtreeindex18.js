@@ -1,5 +1,8 @@
 var NAVTREEINDEX18 =
 {
+"class_underground_corruption_shader.html":[3,0,1324],
+"class_underground_hallow_shader.html":[3,0,1325],
+"class_underground_mushroom_shader.html":[3,0,1326],
 "class_underworld_shader.html":[3,0,1327],
 "class_unified_random.html":[3,0,1328],
 "class_unified_random.html#a4040681602b93f1eed92662395230f13":[3,0,1328,0],
@@ -161,6 +164,7 @@ var NAVTREEINDEX18 =
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
 "functions_e.html":[3,3,0,4],
+"functions_evnt.html":[3,3,4],
 "functions_f.html":[3,3,0,5],
 "functions_func.html":[3,3,1,0],
 "functions_func.html":[3,3,1],
@@ -196,8 +200,8 @@ var NAVTREEINDEX18 =
 "functions_n.html":[3,3,0,13],
 "functions_o.html":[3,3,0,14],
 "functions_p.html":[3,3,0,15],
-"functions_prop.html":[3,3,3,0],
 "functions_prop.html":[3,3,3],
+"functions_prop.html":[3,3,3,0],
 "functions_prop_b.html":[3,3,3,1],
 "functions_prop_c.html":[3,3,3,2],
 "functions_prop_d.html":[3,3,3,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX18 =
 "functions_vars_q.html":[3,3,2,16],
 "functions_vars_r.html":[3,3,2,17],
 "functions_vars_s.html":[3,3,2,18],
-"functions_vars_t.html":[3,3,2,19],
-"functions_vars_u.html":[3,3,2,20],
-"functions_vars_v.html":[3,3,2,21],
-"functions_vars_w.html":[3,3,2,22],
-"functions_vars_x.html":[3,3,2,23]
+"functions_vars_t.html":[3,3,2,19]
 };

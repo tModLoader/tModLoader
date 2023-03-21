@@ -14,5 +14,6 @@ var struct_player_1_1_hurt_modifiers =
     [ "Dodgeable", "struct_player_1_1_hurt_modifiers.html#a32fd83a16f941de2d034462d26f76ee1", null ],
     [ "HitDirection", "struct_player_1_1_hurt_modifiers.html#a45de05587597f4746aa93b9325f5ec6c", null ],
     [ "HitDirectionOverride", "struct_player_1_1_hurt_modifiers.html#a873d28ec48235b3cc3c4489cd9629133", null ],
-    [ "PvP", "struct_player_1_1_hurt_modifiers.html#acc6458994f221c568588dfaf15d91ba3", null ]
+    [ "PvP", "struct_player_1_1_hurt_modifiers.html#acc6458994f221c568588dfaf15d91ba3", null ],
+    [ "ModifyHurtInfo", "struct_player_1_1_hurt_modifiers.html#a0a923ca8e55f3480471ef0e4de14af57", null ]
 ];
