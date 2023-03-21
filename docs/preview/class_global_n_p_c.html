@@ -133,10 +133,6 @@ Public Member Functions</h2></td></tr>
  NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br  />
  To do that, you will need to use the "CatchingTool" set in <a class="el" href="class_item_i_d_1_1_sets.html">ItemID.Sets</a>.  <a href="class_global_n_p_c.html#a194e835eb133064af83b2fd0a61feb4c">More...</a><br /></td></tr>
 <tr class="separator:a194e835eb133064af83b2fd0a61feb4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a925bf6a00ea92b4715b4fffdaae49ebf"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a925bf6a00ea92b4715b4fffdaae49ebf">CanBeCollidedWithPlayerMeleeAttack</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, Rectangle meleeAttackHitbox)</td></tr>
-<tr class="memdesc:a925bf6a00ea92b4715b4fffdaae49ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be collided with the player melee weapon when swung. <br  />
- Use CanBeHitByItem(NPC, Player, Item) instead for Guide Voodoo Doll-type effects.  <a href="class_global_n_p_c.html#a925bf6a00ea92b4715b4fffdaae49ebf">More...</a><br /></td></tr>
-<tr class="separator:a925bf6a00ea92b4715b4fffdaae49ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef6c246b055e01e0bc1d3afe570343a5"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5">CanBeHitByItem</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:aef6c246b055e01e0bc1d3afe570343a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be hit by the given melee weapon when swung. Return true to allow hitting the <a class="el" href="class_n_p_c.html">NPC</a>, return false to block hitting the <a class="el" href="class_n_p_c.html">NPC</a>, and return null to use the vanilla code for whether the <a class="el" href="class_n_p_c.html">NPC</a> can be hit. Returns null by default.  <a href="class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5">More...</a><br /></td></tr>
 <tr class="separator:aef6c246b055e01e0bc1d3afe570343a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,6 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a7ca2ff222fff84f88a66d94e6237d1"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a6a7ca2ff222fff84f88a66d94e6237d1">CanChat</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a6a7ca2ff222fff84f88a66d94e6237d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this <a class="el" href="class_n_p_c.html">NPC</a> can talk with the player. Return true to allow talking with the player, return false to block this <a class="el" href="class_n_p_c.html">NPC</a> from talking with the player, and return null to use the vanilla code for whether the <a class="el" href="class_n_p_c.html">NPC</a> can talk. Returns null by default.  <a href="class_global_n_p_c.html#a6a7ca2ff222fff84f88a66d94e6237d1">More...</a><br /></td></tr>
 <tr class="separator:a6a7ca2ff222fff84f88a66d94e6237d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fefb51cb5c3821a6da020c0d685f8e2"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a2fefb51cb5c3821a6da020c0d685f8e2">CanCollideWithPlayerMeleeAttack</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, Rectangle meleeAttackHitbox)</td></tr>
+<tr class="memdesc:a2fefb51cb5c3821a6da020c0d685f8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be collided with the player melee weapon when swung. <br  />
+ Use CanBeHitByItem(NPC, Player, Item) instead for Guide Voodoo Doll-type effects.  <a href="class_global_n_p_c.html#a2fefb51cb5c3821a6da020c0d685f8e2">More...</a><br /></td></tr>
+<tr class="separator:a2fefb51cb5c3821a6da020c0d685f8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23a868abdd7ba10a609b9db305873d02"><td class="memItemLeft" align="right" valign="top"><a id="a23a868abdd7ba10a609b9db305873d02" name="a23a868abdd7ba10a609b9db305873d02"></a>
 virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanFallThroughPlatforms</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a23a868abdd7ba10a609b9db305873d02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how and when an <a class="el" href="class_n_p_c.html">NPC</a> can fall through platforms and similar tiles. <br  />
@@ -921,66 +921,6 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
 
 </div>
 </div>
-<a id="a925bf6a00ea92b4715b4fffdaae49ebf" name="a925bf6a00ea92b4715b4fffdaae49ebf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a925bf6a00ea92b4715b4fffdaae49ebf">&#9670;&nbsp;</a></span>CanBeCollidedWithPlayerMeleeAttack()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual ? bool GlobalNPC.CanBeCollidedWithPlayerMeleeAttack </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
-          <td class="paramname"><em>npc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Rectangle&#160;</td>
-          <td class="paramname"><em>meleeAttackHitbox</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be collided with the player melee weapon when swung. <br  />
- Use CanBeHitByItem(NPC, Player, Item) instead for Guide Voodoo Doll-type effects. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">player</td><td>The player wielding this item.</td></tr>
-    <tr><td class="paramname">item</td><td>The weapon item the player is holding.</td></tr>
-    <tr><td class="paramname">meleeAttackHitbox</td><td>Hitbox of melee attack.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the <a class="el" href="class_n_p_c.html">NPC</a>, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default. </dd></dl>
-
-</div>
-</div>
 <a id="aef6c246b055e01e0bc1d3afe570343a5" name="aef6c246b055e01e0bc1d3afe570343a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef6c246b055e01e0bc1d3afe570343a5">&#9670;&nbsp;</a></span>CanBeHitByItem()</h2>
 
@@ -1112,6 +1052,66 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a2fefb51cb5c3821a6da020c0d685f8e2" name="a2fefb51cb5c3821a6da020c0d685f8e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fefb51cb5c3821a6da020c0d685f8e2">&#9670;&nbsp;</a></span>CanCollideWithPlayerMeleeAttack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool GlobalNPC.CanCollideWithPlayerMeleeAttack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>meleeAttackHitbox</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be collided with the player melee weapon when swung. <br  />
+ Use CanBeHitByItem(NPC, Player, Item) instead for Guide Voodoo Doll-type effects. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player wielding this item.</td></tr>
+    <tr><td class="paramname">item</td><td>The weapon item the player is holding.</td></tr>
+    <tr><td class="paramname">meleeAttackHitbox</td><td>Hitbox of melee attack.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the <a class="el" href="class_n_p_c.html">NPC</a>, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default. </dd></dl>
 
 </div>
 </div>
