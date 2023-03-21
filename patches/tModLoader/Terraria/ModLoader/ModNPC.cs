@@ -449,7 +449,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <returns>
 	/// Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the NPC, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default.
 	/// </returns>
-	public virtual bool? CanBeCollidedWithPlayerMeleeAttack(Player player, Item item, Rectangle meleeAttackHitbox)
+	public virtual bool? CanCollideWithPlayerMeleeAttack(Player player, Item item, Rectangle meleeAttackHitbox)
 	{
 		return null;
 	}

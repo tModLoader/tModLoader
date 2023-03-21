@@ -702,12 +702,12 @@ public static class NPCLoader
 		return flag;
 	}
 
-	private static HookList HookCanBeCollidedWithPlayerMeleeAttack = AddHook<Func<NPC, Player, Item, Rectangle, bool?>>(g => g.CanBeCollidedWithPlayerMeleeAttack);
-	public static bool? CanBeCollidedWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+	private static HookList HookCanCollideWithPlayerMeleeAttack = AddHook<Func<NPC, Player, Item, Rectangle, bool?>>(g => g.CanCollideWithPlayerMeleeAttack);
+	public static bool? CanCollideWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
 	{
 		bool? flag = null;
-		foreach (GlobalNPC g in HookCanBeCollidedWithPlayerMeleeAttack.Enumerate(npc.globalNPCs)) {
-			bool? canCollide = g.CanBeCollidedWithPlayerMeleeAttack(npc, player, item, meleeAttackHitbox);
+		foreach (GlobalNPC g in HookCanCollideWithPlayerMeleeAttack.Enumerate(npc.globalNPCs)) {
+			bool? canCollide = g.CanCollideWithPlayerMeleeAttack(npc, player, item, meleeAttackHitbox);
 			if (canCollide.HasValue) {
 				if (!canCollide.Value) {
 					return false;
@@ -718,7 +718,7 @@ public static class NPCLoader
 		}
 
 		if (npc.ModNPC != null) {
-			bool? canHit = npc.ModNPC.CanBeCollidedWithPlayerMeleeAttack(player, item, meleeAttackHitbox);
+			bool? canHit = npc.ModNPC.CanCollideWithPlayerMeleeAttack(player, item, meleeAttackHitbox);
 
 			if (canHit.HasValue) {
 				if (!canHit.Value) {

@@ -381,7 +381,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <returns>
 	/// Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the NPC, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default.
 	/// </returns>
-	public virtual bool? CanBeCollidedWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+	public virtual bool? CanCollideWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
 	{
 		return null;
 	}

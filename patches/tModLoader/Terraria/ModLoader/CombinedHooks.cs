@@ -197,7 +197,7 @@ public static class CombinedHooks
 
 		_ = Update(PlayerLoader.CanMeleeAttackCollideWithNPC(player, item, meleeAttackHitbox, target))
 			&& Update(ItemLoader.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target))
-			&& Update(NPCLoader.CanBeCollidedWithPlayerMeleeAttack(target, player, item, meleeAttackHitbox));
+			&& Update(NPCLoader.CanCollideWithPlayerMeleeAttack(target, player, item, meleeAttackHitbox));
 		return ret;
 	}
 
