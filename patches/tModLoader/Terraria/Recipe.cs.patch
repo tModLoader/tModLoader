@@ -767,7 +767,7 @@
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
-+		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
++		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.ZenithWorld);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
 +		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);

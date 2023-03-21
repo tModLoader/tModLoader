@@ -598,9 +598,13 @@
 		"InLihzardTemple": "In the Lihzard Temple",
 		"InGraveyardBiome": "In a Graveyard Biome",
 
-		"EverythingSeed": "In an Everything world",
 		"CrimsonWorld": "In a world with The Crimson",
-		"CorruptWorld": "In a world with The Corruption"
+		"CorruptWorld": "In a world with The Corruption",
+		"WorldDrunk": "In an Drunk world",
+		"WorldRemix": "In a Remix world",
+		"WorldForTheWorthy": "In a For the Worthy world",
+		"WorldAnniversary": "In a Celebration Mk 10 world",
+		"WorldZenith": "In a Zenith world"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
