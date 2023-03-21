@@ -746,7 +746,7 @@
 +		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
 +			currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
 +
-+		static void ReplaceCondition(ref bool field, Recipe.Condition cond)
++		static void ReplaceCondition(ref bool field, Condition cond)
 +		{
 +			if (field)
 +				currentRecipe.AddCondition(cond);
@@ -754,7 +754,7 @@
 +			field = false;
 +		}
 +
-+		static void ReplaceDecraftCondition(ref bool field, Recipe.Condition cond)
++		static void ReplaceDecraftCondition(ref bool field, Condition cond)
 +		{
 +			if (field)
 +				currentRecipe.AddDecraftCondition(cond);
