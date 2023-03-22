@@ -787,6 +787,11 @@ Mods: {
 				// DisplayName: Example Explosive
 				// Tooltip: ""
 			}
+
+			ExampleJavelin: {
+				// DisplayName: Example Javelin
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -819,6 +824,7 @@ Mods: {
 			// SparklingBall.DisplayName: Sparkling Ball
 			// ExampleDrillProjectile.DisplayName: Example Drill Projectile
 			// ExampleExplosive.DisplayName: Example Explosive
+			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 		}
 
 		Buffs: {
@@ -900,6 +906,11 @@ Mods: {
 			ExampleWhipAdvancedDebuff: {
 				// DisplayName: Example Whip Advanced Debuff
 				// Description: ""
+			}
+
+			ExampleJavelinDebuff: {
+				// DisplayName: Example Javelin Debuff
+				// Description: Losing life
 			}
 		}
 
