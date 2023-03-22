@@ -17,6 +17,8 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
+using Nanoray.Pintail;
+using System.Reflection.Emit;
 
 namespace Terraria.ModLoader
 {
@@ -49,6 +51,14 @@ namespace Terraria.ModLoader
 		public static string ModPath => ModOrganizer.modPath;
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
+		private static readonly Lazy<IProxyManager<string>> proxyManager = new(() => {
+			AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName($"Terraria.ModLoader.Proxies, Version={typeof(ModLoader).Assembly.GetName().Version}, Culture=neutral"), AssemblyBuilderAccess.RunAndCollect);
+			ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("Terraria.ModLoader.Proxies");
+			return new ProxyManager<string>(moduleBuilder, new ProxyManagerConfiguration<string>(
+				proxyPrepareBehavior: ProxyManagerProxyPrepareBehavior.Eager,
+				proxyObjectInterfaceMarking: ProxyObjectInterfaceMarking.MarkerWithProperty
+			));
+		});
 
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
@@ -83,6 +93,49 @@ namespace Terraria.ModLoader
 		/// <summary> Safely checks whether or not a mod with the specified internal name is currently loaded. </summary>
 		/// <returns> Whether or not a mod with the provided internal name has been found. </returns>
 		public static bool HasMod(string name) => modsByName.ContainsKey(name);
+
+		public static TInterface GetAPI<TInterface>(string name) where TInterface : class
+		{
+			// get mod
+			if (!TryGetMod(name, out Mod mod))
+				return null;
+
+			// get raw API
+			object api = mod.GetAPI();
+			if (api is null)
+				return null;
+
+			// validate mapping
+			if (!typeof(TInterface).IsInterface)
+			{
+				Logging.tML.Error($"Tried to map a mod-provided API to class `{typeof(TInterface).FullName}`; must be a public interface.");
+				return null;
+			}
+			if (!typeof(TInterface).IsPublic)
+			{
+				Logging.tML.Error($"Tried to map a mod-provided API to non-public interface `{typeof(TInterface).FullName}`; must be a public interface.");
+				return null;
+			}
+
+			// get API of type
+			if (api is TInterface castApi)
+				return castApi;
+
+			try {
+				// these two are used as part of the resulting type name - useful when reading stack traces
+				// might want to use something shorter (like mod names), as the generated names are omega long though
+				// i didn't have access to the consuming mod's name here though, so i did this instead
+				string targetContext = mod.GetType().Assembly.GetName().FullName;
+				string proxyContext = typeof(TInterface).Assembly.GetName().FullName;
+
+				TInterface proxy = proxyManager.Value.ObtainProxy<string, TInterface>(api, targetContext: targetContext, proxyContext: proxyContext);
+				return proxy;
+			}
+			catch (Exception ex) {
+				Logging.tML.Error($"There was a problem retrieving `{typeof(TInterface).FullName}` API for mod `{name}`:\n{ex}");
+				return null;
+			}
+		}
 
 		internal static void EngineInit()
 		{
