@@ -175,8 +175,8 @@ namespace ExampleMod.Content.Projectiles
 				Utils.ClampWithinWorld(ref minTileX, ref minTileY, ref maxTileX, ref maxTileY);
 
 				// These 2 methods handle actually mining the tiles and walls while honoring tile explosion conditions
-				bool explodeWalls = Projectile.ShouldWallExplode(Projectile.position, explosionRadius, minTileX, maxTileX, minTileY, maxTileY);
-				Projectile.ExplodeTiles(Projectile.position, explosionRadius, minTileX, maxTileX, minTileY, maxTileY, explodeWalls);
+				bool explodeWalls = Projectile.ShouldWallExplode(Projectile.Center, explosionRadius, minTileX, maxTileX, minTileY, maxTileY);
+				Projectile.ExplodeTiles(Projectile.Center, explosionRadius, minTileX, maxTileX, minTileY, maxTileY, explodeWalls);
 			}
 		}
 	}
