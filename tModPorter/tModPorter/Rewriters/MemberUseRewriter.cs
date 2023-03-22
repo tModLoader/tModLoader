@@ -18,6 +18,9 @@ public class MemberUseRewriter : BaseRewriter {
 	public static void RefactorInstanceMember(string type, string name, RewriteMemberUse handler) => handlers.Add((type, name, handler));
 	public static void RefactorInstanceMember(string type, string name, AddComment comment) => RefactorInstanceMember(type, name, (_, _, n) => comment.Apply(n));
 
+	public static void RefactorStaticMember(string type, string name, RewriteMemberUse handler) => handlers.Add((type, name, handler));
+	public static void RefactorStaticMember(string type, string name, AddComment comment) => RefactorStaticMember(type, name, (_, _, n) => comment.Apply(n));
+
 
 	public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node) {
 		if (!IdentifierNameInvalid(node, out var op, out var targetType, out bool isInvoke) || op == null || isInvoke)

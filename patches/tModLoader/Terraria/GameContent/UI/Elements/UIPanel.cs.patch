@@ -1,38 +1,41 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIPanel.cs
-@@ -13,15 +_,22 @@
- 		private Asset<Texture2D> _backgroundTexture;
- 		public Color BorderColor = Color.Black;
- 		public Color BackgroundColor = new Color(63, 82, 151) * 0.7f;
-+		private bool _needsTextureLoading = false;
+@@ -13,16 +_,25 @@
+ 	private Asset<Texture2D> _backgroundTexture;
+ 	public Color BorderColor = Color.Black;
+ 	public Color BackgroundColor = new Color(63, 82, 151) * 0.7f;
++	
++	// Added by TML.
++	private bool _needsTextureLoading;
  
--		public UIPanel() {
-+		private void LoadTextures()
-+		{
-+			// These used to be moved to OnActivate in order to avoid texture loading on JIT thread.
-+			// Doing so caused issues with missing backgrounds and borders because Activate wasn't always being called.
- 			if (_borderTexture == null)
- 				_borderTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBorder");
+-	public UIPanel()
++	private void LoadTextures()
+ 	{
++		// These used to be moved to OnActivate in order to avoid texture loading on JIT thread.
++		// Doing so caused issues with missing backgrounds and borders because Activate wasn't always being called.
+ 		if (_borderTexture == null)
+ 			_borderTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBorder");
  
- 			if (_backgroundTexture == null)
- 				_backgroundTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBackground");
+ 		if (_backgroundTexture == null)
+ 			_backgroundTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBackground");
++	}
+ 
++	public UIPanel()
++	{
+ 		SetPadding(_cornerSize);
++		_needsTextureLoading = true;
+ 	}
+ 
+ 	public UIPanel(Asset<Texture2D> customBackground, Asset<Texture2D> customborder, int customCornerSize = 12, int customBarSize = 4)
+@@ -58,6 +_,11 @@
+ 
+ 	protected override void DrawSelf(SpriteBatch spriteBatch)
+ 	{
++		if (_needsTextureLoading) {
++			_needsTextureLoading = false;
++			LoadTextures();
 +		}
- 
-+		public UIPanel() {
- 			SetPadding(_cornerSize);
-+			_needsTextureLoading = true;
- 		}
- 
- 		public UIPanel(Asset<Texture2D> customBackground, Asset<Texture2D> customborder, int customCornerSize = 12, int customBarSize = 4) {
-@@ -54,6 +_,11 @@
- 		}
- 
- 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-+			if (_needsTextureLoading) {
-+				_needsTextureLoading = false;
-+				LoadTextures();
-+			}
 +
- 			if (_backgroundTexture != null)
- 				DrawPanel(spriteBatch, _backgroundTexture.Value, BackgroundColor);
+ 		if (_backgroundTexture != null)
+ 			DrawPanel(spriteBatch, _backgroundTexture.Value, BackgroundColor);
  

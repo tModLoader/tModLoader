@@ -28,7 +28,7 @@ then
 fi
 
 # Prompt user for lobby type and steam server if not specified in args
-if ! [[ -z $"{steam_server}+x" ]]; then
+if [ -z "${steam_server}" ]; then
 	read -p "Use steam server (y/n): " steam_server_response
 	if [[ $steam_server_response == y* ]]
 	then

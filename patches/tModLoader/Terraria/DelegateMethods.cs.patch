@@ -1,0 +1,19 @@
+--- src/TerrariaNetCore/Terraria/DelegateMethods.cs
++++ src/tModLoader/Terraria/DelegateMethods.cs
+@@ -5,6 +_,7 @@
+ using Terraria.Enums;
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria;
+ 
+@@ -386,7 +_,7 @@
+ 		if (tile2 == null)
+ 			return false;
+ 
+-		if (tile2.type < 0 || tile2.type >= TileID.Count)
++		if (tile2.type < 0)
+ 			return false;
+ 
+ 		if (Main.tileSolid[tile2.type] && !TileID.Sets.Platforms[tile2.type])

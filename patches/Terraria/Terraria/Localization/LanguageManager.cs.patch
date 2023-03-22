@@ -1,11 +1,11 @@
 --- src/decompiled/Terraria/Localization/LanguageManager.cs
 +++ src/Terraria/Terraria/Localization/LanguageManager.cs
-@@ -85,7 +_,7 @@
+@@ -89,7 +_,7 @@
+ 	private string[] GetLanguageFilesForCulture(GameCulture culture)
+ 	{
+ 		Assembly.GetExecutingAssembly();
+-		return Array.FindAll(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.StartsWith("Terraria.Localization.Content." + culture.CultureInfo.Name) && element.EndsWith(".json"));
++		return Array.FindAll(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.StartsWith("Terraria.Localization.Content." + culture.CultureInfo.Name.Replace('-', '_')) && element.EndsWith(".json"));
+ 	}
  
- 		private string[] GetLanguageFilesForCulture(GameCulture culture) {
- 			Assembly.GetExecutingAssembly();
--			return Array.FindAll(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.StartsWith("Terraria.Localization.Content." + culture.CultureInfo.Name) && element.EndsWith(".json"));
-+			return Array.FindAll(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.StartsWith("Terraria.Localization.Content." + culture.CultureInfo.Name.Replace('-', '_')) && element.EndsWith(".json"));
- 		}
- 
- 		public void SetLanguage(GameCulture culture) {
+ 	public void SetLanguage(GameCulture culture)

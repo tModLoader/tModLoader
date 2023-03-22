@@ -1,11 +1,55 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,7 +_,7 @@
+@@ -3,19 +_,51 @@
  
- namespace Terraria
+ namespace Terraria;
+ 
+-public abstract class Entity
++public abstract partial class Entity
  {
--	public abstract class Entity
-+	public abstract partial class Entity
- 	{
- 		public int whoAmI;
- 		public bool active;
++	/// <summary>
++	/// The index of this Entity within its specific array. These arrays track the entities in the world.
++	/// <br/> Item: unused
++	/// <br/> Projectile: <see cref="Main.projectile"/>
++	/// <br/> NPC: <see cref="Main.npc"/>
++	/// <br/> Player: <see cref="Main.player"/>
++	/// </summary>
+ 	public int whoAmI;
++
++	/// <summary>
++	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array.
++	/// </summary>
+ 	public bool active;
+ 	internal long entityId;
++
++	/// <summary>
++	/// The position of this Entity in world coordinates.
++	/// </summary>
+ 	public Vector2 position;
++
++	/// <summary>
++	/// The velocity of this Entity in world coordinates per tick.
++	/// </summary>
+ 	public Vector2 velocity;
+ 	public Vector2 oldPosition;
+ 	public Vector2 oldVelocity;
+ 	public int oldDirection;
+ 	public int direction = 1;
++
++	/// <summary>
++	/// The width of this Entity's hitbox, in pixels.
++	/// </summary>
+ 	public int width;
++
++	/// <summary>
++	/// The height of this Entity's hitbox, in pixels.
++	/// </summary>
+ 	public int height;
++
++	/// <summary>
++	/// The Entity is currently in water.
++	/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
++	/// </summary>
+ 	public bool wet;
+ 	public bool shimmerWet;
+ 	public bool honeyWet;

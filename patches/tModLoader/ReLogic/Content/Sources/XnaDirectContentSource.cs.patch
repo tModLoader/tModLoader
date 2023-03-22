@@ -1,94 +1,44 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/XnaDirectContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/XnaDirectContentSource.cs
-@@ -1,72 +_,36 @@
+@@ -1,9 +_,36 @@
  using System;
--using System.Collections.Generic;
+ using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  
- namespace ReLogic.Content.Sources
- {
--	public class XnaDirectContentSource : IContentSource
-+	public class XnaDirectContentSource : ContentSource
- 	{
- 		private readonly string _rootDirectory;
--		private readonly HashSet<string> _files = new HashSet<string>();
--		private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
--
--		public IContentValidator ContentValidator {
--			get;
--			set;
--		}
--
--		public XnaDirectContentSource(string rootDirectory) {
-+		private readonly string _alternateRootDirectory;
+ namespace ReLogic.Content.Sources;
+ 
++//TML: Now derives from ContentSource instead of IContentSource
++public class XnaDirectContentSource : ContentSource
++{
++	private readonly string[] _rootDirectories;
 +
-+		public XnaDirectContentSource(string rootDirectory, string alternateRootDirectory) {
- 			_rootDirectory = AssetPathHelper.CleanPath(rootDirectory);
--			BuildFileMap();
--		}
--
--		private void BuildFileMap() {
--			_files.Clear();
--			string[] files = Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories);
--			foreach (string text in files) {
--				_files.Add(text.ToLower());
--			}
--		}
--
--		public bool HasAsset(string assetName) {
--			string text = Path.Combine(_rootDirectory, assetName) + ".xnb";
--			if (_rejections.IsRejected(assetName))
--				return false;
--
--			return _files.Contains(text.ToLower());
--		}
--
--		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
--			string value = Path.Combine(_rootDirectory, assetNameStart).ToLower();
--			List<string> list = new List<string>();
--			foreach (string file in _files) {
--				if (file.StartsWith(value))
--					list.Add(file);
--			}
--
--			return list;
--		}
--
--		public string GetExtension(string assetName) => ".xnb";
--
--		public Stream OpenStream(string assetName) {
--			string path = Path.Combine(_rootDirectory, assetName) + ".xnb";
-+			_alternateRootDirectory = AssetPathHelper.CleanPath(alternateRootDirectory);
++	public XnaDirectContentSource(IEnumerable<string> rootDirectories)
++	{
++		_rootDirectories = rootDirectories.Select(AssetPathHelper.CleanPath).ToArray();
++		SetAssetNames(
++			_rootDirectories
++				.SelectMany(rootDir => Directory.GetFiles(rootDir, "*.xnb", SearchOption.AllDirectories).Select(path => path.Substring(rootDir.Length + 1)))
++				.ToHashSet());
++	}
 +
-+			SetAssetNames(
-+				Directory.GetFiles(_rootDirectory, "*.xnb", SearchOption.AllDirectories)
-+				.Select(path => path.Substring(_rootDirectory.Length+1))
-+				.Concat(Directory.GetFiles(_alternateRootDirectory, "*.xnb", SearchOption.AllDirectories)
-+				.Select(path => path.Substring(_alternateRootDirectory.Length + 1))).ToHashSet());
++	public override Stream OpenStream(string assetName)
++	{
++		try {
++			return File.OpenRead(_rootDirectories.Select(rootDir => Path.Combine(rootDir, assetName)).First(File.Exists));
 +		}
++		catch (Exception innerException) {
++			throw AssetLoadException.FromMissingAsset(assetName, innerException);
++		}
++	}
++}
 +
-+		public override Stream OpenStream(string assetName) {
-+			string path = Path.Combine(_rootDirectory, assetName);
-+			string altPath = Path.Combine(_alternateRootDirectory, assetName);
- 			try {
-+				if (File.Exists(altPath))
-+					return File.OpenRead(altPath);
- 				return File.OpenRead(path);
- 			}
- 			catch (Exception innerException) {
- 				throw AssetLoadException.FromMissingAsset(assetName, innerException);
- 			}
- 		}
--
--		public void RejectAsset(string assetName, IRejectionReason reason) {
--			_rejections.Reject(assetName, reason);
--		}
--
--		public void ClearRejections() {
--			_rejections.Clear();
--		}
--
--		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
- 	}
++/*
+ public class XnaDirectContentSource : IContentSource
+ {
+ 	private readonly string _rootDirectory;
+@@ -73,3 +_,4 @@
+ 
+ 	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
  }
++*/

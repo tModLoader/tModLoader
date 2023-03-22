@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Content.Items;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -34,10 +33,6 @@ namespace ExampleMod.Content.Projectiles
 
 	public class ExamplePiercingProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Piercing Projectile"); // The name of the projectile(it can be appeared in chat)
-		}
-
 		public override void SetDefaults() {
 			Projectile.width = 12; // The width of projectile hitbox
 			Projectile.height = 12; // The height of projectile hitbox
@@ -62,7 +57,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// See comments at the beginning of the class
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// 3a: target.immune[Projectile.owner] = 20;
 			// 3b: target.immune[Projectile.owner] = 5;
 		}
@@ -72,10 +67,6 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExamplePiercingProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
-
-		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);

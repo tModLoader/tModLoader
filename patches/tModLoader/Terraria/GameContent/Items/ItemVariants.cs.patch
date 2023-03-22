@@ -1,0 +1,99 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/ItemVariants.cs
++++ src/tModLoader/Terraria/GameContent/Items/ItemVariants.cs
+@@ -5,6 +_,9 @@
+ 
+ namespace Terraria.GameContent.Items;
+ 
++/// <summary>
++/// Handles conditional variants for <see cref="Item"/>s, commonly used for secret seeds.
++/// </summary>
+ public static class ItemVariants
+ {
+ 	public class VariantEntry
+@@ -28,15 +_,52 @@
+ 	}
+ 
+ 	private static List<VariantEntry>[] _variants;
++
++	/// <summary>
++	/// Represents the stronger variant of items used on the Remix seed.
++	/// </summary>
+ 	public static ItemVariant StrongerVariant;
++
++	/// <summary>
++	/// Represents the weaker variant of items used on the Remix seed.
++	/// </summary>
+ 	public static ItemVariant WeakerVariant;
++
++	/// <summary>
++	/// Represents the rebalanced variant of items used on the "For the Worthy" seed.
++	/// </summary>
+ 	public static ItemVariant RebalancedVariant;
++
++	/// <summary>
++	/// Represents a variant of an item that is conditionally enabled.
++	/// </summary>
+ 	public static ItemVariant EnabledVariant;
++
++	/// <summary>
++	/// Represents a variant of a boss summoning item that is conditionally disabled.
++	/// </summary>
+ 	public static ItemVariant DisabledBossSummonVariant;
++
++	/// <summary>
++	/// The condition that the active world is using ther "Don't Dig Up" secret seed (<see cref="Main.remixWorld"/>).
++	/// </summary>
+ 	public static ItemVariantCondition RemixWorld;
++
++	/// <summary>
++	/// The condition that the active world is using ther "For the Worthy" secret seed (<see cref="Main.getGoodWorld"/>).
++	/// </summary>
+ 	public static ItemVariantCondition GetGoodWorld;
++
++	/// <summary>
++	/// The condition that the active world is using ther "Get Fixed Boi" secret seed (<c><see cref="Main.remixWorld"/> &amp;&amp; <see cref="Main.getGoodWorld"/></c>).
++	/// </summary>
+ 	public static ItemVariantCondition EverythingWorld;
+ 
++	/// <summary>
++	/// Gets all of the <see cref="ItemVariant"/>s associated with <paramref name="itemId"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to get <see cref="ItemVariant"/>s for.</param>
++	/// <returns>A list of all registered <see cref="ItemVariant"/>s for <paramref name="itemId"/>.</returns>
+ 	public static IEnumerable<VariantEntry> GetVariants(int itemId)
+ 	{
+ 		if (!_variants.IndexInRange(itemId))
+@@ -48,6 +_,12 @@
+ 
+ 	private static VariantEntry GetEntry(int itemId, ItemVariant variant) => GetVariants(itemId).SingleOrDefault((VariantEntry v) => v.Variant == variant);
+ 
++	/// <summary>
++	/// Registers an <see cref="ItemVariant"/> for the given <see cref="Item.type"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to register the <see cref="ItemVariant"/> for.</param>
++	/// <param name="variant">The <see cref="ItemVariant"/> to register to <paramref name="itemId"/>.</param>
++	/// <param name="conditions">The conditions under which <see cref="Item"/>s of type <paramref name="itemId"/> will have <paramref name="variant"/> applied. (<see cref="SelectVariant(int)"/>)</param>
+ 	public static void AddVariant(int itemId, ItemVariant variant, params ItemVariantCondition[] conditions)
+ 	{
+ 		VariantEntry variantEntry = GetEntry(itemId, variant);
+@@ -62,8 +_,20 @@
+ 		variantEntry.AddConditions(conditions);
+ 	}
+ 
++	/// <summary>
++	/// Determines if an <see cref="Item.type"/> has a particular <see cref="ItemVariant"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to check.</param>
++	/// <param name="variant">The <see cref="ItemVariant"/> to check for.</param>
++	/// <returns><see langword="true"/> if <paramref name="itemId"/> has a registered <see cref="ItemVariant"/> of type <paramref name="variant"/>, <see langword="false"/> otherwise.</returns>
++	/// <remarks>This method only checks if the given <see cref="ItemVariant"/> exists, not if it will be applied.</remarks>
+ 	public static bool HasVariant(int itemId, ItemVariant variant) => GetEntry(itemId, variant) != null;
+ 
++	/// <summary>
++	/// Determines which <see cref="ItemVariant"/> should be applied to an item of type <paramref name="itemId"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to check.</param>
++	/// <returns>The <see cref="ItemVariant"/> to use under the current conditions, or <see langword="null"/> if no appropriate <see cref="ItemVariant"/> exists.</returns>
+ 	public static ItemVariant SelectVariant(int itemId)
+ 	{
+ 		if (!_variants.IndexInRange(itemId))

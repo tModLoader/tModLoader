@@ -1,102 +1,109 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TilePaintSystemV2.cs
 +++ src/tModLoader/Terraria/GameContent/TilePaintSystemV2.cs
 @@ -3,6 +_,8 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
- using System;
- using System.Collections.Generic;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent
- {
-@@ -74,7 +_,36 @@
- 			public TreeFoliageVariantKey Key;
+ namespace Terraria.GameContent;
  
- 			public override void Prepare() {
--				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
-+				Asset<Texture2D> asset;
+@@ -80,7 +_,38 @@
+ 
+ 		public override void Prepare()
+ 		{
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeTop[Key.TextureIndex].Name);
++			*/
++			Asset<Texture2D> asset;
 +
-+				if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
-+					int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
++			if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
++				int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
 +
-+					asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetTopTextures();
-+					
-+				}
-+				else if (Key.TextureIndex < 0) {
-+					int lookup = -1 * Key.TextureIndex;
++				asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetTopTextures();
++			}
++			else if (Key.TextureIndex < 0) {
++				int lookup = -1 * Key.TextureIndex;
 +
-+					bool isOcean = lookup % 2 == 0;
++				bool isOcean = lookup % 2 == 0;
 +
-+					if (isOcean) {
-+						lookup = lookup / 2;
-+						asset = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, lookup).GetTopTextures();
-+					}
-+					else {
-+						lookup = (lookup - 1) / 2;
-+						asset = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, lookup).GetOasisTopTextures();
-+					}
++				if (isOcean) {
++					lookup = lookup / 2;
++					asset = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, lookup).GetTopTextures();
 +				}
 +				else {
-+					asset = TextureAssets.TreeTop[Key.TextureIndex];
++					lookup = (lookup - 1) / 2;
++					asset = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, lookup).GetOasisTopTextures();
 +				}
++			}
++			else {
++				asset = TextureAssets.TreeTop[Key.TextureIndex];
++			}
 +
-+				if (asset == null)
-+					asset = TextureAssets.TreeTop[0];
++			if (asset == null)
++				asset = TextureAssets.TreeTop[0];
 +
-+				asset.Wait?.Invoke();
- 				PrepareTextureIfNecessary(asset.Value);
- 			}
++			asset.Wait?.Invoke();
+ 			PrepareTextureIfNecessary(asset.Value);
+ 		}
  
-@@ -88,7 +_,21 @@
- 			public TreeFoliageVariantKey Key;
+@@ -96,7 +_,24 @@
  
- 			public override void Prepare() {
--				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
-+				Asset<Texture2D> asset;
+ 		public override void Prepare()
+ 		{
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.TreeBranch[Key.TextureIndex].Name);
++			*/
++			Asset<Texture2D> asset;
 +
-+				if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
-+					int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
++			if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
++				int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
 +
-+					asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetBranchTextures();
-+				}
-+				else {
-+					asset = TextureAssets.TreeBranch[Key.TextureIndex];
-+				}
++				asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetBranchTextures();
++			}
++			else {
++				asset = TextureAssets.TreeBranch[Key.TextureIndex];
++			}
 +
-+				if (asset == null)
-+					asset = TextureAssets.TreeBranch[0];
++			if (asset == null)
++				asset = TextureAssets.TreeBranch[0];
 +
-+				asset.Wait?.Invoke();
- 				PrepareTextureIfNecessary(asset.Value);
- 			}
++			asset.Wait?.Invoke();
+ 			PrepareTextureIfNecessary(asset.Value);
+ 		}
  
-@@ -102,7 +_,19 @@
- 			public TileVariationkey Key;
+@@ -112,7 +_,22 @@
  
- 			public override void Prepare() {
--				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
-+				Asset<Texture2D> asset;
+ 		public override void Prepare()
+ 		{
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
++			*/
++			Asset<Texture2D> asset;
 +
-+				if (PlantLoader.plantIdToStyleLimit.TryGetValue(Key.TileType, out int val)
-+					&& val <= Math.Abs(Key.TileStyle)) {
++			if (PlantLoader.plantIdToStyleLimit.TryGetValue(Key.TileType, out int val)
++				&& val <= Math.Abs(Key.TileStyle)) {
 +
-+					int lookup = Math.Abs(Key.TileStyle) - val;
-+					asset = PlantLoader.GetTexture(Key.TileType, lookup);
-+				} else {
-+					Main.instance.LoadTiles(Key.TileType);
-+					asset = TextureAssets.Tile[Key.TileType];
-+				}
++				int lookup = Math.Abs(Key.TileStyle) - val;
++				asset = PlantLoader.GetTexture(Key.TileType, lookup);
++			} else {
++				Main.instance.LoadTiles(Key.TileType);
++				asset = TextureAssets.Tile[Key.TileType];
++			}
 +
-+				asset.Wait?.Invoke();
- 				PrepareTextureIfNecessary(asset.Value);
- 			}
++			asset.Wait?.Invoke();
+ 			PrepareTextureIfNecessary(asset.Value);
+ 		}
  
-@@ -116,7 +_,7 @@
- 			public WallVariationKey Key;
+@@ -128,7 +_,10 @@
  
- 			public override void Prepare() {
--				Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Wall[Key.WallType].Name);
-+				Asset<Texture2D> asset = TextureAssets.Wall[Key.WallType];
- 				PrepareTextureIfNecessary(asset.Value);
- 			}
+ 		public override void Prepare()
+ 		{
++			/*
+ 			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Wall[Key.WallType].Name);
++			*/
++			Asset<Texture2D> asset = TextureAssets.Wall[Key.WallType];
+ 			PrepareTextureIfNecessary(asset.Value);
+ 		}
  

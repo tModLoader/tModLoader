@@ -6,11 +6,6 @@ namespace ExampleMod.Content.Items.Accessories
 {
 	public class ExampleImmunityAccessory : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded cross necklace that increases your immunity time by 1 second.");
-			SacrificeTotal = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 26;
 			Item.height = 32;

@@ -1,47 +1,51 @@
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 
-namespace Terraria.ModLoader.Default.Patreon
+namespace Terraria.ModLoader.Default.Patreon;
+
+[AutoloadEquip(EquipType.Head)]
+internal class Remeus_Head : PatreonItem
 {
-	[AutoloadEquip(EquipType.Head)]
-	internal class Remeus_Head : PatreonItem
+	public override void SetDefaults()
 	{
-		public override void SetDefaults() {
-			base.SetDefaults();
+		base.SetDefaults();
 
-			Item.Size = new Vector2(34);
-		}
+		Item.Size = new Vector2(34);
+	}
+}
+
+[AutoloadEquip(EquipType.Body)]
+internal class Remeus_Body : PatreonItem
+{
+	public override void SetStaticDefaults()
+	{
+		base.SetStaticDefaults();
+
+		ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
 	}
 
-	[AutoloadEquip(EquipType.Body)]
-	internal class Remeus_Body : PatreonItem
+	public override void SetDefaults()
 	{
-		public override void SetStaticDefaults() {
-			base.SetStaticDefaults();
+		base.SetDefaults();
 
-			ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
-		}
+		Item.Size = new Vector2(30, 18);
+	}
+}
 
-		public override void SetDefaults() {
-			base.SetDefaults();
+[AutoloadEquip(EquipType.Legs)]
+internal class Remeus_Legs : PatreonItem
+{
+	public override void SetStaticDefaults()
+	{
+		base.SetStaticDefaults();
 
-			Item.Size = new Vector2(30, 18);
-		}
+		ArmorIDs.Legs.Sets.HidesBottomSkin[Item.legSlot] = true;
 	}
 
-	[AutoloadEquip(EquipType.Legs)]
-	internal class Remeus_Legs : PatreonItem
+	public override void SetDefaults()
 	{
-		public override void SetStaticDefaults() {
-			base.SetStaticDefaults();
+		base.SetDefaults();
 
-			ArmorIDs.Legs.Sets.HidesBottomSkin[Item.legSlot] = true;
-		}
-
-		public override void SetDefaults() {
-			base.SetDefaults();
-
-			Item.Size = new Vector2(22, 18);
-		}
+		Item.Size = new Vector2(22, 18);
 	}
 }

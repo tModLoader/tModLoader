@@ -5,12 +5,11 @@ using ExampleMod.Content.Items.Placeable.Furniture;
 using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Chat;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
@@ -32,6 +31,9 @@ namespace ExampleMod.Content.NPCs
 
 		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
 		public List<Item> shopItems = new List<Item>();
+
+		private static int ShimmerHeadIndex;
+		private static Profiles.StackedNPCProfile NPCProfile;
 
 		public override bool PreAI() {
 			if ((!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(NPC.Center)) // If it's past the despawn time and the NPC isn't onscreen
@@ -90,7 +92,7 @@ namespace ExampleMod.Content.NPCs
 				return false;
 
 			// can't spawn if the sundial is active
-			if (Main.fastForwardTime)
+			if (Main.IsFastForwardingTime())
 				return false;
 
 			// can spawn if daytime, and between the spawn and despawn times
@@ -160,6 +162,11 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
+		public override void Load() {
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
+		}
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[NPC.type] = 25;
 			NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
@@ -169,6 +176,20 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[NPC.type] = 90;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.ShimmerTownTransform[Type] = true;
+
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+				Velocity = 2f, // Draws the NPC in the bestiary as if its walking +2 tiles in the x direction
+				Direction = -1 // -1 is left and 1 is right.
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex)
+			);
 		}
 
 		public override void SetDefaults() {
@@ -188,6 +209,12 @@ namespace ExampleMod.Content.NPCs
 			CreateNewShop();
 		}
 
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+			});
+		}
+
 		public override void SaveData(TagCompound tag) {
 			tag["itemIds"] = shopItems;
 		}
@@ -196,19 +223,53 @@ namespace ExampleMod.Content.NPCs
 			shopItems = tag.Get<List<Item>>("shopItems");
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			int num = NPC.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				// Retrieve the gore types. This NPC has shimmer variants for head, arm, and leg gore. It also has a custom hat gore. (7 gores)
+				// This NPC will spawn either the assigned party hat or a custom hat gore when not shimmered. When shimmered the top hat is part of the head and no hat gore is spawned.
+				int hatGore = NPC.GetPartyHatGore();
+				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore 
+				if (hatGore == 0 && !NPC.IsShimmerVariant) {
+					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
+				}
+				string variant = "";
+				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				if (hatGore > 0) {
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, hatGore);
+				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
+		public override bool UsesPartyHat() {
+			// ExampleTravelingMerchant likes to keep his hat on while shimmered.
+			if (NPC.IsShimmerVariant) {
+				return false;
+			}
+			return true;
+		}
+
+		public override bool CanTownNPCSpawn(int numTownNPCs) {
 			return false; // This should always be false, because we spawn in the Traveling Merchant manually
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
-			return new ExampleTravelingMerchantProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -292,23 +353,5 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
-	}
-
-	public class ExampleTravelingMerchantProfile : ITownNPCProfile
-	{
-		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
-
-			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
-
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
-		}
-
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Head");
 	}
 }

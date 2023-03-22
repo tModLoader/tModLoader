@@ -5,15 +5,12 @@ using Terraria.ModLoader;
 public class EquipTextureTest : EquipTexture
 {
 	void Method() {
-#if COMPILE_ERROR
 		Console.WriteLine(mod);
-#endif
 		Console.WriteLine(item);
 	}
 
 	public override void UpdateVanity(Player player, EquipType type) { /* Empty */ }
 
-#if COMPILE_ERROR
 	public override bool DrawHead() { return true; /* Empty */ }
 
 	public override bool DrawBody() { return true; /* Empty */ }
@@ -23,7 +20,6 @@ public class EquipTextureTest : EquipTexture
 	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
 
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
-#endif
 }
 
 public class EquipTextureModTest : Mod
@@ -67,9 +63,7 @@ public class EquipTextureModTest : Mod
 
 		// 1.3 sbyte Mod.GetAccessorySlot(string name, EquipType type)
 		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type)
-#if COMPILE_ERROR // sbyte -> int
 		sbyte sSlot = mod.GetAccessorySlot(equipName, equipType);
 		sSlot = GetAccessorySlot(equipName, equipType);
-#endif
 	}
 }

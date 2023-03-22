@@ -19,15 +19,13 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		private static readonly float RangeHypoteneus = (float)(Math.Sqrt(2.0) * Range); // This comes from the formula for calculating the diagonal of a square (a * √2)
 		private static readonly float RangeHypoteneusSquared = RangeHypoteneus * RangeHypoteneus;
 
-		// The following 2 lines of code are ref properties (learn about them in google) to the projectile.ai array entries, which will help us make our code way more readable.
+		// The following 2 lines of code are ref properties (learn about them in google) to the Projectile.ai array entries, which will help us make our code way more readable.
 		// We're using the ai array because it's automatically synchronized by the base game in multiplayer, which saves us from writing a lot of boilerplate code.
-		// Note that the projectile.ai array is only 2 entries big. If you need more than 2 synchronized variables - you'll have to use fields and sync them manually.
+		// Note that the Projectile.ai array is only 3 entries big. If you need more than 3 synchronized variables - you'll have to use fields and sync them manually.
 		public ref float AIFadeProgress => ref Projectile.ai[0];
 		public ref float AIDashCharge => ref Projectile.ai[1];
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Annoying Light");
-
 			Main.projFrames[Projectile.type] = 1;
 			Main.projPet[Projectile.type] = true;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;

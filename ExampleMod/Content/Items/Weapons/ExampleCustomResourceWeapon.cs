@@ -1,8 +1,7 @@
-﻿using ExampleMod.Common.Players;
+﻿using System.Collections.Generic;
+using ExampleMod.Common.Players;
 using ExampleMod.Content.Tiles.Furniture;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,10 +10,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleCustomResourceWeapon : ModItem
 	{
 		private int exampleResourceCost; // Add our custom resource cost
-
-		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.damage = 130;

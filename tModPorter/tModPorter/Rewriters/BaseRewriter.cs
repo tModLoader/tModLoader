@@ -53,10 +53,11 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		usings = usings.WithUsingNamespace(ns.ToString());
 	}
 
-	public TypeSyntax UseType(ITypeSymbol sym) =>
-		sym is INamedTypeSymbol named ?
-			UseType(named) :
-			IdentifierName(sym.ToString());
+	public TypeSyntax UseType(ITypeSymbol sym) => sym switch {
+		INamedTypeSymbol named => UseType(named),
+		IArrayTypeSymbol array => UseType(array),
+		_ => IdentifierName(sym.ToString())
+	};
 
 	public TypeSyntax UseType(INamedTypeSymbol sym) {
 		if (sym.ConstructedFrom is INamedTypeSymbol genericTemplate && genericTemplate.SpecialType == SpecialType.System_Nullable_T)
@@ -66,18 +67,26 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		if (specialKind != SyntaxKind.None)
 			return PredefinedType(Token(specialKind));
 
-		if (sym.ContainingNamespace != null) {
+		if (sym.ContainingNamespace != null)
 			UsingNamespace(sym.ContainingNamespace);
-		}
 
-		if (sym.TypeArguments.Length > 0) {
-			return GenericName(Identifier(sym.Name), TypeArgumentList(sym.TypeArguments.Select(UseType)));
-		}
+		return Name(sym);
+	}
 
-		return IdentifierName(sym.Name);
+	private NameSyntax Name(INamedTypeSymbol sym)
+	{
+		SimpleNameSyntax name = sym.TypeArguments.Length > 0
+			? GenericName(Identifier(sym.Name), TypeArgumentList(sym.TypeArguments.Select(UseType)))
+			: IdentifierName(sym.Name);
+
+		return sym.ContainingType != null
+			? QualifiedName(Name(sym.ContainingType), name)
+			: name;
 	}
 
 	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
+
+	public TypeSyntax UseType(IArrayTypeSymbol arrayType) => ArrayTypeRank1(UseType(arrayType.ElementType));
 
 	public bool IsUsingNamespace(string @namespace) => usings.Contains(@namespace);
 
@@ -114,7 +123,8 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 
 		targetType = null;
 		isInvoke = false;
-		if ((op = model.GetOperation(node) as IInvalidOperation) != null) {
+		op = model.GetOperation(node);
+		if (IsInvalidOrObsolete(op)) {
 			return true;
 		}
 
@@ -137,7 +147,10 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
 	}
 
-	public static bool IsInvalidOrObsolete(IOperation op) => op is IInvalidOperation || op is IInvocationOperation invocation && invocation.TargetMethod.IsObsolete();
+	public static bool IsInvalidOrObsolete(IOperation op) =>
+		op is IInvalidOperation ||
+		op is IInvocationOperation invocation && invocation.TargetMethod.IsObsolete() ||
+		op is IMemberReferenceOperation reference && reference.Member.IsObsolete();
 
 	public static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
 		switch (expr) {

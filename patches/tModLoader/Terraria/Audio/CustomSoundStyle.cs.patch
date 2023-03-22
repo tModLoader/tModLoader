@@ -7,8 +7,8 @@
  using Microsoft.Xna.Framework.Audio;
  using Terraria.Utilities;
  
-@@ -25,3 +_,4 @@
- 		public override SoundEffect GetRandomSound() => _soundEffects[Random.Next(_soundEffects.Length)];
- 	}
+@@ -26,3 +_,4 @@
+ 
+ 	public override SoundEffect GetRandomSound() => _soundEffects[Random.Next(_soundEffects.Length)];
  }
 +*/

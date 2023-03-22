@@ -25,7 +25,7 @@ namespace Terraria.ModLoader
 		[ClassInitialize]
 		public static void ClassInit(TestContext context) {
 			//initialize a server context for ItemIO
-			typeof(Program).GetProperty(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public).SetValue(null, ".");
+			Program.SavePath = ".";
 			Main.dedServ = true;
 
 			// autoload the TagSerializers
@@ -508,7 +508,7 @@ namespace Terraria.ModLoader
     [],
     [12, 3]
   ]
-}");
+}".ReplaceLineEndings());
 		}
 
 		[TestMethod]
@@ -548,7 +548,7 @@ namespace Terraria.ModLoader
       ]
     ]
   ]
-}");
+}".ReplaceLineEndings());
 
 			//verify that imposing an element type on a dynamic list throws the appropriate exception
 			try {
@@ -574,7 +574,7 @@ namespace Terraria.ModLoader
       {}
     ]
   ]
-}");
+}".ReplaceLineEndings());
 
 			//should modify the underlying tag
 			var list1 = tag.GetList<IList>("list");
@@ -588,7 +588,7 @@ namespace Terraria.ModLoader
     ],
     object []
   ]
-}");
+}".ReplaceLineEndings());
 			var list2 = tag.GetList<List<TagCompound>>("list");
 			list2.RemoveAt(1);//no effect on underlying tag
 			list2[0][1]["key"] = "value";//effect on underlying tag
@@ -602,7 +602,7 @@ namespace Terraria.ModLoader
     ],
     object []
   ]
-}");
+}".ReplaceLineEndings());
 		}
 
 		[TestMethod]
@@ -751,7 +751,7 @@ namespace Terraria.ModLoader
   int ""id"" = 6,
   string ""<type>"" = ""Terraria.Item"",
   string ""prefix"" = ""string""
-})");
+})".ReplaceLineEndings());
 				Assert.AreEqual(e.InnerException.Message, "NBT Deserialization (type=System.Byte,entry=string \"prefix\" = \"string\")");
 				Assert.AreEqual(e.InnerException.InnerException.Message, "Unable to cast object of type 'System.String' to type 'System.Byte'");
 			}
@@ -867,7 +867,7 @@ namespace Terraria.ModLoader
 			catch (IOException e) {
 				Assert.AreEqual(e.Message, @"NBT Deserialization (type=Terraria.ModLoader.TagIOTests+A,entry=object ""a"" {
   string ""<type>"" = ""Terraria.ModLoader.TagIOTests+A""
-})");
+})".ReplaceLineEndings());
 				Assert.AreEqual(e.InnerException.Message, "Missing deserializer for type 'Terraria.ModLoader.TagIOTests+A'.");
 			}
 		}

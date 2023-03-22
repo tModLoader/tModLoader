@@ -1,247 +1,186 @@
 --- src/TerrariaNetCore/Terraria/ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria/ObjectData/TileObjectData.cs
-@@ -3,13 +_,14 @@
- using Terraria.DataStructures;
+@@ -4,13 +_,14 @@
  using Terraria.Enums;
  using Terraria.GameContent.Tile_Entities;
+ using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.Modules;
  
- namespace Terraria.ObjectData
+ namespace Terraria.ObjectData;
+ 
+-public class TileObjectData
++public partial class TileObjectData
  {
- 	public class TileObjectData
- 	{
--		private TileObjectData _parent;
-+		internal TileObjectData _parent;
- 		private bool _linkedAlternates;
- 		private bool _usesCustomCanPlace;
- 		private TileObjectAlternatesModule _alternates;
-@@ -34,34 +_,34 @@
- 		private bool _hasOwnTileObjectDraw;
- 		private bool _hasOwnTileObjectStyle;
- 		private bool _hasOwnTileObjectCoords;
--		private static List<TileObjectData> _data;
-+		internal static List<TileObjectData> _data;
- 		private static TileObjectData _baseObject;
- 		private static bool readOnlyData;
--		private static TileObjectData newTile;
-+		public static TileObjectData newTile;
--		private static TileObjectData newSubTile;
-+		public static TileObjectData newSubTile;
--		private static TileObjectData newAlternate;
-+		public static TileObjectData newAlternate;
--		private static TileObjectData StyleSwitch;
-+		public static TileObjectData StyleSwitch;
--		private static TileObjectData StyleTorch;
-+		public static TileObjectData StyleTorch;
--		private static TileObjectData Style4x2;
-+		public static TileObjectData Style4x2;
--		private static TileObjectData Style2x2;
-+		public static TileObjectData Style2x2;
--		private static TileObjectData Style1x2;
-+		public static TileObjectData Style1x2;
--		private static TileObjectData Style1x1;
-+		public static TileObjectData Style1x1;
--		private static TileObjectData StyleAlch;
-+		public static TileObjectData StyleAlch;
--		private static TileObjectData StyleDye;
-+		public static TileObjectData StyleDye;
--		private static TileObjectData Style2x1;
-+		public static TileObjectData Style2x1;
--		private static TileObjectData Style6x3;
-+		public static TileObjectData Style6x3;
--		private static TileObjectData StyleSmallCage;
-+		public static TileObjectData StyleSmallCage;
--		private static TileObjectData StyleOnTable1x1;
-+		public static TileObjectData StyleOnTable1x1;
--		private static TileObjectData Style1x2Top;
-+		public static TileObjectData Style1x2Top;
--		private static TileObjectData Style1xX;
-+		public static TileObjectData Style1xX;
--		private static TileObjectData Style2xX;
-+		public static TileObjectData Style2xX;
--		private static TileObjectData Style3x2;
-+		public static TileObjectData Style3x2;
--		private static TileObjectData Style3x3;
-+		public static TileObjectData Style3x3;
--		private static TileObjectData Style3x4;
-+		public static TileObjectData Style3x4;
--		private static TileObjectData Style5x4;
-+		public static TileObjectData Style5x4;
--		private static TileObjectData Style3x3Wall;
-+		public static TileObjectData Style3x3Wall;
+-	private TileObjectData _parent;
++	internal TileObjectData _parent;
+ 	private bool _linkedAlternates;
+ 	private bool _usesCustomCanPlace;
+ 	private TileObjectAlternatesModule _alternates;
+@@ -35,34 +_,36 @@
+ 	private bool _hasOwnTileObjectDraw;
+ 	private bool _hasOwnTileObjectStyle;
+ 	private bool _hasOwnTileObjectCoords;
+-	private static List<TileObjectData> _data;
++	internal static List<TileObjectData> _data;
+ 	private static TileObjectData _baseObject;
+ 	private static bool readOnlyData;
++
++	//TML: Everything made public.
+-	private static TileObjectData newTile;
++	public static TileObjectData newTile;
+-	private static TileObjectData newSubTile;
++	public static TileObjectData newSubTile;
+-	private static TileObjectData newAlternate;
++	public static TileObjectData newAlternate;
+-	private static TileObjectData StyleSwitch;
++	public static TileObjectData StyleSwitch;
+-	private static TileObjectData StyleTorch;
++	public static TileObjectData StyleTorch;
+-	private static TileObjectData Style4x2;
++	public static TileObjectData Style4x2;
+-	private static TileObjectData Style2x2;
++	public static TileObjectData Style2x2;
+-	private static TileObjectData Style1x2;
++	public static TileObjectData Style1x2;
+-	private static TileObjectData Style1x1;
++	public static TileObjectData Style1x1;
+-	private static TileObjectData StyleAlch;
++	public static TileObjectData StyleAlch;
+-	private static TileObjectData StyleDye;
++	public static TileObjectData StyleDye;
+-	private static TileObjectData Style2x1;
++	public static TileObjectData Style2x1;
+-	private static TileObjectData Style6x3;
++	public static TileObjectData Style6x3;
+-	private static TileObjectData StyleSmallCage;
++	public static TileObjectData StyleSmallCage;
+-	private static TileObjectData StyleOnTable1x1;
++	public static TileObjectData StyleOnTable1x1;
+-	private static TileObjectData Style1x2Top;
++	public static TileObjectData Style1x2Top;
+-	private static TileObjectData Style1xX;
++	public static TileObjectData Style1xX;
+-	private static TileObjectData Style2xX;
++	public static TileObjectData Style2xX;
+-	private static TileObjectData Style3x2;
++	public static TileObjectData Style3x2;
+-	private static TileObjectData Style3x3;
++	public static TileObjectData Style3x3;
+-	private static TileObjectData Style3x4;
++	public static TileObjectData Style3x4;
+-	private static TileObjectData Style5x4;
++	public static TileObjectData Style5x4;
+-	private static TileObjectData Style3x3Wall;
++	public static TileObjectData Style3x3Wall;
  
--		private bool LinkedAlternates {
-+		public bool LinkedAlternates {
- 			get {
- 				return _linkedAlternates;
- 			}
-@@ -86,7 +_,7 @@
- 			}
+-	private bool LinkedAlternates {
++	public bool LinkedAlternates {
+ 		get {
+ 			return _linkedAlternates;
  		}
- 
--		private List<TileObjectData> Alternates {
-+		internal List<TileObjectData> Alternates {
- 			get {
- 				if (_alternates == null)
- 					return _baseObject.Alternates;
-@@ -530,7 +_,7 @@
- 			}
- 		}
- 
--		private List<TileObjectData> SubTiles {
-+		internal List<TileObjectData> SubTiles {
- 			get {
- 				if (_subTiles == null)
- 					return _baseObject.SubTiles;
-@@ -1339,6 +_,18 @@
- 				if (_liquidDeath.water)
- 					WaterPlacement = LiquidPlacement.NotAllowed;
- 			}
-+
-+			// Detect modder mistake: IndexOutOfRangeException
-+			if (Height != _tileObjectCoords.heights.Length) {
-+				// legacy compatibility, mismatch isn't a problem here
-+				if (Height < _tileObjectCoords.heights.Length)
-+					return;
-+
-+				FixNewTile();
-+				throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.") {
-+					HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-Tile"
-+				};
-+			}
- 		}
- 
- 		private void WriteCheck() {
-@@ -1350,13 +_,15 @@
- 			readOnlyData = true;
- 		}
- 
--		public bool LiquidPlace(Tile checkTile) {
-+		public bool LiquidPlace(Tile checkTile, bool checkStay = false) {
- 			if (checkTile == null)
- 				return false;
- 
- 			if (checkTile.liquid > 0) {
- 				switch (checkTile.liquidType()) {
- 					case 1:
-+						if (checkStay && !LavaDeath)
-+							break;
- 						if (LavaPlacement == LiquidPlacement.NotAllowed)
- 							return false;
- 						if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1364,6 +_,8 @@
- 						break;
- 					case 0:
- 					case 2:
-+						if (checkStay && !WaterDeath)
-+							break;
- 						if (WaterPlacement == LiquidPlacement.NotAllowed)
- 							return false;
- 						if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1467,13 +_,17 @@
- 			newTile = new TileObjectData(_baseObject);
- 		}
- 
--		private static void addTile(int tileType) {
-+		public static void addTile(int tileType) {
- 			newTile.Calculate();
- 			_data[tileType] = newTile;
- 			newTile = new TileObjectData(_baseObject);
- 		}
- 
-+		public static void FixNewTile() {
-+			newTile = new TileObjectData(_baseObject);
-+		}
-+
--		private static void addSubTile(int style) {
-+		public static void addSubTile(int style) {
- 			newSubTile.Calculate();
- 			List<TileObjectData> list;
- 			if (!newTile._hasOwnSubTiles) {
-@@ -1495,7 +_,7 @@
- 			newSubTile = new TileObjectData(_baseObject);
- 		}
- 
--		private static void addAlternate(int baseStyle) {
-+		public static void addAlternate(int baseStyle) {
- 			newAlternate.Calculate();
- 			if (!newTile._hasOwnAlternates)
- 				newTile.Alternates = new List<TileObjectData>();
-@@ -4189,7 +_,6 @@
- 			newTile.StyleMultiplier = 3;
- 			newTile.StyleHorizontal = true;
- 			addTile(615);
--			readOnlyData = true;
- 		}
- 
- 		public static bool CustomPlace(int type, int style) {
-@@ -4343,6 +_,68 @@
- 			TileObjectData tileData = GetTileData(type, style);
- 			if (tileData != null)
- 				baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);
-+		}
-+
-+		public static int GetTileStyle(Tile getTile) {
-+			if (getTile == null || !getTile.active())
-+				return -1;
-+
-+			int type = getTile.type;
-+			if (type < 0 || type >= _data.Count)
-+				throw new ArgumentOutOfRangeException("Function called with a bad tile type");
-+
-+			TileObjectData tileObjectData = _data[type];
-+			if (tileObjectData == null)
-+				return -1;
-+
-+			int num = getTile.frameX / tileObjectData.CoordinateFullWidth;
-+			int num2 = getTile.frameY / tileObjectData.CoordinateFullHeight;
-+			int num3 = tileObjectData.StyleWrapLimit;
-+			if (num3 == 0)
-+				num3 = 1;
-+
-+			int num4;
-+			if (tileObjectData.StyleHorizontal)
-+				num4 = num2 * num3 + num;
-+			else
-+				num4 = num * num3 + num2;
-+
-+			int num5 = num4 / tileObjectData.StyleMultiplier;
-+			int num6 = num4 % tileObjectData.StyleMultiplier;
-+			return num5;
-+		}
-+
-+		public static void GetTileInfo(Tile getTile, ref int style, ref int alternate) {
-+			if (getTile == null || !getTile.active())
-+				return;
-+
-+			int type = getTile.type;
-+			if (type < 0 || type >= _data.Count)
-+				throw new ArgumentOutOfRangeException("Function called with a bad tile type");
-+
-+			TileObjectData tileObjectData = _data[type];
-+			if (tileObjectData == null)
-+				return;
-+
-+			int num = getTile.frameX / tileObjectData.CoordinateFullWidth;
-+			int num2 = getTile.frameY / tileObjectData.CoordinateFullHeight;
-+			int num3 = tileObjectData.StyleWrapLimit;
-+			if (num3 == 0)
-+				num3 = 1;
-+
-+			int num4;
-+			if (tileObjectData.StyleHorizontal)
-+				num4 = num2 * num3 + num;
-+			else
-+				num4 = num * num3 + num2;
-+
-+			int num5 = num4 / tileObjectData.StyleMultiplier;
-+			int num6 = num4 % tileObjectData.StyleMultiplier;
-+			style = num5;
-+			if (tileObjectData._alternates != null)
-+				alternate = num6;
-+
-+			return;
+@@ -87,7 +_,7 @@
  		}
  	}
- }
+ 
+-	private List<TileObjectData> Alternates {
++	internal List<TileObjectData> Alternates {
+ 		get {
+ 			if (_alternates == null)
+ 				return _baseObject.Alternates;
+@@ -531,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private List<TileObjectData> SubTiles {
++	internal List<TileObjectData> SubTiles {
+ 		get {
+ 			if (_subTiles == null)
+ 				return _baseObject.SubTiles;
+@@ -1372,6 +_,19 @@
+ 			if (_liquidDeath.water)
+ 				WaterPlacement = LiquidPlacement.NotAllowed;
+ 		}
++
++		// Detect modder mistake: IndexOutOfRangeException
++		if (Height != _tileObjectCoords.heights.Length) {
++			// Legacy compatibility, mismatch isn't a problem here
++			if (Height < _tileObjectCoords.heights.Length)
++				return;
++
++			FixNewTile();
++
++			throw new Exception($"TileObjectData Height and CoordinateHeights are incorrect. Height must equal the number of values in CoordinateHeights: [{string.Join(", ", _tileObjectCoords.heights)}] is not {Height} elements long.") {
++				HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-Tile"
++			};
++		}
+ 	}
+ 
+ 	private void WriteCheck()
+@@ -1385,7 +_,8 @@
+ 		readOnlyData = true;
+ 	}
+ 
+-	public bool LiquidPlace(Tile checkTile)
++	//TML: Added 'checkStay' parameter.
++	public bool LiquidPlace(Tile checkTile, bool checkStay = false)
+ 	{
+ 		if (checkTile == null)
+ 			return false;
+@@ -1393,6 +_,9 @@
+ 		if (checkTile.liquid > 0) {
+ 			switch (checkTile.liquidType()) {
+ 				case 1:
++					if (checkStay && !LavaDeath)
++						break;
++
+ 					if (LavaPlacement == LiquidPlacement.NotAllowed)
+ 						return false;
+ 					if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
+@@ -1401,6 +_,9 @@
+ 				case 0:
+ 				case 2:
+ 				case 3:
++					if (checkStay && !WaterDeath)
++						break;
++
+ 					if (WaterPlacement == LiquidPlacement.NotAllowed)
+ 						return false;
+ 					if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
+@@ -1510,14 +_,14 @@
+ 		newTile = new TileObjectData(_baseObject);
+ 	}
+ 
+-	private static void addTile(int tileType)
++	public static void addTile(int tileType)
+ 	{
+ 		newTile.Calculate();
+ 		_data[tileType] = newTile;
+ 		newTile = new TileObjectData(_baseObject);
+ 	}
+ 
+-	private static void addSubTile(params int[] styles)
++	public static void addSubTile(params int[] styles)
+ 	{
+ 		newSubTile.Calculate();
+ 		foreach (int num in styles) {
+@@ -1566,7 +_,7 @@
+ 		newSubTile = new TileObjectData(_baseObject);
+ 	}
+ 
+-	private static void addAlternate(int baseStyle)
++	public static void addAlternate(int baseStyle)
+ 	{
+ 		newAlternate.Calculate();
+ 		if (!newTile._hasOwnAlternates)
+@@ -4579,7 +_,10 @@
+ 		newTile.StyleMultiplier = 3;
+ 		newTile.StyleHorizontal = true;
+ 		addTile(615);
++
++		/*
+ 		readOnlyData = true;
++		*/
+ 	}
+ 
+ 	public static bool CustomPlace(int type, int style)

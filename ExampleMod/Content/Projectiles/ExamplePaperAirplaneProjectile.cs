@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,10 +11,6 @@ namespace ExampleMod.Content.Projectiles
 {
 	public class ExamplePaperAirplaneProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Paper Airplane Projectile"); // The English name of the projectile
-		}
-
 		public override void SetDefaults() {
 			Projectile.width = 10; // The width of the projectile
 			Projectile.height = 10; // The height of the projectile
@@ -157,6 +153,14 @@ namespace ExampleMod.Content.Projectiles
 			// Let's add some dust for special effect.
 			for (int i = 0; i < 10; i++) {
 				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, ModContent.DustType<Dusts.Sparkle>());
+			}
+		}
+
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			if (target.type == NPCID.GraniteGolem) {
+				// Paper beats Rock!
+				// Use FinalDamage since the projectile isn't conceptually stronger, the target is weaker to this weapon.
+				modifiers.FinalDamage *= 20f; // 20x damage...isn't much since defense is high and damage is low.
 			}
 		}
 	}

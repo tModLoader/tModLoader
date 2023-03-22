@@ -1,67 +1,70 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
 @@ -4,6 +_,7 @@
- using System.Collections;
- using System.Collections.Generic;
  using System.IO;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Content.Sources;
 +using Terraria.ModLoader.Engine;
  
- namespace Terraria.Audio
- {
+ namespace Terraria.Audio;
+ 
 @@ -68,17 +_,19 @@
- 					continue;
  
- 				string extension = contentSource.GetExtension(assetPath);
-+				string assetPathWithExtension = assetPath + extension;
+ #if !SERVER
+ 			string extension = contentSource.GetExtension(assetPath);
++			string assetPathWithExtension = assetPath + extension;
 +
- 				try {
- 					IAudioTrack audioTrack2 = null;
- 					switch (extension) {
- 						case ".ogg":
--							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPath));
-+							audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPathWithExtension));
- 							break;
- 						case ".wav":
--							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPath));
-+							audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPathWithExtension));
- 							break;
- 						case ".mp3":
--							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPath));
-+							audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPathWithExtension));
- 							break;
- 					}
+ 			try {
+ 				IAudioTrack audioTrack2 = null;
+ 				switch (extension) {
+ 					case ".ogg":
+-						audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPath));
++						audioTrack2 = new OGGAudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 						break;
+ 					case ".wav":
+-						audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPath));
++						audioTrack2 = new WAVAudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 						break;
+ 					case ".mp3":
+-						audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPath));
++						audioTrack2 = new MP3AudioTrack(contentSource.OpenStream(assetPathWithExtension));
+ 						break;
+ 				}
  
-@@ -98,10 +_,12 @@
- 		}
+@@ -100,10 +_,12 @@
  
- 		public LegacyAudioSystem() {
--			Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
--			SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
-+			var contentManager = (TMLContentManager)Main.instance.Content;
+ 	public LegacyAudioSystem()
+ 	{
+-		Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+-		SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
++		var contentManager = (TMLContentManager)Main.instance.Content;
 +
-+			Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
-+			SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
- 			Engine.Update();
--			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
-+			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb")); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
- 			Engine.Update();
- 			AudioTracks = new IAudioTrack[91];
- 			TrackNamesByIndex = new Dictionary<int, string>();
-@@ -115,6 +_,8 @@
- 			}
++		Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
++		SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
+ 		Engine.Update();
+-		WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512); //TODO, investigate history of windows looping errors with streaming wavebank from disk in FNA in Windows.
++		WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb"), 0, 512); //TODO, investigate history of windows looping errors with streaming wavebank from disk in FNA in Windows.
+ 		Engine.Update();
+ 		AudioTracks = new IAudioTrack[Main.maxMusic];
+ 		TrackNamesByIndex = new Dictionary<int, string>();
+@@ -118,6 +_,10 @@
  		}
+ 	}
  
-+		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
++	// Added by TML.
++	internal Cue GetCueInternal(string cueName)
++		=> SoundBank.GetCue(cueName);
 +
- 		public void LoadCue(int cueIndex, string cueName) {
- 			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
- 			TrackNamesByIndex[cueIndex] = cueName;
-@@ -244,7 +_,7 @@
- 		}
+ 	public void LoadCue(int cueIndex, string cueName)
+ 	{
+ 		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
+@@ -256,7 +_,8 @@
  
- 		public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible) {
--			if (!WaveBank.IsPrepared)
-+			if (!WaveBank.IsPrepared || AudioTracks[i] is null) // should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
- 				return;
+ 	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
+ 	{
+-		if (!WaveBank.IsPrepared)
++		// Track should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
++		if (!WaveBank.IsPrepared || AudioTracks[i] is null)
+ 			return;
  
- 			if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {
+ 		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {

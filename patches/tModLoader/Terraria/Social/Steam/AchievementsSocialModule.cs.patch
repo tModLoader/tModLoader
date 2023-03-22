@@ -1,11 +1,19 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/AchievementsSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/AchievementsSocialModule.cs
-@@ -92,7 +_,7 @@
- 		}
+@@ -100,12 +_,14 @@
  
- 		private void OnUserStatsReceived(UserStatsReceived_t results) {
--			if (results.m_nGameID == 105600 && results.m_steamIDUser == SteamUser.GetSteamID())
-+			if (results.m_nGameID == 1281930 && results.m_steamIDUser == SteamUser.GetSteamID())
- 				_areStatsReceived = true;
- 		}
+ 	public override void CompleteAchievement(string name)
+ 	{
++		//Solxan: Blocks attempts to give steam achievements in tml
+-		SteamUserStats.SetAchievement(name);
++		//SteamUserStats.SetAchievement(name);
  	}
+ 
+ 	private void OnUserStatsReceived(UserStatsReceived_t results)
+ 	{
++		// AppID changed from Terraria to TML
+-		if (results.m_nGameID == 105600 && results.m_steamIDUser == SteamUser.GetSteamID())
++		if (results.m_nGameID == ModLoader.Engine.Steam.TMLAppID && results.m_steamIDUser == SteamUser.GetSteamID())
+ 			_areStatsReceived = true;
+ 	}
+ }

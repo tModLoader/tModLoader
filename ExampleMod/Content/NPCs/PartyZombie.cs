@@ -14,9 +14,9 @@ namespace ExampleMod.Content.NPCs
 	public class PartyZombie : ModNPC
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Party Zombie");
-
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
+
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
 
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
@@ -84,7 +84,7 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// Spawn confetti when this zombie is hit.
 
 			for (int i = 0; i < 10; i++) {
@@ -98,7 +98,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit) {
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) {
 			// Here we can make things happen if this NPC hits a player via its hitbox (not projectiles it shoots, this is handled in the projectile code usually)
 			// Common use is applying buffs/debuffs:
 
@@ -107,6 +107,14 @@ namespace ExampleMod.Content.NPCs
 
 			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
 			target.AddBuff(buffType, timeToAdd);
+		}
+
+		public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
+			if (modifiers.DamageType.CountsAsClass(DamageClass.Magic)) {
+				// This example shows how PartyZombie reduces magic damage by 75%. We use FinalDamage here rather than SourceDamage since we are affecting how the npc reacts to the damage.
+				// Conceptually, the source dealing the damage isn't interpreted as stronger, but rather this NPC has a resistance to this damage source.
+				modifiers.FinalDamage *= 0.25f;
+			}
 		}
 	}
 }

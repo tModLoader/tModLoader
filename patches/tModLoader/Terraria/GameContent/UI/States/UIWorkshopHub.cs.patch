@@ -1,175 +1,143 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorkshopHub.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopHub.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
+ using System;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
 +using ReLogic.Content;
- using System;
  using Terraria.Audio;
  using Terraria.GameContent.UI.Elements;
+ using Terraria.ID;
 @@ -10,7 +_,7 @@
  
- namespace Terraria.GameContent.UI.States
+ namespace Terraria.GameContent.UI.States;
+ 
+-public class UIWorkshopHub : UIState, IHaveBackButtonCommand
++public partial class UIWorkshopHub : UIState
  {
--	public class UIWorkshopHub : UIState, IHaveBackButtonCommand
-+	public partial class UIWorkshopHub : UIState, IHaveBackButtonCommand
+ 	private UIState _previousUIState;
+ 	private UIText _descriptionText;
+@@ -40,14 +_,24 @@
+ 		int num = 20;
+ 		int num2 = 250;
+ 		int num3 = 50 + num * 2;
++
++		/*
+ 		int num4 = 600;
++		*/
++		int num4 = Main.minScreenH;
++
+ 		int num5 = num4 - num2 - num3;
+ 		UIElement uIElement = new UIElement();
+ 		uIElement.Width.Set(600f, 0f);
+ 		uIElement.Top.Set(num2, 0f);
+ 		uIElement.Height.Set(num4 - num2, 0f);
+ 		uIElement.HAlign = 0.5f;
++
++		/*
+ 		int num6 = 154;
++		*/
++		int num6 = 70 * 4 + 4;
++
+ 		UIPanel uIPanel = new UIPanel();
+ 		uIPanel.Width.Set(0f, 1f);
+ 		uIPanel.Height.Set(num5, 0f);
+@@ -87,12 +_,13 @@
+ 		_buttonLogs = uITextPanel3;
+ 		UIElement uIElement3 = MakeButton_OpenWorkshopWorldsImportMenu();
+ 		uIElement3.HAlign = 0f;
+-		uIElement3.VAlign = 0f;
++		uIElement3.VAlign = 1f; //TML: Changed from '0f'.
+ 		uIElement2.Append(uIElement3);
+ 		uIElement3 = MakeButton_OpenUseResourcePacksMenu();
+ 		uIElement3.HAlign = 1f;
+-		uIElement3.VAlign = 0f;
++		uIElement3.VAlign = 1f; //TML: Changed from '0f'.
+ 		uIElement2.Append(uIElement3);
++		/*
+ 		uIElement3 = MakeButton_OpenPublishWorldsMenu();
+ 		uIElement3.HAlign = 0f;
+ 		uIElement3.VAlign = 1f;
+@@ -101,6 +_,10 @@
+ 		uIElement3.HAlign = 1f;
+ 		uIElement3.VAlign = 1f;
+ 		uIElement2.Append(uIElement3);
++		*/
++
++		AppendTmlElements(uIElement2);
++
+ 		AddHorizontalSeparator(uIPanel, num6 + 6 + 6);
+ 		AddDescriptionPanel(uIPanel, num6 + 8 + 6 + 6, num5 - num6 - 12 - 12 - 8, "desc");
+ 		uIPanel.Append(uIElement2);
+@@ -179,6 +_,9 @@
+ 	public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement)
  	{
- 		private UIState _previousUIState;
- 		private UIText _descriptionText;
-@@ -24,6 +_,12 @@
+ 		LocalizedText localizedText = null;
++
++		OnChooseOptionDescription(listeningElement, ref localizedText);
++
+ 		if (listeningElement == _buttonUseResourcePacks)
+ 			localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
  
- 		public static event Action OnWorkshopHubMenuOpened;
+@@ -233,17 +_,23 @@
  
-+		// Added by TML.
-+		public UIState PreviousUIState {
-+			get => _previousUIState;
-+			set => _previousUIState = value;
-+		}
+ 	private UIElement MakeFancyButton(string iconImagePath, string textKey)
+ 	{
++		return MakeFancyButton_Inner(Main.Assets.Request<Texture2D>(iconImagePath), textKey);
++	}
 +
- 		public UIWorkshopHub(UIState stateToGoBackTo) {
- 			_previousUIState = stateToGoBackTo;
- 		}
-@@ -37,14 +_,14 @@
- 			int num = 20;
- 			int num2 = 250;
- 			int num3 = 50 + num * 2;
--			int num4 = 600;
-+			int num4 = Main.minScreenH;
- 			int num5 = num4 - num2 - num3;
- 			UIElement uIElement = new UIElement();
- 			uIElement.Width.Set(600f, 0f);
- 			uIElement.Top.Set(num2, 0f);
- 			uIElement.Height.Set(num4 - num2, 0f);
- 			uIElement.HAlign = 0.5f;
--			int num6 = 154;
-+			int num6 = 70 * 4 + 4; //154;
- 			UIPanel uIPanel = new UIPanel();
- 			uIPanel.Width.Set(0f, 1f);
- 			uIPanel.Height.Set(num5, 0f);
-@@ -84,12 +_,13 @@
- 			_buttonLogs = uITextPanel3;
- 			UIElement uIElement3 = MakeButton_OpenWorkshopWorldsImportMenu();
- 			uIElement3.HAlign = 0f;
--			uIElement3.VAlign = 0f;
-+			uIElement3.VAlign = 1f;
- 			uIElement2.Append(uIElement3);
- 			uIElement3 = MakeButton_OpenUseResourcePacksMenu();
- 			uIElement3.HAlign = 1f;
--			uIElement3.VAlign = 0f;
-+			uIElement3.VAlign = 1f;
- 			uIElement2.Append(uIElement3);
-+			/*
- 			uIElement3 = MakeButton_OpenPublishWorldsMenu();
- 			uIElement3.HAlign = 0f;
- 			uIElement3.VAlign = 1f;
-@@ -98,6 +_,30 @@
- 			uIElement3.HAlign = 1f;
- 			uIElement3.VAlign = 1f;
- 			uIElement2.Append(uIElement3);
-+			*/
-+
-+			// Added by TML [
-+			var modsMenu = MakeButton_OpenModsMenu();
-+			modsMenu.HAlign = 0f;
-+			modsMenu.VAlign = 0f;
-+			uIElement2.Append(modsMenu);
-+
-+			var modSources = MakeButton_OpenModSourcesMenu();
-+			modSources.HAlign = 1f;
-+			modSources.VAlign = 0f;
-+			uIElement2.Append(modSources);
-+
-+			var modBrowser = MakeButton_OpenModBrowserMenu();
-+			modBrowser.HAlign = 0f;
-+			modBrowser.VAlign = 0.5f;
-+			uIElement2.Append(modBrowser);
-+
-+			var tbd = MakeButton_ModPackMenu();
-+			tbd.HAlign = 1f;
-+			tbd.VAlign = 0.5f;
-+			uIElement2.Append(tbd);
-+			// ]
-+
- 			AddHorizontalSeparator(uIPanel, num6 + 6 + 6);
- 			AddDescriptionPanel(uIPanel, num6 + 8 + 6 + 6, num5 - num6 - 12 - 12 - 8, "desc");
- 			uIPanel.Append(uIElement2);
-@@ -166,6 +_,19 @@
++	//TML: A split from the above method.
++	private UIElement MakeFancyButton_Inner(Asset<Texture2D> iconImage, string textKey)
++	{
+ 		UIPanel uIPanel = new UIPanel();
+ 		int num = -3;
+ 		int num2 = -3;
+ 		uIPanel.Width = StyleDimension.FromPixelsAndPercent(num, 0.5f);
+-		uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.5f);
++		uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.33f); // (num2, 0.5f);
+ 		uIPanel.OnMouseOver += SetColorsToHovered;
+ 		uIPanel.OnMouseOut += SetColorsToNotHovered;
+ 		uIPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+ 		uIPanel.BorderColor = new Color(89, 116, 213) * 0.7f;
+ 		uIPanel.SetPadding(6f);
+-		UIImage uIImage = new UIImage(Main.Assets.Request<Texture2D>(iconImagePath)) {
++		UIImage uIImage = new UIImage(iconImage) {
+ 			IgnoresMouseInteraction = true,
+ 			VAlign = 0.5f
+ 		};
+@@ -315,13 +_,13 @@
  
- 		public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement) {
- 			LocalizedText localizedText = null;
-+
-+			if (listeningElement == _buttonMods)
-+				localizedText = Language.GetText("tModLoader.MenuManageModsDescription");
-+
-+			if (listeningElement == _buttonModSources)
-+				localizedText = Language.GetText("tModLoader.MenuDevelopModsDescription");
-+
-+			if (listeningElement == _buttonModBrowser)
-+				localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
-+
-+			if (listeningElement == _buttonModPack)
-+				localizedText = Language.GetText("tModLoader.MenuModPackDescription");
-+
- 			if (listeningElement == _buttonUseResourcePacks)
- 				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
- 
-@@ -216,18 +_,22 @@
- 			_descriptionText = uIText;
+ 	public void HandleBackButtonUsage()
+ 	{
+-		if (_previousUIState == null) {
++		if (PreviousUIState == null) {
+ 			Main.menuMode = 0;
+ 			return;
  		}
  
--		private UIElement MakeFancyButton(string iconImagePath, string textKey) {
-+		private UIElement MakeFancyButton(string path, string textKey) {
-+			return MakeFancyButtonInner(Main.Assets.Request<Texture2D>(path), textKey);
-+		}
+ 		Main.menuMode = 888;
+-		Main.MenuUI.SetState(_previousUIState);
++		Main.MenuUI.SetState(PreviousUIState);
+ 		SoundEngine.PlaySound(11);
+ 	}
+ 
+@@ -333,7 +_,11 @@
+ 
+ 	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+ 	{
++		//TODO: Add workshop mod gamepad link point
 +
-+		private UIElement MakeFancyButtonInner(Asset<Texture2D> iconImage, string textKey) {
- 			UIPanel uIPanel = new UIPanel();
- 			int num = -3;
- 			int num2 = -3;
- 			uIPanel.Width = StyleDimension.FromPixelsAndPercent(num, 0.5f);
--			uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.5f);
-+			uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.33f);
- 			uIPanel.OnMouseOver += SetColorsToHovered;
- 			uIPanel.OnMouseOut += SetColorsToNotHovered;
- 			uIPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
- 			uIPanel.BorderColor = new Color(89, 116, 213) * 0.7f;
- 			uIPanel.SetPadding(6f);
--			UIImage uIImage = new UIImage(Main.Assets.Request<Texture2D>(iconImagePath)) {
-+			UIImage uIImage = new UIImage(iconImage) {
- 				IgnoresMouseInteraction = true,
- 				VAlign = 0.5f
- 			};
-@@ -292,13 +_,13 @@
- 		}
+ 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
++
++		/*
+ 		int num = 3000;
+ 		int idRangeEndExclusive = num;
+ 		UILinkPoint linkPoint = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonUseResourcePacks);
+@@ -350,6 +_,7 @@
+ 		_helper.PairUpDown(linkPoint4, linkPoint5);
+ 		_helper.PairUpDown(linkPoint2, linkPoint6);
+ 		_helper.MoveToVisuallyClosestPoint(num, idRangeEndExclusive);
++		*/
+ 	}
  
- 		public void HandleBackButtonUsage() {
--			if (_previousUIState == null) {
-+			if (PreviousUIState == null) {
- 				Main.menuMode = 0;
- 				return;
- 			}
- 
- 			Main.menuMode = 888;
--			Main.MenuUI.SetState(_previousUIState);
-+			Main.MenuUI.SetState(PreviousUIState);
- 			SoundEngine.PlaySound(11);
- 		}
- 
-@@ -308,7 +_,9 @@
- 		}
- 
- 		private void SetupGamepadPoints(SpriteBatch spriteBatch) {
-+			//TODO: Add workshop mod gamepad link point
- 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
-+			/*
- 			int num = 3000;
- 			int idRangeEndExclusive = num;
- 			UILinkPoint linkPoint = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonUseResourcePacks);
-@@ -325,6 +_,7 @@
- 			_helper.PairUpDown(linkPoint4, linkPoint5);
- 			_helper.PairUpDown(linkPoint2, linkPoint6);
- 			_helper.MoveToVisuallyClosestPoint(num, idRangeEndExclusive);
-+			*/
- 		}
- 
- 		static UIWorkshopHub() {
+ 	static UIWorkshopHub()

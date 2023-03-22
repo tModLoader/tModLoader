@@ -1,50 +1,72 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
-@@ -1,5 +_,7 @@
+@@ -1,10 +_,12 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
 +using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.UI.BigProgressBar
+ namespace Terraria.GameContent.UI.BigProgressBar;
+ 
+-public class BigProgressBarHelper
++public partial class BigProgressBarHelper
  {
-@@ -21,6 +_,12 @@
- 		}
+ 	private const string _bossBarTexturePath = "Images/UI/UI_BossBar";
  
- 		public static void DrawFancyBar(SpriteBatch spriteBatch, float lifePercent, Texture2D barIconTexture, Rectangle barIconFrame) {
-+			if (BossBarLoader.drawingInfo.HasValue) {
-+				//Code of the shieldPercent overload is nearly identical
-+				DrawFancyBar(spriteBatch, lifePercent, barIconTexture, barIconFrame, 0f);
-+				return;
-+			}
-+
- 			Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
- 			Point p = new Point(456, 22);
- 			Point p2 = new Point(32, 24);
-@@ -52,6 +_,26 @@
+@@ -24,6 +_,12 @@
  
- 		public static void DrawFancyBar(SpriteBatch spriteBatch, float lifePercent, Texture2D barIconTexture, Rectangle barIconFrame, float shieldPercent) {
- 			Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
-+			if (BossBarLoader.drawingInfo.HasValue) {
-+				//Only the case if called through BigProgressBarSystem.Draw, and not skipped by a custom style
-+				BigProgressBarInfo info = BossBarLoader.drawingInfo.Value;
-+				BossBarLoader.drawingInfo = null;
+ 	public static void DrawFancyBar(SpriteBatch spriteBatch, float lifeAmount, float lifeMax, Texture2D barIconTexture, Rectangle barIconFrame)
+ 	{
++		if (BossBarLoader.drawingInfo.HasValue) {
++			// Code of the shieldPercent overload is nearly identical
++			DrawFancyBar(spriteBatch, lifeAmount, lifeMax, barIconTexture, barIconFrame, shieldCurrent: 0, shieldMax: 0);
++			return;
++		}
 +
-+				Vector2 barCenter = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f);
-+				Color iconColor = Color.White;
-+				float iconScale = 1f;
+ 		Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
+ 		Point p = new Point(456, 22);
+ 		Point p2 = new Point(32, 24);
+@@ -75,6 +_,27 @@
+ 	public static void DrawFancyBar(SpriteBatch spriteBatch, float lifeAmount, float lifeMax, Texture2D barIconTexture, Rectangle barIconFrame, float shieldCurrent, float shieldMax)
+ 	{
+ 		Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
 +
-+				BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifePercent, shieldPercent, iconScale);
++		if (BossBarLoader.drawingInfo.HasValue) {
++			// Only the case if called through BigProgressBarSystem.Draw, and not skipped by a custom style
++			BigProgressBarInfo info = BossBarLoader.drawingInfo.Value;
++			BossBarLoader.drawingInfo = null;
 +
-+				bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
-+				if (!skipped)
-+					BossBarLoader.DrawFancyBar_TML(spriteBatch, drawParams);
++			Vector2 barCenter = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f);
++			Color iconColor = Color.White;
++			float iconScale = 1f;
 +
-+				BossBarLoader.PostDraw(spriteBatch, info, drawParams);
++			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, shieldCurrent, shieldMax, iconScale, info.showText, Vector2.Zero);
 +
-+				return;
-+			}
++			bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
++			if (!skipped)
++				BossBarLoader.DrawFancyBar_TML(spriteBatch, drawParams);
 +
- 			Point p = new Point(456, 22);
- 			Point p2 = new Point(32, 24);
- 			int verticalFrames = 6;
++			BossBarLoader.PostDraw(spriteBatch, info, drawParams);
++
++			return;
++		}
++
+ 		Point p = new Point(456, 22);
+ 		Point p2 = new Point(32, 24);
+ 		int verticalFrames = 6;
+@@ -111,8 +_,14 @@
+ 		spriteBatch.Draw(value, vector, value2, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(value, rectangle.TopLeft(), value3, Color.White, 0f, Vector2.Zero, new Vector2(num2 / value3.Width, 1f), SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(value, rectangle.TopLeft() + new Vector2(num2 - 2, 0f), value4, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++
++		if (shieldMax <= 0)
++			goto skipShield;
++
+ 		spriteBatch.Draw(value, rectangle.TopLeft(), value5, Color.White, 0f, Vector2.Zero, new Vector2(num4 / value5.Width, 1f), SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(value, rectangle.TopLeft() + new Vector2(num4 - 2, 0f), value6, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++		skipShield:
++
+ 		Rectangle value7 = value.Frame(1, verticalFrames);
+ 		spriteBatch.Draw(value, vector, value7, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 		Vector2 vector2 = new Vector2(4f, 20f) + barIconFrame.Size() / 2f;

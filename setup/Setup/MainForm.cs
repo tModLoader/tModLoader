@@ -21,6 +21,8 @@ namespace Terraria.ModLoader.Setup
 		{
 			InitializeComponent();
 
+			labelWorkingDirectory.Text = $"{Directory.GetCurrentDirectory()}";
+
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
 			// Terraria
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));

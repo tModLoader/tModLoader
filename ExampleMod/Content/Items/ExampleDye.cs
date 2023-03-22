@@ -3,7 +3,6 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -20,7 +19,7 @@ namespace ExampleMod.Content.Items
 				);
 			}
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			Item.ResearchUnlockCount = 3;
 		}
 
 		public override void SetDefaults() {

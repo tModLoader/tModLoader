@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
@@ -58,11 +59,12 @@ namespace ExampleMod.Content.Tiles
 
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.PreventsSandfall[Type] = true;
+			TileID.Sets.AvoidedByMeteorLanding[Type] = true;
 
 			// Adds functionality for proximity of pylons; if this is true, then being near this tile will count as being near a pylon for the teleportation process.
 			AddToArray(ref TileID.Sets.CountsAsPylon);
 
-			ModTranslation pylonName = CreateMapEntryName(); //Name is in the localization file
+			LocalizedText pylonName = CreateMapEntryName(); //Name is in the localization file
 			AddMapEntry(Color.White, pylonName);
 		}
 
@@ -84,9 +86,6 @@ namespace ExampleMod.Content.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			// We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
 			ModContent.GetInstance<SimplePylonTileEntity>().Kill(i, j);
-
-			// Also, like other pylons, breaking it simply drops the item once again. Pretty straight-forward.
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 2, 3, ModContent.ItemType<ExamplePylonItem>());
 		}
 
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
