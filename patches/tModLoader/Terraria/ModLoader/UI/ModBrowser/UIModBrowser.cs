@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -15,15 +17,40 @@ namespace Terraria.ModLoader.UI.ModBrowser;
 
 internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 {
+	// Used for swapping backend hosting
+	public SocialBrowserModule SocialBackend => WorkshopBrowserModule.Instance;
+
+	private class AP_UIModDowloadItem : AsyncProvider<UIModDownloadItem>
+	{
+		private SocialBrowserModule SocialBackend;
+		public AP_UIModDowloadItem(SocialBrowserModule socialBackend) : base()
+		{
+			SocialBackend = socialBackend;
+		}
+
+		protected override async Task<bool> Run(CancellationToken token)
+		{
+			bool error = false;
+			await foreach (var item in SocialBackend.QueryBrowser(new QueryParameters())) {
+				if (item is null) {
+					error = true; // Save the error, but let the enumerator finish
+				} else {
+					lock (_Data) { // @TODO: lock in batches?
+						_Data.Add(new UIModDownloadItem(item));
+						HasNewData = true;
+					}
+				}
+			}
+			return !error;
+		}
+	}
+
 	public static bool AvoidGithub;
 	public static bool AvoidImgur;
 	public static bool EarlyAutoUpdate;
 	public static bool PlatformSupportsTls12 => true;
 
 	public UIModDownloadItem SelectedItem;
-
-	// Used for swapping backend hosting
-	public SocialBrowserModule SocialBackend => WorkshopBrowserModule.Instance;
 
 	// TODO maybe we can refactor this as a "BrowserState" enum
 	public bool Loading;
@@ -192,13 +219,19 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		PopulateModBrowser(uiOnly: false);
 	}
 
+	private void ModListStateChanged(AsyncProvider.State newState, AsyncProvider.State oldState)
+	{
+		_browserStatus.SetCurrentState(newState);
+		if ((newState == AsyncProvider.State.Aborted) || (newState == AsyncProvider.State.Completed))
+			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
+	}
+
 	// TODO if we store a browser 'state' we can probably refactor this
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
 		if (!UpdateNeeded || Loading) return;
 		UpdateNeeded = false;
-		if (!Loading) _backgroundElement.RemoveChild(_loaderElement);
 		ModList.Clear();
 		ModList.AddRange(_items.Where(item => item.PassFilters()));
 		bool hasNoModsFoundNotif = ModList.HasChild(NoModsFoundText);
@@ -225,37 +258,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
 		_reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
-		_backgroundElement.Append(_loaderElement);
 		SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 
 		// Remove old data
 		ModList.Clear();
 		_items.Clear();
-		ModList.Deactivate();
+		ModList.Deactivate(); // @TODO: ???
 
 		// Asynchronous load the Mod Browser
-		Task.Run(() => {
-			InnerPopulateModBrowser(uiOnly: uiOnly);
-			Loading = false;
-			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
-		});
-	}
-
-	internal bool InnerPopulateModBrowser(bool uiOnly)
-	{
-		if (!uiOnly)
-			modBrowserPages.Clear();
-
-		var stats = SocialBackend.QueryBrowser(new QueryParameters());
-
-		if (!uiOnly && !stats.success)
-			return false;
-
-		foreach (var item in SocialBackend.Items) {
-			_items.Add(new UIModDownloadItem(item));
-		}
-
-		return UpdateNeeded = true;
+		ModList.SetProvider(new AP_UIModDowloadItem(SocialBackend));
 	}
 
 	internal Dictionary<int, List<UIModDownloadItem>> modBrowserPages = new Dictionary<int, List<UIModDownloadItem>>();

@@ -13,7 +13,6 @@ internal partial class UIModBrowser
 	/* Layout */
 	private UIElement _rootElement;
 	private UIPanel _backgroundElement;
-	private UILoaderAnimatedImage _loaderElement;
 	public UIAsyncList ModList;
 	public UIText NoModsFoundText;
 	public UITextPanel<string> HeaderTextPanel;
@@ -54,6 +53,7 @@ internal partial class UIModBrowser
 		_clearButton.OnLeftClick += ClearFilters;
 		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
 		_updateAllButton.OnLeftClick += UpdateAllMods;
+		ModList.OnStateChanged += ModListStateChanged;
 		_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnTextChange += (sender, e) => {
@@ -78,8 +78,6 @@ internal partial class UIModBrowser
 			PaddingTop = 0f
 		};
 		_rootElement.Append(_backgroundElement);
-
-		_loaderElement = new UILoaderAnimatedImage(0.5f, 0.5f);
 
 		ModList = new UIAsyncList {
 			Width = { Pixels = -25, Percent = 1f },

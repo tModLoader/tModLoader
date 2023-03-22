@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow.CopyAnalysis;
 
 namespace Terraria.ModLoader;
 
@@ -16,18 +18,50 @@ public static class AsyncProvider
 		Completed,
 		Aborted
 	}
+
+	public class Empty<T> : IAsyncProvider<T>
+	{
+		public void Start(CancellationToken token) { }
+
+		public IEnumerable<T> GetData() => Enumerable.Empty<T>();
+		public int Count => 0;
+		public AsyncProvider.State State => AsyncProvider.State.Completed;
+		public bool HasNewData => false;
+	}
 }
 
-public abstract class AsyncProvider<T>
+// Only interfaces can be variant/covariant, so let's make an interface
+// IList is NOT vairant... :( <out T> no like
+public interface IAsyncProvider<out T>
 {
-	public class Empty : AsyncProvider<T>
+	public void Start(CancellationToken token);
+	public IEnumerable<T> GetData();
+	public int Count { get; }
+	public AsyncProvider.State State { get; }
+	public bool HasNewData { get; }
+}
+
+/*
+// This made sense when GetData returned a List
+public class AsyncProviderCasted<T, ST> where ST : T, IAsyncProvider<T>
+{
+	private IAsyncProvider<ST> _provider;
+	public AsyncProviderCasted(IAsyncProvider<ST> provider)
 	{
-		protected override Task<bool> Run(CancellationToken token)
-		{
-			return Task.FromResult(true);
-		}
+		_provider = provider;
 	}
 
+	public void Start(CancellationToken token) => _provider.Start(token);
+
+	public IEnumerable<T> GetData() => _provider.GetData().Cast<T>();
+	public int Count => _provider.Count;
+	public AsyncProvider.State State => _provider.State;
+	public bool HasNewData => _provider.HasNewData;
+}
+*/
+
+public abstract class AsyncProvider<T> : IAsyncProvider<T>
+{
 	protected abstract Task<bool> Run(CancellationToken token);
 	public virtual void Start(CancellationToken token)
 	{
@@ -48,13 +82,16 @@ public abstract class AsyncProvider<T>
 		});
 	}
 	protected List<T> _Data = new();
-	public List<T> GetData()
+	public IEnumerable<T> GetData()
 	{
+		List<T> copy;
 		lock (this) {
 			HasNewData = false;
-			return _Data.ToList(); // Make a copy
+			copy = _Data.ToList(); // Make a copy to free the lock
 		}
+		return copy;
 	}
+
 	public int Count => _Data.Count; // @TODO: Is this atomic or need lock?
 	public AsyncProvider.State State { get; protected set; } = AsyncProvider.State.NotStarted;
 	public bool HasNewData { get; protected set; } = false;

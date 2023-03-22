@@ -20,7 +20,7 @@ public interface SocialBrowserModule
 	public ModDownloadItem FindDownloadItem(string modName)
 		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-	public QueryConfirmation QueryBrowser(QueryParameters queryParams);
+	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams);
 
 	/////// Lookups of Browser Items ///////////////////////////////////////////
 

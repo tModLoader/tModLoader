@@ -12,29 +12,28 @@ public class UIAsyncList : UIList
 	// DON'T USE Add/AddRange!
 
 	public delegate void StateChangedDelegate(AsyncProvider.State newState, AsyncProvider.State oldState);
-	public event StateChangedDelegate StateChanged;
+	public event StateChangedDelegate OnStateChanged;
 
 	CancellationTokenSource _token = new();
-	AsyncProvider<UIElement> _provider = new AsyncProvider<UIElement>.Empty();
+	IAsyncProvider<UIElement> _provider = new AsyncProvider.Empty<UIElement>();
 	UIText _endItem;
 	AsyncProvider.State _lastState = AsyncProvider.State.NotStarted;
 
 	public UIAsyncList() : base()
 	{
 		ManualSortMethod = (l) => { };
-
-		_endItem = new UIText(GetEndItemTextForState(_lastState)) {
-			HAlign = 0.5f
-		}.WithPadding(15f);
 	}
 
 	public override void OnInitialize()
 	{
 		base.OnInitialize();
 
+		_endItem = new UIText(GetEndItemTextForState(_lastState, _provider.Count <= 0)) {
+			HAlign = 0.5f
+		}.WithPadding(15f);
 	}
 
-	public void SetProvider(AsyncProvider<UIElement> provider)
+	public void SetProvider(IAsyncProvider<UIElement> provider)
 	{
 		_token.Cancel();
 
@@ -71,7 +70,7 @@ public class UIAsyncList : UIList
 
 		var _tmpState = _provider.State;
 		if (_lastState != _tmpState) {
-			StateChanged?.Invoke(_tmpState, _lastState);
+			OnStateChanged?.Invoke(_tmpState, _lastState);
 			_endItem.SetText(GetEndItemTextForState(_tmpState, _provider.Count <= 0));
 			_lastState = _tmpState;
 			Recalculate(); // @TODO: Needed?
