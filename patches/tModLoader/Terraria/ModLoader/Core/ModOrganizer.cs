@@ -165,7 +165,7 @@ internal static class ModOrganizer
 				continue;
 
 			try {
-				WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
+				WorkshopHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
 			}
 			catch (OverflowException e) {
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopIrregularDependenciesFailure", mod.DisplayName, e.Message, mod.DisplayName), Interface.loadModsID);

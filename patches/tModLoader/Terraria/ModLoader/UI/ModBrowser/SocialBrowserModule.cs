@@ -21,9 +21,14 @@ public interface SocialBrowserModule
 		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
 	public QueryConfirmation QueryBrowser(QueryParameters queryParams);
-	
 
-	/////// Informed of Local Install ///////////////////////////////////////////
+	/////// Lookups of Browser Items ///////////////////////////////////////////
+
+	public string GetModWebPage(string modId);
+
+
+
+	/////// Management of Local Install ///////////////////////////////////////////
 
 	//TODO: This would need to be public for a mod to add a backend
 	internal IReadOnlyList<LocalMod> GetInstalledItems();
@@ -89,6 +94,8 @@ public interface SocialBrowserModule
 	}
 
 	internal void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress);
+
+	
 }
 
 

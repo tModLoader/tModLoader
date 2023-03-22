@@ -276,7 +276,7 @@ internal class UIModInfo : UIState
 			_loading = true;
 			_ready = false;
 
-			_info = Social.Steam.WorkshopHelper.QueryHelper.GetDescription(ulong.Parse(_publishedFileId));
+			Utils.OpenToURL(Interface.modBrowser.SocialBackend.GetModWebPage(_publishedFileId));
 
 			if (string.IsNullOrWhiteSpace(_info)) {
 				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
