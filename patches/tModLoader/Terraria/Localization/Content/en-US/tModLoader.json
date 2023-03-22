@@ -228,6 +228,11 @@
 		"MPErrorModDownloadError": "An error occurred while downloading {0}",
 		"MPPacketTooLarge": "Packet too large {0} > {1}",
 
+		// UIAsyncList
+		"ALLoading": "Still loading...",
+		"ALEmpty": "Loading completed, but no entries found",
+		"ALAborted": "Loading aborted, reload to see all data",
+
 		// Mod Browser
 		"MBDownload": "Download",
 		"MBDownloadAll": "Download All",
