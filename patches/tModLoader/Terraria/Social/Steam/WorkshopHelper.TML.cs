@@ -32,7 +32,7 @@ public partial class WorkshopHelper
 		protected override void PrepareContentForUpdate() { }
 	}
 
-	// Workshop Files Management
+	/////// Workshop Mod Download Location ////////////////////
 	public static string GetWorkshopFolder(AppId_t app)
 	{
 		if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
@@ -56,6 +56,24 @@ public partial class WorkshopHelper
 		return Path.Combine("steamapps", "workshop");
 	}
 
+	/////// Workshop Dependencies ////////////////////
+
+	private static List<ulong> GetDependencies(ulong publishedId)
+	{
+		var query = new QueryHelper.AQueryInstance();
+		query.FastQueryItem(publishedId, queryChildren: true);
+		return query.ugcChildren;
+	}
+
+	internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set)
+	{
+		var deps = GetDependencies(publishedId);
+		set.UnionWith(deps);
+
+		foreach (ulong dep in deps)
+			GetDependenciesRecursive(dep, ref set);
+	}
+
 	// Should this be in SteamedWraps or here?
 	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId)
 	{
@@ -67,7 +85,43 @@ public partial class WorkshopHelper
 		return true;
 	}
 
-	// Workshop Publishing Module
+	/////// Workshop Version Calculation Helpers ////////////////////
+	private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
+	{
+		(System.Version modV, string tmlV) selectVersion = new(new System.Version(metadata["version"].Replace("v", "")), metadata["modloaderversion"]);
+		// Backwards compat after metadata version change
+		if (!metadata["versionsummary"].Contains(':'))
+			return selectVersion;
+
+		InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
+
+		// Handle Github Actions metadata from description
+		// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
+		Match match = MetadataInDescriptionFallbackRegex.Match(mbDescription);
+		if (match.Success) {
+			InnerCalculateRelevantVersion(ref selectVersion, (match.Groups[1].Value));
+		}
+
+		return selectVersion;
+	}
+
+	// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
+	private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary)
+	{
+		foreach (var item in VersionSummaryToArray(versionSummary)) {
+			if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
+				selectVersion.modV = item.modVersion;
+				selectVersion.tmlV = item.tmlVersion.MajorMinor().ToString();
+			}
+		}
+	}
+
+	private static (System.Version tmlVersion, System.Version modVersion)[] VersionSummaryToArray(string versionSummary)
+	{
+		return versionSummary.Split(";").Select(s => (new System.Version(s.Split(":")[0]), new System.Version(s.Split(":")[1]))).ToArray();
+	}
+
+	//////// Workshop Publishing ////////////////////
 	internal static void PublishMod(LocalMod mod, string iconPath)
 	{
 		var modFile = mod.modFile;
@@ -131,14 +185,33 @@ public partial class WorkshopHelper
 
 	internal static class QueryHelper
 	{
+		/////// Workshop Special Statics ////////////////////
+
 		internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
 		internal static int IncompleteModCount;
 		internal static int HiddenModCount;
 		internal static uint TotalItemsQueried;
 
+		/////// Used for making code hear easier on common calls ////////////////////
 		internal static List<ModDownloadItem> Items => WorkshopBrowserModule.Instance.Items;
 		internal static IReadOnlyList<LocalMod> InstalledMods => WorkshopBrowserModule.Instance.InstalledItems;
 
+
+		/////// Used for Publishing ////////////////////
+		internal static bool GetPublishIdByInternalName(string internalName, out ulong publishId)
+		{
+			var query = new AQueryInstance();
+			bool success = query.SearchByInternalName(internalName, out var itemDetails);
+
+			publishId = itemDetails.m_nPublishedFileId.m_PublishedFileId;
+			return success;
+		}
+
+		internal static ulong GetSteamOwner(ulong publishedId)
+		{
+			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
+			return pDetails.m_ulSteamIDOwner;
+		}
 
 		internal static bool QueryWorkshop()
 		{
@@ -164,110 +237,6 @@ public partial class WorkshopHelper
 			return true;
 		}
 
-		internal static bool HandleError(EResult eResult)
-		{
-			if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
-				return true;
-
-			if (eResult == EResult.k_EResultAccessDenied) {
-				Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
-			}
-			else if (eResult == EResult.k_EResultTimeout) {
-				Utils.ShowFancyErrorMessage("Error: Operation Timed Out. No callback received from Steam Servers.", 0);
-			}
-			else {
-				Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
-				SteamedWraps.ReportCheckSteamLogs();
-			}
-			return false;
-		}
-
-		internal static string GetDescription(ulong publishedId)
-		{
-			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
-			return pDetails.m_rgchDescription;
-		}
-
-		internal static ulong GetSteamOwner(ulong publishedId)
-		{
-			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
-			return pDetails.m_ulSteamIDOwner;
-		}
-
-		private static List<ulong> GetDependencies(ulong publishedId)
-		{
-			var query = new AQueryInstance();
-			query.FastQueryItem(publishedId, queryChildren: true);
-			return query.ugcChildren;
-		}
-
-		internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set)
-		{
-			var deps = GetDependencies(publishedId);
-			set.UnionWith(deps);
-
-			foreach (ulong dep in deps)
-				GetDependenciesRecursive(dep, ref set);
-		}
-
-		internal static bool GetPublishIdByInternalName(string internalName, out ulong publishId)
-		{
-			var query = new AQueryInstance();
-			bool success = query.SearchByInternalName(internalName, out var itemDetails);
-
-			publishId = itemDetails.m_nPublishedFileId.m_PublishedFileId;
-			return success;
-		}
-
-		internal static bool CheckWorkshopConnection()
-		{
-			// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-			if (!QueryWorkshop())
-				return false;
-
-			// If there are zero items on workshop, than return true.
-			if (Items.Count + TotalItemsQueried == 0)
-				return true;
-
-			// Otherwise, return the original condition.
-			return Items.Count + IncompleteModCount != 0;
-		}
-
-		private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
-		{
-			(System.Version modV, string tmlV) selectVersion = new (new System.Version(metadata["version"].Replace("v", "")), metadata["modloaderversion"]);
-			// Backwards compat after metadata version change
-			if (!metadata["versionsummary"].Contains(':'))
-				return selectVersion;
-
-			InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
-
-			// Handle Github Actions metadata from description
-			// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
-			Match match = MetadataInDescriptionFallbackRegex.Match(mbDescription);
-			if (match.Success) {
-				InnerCalculateRelevantVersion(ref selectVersion, (match.Groups[1].Value));
-			}
-
-			return selectVersion;
-		}
-
-		// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
-		private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary)
-		{
-			foreach (var item in VersionSummaryToArray(versionSummary)) {
-				if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
-					selectVersion.modV = item.modVersion;
-					selectVersion.tmlV = item.tmlVersion.MajorMinor().ToString();
-				}
-			}
-		}
-
-		private static (System.Version tmlVersion, System.Version modVersion)[] VersionSummaryToArray(string versionSummary)
-		{
-			return versionSummary.Split(";").Select(s => (new System.Version(s.Split(":")[0]), new System.Version(s.Split(":")[1]))).ToArray();
-		}
-
 		internal class AQueryInstance
 		{
 			private CallResult<SteamUGCQueryCompleted_t> _queryHook;
@@ -276,7 +245,7 @@ public partial class WorkshopHelper
 			protected uint _queryReturnCount;
 			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
-			internal bool stopCurrentQuery = false;
+			internal bool stopCurrentQuery;
 
 			internal AQueryInstance()
 			{
@@ -324,8 +293,6 @@ public partial class WorkshopHelper
 				return pDetails;
 			}
 
-			internal const int ItemsPerBrowserPage = 100;
-
 			internal bool QueryAllWorkshopItems()
 			{
 				int pageIndex = 0;
@@ -349,15 +316,8 @@ public partial class WorkshopHelper
 					// Appx. 10 ms per page of 50 items
 					ProcessPageResult();
 
-					// 100 items per Browser UI Item Dictionairy page.
-					if (Math.Floor((double)(Items.Count / ItemsPerBrowserPage)) > pageIndex) {
-						Interface.modBrowser.AddUIDownloadItemsToPage(ItemsPerBrowserPage, pageIndex++, Items, ItemsPerBrowserPage);
-					}
-
 					ReleaseWorkshopQuery();
 				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount && !stopCurrentQuery);
-
-				Interface.modBrowser.AddUIDownloadItemsToPage((uint)(Items.Count % ItemsPerBrowserPage), pageIndex, Items, ItemsPerBrowserPage);
 
 				return true;
 			}
@@ -396,6 +356,24 @@ public partial class WorkshopHelper
 				while (_primaryQueryResult == EResult.k_EResultNone);
 
 				return HandleError(_primaryQueryResult);
+			}
+
+			internal static bool HandleError(EResult eResult)
+			{
+				if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
+					return true;
+
+				if (eResult == EResult.k_EResultAccessDenied) {
+					Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
+				}
+				else if (eResult == EResult.k_EResultTimeout) {
+					Utils.ShowFancyErrorMessage("Error: Operation Timed Out. No callback received from Steam Servers.", 0);
+				}
+				else {
+					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
+					SteamedWraps.ReportCheckSteamLogs();
+				}
+				return false;
 			}
 
 			private void ProcessPageResult()

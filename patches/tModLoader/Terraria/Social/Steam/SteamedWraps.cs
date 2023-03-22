@@ -54,6 +54,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	public bool DoesAppNeedRestartToReinstallItem(string modId) => SteamedWraps.IsWorkshopItemInstalled(GetId(modId));
 
+	public string GetModWebPage(string modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId}";
+
 	//TODO: Work In Progress
 	public QueryConfirmation QueryBrowser(QueryParameters queryParams)
 	{

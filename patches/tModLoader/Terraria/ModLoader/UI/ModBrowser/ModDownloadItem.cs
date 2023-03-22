@@ -72,6 +72,8 @@ public class ModDownloadItem
 		Installed = installed;
 	}
 
+	// Below needs to be re looked at if browser doesm't have all items
+
 	internal Task InnerDownloadWithDeps()
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
