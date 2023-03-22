@@ -3194,7 +3194,7 @@
  
  			GetItemDrawFrame(num15, out var itemTexture2, out var rectangle3);
 +
-+			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref num13, ref num14, ref zero);
++			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref rectangle3, ref num13, ref num14, ref zero);
 +
  			Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num13, num13);
  			Vector2 vector6 = swingStats.Item1 + (swingStats.Item1 - n.Center) * num14 + zero;
