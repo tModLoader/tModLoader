@@ -309,14 +309,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		if (dotnetSDKFound)
 			return true;
 
-		string dotnetPath = GetSystemDotnetPath();
-		if (dotnetPath == null)
-			return false;
-
-
 		try {
 			string output = Process.Start(new ProcessStartInfo {
-				FileName = dotnetPath,
+				FileName = GetSystemDotnetPath() ?? "dotnet",
 				Arguments = "--list-sdks",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
