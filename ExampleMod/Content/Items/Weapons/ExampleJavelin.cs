@@ -6,8 +6,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleJavelin : ModItem
 	{
-		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSpear"; //TODO: remove when sprite is made for this
-
 		public override void SetDefaults() {
 			// Alter any of these values as you see fit, but you should probably keep useStyle on 1, as well as the noUseGraphic and noMelee bools
 
