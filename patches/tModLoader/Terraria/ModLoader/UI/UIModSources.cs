@@ -251,7 +251,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return true;
 		}
 
-		if (!IsCompatibleDotnetSdkAviable()) {
+		if (!IsCompatibleDotnetSdkAvailable()) {
 			ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
 			return true;
 		}
@@ -311,7 +311,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return null;
 	}
 
-	bool IsCompatibleDotnetSdkAviable()
+	bool IsCompatibleDotnetSdkAvailable()
 	{
 		if (dotnetSDKFound)
 			return true;
