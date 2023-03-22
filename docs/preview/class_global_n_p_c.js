@@ -21,7 +21,7 @@ var class_global_n_p_c =
     [ "DrawEffects", "class_global_n_p_c.html#ac87d0a0c4991d99f63daf3294bf7ee17", null ],
     [ "DrawHealthBar", "class_global_n_p_c.html#ad3511fc61d70e815893818bbd6721b2a", null ],
     [ "DrawTownAttackGun", "class_global_n_p_c.html#adf061b7edaeedb602ee563d032350736", null ],
-    [ "DrawTownAttackSwing", "class_global_n_p_c.html#a0bb3097f8d69cef4563b94620e3c765e", null ],
+    [ "DrawTownAttackSwing", "class_global_n_p_c.html#aaebac936b40bd875052fcab37545c67b", null ],
     [ "EditSpawnPool", "class_global_n_p_c.html#af0e8f0dfeef011bdd97801be5990973f", null ],
     [ "EditSpawnRange", "class_global_n_p_c.html#ae363ef35abb5e21e6babd9336a6164d8", null ],
     [ "EditSpawnRate", "class_global_n_p_c.html#aa03f7f9ed767f027736a2ce7f8063368", null ],

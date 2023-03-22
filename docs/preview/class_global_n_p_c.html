@@ -178,9 +178,9 @@ Return true to allow an <a class="el" href="class_n_p_c.html">NPC</a> to fall th
 <tr class="memitem:adf061b7edaeedb602ee563d032350736"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#adf061b7edaeedb602ee563d032350736">DrawTownAttackGun</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref float scale, ref int <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, ref int closeness)</td></tr>
 <tr class="memdesc:adf061b7edaeedb602ee563d032350736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize how a town <a class="el" href="class_n_p_c.html">NPC</a>'s weapon is drawn when the <a class="el" href="class_n_p_c.html">NPC</a> is shooting (the <a class="el" href="class_n_p_c.html">NPC</a> must have an attack type of 1). Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_global_n_p_c.html#adf061b7edaeedb602ee563d032350736">More...</a><br /></td></tr>
 <tr class="separator:adf061b7edaeedb602ee563d032350736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bb3097f8d69cef4563b94620e3c765e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a0bb3097f8d69cef4563b94620e3c765e">DrawTownAttackSwing</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="class_mod_dust.html#adedf94f8add8ccfd5388f99babe01140">Texture2D</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, ref int itemSize, ref float scale, ref Vector2 offset)</td></tr>
-<tr class="memdesc:a0bb3097f8d69cef4563b94620e3c765e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize how a town <a class="el" href="class_n_p_c.html">NPC</a>'s weapon is drawn when the <a class="el" href="class_n_p_c.html">NPC</a> is swinging it (the <a class="el" href="class_n_p_c.html">NPC</a> must have an attack type of 3). <a class="el" href="class_item.html">Item</a> is the Texture2D instance of the item to be drawn (use Main.itemTexture[id of item]), itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position.  <a href="class_global_n_p_c.html#a0bb3097f8d69cef4563b94620e3c765e">More...</a><br /></td></tr>
-<tr class="separator:a0bb3097f8d69cef4563b94620e3c765e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaebac936b40bd875052fcab37545c67b"><td class="memItemLeft" align="right" valign="top"><a id="aaebac936b40bd875052fcab37545c67b" name="aaebac936b40bd875052fcab37545c67b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawTownAttackSwing</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="class_mod_dust.html#adedf94f8add8ccfd5388f99babe01140">Texture2D</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)</td></tr>
+<tr class="separator:aaebac936b40bd875052fcab37545c67b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0e8f0dfeef011bdd97801be5990973f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#af0e8f0dfeef011bdd97801be5990973f">EditSpawnPool</a> (IDictionary&lt; int, float &gt; pool, <a class="el" href="struct_n_p_c_spawn_info.html">NPCSpawnInfo</a> spawnInfo)</td></tr>
 <tr class="memdesc:af0e8f0dfeef011bdd97801be5990973f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter maps <a class="el" href="class_n_p_c.html">NPC</a> types to their spawning weights (likelihood to spawn compared to other NPCs). A type of 0 in the pool represents the default vanilla <a class="el" href="class_n_p_c.html">NPC</a> spawning.  <a href="class_global_n_p_c.html#af0e8f0dfeef011bdd97801be5990973f">More...</a><br /></td></tr>
 <tr class="separator:af0e8f0dfeef011bdd97801be5990973f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1532,72 +1532,6 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
     <tr><td class="paramname">scale</td><td></td></tr>
     <tr><td class="paramname">item</td><td></td></tr>
     <tr><td class="paramname">closeness</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a0bb3097f8d69cef4563b94620e3c765e" name="a0bb3097f8d69cef4563b94620e3c765e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bb3097f8d69cef4563b94620e3c765e">&#9670;&nbsp;</a></span>DrawTownAttackSwing()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalNPC.DrawTownAttackSwing </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
-          <td class="paramname"><em>npc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="class_mod_dust.html#adedf94f8add8ccfd5388f99babe01140">Texture2D</a>&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>itemSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>scale</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref Vector2&#160;</td>
-          <td class="paramname"><em>offset</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to customize how a town <a class="el" href="class_n_p_c.html">NPC</a>'s weapon is drawn when the <a class="el" href="class_n_p_c.html">NPC</a> is swinging it (the <a class="el" href="class_n_p_c.html">NPC</a> must have an attack type of 3). <a class="el" href="class_item.html">Item</a> is the Texture2D instance of the item to be drawn (use Main.itemTexture[id of item]), itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">npc</td><td></td></tr>
-    <tr><td class="paramname">item</td><td></td></tr>
-    <tr><td class="paramname">itemSize</td><td></td></tr>
-    <tr><td class="paramname">scale</td><td></td></tr>
-    <tr><td class="paramname">offset</td><td></td></tr>
   </table>
   </dd>
 </dl>
