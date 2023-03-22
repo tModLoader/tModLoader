@@ -270,7 +270,6 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	string GetCommandToFindPathOfExecutable()
 	{
-		;
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			return "where";
 
