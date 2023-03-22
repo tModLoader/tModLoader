@@ -108,6 +108,7 @@ public static partial class Logging
 			if (!oom && ignoreContents.Any(s => MatchContents(traceString, s)))
 				return;
 
+			PrettifyStackTraceSources(stackTrace.GetFrames());
 			traceString = stackTrace.ToString();
 			traceString = traceString[traceString.IndexOf('\n')..];
 

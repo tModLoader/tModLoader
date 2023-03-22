@@ -13,6 +13,7 @@ internal static class LoggingHooks
 	internal static void Init()
 	{
 		FixBrokenConsolePipeError();
+		PrettifyStackTraceSources();
 		HookWebRequests();
 		HookProcessStart();
 	}
@@ -46,6 +47,25 @@ internal static class LoggingHooks
 			Logging.tML.Debug($"Process.Start (UseShellExecute = {self.StartInfo.UseShellExecute}): \"{self.StartInfo.FileName}\" {self.StartInfo.Arguments}");
 			return orig(self);
 		}));
+	}
+
+	// On .NET, hook the StackTrace constructor
+	private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
+	private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
+	private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo)
+	{
+		orig(self, e, fNeedFileInfo);
+		if (fNeedFileInfo)
+			Logging.PrettifyStackTraceSources(self.GetFrames());
+	}
+
+	private static Hook stackTraceCtorHook;
+	private static void PrettifyStackTraceSources()
+	{
+		if (Logging.f_fileName == null)
+			return;
+
+		stackTraceCtorHook = new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
 	}
 
 	private delegate ValueTask<HttpResponseMessage> orig_SendAsyncCore(object self, HttpRequestMessage request, Uri? proxyUri, bool async, bool doRequestAuth, bool isProxyConnect, CancellationToken cancellationToken);
