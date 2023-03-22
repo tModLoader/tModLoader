@@ -290,12 +290,19 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return null;
 
 		try {
-			return Process.Start(new ProcessStartInfo {
+			string dotnetPath = Process.Start(new ProcessStartInfo {
 				FileName = commandToFindPathOfExecutable,
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Trim();
+
+			if (!File.Exists(dotnetPath)) {
+				Logging.tML.Debug("Can't find SystemDotnetPath");
+				return null;
+			}
+
+			return dotnetPath;
 		}
 		catch (Exception e) {
 			Logging.tML.Debug("Finding SystemDotnetPath failed: ", e);
