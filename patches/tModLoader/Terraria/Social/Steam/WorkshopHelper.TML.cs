@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -215,7 +216,7 @@ public partial class WorkshopHelper
 		}
 
 		// Yield returns null if an error happens and the result is cut short
-		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop()
+		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(CancellationToken token)
 		{
 			HiddenModCount = IncompleteModCount = 0;
 			TotalItemsQueried = 0;
@@ -233,7 +234,7 @@ public partial class WorkshopHelper
 				}
 			}
 
-			await foreach (var item in new AQueryInstance().QueryAllWorkshopItems()) {
+			await foreach (var item in new AQueryInstance().QueryAllWorkshopItems(token)) {
 				if (item is not null)
 					Items.Add(item);
 				yield return item;
@@ -296,9 +297,11 @@ public partial class WorkshopHelper
 				return pDetails;
 			}
 
-			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems()
+			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
 			{
 				do {
+					token.ThrowIfCancellationRequested();
+
 					// Appx. 0.5 seconds per page of 50 items during testing. No way to parallelize.
 					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
 
@@ -307,7 +310,7 @@ public partial class WorkshopHelper
 						ReleaseWorkshopQuery();
 
 						// If it failed, make a second attempt after 100 ms
-						await Task.Delay(100);
+						await Task.Delay(100, token);
 						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage))) {
 							ReleaseWorkshopQuery();
 							yield return null;

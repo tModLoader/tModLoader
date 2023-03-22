@@ -42,7 +42,6 @@ internal partial class UIModBrowser
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
-		Loading = false;
 		UpdateNeeded = true;
 	}
 

@@ -23,10 +23,36 @@ public static class AsyncProvider
 	{
 		public void Start(CancellationToken token) { }
 
-		public IEnumerable<T> GetData() => Enumerable.Empty<T>();
+		public IEnumerable<T> GetData(bool clearHasNewData) => Enumerable.Empty<T>();
 		public int Count => 0;
 		public AsyncProvider.State State => AsyncProvider.State.Completed;
 		public bool HasNewData => false;
+	}
+}
+
+public static class AsyncProviderExtensions
+{
+	private class AsyncProviderSelect<T, U> : IAsyncProvider<U>
+	{
+		private IAsyncProvider<T> _provider;
+		private Func<T, U> _converter;
+		public AsyncProviderSelect(IAsyncProvider<T> provider, Func<T, U> converter)
+		{
+			_provider = provider;
+			_converter = converter;
+		}
+
+		public void Start(CancellationToken token) => _provider.Start(token);
+
+		public IEnumerable<U> GetData(bool clearHasNewData) => _provider.GetData(clearHasNewData).Select(_converter);
+		public int Count => _provider.Count;
+		public AsyncProvider.State State => _provider.State;
+		public bool HasNewData => _provider.HasNewData;
+	}
+
+	public static IAsyncProvider<U> Select<T, U>(this IAsyncProvider<T> provider, Func<T, U> converter)
+	{
+		return new AsyncProviderSelect<T, U>(provider, converter);
 	}
 }
 
@@ -35,7 +61,7 @@ public static class AsyncProvider
 public interface IAsyncProvider<out T>
 {
 	public void Start(CancellationToken token);
-	public IEnumerable<T> GetData();
+	public IEnumerable<T> GetData(bool clearHasNewData);
 	public int Count { get; }
 	public AsyncProvider.State State { get; }
 	public bool HasNewData { get; }
@@ -82,11 +108,12 @@ public abstract class AsyncProvider<T> : IAsyncProvider<T>
 		});
 	}
 	protected List<T> _Data = new();
-	public IEnumerable<T> GetData()
+	public IEnumerable<T> GetData(bool clearHasNewData)
 	{
 		List<T> copy;
 		lock (this) {
-			HasNewData = false;
+			if (clearHasNewData)
+				HasNewData = false;
 			copy = _Data.ToList(); // Make a copy to free the lock
 		}
 		return copy;

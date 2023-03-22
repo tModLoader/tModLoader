@@ -18,6 +18,7 @@ public class UIAsyncList : UIList
 	IAsyncProvider<UIElement> _provider = new AsyncProvider.Empty<UIElement>();
 	UIText _endItem;
 	AsyncProvider.State _lastState = AsyncProvider.State.NotStarted;
+	bool _forceUpdateData = false;
 
 	public UIAsyncList() : base()
 	{
@@ -57,13 +58,24 @@ public class UIAsyncList : UIList
 		return "ERROR: Invalid State";
 	}
 
+	public void AbortLoading()
+	{
+		_token.Cancel();
+	}
+
+	public void ForceUpdateData()
+	{
+		_forceUpdateData = true;
+	}
+
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
 
-		if (_provider.HasNewData) {
+		if (_provider.HasNewData || _forceUpdateData) {
+			_forceUpdateData = false;
 			Clear();
-			AddRange(_provider.GetData());
+			AddRange(_provider.GetData(true));
 			Add(_endItem);
 			Recalculate(); // @TODO: Needed?
 		}

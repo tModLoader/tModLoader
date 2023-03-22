@@ -24,7 +24,6 @@ public class ModDownloadItem
 
 	internal readonly string Author;
 	internal readonly string ModIconUrl;
-	internal ModIconStatus ModIconStatus = ModIconStatus.UNKNOWN;
 	internal readonly DateTime TimeStamp;
 	internal readonly string ModReferences;
 	internal readonly ModSide ModSide;

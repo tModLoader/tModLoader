@@ -5,6 +5,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
@@ -20,7 +21,9 @@ public interface SocialBrowserModule
 	public ModDownloadItem FindDownloadItem(string modName)
 		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams);
+#pragma warning disable CS8424 // I know [EnumeratorCancellation] has no effect, but it's placed here to remember to add it to async implementations
+	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
+#pragma warning restore CS8424
 
 	/////// Lookups of Browser Items ///////////////////////////////////////////
 
