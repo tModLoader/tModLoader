@@ -313,7 +313,9 @@ public partial class WorkshopHelper
 						await Task.Delay(100, token);
 						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage))) {
 							ReleaseWorkshopQuery();
+							// Exit for error fetching stuff (will leave the status as not complete (could in alternative throw an error for clearer info)
 							yield return null;
+							yield break;
 						}
 					}
 
