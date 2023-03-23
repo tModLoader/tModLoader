@@ -7,9 +7,6 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 	public class ExampleJourneyModeDropCondition : IItemDropRuleCondition
 	{
 		public bool CanDrop(DropAttemptInfo info) {
-			if (info.IsInSimulation) {
-				return false;
-			}
 			return Main.GameModeInfo.IsJourneyMode;
 		}
 

@@ -7,10 +7,7 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 	public class ExampleDropCondition : IItemDropRuleCondition
 	{
 		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return Main.dayTime;
-			}
-			return false;
+			return Main.dayTime;
 		}
 
 		public bool CanShowItemDropInUI() {
