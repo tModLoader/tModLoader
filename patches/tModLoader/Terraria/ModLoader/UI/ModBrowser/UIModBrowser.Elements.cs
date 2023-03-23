@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -12,8 +13,7 @@ internal partial class UIModBrowser
 	/* Layout */
 	private UIElement _rootElement;
 	private UIPanel _backgroundElement;
-	private UILoaderAnimatedImage _loaderElement;
-	public UIList ModList;
+	public UIAsyncList ModList;
 	public UIText NoModsFoundText;
 	public UITextPanel<string> HeaderTextPanel;
 	private UIElement _upperMenuContainer;
@@ -25,6 +25,7 @@ internal partial class UIModBrowser
 	private UITextPanel<string> _updateAllButton;
 	private UIPanel _filterTextBoxBackground;
 	internal UIInputTextField FilterTextBox;
+	private UIBrowserStatus _browserStatus;
 
 	/* Filters */
 	public UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle;
@@ -41,7 +42,6 @@ internal partial class UIModBrowser
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
-		Loading = false;
 		UpdateNeeded = true;
 	}
 
@@ -52,6 +52,7 @@ internal partial class UIModBrowser
 		_clearButton.OnLeftClick += ClearFilters;
 		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
 		_updateAllButton.OnLeftClick += UpdateAllMods;
+		ModList.OnStateChanged += ModListStateChanged;
 		_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnTextChange += (sender, e) => {
@@ -77,9 +78,7 @@ internal partial class UIModBrowser
 		};
 		_rootElement.Append(_backgroundElement);
 
-		_loaderElement = new UILoaderAnimatedImage(0.5f, 0.5f);
-
-		ModList = new UIList {
+		ModList = new UIAsyncList {
 			Width = { Pixels = -25, Percent = 1f },
 			Height = { Pixels = -50, Percent = 1f },
 			Top = { Pixels = 50 },
@@ -184,6 +183,13 @@ internal partial class UIModBrowser
 		UpdateFilterToggle.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
+
+		_browserStatus = new UIBrowserStatus() {
+			VAlign = 1f,
+			Top = { Pixels = -65 +25 -32 }, // Allign with _reloadButton
+			Left = { Pixels = 545f } // Allign with SearchFilterToggle
+		};
+		_rootElement.Append(_browserStatus);
 
 		InitializeInteractions();
 

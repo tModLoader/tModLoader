@@ -31,6 +31,7 @@ internal class UIModDownloadItem : UIPanel
 	private readonly UIImage _updateWithDepsButton;
 	private readonly UIImage _moreInfoButton;
 	private readonly UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
+	internal ModIconStatus ModIconStatus = ModIconStatus.UNKNOWN;
 	private UIImage _modIcon;
 	internal string tooltip;
 
@@ -197,8 +198,8 @@ internal class UIModDownloadItem : UIPanel
 	{
 		base.DrawSelf(spriteBatch);
 
-		if (HasModIcon && ModDownload.ModIconStatus == ModIconStatus.UNKNOWN) {
-			ModDownload.ModIconStatus = ModIconStatus.WANTED;
+		if (HasModIcon && ModIconStatus == ModIconStatus.UNKNOWN) {
+			ModIconStatus = ModIconStatus.WANTED;
 			if (ModIconDownloadFailCount >= MaxImgurFails)
 				AdjustPositioningFailedIcon();
 		}
@@ -248,7 +249,7 @@ internal class UIModDownloadItem : UIPanel
 	{
 		base.Update(gameTime);
 
-		switch (ModDownload.ModIconStatus) {
+		switch (ModIconStatus) {
 			case ModIconStatus.WANTED:
 				RequestModIcon();
 				break;
@@ -260,7 +261,7 @@ internal class UIModDownloadItem : UIPanel
 
 	private void RequestModIcon()
 	{
-		ModDownload.ModIconStatus = ModIconStatus.REQUESTED;
+		ModIconStatus = ModIconStatus.REQUESTED;
 		using (var client = new WebClient()) {
 			client.DownloadDataCompleted += IconDownloadComplete;
 			client.DownloadDataAsync(new Uri(ModDownload.ModIconUrl));
@@ -269,7 +270,7 @@ internal class UIModDownloadItem : UIPanel
 
 	private void AppendModIcon()
 	{
-		ModDownload.ModIconStatus = ModIconStatus.APPENDED;
+		ModIconStatus = ModIconStatus.APPENDED;
 		Append(_modIcon);
 	}
 
@@ -290,7 +291,7 @@ internal class UIModDownloadItem : UIPanel
 						MaxHeight = { Pixels = 80f, Percent = 0f },
 						ScaleToFit = true
 					};
-					ModDownload.ModIconStatus = ModIconStatus.READY;
+					ModIconStatus = ModIconStatus.READY;
 					success = true;
 				}
 			}
@@ -310,7 +311,7 @@ internal class UIModDownloadItem : UIPanel
 
 	private void AdjustPositioningFailedIcon()
 	{
-		ModDownload.ModIconStatus = ModIconStatus.APPENDED;
+		ModIconStatus = ModIconStatus.APPENDED;
 		_modName.Left.Pixels -= ModIconAdjust;
 		_moreInfoButton.Left.Pixels -= ModIconAdjust;
 		if(_updateButton != null)

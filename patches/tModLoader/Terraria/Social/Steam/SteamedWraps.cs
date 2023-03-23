@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -57,18 +59,18 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	public string GetModWebPage(string modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId}";
 
 	//TODO: Work In Progress
-	public QueryConfirmation QueryBrowser(QueryParameters queryParams)
+	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
 		InstalledItems = GetInstalledItems();
 
-		QueryConfirmation info = new QueryConfirmation();
-		info.success = WorkshopHelper.QueryHelper.QueryWorkshop();
-		info.totalItems = 0;
-		info.pageSize = 50;
+		await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(token)) {
+			yield return item;
+		}
+
+		// @TODO: SHOULD ALWAYS AVOID SIDE EFFECTS OF ENUMERABLES! (this is left only until `Items` refs completely disappear
+		Items = WorkshopHelper.QueryHelper.Items.ToList(); // @TODO: Copy?
 
 		InstalledItems = null;
-
-		return info;
 	}
 }
 

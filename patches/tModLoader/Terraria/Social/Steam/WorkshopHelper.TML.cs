@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -213,7 +215,8 @@ public partial class WorkshopHelper
 			return pDetails.m_ulSteamIDOwner;
 		}
 
-		internal static bool QueryWorkshop()
+		// Yield returns null if an error happens and the result is cut short
+		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(CancellationToken token)
 		{
 			HiddenModCount = IncompleteModCount = 0;
 			TotalItemsQueried = 0;
@@ -222,7 +225,7 @@ public partial class WorkshopHelper
 			if (!SteamedWraps.SteamAvailable) {
 				if (!SteamedWraps.TryInitViaGameServer()) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
-					return false;
+					yield return null;
 				}
 
 				var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
@@ -231,10 +234,11 @@ public partial class WorkshopHelper
 				}
 			}
 
-			if (!new AQueryInstance().QueryAllWorkshopItems())
-				return false;
-
-			return true;
+			await foreach (var item in new AQueryInstance().QueryAllWorkshopItems(token)) {
+				if (item is not null)
+					Items.Add(item);
+				yield return item;
+			}
 		}
 
 		internal class AQueryInstance
@@ -293,11 +297,11 @@ public partial class WorkshopHelper
 				return pDetails;
 			}
 
-			internal bool QueryAllWorkshopItems()
+			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
 			{
-				int pageIndex = 0;
-
 				do {
+					token.ThrowIfCancellationRequested();
+
 					// Appx. 0.5 seconds per page of 50 items during testing. No way to parallelize.
 					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
 
@@ -306,20 +310,21 @@ public partial class WorkshopHelper
 						ReleaseWorkshopQuery();
 
 						// If it failed, make a second attempt after 100 ms
-						Thread.Sleep(100);
+						await Task.Delay(100, token);
 						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage))) {
 							ReleaseWorkshopQuery();
-							return false;
+							// Exit for error fetching stuff (will leave the status as not complete (could in alternative throw an error for clearer info)
+							yield return null;
+							yield break;
 						}
 					}
 
 					// Appx. 10 ms per page of 50 items
-					ProcessPageResult();
+					foreach (var item in ProcessPageResult())
+						yield return item;
 
 					ReleaseWorkshopQuery();
 				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount && !stopCurrentQuery);
-
-				return true;
 			}
 
 			// Only use if we don't have a guaranteed PublishID source
@@ -376,7 +381,7 @@ public partial class WorkshopHelper
 				return false;
 			}
 
-			private void ProcessPageResult()
+			private IEnumerable<ModDownloadItem> ProcessPageResult()
 			{
 				for (uint i = 0; i < _queryReturnCount; i++) {
 					// Item Result call data
@@ -442,7 +447,7 @@ public partial class WorkshopHelper
 					// Item Statistics
 					SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-					Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.modV.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"]));
+					yield return new ModDownloadItem(displayname, metadata["name"], cVersion.modV.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"]);
 				}
 			}
 		}
