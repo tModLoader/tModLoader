@@ -51,13 +51,14 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition InLihzhardTemple =		new("Condition.InLihzardTemple",		() => Main.LocalPlayer.ZoneLihzhardTemple);
 	public static readonly Condition InGraveyardBiome =		new("Condition.InGraveyardBiome",		() => Main.LocalPlayer.ZoneGraveyard);
 	//WorldType
-	public static readonly Condition CrimsonWorld =			new("Condition.CrimsonWorld",			() => WorldGen.crimson);
-	public static readonly Condition CorruptWorld =			new("Condition.CorruptWorld",			() => !WorldGen.crimson);
-	
+	public static readonly Condition CrimsonWorld =			new("Condition.WorldCrimson",			() => WorldGen.crimson);
+	public static readonly Condition CorruptWorld =			new("Condition.WorldCorrupt",			() => !WorldGen.crimson);
+	//WorldSeed
 	public static readonly Condition DrunkWorld =			new("Condition.WorldDrunk",				() => Main.drunkWorld);
 	public static readonly Condition RemixWorld =			new("Condition.WorldRemix",				() => Main.remixWorld);
-	public static readonly Condition ForTheWorthy =			new("Condition.WorldForTheWorthy",		() => Main.getGoodWorld);
-	public static readonly Condition TenthAnniversary =		new("Condition.WorldAnniversary",		() => Main.tenthAnniversaryWorld);
+	public static readonly Condition ForTheWorthyWorld =	new("Condition.WorldForTheWorthy",		() => Main.getGoodWorld);
+	public static readonly Condition TenthAnniversaryWorld =new("Condition.WorldAnniversary",		() => Main.tenthAnniversaryWorld);
+	public static readonly Condition DontStarveWorld =		new("Condition.WorldDontStarve",		() => Main.dontStarveWorld);
 	public static readonly Condition ZenithWorld =			new("Condition.WorldZenith",			() => Main.remixWorld && Main.getGoodWorld);
 }
 			

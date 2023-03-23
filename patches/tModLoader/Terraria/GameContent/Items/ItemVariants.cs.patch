@@ -118,7 +118,7 @@
 +		EverythingWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
 +		*/
 +		RemixWorld = Condition.RemixWorld;
-+		GetGoodWorld = Condition.ForTheWorthy;
++		GetGoodWorld = Condition.ForTheWorthyWorld;
 +		EverythingWorld = Condition.ZenithWorld;
 +
  		AddVariant(112, StrongerVariant, RemixWorld);
