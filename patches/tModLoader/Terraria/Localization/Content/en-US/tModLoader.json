@@ -560,7 +560,7 @@
 	"Bestiary_ItemDropConditions": {
 		"SimpleCondition": "Drops: {0}"
 	},
-	"Condition": {
+	"Conditions": {
 		"NearWater": "Near water",
 		"NearLava": "Near lava",
 		"NearHoney": "Near honey",

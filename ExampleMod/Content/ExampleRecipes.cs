@@ -97,7 +97,7 @@ namespace ExampleMod.Content
 				// Adds a custom condition, that the player must be at <1/2 health for the recipe to work.
 				// The key used here is defined in 'Localization/*.hjson' files.
 				// The second argument uses a lambda expression to create a delegate, you can learn more about lambdas in Google.
-				.AddCondition(Language.GetOrRegister("Mods.ExampleMod.Condition.LowHealth"), () => Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax / 2)
+				.AddCondition(Language.GetOrRegister("Mods.ExampleMod.Conditions.LowHealth"), () => Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax / 2)
 
 				// When you're done, call this to register the recipe. Note that there's a semicolon at the end of the chain.
 				.Register();
