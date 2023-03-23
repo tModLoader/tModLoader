@@ -557,6 +557,9 @@
 		"SummonTagDamage": "{0} summon tag damage",
 		"PercentSummonTagCritChance": "{0}% summon tag critical strike chance"
 	},
+	"Bestiary_ItemDropConditions": {
+		"SimpleCondition": "Drops: {0}"
+	},
 	"Condition": {
 		"NearWater": "Near water",
 		"NearLava": "Near lava",

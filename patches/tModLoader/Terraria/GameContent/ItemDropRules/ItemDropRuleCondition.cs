@@ -3,10 +3,10 @@ using Terraria.Localization;
 
 namespace Terraria.GameContent.ItemDropRules;
 
-public record SimpleItemDropRuleCondition(LocalizedText Description, Func<bool> Predicate, ShowItemDropInUI ShowItemDropInUI) : IItemDropRuleCondition
-{
-	public SimpleItemDropRuleCondition(Condition Condition, ShowItemDropInUI ShowItemDropInUI) : this(Condition.Description, Condition.Predicate, ShowItemDropInUI) { }
+#nullable enable
 
+public record SimpleItemDropRuleCondition(LocalizedText Description, Func<bool> Predicate, ShowItemDropInUI ShowItemDropInUI, bool ShowConditionInUI = true) : IItemDropRuleCondition
+{
 	public bool CanDrop(DropAttemptInfo info) => Predicate();
 
 	public bool CanShowItemDropInUI() => ShowItemDropInUI switch {
@@ -16,7 +16,7 @@ public record SimpleItemDropRuleCondition(LocalizedText Description, Func<bool> 
 		_ => throw new NotImplementedException()
 	};
 
-	public string GetConditionDescription() => Description?.Value;
+	public string? GetConditionDescription() => ShowConditionInUI ? Description.Value : null;
 }
 
 public enum ShowItemDropInUI
@@ -28,5 +28,6 @@ public enum ShowItemDropInUI
 
 public static class Extensions
 {
-	public static SimpleItemDropRuleCondition ToDropCondition(this Condition condition, ShowItemDropInUI showItemDropInUI) => new(condition, showItemDropInUI);
+	public static SimpleItemDropRuleCondition ToDropCondition(this Condition condition, ShowItemDropInUI showItemDropInUI, bool showConditionInUI = true) =>
+		new(Language.GetText("Bestiary_ItemDropConditions.SimpleCondition").WithFormatArgs(condition.Description), condition.Predicate, showItemDropInUI, showConditionInUI);
 }
