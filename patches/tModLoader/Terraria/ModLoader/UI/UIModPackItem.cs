@@ -379,8 +379,6 @@ internal class UIModPackItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 		Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 		Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
-		Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
-		Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
 		Interface.modBrowser.UpdateNeeded = true;
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 

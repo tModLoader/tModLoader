@@ -63,7 +63,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public UIModDownloadItem SelectedItem;
 
 	// TODO maybe we can refactor this as a "BrowserState" enum
-	public bool Loading => _provider?.State == AsyncProvider.State.Loading;
+	public bool Loading => _provider?.State.IsFinished() != true;
 	public bool anEnabledModUpdated;
 	public bool aDisabledModUpdated;
 	public bool aNewModDownloaded;
@@ -82,10 +82,25 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
 
 	internal bool UpdateNeeded;
-	internal string Filter => FilterTextBox.Text;
 	public UIState PreviousUIState { get; set; }
 
 	/* Filters */
+	public QueryParameters FilterParameters => new() {
+		searchTags = null,
+		searchModIds = null,
+		searchModSlugs = null,
+		searchModNames = SpecialModPackFilter,
+		searchName = SearchFilterMode == SearchFilter.Name ? Filter : null,
+		searchAuthor = SearchFilterMode == SearchFilter.Author ? Filter : null,
+		sortingParamater = SortMode,
+		updateStatusFilter = UpdateFilterMode,
+		modSideFilter = ModSideFilterMode,
+
+		queryType = QueryType.SearchAll
+	};
+
+	internal string Filter => FilterTextBox.Text;
+
 	public ModBrowserSortMode SortMode {
 		get => SortModeFilterToggle.State;
 		set => SortModeFilterToggle.SetCurrentState(value);
@@ -154,7 +169,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
+		// @TODO: Why this is on Draw??? (plus hard coded 101 :|)
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
+
 		base.Draw(spriteBatch);
 		for (int i = 0; i < CategoryButtons.Count; i++)
 			if (CategoryButtons[i].IsMouseHovering) {
@@ -178,9 +195,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				}
 
 				UICommon.DrawHoverStringInBounds(spriteBatch, text);
-				return;
+				// @TEMP: Was return here, it did "block" _updateAvailable processing
+				break;
 			}
 
+		// @TODO: This feels a lot like an Update method...
 		if (_updateAvailable) {
 			_updateAvailable = false;
 			Interface.updateMessage.SetMessage(_updateText);
@@ -240,7 +259,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		_browserStatus.SetCurrentState(newState);
 		_rootElement.RemoveChild(_updateAllButton);
-		if ((newState == AsyncProvider.State.Aborted) || (newState == AsyncProvider.State.Completed)) {
+		if (newState.IsFinished()) {
 			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 
 			_items.Clear();
@@ -290,6 +309,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		var downloads = new List<ModDownloadItem>();
 
 		foreach (string desiredMod in modNames) {
+			// This is an instance of searching mod by name
 			var mod = SocialBackend.Items.FirstOrDefault(x => x.ModName == desiredMod);
 
 			if (mod == null) { // Not found on the browser

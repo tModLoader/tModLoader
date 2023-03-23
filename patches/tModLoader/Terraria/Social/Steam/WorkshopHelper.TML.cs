@@ -226,7 +226,7 @@ public partial class WorkshopHelper
 		*/
 
 		// Yield returns null if an error happens and the result is cut short
-		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, CancellationToken token)
+		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token)
 		{
 			HiddenModCount = IncompleteModCount = 0;
 			TotalItemsQueried = 0;

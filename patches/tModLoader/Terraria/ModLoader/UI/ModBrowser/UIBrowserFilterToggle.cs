@@ -30,12 +30,10 @@ public class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 	private void UpdateToNext(UIMouseEvent @event, UIElement element)
 	{
 		SetCurrentState(State.NextEnum());
-		Interface.modBrowser.UpdateNeeded = true;
 	}
 
 	private void UpdateToPrevious(UIMouseEvent @event, UIElement element)
 	{
 		SetCurrentState(State.PreviousEnum());
-		Interface.modBrowser.UpdateNeeded = true;
 	}
 }

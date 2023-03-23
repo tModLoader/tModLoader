@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow.CopyAnalysis;
 
 namespace Terraria.ModLoader;
+
+public static class AsyncProviderStateExtensions
+{
+	public static bool IsFinished(this AsyncProvider.State s) => (s == AsyncProvider.State.Completed || s == AsyncProvider.State.Aborted);
+};
 
 public static class AsyncProvider
 {

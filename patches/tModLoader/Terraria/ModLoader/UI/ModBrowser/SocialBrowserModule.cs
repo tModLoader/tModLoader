@@ -114,12 +114,13 @@ public struct QueryParameters
 	public List<string> searchTags;
 	public List<string> searchModIds;
 	public List<string> searchModSlugs;
-	public string searchTextField;
+	public List<string> searchModNames;
+	public string searchName;
+	public string searchAuthor;
 
-	public UIBrowserFilterToggle<ModBrowserSortMode> sortingParamater;
-	public UIBrowserFilterToggle<UpdateFilter> updateStatusFilter;
-	public UIBrowserFilterToggle<SearchFilter> searchFilterOption;
-	public UIBrowserFilterToggle<ModSideFilter> modSideFilter;
+	public ModBrowserSortMode sortingParamater;
+	public UpdateFilter updateStatusFilter;
+	public ModSideFilter modSideFilter;
 
 	public QueryType queryType;
 }

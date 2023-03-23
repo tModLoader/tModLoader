@@ -58,6 +58,11 @@ internal partial class UIModBrowser
 		FilterTextBox.OnTextChange += (sender, e) => {
 			UpdateNeeded = true;
 		};
+		foreach (var btn in CategoryButtons) {
+			btn.OnStateChanged += (sender, e) => {
+				UpdateNeeded = true;
+			};
+		}
 	}
 
 	public override void OnInitialize()
