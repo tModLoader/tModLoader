@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
@@ -174,8 +174,7 @@ namespace Terraria.ModLoader.Core
 		public static ArrayPool<T> Pool = ArrayPool<T>.Create();
 
 		static GlobalInstantiationArrayPool() {
-			// honestly, this should go in 'OnResizeArrays'
-			TypeCaching.OnClear += () => LoaderUtils.ResetStaticMembers(typeof(GlobalInstantiationArrayPool<T>), false);
+		    TypeCaching.OnClear += () => Pool = ArrayPool<T>.Create();
 		}
 	}
 }
