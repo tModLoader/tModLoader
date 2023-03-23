@@ -976,6 +976,7 @@ Mods: {
 
 		// InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
 		// ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
+		// Condition.LowHealth: When the player is below half HP
 	}
 }
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
