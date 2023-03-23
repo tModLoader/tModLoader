@@ -63,7 +63,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	{
 		InstalledItems = GetInstalledItems();
 
-		await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(token)) {
+		await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
 			yield return item;
 		}
 
@@ -177,28 +177,42 @@ public static class SteamedWraps
 		return deps;
 	}
 
-	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, bool returnChildInfo = false, bool returnLongDesc = false, bool returnKeyValueTags = false, bool returnPlaytimeStats = false)
+	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle)
 	{
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-			SteamUGC.SetReturnLongDescription(qHandle, returnLongDesc);
-			SteamUGC.SetReturnChildren(qHandle, returnChildInfo);
-			SteamUGC.SetReturnKeyValueTags(qHandle, returnKeyValueTags);
-			if (returnPlaytimeStats)
-				SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+			SteamUGC.SetReturnChildren(qHandle, true);
+			SteamUGC.SetReturnKeyValueTags(qHandle, true);
+			SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 		}
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-			SteamGameServerUGC.SetReturnLongDescription(qHandle, returnLongDesc);
-			SteamGameServerUGC.SetReturnChildren(qHandle, returnChildInfo);
-			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, returnKeyValueTags);
-			if (returnPlaytimeStats)
-				SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+			SteamGameServerUGC.SetReturnChildren(qHandle, true);
+			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
+			SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 		}
+	}
+
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	{
+		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
+
+		if (SteamClient) {
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle);
+			return SteamUGC.SendQueryUGCRequest(qHandle);
+		}
+		else if (SteamAvailable) {
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle);
+			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
+		}
+
+		return new();
 	}
 
 	private static void FilterByTags(ref UGCQueryHandle_t qHandle, List<string> tags)
@@ -226,35 +240,38 @@ public static class SteamedWraps
 			SteamGameServerUGC.AddRequiredKeyValueTag(qHandle, "name", internalName);
 	}
 
-	public static SteamAPICall_t GenerateSingleItemQuery(ulong publishId)
+	private static void FilterByText(ref UGCQueryHandle_t qHandle, string text)
 	{
-		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
-			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
-			return SteamUGC.SendQueryUGCRequest(qHandle);
-		} else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
-			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
-			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-		}
+		if (text == null)
+			return;
 
-		return new();
+		if (SteamClient)
+			SteamUGC.SetSearchText(qHandle, text);
+		else if (SteamAvailable)
+			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
 
-	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, List<string> tags = null, string internalName = null)
+	//TODO: Needs more refactor.
+	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
-			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
-			FilterByTags(ref qHandle, tags);
+
+			ModifyQueryHandle(ref qHandle);
+			FilterByText(ref qHandle, qP.searchTextField);
+			FilterByTags(ref qHandle, qP.searchTags);
 			FilterByInternalName(ref qHandle, internalName);
+
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
-			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
-			FilterByTags(ref qHandle, tags);
+
+			ModifyQueryHandle(ref qHandle);
+			FilterByText(ref qHandle, qP.searchTextField);
+			FilterByTags(ref qHandle, qP.searchTags);
 			FilterByInternalName(ref qHandle, internalName);
+
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 

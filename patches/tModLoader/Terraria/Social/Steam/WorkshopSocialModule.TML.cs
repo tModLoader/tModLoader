@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 
@@ -19,10 +20,17 @@ public partial class WorkshopSocialModule
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
-		if(!WorkshopHelper.QueryHelper.GetPublishIdByInternalName(modFile.Name, out currPublishID)) {
+		var query = new QueryParameters() {
+			searchModSlugs = new List<string>() { modFile.Name },
+			queryType = QueryType.SearchDirect
+		};
+
+		if (!WorkshopHelper.QueryHelper.TryGetPublishIdByInternalName(query, out List<string> modIds)) {
 			base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
+
+		currPublishID = ulong.Parse(modIds[0]);
 
 		if (currPublishID == 0)
 			return false;
@@ -54,7 +62,8 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
+			//ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
+			ulong existingID = 0;
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.

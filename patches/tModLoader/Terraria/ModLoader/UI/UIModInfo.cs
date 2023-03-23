@@ -276,6 +276,7 @@ internal class UIModInfo : UIState
 			_loading = true;
 			_ready = false;
 
+			//TODO - move this to the open infi  button. Not on open UI.
 			Utils.OpenToURL(Interface.modBrowser.SocialBackend.GetModWebPage(_publishedFileId));
 
 			if (string.IsNullOrWhiteSpace(_info)) {
