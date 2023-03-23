@@ -12,7 +12,7 @@ public record SimpleItemDropRuleCondition(LocalizedText Description, Func<bool> 
 	public bool CanShowItemDropInUI() => ShowItemDropInUI switch {
 		ShowItemDropInUI.Always => true,
 		ShowItemDropInUI.Never => false,
-		ShowItemDropInUI.WhenConditionSatisifed => Predicate(),
+		ShowItemDropInUI.WhenConditionSatisfied => Predicate(),
 		_ => throw new NotImplementedException()
 	};
 
@@ -23,7 +23,7 @@ public enum ShowItemDropInUI
 {
 	Always,
 	Never,
-	WhenConditionSatisifed
+	WhenConditionSatisfied
 }
 
 public static class Extensions
