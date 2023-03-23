@@ -2,11 +2,18 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Localization;
 
 namespace ExampleMod.Common.ItemDropRules.DropConditions
 {
 	public class ExampleSoulCondition : IItemDropRuleCondition
 	{
+		private static LocalizedText Description;
+
+		public ExampleSoulCondition() {
+			Description ??= Language.GetOrRegister("Mods.ExampleMod.DropConditions.ExampleSoul");
+		}
+
 		public bool CanDrop(DropAttemptInfo info) {
 			NPC npc = info.npc;
 			return Main.hardMode
@@ -23,7 +30,7 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 		}
 
 		public string GetConditionDescription() {
-			return "Drops in 'Example Underground Biome' in hardmode";
+			return Description.Value;
 		}
 	}
 }
