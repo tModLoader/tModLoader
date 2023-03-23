@@ -147,4 +147,8 @@ public class ModAddRecipes : Mod
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	}
+
+	public void NewRecipeMethodConditionRefactors(Recipe recipe) {
+		recipe.AddCondition(Condition.TimeDay);
+	}
 }
