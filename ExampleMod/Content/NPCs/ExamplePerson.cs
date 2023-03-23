@@ -289,12 +289,12 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Placeable.Furniture.ExampleChest>()
 				.Add<Items.Tools.ExamplePickaxe>()
 				.Add<Items.Tools.ExampleHamaxe>()
-				.Add<Items.Consumables.ExampleHealingPotion>(new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.PlayerHasLifeforceBuff"), () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
-				.Add<Items.Weapons.ExampleSword>(NPCShop.Condition.MoonPhasesQuarter0)
-				//.Add<ExampleGun>(NPCShop.Condition.MoonPhasesQuarter1)
-				.Add<Items.Ammo.ExampleBullet>(NPCShop.Condition.MoonPhasesQuarter1)
-				//.Add<ExampleStaff>(NPCShop.Condition.MoonPhasesQuarter2)
-				.Add<Items.Weapons.ExampleYoyo>(NPCShop.Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
+				.Add<Items.Consumables.ExampleHealingPotion>(new Condition("Mods.ExampleMod.Conditions.PlayerHasLifeforceBuff", () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
+				.Add<Items.Weapons.ExampleSword>(Condition.MoonPhasesQuarter0)
+				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
+				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
+				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
 			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
 				npcShop.Add<ExampleWings>(ExampleConditions.InExampleBiome);

@@ -762,7 +762,7 @@
 +			field = false;
 +		}
 +
-+		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
++		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyard);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);

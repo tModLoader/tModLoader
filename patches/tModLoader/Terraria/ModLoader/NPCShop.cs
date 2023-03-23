@@ -56,21 +56,21 @@ public sealed partial class NPCShop
 		return this;
 	}
 
-	public NPCShop Add(Item item, params ICondition[] condition) => Add(new Entry(item, condition));
-	public NPCShop Add(int item, params ICondition[] condition) => Add(ContentSamples.ItemsByType[item], condition);
-	public NPCShop Add<T>(params ICondition[] condition) where T : ModItem => Add(ModContent.ItemType<T>(), condition);
+	public NPCShop Add(Item item, params Condition[] condition) => Add(new Entry(item, condition));
+	public NPCShop Add(int item, params Condition[] condition) => Add(ContentSamples.ItemsByType[item], condition);
+	public NPCShop Add<T>(params Condition[] condition) where T : ModItem => Add(ModContent.ItemType<T>(), condition);
 
-	private NPCShop InsertAt(Entry targetEntry, bool after, Item item, params ICondition[] condition) => Add(new Entry(item, condition).SetOrdering(targetEntry, after));
-	private NPCShop InsertAt(int targetItem, bool after, Item item, params ICondition[] condition) => InsertAt(GetEntry(targetItem), after, item, condition);
-	private NPCShop InsertAt(int targetItem, bool after, int item, params ICondition[] condition) => InsertAt(targetItem, after, ContentSamples.ItemsByType[item], condition);
+	private NPCShop InsertAt(Entry targetEntry, bool after, Item item, params Condition[] condition) => Add(new Entry(item, condition).SetOrdering(targetEntry, after));
+	private NPCShop InsertAt(int targetItem, bool after, Item item, params Condition[] condition) => InsertAt(GetEntry(targetItem), after, item, condition);
+	private NPCShop InsertAt(int targetItem, bool after, int item, params Condition[] condition) => InsertAt(targetItem, after, ContentSamples.ItemsByType[item], condition);
 
-	public NPCShop InsertBefore(Entry targetEntry, Item item, params ICondition[] condition) => InsertAt(targetEntry, after: false, item, condition);
-	public NPCShop InsertBefore(int targetItem, Item item, params ICondition[] condition) => InsertAt(targetItem, after: false, item, condition);
-	public NPCShop InsertBefore(int targetItem, int item, params ICondition[] condition) => InsertAt(targetItem, after: false, item, condition);
+	public NPCShop InsertBefore(Entry targetEntry, Item item, params Condition[] condition) => InsertAt(targetEntry, after: false, item, condition);
+	public NPCShop InsertBefore(int targetItem, Item item, params Condition[] condition) => InsertAt(targetItem, after: false, item, condition);
+	public NPCShop InsertBefore(int targetItem, int item, params Condition[] condition) => InsertAt(targetItem, after: false, item, condition);
 
-	public NPCShop InsertAfter(Entry targetEntry, Item item, params ICondition[] condition) => InsertAt(targetEntry, after: true, item, condition);
-	public NPCShop InsertAfter(int targetItem, Item item, params ICondition[] condition) => InsertAt(targetItem, after: true, item, condition);
-	public NPCShop InsertAfter(int targetItem, int item, params ICondition[] condition) => InsertAt(targetItem, after: true, item, condition);
+	public NPCShop InsertAfter(Entry targetEntry, Item item, params Condition[] condition) => InsertAt(targetEntry, after: true, item, condition);
+	public NPCShop InsertAfter(int targetItem, Item item, params Condition[] condition) => InsertAt(targetItem, after: true, item, condition);
+	public NPCShop InsertAfter(int targetItem, int item, params Condition[] condition) => InsertAt(targetItem, after: true, item, condition);
 
 	/// <summary>
 	/// Fills a shop array with the contents of this shop, evaluating conditions and running callbacks. <br/>

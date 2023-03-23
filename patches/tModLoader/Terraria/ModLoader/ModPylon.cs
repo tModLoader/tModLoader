@@ -84,14 +84,14 @@ public abstract class ModPylon : ModTile
 	/// Return null to prevent automatically registering this pylon in shops. <br/>
 	/// By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero <see cref="ModBlockType.ItemDrop"/> <br/>
 	/// <br/>
-	/// The standard pylon conditions are <see cref="NPCShop.Condition.HappyEnoughToSellPylons"/>, <see cref="NPCShop.Condition.AnotherTownNPCNearby"/>, <see cref="NPCShop.Condition.NotInEvilBiome"/>
+	/// The standard pylon conditions are <see cref="Condition.HappyEnoughToSellPylons"/>, <see cref="Condition.AnotherTownNPCNearby"/>, <see cref="Condition.NotInEvilBiome"/>
 	/// </summary>
 	public virtual NPCShop.Entry GetNPCShopEntry()
 	{
 		if (ItemDrop == 0)
 			return null;
 
-		return new NPCShop.Entry(ItemDrop, NPCShop.Condition.HappyEnoughToSellPylons, NPCShop.Condition.AnotherTownNPCNearby, NPCShop.Condition.NotInEvilBiome);
+		return new NPCShop.Entry(ItemDrop, Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome);
 	}
 
 	/// <summary>

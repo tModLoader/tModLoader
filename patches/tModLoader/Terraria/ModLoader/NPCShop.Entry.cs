@@ -10,8 +10,8 @@ public sealed partial class NPCShop
 	{
 		public Item Item { get; private init; }
 
-		private readonly List<ICondition> conditions;
-		public IReadOnlyList<ICondition> Conditions => conditions;
+		private readonly List<Condition> conditions;
+		public IReadOnlyList<Condition> Conditions => conditions;
 
 		private Action<Item, NPC> shopOpenedHooks;
 
@@ -21,9 +21,9 @@ public sealed partial class NPCShop
 		public bool OrdersLast { get; private set; }
 		public bool SlotReserved { get; private set; }
 
-		public Entry(int item, params ICondition[] condition) : this(new Item(item), condition) { }
+		public Entry(int item, params Condition[] condition) : this(new Item(item), condition) { }
 
-		public Entry(Item item, params ICondition[] condition)
+		public Entry(Item item, params Condition[] condition)
 		{
 			Disabled = false;
 			Item = item;
@@ -48,7 +48,7 @@ public sealed partial class NPCShop
 		public Entry SortBefore(Entry target) => SetOrdering(target, after: false);
 		public Entry SortAfter(Entry target) => SetOrdering(target, after: true);
 
-		public Entry AddCondition(ICondition condition)
+		public Entry AddCondition(Condition condition)
 		{
 			ArgumentNullException.ThrowIfNull(condition, nameof(condition));
 			conditions.Add(condition);
@@ -87,7 +87,7 @@ public sealed partial class NPCShop
 		public bool ConditionsMet()
 		{
 			for (int i = 0; i < conditions.Count; i++) {
-				if (!conditions[i].IsAvailable()) {
+				if (!conditions[i].IsMet()) {
 					return false;
 				}
 			}

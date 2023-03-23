@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using static Terraria.ModLoader.NPCShop;
 
 namespace Terraria.ModLoader;
 
@@ -12,13 +11,13 @@ public static partial class NPCShopDatabase
 
 	private class ConditionTest
 	{
-		public IReadOnlyList<ICondition> Conditions;
+		public IReadOnlyList<Condition> Conditions;
 		public string Name;
 		public bool Tested;
 
-		public ConditionTest(IReadOnlyList<ICondition> conditions)
+		public ConditionTest(IReadOnlyList<Condition> conditions)
 		{
-			Conditions = conditions.OrderBy(c => c.Description).ToList();
+			Conditions = conditions.OrderBy(c => c.Description.Value).ToList();
 			Name = string.Join(" && ", conditions.Select(c => c.Description));
 		}
 
@@ -102,7 +101,7 @@ public static partial class NPCShopDatabase
 				continue;
 			}
 
-			if (test.Conditions.All(e => e.IsAvailable())) {
+			if (test.Conditions.All(e => e.IsMet())) {
 				test.Tested = true;
 				testedCount++;
 				newCondsTested = true;

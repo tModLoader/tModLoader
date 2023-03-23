@@ -50,7 +50,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				return;
 
 			// Adding ExampleTorch to Merchant, with condition being sold only during daytime. Have it appear just after Torch
-			shop.InsertAfter(ItemID.Torch, ModContent.ItemType<Content.Items.Placeable.ExampleTorch>(), NPCShop.Condition.TimeDay);
+			shop.InsertAfter(ItemID.Torch, ModContent.ItemType<Content.Items.Placeable.ExampleTorch>(), Condition.TimeDay);
 
 			// Hiding Copper Pickaxe and Copper Axe. They will never appear in Merchant shop anymore
 			// However, this approach may fail if item doesn't exists in shop.
@@ -62,16 +62,16 @@ namespace ExampleMod.Common.GlobalNPCs
 			}
 
 			// Adding new Condition to Blue Flare. Now it will appear just if player carries a Flare Gun in their inventory AND is in Snow biome
-			shop.GetEntry(ItemID.BlueFlare).AddCondition(NPCShop.Condition.InSnowBiome);
+			shop.GetEntry(ItemID.BlueFlare).AddCondition(Condition.InSnow);
 
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
 			// If condition is fulfilled, add an item to the shop.
-			shop.Add<ExampleItem>(NPCShop.Condition.HappyWindyDay, NPCShop.Condition.HappyEnough);
+			shop.Add<ExampleItem>(Condition.HappyWindyDay, Condition.HappyEnough);
 
 			// Custom condition, opposite of conditions for ExampleItem above.
-			var redPotCondition = new NPCShop.Condition(NetworkText.FromKey("Mods.ExampleMod.ShopConditions.RedPotCondition"), () => !NPCShop.Condition.HappyWindyDay.IsAvailable() || !NPCShop.Condition.HappyEnough.IsAvailable());
+			var redPotCondition = new Condition("Mods.ExampleMod.Conditions.NotSellingExampleItem", () => !Condition.HappyWindyDay.IsMet() || !Condition.HappyEnough.IsMet());
 			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
-			shop.Add(ItemID.RedPotion, redPotCondition, NPCShop.Condition.ForTheWorthy);
+			shop.Add(ItemID.RedPotion, redPotCondition, Condition.ForTheWorthyWorld);
 		}
 	}
 }
