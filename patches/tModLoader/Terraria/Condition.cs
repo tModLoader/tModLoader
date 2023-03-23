@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -6,7 +6,7 @@ namespace Terraria;
 
 public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 {
-	public Condition(string LocalizationKey, Func<bool> Predicate) : this(Language.GetText(LocalizationKey), Predicate) { }
+	public Condition(string LocalizationKey, Func<bool> Predicate) : this(Language.GetOrRegister(LocalizationKey), Predicate) { }
 
 	public bool IsMet() => Predicate();
 
