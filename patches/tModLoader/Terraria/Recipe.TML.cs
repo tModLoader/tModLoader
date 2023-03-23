@@ -12,78 +12,6 @@ namespace Terraria;
 
 public partial class Recipe
 {
-	public interface ICondition
-	{
-		string Description { get; }
-
-		bool RecipeAvailable(Recipe recipe);
-	}
-
-	public sealed class Condition : ICondition
-	{
-		#region Conditions
-
-		//Liquids
-		public static readonly Condition NearWater = new Condition(NetworkText.FromKey("RecipeConditions.NearWater"), _ => Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[TileID.Sinks]);
-		public static readonly Condition NearLava = new Condition(NetworkText.FromKey("RecipeConditions.NearLava"), _ => Main.LocalPlayer.adjLava);
-		public static readonly Condition NearHoney = new Condition(NetworkText.FromKey("RecipeConditions.NearHoney"), _ => Main.LocalPlayer.adjHoney);
-		public static readonly Condition NearShimmer = new Condition(NetworkText.FromKey("RecipeConditions.NearShimmer"), _ => Main.LocalPlayer.adjShimmer);
-		//Time
-		public static readonly Condition TimeDay = new Condition(NetworkText.FromKey("RecipeConditions.TimeDay"), _ => Main.dayTime);
-		public static readonly Condition TimeNight = new Condition(NetworkText.FromKey("RecipeConditions.TimeNight"), _ => !Main.dayTime);
-		//Biomes
-		public static readonly Condition InDungeon = new Condition(NetworkText.FromKey("RecipeConditions.InDungeon"), _ => Main.LocalPlayer.ZoneDungeon);
-		public static readonly Condition InCorrupt = new Condition(NetworkText.FromKey("RecipeConditions.InCorrupt"), _ => Main.LocalPlayer.ZoneCorrupt);
-		public static readonly Condition InHallow = new Condition(NetworkText.FromKey("RecipeConditions.InHallow"), _ => Main.LocalPlayer.ZoneHallow);
-		public static readonly Condition InMeteor = new Condition(NetworkText.FromKey("RecipeConditions.InMeteor"), _ => Main.LocalPlayer.ZoneMeteor);
-		public static readonly Condition InJungle = new Condition(NetworkText.FromKey("RecipeConditions.InJungle"), _ => Main.LocalPlayer.ZoneJungle);
-		public static readonly Condition InSnow = new Condition(NetworkText.FromKey("RecipeConditions.InSnow"), _ => Main.LocalPlayer.ZoneSnow);
-		public static readonly Condition InCrimson = new Condition(NetworkText.FromKey("RecipeConditions.InCrimson"), _ => Main.LocalPlayer.ZoneCrimson);
-		public static readonly Condition InWaterCandle = new Condition(NetworkText.FromKey("RecipeConditions.InWaterCandle"), _ => Main.LocalPlayer.ZoneWaterCandle);
-		public static readonly Condition InPeaceCandle = new Condition(NetworkText.FromKey("RecipeConditions.InPeaceCandle"), _ => Main.LocalPlayer.ZonePeaceCandle);
-		public static readonly Condition InTowerSolar = new Condition(NetworkText.FromKey("RecipeConditions.InTowerSolar"), _ => Main.LocalPlayer.ZoneTowerSolar);
-		public static readonly Condition InTowerVortex = new Condition(NetworkText.FromKey("RecipeConditions.InTowerVortex"), _ => Main.LocalPlayer.ZoneTowerVortex);
-		public static readonly Condition InTowerNebula = new Condition(NetworkText.FromKey("RecipeConditions.InTowerNebula"), _ => Main.LocalPlayer.ZoneTowerNebula);
-		public static readonly Condition InTowerStardust = new Condition(NetworkText.FromKey("RecipeConditions.InTowerStardust"), _ => Main.LocalPlayer.ZoneTowerStardust);
-		public static readonly Condition InDesert = new Condition(NetworkText.FromKey("RecipeConditions.InDesert"), _ => Main.LocalPlayer.ZoneDesert);
-		public static readonly Condition InGlowshroom = new Condition(NetworkText.FromKey("RecipeConditions.InGlowshroom"), _ => Main.LocalPlayer.ZoneGlowshroom);
-		public static readonly Condition InUndergroundDesert = new Condition(NetworkText.FromKey("RecipeConditions.InUndergroundDesert"), _ => Main.LocalPlayer.ZoneUndergroundDesert);
-		public static readonly Condition InSkyHeight = new Condition(NetworkText.FromKey("RecipeConditions.InSkyHeight"), _ => Main.LocalPlayer.ZoneSkyHeight);
-		public static readonly Condition InOverworldHeight = new Condition(NetworkText.FromKey("RecipeConditions.InOverworldHeight"), _ => Main.LocalPlayer.ZoneOverworldHeight);
-		public static readonly Condition InDirtLayerHeight = new Condition(NetworkText.FromKey("RecipeConditions.InDirtLayerHeight"), _ => Main.LocalPlayer.ZoneDirtLayerHeight);
-		public static readonly Condition InRockLayerHeight = new Condition(NetworkText.FromKey("RecipeConditions.InRockLayerHeight"), _ => Main.LocalPlayer.ZoneRockLayerHeight);
-		public static readonly Condition InUnderworldHeight = new Condition(NetworkText.FromKey("RecipeConditions.InUnderworldHeight"), _ => Main.LocalPlayer.ZoneUnderworldHeight);
-		public static readonly Condition InBeach = new Condition(NetworkText.FromKey("RecipeConditions.InBeach"), _ => Main.LocalPlayer.ZoneBeach);
-		public static readonly Condition InRain = new Condition(NetworkText.FromKey("RecipeConditions.InRain"), _ => Main.LocalPlayer.ZoneRain);
-		public static readonly Condition InSandstorm = new Condition(NetworkText.FromKey("RecipeConditions.InSandstorm"), _ => Main.LocalPlayer.ZoneSandstorm);
-		public static readonly Condition InOldOneArmy = new Condition(NetworkText.FromKey("RecipeConditions.InOldOneArmy"), _ => Main.LocalPlayer.ZoneOldOneArmy);
-		public static readonly Condition InGranite = new Condition(NetworkText.FromKey("RecipeConditions.InGranite"), _ => Main.LocalPlayer.ZoneGranite);
-		public static readonly Condition InMarble = new Condition(NetworkText.FromKey("RecipeConditions.InMarble"), _ => Main.LocalPlayer.ZoneMarble);
-		public static readonly Condition InHive = new Condition(NetworkText.FromKey("RecipeConditions.InHive"), _ => Main.LocalPlayer.ZoneHive);
-		public static readonly Condition InGemCave = new Condition(NetworkText.FromKey("RecipeConditions.InGemCave"), _ => Main.LocalPlayer.ZoneGemCave);
-		public static readonly Condition InLihzhardTemple = new Condition(NetworkText.FromKey("RecipeConditions.InLihzardTemple"), _ => Main.LocalPlayer.ZoneLihzhardTemple);
-		public static readonly Condition InGraveyardBiome = new Condition(NetworkText.FromKey("RecipeConditions.InGraveyardBiome"), _ => Main.LocalPlayer.ZoneGraveyard);
-		//WorldType
-		public static readonly Condition EverythingSeed = new Condition(NetworkText.FromKey("RecipeConditions.EverythingSeed"), _ => Main.remixWorld && Main.getGoodWorld);
-		public static readonly Condition CrimsonWorld = new Condition(NetworkText.FromKey("RecipeConditions.CrimsonWorld"), _ => WorldGen.crimson);
-		public static readonly Condition CorruptWorld = new Condition(NetworkText.FromKey("RecipeConditions.CorruptWorld"), _ => !WorldGen.crimson);
-
-		#endregion
-
-		private readonly NetworkText DescriptionText;
-		private readonly Predicate<Recipe> Predicate;
-
-		public string Description => DescriptionText.ToString();
-
-		public Condition(NetworkText description, Predicate<Recipe> predicate)
-		{
-			DescriptionText = description ?? throw new ArgumentNullException(nameof(description));
-			Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
-		}
-
-		public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
-	}
-
 	public static class ConsumptionRules
 	{
 		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
@@ -273,9 +201,9 @@ public partial class Recipe
 	/// <summary>
 	/// Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
-	/// <param name="condition">The predicate delegate condition.</param>
-	/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-	public Recipe AddCondition(NetworkText description, Predicate<Recipe> condition) => AddCondition(new Condition(description, condition));
+	/// <param name="description">A description of this condition.</param>
+	/// <param name="condition">A function returning whether the condition is met.</param>
+	public Recipe AddCondition(LocalizedText description, Func<bool> condition) => AddCondition(new Condition(description, condition));
 
 	/// <summary>
 	/// Adds an array of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
@@ -304,9 +232,9 @@ public partial class Recipe
 	/// <summary>
 	/// Sets a condition delegate that will determine whether or not the recipe can be shimmered/decrafted. The condition can be unrelated to items or tiles (for example, biome or time).
 	/// </summary>
+	/// <param name="description">A description of this condition.</param>
 	/// <param name="condition">The predicate delegate condition.</param>
-	/// <param name="description">A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</param>
-	public Recipe AddDecraftCondition(NetworkText description, Predicate<Recipe> condition) => AddDecraftCondition(new Condition(description, condition));
+	public Recipe AddDecraftCondition(LocalizedText description, Func<bool> condition) => AddDecraftCondition(new Condition(description, condition));
 
 	/// <summary>
 	/// Adds an array of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).

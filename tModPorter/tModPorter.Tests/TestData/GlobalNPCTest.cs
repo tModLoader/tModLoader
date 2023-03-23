@@ -43,4 +43,5 @@ public class GlobalNPCTest : GlobalNPC
 		return false;
 	}
 	public override bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) => false;
+	public override void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) { }
 }

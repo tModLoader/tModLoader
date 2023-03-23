@@ -487,6 +487,22 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
+	/// Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
+	/// </summary>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="target">The target npc.</param>
+	/// <returns>
+	/// Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC. <br/>
 	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>

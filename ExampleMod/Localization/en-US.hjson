@@ -778,6 +778,16 @@ Mods: {
 				DisplayName: Example Drill
 				Tooltip: ""
 			}
+
+			ExampleExplosive: {
+				DisplayName: Example Explosive
+				Tooltip: ""
+			}
+
+			ExampleJavelin: {
+				DisplayName: Example Javelin
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -809,6 +819,8 @@ Mods: {
 			ExampleSimpleMinion.DisplayName: Example Minion
 			SparklingBall.DisplayName: Sparkling Ball
 			ExampleDrillProjectile.DisplayName: Example Drill Projectile
+			ExampleExplosive.DisplayName: Example Explosive
+			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 		}
 
 		Buffs: {
@@ -890,6 +902,11 @@ Mods: {
 			ExampleWhipAdvancedDebuff: {
 				DisplayName: Example Whip Advanced Debuff
 				Description: ""
+			}
+
+			ExampleJavelinDebuff: {
+				DisplayName: Example Javelin Debuff
+				Description: Losing life
 			}
 		}
 
@@ -979,6 +996,13 @@ Mods: {
 
 		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
 		ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
+		Conditions.LowHealth: When the player is below half HP
+
+		DropConditions: {
+			ExampleSoul: Drops in the Example Underground biome in hardmode
+			JourneyMode: Drops in Journey Mode
+			Example: Drops during daytime
+		}
 	}
 }
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.

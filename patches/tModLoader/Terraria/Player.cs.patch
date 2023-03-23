@@ -5511,7 +5511,7 @@
  			if (inventory[selectedItem].type == 3106) {
  				stealth = 1f;
  				if (Main.netMode == 1)
-@@ -34375,6 +_,15 @@
+@@ -34375,9 +_,20 @@
  				TakeDamageFromJellyfish(npcIndex);
  		}
  		else {
@@ -5527,12 +5527,24 @@
  			if (nPC.friendly && (nPC.type != 22 || !killGuide) && (nPC.type != 54 || !killClothier) && (!nPC.isLikeATownNPC || sItem.type != 5129))
  				return;
  
-@@ -34391,18 +_,27 @@
++			skipVanillaHitChecks:
++
+ 			Rectangle rectangle = new Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
+ 			bool flag = itemRectangle.Intersects(rectangle);
+ 			int type = sItem.type;
+@@ -34388,21 +_,34 @@
+ 				flag = ((!_spawnVolcanoExplosion) ? (flag || flag2) : flag2);
+ 			}
+ 
++			bool? modCanCollide = CombinedHooks.CanPlayerMeleeAttackCollideWithNPC(this, sItem, itemRectangle, nPC);
++			if (modCanCollide == false)
++				return;
++			if (modCanCollide == true)
++				flag = true;
++
  			if (!flag || (!nPC.noTileCollide && !CanHit(nPC)))
  				return;
  
-+			skipVanillaHitChecks:
-+
 +			var modifiers = nPC.GetIncomingStrikeModifiers(sItem.DamageType, direction);
 +			/*
  			int num = originalDamage;

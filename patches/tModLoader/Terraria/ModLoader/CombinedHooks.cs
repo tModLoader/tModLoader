@@ -190,6 +190,17 @@ public static class CombinedHooks
 		return ProjectileLoader.CanHitPvp(projectile, target) && PlayerLoader.CanHitPvpWithProj(projectile, target);
 	}
 
+	public static bool? CanPlayerMeleeAttackCollideWithNPC(Player player, Item item, Rectangle meleeAttackHitbox, NPC target)
+	{
+		bool? ret = null;
+		bool Update(bool? b) => (ret ??= b) is not false;
+
+		_ = Update(PlayerLoader.CanMeleeAttackCollideWithNPC(player, item, meleeAttackHitbox, target))
+			&& Update(ItemLoader.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target))
+			&& Update(NPCLoader.CanCollideWithPlayerMeleeAttack(target, player, item, meleeAttackHitbox));
+		return ret;
+	}
+
 	public static void ModifyItemScale(Player player, Item item, ref float scale)
 	{
 		ItemLoader.ModifyItemScale(item, player, ref scale);

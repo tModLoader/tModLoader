@@ -1264,6 +1264,16 @@
  
  	private void AI_152_SuperStarSlash()
  	{
+@@ -15911,6 +_,9 @@
+ 		tileCollide = false;
+ 	}
+ 
++	/// <summary>
++	/// Changes the <see cref="Entity.width"/> and <see cref="Entity.height"/> of the projectile while preserving the <see cref="Entity.Center"/>. Useful for explosive projectiles that expand their hitbox while exploding.
++	/// </summary>
+ 	public void Resize(int newWidth, int newHeight)
+ 	{
+ 		position = base.Center;
 @@ -16028,6 +_,11 @@
  
  	public void AI()
@@ -1687,6 +1697,16 @@
  		List<int> list = new List<int> {
  			181,
  			182,
+@@ -56667,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjuction with <see cref="ExplodeTiles"/>.
++	/// </summary>
+ 	public bool ShouldWallExplode(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)
+ 	{
+ 		bool result = false;
 @@ -56692,9 +_,13 @@
  
  	public bool CanExplodeTile(int x, int y)
@@ -1701,6 +1721,16 @@
  		switch (Main.tile[x, y].type) {
  			case 26:
  			case 88:
+@@ -56736,6 +_,9 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Explodes tiles within a radius of the given position and within the bounds passed in. The <paramref name="wallSplode"/> parameter should be the result of <see cref="ShouldWallExplode(Vector2, int, int, int, int, int)"/> and dictates if walls will also be destroyed. This method honors the tile and wall explosion conditions.
++	/// </summary>
+ 	public void ExplodeTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ, bool wallSplode)
+ 	{
+ 		AchievementsHelper.CurrentlyMining = true;
 @@ -56762,6 +_,10 @@
  				for (int k = i - 1; k <= i + 1; k++) {
  					for (int l = j - 1; l <= j + 1; l++) {

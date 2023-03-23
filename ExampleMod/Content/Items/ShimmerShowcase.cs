@@ -29,7 +29,7 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Cactus)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.AddDecraftCondition(Recipe.Condition.InDesert)
+			.AddDecraftCondition(Condition.InDesert)
 			.Register();
 
 		// Many items have multiple recipes. The last added recipe will usually be used for shimmer decrafting.
@@ -38,14 +38,14 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.RottenChunk)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.AddDecraftCondition(Recipe.Condition.CorruptWorld)
+			.AddDecraftCondition(Condition.CorruptWorld)
 			.Register();
 
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Vertebrae)
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
-			.AddDecraftCondition(Recipe.Condition.CrimsonWorld)
+			.AddDecraftCondition(Condition.CrimsonWorld)
 			.Register();
 	}
 }

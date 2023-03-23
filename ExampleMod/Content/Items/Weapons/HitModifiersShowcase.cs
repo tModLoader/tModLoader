@@ -93,6 +93,7 @@ namespace ExampleMod.Content.Items.Weapons
 					return "Will apply ExampleDefenseDebuff, reducing defense by 25%";
 				case 7:
 					return "On hit, gives player ExampleDodgeBuff to dodge the next hit";
+
 			}
 			return "Unknown mode";
 		}
@@ -114,6 +115,19 @@ namespace ExampleMod.Content.Items.Weapons
 			else if (mode == 5) {
 				modifiers.ScalingArmorPenetration += 0.5f;
 			}
+
+			// Below is an example of using ModifyHitInfo to alter the final value of damage, between Modify and OnHit hooks.
+			// This 'backdoor' is a replacmenet for the old style of modifiers which allowed modifying the damage via `ref`
+			// Please only use this if absolutely necessary, as multiple mods freely altering the damage results will create incompatible or unintutive player experiences.
+			//
+			// For example, the effect below could be better implemented by checking `player.GetWeaponDamage(Item)` and adding to FinalDamage.Base, SourceDamage.Base, SourceDamage.Flat or FlatBonusDamage
+			/*
+			modifiers.ModifyHitInfo += (ref NPC.HitInfo hitInfo) => {
+				if (hitInfo.Damage > 10) {
+					hitInfo.Damage += 5;
+				}
+			};
+			*/
 		}
 
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {

@@ -3223,7 +3223,7 @@
  
  			GetItemDrawFrame(num15, out var itemTexture2, out var rectangle3);
 +
-+			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref num13, ref num14, ref zero);
++			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref rectangle3, ref num13, ref num14, ref zero);
 +
  			Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num13, num13);
  			Vector2 vector6 = swingStats.Item1 + (swingStats.Item1 - n.Center) * num14 + zero;
@@ -4165,7 +4165,7 @@
  				_requiredObjecsForCraftingText.Add(Lang.inter[124].Value);
  
 +			//TML: Display recipe conditions' descriptions
-+			_requiredObjecsForCraftingText.AddRange(recipe.Conditions.Select(x => x.Description));
++			_requiredObjecsForCraftingText.AddRange(recipe.Conditions.Select(x => x.Description.Value));
 +
  			if (_requiredObjecsForCraftingText.Count == 0) {
  				string value = Lang.inter[23].Value;
