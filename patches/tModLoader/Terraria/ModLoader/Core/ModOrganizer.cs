@@ -165,7 +165,7 @@ internal static class ModOrganizer
 				continue;
 
 			try {
-				WorkshopHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
+				//WorkshopHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
 			}
 			catch (OverflowException e) {
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopIrregularDependenciesFailure", mod.DisplayName, e.Message, mod.DisplayName), Interface.loadModsID);
@@ -190,8 +190,8 @@ internal static class ModOrganizer
 		message.Append(Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods"));
 		foreach (ulong dep in deps) {
 			// TODO: No way to really show the internal name, just display name. How to fix? Does it *need* fixing?
-			var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
-			message.Append($"\n  {details.m_rgchTitle}");
+			/*var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
+			message.Append($"\n  {details.m_rgchTitle}"); */
 		}
 
 		return message.ToString();
