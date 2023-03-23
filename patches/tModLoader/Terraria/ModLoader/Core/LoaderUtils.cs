@@ -197,7 +197,6 @@ internal class GlobalInstantiationArrayPool<T>
 
 	static GlobalInstantiationArrayPool()
 	{
-		// honestly, this should go in 'OnResizeArrays'
-		TypeCaching.OnClear += () => LoaderUtils.ResetStaticMembers(typeof(GlobalInstantiationArrayPool<T>), false);
+
 	}
 }
