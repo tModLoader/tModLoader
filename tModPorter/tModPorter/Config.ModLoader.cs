@@ -472,6 +472,7 @@ public static partial class Config
 
 		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
 		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
+		RenameType(from: "Terraria.Recipe.Condition", to: "Terraria.Condition");
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
@@ -498,7 +499,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
 		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
     
-    RenameMethod("Terraria.ModLoader.ModBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
+		RenameMethod("Terraria.ModLoader.ModBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
 		RenameMethod("Terraria.ModLoader.GlobalBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
 		ChangeHookSignature("Terraria.ModLoader.ModBuff", "ModifyBuffText");
 		ChangeHookSignature("Terraria.ModLoader.GlobalBuff", "ModifyBuffText");
