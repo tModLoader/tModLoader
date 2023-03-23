@@ -1000,9 +1000,6 @@ var hierarchy =
       [ "SortingSteps.ByStat", "class_sorting_steps_1_1_by_stat.html", null ],
       [ "SortingSteps.ByUnlockState", "class_sorting_steps_1_1_by_unlock_state.html", null ]
     ] ],
-    [ "Recipe.ICondition", "interface_recipe_1_1_i_condition.html", [
-      [ "Recipe.Condition", "class_recipe_1_1_condition.html", null ]
-    ] ],
     [ "IConfigKeyHolder", "interface_i_config_key_holder.html", [
       [ "ClassicPlayerResourcesDisplaySet", "class_classic_player_resources_display_set.html", null ],
       [ "FancyClassicPlayerResourcesDisplaySet", "class_fancy_classic_player_resources_display_set.html", null ],
@@ -1884,7 +1881,6 @@ var hierarchy =
     [ "ItemSlot.ItemTransferInfo", "struct_item_slot_1_1_item_transfer_info.html", null ],
     [ "ItemUseStyleID", "class_item_use_style_i_d.html", null ],
     [ "ItemVariant", "class_item_variant.html", null ],
-    [ "ItemVariantCondition", "class_item_variant_condition.html", null ],
     [ "ItemVariants", "class_item_variants.html", null ],
     [ "ITileData", "interface_i_tile_data.html", [
       [ "LiquidData", "struct_liquid_data.html", null ],

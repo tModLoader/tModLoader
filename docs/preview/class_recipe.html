@@ -98,11 +98,7 @@ $(document).ready(function(){initNavTree('class_recipe.html',''); initResizable(
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_1_1_condition.html">Condition</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_1_1_consumption_rules.html">ConsumptionRules</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_recipe_1_1_i_condition.html">ICondition</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -114,15 +110,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptedByItemGroups<
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptsGroup</b> (int groupId)</td></tr>
 <tr class="separator:aca53c69e042be32e48be1b0bc079cf61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d15ec90c950e35e9a795e5b2c4ca808"><td class="memItemLeft" align="right" valign="top"><a id="a5d15ec90c950e35e9a795e5b2c4ca808" name="a5d15ec90c950e35e9a795e5b2c4ca808"></a>
-<a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddCondition</b> (<a class="el" href="class_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+<a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddCondition</b> (Condition condition)</td></tr>
 <tr class="separator:a5d15ec90c950e35e9a795e5b2c4ca808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae836542e8c39a03f778756c0cf830639"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#ae836542e8c39a03f778756c0cf830639">AddCondition</a> (<a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_recipe_1_1_condition.html">Condition</a> &gt; conditions)</td></tr>
+<tr class="memitem:ae836542e8c39a03f778756c0cf830639"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#ae836542e8c39a03f778756c0cf830639">AddCondition</a> (<a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; Condition &gt; conditions)</td></tr>
 <tr class="memdesc:ae836542e8c39a03f778756c0cf830639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a collection of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#ae836542e8c39a03f778756c0cf830639">More...</a><br /></td></tr>
 <tr class="separator:ae836542e8c39a03f778756c0cf830639"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c427fbd553b1208d55163a6206c03b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a4c427fbd553b1208d55163a6206c03b4">AddCondition</a> (<a class="el" href="class_network_text.html">NetworkText</a> description, Predicate&lt; <a class="el" href="class_recipe.html">Recipe</a> &gt; condition)</td></tr>
-<tr class="memdesc:a4c427fbd553b1208d55163a6206c03b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#a4c427fbd553b1208d55163a6206c03b4">More...</a><br /></td></tr>
-<tr class="separator:a4c427fbd553b1208d55163a6206c03b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a201aa97265a199607d864e8fbe40dda6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a201aa97265a199607d864e8fbe40dda6">AddCondition</a> (params <a class="el" href="class_recipe_1_1_condition.html">Condition</a>[] conditions)</td></tr>
+<tr class="memitem:aca15dbdbe8d4a62c21673c369c0f908c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#aca15dbdbe8d4a62c21673c369c0f908c">AddCondition</a> (<a class="el" href="class_localized_text.html">LocalizedText</a> description, Func&lt; bool &gt; condition)</td></tr>
+<tr class="memdesc:aca15dbdbe8d4a62c21673c369c0f908c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#aca15dbdbe8d4a62c21673c369c0f908c">More...</a><br /></td></tr>
+<tr class="separator:aca15dbdbe8d4a62c21673c369c0f908c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201aa97265a199607d864e8fbe40dda6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a201aa97265a199607d864e8fbe40dda6">AddCondition</a> (params Condition[] conditions)</td></tr>
 <tr class="memdesc:a201aa97265a199607d864e8fbe40dda6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an array of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#a201aa97265a199607d864e8fbe40dda6">More...</a><br /></td></tr>
 <tr class="separator:a201aa97265a199607d864e8fbe40dda6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf2ce910bb8fc35fb9ec7fb195a242c2"><td class="memItemLeft" align="right" valign="top"><a id="aaf2ce910bb8fc35fb9ec7fb195a242c2" name="aaf2ce910bb8fc35fb9ec7fb195a242c2"></a>
@@ -133,15 +129,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptsGroup</b> (int
 <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddCustomShimmerResult</b> (int itemType, int itemStack=1)</td></tr>
 <tr class="separator:a6e86782020981c3d9cd804fc90fef164"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fc6fa925ceba616882b087fc338d609"><td class="memItemLeft" align="right" valign="top"><a id="a2fc6fa925ceba616882b087fc338d609" name="a2fc6fa925ceba616882b087fc338d609"></a>
-<a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddDecraftCondition</b> (<a class="el" href="class_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+<a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddDecraftCondition</b> (Condition condition)</td></tr>
 <tr class="separator:a2fc6fa925ceba616882b087fc338d609"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dff5481bb47513683cfdd8abec91a94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a3dff5481bb47513683cfdd8abec91a94">AddDecraftCondition</a> (<a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_recipe_1_1_condition.html">Condition</a> &gt; conditions)</td></tr>
+<tr class="memitem:a3dff5481bb47513683cfdd8abec91a94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a3dff5481bb47513683cfdd8abec91a94">AddDecraftCondition</a> (<a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; Condition &gt; conditions)</td></tr>
 <tr class="memdesc:a3dff5481bb47513683cfdd8abec91a94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a collection of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#a3dff5481bb47513683cfdd8abec91a94">More...</a><br /></td></tr>
 <tr class="separator:a3dff5481bb47513683cfdd8abec91a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5894594a426da2c25c9b58a4a36f8092"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a5894594a426da2c25c9b58a4a36f8092">AddDecraftCondition</a> (<a class="el" href="class_network_text.html">NetworkText</a> description, Predicate&lt; <a class="el" href="class_recipe.html">Recipe</a> &gt; condition)</td></tr>
-<tr class="memdesc:a5894594a426da2c25c9b58a4a36f8092"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a condition delegate that will determine whether or not the recipe can be shimmered/decrafted. The condition can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#a5894594a426da2c25c9b58a4a36f8092">More...</a><br /></td></tr>
-<tr class="separator:a5894594a426da2c25c9b58a4a36f8092"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbe1f5833386ce49fa78a4bc8d8ce23a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#abbe1f5833386ce49fa78a4bc8d8ce23a">AddDecraftCondition</a> (params <a class="el" href="class_recipe_1_1_condition.html">Condition</a>[] conditions)</td></tr>
+<tr class="memitem:a65694504cb539a30b4b834cfe5c66e1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e">AddDecraftCondition</a> (<a class="el" href="class_localized_text.html">LocalizedText</a> description, Func&lt; bool &gt; condition)</td></tr>
+<tr class="memdesc:a65694504cb539a30b4b834cfe5c66e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a condition delegate that will determine whether or not the recipe can be shimmered/decrafted. The condition can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e">More...</a><br /></td></tr>
+<tr class="separator:a65694504cb539a30b4b834cfe5c66e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbe1f5833386ce49fa78a4bc8d8ce23a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#abbe1f5833386ce49fa78a4bc8d8ce23a">AddDecraftCondition</a> (params Condition[] conditions)</td></tr>
 <tr class="memdesc:abbe1f5833386ce49fa78a4bc8d8ce23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an array of conditions that will determine whether or not the recipe can be shimmered/decrafted. The conditions can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#abbe1f5833386ce49fa78a4bc8d8ce23a">More...</a><br /></td></tr>
 <tr class="separator:abbe1f5833386ce49fa78a4bc8d8ce23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32e3bff72441114d4cda94dd4cb05ea7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7">AddIngredient</a> (int itemID, int stack=1)</td></tr>
@@ -210,7 +206,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> ()</td></t
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableRecipe</b> ()</td></tr>
 <tr class="separator:a0d964688c254d3b46e95bce45701f8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01bf9b6098fd5723426ff95c4139f11e"><td class="memItemLeft" align="right" valign="top"><a id="a01bf9b6098fd5723426ff95c4139f11e" name="a01bf9b6098fd5723426ff95c4139f11e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasCondition</b> (<a class="el" href="class_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasCondition</b> (Condition condition)</td></tr>
 <tr class="separator:a01bf9b6098fd5723426ff95c4139f11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81b3343fd8e89850621f08ff10296ac1"><td class="memItemLeft" align="right" valign="top"><a id="a81b3343fd8e89850621f08ff10296ac1" name="a81b3343fd8e89850621f08ff10296ac1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasIngredient</b> (int itemID)</td></tr>
@@ -244,7 +240,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasResult</b> (<a cla
 <tr class="memitem:afd04c8352d5e53660f51da6bed145ec0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#afd04c8352d5e53660f51da6bed145ec0">HasResult&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:afd04c8352d5e53660f51da6bed145ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb66b1a5a415dccff90a99bd082e218"><td class="memItemLeft" align="right" valign="top"><a id="a5cb66b1a5a415dccff90a99bd082e218" name="a5cb66b1a5a415dccff90a99bd082e218"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasShimmerCondition</b> (<a class="el" href="class_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasShimmerCondition</b> (Condition condition)</td></tr>
 <tr class="separator:a5cb66b1a5a415dccff90a99bd082e218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d0c71df80d9060703d03af0cefbedca"><td class="memItemLeft" align="right" valign="top"><a id="a5d0c71df80d9060703d03af0cefbedca" name="a5d0c71df80d9060703d03af0cefbedca"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasTile</b> (int tileID)</td></tr>
@@ -267,7 +263,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessGroupsForText<
 <tr class="memdesc:adbbadf559d181a9ed34ce2082c6f8f9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.  <a href="class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f">More...</a><br /></td></tr>
 <tr class="separator:adbbadf559d181a9ed34ce2082c6f8f9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53a99bb12a3657c3065ee04fe0ef476d"><td class="memItemLeft" align="right" valign="top"><a id="a53a99bb12a3657c3065ee04fe0ef476d" name="a53a99bb12a3657c3065ee04fe0ef476d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveCondition</b> (<a class="el" href="class_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveCondition</b> (Condition condition)</td></tr>
 <tr class="separator:a53a99bb12a3657c3065ee04fe0ef476d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa52ccf1570cf76165658b8ef88c76184"><td class="memItemLeft" align="right" valign="top"><a id="aa52ccf1570cf76165658b8ef88c76184" name="aa52ccf1570cf76165658b8ef88c76184"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveIngredient</b> (int itemID)</td></tr>
@@ -279,7 +275,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveIngredient</b> 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveRecipeGroup</b> (int groupID)</td></tr>
 <tr class="separator:ab6ba0ca104ee945a76c9f7f63192ef6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac45b63820016252f057ac8d53353fae9"><td class="memItemLeft" align="right" valign="top"><a id="ac45b63820016252f057ac8d53353fae9" name="ac45b63820016252f057ac8d53353fae9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveShimmerCondition</b> (<a class="el" href="class_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveShimmerCondition</b> (Condition condition)</td></tr>
 <tr class="separator:ac45b63820016252f057ac8d53353fae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae93b5106a73ea3198517545eca87f35b"><td class="memItemLeft" align="right" valign="top"><a id="ae93b5106a73ea3198517545eca87f35b" name="ae93b5106a73ea3198517545eca87f35b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveTile</b> (int tileID)</td></tr>
@@ -382,7 +378,7 @@ Public Attributes</h2></td></tr>
 <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>acceptedGroups</b> = new()</td></tr>
 <tr class="separator:a6999c5d0f9de0ac14ad72daf06849ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86772e3b05db56fe6165cda4169fd40a"><td class="memItemLeft" align="right" valign="top"><a id="a86772e3b05db56fe6165cda4169fd40a" name="a86772e3b05db56fe6165cda4169fd40a"></a>
-readonly <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_recipe_1_1_condition.html">Condition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Conditions</b> = new <a class="el" href="class_list.html">List</a>&lt;<a class="el" href="class_recipe_1_1_condition.html">Condition</a>&gt;()</td></tr>
+readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Conditions</b> = new <a class="el" href="class_list.html">List</a>&lt;Condition&gt;()</td></tr>
 <tr class="separator:a86772e3b05db56fe6165cda4169fd40a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe78f7e05bb32f31689f4d7619c178bb"><td class="memItemLeft" align="right" valign="top"><a id="afe78f7e05bb32f31689f4d7619c178bb" name="afe78f7e05bb32f31689f4d7619c178bb"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>createItem</b> = new <a class="el" href="class_item.html">Item</a>()</td></tr>
@@ -391,7 +387,7 @@ readonly <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="c
 <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_item.html">Item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>customShimmerResults</b></td></tr>
 <tr class="separator:a4585663049386f7d8345538d774b6a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e61b3d820f3d7790a27ad98a2b5bb8"><td class="memItemLeft" align="right" valign="top"><a id="ab5e61b3d820f3d7790a27ad98a2b5bb8" name="ab5e61b3d820f3d7790a27ad98a2b5bb8"></a>
-readonly <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_recipe_1_1_condition.html">Condition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DecraftConditions</b> = new <a class="el" href="class_list.html">List</a>&lt;<a class="el" href="class_recipe_1_1_condition.html">Condition</a>&gt;()</td></tr>
+readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DecraftConditions</b> = new <a class="el" href="class_list.html">List</a>&lt;Condition&gt;()</td></tr>
 <tr class="separator:ab5e61b3d820f3d7790a27ad98a2b5bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a559a239e8198f562454d3be2265b0e40"><td class="memItemLeft" align="right" valign="top"><a id="a559a239e8198f562454d3be2265b0e40" name="a559a239e8198f562454d3be2265b0e40"></a>
 readonly <a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Mod</b></td></tr>
@@ -439,7 +435,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
         <tr>
           <td class="memname"><a class="el" href="class_recipe.html">Recipe</a> Recipe.AddCondition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_recipe_1_1_condition.html">Condition</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; Condition &gt;&#160;</td>
           <td class="paramname"><em>conditions</em></td><td>)</td>
           <td></td>
         </tr>
@@ -456,8 +452,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 
 </div>
 </div>
-<a id="a4c427fbd553b1208d55163a6206c03b4" name="a4c427fbd553b1208d55163a6206c03b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c427fbd553b1208d55163a6206c03b4">&#9670;&nbsp;</a></span>AddCondition() <span class="overload">[2/3]</span></h2>
+<a id="aca15dbdbe8d4a62c21673c369c0f908c" name="aca15dbdbe8d4a62c21673c369c0f908c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca15dbdbe8d4a62c21673c369c0f908c">&#9670;&nbsp;</a></span>AddCondition() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -465,13 +461,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
         <tr>
           <td class="memname"><a class="el" href="class_recipe.html">Recipe</a> Recipe.AddCondition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_network_text.html">NetworkText</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td>
           <td class="paramname"><em>description</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Predicate&lt; <a class="el" href="class_recipe.html">Recipe</a> &gt;&#160;</td>
+          <td class="paramtype">Func&lt; bool &gt;&#160;</td>
           <td class="paramname"><em>condition</em>&#160;</td>
         </tr>
         <tr>
@@ -485,8 +481,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 <p>Sets a condition delegate that will determine whether or not the recipe will be to be available for the player to use. The condition can be unrelated to items or tiles (for example, biome or time). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">condition</td><td>The predicate delegate condition.</td></tr>
-    <tr><td class="paramname">description</td><td>A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</td></tr>
+    <tr><td class="paramname">description</td><td>A description of this condition.</td></tr>
+    <tr><td class="paramname">condition</td><td>A function returning whether the condition is met.</td></tr>
   </table>
   </dd>
 </dl>
@@ -502,7 +498,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
         <tr>
           <td class="memname"><a class="el" href="class_recipe.html">Recipe</a> Recipe.AddCondition </td>
           <td>(</td>
-          <td class="paramtype">params <a class="el" href="class_recipe_1_1_condition.html">Condition</a>[]&#160;</td>
+          <td class="paramtype">params Condition[]&#160;</td>
           <td class="paramname"><em>conditions</em></td><td>)</td>
           <td></td>
         </tr>
@@ -528,7 +524,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
         <tr>
           <td class="memname"><a class="el" href="class_recipe.html">Recipe</a> Recipe.AddDecraftCondition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_recipe_1_1_condition.html">Condition</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; Condition &gt;&#160;</td>
           <td class="paramname"><em>conditions</em></td><td>)</td>
           <td></td>
         </tr>
@@ -545,8 +541,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 
 </div>
 </div>
-<a id="a5894594a426da2c25c9b58a4a36f8092" name="a5894594a426da2c25c9b58a4a36f8092"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5894594a426da2c25c9b58a4a36f8092">&#9670;&nbsp;</a></span>AddDecraftCondition() <span class="overload">[2/3]</span></h2>
+<a id="a65694504cb539a30b4b834cfe5c66e1e" name="a65694504cb539a30b4b834cfe5c66e1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65694504cb539a30b4b834cfe5c66e1e">&#9670;&nbsp;</a></span>AddDecraftCondition() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -554,13 +550,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
         <tr>
           <td class="memname"><a class="el" href="class_recipe.html">Recipe</a> Recipe.AddDecraftCondition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_network_text.html">NetworkText</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td>
           <td class="paramname"><em>description</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Predicate&lt; <a class="el" href="class_recipe.html">Recipe</a> &gt;&#160;</td>
+          <td class="paramtype">Func&lt; bool &gt;&#160;</td>
           <td class="paramname"><em>condition</em>&#160;</td>
         </tr>
         <tr>
@@ -574,8 +570,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 <p>Sets a condition delegate that will determine whether or not the recipe can be shimmered/decrafted. The condition can be unrelated to items or tiles (for example, biome or time). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">description</td><td>A description of this condition.</td></tr>
     <tr><td class="paramname">condition</td><td>The predicate delegate condition.</td></tr>
-    <tr><td class="paramname">description</td><td>A description of this condition. Use NetworkText.FromKey, or NetworkText.FromLiteral for this.</td></tr>
   </table>
   </dd>
 </dl>
@@ -591,7 +587,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
         <tr>
           <td class="memname"><a class="el" href="class_recipe.html">Recipe</a> Recipe.AddDecraftCondition </td>
           <td>(</td>
-          <td class="paramtype">params <a class="el" href="class_recipe_1_1_condition.html">Condition</a>[]&#160;</td>
+          <td class="paramtype">params Condition[]&#160;</td>
           <td class="paramname"><em>conditions</em></td><td>)</td>
           <td></td>
         </tr>

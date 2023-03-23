@@ -30,5 +30,5 @@ var searchData=
   ['itemconsumedcallback_27',['ItemConsumedCallback',['../class_mod_player.html#a6b34e5ab775f0b0e547870de325edb66',1,'ModPlayer']]],
   ['itemspace_28',['ItemSpace',['../class_global_item.html#a06dc12c3d4fefe54b4d17a54d2e18e36',1,'GlobalItem.ItemSpace()'],['../class_mod_item.html#acfc46a2a397ebe4dc8b01308ec1d3126',1,'ModItem.ItemSpace()']]],
   ['itemtype_3c_20t_20_3e_29',['ItemType&lt; T &gt;',['../class_mod_content.html#a9b116a7709430393751b7c562bf978d0',1,'ModContent']]],
-  ['itemvariant_30',['ItemVariant',['../class_item_variant.html#a6d18f3c550fdc6b905105f89fefbc817',1,'ItemVariant']]]
+  ['itemvariant_30',['ItemVariant',['../class_item_variant.html#a04b24d40434156cfe40bd870f7c54378',1,'ItemVariant']]]
 ];

@@ -1,14 +1,12 @@
 var class_recipe =
 [
-    [ "Condition", "class_recipe_1_1_condition.html", null ],
     [ "ConsumptionRules", "class_recipe_1_1_consumption_rules.html", "class_recipe_1_1_consumption_rules" ],
-    [ "ICondition", "interface_recipe_1_1_i_condition.html", null ],
     [ "AddCondition", "class_recipe.html#ae836542e8c39a03f778756c0cf830639", null ],
-    [ "AddCondition", "class_recipe.html#a4c427fbd553b1208d55163a6206c03b4", null ],
+    [ "AddCondition", "class_recipe.html#aca15dbdbe8d4a62c21673c369c0f908c", null ],
     [ "AddCondition", "class_recipe.html#a201aa97265a199607d864e8fbe40dda6", null ],
     [ "AddConsumeItemCallback", "class_recipe.html#aaf2ce910bb8fc35fb9ec7fb195a242c2", null ],
     [ "AddDecraftCondition", "class_recipe.html#a3dff5481bb47513683cfdd8abec91a94", null ],
-    [ "AddDecraftCondition", "class_recipe.html#a5894594a426da2c25c9b58a4a36f8092", null ],
+    [ "AddDecraftCondition", "class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e", null ],
     [ "AddDecraftCondition", "class_recipe.html#abbe1f5833386ce49fa78a4bc8d8ce23a", null ],
     [ "AddIngredient", "class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7", null ],
     [ "AddIngredient", "class_recipe.html#afb01ae9f6e1291665e441763d92a8640", null ],
