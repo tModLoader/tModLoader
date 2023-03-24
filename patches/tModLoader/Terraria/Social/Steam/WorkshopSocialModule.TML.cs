@@ -62,8 +62,7 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			//ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
-			ulong existingID = 0;
+			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.

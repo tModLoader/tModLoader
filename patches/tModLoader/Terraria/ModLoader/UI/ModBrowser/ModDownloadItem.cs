@@ -15,6 +15,7 @@ public class ModDownloadItem
 	public readonly string DisplayName;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 	public readonly string PublishId;
+	public readonly string OwnerId;
 	public readonly bool HasUpdate;
 	public readonly bool UpdateIsDowngrade;
 
@@ -25,7 +26,8 @@ public class ModDownloadItem
 	internal readonly string Author;
 	internal readonly string ModIconUrl;
 	internal readonly DateTime TimeStamp;
-	internal readonly string ModReferences;
+	internal readonly string ModReferencesBySlug;
+	internal readonly string ModReferenceByModId;
 	internal readonly ModSide ModSide;
 	internal readonly int Downloads;
 	internal readonly int Hot;
@@ -34,7 +36,7 @@ public class ModDownloadItem
 
 	private bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage)
+	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string referencesById)
 	{
 		// Check against installed mods for updates
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(name);
@@ -47,9 +49,11 @@ public class ModDownloadItem
 		DisplayName = displayName;
 		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
 		PublishId = publishId;
+		OwnerId = ownerId;
 
 		Author = author;
-		ModReferences = modReferences;
+		ModReferencesBySlug = modReferences;
+		ModReferenceByModId = referencesById;
 		ModSide = modSide;
 		ModIconUrl = modIconUrl;
 		Downloads = downloads;

@@ -215,7 +215,7 @@ public static class SteamedWraps
 		return new();
 	}
 
-	private static void FilterByTags(ref UGCQueryHandle_t qHandle, List<string> tags)
+	private static void FilterByTags(ref UGCQueryHandle_t qHandle, string[] tags)
 	{
 		if (tags == null)
 			return;

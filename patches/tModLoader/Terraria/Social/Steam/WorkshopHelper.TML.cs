@@ -59,16 +59,14 @@ public partial class WorkshopHelper
 	}
 
 	/////// Workshop Dependencies ////////////////////
-
-	/*
-	private static List<ulong> GetDependencies(ulong publishedId)
+	private static List<string> GetDependencies(string)
 	{
 		var query = new QueryHelper.AQueryInstance(new QueryParameters());
-		query.FastQueryItem(publishedId);
+		query.TrySearchByInternalName(out var items);
 		return query.ugcChildren;
 	}
 
-	internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set)
+	internal static void GetDependenciesRecursive(string modSlug, ref HashSet<ulong> set)
 	{
 		var deps = GetDependencies(publishedId);
 		set.UnionWith(deps);
@@ -76,7 +74,6 @@ public partial class WorkshopHelper
 		foreach (ulong dep in deps)
 			GetDependenciesRecursive(dep, ref set);
 	}
-	*/
 
 	// Should this be in SteamedWraps or here?
 	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId)
@@ -210,20 +207,20 @@ public partial class WorkshopHelper
 			if (!queryHandle.TrySearchByInternalName(out List<ModDownloadItem> items))
 				return false;
 
-			for (int i = 0; i < query.searchModSlugs.Count; i++) {
+			for (int i = 0; i < query.searchModSlugs.Length; i++) {
 				modIds.Add(items[i] == null ? "0" : items[i].PublishId);
 			}
 
 			return true;
 		}
 
-		/*
 		internal static ulong GetSteamOwner(string modId)
 		{
-			var mod = new AQueryInstance(new ).FastQueryItem(modId);
-			return pDetails.m_ulSteamIDOwner;
+			var mods = new AQueryInstance(new QueryParameters() { searchModIds = new string[] { modId } }).FastQueryItems();
+			return ulong.Parse(mods[0].OwnerId);
 		}
-		*/
+
+		/////// Used for Mod Browser ////////////////////
 
 		// Yield returns null if an error happens and the result is cut short
 		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token)
@@ -253,6 +250,8 @@ public partial class WorkshopHelper
 			}
 		}
 
+		/////// Used for Query Caching per Steam Requirements ////////////////////
+
 		internal class AQueryInstance
 		{
 			private CallResult<SteamUGCQueryCompleted_t> _queryHook;
@@ -263,6 +262,8 @@ public partial class WorkshopHelper
 			internal List<ulong> ugcChildren = new List<ulong>();
 			internal bool stopCurrentQuery;
 			internal QueryParameters queryParameters;
+
+			/////// Query basic implemenatation ////////////////////
 
 			internal AQueryInstance(QueryParameters queryParameters)
 			{
@@ -289,18 +290,22 @@ public partial class WorkshopHelper
 				SteamedWraps.ReleaseWorkshopHandle(_primaryUGCHandle);
 			}
 
+			/////// Queries ////////////////////
+
 			/// <summary>
 			/// For direct information gathering of a particular mod/workshop item
 			/// </summary>
-			internal ModDownloadItem FastQueryItem(string modId, out string modOwner)
+			internal ModDownloadItem[] FastQueryItems()
 			{
-				TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(new string[] { modId }));
+				TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(queryParameters.searchModIds));
 
-				var result = GenerateModDownloadItemFromQuery(0);
-				modOwner = "";
+				var items = new ModDownloadItem[queryParameters.searchModIds.Length];
+				for (int i = 0; i < queryParameters.searchModIds.Length; i++) {
+					items[i] = GenerateModDownloadItemFromQuery((uint)i);
+				}
 				
 				ReleaseWorkshopQuery();
-				return result;
+				return items;
 			}
 
 			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
@@ -333,6 +338,17 @@ public partial class WorkshopHelper
 				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount && !stopCurrentQuery);
 			}
 
+			private IEnumerable<ModDownloadItem> ProcessPageResult()
+			{
+				for (uint i = 0; i < _queryReturnCount; i++) {
+					var mod = GenerateModDownloadItemFromQuery(i);
+					if (mod == null)
+						continue;
+
+					yield return mod;
+				}
+			}
+
 			// Only use if we don't have a guaranteed PublishID source
 			internal bool TrySearchByInternalName(out List<ModDownloadItem> items)
 			{
@@ -358,6 +374,8 @@ public partial class WorkshopHelper
 
 				return true;
 			}
+
+			/////// Run Queries ////////////////////
 
 			internal bool TryRunQuery(SteamAPICall_t query)
 			{
@@ -394,6 +412,8 @@ public partial class WorkshopHelper
 				return false;
 			}
 
+			/////// Process Query Result per Item ////////////////////
+
 			internal ModDownloadItem GenerateModDownloadItemFromQuery(uint i)
 			{
 				// Item Result call data
@@ -411,6 +431,8 @@ public partial class WorkshopHelper
 					HiddenModCount++;
 					return null;
 				}
+
+				string ownerId = pDetails.m_ulSteamIDOwner.ToString();
 
 				DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
 				string displayname = pDetails.m_rgchTitle;
@@ -436,6 +458,8 @@ public partial class WorkshopHelper
 					return null;
 				}
 
+				
+
 				// Partial Description - we don't include Long Description so this is only first handful of characters
 				string description = pDetails.m_rgchDescription;
 
@@ -459,18 +483,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"]);
-			}
-
-			private IEnumerable<ModDownloadItem> ProcessPageResult()
-			{
-				for (uint i = 0; i < _queryReturnCount; i++) {
-					var mod = GenerateModDownloadItemFromQuery(i);
-					if (mod == null)
-						continue;
-
-					yield return mod;
-				}
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId);
 			}
 		}
 	}

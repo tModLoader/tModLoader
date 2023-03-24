@@ -111,9 +111,9 @@ public struct QueryConfirmation
 
 public struct QueryParameters
 {
-	public List<string> searchTags;
-	public List<string> searchModIds;
-	public List<string> searchModSlugs;
+	public string[] searchTags;
+	public string[] searchModIds;
+	public string[] searchModSlugs;
 	public string searchGeneric;
 	public string searchAuthor;
 
