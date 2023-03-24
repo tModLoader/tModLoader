@@ -87,10 +87,10 @@ public interface SocialBrowserModule
 			FindDownloadItem(item.ModName).Installed = localMod;
 		}
 
-		Interface.modBrowser.PopulateModBrowser(uiOnly: true);
-		Interface.modBrowser.UpdateNeeded = true;
+		Interface.modBrowser.PopulateModBrowser(uiOnly: true); // @TODO: The reload should be signaled to the caller, not acted directly? this also supposes the ModBrowser is already Activated and populated with all the UI...
+		Interface.modBrowser.UpdateNeeded = true; // @TODO: This will trigger also redownload..., uiOnly above is enough here I think
 
-		uiProgress?.Leave(refreshBrowser: true);
+		uiProgress?.Leave(refreshBrowser: true); // @TODO: Here this is unused??? probably this should propagate instead of the methods above to force reload...
 
 		if (reloadWhenDone)
 			ModLoader.Reload();
