@@ -395,7 +395,7 @@ internal class UIModConfig : UIState
 		base.Draw(spriteBatch);
 
 		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, Tooltip, GetDimensions().ToRectangle());
+			UICommon.MouseText(Tooltip, true);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
