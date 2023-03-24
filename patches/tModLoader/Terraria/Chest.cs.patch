@@ -620,18 +620,6 @@
  	}
  
  	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count)
-@@ -731,8 +_,11 @@
- 					Main.travelShop[count++] = 3636;
- 					Main.travelShop[count++] = 3641;
- 					break;
-+					// Extra patch context.
- 			}
- 		}
-+
-+		NPCLoader.SetupTravelShop(Main.travelShop, ref count);
- 	}
- 
- 	public static bool SetupTravelShop_CanAddItemToShop(int it)
 @@ -1077,6 +_,9 @@
  		}
  	}
@@ -642,7 +630,13 @@
  	public static void SetupTravelShop()
  	{
  		for (int i = 0; i < 40; i++) {
-@@ -1168,6 +_,11 @@
+@@ -1164,10 +_,17 @@
+ 				break;
+ 			}
+ 		}
++
++		NPCLoader.SetupTravelShop(Main.travelShop, ref count);
+ 	}
  
  	public void SetupShop(int type)
  	{
