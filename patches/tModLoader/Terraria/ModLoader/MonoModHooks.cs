@@ -1,10 +1,10 @@
-using Mono.Cecil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -116,8 +116,6 @@ public static class MonoModHooks
 		assemblyDetours.Clear();
 	}
 
-	// TODO: 'Detour' or 'On Hook'?
-	// TODO: should it require the mod as a parameter instead of logging it with tML?
 	/// <summary>
 	/// Dumps the list of currently registered IL hooks to the console. Useful for checking if a hook has been correctly added.
 	/// </summary>
@@ -157,15 +155,28 @@ public static class MonoModHooks
 	}
 
 	/// <summary>
-	/// A helper method that logs to the console that an IL patch failed.
+	/// Dumps the information about the given ILContext to a file in Logs/ILDumps/{Mod Name}/{Method Name}.txt<br/>
+	/// It may be useful to use a tool such as <see href="https://www.diffchecker.com/"/> to compare the IL before and after edits
 	/// </summary>
 	/// <param name="mod"></param>
 	/// <param name="il"></param>
-	/// <param name="reason"></param>
-	public static void LogILPatchFailure(Mod mod, ILContext il, string reason)
+	public static void DumpIL(Mod mod, ILContext il)
 	{
-		// TODO: use StringRep function but for MethodDefinition instead of MethodBase
-		// TODO: should this also include a patching class where the hooks are made and a feature name?
-		mod.Logger.Warn($"Failed to IL edit method \"{il.Method.Name}\", because \"{reason}\"");
+		string txt = il.ToString();
+		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, il.Method.FullName);
+		string folderPath = Path.GetDirectoryName(filePath);
+
+		if (!Directory.Exists(folderPath))
+			Directory.CreateDirectory(folderPath);
+		File.WriteAllText(filePath, txt);
+
+		Logging.tML.Debug($"Dumped ILContext \"{il.Method.FullName}\" to \"{filePath}\"");
+	}
+}
+
+public class ILPatchFailureException : Exception
+{
+	public ILPatchFailureException(Mod mod, ILContext il, Exception innerException) : base($"Mod \"{mod.Name}\" failed to IL edit method \"{il.Method.FullName}\"", innerException) {
+		
 	}
 }

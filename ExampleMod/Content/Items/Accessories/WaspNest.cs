@@ -17,28 +17,30 @@ namespace ExampleMod.Content.Items.Accessories
 
 		// This IL editing (Intermediate Language editing) example is walked through in the guide: https://github.com/tModLoader/tModLoader/wiki/Expert-IL-Editing#example---hive-pack-upgrade
 		private static void HookBeeType(ILContext il) {
-			ILCursor c = new ILCursor(il);
+			try {
+				ILCursor c = new ILCursor(il);
 
-			// Try to find where 566 is placed onto the stack
-			if (!c.TryGotoNext(i => i.MatchLdcI4(566))) {
-				// Patch unable to be applied, so we let people know with this method and exit the method
-				MonoModHooks.LogILPatchFailure(ModContent.GetInstance<ExampleMod>(), il, "Unable to locate 566 on the stack");
-				return;
+				// Try to find where 566 is placed onto the stack
+				c.GotoNext(i => i.MatchLdcI4(566));
+
+				// Move the cursor after 566 and onto the ret op.
+				c.Index++;
+				// Push the Player instance onto the stack
+				c.Emit(OpCodes.Ldarg_0);
+				// Call a delegate using the int and Player from the stack.
+				c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
+					// Regular c# code
+					if (player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade && Main.rand.NextBool(10) && Main.ProjectileUpdateLoopIndex == -1) {
+						return ProjectileID.Beenade;
+					}
+
+					return returnValue;
+				});
 			}
-
-			// Move the cursor after 566 and onto the ret op.
-			c.Index++;
-			// Push the Player instance onto the stack
-			c.Emit(OpCodes.Ldarg_0);
-			// Call a delegate using the int and Player from the stack.
-			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) => {
-				// Regular c# code
-				if (player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade && Main.rand.NextBool(10) && Main.ProjectileUpdateLoopIndex == -1) {
-					return ProjectileID.Beenade;
-				}
-
-				return returnValue;
-			});
+			catch (Exception e) {
+				// If there are any failures with the IL editing, this custom exception will be thrown that dumps the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
+				throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
+			}
 		}
 
 		public override void SetStaticDefaults() {
