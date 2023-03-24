@@ -59,15 +59,26 @@ public partial class WorkshopHelper
 	}
 
 	/////// Workshop Dependencies ////////////////////
-	private static List<string> GetDependencies(string)
+	private static List<string> GetDependencies(string modId)
 	{
 		var query = new QueryHelper.AQueryInstance(new QueryParameters());
 		query.TrySearchByInternalName(out var items);
-		return query.ugcChildren;
+		items[0].ModReferenceByModId
+	}
+
+	internal static void GetDependenciesRecursive(string[] modIds, ref HashSet<ulong> set)
+	{
+
 	}
 
 	internal static void GetDependenciesRecursive(string modSlug, ref HashSet<ulong> set)
 	{
+		var query = new QueryHelper.AQueryInstance(new QueryParameters() { searchModSlugs = new string[] { modSlug } });
+		if (!query.TrySearchByInternalName(out var items))
+			return;
+
+		items[0].ModReferenceByModId
+
 		var deps = GetDependencies(publishedId);
 		set.UnionWith(deps);
 
@@ -458,7 +469,7 @@ public partial class WorkshopHelper
 					return null;
 				}
 
-				
+				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();
 
 				// Partial Description - we don't include Long Description so this is only first handful of characters
 				string description = pDetails.m_rgchDescription;
@@ -483,7 +494,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId);
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById);
 			}
 		}
 	}

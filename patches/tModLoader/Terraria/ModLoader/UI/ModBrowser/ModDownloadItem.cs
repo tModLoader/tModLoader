@@ -27,7 +27,7 @@ public class ModDownloadItem
 	internal readonly string ModIconUrl;
 	internal readonly DateTime TimeStamp;
 	internal readonly string ModReferencesBySlug;
-	internal readonly string ModReferenceByModId;
+	internal readonly string[] ModReferenceByModId;
 	internal readonly ModSide ModSide;
 	internal readonly int Downloads;
 	internal readonly int Hot;
@@ -36,7 +36,7 @@ public class ModDownloadItem
 
 	private bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string referencesById)
+	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
 		// Check against installed mods for updates
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(name);
@@ -87,7 +87,7 @@ public class ModDownloadItem
 
 	private IEnumerable<ModDownloadItem> GetDependencies()
 	{
-		return ModReferences.Split(',')
+		return ModReferencesBySlug.Split(',')
 			.Select(Interface.modBrowser.SocialBackend.FindDownloadItem)
 			.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)));
 	}
