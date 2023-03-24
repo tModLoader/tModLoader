@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -8,27 +10,21 @@ namespace Terraria.ModLoader;
 
 public static partial class NPCShopDatabase
 {
-	private static readonly Dictionary<string, NPCShop> npcShopByName = new();
-	public static IEnumerable<NPCShop> AllShops => npcShopByName.Values;
+	private static readonly Dictionary<string, AbstractNPCShop> npcShopByName = new();
+	public static IEnumerable<AbstractNPCShop> AllShops => npcShopByName.Values;
 
 	public static readonly ISet<string> NoPylons = new HashSet<string>();
 
-	internal static void AddShop(NPCShop shop)
+	internal static void AddShop(AbstractNPCShop shop)
 	{
 		npcShopByName.Add(shop.FullName, shop);
 	}
 
-	public static NPCShop GetNPCShop(string fullName)
-	{
-		if (npcShopByName.TryGetValue(fullName, out NPCShop shop))
-			return shop;
-
-		return null;
-	}
+	public static bool TryGetNPCShop(string fullName, out AbstractNPCShop shop) => npcShopByName.TryGetValue(fullName, out shop);
 
 	/// <summary>
-	/// Gets a shop name (identifier) in the format matching <see cref="NPCShop.FullName"/> <br/>
-	/// Can be used with <see cref="GetNPCShop(string)"/> and <see cref="GlobalNPC.ModifyActiveShop(NPC, string, Item[])"/>
+	/// Gets a shop name (identifier) in the format matching <see cref="AbstractNPCShop.FullName"/> <br/>
+	/// Can be used with <see cref="TryGetNPCShop"/> and <see cref="GlobalNPC.ModifyActiveShop(NPC, string, Item[])"/>
 	/// </summary>
 	/// <param name="npcType"></param>
 	/// <param name="shopName"></param>
@@ -79,9 +75,18 @@ public static partial class NPCShopDatabase
 		for (int i = 0; i < NPCLoader.NPCCount; i++) {
 			NPCLoader.AddShops(i);
 		}
-		foreach (var shop in AllShops) {
+		foreach (var shop in AllShops.OfType<NPCShop>()) {
 			NPCLoader.ModifyShop(shop);
 		}
+	}
+
+	internal static void FinishSetup()
+	{
+		foreach (var shop in AllShops) {
+			shop.FinishSetup();
+		}
+
+		InitShopTestSystem();
 	}
 
 	private static void RegisterVanillaNPCShops()
@@ -114,6 +119,7 @@ public static partial class NPCShopDatabase
 		RegisterGolfer();
 		RegisterZoologist();
 		RegisterPrincess();
+		RegisterTravellingMerchant();
 	}
 
 	public static IEnumerable<Entry> GetPylonEntries()
@@ -1051,12 +1057,108 @@ public static partial class NPCShopDatabase
 			.Register();
 	}
 
-	internal static void SortAllShops()
+	private static void RegisterTravellingMerchant()
 	{
-		foreach (var shop in AllShops) {
-			shop.Sort();
-		}
+		new TravellingMerchantShop(NPCID.TravellingMerchant)
+			.AddInfoEntry(3309)
+			.AddInfoEntry(3314)
+			.AddInfoEntry(1987)
+			.AddInfoEntry(2270, Condition.Hardmode)
+			.AddInfoEntry(4760, Condition.Hardmode)
+			.AddInfoEntry(2278)
+			.AddInfoEntry(2271)
+			.AddInfoEntry(2223, Condition.DownedDestroyer, Condition.DownedTwins, Condition.DownedSkeletronPrime)
+			.AddInfoEntry(2272)
+			.AddInfoEntry(2276)
+			.AddInfoEntry(2284)
+			.AddInfoEntry(2285)
+			.AddInfoEntry(2286)
+			.AddInfoEntry(2287)
+			.AddInfoEntry(4744)
+			.AddInfoEntry(2296, Condition.DownedSkeletron)
+			.AddInfoEntry(3628)
+			.AddInfoEntry(4091, Condition.Hardmode)
+			.AddInfoEntry(4603)
+			.AddInfoEntry(4604)
+			.AddInfoEntry(5297)
+			.AddInfoEntry(4605)
+			.AddInfoEntry(4550)
+			.AddInfoEntry(2268)
+			.AddInfoEntry(2269, Condition.SmashedShadowOrb)
+			.AddInfoEntry(1988)
+			.AddInfoEntry(2275)
+			.AddInfoEntry(2279)
+			.AddInfoEntry(2277)
+			.AddInfoEntry(4555)
+			.AddInfoEntry(4321)
+			.AddInfoEntry(4323)
+			.AddInfoEntry(5390)
+			.AddInfoEntry(4549)
+			.AddInfoEntry(4561)
+			.AddInfoEntry(4774)
+			.AddInfoEntry(5136)
+			.AddInfoEntry(5305)
+			.AddInfoEntry(4562)
+			.AddInfoEntry(4558)
+			.AddInfoEntry(4559)
+			.AddInfoEntry(4563)
+			.AddInfoEntry(4666)
+			.AddInfoEntry(4347, Condition.DownedEarlygameBoss)
+			.AddInfoEntry(4348, Condition.Hardmode)
+			.AddInfoEntry(3262, Condition.DownedEyeOfCthulhu)
+			.AddInfoEntry(3284, Condition.DownedMechBossAny)
+			.AddInfoEntry(2267)
+			.AddInfoEntry(2214)
+			.AddInfoEntry(2215)
+			.AddInfoEntry(2216)
+			.AddInfoEntry(2217)
+			.AddInfoEntry(3624)
+			.AddInfoEntry(671,	Condition.RemixWorld)
+			.AddInfoEntry(2273, Condition.NotRemixWorld)
+			.AddInfoEntry(2274)
+			.AddInfoEntry(2266)
+			.AddInfoEntry(2281)
+			.AddInfoEntry(2282)
+			.AddInfoEntry(2283)
+			.AddInfoEntry(2258)
+			.AddInfoEntry(2242)
+			.AddInfoEntry(2260)
+			.AddInfoEntry(3637)
+			.AddInfoEntry(4420)
+			.AddInfoEntry(3119)
+			.AddInfoEntry(3118)
+			.AddInfoEntry(3099)
+			.Register();
+	}
+}
 
-		InitShopTestSystem();
+public class TravellingMerchantShop : AbstractNPCShop
+{
+	private record Entry(Item Item, IReadOnlyList<Condition> Conditions) : IShopEntry { }
+
+	private List<Entry> _entries = new();
+
+	public override IEnumerable<IShopEntry> ActiveEntries => _entries;
+
+	public TravellingMerchantShop(int npcType) : base(npcType) { }
+
+	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions) {
+		_entries.Add(new Entry(item, conditions.ToList()));
+		return this;
+	}
+
+	public TravellingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
+
+	public override void Build(Item[] items, NPC npc, out bool overflow)
+	{
+		overflow = false;
+
+		int i = 0;
+		foreach (var itemId in Main.travelShop) {
+			if (itemId == 0)
+				continue;
+			
+			items[i++] = new Item(itemId);
+		}
 	}
 }

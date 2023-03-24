@@ -70,6 +70,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	// World Flags
 	public static readonly Condition Hardmode =				new("Conditions.InHardmode",			() => Main.hardMode);
 	public static readonly Condition PreHardmode =			new("Conditions.PreHardmode",			() => !Main.hardMode);
+	public static readonly Condition SmashedShadowOrb =		new("Conditions.SmashedShadowOrb",		() => WorldGen.shadowOrbSmashed);
 	public static readonly Condition CrimsonWorld =			new("Conditions.WorldCrimson",			() => WorldGen.crimson);
 	public static readonly Condition CorruptWorld =			new("Conditions.WorldCorrupt",			() => !WorldGen.crimson);
 	// World Types
@@ -109,6 +110,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedQueenBee =			new("Conditions.DownedQueenBee",			() => NPC.downedQueenBee);
 	public static readonly Condition DownedSkeletron =			new("Conditions.DownedSkeletron",			() => NPC.downedBoss3);
 	public static readonly Condition DownedQueenSlime =			new("Conditions.DownedQueenSlime",			() => NPC.downedQueenSlime);
+	public static readonly Condition DownedEarlygameBoss =		new("Conditions.DownedEarlygameBoss",		() => NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee || Main.hardMode);
 	public static readonly Condition DownedMechBossAny =		new("Conditions.DownedMechBossAny",			() => NPC.downedMechBossAny);
 	public static readonly Condition DownedTwins =				new("Conditions.DownedTwins",				() => NPC.downedMechBoss2);
 	public static readonly Condition DownedDestroyer =			new("Conditions.DownedDestroyer",			() => NPC.downedMechBoss1);

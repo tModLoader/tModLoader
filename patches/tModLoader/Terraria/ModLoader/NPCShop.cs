@@ -5,22 +5,52 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
-public sealed partial class NPCShop
+public abstract class AbstractNPCShop
 {
-	private List<Entry> _entries;
+	public interface IShopEntry
+	{
+		public Item Item { get; }
+		public IReadOnlyList<Condition> Conditions {  get; }
+	}
 
-	public IReadOnlyList<Entry> Entries => _entries;
 	public int NpcType { get; private init; }
 	public string Name { get; private init; }
 	public string FullName => NPCShopDatabase.GetShopName(NpcType, Name);
 
-	public bool FillLastSlot { get; private set; }
+	public abstract IEnumerable<IShopEntry> ActiveEntries { get; }
 
-	public NPCShop(int npcType, string name = "Shop")
+	public AbstractNPCShop(int npcType, string name = "Shop")
 	{
-		_entries = new();
 		NpcType = npcType;
 		Name = name;
+	}
+
+	public void Register() => NPCShopDatabase.AddShop(this);
+
+	/// <summary>
+	/// Fills a shop array with the contents of this shop, evaluating conditions and running callbacks.
+	/// </summary>
+	/// <param name="items">Array to be filled.</param>
+	/// <param name="npc">The NPC the player is talking to</param>
+	/// <param name="overflow">True if some items were unable to fit in the provided array</param>
+	public abstract void Build(Item[] items, NPC npc, out bool overflow);
+
+	public virtual void FinishSetup() { }
+}
+
+public sealed partial class NPCShop : AbstractNPCShop
+{
+	private List<Entry> _entries;
+
+	public IReadOnlyList<Entry> Entries => _entries;
+
+	public bool FillLastSlot { get; private set; }
+
+	public override IEnumerable<Entry> ActiveEntries => Entries.Where(e => !e.Disabled);
+
+	public NPCShop(int npcType, string name = "Shop") : base(npcType, name)
+	{
+		_entries = new();
 	}
 
 	public Entry GetEntry(int item)
@@ -37,11 +67,6 @@ public sealed partial class NPCShop
 		}
 		entry = _entries[i];
 		return true;
-	}
-
-	public void Register()
-	{
-		NPCShopDatabase.AddShop(this);
 	}
 
 	public NPCShop AllowFillingLastSlot()
@@ -80,7 +105,7 @@ public sealed partial class NPCShop
 	/// <param name="items">Array to be filled.</param>
 	/// <param name="npc">The NPC the player is talking to, for <see cref="Entry.OnShopOpen(Item, NPC)"/> calls.</param>
 	/// <param name="overflow">True if some items were unable to fit in the provided array.</param>
-	public void Build(Item[] items, NPC npc, out bool overflow)
+	public override void Build(Item[] items, NPC npc, out bool overflow)
 	{
 		overflow = false;
 
@@ -112,7 +137,9 @@ public sealed partial class NPCShop
 		}
 	}
 
-	internal void Sort()
+	public override void FinishSetup() => Sort();
+
+	private void Sort()
 	{
 		// process 'OrdersLast' first, so an entry which sorts after an 'OrdersLast' entry is still placed in the correct position
 		var toBeLast = _entries.Where(x => x.OrdersLast).ToList();
@@ -122,7 +149,7 @@ public sealed partial class NPCShop
 		_entries = SortBeforeAfter(_entries, r => r.Ordering);
 	}
 
-	internal static List<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func)
+	private static List<T> SortBeforeAfter<T>(IEnumerable<T> values, Func<T, (T, bool after)> func)
 	{
 		var baseOrder = new List<T>();
 		var sortBefore = new Dictionary<T, List<T>>();

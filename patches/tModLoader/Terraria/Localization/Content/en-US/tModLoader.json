@@ -615,6 +615,7 @@
 
 		"InHardmode": "In hardmode",
 		"PreHardmode": "Before hardmode",
+		"SmashedShadowOrb": "After smashing a Shadow Orb or Crimson Heart",
 		"WorldCrimson": "In a world with The Crimson",
 		"WorldCorrupt": "In a world with The Corruption",
 		"WorldDrunk": "In an Drunk world",
@@ -650,6 +651,7 @@
 		"DownedQueenBee": "After defeating Queen Bee",
 		"DownedSkeletron": "After defeating Skeletron",
 		"DownedQueenSlime": "After defeating Queen Slime",
+		"DownedEarlygameBoss": "After defeating the Eye of Cthulhu, Eater of Worlds, Brain of Cthulhu, Queen Bee or Skeletron",
 		"DownedMechBossAny": "After defeating any mechanical boss",
 		"DownedTwins": "After defeating The Twins",
 		"DownedDestroyer": "After defeating The Destroyer",

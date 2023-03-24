@@ -34,7 +34,7 @@ public static partial class NPCShopDatabase
 			return;
 
 		tests.Clear();
-		foreach (var shop in AllShops) {
+		foreach (var shop in AllShops.OfType<NPCShop>()) {
 			foreach (var entry in shop.Entries) {
 				var test = new ConditionTest(entry.Conditions);
 				if (!tests.Any(t => Enumerable.SequenceEqual(t.Conditions, test.Conditions)))

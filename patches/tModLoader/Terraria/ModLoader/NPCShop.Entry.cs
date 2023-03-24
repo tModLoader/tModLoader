@@ -6,7 +6,7 @@ namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop
 {
-	public sealed class Entry
+	public sealed class Entry : IShopEntry
 	{
 		public Item Item { get; private init; }
 

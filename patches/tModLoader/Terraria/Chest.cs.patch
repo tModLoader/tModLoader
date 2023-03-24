@@ -663,7 +663,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2996,7 +_,38 @@
+@@ -2996,7 +_,30 @@
  		}
  	}
  
@@ -672,15 +672,7 @@
 +	{
 +		Array.Fill(item, null);
 +
-+		if (shopName == NPCShopDatabase.GetShopNameFromVanillaIndex(19)) {
-+			int i = 0;
-+			for (int num11 = 0; num11 < 40; num11++) {
-+				if (Main.travelShop[num11] != 0) {
-+					item[i++] = new Item(Main.travelShop[num11]);
-+				}
-+			}
-+		}
-+		else if (NPCShopDatabase.GetNPCShop(shopName) is NPCShop shop) {
++		if (NPCShopDatabase.TryGetNPCShop(shopName, out var shop)) {
 +			shop.Build(item, npc, out bool overflow);
 +			if (overflow) {
 +				Main.NewText(Language.GetTextValue("tModLoader.ShopOverflow"), Color.Orange);

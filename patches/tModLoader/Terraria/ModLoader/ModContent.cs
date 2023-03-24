@@ -342,7 +342,7 @@ public static class ModContent
 		SetupBestiary();
 		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
-		NPCShopDatabase.SortAllShops();
+		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
