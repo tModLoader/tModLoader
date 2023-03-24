@@ -258,7 +258,7 @@ public static class SteamedWraps
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 
 			ModifyQueryHandle(ref qHandle);
-			FilterByText(ref qHandle, qP.searchTextField);
+			FilterByText(ref qHandle, qP.searchGeneric);
 			FilterByTags(ref qHandle, qP.searchTags);
 			FilterByInternalName(ref qHandle, internalName);
 
@@ -268,10 +268,10 @@ public static class SteamedWraps
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 
 			ModifyQueryHandle(ref qHandle);
-			FilterByText(ref qHandle, qP.searchTextField);
+			FilterByText(ref qHandle, qP.searchGeneric);
 			FilterByTags(ref qHandle, qP.searchTags);
 			FilterByInternalName(ref qHandle, internalName);
-
+			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 

@@ -114,8 +114,7 @@ public struct QueryParameters
 	public List<string> searchTags;
 	public List<string> searchModIds;
 	public List<string> searchModSlugs;
-	public List<string> searchModNames;
-	public string searchName;
+	public string searchGeneric;
 	public string searchAuthor;
 
 	public ModBrowserSortMode sortingParamater;

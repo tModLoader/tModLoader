@@ -88,9 +88,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public QueryParameters FilterParameters => new() {
 		searchTags = null,
 		searchModIds = null,
-		searchModSlugs = null,
-		searchModNames = SpecialModPackFilter,
-		searchName = SearchFilterMode == SearchFilter.Name ? Filter : null,
+		searchModSlugs = SpecialModPackFilter,
+		searchGeneric = SearchFilterMode == SearchFilter.Name ? Filter : null,
 		searchAuthor = SearchFilterMode == SearchFilter.Author ? Filter : null,
 		sortingParamater = SortMode,
 		updateStatusFilter = UpdateFilterMode,
