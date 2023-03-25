@@ -10,9 +10,9 @@
 	//width &= 0x7FFFFFFE;
 	//height &= 0x7FFFFFFE;
 	```
+	
 ## Main
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
-- Investigate new `BindSettingsTo`
 
 ## ItemSlot
 - Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
@@ -36,16 +36,12 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 ## Tile(.TML).cs:
 - Patches have been reimplemented, check that again.
 
-## TileID.tML.cs
-- `CanBeSatOnForNPCs` -> `CanNPCsSitOn`
-
 ## Porting Notes:
 - `GrantPrefixBenefits` is only called if `Item.accessory` is `true`. This applies in mod accessory slots too now.
 - `ModWaterStyle` now requires an additional texture, `_Slope`. See `ExampleWaterStyle` for details.
 - Reforging is now implemented via `Item.ResetPrefix`. This sets `prefix` to 0 and then refreshes the item. Make sure any custom fields set by custom prefixes are not serialized independently.
 
 ## WorldGen.cs:
-- TileLoader.Drop can probably be moved to `Item.NewItem` with `GetItemSource_FromTileBreak`
 - Revert some of the public field changes. A lot of them aren't meant to be public and were just blanket changed in the past. We have WorldGenVars now
 
 ## MysticLogFairies, SandStorm, SkyManager, WorldGen, Main and Deerclops AI
@@ -60,6 +56,3 @@ Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Shou
 
 ## ChildSafety
 - Factories, do they need support for modded ids?
-
-## UserInterface
-- Rework patches for mouseright/middle/xbutton1/xbutton2 around new InputPointerCache system
