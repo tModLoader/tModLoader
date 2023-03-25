@@ -98,9 +98,16 @@ $(document).ready(function(){initNavTree('class_pylon_shop_n_p_c.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9d5894dbdee6090b5f8c7a1b407b19a4"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pylon_shop_n_p_c.html#a9d5894dbdee6090b5f8c7a1b407b19a4">SetupShop</a> (int type, <a class="el" href="class_chest.html">Chest</a> shop, ref int nextSlot)</td></tr>
-<tr class="memdesc:a9d5894dbdee6090b5f8c7a1b407b19a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to an <a class="el" href="class_n_p_c.html">NPC</a>'s shop. The type parameter is the type of the <a class="el" href="class_n_p_c.html">NPC</a> that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.  <a href="class_pylon_shop_n_p_c.html#a9d5894dbdee6090b5f8c7a1b407b19a4">More...</a><br /></td></tr>
-<tr class="separator:a9d5894dbdee6090b5f8c7a1b407b19a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01c77e7e8dc93c418f84b5f123d6c67a"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pylon_shop_n_p_c.html#a01c77e7e8dc93c418f84b5f123d6c67a">ModifyActiveShop</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, string shopName, <a class="el" href="class_item.html">Item</a>[] items)</td></tr>
+<tr class="memdesc:a01c77e7e8dc93c418f84b5f123d6c67a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the contents of a shop whenever player opens it. <br  />
+ If possible, use ModifyShop(NPCShop) instead, to reduce mod conflicts and improve compatibility. Note that for special shops like travelling merchant, the <em>shopId</em>  may not correspond to a <a class="el" href="class_n_p_c_shop.html">NPCShop</a> in the <a class="el" href="class_n_p_c_shop_database.html">NPCShopDatabase</a>  <a href="class_pylon_shop_n_p_c.html#a01c77e7e8dc93c418f84b5f123d6c67a">More...</a><br /></td></tr>
+<tr class="separator:a01c77e7e8dc93c418f84b5f123d6c67a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2347ce7a7f7d4db62b0a6bd290cc27"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pylon_shop_n_p_c.html#a4d2347ce7a7f7d4db62b0a6bd290cc27">ModifyShop</a> (<a class="el" href="class_n_p_c_shop.html">NPCShop</a> shop)</td></tr>
+<tr class="memdesc:a4d2347ce7a7f7d4db62b0a6bd290cc27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify existing shop. Be aware that this hook is called just one time during loading.  <a href="class_pylon_shop_n_p_c.html#a4d2347ce7a7f7d4db62b0a6bd290cc27">More...</a><br /></td></tr>
+<tr class="separator:a4d2347ce7a7f7d4db62b0a6bd290cc27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3e43a390e6d9ccdb8d929e44a76964f"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pylon_shop_n_p_c.html#ab3e43a390e6d9ccdb8d929e44a76964f">Unload</a> ()</td></tr>
+<tr class="memdesc:ab3e43a390e6d9ccdb8d929e44a76964f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called during unloading when needed.  <a href="class_pylon_shop_n_p_c.html#ab3e43a390e6d9ccdb8d929e44a76964f">More...</a><br /></td></tr>
+<tr class="separator:ab3e43a390e6d9ccdb8d929e44a76964f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_global_n_p_c"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_global_n_p_c')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_global_n_p_c.html">GlobalNPC</a></td></tr>
 <tr class="memitem:a5f17cdba8428c9d491606d38e7386f26 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a5f17cdba8428c9d491606d38e7386f26">AI</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a5f17cdba8428c9d491606d38e7386f26 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will only be called if PreAI returns true.  <a href="class_global_n_p_c.html#a5f17cdba8428c9d491606d38e7386f26">More...</a><br /></td></tr>
@@ -213,6 +220,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <tr class="memitem:a6a6afd0e33d59496e457502dd36899d5 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a6a6afd0e33d59496e457502dd36899d5">LoadData</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:a6a6afd0e33d59496e457502dd36899d5 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for the given npc.  <a href="class_global_n_p_c.html#a6a6afd0e33d59496e457502dd36899d5">More...</a><br /></td></tr>
 <tr class="separator:a6a6afd0e33d59496e457502dd36899d5 inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace4ad57e4a8634252d4772b4a14e9987 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#ace4ad57e4a8634252d4772b4a14e9987">ModifyActiveShop</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, string shopName, <a class="el" href="class_item.html">Item</a>[] items)</td></tr>
+<tr class="memdesc:ace4ad57e4a8634252d4772b4a14e9987 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the contents of a shop whenever player opens it. <br  />
+ If possible, use <a class="el" href="class_pylon_shop_n_p_c.html#a4d2347ce7a7f7d4db62b0a6bd290cc27" title="Allows you to modify existing shop. Be aware that this hook is called just one time during loading.">ModifyShop(NPCShop)</a> instead, to reduce mod conflicts and improve compatibility. Note that for special shops like travelling merchant, the <em>shopId</em>  may not correspond to a <a class="el" href="class_n_p_c_shop.html">NPCShop</a> in the <a class="el" href="class_n_p_c_shop_database.html">NPCShopDatabase</a>  <a href="class_global_n_p_c.html#ace4ad57e4a8634252d4772b4a14e9987">More...</a><br /></td></tr>
+<tr class="separator:ace4ad57e4a8634252d4772b4a14e9987 inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a841136ffed6b0a17595b4ea11200407e inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a841136ffed6b0a17595b4ea11200407e">ModifyCollisionData</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref <a class="el" href="struct_multipliable_float.html">MultipliableFloat</a> damageMultiplier, ref Rectangle npcHitbox)</td></tr>
 <tr class="memdesc:a841136ffed6b0a17595b4ea11200407e inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the npc's </p><dl class="section see"><dt>See also</dt><dd>ID.ImmunityCooldownID</dd></dl>
 <p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.  <a href="class_global_n_p_c.html#a841136ffed6b0a17595b4ea11200407e">More...</a><br /></td></tr>
@@ -250,6 +261,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyNPCNameList</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_list.html">List</a>&lt; string &gt; nameList)</td></tr>
 <tr class="memdesc:ab74d6685b1d519456e539de07d504f80 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the list of names available to the given town <a class="el" href="class_n_p_c.html">NPC</a>. <br /></td></tr>
 <tr class="separator:ab74d6685b1d519456e539de07d504f80 inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ea85a8fe6ae4bd75c26d76f06dd9af inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a27ea85a8fe6ae4bd75c26d76f06dd9af">ModifyShop</a> (<a class="el" href="class_n_p_c_shop.html">NPCShop</a> shop)</td></tr>
+<tr class="memdesc:a27ea85a8fe6ae4bd75c26d76f06dd9af inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify existing shop. Be aware that this hook is called just one time during loading.  <a href="class_global_n_p_c.html#a27ea85a8fe6ae4bd75c26d76f06dd9af">More...</a><br /></td></tr>
+<tr class="separator:a27ea85a8fe6ae4bd75c26d76f06dd9af inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b1590ebfb815162bed3bb3e5b5bce71 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="interface_i_town_n_p_c_profile.html">ITownNPCProfile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a6b1590ebfb815162bed3bb3e5b5bce71">ModifyTownNPCProfile</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a6b1590ebfb815162bed3bb3e5b5bce71 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the town <a class="el" href="class_n_p_c.html">NPC</a> profile that a given <a class="el" href="class_n_p_c.html">NPC</a> uses.  <a href="class_global_n_p_c.html#a6b1590ebfb815162bed3bb3e5b5bce71">More...</a><br /></td></tr>
 <tr class="separator:a6b1590ebfb815162bed3bb3e5b5bce71 inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -340,9 +354,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</
 <tr class="memitem:a53b308ea4688457257e72f39dd5d6de5 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a53b308ea4688457257e72f39dd5d6de5">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a53b308ea4688457257e72f39dd5d6de5 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_global_n_p_c.html#a53b308ea4688457257e72f39dd5d6de5">More...</a><br /></td></tr>
 <tr class="separator:a53b308ea4688457257e72f39dd5d6de5 inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95ad99a48d0f4433ff4eab54a675775f inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a95ad99a48d0f4433ff4eab54a675775f">SetupShop</a> (int type, <a class="el" href="class_chest.html">Chest</a> shop, ref int nextSlot)</td></tr>
-<tr class="memdesc:a95ad99a48d0f4433ff4eab54a675775f inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to an <a class="el" href="class_n_p_c.html">NPC</a>'s shop. The type parameter is the type of the <a class="el" href="class_n_p_c.html">NPC</a> that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.  <a href="class_global_n_p_c.html#a95ad99a48d0f4433ff4eab54a675775f">More...</a><br /></td></tr>
-<tr class="separator:a95ad99a48d0f4433ff4eab54a675775f inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5290c411f7d7a5fbeb39dcf7a4992f0 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#ae5290c411f7d7a5fbeb39dcf7a4992f0">SetupTravelShop</a> (int[] shop, ref int nextSlot)</td></tr>
 <tr class="memdesc:ae5290c411f7d7a5fbeb39dcf7a4992f0 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.  <a href="class_global_n_p_c.html#ae5290c411f7d7a5fbeb39dcf7a4992f0">More...</a><br /></td></tr>
 <tr class="separator:ae5290c411f7d7a5fbeb39dcf7a4992f0 inherit pub_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,8 +593,8 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This is a <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> native to tML that handles adding Pylon items to <a class="el" href="class_n_p_c.html">NPC</a>'s shops, to save on patch size within vanilla. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9d5894dbdee6090b5f8c7a1b407b19a4" name="a9d5894dbdee6090b5f8c7a1b407b19a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d5894dbdee6090b5f8c7a1b407b19a4">&#9670;&nbsp;</a></span>SetupShop()</h2>
+<a id="a01c77e7e8dc93c418f84b5f123d6c67a" name="a01c77e7e8dc93c418f84b5f123d6c67a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01c77e7e8dc93c418f84b5f123d6c67a">&#9670;&nbsp;</a></span>ModifyActiveShop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -592,22 +603,22 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override void PylonShopNPC.SetupShop </td>
+          <td class="memname">override void PylonShopNPC.ModifyActiveShop </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_chest.html">Chest</a>&#160;</td>
-          <td class="paramname"><em>shop</em>, </td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>shopName</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>nextSlot</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>[]&#160;</td>
+          <td class="paramname"><em>items</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -622,17 +633,85 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to add items to an <a class="el" href="class_n_p_c.html">NPC</a>'s shop. The type parameter is the type of the <a class="el" href="class_n_p_c.html">NPC</a> that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming. </p>
+<p>Allows you to modify the contents of a shop whenever player opens it. <br  />
+ If possible, use ModifyShop(NPCShop) instead, to reduce mod conflicts and improve compatibility. Note that for special shops like travelling merchant, the <em>shopId</em>  may not correspond to a <a class="el" href="class_n_p_c_shop.html">NPCShop</a> in the <a class="el" href="class_n_p_c_shop_database.html">NPCShopDatabase</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td></td></tr>
-    <tr><td class="paramname">shop</td><td></td></tr>
-    <tr><td class="paramname">nextSlot</td><td></td></tr>
+    <tr><td class="paramname">npc</td><td>An instance of <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_n_p_c.html">NPC</a></dd></dl>
+that currently player talks to.</td></tr>
+    <tr><td class="paramname">shopName</td><td>The full name of the shop being opened. See <a class="el" href="class_n_p_c_shop_database.html#aaec2893a470d893be7a70324cdc389cd" title="Gets a shop name (identifier) in the format matching AbstractNPCShop.FullName   Can be used with TryG...">NPCShopDatabase.GetShopName</a> for the format. </td></tr>
+    <tr><td class="paramname">items</td><td>Items in the shop including 'air' items in empty slots.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="class_global_n_p_c.html#a95ad99a48d0f4433ff4eab54a675775f">GlobalNPC</a>.</p>
+<p>Reimplemented from <a class="el" href="class_global_n_p_c.html#ace4ad57e4a8634252d4772b4a14e9987">GlobalNPC</a>.</p>
+
+</div>
+</div>
+<a id="a4d2347ce7a7f7d4db62b0a6bd290cc27" name="a4d2347ce7a7f7d4db62b0a6bd290cc27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2347ce7a7f7d4db62b0a6bd290cc27">&#9670;&nbsp;</a></span>ModifyShop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void PylonShopNPC.ModifyShop </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c_shop.html">NPCShop</a>&#160;</td>
+          <td class="paramname"><em>shop</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify existing shop. Be aware that this hook is called just one time during loading. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shop</td><td>A <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_n_p_c_shop.html">NPCShop</a></dd></dl>
+instance.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_global_n_p_c.html#a27ea85a8fe6ae4bd75c26d76f06dd9af">GlobalNPC</a>.</p>
+
+</div>
+</div>
+<a id="ab3e43a390e6d9ccdb8d929e44a76964f" name="ab3e43a390e6d9ccdb8d929e44a76964f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3e43a390e6d9ccdb8d929e44a76964f">&#9670;&nbsp;</a></span>Unload()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void PylonShopNPC.Unload </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called during unloading when needed. </p>
+
+<p>Implements <a class="el" href="interface_i_loadable.html#aec1540dae35bd83a145bb336b6e981e8">ILoadable</a>.</p>
 
 </div>
 </div>

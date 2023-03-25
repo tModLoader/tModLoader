@@ -8,6 +8,10 @@ var hierarchy =
       [ "ItemFilters.Armor", "class_item_filters_1_1_armor.html", null ],
       [ "ItemFilters.Vanity", "class_item_filters_1_1_vanity.html", null ]
     ] ],
+    [ "AbstractNPCShop", "class_abstract_n_p_c_shop.html", [
+      [ "NPCShop", "class_n_p_c_shop.html", null ],
+      [ "TravellingMerchantShop", "class_travelling_merchant_shop.html", null ]
+    ] ],
     [ "Achievement", "class_achievement.html", null ],
     [ "AchievementAdvisor", "class_achievement_advisor.html", null ],
     [ "AchievementAdvisorCard", "class_achievement_advisor_card.html", null ],
@@ -385,6 +389,9 @@ var hierarchy =
       [ "Projectile", "class_projectile.html", null ]
     ] ],
     [ "EntityShadowInfo", "struct_entity_shadow_info.html", null ],
+    [ "AbstractNPCShop.Entry", "interface_abstract_n_p_c_shop_1_1_entry.html", [
+      [ "NPCShop.Entry", "class_n_p_c_shop_1_1_entry.html", null ]
+    ] ],
     [ "EntryFilterer< T, U >", "class_entry_filterer.html", null ],
     [ "EntryFilterer< BestiaryEntry, IBestiaryEntryFilter >", "class_entry_filterer.html", null ],
     [ "EntryFilterer< Item, IItemEntryFilter >", "class_entry_filterer.html", null ],
@@ -2030,6 +2037,7 @@ var hierarchy =
     [ "NPCKillAttempt", "struct_n_p_c_kill_attempt.html", null ],
     [ "NPCLoader", "class_n_p_c_loader.html", null ],
     [ "Actions.NPCs", "class_actions_1_1_n_p_cs.html", null ],
+    [ "NPCShopDatabase", "class_n_p_c_shop_database.html", null ],
     [ "NPCSpawnInfo", "struct_n_p_c_spawn_info.html", null ],
     [ "NPCSpawnParams", "struct_n_p_c_spawn_params.html", null ],
     [ "NPCStrengthHelper", "struct_n_p_c_strength_helper.html", null ],

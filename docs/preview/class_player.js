@@ -117,6 +117,7 @@ var class_player =
     [ "ItemAnimationJustStarted", "class_player.html#ac479b8ca92fc8377275c5b4fcf4c025b", null ],
     [ "ItemUsesThisAnimation", "class_player.html#a841b107297d8f66873c10b711ddecafe", null ],
     [ "MountedCenter", "class_player.html#a1fb16534ae211b195f04bf6303a06711", null ],
+    [ "TalkNPC", "class_player.html#abfd6c6c91f5fa43c16994b0c02e66f66", null ],
     [ "ThrownCost33", "class_player.html#ad2d24b43fe8efb4673c414444b948e6c", null ],
     [ "ThrownCost50", "class_player.html#a8c424aeb9f574a1a293ee8cdcf839f7b", null ],
     [ "ThrownVelocity", "class_player.html#a7280d33428d5bd4e3c296cdd3c3ddd20", null ],

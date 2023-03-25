@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "ABasicParticle", "class_a_basic_particle.html", null ],
+    [ "AbstractNPCShop", "class_abstract_n_p_c_shop.html", "class_abstract_n_p_c_shop" ],
     [ "AccessorySlotLoader", "class_accessory_slot_loader.html", "class_accessory_slot_loader" ],
     [ "Achievement", "class_achievement.html", null ],
     [ "AchievementAdvisor", "class_achievement_advisor.html", null ],
@@ -860,6 +861,8 @@ var annotated_dup =
     [ "NPCNetIdBestiaryInfoElement", "class_n_p_c_net_id_bestiary_info_element.html", null ],
     [ "NPCPortraitInfoElement", "class_n_p_c_portrait_info_element.html", null ],
     [ "NPCPreferenceTrait", "class_n_p_c_preference_trait.html", null ],
+    [ "NPCShop", "class_n_p_c_shop.html", "class_n_p_c_shop" ],
+    [ "NPCShopDatabase", "class_n_p_c_shop_database.html", "class_n_p_c_shop_database" ],
     [ "NPCSmartInteractCandidateProvider", "class_n_p_c_smart_interact_candidate_provider.html", null ],
     [ "NPCSpawnInfo", "struct_n_p_c_spawn_info.html", "struct_n_p_c_spawn_info" ],
     [ "NPCSpawnParams", "struct_n_p_c_spawn_params.html", null ],
@@ -1210,6 +1213,7 @@ var annotated_dup =
     [ "TownRoomManager", "class_town_room_manager.html", null ],
     [ "TrackedProjectileReference", "struct_tracked_projectile_reference.html", null ],
     [ "TrackGenerator", "class_track_generator.html", null ],
+    [ "TravellingMerchantShop", "class_travelling_merchant_shop.html", "class_travelling_merchant_shop" ],
     [ "TreePaintingSettings", "class_tree_painting_settings.html", null ],
     [ "TreePaintSystemData", "class_tree_paint_system_data.html", null ],
     [ "TreeTopID", "class_tree_top_i_d.html", null ],

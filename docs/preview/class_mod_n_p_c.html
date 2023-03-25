@@ -100,6 +100,11 @@ $(document).ready(function(){initNavTree('class_mod_n_p_c.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:afb01454e473cae470741a9a0954b4b09"><td class="memItemLeft" align="right" valign="top"><a id="afb01454e473cae470741a9a0954b4b09" name="afb01454e473cae470741a9a0954b4b09"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AddShops</b> ()</td></tr>
+<tr class="memdesc:afb01454e473cae470741a9a0954b4b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add shops to this <a class="el" href="class_n_p_c.html">NPC</a>, similar to adding recipes for items. <br  />
+ Make a new <a class="el" href="class_n_p_c_shop.html">NPCShop</a>, and items to it, and call AbstractNPCShop.Register <br /></td></tr>
+<tr class="separator:afb01454e473cae470741a9a0954b4b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8d0a987b5ccdb2c583e789af32c9287"><td class="memItemLeft" align="right" valign="top"><a id="ae8d0a987b5ccdb2c583e789af32c9287" name="ae8d0a987b5ccdb2c583e789af32c9287"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AI</b> ()</td></tr>
 <tr class="memdesc:ae8d0a987b5ccdb2c583e789af32c9287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will only be called if PreAI returns true. <br /></td></tr>
@@ -210,6 +215,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <tr class="memitem:afc8f409acec8b46fed06244d8c9ce686"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#afc8f409acec8b46fed06244d8c9ce686">LoadData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:afc8f409acec8b46fed06244d8c9ce686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this npc.  <a href="class_mod_n_p_c.html#afc8f409acec8b46fed06244d8c9ce686">More...</a><br /></td></tr>
 <tr class="separator:afc8f409acec8b46fed06244d8c9ce686"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0415bbb99db44c24f0dc03a3edf7c803"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a0415bbb99db44c24f0dc03a3edf7c803">ModifyActiveShop</a> (string shopName, <a class="el" href="class_item.html">Item</a>[] items)</td></tr>
+<tr class="memdesc:a0415bbb99db44c24f0dc03a3edf7c803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the contents of a shop whenever player opens it. <br  />
+ To create a shop, use <a class="el" href="class_mod_n_p_c.html#afb01454e473cae470741a9a0954b4b09" title="Allows you to add shops to this NPC, similar to adding recipes for items.   Make a new NPCShop,...">AddShops</a> <br  />
+ Note that for special shops like travelling merchant, the <em>shopId</em>  may not correspond to a <a class="el" href="class_n_p_c_shop.html">NPCShop</a> in the <a class="el" href="class_n_p_c_shop_database.html">NPCShopDatabase</a>  <a href="class_mod_n_p_c.html#a0415bbb99db44c24f0dc03a3edf7c803">More...</a><br /></td></tr>
+<tr class="separator:a0415bbb99db44c24f0dc03a3edf7c803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">ModifyCollisionData</a> (Rectangle victimHitbox, ref int immunityCooldownSlot, ref <a class="el" href="struct_multipliable_float.html">MultipliableFloat</a> damageMultiplier, ref Rectangle npcHitbox)</td></tr>
 <tr class="memdesc:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the npc's </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_immunity_cooldown_i_d.html">ImmunityCooldownID</a></dd></dl>
 <p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.  <a href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">More...</a><br /></td></tr>
@@ -256,9 +266,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>NeedSaving</b
 <tr class="memitem:aa76be5da1b6aa44430c0aecfa9b27c65"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#aa76be5da1b6aa44430c0aecfa9b27c65">OnCaughtBy</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, bool failed)</td></tr>
 <tr class="memdesc:aa76be5da1b6aa44430c0aecfa9b27c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the given item attempts to catch this <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_mod_n_p_c.html#aa76be5da1b6aa44430c0aecfa9b27c65">More...</a><br /></td></tr>
 <tr class="separator:aa76be5da1b6aa44430c0aecfa9b27c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ee6730d82d0058d379c318202a7ec10"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a5ee6730d82d0058d379c318202a7ec10">OnChatButtonClicked</a> (bool firstButton, ref bool shop)</td></tr>
-<tr class="memdesc:a5ee6730d82d0058d379c318202a7ec10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen whenever a button is clicked on this <a class="el" href="class_n_p_c.html">NPC</a>'s chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this <a class="el" href="class_n_p_c.html">NPC</a>'s shop.  <a href="class_mod_n_p_c.html#a5ee6730d82d0058d379c318202a7ec10">More...</a><br /></td></tr>
-<tr class="separator:a5ee6730d82d0058d379c318202a7ec10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a567c0f085228b63dfde725b4e9c84ee3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a567c0f085228b63dfde725b4e9c84ee3">OnChatButtonClicked</a> (bool firstButton, ref string shopName)</td></tr>
+<tr class="memdesc:a567c0f085228b63dfde725b4e9c84ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen whenever a button is clicked on this <a class="el" href="class_n_p_c.html">NPC</a>'s chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this <a class="el" href="class_n_p_c.html">NPC</a>'s shop.  <a href="class_mod_n_p_c.html#a567c0f085228b63dfde725b4e9c84ee3">More...</a><br /></td></tr>
+<tr class="separator:a567c0f085228b63dfde725b4e9c84ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b7f108608af16299c62fd6c7c624ee9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a2b7f108608af16299c62fd6c7c624ee9">OnGoToStatue</a> (bool toKingStatue)</td></tr>
 <tr class="memdesc:a2b7f108608af16299c62fd6c7c624ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this <a class="el" href="class_n_p_c.html">NPC</a> teleports to a King or Queen statue. This method is only called server side.  <a href="class_mod_n_p_c.html#a2b7f108608af16299c62fd6c7c624ee9">More...</a><br /></td></tr>
 <tr class="separator:a2b7f108608af16299c62fd6c7c624ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -341,9 +351,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</
 <tr class="memitem:a0ca7d498f7836ff8a5c3cda4bd331cd8"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a0ca7d498f7836ff8a5c3cda4bd331cd8">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a0ca7d498f7836ff8a5c3cda4bd331cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_mod_type.html#a9c37299af884906efb2d1abf168ce603" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_mod_n_p_c.html#a0ca7d498f7836ff8a5c3cda4bd331cd8">More...</a><br /></td></tr>
 <tr class="separator:a0ca7d498f7836ff8a5c3cda4bd331cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ed1f23571d97157424b9fa33ad0bf9e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a0ed1f23571d97157424b9fa33ad0bf9e">SetupShop</a> (<a class="el" href="class_chest.html">Chest</a> shop, ref int nextSlot)</td></tr>
-<tr class="memdesc:a0ed1f23571d97157424b9fa33ad0bf9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add items to this <a class="el" href="class_n_p_c.html">NPC</a>'s shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.  <a href="class_mod_n_p_c.html#a0ed1f23571d97157424b9fa33ad0bf9e">More...</a><br /></td></tr>
-<tr class="separator:a0ed1f23571d97157424b9fa33ad0bf9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a9eb89f7c9fa0eef966bc36a29f848cd6">SpawnChance</a> (<a class="el" href="struct_n_p_c_spawn_info.html">NPCSpawnInfo</a> spawnInfo)</td></tr>
 <tr class="memdesc:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> can spawn with the given spawning conditions. Return the weight for the chance of this <a class="el" href="class_n_p_c.html">NPC</a> to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Shorthand for player[myPlayer].">Main.LocalPlayer</a> when checking <a class="el" href="class_player.html">Player</a> or <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> fields, otherwise your mod won't work in Multiplayer.  <a href="class_mod_n_p_c.html#a9eb89f7c9fa0eef966bc36a29f848cd6">More...</a><br /></td></tr>
 <tr class="separator:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1635,6 +1642,53 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
+<a id="a0415bbb99db44c24f0dc03a3edf7c803" name="a0415bbb99db44c24f0dc03a3edf7c803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0415bbb99db44c24f0dc03a3edf7c803">&#9670;&nbsp;</a></span>ModifyActiveShop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModNPC.ModifyActiveShop </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>shopName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>[]&#160;</td>
+          <td class="paramname"><em>items</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify the contents of a shop whenever player opens it. <br  />
+ To create a shop, use <a class="el" href="class_mod_n_p_c.html#afb01454e473cae470741a9a0954b4b09" title="Allows you to add shops to this NPC, similar to adding recipes for items.   Make a new NPCShop,...">AddShops</a> <br  />
+ Note that for special shops like travelling merchant, the <em>shopId</em>  may not correspond to a <a class="el" href="class_n_p_c_shop.html">NPCShop</a> in the <a class="el" href="class_n_p_c_shop_database.html">NPCShopDatabase</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shopName</td><td>The full name of the shop being opened. See <a class="el" href="class_n_p_c_shop_database.html#aaec2893a470d893be7a70324cdc389cd" title="Gets a shop name (identifier) in the format matching AbstractNPCShop.FullName   Can be used with TryG...">NPCShopDatabase.GetShopName</a> for the format. </td></tr>
+    <tr><td class="paramname">items</td><td>Items in the shop including 'air' items in empty slots.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a095f3b4ae89e2e981da4d9fe9b62afde" name="a095f3b4ae89e2e981da4d9fe9b62afde"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a095f3b4ae89e2e981da4d9fe9b62afde">&#9670;&nbsp;</a></span>ModifyCollisionData()</h2>
 
@@ -2045,8 +2099,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 
 </div>
 </div>
-<a id="a5ee6730d82d0058d379c318202a7ec10" name="a5ee6730d82d0058d379c318202a7ec10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ee6730d82d0058d379c318202a7ec10">&#9670;&nbsp;</a></span>OnChatButtonClicked()</h2>
+<a id="a567c0f085228b63dfde725b4e9c84ee3" name="a567c0f085228b63dfde725b4e9c84ee3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a567c0f085228b63dfde725b4e9c84ee3">&#9670;&nbsp;</a></span>OnChatButtonClicked()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2063,8 +2117,8 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>shop</em>&#160;</td>
+          <td class="paramtype">ref string&#160;</td>
+          <td class="paramname"><em>shopName</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2079,11 +2133,11 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make something happen whenever a button is clicked on this <a class="el" href="class_n_p_c.html">NPC</a>'s chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this <a class="el" href="class_n_p_c.html">NPC</a>'s shop. </p>
+<p>Allows you to make something happen whenever a button is clicked on this <a class="el" href="class_n_p_c.html">NPC</a>'s chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this <a class="el" href="class_n_p_c.html">NPC</a>'s shop. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">firstButton</td><td></td></tr>
-    <tr><td class="paramname">shop</td><td></td></tr>
+    <tr><td class="paramname">shopName</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -2776,51 +2830,6 @@ Only called on the server. </p>
 <p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_mod_type.html#a9c37299af884906efb2d1abf168ce603" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it. </p>
 
 <p>Reimplemented from <a class="el" href="class_mod_type.html#a9b37711592d855e0fbf38caff1dce343">ModType&lt; NPC, ModNPC &gt;</a>.</p>
-
-</div>
-</div>
-<a id="a0ed1f23571d97157424b9fa33ad0bf9e" name="a0ed1f23571d97157424b9fa33ad0bf9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ed1f23571d97157424b9fa33ad0bf9e">&#9670;&nbsp;</a></span>SetupShop()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModNPC.SetupShop </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_chest.html">Chest</a>&#160;</td>
-          <td class="paramname"><em>shop</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>nextSlot</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to add items to this <a class="el" href="class_n_p_c.html">NPC</a>'s shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">shop</td><td></td></tr>
-    <tr><td class="paramname">nextSlot</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

@@ -122,13 +122,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultDrawPylonCryst
 <tr class="memdesc:a6de89aa5e95828e19f32646a5f07b3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the map is visible, in order to draw the passed in Pylon on the map. In order to draw on the map, you must use </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="struct_map_overlay_draw_context.html">MapOverlayDrawContext</a></dd></dl>
 <p>'s Draw Method. By default, doesn't draw anything.  <a href="class_mod_pylon.html#a6de89aa5e95828e19f32646a5f07b3f9">More...</a><br /></td></tr>
 <tr class="separator:a6de89aa5e95828e19f32646a5f07b3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1ed9277882319241603bc0c9002af9d"><td class="memItemLeft" align="right" valign="top"><a id="ad1ed9277882319241603bc0c9002af9d" name="ad1ed9277882319241603bc0c9002af9d"></a>
+virtual <a class="el" href="class_n_p_c_shop_1_1_entry.html">NPCShop.Entry</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNPCShopEntry</b> ()</td></tr>
+<tr class="memdesc:ad1ed9277882319241603bc0c9002af9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the npc shop entry which will be registered to the shops of all NPCs which can sell pylons. <br  />
+ Override this to change the sold item type, or alter the conditions of sale. <br  />
+ Return null to prevent automatically registering this pylon in shops. <br  />
+ By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero <a class="el" href="class_mod_block_type.html#a349d8595e8fdd60d75b2b3a72514850b" title="The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item sp...">ModBlockType.ItemDrop</a> <br  />
+ <br  />
+ The standard pylon conditions are Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome <br /></td></tr>
+<tr class="separator:ad1ed9277882319241603bc0c9002af9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b0af8c33b2240dfa69baac2c24e9b65"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_pylon.html#a5b0af8c33b2240dfa69baac2c24e9b65">HasSmartInteract</a> (int i, int j, <a class="el" href="struct_smart_interact_scan_settings.html">SmartInteractScanSettings</a> settings)</td></tr>
 <tr class="memdesc:a5b0af8c33b2240dfa69baac2c24e9b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.  <a href="class_mod_pylon.html#a5b0af8c33b2240dfa69baac2c24e9b65">More...</a><br /></td></tr>
 <tr class="separator:a5b0af8c33b2240dfa69baac2c24e9b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a044cd67e670a4413922783c36a862d94"><td class="memItemLeft" align="right" valign="top">virtual ? int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_pylon.html#a044cd67e670a4413922783c36a862d94">IsPylonForSale</a> (int npcType, <a class="el" href="class_player.html">Player</a> player, bool isNPCHappyEnough)</td></tr>
-<tr class="memdesc:a044cd67e670a4413922783c36a862d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this Pylon should be sold by the specified <a class="el" href="class_n_p_c.html">NPC</a> type and with the given player. This should return the ITEM TYPE of the item that places this <a class="el" href="class_mod_pylon.html" title="Extension to ModTilethat streamlines the process of creating a modded Pylon. Has all of ModTile&#39;s hoo...">ModPylon</a>, if one exists. If you don't want anything to be put up for sale, return null. <br  />
- Returns null by default.   <a href="class_mod_pylon.html#a044cd67e670a4413922783c36a862d94">More...</a><br /></td></tr>
-<tr class="separator:a044cd67e670a4413922783c36a862d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afce2640ed4af061869f6aa5d59380ba5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_pylon.html#afce2640ed4af061869f6aa5d59380ba5">ModifyTeleportationPosition</a> (<a class="el" href="struct_teleport_pylon_info.html">TeleportPylonInfo</a> destinationPylonInfo, ref Vector2 teleportationPosition)</td></tr>
 <tr class="memdesc:afce2640ed4af061869f6aa5d59380ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called right BEFORE the teleportation of the player occurs, when all checks succeed during the ValidTeleportCheck process. Allows the modification of where the player ends up when the teleportation takes place. Remember that the teleport location is in WORLD coordinates, not tile coordinates.  <a href="class_mod_pylon.html#afce2640ed4af061869f6aa5d59380ba5">More...</a><br /></td></tr>
 <tr class="separator:afce2640ed4af061869f6aa5d59380ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1040,60 +1045,6 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_mod_tile.html#ab2f2edcfdbe4e44786c7694b074e5d25">ModTile</a>.</p>
-
-</div>
-</div>
-<a id="a044cd67e670a4413922783c36a862d94" name="a044cd67e670a4413922783c36a862d94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a044cd67e670a4413922783c36a862d94">&#9670;&nbsp;</a></span>IsPylonForSale()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual ? int ModPylon.IsPylonForSale </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>npcType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isNPCHappyEnough</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether or not this Pylon should be sold by the specified <a class="el" href="class_n_p_c.html">NPC</a> type and with the given player. This should return the ITEM TYPE of the item that places this <a class="el" href="class_mod_pylon.html" title="Extension to ModTilethat streamlines the process of creating a modded Pylon. Has all of ModTile&#39;s hoo...">ModPylon</a>, if one exists. If you don't want anything to be put up for sale, return null. <br  />
- Returns null by default.  </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">npcType</td><td>The type of the <a class="el" href="class_n_p_c.html">NPC</a> currently being spoken to to determine the shop of. </td></tr>
-    <tr><td class="paramname">player</td><td>The current player asking said <a class="el" href="class_n_p_c.html">NPC</a> type what they have for sale. </td></tr>
-    <tr><td class="paramname">isNPCHappyEnough</td><td>Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness. For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code: <div class="fragment"><div class="line">Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</div>
-</div><!-- fragment --> </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

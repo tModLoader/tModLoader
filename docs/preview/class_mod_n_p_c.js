@@ -1,5 +1,6 @@
 var class_mod_n_p_c =
 [
+    [ "AddShops", "class_mod_n_p_c.html#afb01454e473cae470741a9a0954b4b09", null ],
     [ "AI", "class_mod_n_p_c.html#ae8d0a987b5ccdb2c583e789af32c9287", null ],
     [ "ApplyDifficultyAndPlayerScaling", "class_mod_n_p_c.html#a1f1472e775b679fbf20ae8ccfa5e8bfd", null ],
     [ "AutoStaticDefaults", "class_mod_n_p_c.html#a2b4784b483864fa6183d727a024967c1", null ],
@@ -30,6 +31,7 @@ var class_mod_n_p_c =
     [ "GetChat", "class_mod_n_p_c.html#a89a98a8894fe9bbf1cfa5da5e5676d43", null ],
     [ "HitEffect", "class_mod_n_p_c.html#a9ac8099138100a46319697f4aa247e41", null ],
     [ "LoadData", "class_mod_n_p_c.html#afc8f409acec8b46fed06244d8c9ce686", null ],
+    [ "ModifyActiveShop", "class_mod_n_p_c.html#a0415bbb99db44c24f0dc03a3edf7c803", null ],
     [ "ModifyCollisionData", "class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde", null ],
     [ "ModifyHitByItem", "class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804", null ],
     [ "ModifyHitByProjectile", "class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30", null ],
@@ -41,7 +43,7 @@ var class_mod_n_p_c =
     [ "ModifyTypeName", "class_mod_n_p_c.html#a85d0cc07d54d82763ba35d86956a5a05", null ],
     [ "NeedSaving", "class_mod_n_p_c.html#af127f116d3b10c04804ab873c9c53683", null ],
     [ "OnCaughtBy", "class_mod_n_p_c.html#aa76be5da1b6aa44430c0aecfa9b27c65", null ],
-    [ "OnChatButtonClicked", "class_mod_n_p_c.html#a5ee6730d82d0058d379c318202a7ec10", null ],
+    [ "OnChatButtonClicked", "class_mod_n_p_c.html#a567c0f085228b63dfde725b4e9c84ee3", null ],
     [ "OnGoToStatue", "class_mod_n_p_c.html#a2b7f108608af16299c62fd6c7c624ee9", null ],
     [ "OnHitByItem", "class_mod_n_p_c.html#aefdef952cf25966e70860e2282964293", null ],
     [ "OnHitByProjectile", "class_mod_n_p_c.html#ac02eeaa56ba249e0a000e367c7e93733", null ],
@@ -63,7 +65,6 @@ var class_mod_n_p_c =
     [ "SetDefaults", "class_mod_n_p_c.html#ad8c6ebb19eb4a5e8728604a8dd976829", null ],
     [ "SetNPCNameList", "class_mod_n_p_c.html#a045adc721e530c4379921ddb48fd525d", null ],
     [ "SetupContent", "class_mod_n_p_c.html#a0ca7d498f7836ff8a5c3cda4bd331cd8", null ],
-    [ "SetupShop", "class_mod_n_p_c.html#a0ed1f23571d97157424b9fa33ad0bf9e", null ],
     [ "SpawnChance", "class_mod_n_p_c.html#a9eb89f7c9fa0eef966bc36a29f848cd6", null ],
     [ "SpawnNPC", "class_mod_n_p_c.html#a4d93ba77c2e72e4d24608c4e8bcdb71d", null ],
     [ "SpecialOnKill", "class_mod_n_p_c.html#aedb1620c9d5caaf9c855929d7bc30332", null ],

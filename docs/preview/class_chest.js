@@ -19,7 +19,6 @@ var class_chest =
     [ "NearOtherChests", "class_chest.html#a3aca32be5751472f3ef9636328ca6fc0", null ],
     [ "PutItemInNearbyChest", "class_chest.html#ac79cdc8a35dcf2ff97ed321ef84ae4c9", null ],
     [ "ServerPlaceItem", "class_chest.html#ab4bb4252641967d5dffc40ff57679e02", null ],
-    [ "SetupShop", "class_chest.html#afb05eb9f1c36dc31ab70d7731222ab0f", null ],
     [ "SetupTravelShop", "class_chest.html#a79210594ca053d26d5311a60d959a37c", null ],
     [ "Unlock", "class_chest.html#a1e10d44ebeadf0a05a146f8f6cf691a6", null ],
     [ "UpdateChestFrames", "class_chest.html#a2d0df9024707905cced22ff229efb5a6", null ],
