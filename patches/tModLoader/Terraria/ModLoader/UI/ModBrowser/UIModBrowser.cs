@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -33,7 +32,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		public void RewrapUI()
 		{
-			lock (this) {
+			lock (_Data) {
 				_Data = _Data.Select(uimdi => new UIModDownloadItem(uimdi.ModDownload)).ToList();
 				HasNewData = true;
 			}
@@ -46,7 +45,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				if (item is null) {
 					error = true; // Save the error, but let the enumerator finish
 				} else {
-					lock (this) { // @TODO: lock in batches?
+					lock (_Data) { // @TODO: lock in batches?
 						_Data.Add(new UIModDownloadItem(item));
 						HasNewData = true;
 					}
@@ -77,20 +76,19 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private List<string> _specialModPackFilter;
 	private readonly List<string> _missingMods = new List<string>();
 
-	private AP_UIModDowloadItem _provider = null;
-	private bool _updateUpdateAllVisibility = false;
+	AP_UIModDowloadItem _provider = null;
 
 	// _items is only updated when everything is downloaded or aborted
 	private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
 
-	internal bool UpdateNeeded = false;
+	internal bool UpdateNeeded;
 	public UIState PreviousUIState { get; set; }
 
 	/* Filters */
 	public QueryParameters FilterParameters => new() {
-		searchTags = null,
+		searchTags = null, //new string[] { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) },
 		searchModIds = null,
-		searchModSlugs = SpecialModPackFilter,
+		searchModSlugs = SpecialModPackFilter?.ToArray(),
 		searchGeneric = SearchFilterMode == SearchFilter.Name ? Filter : null,
 		searchAuthor = SearchFilterMode == SearchFilter.Author ? Filter : null,
 		sortingParamater = SortMode,
@@ -256,36 +254,17 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	public override void Update(GameTime gameTime)
-	{
-		base.Update(gameTime);
-
-		if (_updateUpdateAllVisibility) {
-			_updateUpdateAllVisibility = false;
-			if (SpecialModPackFilter == null && _items.Count(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade) > 0) {
-				_rootElement.Append(_updateAllButton);
-			} else {
-				_rootElement.RemoveChild(_updateAllButton);
-			}
-		}
-
-		if (UpdateNeeded) { // @TODO: Add grace period for text input!!!
-			UpdateNeeded = false;
-			PopulateModBrowser(uiOnly: false); // @TODO: Should be false for filters etc... but not for installs etc... check where it's set and move it all to methods here
-		}
-	}
-
 	private void ModListStateChanged(AsyncProvider.State newState, AsyncProvider.State oldState)
 	{
 		_browserStatus.SetCurrentState(newState);
+		_rootElement.RemoveChild(_updateAllButton);
 		if (newState.IsFinished()) {
 			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 
 			_items.Clear();
 			_items.AddRange(_provider.GetData(false));
-
-			// This is run syncronously, but in the Update of the ModList! so don't change parent UI elements here, defer to Update
-			_updateUpdateAllVisibility = true;
+			if (SpecialModPackFilter == null && _items.Count(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade) > 0)
+				_rootElement.Append(_updateAllButton);
 		}
 	}
 
@@ -312,10 +291,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (uiOnly) {
 			_provider?.RewrapUI();
 			//ModList.ForceUpdateData(); // Not needed
-		}
-		else {
+		} else {
 			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
-			QueryParameters qparams = new();
+			QueryParameters qparams = FilterParameters;
 			// @TODO: Populate qparams
 			_provider = new AP_UIModDowloadItem(SocialBackend, qparams);
 			ModList.SetProvider(_provider); // .Select(mdi => new UIModDownloadItem(mdi))

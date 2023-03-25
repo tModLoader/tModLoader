@@ -119,13 +119,13 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
-			/*
+			
 			else if (!ModLoader.AlphaWelcomed) {
 				ModLoader.AlphaWelcomed = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
-			*/
+			
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
 				if (File.Exists("RecentGitHubCommits.txt")) {

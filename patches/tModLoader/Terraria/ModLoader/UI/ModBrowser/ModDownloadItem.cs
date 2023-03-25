@@ -67,6 +67,7 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 	}
 
+	// Shorthand ModDownloadItem
 	internal ModDownloadItem(string displayName, string publishId, LocalMod installed)
 	{
 		DisplayName = displayName;
@@ -81,27 +82,14 @@ public class ModDownloadItem
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
 		downloads.Add(this);
-		GetDependenciesRecursive(this, ref downloads);
-		return Interface.modBrowser.SocialBackend.SetupDownload(downloads.ToList(), Interface.modBrowserID);
+
+		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(new HashSet<string>() { this.PublishId }, ref downloads);
+
+		return Interface.modBrowser.SocialBackend.SetupDownload(FilterOutInstalled(downloads).ToList(), Interface.modBrowserID);
 	}
 
-	private IEnumerable<ModDownloadItem> GetDependencies()
+	private IEnumerable<ModDownloadItem> FilterOutInstalled(IEnumerable<ModDownloadItem> downloads)
 	{
-		return ModReferencesBySlug.Split(',')
-			.Select(Interface.modBrowser.SocialBackend.FindDownloadItem)
-			.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)));
-	}
-
-	private void GetDependenciesRecursive(ModDownloadItem item, ref HashSet<ModDownloadItem> set)
-	{
-		var deps = item.GetDependencies();
-		set.UnionWith(deps);
-
-		// Cyclic dependency should never happen, as it's not allowed
-		//TODO: What if the same mod is a dependency twice, but different versions?
-
-		foreach (var dep in deps) {
-			GetDependenciesRecursive(dep, ref set);
-		}
+		return downloads.Where(item => !item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade));
 	}
 }

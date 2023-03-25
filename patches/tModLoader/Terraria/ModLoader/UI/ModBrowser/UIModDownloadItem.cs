@@ -115,9 +115,9 @@ internal class UIModDownloadItem : UIPanel
 			Append(_updateWithDepsButton);
 		}
 
-		if (ModDownload.ModReferences?.Length > 0) {
+		if (ModDownload.ModReferencesBySlug?.Length > 0) {
 			var icon = UICommon.ButtonExclamationTexture;
-			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferences.Split(',').Select(x => x.Trim())))) {
+			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {
 				Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 			};
 			modReferenceIcon.OnLeftClick += ShowModDependencies;
@@ -130,7 +130,7 @@ internal class UIModDownloadItem : UIPanel
 	private void ShowModDependencies(UIMouseEvent evt, UIElement element)
 	{
 		var modListItem = (UIModDownloadItem)element.Parent;
-		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferences.Split(',').Select(x => x.Trim()).ToList();
+		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim()).ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 		Interface.modBrowser.FilterTextBox.Text = "";
 		Interface.modBrowser.UpdateNeeded = true;

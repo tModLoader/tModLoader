@@ -21,7 +21,7 @@ public partial class WorkshopSocialModule
 	{
 		info = null;
 		var query = new QueryParameters() {
-			searchModSlugs = new List<string>() { modFile.Name },
+			searchModSlugs = new string[] { modFile.Name },
 			queryType = QueryType.SearchDirect
 		};
 
@@ -62,7 +62,7 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
+			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID.ToString());
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
@@ -94,10 +94,10 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
-		string[] modMetadata = { buildData["modside"] };
-
-		string[] tagsList = usedTagsInternalNames.Concat(modMetadata).ToArray();
+		List<string> tagsList = new List<string>();
+		tagsList.AddRange(settings.GetUsedTagsInternalNames());
+		tagsList.Add(buildData["modside"]);
+		tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 		CalculateWorkshopDeps(ref buildData);
 		
@@ -117,7 +117,7 @@ public partial class WorkshopSocialModule
 
 			_publisherInstances.Add(modPublisherInstance);
 
-			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID, settings.ChangeNotes);
+			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes);
 
 			return true;
 		}

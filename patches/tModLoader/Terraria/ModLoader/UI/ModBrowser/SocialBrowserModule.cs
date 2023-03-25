@@ -16,6 +16,7 @@ public interface SocialBrowserModule
 	public List<ModDownloadItem> Items { get; set; }
 
 	// Used for caching in Mod Browser Queries
+	//TODO: handling installed ModDowmloadItem for query
 	internal IReadOnlyList<LocalMod> InstalledItems { get; set; }
 
 	public ModDownloadItem FindDownloadItem(string modName)
@@ -25,11 +26,9 @@ public interface SocialBrowserModule
 	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
 #pragma warning restore CS8424
 
-	/////// Lookups of Browser Items ///////////////////////////////////////////
+	/////// Display of Browser Items ///////////////////////////////////////////
 
 	public string GetModWebPage(string modId);
-
-
 
 	/////// Management of Local Install ///////////////////////////////////////////
 
@@ -87,10 +86,10 @@ public interface SocialBrowserModule
 			FindDownloadItem(item.ModName).Installed = localMod;
 		}
 
-		Interface.modBrowser.PopulateModBrowser(uiOnly: true); // @TODO: The reload should be signaled to the caller, not acted directly? this also supposes the ModBrowser is already Activated and populated with all the UI...
-		Interface.modBrowser.UpdateNeeded = true; // @TODO: This will trigger also redownload..., uiOnly above is enough here I think
+		Interface.modBrowser.PopulateModBrowser(uiOnly: true);
+		Interface.modBrowser.UpdateNeeded = true;
 
-		uiProgress?.Leave(refreshBrowser: true); // @TODO: Here this is unused??? probably this should propagate instead of the methods above to force reload...
+		uiProgress?.Leave(refreshBrowser: true);
 
 		if (reloadWhenDone)
 			ModLoader.Reload();
@@ -98,7 +97,31 @@ public interface SocialBrowserModule
 
 	internal void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress);
 
-	
+	/////// Management of Dependencies ///////////////////////////////////////////
+
+	public ModDownloadItem[] GetDependencies(HashSet<string> modIds);
+
+	public void GetDependenciesRecursive(HashSet<string> modIds, ref HashSet<ModDownloadItem> set)
+	{
+		var deps = GetDependencies(modIds);
+		set.UnionWith(deps);
+
+		HashSet<string> depIds = deps.Select(d => d.PublishId).Except(set.Select(d => d.PublishId)).ToHashSet();
+
+		//TODO: What if the same mod is a dependency twice, but different versions?
+		GetDependenciesRecursive(depIds, ref set);
+	}
+
+	public static string GetBrowserVersionNumber(Version tmlVersion)
+	{
+		if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9
+			return "1.3";
+
+		if (tmlVersion < new Version(2022, 10)) // Versions 0.12 to 2022.9
+			return "1.4";
+
+		return "1.4.4";
+	} 
 }
 
 

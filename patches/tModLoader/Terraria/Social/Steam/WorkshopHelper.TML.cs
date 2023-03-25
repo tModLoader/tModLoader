@@ -58,32 +58,15 @@ public partial class WorkshopHelper
 		return Path.Combine("steamapps", "workshop");
 	}
 
-	/////// Workshop Dependencies ////////////////////
-	private static List<string> GetDependencies(string modId)
-	{
-		var query = new QueryHelper.AQueryInstance(new QueryParameters());
-		query.TrySearchByInternalName(out var items);
-		items[0].ModReferenceByModId
-	}
+	/////// Others ////////////////////
 
-	internal static void GetDependenciesRecursive(string[] modIds, ref HashSet<ulong> set)
-	{
-
-	}
-
-	internal static void GetDependenciesRecursive(string modSlug, ref HashSet<ulong> set)
+	internal static ModDownloadItem GetModDownloadItem(string modSlug)
 	{
 		var query = new QueryHelper.AQueryInstance(new QueryParameters() { searchModSlugs = new string[] { modSlug } });
 		if (!query.TrySearchByInternalName(out var items))
-			return;
+			return null;
 
-		items[0].ModReferenceByModId
-
-		var deps = GetDependencies(publishedId);
-		set.UnionWith(deps);
-
-		foreach (ulong dep in deps)
-			GetDependenciesRecursive(dep, ref set);
+		return items[0];
 	}
 
 	// Should this be in SteamedWraps or here?
@@ -271,7 +254,6 @@ public partial class WorkshopHelper
 			protected uint _queryReturnCount;
 			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
-			internal bool stopCurrentQuery;
 			internal QueryParameters queryParameters;
 
 			/////// Query basic implemenatation ////////////////////
@@ -346,7 +328,7 @@ public partial class WorkshopHelper
 						yield return item;
 
 					ReleaseWorkshopQuery();
-				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount && !stopCurrentQuery);
+				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
 			}
 
 			private IEnumerable<ModDownloadItem> ProcessPageResult()

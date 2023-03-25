@@ -151,6 +151,7 @@ internal static class ModOrganizer
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
 	}
 
+	//TODO: Need to clean this up after all changes made
 	internal static IEnumerable<ulong> IdentifyWorkshopDependencies()
 	{
 		HashSet<ulong> dependencies = new HashSet<ulong>();
@@ -580,6 +581,21 @@ internal static class ModOrganizer
 			}
 		}
 		return val;
+	}
+
+	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
+	{
+		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+		HashSet<string> versions = new HashSet<string>();
+
+		foreach (string fileName in tmods) {
+			var match = PublishFolderMetadata.Match(fileName);
+			if (match.Success) {
+				versions.Add(UI.ModBrowser.SocialBrowserModule.GetBrowserVersionNumber(new Version(match.Groups[1].Value)));
+			}
+		}
+
+		return versions;
 	}
 
 	internal static void CleanupOldPublish(string repo)

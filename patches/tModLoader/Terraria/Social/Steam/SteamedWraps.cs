@@ -54,6 +54,11 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		return false;
 	}
 
+	public ModDownloadItem[] GetDependencies(HashSet<string> modIds)
+	{
+		return new WorkshopHelper.QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = modIds.ToArray() }).FastQueryItems();
+	}
+
 	public bool DoesAppNeedRestartToReinstallItem(string modId) => SteamedWraps.IsWorkshopItemInstalled(GetId(modId));
 
 	public string GetModWebPage(string modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId}";
@@ -242,7 +247,7 @@ public static class SteamedWraps
 
 	private static void FilterByText(ref UGCQueryHandle_t qHandle, string text)
 	{
-		if (text == null)
+		if (string.IsNullOrEmpty(text))
 			return;
 
 		if (SteamClient)
@@ -252,6 +257,7 @@ public static class SteamedWraps
 	}
 
 	//TODO: Needs more refactor.
+	//TODO: Sorting, filters, author
 	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {
