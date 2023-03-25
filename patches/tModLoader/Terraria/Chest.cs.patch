@@ -673,7 +673,7 @@
 +		Array.Fill(item, null);
 +
 +		if (NPCShopDatabase.TryGetNPCShop(shopName, out var shop)) {
-+			shop.Build(item, npc, out bool overflow);
++			shop.FillShop(item, npc, out bool overflow);
 +			if (overflow) {
 +				Main.NewText(Language.GetTextValue("tModLoader.ShopOverflow"), Color.Orange);
 +				Logging.tML.Warn($"Unable to fit all item in the shop {shopName}");

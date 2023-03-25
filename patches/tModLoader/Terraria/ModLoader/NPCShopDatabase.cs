@@ -1149,7 +1149,15 @@ public class TravellingMerchantShop : AbstractNPCShop
 
 	public TravellingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
 
-	public override void Build(Item[] items, NPC npc, out bool overflow)
+	public override void FillShop(ICollection<Item> items, NPC npc)
+	{
+		foreach (var itemId in Main.travelShop) {
+			if (itemId != 0)
+				items.Add(new Item(itemId));
+		}
+	}
+
+	public override void FillShop(Item[] items, NPC npc, out bool overflow)
 	{
 		overflow = false;
 
