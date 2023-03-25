@@ -1,3 +1,4 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -13,7 +14,6 @@ namespace ExampleMod.Content.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleBlock>();
 
 			AddMapEntry(new Color(200, 200, 200));
 		}
@@ -22,9 +22,8 @@ namespace ExampleMod.Content.Tiles
 			num = fail ? 1 : 3;
 		}
 
-		// todo: implement
-		// public override void ChangeWaterfallStyle(ref int style) {
-		// 	style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
-		// }
+		 public override void ChangeWaterfallStyle(ref int style) {
+			style = ModContent.GetInstance<ExampleWaterfallStyle>().Slot;
+		}
 	}
 }

@@ -174,10 +174,11 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
-	/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/> 
+	/// Called on local, server and remote clients. <br/> 
+	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
 	/// </summary>
-	public virtual void HitEffect(NPC npc, int hitDirection, double damage)
+	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
 	}
 
@@ -311,20 +312,19 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs).
+	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs). <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -344,10 +344,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -356,10 +354,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	public virtual void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit)
 	{
 	}
 
@@ -376,15 +372,29 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon.
+	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung. <br/>
+	/// Use <see cref="CanBeHitByItem(NPC, Player, Item)"/> instead for Guide Voodoo Doll-type effects.
+	/// </summary>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <returns>
+	/// Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the NPC, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanCollideWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -394,10 +404,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -417,11 +426,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -430,26 +436,19 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.
+	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="defense"></param>
-	/// <param name="knockback"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <returns></returns>
-	public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
 	{
-		return true;
 	}
 
 	/// <summary>
@@ -767,15 +766,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	/// <summary>
-	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is swinging it (the NPC must have an attack type of 3). Item is the Texture2D instance of the item to be drawn (use Main.itemTexture[id of item]), itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="item"></param>
-	/// <param name="itemSize"></param>
-	/// <param name="scale"></param>
-	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+
+	/// <inheritdoc cref="ModNPC.DrawTownAttackSwing" />
+	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 
@@ -788,7 +781,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damageMultiplier"></param>
 	/// <param name="npcHitbox"></param>
 	/// <returns></returns>
-	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
+	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
 	{
 		return true;
 	}

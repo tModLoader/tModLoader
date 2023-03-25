@@ -49,6 +49,7 @@ internal class TMLContentManager : ContentManager
 		if (!assetName.StartsWith("tmod:")) {
 			if (overrideContentManager != null && File.Exists(Path.Combine(overrideContentManager.RootDirectory, assetName + ".xnb"))) {
 				try {
+					using var _ = new Logging.QuietExceptionHandle();
 					return overrideContentManager.OpenStream(assetName);
 				}
 				catch {}

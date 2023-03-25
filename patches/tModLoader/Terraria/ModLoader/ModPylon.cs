@@ -254,6 +254,7 @@ public abstract class ModPylon : ModTile
 			return true;
 		}
 
+		WorldGen.KillTile_DropItems(i, j, tileSafely, includeLargeObjectDrops: true, includeAllModdedLargeObjectDrops: true); // include all drops.
 		KillMultiTile(topLeftX, topLeftY, tileSafely.TileFrameX, tileSafely.TileFrameY);
 		WorldGen.destroyObject = true;
 		for (int x = topLeftX; x < rightX; x++) {

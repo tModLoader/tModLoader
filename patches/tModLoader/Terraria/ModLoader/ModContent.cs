@@ -305,6 +305,7 @@ public static class ModContent
 		});
 
 		ContentSamples.Initialize();
+		TileLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -328,6 +329,8 @@ public static class ModContent
 		PrefixLoader.FinishSetup();
 		ProjectileLoader.FinishSetup();
 		PylonLoader.FinishSetup();
+		TileLoader.FinishSetup();
+		WallLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();

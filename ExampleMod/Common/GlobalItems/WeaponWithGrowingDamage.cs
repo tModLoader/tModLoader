@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader.IO;
 using System.IO;
 using ExampleMod.Content.NPCs;
+using ExampleMod.Common.Configs;
 
 //Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
@@ -19,6 +20,11 @@ namespace ExampleMod.Common.GlobalItems
 		public int level => experience / experiencePerLevel;
 
 		public override bool InstancePerEntity => true;
+
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
+		}
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 			//Apply to weapons
@@ -42,13 +48,13 @@ namespace ExampleMod.Common.GlobalItems
 			GainExperience(item, reader.ReadInt32());
 		}
 		
-		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
-			OnHitNPCGeneral(player, target, damage, knockBack, crit, item);
+		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+			OnHitNPCGeneral(player, target, hit, item);
 		}
 
-		public void OnHitNPCGeneral(Player player, NPC target, int damage, float knockBack, bool crit, Item item = null, Projectile projectile = null) {
+		public void OnHitNPCGeneral(Player player, NPC target, NPC.HitInfo hit, Item item = null, Projectile projectile = null) {
 			//The weapon gains experience when hitting an npc.
-			int xp = damage;
+			int xp = hit.Damage;
 			if (projectile != null) {
 				xp /= 2;
 			}
@@ -111,34 +117,34 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 
-		public override void OnStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
+		public override void OnStack(Item destination, Item source, int numToTransfer) {
+			if (!source.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
 				return;
 			}
 
-			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
+			TransferExperience(destination, source, weapon2, numToTransfer);
 		}
 
-		public override void SplitStack(Item increase, Item decrease, int numberToBeTransfered) {
-			if (!decrease.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
+		public override void SplitStack(Item destination, Item source, int numToTransfer) {
+			if (!source.TryGetGlobalItem(out WeaponWithGrowingDamage weapon2)) {
 				return;
 			}
 
 			//Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
 			experience = 0;
 
-			TransferExperience(increase, decrease, weapon2, numberToBeTransfered);
+			TransferExperience(destination, source, weapon2, numToTransfer);
 		}
 
-		private void TransferExperience(Item increase, Item decrease, WeaponWithGrowingDamage weapon2, int numberToBeTransfered) {
+		private void TransferExperience(Item destination, Item source, WeaponWithGrowingDamage weapon2, int numToTransfer) {
 			//Transfer experience and value to increase.
 			experience += weapon2.experience;
-			UpdateValue(increase, numberToBeTransfered);
+			UpdateValue(destination, numToTransfer);
 
-			if (decrease.stack > numberToBeTransfered) {
+			if (source.stack > numToTransfer) {
 				//Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
 				weapon2.experience = 0;
-				weapon2.UpdateValue(decrease, -numberToBeTransfered);
+				weapon2.UpdateValue(source, -numToTransfer);
 			}
 		}
 	}

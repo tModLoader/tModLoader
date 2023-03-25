@@ -144,10 +144,10 @@ public static class ItemLoader
 			ContentSamples.ItemsByType[item.Type].RebuildTooltip();
 		}
 
-		ValidateGeodeDropsSet();
+		ValidateDropsSet();
 	}
 
-	internal static void ValidateGeodeDropsSet()
+	internal static void ValidateDropsSet()
 	{
 		foreach (var pair in ItemID.Sets.GeodeDrops) {
 			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.GeodeDrops)}'";
@@ -156,6 +156,15 @@ public static class ItemLoader
 
 			if (pair.Value.maxStack <= pair.Value.minStack)
 				throw new Exception($"{exceptionCommon} must have maxStack bigger than minStack");
+		}
+
+		foreach (var pair in ItemID.Sets.OreDropsFromSlime) {
+			string exceptionCommon = $"{Lang.GetItemNameValue(pair.Key)} registered in 'ItemID.Sets.{nameof(ItemID.Sets.OreDropsFromSlime)}'";
+			if (pair.Value.minStack < 1)
+				throw new Exception($"{exceptionCommon} must have minStack bigger than 0");
+
+			if (pair.Value.maxStack < pair.Value.minStack)
+				throw new Exception($"{exceptionCommon} must have maxStack bigger than or equal to minStack");
 		}
 	}
 
@@ -927,32 +936,65 @@ public static class ItemLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit);
+	private static HookList HookCanCollideNPC = AddHook<Func<Item, Rectangle, Player, NPC, bool?>>(g => g.CanMeleeAttackCollideWithNPC);
+
+	public static bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target)
+	{
+		bool? flag = null;
+
+		foreach (var g in HookCanCollideNPC.Enumerate(item.globalItems)) {
+			bool? canCollide = g.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
+
+			if (canCollide.HasValue) {
+				if (!canCollide.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		if (item.ModItem != null) {
+			bool? canHit = item.ModItem.CanMeleeAttackCollideWithNPC(meleeAttackHitbox, player, target);
+
+			if (canHit.HasValue) {
+				if (!canHit.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		return flag;
+	}
+
+	private delegate void DelegateModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
 	/// <summary>
 	/// Calls ModItem.ModifyHitNPC, then all GlobalItem.ModifyHitNPC hooks.
 	/// </summary>
-	public static void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	public static void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
-		item.ModItem?.ModifyHitNPC(player, target, ref damage, ref knockBack, ref crit);
+		item.ModItem?.ModifyHitNPC(player, target, ref modifiers);
 
 		foreach (var g in HookModifyHitNPC.Enumerate(item.globalItems)) {
-			g.ModifyHitNPC(item, player, target, ref damage, ref knockBack, ref crit);
+			g.ModifyHitNPC(item, player, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, int, float, bool>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Item, Player, NPC, NPC.HitInfo, int>>(g => g.OnHitNPC);
 
 	/// <summary>
 	/// Calls ModItem.OnHitNPC and all GlobalItem.OnHitNPC hooks.
 	/// </summary>
-	public static void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
+	public static void OnHitNPC(Item item, Player player, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
-		item.ModItem?.OnHitNPC(player, target, damage, knockBack, crit);
+		item.ModItem?.OnHitNPC(player, target, hit, damageDone);
 
 		foreach (var g in HookOnHitNPC.Enumerate(item.globalItems)) {
-			g.OnHitNPC(item, player, target, damage, knockBack, crit);
+			g.OnHitNPC(item, player, target, hit, damageDone);
 		}
 	}
 
@@ -972,32 +1014,33 @@ public static class ItemLoader
 		return item.ModItem == null || item.ModItem.CanHitPvp(player, target);
 	}
 
-	private delegate void DelegateModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(g => g.ModifyHitPvp);
 
 	/// <summary>
 	/// Calls ModItem.ModifyHitPvp, then all GlobalItem.ModifyHitPvp hooks.
 	/// </summary>
-	public static void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+	public static void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
-		item.ModItem?.ModifyHitPvp(player, target, ref damage, ref crit);
+		item.ModItem?.ModifyHitPvp(player, target, ref modifiers);
 
 		foreach (var g in HookModifyHitPvp.Enumerate(item.globalItems)) {
-			g.ModifyHitPvp(item, player, target, ref damage, ref crit);
+			g.ModifyHitPvp(item, player, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitPvp = AddHook<Action<Item, Player, Player, int, bool>>(g => g.OnHitPvp);
+	private static HookList HookOnHitPvp = AddHook<Action<Item, Player, Player, Player.HurtInfo>>(g => g.OnHitPvp);
 
 	/// <summary>
-	/// Calls ModItem.OnHitPvp and all GlobalItem.OnHitPvp hooks.
+	/// Calls ModItem.OnHitPvp and all GlobalItem.OnHitPvp hooks. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
-	public static void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+	public static void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
-		item.ModItem?.OnHitPvp(player, target, damage, crit);
+		item.ModItem?.OnHitPvp(player, target, hurtInfo);
 
 		foreach (var g in HookOnHitPvp.Enumerate(item.globalItems)) {
-			g.OnHitPvp(item, player, target, damage, crit);
+			g.OnHitPvp(item, player, target, hurtInfo);
 		}
 	}
 
@@ -1146,6 +1189,23 @@ public static class ItemLoader
 
 		foreach (var g in HookUpdateInventory.Enumerate(item.globalItems)) {
 			g.UpdateInventory(item, player);
+		}
+	}
+
+	private static HookList HookUpdateInfoAccessory = AddHook<Action<Item, Player>>(g => g.UpdateInfoAccessory);
+
+	/// <summary>
+	/// Calls ModItem.UpdateInfoAccessory and all GlobalItem.UpdateInfoAccessory hooks.
+	/// </summary>
+	public static void UpdateInfoAccessory(Item item, Player player)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateInfoAccessory(player);
+
+		foreach (var g in HookUpdateInfoAccessory.Enumerate(item.globalItems)) {
+			g.UpdateInfoAccessory(item, player);
 		}
 	}
 
@@ -1400,17 +1460,20 @@ public static class ItemLoader
 	/// <summary>
 	/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 	/// </summary>
-	public static bool CanStack(Item increase, Item decrease)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <returns>Whether or not the items are allowed to stack</returns>
+	public static bool CanStack(Item destination, Item source)
 	{
-		if (increase.prefix != decrease.prefix) // #StackablePrefixWeapons
+		if (destination.prefix != source.prefix) // #StackablePrefixWeapons
 			return false;
 
-		foreach (var g in HookCanStack.Enumerate(increase.globalItems)) {
-			if (!g.CanStack(increase, decrease))
+		foreach (var g in HookCanStack.Enumerate(destination.globalItems)) {
+			if (!g.CanStack(destination, source))
 				return false;
 		}
 
-		return increase.ModItem?.CanStack(decrease) ?? true;
+		return destination.ModItem?.CanStack(source) ?? true;
 	}
 
 	private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
@@ -1418,102 +1481,126 @@ public static class ItemLoader
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 	/// </summary>
-	public static bool CanStackInWorld(Item increase, Item decrease)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <returns>Whether or not the items are allowed to stack</returns>
+	public static bool CanStackInWorld(Item destination, Item source)
 	{
-		foreach (var g in HookCanStackInWorld.Enumerate(increase.globalItems)) {
-			if (!g.CanStackInWorld(increase, decrease))
+		foreach (var g in HookCanStackInWorld.Enumerate(destination.globalItems)) {
+			if (!g.CanStackInWorld(destination, source))
 				return false;
 		}
 
-		return increase.ModItem?.CanStackInWorld(decrease) ?? true;
+		return destination.ModItem?.CanStackInWorld(source) ?? true;
 	}
 	
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
 
 	/// <summary>
-	/// Short-circuits if <see cref="CanStack"/> hooks don't return true.
-	/// <br/> Returns the result of the initial check.
-	/// <br/>
-	/// <br/> <inheritdoc cref="StackItems"/>
+	/// Stacks <paramref name="source"/> onto <paramref name="destination"/> if CanStack permits the transfer
 	/// </summary>
-	/// <param name="increase">Item where the stack is being increased.</param>
-	/// <param name="decrease">Item where the stack is being reduced.</param>
-	/// <param name="numTransfered">Amount to be transfered </param>
-	/// <param name="infiniteSource">The final stack of item2</param>
-	public static bool TryStackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
+	/// <returns>Whether or not the items were allowed to stack</returns>
+	public static bool TryStackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false)
 	{
-		numTransfered = 0;
+		numTransferred = 0;
 
-		if (!CanStack(increase, decrease))
+		if (!CanStack(destination, source))
 			return false;
 
-		StackItems(increase, decrease, out numTransfered, infiniteSource);
+		StackItems(destination, source, out numTransferred, infiniteSource);
 
 		return true;
 	}
 
 	/// <summary>
-	/// Stacks <paramref name="increase"/> and <paramref name="decrease"/> items.
-	/// <br/> Calls all <see cref="GlobalItem.OnStack"/> and <see cref="ModItem.OnStack"/> hooks if <paramref name="increase"/>.stack is less than <paramref name="increase"/>.maxStack.
+	/// Stacks <paramref name="destination"/> onto <paramref name="source"/><br/>
+	/// This method should not be called unless <see cref="CanStack(Item, Item)"/> returns true.  See: <see cref="TryStackItems(Item, Item, out int, bool)"/>
 	/// </summary>
-	/// <param name="increase">Item where the stack is being increased.</param>
-	/// <param name="decrease">Item where the stack is being reduced.</param>
-	/// <param name="numTransfered">Amount to be transfered </param>
-	/// <param name="infiniteSource"></param>
-	/// <param name="numToTransfer">Used to only transfer a specidied amount instead of all.</param>
-	public static void StackItems(Item increase, Item decrease, out int numTransfered, bool infiniteSource = false, int? numToTransfer = null)
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
+	/// <param name="numToTransfer">
+	/// An optional argument used to specify the quantity of items to transfer from <paramref name="source"/> to <paramref name="destination"/>.<br/>
+	/// By default, as many items as possible will be transferred.  That is, either source will be empty, or destination will be full (maxStack)
+	/// </param>
+	public static void StackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false, int? numToTransfer = null)
 	{
-		numTransfered = numToTransfer ?? Math.Min(decrease.stack, increase.maxStack - increase.stack);
+		numTransferred = numToTransfer ?? Math.Min(source.stack, destination.maxStack - destination.stack);
 
-		foreach (var g in HookOnStack.Enumerate(increase.globalItems)) {
-			g.OnStack(increase, decrease, numTransfered);
+		OnStack(destination, source, numTransferred);
+
+		if (source.favorited) {
+			destination.favorited = true;
+			source.favorited = false;
 		}
 
-		increase.ModItem?.OnStack(decrease, numTransfered);
-
-		if (decrease.favorited) {
-			increase.favorited = true;
-			decrease.favorited = false;
-		}
-
-		increase.stack += numTransfered;
+		destination.stack += numTransferred;
 		if (!infiniteSource)
-			decrease.stack -= numTransfered;
+			source.stack -= numTransferred;
+	}
+
+	/// <summary>
+	/// Calls the GlobalItem.OnStack hooks in <paramref name="destination"/>, then the ModItem.OnStack hook in <paramref name="destination"/><br/>
+	/// OnStack is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
+	/// </summary>
+	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	public static void OnStack(Item destination, Item source, int numToTransfer)
+	{
+		foreach (var g in HookOnStack.Enumerate(destination.globalItems)) {
+			g.OnStack(destination, source, numToTransfer);
+		}
+
+		destination.ModItem?.OnStack(source, numToTransfer);
 	}
 
 	private static HookList HookSplitStack = AddHook<Action<Item, Item, int>>(g => g.SplitStack);
 
-	public static Item TransferWithLimit(Item decrease, int limit)
+	/// <summary>
+	/// Extract up to <paramref name="limit"/> items from <paramref name="source"/>. If some items remain, <see cref="SplitStack"/> will be used.
+	/// </summary>
+	/// <param name="source">The original item instance</param>
+	/// <param name="limit">How many items should be transferred</param>
+	public static Item TransferWithLimit(Item source, int limit)
 	{
-		Item increase = decrease.Clone();
-		if (decrease.stack <= limit) {
-			decrease.TurnToAir();
+		Item destination = source.Clone();
+		if (source.stack <= limit) {
+			source.TurnToAir();
 		}
 		else {
-			SplitStack(increase, decrease, limit);
+			SplitStack(destination, source, limit);
 		}
-		return increase;
+		return destination;
 	}
 
 	/// <summary>
 	/// Called when splitting a stack of items.
 	/// </summary>
-	/// <param name="increase">A clone of decrease.  Stack is set to zero then incremented in SplitStack or after SplitStack is called.</param>
-	/// <param name="decrease">The original item with stack being reduced.</param>
-	/// <param name="numToTransfer">Usually 1, but possible to be higher.</param>
-	public static void SplitStack(Item increase, Item decrease, int numToTransfer)
+	/// <param name="destination">
+	/// The item instance that <paramref name="source"/> will transfer items to, and is usually a clone of <paramref name="source"/>.<br/>
+	/// This parameter's stack will be set to zero before any transfer occurs.
+	/// </param>
+	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	public static void SplitStack(Item destination, Item source, int numToTransfer)
 	{
-		increase.stack = 0;
-		increase.favorited = false;
+		destination.stack = 0;
+		destination.favorited = false;
 
-		foreach (var g in HookSplitStack.Enumerate(increase.globalItems)) {
-			g.SplitStack(increase, decrease, numToTransfer);
+		foreach (var g in HookSplitStack.Enumerate(destination.globalItems)) {
+			g.SplitStack(destination, source, numToTransfer);
 		}
 
-		increase.ModItem?.SplitStack(decrease, numToTransfer);
+		destination.ModItem?.SplitStack(source, numToTransfer);
 
-		increase.stack += numToTransfer;
-		decrease.stack -= numToTransfer;
+		destination.stack += numToTransfer;
+		source.stack -= numToTransfer;
 	}
 
 	private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);

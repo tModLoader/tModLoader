@@ -26,12 +26,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.DrawsWalls[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.OpenDoorID[Type] = ModContent.TileType<ExampleDoorOpen>();
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.ClosedDoor };
-			OpenDoorID = ModContent.TileType<ExampleDoorOpen>();
 
 			// Names
 			LocalizedText name = CreateMapEntryName();
@@ -63,10 +63,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<ExampleDoor>());
 		}
 
 		public override void MouseOver(int i, int j) {

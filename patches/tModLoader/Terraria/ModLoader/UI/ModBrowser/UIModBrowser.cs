@@ -331,7 +331,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void SetHeading(string heading)
+	private void SetHeading(LocalizedText heading)
 	{
 		HeaderTextPanel.SetText(heading, 0.8f, true);
 		HeaderTextPanel.Recalculate();

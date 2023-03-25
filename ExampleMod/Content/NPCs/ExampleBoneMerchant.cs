@@ -8,6 +8,8 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -18,6 +20,8 @@ namespace ExampleMod.Content.NPCs
 	/// </summary>
 	public class ExampleBoneMerchant : ModNPC
 	{
+		private static Profiles.StackedNPCProfile NPCProfile;
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 
@@ -28,6 +32,7 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
 
 			//This sets entry is the most important part of this NPC. Since it is true, it tells the game that we want this NPC to act like a town NPC without ACTUALLY being one.
 			//What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
@@ -49,6 +54,11 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, -1),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", -1)
+			);
 		}
 
 		public override void SetDefaults() {
@@ -87,13 +97,34 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// Causes dust to spawn when the NPC takes damage.
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				// Retrieve the gore types. This NPC only has shimmer variants. (6 total gores)
+				string variant = "";
+				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+			}
+		}
+
+		public override ITownNPCProfile TownNPCProfile() {
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {

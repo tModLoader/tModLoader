@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
@@ -99,10 +100,10 @@ namespace ExampleMod.Content.Projectiles
 			return false; // still charging
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
-			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.AddBuff(ModContent.BuffType<ExampleWhipAdvancedDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
-			Projectile.damage = (int)(damage * 0.7f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
+			Projectile.damage = (int)(Projectile.damage * 0.7f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.

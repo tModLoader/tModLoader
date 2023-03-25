@@ -654,7 +654,7 @@ internal static class ModOrganizer
 			var checkVersion = new Version(match.Groups[1].Value);
 
 			if (checkVersion > BuildInfo.stableVersion && checkVersion < BuildInfo.tMLVersion.MajorMinor())
-				Directory.Delete(filename, true);
+				Directory.Delete(Path.GetDirectoryName(filename), true);
 		}
 	}
 
