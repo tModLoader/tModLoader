@@ -15,8 +15,7 @@
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
 
 ## ItemSlot
-- Preserve modded data in journey duplication menu. See `JourneyDuplicationItemCreationContext` for all code-paths. 
-Also need to use `CanStack`/`TryStackItems`. See similar hooks in shop buy. Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
+- Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
 
 ## Player
 - `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.

@@ -101,6 +101,18 @@
  				return false;
  
  			item.favorited = !item.favorited;
+@@ -443,8 +_,9 @@
+ 
+ 		if (Main.cursorOverride == 7) {
+ 			if (context == 29) {
+-				Item item2 = new Item();
++				Item /*item2 = new Item();
+-				item2.SetDefaults(inv[slot].netID);
++				item2.SetDefaults(inv[slot].netID);*/
++				item2 = inv[slot].Clone();
+ 				item2.stack = item2.maxStack;
+ 				item2.OnCreated(new JourneyDuplicationItemCreationContext());
+ 				item2 = Main.player[Main.myPlayer].GetItem(Main.myPlayer, item2, GetItemSettings.InventoryEntityToPlayerInventorySettings);
 @@ -497,6 +_,9 @@
  		inv = singleSlotArray[0];
  	}
@@ -279,6 +291,16 @@
  				}
  
  				Recipe.FindRecipes();
+@@ -762,7 +_,8 @@
+ 			case 5:
+ 				if (Main.mouseItem.IsAir) {
+ 					SoundEngine.PlaySound(7);
+-					Main.mouseItem.SetDefaults(inv[slot].netID);
++					//Main.mouseItem.SetDefaults(inv[slot].netID);
++					Main.mouseItem = inv[slot].Clone();
+ 					Main.mouseItem.stack = Main.mouseItem.maxStack;
+ 					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
+ 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
 @@ -788,7 +_,7 @@
  		bool result = false;
  		if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
@@ -402,7 +424,7 @@
  							PickupItemIntoMouse(inv, context, slot, player);
  							SoundEngine.PlaySound(12);
  							RefreshStackSplitCooldown();
-@@ -1124,25 +_,38 @@
+@@ -1124,25 +_,39 @@
  
  	public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player)
  	{
@@ -413,7 +435,8 @@
 +			*/
  			if (context == 29) {
 -				Main.mouseItem.SetDefaults(Main.mouseItem.type);
-+				Main.mouseItem.SetDefaults(inv[slot].type /* Main.mouseItem.type */);
++				//Main.mouseItem.SetDefaults(inv[slot].type /* Main.mouseItem.type */);
++				Main.mouseItem = inv[slot].Clone();
  				Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  			}
 +			else { // Added, replaces commented code above and below
