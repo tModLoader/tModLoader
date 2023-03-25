@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -626,12 +627,23 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to add items to an NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
+	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
 	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="shop"></param>
-	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
+	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
+	public virtual void ModifyShop(NPCShop shop)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
+	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
+	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// </summary>
+	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
+	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
+	/// <summary>
+	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}
 

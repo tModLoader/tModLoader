@@ -31,7 +31,7 @@ public static class NPCLoader
 	internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 	internal static readonly List<GlobalNPC> globalNPCs = new();
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-	private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
+	internal static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 	/// <summary>
 	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 	/// </summary>
@@ -54,34 +54,6 @@ public static class NPCLoader
 		modHooks.Add(hook);
 
 		return hook;
-	}
-
-	static NPCLoader()
-	{
-		shopToNPC[1] = NPCID.Merchant;
-		shopToNPC[2] = NPCID.ArmsDealer;
-		shopToNPC[3] = NPCID.Dryad;
-		shopToNPC[4] = NPCID.Demolitionist;
-		shopToNPC[5] = NPCID.Clothier;
-		shopToNPC[6] = NPCID.GoblinTinkerer;
-		shopToNPC[7] = NPCID.Wizard;
-		shopToNPC[8] = NPCID.Mechanic;
-		shopToNPC[9] = NPCID.SantaClaus;
-		shopToNPC[10] = NPCID.Truffle;
-		shopToNPC[11] = NPCID.Steampunker;
-		shopToNPC[12] = NPCID.DyeTrader;
-		shopToNPC[13] = NPCID.PartyGirl;
-		shopToNPC[14] = NPCID.Cyborg;
-		shopToNPC[15] = NPCID.Painter;
-		shopToNPC[16] = NPCID.WitchDoctor;
-		shopToNPC[17] = NPCID.Pirate;
-		shopToNPC[18] = NPCID.Stylist;
-		shopToNPC[19] = NPCID.TravellingMerchant;
-		shopToNPC[20] = NPCID.SkeletonMerchant;
-		shopToNPC[21] = NPCID.DD2Bartender;
-		shopToNPC[22] = NPCID.Golfer;
-		shopToNPC[23] = NPCID.BestiaryGirl;
-		shopToNPC[24] = NPCID.Princess;
 	}
 
 	internal static int ReserveNPCID()
@@ -1139,17 +1111,14 @@ public static class NPCLoader
 
 	public static void SetChatButtons(ref string button, ref string button2)
 	{
-		if (Main.player[Main.myPlayer].talkNPC >= 0) {
-			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			npc.ModNPC?.SetChatButtons(ref button, ref button2);
-		}
+		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
 	}
 
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
 
 	public static bool PreChatButtonClicked(bool firstButton)
 	{
-		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+		NPC npc = Main.LocalPlayer.TalkNPC;
 
 		bool result = true;
 		foreach (GlobalNPC g in HookPreChatButtonClicked.Enumerate(npc.globalNPCs)) {
@@ -1169,18 +1138,20 @@ public static class NPCLoader
 
 	public static void OnChatButtonClicked(bool firstButton)
 	{
-		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
-		bool shop = false;
+		NPC npc = Main.LocalPlayer.TalkNPC;
+		string shopName = null;
 
 		if (npc.ModNPC != null) {
-			npc.ModNPC.OnChatButtonClicked(firstButton, ref shop);
+			npc.ModNPC.OnChatButtonClicked(firstButton, ref shopName);
 			SoundEngine.PlaySound(SoundID.MenuTick);
 
-			if (shop) {
+			if (shopName != null) {
+				// Copied from Main.OpenShop
 				Main.playerInventory = true;
+				Main.stackSplit = 9999;
 				Main.npcChatText = "";
-				Main.npcShop = Main.MaxShopIDs - 1;
-				Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+				Main.SetNPCShopIndex(1);
+				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
 			}
 		}
 
@@ -1189,19 +1160,28 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
-	private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
+	public static void AddShops(int type) {
+		GetNPC(type)?.AddShops();
+	}
 
-	public static void SetupShop(int type, Chest shop, ref int nextSlot)
+	private delegate void DelegateModifyShop(NPCShop shop);
+	private static HookList HookModifyShop = AddHook<DelegateModifyShop>(g => g.ModifyShop);
+
+	public static void ModifyShop(NPCShop shop)
 	{
-		if (type < shopToNPC.Length) {
-			type = shopToNPC[type];
+		foreach (GlobalNPC g in HookModifyShop.Enumerate(globalNPCs)) {
+			g.ModifyShop(shop);
 		}
-		else {
-			GetNPC(type)?.SetupShop(shop, ref nextSlot);
-		}
-		foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
-			g.SetupShop(type, shop, ref nextSlot);
+	}
+
+	private delegate void DelegateModifyActiveShop(NPC npc, string shopName, Item[] items);
+	private static HookList HookModifyActiveShop = AddHook<DelegateModifyActiveShop>(g => g.ModifyActiveShop);
+
+	public static void ModifyActiveShop(NPC npc, string shopName, Item[] shopContents)
+	{
+		GetNPC(npc.type)?.ModifyActiveShop(shopName, shopContents);
+		foreach (GlobalNPC g in HookModifyActiveShop.Enumerate(globalNPCs)) {
+			g.ModifyActiveShop(npc, shopName, shopContents);
 		}
 	}
 

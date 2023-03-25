@@ -113,7 +113,7 @@ public static class RecipeLoader
 
 					before.Add(r);
 					break;
-				case (var target, true): // sortBefore
+				case (var target, true): // sortAfter
 					if (!sortAfter.TryGetValue(target, out var after))
 						after = sortAfter[target] = new();
 

@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,6 +35,8 @@ public class GlobalNPCTest : GlobalNPC
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
 	{
 	}
+
+	public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) { /* Empty */ }
 
 	public override void HitEffect(NPC npc, NPC.HitInfo hit) { }
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) { }

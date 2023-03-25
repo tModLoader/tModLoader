@@ -989,7 +989,13 @@ Mods: {
 
 		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
 		ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
-		Conditions.LowHealth: When the player is below half HP
+
+		Conditions: {
+			LowHealth: When the player is below half HP
+			PlayerHasLifeforceBuff: When the player has the Lifeforce buff
+			InExampleBiome: In the Example biome
+			NotSellingExampleItem: When not selling Example Item
+		}
 
 		DropConditions: {
 			ExampleSoul: Drops in the Example Underground biome in hardmode

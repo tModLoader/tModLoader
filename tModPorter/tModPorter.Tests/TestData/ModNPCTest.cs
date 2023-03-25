@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -46,6 +46,9 @@ public class ModNPCTest : ModNPC
 	public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
 	{
 	}
+
+	public override void OnChatButtonClicked(bool firstButton, ref bool shop) { /* Empty */ }
+	public override void SetupShop(Chest shop, ref int nextSlot) { }
 
 	public override void HitEffect(int hitDirection, double damage) { }
 	public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit) { }

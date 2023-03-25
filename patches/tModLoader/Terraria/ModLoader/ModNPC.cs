@@ -695,20 +695,30 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this NPC's shop.
 	/// </summary>
 	/// <param name="firstButton"></param>
-	/// <param name="shop"></param>
-	public virtual void OnChatButtonClicked(bool firstButton, ref bool shop)
+	/// <param name="shopName"></param>
+	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
+	/// Allows you to add shops to this NPC, similar to adding recipes for items. <br/>
+	/// Make a new <see cref="NPCShop"/>, and items to it, and call <see cref="AbstractNPCShop.Register"/>
 	/// </summary>
-	/// <param name="shop"></param>
-	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(Chest shop, ref int nextSlot)
+	public virtual void AddShops()
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
+	/// To create a shop, use <see cref="AddShops"/> <br/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// </summary>
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
+	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
+	public virtual void ModifyActiveShop(string shopName, Item[] items)
 	{
 	}
 

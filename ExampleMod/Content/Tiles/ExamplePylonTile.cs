@@ -1,4 +1,5 @@
-﻿using ExampleMod.Common.Systems;
+﻿using ExampleMod.Common;
+using ExampleMod.Common.Systems;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.TileEntities;
@@ -68,14 +69,18 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(Color.White, pylonName);
 		}
 
-		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
-			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances, granted that the NPC
-			// is in the Example Surface/Underground Biome.
-			return ModContent.GetInstance<ExampleSurfaceBiome>().IsBiomeActive(player) || ModContent.GetInstance<ExampleUndergroundBiome>().IsBiomeActive(player)
-				? ModContent.ItemType<ExamplePylonItem>()
-				: null;
-		}
+		public override NPCShop.Entry GetNPCShopEntry() {
+			// return a new NPCShop.Entry with the desired conditions for sale.
 
+			// As an example, if we want to sell the pylon if we're in the example surface, or example underground, when there is another NPC nearby.
+			// Lets assume we don't care about happiness or crimson or corruption, so we won't include those conditions
+			// This does not affect the teleport conditions, only the sale conditions
+			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItem>(), Condition.AnotherTownNPCNearby, ExampleConditions.InExampleBiome);
+
+			// Other standard pylon conditions are:
+			// Condition.HappyEnoughToSellPylons
+			// Condition.NotInEvilBiome
+		}
 
 		public override void MouseOver(int i, int j) {
 			// Show a little pylon icon on the mouse indicating we are hovering over it.

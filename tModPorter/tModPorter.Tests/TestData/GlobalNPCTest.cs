@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +27,8 @@ public class GlobalNPCTest : GlobalNPC
 	public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
 	{
 	}
+
+	public override void SetupShop(int type, Chest shop, ref int nextSlot) { /* Empty */ }
 
 	public override void HitEffect(NPC npc, int hitDirection, double damage) { }
 	public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit) { }

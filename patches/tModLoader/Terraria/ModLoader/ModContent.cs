@@ -340,7 +340,9 @@ public static class ModContent
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
+		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
+		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();

@@ -160,15 +160,16 @@ namespace ExampleMod.Content.NPCs
 			button = Language.GetTextValue("LegacyInterface.28"); //This is the key to the word "Shop"
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
-				shop = true;
+				shop = "Shop";
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot) {
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleItem>());
-			nextSlot++;
+		public override void AddShops() {
+			new NPCShop(Type)
+				.Add<ExampleItem>()
+				.Register();
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {

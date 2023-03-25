@@ -400,6 +400,15 @@
  	public static int myPlayer;
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
+@@ -1045,7 +_,7 @@
+ 	public static bool npcChatFocus4;
+ 	public static int oldNPCShop;
+ 	public static int npcChatCornerItem;
+-	public Chest[] shop = new Chest[100];
++	public Chest[] shop = new Chest[2]; // technically only need a single Chest for the shop, but npcShop 0 is used for 'no shop' and we don't want to patch 20 places
+ 	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
+ 	public static int[] travelShop = new int[40];
+ 	public static List<string> anglerWhoFinishedToday = new List<string>();
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -1283,6 +1292,25 @@
  		ClientInitialize();
  		base.Initialize();
  	}
+@@ -5239,11 +_,18 @@
+ 		}
+ 
+ 		shop[0] = new Chest();
++		shop[1] = new Chest(); // Added by tML, only 1 shop actually needed
+ 		Chest.SetupTravelShop();
++		/*
+ 		for (int m = 1; m < 100; m++) {
+ 			shop[m] = new Chest();
++
++			if (m >= NPCLoader.shopToNPC.Length)
++				continue;
++
+ 			shop[m].SetupShop(m);
+ 		}
++		*/
+ 
+ 		teamColor[0] = Microsoft.Xna.Framework.Color.White;
+ 		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -1958,11 +1986,12 @@
  				syncedAnyInventoryContents = true;
  				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
  			}
-@@ -14156,6 +_,9 @@
+@@ -14156,6 +_,10 @@
  	{
  		UpdateParticleSystems();
  		tileSolid[379] = false;
 +
++		NPCShopDatabase.Test();
 +		SystemLoader.PreUpdatePlayers();
 +
  		int num = 0;
@@ -3746,8 +3775,8 @@
  				num16 = 1;
  
 +			reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
-+			PlayerLoader.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num16);
++			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
++			PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref num16);
 +
  			if (num16 < 0)
  				num16 = 0;
@@ -3832,7 +3861,7 @@
  						}
 +
 +						SkipDebuffRemoval:
-+						PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num5);
++						PlayerLoader.PostNurseHeal(LocalPlayer, LocalPlayer.TalkNPC, health, removeDebuffs, num5);
  					}
  					else {
  						int num26 = rand.Next(3);
@@ -3848,6 +3877,18 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
+@@ -32405,8 +_,9 @@
+ 		playerInventory = true;
+ 		stackSplit = 9999;
+ 		npcChatText = "";
+-		SetNPCShopIndex(shopIndex);
++		SetNPCShopIndex(1);
+-		shop[npcShop].SetupShop(npcShop);
++		shop[npcShop].SetupShop(shopIndex);
++		
+ 		SoundEngine.PlaySound(12);
+ 	}
+ 
 @@ -32451,8 +_,12 @@
  			npcChatFocus2 = false;
  		}
