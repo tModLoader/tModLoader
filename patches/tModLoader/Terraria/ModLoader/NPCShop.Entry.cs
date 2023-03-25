@@ -6,12 +6,12 @@ namespace Terraria.ModLoader;
 
 public sealed partial class NPCShop
 {
-	public sealed class Entry : IShopEntry
+	public new sealed class Entry : AbstractNPCShop.Entry
 	{
-		public Item Item { get; private init; }
+		public Item Item { get; }
 
 		private readonly List<Condition> conditions;
-		public IReadOnlyList<Condition> Conditions => conditions;
+		public IEnumerable<Condition> Conditions => conditions;
 
 		private Action<Item, NPC> shopOpenedHooks;
 

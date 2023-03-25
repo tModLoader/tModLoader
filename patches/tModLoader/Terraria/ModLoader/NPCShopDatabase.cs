@@ -1134,11 +1134,11 @@ public static partial class NPCShopDatabase
 
 public class TravellingMerchantShop : AbstractNPCShop
 {
-	private record Entry(Item Item, IReadOnlyList<Condition> Conditions) : IShopEntry { }
+	private new record Entry(Item Item, IEnumerable<Condition> Conditions) : AbstractNPCShop.Entry { }
 
 	private List<Entry> _entries = new();
 
-	public override IEnumerable<IShopEntry> ActiveEntries => _entries;
+	public override IEnumerable<AbstractNPCShop.Entry> ActiveEntries => _entries;
 
 	public TravellingMerchantShop(int npcType) : base(npcType) { }
 

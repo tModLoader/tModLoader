@@ -11,11 +11,11 @@ public static partial class NPCShopDatabase
 
 	private class ConditionTest
 	{
-		public IReadOnlyList<Condition> Conditions;
+		public IEnumerable<Condition> Conditions;
 		public string Name;
 		public bool Tested;
 
-		public ConditionTest(IReadOnlyList<Condition> conditions)
+		public ConditionTest(IEnumerable<Condition> conditions)
 		{
 			Conditions = conditions.OrderBy(c => c.Description.Value).ToList();
 			Name = string.Join(" && ", conditions.Select(c => c.Description));

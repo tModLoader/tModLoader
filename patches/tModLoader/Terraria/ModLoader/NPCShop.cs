@@ -7,17 +7,17 @@ namespace Terraria.ModLoader;
 
 public abstract class AbstractNPCShop
 {
-	public interface IShopEntry
+	public interface Entry
 	{
 		public Item Item { get; }
-		public IReadOnlyList<Condition> Conditions {  get; }
+		public IEnumerable<Condition> Conditions { get; }
 	}
 
 	public int NpcType { get; private init; }
 	public string Name { get; private init; }
 	public string FullName => NPCShopDatabase.GetShopName(NpcType, Name);
 
-	public abstract IEnumerable<IShopEntry> ActiveEntries { get; }
+	public abstract IEnumerable<Entry> ActiveEntries { get; }
 
 	public AbstractNPCShop(int npcType, string name = "Shop")
 	{
