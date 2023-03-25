@@ -74,8 +74,8 @@ namespace ExampleMod.Content.NPCs
 				.Add<ExampleBugNet>()
 				.Add<ExamplePickaxe>();
 
-			// Bring 3 Weapons
-			Shop.AddPool("Weapons", slots: 3)
+			// Bring 4 Weapons
+			Shop.AddPool("Weapons", slots: 4)
 				.Add<ExampleSword>()
 				.Add<ExampleShortsword>()
 				.Add<ExampleShootingSword>()
@@ -91,7 +91,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<ExampleWhipAdvanced>(Condition.Hardmode)
 				.Add<ExampleYoyo>();
 
-			// Bring 2 Furniture
+			// Bring 3 Furniture
 			Shop.AddPool("Furniture", slots: 3)
 				.Add<ExampleLamp>()
 				.Add<ExampleBed>()
@@ -325,18 +325,6 @@ namespace ExampleMod.Content.NPCs
 		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
 				shop = Shop.Name; // Opens the shop
-			}
-		}
-
-		public override void ModifyActiveShop(string shopName, Item[] items) {
-			int i = 0;
-			foreach (var shopItem in shopItems) {
-				// We don't want "empty" items and unloaded items to appear
-				if (shopItem == null || shopItem.type == ItemID.None)
-					continue;
-
-				items[i] = shopItem;
-				i++;
 			}
 		}
 
