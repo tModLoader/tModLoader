@@ -2334,20 +2334,18 @@
  						prioritizedTownNPCType = Main.npc[i].type;
  						break;
  					}
-@@ -52141,7 +_,12 @@
+@@ -52141,7 +_,10 @@
  		if (Main.dayTime && !Main.remixWorld)
  			return;
  
-+		_timePass += Main.desiredWorldEventsUpdateRate;
-+
 +		/*
  		for (int m = 0; m < Main.dayRate; m++) {
 +		*/
-+		for (int m = 1; m <= (int)_timePass; m++) {
++		for (int m = 1; m <= Main.worldEventUpdates	; m++) {
  			double num7 = (double)Main.maxTilesX / 4200.0;
  			num7 *= (double)Star.starfallBoost;
  			if (!((double)Main.rand.Next(8000) < 10.0 * num7))
-@@ -52170,14 +_,25 @@
+@@ -52170,14 +_,23 @@
  				num16 = (float)num8 / num16;
  				num14 *= num16;
  				num15 *= num16;
@@ -2362,8 +2360,6 @@
 +				// Extra patch context.
  			}
  		}
-+
-+		_timePass %= 1.0;
  	}
  
 +	//TML: Changed return value from 'int' to 'double'.
