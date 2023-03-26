@@ -14,9 +14,6 @@
 ## Main
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
 
-## ItemSlot
-- Should we have a creation context for shop purchasing too? Perhaps that could replace `PostBuyItem`?
-
 ## Player
 - `dropItemCheck` patches should use the `Item` overload of `NewItem`. Need to check for loss of modded data in multiplayer? OnSpawn hooks will have the wrong item instance.
 - Reapply patch for `sItem.useStyle == 13` and `sItem.useStyle == 5`? Do we still want this now that `NetMessage.SendData(13` is sent as well?

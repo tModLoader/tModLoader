@@ -566,9 +566,16 @@
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
  
-@@ -1397,22 +_,35 @@
+@@ -1396,23 +_,40 @@
+ 					SoundEngine.PlaySound(7);
  			}
  
++			// Changed for parity with the Recipe item creation process
++			Item boughtItem = inv[slot].Clone();
++			boughtItem.buyOnce = false;
++			boughtItem.stack = 1;
++			boughtItem.OnCreated(new BuyItemCreationContext(Main.mouseItem, localPlayer.TalkNPC, localPlayer));
++
  			if (Main.mouseItem.type == 0) {
 +				/*
  				Main.mouseItem.netDefaults(inv[slot].netID);
@@ -577,9 +584,7 @@
  
  				Main.mouseItem.stack = 0;
 +				*/
-+				Main.mouseItem = inv[slot].Clone();
-+				Main.mouseItem.buyOnce = false;
-+				Main.mouseItem.stack = 1;
++				Main.mouseItem = boughtItem;
 +			}
 +			else {
 +				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: true, 1);
