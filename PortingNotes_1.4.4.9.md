@@ -10,7 +10,6 @@
 	//width &= 0x7FFFFFFE;
 	//height &= 0x7FFFFFFE;
 	```
-	
 ## Main
 - Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
 
