@@ -37,9 +37,6 @@
 - `ModWaterStyle` now requires an additional texture, `_Slope`. See `ExampleWaterStyle` for details.
 - Reforging is now implemented via `Item.ResetPrefix`. This sets `prefix` to 0 and then refreshes the item. Make sure any custom fields set by custom prefixes are not serialized independently.
 
-## WorldGen.cs:
-- Revert some of the public field changes. A lot of them aren't meant to be public and were just blanket changed in the past. We have WorldGenVars now
-
 ## MysticLogFairies, SandStorm, SkyManager, WorldGen, Main and Deerclops AI
 - Could benefit from a Main variable which counts number of full ticks of dayRate which have progressed this tick.
 - No need for _timePass variables

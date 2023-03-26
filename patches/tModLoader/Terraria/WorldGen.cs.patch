@@ -17,67 +17,6 @@
  {
  	public static class WorldSize
  	{
-@@ -810,13 +_,15 @@
- 	public static bool worldCleared;
- 	public static bool worldBackup;
- 	public static bool loadBackup = false;
-+	// Made public: [[
--	private static int lastMaxTilesX;
-+	public static int lastMaxTilesX;
--	private static int lastMaxTilesY;
-+	public static int lastMaxTilesY;
--	private static bool mergeUp;
-+	public static bool mergeUp;
--	private static bool mergeDown;
-+	public static bool mergeDown;
--	private static bool mergeLeft;
-+	public static bool mergeLeft;
--	private static bool mergeRight;
-+	public static bool mergeRight;
--	private static bool stopDrops;
-+	public static bool stopDrops;
-+	// ]]
- 	public static bool noLiquidCheck;
- 	public static bool AllowedToSpreadInfections = true;
- 	[ThreadStatic]
-@@ -866,8 +_,10 @@
- 	public static readonly int cactusWaterHeight = 25;
- 	public static readonly int cactusWaterLimit = 25;
- 	public static MysticLogFairiesEvent mysticLogsEvent = new MysticLogFairiesEvent();
-+	// Made public: [[
--	private static bool currentlyTryingToUseAlternateHousingSpot;
-+	public static bool currentlyTryingToUseAlternateHousingSpot;
--	private static int sharedRoomX;
-+	public static int sharedRoomX;
-+	// ]]
- 	public static TownNPCRoomCheckFailureReason roomCheckFailureReason = TownNPCRoomCheckFailureReason.None;
- 	public const int WorldSizeSmallX = 4200;
- 	public const int WorldSizeSmallY = 1200;
-@@ -877,14 +_,16 @@
- 	public const int WorldSizeLargeY = 2400;
- 	public const int InfectionAndGrassSpreadOuterWorldBuffer = 10;
- 	public static bool generatingWorld = false;
-+	// Made public: [[
--	private static int[,] trapDiag = new int[4, 2];
-+	public static int[,] trapDiag = new int[4, 2];
--	private static bool[] gem = new bool[6];
-+	public static bool[] gem = new bool[6];
--	private static int[] mossType = new int[3];
-+	public static int[] mossType = new int[3];
--	private static ushort neonMossType;
-+	public static ushort neonMossType;
--	private static int tileCounterNum;
-+	public static int tileCounterNum;
--	private static int tileCounterMax = 20;
-+	public static int tileCounterMax = 20;
--	private static int[] tileCounterX = new int[tileCounterMax];
-+	public static int[] tileCounterX = new int[tileCounterMax];
--	private static int[] tileCounterY = new int[tileCounterMax];
-+	public static int[] tileCounterY = new int[tileCounterMax];
-+	// ]]
- 	private static WorldGenerator _generator;
- 	public static int SmallConsecutivesFound = 0;
- 	public static int SmallConsecutivesEliminated = 0;
 @@ -1284,7 +_,7 @@
  			}
  		}
