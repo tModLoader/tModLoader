@@ -12,11 +12,11 @@ namespace ExampleMod.Content.Items
 	public class ExampleOnBuyItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.CloneDefaults(ItemID.Bomb);
-
-			// We don't want this item to actually act like a vanilla bomb.
-			Item.shoot = ProjectileID.None;
-			Item.shootSpeed = 0f;
+			Item.width = 16;
+			Item.height = 16;
+			Item.rare = ItemRarityID.Blue;
+			Item.value = Item.buyPrice(silver: 1, copper: 50);
+			Item.maxStack = 9999;
 		}
 
 		// Note that alternatively, you can use the ModPlayer.PostBuyItem hook to achieve the same functionality!
