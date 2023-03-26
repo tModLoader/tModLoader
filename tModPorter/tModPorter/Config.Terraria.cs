@@ -96,6 +96,27 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"armorPenetration",	DamageModifier("Generic",	"GetArmorPenetration"));
 		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
 
+		RefactorInstanceMember("Terraria.ID.MessageID", "ClientHello",                  Removed("Use MessageID.Hello instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "LoadPlayer",                   Removed("Use MessageID.PlayerInfo instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "RequestWorldInfo",             Removed("Use MessageID.RequestWorldData instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "RequestTileData",              Removed("Use MessageID.SpawnTileData instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "StatusText",                   Removed("Use MessageID.StatusTextSize instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "FrameSection",                 Removed("Use MessageID.TileFrameSection instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "SpawnPlayer",                  Removed("Use MessageID.PlayerSpawn instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "PlayerHealth",                 Removed("Use MessageID.PlayerLifeMana instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "TileChange",                   Removed("Use MessageID.TileManipulation instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "MenuSunMoon",                  Removed("Use MessageID.SetTime instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "ChangeDoor",                   Removed("Use MessageID.ToggleDoorState instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "UnusedStrikeNPC",              Removed("Use MessageID.UnusedMeleeStrike instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "StrikeNPC",                    Removed("Use MessageID.DamageNPC instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "PlayerPVP",                    Removed("Use MessageID.TogglePVP instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "HealEffect",                   Removed("Use MessageID.PlayerHeal instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "PlayerZone",                   Removed("Use MessageID.SyncPlayerZone instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "ResetItemOwner",               Removed("Use MessageID.ReleaseItemOwnership instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "PlayerTalkingNPC",             Removed("Use MessageID.SyncTalkNPC instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "ItemAnimation",                Removed("Use MessageID.ShotAnimationAndSound instead"));
+		RefactorInstanceMember("Terraria.ID.MessageID", "MurderSomeoneElsesProjectile", Removed("Use MessageID.MurderSomeoneElsesPortal instead"));
+
 		RefactorInstanceMethodCall("Terraria.Player", "VanillaUpdateEquip",	Removed("Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots)"));
 
 		RefactorInstanceMember("Terraria.Main", "fastForwardTime", Removed("Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk"));
