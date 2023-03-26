@@ -286,18 +286,25 @@ public partial class WorkshopHelper
 			/////// Queries ////////////////////
 
 			/// <summary>
-			/// For direct information gathering of a particular mod/workshop item
+			/// For direct information gathering of particular mod/workshop items
 			/// </summary>
 			internal ModDownloadItem[] FastQueryItems()
 			{
-				TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(queryParameters.searchModIds));
-
+				var numPages = Math.Ceiling((float)(queryParameters.searchModIds.Length / Constants.kNumUGCResultsPerPage));
 				var items = new ModDownloadItem[queryParameters.searchModIds.Length];
-				for (int i = 0; i < queryParameters.searchModIds.Length; i++) {
-					items[i] = GenerateModDownloadItemFromQuery((uint)i);
+
+				for (int i = 0; i < numPages; i++) {
+					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) - 1));
+
+					TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(pageIds.ToArray()));
+
+					for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
+						items[j] = GenerateModDownloadItemFromQuery((uint)j);
+					}
+
+					ReleaseWorkshopQuery();
 				}
 				
-				ReleaseWorkshopQuery();
 				return items;
 			}
 

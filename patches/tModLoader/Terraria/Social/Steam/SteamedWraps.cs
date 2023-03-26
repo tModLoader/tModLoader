@@ -77,6 +77,14 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 		InstalledItems = null;
 	}
+
+	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
+	{
+		if (queryParams.searchModIds == null)
+			return null; // Should only be called if the above is filled in.
+
+		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).FastQueryItems();
+	}
 }
 
 
@@ -278,8 +286,6 @@ public static class SteamedWraps
 		};
 	}
 
-	//TODO: Needs more refactor.
-	//TODO: Sorting, filters, author
 	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {

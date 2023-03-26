@@ -26,6 +26,8 @@ public interface SocialBrowserModule
 	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
 #pragma warning restore CS8424
 
+	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams);
+
 	/////// Display of Browser Items ///////////////////////////////////////////
 
 	public string GetModWebPage(string modId);

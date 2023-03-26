@@ -171,22 +171,6 @@ internal static class ModOrganizer
 		return missingModSlugs;
 	}
 
-	internal static string ListDependenciesToDownload(List<ulong> deps)
-	{
-		if (deps.Count == 0) return null;
-
-		var message = new StringBuilder();
-
-		message.Append(Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods"));
-		foreach (ulong dep in deps) {
-			// TODO: No way to really show the internal name, just display name. How to fix? Does it *need* fixing?
-			/*var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
-			message.Append($"\n  {details.m_rgchTitle}"); */
-		}
-
-		return message.ToString();
-	}
-
 	/// <summary>
 	/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
 	/// </summary>

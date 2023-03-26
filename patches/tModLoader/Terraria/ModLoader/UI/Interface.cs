@@ -167,25 +167,30 @@ internal static class Interface
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
 				// Find dependencies that need to be downloaded.
-				var deps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
-				/*
-				bool promptDepDownloads = deps.Count != 0;
+				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
+				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
-                string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
-                string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+                string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}\n{string.Concat(missingDeps)}".Trim('\n');
+
                 string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
                 string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
-                Action downloadAction = () => {
-                if (promptDepDownloads) {
-					//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
-					modBrowser.SocialBackend.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
-				}
+
+				Action downloadAction = () => {
+					if (promptDepDownloads) {
+						foreach (var slug in missingDeps) {
+							var item = WorkshopHelper.GetModDownloadItem(slug);
+							if (item == null) {
+								Utils.LogAndConsoleInfoMessage($"Could not find required mod dependency on Workshop: {slug}");
+								continue;
+							}
+
+							item.InnerDownloadWithDeps();
+						}
+					}
                 };
 
                 if (!string.IsNullOrWhiteSpace(message))
-                infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
-				*/
+					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 			}
 		}
 		if (Main.menuMode == modsMenuID) {
