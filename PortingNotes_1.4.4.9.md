@@ -48,4 +48,4 @@
 - Not visiting into switch case blocks properly? See `ItemSlot.LeftClick`
 
 ## ChildSafety
-- Factories, do they need support for modded ids?
+- Factories, do they need support for modded ids? (Should be made into issue - Mutant)
