@@ -54,8 +54,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition InGemCave =			new("Conditions.InGemCave",				() => Main.LocalPlayer.ZoneGemCave);
 	public static readonly Condition InLihzhardTemple =		new("Conditions.InLihzardTemple",		() => Main.LocalPlayer.ZoneLihzhardTemple);
 	public static readonly Condition InGraveyard =			new("Conditions.InGraveyard",			() => Main.LocalPlayer.ZoneGraveyard);
+	public static readonly Condition InAether =				new("Conditions.InAether",				() => Main.LocalPlayer.ZoneShimmer);
 
 	public static readonly Condition InShoppingZoneForest = new("Conditions.InShoppingForest",		() => Main.LocalPlayer.ShoppingZone_Forest);
+	public static readonly Condition InBelowSurface =		new("Conditions.InBelowSurface",		() => Main.LocalPlayer.ShoppingZone_BelowSurface);
 	public static readonly Condition InEvilBiome =			new("Conditions.InEvilBiome",			() => Main.LocalPlayer.ZoneCrimson || Main.LocalPlayer.ZoneCorrupt);
 
 	public static readonly Condition NotInEvilBiome =		new("Conditions.NotInEvilBiome",		() => !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt);
@@ -120,6 +122,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedTwins =				new("Conditions.DownedTwins",				() => NPC.downedMechBoss2);
 	public static readonly Condition DownedDestroyer =			new("Conditions.DownedDestroyer",			() => NPC.downedMechBoss1);
 	public static readonly Condition DownedSkeletronPrime =		new("Conditions.DownedSkeletronPrime",		() => NPC.downedMechBoss3);
+	public static readonly Condition DownedMechBossAll =		new("Conditions.DownedMechBossAll",			() => NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3);
 	public static readonly Condition DownedPlantera =			new("Conditions.DownedPlantera",			() => NPC.downedPlantBoss);
 	public static readonly Condition DownedEmpressOfLight =		new("Conditions.DownedEmpressOfLight",		() => NPC.downedEmpressOfLight);
 	public static readonly Condition DownedDukeFishron =		new("Conditions.DownedDukeFishron",			() => NPC.downedFishron);
