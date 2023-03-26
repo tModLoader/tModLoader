@@ -182,8 +182,12 @@ public static class SteamedWraps
 		return deps;
 	}
 
-	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle)
+	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
+		FilterByText(ref qHandle, qP.searchGeneric);
+		FilterByTags(ref qHandle, qP.searchTags);
+		FilterModSide(ref qHandle, qP.modSideFilter);
+
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
@@ -202,22 +206,12 @@ public static class SteamedWraps
 		}
 	}
 
-	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	private static void FilterModSide(ref UGCQueryHandle_t qHandle, ModSideFilter side)
 	{
-		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
+		if (side == ModSideFilter.All)
+			return;
 
-		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle);
-			return SteamUGC.SendQueryUGCRequest(qHandle);
-		}
-		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle);
-			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-		}
-
-		return new();
+		FilterByTags(ref qHandle, new string[] { side.ToFriendlyString() });
 	}
 
 	private static void FilterByTags(ref UGCQueryHandle_t qHandle, string[] tags)
@@ -256,26 +250,50 @@ public static class SteamedWraps
 			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
 
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	{
+		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
+
+		if (SteamClient) {
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			return SteamUGC.SendQueryUGCRequest(qHandle);
+		}
+		else if (SteamAvailable) {
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
+		}
+
+		return new();
+	}
+
+	public static EUGCQuery CalculateQuerySort(ModBrowserSortMode reqSorting)
+	{
+		return (reqSorting) switch {
+			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
+			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
+			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
+			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch
+		};
+	}
+
 	//TODO: Needs more refactor.
 	//TODO: Sorting, filters, author
 	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP.sortingParamater), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 
-			ModifyQueryHandle(ref qHandle);
-			FilterByText(ref qHandle, qP.searchGeneric);
-			FilterByTags(ref qHandle, qP.searchTags);
+			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP.sortingParamater), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 
-			ModifyQueryHandle(ref qHandle);
-			FilterByText(ref qHandle, qP.searchGeneric);
-			FilterByTags(ref qHandle, qP.searchTags);
+			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);

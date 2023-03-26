@@ -259,7 +259,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		_browserStatus.SetCurrentState(newState);
 		_rootElement.RemoveChild(_updateAllButton);
 		if (newState.IsFinished()) {
-			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
+			_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));
 
 			_items.Clear();
 			_items.AddRange(_provider.GetData(false));
@@ -282,7 +282,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
 
-		SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser")); // @TODO: WHAT IS DOING THIS HERE???
+		SetHeading(Language.GetText("tModLoader.MenuModBrowser")); // @TODO: WHAT IS DOING THIS HERE???
 
 		// Remove old data
 		ModList.Clear();
@@ -292,7 +292,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			_provider?.RewrapUI();
 			//ModList.ForceUpdateData(); // Not needed
 		} else {
-			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
+			_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
 			QueryParameters qparams = FilterParameters;
 			// @TODO: Populate qparams
 			_provider = new AP_UIModDowloadItem(SocialBackend, qparams);

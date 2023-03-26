@@ -51,7 +51,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (BuildInfo.IsDev) {
+		if (!BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -88,7 +88,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string description = buildData["description"];
+		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
 		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
 			return false;
@@ -247,7 +247,7 @@ public partial class WorkshopSocialModule
 			workshopDesc = File.ReadAllText(workshopDescFile);
 
 		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]" +
+		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
 			$"{workshopDesc}";
 
 
