@@ -167,23 +167,25 @@ internal static class Interface
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
 				// Find dependencies that need to be downloaded.
-				var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
+				var deps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
+				/*
 				bool promptDepDownloads = deps.Count != 0;
 
 				string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
-                    string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
-                    string message = $"{newDownloads}\n{dependencies}".Trim('\n');
-                    string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-                    string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
-                    Action downloadAction = () => {
-                    if (promptDepDownloads) {
-						//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
-						modBrowser.SocialBackend.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
-					}
-                    };
+                string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
+                string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+                string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+                string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+                Action downloadAction = () => {
+                if (promptDepDownloads) {
+					//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
+					modBrowser.SocialBackend.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
+				}
+                };
 
-                    if (!string.IsNullOrWhiteSpace(message))
-                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+                if (!string.IsNullOrWhiteSpace(message))
+                infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				*/
 			}
 		}
 		if (Main.menuMode == modsMenuID) {

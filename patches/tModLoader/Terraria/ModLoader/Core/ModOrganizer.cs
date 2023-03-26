@@ -151,35 +151,24 @@ internal static class ModOrganizer
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
 	}
 
-	//TODO: Need to clean this up after all changes made
-	internal static IEnumerable<ulong> IdentifyWorkshopDependencies()
+	internal static HashSet<string> IdentifyMissingWorkshopDependencies()
 	{
-		HashSet<ulong> dependencies = new HashSet<ulong>();
+		var mods = FindWorkshopMods();
+		var installedSlugs = mods.Select(s => s.Name).ToArray();
 
-		foreach (LocalMod mod in FindWorkshopMods()) {
-			// Skip if the mod has no dependencies according to the build information.
-			if (mod.properties.modReferences.Length == 0)
-				continue;
+		//TODO: This could be refactored to one single line once tested
+		//Begin
+		HashSet<string> missingModSlugs = new HashSet<string>();
 
-			// This shouldn't really ever fail, but better safe than sorry.
-			if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
-				continue;
+		// This won't look recursively for missing deps. Because any recursive missing deps implies a missing dep elsewhere
+		foreach (var mod in mods.Where(m => m.properties.modReferences.Length > 0)) {
+			var missingDeps = mod.properties.modReferences.Select(dep => dep.mod).Where(slug => !installedSlugs.Contains(slug));
 
-			try {
-				//WorkshopHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
-			}
-			catch (OverflowException e) {
-				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopIrregularDependenciesFailure", mod.DisplayName, e.Message, mod.DisplayName), Interface.loadModsID);
-				Logging.tML.Warn($"Failed to fetch missing dependencies for local mod: {mod.DisplayName}. Irregular dependencies count detected! {e.Message}. Please report this issue to {mod.DisplayName}'s developers!", e);
-			}
-			catch (Exception e) {
-				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopFetchDependenciesFailure", mod.DisplayName), Interface.loadModsID);
-				Logging.tML.Warn($"Failed to fetch missing dependencies for local mod: {mod.DisplayName}. Check your internet connection or download manually from Steam Workshop!!", e);
-			}
+			missingModSlugs.UnionWith(missingDeps);
 		}
+		//End
 
-		// Cull out any dependencies that are already installed.
-		return dependencies.Where(x => !SteamedWraps.IsWorkshopItemInstalled(new Steamworks.PublishedFileId_t(x))).ToList();
+		return missingModSlugs;
 	}
 
 	internal static string ListDependenciesToDownload(List<ulong> deps)
