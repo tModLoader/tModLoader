@@ -101,15 +101,15 @@
  				return false;
  
  			item.favorited = !item.favorited;
-@@ -443,8 +_,9 @@
+@@ -443,8 +_,11 @@
  
  		if (Main.cursorOverride == 7) {
  			if (context == 29) {
--				Item item2 = new Item();
-+				Item /*item2 = new Item();
--				item2.SetDefaults(inv[slot].netID);
-+				item2.SetDefaults(inv[slot].netID);*/
-+				item2 = inv[slot].Clone();
++				/*
+ 				Item item2 = new Item();
+ 				item2.SetDefaults(inv[slot].netID);
++				*/
++				Item item2 = inv[slot].Clone();
  				item2.stack = item2.maxStack;
  				item2.OnCreated(new JourneyDuplicationItemCreationContext());
  				item2 = Main.player[Main.myPlayer].GetItem(Main.myPlayer, item2, GetItemSettings.InventoryEntityToPlayerInventorySettings);
@@ -435,7 +435,7 @@
 +			*/
  			if (context == 29) {
 -				Main.mouseItem.SetDefaults(Main.mouseItem.type);
-+				//Main.mouseItem.SetDefaults(inv[slot].type /* Main.mouseItem.type */);
++				//Main.mouseItem.SetDefaults(Main.mouseItem.type);
 +				Main.mouseItem = inv[slot].Clone();
  				Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  			}
@@ -566,13 +566,14 @@
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
  
-@@ -1396,23 +_,40 @@
+@@ -1396,23 +_,41 @@
  					SoundEngine.PlaySound(7);
  			}
  
 +			// Changed for parity with the Recipe item creation process
 +			Item boughtItem = inv[slot].Clone();
 +			boughtItem.buyOnce = false;
++			boughtItem.isAShopItem = false;
 +			boughtItem.stack = 1;
 +			boughtItem.OnCreated(new BuyItemCreationContext(Main.mouseItem, localPlayer.TalkNPC, localPlayer));
 +
