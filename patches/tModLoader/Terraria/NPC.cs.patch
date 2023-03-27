@@ -2118,7 +2118,7 @@
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
-@@ -72653,15 +_,16 @@
+@@ -72653,20 +_,13 @@
  		justHit = false;
  	}
  
@@ -2128,17 +2128,21 @@
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
 -			if (releaseOwner != 255 || SpawnedFromStatue)
 -				catchableNPCTempImmunityCounter = 0;
-+		if (type >= 0 && Main.npcCatchable[type]) {
-+			if (releaseOwner == 255 || SpawnedFromStatue || catchableNPCTempImmunityCounter < 0)
-+				return;
- 
+-
++		if (type >= 0 && Main.npcCatchable[type] && !(releaseOwner == 255 || SpawnedFromStatue || catchableNPCTempImmunityCounter < 0)) {
  			bool num = friendly;
-+			catchableNPCTempImmunityCounter--;
- 			if (catchableNPCTempImmunityCounter > 0) {
+-			if (catchableNPCTempImmunityCounter > 0) {
 -				catchableNPCTempImmunityCounter--;
- 				friendly = true;
- 			}
- 			else {
+-				friendly = true;
+-			}
+-			else {
+-				friendly = false;
+-			}
++			catchableNPCTempImmunityCounter--;
++			friendly = catchableNPCTempImmunityCounter > 0;
+ 
+ 			if (num != friendly)
+ 				netUpdate = true;
 @@ -72760,6 +_,8 @@
  		}
  	}
