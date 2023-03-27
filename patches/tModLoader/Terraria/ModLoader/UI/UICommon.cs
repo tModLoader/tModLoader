@@ -88,9 +88,13 @@ public static class UICommon
 		Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, vector, color, 0f, Vector2.Zero, Vector2.One);
 	}
 
-	public static void MouseText(string text, bool hoverBackground = false)
+	/// <summary>
+	/// Functions like Main.instance.MouseText, but adds the same background seen in tooltips to the text
+	/// </summary>
+	/// <param name="text"></param>
+	public static void TooltipMouseText(string text)
 	{
-		if (hoverBackground && Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
+		if (Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
 			Item fakeItem = new Item();
 			fakeItem.SetDefaults(0, noMatCheck: true);
 			fakeItem.SetNameOverride(text);

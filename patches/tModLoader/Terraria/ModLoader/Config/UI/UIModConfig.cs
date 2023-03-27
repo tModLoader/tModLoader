@@ -395,7 +395,7 @@ internal class UIModConfig : UIState
 		base.Draw(spriteBatch);
 
 		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.MouseText(Tooltip, true);
+			UICommon.TooltipMouseText(Tooltip);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;

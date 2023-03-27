@@ -78,7 +78,7 @@ internal class UIMemoryBar : UIElement
 		}
 
 		if (drawHover && hoverData != null) {
-			UICommon.MouseText(hoverData.Tooltip, true);
+			UICommon.TooltipMouseText(hoverData.Tooltip);
 		}
 	}
 
