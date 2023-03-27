@@ -54,8 +54,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition InGemCave =			new("Conditions.InGemCave",				() => Main.LocalPlayer.ZoneGemCave);
 	public static readonly Condition InLihzhardTemple =		new("Conditions.InLihzardTemple",		() => Main.LocalPlayer.ZoneLihzhardTemple);
 	public static readonly Condition InGraveyard =			new("Conditions.InGraveyard",			() => Main.LocalPlayer.ZoneGraveyard);
+	public static readonly Condition InAether =				new("Conditions.InAether",				() => Main.LocalPlayer.ZoneShimmer);
 
 	public static readonly Condition InShoppingZoneForest = new("Conditions.InShoppingForest",		() => Main.LocalPlayer.ShoppingZone_Forest);
+	public static readonly Condition InBelowSurface =		new("Conditions.InBelowSurface",		() => Main.LocalPlayer.ShoppingZone_BelowSurface);
 	public static readonly Condition InEvilBiome =			new("Conditions.InEvilBiome",			() => Main.LocalPlayer.ZoneCrimson || Main.LocalPlayer.ZoneCorrupt);
 
 	public static readonly Condition NotInEvilBiome =		new("Conditions.NotInEvilBiome",		() => !Main.LocalPlayer.ZoneCrimson && !Main.LocalPlayer.ZoneCorrupt);
@@ -76,16 +78,20 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	// World Types
 	public static readonly Condition DrunkWorld =				new("Conditions.WorldDrunk",				() => Main.drunkWorld);
 	public static readonly Condition RemixWorld =				new("Conditions.WorldRemix",				() => Main.remixWorld);
+	public static readonly Condition NotTheBeesWorld =			new("Conditions.WorldNotTheBees",			() => Main.notTheBeesWorld);
 	public static readonly Condition ForTheWorthyWorld =		new("Conditions.WorldForTheWorthy",			() => Main.getGoodWorld);
 	public static readonly Condition TenthAnniversaryWorld =	new("Conditions.WorldAnniversary",			() => Main.tenthAnniversaryWorld);
 	public static readonly Condition DontStarveWorld =			new("Conditions.WorldDontStarve",			() => Main.dontStarveWorld);
+	public static readonly Condition NoTrapsWorld =				new("Conditions.WorldNoTraps",				() => Main.noTrapsWorld);
 	public static readonly Condition ZenithWorld =				new("Conditions.WorldZenith",				() => Main.remixWorld && Main.getGoodWorld);
 	
 	public static readonly Condition NotDrunkWorld =			new("Conditions.WorldNotDrunk",				() => !Main.drunkWorld);
 	public static readonly Condition NotRemixWorld =			new("Conditions.WorldNotRemix",				() => !Main.remixWorld);
+	public static readonly Condition NotNotTheBeesWorld =		new("Conditions.WorldNotNotTheBees",		() => !Main.notTheBeesWorld);
 	public static readonly Condition NotForTheWorthy =			new("Conditions.WorldNotForTheWorthy",		() => !Main.getGoodWorld);
 	public static readonly Condition NotTenthAnniversaryWorld =	new("Conditions.WorldNotAnniversary",		() => !Main.tenthAnniversaryWorld);
 	public static readonly Condition NotDontStarveWorld =		new("Conditions.WorldNotDontStarve",		() => !Main.dontStarveWorld);
+	public static readonly Condition NotNoTrapsWorld =			new("Conditions.WorldNotNoTraps",			() => !Main.noTrapsWorld);
 	public static readonly Condition NotZenithWorld =			new("Conditions.WorldNotZenith",			() => !ZenithWorld.IsMet());
 	// Events
 	public static readonly Condition Christmas =				new("Conditions.Christmas",					() => Main.xMas);
@@ -109,18 +115,27 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedBrainOfCthulhu =		new("Conditions.DownedBrainOfCthulhu",		() => NPC.downedBoss2 && WorldGen.crimson);
 	public static readonly Condition DownedQueenBee =			new("Conditions.DownedQueenBee",			() => NPC.downedQueenBee);
 	public static readonly Condition DownedSkeletron =			new("Conditions.DownedSkeletron",			() => NPC.downedBoss3);
+	public static readonly Condition DownedDeerclops =			new("Conditions.DownedDeerclops",			() => NPC.downedDeerclops);
 	public static readonly Condition DownedQueenSlime =			new("Conditions.DownedQueenSlime",			() => NPC.downedQueenSlime);
 	public static readonly Condition DownedEarlygameBoss =		new("Conditions.DownedEarlygameBoss",		() => NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee || Main.hardMode);
 	public static readonly Condition DownedMechBossAny =		new("Conditions.DownedMechBossAny",			() => NPC.downedMechBossAny);
 	public static readonly Condition DownedTwins =				new("Conditions.DownedTwins",				() => NPC.downedMechBoss2);
 	public static readonly Condition DownedDestroyer =			new("Conditions.DownedDestroyer",			() => NPC.downedMechBoss1);
 	public static readonly Condition DownedSkeletronPrime =		new("Conditions.DownedSkeletronPrime",		() => NPC.downedMechBoss3);
+	public static readonly Condition DownedMechBossAll =		new("Conditions.DownedMechBossAll",			() => NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3);
 	public static readonly Condition DownedPlantera =			new("Conditions.DownedPlantera",			() => NPC.downedPlantBoss);
 	public static readonly Condition DownedEmpressOfLight =		new("Conditions.DownedEmpressOfLight",		() => NPC.downedEmpressOfLight);
+	public static readonly Condition DownedDukeFishron =		new("Conditions.DownedDukeFishron",			() => NPC.downedFishron);
 	public static readonly Condition DownedGolem =				new("Conditions.DownedGolem",				() => NPC.downedGolemBoss);
+	public static readonly Condition DownedMourningWood =		new("Conditions.DownedMourningWood",		() => NPC.downedHalloweenTree);
+	public static readonly Condition DownedPumpking =			new("Conditions.DownedPumpking",			() => NPC.downedHalloweenKing);
+	public static readonly Condition DownedEverscream =			new("Conditions.DownedEverscream",			() => NPC.downedChristmasTree);
+	public static readonly Condition DownedSantaNK1 =			new("Conditions.DownedSantaNK1",			() => NPC.downedChristmasSantank);
+	public static readonly Condition DownedIceQueen =			new("Conditions.DownedIceQueen",			() => NPC.downedChristmasIceQueen);
 	public static readonly Condition DownedCultist =			new("Conditions.DownedLunaticCultist",		() => NPC.downedAncientCultist);
 	public static readonly Condition DownedMoonLord =			new("Conditions.DownedMoonLord",			() => NPC.downedMoonlord);
 	public static readonly Condition DownedClown =				new("Conditions.DownedClown",				() => NPC.downedClown);
+	public static readonly Condition DownedGoblinArmy =			new("Conditions.DownedGoblinArmy",			() => NPC.downedGoblins);
 	public static readonly Condition DownedPirates =			new("Conditions.DownedPirates",			 	() => NPC.downedPirates);
 	public static readonly Condition DownedMartians =			new("Conditions.DownedMartians",		 	() => NPC.downedMartians);
 	public static readonly Condition DownedFrostLegion =	  	new("Conditions.DownedFrostLegion",			() => NPC.downedFrost);
@@ -128,6 +143,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedVortexPillar =	  	new("Conditions.DownedVortexPillar",		() => NPC.downedTowerVortex);
 	public static readonly Condition DownedNebulaPillar =	  	new("Conditions.DownedNebulaPillar",		() => NPC.downedTowerNebula);
 	public static readonly Condition DownedStardustPillar =		new("Conditions.DownedStardustPillar",		() => NPC.downedTowerStardust);
+	public static readonly Condition DownedOldOnesArmyAny =		new("Conditions.DownedOldOnesArmyAny",		() => GameContent.Events.DD2Event.DownedInvasionAnyDifficulty);
+	public static readonly Condition DownedOldOnesArmyT1 =		new("Conditions.DownedOldOnesArmyT1",		() => GameContent.Events.DD2Event.DownedInvasionT1);
+	public static readonly Condition DownedOldOnesArmyT2 =		new("Conditions.DownedOldOnesArmyT2",		() => GameContent.Events.DD2Event.DownedInvasionT2);
+	public static readonly Condition DownedOldOnesArmyT3 =		new("Conditions.DownedOldOnesArmyT3",		() => GameContent.Events.DD2Event.DownedInvasionT3);
 
 	public static readonly Condition NotDownedKingSlime =	  	new("Conditions.NotNotDownedKingSlime",		() => !NPC.downedSlimeKing);
 	public static readonly Condition NotDownedEyeOfCthulhu =	new("Conditions.NotDownedEyeOfCthulhu",		() => !NPC.downedBoss1);
@@ -136,6 +155,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotDownedBrainOfCthulhu =	new("Conditions.NotDownedBrainOfCthulhu",	() => !NPC.downedBoss2 && WorldGen.crimson);
 	public static readonly Condition NotDownedQueenBee =	  	new("Conditions.NotDownedQueenBee",		 	() => !NPC.downedQueenBee);
 	public static readonly Condition NotDownedSkeletron =	  	new("Conditions.NotDownedSkeletron",	 	() => !NPC.downedBoss3);
+	public static readonly Condition NotDownedDeerclops =		new("Conditions.NotDownedDeerclops",		() => !NPC.downedDeerclops);
 	public static readonly Condition NotDownedQueenSlime =	  	new("Conditions.NotDownedQueenSlime",	 	() => !NPC.downedQueenSlime);
 	public static readonly Condition NotDownedMechBossAny =		new("Conditions.NotDownedMechBossAny",	 	() => !NPC.downedMechBossAny);
 	public static readonly Condition NotDownedTwins =			new("Conditions.NotDownedTwins",		 	() => !NPC.downedMechBoss2);
@@ -143,13 +163,28 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotDownedSkeletronPrime =	new("Conditions.NotDownedSkeletronPrime",	() => !NPC.downedMechBoss3);
 	public static readonly Condition NotDownedPlantera =		new("Conditions.NotDownedPlantera",		 	() => !NPC.downedPlantBoss);
 	public static readonly Condition NotDownedEmpressOfLight =	new("Conditions.NotDownedEmpressOfLight",	() => !NPC.downedEmpressOfLight);
+	public static readonly Condition NotDownedDukeFishron =		new("Conditions.NotDownedDukeFishron",		() => !NPC.downedFishron);
 	public static readonly Condition NotDownedGolem =			new("Conditions.NotDownedGolem",		 	() => !NPC.downedGolemBoss);
+	public static readonly Condition NotDownedMourningWood =	new("Conditions.NotDownedMourningWood",		() => !NPC.downedHalloweenTree);
+	public static readonly Condition NotDownedPumpking =		new("Conditions.NotDownedPumpking",			() => !NPC.downedHalloweenKing);
+	public static readonly Condition NotDownedEverscream =		new("Conditions.NotDownedEverscream",		() => !NPC.downedChristmasTree);
+	public static readonly Condition NotDownedSantaNK1 =		new("Conditions.NotDownedSantaNK1",			() => !NPC.downedChristmasSantank);
+	public static readonly Condition NotDownedIceQueen =		new("Conditions.NotDownedIceQueen",			() => !NPC.downedChristmasIceQueen);
 	public static readonly Condition NotDownedCultist =			new("Conditions.NotDownedLunaticCultist",	() => !NPC.downedAncientCultist);
 	public static readonly Condition NotDownedMoonLord =		new("Conditions.NotDownedMoonLord",		 	() => !NPC.downedMoonlord);
 	public static readonly Condition NotDownedClown =			new("Conditions.NotDownedClown",		 	() => !NPC.downedClown);
+	public static readonly Condition NotDownedGoblinArmy =		new("Conditions.NotDownedGoblinArmy",		() => !NPC.downedGoblins);
 	public static readonly Condition NotDownedPirates =			new("Conditions.NotDownedPirates",		 	() => !NPC.downedPirates);
 	public static readonly Condition NotDownedMartians =		new("Conditions.NotDownedMartians",			() => !NPC.downedMartians);
 	public static readonly Condition NotDownedFrostLegin =		new("Conditions.NotDownedFrostLegion",		() => !NPC.downedFrost);
+	public static readonly Condition NotDownedSolarPillar =		new("Conditions.NotDownedSolarPillar",		() => !NPC.downedTowerSolar);
+	public static readonly Condition NotDownedVortexPillar =	new("Conditions.NotDownedVortexPillar",		() => !NPC.downedTowerVortex);
+	public static readonly Condition NotDownedNebulaPillar =	new("Conditions.NotDownedNebulaPillar",		() => !NPC.downedTowerNebula);
+	public static readonly Condition NotDownedStardustPillar =	new("Conditions.NotDownedStardustPillar",	() => !NPC.downedTowerStardust);
+	public static readonly Condition NotDownedOldOnesArmyAny =	new("Conditions.NotDownedOldOnesArmyAny",	() => !GameContent.Events.DD2Event.DownedInvasionAnyDifficulty);
+	public static readonly Condition NotDownedOldOnesArmyT1 =	new("Conditions.NotDownedOldOnesArmyT1",	() => !GameContent.Events.DD2Event.DownedInvasionT1);
+	public static readonly Condition NotDownedOldOnesArmyT2 =	new("Conditions.NotDownedOldOnesArmyT2",	() => !GameContent.Events.DD2Event.DownedInvasionT2);
+	public static readonly Condition NotDownedOldOnesArmyT3 =	new("Conditions.NotDownedOldOnesArmyT3",	() => !GameContent.Events.DD2Event.DownedInvasionT3);
 
 	// Misc
 	public static readonly Condition BloodMoonOrHardmode =		new("Conditions.BloodMoonOrHardmode",		() => Main.bloodMoon || Main.hardMode);
@@ -190,5 +225,6 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
 	public static Condition GolfScoreOver(int score) => new(Language.GetText("Conditions.GolfScoreOver").WithFormatArgs(score), () => Main.LocalPlayer.golferScoreAccumulated >= score);
 	public static Condition NpcIsPresent(int npcId) => new(Language.GetText("Conditions.NpcIsPresent").WithFormatArgs(Lang.GetNPCName(npcId)), () => NPC.AnyNPCs(npcId));
+	public static Condition AnglerQuestsFinishedOver(int quests) => new(Language.GetText("Conditions.AnglerQuestsFinishedOver").WithFormatArgs(quests), () => Main.LocalPlayer.anglerQuestsFinished >= quests);
 }
 			
