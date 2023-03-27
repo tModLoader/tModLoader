@@ -370,6 +370,12 @@ Mods: {
 				// Tooltip: This summons a modded mount.
 			}
 
+			ExampleOnBuyItem: {
+				// DisplayName: Volatile Explosive Device
+				// Tooltip: Has a 50% chance to kill the player whenever bought from a shop
+				// DeathMessage: "{0} tried and failed to handle a very volatile explosive device."
+			}
+
 			ExamplePaperAirplane: {
 				// DisplayName: Example Paper Airplane
 				// Tooltip: This is a modded paper airplane.
