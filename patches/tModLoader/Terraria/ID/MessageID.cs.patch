@@ -388,7 +388,7 @@
  	public const byte ChestName = 69;
  	public const byte BugCatching = 70;
  	public const byte BugReleasing = 71;
-@@ -92,20 +_,37 @@
+@@ -92,14 +_,30 @@
  	public const byte PlaceObject = 79;
  	public const byte SyncPlayerChestIndex = 80;
  	public const byte CombatTextInt = 81;
@@ -419,10 +419,3 @@
  	public const byte InstancedItem = 90;
  	public const byte SyncEmoteBubble = 91;
  	public const byte SyncExtraValue = 92;
- 	public const byte SocialHandshake = 93;
- 	public const byte Deprecated1 = 94;
- 	public const byte MurderSomeoneElsesPortal = 95;
-+
- 	public const byte TeleportPlayerThroughPortal = 96;
- 	public const byte AchievementMessageNPCKilled = 97;
- 	public const byte AchievementMessageEventHappened = 98;
