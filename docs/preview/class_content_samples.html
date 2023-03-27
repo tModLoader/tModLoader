@@ -93,7 +93,9 @@ $(document).ready(function(){initNavTree('class_content_samples.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p>This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new <a class="el" href="class_item.html">Item</a> instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way.  
+<p>This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new <a class="el" href="class_item.html">Item</a> instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way. <br  />
+ <a class="el" href="class_content_samples.html" title="This class stores instances of various content types in a number of dictionaries. These instances ser...">ContentSamples</a> should only be accessed in code that runs during <a class="el" href="class_mod.html#afe714e608786744a898fed05debcd972" title="Allows you to load things in your mod after its content has been setup (arrays have been resized to f...">Mod.PostSetupContent</a> or later, as the entries are not filled in until then. <br  />
+  
  <a href="class_content_samples.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -165,7 +167,9 @@ static Dictionary&lt; int, string &gt;&#160;</td><td class="memItemRight" valign
 <tr class="separator:af79d86f1de1ba3cd9a8dd5a87e18f0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="memItemLeft" align="right" valign="top"><a id="a793a5e2f47721ef9ad5bb343e700d0a3" name="a793a5e2f47721ef9ad5bb343e700d0a3"></a>
 static Dictionary&lt; int, <a class="el" href="class_n_p_c.html">NPC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcsByNetId</b> = new Dictionary&lt;int, <a class="el" href="class_n_p_c.html">NPC</a>&gt;()</td></tr>
-<tr class="memdesc:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default <a class="el" href="class_n_p_c.html">NPC</a> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type). <br /></td></tr>
+<tr class="memdesc:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default <a class="el" href="class_n_p_c.html">NPC</a> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (NPC.type). <br  />
+ Note that these entries do not take into account game mode specific changes so they shouldn't be used for querying that data. <br  />
+ <br /></td></tr>
 <tr class="separator:a793a5e2f47721ef9ad5bb343e700d0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a765028f028e8967d2caaaf41c6d067ad"><td class="memItemLeft" align="right" valign="top"><a id="a765028f028e8967d2caaaf41c6d067ad" name="a765028f028e8967d2caaaf41c6d067ad"></a>
 static Dictionary&lt; int, <a class="el" href="class_projectile.html">Projectile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ProjectilesByType</b> = new Dictionary&lt;int, <a class="el" href="class_projectile.html">Projectile</a>&gt;()</td></tr>
@@ -173,7 +177,9 @@ static Dictionary&lt; int, <a class="el" href="class_projectile.html">Projectile
 <tr class="separator:a765028f028e8967d2caaaf41c6d067ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new <a class="el" href="class_item.html">Item</a> instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way. </p>
+<div class="textblock"><p >This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new <a class="el" href="class_item.html">Item</a> instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way. <br  />
+ <a class="el" href="class_content_samples.html" title="This class stores instances of various content types in a number of dictionaries. These instances ser...">ContentSamples</a> should only be accessed in code that runs during <a class="el" href="class_mod.html#afe714e608786744a898fed05debcd972" title="Allows you to load things in your mod after its content has been setup (arrays have been resized to f...">Mod.PostSetupContent</a> or later, as the entries are not filled in until then. <br  />
+ </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a0436d4c4434a13c690c2738ccb60df44" name="a0436d4c4434a13c690c2738ccb60df44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0436d4c4434a13c690c2738ccb60df44">&#9670;&nbsp;</a></span>ItemNetIdsByPersistentIds</h2>
