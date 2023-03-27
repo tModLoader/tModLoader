@@ -94,10 +94,133 @@ $(document).ready(function(){initNavTree('class_mono_mod_hooks.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9fa5a80731da26e1f975e55528beb726"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726">DumpIL</a> (<a class="el" href="class_mod.html">Mod</a> mod, ILContext il)</td></tr>
+<tr class="memdesc:a9fa5a80731da26e1f975e55528beb726"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the information about the given ILContext to a file in Logs/ILDumps/{<a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> Name}/{Method Name}.txt<br  />
+ It may be useful to use a tool such as  to compare the IL before and after edits  <a href="class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726">More...</a><br /></td></tr>
+<tr class="separator:a9fa5a80731da26e1f975e55528beb726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9feb07b175d8d9b2dd42d7b7b62bcc43"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mono_mod_hooks.html#a9feb07b175d8d9b2dd42d7b7b62bcc43">DumpILHooks</a> ()</td></tr>
+<tr class="memdesc:a9feb07b175d8d9b2dd42d7b7b62bcc43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the list of currently registered IL hooks to the console. Useful for checking if a hook has been correctly added.  <a href="class_mono_mod_hooks.html#a9feb07b175d8d9b2dd42d7b7b62bcc43">More...</a><br /></td></tr>
+<tr class="separator:a9feb07b175d8d9b2dd42d7b7b62bcc43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47f0a82fae2c68a518596d75c3899d2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mono_mod_hooks.html#ab47f0a82fae2c68a518596d75c3899d2">DumpOnHooks</a> ()</td></tr>
+<tr class="memdesc:ab47f0a82fae2c68a518596d75c3899d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the list of currently registered On hooks to the console. Useful for checking if a hook has been correctly added.  <a href="class_mono_mod_hooks.html#ab47f0a82fae2c68a518596d75c3899d2">More...</a><br /></td></tr>
+<tr class="separator:ab47f0a82fae2c68a518596d75c3899d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a228c0bf85a248a0976c9ad0328f1e6b9"><td class="memItemLeft" align="right" valign="top"><a id="a228c0bf85a248a0976c9ad0328f1e6b9" name="a228c0bf85a248a0976c9ad0328f1e6b9"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RequestNativeAccess</b> ()</td></tr>
 <tr class="separator:a228c0bf85a248a0976c9ad0328f1e6b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9fa5a80731da26e1f975e55528beb726" name="a9fa5a80731da26e1f975e55528beb726"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fa5a80731da26e1f975e55528beb726">&#9670;&nbsp;</a></span>DumpIL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void MonoModHooks.DumpIL </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ILContext&#160;</td>
+          <td class="paramname"><em>il</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dumps the information about the given ILContext to a file in Logs/ILDumps/{<a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> Name}/{Method Name}.txt<br  />
+ It may be useful to use a tool such as  to compare the IL before and after edits </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td></td></tr>
+    <tr><td class="paramname">il</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9feb07b175d8d9b2dd42d7b7b62bcc43" name="a9feb07b175d8d9b2dd42d7b7b62bcc43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9feb07b175d8d9b2dd42d7b7b62bcc43">&#9670;&nbsp;</a></span>DumpILHooks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void MonoModHooks.DumpILHooks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dumps the list of currently registered IL hooks to the console. Useful for checking if a hook has been correctly added. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_exception.html">Exception</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab47f0a82fae2c68a518596d75c3899d2" name="ab47f0a82fae2c68a518596d75c3899d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab47f0a82fae2c68a518596d75c3899d2">&#9670;&nbsp;</a></span>DumpOnHooks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void MonoModHooks.DumpOnHooks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dumps the list of currently registered On hooks to the console. Useful for checking if a hook has been correctly added. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_exception.html">Exception</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

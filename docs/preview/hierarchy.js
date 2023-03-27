@@ -409,6 +409,7 @@ var hierarchy =
     [ "Exception", "class_exception.html", [
       [ "FolderCreationFailedException", "class_folder_creation_failed_exception.html", null ],
       [ "GetLoadableTypesException", "class_get_loadable_types_exception.html", null ],
+      [ "ILPatchFailureException", "class_i_l_patch_failure_exception.html", null ],
       [ "JITException", "class_j_i_t_exception.html", null ],
       [ "MissingEffectException", "class_missing_effect_exception.html", null ],
       [ "MissingResourceException", "class_missing_resource_exception.html", null ],
