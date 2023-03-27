@@ -746,13 +746,12 @@
  		if (aiStyle == 0) {
  			if (Main.netMode != 1) {
  				for (int i = 0; i < 255; i++) {
-@@ -31736,7 +_,8 @@
+@@ -31736,7 +_,7 @@
  			timeLeft = 86400;
  		}
  
-+		//TODO: Replace this downcast.
 -		timeLeft -= Main.dayRate;
-+		timeLeft -= (int)Main.dayRate;
++		timeLeft -= Main.worldEventUpdates;
  		if (timeLeft < 0)
  			timeLeft = 0;
  
