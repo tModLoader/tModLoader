@@ -24,7 +24,7 @@
  		bool flag = false;
 +
 -		for (int i = 0; i < Main.dayRate; i++) {
-+		for (int i = 1; i <= Main.worldEventUpdates; i++) {
++		for (int i = 0; i < Main.worldEventUpdates; i++) {
  			if (Main.rand.Next(oneOverSpawnChance) == 0) {
  				flag = true;
  				break;
