@@ -11,6 +11,13 @@ namespace ExampleMod.Content.Items
 	/// </summary>
 	public class ExampleOnBuyItem : ModItem
 	{
+		public static LocalizedText DeathMessage { get; private set; }
+
+		public override void SetStaticDefaults() {
+			// See the localization files for more info! (Localization/en-US.hjson)
+			DeathMessage = this.GetLocalization(nameof(DeathMessage));
+		}
+
 		public override void SetDefaults() {
 			Item.width = 16;
 			Item.height = 16;
@@ -30,8 +37,9 @@ namespace ExampleMod.Content.Items
 				return;
 			}
 
-			Player player = buyContext.PlayerCustomer;
-			player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.ExampleMod.Items.ExampleOnBuyItem.DeathMessage", player.name)), 9999, 0);
+			// This is only ever called on the local client, so the local player will do.
+			Player player = Main.LocalPlayer;
+			player.KillMe(PlayerDeathReason.ByCustomReason(DeathMessage.Format(player.name)), 9999, 0);
 		}
 	}
 }

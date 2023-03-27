@@ -575,7 +575,7 @@
 +			boughtItem.buyOnce = false;
 +			boughtItem.isAShopItem = false;
 +			boughtItem.stack = 1;
-+			boughtItem.OnCreated(new BuyItemCreationContext(Main.mouseItem, localPlayer.TalkNPC, localPlayer));
++			boughtItem.OnCreated(new BuyItemCreationContext(Main.mouseItem, localPlayer.TalkNPC));
 +
  			if (Main.mouseItem.type == 0) {
 +				/*
