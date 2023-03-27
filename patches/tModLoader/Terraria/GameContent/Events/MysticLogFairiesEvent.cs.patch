@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
 +++ src/tModLoader/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
-@@ -9,15 +_,17 @@
+@@ -9,7 +_,7 @@
  public class MysticLogFairiesEvent
  {
  	private bool _canSpawnFairies;
@@ -8,25 +8,7 @@
 +	private double _delayUntilNextAttempt; //TML: Changed from int to double.
  	private const int DELAY_BETWEEN_ATTEMPTS = 60;
  	private List<Point> _stumpCoords = new List<Point>();
-+	private double _timePass; // Added by TML; used to account for more precise time rates.
  
- 	public void WorldClear()
- 	{
- 		_canSpawnFairies = false;
- 		_delayUntilNextAttempt = 0;
- 		_stumpCoords.Clear();
-+		_timePass = 0;
- 	}
- 
- 	public void StartWorld()
-@@ -31,6 +_,7 @@
- 		if (Main.netMode != 1) {
- 			_canSpawnFairies = true;
- 			_delayUntilNextAttempt = 0;
-+			_timePass = 0;
- 			ScanWholeOverworldForLogs();
- 		}
- 	}
 @@ -38,7 +_,7 @@
  	public void UpdateTime()
  	{
@@ -36,22 +18,13 @@
  			if (_delayUntilNextAttempt == 0) {
  				_delayUntilNextAttempt = 60;
  				TrySpawningFairies();
-@@ -69,12 +_,17 @@
+@@ -69,7 +_,8 @@
  
  		int oneOverSpawnChance = GetOneOverSpawnChance();
  		bool flag = false;
 +
-+		_timePass += Main.desiredWorldEventsUpdateRate;
-+
 -		for (int i = 0; i < Main.dayRate; i++) {
-+		for (int i = 1; i <= (int)_timePass; i++) {
++		for (int i = 0; i < Main.worldEventUpdates; i++) {
  			if (Main.rand.Next(oneOverSpawnChance) == 0) {
  				flag = true;
  				break;
- 			}
- 		}
-+
-+		_timePass %= 1.0;
- 
- 		if (!flag)
- 			return;

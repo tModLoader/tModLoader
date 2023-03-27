@@ -294,6 +294,7 @@ namespace ExampleMod.Content.NPCs
 				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
 				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
 				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<ExampleOnBuyItem>()
 				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
 			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {

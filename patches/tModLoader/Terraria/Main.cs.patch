@@ -1870,17 +1870,17 @@
 +		if (desiredWorldEventsUpdateRate <= 0)
 +			goto skipWeatherUpdates;
 +
-+		timePass += desiredWorldEventsUpdateRate;
++		_partialWorldEventUpdates += Main.desiredWorldEventsUpdateRate;
++		worldEventUpdates = (int)_partialWorldEventUpdates;
++		_partialWorldEventUpdates -= worldEventUpdates;
 +
 +		/*
  		for (int i = 0; i < dayRate; i++) {
 +		*/
-+		for (int i = 1; i <= (int)timePass; i++) {
++		for (int i = 0; i < worldEventUpdates; i++) {
  			UpdateWeather(gameTime, i);
  		}
  
-+		timePass %= 1.0;
-+
 +		skipWeatherUpdates:
  		UnpausedUpdateSeed = Utils.RandomNextSeed(UnpausedUpdateSeed);
  		Ambience();

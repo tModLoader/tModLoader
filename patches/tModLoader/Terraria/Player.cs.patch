@@ -857,8 +857,9 @@
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
  			if (item.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
-+				Main.item[num] = item.Clone(); // Added by TML.
+-				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
++				// int num = //Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
++				int num = Item.NewItem(GetItemSource_Misc(4), position, width, height, item, noGrabDelay: true);
  				Main.item[num].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num, 1f);
@@ -867,8 +868,9 @@
  			Item item2 = GetItem(whoAmI, Main.reforgeItem, getItemInDropItemCheck);
  			if (item2.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
-+				Main.item[num2] = item2.Clone(); // Added by TML.
+-				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
++				// int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
++				int num2 = Item.NewItem(GetItemSource_Misc(4), position, width, height, item2, noGrabDelay: true);
  				Main.item[num2].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num2, 1f);
@@ -882,6 +884,16 @@
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num3, 1f);
+@@ -2852,7 +_,8 @@
+ 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
+ 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
+ 
+-			int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			// int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			int num = Item.NewItem(GetItemSource_Misc(4), position, width, height, theItemWeDrop);
+ 			theItemWeDrop.position = Main.item[num].position;
+ 			Main.item[num] = theItemWeDrop;
+ 			theItemWeDrop = new Item();
 @@ -2923,6 +_,14 @@
  		return -1;
  	}
