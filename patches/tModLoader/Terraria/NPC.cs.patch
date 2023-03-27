@@ -663,6 +663,15 @@
  		setFrameSize = false;
  		netSkip = -2;
  		realLife = -1;
+@@ -2238,7 +_,7 @@
+ 		onFire3 = false;
+ 		justHit = false;
+ 		dontTakeDamage = false;
+-		catchableNPCTempImmunityCounter = 0;
++		catchableNPCTempImmunityCounter = -1;
+ 		npcSlots = 1f;
+ 		lavaImmune = false;
+ 		lavaWet = false;
 @@ -10793,13 +_,18 @@
  			catchItem = 2121;
  		}
@@ -687,7 +696,7 @@
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type]) {
++		if (type >= 0 && Main.npcCatchable[type] && !friendly) {
  			catchableNPCTempImmunityCounter = 90;
  			friendly = true;
  		}
@@ -2109,15 +2118,27 @@
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
-@@ -72655,7 +_,7 @@
+@@ -72653,15 +_,16 @@
+ 		justHit = false;
+ 	}
  
++
  	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
+-			if (releaseOwner != 255 || SpawnedFromStatue)
+-				catchableNPCTempImmunityCounter = 0;
 +		if (type >= 0 && Main.npcCatchable[type]) {
- 			if (releaseOwner != 255 || SpawnedFromStatue)
- 				catchableNPCTempImmunityCounter = 0;
++			if (releaseOwner == 255 || SpawnedFromStatue || catchableNPCTempImmunityCounter < 0)
++				return;
  
+ 			bool num = friendly;
++			catchableNPCTempImmunityCounter--;
+ 			if (catchableNPCTempImmunityCounter > 0) {
+-				catchableNPCTempImmunityCounter--;
+ 				friendly = true;
+ 			}
+ 			else {
 @@ -72760,6 +_,8 @@
  		}
  	}
