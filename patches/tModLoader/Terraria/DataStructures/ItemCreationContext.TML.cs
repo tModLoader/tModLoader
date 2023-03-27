@@ -16,11 +16,11 @@ public class BuyItemCreationContext : ItemCreationContext
 	/// <summary>
 	/// The NPC that this item was bought from.
 	/// </summary>
-	public NPC NPCBoughtFrom;
+	public NPC VendorNPC;
 
-	public BuyItemCreationContext(Item destinationStack, NPC npcBoughtFrom)
+	public BuyItemCreationContext(Item destinationStack, NPC vendorNPC)
 	{
 		DestinationStack = destinationStack;
-		NPCBoughtFrom = npcBoughtFrom;
+		VendorNPC = vendorNPC;
 	}
 }
