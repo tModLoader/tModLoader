@@ -162,13 +162,16 @@ public static class MonoModHooks
 	/// <param name="il"></param>
 	public static void DumpIL(Mod mod, ILContext il)
 	{
-		string txt = il.ToString();
-		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, il.Method.FullName);
+		string methodName = il.Method.FullName.Replace(':', '_');
+		if (methodName.Contains('?')) // MonoMod IL copies are created with mangled names like DMD<Terraria.Player::beeType>?38504011::Terraria.Player::beeType(Terraria.Player)
+			methodName = methodName[(methodName.LastIndexOf('?')+1)..];
+
+		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, methodName + ".txt");
 		string folderPath = Path.GetDirectoryName(filePath);
 
 		if (!Directory.Exists(folderPath))
 			Directory.CreateDirectory(folderPath);
-		File.WriteAllText(filePath, txt);
+		File.WriteAllText(filePath, il.ToString());
 
 		Logging.tML.Debug($"Dumped ILContext \"{il.Method.FullName}\" to \"{filePath}\"");
 	}
@@ -177,6 +180,6 @@ public static class MonoModHooks
 public class ILPatchFailureException : Exception
 {
 	public ILPatchFailureException(Mod mod, ILContext il, Exception innerException) : base($"Mod \"{mod.Name}\" failed to IL edit method \"{il.Method.FullName}\"", innerException) {
-		
+		MonoModHooks.DumpIL(mod, il);
 	}
 }
