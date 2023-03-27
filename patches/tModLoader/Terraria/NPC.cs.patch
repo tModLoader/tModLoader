@@ -663,15 +663,66 @@
  		setFrameSize = false;
  		netSkip = -2;
  		realLife = -1;
-@@ -2238,7 +_,7 @@
- 		onFire3 = false;
- 		justHit = false;
- 		dontTakeDamage = false;
--		catchableNPCTempImmunityCounter = 0;
-+		catchableNPCTempImmunityCounter = -1;
- 		npcSlots = 1f;
- 		lavaImmune = false;
- 		lavaWet = false;
+@@ -6970,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2002;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 358) {
+ 			width = 12;
+@@ -7216,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2740;
+ 			npcSlots = 0.1f;
+ 		}
+@@ -7680,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2893;
+ 			npcSlots = 0.1f;
+ 			rarity = 3;
+@@ -7709,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2895;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			rarity = 3;
+ 		}
+ 		else if (type == 449) {
+@@ -7936,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = (short)(3191 + type - 484);
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 488) {
+ 			width = 18;
+@@ -9994,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 4363;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 607) {
+ 			noGravity = true;
 @@ -10793,13 +_,18 @@
  			catchItem = 2121;
  		}
@@ -691,13 +742,14 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
-@@ -10841,12 +_,12 @@
+@@ -10841,12 +_,13 @@
  		else if (Main.tenthAnniversaryWorld)
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type] && !friendly) {
++		if (type >= 0 && Main.npcCatchable[type]) { 
  			catchableNPCTempImmunityCounter = 90;
++			catchableNPCOriginallyFriendly = friendly; 
  			friendly = true;
  		}
  
@@ -2118,7 +2170,7 @@
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
-@@ -72653,20 +_,13 @@
+@@ -72653,19 +_,21 @@
  		justHit = false;
  	}
  
@@ -2126,23 +2178,23 @@
  	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
--			if (releaseOwner != 255 || SpawnedFromStatue)
--				catchableNPCTempImmunityCounter = 0;
--
-+		if (type >= 0 && Main.npcCatchable[type] && !(releaseOwner == 255 || SpawnedFromStatue || catchableNPCTempImmunityCounter < 0)) {
++		// TML: changed catchableNPCTempImmunityCounter logic to not assume npcCatchable npc should be friendly.
++		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter > 0) {
+ 			if (releaseOwner != 255 || SpawnedFromStatue)
+ 				catchableNPCTempImmunityCounter = 0;
+ 
  			bool num = friendly;
--			if (catchableNPCTempImmunityCounter > 0) {
--				catchableNPCTempImmunityCounter--;
--				friendly = true;
--			}
--			else {
--				friendly = false;
--			}
 +			catchableNPCTempImmunityCounter--;
-+			friendly = catchableNPCTempImmunityCounter > 0;
+ 			if (catchableNPCTempImmunityCounter > 0) {
+-				catchableNPCTempImmunityCounter--;
+ 				friendly = true;
+ 			}
+ 			else {
+-				friendly = false;
++				friendly = catchableNPCOriginallyFriendly;
+ 			}
  
  			if (num != friendly)
- 				netUpdate = true;
 @@ -72760,6 +_,8 @@
  		}
  	}
