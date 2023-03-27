@@ -1861,6 +1861,7 @@ var hierarchy =
     [ "ItemAlternativeFunctionID", "class_item_alternative_function_i_d.html", null ],
     [ "Player.ItemCheckContext", "struct_player_1_1_item_check_context.html", null ],
     [ "ItemCreationContext", "class_item_creation_context.html", [
+      [ "BuyItemCreationContext", "class_buy_item_creation_context.html", null ],
       [ "InitializationItemCreationContext", "class_initialization_item_creation_context.html", null ],
       [ "JourneyDuplicationItemCreationContext", "class_journey_duplication_item_creation_context.html", null ],
       [ "RecipeItemCreationContext", "class_recipe_item_creation_context.html", null ]

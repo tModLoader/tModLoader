@@ -112,6 +112,7 @@ var annotated_dup =
     [ "BuffID", "class_buff_i_d.html", "class_buff_i_d" ],
     [ "BuffLoader", "class_buff_loader.html", "class_buff_loader" ],
     [ "BuildInfo", "class_build_info.html", "class_build_info" ],
+    [ "BuyItemCreationContext", "class_buy_item_creation_context.html", "class_buy_item_creation_context" ],
     [ "CachedBuffer", "class_cached_buffer.html", null ],
     [ "CalculatedStyle", "struct_calculated_style.html", null ],
     [ "Camera", "class_camera.html", null ],

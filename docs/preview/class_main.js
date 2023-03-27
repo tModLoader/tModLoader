@@ -39,6 +39,7 @@ var class_main =
     [ "tileMergeDirt", "class_main.html#a077281b897b5c1fb1bc7840f65e0ae3a", null ],
     [ "time", "class_main.html#a286e04821e5e48abf3d683972a668976", null ],
     [ "vanityPet", "class_main.html#a610f0ef35769f577a8670ac04e86be9a", null ],
+    [ "worldEventUpdates", "class_main.html#a2d12b04e725bec080a9b1e5158597e5d", null ],
     [ "worldSurface", "class_main.html#aa44e433e53a98400dacd5260313d7b2b", null ],
     [ "CurrentPlayer", "class_main.html#ab60656fb0e91b1cbec3a13882f999cae", null ],
     [ "LocalPlayer", "class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809", null ],
