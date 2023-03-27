@@ -2341,7 +2341,7 @@
 +		/*
  		for (int m = 0; m < Main.dayRate; m++) {
 +		*/
-+		for (int m = 1; m <= Main.worldEventUpdates	; m++) {
++		for (int m = 1; m <= Main.worldEventUpdates; m++) {
  			double num7 = (double)Main.maxTilesX / 4200.0;
  			num7 *= (double)Star.starfallBoost;
  			if (!((double)Main.rand.Next(8000) < 10.0 * num7))
