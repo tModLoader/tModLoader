@@ -4333,7 +4333,7 @@
 +	}
 +
 +	// out param and extras from above added
-+	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, out Player.HurtInfo info, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
++	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, out HurtInfo info, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
 +	{
 +		info = default;
 +
@@ -4349,26 +4349,11 @@
  		bool flag = !immune;
  		bool flag2 = false;
  		int hitContext = cooldownCounter;
-@@ -29531,6 +_,9 @@
+@@ -29530,7 +_,34 @@
+ 		}
  
  		if (flag) {
- 			if (dodgeable) {
-+				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, damageSource, cooldownCounter))
-+					return 0.0;
-+
- 				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
- 					NinjaDodge();
- 					return 0.0;
-@@ -29545,24 +_,67 @@
- 					ShadowDodge();
- 					return 0.0;
- 				}
-+
-+				if (whoAmI == Main.myPlayer && PlayerLoader.ConsumableDodge(this, damageSource, cooldownCounter))
-+					return 0.0;
- 			}
- 
-+			Player.HurtModifiers modifiers = new() {
++			HurtModifiers modifiers = new() {
 +				DamageSource = damageSource,
 +				PvP = pvp,
 +				CooldownCounter = cooldownCounter,
@@ -4391,6 +4376,23 @@
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
 +			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
++
+ 			if (dodgeable) {
++				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, info))
++					return 0.0;
++
+ 				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
+ 					NinjaDodge();
+ 					return 0.0;
+@@ -29545,24 +_,44 @@
+ 					ShadowDodge();
+ 					return 0.0;
+ 				}
++
++				if (whoAmI == Main.myPlayer && PlayerLoader.ConsumableDodge(this, info))
++					return 0.0;
+ 			}
+ 
 +			Hurt(info, quiet);
 +			return info.Damage;
 +		}
