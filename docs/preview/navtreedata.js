@@ -53,7 +53,7 @@ var NAVTREEINDEX =
 "class_entity_source___tile_entity.html",
 "class_generic_damage_class.html#a80cc5db3b859ee58bdc0a731c87ce8fa",
 "class_global_projectile.html#a24da8a1d31d232c090607771aa3c655b",
-"class_item.html#a72948c5c911e46de5b4215389b889494",
+"class_item.html#a721ada78521fd509b1a073844e797cb0",
 "class_item_loader.html#a89e80c1a38407d62ae36654f4a49c623",
 "class_minecart_digger_helper.html",
 "class_mod_item.html#a44335a4cb0096527824a56e993cfe0b4",
