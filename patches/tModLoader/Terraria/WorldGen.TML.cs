@@ -21,7 +21,7 @@ public partial class WorldGen
 
 	public static void ModifyPass(PassLegacy pass, ILContext.Manipulator callback)
 	{
-		HookEndpointManager.Modify(GetGenPassMethod(pass), callback);
+		HookEndpointManager.Modify(pass._method.Method, callback);
 	}
 
 	// TODO: Self cannot be WorldGen, since the one used in the actual method is WorldGen+<>c, which is compiler generated or something like that
@@ -31,18 +31,6 @@ public partial class WorldGen
 
 	public static void DetourPass(PassLegacy pass, GenPassDetour hookDelegate)
 	{
-		HookEndpointManager.Add(GetGenPassMethod(pass), hookDelegate);
-	}
-
-	internal static MethodInfo GetGenPassMethod(PassLegacy pass)
-	{
-		var methodField = typeof(PassLegacy).GetField("_method", BindingFlags.NonPublic | BindingFlags.Instance);
-		object methodFieldValue = methodField.GetValue(pass);
-		if (methodFieldValue is WorldGenLegacyMethod legacyMethod) {
-			return legacyMethod.Method;
-		}
-		else {
-			throw new Exception("Method is not a WorldGenLegacyMethod");
-		}
+		HookEndpointManager.Add(pass._method.Method, hookDelegate);
 	}
 }
