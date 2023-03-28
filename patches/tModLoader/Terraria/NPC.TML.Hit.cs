@@ -91,7 +91,7 @@ public partial class NPC
 		/// Recommend only multiplication, no addition or subtraction. <br/>
 		/// Not recommended to for buffs/debuffs. Use for gamemode tweaks, or if an enemy revolves very heavily around armor penetration.
 		/// </summary>
-		public MultipliableFloat DefenseEffectiveness = new();
+		public MultipliableFloat DefenseEffectiveness = MultipliableFloat.One * 0.5f;
 
 		/// <summary>
 		/// Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (+100% damage). <br/>
