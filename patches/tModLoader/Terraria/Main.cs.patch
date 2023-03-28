@@ -678,6 +678,16 @@
  		if (Configuration.Save())
  			return PlayerInput.Save();
  
+@@ -3282,6 +_,9 @@
+ 	protected void CheckBunny()
+ 	{
+ 		try {
++			if (!OperatingSystem.IsWindows())
++				return;
++
+ 			RegistryKey currentUser = Registry.CurrentUser;
+ 			currentUser = currentUser.CreateSubKey("Software\\Terraria");
+ 			if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
 @@ -3352,14 +_,40 @@
  		int currentValue3 = graphics.PreferredBackBufferHeight;
  		configuration.Get("DisplayWidth", ref currentValue2);
