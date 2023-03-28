@@ -2976,7 +2976,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -15863,21 +_,71 @@
+@@ -15863,21 +_,91 @@
  		return num;
  	}
  
@@ -3006,8 +3006,22 @@
 +		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
 +	}
 +
++	/// <summary>
++	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
++	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
++	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
++	/// Will apply daamage class based armor penetration. <br/>
++	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="knockback">The amount of knockback to apply</param>
++	/// <param name="direction">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Whether or not the strike is a crit</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 -	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
-+	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, DamageClass? damageType = null, bool damageVariation = false)
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
 +			return;
@@ -3028,6 +3042,12 @@
 +		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
 +	}
 +
++	/// <summary>
++	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
++	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="hit">The hit to apply</param>
 +	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
 +	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
