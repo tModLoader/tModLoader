@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
@@ -33,6 +34,7 @@ public abstract class GlobalType : ModType, IIndexed
 
 	public static T Instance<T>(Instanced<T>[] globals, ushort index) where T : class
 	{
+		// TODO, binary search or something better
 		for (int i = 0; i < globals.Length; i++) {
 			var g = globals[i];
 
@@ -44,12 +46,15 @@ public abstract class GlobalType : ModType, IIndexed
 		return default;
 	}
 
-	public static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance) where TGlobal : GlobalType where TResult : TGlobal
-		=> TryGetGlobal(globals, baseInstance, out TResult result) ? result : throw new KeyNotFoundException($"Instance of '{typeof(TResult).Name}' does not exist on the current {typeof(TEntity).Name}.");
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static TResult GetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance) where TGlobal : GlobalType where TResult : TGlobal
+		=> TryGetGlobal(globals, baseInstance, out TResult result) ? result : throw new KeyNotFoundException(baseInstance.FullName);
 
-	public static TResult GetGlobal<TEntity, TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType) where TGlobal : GlobalType where TResult : TGlobal
-		=> TryGetGlobal(globals, exactType, out TResult result) ? result : throw new KeyNotFoundException($"Instance of '{typeof(TResult).Name}' does not exist on the current {typeof(TEntity).Name}.");
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static TResult GetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals) where TGlobal : GlobalType where TResult : TGlobal
+		=> TryGetGlobal(globals, out TResult result) ? result : throw new KeyNotFoundException(typeof(TResult).FullName);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, TResult baseInstance, out TResult result) where TGlobal : GlobalType where TResult : TGlobal
 	{
 		if (baseInstance == null) {
@@ -61,21 +66,11 @@ public abstract class GlobalType : ModType, IIndexed
 		return result != null;
 	}
 
-	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, bool exactType, out TResult result) where TGlobal : GlobalType where TResult : TGlobal
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool TryGetGlobal<TGlobal, TResult>(Instanced<TGlobal>[] globals, out TResult result) where TGlobal : GlobalType where TResult : TGlobal
 	{
-		if (exactType) {
-			return TryGetGlobal(globals, ModContent.GetInstance<TResult>(), out result);
-		}
-
-		for (int i = 0; i < globals.Length; i++) {
-			if (globals[i].Instance is TResult t) {
-				result = t;
-				return true;
-			}
-		}
-
-		result = default;
-		return false;
+		result = (TResult)Instance(globals, ModContent.GetInstance<TResult>().Index);
+		return result != null;
 	}
 }
 

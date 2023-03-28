@@ -125,23 +125,23 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalProjectile<T>(bool exactType = true) where T : GlobalProjectile
-		=> GlobalType.GetGlobal<Projectile, GlobalProjectile, T>(globalProjectiles, exactType);
+	public T GetGlobalProjectile<T>() where T : GlobalProjectile
+		=> GlobalType.GetGlobal<GlobalProjectile, T>(globalProjectiles);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
-		=> GlobalType.GetGlobal<Projectile, GlobalProjectile, T>(globalProjectiles, baseInstance);
+		=> GlobalType.GetGlobal(globalProjectiles, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
-	public bool TryGetGlobalProjectile<T>(out T result, bool exactType = true) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, exactType, out result);
+	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
+		=> GlobalType.TryGetGlobal(globalProjectiles, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
+		=> GlobalType.TryGetGlobal(globalProjectiles, baseInstance, out result);
 
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());

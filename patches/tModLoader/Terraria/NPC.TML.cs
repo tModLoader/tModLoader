@@ -63,23 +63,23 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalNPC<T>(bool exactType = true) where T : GlobalNPC
-		=> GlobalType.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType);
+	public T GetGlobalNPC<T>() where T : GlobalNPC
+		=> GlobalType.GetGlobal<GlobalNPC, T>(globalNPCs);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
-		=> GlobalType.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance);
+		=> GlobalType.GetGlobal(globalNPCs, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
 	public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, exactType, out result);
+		=> GlobalType.TryGetGlobal(globalNPCs, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
+		=> GlobalType.TryGetGlobal(globalNPCs, baseInstance, out result);
 
 	/// <summary>
 	/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
