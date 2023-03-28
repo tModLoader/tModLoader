@@ -1764,7 +1764,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,120 @@
+@@ -64591,26 +_,117 @@
  
  		return armorPenetration / 2;
  	}
@@ -1793,9 +1793,6 @@
 +		HitInfo hit;
 +		if (Damage == 9999) {
 +			hit = new HitInfo {
-+				DamageType = DamageClass.Default,
-+				SourceDamage = Damage,
-+				Damage = 0,
 +				Crit = crit,
 +				KnockBack = knockBack,
 +				HitDirection = hitDirection,
