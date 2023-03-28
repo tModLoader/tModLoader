@@ -511,6 +511,8 @@ public static partial class Config
 
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "DrawTownAttackSwing");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "DrawTownAttackSwing");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "DrawTownAttackGun", "Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "DrawTownAttackGun", "Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type.");
 
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");

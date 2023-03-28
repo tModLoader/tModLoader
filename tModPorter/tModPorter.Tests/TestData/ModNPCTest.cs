@@ -68,4 +68,7 @@ public class ModNPCTest : ModNPC
 	}
 	public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) => false;
 	public override void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) { }
+	public override void DrawTownAttackGun(ref float scale, ref int item, ref int closeness) {
+		closeness = 10;
+	}
 }

@@ -768,13 +768,14 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is shooting (the NPC must have an attack type of 1). Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
+	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is shooting (the NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="scale"></param>
 	/// <param name="item"></param>
-	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	/// <param name="itemFrame"></param>
+	/// <param name="scale"></param>
+	/// <param name="horizontalHoldoutOffset"></param>
+	public virtual void DrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 	{
 	}
 

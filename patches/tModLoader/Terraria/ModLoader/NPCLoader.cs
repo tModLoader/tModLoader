@@ -1335,15 +1335,15 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateDrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness);
+	private delegate void DelegateDrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset);
 	private static HookList HookDrawTownAttackGun = AddHook<DelegateDrawTownAttackGun>(g => g.DrawTownAttackGun);
 
-	public static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	public static void DrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 	{
-		npc.ModNPC?.DrawTownAttackGun(ref scale, ref item, ref closeness);
+		npc.ModNPC?.DrawTownAttackGun(ref item, ref itemFrame, ref scale, ref horizontalHoldoutOffset);
 
 		foreach (GlobalNPC g in HookDrawTownAttackGun.Enumerate(npc.globalNPCs)) {
-			g.DrawTownAttackGun(npc, ref scale, ref item, ref closeness);
+			g.DrawTownAttackGun(npc, ref item, ref itemFrame, ref scale, ref horizontalHoldoutOffset);
 		}
 	}
 

@@ -3216,7 +3216,7 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
-@@ -21985,10 +_,13 @@
+@@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
  
@@ -3224,12 +3224,14 @@
  					num10 = 0.75f;
  				}
  			}
- 
-+			NPCLoader.DrawTownAttackGun(n, ref num10, ref itemtype, ref num11);
-+
+@@ -21992,6 +_,7 @@
  			Vector2 vector4 = DrawPlayerItemPos(1f, itemtype);
  			GetItemDrawFrame(itemtype, out var itemTexture, out var value2);
  			int num12 = (int)vector4.X - num11;
++			NPCLoader.DrawTownAttackGun(n, ref itemTexture, ref value2, ref num10, ref num12);
+ 			Vector2 origin2 = new Vector2(-num12, value2.Height / 2);
+ 			if (n.spriteDirection == -1)
+ 				origin2 = new Vector2(value2.Width + num12, value2.Height / 2);
 @@ -22048,6 +_,7 @@
  			}
  			else if (n.type == 441) {
