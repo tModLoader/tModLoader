@@ -243,6 +243,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalNPC",		from: "StrikeNPC",				to: "ModifyIncomingHit");
 		RenameMethod("Terraria.ModLoader.ModProjectile",	from: "ModifyDamageScaling",	to: "ModifyHitNPC");
 		RenameMethod("Terraria.ModLoader.GlobalProjectile",	from: "ModifyDamageScaling",	to: "ModifyHitNPC");
+		RenameMethod("Terraria.NPC",						from: "SimpleStrike",			to: "CalculateHitInfo");
+		RenameInstanceField("Terraria.NPC.HitInfo",			from: "KnockBack",				to: "Knockback");
 
 		HookRemoved("Terraria.ModLoader.ModPlayer",			"ModifyHitPvp",				"Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player");
 		HookRemoved("Terraria.ModLoader.ModPlayer",			"ModifyHitPvpWithProj",		"Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player");

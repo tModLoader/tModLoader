@@ -1840,7 +1840,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,120 @@
+@@ -64591,26 +_,159 @@
  
  		return armorPenetration / 2;
  	}
@@ -1869,11 +1869,8 @@
 +		HitInfo hit;
 +		if (Damage == 9999) {
 +			hit = new HitInfo {
-+				DamageType = DamageClass.Default,
-+				SourceDamage = Damage,
-+				Damage = 0,
 +				Crit = crit,
-+				KnockBack = knockBack,
++				Knockback = knockBack,
 +				HitDirection = hitDirection,
 +				InstantKill = true
 +			};
@@ -1887,6 +1884,13 @@
 +		return hit;
 +	}
 +
++	/// <summary>
++	/// Initializes a <see cref="HitModifiers"/> calculation with the properties of this NPC, including calling <see cref="NPCLoader.ModifyIncomingHit"/>
++	/// </summary>
++	/// <param name="damageType">The DamageType of the hit.</param>
++	/// <param name="hitDirection">The direction to apply knockback. If 0, no knockback will be applied.</param>
++	/// <param name="ignoreArmorDebuffs">Ignores <see cref="ichor"/> and <see cref="betsysCurse"/>. Only used for legacy vanilla codepaths.</param>
++	/// <returns></returns>
 +	public HitModifiers GetIncomingStrikeModifiers(DamageClass damageType, int hitDirection, bool ignoreArmorDebuffs = false)
 +	{
 +		var modifiers = new HitModifiers() with {
@@ -1927,17 +1931,52 @@
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
-+	public HitInfo SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
++	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
++	}
++
++	/// <summary>
++	/// Calls <see cref="CalculateHitInfo"/>, <see cref="StrikeNPC(HitInfo, bool, bool)"/> and then <see cref="NetMessage.SendStrikeNPC"/> (in multiplayer) <br/>
++	/// </summary>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Defaults to false</param>
++	/// <param name="knockBack">Defaults to 0</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
++	public int SimpleStrikeNPC(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0, bool noPlayerInteraction = false)
++	{
++		var hit = CalculateHitInfo(damage, hitDirection, crit, knockBack, damageType, damageVariation, luck);
++		int damageDone = StrikeNPC(hit, fromNet: false, noPlayerInteraction);
++		if (Main.netMode != NetmodeID.SinglePlayer)
++			NetMessage.SendStrikeNPC(this, hit);
++
++		return damageDone;
++	}
++
++	/// <summary>
++	/// Helper method for calling <see cref="StrikeNPC(HitInfo, bool, bool)"/> with a <see cref="HitInfo.InstantKill"/> strike. <br/>
++	/// Use to butcher your own NPCs. <br/>
++	/// Not recommended for use on multiplayer clients because the net packet will trigger <see cref="PlayerInteraction"/> on the server.
++	/// </summary>
++	public void StrikeInstantKill()
++	{
++		var hit = new NPC.HitInfo() { InstantKill = true };
++		StrikeNPC(hit, noPlayerInteraction: true);
++		if (Main.netMode != NetmodeID.SinglePlayer)
++			NetMessage.SendStrikeNPC(this, hit);
 +	}
 +
 +	/// <summary>
 +	/// Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the provided <see cref="HitInfo"/><br/>
 +	/// Calls <see cref="HitEffect(HitInfo)"/> and associated hooks after dealing damage.<br/>
 +	/// Calls <see cref="checkDead"/><br/>
-+	/// Does not automatically send packets. Use <see cref="NetMessage.SendStrikeNPC(NPC, in HitInfo, int)"/> to synchronize hits.
++	/// Does not automatically send packets. Use <see cref="NetMessage.SendStrikeNPC"/> to synchronize hits.
 +	/// </summary>
-+	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="SimpleStrike"/></param>
++	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="CalculateHitInfo"/></param>
 +	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
 +	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
 +	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
@@ -1986,8 +2025,8 @@
  				if (onFire2)
  					num3 *= 1.1f;
 +			*/
-+			if (hit.KnockBack > 0) {
-+				float num3 = hit.KnockBack;
++			if (hit.Knockback > 0) {
++				float num3 = hit.Knockback;
  
  				if (num3 > 8f) {
  					float num4 = num3 - 8f;
@@ -2029,11 +2068,11 @@
 +		instantKill ??= dmg == 9999;
 +		HitEffect(new HitInfo {
 +			DamageType = DamageClass.Default,
-+			SourceDamage = (int)dmg,
-+			Damage = instantKill.Value ? 0 : (int)dmg,
++			SourceDamage = instantKill.Value ? 1 : (int)dmg,
++			Damage = instantKill.Value ? 1 : (int)dmg,
 +			Crit = false,
 +			HitDirection = hitDirection,
-+			KnockBack = 0,
++			Knockback = 0,
 +			InstantKill = instantKill.Value
 +		});
 +	}
