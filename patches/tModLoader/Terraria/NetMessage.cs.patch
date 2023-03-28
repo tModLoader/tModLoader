@@ -193,7 +193,7 @@
 +					writer.Write7BitEncodedInt(hit.SourceDamage);
 +					writer.Write7BitEncodedInt(hit.DamageType.Type);
 +					writer.Write((sbyte)hit.HitDirection);
-+					writer.Write(hit.KnockBack);
++					writer.Write(hit.Knockback);
 +					var flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
 +					writer.Write(flags);
  					break;

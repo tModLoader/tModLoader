@@ -5640,7 +5640,7 @@
 +			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
 +			// num6 is post-variation and armor pen, only used by bees and muramasa.
 +			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
-+			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.KnockBack, npcIndex, strike.SourceDamage, dmgDone);
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, dmgDone);
  			int num7 = Item.NPCtoBanner(nPC.BannerID());
  			if (num7 >= 0)
  				lastCreatureHit = num7;

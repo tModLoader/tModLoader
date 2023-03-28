@@ -226,7 +226,7 @@ public partial class NPC
 				SourceDamage = Math.Max((int)SourceDamage.ApplyTo(baseDamage), 1),
 				Damage = _instantKill ? 1 : GetDamage(baseDamage, crit, damageVariation, luck),
 				Crit = _critOverride ?? crit,
-				KnockBack = GetKnockback(baseKnockback),
+				Knockback = GetKnockback(baseKnockback),
 				HitDirection = HitDirectionOverride ?? HitDirection,
 				InstantKill = _instantKill,
 				HideCombatText = _combatTextHidden
@@ -290,7 +290,7 @@ public partial class NPC
 		/// The amount of knockback to apply. Should always be >= 0. <br/>
 		/// Note that <see cref="NPC.StrikeNPC(HitInfo, bool, bool)"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
 		/// </summary>
-		public float KnockBack = 0;
+		public float Knockback = 0;
 
 		/// <summary>
 		/// If true, as much damage as necessary will be dealt, and damage number popups will not be shown for this hit. <br/>

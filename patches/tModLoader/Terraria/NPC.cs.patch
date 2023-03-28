@@ -1794,7 +1794,7 @@
 +		if (Damage == 9999) {
 +			hit = new HitInfo {
 +				Crit = crit,
-+				KnockBack = knockBack,
++				Knockback = knockBack,
 +				HitDirection = hitDirection,
 +				InstantKill = true
 +			};
@@ -1949,8 +1949,8 @@
  				if (onFire2)
  					num3 *= 1.1f;
 +			*/
-+			if (hit.KnockBack > 0) {
-+				float num3 = hit.KnockBack;
++			if (hit.Knockback > 0) {
++				float num3 = hit.Knockback;
  
  				if (num3 > 8f) {
  					float num4 = num3 - 8f;
@@ -1996,7 +1996,7 @@
 +			Damage = instantKill.Value ? 1 : (int)dmg,
 +			Crit = false,
 +			HitDirection = hitDirection,
-+			KnockBack = 0,
++			Knockback = 0,
 +			InstantKill = instantKill.Value
 +		});
 +	}
