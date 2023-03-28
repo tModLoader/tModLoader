@@ -1042,6 +1042,10 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>frameCounter</b></t
 <tr class="separator:a49b5abd04d31a090c88a59f3ac7d07a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d0e747e4548ea459606bcbb92b96c96"><td class="memItemLeft" align="right" valign="top"><a id="a0d0e747e4548ea459606bcbb92b96c96" name="a0d0e747e4548ea459606bcbb92b96c96"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>friendly</b></td></tr>
+<tr class="memdesc:a0d0e747e4548ea459606bcbb92b96c96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that an <a class="el" href="class_n_p_c.html">NPC</a> is friendly to players. If true, a player won't damage the <a class="el" href="class_n_p_c.html">NPC</a> and the <a class="el" href="class_n_p_c.html">NPC</a> won't deal contact damage to players, unless otherwise forced. <br  />
+ Mostly set to true for town npc and rescuable town npc. <br  />
+ Naturally spawned critter <a class="el" href="class_n_p_c.html">NPC</a> that are <a class="el" href="class_main.html#a68c6c0e4e719b5dc56055829b988ba0b" title="Used to denote an NPC as being catchable by bug nets and similar.  Contrary to its name,...">Main.npcCatchable</a> will automatically be friendly for 1.5 seconds after spawning. <br  />
+ <br /></td></tr>
 <tr class="separator:a0d0e747e4548ea459606bcbb92b96c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affc73e56ef27f75f03300fd184e7b66c"><td class="memItemLeft" align="right" valign="top"><a id="affc73e56ef27f75f03300fd184e7b66c" name="affc73e56ef27f75f03300fd184e7b66c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>friendlyRegen</b></td></tr>
@@ -1243,6 +1247,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>reflectsProjectiles</
 <tr class="separator:addf44ff73d1bb4bc3b6e8b234030f56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad22e85ca1fd0c717d9d54eb91179c86c"><td class="memItemLeft" align="right" valign="top"><a id="ad22e85ca1fd0c717d9d54eb91179c86c" name="ad22e85ca1fd0c717d9d54eb91179c86c"></a>
 short&#160;</td><td class="memItemRight" valign="bottom"><b>releaseOwner</b> = 255</td></tr>
+<tr class="memdesc:ad22e85ca1fd0c717d9d54eb91179c86c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifies the player who released this <a class="el" href="class_n_p_c.html">NPC</a> into the world. Used mainly for released critters. Helps limit how many critters a player can release. Default to 255, indicating that the npc was not released by a player. <br /></td></tr>
 <tr class="separator:ad22e85ca1fd0c717d9d54eb91179c86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46690e1097a51d957ca6801f0bc905c1"><td class="memItemLeft" align="right" valign="top"><a id="a46690e1097a51d957ca6801f0bc905c1" name="a46690e1097a51d957ca6801f0bc905c1"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>rotation</b></td></tr>

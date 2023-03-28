@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"struct_item_i_d_1_1_banner_effect.html#a35fc7bf757781d601b604dedad736cf9":[3,0,595,0,0],
+"struct_item_i_d_1_1_banner_effect.html#a4d02bf4d90579faf43f6993217783505":[3,0,595,0,4],
 "struct_item_i_d_1_1_banner_effect.html#a5fa97458ee4e665b898b47ee6f98fefb":[3,0,595,0,1],
 "struct_item_i_d_1_1_banner_effect.html#a6daf82ec4e7a15e9f65c5adf58137b57":[3,0,595,0,7],
 "struct_item_i_d_1_1_banner_effect.html#a9caec4582bd6bac8e1940cc433fb41c9":[3,0,595,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "struct_wing_stats.html#abf355405085b9afc488a708364c3f8d2":[3,0,1399,7],
 "struct_wing_stats.html#afb5122ef5b805cf2a526235908bf7c29":[3,0,1399,2],
 "struct_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html":[3,0,1405,1,4],
-"struct_world_gen_1_1_check_tree_settings.html":[3,0,1417,0],
-"struct_world_gen_1_1_grow_tree_settings.html":[3,0,1417,1],
-"struct_world_gen_1_1_tile_merge_cull_cache.html":[3,0,1417,6]
+"struct_world_gen_1_1_check_tree_settings.html":[3,0,1417,0]
 };

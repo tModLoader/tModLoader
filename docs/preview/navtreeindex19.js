@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"functions_vars.html":[3,3,2],
+"functions_vars.html":[3,3,2,0],
 "functions_vars_b.html":[3,3,2,1],
 "functions_vars_c.html":[3,3,2,2],
 "functions_vars_d.html":[3,3,2,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_item_1_1_disable_clone_method.html":[3,0,581,0],
 "struct_item_drop_attempt_result.html":[3,0,586],
 "struct_item_i_d_1_1_banner_effect.html":[3,0,595,0],
-"struct_item_i_d_1_1_banner_effect.html#a30bb345ffe13aaec5504742fbf4fb6c3":[3,0,595,0,5],
-"struct_item_i_d_1_1_banner_effect.html#a35fc7bf757781d601b604dedad736cf9":[3,0,595,0,0],
-"struct_item_i_d_1_1_banner_effect.html#a4d02bf4d90579faf43f6993217783505":[3,0,595,0,4]
+"struct_item_i_d_1_1_banner_effect.html#a30bb345ffe13aaec5504742fbf4fb6c3":[3,0,595,0,5]
 };

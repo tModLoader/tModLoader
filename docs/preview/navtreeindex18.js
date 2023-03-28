@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_u_i_vertical_slider.html":[3,0,1312],
+"class_u_i_virtual_keyboard.html":[3,0,1313],
 "class_u_i_workshop_hub.html":[3,0,1314],
 "class_u_i_workshop_import_world_list_item.html":[3,0,1315],
 "class_u_i_workshop_publish_resource_pack_list_item.html":[3,0,1316],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "functions_s.html":[3,3,0,18],
 "functions_t.html":[3,3,0,19],
 "functions_u.html":[3,3,0,20],
-"functions_v.html":[3,3,0,21],
-"functions_vars.html":[3,3,2],
-"functions_vars.html":[3,3,2,0]
+"functions_v.html":[3,3,0,21]
 };

@@ -65,7 +65,7 @@ var searchData=
   ['framecounter_62',['frameCounter',['../class_chest.html#a8c2a8ab4d3868cf3a8a4f127af8fd4c1',1,'Chest.frameCounter()'],['../class_projectile.html#a3140e5a7fc51a92f726863ee1bd1f86c',1,'Projectile.frameCounter()']]],
   ['freeadvanced_63',['freeAdvanced',['../class_popup_text.html#a00c0066594c7f345ed6fa8943baddd7c',1,'PopupText']]],
   ['freegolemhead_64',['FreeGolemHead',['../class_n_p_c_a_i_style_i_d.html#aafe506ce4bf82170fd282a8741e19d18',1,'NPCAIStyleID']]],
-  ['friendly_65',['friendly',['../class_projectile.html#ac64a90bef6c47cf5804770e63f522a87',1,'Projectile']]],
+  ['friendly_65',['friendly',['../class_n_p_c.html#a0d0e747e4548ea459606bcbb92b96c96',1,'NPC.friendly()'],['../class_projectile.html#ac64a90bef6c47cf5804770e63f522a87',1,'Projectile.friendly()']]],
   ['frontaccback_66',['FrontAccBack',['../class_player_draw_layers.html#a77664daef3a39d0bb800b0374b41bf1b',1,'PlayerDrawLayers']]],
   ['frontaccfront_67',['FrontAccFront',['../class_player_draw_layers.html#a71a62c95bb0a4653384a2e150db81324',1,'PlayerDrawLayers']]],
   ['frontcape_68',['frontCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a93f98317856c858ca11a8ed4a9f0554d',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],

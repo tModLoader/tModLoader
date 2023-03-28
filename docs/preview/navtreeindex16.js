@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"class_rare_spawn_bestiary_info_element.html":[3,0,991],
+"class_rarity_loader.html":[3,0,992],
 "class_raw_img_reader.html":[3,0,993],
 "class_recipe.html":[3,0,994],
 "class_recipe.html#a15eaf435d1348b0e68a4865e08ee157c":[3,0,994,20],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1152,0],
 "class_t_e_teleportation_pylon.html":[3,0,1156],
 "class_t_e_training_dummy.html":[3,0,1157],
-"class_t_e_weapons_rack.html":[3,0,1158],
-"class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae":[3,0,1158,3],
-"class_t_e_weapons_rack.html#a66040a1ab7f3a6e4566e92a167935c19":[3,0,1158,1]
+"class_t_e_weapons_rack.html":[3,0,1158]
 };

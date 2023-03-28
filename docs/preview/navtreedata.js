@@ -60,15 +60,15 @@ var NAVTREEINDEX =
 "class_mod_player.html#a14d39bdf1c86b2c68945dacbf5952290",
 "class_mod_system.html#a10467c193f43ee4d910254ef48229acc",
 "class_music_i_d.html",
-"class_n_p_c_i_d_1_1_sets.html#a3d6fcf1b1aebf8d3b001051eb09cb093",
-"class_player.html#acdf8e12ddf06f366c080f718a62899d7",
-"class_proj_a_i_style_i_d.html#a3e846dd95d935448182cbe4d342ce3d6",
-"class_raw_img_reader.html",
-"class_t_e_weapons_rack.html#aaa4875b78ecf4e734f17bfaecb1f2353",
-"class_u_i_workshop_hub.html",
-"functions_vars_b.html",
-"struct_item_i_d_1_1_banner_effect.html#a5fa97458ee4e665b898b47ee6f98fefb",
-"structnativefiledialog_1_1nfdpathset__t.html"
+"class_n_p_c_i_d_1_1_sets.html#a346685ba200fa2c32c234a4da8376e16",
+"class_player.html#ac8bcb50bf826874dfa2d162af367d013",
+"class_proj_a_i_style_i_d.html#a3d43fdff9f9801317a7a320900f874be",
+"class_rare_spawn_bestiary_info_element.html",
+"class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae",
+"class_u_i_vertical_slider.html",
+"functions_vars.html",
+"struct_item_i_d_1_1_banner_effect.html#a35fc7bf757781d601b604dedad736cf9",
+"struct_world_gen_1_1_grow_tree_settings.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

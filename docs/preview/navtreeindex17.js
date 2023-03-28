@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae":[3,0,1158,3],
+"class_t_e_weapons_rack.html#a66040a1ab7f3a6e4566e92a167935c19":[3,0,1158,1],
 "class_t_e_weapons_rack.html#aaa4875b78ecf4e734f17bfaecb1f2353":[3,0,1158,2],
 "class_t_e_weapons_rack.html#ac4e0e7b7865af88f21cbfccda6320747":[3,0,1158,0],
 "class_t_mod_content_source.html":[3,0,1203],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_text_box.html":[3,0,1308],
 "class_u_i_text_panel.html":[3,0,1309],
 "class_u_i_toggle_image.html":[3,0,1310],
-"class_u_i_vertical_separator.html":[3,0,1311],
-"class_u_i_vertical_slider.html":[3,0,1312],
-"class_u_i_virtual_keyboard.html":[3,0,1313]
+"class_u_i_vertical_separator.html":[3,0,1311]
 };
