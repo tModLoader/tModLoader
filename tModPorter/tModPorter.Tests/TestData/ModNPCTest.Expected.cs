@@ -82,6 +82,10 @@ public class ModNPCTest : ModNPC
 		return false;
 #endif
 	}
+	public void HitMemberRename(NPC npc) {
+		var hit = npc.CalculateHitInfo(0, 0);
+		hit.Knockback = 2;
+	}
 	public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) => false;
 	public override void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset) { }
 }
