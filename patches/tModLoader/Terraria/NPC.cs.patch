@@ -15,7 +15,7 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -65,8 +_,19 @@
+@@ -65,8 +_,22 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
  	public Vector2 netOffset = Vector2.Zero;
@@ -27,6 +27,9 @@
 +	/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
 +	/// </summary>
 +	public int catchItem; //TML: Changed from short to int for convenience and consistency purposes.
++	/// <summary>
++	/// Identifies the player who released this NPC into the world. Used mainly for released critters. Helps limit how many critters a player can release. Default to 255, indicating that the npc was not released by a player.
++	/// </summary>
  	public short releaseOwner = 255;
 +
 +	/// <summary>
@@ -409,6 +412,18 @@
  	public float value;
  	public int extraValue;
  	public bool dontTakeDamage;
+@@ -290,6 +_,11 @@
+ 	public bool oldHomeless;
+ 	public int oldHomeTileX = -1;
+ 	public int oldHomeTileY = -1;
++	/// <summary>
++	/// Indicates that an NPC is friendly to players. If true, a player won't damage the NPC and the NPC won't deal contact damage to players, unless otherwise forced. <br/>
++	/// Mostly set to true for town npc and rescuable town npc. <br/>
++	/// Naturally spawned critter NPC that are <see cref="Main.npcCatchable"/> will automatically be friendly for 1.5 seconds after spawning. <br/>
++	/// </summary>
+ 	public bool friendly;
+ 	public bool closeDoor;
+ 	public int doorX;
 @@ -382,7 +_,9 @@
  	private static bool dayTimeHax;
  	private static bool rainingHax;
@@ -747,7 +762,7 @@
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type]) { 
++		if (type >= 0 && Main.npcCatchable[type]) {
  			catchableNPCTempImmunityCounter = 90;
 +			catchableNPCOriginallyFriendly = friendly; 
  			friendly = true;
