@@ -79,12 +79,13 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
-		public override bool ConsumableDodge(PlayerDeathReason damageSource, int cooldownCounter) {
+		public override bool ConsumableDodge(Player.HurtInfo info) {
 			if (exampleDodge) {
 				ExampleDodgeEffects();
 				return true;
 			}
-			return base.ConsumableDodge(damageSource, cooldownCounter);
+
+			return false;
 		}
 
 		// ExampleDodgeEffects() will be called from ConsumableDodge and HandleExampleDodgeMessage to sync the effect.

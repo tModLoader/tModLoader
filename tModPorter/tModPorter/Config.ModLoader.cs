@@ -233,6 +233,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitByNPC");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHitByProjectile");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"FreeDodge");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ConsumableDodge");
 
 		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "CanHitNPC",				to: "CanHitNPCWithItem");
 		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "ModifyHitNPC",			to: "ModifyHitNPCWithItem");

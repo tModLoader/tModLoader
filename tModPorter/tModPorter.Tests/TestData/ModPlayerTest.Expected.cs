@@ -115,4 +115,7 @@ public class ModPlayerTest : ModPlayer
 	public override void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)/* tModPorter Note: Removed. Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player */ { }
 	public override void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)/* tModPorter Note: Removed. Use OnHurt on the receiving player and check info.PvP. Use info.DamageSource.SourcePlayerIndex to get the attacking player */ { }
 #endif
+
+	public override bool FreeDodge(Player.HurtInfo info) => false;
+	public override bool ConsumableDodge(Player.HurtInfo info) => false;
 }
