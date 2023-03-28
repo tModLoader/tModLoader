@@ -10,6 +10,8 @@ using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ExampleMod.Content.Items.Weapons;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -28,8 +30,9 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs.
 			NPCID.Sets.AttackFrameCount[Type] = 4;
 			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
-			NPCID.Sets.AttackType[Type] = 0;
-			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
+			NPCID.Sets.PrettySafe[Type] = 300;
+			NPCID.Sets.AttackType[Type] = 1; // Shoots a weapon.
+			NPCID.Sets.AttackTime[Type] = 60; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
 			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
@@ -174,17 +177,51 @@ namespace ExampleMod.Content.NPCs
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {
 			damage = 20;
-			knockback = 4f;
+			knockback = 2f;
 		}
 
 		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown) {
-			cooldown = 30;
-			randExtraCooldown = 30;
+			cooldown = 10;
+			randExtraCooldown = 1;
+		}
+
+		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
+			projType = ProjectileID.NanoBullet;
+			attackDelay = 1;
+
+			// This code progressively delays subsequent shots.
+			if (NPC.localAI[3] > attackDelay) {
+				attackDelay = 12;
+			}
+			if (NPC.localAI[3] > attackDelay) {
+				attackDelay = 24;
+			}
 		}
 
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
-			multiplier = 12f;
-			randomOffset = 2f;
+			multiplier = 10f;
+			randomOffset = 0.2f;
+		}
+
+		public override void TownNPCAttackShoot(ref bool inBetweenShots) {
+			if (NPC.localAI[3] > 1) {
+				inBetweenShots = true;
+			}
+		}
+
+		public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset) {
+			if (!NPC.IsShimmerVariant) {
+				// If using an existing item, use this approach
+				int itemType = ModContent.ItemType<ExampleCustomAmmoGun>();
+				Main.GetItemDrawFrame(itemType, out item, out itemFrame);
+				horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - 12;
+			}
+			else {
+				// This texture isn't actually an existing item, but can still be used.
+				item = ModContent.Request<Texture2D>(Texture + "_Shimmer_Gun").Value;
+				itemFrame = item.Frame();
+				horizontalHoldoutOffset = -2;
+			}
 		}
 	}
 }
