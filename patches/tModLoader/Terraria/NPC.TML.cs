@@ -46,6 +46,8 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// </summary>
 	public IBigProgressBar BossBar { get; set; }
 
+	private bool catchableNPCOriginallyFriendly; // TML: Fix #3299, Allow npcCatchable to work with friendly npc.
+
 	public NPC()
 	{
 		thisEntitySourceCache = new EntitySource_Parent(this);

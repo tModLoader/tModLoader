@@ -15,7 +15,7 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -65,8 +_,19 @@
+@@ -65,8 +_,22 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
  	public Vector2 netOffset = Vector2.Zero;
@@ -27,6 +27,9 @@
 +	/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
 +	/// </summary>
 +	public int catchItem; //TML: Changed from short to int for convenience and consistency purposes.
++	/// <summary>
++	/// Identifies the player who released this NPC into the world. Used mainly for released critters. Helps limit how many critters a player can release. Default to 255, indicating that the npc was not released by a player.
++	/// </summary>
  	public short releaseOwner = 255;
 +
 +	/// <summary>
@@ -409,6 +412,18 @@
  	public float value;
  	public int extraValue;
  	public bool dontTakeDamage;
+@@ -290,6 +_,11 @@
+ 	public bool oldHomeless;
+ 	public int oldHomeTileX = -1;
+ 	public int oldHomeTileY = -1;
++	/// <summary>
++	/// Indicates that an NPC is friendly to players. If true, a player won't damage the NPC and the NPC won't deal contact damage to players, unless otherwise forced. <br/>
++	/// Mostly set to true for town npc and rescuable town npc. <br/>
++	/// Naturally spawned critter NPC that are <see cref="Main.npcCatchable"/> will automatically be friendly for 1.5 seconds after spawning. <br/>
++	/// </summary>
+ 	public bool friendly;
+ 	public bool closeDoor;
+ 	public int doorX;
 @@ -382,7 +_,9 @@
  	private static bool dayTimeHax;
  	private static bool rainingHax;
@@ -663,6 +678,66 @@
  		setFrameSize = false;
  		netSkip = -2;
  		realLife = -1;
+@@ -6970,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2002;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 358) {
+ 			width = 12;
+@@ -7216,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2740;
+ 			npcSlots = 0.1f;
+ 		}
+@@ -7680,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2893;
+ 			npcSlots = 0.1f;
+ 			rarity = 3;
+@@ -7709,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2895;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			rarity = 3;
+ 		}
+ 		else if (type == 449) {
+@@ -7936,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = (short)(3191 + type - 484);
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 488) {
+ 			width = 18;
+@@ -9994,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 4363;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 607) {
+ 			noGravity = true;
 @@ -10793,13 +_,18 @@
  			catchItem = 2121;
  		}
@@ -682,13 +757,14 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
-@@ -10841,12 +_,12 @@
+@@ -10841,12 +_,13 @@
  		else if (Main.tenthAnniversaryWorld)
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
 +		if (type >= 0 && Main.npcCatchable[type]) {
  			catchableNPCTempImmunityCounter = 90;
++			catchableNPCOriginallyFriendly = friendly; 
  			friendly = true;
  		}
  
@@ -2109,15 +2185,31 @@
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
-@@ -72655,7 +_,7 @@
+@@ -72653,19 +_,21 @@
+ 		justHit = false;
+ 	}
  
++
  	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type]) {
++		// TML: changed logic to not assume npcCatchable npc should not be friendly after invulnerability period. Also only run code during period to prevent undoing intentional changes to friendly in AI code.
++		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter > 0) {
  			if (releaseOwner != 255 || SpawnedFromStatue)
  				catchableNPCTempImmunityCounter = 0;
  
+ 			bool num = friendly;
++			catchableNPCTempImmunityCounter--;
+ 			if (catchableNPCTempImmunityCounter > 0) {
+-				catchableNPCTempImmunityCounter--;
+ 				friendly = true;
+ 			}
+ 			else {
+-				friendly = false;
++				friendly = catchableNPCOriginallyFriendly;
+ 			}
+ 
+ 			if (num != friendly)
 @@ -72760,6 +_,8 @@
  		}
  	}

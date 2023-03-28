@@ -364,7 +364,7 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -942,6 +_,12 @@
+@@ -942,6 +_,13 @@
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
  	public static bool[] tileFlame = new bool[TileID.Count];
@@ -373,6 +373,7 @@
 +	/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
 +	/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
 +	/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++	/// These NPC will be forced <see cref="NPC.friendly"/> for 1.5 seconds if naturally spawned.<br/>
 +	/// </summary>
  	public static bool[] npcCatchable = new bool[NPCID.Count];
  	public static int[] tileFrame = new int[TileID.Count];
