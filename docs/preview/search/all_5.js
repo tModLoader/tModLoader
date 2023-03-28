@@ -132,7 +132,7 @@ var searchData=
   ['frameworkversion_129',['FrameworkVersion',['../class_framework_version.html',1,'']]],
   ['framing_130',['Framing',['../class_framing.html',1,'']]],
   ['freeadvanced_131',['freeAdvanced',['../class_popup_text.html#a00c0066594c7f345ed6fa8943baddd7c',1,'PopupText']]],
-  ['freedodge_132',['FreeDodge',['../class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503',1,'ModPlayer']]],
+  ['freedodge_132',['FreeDodge',['../class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618',1,'ModPlayer']]],
   ['freegolemhead_133',['FreeGolemHead',['../class_n_p_c_a_i_style_i_d.html#aafe506ce4bf82170fd282a8741e19d18',1,'NPCAIStyleID']]],
   ['freezerainpower_134',['FreezeRainPower',['../class_creative_powers_1_1_freeze_rain_power.html',1,'CreativePowers']]],
   ['freezetime_135',['FreezeTime',['../class_creative_powers_1_1_freeze_time.html',1,'CreativePowers']]],

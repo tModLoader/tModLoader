@@ -229,7 +229,7 @@ var searchData=
   ['constructfrombase_226',['ConstructFromBase',['../class_mod_tile_entity.html#ad373ed2d9adf27645bbd575c8aafd658',1,'ModTileEntity']]],
   ['constructfromtype_227',['ConstructFromType',['../class_mod_tile_entity.html#af7238b15e8012a7506c9a789b94e2991',1,'ModTileEntity']]],
   ['consumable_228',['consumable',['../class_item.html#ac6ff27af31d1bf259434de86917579fb',1,'Item']]],
-  ['consumabledodge_229',['ConsumableDodge',['../class_mod_player.html#a251630e79f0bf9ff067bf12445b8e9c8',1,'ModPlayer']]],
+  ['consumabledodge_229',['ConsumableDodge',['../class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf',1,'ModPlayer']]],
   ['consumables_230',['Consumables',['../class_item_filters_1_1_consumables.html',1,'ItemFilters']]],
   ['consumeammoonfirstshotonly_231',['consumeAmmoOnFirstShotOnly',['../class_item.html#af50e755297ab9529ba9282c0a16aa0c4',1,'Item']]],
   ['consumeammoonlastshotonly_232',['consumeAmmoOnLastShotOnly',['../class_item.html#aa1ba575eb88a5eb7de33b27efa4ece6b',1,'Item']]],

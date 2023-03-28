@@ -57,7 +57,7 @@ var NAVTREEINDEX =
 "class_item_loader.html#a89e80c1a38407d62ae36654f4a49c623",
 "class_minecart_digger_helper.html",
 "class_mod_item.html#a44335a4cb0096527824a56e993cfe0b4",
-"class_mod_player.html#a14d39bdf1c86b2c68945dacbf5952290",
+"class_mod_player.html#a19964efe7ba5a1564052b3000665b641",
 "class_mod_system.html#a10467c193f43ee4d910254ef48229acc",
 "class_music_i_d.html",
 "class_n_p_c_i_d_1_1_sets.html#a1e27dc0cd15bcd4774ce5c69a86fd71e",

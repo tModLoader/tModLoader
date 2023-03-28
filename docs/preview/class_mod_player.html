@@ -173,15 +173,15 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memitem:a031921ab7d8289137eac8285865bb432"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a031921ab7d8289137eac8285865bb432">CatchFish</a> (<a class="el" href="struct_fishing_attempt.html">FishingAttempt</a> attempt, ref int itemDrop, ref int npcSpawn, ref <a class="el" href="struct_advanced_popup_request.html">AdvancedPopupRequest</a> sonar, ref Vector2 sonarPosition)</td></tr>
 <tr class="memdesc:a031921ab7d8289137eac8285865bb432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the item or enemy the player gets when sucessfully catching an item or <a class="el" href="class_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_n_p_c.html">NPC</a>) freely  <a href="class_mod_player.html#a031921ab7d8289137eac8285865bb432">More...</a><br /></td></tr>
 <tr class="separator:a031921ab7d8289137eac8285865bb432"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a251630e79f0bf9ff067bf12445b8e9c8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a251630e79f0bf9ff067bf12445b8e9c8">ConsumableDodge</a> (<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a> damageSource, int cooldownCounter)</td></tr>
-<tr class="memdesc:a251630e79f0bf9ff067bf12445b8e9c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dodge damage for a player.<br  />
+<tr class="memitem:a4afd4db6bd12cec91f783a4bf0fd10bf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf">ConsumableDodge</a> (<a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> info)</td></tr>
+<tr class="memdesc:a4afd4db6bd12cec91f783a4bf0fd10bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dodge damage for a player.<br  />
  Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br  />
- For dodges which are 'free' and should be used before triggering consumables, use <a class="el" href="class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503" title="Allows you to dodge damage for a player. Intended for guaranteed &#39;free&#39; or random dodges....">FreeDodge</a> instead.<br  />
+ For dodges which are 'free' and should be used before triggering consumables, use <a class="el" href="class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618" title="Allows you to dodge damage for a player. Intended for guaranteed &#39;free&#39; or random dodges....">FreeDodge</a> instead.<br  />
  <br  />
  Only runs on the local client of the player receiving the damage. <br  />
  If dodge is determined on the local player, the hit will not be sent across the network. <br  />
- You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.  <a href="class_mod_player.html#a251630e79f0bf9ff067bf12445b8e9c8">More...</a><br /></td></tr>
-<tr class="separator:a251630e79f0bf9ff067bf12445b8e9c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.  <a href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf">More...</a><br /></td></tr>
+<tr class="separator:a4afd4db6bd12cec91f783a4bf0fd10bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99b4decd672a09196ad922ccdf4d03ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a99b4decd672a09196ad922ccdf4d03ec">CopyClientState</a> (<a class="el" href="class_mod_player.html">ModPlayer</a> targetCopy)</td></tr>
 <tr class="memdesc:a99b4decd672a09196ad922ccdf4d03ec"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
  Allows you to copy information that you intend to sync between server and client to the <em>targetCopy</em>  parameter. <br  />
@@ -199,15 +199,15 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>FrameEffects</b> ()</td></tr>
 <tr class="memdesc:a4c43f816c48cdfdfab5ffe524f27ec3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust. <br /></td></tr>
 <tr class="separator:a4c43f816c48cdfdfab5ffe524f27ec3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a046aee266ef1ac52bca54ff6c6ae5503"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503">FreeDodge</a> (<a class="el" href="class_player_death_reason.html">PlayerDeathReason</a> damageSource, int cooldownCounter)</td></tr>
-<tr class="memdesc:a046aee266ef1ac52bca54ff6c6ae5503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br  />
+<tr class="memitem:a71c0e6fc69f1e25cd85ed8576ce13618"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618">FreeDodge</a> (<a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> info)</td></tr>
+<tr class="memdesc:a71c0e6fc69f1e25cd85ed8576ce13618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br  />
  Vanilla example is black belt.<br  />
- For dodges which consume a stack/buff or have a cooldown, use <a class="el" href="class_mod_player.html#a251630e79f0bf9ff067bf12445b8e9c8" title="Allows you to dodge damage for a player.  Vanilla examples include hallowed armor shadow dodge,...">ConsumableDodge</a> instead.<br  />
+ For dodges which consume a stack/buff or have a cooldown, use <a class="el" href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf" title="Allows you to dodge damage for a player.  Vanilla examples include hallowed armor shadow dodge,...">ConsumableDodge</a> instead.<br  />
  <br  />
  Only runs on the local client of the player receiving the damage. <br  />
  If dodge is determined on the local player, the hit will not be sent across the network. <br  />
- If visual indication of the dodge is required on remote clients, you will need to send your own packet.  <a href="class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503">More...</a><br /></td></tr>
-<tr class="separator:a046aee266ef1ac52bca54ff6c6ae5503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ If visual indication of the dodge is required on remote clients, you will need to send your own packet.  <a href="class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618">More...</a><br /></td></tr>
+<tr class="separator:a71c0e6fc69f1e25cd85ed8576ce13618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a839b0c83e115caf35a0ed5ecf50d216d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a839b0c83e115caf35a0ed5ecf50d216d">GetDyeTraderReward</a> (<a class="el" href="class_list.html">List</a>&lt; int &gt; rewardPool)</td></tr>
 <tr class="memdesc:a839b0c83e115caf35a0ed5ecf50d216d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify what items are possible for the player to earn when giving a Strange Plant to the Dye Trader.  <a href="class_mod_player.html#a839b0c83e115caf35a0ed5ecf50d216d">More...</a><br /></td></tr>
 <tr class="separator:a839b0c83e115caf35a0ed5ecf50d216d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -297,7 +297,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHurt</b
  Called on local, server and remote clients. <br  />
  Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br  />
  Use <a class="el" href="class_mod_player.html#aacc3f719106ed7fca9e2c036fbfebe45" title="Allows you to make anything happen when the player takes damage.   Called on local,...">OnHurt</a> or <a class="el" href="class_mod_player.html#a33be7355e232a4123421d13d7caf9940" title="Allows you to make anything happen when the player takes damage.   Called on local,...">PostHurt</a> instead where possible. <br  />
- The player will always take at least 1 damage. To prevent damage <a class="el" href="class_mod_player.html#a36713d1e34d50e3125362ae1b4406ee5" title="Allows you to make a player immune to damage from a certain source, or at a certain time....">ImmuneTo</a> or <a class="el" href="class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503" title="Allows you to dodge damage for a player. Intended for guaranteed &#39;free&#39; or random dodges....">FreeDodge</a> <br  />
+ The player will always take at least 1 damage. To prevent damage <a class="el" href="class_mod_player.html#a36713d1e34d50e3125362ae1b4406ee5" title="Allows you to make a player immune to damage from a certain source, or at a certain time....">ImmuneTo</a> or <a class="el" href="class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618" title="Allows you to dodge damage for a player. Intended for guaranteed &#39;free&#39; or random dodges....">FreeDodge</a> <br  />
  <br /></td></tr>
 <tr class="separator:a409538188666d901da58617d9b4ac57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae93bbd70e8c66f4d5b7e2d3511e4fadb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#ae93bbd70e8c66f4d5b7e2d3511e4fadb">ModifyItemScale</a> (<a class="el" href="class_item.html">Item</a> item, ref float scale)</td></tr>
@@ -1561,8 +1561,8 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 
 </div>
 </div>
-<a id="a251630e79f0bf9ff067bf12445b8e9c8" name="a251630e79f0bf9ff067bf12445b8e9c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a251630e79f0bf9ff067bf12445b8e9c8">&#9670;&nbsp;</a></span>ConsumableDodge()</h2>
+<a id="a4afd4db6bd12cec91f783a4bf0fd10bf" name="a4afd4db6bd12cec91f783a4bf0fd10bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4afd4db6bd12cec91f783a4bf0fd10bf">&#9670;&nbsp;</a></span>ConsumableDodge()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1573,19 +1573,9 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
         <tr>
           <td class="memname">virtual bool ModPlayer.ConsumableDodge </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td>
-          <td class="paramname"><em>damageSource</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a>&#160;</td>
+          <td class="paramname"><em>info</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>cooldownCounter</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1597,18 +1587,11 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 
 <p>Allows you to dodge damage for a player.<br  />
  Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br  />
- For dodges which are 'free' and should be used before triggering consumables, use <a class="el" href="class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503" title="Allows you to dodge damage for a player. Intended for guaranteed &#39;free&#39; or random dodges....">FreeDodge</a> instead.<br  />
+ For dodges which are 'free' and should be used before triggering consumables, use <a class="el" href="class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618" title="Allows you to dodge damage for a player. Intended for guaranteed &#39;free&#39; or random dodges....">FreeDodge</a> instead.<br  />
  <br  />
  Only runs on the local client of the player receiving the damage. <br  />
  If dodge is determined on the local player, the hit will not be sent across the network. <br  />
  You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">damageSource</td><td>The source of the damage (projectile, <a class="el" href="class_n_p_c.html">NPC</a>, etc)</td></tr>
-    <tr><td class="paramname">cooldownCounter</td><td>The <a class="el" href="class_immunity_cooldown_i_d.html">ImmunityCooldownID</a> of the hit</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>True to completely ignore the hit</dd></dl>
 
 </div>
@@ -1757,8 +1740,8 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 
 </div>
 </div>
-<a id="a046aee266ef1ac52bca54ff6c6ae5503" name="a046aee266ef1ac52bca54ff6c6ae5503"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a046aee266ef1ac52bca54ff6c6ae5503">&#9670;&nbsp;</a></span>FreeDodge()</h2>
+<a id="a71c0e6fc69f1e25cd85ed8576ce13618" name="a71c0e6fc69f1e25cd85ed8576ce13618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71c0e6fc69f1e25cd85ed8576ce13618">&#9670;&nbsp;</a></span>FreeDodge()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1769,19 +1752,9 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
         <tr>
           <td class="memname">virtual bool ModPlayer.FreeDodge </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td>
-          <td class="paramname"><em>damageSource</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a>&#160;</td>
+          <td class="paramname"><em>info</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>cooldownCounter</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1793,18 +1766,11 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 
 <p>Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br  />
  Vanilla example is black belt.<br  />
- For dodges which consume a stack/buff or have a cooldown, use <a class="el" href="class_mod_player.html#a251630e79f0bf9ff067bf12445b8e9c8" title="Allows you to dodge damage for a player.  Vanilla examples include hallowed armor shadow dodge,...">ConsumableDodge</a> instead.<br  />
+ For dodges which consume a stack/buff or have a cooldown, use <a class="el" href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf" title="Allows you to dodge damage for a player.  Vanilla examples include hallowed armor shadow dodge,...">ConsumableDodge</a> instead.<br  />
  <br  />
  Only runs on the local client of the player receiving the damage. <br  />
  If dodge is determined on the local player, the hit will not be sent across the network. <br  />
  If visual indication of the dodge is required on remote clients, you will need to send your own packet. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">damageSource</td><td>The source of the damage (projectile, <a class="el" href="class_n_p_c.html">NPC</a>, etc)</td></tr>
-    <tr><td class="paramname">cooldownCounter</td><td>The <a class="el" href="class_immunity_cooldown_i_d.html">ImmunityCooldownID</a> of the hit</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>True to completely ignore the hit</dd></dl>
 
 </div>

@@ -243,11 +243,11 @@ var NAVTREEINDEX9 =
 "class_mod_palm_tree.html#af32727e80d17c9a70845b1476b0de396":[3,0,759,2],
 "class_mod_player.html":[3,0,760],
 "class_mod_player.html#a031921ab7d8289137eac8285865bb432":[3,0,760,19],
-"class_mod_player.html#a046aee266ef1ac52bca54ff6c6ae5503":[3,0,760,24],
 "class_mod_player.html#a06d300d3a15d328a3a504e100318efc5":[3,0,760,18],
 "class_mod_player.html#a07262283140e5f0b7977051b678b26b1":[3,0,760,96],
 "class_mod_player.html#a0a73016c97f920cc3022e4c45fc9470c":[3,0,760,109],
 "class_mod_player.html#a0b4366d1ba7df8a0ead2b44e5baaa8c2":[3,0,760,11],
 "class_mod_player.html#a0db6b0e6f4f7fe22ece2fad254541edd":[3,0,760,59],
-"class_mod_player.html#a1492d374034e69d02adb0038a6005172":[3,0,760,5]
+"class_mod_player.html#a1492d374034e69d02adb0038a6005172":[3,0,760,5],
+"class_mod_player.html#a14d39bdf1c86b2c68945dacbf5952290":[3,0,760,66]
 };

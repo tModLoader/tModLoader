@@ -80,7 +80,7 @@ var searchData=
   ['colormultiplier_77',['ColorMultiplier',['../class_mod_waterfall_style.html#a131cbc0499db548575b1bffefa00a17c',1,'ModWaterfallStyle']]],
   ['constructfrombase_78',['ConstructFromBase',['../class_mod_tile_entity.html#ad373ed2d9adf27645bbd575c8aafd658',1,'ModTileEntity']]],
   ['constructfromtype_79',['ConstructFromType',['../class_mod_tile_entity.html#af7238b15e8012a7506c9a789b94e2991',1,'ModTileEntity']]],
-  ['consumabledodge_80',['ConsumableDodge',['../class_mod_player.html#a251630e79f0bf9ff067bf12445b8e9c8',1,'ModPlayer']]],
+  ['consumabledodge_80',['ConsumableDodge',['../class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf',1,'ModPlayer']]],
   ['consumeitem_81',['ConsumeItem',['../class_item_loader.html#af34577b89d0660a6b252315cb49f0521',1,'ItemLoader.ConsumeItem()'],['../class_mod_item.html#a899ed968444cbf89a032cd401f6f3f90',1,'ModItem.ConsumeItem()'],['../class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c',1,'RecipeLoader.ConsumeItem()'],['../class_player.html#a8894857f3ee4202362ac2d3947fc7e84',1,'Player.ConsumeItem()'],['../class_global_item.html#ad2b18f62232732eae106b48de1904eb3',1,'GlobalItem.ConsumeItem()']]],
   ['convert_82',['Convert',['../class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494',1,'WorldGen']]],
   ['coordstopos_83',['CoordsToPos',['../struct_pos_data.html#ac88465266a438788d12582053b9f9932',1,'PosData']]],
