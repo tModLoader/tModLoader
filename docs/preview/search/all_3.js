@@ -229,7 +229,7 @@ var searchData=
   ['drawscreencheckfluff_226',['DrawScreenCheckFluff',['../class_projectile_i_d_1_1_sets.html#af38fa705ece65d7f941a93a0df36fcbe',1,'ProjectileID::Sets']]],
   ['drawsinnecklayer_227',['DrawsInNeckLayer',['../class_armor_i_ds_1_1_front_1_1_sets.html#a58f94963c0a0f108c884a8ad73605fb6',1,'ArmorIDs::Front::Sets']]],
   ['drawticksattribute_228',['DrawTicksAttribute',['../class_draw_ticks_attribute.html',1,'']]],
-  ['drawtownattackgun_229',['DrawTownAttackGun',['../class_global_n_p_c.html#adf061b7edaeedb602ee563d032350736',1,'GlobalNPC.DrawTownAttackGun()'],['../class_mod_n_p_c.html#a6420c889d630d0cd51591ee4706829bb',1,'ModNPC.DrawTownAttackGun(ref float scale, ref int item, ref int closeness)']]],
+  ['drawtownattackgun_229',['DrawTownAttackGun',['../class_global_n_p_c.html#a1da5aeb61e511d2647d994aff6de2a10',1,'GlobalNPC.DrawTownAttackGun()'],['../class_mod_n_p_c.html#a9940e3d04ca0f8e38fef41a199e13621',1,'ModNPC.DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)']]],
   ['drawtownattackswing_230',['DrawTownAttackSwing',['../class_mod_n_p_c.html#a69ca86691d005cfad6822f3e1bf12d33',1,'ModNPC.DrawTownAttackSwing()'],['../class_global_n_p_c.html#aaebac936b40bd875052fcab37545c67b',1,'GlobalNPC.DrawTownAttackSwing()']]],
   ['drawunsafeindicator_231',['DrawUnsafeIndicator',['../class_item_i_d_1_1_sets.html#a02b6f4761f0bf05e4b5592d2cab258f2',1,'ItemID::Sets']]],
   ['drawverticalalignment_232',['DrawVerticalAlignment',['../class_accessory_slot_loader.html#a5a76ad789c8fa80b92f6447a02c7b927',1,'AccessorySlotLoader']]],

@@ -46,7 +46,7 @@ var searchData=
   ['drawmana_43',['DrawMana',['../class_mod_resource_display_set.html#a672fab3a1a786572572090d9e4a9e3d4',1,'ModResourceDisplaySet']]],
   ['drawmapicon_44',['DrawMapIcon',['../class_mod_pylon.html#a6de89aa5e95828e19f32646a5f07b3f9',1,'ModPylon']]],
   ['drawresource_45',['DrawResource',['../class_resource_overlay_loader.html#a6551c6239e6df82eb715e9674a7d7616',1,'ResourceOverlayLoader']]],
-  ['drawtownattackgun_46',['DrawTownAttackGun',['../class_global_n_p_c.html#adf061b7edaeedb602ee563d032350736',1,'GlobalNPC.DrawTownAttackGun()'],['../class_mod_n_p_c.html#a6420c889d630d0cd51591ee4706829bb',1,'ModNPC.DrawTownAttackGun()']]],
+  ['drawtownattackgun_46',['DrawTownAttackGun',['../class_global_n_p_c.html#a1da5aeb61e511d2647d994aff6de2a10',1,'GlobalNPC.DrawTownAttackGun()'],['../class_mod_n_p_c.html#a9940e3d04ca0f8e38fef41a199e13621',1,'ModNPC.DrawTownAttackGun()']]],
   ['drawtownattackswing_47',['DrawTownAttackSwing',['../class_global_n_p_c.html#aaebac936b40bd875052fcab37545c67b',1,'GlobalNPC.DrawTownAttackSwing()'],['../class_mod_n_p_c.html#a69ca86691d005cfad6822f3e1bf12d33',1,'ModNPC.DrawTownAttackSwing()']]],
   ['drop_48',['Drop',['../class_global_tile.html#a7bbde788cba66acfd18f62fec2b139af',1,'GlobalTile.Drop()'],['../class_global_wall.html#a4c68c359fda675d590609b2de070af91',1,'GlobalWall.Drop()'],['../class_mod_wall.html#a9f0546972f19658b7c7e55b557df2024',1,'ModWall.Drop()']]],
   ['dropcache_49',['DropCache',['../class_item.html#ac33ddc6742cac7a20704bdccc4036778',1,'Item']]],

@@ -24,7 +24,7 @@ var class_mod_n_p_c =
     [ "DrawBehind", "class_mod_n_p_c.html#a38e287cc0b3e5c7f972fb78749e83e8d", null ],
     [ "DrawEffects", "class_mod_n_p_c.html#ac5ebaf7cafa1e165a9fcf5479d10b9ed", null ],
     [ "DrawHealthBar", "class_mod_n_p_c.html#a07c0e4f83fd52ac180816a3aa463096a", null ],
-    [ "DrawTownAttackGun", "class_mod_n_p_c.html#a6420c889d630d0cd51591ee4706829bb", null ],
+    [ "DrawTownAttackGun", "class_mod_n_p_c.html#a9940e3d04ca0f8e38fef41a199e13621", null ],
     [ "DrawTownAttackSwing", "class_mod_n_p_c.html#a69ca86691d005cfad6822f3e1bf12d33", null ],
     [ "FindFrame", "class_mod_n_p_c.html#af372ab81defe98db878f181a8c66978c", null ],
     [ "GetAlpha", "class_mod_n_p_c.html#a75059d9fe33c30f53fb501670d6fa4f1", null ],
