@@ -4,6 +4,7 @@ var struct_n_p_c_1_1_hit_modifiers =
     [ "HideCombatText", "struct_n_p_c_1_1_hit_modifiers.html#a3559cbc95072314a723c58c10e014a0f", null ],
     [ "SetCrit", "struct_n_p_c_1_1_hit_modifiers.html#a1877b3584118b32c9ad35e504bf67161", null ],
     [ "SetInstantKill", "struct_n_p_c_1_1_hit_modifiers.html#a05bb280b449f6b6caced58296875901b", null ],
+    [ "SetMaxDamage", "struct_n_p_c_1_1_hit_modifiers.html#a736e6da887fc94e12343f7037139e0a6", null ],
     [ "ArmorPenetration", "struct_n_p_c_1_1_hit_modifiers.html#a5cd98f3779db944a0599ac1ebbe8be4a", null ],
     [ "CritDamage", "struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1", null ],
     [ "DamageVariationScale", "struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e", null ],

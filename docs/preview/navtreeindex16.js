@@ -1,5 +1,10 @@
 var NAVTREEINDEX16 =
 {
+"class_rain_shader.html":[3,0,986],
+"class_randomized_frame_particle.html":[3,0,987],
+"class_range_attribute.html":[3,0,988],
+"class_range_element.html":[3,0,990],
+"class_ranged_damage_class.html":[3,0,989],
 "class_rare_spawn_bestiary_info_element.html":[3,0,991],
 "class_rarity_loader.html":[3,0,992],
 "class_raw_img_reader.html":[3,0,993],
@@ -244,10 +249,5 @@ var NAVTREEINDEX16 =
 "class_t_e_item_frame.html#a8c302b9477e1295a59782c7c57aa2727":[3,0,1145,2],
 "class_t_e_item_frame.html#abf8f2f669298cb42025c267d95b1a83f":[3,0,1145,1],
 "class_t_e_logic_sensor.html":[3,0,1151],
-"class_t_e_modded_pylon.html":[3,0,1152],
-"class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d":[3,0,1152,1],
-"class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1152,0],
-"class_t_e_teleportation_pylon.html":[3,0,1156],
-"class_t_e_training_dummy.html":[3,0,1157],
-"class_t_e_weapons_rack.html":[3,0,1158]
+"class_t_e_modded_pylon.html":[3,0,1152]
 };

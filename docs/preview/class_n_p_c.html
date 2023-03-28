@@ -159,6 +159,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>BloodNautilus_GetMout
 <tr class="memitem:a87e1b11c1b3a5043109c9d44ee0261d5"><td class="memItemLeft" align="right" valign="top"><a id="a87e1b11c1b3a5043109c9d44ee0261d5" name="a87e1b11c1b3a5043109c9d44ee0261d5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Boss_CanShootExtraAt</b> (int playerIndex, int rotationIndexToAttack, int rotationSize, float attackScanDistance, bool alwaysSkipMainTarget=true)</td></tr>
 <tr class="separator:a87e1b11c1b3a5043109c9d44ee0261d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77e09a18418cc3ce69c59f4fb9ada67d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_n_p_c_1_1_hit_info.html">HitInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d">CalculateHitInfo</a> (int <a class="el" href="class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580">damage</a>, int hitDirection, bool crit=false, float knockBack=0f, <a class="el" href="class_damage_class.html">DamageClass</a> damageType=null, bool damageVariation=false, float luck=0)</td></tr>
+<tr class="memdesc:a77e09a18418cc3ce69c59f4fb9ada67d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations. <br  />
+ The result <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> will contain the health the <a class="el" href="class_n_p_c.html">NPC</a> will lose when applied. <br  />
+  <a href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d">More...</a><br /></td></tr>
+<tr class="separator:a77e09a18418cc3ce69c59f4fb9ada67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b296f26e12edaedac912cddd7691525"><td class="memItemLeft" align="right" valign="top"><a id="a2b296f26e12edaedac912cddd7691525" name="a2b296f26e12edaedac912cddd7691525"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanApplyHunterPotionEffects</b> ()</td></tr>
 <tr class="separator:a2b296f26e12edaedac912cddd7691525"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -283,8 +288,8 @@ Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (Color 
 <tr class="memitem:a6ff9f1ca30bd9e108b5f6384b9f33cf4"><td class="memItemLeft" align="right" valign="top"><a id="a6ff9f1ca30bd9e108b5f6384b9f33cf4" name="a6ff9f1ca30bd9e108b5f6384b9f33cf4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetImmuneTime</b> (int fromWho, int time)</td></tr>
 <tr class="separator:a6ff9f1ca30bd9e108b5f6384b9f33cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a821efa5e5bebb9fffc6fe365eea23e8e"><td class="memItemLeft" align="right" valign="top"><a id="a821efa5e5bebb9fffc6fe365eea23e8e" name="a821efa5e5bebb9fffc6fe365eea23e8e"></a>
-<a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">HitModifiers</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetIncomingStrikeModifiers</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageType, int hitDirection, bool ignoreArmorDebuffs=false)</td></tr>
+<tr class="memitem:a821efa5e5bebb9fffc6fe365eea23e8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">HitModifiers</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a821efa5e5bebb9fffc6fe365eea23e8e">GetIncomingStrikeModifiers</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageType, int hitDirection, bool ignoreArmorDebuffs=false)</td></tr>
+<tr class="memdesc:a821efa5e5bebb9fffc6fe365eea23e8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html" title="Represents a damage calculation in the process of being calculated for damage to be applied to an NPC...">HitModifiers</a> calculation with the properties of this <a class="el" href="class_n_p_c.html">NPC</a>, including calling NPCLoader.ModifyIncomingHit  <a href="class_n_p_c.html#a821efa5e5bebb9fffc6fe365eea23e8e">More...</a><br /></td></tr>
 <tr class="separator:a821efa5e5bebb9fffc6fe365eea23e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4e2ebdbe2ae675391e233ed4ed4c2a3"><td class="memItemLeft" align="right" valign="top"><a id="aa4e2ebdbe2ae675391e233ed4ed4c2a3" name="aa4e2ebdbe2ae675391e233ed4ed4c2a3"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>GetLifePercent</b> ()</td></tr>
@@ -440,11 +445,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldFaceTarget</b> 
 <tr class="memitem:a7b1283a08852430d1a7d0bb049d78a53"><td class="memItemLeft" align="right" valign="top"><a id="a7b1283a08852430d1a7d0bb049d78a53" name="a7b1283a08852430d1a7d0bb049d78a53"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SimpleFlyMovement</b> (Vector2 desiredVelocity, float moveSpeed)</td></tr>
 <tr class="separator:a7b1283a08852430d1a7d0bb049d78a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05869357b0e48967bf77d160e4e69a66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_n_p_c_1_1_hit_info.html">HitInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66">SimpleStrike</a> (int <a class="el" href="class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580">damage</a>, int hitDirection, bool crit=false, float knockBack=0f, <a class="el" href="class_damage_class.html">DamageClass</a> damageType=null, bool damageVariation=false, float luck=0)</td></tr>
-<tr class="memdesc:a05869357b0e48967bf77d160e4e69a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations. <br  />
- The result <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> will contain the health the <a class="el" href="class_n_p_c.html">NPC</a> will lose when applied. <br  />
-  <a href="class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66">More...</a><br /></td></tr>
-<tr class="separator:a05869357b0e48967bf77d160e4e69a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a768a784294f8cac81a855fa5fbeb9e30"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a768a784294f8cac81a855fa5fbeb9e30">SimpleStrikeNPC</a> (int <a class="el" href="class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580">damage</a>, int hitDirection, bool crit=false, float knockBack=0f, <a class="el" href="class_damage_class.html">DamageClass</a> damageType=null, bool damageVariation=false, float luck=0, bool noPlayerInteraction=false)</td></tr>
+<tr class="memdesc:a768a784294f8cac81a855fa5fbeb9e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d" title="Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations.   The result HitInf...">CalculateHitInfo</a>, <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and then <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a> (in multiplayer) <br  />
+  <a href="class_n_p_c.html#a768a784294f8cac81a855fa5fbeb9e30">More...</a><br /></td></tr>
+<tr class="separator:a768a784294f8cac81a855fa5fbeb9e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a730d6d0e9d96e451fc08814adeb807ba"><td class="memItemLeft" align="right" valign="top"><a id="a730d6d0e9d96e451fc08814adeb807ba" name="a730d6d0e9d96e451fc08814adeb807ba"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SitDown</b> (Point anchorTilePosition, out int direction, out Vector2 bottom)</td></tr>
 <tr class="memdesc:a730d6d0e9d96e451fc08814adeb807ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for getting the parameters for seating a town <a class="el" href="class_n_p_c.html">NPC</a>. Assumes the tile at <em>anchorTilePosition</em>  is a valid tile for sitting <br /></td></tr>
@@ -452,11 +456,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SitDown</b> (Point an
 <tr class="memitem:a0acfad7a2ac1e29cb7441066f3f000b3"><td class="memItemLeft" align="right" valign="top"><a id="a0acfad7a2ac1e29cb7441066f3f000b3" name="a0acfad7a2ac1e29cb7441066f3f000b3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnWithHigherTime</b> (int timeMult)</td></tr>
 <tr class="separator:a0acfad7a2ac1e29cb7441066f3f000b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9628e88277c1abb2d7ebf19d6c2d024b"><td class="memItemLeft" align="right" valign="top"><a id="a9628e88277c1abb2d7ebf19d6c2d024b" name="a9628e88277c1abb2d7ebf19d6c2d024b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StrikeInstantKill</b> ()</td></tr>
+<tr class="memdesc:a9628e88277c1abb2d7ebf19d6c2d024b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for calling <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> with a <a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47" title="If true, as much damage as necessary will be dealt, and damage number popups will not be shown for th...">HitInfo.InstantKill</a> strike. <br  />
+ Use to butcher your own NPCs. <br  />
+ Not recommended for use on multiplayer clients because the net packet will trigger PlayerInteraction on the server. <br /></td></tr>
+<tr class="separator:a9628e88277c1abb2d7ebf19d6c2d024b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99d0dc536e4ca397859fcb73a9871a79"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79">StrikeNPC</a> (<a class="el" href="struct_n_p_c_1_1_hit_info.html">HitInfo</a> hit, bool fromNet=false, bool noPlayerInteraction=false)</td></tr>
 <tr class="memdesc:a99d0dc536e4ca397859fcb73a9871a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directly deals damage to the <a class="el" href="class_n_p_c.html">NPC</a>, spawns combat text, plays hit sound, deals knockback based on the provided <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a><br  />
  Calls HitEffect(HitInfo) and associated hooks after dealing damage.<br  />
  Calls checkDead<br  />
- Does not automatically send packets. Use NetMessage.SendStrikeNPC(NPC, in HitInfo, int) to synchronize hits.  <a href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79">More...</a><br /></td></tr>
+ Does not automatically send packets. Use <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a> to synchronize hits.  <a href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79">More...</a><br /></td></tr>
 <tr class="separator:a99d0dc536e4ca397859fcb73a9871a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="memItemLeft" align="right" valign="top"><a id="ace46ba11f1b49ba040e73aed0b05b1d9" name="ace46ba11f1b49ba040e73aed0b05b1d9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TargetClosest</b> (bool faceTarget=true)</td></tr>
@@ -2012,6 +2022,81 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a77e09a18418cc3ce69c59f4fb9ada67d" name="a77e09a18418cc3ce69c59f4fb9ada67d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77e09a18418cc3ce69c59f4fb9ada67d">&#9670;&nbsp;</a></span>CalculateHitInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_n_p_c_1_1_hit_info.html">HitInfo</a> NPC.CalculateHitInfo </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>damage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hitDirection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>crit</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>knockBack</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageType</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>damageVariation</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>luck</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations. <br  />
+ The result <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> will contain the health the <a class="el" href="class_n_p_c.html">NPC</a> will lose when applied. <br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damage</td><td>The damage to deal to the <a class="el" href="class_n_p_c.html">NPC</a>, before modifications, defense, resistances etc</td></tr>
+    <tr><td class="paramname">hitDirection</td><td>The hit direction of the resulting strike (1 or -1)</td></tr>
+    <tr><td class="paramname">crit</td><td>Defaults to false</td></tr>
+    <tr><td class="paramname">knockBack</td><td>Defaults to 0</td></tr>
+    <tr><td class="paramname">damageType</td><td>Defaults to DamageClass.Default</td></tr>
+    <tr><td class="paramname">damageVariation</td><td>Whether to apply damage variation. Defaults to false.</td></tr>
+    <tr><td class="paramname">luck</td><td>Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a> for use with <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a></dd></dl>
+
+</div>
+</div>
 <a id="a64991e8657153fdce11c33746dc806fa" name="a64991e8657153fdce11c33746dc806fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64991e8657153fdce11c33746dc806fa">&#9670;&nbsp;</a></span>CheckCatchNPC()</h2>
 
@@ -2192,6 +2277,51 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a821efa5e5bebb9fffc6fe365eea23e8e" name="a821efa5e5bebb9fffc6fe365eea23e8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a821efa5e5bebb9fffc6fe365eea23e8e">&#9670;&nbsp;</a></span>GetIncomingStrikeModifiers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">HitModifiers</a> NPC.GetIncomingStrikeModifiers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hitDirection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignoreArmorDebuffs</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes a <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html" title="Represents a damage calculation in the process of being calculated for damage to be applied to an NPC...">HitModifiers</a> calculation with the properties of this <a class="el" href="class_n_p_c.html">NPC</a>, including calling NPCLoader.ModifyIncomingHit </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageType</td><td>The DamageType of the hit.</td></tr>
+    <tr><td class="paramname">hitDirection</td><td>The direction to apply knockback. If 0, no knockback will be applied.</td></tr>
+    <tr><td class="paramname">ignoreArmorDebuffs</td><td>Ignores ichor and betsysCurse. Only used for legacy vanilla codepaths.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2584,14 +2714,14 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 
 </div>
 </div>
-<a id="a05869357b0e48967bf77d160e4e69a66" name="a05869357b0e48967bf77d160e4e69a66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05869357b0e48967bf77d160e4e69a66">&#9670;&nbsp;</a></span>SimpleStrike()</h2>
+<a id="a768a784294f8cac81a855fa5fbeb9e30" name="a768a784294f8cac81a855fa5fbeb9e30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a768a784294f8cac81a855fa5fbeb9e30">&#9670;&nbsp;</a></span>SimpleStrikeNPC()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_n_p_c_1_1_hit_info.html">HitInfo</a> NPC.SimpleStrike </td>
+          <td class="memname">int NPC.SimpleStrikeNPC </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>damage</em>, </td>
@@ -2630,7 +2760,13 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>luck</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>luck</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noPlayerInteraction</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2640,8 +2776,7 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
       </table>
 </div><div class="memdoc">
 
-<p>Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations. <br  />
- The result <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> will contain the health the <a class="el" href="class_n_p_c.html">NPC</a> will lose when applied. <br  />
+<p>Calls <a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d" title="Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations.   The result HitInf...">CalculateHitInfo</a>, <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and then <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a> (in multiplayer) <br  />
  </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2652,10 +2787,11 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
     <tr><td class="paramname">damageType</td><td>Defaults to DamageClass.Default</td></tr>
     <tr><td class="paramname">damageVariation</td><td>Whether to apply damage variation. Defaults to false.</td></tr>
     <tr><td class="paramname">luck</td><td>Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</td></tr>
+    <tr><td class="paramname">noPlayerInteraction</td><td>Prevents PlayerInteraction(int) from being called in singleplayer. In multiplayer, player interaction is handled by the server.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a> for use with <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The actual health lost by the <a class="el" href="class_n_p_c.html">NPC</a>. Normally this is <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> but it is capped at the current health of the <a class="el" href="class_n_p_c.html">NPC</a>, and represents the actual damge dealt in the case of <a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47" title="If true, as much damage as necessary will be dealt, and damage number popups will not be shown for th...">HitInfo.InstantKill</a> </dd></dl>
 
 </div>
 </div>
@@ -2694,10 +2830,10 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 <p>Directly deals damage to the <a class="el" href="class_n_p_c.html">NPC</a>, spawns combat text, plays hit sound, deals knockback based on the provided <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a><br  />
  Calls HitEffect(HitInfo) and associated hooks after dealing damage.<br  />
  Calls checkDead<br  />
- Does not automatically send packets. Use NetMessage.SendStrikeNPC(NPC, in HitInfo, int) to synchronize hits. </p>
+ Does not automatically send packets. Use <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a> to synchronize hits. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">hit</td><td>The parameters of the hit. Normally obtained via <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html" title="Represents a damage calculation in the process of being calculated for damage to be applied to an NPC...">NPC.HitModifiers</a> or <a class="el" href="class_n_p_c.html#a05869357b0e48967bf77d160e4e69a66" title="Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations.   The result HitInf...">SimpleStrike</a></td></tr>
+    <tr><td class="paramname">hit</td><td>The parameters of the hit. Normally obtained via <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html" title="Represents a damage calculation in the process of being calculated for damage to be applied to an NPC...">NPC.HitModifiers</a> or <a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d" title="Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations.   The result HitInf...">CalculateHitInfo</a></td></tr>
     <tr><td class="paramname">fromNet</td><td>true if this strike came from another client over the network. Just changes the combat text to be darker in color.</td></tr>
     <tr><td class="paramname">noPlayerInteraction</td><td>Prevents PlayerInteraction(int) from being called in singleplayer. In multiplayer, player interaction is handled by the server.</td></tr>
   </table>

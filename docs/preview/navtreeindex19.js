@@ -1,5 +1,10 @@
 var NAVTREEINDEX19 =
 {
+"functions_r.html":[3,3,0,17],
+"functions_s.html":[3,3,0,18],
+"functions_t.html":[3,3,0,19],
+"functions_u.html":[3,3,0,20],
+"functions_v.html":[3,3,0,21],
 "functions_vars.html":[3,3,2],
 "functions_vars.html":[3,3,2,0],
 "functions_vars_b.html":[3,3,2,1],
@@ -244,10 +249,5 @@ var NAVTREEINDEX19 =
 "struct_golf_helper_1_1_shot_strength.html":[3,0,440,2],
 "struct_helper_info.html":[3,0,457],
 "struct_hook_list_1_1_instance_enumerator.html":[3,0,463,0],
-"struct_instanced.html":[3,0,542],
-"struct_int_range.html":[3,0,543],
-"struct_item_1_1_disable_clone_method.html":[3,0,581,0],
-"struct_item_drop_attempt_result.html":[3,0,586],
-"struct_item_i_d_1_1_banner_effect.html":[3,0,595,0],
-"struct_item_i_d_1_1_banner_effect.html#a30bb345ffe13aaec5504742fbf4fb6c3":[3,0,595,0,5]
+"struct_instanced.html":[3,0,542]
 };

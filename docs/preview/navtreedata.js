@@ -60,15 +60,15 @@ var NAVTREEINDEX =
 "class_mod_player.html#a14d39bdf1c86b2c68945dacbf5952290",
 "class_mod_system.html#a10467c193f43ee4d910254ef48229acc",
 "class_music_i_d.html",
-"class_n_p_c_i_d_1_1_sets.html#a346685ba200fa2c32c234a4da8376e16",
-"class_player.html#ac8bcb50bf826874dfa2d162af367d013",
-"class_proj_a_i_style_i_d.html#a3d43fdff9f9801317a7a320900f874be",
-"class_rare_spawn_bestiary_info_element.html",
-"class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae",
-"class_u_i_vertical_slider.html",
-"functions_vars.html",
-"struct_item_i_d_1_1_banner_effect.html#a35fc7bf757781d601b604dedad736cf9",
-"struct_world_gen_1_1_grow_tree_settings.html"
+"class_n_p_c_i_d_1_1_sets.html#a1e27dc0cd15bcd4774ce5c69a86fd71e",
+"class_player.html#ac0d99ef77f3caa4cac5217ae7c0092ff",
+"class_proj_a_i_style_i_d.html#a3265d2e3e20ee22fb8be4ea0378f34a3",
+"class_rain_shader.html",
+"class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d",
+"class_u_i_text.html",
+"functions_r.html",
+"struct_int_range.html",
+"struct_wing_stats.html#a6ee3e93f253426d74d7945285f6caba2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

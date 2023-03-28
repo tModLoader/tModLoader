@@ -125,6 +125,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetInstantKill</b> ()
 <tr class="memdesc:a05bb280b449f6b6caced58296875901b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to make the hit instantly kill the target, dealing as much damage as necessary. <br  />
  Combat text will not be shown. <br /></td></tr>
 <tr class="separator:a05bb280b449f6b6caced58296875901b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a736e6da887fc94e12343f7037139e0a6"><td class="memItemLeft" align="right" valign="top"><a id="a736e6da887fc94e12343f7037139e0a6" name="a736e6da887fc94e12343f7037139e0a6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxDamage</b> (int limit)</td></tr>
+<tr class="memdesc:a736e6da887fc94e12343f7037139e0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an inclusive upper bound on the final damage of the hit. <br  />
+ Can be set by multiple mods, in which case the lowest limit will be used. <br  />
+ Cannot be set to less than 1 <br /></td></tr>
+<tr class="separator:a736e6da887fc94e12343f7037139e0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2d8041dcaf1ef9638166a0cb2eaae29"><td class="memItemLeft" align="right" valign="top"><a id="ae2d8041dcaf1ef9638166a0cb2eaae29" name="ae2d8041dcaf1ef9638166a0cb2eaae29"></a>
 <a class="el" href="struct_n_p_c_1_1_hit_info.html">HitInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ToHitInfo</b> (float baseDamage, bool crit, float baseKnockback, bool damageVariation=false, float luck=0f)</td></tr>
 <tr class="separator:ae2d8041dcaf1ef9638166a0cb2eaae29"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,7 +257,7 @@ int?&#160;</td><td class="memItemRight" valign="bottom"><b>HitDirectionOverride<
 <tr class="memitem:af77c582a376918753e76b24f4fda031c"><td class="memItemLeft" align="right" valign="top"><a id="af77c582a376918753e76b24f4fda031c" name="af77c582a376918753e76b24f4fda031c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SuperArmor</b> = false<code> [get]</code></td></tr>
 <tr class="memdesc:af77c582a376918753e76b24f4fda031c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, no amount of damage can get through the defense of this <a class="el" href="class_n_p_c.html">NPC</a>, damage will be reduced to 1. <br  />
- <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1" title="Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (...">CritDamage</a> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 10. <br  />
+ <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1" title="Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (...">CritDamage</a> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 4. <br  />
  <br /></td></tr>
 <tr class="separator:af77c582a376918753e76b24f4fda031c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">

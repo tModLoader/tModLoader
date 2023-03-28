@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d":[3,0,1152,1],
+"class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1152,0],
+"class_t_e_teleportation_pylon.html":[3,0,1156],
+"class_t_e_training_dummy.html":[3,0,1157],
+"class_t_e_weapons_rack.html":[3,0,1158],
 "class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae":[3,0,1158,3],
 "class_t_e_weapons_rack.html#a66040a1ab7f3a6e4566e92a167935c19":[3,0,1158,1],
 "class_t_e_weapons_rack.html#aaa4875b78ecf4e734f17bfaecb1f2353":[3,0,1158,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_sliced_image.html":[3,0,1303],
 "class_u_i_slider_base.html":[3,0,1304],
 "class_u_i_sortable_element.html":[3,0,1305],
-"class_u_i_state.html":[3,0,1306],
-"class_u_i_text.html":[3,0,1307],
-"class_u_i_text_box.html":[3,0,1308],
-"class_u_i_text_panel.html":[3,0,1309],
-"class_u_i_toggle_image.html":[3,0,1310],
-"class_u_i_vertical_separator.html":[3,0,1311]
+"class_u_i_state.html":[3,0,1306]
 };

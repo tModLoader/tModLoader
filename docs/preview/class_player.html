@@ -187,9 +187,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuf
 <tr class="memitem:aa10790d4d3b5b448ab842361895c5926"><td class="memItemLeft" align="right" valign="top"><a id="aa10790d4d3b5b448ab842361895c5926" name="aa10790d4d3b5b448ab842361895c5926"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuff</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="separator:aa10790d4d3b5b448ab842361895c5926"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa819bb312ed50678d3bc23840ce460b6"><td class="memItemLeft" align="right" valign="top"><a id="aa819bb312ed50678d3bc23840ce460b6" name="aa819bb312ed50678d3bc23840ce460b6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyDamageToNPC</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int direction, bool crit, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null, bool damageVariation=false)</td></tr>
-<tr class="separator:aa819bb312ed50678d3bc23840ce460b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579382395e10ab8a10ba1c52254892d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a579382395e10ab8a10ba1c52254892d5">ApplyDamageToNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int direction, bool crit=false, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null, bool damageVariation=false)</td></tr>
+<tr class="memdesc:a579382395e10ab8a10ba1c52254892d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deals damage to an <a class="el" href="class_n_p_c.html">NPC</a> (and syncs the hit in multiplayer). <br  />
+ The damage will be affected by modifiers, armor pen, enemy resistances etc. <br  />
+ Will not apply damage class modifiers/knockback. Use GetTotalDamage&lt;T&gt; to adjust the damage before calling if necessary. <br  />
+ Will apply daamage class based armor penetration. <br  />
+ Will exit early with no effect if PlayerLoader.CanHitNPC returns false.  <a href="class_player.html#a579382395e10ab8a10ba1c52254892d5">More...</a><br /></td></tr>
+<tr class="separator:a579382395e10ab8a10ba1c52254892d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae96b0bccb55bee8c4ce574a1072f5752"><td class="memItemLeft" align="right" valign="top"><a id="ae96b0bccb55bee8c4ce574a1072f5752" name="ae96b0bccb55bee8c4ce574a1072f5752"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyEquipFunctional</b> (<a class="el" href="class_item.html">Item</a> currentItem, bool hideVisual)</td></tr>
 <tr class="separator:ae96b0bccb55bee8c4ce574a1072f5752"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1201,8 +1205,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StickyMovement</b> ()
 <tr class="memitem:a3a4160de9a4e478262a9ba25b33cd03a"><td class="memItemLeft" align="right" valign="top"><a id="a3a4160de9a4e478262a9ba25b33cd03a" name="a3a4160de9a4e478262a9ba25b33cd03a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StopVanityActions</b> (bool multiplayerBroadcast=true)</td></tr>
 <tr class="separator:a3a4160de9a4e478262a9ba25b33cd03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5747bc3c4c71944001372293befb3fd"><td class="memItemLeft" align="right" valign="top"><a id="aa5747bc3c4c71944001372293befb3fd" name="aa5747bc3c4c71944001372293befb3fd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StrikeNPCDirect</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit)</td></tr>
+<tr class="memitem:aa5747bc3c4c71944001372293befb3fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#aa5747bc3c4c71944001372293befb3fd">StrikeNPCDirect</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit)</td></tr>
+<tr class="memdesc:aa5747bc3c4c71944001372293befb3fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a hit to an <a class="el" href="class_n_p_c.html">NPC</a> via <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">NPC.StrikeNPC(NPC.HitInfo, bool, bool)</a>. <br  />
+ Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike  <a href="class_player.html#aa5747bc3c4c71944001372293befb3fd">More...</a><br /></td></tr>
 <tr class="separator:aa5747bc3c4c71944001372293befb3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7c45999862391dc1fdd3f9a8cf24c4c"><td class="memItemLeft" align="right" valign="top"><a id="ad7c45999862391dc1fdd3f9a8cf24c4c" name="ad7c45999862391dc1fdd3f9a8cf24c4c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SummonItemCheck</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
@@ -5192,6 +5197,82 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a579382395e10ab8a10ba1c52254892d5" name="a579382395e10ab8a10ba1c52254892d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a579382395e10ab8a10ba1c52254892d5">&#9670;&nbsp;</a></span>ApplyDamageToNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Player.ApplyDamageToNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>damage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>knockback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>crit</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>?&#160;</td>
+          <td class="paramname"><em>damageType</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>damageVariation</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deals damage to an <a class="el" href="class_n_p_c.html">NPC</a> (and syncs the hit in multiplayer). <br  />
+ The damage will be affected by modifiers, armor pen, enemy resistances etc. <br  />
+ Will not apply damage class modifiers/knockback. Use GetTotalDamage&lt;T&gt; to adjust the damage before calling if necessary. <br  />
+ Will apply daamage class based armor penetration. <br  />
+ Will exit early with no effect if PlayerLoader.CanHitNPC returns false. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_n_p_c.html">NPC</a> to strike</td></tr>
+    <tr><td class="paramname">damage</td><td>The damage to deal to the <a class="el" href="class_n_p_c.html">NPC</a>, before modifications, defense, resistances etc</td></tr>
+    <tr><td class="paramname">knockback</td><td>The amount of knockback to apply</td></tr>
+    <tr><td class="paramname">direction</td><td>The hit direction of the resulting strike (1 or -1)</td></tr>
+    <tr><td class="paramname">crit</td><td>Whether or not the strike is a crit</td></tr>
+    <tr><td class="paramname">damageType</td><td>Defaults to DamageClass.Default</td></tr>
+    <tr><td class="paramname">damageVariation</td><td>Whether to apply damage variation. Defaults to false.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a782b58d9c3dfc2ce794de1d9c280f046" name="a782b58d9c3dfc2ce794de1d9c280f046"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a782b58d9c3dfc2ce794de1d9c280f046">&#9670;&nbsp;</a></span>CheckMana()</h2>
 
@@ -6464,6 +6545,44 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="aa5747bc3c4c71944001372293befb3fd" name="aa5747bc3c4c71944001372293befb3fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5747bc3c4c71944001372293befb3fd">&#9670;&nbsp;</a></span>StrikeNPCDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Player.StrikeNPCDirect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a>&#160;</td>
+          <td class="paramname"><em>hit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Applies a hit to an <a class="el" href="class_n_p_c.html">NPC</a> via <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">NPC.StrikeNPC(NPC.HitInfo, bool, bool)</a>. <br  />
+ Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_n_p_c.html">NPC</a> to strike</td></tr>
+    <tr><td class="paramname">hit</td><td>The hit to apply</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

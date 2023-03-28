@@ -2,6 +2,7 @@ var struct_player_1_1_hurt_modifiers =
 [
     [ "DisableDust", "struct_player_1_1_hurt_modifiers.html#a91dc16c0ded57f497609926b87ec2125", null ],
     [ "DisableSound", "struct_player_1_1_hurt_modifiers.html#a4eb3681039301ffd4896697254a99afa", null ],
+    [ "SetMaxDamage", "struct_player_1_1_hurt_modifiers.html#aa447fefe1c6804405d6279704d2bd833", null ],
     [ "ArmorPenetration", "struct_player_1_1_hurt_modifiers.html#a5cecfb1b3ecc71f5dc9e570c4b22e193", null ],
     [ "FinalDamage", "struct_player_1_1_hurt_modifiers.html#a509721d96a3aa071202b2fbc1758f8a4", null ],
     [ "IncomingDamageMultiplier", "struct_player_1_1_hurt_modifiers.html#a57975e2d412fa105cc1c8c95e9914ed7", null ],
