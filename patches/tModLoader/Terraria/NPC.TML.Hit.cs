@@ -24,7 +24,7 @@ public partial class NPC
 
 		/// <summary>
 		/// If true, no amount of damage can get through the defense of this NPC, damage will be reduced to 1. <br/>
-		/// <see cref="CritDamage"/> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 10. <br/>
+		/// <see cref="CritDamage"/> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 4. <br/>
 		/// </summary>
 		public bool SuperArmor { get; init; } = false;
 
@@ -193,7 +193,7 @@ public partial class NPC
 				if (_critOverride ?? crit)
 					dmg *= CritDamage.Additive * CritDamage.Multiplicative;
 
-				return Math.Clamp((int)dmg, 1, Math.Min(_damageLimit, 10));
+				return Math.Clamp((int)dmg, 1, Math.Min(_damageLimit, 4));
 			}
 
 			float damage = SourceDamage.ApplyTo(baseDamage);
