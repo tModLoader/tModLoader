@@ -237,10 +237,18 @@
  	public static int maxTilesY = (int)bottomWorld / 16 + 1;
  	public const int sectionWidth = 200;
  	public const int sectionHeight = 150;
-@@ -687,7 +_,7 @@
- 	public const int maxItems = 400;
- 	public const int maxProjectiles = 1000;
- 	public const int maxNPCs = 200;
+@@ -683,11 +_,11 @@
+ 	public const int maxItemText = 20;
+ 	public const int maxPlayers = 255;
+ 	public static int maxNetPlayers = 255;
+-	public const int maxChests = 8000;
++	public static readonly int maxChests = 8000;
+-	public const int maxItems = 400;
++	public static readonly int maxItems = 400;
+-	public const int maxProjectiles = 1000;
++	public static readonly int maxProjectiles = 1000;
+-	public const int maxNPCs = 200;
++	public static readonly int maxNPCs = 200;
 -	private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
 +	internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
  	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
