@@ -150,5 +150,6 @@ public class ModAddRecipes : Mod
 
 	public void NewRecipeMethodConditionRefactors(Recipe recipe) {
 		recipe.AddCondition(Condition.TimeDay);
+		recipe.AddCondition(Condition.InGraveyard);
 	}
 }
