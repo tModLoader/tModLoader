@@ -122,6 +122,14 @@ public partial class NPC
 		/// </summary>
 		public MultipliableFloat DamageVariationScale = new();
 
+		private int _damageLimit = int.MaxValue;
+		/// <summary>
+		/// Sets an inclusive upper bound on the final damage of the hit. <br/>
+		/// Can be set by multiple mods, in which case the lowest limit will be used. <br/>
+		/// Cannot be set to less than 1
+		/// </summary>
+		public void SetMaxDamage(int limit) => _damageLimit = Math.Min(_damageLimit, Math.Max(limit, 1));
+
 		private bool? _critOverride = default;
 
 		/// <summary>
@@ -185,7 +193,7 @@ public partial class NPC
 				if (_critOverride ?? crit)
 					dmg *= CritDamage.Additive * CritDamage.Multiplicative;
 
-				return Math.Clamp((int)dmg, 1, 10);
+				return Math.Clamp((int)dmg, 1, Math.Min(_damageLimit, 10));
 			}
 
 			float damage = SourceDamage.ApplyTo(baseDamage);
@@ -206,7 +214,7 @@ public partial class NPC
 			if (_critOverride ?? crit)
 				damage = CritDamage.ApplyTo(damage);
 
-			return Math.Max((int)FinalDamage.ApplyTo(damage), 1);
+			return Math.Clamp((int)FinalDamage.ApplyTo(damage), 1, _damageLimit);
 		}
 
 		public readonly float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
