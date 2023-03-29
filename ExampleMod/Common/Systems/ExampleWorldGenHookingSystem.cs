@@ -1,6 +1,5 @@
 ﻿using MonoMod.Cil;
 using System;
-using System.Linq;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.IO;
@@ -23,14 +22,10 @@ namespace ExampleMod.Common.Systems
 			WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Shinies"], Detour_Shinies);
 		}
 
-		// IL editing should be the same, this is just an example so you can check this is actually working
 		void Modify_Pyramids(ILContext il) {
 			try {
 				var c = new ILCursor(il);
-
-				c.EmitDelegate(delegate () {
-					WorldGen.Pyramid(Main.maxTilesX / 2, Main.maxTilesY / 2);
-				});
+				c.EmitDelegate(() => ModContent.GetInstance<ExampleMod>().Logger.Debug("(In ILHook) Generating Pyramids"));
 			}
 			catch (Exception) {
 				MonoModHooks.DumpIL(ModContent.GetInstance<ExampleMod>(), il);
@@ -41,7 +36,9 @@ namespace ExampleMod.Common.Systems
 		// One thing to note is that for techincal reasons, the self parameter is an object type
 		// You will never need to actually cast it to type WorldGen though, since it contains no instance fields or methods
 		void Detour_Shinies(WorldGen.orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration) {
-			// orig(self, progress, configuration); This stops underground ore generating by not calling the original method
+			ModContent.GetInstance<ExampleMod>().Logger.Debug("(On Hook) Before Shinies");
+			orig(self, progress, configuration);
+			ModContent.GetInstance<ExampleMod>().Logger.Debug("(On Hook) After Shinies");
 		}
 	}
 }
