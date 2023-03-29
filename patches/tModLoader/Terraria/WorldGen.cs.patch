@@ -344,12 +344,11 @@
  
  		for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
  			Main.countsAsHostForGameplay[n] = false;
-@@ -3026,6 +_,10 @@
+@@ -3026,6 +_,9 @@
  
  		setWorldSize();
  		Star.SpawnStars();
 +
-+		TileIO.ClearWorld();
 +		SystemLoader.ClearWorld();
 +
  		worldCleared = true;

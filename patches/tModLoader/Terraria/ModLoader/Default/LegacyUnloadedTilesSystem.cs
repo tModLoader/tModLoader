@@ -14,7 +14,7 @@ internal partial class LegacyUnloadedTilesSystem : ModSystem
 	private static readonly List<TileInfo> infos = new List<TileInfo>();
 	private static readonly Dictionary<int, ushort> converted = new Dictionary<int, ushort>();
 
-	public override void OnWorldLoad()
+	public override void ClearWorld()
 	{
 		infos.Clear();
 		converted.Clear();

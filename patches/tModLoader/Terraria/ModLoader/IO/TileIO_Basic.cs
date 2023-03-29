@@ -258,8 +258,7 @@ internal static partial class TileIO
 
 	internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
-	// Called to ensure proper loading/unloaded behaviour with respect to Unloaded Placeholders
-	internal static void ResizeArrays()
+	internal static void ResetUnloadedTypes()
 	{
 		Tiles.unloadedTypes.Clear();
 		Walls.unloadedTypes.Clear();
