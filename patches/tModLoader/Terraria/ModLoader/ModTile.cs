@@ -29,12 +29,6 @@ public abstract class ModTile : ModBlockType
 	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
 	public int[] AdjTiles { get; set; } = new int[0];
 
-	/// <summary> The ID of the item that drops when this chest is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
-	public int ChestDrop { get; set; }
-
-	/// <summary> The ID of the item that drops when this dresser is destroyed. Defaults to 0. Honestly, this is only really used when the chest limit is reached on a server. </summary>
-	public int DresserDrop { get; set; }
-
 	public override string LocalizationCategory => "Tiles";
 
 	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
@@ -186,13 +180,40 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize which items the tile at the given coordinates drops. Remember that the x, y (i, j) coordinates are in tile coordinates, you will need to multiply them by 16 if you want to drop an item using them. Return false to stop the game from dropping the tile's default item. Returns true by default. Please note that this hook currently only works for 1x1 tiles.
+	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. See <see cref="GetItemDrops"/> to customize the item drop.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool Drop(int i, int j)
+	public virtual bool CanDrop(int i, int j)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Allows you to customize the items the tile at the given coordinates drops.
+	/// <br/> By default, this method will intelligently decide on a single item drop based on <see cref="ModBlockType.ItemDrop"/>, the tile style, and associated <see cref="TileObjectData"/> if it exists.
+	/// <br/> If <see cref="ModBlockType.ItemDrop"/> has a non-zero value, it will be used as the item to drop. If -1, no item will drop.
+	/// <br/> Otherwise, the dropped item will be the item type of the loaded item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of the Tile. If the specific <see cref="Item.placeStyle"/> is not found, the decision will fall back to a <see cref="Item.placeStyle"/> of 0.
+	/// <br/> Detecting the tile style is only reliable for tiles with an associated <see cref="TileObjectData"/>, so tiles using a manual tile style approach need to override this method. Once the style is calculated from the tile frame data, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop. 
+	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.
+	/// <br/> For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. 
+	/// <br/> Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual IEnumerable<Item> GetItemDrops(int i, int j)
+	{
+		// Automatic item derived from item.createTile and item.placeStyle
+		Tile tile = Main.tile[i, j];
+		int style = TileObjectData.GetTileStyle(tile);
+		if (style == -1) {
+			style = 0;
+		}
+		int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.type, style);
+		if (dropItem > 0) {
+			return new[] { new Item(dropItem) };
+		}
+		return null;
 	}
 
 	/// <summary>
@@ -207,7 +228,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping.
+	/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. Fail determines whether the tile is mined, effectOnly makes it so that only dust is created, and noItem stops items from dropping. Use this to clean up extra data such as Chests, Signs, or TileEntities. For tiles larger than 1x1, use <see cref="KillMultiTile(int, int, int, int)"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -219,7 +240,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// This hook is called exactly once whenever a block encompassing multiple tiles is destroyed. You can use it to make your multi-tile block drop a single item, for example.
+	/// This hook is called exactly once whenever a block encompassing multiple tiles is destroyed. Use this to clean up extra data such as Chests, Signs, or TileEntities. For tiles that are 1x1, use <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -496,5 +517,28 @@ public abstract class ModTile : ModBlockType
 	/// <returns>Return true if this tile truly is an unlocked chest and the chest can be locked</returns>
 	public virtual bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) => false;
 
-	public virtual LocalizedText ContainerName(int frameX, int frameY) => null;
+	/// <summary>
+	/// Returns the default name for a chest or dresser with the provided FrameX and FrameY values. <br/>
+	/// A typical implementation of a tile with only a single name might return <c>CreateMapEntryName()</c> <br/>
+	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries.
+	/// </summary>
+	public virtual LocalizedText DefaultContainerName(int frameX, int frameY)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to stop this tile at the given coordinates from being replaced via the block swap feature. The tileTypeBeingPlaced parameter is the tile type that will replace the current tile.
+	/// <br/> This method is called on the local client. This method is only called if the local player has sufficient pickaxe power to mine the existing tile.
+	/// <br/> Return false to block the tile from being replaced. Returns true by default.
+	/// <br/> Use this for dynamic logic. <see cref="ID.TileID.Sets.DoesntGetReplacedWithTileReplacement"/>, <see cref="ID.TileID.Sets.DoesntPlaceWithTileReplacement"/>, and <see cref="ID.TileID.Sets.PreventsTileReplaceIfOnTopOfIt"/> cover the most common use cases and should be used instead if possible.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="tileTypeBeingPlaced"></param>
+	/// <returns></returns>
+	public virtual bool CanReplace(int i, int j, int tileTypeBeingPlaced)
+	{
+		return true;
+	}
 }

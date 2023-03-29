@@ -160,7 +160,7 @@
  					if ((byte)bitsByte24 != 0)
  						bitsByte23[2] = true;
  
-@@ -710,11 +_,20 @@
+@@ -710,14 +_,38 @@
  					if (bitsByte24[0])
  						writer.Write(projectile.ai[2]);
  
@@ -172,16 +172,33 @@
  				}
  				case 28:
  					writer.Write((short)number);
-+
-+					if (ModNet.AllowVanillaClients)
--					writer.Write((short)number2);
-+						writer.Write((short)number2);
-+					else
-+						writer.Write((int)number2);
-+
++					/*
+ 					writer.Write((short)number2);
  					writer.Write(number3);
  					writer.Write((byte)(number4 + 1f));
  					writer.Write((byte)number5);
++					*/
++
++					if (number2 < 0) {
++						if (Main.netMode != NetmodeID.Server)
++							throw new ArgumentException("Packet 28 (StrikeNPC) can only be sent with negative damage (silent insta-kill) from the server.");
++
++						// send 'kill NPC' variant
++						writer.Write7BitEncodedInt((int)number2);
++						break;
++					}
++
++					var hit = number7 == 1 ? _currentStrike : _lastLegacyStrike;
++					writer.Write7BitEncodedInt(hit.Damage);
++					writer.Write7BitEncodedInt(hit.SourceDamage);
++					writer.Write7BitEncodedInt(hit.DamageType.Type);
++					writer.Write((sbyte)hit.HitDirection);
++					writer.Write(hit.Knockback);
++					var flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
++					writer.Write(flags);
+ 					break;
+ 				case 29:
+ 					writer.Write((short)number);
 @@ -735,13 +_,21 @@
  					Item item7 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
@@ -266,6 +283,38 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
+@@ -1247,6 +_,11 @@
+ 					writer.Write(number);
+ 					break;
+ 				case 117:
++					if (number7 == 1) {
++						writer.Write((byte)255); // special signifier of new direct hurt packet
++						goto SendDirectHurt;
++					}
++
+ 					writer.Write((byte)number);
+ 					_currentPlayerDeathReason.WriteSelfTo(writer);
+ 					writer.Write((short)number2);
+@@ -1254,6 +_,19 @@
+ 					writer.Write((byte)number4);
+ 					writer.Write((sbyte)number5);
+ 					break;
++
++					SendDirectHurt:
++					writer.Write((byte)number);
++					var args = _currentPlayerHurtInfo;
++					var pack = new BitsByte(args.PvP, args.Dodgeable, args.DustDisabled, args.SoundDisabled);
++					writer.Write(pack);
++					args.DamageSource.WriteSelfTo(writer);
++					writer.Write((sbyte)args.CooldownCounter);
++					writer.Write7BitEncodedInt(args.SourceDamage);
++					writer.Write7BitEncodedInt(args.Damage);
++					writer.Write((sbyte)args.HitDirection);
++					writer.Write(args.Knockback);
++					break;
+ 				case 118:
+ 					writer.Write((byte)number);
+ 					_currentPlayerDeathReason.WriteSelfTo(writer);
 @@ -1291,9 +_,16 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
@@ -502,6 +551,59 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
+@@ -2262,8 +_,12 @@
+ 			SendData(77, whoAmi, -1, null, animationType, tileType, xCoord, yCoord);
+ 	}
+ 
++	// Made internal, only for PvP use
+-	public static void SendPlayerHurt(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool critical, bool pvp, int hitContext, int remoteClient = -1, int ignoreClient = -1)
++	internal static void SendPlayerHurt(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool critical, bool pvp, int hitContext, int remoteClient = -1, int ignoreClient = -1)
+ 	{
++		if (!pvp)
++			throw new ArgumentException("SendPlayerHurt is legacy, for pvp usage only. Call Player.Hurt with quiet: false, or use the Player.HurtInfo overload");
++
+ 		_currentPlayerDeathReason = reason;
+ 		BitsByte bitsByte = (byte)0;
+ 		bitsByte[0] = critical;
+@@ -2271,6 +_,14 @@
+ 		SendData(117, remoteClient, ignoreClient, null, playerTargetIndex, damage, direction, (int)(byte)bitsByte, hitContext);
+ 	}
+ 
++	// Added by TML
++	private static Player.HurtInfo _currentPlayerHurtInfo;
++	public static void SendPlayerHurt(int playerTargetIndex, Player.HurtInfo info, int ignoreClient = -1)
++	{
++		_currentPlayerHurtInfo = info;
++		SendData(117, -1, ignoreClient, number: playerTargetIndex, number7: 1);
++	}
++
+ 	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
+ 	{
+ 		_currentPlayerDeathReason = reason;
+@@ -2291,6 +_,23 @@
+ 		SendData(126, remoteClient, ignoreClient);
+ 	}
+ 
++	private static NPC.HitInfo _lastLegacyStrike;
++	internal static void SetLegacyStrike(NPC.HitInfo hit)
++	{
++		_lastLegacyStrike = hit;
++	}
++
++	private static NPC.HitInfo _currentStrike;
++
++	/// <summary>
++	/// Use this to synchronize damage strikes against NPCs!
++	/// </summary>
++	public static void SendStrikeNPC(NPC npc, in NPC.HitInfo hit, int ignoreClient = -1)
++	{
++		_currentStrike = hit;
++		SendData(28, -1, ignoreClient, null, npc.whoAmI, number7: 1);
++	}
++
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
 @@ -2455,7 +_,7 @@
  		}
  

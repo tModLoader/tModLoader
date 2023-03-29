@@ -746,7 +746,7 @@
 +		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
 +			currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
 +
-+		static void ReplaceCondition(ref bool field, Recipe.Condition cond)
++		static void ReplaceCondition(ref bool field, Condition cond)
 +		{
 +			if (field)
 +				currentRecipe.AddCondition(cond);
@@ -754,7 +754,7 @@
 +			field = false;
 +		}
 +
-+		static void ReplaceDecraftCondition(ref bool field, Recipe.Condition cond)
++		static void ReplaceDecraftCondition(ref bool field, Condition cond)
 +		{
 +			if (field)
 +				currentRecipe.AddDecraftCondition(cond);
@@ -762,12 +762,12 @@
 +			field = false;
 +		}
 +
-+		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyardBiome);
++		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyard);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
-+		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.EverythingSeed);
++		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.ZenithWorld);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
 +		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);

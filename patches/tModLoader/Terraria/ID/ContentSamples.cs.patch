@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
-@@ -1,10 +_,16 @@
+@@ -1,10 +_,17 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -12,7 +12,8 @@
  namespace Terraria.ID;
  
 +/// <summary>
-+/// This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new Item instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way.
++/// This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new Item instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way. <br/>
++/// ContentSamples should only be accessed in code that runs during <see cref="Mod.PostSetupContent"/> or later, as the entries are not filled in until then. <br/>
 +/// </summary>
  public static class ContentSamples
  {
@@ -43,12 +44,13 @@
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -719,26 +_,85 @@
+@@ -719,26 +_,86 @@
  		public static int GetBestiaryStarsPriority(NPC npc) => NpcBestiaryRarityStars[npc.type];
  	}
  
 +	/// <summary>
-+	/// The default <see cref="NPC"/> for a given NPC type (<see cref="NPC.type"/>).
++	/// The default <see cref="NPC"/> for a given NPC type (<see cref="NPC.type"/>). <br/>
++	/// Note that these entries do not take into account game mode specific changes so they shouldn't be used for querying that data. <br/>
 +	/// </summary>
  	public static Dictionary<int, NPC> NpcsByNetId = new Dictionary<int, NPC>();
 +

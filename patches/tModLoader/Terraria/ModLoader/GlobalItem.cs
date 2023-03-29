@@ -487,16 +487,33 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
+	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
+	/// Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
 	/// </summary>
-	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="target">The target npc.</param>
+	/// <returns>
+	/// Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// </summary>
+	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	public virtual void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
+	public virtual void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -511,14 +528,15 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
 	/// </summary>
-	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a melee weapon hits a player.
+	/// Allows you to create special effects when a melee weapon hits a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
-	public virtual void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 

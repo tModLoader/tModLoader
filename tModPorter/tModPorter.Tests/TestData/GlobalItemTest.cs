@@ -45,4 +45,9 @@ public class GlobalItemTest : GlobalItem
 	public override TagCompound Save(Item item) => new TagCompound();
 
 	public override void ExtractinatorUse(int extractType, ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit) { }
+	public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) { }
+	public override void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit) { }
+	public override void OnHitPvp(Item item, Player player, Player target, int damage, bool crit) { }
 }

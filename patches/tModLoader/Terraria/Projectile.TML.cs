@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -88,6 +89,16 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		}
 	}
 
+	public bool TryGetOwner([NotNullWhen(true)] out Player? player)
+	{
+		player = null;
+		if (npcProj || trap)
+			return false;
+
+		player = Main.player[owner];
+		return player.active;
+	}
+
 	/// <summary>
 	/// Will drop loot the same way as when <see cref="ProjectileID.Geode"/> is cracked open.
 	/// </summary>
@@ -114,23 +125,23 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalProjectile<T>(bool exactType = true) where T : GlobalProjectile
-		=> GlobalType.GetGlobal<Projectile, GlobalProjectile, T>(globalProjectiles, exactType);
+	public T GetGlobalProjectile<T>() where T : GlobalProjectile
+		=> GlobalType.GetGlobal<GlobalProjectile, T>(globalProjectiles);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
-		=> GlobalType.GetGlobal<Projectile, GlobalProjectile, T>(globalProjectiles, baseInstance);
+		=> GlobalType.GetGlobal(globalProjectiles, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
-	public bool TryGetGlobalProjectile<T>(out T result, bool exactType = true) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, exactType, out result);
+	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
+		=> GlobalType.TryGetGlobal(globalProjectiles, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
+		=> GlobalType.TryGetGlobal(globalProjectiles, baseInstance, out result);
 
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
@@ -138,5 +149,8 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
-	
+	/// <summary>
+	/// Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br/>
+	/// </summary>
+	public bool IsMinionOrSentryRelated => minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type];
 }

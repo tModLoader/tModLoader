@@ -83,10 +83,11 @@ partial class Mod
 	}
 
 	/// <summary>
-	/// Called whenever a net message / packet is received from a client (if this is a server) or the server (if this is a client). whoAmI is the ID of whomever sent the packet (equivalent to the Main.myPlayer of the sender), and reader is used to read the binary data of the packet.
+	/// Called whenever a net message / packet is received from a client (if this is a server) or the server (if this is a client). whoAmI is the ID of whomever sent the packet (equivalent to the Main.myPlayer of the sender), and reader is used to read the binary data of the packet. <br/>
+	/// Note that many packets are sent from a client to the server and then relayed to the remaining clients. The whoAmI when the packet arrives at the remaining clients will be the servers <see cref="Main.myPlayer"/>, not the original clients <see cref="Main.myPlayer"/>. For packets only sent from a client to the server, relying on <paramref name="whoAmI"/> to identify the clients player is fine, but for packets that are relayed, the clients player index will need to be part of the packet itself to correctly identify the client that sent the original packet. Use <c>packet.Write((byte) Main.myPlayer);</c> to write and <c>int player = reader.ReadByte();</c> to read.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
-	/// <param name="whoAmI">The player the message is from.</param>
+	/// <param name="whoAmI">The player the message is from. Only relevant for server code. For clients it will always be 255, the server. For the server it will be the whoAmI of the client.</param>
 	public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 	{
 	}

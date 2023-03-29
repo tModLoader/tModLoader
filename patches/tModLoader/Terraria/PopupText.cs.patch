@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -1,36 +_,144 @@
+@@ -1,36 +_,145 @@
  using System;
  using Microsoft.Xna.Framework;
  using Terraria.GameContent;
@@ -11,7 +11,8 @@
  namespace Terraria;
  
 +/// <summary>
-+/// Represents an in-world floating text object.
++/// Represents an in-world floating text object. <br/>
++/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
 +/// </summary>
  public class PopupText
  {

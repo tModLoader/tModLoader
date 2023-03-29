@@ -29,6 +29,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.OpenDoor };
+			// Tiles usually drop their corresponding item automatically, but ItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
+			ItemDrop = ModContent.ItemType<ExampleDoor>();
+			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 
 			// Names
 			LocalizedText name = CreateMapEntryName();
@@ -82,10 +85,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleDoor>());
 		}
 
 		public override void MouseOver(int i, int j) {

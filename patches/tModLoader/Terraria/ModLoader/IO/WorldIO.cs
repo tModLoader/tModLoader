@@ -221,10 +221,10 @@ internal static class WorldIO
 				nextFreeNPC++;
 			}
 
-			if ((string)tag["mod"] == "Terraria") {
-				int npcId = NPCID.Search.GetId((string)tag["name"]);
-				float x = (float)tag["x"];
-				float y = (float)tag["y"];
+			if (tag.GetString("mod") == "Terraria") {
+				int npcId = NPCID.Search.GetId(tag.GetString("name"));
+				float x = tag.GetFloat("x");
+				float y = tag.GetFloat("y");
 
 				int index;
 
@@ -261,17 +261,17 @@ internal static class WorldIO
 
 				npc = Main.npc[nextFreeNPC];
 				npc.SetDefaults(modNpc.Type);
-				npc.position.X = (float)tag["x"];
-				npc.position.Y = (float)tag["y"];
+				npc.position.X = tag.GetFloat("x");
+				npc.position.Y = tag.GetFloat("y");
 
 				if (npc.townNPC) {
-					npc.GivenName = (string)tag["displayName"];
+					npc.GivenName = tag.GetString("displayName");
 					npc.homeless = tag.GetBool("homeless");
-					npc.homeTileX = (int)tag["homeTileX"];
-					npc.homeTileY = (int)tag["homeTileY"];
+					npc.homeTileX = tag.GetInt("homeTileX");
+					npc.homeTileY = tag.GetInt("homeTileY");
 
 					NPC.ShimmeredTownNPCs[modNpc.Type] = tag.GetBool("isShimmered");
-					npc.townNpcVariationIndex = (int)tag["npcTownVariationIndex"];
+					npc.townNpcVariationIndex = tag.GetInt("npcTownVariationIndex");
 				}
 
 				if (tag.ContainsKey("data")) {
@@ -282,13 +282,13 @@ internal static class WorldIO
 			IList<TagCompound> globalData = tag.GetList<TagCompound>("globalData");
 
 			foreach (TagCompound tagCompound in globalData) {
-				string modName = (string)tagCompound["mod"];
+				string modName = tagCompound.GetString("mod");
 
-				if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
+				if (ModContent.TryFind(modName, tagCompound.GetString("name"), out GlobalNPC globalNPC)) {
 					GlobalNPC globalNPC2 = globalNPC.Instance(npc);
 
 					try {
-						globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
+						globalNPC2.LoadData(npc, tagCompound.GetCompound("data"));
 					}
 					catch (Exception inner) {
 						throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom player data for {modName}", inner);

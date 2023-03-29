@@ -29,7 +29,6 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.Torch[Type] = true;
 
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleTorch>();
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Torches };
 
