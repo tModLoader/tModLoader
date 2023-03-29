@@ -2,27 +2,29 @@ namespace Terraria.ModLoader;
 
 public struct StatModifier
 {
-	public static readonly StatModifier Default = new StatModifier(1f, 1f, 0f, 0f);
+	public static readonly StatModifier Default = new();
 
 	/// <summary>
 	/// Increase to the base value of the stat. Directly added to the stat before multipliers are applied.
 	/// </summary>
-	public float Base;
+	public float Base = 0f;
 
 	/// <summary>
 	/// The combination of all additive multipliers. Starts at 1
 	/// </summary>
-	public float Additive { get; private set; }
+	public float Additive { get; private set; } = 1f;
 
 	/// <summary>
 	/// The combination of all multiplicative multipliers. Starts at 1. Applies 'after' all additive bonuses have been accumulated.
 	/// </summary>
-	public float Multiplicative { get; private set; }
+	public float Multiplicative { get; private set; } = 1f;
 
 	/// <summary>
 	/// Increase to the final value of the stat. Directly added to the stat after multipliers are applied.
 	/// </summary>
-	public float Flat;
+	public float Flat = 0f;
+
+	public StatModifier() { }
 
 	public StatModifier(float additive, float multiplicative, float flat = 0f, float @base = 0f)
 	{

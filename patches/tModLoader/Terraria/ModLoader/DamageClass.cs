@@ -52,6 +52,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <summary>
 	/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.
 	/// This should include the 'damage' part.
+	/// Note that vanilla entries all start with a space that will need to be trimmed if used in other contexts.
 	/// </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 

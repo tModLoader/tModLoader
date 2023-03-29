@@ -108,18 +108,18 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalItem<T>(bool exactType = true) where T : GlobalItem
-		=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, exactType);
+	public T GetGlobalItem<T>() where T : GlobalItem
+		=> GlobalType.GetGlobal<GlobalItem, T>(globalItems);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-		=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, baseInstance);
+		=> GlobalType.GetGlobal(globalItems, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
-	public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, exactType, out result);
+	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
+		=> GlobalType.TryGetGlobal(globalItems, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
@@ -136,7 +136,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	/// <summary>
 	/// returns false if and only if type, stack and prefix match<br/>
-	/// <seealso cref="IsNetStateEquivalent(Item)"/>
+	/// <seealso cref="IsNetStateDifferent(Item)"/>
 	/// </summary>
 	public bool IsNotSameTypePrefixAndStack(Item compareItem) => type != compareItem.type || stack != compareItem.stack || prefix != compareItem.prefix;
 
@@ -147,7 +147,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	/// <summary>
 	/// Use this instead of <see cref="Clone"/> for much faster state snapshotting and change sync detection.<br/>
-	/// Note!! <see cref="SetDefaults"/> will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion
+	/// Note!! <see cref="SetDefaults(int)"/> will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion
 	/// </summary>
 	public void CopyNetStateTo(Item target)
 	{
@@ -163,6 +163,15 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	{
 		public DisableCloneMethod(string msg) => cloningDisabled = msg;
 		public void Dispose() => cloningDisabled = null;
+	}
+
+	[ThreadStatic]
+	private static bool newItemDisabled = false;
+	// Used to disable NewItem in situations that would result in an undesireable amount of patches.
+	internal ref struct DisableNewItemMethod
+	{
+		internal DisableNewItemMethod(bool disabled) => newItemDisabled = disabled;
+		internal void Dispose() => newItemDisabled = false;
 	}
 
 	/// <summary>

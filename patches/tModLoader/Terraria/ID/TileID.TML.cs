@@ -7,6 +7,8 @@ partial class TileID
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
 		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
+		/// <summary> Tiles within this set are multi-tiles that don't have a TileObjectData. This is only used to prevent TileLoader.Drop from being called multiple times when breaking these tiles, as might be expected. Trees and Cactus are not included in this, since each of those tiles drop items. </summary>
+		public static bool[] IsMultitile = Factory.CreateBoolSet(Pots, ShadowOrbs, PlantDetritus, LifeFruit, PlanteraBulb, OasisPlants); // 165, 185, 201: Have 1x1 and multitiles in same tile, ignore.
 
 		/// <summary> Tiles within this set are allowed to be replaced by generating ore. </summary>
 		public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234, 396, 397, 401, 403, 400, 398, 399, 402);
@@ -48,6 +50,9 @@ partial class TileID
 		/// <summary> Whether or not this tile counts as a lava source for crafting purposes. </summary>
 		public static bool[] CountsAsLavaSource = Factory.CreateBoolSet();
 
+		/// <summary> Whether or not this tile counts as a shimmer source for crafting purposes. </summary>
+		public static bool[] CountsAsShimmerSource = Factory.CreateBoolSet();
+
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530, 637, 655);
 
@@ -76,6 +81,12 @@ partial class TileID
 		/// </summary>
 		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
 
+		// Values taken from Main.SetupTileMerge
+		/// <summary>
+		/// The value a tile forces to be set for <see cref="BlockMergesWithMergeAllBlock"/> regardless of default conditions (see its documentation). null by default.
+		/// </summary>
+		public static bool?[] BlockMergesWithMergeAllBlockOverride = Factory.CreateCustomSet<bool?>(null, 10, false, 387, false, 541, false);
+
 		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
 		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
 		public static int[] HallowBiome = Factory.CreateIntSet(0, 109, 1, 492, 1, 110, 1, 113, 1, 117, 1, 116, 1, 164, 1, 403, 1, 402, 1);
@@ -89,6 +100,16 @@ partial class TileID
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
 		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is CLOSED. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] OpenDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// The ID of the tile that a given door transforms into when it is OPEN. Defaults to -1, which means said tile isn't a door.
+		/// </summary>
+		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)

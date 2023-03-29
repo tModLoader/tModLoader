@@ -34,6 +34,39 @@
  						if (num3 < 0)
  							num3 = 0;
  
+@@ -644,17 +_,32 @@
+ 			return false;
+ 		}
+ 	}
++	private static void OpenFolderXdg(string folderPath)
++	{
++		ProcessStartInfo processStartInfo = new ProcessStartInfo {
++			FileName = "xdg-open",
++			Arguments = folderPath,
++			UseShellExecute = true,
++			CreateNoWindow = true
++		};
++
++		processStartInfo.EnvironmentVariables["LD_LIBRARY_PATH"] = "/usr/lib:/lib";
++		Process.Start(processStartInfo);
++	}
+ 
+ 	public static void OpenFolder(string folderPath)
+ 	{
+ 		if (TryCreatingDirectory(folderPath)) {
+ 			if (Platform.IsLinux) {
++				/*
+ 				Process.Start(new ProcessStartInfo(folderPath) {
+ 					FileName = "open-folder",
+ 					Arguments = folderPath,
+ 					UseShellExecute = true,
+ 					CreateNoWindow = true
+ 				});
++				*/
++				OpenFolderXdg(folderPath);
+ 			}
+ 			else {
+ 				Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
 @@ -669,6 +_,11 @@
  		return array;
  	}

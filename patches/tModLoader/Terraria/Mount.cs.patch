@@ -207,6 +207,18 @@
  		switch (_type) {
  			case 9: {
  				int frameExtra = _frameExtra;
+@@ -4171,7 +_,11 @@
+ 		}
+ 
+ 		int type = _type;
++
++		/*
+ 		if (type == 50 && texture2D != null) {
++		*/
++		if (type == 50 && texture2D != null && texture2D != Asset<Texture2D>.DefaultValue) {
+ 			PlayerQueenSlimeMountTextureContent queenSlimeMount = TextureAssets.RenderTargets.QueenSlimeMount;
+ 			queenSlimeMount.Request();
+ 			if (queenSlimeMount.IsReady)
 @@ -4473,10 +_,13 @@
  				break;
  		}

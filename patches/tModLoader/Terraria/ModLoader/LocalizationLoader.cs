@@ -193,7 +193,13 @@ public static class LocalizationLoader
 				}
 
 				// Parse HJSON and convert to standard JSON
-				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
+  				string jsonString;
+				try {
+					jsonString = HjsonValue.Parse(translationFileContents).ToString();
+				}
+				catch (Exception e) {
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+				}
 
 				// Parse JSON
 				var jsonObject = JObject.Parse(jsonString);
@@ -263,7 +269,13 @@ public static class LocalizationLoader
 	{
 		// For each mod with mod sources
 		foreach (var mod in ModLoader.Mods) {
-			UpdateLocalizationFilesForMod(mod);
+			try {
+				UpdateLocalizationFilesForMod(mod);
+			}
+			catch (Exception e) {
+				e.Data["mod"] = mod.Name;
+				throw;
+			}
 		}
 	}
 
@@ -341,7 +353,14 @@ public static class LocalizationLoader
 					// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
 				}
 
-				JsonValue jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+				JsonValue jsonValueEng;
+				try {
+					jsonValueEng = HjsonValue.Parse(translationFileContents, new HjsonOptions() { KeepWsc = true });
+				}
+				catch (Exception e) {
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+				}
+				
 				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
 				if (!fileList.Any(x => x.path == fixedFileName))
@@ -397,14 +416,14 @@ public static class LocalizationLoader
 			}
 
 			foreach (var baseFile in baseLocalizationFiles) {
-				string hjsonContents = LocalizationFileToHjsonText(baseFile, localizationsForCulture);
+				string hjsonContents = LocalizationFileToHjsonText(baseFile, localizationsForCulture).ReplaceLineEndings(); // need to compare with same line endings, as Git and OS will affect actual line endings.
 				string outputFileName = GetPathForCulture(baseFile, culture);
 
 				// Only write if file doesn't exist or if file has changed and .tmod file is newer than existing file.
 				// File Modified date check allows edits to English files to be propagated with a build and reload without being accidentally reverted when tmod is launched.
 				var outputFilePath = Path.Combine(sourceFolder, outputFileName) /*+ ".new"*/;
 				DateTime dateTime = File.GetLastWriteTime(outputFilePath);
-				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents != hjsonContents && dateTime < modLastModified) {
+				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified) {
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
 

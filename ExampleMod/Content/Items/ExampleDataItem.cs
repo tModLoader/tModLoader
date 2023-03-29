@@ -11,10 +11,6 @@ namespace ExampleMod.Content.Items
 
 		public int timer;
 
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPatato", $"You have {timer / 60f:N1} seconds left!") { OverrideColor = Color.Red };
 			tooltips.Add(tooltip);
@@ -32,7 +28,7 @@ namespace ExampleMod.Content.Items
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient<ExampleItem>(100);
-			(recipe.createItem.ModItem as ExampleDataItem).timer = 300;
+			((ExampleDataItem)recipe.createItem.ModItem).timer = 300;
 			recipe.Register();
 		}
 	}

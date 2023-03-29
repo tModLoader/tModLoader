@@ -84,10 +84,15 @@
  	public static FileMetadata WorldFileMetadata;
  	public static FileMetadata MapFileMetadata;
  	public static PingMapLayer Pings = new PingMapLayer();
-@@ -487,12 +_,12 @@
+@@ -487,12 +_,17 @@
  	public static bool showSplash = true;
  	public static bool ignoreErrors = true;
  	public static string defaultIP = "";
++
++	/// <summary>
++	/// The rate at which <see cref="time"/> updates per tick.
++	/// <br/> Can be modified using <see cref="ModSystem.ModifyTimeRate(ref double, ref double, ref double)"/>. Capped at <c>86,400.0</c>.
++	/// </summary>
 -	public static int dayRate = 1;
 +	public static double dayRate = 1;
 -	public static int desiredWorldTilesUpdateRate = 1;
@@ -100,9 +105,15 @@
  	public static float iS = 1f;
  	public static bool render;
  	public static int qaStyle;
-@@ -502,12 +_,46 @@
+@@ -501,13 +_,58 @@
+ 	public static float musicPitch = 0f;
  	public static bool[] projHostile = new bool[ProjectileID.Count];
  	public static bool[] projHook = new bool[ProjectileID.Count];
++
++	/// <summary>
++	/// Indexed by <see cref="BuffID"/>. If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff can be applied to players by other players in PvP.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public static bool[] pvpBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
@@ -138,6 +149,12 @@
 +	/// Defaults to false; all vanilla debuffs have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] debuff = new bool[BuffID.Count];
++
++	/// <summary>
++	/// Indexed by <see cref="BuffID"/>. If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will not be saved when exiting a world.
++	/// <br/> Vanilla sets this for DoT effects (<see cref="BuffID.Poisoned"/>), short item buffs (<see cref="BuffID.Panic"/>), mount buffs, and conditionally-applied buffs (<see cref="BuffID.Campfire"/>, <see cref="BuffID.Werewolf"/>).
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public static bool[] buffNoSave = new bool[BuffID.Count];
 +
 +	/// <summary>
@@ -204,16 +221,40 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
-@@ -687,7 +_,7 @@
- 	public const int maxItems = 400;
- 	public const int maxProjectiles = 1000;
- 	public const int maxNPCs = 200;
+@@ -671,7 +_,15 @@
+ 	public static float rightWorld = 134400f;
+ 	public static float topWorld = 0f;
+ 	public static float bottomWorld = 38400f;
++
++	/// <summary>
++	/// The width of the currently-loaded world in tiles.
++	/// </summary>
+ 	public static int maxTilesX = (int)rightWorld / 16 + 1;
++
++	/// <summary>
++	/// The height of the currently-loaded world in tiles.
++	/// </summary>
+ 	public static int maxTilesY = (int)bottomWorld / 16 + 1;
+ 	public const int sectionWidth = 200;
+ 	public const int sectionHeight = 150;
+@@ -683,11 +_,11 @@
+ 	public const int maxItemText = 20;
+ 	public const int maxPlayers = 255;
+ 	public static int maxNetPlayers = 255;
+-	public const int maxChests = 8000;
++	public static readonly int maxChests = 8000;
+-	public const int maxItems = 400;
++	public static readonly int maxItems = 400;
+-	public const int maxProjectiles = 1000;
++	public static readonly int maxProjectiles = 1000;
+-	public const int maxNPCs = 200;
++	public static readonly int maxNPCs = 200;
 -	private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
 +	internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
  	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
-@@ -743,7 +_,17 @@
+@@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -232,6 +273,37 @@
  	public static string worldName = "";
  	public static int worldID;
  	public static int background;
+ 	public static int caveBackground = 0;
+ 	public static float ugBackTransition;
+ 	public static Microsoft.Xna.Framework.Color tileColor;
++
++	/// <summary>
++	/// The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0' on the Depth Meter.
++	/// </summary>
++	/// <remarks>Players under the surface will have <see cref="Player.ZoneDirtLayerHeight"/> set to <see langword="true"/>.</remarks>
+ 	public static double worldSurface;
++
++	/// <summary>
++	/// The y-coordinate of the top of the caverns layer, in tile coordinates.
++	/// </summary>
++	/// <remarks>Players in this layer will have <see cref="Player.ZoneRockLayerHeight"/> set to <see langword="true"/>.</remarks>
+ 	public static double rockLayer;
+ 	public static Microsoft.Xna.Framework.Color[] teamColor = new Microsoft.Xna.Framework.Color[6];
+ 	public const double dayLength = 54000.0;
+ 	public const double nightLength = 32400.0;
+ 	public static bool dayTime = true;
++
++	/// <summary>
++	/// The time that has passed since it last became day/night.
++	/// <br/> Increased by <see cref="dayRate"/> every tick.
++	/// <br/> If it is <see cref="dayTime"/>, this caps at <see cref="dayLength"/>. Otherwise, this caps at <see cref="nightLength"/>.
++	/// </summary>
++	/// <remarks>
++	/// If you need 24-hour time, use <see cref="Utils.GetDayTimeAs24FloatStartingFromMidnight"/>.
++	/// </remarks>
+ 	public static double time = 13500.0;
+ 	public static double timeForVisualEffects;
+ 	public static int moonPhase;
 @@ -768,7 +_,7 @@
  	public static float cloudAlpha;
  	public static float maxRaining;
@@ -272,7 +344,35 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -942,6 +_,12 @@
+@@ -829,7 +_,18 @@
+ 	public static float ambientVolume = 1f;
+ 	public static float soundVolume = 1f;
+ 	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
++
++	/// <summary>
++	/// Indexed by <see cref="TileID"/>. If <see langword="true"/> for a given <see cref="TileID"/>, then that tile produces light.
++	/// <br/> You can set the light color for tile using <see cref="ModBlockType.ModifyLight(int, int, ref float, ref float, ref float)"/> or <see cref="GlobalBlockType.ModifyLight(int, int, int, ref float, ref float, ref float)"/>.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public static bool[] tileLighted = new bool[TileID.Count];
++
++	/// <summary>
++	/// Indexed by <see cref="TileID"/>. If <see langword="true"/> for a given <see cref="TileID"/>, then that tile has frames for merging with <see cref="TileID.Dirt"/>.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public static bool[] tileMergeDirt = new bool[TileID.Count];
+ 	public static bool[] tileCut = new bool[TileID.Count];
+ 	public static bool[] tileAlch = new bool[TileID.Count];
+@@ -862,6 +_,8 @@
+ 	public static bool[] tileNoFail = new bool[TileID.Count];
+ 	public static bool[] tileCracked = new bool[TileID.Count];
+ 	public static bool[] tileObsidianKill = new bool[TileID.Count];
++	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
+ 	public static bool[] tileFrameImportant = new bool[TileID.Count];
+ 	public static bool[] tilePile = new bool[TileID.Count];
+ 	public static bool[] tileBlendAll = new bool[TileID.Count];
+@@ -942,6 +_,13 @@
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
  	public static bool[] tileFlame = new bool[TileID.Count];
@@ -281,6 +381,7 @@
 +	/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
 +	/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
 +	/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++	/// These NPC will be forced <see cref="NPC.friendly"/> for 1.5 seconds if naturally spawned.<br/>
 +	/// </summary>
  	public static bool[] npcCatchable = new bool[NPCID.Count];
  	public static int[] tileFrame = new int[TileID.Count];
@@ -296,6 +397,27 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -1026,6 +_,11 @@
+ 	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
+ 	public static int numAvailableRecipes;
+ 	public static int focusRecipe;
++
++	/// <summary>
++	/// The index in <see cref="player"/> of this client's Player.
++	/// <br/> If this is <c>255</c>, this client is the server.
++	/// </summary>
+ 	public static int myPlayer;
+ 	public static Player[] player = new Player[256];
+ 	public static Player[] playerVisualClone = new Player[256];
+@@ -1045,7 +_,7 @@
+ 	public static bool npcChatFocus4;
+ 	public static int oldNPCShop;
+ 	public static int npcChatCornerItem;
+-	public Chest[] shop = new Chest[100];
++	public Chest[] shop = new Chest[2]; // technically only need a single Chest for the shop, but npcShop 0 is used for 'no shop' and we don't want to patch 20 places
+ 	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
+ 	public static int[] travelShop = new int[40];
+ 	public static List<string> anglerWhoFinishedToday = new List<string>();
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -424,7 +546,22 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
-@@ -2319,7 +_,7 @@
+@@ -2311,15 +_,22 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The y-coordinate of the top of the underworld, in tile coordinates.
++	/// </summary>
++	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworld"/> set to <see langword="true"/>.</remarks>
+ 	public static int UnderworldLayer => maxTilesY - 200;
+ 
+ 	public static float WindForVisuals => windSpeedCurrent;
+ 
++	/// <summary>
++	/// Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.
++	/// </summary>
+ 	public static Player LocalPlayer => player[myPlayer];
  
  	public static CreativeUnlocksTracker LocalPlayerCreativeTracker => player[myPlayer].creativeTracker;
  
@@ -442,7 +579,30 @@
  		return result;
  	}
  
-@@ -2848,6 +_,12 @@
+@@ -2842,12 +_,34 @@
+ 			tileMerge[i] = new bool[count];
+ 		}
+ 
++		SetupAllBlockMerge();
++	}
++
++	// internal split to be called by TileLoader, to avoid tileMerge reset (handled by ResizeArrays)
++	internal static void SetupAllBlockMerge()
++	{
+-		for (int j = 0; j < TileID.Count; j++) {
++		for (int j = 0; j < TileLoader.TileCount; j++) {
++			// TML: moved these cases into BlockMergesWithMergeAllBlockOverride
+ 			bool flag = j == 10 || j == 387 || j == 541;
++			if (TileID.Sets.BlockMergesWithMergeAllBlockOverride[j] is bool mergeOverride) {
++				TileID.Sets.BlockMergesWithMergeAllBlock[j] = mergeOverride;
++				continue;
++			}
++
++			// TML: 10 is the closed door tile, so make modded closed doors also match. This code runs after they have set their OpenDoorID
++			if (TileLoader.IsClosedDoor(j))
++				flag = true;
++
+ 			TileID.Sets.BlockMergesWithMergeAllBlock[j] = !flag && tileSolid[j] && !tileSolidTop[j];
  		}
  	}
  
@@ -518,6 +678,16 @@
  		if (Configuration.Save())
  			return PlayerInput.Save();
  
+@@ -3282,6 +_,9 @@
+ 	protected void CheckBunny()
+ 	{
+ 		try {
++			if (!OperatingSystem.IsWindows())
++				return;
++
+ 			RegistryKey currentUser = Registry.CurrentUser;
+ 			currentUser = currentUser.CreateSubKey("Software\\Terraria");
+ 			if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
 @@ -3352,14 +_,40 @@
  		int currentValue3 = graphics.PreferredBackBufferHeight;
  		configuration.Get("DisplayWidth", ref currentValue2);
@@ -612,6 +782,32 @@
  			LoadWorlds();
  		}
  		catch {
+@@ -3830,6 +_,12 @@
+ 
+ 	public static string GetPlayerPathFromName(string playerName, bool cloudSave)
+ 	{
++		// #3298
++		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
++		if (Regex.IsMatch(playerName, invalidFilePattern, RegexOptions.IgnoreCase)) {
++			playerName += "_";
++		}
++
+ 		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+ 		string text = "";
+ 		playerName = playerName.Replace(".", "_");
+@@ -3856,6 +_,12 @@
+ 
+ 	public static string GetWorldPathFromName(string worldName, bool cloudSave)
+ 	{
++		// #3298
++		string invalidFilePattern = @"^(con|prn|aux|nul|com[1-9]|lpt[1-9])$";
++		if (Regex.IsMatch(worldName, invalidFilePattern, RegexOptions.IgnoreCase)) {
++			worldName += "_";
++		}
++
+ 		char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+ 		string text = "";
+ 		foreach (char c in worldName) {
 @@ -3933,8 +_,10 @@
  						new FileInfo(text2);
  						autoGenFileLocation = text2;
@@ -1123,6 +1319,25 @@
  		ClientInitialize();
  		base.Initialize();
  	}
+@@ -5239,11 +_,18 @@
+ 		}
+ 
+ 		shop[0] = new Chest();
++		shop[1] = new Chest(); // Added by tML, only 1 shop actually needed
+ 		Chest.SetupTravelShop();
++		/*
+ 		for (int m = 1; m < 100; m++) {
+ 			shop[m] = new Chest();
++
++			if (m >= NPCLoader.shopToNPC.Length)
++				continue;
++
+ 			shop[m].SetupShop(m);
+ 		}
++		*/
+ 
+ 		teamColor[0] = Microsoft.Xna.Framework.Color.White;
+ 		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -1682,17 +1897,17 @@
 +		if (desiredWorldEventsUpdateRate <= 0)
 +			goto skipWeatherUpdates;
 +
-+		timePass += desiredWorldEventsUpdateRate;
++		_partialWorldEventUpdates += Main.desiredWorldEventsUpdateRate;
++		worldEventUpdates = (int)_partialWorldEventUpdates;
++		_partialWorldEventUpdates -= worldEventUpdates;
 +
 +		/*
  		for (int i = 0; i < dayRate; i++) {
 +		*/
-+		for (int i = 1; i <= (int)timePass; i++) {
++		for (int i = 0; i < worldEventUpdates; i++) {
  			UpdateWeather(gameTime, i);
  		}
  
-+		timePass %= 1.0;
-+
 +		skipWeatherUpdates:
  		UnpausedUpdateSeed = Utils.RandomNextSeed(UnpausedUpdateSeed);
  		Ambience();
@@ -1798,11 +2013,12 @@
  				syncedAnyInventoryContents = true;
  				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
  			}
-@@ -14156,6 +_,9 @@
+@@ -14156,6 +_,10 @@
  	{
  		UpdateParticleSystems();
  		tileSolid[379] = false;
 +
++		NPCShopDatabase.Test();
 +		SystemLoader.PreUpdatePlayers();
 +
  		int num = 0;
@@ -2148,7 +2364,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,90 @@
+@@ -16311,47 +_,91 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2235,7 +2451,8 @@
 +			if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905)) && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Damage")) {
 +				LocalizedText tip;
 +				if (item.DamageType != null) {
-+					tip = new LocalizedText("", " " + item.DamageType.DisplayName);
++					bool addLeadingSpace = item.DamageType is not VanillaDamageClass;
++					tip = new LocalizedText("", (addLeadingSpace ? " " : "") + item.DamageType.DisplayName);
 +				}
 +				else {
 +					tip = Lang.tip[55]; // No damage class
@@ -2887,7 +3104,7 @@
  				}
  			}
  		}
-@@ -17350,24 +_,30 @@
+@@ -17350,30 +_,51 @@
  			if (!gore[i].active || gore[i].type <= 0)
  				continue;
  
@@ -2919,6 +3136,27 @@
  			}
  		}
  
+ 		TimeLogger.DetailedDrawTime(24);
+ 	}
+ 
++	/// <summary>
++	/// Draws a small health bar.
++	/// <br/> <see cref="spriteBatch"/> should <strong>already be started</strong> before calling this method.
++	/// </summary>
++	/// <param name="X">The x-coordinate of the health bar in world coordinates.</param>
++	/// <param name="Y">The y-coordinate of the health bar in world coordinates.</param>
++	/// <param name="Health">
++	/// The current health displayed. The health bar is drawn <c><paramref name="Health"/> / <paramref name="MaxHealth"/></c> percent full.
++	/// <br/> If <c><paramref name="Health"/> &lt;= 0</c>, no health bar is drawn.
++	/// <br/> If <c><paramref name="Health"/> &gt; <paramref name="MaxHealth"/></c>, the health bar will not exceed max capacity.
++	/// </param>
++	/// <param name="MaxHealth">The maximum health displayed. The health bar is drawn <c><paramref name="Health"/> / <paramref name="MaxHealth"/></c> percent full.</param>
++	/// <param name="alpha">The opacity of the healthbar, where <c>0f</c> is transparent and <c>1f</c> is opaque.</param>
++	/// <param name="scale">The visual scale of the health bar.</param>
++	/// <param name="noFlip">If <see langword="true"/>, then the health bar will not adjust its y-position for players with reversed gravity.</param>
+ 	public void DrawHealthBar(float X, float Y, int Health, int MaxHealth, float alpha, float scale = 1f, bool noFlip = false)
+ 	{
+ 		if (Health <= 0)
 @@ -17456,6 +_,8 @@
  		float num = 0f;
  		if (theNPC.type == 125)
@@ -2973,7 +3211,20 @@
  		npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  		if (type == 50) {
  			Vector2 zero = Vector2.Zero;
-@@ -21985,10 +_,13 @@
+@@ -21675,6 +_,12 @@
+ 		spriteBatch.Draw(itemTexture, new Vector2(rCurrentNPC.Center.X - screenPosition.X + num8, rCurrentNPC.Center.Y - screenPosition.Y + rCurrentNPC.gfxOffY + num9), rectangle, npcColor, num11, rectangle.Size() / 2f, num2, SpriteEffects.None, 0f);
+ 	}
+ 
++	/// <summary>
++	/// Gets the texture and frame of the given item type (<see cref="Item.type"/>).
++	/// </summary>
++	/// <param name="item">The item type to use.</param>
++	/// <param name="itemTexture">The <see cref="Texture2D"/> in <see cref="TextureAssets.Item"/> of <paramref name="item"/>.</param>
++	/// <param name="itemFrame">The <see cref="Rectangle"/> covering this item's current frame on <paramref name="itemTexture"/>.</param>
+ 	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
+ 	{
+ 		instance.LoadItem(item);
+@@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
  
@@ -2981,12 +3232,14 @@
  					num10 = 0.75f;
  				}
  			}
- 
-+			NPCLoader.DrawTownAttackGun(n, ref num10, ref itemtype, ref num11);
-+
+@@ -21992,6 +_,7 @@
  			Vector2 vector4 = DrawPlayerItemPos(1f, itemtype);
  			GetItemDrawFrame(itemtype, out var itemTexture, out var value2);
  			int num12 = (int)vector4.X - num11;
++			NPCLoader.DrawTownAttackGun(n, ref itemTexture, ref value2, ref num10, ref num12);
+ 			Vector2 origin2 = new Vector2(-num12, value2.Height / 2);
+ 			if (n.spriteDirection == -1)
+ 				origin2 = new Vector2(value2.Width + num12, value2.Height / 2);
 @@ -22048,6 +_,7 @@
  			}
  			else if (n.type == 441) {
@@ -3000,7 +3253,7 @@
  
  			GetItemDrawFrame(num15, out var itemTexture2, out var rectangle3);
 +
-+			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref num13, ref num14, ref zero);
++			NPCLoader.DrawTownAttackSwing(n, ref itemTexture2, ref rectangle3, ref num13, ref num14, ref zero);
 +
  			Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num13, num13);
  			Vector2 vector6 = swingStats.Item1 + (swingStats.Item1 - n.Center) * num14 + zero;
@@ -3552,8 +3805,8 @@
  				num16 = 1;
  
 +			reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], npc[player[myPlayer].talkNPC], ref health, ref removeDebuffs, ref reason);
-+			PlayerLoader.ModifyNursePrice(player[myPlayer], npc[player[myPlayer].talkNPC], health, removeDebuffs, ref num16);
++			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
++			PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref num16);
 +
  			if (num16 < 0)
  				num16 = 0;
@@ -3638,7 +3891,7 @@
  						}
 +
 +						SkipDebuffRemoval:
-+						PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num5);
++						PlayerLoader.PostNurseHeal(LocalPlayer, LocalPlayer.TalkNPC, health, removeDebuffs, num5);
  					}
  					else {
  						int num26 = rand.Next(3);
@@ -3654,6 +3907,18 @@
  			if (npc[player[myPlayer].talkNPC].type == 20) {
  				SoundEngine.PlaySound(12);
  				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
+@@ -32405,8 +_,9 @@
+ 		playerInventory = true;
+ 		stackSplit = 9999;
+ 		npcChatText = "";
+-		SetNPCShopIndex(shopIndex);
++		SetNPCShopIndex(1);
+-		shop[npcShop].SetupShop(npcShop);
++		shop[npcShop].SetupShop(shopIndex);
++		
+ 		SoundEngine.PlaySound(12);
+ 	}
+ 
 @@ -32451,8 +_,12 @@
  			npcChatFocus2 = false;
  		}
@@ -3720,7 +3985,7 @@
 +					if (meleeBuff[num34])
 +						rare = -10;
 +
-+					BuffLoader.ModifyBuffTip(num34, ref buffTooltip, ref rare);
++					BuffLoader.ModifyBuffText(num34, ref buffName, ref buffTooltip, ref rare);
 +					MouseTextHackZoom(buffName, rare, diff: 0, buffTooltip);
  				}
  			}
@@ -3930,7 +4195,7 @@
  				_requiredObjecsForCraftingText.Add(Lang.inter[124].Value);
  
 +			//TML: Display recipe conditions' descriptions
-+			_requiredObjecsForCraftingText.AddRange(recipe.Conditions.Select(x => x.Description));
++			_requiredObjecsForCraftingText.AddRange(recipe.Conditions.Select(x => x.Description.Value));
 +
  			if (_requiredObjecsForCraftingText.Count == 0) {
  				string value = Lang.inter[23].Value;
@@ -4065,7 +4330,7 @@
 +			if (meleeBuff[num5])
 +				rare = -10;
 +
-+			BuffLoader.ModifyBuffTip(num5, ref buffTooltip, ref rare);
++			BuffLoader.ModifyBuffText(num5, ref buffName, ref buffTooltip, ref rare);
 +			MouseTextHackZoom(buffName, rare, 0, buffTooltip);
  		}
  	}
@@ -4402,18 +4667,19 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,46 @@
+@@ -38346,27 +_,47 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
 +			else {
 +				num = info.Type;
-+				text2 = info.DisplayValue();
++				text2 = info.DisplayValue(ref infoTextColor);
 +				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
++			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor);
  
  			if (!(text2 != ""))
  				continue;
@@ -5536,6 +5802,15 @@
  			}
  		}
  
+@@ -51852,6 +_,8 @@
+ 		instance.CameraModifiers.ApplyTo(ref screenPosition);
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
++		PlayerLoader.ModifyScreenPosition(LocalPlayer);
++		SystemLoader.ModifyScreenPosition();
+ 		ClampScreenPositionToWorld();
+ 	}
+ 
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
@@ -5705,17 +5980,23 @@
  					Netplay.Clients[k].PendingTerminationApproved = true;
  				}
  			}
-@@ -53384,6 +_,13 @@
+@@ -53384,6 +_,19 @@
  		}
  	}
  
 +	// Overload added by TML.
++	/// <inheritdoc cref="NewText(string, byte, byte, byte)"/>
 +	public static void NewText(object o, Color? color = null)
 +	{
 +		var c = color ?? Color.White;
 +		NewText(o.ToString(), c.R, c.G, c.B);
 +	}
 +
++	/// <summary>
++	/// Spawns chat text on the local client. Does nothing on the server. <br/>
++	/// For floating text, such as damage, see <see cref="CombatText"/> <br/>
++	/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
++	/// </summary>
  	public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue)
  	{
  		chatMonitor.NewText(newText, R, G, B);
@@ -5919,7 +6200,7 @@
  				num40++;
  			}
  		}
-@@ -54517,6 +_,8 @@
+@@ -54517,20 +_,38 @@
  
  			WorldGen.prioritizedTownNPCType = num42;
  		}
@@ -5927,7 +6208,58 @@
 +		NPCLoader.CanTownNPCSpawn(num40);
  	}
  
++	public static int DefaultDamageVariationPercent = 15;
++	/// <summary>
++	/// Multiplies the input damage by a random value between <c>0.85f</c> and <c>1.15f</c>.
++	/// </summary>
++	/// <param name="dmg">The damage to vary.</param>
++	/// <param name="luck">
++	/// How lucky the damager is, in the range [-1f, 1f].
++	/// <br/> If <c><paramref name="luck"/> &gt; 0f</c>, there is a <c><paramref name="luck"/></c>% chance that damage variation is rerolled, with the higher value being used.
++	/// <br/> If <c><paramref name="luck"/> &lt; 0f</c>, there is a <c>-<paramref name="luck"/></c>% chance that damage variation is rerolled, with the lower value being used.
++	/// </param>
++	/// <returns>The varied damage value, rounded to the nearest integer.</returns>
  	public static int DamageVar(float dmg, float luck = 0f)
+ 	{
++		return DamageVar(dmg, DefaultDamageVariationPercent, luck);
++	}
++	
++	public static int DamageVar(float dmg, int percent, float luck = 0f)
++	{
+-		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++		float num = dmg * (1f + (float)rand.Next(-percent, percent+1) * 0.01f);
+ 		if (luck > 0f) {
+ 			if (rand.NextFloat() < luck) {
+-				float num2 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++				float num2 = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
+ 				if (num2 > num)
+ 					num = num2;
+ 			}
+ 		}
+ 		else if (luck < 0f && rand.NextFloat() < 0f - luck) {
+-			float num3 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
++			float num3 = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
+ 			if (num3 < num)
+ 				num = num3;
+ 		}
+@@ -54538,7 +_,8 @@
+ 		return (int)Math.Round(num);
+ 	}
+ 
++	/*
+-	public static double CalculateDamageNPCsTake(int Damage, int Defense)
++	public static double CalculateDamageNPCsTake(double Damage, int Defense)
+ 	{
+ 		double num = (double)Damage - (double)Defense * 0.5;
+ 		if (num < 1.0)
+@@ -54569,6 +_,7 @@
+ 
+ 		return num;
+ 	}
++	*/
+ 
+ 	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)
+ 	{
 @@ -54625,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)
