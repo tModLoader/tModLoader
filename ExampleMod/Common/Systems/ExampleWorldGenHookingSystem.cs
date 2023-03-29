@@ -16,16 +16,10 @@ namespace ExampleMod.Common.Systems
 		// Generation pass hooks are unloaded manually, so no Unload method is needed
 		public override void Load() {
 			// IL editing the pyramids pass
-			if (WorldGen.VanillaGenPasses["Pyramids"] is PassLegacy pass1)// Get the generation pass and check if it is a PassLegacy, since PassLegacys are the generation passes that can't normally be edited
-				WorldGen.ModifyPass(pass1, Modify_Pyramids);// IL edit the pass
-			else
-				Mod.Logger.Warn("Unable to modify pyramids pass");// Log an error if the pass isn't a PassLegacy
+			WorldGen.ModifyPass((PassLegacy)WorldGen.VanillaGenPasses["Pyramids"], Modify_Pyramids);
 
 			// Detouring the shinies pass (generates ore)
-			if (WorldGen.VanillaGenPasses["Shinies"] is PassLegacy pass2)// Get the generation pass and check if it is a PassLegacy, since PassLegacys are the generation passes that can't normally be edited
-				WorldGen.DetourPass(pass2, Detour_Shinies);// Detour the pass
-			else
-				Mod.Logger.Warn("Unable to detour shinies pass");// Log an error if the pass isn't a PassLegacy
+			WorldGen.DetourPass((PassLegacy)WorldGen.VanillaGenPasses["Shinies"], Detour_Shinies);
 		}
 
 		// IL editing should be the same, this is just an example so you can check this is actually working
