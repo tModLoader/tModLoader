@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using System;
 using System.Linq;
 using Terraria;
 using Terraria.GameContent.Generation;
@@ -24,11 +25,16 @@ namespace ExampleMod.Common.Systems
 
 		// IL editing should be the same, this is just an example so you can check this is actually working
 		void Modify_Pyramids(ILContext il) {
-			var c = new ILCursor(il);
+			try {
+				var c = new ILCursor(il);
 
-			c.EmitDelegate(delegate () {
-				WorldGen.Pyramid(Main.maxTilesX / 2, Main.maxTilesY / 2);
-			});
+				c.EmitDelegate(delegate () {
+					WorldGen.Pyramid(Main.maxTilesX / 2, Main.maxTilesY / 2);
+				});
+			}
+			catch (Exception) {
+				MonoModHooks.DumpIL(ModContent.GetInstance<ExampleMod>(), il);
+			}
 		}
 
 		// Detouring should be the same (except for one thing mentioned below), this is just an example so you can check this is actually working
