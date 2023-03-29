@@ -38,9 +38,6 @@ namespace ExampleMod.Common.Configs.CustomUI
 			circleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 			valueStrings = Enum.GetNames(MemberInfo.Type);
 			TextDisplayFunction = () => Label + ": " + GetStringValue();
-			if (LabelAttribute != null) {
-				TextDisplayFunction = () => LabelAttribute.Label + ": " + GetStringValue();
-			}
 		}
 
 		void SetValue(Corner value) => SetObject(value);

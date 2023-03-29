@@ -88,10 +88,23 @@ public static class ConfigManager
 						continue;
 
 					Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Label"), () => "");
+					// TODO: Only register tooltip if [Tooltip]? Is it too messy?
 					Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Tooltip"), () => "");
+
+					var header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
+					if(header != null && header.Header == null) {
+						// TODO: Should [Header("Example")] show up in localization files?
+						// TODO: Good auto default?
+						// TODO: What about if {variable.Name}.Header already in config file but not [Header], should that work?
+						// Should key be {config.Name}.Headers.{variable.Name}?
+						// Should all headers have a name, [Header("HeaderName")], then {config.Name}.Headers.{HeaderName}
+						Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Header"), () => $"{variable.Name} Header");
+					}
 				}
 			}
 		}
+		// Current code gets all fields/properties in ModConfig class.
+		// What about fields/properties of classes used in ModConfig?
 	}
 
 	// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
@@ -380,6 +393,7 @@ public static class ConfigManager
 	}
 
 	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
+		// Priority: Localization -> Attribute -> member name
 		var config = Interface.modConfig.pendingConfig;
 		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Label");
 		if (Language.Exists(labelKey)) {
@@ -397,6 +411,7 @@ public static class ConfigManager
 
 	internal static string GetLocalizedTooltip(TooltipAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
 	{
+		// Priority: Localization -> Attribute -> null
 		var config = Interface.modConfig.pendingConfig;
 		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
 		if (Language.Exists(labelKey)) {
@@ -412,8 +427,28 @@ public static class ConfigManager
 		return null;
 	}
 
+	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo)
+	{
+		HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
+		if (header == null)
+			return null;
+
+		var config = Interface.modConfig.pendingConfig;
+		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Header");
+		if (Language.Exists(labelKey)) {
+			string labelLocalization = Language.GetTextValue(labelKey);
+			if (!string.IsNullOrEmpty(labelLocalization))
+				header.autoKey = labelKey;
+		}
+
+		if (header.Header == null)
+			return null; // [Header] but no auto generated key, such as a non-ModConfig field.
+		return header;
+	}
+
 	internal static string GetModConfigDisplayName(ModConfig config)
 	{
+		// Priority: Localization -> Attribute -> InternalName (Type.Name)
 		string key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
 		if (Language.Exists(key)) {
 			string displayName = Language.GetTextValue(key);

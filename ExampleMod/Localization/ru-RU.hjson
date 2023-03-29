@@ -8,17 +8,7 @@
 
 Mods: {
 	ExampleMod: {
-		Config: {
-			// ItemHeader: Items
-			// SampleEnumLabels.Peculiar: Very Peculiar
-		}
-
-		Common: {
-			PaperAirplane: Бумажный самолётик
-			LocalizedLabel: Эта строка из файлов локализации: {$Mods.ExampleMod.Common.PaperAirplane}
-			LocalizedTooltip: Эта подсказка из файлов локализации.
-			LocalizedHeader: Заголовки помогут организовывать.
-		}
+		Common.PaperAirplane: Бумажный самолётик
 
 		CommonItemTooltip: {
 			// IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}

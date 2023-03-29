@@ -495,12 +495,7 @@ internal class UIModConfig : UIState
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 				continue;
 
-			HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
-
-			if (header != null) {
-				var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-				WrapIt(mainConfigList, ref top, wrapper, header, order++);
-			}
+			HandleHeader(mainConfigList, ref top, ref order, variable);
 
 			WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
 		}
@@ -780,12 +775,7 @@ internal class UIModConfig : UIState
 				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
 
-				HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
-
-				if (header != null) {
-					var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-					WrapIt(separateList, ref top, wrapper, header, order++);
-				}
+				HandleHeader(separateList, ref top, ref order, variable);
 
 				WrapIt(separateList, ref top, variable, subitem, order++);
 			}
@@ -797,6 +787,16 @@ internal class UIModConfig : UIState
 
 		Interface.modConfig.subPageStack.Pop();
 		return uIPanel;
+	}
+
+	public static void HandleHeader(UIList separateList, ref int top, ref int order, PropertyFieldWrapper variable)
+	{
+		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable);
+
+		if (header != null) {
+			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+			WrapIt(separateList, ref top, wrapper, header, order++);
+		}
 	}
 
 	internal static void SwitchToSubConfig(UIPanel separateListPanel)

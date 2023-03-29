@@ -38,9 +38,16 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[Header("Headers Section")]
 		public int Header;
 
-		[Header("$Mods.ExampleMod.Common.LocalizedHeader")]
+		// Using [Header], Mods.ExampleMod.Configs.ModConfigShowcaseLabels.AutoLocalizedHeader.Header will automatically appear in localization files.
+		[Header]
+		public int AutoLocalizedHeader;
+
+		// We can also specify a specific translation key, if desired.
+		// The "$" character before a name means it should interpret the name as a translation key and use the loaded translation with the same key.
+		[Header("$Mods.ExampleMod.Configs.Common.LocalizedHeader")]
 		public int LocalizedHeader;
 
+		// Chat tags such as colored text or item icons can help users find config sections quickly
 		[Header("[i:19][c/00FF00:Green Text][i:ExampleMod/ExampleItem]")]
 		public int CoolHeader;
 

@@ -77,17 +77,31 @@ public class TooltipAttribute : Attribute
 /// <summary>
 /// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config.
 /// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order.
+/// Passing in null or using the parameterless contructor will result in the text being retrieved from a suitable key in localization files. 
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class HeaderAttribute : Attribute
 {
 	private readonly string header;
+	internal string autoKey;
 
-	public string Header => header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
+	public string Header {
+		get {
+			if (autoKey != null)
+				return Localization.Language.GetTextValue(autoKey);
+			if (header == null)
+				return null;
+			return header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
+		}
+	}
 
 	public HeaderAttribute(string header)
 	{
 		this.header = header;
+	}
+
+	public HeaderAttribute()
+	{
 	}
 }
 

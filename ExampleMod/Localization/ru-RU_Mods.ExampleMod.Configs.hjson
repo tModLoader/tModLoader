@@ -1,10 +1,23 @@
 
+Common: {
+	// SampleEnumLabels.Peculiar: Very Peculiar
+	// LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
+	// LocalizedTooltip: This tooltip is from the localization files.
+	// LocalizedHeader: Headers can help organize
+}
+
 ExampleModConfig: {
 	// DisplayName: ""
 
 	ExampleWingsToggle: {
 		// Label: ExampleWings Toggle
 		// Tooltip: Enables or disables the ExampleWings item
+		// Header: Items
+	}
+
+	WeaponWithGrowingDamageToggle: {
+		// Label: ""
+		// Tooltip: ""
 	}
 }
 
@@ -239,8 +252,8 @@ ModConfigShowcaseLabels: {
 	}
 
 	LocalizedLabel: {
-		// Label: "{$Mods.ExampleMod.Common.LocalizedLabel}"
-		// Tooltip: "{$Mods.ExampleMod.Common.LocalizedTooltip}"
+		// Label: "{$Mods.ExampleMod.Configs.Common.LocalizedLabel}"
+		// Tooltip: "{$Mods.ExampleMod.Configs.Common.LocalizedTooltip}"
 	}
 
 	LocalizedLabelDynamic: {
@@ -276,6 +289,12 @@ ModConfigShowcaseLabels: {
 	simpleDataExample2: {
 		// Label: OverridenColor SimpleData
 		// Tooltip: ""
+	}
+
+	AutoLocalizedHeader: {
+		// Label: ""
+		// Tooltip: ""
+		// Header: Another Header
 	}
 }
 

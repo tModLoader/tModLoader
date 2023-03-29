@@ -265,12 +265,8 @@ internal class ObjectElement : ConfigElement<object>
 						continue;
 
 					int top = 0;
-					var header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
 
-					if (header != null) {
-						var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-						UIModConfig.WrapIt(dataList, ref top, wrapper, header, order++);
-					}
+					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
 
 					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
 
