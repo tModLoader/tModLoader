@@ -27,8 +27,9 @@ public partial class WorldGen
 		_hookRefs.Add(new ILHook(pass._method.Method, callback));
 	}
 
-	// TODO: Self cannot be WorldGen, since the one used in the actual method is WorldGen+<>c, which is compiler generated or something like that
-	// The self parameter should be removed, since world gen is an instanced class, but has no instance fields or methods (it could be made static in another pr)
+	// The self reference has to be object, because the actual type is a compiler generated closure class
+	// The self reference isn't useful anyway, since the closure doesn't capture any method locals or an enclosing class instance
+	// We might think to omit the self parameter from mod delegates, and register a wrapper which propogates self via a closure, but then MonoModHooks will attribute the hook to tModLoader rather than the original mod.
 	public delegate void GenPassDetour(orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration);
 	public delegate void orig_GenPassDetour(object self, GenerationProgress progress, GameConfiguration configuration);
 
