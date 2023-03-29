@@ -1,12 +1,9 @@
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour.HookGen;
 using System.Collections.Generic;
-using System.Reflection;
-using System;
 using Terraria.GameContent.Generation;
 using Terraria.WorldBuilding;
 using Terraria.IO;
-using System.Collections.ObjectModel;
 
 namespace Terraria;
 
@@ -15,7 +12,7 @@ public partial class WorldGen
 	internal static void ClearGenerationPasses() => _generator?._passes.Clear();
 
 	internal static Dictionary<string, GenPass> _vanillaGenPasses = new();
-	public static IReadOnlyDictionary<string, GenPass> VanillaGenPasses = new ReadOnlyDictionary<string, GenPass>(_vanillaGenPasses);
+	public static IReadOnlyDictionary<string, GenPass> VanillaGenPasses => _vanillaGenPasses;
 
 	public static void ModifyPass(PassLegacy pass, ILContext.Manipulator callback)
 	{
