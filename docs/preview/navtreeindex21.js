@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"struct_wing_stats.html#a1b8bff142cb33bb76b8e718881bc91d6":[3,0,1399,4],
+"struct_wing_stats.html#a3b110ff1cc590cd4872ff84561ec9a75":[3,0,1399,1],
 "struct_wing_stats.html#a6ee3e93f253426d74d7945285f6caba2":[3,0,1399,6],
 "struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436":[3,0,1399,5],
 "struct_wing_stats.html#aa7c6c74b8ca48dd1da63b0540827ea91":[3,0,1399,0],

@@ -3,6 +3,7 @@ var class_mod_system =
     [ "AddRecipeGroups", "class_mod_system.html#aeb82ea695ce424e7d906808097ef3e02", null ],
     [ "AddRecipes", "class_mod_system.html#aed57ccad5d10597a1cd4f56ee3cdd226", null ],
     [ "CanWorldBePlayed", "class_mod_system.html#a7038131d8d178a6a07f427a57965cc39", null ],
+    [ "ClearWorld", "class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3", null ],
     [ "HijackGetData", "class_mod_system.html#a9b117373c4a4f0cf900e7935d1e55785", null ],
     [ "HijackSendData", "class_mod_system.html#a5888a1efc913620528bb24cd6c1b631d", null ],
     [ "LoadWorldData", "class_mod_system.html#a12097aab73db65bd17b2bde505e1022d", null ],

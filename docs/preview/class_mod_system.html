@@ -116,6 +116,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRecipes</b
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanWorldBePlayed</b> (<a class="el" href="class_player_file_data.html">PlayerFileData</a> playerData, <a class="el" href="class_world_file_data.html">WorldFileData</a> worldFileData)</td></tr>
 <tr class="memdesc:a7038131d8d178a6a07f427a57965cc39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing. <br /></td></tr>
 <tr class="separator:a7038131d8d178a6a07f427a57965cc39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa557dc13d8b04def150ba29ab407e2e3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3">ClearWorld</a> ()</td></tr>
+<tr class="memdesc:aa557dc13d8b04def150ba29ab407e2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
+ Also called just before mods are unloaded.  <a href="class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3">More...</a><br /></td></tr>
+<tr class="separator:aa557dc13d8b04def150ba29ab407e2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b117373c4a4f0cf900e7935d1e55785"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a9b117373c4a4f0cf900e7935d1e55785">HijackGetData</a> (ref byte messageType, ref BinaryReader reader, int playerNumber)</td></tr>
 <tr class="memdesc:a9b117373c4a4f0cf900e7935d1e55785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify net message / packet information that is received before the game can act on it.  <a href="class_mod_system.html#a9b117373c4a4f0cf900e7935d1e55785">More...</a><br /></td></tr>
 <tr class="separator:a9b117373c4a4f0cf900e7935d1e55785"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,13 +185,14 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnModLoad</b>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnModUnload</b> ()</td></tr>
 <tr class="memdesc:a6575c946091630b2328a27511506e96b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called right before Mod.UnLoad() <br /></td></tr>
 <tr class="separator:a6575c946091630b2328a27511506e96b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6a150f64d282a855c4b9c6dbe8347b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#ad6a150f64d282a855c4b9c6dbe8347b6">OnWorldLoad</a> ()</td></tr>
-<tr class="memdesc:ad6a150f64d282a855c4b9c6dbe8347b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is loaded. This can be used to initialize data structures, etc. <br  />
-If you need to access your data during worldgen, initialize it in PreWorldGen instead, unless you also save it on the world, then you need both.  <a href="class_mod_system.html#ad6a150f64d282a855c4b9c6dbe8347b6">More...</a><br /></td></tr>
+<tr class="memitem:ad6a150f64d282a855c4b9c6dbe8347b6"><td class="memItemLeft" align="right" valign="top"><a id="ad6a150f64d282a855c4b9c6dbe8347b6" name="ad6a150f64d282a855c4b9c6dbe8347b6"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnWorldLoad</b> ()</td></tr>
+<tr class="memdesc:ad6a150f64d282a855c4b9c6dbe8347b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is loaded, before <a class="el" href="class_unloaded_system.html#a2e1d5a525659cd8b49d4fc286299dc92" title="Allows you to load custom data you have saved for this system in the currently loading world....">LoadWorldData</a> <br  />
+ If you need to initialize tile or other world related data-structures, use <a class="el" href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79" title="Called whenever the world is cleared. Use this reset world-related data structures before world-gen o...">ClearWorld</a> instead <br /></td></tr>
 <tr class="separator:ad6a150f64d282a855c4b9c6dbe8347b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a953bc06309d50d385ffa4e4a6ea15dd9"><td class="memItemLeft" align="right" valign="top"><a id="a953bc06309d50d385ffa4e4a6ea15dd9" name="a953bc06309d50d385ffa4e4a6ea15dd9"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnWorldUnload</b> ()</td></tr>
-<tr class="memdesc:a953bc06309d50d385ffa4e4a6ea15dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc. <br /></td></tr>
+<tr class="memdesc:a953bc06309d50d385ffa4e4a6ea15dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is unloaded. <br /></td></tr>
 <tr class="separator:a953bc06309d50d385ffa4e4a6ea15dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef5b3ff340ad29903d5f95aa41f8b51"><td class="memItemLeft" align="right" valign="top"><a id="a6ef5b3ff340ad29903d5f95aa41f8b51" name="a6ef5b3ff340ad29903d5f95aa41f8b51"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAddRecipes</b> ()</td></tr>
@@ -495,6 +500,36 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><a class="el" href="class_mod_system.html" title="ModSystem is an abstract class that your classes can derive from. It contains general-use hooks,...">ModSystem</a> is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>, can have unlimited amounts of types deriving from it. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa557dc13d8b04def150ba29ab407e2e3" name="aa557dc13d8b04def150ba29ab407e2e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa557dc13d8b04def150ba29ab407e2e3">&#9670;&nbsp;</a></span>ClearWorld()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModSystem.ClearWorld </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
+ Also called just before mods are unloaded. </p>
+
+<p>Reimplemented in <a class="el" href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79">UnloadedSystem</a>.</p>
+
+</div>
+</div>
 <a id="a9b117373c4a4f0cf900e7935d1e55785" name="a9b117373c4a4f0cf900e7935d1e55785"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b117373c4a4f0cf900e7935d1e55785">&#9670;&nbsp;</a></span>HijackGetData()</h2>
 
@@ -852,36 +887,6 @@ Only called on the server. </p>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ad6a150f64d282a855c4b9c6dbe8347b6" name="ad6a150f64d282a855c4b9c6dbe8347b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6a150f64d282a855c4b9c6dbe8347b6">&#9670;&nbsp;</a></span>OnWorldLoad()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModSystem.OnWorldLoad </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Called whenever a world is loaded. This can be used to initialize data structures, etc. <br  />
-If you need to access your data during worldgen, initialize it in PreWorldGen instead, unless you also save it on the world, then you need both. </p>
-
-<p>Reimplemented in <a class="el" href="class_unloaded_system.html#ac3d21cabb519d8ce17a327dde654401d">UnloadedSystem</a>.</p>
 
 </div>
 </div>

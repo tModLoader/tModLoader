@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"struct_hook_list_1_1_instance_enumerator.html":[3,0,463,0],
+"struct_instanced.html":[3,0,542],
 "struct_int_range.html":[3,0,543],
 "struct_item_1_1_disable_clone_method.html":[3,0,581,0],
 "struct_item_drop_attempt_result.html":[3,0,586],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "struct_well_fed_helper.html":[3,0,1395],
 "struct_whip_settings.html":[3,0,1396],
 "struct_wing_stats.html":[3,0,1399],
-"struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514":[3,0,1399,3],
-"struct_wing_stats.html#a1b8bff142cb33bb76b8e718881bc91d6":[3,0,1399,4],
-"struct_wing_stats.html#a3b110ff1cc590cd4872ff84561ec9a75":[3,0,1399,1]
+"struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514":[3,0,1399,3]
 };

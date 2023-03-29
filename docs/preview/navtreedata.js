@@ -59,16 +59,16 @@ var NAVTREEINDEX =
 "class_mod_item.html#a44335a4cb0096527824a56e993cfe0b4",
 "class_mod_player.html#a19964efe7ba5a1564052b3000665b641",
 "class_mod_system.html#a10467c193f43ee4d910254ef48229acc",
-"class_music_i_d.html",
-"class_n_p_c_i_d_1_1_sets.html#a1e27dc0cd15bcd4774ce5c69a86fd71e",
-"class_player.html#ac0d99ef77f3caa4cac5217ae7c0092ff",
-"class_proj_a_i_style_i_d.html#a3265d2e3e20ee22fb8be4ea0378f34a3",
-"class_rain_shader.html",
-"class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d",
-"class_u_i_text.html",
-"functions_r.html",
-"struct_int_range.html",
-"struct_wing_stats.html#a6ee3e93f253426d74d7945285f6caba2"
+"class_music_cue_holder.html",
+"class_n_p_c_i_d_1_1_sets.html#a1cdde2add658b7197b42715630b1296a",
+"class_player.html#ac060ab24f091f7549c6c8dbf56511ec0",
+"class_proj_a_i_style_i_d.html#a2f67cf95f7c9eb09fce1595c6aa42d17",
+"class_rain.html",
+"class_t_e_modded_pylon.html",
+"class_u_i_state.html",
+"functions_prop_z.html",
+"struct_hook_list_1_1_instance_enumerator.html",
+"struct_wing_stats.html#a1b8bff142cb33bb76b8e718881bc91d6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

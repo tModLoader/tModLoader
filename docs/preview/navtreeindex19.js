@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"functions_prop_z.html":[3,3,3,21],
+"functions_q.html":[3,3,0,16],
 "functions_r.html":[3,3,0,17],
 "functions_s.html":[3,3,0,18],
 "functions_t.html":[3,3,0,19],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_global_loot.html":[3,0,425],
 "struct_golf_helper_1_1_club_properties.html":[3,0,440,0],
 "struct_golf_helper_1_1_shot_strength.html":[3,0,440,2],
-"struct_helper_info.html":[3,0,457],
-"struct_hook_list_1_1_instance_enumerator.html":[3,0,463,0],
-"struct_instanced.html":[3,0,542]
+"struct_helper_info.html":[3,0,457]
 };
