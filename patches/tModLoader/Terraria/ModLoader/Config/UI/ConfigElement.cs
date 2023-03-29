@@ -4,7 +4,6 @@ using ReLogic.Content;
 using System;
 using System.Collections;
 using Terraria.GameContent;
-using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -52,9 +51,6 @@ public abstract class ConfigElement : UIElement
 	protected internal Func<string> TextDisplayFunction { get; set; }
 	protected Func<string> TooltipFunction { get; set; }
 	protected bool DrawLabel { get; set; } = true;
-	protected bool ReloadRequired { get; set; }
-	protected object OldValue { get; set; }
-	protected bool ValueChanged => !OldValue.Equals(GetObject());
 
 	public ConfigElement()
 	{
@@ -76,8 +72,6 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		OldValue = GetObject();
-
 		TextDisplayFunction = () => MemberInfo.Name;
 		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
 
@@ -101,7 +95,6 @@ public abstract class ConfigElement : UIElement
 		IncrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(MemberInfo, Item, List);
 		NullAllowed = ConfigManager.GetCustomAttribute<NullAllowedAttribute>(MemberInfo, Item, List) != null;
 		JsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(MemberInfo, Item, List);
-		ReloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
 	}
 
 	protected virtual void SetObject(object value)
@@ -148,27 +141,31 @@ public abstract class ConfigElement : UIElement
 		if (DrawLabel) {
 			position.X += 8f;
 			position.Y += 8f;
-
-			string label = TextDisplayFunction();
-			if (ValueChanged && ReloadRequired) {
-				label += " - [c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
-			}
-
-			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, label, position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 		}
 
 		if (IsMouseHovering && TooltipFunction != null) {
-			string tooltip = TooltipFunction();
-
-			// TODO - Add line for default value?
-
-			if (ReloadRequired) {
-				tooltip += string.IsNullOrEmpty(tooltip) ? "" : "\n";
-				tooltip += "[c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
+			UIModConfig.Tooltip = TooltipFunction();
+			/*
+			string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
+			float x = FontAssets.MouseText.Value.MeasureString(hoverText).X;
+			vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
+			if (vector.Y > (float)(Main.screenHeight - 30)) {
+				vector.Y = (float)(Main.screenHeight - 30);
 			}
-
-			UIModConfig.Tooltip = tooltip;
+			if (vector.X > (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16)) {
+				vector.X = (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16);
+			}
+			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			*/
 		}
+
+		/*
+		if (IsMouseHovering) {
+			Rectangle hitbox = GetInnerDimensions().ToRectangle();
+			Main.spriteBatch.Draw(TextureAssets.MagicPixel, hitbox, Color.Green * 0.6f);
+		}
+		*/
 	}
 
 	public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color)
