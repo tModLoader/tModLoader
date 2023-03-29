@@ -124,9 +124,15 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a33eb42abf73edaaaf2e44b566fcb68d7"><td class="memItemLeft" align="right" valign="top"><a id="a33eb42abf73edaaaf2e44b566fcb68d7" name="a33eb42abf73edaaaf2e44b566fcb68d7"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GenPassDetour</b> (orig_GenPassDetour orig, object self, <a class="el" href="class_generation_progress.html">GenerationProgress</a> progress, <a class="el" href="class_game_configuration.html">GameConfiguration</a> configuration)</td></tr>
+<tr class="separator:a33eb42abf73edaaaf2e44b566fcb68d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d07f7731b455d8b981e52047052f6af"><td class="memItemLeft" align="right" valign="top"><a id="a4d07f7731b455d8b981e52047052f6af" name="a4d07f7731b455d8b981e52047052f6af"></a>
 delegate bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetTreeFoliageDataMethod</b> (int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)</td></tr>
 <tr class="separator:a4d07f7731b455d8b981e52047052f6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9cc42ee243ca998c2fc4a0dfd962f9"><td class="memItemLeft" align="right" valign="top"><a id="abd9cc42ee243ca998c2fc4a0dfd962f9" name="abd9cc42ee243ca998c2fc4a0dfd962f9"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>orig_GenPassDetour</b> (object self, <a class="el" href="class_generation_progress.html">GenerationProgress</a> progress, <a class="el" href="class_game_configuration.html">GameConfiguration</a> configuration)</td></tr>
+<tr class="separator:abd9cc42ee243ca998c2fc4a0dfd962f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -539,6 +545,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>DesertCloudIsl
 <tr class="memitem:a03dc6ed112bec7239427cd5b5b278615"><td class="memItemLeft" align="right" valign="top"><a id="a03dc6ed112bec7239427cd5b5b278615" name="a03dc6ed112bec7239427cd5b5b278615"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DestroyHeart</b> (int i, int j)</td></tr>
 <tr class="separator:a03dc6ed112bec7239427cd5b5b278615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a288bd2d2c26ff65ae71a2cc91d8849d9"><td class="memItemLeft" align="right" valign="top"><a id="a288bd2d2c26ff65ae71a2cc91d8849d9" name="a288bd2d2c26ff65ae71a2cc91d8849d9"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>DetourPass</b> (<a class="el" href="class_pass_legacy.html">PassLegacy</a> pass, GenPassDetour hookDelegate)</td></tr>
+<tr class="separator:a288bd2d2c26ff65ae71a2cc91d8849d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6743b2188aaf1bd41807618dfd9efa3f"><td class="memItemLeft" align="right" valign="top"><a id="a6743b2188aaf1bd41807618dfd9efa3f" name="a6743b2188aaf1bd41807618dfd9efa3f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DiamondTileFrame</b> (int i, int j)</td></tr>
 <tr class="separator:a6743b2188aaf1bd41807618dfd9efa3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -941,6 +950,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>meteor</b> (in
 <tr class="memitem:a4d1d5b22a840216851f47bdab66dd358"><td class="memItemLeft" align="right" valign="top"><a id="a4d1d5b22a840216851f47bdab66dd358" name="a4d1d5b22a840216851f47bdab66dd358"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>MineHouse</b> (int i, int j)</td></tr>
 <tr class="separator:a4d1d5b22a840216851f47bdab66dd358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e49541dcd6b0195a17a5d7617148fbb"><td class="memItemLeft" align="right" valign="top"><a id="a0e49541dcd6b0195a17a5d7617148fbb" name="a0e49541dcd6b0195a17a5d7617148fbb"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyPass</b> (<a class="el" href="class_pass_legacy.html">PassLegacy</a> pass, ILContext.Manipulator callback)</td></tr>
+<tr class="separator:a0e49541dcd6b0195a17a5d7617148fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83f8dab1c24c67333e691d242ff21146"><td class="memItemLeft" align="right" valign="top"><a id="a83f8dab1c24c67333e691d242ff21146" name="a83f8dab1c24c67333e691d242ff21146"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Mountinater</b> (int i, int j)</td></tr>
 <tr class="separator:a83f8dab1c24c67333e691d242ff21146"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2021,6 +2033,9 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>oceanLevel</
 <tr class="memitem:a6c9af4f166f61269f6780bd72cd2c7dc"><td class="memItemLeft" align="right" valign="top"><a id="a6c9af4f166f61269f6780bd72cd2c7dc" name="a6c9af4f166f61269f6780bd72cd2c7dc"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SkipFramingBecauseOfGen</b><code> [get]</code></td></tr>
 <tr class="separator:a6c9af4f166f61269f6780bd72cd2c7dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d97ae23d982bd3aedc9283a938a5e8"><td class="memItemLeft" align="right" valign="top"><a id="ab6d97ae23d982bd3aedc9283a938a5e8" name="ab6d97ae23d982bd3aedc9283a938a5e8"></a>
+static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">GenPass</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaGenPasses</b><code> [get]</code></td></tr>
+<tr class="separator:ab6d97ae23d982bd3aedc9283a938a5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4c0e5140584ee1a66fa8e98e5fef5494" name="a4c0e5140584ee1a66fa8e98e5fef5494"></a>
