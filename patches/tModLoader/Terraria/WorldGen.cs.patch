@@ -349,7 +349,7 @@
  		setWorldSize();
  		Star.SpawnStars();
 +
-+		TileIO.ClearWorld();
++		SystemLoader.ClearWorld();
 +
  		worldCleared = true;
  	}

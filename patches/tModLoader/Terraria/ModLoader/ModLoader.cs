@@ -225,6 +225,7 @@ public static class ModLoader
 	{
 		Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
+		WorldGen.clearWorld();
 		ModContent.UnloadModContent();
 
 		Mods = new Mod[0];
