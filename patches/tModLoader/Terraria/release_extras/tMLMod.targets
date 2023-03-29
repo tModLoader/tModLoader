@@ -10,6 +10,7 @@
 		<!-- TML stable version define placeholder -->
 	</PropertyGroup>
 	<ItemGroup>
+		<AdditionalFiles Include="**/*.hjson" />
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
 		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />

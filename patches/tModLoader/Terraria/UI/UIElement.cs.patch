@@ -1,186 +1,34 @@
 --- src/TerrariaNetCore/Terraria/UI/UIElement.cs
 +++ src/tModLoader/Terraria/UI/UIElement.cs
-@@ -75,6 +_,22 @@
- 		public event MouseEvent OnMouseOver;
- 		public event MouseEvent OnMouseOut;
- 		public event MouseEvent OnDoubleClick;
-+		public event MouseEvent OnRightMouseDown;
-+		public event MouseEvent OnRightMouseUp;
-+		public event MouseEvent OnRightClick;
-+		public event MouseEvent OnRightDoubleClick;
-+		public event MouseEvent OnMiddleMouseDown;
-+		public event MouseEvent OnMiddleMouseUp;
-+		public event MouseEvent OnMiddleClick;
-+		public event MouseEvent OnMiddleDoubleClick;
-+		public event MouseEvent OnXButton1MouseDown;
-+		public event MouseEvent OnXButton1MouseUp;
-+		public event MouseEvent OnXButton1Click;
-+		public event MouseEvent OnXButton1DoubleClick;
-+		public event MouseEvent OnXButton2MouseDown;
-+		public event MouseEvent OnXButton2MouseUp;
-+		public event MouseEvent OnXButton2Click;
-+		public event MouseEvent OnXButton2DoubleClick;
- 		public event ScrollWheelEvent OnScrollWheel;
- 		public event ElementEvent OnUpdate;
+@@ -8,7 +_,7 @@
  
-@@ -141,6 +_,8 @@
- 			Elements.Clear();
+ namespace Terraria.UI;
+ 
+-public class UIElement : IComparable
++public partial class UIElement : IComparable
+ {
+ 	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
+ 
+@@ -167,13 +_,22 @@
+ 		if (overflowHidden) {
+ 			spriteBatch.End();
+ 			Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
++
++			/*
+ 			spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
++			*/
++			Rectangle adjustedClippingRectangle = Rectangle.Intersect(clippingRectangle, spriteBatch.GraphicsDevice.ScissorRectangle);
++			spriteBatch.GraphicsDevice.ScissorRectangle = adjustedClippingRectangle;
++
+ 			spriteBatch.GraphicsDevice.RasterizerState = OverflowHiddenRasterizerState;
+ 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, OverflowHiddenRasterizerState, null, Main.UIScaleMatrix);
  		}
  
-+		public bool HasChild(UIElement child) => Elements.Contains(child);
+ 		DrawChildren(spriteBatch);
+ 		if (overflowHidden) {
++			// TML: save a new rasterizer state snapshot to restore
++			rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 +
- 		public virtual void Draw(SpriteBatch spriteBatch) {
- 			bool overflowHidden = OverflowHidden;
- 			bool useImmediateMode = UseImmediateMode;
-@@ -161,13 +_,15 @@
- 			if (overflowHidden) {
- 				spriteBatch.End();
- 				Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
--				spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
-+				Rectangle adjustedClippingRectangle = Rectangle.Intersect(clippingRectangle, spriteBatch.GraphicsDevice.ScissorRectangle);
- 				spriteBatch.GraphicsDevice.RasterizerState = OverflowHiddenRasterizerState;
-+				spriteBatch.GraphicsDevice.ScissorRectangle = adjustedClippingRectangle;
- 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, OverflowHiddenRasterizerState, null, Main.UIScaleMatrix);
- 			}
- 
- 			DrawChildren(spriteBatch);
- 			if (overflowHidden) {
-+				rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
- 				spriteBatch.End();
- 				spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
- 				spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
-@@ -366,6 +_,134 @@
- 
- 			if (Parent != null)
- 				Parent.DoubleClick(evt);
-+		}
-+
-+		public virtual void RightMouseDown(UIMouseEvent evt) {
-+			if (OnRightMouseDown != null)
-+				OnRightMouseDown(evt, this);
-+
-+			if (Parent != null)
-+				Parent.RightMouseDown(evt);
-+		}
-+
-+		public virtual void RightMouseUp(UIMouseEvent evt) {
-+			if (OnRightMouseUp != null)
-+				OnRightMouseUp(evt, this);
-+
-+			if (Parent != null)
-+				Parent.RightMouseUp(evt);
-+		}
-+
-+		public virtual void RightClick(UIMouseEvent evt) {
-+			if (OnRightClick != null)
-+				OnRightClick(evt, this);
-+
-+			if (Parent != null)
-+				Parent.RightClick(evt);
-+		}
-+
-+		public virtual void RightDoubleClick(UIMouseEvent evt) {
-+			if (OnRightDoubleClick != null)
-+				OnRightDoubleClick(evt, this);
-+
-+			if (Parent != null)
-+				Parent.RightDoubleClick(evt);
-+		}
-+
-+		public virtual void MiddleMouseDown(UIMouseEvent evt) {
-+			if (OnMiddleMouseDown != null)
-+				OnMiddleMouseDown(evt, this);
-+
-+			if (Parent != null)
-+				Parent.MiddleMouseDown(evt);
-+		}
-+
-+		public virtual void MiddleMouseUp(UIMouseEvent evt) {
-+			if (OnMiddleMouseUp != null)
-+				OnMiddleMouseUp(evt, this);
-+
-+			if (Parent != null)
-+				Parent.MiddleMouseUp(evt);
-+		}
-+
-+		public virtual void MiddleClick(UIMouseEvent evt) {
-+			if (OnMiddleClick != null)
-+				OnMiddleClick(evt, this);
-+
-+			if (Parent != null)
-+				Parent.MiddleClick(evt);
-+		}
-+
-+		public virtual void MiddleDoubleClick(UIMouseEvent evt) {
-+			if (OnMiddleDoubleClick != null)
-+				OnMiddleDoubleClick(evt, this);
-+
-+			if (Parent != null)
-+				Parent.MiddleDoubleClick(evt);
-+		}
-+
-+		public virtual void XButton1MouseDown(UIMouseEvent evt) {
-+			if (OnXButton1MouseDown != null)
-+				OnXButton1MouseDown(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton1MouseDown(evt);
-+		}
-+
-+		public virtual void XButton1MouseUp(UIMouseEvent evt) {
-+			if (OnXButton1MouseUp != null)
-+				OnXButton1MouseUp(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton1MouseUp(evt);
-+		}
-+
-+		public virtual void XButton1Click(UIMouseEvent evt) {
-+			if (OnXButton1Click != null)
-+				OnXButton1Click(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton1Click(evt);
-+		}
-+
-+		public virtual void XButton1DoubleClick(UIMouseEvent evt) {
-+			if (OnXButton1DoubleClick != null)
-+				OnXButton1DoubleClick(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton1DoubleClick(evt);
-+		}
-+
-+		public virtual void XButton2MouseDown(UIMouseEvent evt) {
-+			if (OnXButton2MouseDown != null)
-+				OnXButton2MouseDown(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton2MouseDown(evt);
-+		}
-+
-+		public virtual void XButton2MouseUp(UIMouseEvent evt) {
-+			if (OnXButton2MouseUp != null)
-+				OnXButton2MouseUp(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton2MouseUp(evt);
-+		}
-+
-+		public virtual void XButton2Click(UIMouseEvent evt) {
-+			if (OnXButton2Click != null)
-+				OnXButton2Click(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton2Click(evt);
-+		}
-+
-+		public virtual void XButton2DoubleClick(UIMouseEvent evt) {
-+			if (OnXButton2DoubleClick != null)
-+				OnXButton2DoubleClick(evt, this);
-+
-+			if (Parent != null)
-+				Parent.XButton2DoubleClick(evt);
- 		}
- 
- 		public virtual void ScrollWheel(UIScrollWheelEvent evt) {
+ 			spriteBatch.End();
+ 			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
+ 			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;

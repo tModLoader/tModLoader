@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,15 +9,7 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleFoodItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Pie");
-			// Using references to language keys allow the tooltip to be easily translated
-			// Listed below are some keys that you may find useful for making a food item
-			// MinorStats, MediumStats, MajorStats, TipsyStats
-			// These correspond to the WellFed, WellFed2, WellFed3, and Tipsy buffs respectively.
-			// Make sure to match the tooltip with the buff you assign in SetDefaults
-			Tooltip.SetDefault("{$CommonItemTooltip.MediumStats}\n'Who knew examples could taste good'");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
+			Item.ResearchUnlockCount = 5;
 
 			// This is to show the correct frame in the inventory
 			// The MaxValue argument is for the animation speed, we want it to be stuck on frame 1

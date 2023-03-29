@@ -13,10 +13,8 @@ public class GenBaseTest : GenBase
 		var test = new GenBaseTest();
 		width = test._worldWidth;
 
-#if COMPILE_ERROR
 		test.Apply(null); // don't change Apply to ApplyPass
 		width = new GenBaseTest()._worldWidth; // leave this alone, may have side effects
-#endif
 	}
 }
 

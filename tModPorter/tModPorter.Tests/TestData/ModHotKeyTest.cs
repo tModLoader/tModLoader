@@ -17,7 +17,5 @@ public class ModHotKeyTest : Mod
 		/* comment */mod.RegisterHotKey("Custom Hotkey", "C");
 	}
 
-#if COMPILE_ERROR
 	public override void HotKeyPressed(string name) { /* Empty */ }
-#endif
 }

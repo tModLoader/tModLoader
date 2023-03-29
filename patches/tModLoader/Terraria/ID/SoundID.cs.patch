@@ -9,103 +9,96 @@
 +using LegacySoundStyle = Terraria.Audio.SoundStyle;
 +using static Terraria.ID.SoundID.SoundStyleDefaults;
  
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
+-public class SoundID
++public partial class SoundID
  {
--	public class SoundID
-+	public partial class SoundID
+-	private struct SoundStyleDefaults
++	internal partial struct SoundStyleDefaults
  	{
--		private struct SoundStyleDefaults
-+		internal partial struct SoundStyleDefaults
- 		{
- 			public readonly float PitchVariance;
- 			public readonly float Volume;
-@@ -18,9 +_,28 @@
- 				Volume = volume;
- 				Type = type;
- 			}
-+
-+			// Added by TML:
-+			public void Apply(ref SoundStyle style) {
-+				style.PitchVariance = PitchVariance;
-+				style.Volume = Volume;
-+				style.Type = Type;
-+			}
+ 		public readonly float PitchVariance;
+ 		public readonly float Volume;
+@@ -19,9 +_,29 @@
+ 			Volume = volume;
+ 			Type = type;
  		}
- 
-+		/*
- 		private static readonly SoundStyleDefaults ItemDefaults = new SoundStyleDefaults(1f, 0.06f);
-+		*/
-+	}
 +
-+	// The following is a split of the integer IDs into a separate internal class,
-+	// with most of them recreated in SoundID.TML.cs as LegacySoundStyle values,
-+	// so that it's possible to leave only one PlaySound method in the public API,
-+	// and also to make it easier to modify/copy sound styles when, for example, adjusting playback volume.
-+
-+	internal class LegacySoundIDs
-+	{
-+		// Vanilla code:
- 		public const int Dig = 0;
- 		public const int PlayerHit = 1;
- 		public const int Item = 2;
-@@ -87,6 +_,14 @@
- 		public const int Research = 63;
- 		public const int ResearchComplete = 64;
- 		public const int QueenSlime = 65;
 +		// Added by TML:
-+		public const int Count = 66;
-+	}
++		public void Apply(ref SoundStyle style)
++		{
++			style.PitchVariance = PitchVariance;
++			style.Volume = Volume;
++			style.Type = Type;
++		}
+ 	}
+ 
++	/*
+ 	private static readonly SoundStyleDefaults ItemDefaults = new SoundStyleDefaults(1f, 0.06f);
++	*/
++}
 +
-+	public partial class SoundID
-+	{
-+		//TML: Redefined in SoundID.TML.cs
-+		/*
- 		public static readonly LegacySoundStyle NPCHit1 = new LegacySoundStyle(3, 1);
- 		public static readonly LegacySoundStyle NPCHit2 = new LegacySoundStyle(3, 2);
- 		public static readonly LegacySoundStyle NPCHit3 = new LegacySoundStyle(3, 3);
-@@ -382,8 +_,12 @@
- 		public static readonly LegacySoundStyle Item170 = new LegacySoundStyle(2, 170);
- 		public static readonly LegacySoundStyle Item171 = new LegacySoundStyle(2, 171);
- 		public static readonly LegacySoundStyle Item172 = new LegacySoundStyle(2, 172);
--		public static short ItemSoundCount = 173;
-+		*/
-+		public static int ItemSoundCount = 173; // TML: Changed from short to int.
-+		/*
- 		public static readonly LegacySoundStyle DD2_GoblinBomb = new LegacySoundStyle(2, 14).WithVolume(0.5f);
-+		*/
-+		public static readonly SoundStyle DD2_GoblinBomb = new SoundStyle($"{Prefix}NPC_Killed_14") { Volume = 0.5f };
- 		public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
- 		public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
- 		public static readonly LegacySoundStyle BlizzardStrongLoop = CreateTrackable("blizzard_strong_loop", SoundType.Ambient).WithVolume(0.5f);
-@@ -496,9 +_,9 @@
- 		public static Dictionary<string, ushort> IndexByName = null;
- 		public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;
- 
--		public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
-+		internal static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
- 
--		public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
-+		internal static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
- 		private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
- 		private static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
- 		private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
-@@ -508,6 +_,7 @@
- 				_trackableLegacySoundPathList = new List<string>();
- 
- 			int count = _trackableLegacySoundPathList.Count;
++// The following is a split of the integer IDs into a separate internal class,
++// with most of them recreated in SoundID.TML.cs as LegacySoundStyle values,
++// so that it's possible to leave only one PlaySound method in the public API,
++// and also to make it easier to modify/copy sound styles when, for example, adjusting playback volume.
 +
- 			if (variations == 1) {
- 				_trackableLegacySoundPathList.Add(name);
- 			}
-@@ -517,7 +_,11 @@
- 				}
- 			}
++internal class LegacySoundIDs
++{
++	// Vanilla code:
+ 	public const int Dig = 0;
+ 	public const int PlayerHit = 1;
+ 	public const int Item = 2;
+@@ -92,6 +_,14 @@
+ 	public const int Cockatiel = 67;
+ 	public const int Macaw = 68;
+ 	public const int Toucan = 69;
++	// Added by TML:
++	public static int Count = 70;
++}
++
++public partial class SoundID
++{
++	//TML: Redefined in SoundID.TML.cs
++	/*
+ 	public static readonly LegacySoundStyle NPCHit1 = new LegacySoundStyle(3, 1);
+ 	public static readonly LegacySoundStyle NPCHit2 = new LegacySoundStyle(3, 2);
+ 	public static readonly LegacySoundStyle NPCHit3 = new LegacySoundStyle(3, 3);
+@@ -394,8 +_,12 @@
+ 	public static readonly LegacySoundStyle Item176 = new LegacySoundStyle(2, 176);
+ 	public static readonly LegacySoundStyle Item177 = new LegacySoundStyle(2, 177);
+ 	public static readonly LegacySoundStyle Item178 = new LegacySoundStyle(2, 178);
+-	public static short ItemSoundCount = 179;
++	*/
++	public static int ItemSoundCount = 179; // TML: Changed from short to int.
++	/*
+ 	public static readonly LegacySoundStyle DD2_GoblinBomb = new LegacySoundStyle(2, 14).WithVolume(0.5f);
++	*/
++	public static readonly SoundStyle DD2_GoblinBomb = new SoundStyle($"{Prefix}NPC_Killed_14") { Volume = 0.5f };
+ 	public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
+ 	public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
+ 	public static readonly LegacySoundStyle BlizzardStrongLoop = CreateTrackable("blizzard_strong_loop", SoundType.Ambient).WithVolume(0.5f);
+@@ -509,9 +_,10 @@
+ 	public static Dictionary<string, ushort> IndexByName = null;
+ 	public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;
  
-+			/*
- 			return new LegacySoundStyle(42, count, variations, type);
-+			*/
-+			
-+			return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", 0, variations, type);
+-	public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
++	internal static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
+ 
+-	public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
++	internal static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
++
+ 	private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
+ 	private static LegacySoundStyle CreateTrackable(string name, int variations, SoundStyleDefaults defaults) => CreateTrackable(name, variations, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
+ 	private static LegacySoundStyle CreateTrackable(string name, SoundType type = SoundType.Sound) => CreateTrackable(name, 1, type);
+@@ -531,7 +_,10 @@
+ 			}
  		}
  
- 		public static void FillAccessMap() {
++		/*
+ 		return new LegacySoundStyle(42, count, variations, type);
++		*/
++		return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", 0, variations, type);
+ 	}
+ 
+ 	public static void FillAccessMap()

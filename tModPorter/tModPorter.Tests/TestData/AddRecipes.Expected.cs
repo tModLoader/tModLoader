@@ -93,6 +93,7 @@ public class ModAddRecipes : Mod
 	}
 #endif
 
+	// not-yet-implemented
 	public Action InLambda() => () => {
 		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.AddIngredient(ItemID.Wood, 10);
@@ -106,6 +107,24 @@ public class ModAddRecipes : Mod
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	};
+	// instead-expect
+#if COMPILE_ERROR
+	public Action InLambda() => () => {
+		var recipe = Recipe.Create();
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.SetResult(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.Register();
+	};
+
+	public Action InDelegate() => delegate() {
+		var recipe = Recipe.Create();
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.SetResult(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.Register();
+	};
+#endif
 
 	public void PortModCreateRecipe(ModItem modItem) {
 		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
@@ -127,5 +146,10 @@ public class ModAddRecipes : Mod
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
+	}
+
+	public void NewRecipeMethodConditionRefactors(Recipe recipe) {
+		recipe.AddCondition(Condition.TimeDay);
+		recipe.AddCondition(Condition.InGraveyard);
 	}
 }

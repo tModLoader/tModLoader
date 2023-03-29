@@ -1,0 +1,194 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerResourcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/HorizontalBarsPlayerResourcesDisplaySet.cs
+@@ -3,6 +_,8 @@
+ using ReLogic.Content;
+ using ReLogic.Graphics;
+ using Terraria.DataStructures;
++using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.ResourceSets;
+ 
+@@ -25,6 +_,9 @@
+ 	private Asset<Texture2D> _panelRightHP;
+ 	private Asset<Texture2D> _panelMiddleMP;
+ 	private Asset<Texture2D> _panelRightMP;
++	
++	// Added by TML.
++	public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
+ 
+ 	public string NameKey { get; private set; }
+ 
+@@ -69,6 +_,10 @@
+ 			DrawLifeBarText(spriteBatch, new Vector2(num3, num2));
+ 		}
+ 
++		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
++		if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, true, ref color, out bool drawText))
++			goto SkipLifeDrawing;
++
+ 		Vector2 vector = new Vector2(num3, num2);
+ 		vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
+ 		bool isHovered = false;
+@@ -81,18 +_,31 @@
+ 		resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++		resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++		resourceDrawSettings.DisplaySet = this;
++		resourceDrawSettings.ResourceIndexOffset = -1;  // Make the range [-1, 20] instead of [0, 21]
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 		resourceDrawSettings = default(ResourceDrawSettings);
+ 		resourceDrawSettings.ElementCount = _hpSegmentsCount;
+ 		resourceDrawSettings.ElementIndexOffset = 0;
++		// Make the filling draw from right to left (#HealthManaAPI)
+ 		resourceDrawSettings.TopLeftAnchor = vector + new Vector2(6f, 6f);
+ 		resourceDrawSettings.GetTextureMethod = LifeFillingDrawer;
+ 		resourceDrawSettings.OffsetPerDraw = new Vector2(_hpFill.Width(), 0f);
+ 		resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++		resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++		resourceDrawSettings.DisplaySet = this;
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 		_hpHovered = isHovered;
++		SkipLifeDrawing:
++
++		ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, true, color, drawText);
++		color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
++		if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, false, ref color, out drawText))
++			goto SkipManaDrawing;
++
+ 		isHovered = false;
+ 		Vector2 vector2 = new Vector2(num3 - 10, num2 + 24);
+ 		vector2.X += (_maxSegmentCount - _mpSegmentsCount) * _panelMiddleMP.Width();
+@@ -105,18 +_,27 @@
+ 		resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.UnitX;
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++		resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++		resourceDrawSettings.DisplaySet = this;
++		resourceDrawSettings.ResourceIndexOffset = -1;  // Make the range [-1, 20] instead of [0, 21]
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 		resourceDrawSettings = default(ResourceDrawSettings);
+ 		resourceDrawSettings.ElementCount = _mpSegmentsCount;
+ 		resourceDrawSettings.ElementIndexOffset = 0;
++		// Make the filling draw from right to left (#HealthManaAPI)
+ 		resourceDrawSettings.TopLeftAnchor = vector2 + new Vector2(6f, 6f);
+ 		resourceDrawSettings.GetTextureMethod = ManaFillingDrawer;
+ 		resourceDrawSettings.OffsetPerDraw = new Vector2(_mpFill.Width(), 0f);
+ 		resourceDrawSettings.OffsetPerDrawByTexturePercentile = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
++		resourceDrawSettings.StatsSnapshot = preparedSnapshot;
++		resourceDrawSettings.DisplaySet = this;
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+ 		_mpHovered = isHovered;
++		SkipManaDrawing:
++
++		ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, false, color, drawText);
+ 	}
+ 
+ 	private static void DrawManaText(SpriteBatch spriteBatch)
+@@ -144,15 +_,26 @@
+ 		spriteBatch.DrawString(FontAssets.MouseText.Value, localPlayer.statLife + "/" + localPlayer.statLifeMax2, vector + new Vector2(vector2.X * 0.5f, 0f), color, 0f, new Vector2(FontAssets.MouseText.Value.MeasureString(localPlayer.statLife + "/" + localPlayer.statLifeMax2).X, 0f), 1f, SpriteEffects.None, 0f);
+ 	}
+ 
++	// Added by TML.
++	private PlayerStatsSnapshot preparedSnapshot;
++
+ 	private void PrepareFields(Player player)
+ 	{
+ 		PlayerStatsSnapshot playerStatsSnapshot = new PlayerStatsSnapshot(player);
++
++		// Make drawing use the automatically-clamped AmountOf properties (#HealthManaAPI)
++		/*
+ 		_hpSegmentsCount = (int)((float)playerStatsSnapshot.LifeMax / playerStatsSnapshot.LifePerSegment);
+ 		_mpSegmentsCount = (int)((float)playerStatsSnapshot.ManaMax / playerStatsSnapshot.ManaPerSegment);
++		*/
++		_hpSegmentsCount = playerStatsSnapshot.AmountOfLifeHearts;
++		_mpSegmentsCount = playerStatsSnapshot.AmountOfManaStars;
+ 		_maxSegmentCount = 20;
+ 		_hpFruitCount = playerStatsSnapshot.LifeFruitCount;
+ 		_hpPercent = (float)playerStatsSnapshot.Life / (float)playerStatsSnapshot.LifeMax;
+ 		_mpPercent = (float)playerStatsSnapshot.Mana / (float)playerStatsSnapshot.ManaMax;
++
++		preparedSnapshot = playerStatsSnapshot;
+ 	}
+ 
+ 	private void LifePanelDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect)
+@@ -167,6 +_,11 @@
+ 		}
+ 		else if (elementIndex != firstElementIndex) {
+ 			sprite = _panelMiddleHP;
++
++			// Make the panels draw from right to left (#HealthManaAPI)
++			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
++			int drawIndexOffset = opposite - elementIndex;
++			offset.X = drawIndexOffset * _panelMiddleHP.Width();
+ 		}
+ 	}
+ 
+@@ -182,27 +_,49 @@
+ 		}
+ 		else if (elementIndex != firstElementIndex) {
+ 			sprite = _panelMiddleMP;
++			// Make the panels draw from right to left (#HealthManaAPI)
++			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
++			int drawIndexOffset = opposite - elementIndex;
++			offset.X = drawIndexOffset * _panelMiddleMP.Width();
+ 		}
+ 	}
+ 
+ 	private void LifeFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect)
+ 	{
+ 		sprite = _hpFill;
++
++		// Make the filling draw from right to left (#HealthManaAPI)
++		/*
+ 		if (elementIndex >= _hpSegmentsCount - _hpFruitCount)
++		*/
++		if (elementIndex < _hpFruitCount)
+ 			sprite = _hpFillHoney;
+ 
+ 		FillBarByValues(elementIndex, sprite, _hpSegmentsCount, _hpPercent, out offset, out drawScale, out sourceRect);
++
++		// Make the bar fillings draw from right to left (#HealthManaAPI)
++		int opposite = lastElementIndex - (elementIndex - firstElementIndex);
++		int drawIndexOffset = opposite - elementIndex;
++		offset.X += drawIndexOffset * sprite.Width();
+ 	}
+ 
+-	private static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect)
++	public static void FillBarByValues(int elementIndex, Asset<Texture2D> sprite, int segmentsCount, float fillPercent, out Vector2 offset, out float drawScale, out Rectangle? sourceRect)
+ 	{
+ 		sourceRect = null;
+ 		offset = Vector2.Zero;
+ 		float num = 1f;
+ 		float num2 = 1f / (float)segmentsCount;
++
++		/*
+ 		float t = 1f - fillPercent;
++		*/
++		float t = fillPercent;
+ 		float lerpValue = Utils.GetLerpValue(num2 * (float)elementIndex, num2 * (float)(elementIndex + 1), t, clamped: true);
++
++		/*
+ 		num = 1f - lerpValue;
++		*/
++		num = lerpValue;
+ 		drawScale = 1f;
+ 		Rectangle value = sprite.Frame();
+ 		int num3 = (int)((float)value.Width * (1f - num));
+@@ -216,6 +_,11 @@
+ 	{
+ 		sprite = _mpFill;
+ 		FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
++
++		// Make the bar fillings draw from right to left (#HealthManaAPI)
++		int opposite = lastElementIndex - (elementIndex - firstElementIndex);
++		int drawIndexOffset = opposite - elementIndex;
++		offset.X += drawIndexOffset * sprite.Width();
+ 	}
+ 
+ 	public void TryToHover()

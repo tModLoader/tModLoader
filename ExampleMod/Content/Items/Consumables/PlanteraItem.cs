@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
@@ -10,10 +9,7 @@ namespace ExampleMod.Content.Items.Consumables
 	public class PlanteraItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Plantera");
-			Tooltip.SetDefault("The wrath of the jungle");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			Item.ResearchUnlockCount = 3;
 			ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
 
 			// This is set to true for all NPCs that can be summoned via an Item (calling NPC.SpawnOnPlayer). If this is for a modded boss,
@@ -53,7 +49,7 @@ namespace ExampleMod.Content.Items.Consumables
 				else {
 					// If the player is in multiplayer, request a spawn
 					// This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
-					NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+					NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
 				}
 			}
 

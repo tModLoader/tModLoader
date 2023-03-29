@@ -1,27 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
-@@ -1,4 +_,5 @@
- using System.Collections.Generic;
-+using Terraria.ModLoader;
+@@ -2,10 +_,14 @@
  
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
+-public static class AmmoID
++public static partial class AmmoID
  {
-@@ -6,6 +_,7 @@
+-	public class Sets
++	public partial class Sets
  	{
- 		public class Sets
- 		{
-+			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
- 			public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
- 				{ 759, new Dictionary<int, int> {
- 						{
-@@ -257,6 +_,10 @@
- 							717
- 						}
- 					} }			};
-+
-+			public static bool[] IsArrow = Factory.CreateBoolSet(false, Arrow, Stake);
-+			public static bool[] IsBullet = Factory.CreateBoolSet(false, Bullet, CandyCorn);
-+			public static bool[] IsRocket = Factory.CreateBoolSet(false, Rocket, StyngerBolt, JackOLantern, NailFriendly);
- 		}
- 
- 		public static int None = 0;
++		/// <summary>
++		/// Associates a launcher's item type (<see cref="Item.type"/>) and an ammo's item type (<see cref="Item.type"/>) to the projectile type (<see cref="Projectile.type"/>) they will shoot when used together.
++		/// <br/> For example, a <see cref="ItemID.SnowmanCannon"/> used with a <see cref="ItemID.MiniNukeI"/> will fire the <see cref="ProjectileID.MiniNukeSnowmanRocketI"/>.
++		/// </summary>
+ 		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
+ 			{
+ 				759,

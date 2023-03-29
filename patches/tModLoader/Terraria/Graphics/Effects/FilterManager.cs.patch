@@ -1,15 +1,16 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/FilterManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/FilterManager.cs
-@@ -183,5 +_,12 @@
+@@ -194,4 +_,13 @@
  
- 			return true;
- 		}
-+
-+		internal void DeactivateAll() {
-+			foreach (string key in _effects.Keys) {
-+				if (this[key].IsActive())
-+					this[key].Deactivate(new object[0]);
-+			}
-+		}
+ 		return true;
  	}
++
++	// Added by TML.
++	internal void DeactivateAll()
++	{
++		foreach (string key in _effects.Keys) {
++			if (this[key].IsActive())
++				this[key].Deactivate(Array.Empty<object>());
++		}
++	}
  }

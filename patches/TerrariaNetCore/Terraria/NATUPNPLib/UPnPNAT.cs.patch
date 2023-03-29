@@ -1,71 +1,74 @@
 --- src/Terraria/Terraria/NATUPNPLib/UPnPNAT.cs
 +++ src/TerrariaNetCore/Terraria/NATUPNPLib/UPnPNAT.cs
-@@ -1,9 +_,13 @@
+@@ -1,9 +_,15 @@
 -#if SERVER
 +using System;
 +using System.Collections;
 +using System.Collections.Generic;
++/*
  using System.Runtime.CompilerServices;
  using System.Runtime.InteropServices;
++*/
 +using UwUPnP;
  
- namespace NATUPNPLib
+ namespace NATUPNPLib;
+ 
++/*
+ [ComImport]
+ [CompilerGenerated]
+ [Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
+@@ -12,4 +_,53 @@
+ public interface UPnPNAT : IUPnPNAT
  {
-+	/*
- 	[ComImport]
- 	[CompilerGenerated]
- 	[Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
-@@ -12,5 +_,52 @@
- 	public interface UPnPNAT : IUPnPNAT
- 	{
- 	}
-+	*/
+ }
+-#endif
++*/
 +
-+	public sealed class UPnPNAT : IUPnPNAT
++public sealed class UPnPNAT : IUPnPNAT
++{
++	public IStaticPortMappingCollection StaticPortMappingCollection { get; } = new MappingCollection();
++
++	private record StaticPortMapping(
++		int InternalPort,
++		string Protocol,
++		string InternalClient
++	) : IStaticPortMapping;
++
++	private class MappingCollection : IStaticPortMappingCollection
 +	{
-+		public IStaticPortMappingCollection StaticPortMappingCollection { get; } = new MappingCollection();
-+
-+		private record StaticPortMapping
-+		(
-+			int InternalPort,
-+			string Protocol,
-+			string InternalClient
-+		) : IStaticPortMapping;
-+
-+		private class MappingCollection : IStaticPortMappingCollection
++		public IStaticPortMapping Add(int lExternalPort, string bstrProtocol, int lInternalPort, string bstrInternalClient, bool bEnabled, string bstrDescription)
 +		{
-+			public IStaticPortMapping Add(int lExternalPort, string bstrProtocol, int lInternalPort, string bstrInternalClient, bool bEnabled, string bstrDescription) {
-+				UPnP.Open(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort, (ushort)lInternalPort, bstrDescription);
-+				return new StaticPortMapping
-+				(
-+					InternalPort: lInternalPort,
-+					Protocol: bstrProtocol,
-+					InternalClient: bstrInternalClient
-+				);
-+			}
++			UPnP.Open(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort, (ushort)lInternalPort, bstrDescription);
 +
-+			public void Remove(int lExternalPort, string bstrProtocol) => UPnP.Close(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort);
++			return new StaticPortMapping(
++				InternalPort: lInternalPort,
++				Protocol: bstrProtocol,
++				InternalClient: bstrInternalClient
++			);
++		}
 +
-+			public IEnumerator GetEnumerator() {
-+				for (int i = 0; ; i++) {
-+					Dictionary<string, string> args;
-+					try {
-+						args = UPnP.GetGenericPortMappingEntry(i);
-+					}
-+					catch {
-+						yield break;
-+					}
++		public void Remove(int lExternalPort, string bstrProtocol) =>
++			UPnP.Close(Enum.Parse<Protocol>(bstrProtocol), (ushort)lExternalPort);
 +
-+					if (args == null ||
-+							!args.TryGetValue("NewInternalPort", out var s_port) || !int.TryParse(s_port, out int port) ||
-+							!args.TryGetValue("NewProtocol", out var protocol) || !args.TryGetValue("NewInternalClient", out var client)) {
-+						yield break;
-+					}
-+
-+					yield return new StaticPortMapping(port, protocol, client);
++		public IEnumerator GetEnumerator()
++		{
++			for (int i = 0; ; i++) {
++				Dictionary<string, string> args;
++				try {
++					args = UPnP.GetGenericPortMappingEntry(i);
 +				}
++				catch {
++					yield break;
++				}
++
++				if (args == null
++				|| !args.TryGetValue("NewInternalPort", out string s_port) || !int.TryParse(s_port, out int port)
++				|| !args.TryGetValue("NewProtocol", out string protocol) || !args.TryGetValue("NewInternalClient", out string client)) {
++					yield break;
++				}
++
++				yield return new StaticPortMapping(port, protocol, client);
 +			}
 +		}
 +	}
- }
--#endif
++}

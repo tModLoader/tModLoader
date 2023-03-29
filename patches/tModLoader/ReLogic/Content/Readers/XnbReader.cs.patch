@@ -1,39 +1,43 @@
 --- src/TerrariaNetCore/ReLogic/Content/Readers/XnbReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/XnbReader.cs
-@@ -1,12 +_,20 @@
- using Microsoft.Xna.Framework.Content;
-+using Microsoft.Xna.Framework.Graphics;
+@@ -1,12 +_,21 @@
  using System;
 +using System.Diagnostics;
  using System.IO;
  using System.Threading;
 +using System.Threading.Tasks;
+ using Microsoft.Xna.Framework.Content;
++using Microsoft.Xna.Framework.Graphics;
  
- namespace ReLogic.Content.Readers
+ namespace ReLogic.Content.Readers;
+ 
+ public class XnbReader : IAssetReader, IDisposable
  {
- 	public class XnbReader : IAssetReader, IDisposable
++	// Added by TML.
++	public static class LoadOnMainThread<T>
++	{
++		public static bool Value;
++	}
++
+ 	private class InternalContentManager : ContentManager
  	{
-+		public static class LoadOnMainThread<T>
-+		{
-+			public static bool Value;
+ 		private Stream _stream;
+@@ -33,9 +_,18 @@
+ 		_contentLoader = new ThreadLocal<InternalContentManager>(() => new InternalContentManager(services));
+ 	}
+ 
++	/*
+ 	public T FromStream<T>(Stream stream) where T : class
++	*/
++	public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class
+ 	{
+ 		InternalContentManager value = _contentLoader.Value;
++
++		if (LoadOnMainThread<T>.Value) {
++			await mainThreadCtx;
++			Debug.Assert(mainThreadCtx.IsCompleted);
 +		}
 +
- 		private class InternalContentManager : ContentManager
- 		{
- 			private Stream _stream;
-@@ -30,8 +_,14 @@
- 			_contentLoader = new ThreadLocal<InternalContentManager>(() => new InternalContentManager(services));
- 		}
- 
--		public T FromStream<T>(Stream stream) where T : class {
-+		public async ValueTask<T> FromStream<T>(Stream stream, MainThreadCreationContext mainThreadCtx) where T : class {
- 			InternalContentManager value = _contentLoader.Value;
-+
-+			if (LoadOnMainThread<T>.Value) {
-+				await mainThreadCtx;
-+				Debug.Assert(mainThreadCtx.IsCompleted);
-+			}
-+
- 			value.SetStream(stream);
- 			return value.Load<T>();
- 		}
+ 		value.SetStream(stream);
+ 		return value.Load<T>();
+ 	}

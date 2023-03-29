@@ -11,12 +11,15 @@ namespace tModPorter.Rewriters;
 
 public class MemberUseRewriter : BaseRewriter {
 
-	public delegate SyntaxNode RewriteMemberUse(MemberUseRewriter rw, IInvalidOperation op, IdentifierNameSyntax memberName);
+	public delegate SyntaxNode RewriteMemberUse(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName);
 
 	private static List<(string type, string name, RewriteMemberUse handler)> handlers = new();
 
 	public static void RefactorInstanceMember(string type, string name, RewriteMemberUse handler) => handlers.Add((type, name, handler));
 	public static void RefactorInstanceMember(string type, string name, AddComment comment) => RefactorInstanceMember(type, name, (_, _, n) => comment.Apply(n));
+
+	public static void RefactorStaticMember(string type, string name, RewriteMemberUse handler) => handlers.Add((type, name, handler));
+	public static void RefactorStaticMember(string type, string name, AddComment comment) => RefactorStaticMember(type, name, (_, _, n) => comment.Apply(n));
 
 
 	public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node) {

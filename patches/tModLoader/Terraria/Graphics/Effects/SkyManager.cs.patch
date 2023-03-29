@@ -1,52 +1,37 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/SkyManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/SkyManager.cs
-@@ -9,6 +_,7 @@
- 		public static SkyManager Instance = new SkyManager();
- 		private float _lastDepth;
- 		private LinkedList<CustomSky> _activeSkies = new LinkedList<CustomSky>();
-+		private double _timePass; // Added by TML; used to account for more precise time rates.
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+@@ -21,11 +_,13 @@
  
- 		public void Reset() {
- 			foreach (CustomSky value in _effects.Values) {
-@@ -16,14 +_,18 @@
- 			}
+ 	public void Update(GameTime gameTime)
+ 	{
++		/*
+ 		int num = Main.dayRate;
+ 		if (num < 1)
+ 			num = 1;
++		*/
  
- 			_activeSkies.Clear();
-+			_timePass = 0;
+-		for (int i = 0; i < num; i++) {
++		for (int i = 0; i < Main.worldEventUpdates; i++) {
+ 			LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
+ 			while (linkedListNode != null) {
+ 				CustomSky value = linkedListNode.Value;
+@@ -98,5 +_,14 @@
  		}
  
- 		public void Update(GameTime gameTime) {
-+			/*
- 			int num = Main.dayRate;
- 			if (num < 1)
- 				num = 1;
-+			*/
- 
-+			_timePass += Main.desiredWorldEventsUpdateRate;
--			for (int i = 0; i < num; i++) {
-+			for (int i = 1; i <= (int)_timePass; i++) {
- 				LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
- 				while (linkedListNode != null) {
- 					CustomSky value = linkedListNode.Value;
-@@ -35,6 +_,7 @@
- 					linkedListNode = next;
- 				}
- 			}
-+			_timePass %= 1.0;
- 		}
- 
- 		public void Draw(SpriteBatch spriteBatch) {
-@@ -87,6 +_,13 @@
- 			}
- 
- 			return MathHelper.Clamp(num, 0f, 1f);
-+		}
+ 		return MathHelper.Clamp(num, 0f, 1f);
++	}
 +
-+		internal void DeactivateAll() {
-+			foreach (string key in _effects.Keys) {
-+				if (this[key].IsActive())
-+					this[key].Deactivate(new object[0]);
-+			}
- 		}
++	// Added by TML.
++	internal void DeactivateAll()
++	{
++		foreach (string key in _effects.Keys) {
++			if (this[key].IsActive())
++				this[key].Deactivate(Array.Empty<object>());
++		}
  	}
  }

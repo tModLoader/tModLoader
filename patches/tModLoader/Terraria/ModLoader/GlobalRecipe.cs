@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader;
+
+// class left in for tModPorter
+[Obsolete("Use Recipe.AddCondition/AddConsumeItemCallback/AddOnCraftCallback or GlobalItem.OnCreate", true)]
+public class GlobalRecipe
 {
-	// class left in for tModPorter
-	[Obsolete("Use Recipe.AddCondition/AddConsumeItemCallback/AddOnCraftCallback or GlobalItem.OnCreate", true)]
-	public class GlobalRecipe
-	{
-	}
 }

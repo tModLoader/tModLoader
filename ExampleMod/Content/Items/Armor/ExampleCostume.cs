@@ -64,10 +64,6 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Charm of Example");
-			Tooltip.SetDefault("Turns the holder into Blocky near town NPC"
-				+ "\nBlocky's colors will invert in water");
-
 			SetupDrawing();
 		}
 
@@ -77,7 +73,7 @@ namespace ExampleMod.Content.Items.Armor
 			Item.accessory = true;
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;
-			Item.canBePlacedInVanityRegardlessOfConditions = true;
+			Item.hasVanityEffects = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

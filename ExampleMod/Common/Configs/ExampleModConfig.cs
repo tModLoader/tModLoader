@@ -17,5 +17,8 @@ namespace ExampleMod.Common.Configs
 		[DefaultValue(true)] // This sets the configs default value.
 		[ReloadRequired] // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
 		public bool ExampleWingsToggle; // To see the implementation of this option, see ExampleWings.cs
+
+		[ReloadRequired]
+		public bool WeaponWithGrowingDamageToggle;
 	}
 }

@@ -41,8 +41,9 @@ namespace ExampleMod.Content.NPCs
 		public ref float AI_FlutterTime => ref NPC.ai[2];
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Flutter Slime"); // Automatic from localization files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
+
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
 
 			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
@@ -236,7 +237,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) {
 			// We can use ModifyCollisionData to customize collision damage.
 			// Here we double damage when this npc is in the falling state and the victim is almost directly below the npc
 			if (AI_State == (float)ActionState.Fall) {

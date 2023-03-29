@@ -8,87 +8,104 @@
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
- namespace Terraria.GameContent.Tile_Entities
+ namespace Terraria.GameContent.Tile_Entities;
+ 
+-public class TEWeaponsRack : TileEntity, IFixLoadedData
++public sealed partial class TEWeaponsRack : TileEntity, IFixLoadedData
  {
--	public class TEWeaponsRack : TileEntity
-+	public sealed partial class TEWeaponsRack : TileEntity
+ 	private static byte _myEntityID;
+ 	public Item item;
+@@ -88,8 +_,8 @@
+ 
+ 	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
  	{
- 		private static byte _myEntityID;
- 		public Item item;
-@@ -78,8 +_,8 @@
+-		writer.Write((short)item.netID);
+-		writer.Write(item.prefix);
++		ItemIO.WriteShortVanillaID(item, writer);
++		ItemIO.WriteByteVanillaPrefix(item, writer);
+ 		writer.Write((short)item.stack);
+ 	}
+ 
+@@ -135,6 +_,7 @@
  		}
  
- 		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
--			writer.Write((short)item.netID);
--			writer.Write(item.prefix);
-+			ItemIO.WriteShortVanillaID(item, writer);
-+			ItemIO.WriteByteVanillaPrefix(item, writer);
- 			writer.Write((short)item.stack);
- 		}
- 
-@@ -137,20 +_,26 @@
- 
- 		public void DropItem() {
- 			if (Main.netMode != 1)
-+				/*
- 				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item.netID, 1, noBroadcast: false, item.prefix);
-+				*/
-+				Item.DropItem(new EntitySource_TileBreak(Position.X, Position.Y), item, new Rectangle(Position.X * 16, Position.Y * 16, 16, 16));
- 
- 			item = new Item();
- 		}
- 
--		public static void TryPlacing(int x, int y, int netid, int prefix, int stack) {
-+		public static void TryPlacing(int x, int y, Item item, int stack) {
- 			WorldGen.RangeFrame(x, y, x + 3, y + 3);
- 			int num = Find(x, y);
- 			if (num == -1) {
-+				/*
- 				int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 32, 1);
- 				Main.item[num2].netDefaults(netid);
- 				Main.item[num2].Prefix(prefix);
- 				Main.item[num2].stack = stack;
- 				NetMessage.SendData(21, -1, -1, null, num2);
-+				*/
-+				Item.DropItem(new EntitySource_TileBreak(x, y), item, new Rectangle(x * 16, y * 16, 16, 16));
- 				return;
+ 		WorldGen.destroyObject = true;
++		bool drop = TileLoader.Drop(callX, callY, 471);
+ 		for (int k = num3; k < num3 + num; k++) {
+ 			for (int l = num4; l < num4 + num2; l++) {
+ 				if (Main.tile[k, l].active() && Main.tile[k, l].type == 471)
+@@ -142,7 +_,8 @@
  			}
+ 		}
  
-@@ -158,10 +_,14 @@
- 			if (tEWeaponsRack.item.stack > 0)
- 				tEWeaponsRack.DropItem();
++		if(drop)
+-		Item.NewItem(new EntitySource_TileBreak(num3, num4), num3 * 16, num4 * 16, 48, 48, 2699);
++			Item.NewItem(new EntitySource_TileBreak(num3, num4), num3 * 16, num4 * 16, 48, 48, 2699);
+ 		Kill(num3, num4);
+ 		WorldGen.destroyObject = false;
+ 	}
+@@ -150,21 +_,24 @@
+ 	public void DropItem()
+ 	{
+ 		if (Main.netMode != 1)
+-			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item.netID, 1, noBroadcast: false, item.prefix);
++			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item, noBroadcast: false);
  
+ 		item = new Item();
+ 	}
+ 
+-	public static void TryPlacing(int x, int y, int netid, int prefix, int stack)
++	public static void TryPlacing(int x, int y, Item item, int stack)
+ 	{
+ 		WorldGen.RangeFrame(x, y, x + 3, y + 3);
+ 		int num = Find(x, y);
+ 		if (num == -1) {
 +			/*
- 			tEWeaponsRack.item = new Item();
- 			tEWeaponsRack.item.netDefaults(netid);
- 			tEWeaponsRack.item.Prefix(prefix);
- 			tEWeaponsRack.item.stack = stack;
+ 			int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 32, 1);
+ 			Main.item[num2].netDefaults(netid);
+ 			Main.item[num2].Prefix(prefix);
+ 			Main.item[num2].stack = stack;
+ 			NetMessage.SendData(21, -1, -1, null, num2);
 +			*/
-+			tEWeaponsRack.item = ItemLoader.TransferWithLimit(item, stack);
++			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
+ 			return;
+ 		}
+ 
+@@ -172,10 +_,14 @@
+ 		if (tEWeaponsRack.item.stack > 0)
+ 			tEWeaponsRack.DropItem();
+ 
++		/*
+ 		tEWeaponsRack.item = new Item();
+ 		tEWeaponsRack.item.netDefaults(netid);
+ 		tEWeaponsRack.item.Prefix(prefix);
+ 		tEWeaponsRack.item.stack = stack;
++		*/
++		tEWeaponsRack.item = ItemLoader.TransferWithLimit(item, stack);
 +
- 			NetMessage.SendData(86, -1, -1, null, tEWeaponsRack.ID, x, y);
+ 		NetMessage.SendData(86, -1, -1, null, tEWeaponsRack.ID, x, y);
+ 	}
+ 
+@@ -229,16 +_,20 @@
+ 				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}
  
-@@ -212,16 +_,20 @@
- 					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
- 			}
+-		if (Main.netMode == 1)
++		if (Main.netMode == 1) {
+ 			NetMessage.SendData(123, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
++			ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
++		}
+ 		else
+-			TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
++			TryPlacing(x, y, player.inventory[player.selectedItem], 1);
  
--			if (Main.netMode == 1)
-+			if (Main.netMode == 1) {
- 				NetMessage.SendData(123, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
-+				ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
-+			}
- 			else
--				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
-+				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
++		/*
+ 		player.inventory[player.selectedItem].stack--;
+ 		if (player.inventory[player.selectedItem].stack <= 0) {
+ 			player.inventory[player.selectedItem].SetDefaults();
+ 			Main.mouseItem.SetDefaults();
+ 		}
++		*/
  
-+			/*
- 			player.inventory[player.selectedItem].stack--;
- 			if (player.inventory[player.selectedItem].stack <= 0) {
- 				player.inventory[player.selectedItem].SetDefaults();
- 				Main.mouseItem.SetDefaults();
- 			}
-+			*/
- 
- 			if (player.selectedItem == 58)
- 				Main.mouseItem = player.inventory[player.selectedItem].Clone();
+ 		if (player.selectedItem == 58)
+ 			Main.mouseItem = player.inventory[player.selectedItem].Clone();

@@ -1,13 +1,12 @@
-﻿using System;
+using System;
 
-namespace Terraria.ModLoader.Exceptions
+namespace Terraria.ModLoader.Exceptions;
+
+class FolderCreationFailedException : Exception
 {
-	class FolderCreationFailedException : Exception
-	{
-		public override string HelpLink => "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemunauthorizedaccessexception-access-to-the-path-is-denied";
+	public override string HelpLink => "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#systemunauthorizedaccessexception-access-to-the-path-is-denied";
 
-		public FolderCreationFailedException(string message, Exception innerException) : base(message, innerException)
-		{
-		}
+	public FolderCreationFailedException(string message, Exception innerException) : base(message, innerException)
+	{
 	}
 }

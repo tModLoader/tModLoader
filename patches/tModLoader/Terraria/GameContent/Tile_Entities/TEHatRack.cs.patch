@@ -7,32 +7,42 @@
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  
- namespace Terraria.GameContent.Tile_Entities
+ namespace Terraria.GameContent.Tile_Entities;
+ 
+-public class TEHatRack : TileEntity, IFixLoadedData
++public sealed partial class TEHatRack : TileEntity, IFixLoadedData
  {
--	public class TEHatRack : TileEntity
-+	public sealed partial class TEHatRack : TileEntity
- 	{
- 		private static byte _myEntityID;
- 		private const int MyTileID = 475;
-@@ -96,8 +_,8 @@
- 			for (int i = 0; i < 2; i++) {
- 				Item item = _items[i];
- 				if (!item.IsAir) {
--					writer.Write((short)item.netID);
--					writer.Write(item.prefix);
-+					ItemIO.WriteShortVanillaID(item, writer);
-+					ItemIO.WriteByteVanillaPrefix(item, writer);
- 					writer.Write((short)item.stack);
- 				}
+ 	private static byte _myEntityID;
+ 	private const int MyTileID = 475;
+@@ -104,8 +_,8 @@
+ 		for (int i = 0; i < 2; i++) {
+ 			Item item = _items[i];
+ 			if (!item.IsAir) {
+-				writer.Write((short)item.netID);
+-				writer.Write(item.prefix);
++				ItemIO.WriteShortVanillaID(item, writer);
++				ItemIO.WriteByteVanillaPrefix(item, writer);
+ 				writer.Write((short)item.stack);
  			}
-@@ -105,8 +_,8 @@
- 			for (int j = 0; j < 2; j++) {
- 				Item item2 = _dyes[j];
- 				if (!item2.IsAir) {
--					writer.Write((short)item2.netID);
--					writer.Write(item2.prefix);
-+					ItemIO.WriteShortVanillaID(item2, writer);
-+					ItemIO.WriteByteVanillaPrefix(item2, writer);
- 					writer.Write((short)item2.stack);
- 				}
+ 		}
+@@ -113,8 +_,8 @@
+ 		for (int j = 0; j < 2; j++) {
+ 			Item item2 = _dyes[j];
+ 			if (!item2.IsAir) {
+-				writer.Write((short)item2.netID);
+-				writer.Write(item2.prefix);
++				ItemIO.WriteShortVanillaID(item2, writer);
++				ItemIO.WriteByteVanillaPrefix(item2, writer);
+ 				writer.Write((short)item2.stack);
  			}
+ 		}
+@@ -172,7 +_,8 @@
+ 			return;
+ 
+ 		Kill(num, num2);
++		if (ModLoader.TileLoader.Drop(callX, callY, 475))
+-		Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, 3977);
++			Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, 3977);
+ 		WorldGen.destroyObject = true;
+ 		for (int k = num; k < num + 3; k++) {
+ 			for (int l = num2; l < num2 + 4; l++) {

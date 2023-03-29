@@ -1,6 +1,6 @@
 ﻿using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
@@ -10,15 +10,10 @@ namespace ExampleMod.Content.Items.Armor
 	[AutoloadEquip(EquipType.Body)]
 	public class ExampleBreastplate : ModItem
 	{
-		public override void SetStaticDefaults() {
-			base.SetStaticDefaults();
-			DisplayName.SetDefault("Example Breastplate");
-			Tooltip.SetDefault("This is a modded body armor."
-				+ "\nImmunity to 'On Fire!'"
-				+ "\n+20 max mana and +1 max minions");
+		public static int MaxManaIncrease = 20;
+		public static int MaxMinionIncrease = 1;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MaxManaIncrease, MaxMinionIncrease);
 
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item
@@ -30,8 +25,8 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override void UpdateEquip(Player player) {
 			player.buffImmune[BuffID.OnFire] = true; // Make the player immune to Fire
-			player.statManaMax2 += 20; // Increase how many mana points the player can have by 20
-			player.maxMinions++; // Increase how many minions the player can have by one
+			player.statManaMax2 += MaxManaIncrease; // Increase how many mana points the player can have by 20
+			player.maxMinions += MaxMinionIncrease; // Increase how many minions the player can have by one
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

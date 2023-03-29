@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -146,10 +145,6 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExampleAdvancedAnimatedProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.NebulaBlaze}";
-
-		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.NebulaBlaze);

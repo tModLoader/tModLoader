@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Prefixes/PrefixLegacy.cs
++++ src/tModLoader/Terraria/GameContent/Prefixes/PrefixLegacy.cs
+@@ -1,10 +_,11 @@
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.Prefixes;
+ 
+ public class PrefixLegacy
+ {
+-	public class Prefixes
++	internal class Prefixes
+ 	{
+ 		public static int[] PrefixesForSwords = new int[40] {
+ 			1,
+@@ -197,7 +_,7 @@
+ 
+ 	public class ItemSets
+ 	{
+-		public static SetFactory Factory = new SetFactory(ItemID.Count);
++		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
+ 		public static bool[] BoomerangsChakrams = Factory.CreateBoolSet(55, 119, 191, 284, 670, 1122, 1513, 1569, 1571, 1825, 1918, 3054, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 5294, 3030, 3543, 4764, 4818, 4760, 561, 1324, 5298);
+ 		public static bool[] ItemsThatCanHaveLegendary2 = Factory.CreateBoolSet(3389);
+ 		public static bool[] MagicAndSummon = Factory.CreateBoolSet(64, 112, 113, 127, 157, 165, 218, 272, 494, 495, 496, 514, 517, 518, 519, 683, 726, 739, 740, 741, 742, 743, 744, 788, 1121, 1155, 1157, 1178, 1244, 1256, 1260, 1264, 1266, 1295, 1296, 1308, 1309, 1313, 1336, 1444, 1445, 1446, 1572, 1801, 1802, 1930, 1931, 2188, 2622, 2621, 2584, 2551, 2366, 2535, 2365, 2364, 2623, 2750, 2795, 3053, 3051, 3209, 3014, 3105, 2882, 3269, 3006, 3377, 3069, 2749, 3249, 3476, 3474, 3531, 3541, 3542, 3569, 3570, 3571, 3779, 3787, 3531, 3852, 3870, 4269, 4273, 4281, 4347, 4348, 4270, 4758, 4715, 4952, 4607, 5005, 5065, 5069, 5114, 5119, 5118, 5147, 3824, 3818, 3829, 3832, 3825, 3819, 3830, 3833, 3826, 3820, 3831, 3834, 4062);

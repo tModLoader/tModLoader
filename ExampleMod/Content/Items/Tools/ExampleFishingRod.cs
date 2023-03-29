@@ -1,22 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Tools
 {
 	public class ExampleFishingRod : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Fishing Rod");
-			Tooltip.SetDefault("Fires multiple lines at once. Can fish in lava.\n" +
-				"The fishing line never snaps.");
-
-			// Allows the pole to fish in lava
-			ItemID.Sets.CanFishInLava[Item.type] = true;
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			ItemID.Sets.CanFishInLava[Item.type] = true; // Allows the pole to fish in lava
 		}
 
 		public override void SetDefaults() {
