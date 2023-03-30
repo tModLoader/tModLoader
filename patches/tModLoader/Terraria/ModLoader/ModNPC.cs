@@ -803,12 +803,15 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and hori<paramref name="horizontalHoldoutOffset"/>zontalHoldoutOffset is how far away the item should be drawn from the NPC.<br/>
+	/// To use an actual item sprite, use <code>Main.GetItemDrawFrame(itemTypeHere, out item, out itemFrame);
+	/// horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - someOffsetHere</code>
 	/// </summary>
-	/// <param name="scale"></param>
 	/// <param name="item"></param>
-	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(ref float scale, ref int item, ref int closeness)
+	/// <param name="itemFrame"></param>
+	/// <param name="scale"></param>
+	/// <param name="horizontalHoldoutOffset"></param>
+	public virtual void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 	{
 	}
 

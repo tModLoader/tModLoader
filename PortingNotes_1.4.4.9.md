@@ -10,8 +10,6 @@
 	//width &= 0x7FFFFFFE;
 	//height &= 0x7FFFFFFE;
 	```
-## Main
-- Check `NPC.DrawTownAttackSwing` and `DrawTownAttackGun`, may need a consistency update with the new `GetItemDrawFrame` method
 
 ## Player
 - Reapply patch for `sItem.useStyle == 13` and `sItem.useStyle == 5`? Do we still want this now that `NetMessage.SendData(13` is sent as well?

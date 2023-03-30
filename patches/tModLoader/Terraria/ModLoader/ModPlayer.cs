@@ -338,10 +338,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
 	/// If visual indication of the dodge is required on remote clients, you will need to send your own packet.
 	/// </summary>
-	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
-	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
 	/// <returns>True to completely ignore the hit</returns>
-	public virtual bool FreeDodge(PlayerDeathReason damageSource, int cooldownCounter)
+	public virtual bool FreeDodge(Player.HurtInfo info)
 	{
 		return false;
 	}
@@ -355,10 +353,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
 	/// You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
 	/// </summary>
-	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
-	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
 	/// <returns>True to completely ignore the hit</returns>
-	public virtual bool ConsumableDodge(PlayerDeathReason damageSource, int cooldownCounter)
+	public virtual bool ConsumableDodge(Player.HurtInfo info)
 	{
 		return false;
 	}

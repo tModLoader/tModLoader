@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
@@ -38,8 +38,11 @@ namespace ExampleMod.Content.Items.Accessories
 				});
 			}
 			catch (Exception e) {
-				// If there are any failures with the IL editing, this custom exception will be thrown that dumps the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
-				throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
+				// If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
+				MonoModHooks.DumpIL(ModContent.GetInstance<ExampleMod>(), il);
+
+				// If the mod cannot run without the IL hook, throw an exception instead. The exception will call DumpIL internally
+				// throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
 			}
 		}
 

@@ -237,10 +237,18 @@
  	public static int maxTilesY = (int)bottomWorld / 16 + 1;
  	public const int sectionWidth = 200;
  	public const int sectionHeight = 150;
-@@ -687,7 +_,7 @@
- 	public const int maxItems = 400;
- 	public const int maxProjectiles = 1000;
- 	public const int maxNPCs = 200;
+@@ -683,11 +_,11 @@
+ 	public const int maxItemText = 20;
+ 	public const int maxPlayers = 255;
+ 	public static int maxNetPlayers = 255;
+-	public const int maxChests = 8000;
++	public static readonly int maxChests = 8000;
+-	public const int maxItems = 400;
++	public static readonly int maxItems = 400;
+-	public const int maxProjectiles = 1000;
++	public static readonly int maxProjectiles = 1000;
+-	public const int maxNPCs = 200;
++	public static readonly int maxNPCs = 200;
 -	private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
 +	internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
  	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
@@ -364,7 +372,7 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -942,6 +_,12 @@
+@@ -942,6 +_,13 @@
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
  	public static bool[] tileFlame = new bool[TileID.Count];
@@ -373,6 +381,7 @@
 +	/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
 +	/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
 +	/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++	/// These NPC will be forced <see cref="NPC.friendly"/> for 1.5 seconds if naturally spawned.<br/>
 +	/// </summary>
  	public static bool[] npcCatchable = new bool[NPCID.Count];
  	public static int[] tileFrame = new int[TileID.Count];
@@ -669,6 +678,16 @@
  		if (Configuration.Save())
  			return PlayerInput.Save();
  
+@@ -3282,6 +_,9 @@
+ 	protected void CheckBunny()
+ 	{
+ 		try {
++			if (!OperatingSystem.IsWindows())
++				return;
++
+ 			RegistryKey currentUser = Registry.CurrentUser;
+ 			currentUser = currentUser.CreateSubKey("Software\\Terraria");
+ 			if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
 @@ -3352,14 +_,40 @@
  		int currentValue3 = graphics.PreferredBackBufferHeight;
  		configuration.Get("DisplayWidth", ref currentValue2);
@@ -1271,6 +1290,14 @@
  		musicFade[50] = 1f;
  		if (dedServ)
  			netMode = 2;
+@@ -5095,6 +_,7 @@
+ 			if (!dedServ)
+ 				Lighting.Clear();
+ 		};
++		WorldGen.AddGenPasses();
+ 
+ 		DontStarveSeed.Initialize();
+ 		ResourceSetsManager = new PlayerResourceSetsManager();
 @@ -5108,11 +_,20 @@
  		BindSettingsTo(Configuration);
  		if (dedServ) {
@@ -2337,7 +2364,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,90 @@
+@@ -16311,47 +_,91 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2424,7 +2451,8 @@
 +			if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905)) && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Damage")) {
 +				LocalizedText tip;
 +				if (item.DamageType != null) {
-+					tip = new LocalizedText("", " " + item.DamageType.DisplayName);
++					bool addLeadingSpace = item.DamageType is not VanillaDamageClass;
++					tip = new LocalizedText("", (addLeadingSpace ? " " : "") + item.DamageType.DisplayName);
 +				}
 +				else {
 +					tip = Lang.tip[55]; // No damage class
@@ -3196,7 +3224,7 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
-@@ -21985,10 +_,13 @@
+@@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
  
@@ -3204,12 +3232,14 @@
  					num10 = 0.75f;
  				}
  			}
- 
-+			NPCLoader.DrawTownAttackGun(n, ref num10, ref itemtype, ref num11);
-+
+@@ -21992,6 +_,7 @@
  			Vector2 vector4 = DrawPlayerItemPos(1f, itemtype);
  			GetItemDrawFrame(itemtype, out var itemTexture, out var value2);
  			int num12 = (int)vector4.X - num11;
++			NPCLoader.DrawTownAttackGun(n, ref itemTexture, ref value2, ref num10, ref num12);
+ 			Vector2 origin2 = new Vector2(-num12, value2.Height / 2);
+ 			if (n.spriteDirection == -1)
+ 				origin2 = new Vector2(value2.Width + num12, value2.Height / 2);
 @@ -22048,6 +_,7 @@
  			}
  			else if (n.type == 441) {

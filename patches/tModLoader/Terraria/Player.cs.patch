@@ -2976,7 +2976,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -15863,21 +_,71 @@
+@@ -15863,21 +_,91 @@
  		return num;
  	}
  
@@ -3006,8 +3006,22 @@
 +		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
 +	}
 +
++	/// <summary>
++	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
++	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
++	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
++	/// Will apply daamage class based armor penetration. <br/>
++	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="knockback">The amount of knockback to apply</param>
++	/// <param name="direction">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Whether or not the strike is a crit</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 -	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
-+	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, DamageClass? damageType = null, bool damageVariation = false)
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
 +			return;
@@ -3028,6 +3042,12 @@
 +		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
 +	}
 +
++	/// <summary>
++	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
++	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="hit">The hit to apply</param>
 +	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
 +	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
@@ -4313,7 +4333,7 @@
 +	}
 +
 +	// out param and extras from above added
-+	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, out Player.HurtInfo info, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
++	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, out HurtInfo info, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
 +	{
 +		info = default;
 +
@@ -4329,26 +4349,11 @@
  		bool flag = !immune;
  		bool flag2 = false;
  		int hitContext = cooldownCounter;
-@@ -29531,6 +_,9 @@
+@@ -29530,7 +_,34 @@
+ 		}
  
  		if (flag) {
- 			if (dodgeable) {
-+				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, damageSource, cooldownCounter))
-+					return 0.0;
-+
- 				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
- 					NinjaDodge();
- 					return 0.0;
-@@ -29545,24 +_,67 @@
- 					ShadowDodge();
- 					return 0.0;
- 				}
-+
-+				if (whoAmI == Main.myPlayer && PlayerLoader.ConsumableDodge(this, damageSource, cooldownCounter))
-+					return 0.0;
- 			}
- 
-+			Player.HurtModifiers modifiers = new() {
++			HurtModifiers modifiers = new() {
 +				DamageSource = damageSource,
 +				PvP = pvp,
 +				CooldownCounter = cooldownCounter,
@@ -4371,6 +4376,23 @@
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
 +			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
++
+ 			if (dodgeable) {
++				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, info))
++					return 0.0;
++
+ 				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
+ 					NinjaDodge();
+ 					return 0.0;
+@@ -29545,24 +_,44 @@
+ 					ShadowDodge();
+ 					return 0.0;
+ 				}
++
++				if (whoAmI == Main.myPlayer && PlayerLoader.ConsumableDodge(this, info))
++					return 0.0;
+ 			}
+ 
 +			Hurt(info, quiet);
 +			return info.Damage;
 +		}
@@ -5620,7 +5642,7 @@
 +			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
 +			// num6 is post-variation and armor pen, only used by bees and muramasa.
 +			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
-+			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.KnockBack, npcIndex, strike.SourceDamage, dmgDone);
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, dmgDone);
  			int num7 = Item.NPCtoBanner(nPC.BannerID());
  			if (num7 >= 0)
  				lastCreatureHit = num7;

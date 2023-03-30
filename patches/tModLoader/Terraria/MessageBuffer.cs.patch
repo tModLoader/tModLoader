@@ -308,7 +308,7 @@
 +						SourceDamage = reader.Read7BitEncodedInt(),
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
 +						HitDirection = reader.ReadSByte(),
-+						KnockBack = reader.ReadSingle()
++						Knockback = reader.ReadSingle()
 +					};
 +					BitsByte flags = reader.ReadByte();
 +					hit.Crit = flags[0];

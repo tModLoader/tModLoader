@@ -89,4 +89,7 @@ public class ModPlayerTest : ModPlayer
 	public override void OnHitPvp(Item item, Player target, int damage, bool crit) { }
 	public override void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit) { }
 	public override void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit) { }
+
+	public override bool FreeDodge(PlayerDeathReason damageSource, int cooldownCounter) => false;
+	public override bool ConsumableDodge(PlayerDeathReason damageSource, int cooldownCounter) => false;
 }

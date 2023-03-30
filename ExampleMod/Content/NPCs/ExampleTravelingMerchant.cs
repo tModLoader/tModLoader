@@ -7,6 +7,7 @@ using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.Items.Weapons;
 using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,21 +172,20 @@ namespace ExampleMod.Content.NPCs
 			return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
 		}
 
-
 		public override void Load() {
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
 		}
 
 		public override void SetStaticDefaults() {
-			Main.npcFrameCount[NPC.type] = 25;
-			NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
-			NPCID.Sets.AttackFrameCount[NPC.type] = 4;
-			NPCID.Sets.DangerDetectRange[NPC.type] = 700;
-			NPCID.Sets.AttackType[NPC.type] = 0;
-			NPCID.Sets.AttackTime[NPC.type] = 90;
-			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
-			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			Main.npcFrameCount[Type] = 25;
+			NPCID.Sets.ExtraFramesCount[Type] = 9;
+			NPCID.Sets.AttackFrameCount[Type] = 4;
+			NPCID.Sets.DangerDetectRange[Type] = 60;
+			NPCID.Sets.AttackType[Type] = 3; // Swings a weapon. This NPC attacks in roughly the same manner as Stylist
+			NPCID.Sets.AttackTime[Type] = 12;
+			NPCID.Sets.AttackAverageChance[Type] = 1;
+			NPCID.Sets.HatOffsetY[Type] = 4;
 			NPCID.Sets.ShimmerTownTransform[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
@@ -214,7 +214,7 @@ namespace ExampleMod.Content.NPCs
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
-			AnimationType = NPCID.Guide;
+			AnimationType = NPCID.Stylist;
 			TownNPCStayingHomeless = true;
 		}
 
@@ -342,18 +342,21 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown) {
-			cooldown = 30;
-			randExtraCooldown = 30;
+			cooldown = 15;
+			randExtraCooldown = 8;
 		}
 
-		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-			projType = ModContent.ProjectileType<SparklingBall>();
-			attackDelay = 1;
+		public override void TownNPCAttackSwing(ref int itemWidth, ref int itemHeight) {
+			itemWidth = itemHeight = 40;
 		}
 
-		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
-			multiplier = 12f;
-			randomOffset = 2f;
+		public override void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset) {
+			Main.GetItemDrawFrame(ModContent.ItemType<ExampleSword>(), out item, out itemFrame);
+			itemSize = 40;
+			// This adjustment draws the swing the way town npcs usually do.
+			if (NPC.ai[1] > NPCID.Sets.AttackTime[NPC.type] * 0.66f) {
+				offset.Y = 12f;
+			}
 		}
 	}
 

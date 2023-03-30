@@ -140,5 +140,6 @@ public class ModAddRecipes : Mod
 
 	public void NewRecipeMethodConditionRefactors(Recipe recipe) {
 		recipe.AddCondition(Recipe.Condition.TimeDay);
+		recipe.AddCondition(Recipe.Condition.InGraveyardBiome);
 	}
 }

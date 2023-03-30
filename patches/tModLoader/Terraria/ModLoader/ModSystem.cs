@@ -69,9 +69,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
 	/// </summary>
-	public virtual void PostSetupRecipes()
-	{
-	}
+	public virtual void PostSetupRecipes() { }
 
 	/// <summary>
 	/// Override this method to add recipe groups to the game.
@@ -81,15 +79,21 @@ public abstract partial class ModSystem : ModType
 	public virtual void AddRecipeGroups() { }
 
 	/// <summary>
-	/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
-	/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
+	/// Called whenever a world is loaded, before <see cref="LoadWorldData"/> <br/>
+	/// If you need to initialize tile or other world related data-structures, use <see cref="ClearWorld"/> instead
 	/// </summary>
 	public virtual void OnWorldLoad() { }
 
 	/// <summary>
-	/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
+	/// Called whenever a world is unloaded.
 	/// </summary>
 	public virtual void OnWorldUnload() { }
+
+	/// <summary>
+	/// Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br/>
+	/// Also called just before mods are unloaded.
+	/// </summary>
+	public virtual void ClearWorld() { }
 
 	/// <summary>
 	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.

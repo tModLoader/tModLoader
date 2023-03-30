@@ -392,22 +392,22 @@ public static class PlayerLoader
 		return false;
 	}
 
-	private static HookList HookFreeDodge = AddHook<Func<PlayerDeathReason, int, bool>>(p => p.FreeDodge);
-	public static bool FreeDodge(Player player, PlayerDeathReason damageSource, int cooldownCounter)
+	private static HookList HookFreeDodge = AddHook<Func<Player.HurtInfo, bool>>(p => p.FreeDodge);
+	public static bool FreeDodge(Player player, in Player.HurtInfo info)
 	{
 		foreach (var modPlayer in HookFreeDodge.Enumerate(player.modPlayers)) {
-			if (modPlayer.FreeDodge(damageSource, cooldownCounter))
+			if (modPlayer.FreeDodge(info))
 				return true;
 		}
 
 		return false;
 	}
 
-	private static HookList HookConsumableDodge = AddHook<Func<PlayerDeathReason, int, bool>>(p => p.ConsumableDodge);
-	public static bool ConsumableDodge(Player player, PlayerDeathReason damageSource, int cooldownCounter)
+	private static HookList HookConsumableDodge = AddHook<Func<Player.HurtInfo, bool>>(p => p.ConsumableDodge);
+	public static bool ConsumableDodge(Player player, in Player.HurtInfo info)
 	{
 		foreach (var modPlayer in HookConsumableDodge.Enumerate(player.modPlayers)) {
-			if (modPlayer.ConsumableDodge(damageSource, cooldownCounter))
+			if (modPlayer.ConsumableDodge(info))
 				return true;
 		}
 

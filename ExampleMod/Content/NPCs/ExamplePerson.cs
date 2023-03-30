@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using Terraria.ModLoader.IO;
 using ExampleMod.Common.Configs;
 using ExampleMod.Common;
+using ExampleMod.Content.Projectiles;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -367,15 +368,15 @@ namespace ExampleMod.Content.NPCs
 			randExtraCooldown = 30;
 		}
 
-		// todo: implement
-		// public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-		// 	projType = ProjectileType<SparklingBall>();
-		// 	attackDelay = 1;
-		// }
+		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
+			projType = ModContent.ProjectileType<SparklingBall>();
+			attackDelay = 1;
+		}
 
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
 			multiplier = 12f;
 			randomOffset = 2f;
+			// SparklingBall is not affected by gravity, so gravityCorrection is left alone.
 		}
 
 		public override void LoadData(TagCompound tag) {

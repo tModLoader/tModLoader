@@ -62,6 +62,13 @@ public class ModNPCTest : ModNPC
 	public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit) {
 		return false;
 	}
+	public void HitMemberRename(NPC npc) {
+		var hit = npc.SimpleStrike(0, 0);
+		hit.KnockBack = 2;
+	}
 	public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) => false;
 	public override void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) { }
+	public override void DrawTownAttackGun(ref float scale, ref int item, ref int closeness) {
+		closeness = 10;
+	}
 }

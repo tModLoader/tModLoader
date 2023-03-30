@@ -108,18 +108,18 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalItem<T>(bool exactType = true) where T : GlobalItem
-		=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, exactType);
+	public T GetGlobalItem<T>() where T : GlobalItem
+		=> GlobalType.GetGlobal<GlobalItem, T>(globalItems);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-		=> GlobalType.GetGlobal<Item, GlobalItem, T>(globalItems, baseInstance);
+		=> GlobalType.GetGlobal(globalItems, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
-	public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, exactType, out result);
+	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
+		=> GlobalType.TryGetGlobal(globalItems, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
