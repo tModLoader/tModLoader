@@ -582,6 +582,34 @@ internal static class ModOrganizer
 		return val;
 	}
 
+	// Delete in Mod Browsewr refactor - temp
+	public static string GetBrowserVersionNumber(Version tmlVersion)
+	{
+		if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9
+			return "1.3";
+
+		if (tmlVersion < new Version(2022, 10)) // Versions 0.12 to 2022.9
+			return "1.4.3";
+
+		return "1.4.4";
+	}
+
+
+	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
+	{
+		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+		HashSet<string> versions = new HashSet<string>();
+
+		foreach (string fileName in tmods) {
+			var match = PublishFolderMetadata.Match(fileName);
+			if (match.Success) {
+				versions.Add(GetBrowserVersionNumber(new Version(match.Groups[1].Value)));
+			}
+		}
+
+		return versions;
+	}
+
 	internal static void CleanupOldPublish(string repo)
 	{
 		if (BuildInfo.IsPreview)
