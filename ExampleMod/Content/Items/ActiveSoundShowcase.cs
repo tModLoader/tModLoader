@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Projectiles;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -16,7 +17,7 @@ namespace ExampleMod.Content.Items
 
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.shootSpeed = 6f;
+			Item.shootSpeed = 4f;
 			Item.shoot = ModContent.ProjectileType<Projectiles.ActiveSoundShowcaseProjectile>();
 			Item.width = 22;
 			Item.height = 24;
@@ -31,12 +32,24 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			Vector2 playerToMouse = Main.MouseScreen + Main.screenPosition - player.Center;
-			float disatanceToScreenEdge = Math.Min(Main.screenHeight / 2, Main.screenWidth / 2) / Main.GameViewMatrix.Zoom.X;
-			int style = Utils.Clamp((int)(playerToMouse.Length() * 6 / disatanceToScreenEdge), 0, 5);
+			int style = CalculateStyle(player);
 
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, ai0: style);
 			return false;
+		}
+
+		public override void HoldItem(Player player) {
+			int style = CalculateStyle(player);
+			player.cursorItemIconText = $"  {(ActiveSoundShowcaseProjectile.ActiveSoundShowcaseStyle)style}";
+			player.cursorItemIconEnabled = true;
+			player.cursorItemIconID = Type;
+		}
+
+		private static int CalculateStyle(Player player) {
+			Vector2 playerToMouse = Main.MouseScreen + Main.screenPosition - player.Center;
+			float disatanceToScreenEdge = Math.Min(Main.screenHeight / 2, Main.screenWidth / 2) / Main.GameViewMatrix.Zoom.X;
+			int style = Utils.Clamp((int)(playerToMouse.Length() * 6 / disatanceToScreenEdge), 0, 5);
+			return style;
 		}
 
 		public override void AddRecipes() {
