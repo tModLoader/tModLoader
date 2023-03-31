@@ -203,7 +203,7 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookWriteExtraAI = AddHook<Action<Projectile, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
+	private static HookList HookSendExtraAI = AddHook<Action<Projectile, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
 	public static byte[] WriteExtraAI(Projectile projectile)
 	{
@@ -217,17 +217,12 @@ public static class ProjectileLoader
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile)) {
+		foreach (var g in HookSendExtraAI.Enumerate(projectile)) {
 			g.SendExtraAI(projectile, bitWriter, globalWriter);
 		}
 
 		bitWriter.Flush(modWriter);
-
 		modWriter.Write(bufferedStream.ToArray());
-
-		globalWriter.Flush();
-
-		modWriter.Flush();
 
 		return stream.ToArray();
 	}
@@ -248,8 +243,9 @@ public static class ProjectileLoader
 
 		BitReader bitReader = new BitReader(modReader);
 
+		bool anyGlobals = false;
 		try {
-			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile)) {
+			foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 
@@ -262,23 +258,13 @@ public static class ProjectileLoader
 			}
 		}
 		catch (IOException e) {
-			Logging.tML.Error(e.ToString());
-
-			string message = $"Above IOException error in Projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} occured";
-
-			var culprits = new List<GlobalProjectile>();
-			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile)) {
-				culprits.Add(g);
-			}
-
-			if (culprits.Count > 0) {
-				message += ", may be caused by one of these:";
-				foreach (GlobalProjectile g in culprits) {
+			string message = $"Error in ReceiveExtraAI for Projectile {projectile.ModProjectile?.FullName ?? projectile.Name}";
+			if (anyGlobals) {
+				message += ", may be caused by one of these GlobalNPCs:";
+				foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
 					message += $"\n\t{g.FullName}";
 				}
 			}
-
-			Logging.tML.Error(message);
 		}
 	}
 

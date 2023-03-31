@@ -273,7 +273,7 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookWriteExtraAI = AddHook<Action<NPC, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
+	private static HookList HookSendExtraAI = AddHook<Action<NPC, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
 	public static byte[] WriteExtraAI(NPC npc)
 	{
@@ -287,17 +287,12 @@ public static class NPCLoader
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (GlobalNPC g in HookWriteExtraAI.Enumerate(npc)) {
+		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
 			g.SendExtraAI(npc, bitWriter, globalWriter);
 		}
 
 		bitWriter.Flush(modWriter);
-
 		modWriter.Write(bufferedStream.ToArray());
-
-		globalWriter.Flush();
-
-		modWriter.Flush();
 
 		return stream.ToArray();
 	}
@@ -318,8 +313,10 @@ public static class NPCLoader
 
 		BitReader bitReader = new BitReader(modReader);
 
+		bool anyGlobals = false;
 		try {
-			foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc)) {
+			foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
+				anyGlobals = true;
 				g.ReceiveExtraAI(npc, bitReader, modReader);
 			}
 
@@ -331,24 +328,16 @@ public static class NPCLoader
 				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (IOException e) {
-			Logging.tML.Error(e.ToString());
-
-			string message = $"Above IOException error in NPC {(npc.ModNPC == null ? npc.TypeName : npc.ModNPC.FullName)} occured";
-
-			var culprits = new List<GlobalNPC>();
-			foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc)) {
-				culprits.Add(g);
-			}
-
-			if (culprits.Count > 0) {
-				message += ", may be caused by one of these:";
-				foreach (GlobalNPC g in culprits) {
+		catch (Exception e) {
+			string message = $"Error in ReceiveExtraAI for NPC {npc.ModNPC?.FullName ?? npc.TypeName}";
+			if (anyGlobals) {
+				message += ", may be caused by one of these GlobalNPCs:";
+				foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
 					message += $"\n\t{g.FullName}";
 				}
 			}
 
-			Logging.tML.Error(message);
+			Logging.tML.Error(message, e);
 		}
 	}
 
@@ -1383,4 +1372,6 @@ public static class NPCLoader
 
 		return false;
 	}
+
+	internal static HookList HookSaveData = AddHook<Action<NPC, TagCompound>>(g => g.SaveData);
 }
