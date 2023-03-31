@@ -525,7 +525,6 @@ public static class ModContent
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
-		TileIO.ResizeArrays();
 		ProjectileLoader.ResizeArrays();
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();
@@ -553,8 +552,6 @@ public static class ModContent
 	/// </summary>
 	internal static void CleanupModReferences()
 	{
-		WorldGen.clearWorld();
-
 		// Clear references to ModPlayer instances
 		for (int i = 0; i < Main.player.Length; i++) {
 			Main.player[i] = new Player();

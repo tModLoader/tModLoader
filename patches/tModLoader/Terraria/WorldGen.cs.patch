@@ -349,13 +349,37 @@
  		setWorldSize();
  		Star.SpawnStars();
 +
-+		TileIO.ClearWorld();
++		SystemLoader.ClearWorld();
 +
  		worldCleared = true;
  	}
  
-@@ -5972,6 +_,9 @@
+@@ -5231,17 +_,17 @@
  
+ 	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
+ 	{
+-		_generator.Append(new PassLegacy(name, method));
++		_vanillaGenPasses.Add(name, new PassLegacy(name, method));
+ 	}
+ 
+ 	private static void AddGenerationPass(GenPass pass)
+ 	{
+-		_generator.Append(pass);
++		_vanillaGenPasses.Add(pass.Name, pass);
+ 	}
+ 
+ 	private static void AddGenerationPass(string name, double weight, WorldGenLegacyMethod method)
+ 	{
+-		_generator.Append(new PassLegacy(name, method, weight));
++		_vanillaGenPasses.Add(name, new PassLegacy(name, method, weight));
+ 	}
+ 
+ 	public static bool checkUnderground(int x, int y)
+@@ -5970,8 +_,12 @@
+ 			GenVars.desertHiveRight = x;
+ 	}
+ 
++	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), AddGenPassesFromLoadTime (the replacement for AddGenPasses in GenerateWorld), and GenerateWorld_RunTasksAndFinish
  	public static void GenerateWorld(int seed, GenerationProgress customProgressObject = null)
  	{
 +		// For timing logging, used below.
@@ -379,7 +403,7 @@
  		_lastSeed = seed;
  		_generator = new WorldGenerator(seed, GenVars.configuration);
  		_genRand = new UnifiedRandom(seed);
-@@ -6097,6 +_,9 @@
+@@ -6097,9 +_,18 @@
  		GenVars.logX = -1;
  		GenVars.logY = -1;
  		GenVars.dungeonLocation = 0;
@@ -389,6 +413,15 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
++		AddGenPassesFromLoadTime();
++		GenerateWorld_RunTasksAndFinish(seed, generationStopwatch, customProgressObject);
++	}
++
++	internal static void AddGenPasses()
++	{
+ 		AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 			if (genRand.Next(2) == 0)
+ 				GenVars.crimsonLeft = false;
 @@ -7904,7 +_,10 @@
  					}
  
@@ -533,12 +566,23 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13850,11 +_,22 @@
+@@ -13849,12 +_,33 @@
+ 			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
- 
-+		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++	}
 +
++	private static void AddGenPassesFromLoadTime()
++	{
++		foreach (var pass in _vanillaGenPasses) {
++			_generator.Append(pass.Value);
++		}
++	}
++
++	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
++	{
++		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
+ 
  		_generator.GenerateWorld(customProgressObject);
  		ConsumePostGenActions(GenVars.structures);
 +
