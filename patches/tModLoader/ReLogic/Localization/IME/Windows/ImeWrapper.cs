@@ -49,14 +49,19 @@ internal class ImeWrapper
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		int size = NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, IntPtr.Zero, 0);
+		if (size == 0) {
+			NativeMethods.ImmReleaseContext(_hWnd, hImc);
+			return "";
+		}
 
 		IntPtr buffer = Marshal.AllocHGlobal(size);
 		NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, buffer, size);
 		NativeMethods.ImmReleaseContext(_hWnd, hImc);
 
-		string compstr = Marshal.PtrToStringUni(buffer);
-		Marshal.FreeCoTaskMem(buffer);
-		return compstr;
+		byte[] buf = new byte[size];
+		Marshal.Copy(buffer, buf, 0, size);
+		Marshal.FreeHGlobal(buffer);
+		return Encoding.Unicode.GetString(buf, 0, size);;
 	}
 
 	public string ImeUi_GetCandidate(uint index)
@@ -64,6 +69,7 @@ internal class ImeWrapper
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
 		if (size == 0) {
+			NativeMethods.ImmReleaseContext(_hWnd, hImc);
 			return "";
 		}
 
@@ -98,6 +104,10 @@ internal class ImeWrapper
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
+		if (size == 0) {
+			NativeMethods.ImmReleaseContext(_hWnd, hImc);
+			return 0;
+		}
 
 		IntPtr candListBuffer = Marshal.AllocHGlobal(size);
 		NativeMethods.ImmGetCandidateList(hImc, 0, candListBuffer, size);
@@ -111,6 +121,10 @@ internal class ImeWrapper
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
+		if (size == 0) {
+			NativeMethods.ImmReleaseContext(_hWnd, hImc);
+			return 0;
+		}
 
 		IntPtr candListBuffer = Marshal.AllocHGlobal(size);
 		NativeMethods.ImmGetCandidateList(hImc, 0, candListBuffer, size);
