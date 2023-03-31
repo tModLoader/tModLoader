@@ -1,0 +1,36 @@
+--- src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
++++ src/tModLoader/ReLogic/OS/Windows/WindowsPlatform.cs
+@@ -1,4 +_,6 @@
+ using System;
++using System.Runtime.InteropServices;
++using System.Text;
+ using ReLogic.Localization.IME;
+ 
+ namespace ReLogic.OS.Windows;
+@@ -22,7 +_,25 @@
+ 	public override void InitializeClientServices(IntPtr windowHandle)
+ 	{
+ #if NETCORE
++		// windowHandle is invalid, need to find it on our own
++		int currentProcessId = NativeMethods.GetCurrentProcessId();
++
++		NativeMethods.EnumWindows(delegate(IntPtr wnd, IntPtr param) {
++			NativeMethods.GetWindowThreadProcessId(wnd, out int processId);
++			if (processId == currentProcessId) {
++				var buffer = new StringBuilder(1024);
++				NativeMethods.GetWindowText(wnd, buffer, 1024);
++
++				if (buffer.ToString().Contains("Terraria")) {
++					windowHandle = wnd;
++					return false;
++				}
++			}
++
++			return true; // Continue enumerating windows
++		}, IntPtr.Zero);
++
+-		RegisterService((IImeService)new FnaIme());
++		RegisterService((IImeService)new WindowsIme(windowHandle));
+ 	}
+ #else
+ 		if (_wndProcHook == null)
