@@ -23,12 +23,19 @@ partial class SystemLoader
 	internal class HookList
 	{
 		public readonly MethodInfo method;
-
-		public ModSystem[] arr = new ModSystem[0];
+		private ModSystem[] arr = Array.Empty<ModSystem>();
 
 		public HookList(MethodInfo method)
 		{
 			this.method = method;
+		}
+
+		// Sadly, returning ReadOnlySpan<T>.Enumerator from a GetEnumerator() method doesn't bring the same performance
+		public ReadOnlySpan<ModSystem> Enumerate() => arr;
+
+		public void Update(IEnumerable<ModSystem> systems)
+		{
+			arr = systems.WhereMethodIsOverridden(method).ToArray();
 		}
 	}
 
@@ -44,7 +51,7 @@ partial class SystemLoader
 	private static void RebuildHooks()
 	{
 		foreach (var hook in hooks) {
-			hook.arr = Systems.WhereMethodIsOverridden(hook.method).ToArray();
+			hook.Update(Systems);
 		}
 	}
 
@@ -71,12 +78,6 @@ partial class SystemLoader
 	//HookLists
 
 	private static HookList HookOnLocalizationsLoaded = AddHook<Action>(s => s.OnLocalizationsLoaded);
-
-	private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
-
-	private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);
-
-	private static HookList HookAddRecipeGroups = AddHook<Action>(s => s.AddRecipeGroups);
 
 	private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 

@@ -544,13 +544,13 @@ internal static class WorldIO
 
 	public static void SendModData(BinaryWriter writer)
 	{
-		foreach (var system in SystemLoader.HookNetSend.arr)
+		foreach (var system in SystemLoader.HookNetSend.Enumerate())
 			writer.SafeWrite(w => system.NetSend(w));
 	}
 
 	public static void ReceiveModData(BinaryReader reader)
 	{
-		foreach (var system in SystemLoader.HookNetReceive.arr) {
+		foreach (var system in SystemLoader.HookNetReceive.Enumerate()) {
 			try {
 				reader.SafeRead(r => system.NetReceive(r));
 			}
