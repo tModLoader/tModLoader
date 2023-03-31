@@ -30,7 +30,6 @@ public static class ItemLoader
 	internal static readonly List<GlobalItem> globalItems = new();
 	internal static GlobalItem[] NetGlobals;
 	internal static readonly int vanillaQuestFishCount = 41;
-	internal static readonly int[] vanillaWings = new int[ArmorIDs.Wing.Count];
 
 	private static readonly List<HookList> hooks = new List<HookList>();
 	private static readonly List<HookList> modHooks = new List<HookList>();
@@ -47,20 +46,6 @@ public static class ItemLoader
 		hook.Update(globalItems);
 		modHooks.Add(hook);
 		return hook;
-	}
-
-	private static void FindVanillaWings()
-	{
-		if (vanillaWings[1] != 0)
-			return;
-
-		Item item = new Item();
-		for (int k = 0; k < ItemID.Count; k++) {
-			item.SetDefaults(k);
-			if (item.wingSlot > 0) {
-				vanillaWings[item.wingSlot] = k;
-			}
-		}
 	}
 
 	internal static int Register(ModItem item)
@@ -117,8 +102,6 @@ public static class ItemLoader
 				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
 				.ToArray();
 
-		FindVanillaWings();
-
 		NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
 
 		foreach (var hook in hooks.Union(modHooks)) {
@@ -160,8 +143,8 @@ public static class ItemLoader
 
 	internal static void Unload()
 	{
-		items.Clear();
 		ItemCount = ItemID.Count;
+		items.Clear();
 		globalItems.Clear();
 		modHooks.Clear();
 	}

@@ -58,7 +58,7 @@ public static class ProjectileLoader
 	{
 		return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;
 	}
-	//change initial size of Terraria.Player.ownedProjectileCounts to ProjectileLoader.ProjectileCount()
+
 	internal static void ResizeArrays()
 	{
 		//Textures
@@ -92,7 +92,7 @@ public static class ProjectileLoader
 
 	internal static void FinishSetup()
 	{
-		foreach (ModProjectile proj in ProjectileLoader.projectiles) {
+		foreach (ModProjectile proj in projectiles) {
 			Lang._projectileNameCache[proj.Type] = proj.DisplayName;
 		}
 	}

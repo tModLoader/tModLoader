@@ -115,8 +115,8 @@ public static class NPCLoader
 
 	internal static void Unload()
 	{
-		npcs.Clear();
 		NPCCount = NPCID.Count;
+		npcs.Clear();
 		globalNPCs.Clear();
 		bannerToItem.Clear();
 		modHooks.Clear();
