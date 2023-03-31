@@ -23,18 +23,14 @@ public static class PlayerLoader
 	private static HookList AddHook<F>(Expression<Func<ModPlayer, F>> func) where F : Delegate
 	{
 		var hook = HookList.Create(func);
-
 		hooks.Add(hook);
-
 		return hook;
 	}
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
 		hook.Update(players);
-
 		modHooks.Add(hook);
-
 		return hook;
 	}
 
@@ -44,7 +40,7 @@ public static class PlayerLoader
 		players.Add(player);
 	}
 
-	internal static void RebuildHooks()
+	internal static void ResizeArrays()
 	{
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update(players);
@@ -63,7 +59,7 @@ public static class PlayerLoader
 	{
 		player.modPlayers = NewInstances(player, CollectionsMarshal.AsSpan(players));
 
-		foreach (var modPlayer in HookInitialize.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookInitialize.Enumerate(player)) {
 			modPlayer.Initialize();
 		}
 	}
@@ -81,7 +77,7 @@ public static class PlayerLoader
 
 	public static void ResetEffects(Player player)
 	{
-		foreach (var modPlayer in HookResetEffects.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookResetEffects.Enumerate(player)) {
 			modPlayer.ResetEffects();
 		}
 	}
@@ -90,7 +86,7 @@ public static class PlayerLoader
 
 	public static void ResetInfoAccessories(Player player)
 	{
-		foreach (var modPlayer in HookResetInfoAccessories.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookResetInfoAccessories.Enumerate(player)) {
 			modPlayer.ResetInfoAccessories();
 		}
 	}
@@ -99,7 +95,7 @@ public static class PlayerLoader
 
 	public static void RefreshInfoAccessoriesFromTeamPlayers(Player player, Player otherPlayer)
 	{
-		foreach (var modPlayer in HookRefreshInfoAccessoriesFromTeamPlayers.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookRefreshInfoAccessoriesFromTeamPlayers.Enumerate(player)) {
 			modPlayer.RefreshInfoAccessoriesFromTeamPlayers(otherPlayer);
 		}
 	}
@@ -130,7 +126,7 @@ public static class PlayerLoader
 		StatModifier cumulativeHealth = StatModifier.Default;
 		StatModifier cumulativeMana = StatModifier.Default;
 
-		foreach (var modPlayer in HookModifyMaxStats.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyMaxStats.Enumerate(player)) {
 			modPlayer.ModifyMaxStats(out StatModifier health, out StatModifier mana);
 
 			cumulativeHealth = cumulativeHealth.CombineWith(health);
@@ -145,7 +141,7 @@ public static class PlayerLoader
 
 	public static void UpdateDead(Player player)
 	{
-		foreach (var modPlayer in HookUpdateDead.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateDead.Enumerate(player)) {
 			modPlayer.UpdateDead();
 		}
 	}
@@ -176,7 +172,7 @@ public static class PlayerLoader
 
 	public static void PreSavePlayer(Player player)
 	{
-		foreach (var modPlayer in HookPreSavePlayer.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreSavePlayer.Enumerate(player)) {
 			modPlayer.PreSavePlayer();
 		}
 	}
@@ -185,7 +181,7 @@ public static class PlayerLoader
 
 	public static void PostSavePlayer(Player player)
 	{
-		foreach (var modPlayer in HookPostSavePlayer.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostSavePlayer.Enumerate(player)) {
 			modPlayer.PostSavePlayer();
 		}
 	}
@@ -194,7 +190,7 @@ public static class PlayerLoader
 
 	public static void CopyClientState(Player player, Player targetCopy)
 	{
-		foreach (var modPlayer in HookCopyClientState.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCopyClientState.Enumerate(player)) {
 			modPlayer.CopyClientState(targetCopy.modPlayers[modPlayer.Index]);
 		}
 	}
@@ -203,7 +199,7 @@ public static class PlayerLoader
 
 	public static void SyncPlayer(Player player, int toWho, int fromWho, bool newPlayer)
 	{
-		foreach (var modPlayer in HookSyncPlayer.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookSyncPlayer.Enumerate(player)) {
 			modPlayer.SyncPlayer(toWho, fromWho, newPlayer);
 		}
 	}
@@ -212,7 +208,7 @@ public static class PlayerLoader
 
 	public static void SendClientChanges(Player player, Player clientPlayer)
 	{
-		foreach (var modPlayer in HookSendClientChanges.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookSendClientChanges.Enumerate(player)) {
 			modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index]);
 		}
 	}
@@ -221,7 +217,7 @@ public static class PlayerLoader
 
 	public static void UpdateBadLifeRegen(Player player)
 	{
-		foreach (var modPlayer in HookUpdateBadLifeRegen.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateBadLifeRegen.Enumerate(player)) {
 			modPlayer.UpdateBadLifeRegen();
 		}
 	}
@@ -230,7 +226,7 @@ public static class PlayerLoader
 
 	public static void UpdateLifeRegen(Player player)
 	{
-		foreach (var modPlayer in HookUpdateLifeRegen.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateLifeRegen.Enumerate(player)) {
 			modPlayer.UpdateLifeRegen();
 		}
 	}
@@ -240,7 +236,7 @@ public static class PlayerLoader
 
 	public static void NaturalLifeRegen(Player player, ref float regen)
 	{
-		foreach (var modPlayer in HookNaturalLifeRegen.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookNaturalLifeRegen.Enumerate(player)) {
 			modPlayer.NaturalLifeRegen(ref regen);
 		}
 	}
@@ -249,7 +245,7 @@ public static class PlayerLoader
 
 	public static void UpdateAutopause(Player player)
 	{
-		foreach (var modPlayer in HookUpdateAutopause.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateAutopause.Enumerate(player)) {
 			modPlayer.UpdateAutopause();
 		}
 	}
@@ -258,7 +254,7 @@ public static class PlayerLoader
 
 	public static void PreUpdate(Player player)
 	{
-		foreach (var modPlayer in HookPreUpdate.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreUpdate.Enumerate(player)) {
 			modPlayer.PreUpdate();
 		}
 	}
@@ -267,7 +263,7 @@ public static class PlayerLoader
 
 	public static void SetControls(Player player)
 	{
-		foreach (var modPlayer in HookSetControls.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookSetControls.Enumerate(player)) {
 			modPlayer.SetControls();
 		}
 	}
@@ -276,7 +272,7 @@ public static class PlayerLoader
 
 	public static void PreUpdateBuffs(Player player)
 	{
-		foreach (var modPlayer in HookPreUpdateBuffs.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreUpdateBuffs.Enumerate(player)) {
 			modPlayer.PreUpdateBuffs();
 		}
 	}
@@ -285,7 +281,7 @@ public static class PlayerLoader
 
 	public static void PostUpdateBuffs(Player player)
 	{
-		foreach (var modPlayer in HookPostUpdateBuffs.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostUpdateBuffs.Enumerate(player)) {
 			modPlayer.PostUpdateBuffs();
 		}
 	}
@@ -295,7 +291,7 @@ public static class PlayerLoader
 
 	public static void UpdateEquips(Player player)
 	{
-		foreach (var modPlayer in HookUpdateEquips.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateEquips.Enumerate(player)) {
 			modPlayer.UpdateEquips();
 		}
 	}
@@ -304,7 +300,7 @@ public static class PlayerLoader
 
 	public static void PostUpdateEquips(Player player)
 	{
-		foreach (var modPlayer in HookPostUpdateEquips.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostUpdateEquips.Enumerate(player)) {
 			modPlayer.PostUpdateEquips();
 		}
 	}
@@ -313,7 +309,7 @@ public static class PlayerLoader
 
 	public static void UpdateVisibleAccessories(Player player)
 	{
-		foreach (var modPlayer in HookUpdateVisibleAccessories.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateVisibleAccessories.Enumerate(player)) {
 			modPlayer.UpdateVisibleAccessories();
 		}
 	}
@@ -322,7 +318,7 @@ public static class PlayerLoader
 
 	public static void UpdateVisibleVanityAccessories(Player player)
 	{
-		foreach (var modPlayer in HookUpdateVisibleVanityAccessories.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateVisibleVanityAccessories.Enumerate(player)) {
 			modPlayer.UpdateVisibleVanityAccessories();
 		}
 	}
@@ -331,7 +327,7 @@ public static class PlayerLoader
 
 	public static void UpdateDyes(Player player)
 	{
-		foreach (var modPlayer in HookUpdateDyes.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUpdateDyes.Enumerate(player)) {
 			modPlayer.UpdateDyes();
 		}
 	}
@@ -340,7 +336,7 @@ public static class PlayerLoader
 
 	public static void PostUpdateMiscEffects(Player player)
 	{
-		foreach (var modPlayer in HookPostUpdateMiscEffects.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostUpdateMiscEffects.Enumerate(player)) {
 			modPlayer.PostUpdateMiscEffects();
 		}
 	}
@@ -349,7 +345,7 @@ public static class PlayerLoader
 
 	public static void PostUpdateRunSpeeds(Player player)
 	{
-		foreach (var modPlayer in HookPostUpdateRunSpeeds.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostUpdateRunSpeeds.Enumerate(player)) {
 			modPlayer.PostUpdateRunSpeeds();
 		}
 	}
@@ -358,7 +354,7 @@ public static class PlayerLoader
 
 	public static void PreUpdateMovement(Player player)
 	{
-		foreach (var modPlayer in HookPreUpdateMovement.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreUpdateMovement.Enumerate(player)) {
 			modPlayer.PreUpdateMovement();
 		}
 	}
@@ -367,7 +363,7 @@ public static class PlayerLoader
 
 	public static void PostUpdate(Player player)
 	{
-		foreach (var modPlayer in HookPostUpdate.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostUpdate.Enumerate(player)) {
 			modPlayer.PostUpdate();
 		}
 	}
@@ -376,7 +372,7 @@ public static class PlayerLoader
 
 	public static void FrameEffects(Player player)
 	{
-		foreach (var modPlayer in HookFrameEffects.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookFrameEffects.Enumerate(player)) {
 			modPlayer.FrameEffects();
 		}
 	}
@@ -384,7 +380,7 @@ public static class PlayerLoader
 	private static HookList HookImmuneTo = AddHook<Func<PlayerDeathReason, int, bool, bool>>(p => p.ImmuneTo);
 	public static bool ImmuneTo(Player player, PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
 	{
-		foreach (var modPlayer in HookImmuneTo.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookImmuneTo.Enumerate(player)) {
 			if (modPlayer.ImmuneTo(damageSource, cooldownCounter, dodgeable))
 				return true;
 		}
@@ -395,7 +391,7 @@ public static class PlayerLoader
 	private static HookList HookFreeDodge = AddHook<Func<Player.HurtInfo, bool>>(p => p.FreeDodge);
 	public static bool FreeDodge(Player player, in Player.HurtInfo info)
 	{
-		foreach (var modPlayer in HookFreeDodge.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookFreeDodge.Enumerate(player)) {
 			if (modPlayer.FreeDodge(info))
 				return true;
 		}
@@ -406,7 +402,7 @@ public static class PlayerLoader
 	private static HookList HookConsumableDodge = AddHook<Func<Player.HurtInfo, bool>>(p => p.ConsumableDodge);
 	public static bool ConsumableDodge(Player player, in Player.HurtInfo info)
 	{
-		foreach (var modPlayer in HookConsumableDodge.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookConsumableDodge.Enumerate(player)) {
 			if (modPlayer.ConsumableDodge(info))
 				return true;
 		}
@@ -435,7 +431,7 @@ public static class PlayerLoader
 			}
 		}
 
-		foreach (var modPlayer in HookModifyHurt.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyHurt.Enumerate(player)) {
 			modPlayer.ModifyHurt(ref modifiers);
 		}
 	}
@@ -460,7 +456,7 @@ public static class PlayerLoader
 			}
 		}
 
-		foreach (var modPlayer in HookHurt.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookHurt.Enumerate(player)) {
 			modPlayer.OnHurt(info);
 		}
 	}
@@ -469,7 +465,7 @@ public static class PlayerLoader
 
 	public static void PostHurt(Player player, Player.HurtInfo info)
 	{
-		foreach (var modPlayer in HookPostHurt.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostHurt.Enumerate(player)) {
 			modPlayer.PostHurt(info);
 		}
 	}
@@ -482,7 +478,7 @@ public static class PlayerLoader
 		ref bool genGore, ref PlayerDeathReason damageSource)
 	{
 		bool flag = true;
-		foreach (var modPlayer in HookPreKill.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreKill.Enumerate(player)) {
 			if (!modPlayer.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource)) {
 				flag = false;
 			}
@@ -494,7 +490,7 @@ public static class PlayerLoader
 
 	public static void Kill(Player player, double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 	{
-		foreach (var modPlayer in HookKill.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookKill.Enumerate(player)) {
 			modPlayer.Kill(damage, hitDirection, pvp, damageSource);
 		}
 	}
@@ -505,7 +501,7 @@ public static class PlayerLoader
 	public static bool PreModifyLuck(Player player, ref float luck)
 	{
 		bool flag = true;
-		foreach (var modPlayer in HookPreModifyLuck.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreModifyLuck.Enumerate(player)) {
 			if (!modPlayer.PreModifyLuck(ref luck)) {
 				flag = false;
 			}
@@ -518,7 +514,7 @@ public static class PlayerLoader
 
 	public static void ModifyLuck(Player player, ref float luck)
 	{
-		foreach (var modPlayer in HookModifyLuck.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyLuck.Enumerate(player)) {
 			modPlayer.ModifyLuck(ref luck);
 		}
 	}
@@ -528,7 +524,7 @@ public static class PlayerLoader
 	public static bool PreItemCheck(Player player)
 	{
 		bool result = true;
-		foreach (var modPlayer in HookPreItemCheck.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPreItemCheck.Enumerate(player)) {
 			result &= modPlayer.PreItemCheck();
 		}
 		return result;
@@ -538,7 +534,7 @@ public static class PlayerLoader
 
 	public static void PostItemCheck(Player player)
 	{
-		foreach (var modPlayer in HookPostItemCheck.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostItemCheck.Enumerate(player)) {
 			modPlayer.PostItemCheck();
 		}
 	}
@@ -552,7 +548,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return multiplier;
 
-		foreach (var modPlayer in HookUseTimeMultiplier.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUseTimeMultiplier.Enumerate(player)) {
 			multiplier *= modPlayer.UseTimeMultiplier(item);
 		}
 
@@ -568,7 +564,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return multiplier;
 
-		foreach (var modPlayer in HookUseAnimationMultiplier.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUseAnimationMultiplier.Enumerate(player)) {
 			multiplier *= modPlayer.UseAnimationMultiplier(item);
 		}
 
@@ -584,7 +580,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return multiplier;
 
-		foreach (var modPlayer in HookUseSpeedMultiplier.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookUseSpeedMultiplier.Enumerate(player)) {
 			multiplier *= modPlayer.UseSpeedMultiplier(item);
 		}
 
@@ -599,7 +595,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookGetHealLife.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookGetHealLife.Enumerate(player)) {
 			modPlayer.GetHealLife(item, quickHeal, ref healValue);
 		}
 	}
@@ -612,7 +608,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookGetHealMana.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookGetHealMana.Enumerate(player)) {
 			modPlayer.GetHealMana(item, quickHeal, ref healValue);
 		}
 	}
@@ -625,7 +621,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookModifyManaCost.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyManaCost.Enumerate(player)) {
 			modPlayer.ModifyManaCost(item, ref reduce, ref mult);
 		}
 	}
@@ -637,7 +633,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookOnMissingMana.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnMissingMana.Enumerate(player)) {
 			modPlayer.OnMissingMana(item, manaNeeded);
 		}
 	}
@@ -649,7 +645,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookOnConsumeMana.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnConsumeMana.Enumerate(player)) {
 			modPlayer.OnConsumeMana(item, manaConsumed);
 		}
 	}
@@ -664,7 +660,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookModifyWeaponDamage.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyWeaponDamage.Enumerate(player)) {
 			modPlayer.ModifyWeaponDamage(item, ref damage);
 		}
 	}
@@ -673,7 +669,7 @@ public static class PlayerLoader
 
 	public static void ProcessTriggers(Player player, TriggersSet triggersSet)
 	{
-		foreach (var modPlayer in HookProcessTriggers.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookProcessTriggers.Enumerate(player)) {
 			modPlayer.ProcessTriggers(triggersSet);
 		}
 	}
@@ -686,7 +682,7 @@ public static class PlayerLoader
 		if (item.IsAir)
 			return;
 
-		foreach (var modPlayer in HookModifyWeaponKnockback.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyWeaponKnockback.Enumerate(player)) {
 			modPlayer.ModifyWeaponKnockback(item, ref knockback);
 		}
 	}
@@ -697,7 +693,7 @@ public static class PlayerLoader
 	public static void ModifyWeaponCrit(Player player, Item item, ref float crit)
 	{
 		if (item.IsAir) return;
-		foreach (var modPlayer in HookModifyWeaponCrit.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyWeaponCrit.Enumerate(player)) {
 			modPlayer.ModifyWeaponCrit(item, ref crit);
 		}
 	}
@@ -706,7 +702,7 @@ public static class PlayerLoader
 
 	public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo)
 	{
-		foreach (var modPlayer in HookCanConsumeAmmo.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanConsumeAmmo.Enumerate(player)) {
 			if (!modPlayer.CanConsumeAmmo(weapon, ammo)) {
 				return false;
 			}
@@ -718,7 +714,7 @@ public static class PlayerLoader
 
 	public static void OnConsumeAmmo(Player player, Item weapon, Item ammo)
 	{
-		foreach (var modPlayer in HookOnConsumeAmmo.Enumerate(player.modPlayers))
+		foreach (var modPlayer in HookOnConsumeAmmo.Enumerate(player))
 			modPlayer.OnConsumeAmmo(weapon, ammo);
 	}
 
@@ -726,7 +722,7 @@ public static class PlayerLoader
 
 	public static bool CanShoot(Player player, Item item)
 	{
-		foreach (var modPlayer in HookCanShoot.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanShoot.Enumerate(player)) {
 			if (!modPlayer.CanShoot(item))
 				return false;
 		}
@@ -739,7 +735,7 @@ public static class PlayerLoader
 
 	public static void ModifyShootStats(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 	{
-		foreach (var modPlayer in HookModifyShootStats.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyShootStats.Enumerate(player)) {
 			modPlayer.ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 	}
@@ -750,7 +746,7 @@ public static class PlayerLoader
 	{
 		bool defaultResult = true;
 
-		foreach (var modPlayer in HookShoot.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookShoot.Enumerate(player)) {
 			defaultResult &= modPlayer.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 
@@ -761,7 +757,7 @@ public static class PlayerLoader
 
 	public static void MeleeEffects(Player player, Item item, Rectangle hitbox)
 	{
-		foreach (var modPlayer in HookMeleeEffects.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookMeleeEffects.Enumerate(player)) {
 			modPlayer.MeleeEffects(item, hitbox);
 		}
 	}
@@ -771,7 +767,7 @@ public static class PlayerLoader
 	public static bool? CanCatchNPC(Player player, NPC target, Item item)
 	{
 		bool? returnValue = null;
-		foreach (var modPlayer in HookCanCatchNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanCatchNPC.Enumerate(player)) {
 			bool? canCatch = modPlayer.CanCatchNPC(target, item);
 			if (canCatch.HasValue) {
 				if (!canCatch.Value)
@@ -787,7 +783,7 @@ public static class PlayerLoader
 
 	public static void OnCatchNPC(Player player, NPC target, Item item, bool failed)
 	{
-		foreach (var modPlayer in HookOnCatchNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnCatchNPC.Enumerate(player)) {
 			modPlayer.OnCatchNPC(target, item, failed);
 		}
 	}
@@ -797,7 +793,7 @@ public static class PlayerLoader
 
 	public static void ModifyItemScale(Player player, Item item, ref float scale)
 	{
-		foreach (var modPlayer in HookModifyItemScale.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyItemScale.Enumerate(player)) {
 			modPlayer.ModifyItemScale(item, ref scale);
 		}
 	}
@@ -806,7 +802,7 @@ public static class PlayerLoader
 
 	public static void OnHitAnything(Player player, float x, float y, Entity victim)
 	{
-		foreach (var modPlayer in HookOnHitAnything.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnHitAnything.Enumerate(player)) {
 			modPlayer.OnHitAnything(x, y, victim);
 		}
 	}
@@ -814,7 +810,7 @@ public static class PlayerLoader
 	private static HookList HookCanHitNPC = AddHook<Func<NPC, bool>>(p => p.CanHitNPC);
 	public static bool CanHitNPC(Player player, NPC target)
 	{
-		foreach (var modPlayer in HookCanHitNPC.Enumerate(player.modPlayers))
+		foreach (var modPlayer in HookCanHitNPC.Enumerate(player))
 			if (!modPlayer.CanHitNPC(target))
 				return false;
 
@@ -827,7 +823,7 @@ public static class PlayerLoader
 	{
 		bool? flag = null;
 
-		foreach (var modPlayer in HookCanCollideNPCWithItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanCollideNPCWithItem.Enumerate(player)) {
 			bool? canHit = modPlayer.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, target);
 
 			if (canHit.HasValue) {
@@ -847,7 +843,7 @@ public static class PlayerLoader
 
 	public static void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
-		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyHitNPC.Enumerate(player)) {
 			modPlayer.ModifyHitNPC(target, ref modifiers);
 		}
 	}
@@ -856,7 +852,7 @@ public static class PlayerLoader
 
 	public static void OnHitNPC(Player player, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
-		foreach (var modPlayer in HookOnHitNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnHitNPC.Enumerate(player)) {
 			modPlayer.OnHitNPC(target, hit, damageDone);
 		}
 	}
@@ -868,7 +864,7 @@ public static class PlayerLoader
 			return false;
 
 		bool? ret = null;
-		foreach (var modPlayer in HookCanHitNPCWithItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanHitNPCWithItem.Enumerate(player)) {
 			if (modPlayer.CanHitNPCWithItem(item, target) is bool b) {
 				if (!b)
 					return false;
@@ -886,7 +882,7 @@ public static class PlayerLoader
 	public static void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers)
 	{
 		ModifyHitNPC(player, target, ref modifiers);
-		foreach (var modPlayer in HookModifyHitNPCWithItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyHitNPCWithItem.Enumerate(player)) {
 			modPlayer.ModifyHitNPCWithItem(item, target, ref modifiers);
 		}
 	}
@@ -896,7 +892,7 @@ public static class PlayerLoader
 	public static void OnHitNPCWithItem(Player player, Item item, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
 		OnHitNPC(player, target, hit, damageDone);
-		foreach (var modPlayer in HookOnHitNPCWithItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnHitNPCWithItem.Enumerate(player)) {
 			modPlayer.OnHitNPCWithItem(item, target, hit, damageDone);
 		}
 	}
@@ -909,7 +905,7 @@ public static class PlayerLoader
 			return false;
 
 		bool? ret = null;
-		foreach (var modPlayer in HookCanHitNPCWithProj.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanHitNPCWithProj.Enumerate(player)) {
 			if (modPlayer.CanHitNPCWithProj(proj, target) is bool b) {
 				if (!b)
 					return false;
@@ -926,7 +922,7 @@ public static class PlayerLoader
 	public static void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
 	{
 		ModifyHitNPC(player, target, ref modifiers);
-		foreach (var modPlayer in HookModifyHitNPCWithProj.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyHitNPCWithProj.Enumerate(player)) {
 			modPlayer.ModifyHitNPCWithProj(proj, target, ref modifiers);
 		}
 	}
@@ -936,7 +932,7 @@ public static class PlayerLoader
 	public static void OnHitNPCWithProj(Player player, Projectile proj, NPC target, in NPC.HitInfo hit, int damageDone)
 	{
 		OnHitNPC(player, target, hit, damageDone);
-		foreach (var modPlayer in HookOnHitNPCWithProj.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnHitNPCWithProj.Enumerate(player)) {
 			modPlayer.OnHitNPCWithProj(proj, target, hit, damageDone);
 		}
 	}
@@ -945,7 +941,7 @@ public static class PlayerLoader
 
 	public static bool CanHitPvp(Player player, Item item, Player target)
 	{
-		foreach (var modPlayer in HookCanHitPvp.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanHitPvp.Enumerate(player)) {
 			if (!modPlayer.CanHitPvp(item, target)) {
 				return false;
 			}
@@ -958,7 +954,7 @@ public static class PlayerLoader
 	public static bool CanHitPvpWithProj(Projectile proj, Player target)
 	{
 		Player player = Main.player[proj.owner];
-		foreach (var modPlayer in HookCanHitPvpWithProj.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanHitPvpWithProj.Enumerate(player)) {
 			if (!modPlayer.CanHitPvpWithProj(proj, target)) {
 				return false;
 			}
@@ -971,7 +967,7 @@ public static class PlayerLoader
 
 	public static bool CanBeHitByNPC(Player player, NPC npc, ref int cooldownSlot)
 	{
-		foreach (var modPlayer in HookCanBeHitByNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanBeHitByNPC.Enumerate(player)) {
 			if (!modPlayer.CanBeHitByNPC(npc, ref cooldownSlot)) {
 				return false;
 			}
@@ -984,7 +980,7 @@ public static class PlayerLoader
 
 	public static void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers)
 	{
-		foreach (var modPlayer in HookModifyHitByNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyHitByNPC.Enumerate(player)) {
 			modPlayer.ModifyHitByNPC(npc, ref modifiers);
 		}
 	}
@@ -993,7 +989,7 @@ public static class PlayerLoader
 
 	public static void OnHitByNPC(Player player, NPC npc, in Player.HurtInfo hurtInfo)
 	{
-		foreach (var modPlayer in HookOnHitByNPC.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnHitByNPC.Enumerate(player)) {
 			modPlayer.OnHitByNPC(npc, hurtInfo);
 		}
 	}
@@ -1002,7 +998,7 @@ public static class PlayerLoader
 
 	public static bool CanBeHitByProjectile(Player player, Projectile proj)
 	{
-		foreach (var modPlayer in HookCanBeHitByProjectile.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanBeHitByProjectile.Enumerate(player)) {
 			if (!modPlayer.CanBeHitByProjectile(proj)) {
 				return false;
 			}
@@ -1015,7 +1011,7 @@ public static class PlayerLoader
 
 	public static void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers)
 	{
-		foreach (var modPlayer in HookModifyHitByProjectile.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyHitByProjectile.Enumerate(player)) {
 			modPlayer.ModifyHitByProjectile(proj, ref modifiers);
 		}
 	}
@@ -1024,7 +1020,7 @@ public static class PlayerLoader
 
 	public static void OnHitByProjectile(Player player, Projectile proj, in Player.HurtInfo hurtInfo)
 	{
-		foreach (var modPlayer in HookOnHitByProjectile.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnHitByProjectile.Enumerate(player)) {
 			modPlayer.OnHitByProjectile(proj, hurtInfo);
 		}
 	}
@@ -1034,7 +1030,7 @@ public static class PlayerLoader
 
 	public static void ModifyFishingAttempt(Player player, ref FishingAttempt attempt)
 	{
-		foreach (var modPlayer in HookModifyFishingAttempt.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyFishingAttempt.Enumerate(player)) {
 			modPlayer.ModifyFishingAttempt(ref attempt);
 		}
 
@@ -1046,7 +1042,7 @@ public static class PlayerLoader
 
 	public static void CatchFish(Player player, FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
 	{
-		foreach (var modPlayer in HookCatchFish.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCatchFish.Enumerate(player)) {
 			modPlayer.CatchFish(attempt, ref itemDrop, ref enemySpawn, ref sonar, ref sonarPosition);
 		}
 	}
@@ -1056,7 +1052,7 @@ public static class PlayerLoader
 
 	public static void ModifyCaughtFish(Player player, Item fish)
 	{
-		foreach (var modPlayer in HookCaughtFish.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCaughtFish.Enumerate(player)) {
 			modPlayer.ModifyCaughtFish(fish);
 		}
 	}
@@ -1067,7 +1063,7 @@ public static class PlayerLoader
 	public static bool? CanConsumeBait(Player player, Item bait)
 	{
 		bool? ret = null;
-		foreach (var modPlayer in HookCaughtFish.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCaughtFish.Enumerate(player)) {
 			if (modPlayer.CanConsumeBait(bait) is bool b)
 				ret = (ret ?? true) && b;
 		}
@@ -1079,7 +1075,7 @@ public static class PlayerLoader
 
 	public static void GetFishingLevel(Player player, Item fishingRod, Item bait, ref float fishingLevel)
 	{
-		foreach (var modPlayer in HookGetFishingLevel.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookGetFishingLevel.Enumerate(player)) {
 			modPlayer.GetFishingLevel(fishingRod, bait, ref fishingLevel);
 		}
 	}
@@ -1088,7 +1084,7 @@ public static class PlayerLoader
 
 	public static void AnglerQuestReward(Player player, float rareMultiplier, List<Item> rewardItems)
 	{
-		foreach (var modPlayer in HookAnglerQuestReward.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookAnglerQuestReward.Enumerate(player)) {
 			modPlayer.AnglerQuestReward(rareMultiplier, rewardItems);
 		}
 	}
@@ -1097,7 +1093,7 @@ public static class PlayerLoader
 
 	public static void GetDyeTraderReward(Player player, List<int> rewardPool)
 	{
-		foreach (var modPlayer in HookGetDyeTraderReward.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookGetDyeTraderReward.Enumerate(player)) {
 			modPlayer.GetDyeTraderReward(rewardPool);
 		}
 	}
@@ -1109,7 +1105,7 @@ public static class PlayerLoader
 	{
 		var player = drawInfo.drawPlayer;
 
-		foreach (var modPlayer in HookDrawEffects.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookDrawEffects.Enumerate(player)) {
 			modPlayer.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
 		}
 	}
@@ -1121,7 +1117,7 @@ public static class PlayerLoader
 	{
 		var player = drawInfo.drawPlayer;
 
-		foreach (var modPlayer in HookModifyDrawInfo.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyDrawInfo.Enumerate(player)) {
 			modPlayer.ModifyDrawInfo(ref drawInfo);
 		}
 	}
@@ -1130,7 +1126,7 @@ public static class PlayerLoader
 
 	public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions)
 	{
-		foreach (var modPlayer in HookModifyDrawLayerOrdering.Enumerate(players)) {
+		foreach (var modPlayer in HookModifyDrawLayerOrdering.Enumerate()) {
 			modPlayer.ModifyDrawLayerOrdering(positions);
 		}
 	}
@@ -1141,7 +1137,7 @@ public static class PlayerLoader
 	{
 		var player = drawInfo.drawPlayer;
 
-		foreach (var modPlayer in HookModifyDrawLayers.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyDrawLayers.Enumerate(player)) {
 			modPlayer.HideDrawLayers(drawInfo);
 		}
 	}
@@ -1150,7 +1146,7 @@ public static class PlayerLoader
 
 	public static void ModifyScreenPosition(Player player)
 	{
-		foreach (var modPlayer in HookModifyScreenPosition.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyScreenPosition.Enumerate(player)) {
 			modPlayer.ModifyScreenPosition();
 		}
 	}
@@ -1160,7 +1156,7 @@ public static class PlayerLoader
 
 	public static void ModifyZoom(Player player, ref float zoom)
 	{
-		foreach (var modPlayer in HookModifyZoom.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyZoom.Enumerate(player)) {
 			modPlayer.ModifyZoom(ref zoom);
 		}
 	}
@@ -1170,7 +1166,7 @@ public static class PlayerLoader
 	public static void PlayerConnect(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
-		foreach (var modPlayer in HookPlayerConnect.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPlayerConnect.Enumerate(player)) {
 			modPlayer.PlayerConnect();
 		}
 	}
@@ -1180,7 +1176,7 @@ public static class PlayerLoader
 	public static void PlayerDisconnect(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
-		foreach (var modPlayer in HookPlayerDisconnect.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPlayerDisconnect.Enumerate(player)) {
 			modPlayer.PlayerDisconnect();
 		}
 	}
@@ -1191,7 +1187,7 @@ public static class PlayerLoader
 	public static void OnEnterWorld(int playerIndex)
 	{
 		var player = Main.player[playerIndex];
-		foreach (var modPlayer in HookOnEnterWorld.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnEnterWorld.Enumerate(player)) {
 			modPlayer.OnEnterWorld();
 		}
 	}
@@ -1200,7 +1196,7 @@ public static class PlayerLoader
 
 	public static void OnRespawn(Player player)
 	{
-		foreach (var modPlayer in HookOnRespawn.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookOnRespawn.Enumerate(player)) {
 			modPlayer.OnRespawn();
 		}
 	}
@@ -1209,7 +1205,7 @@ public static class PlayerLoader
 
 	public static bool ShiftClickSlot(Player player, Item[] inventory, int context, int slot)
 	{
-		foreach (var modPlayer in HookShiftClickSlot.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookShiftClickSlot.Enumerate(player)) {
 			if (modPlayer.ShiftClickSlot(inventory, context, slot)) {
 				return true;
 			}
@@ -1221,7 +1217,7 @@ public static class PlayerLoader
 
 	public static bool HoverSlot(Player player, Item[] inventory, int context, int slot)
 	{
-		foreach (var modPlayer in HookHoverSlot.Enumerate(player.ModPlayers)) {
+		foreach (var modPlayer in HookHoverSlot.Enumerate(player)) {
 			if (modPlayer.HoverSlot(inventory, context, slot)) {
 				return true;
 			}
@@ -1233,7 +1229,7 @@ public static class PlayerLoader
 
 	public static void PostSellItem(Player player, NPC npc, Item[] shopInventory, Item item)
 	{
-		foreach (var modPlayer in HookPostSellItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostSellItem.Enumerate(player)) {
 			modPlayer.PostSellItem(npc, shopInventory, item);
 		}
 	}
@@ -1243,7 +1239,7 @@ public static class PlayerLoader
 	// TODO: GlobalNPC and ModNPC hooks for Buy/Sell hooks as well.
 	public static bool CanSellItem(Player player, NPC npc, Item[] shopInventory, Item item)
 	{
-		foreach (var modPlayer in HookCanSellItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanSellItem.Enumerate(player)) {
 			if (!modPlayer.CanSellItem(npc, shopInventory, item))
 				return false;
 		}
@@ -1254,7 +1250,7 @@ public static class PlayerLoader
 
 	public static void PostBuyItem(Player player, NPC npc, Item[] shopInventory, Item item)
 	{
-		foreach (var modPlayer in HookPostBuyItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostBuyItem.Enumerate(player)) {
 			modPlayer.PostBuyItem(npc, shopInventory, item);
 		}
 	}
@@ -1263,7 +1259,7 @@ public static class PlayerLoader
 
 	public static bool CanBuyItem(Player player, NPC npc, Item[] shopInventory, Item item)
 	{
-		foreach (var modPlayer in HookCanBuyItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanBuyItem.Enumerate(player)) {
 			if (!modPlayer.CanBuyItem(npc, shopInventory, item))
 				return false;
 		}
@@ -1274,7 +1270,7 @@ public static class PlayerLoader
 
 	public static bool CanUseItem(Player player, Item item)
 	{
-		foreach (var modPlayer in HookCanUseItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanUseItem.Enumerate(player)) {
 			if (!modPlayer.CanUseItem(item))
 				return false;
 		}
@@ -1288,7 +1284,7 @@ public static class PlayerLoader
 	{
 		bool? flag = null;
 
-		foreach (var modPlayer in HookCanAutoReuseItem.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookCanAutoReuseItem.Enumerate(player)) {
 			bool? allow = modPlayer.CanAutoReuseItem(item);
 
 			if (allow.HasValue) {
@@ -1309,7 +1305,7 @@ public static class PlayerLoader
 
 	public static bool ModifyNurseHeal(Player player, NPC npc, ref int health, ref bool removeDebuffs, ref string chat)
 	{
-		foreach (var modPlayer in HookModifyNurseHeal.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyNurseHeal.Enumerate(player)) {
 			if (!modPlayer.ModifyNurseHeal(npc, ref health, ref removeDebuffs, ref chat))
 				return false;
 		}
@@ -1322,7 +1318,7 @@ public static class PlayerLoader
 
 	public static void ModifyNursePrice(Player player, NPC npc, int health, bool removeDebuffs, ref int price)
 	{
-		foreach (var modPlayer in HookModifyNursePrice.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyNursePrice.Enumerate(player)) {
 			modPlayer.ModifyNursePrice(npc, health, removeDebuffs, ref price);
 		}
 	}
@@ -1331,7 +1327,7 @@ public static class PlayerLoader
 
 	public static void PostNurseHeal(Player player, NPC npc, int health, bool removeDebuffs, int price)
 	{
-		foreach (var modPlayer in HookPostNurseHeal.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookPostNurseHeal.Enumerate(player)) {
 			modPlayer.PostNurseHeal(npc, health, removeDebuffs, price);
 		}
 	}
@@ -1345,11 +1341,11 @@ public static class PlayerLoader
 			["Terraria"] = vanillaItems.ToList()
 		};
 
-		foreach (var modPlayer in HookAddStartingItems.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookAddStartingItems.Enumerate(player)) {
 			itemsByMod[modPlayer.Mod.Name] = modPlayer.AddStartingItems(mediumCoreDeath).ToList();
 		}
 
-		foreach (var modPlayer in HookModifyStartingInventory.Enumerate(player.modPlayers)) {
+		foreach (var modPlayer in HookModifyStartingInventory.Enumerate(player)) {
 			modPlayer.ModifyStartingInventory(itemsByMod, mediumCoreDeath);
 		}
 

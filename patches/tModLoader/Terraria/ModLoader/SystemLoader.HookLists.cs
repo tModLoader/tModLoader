@@ -37,9 +37,7 @@ partial class SystemLoader
 	private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate
 	{
 		var hook = new HookList(func.ToMethodInfo());
-
 		hooks.Add(hook);
-
 		return hook;
 	}
 

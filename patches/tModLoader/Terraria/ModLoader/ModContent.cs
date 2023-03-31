@@ -530,7 +530,7 @@ public static class ModContent
 		NPCHeadLoader.ResizeAndFillArrays();
 		MountLoader.ResizeArrays();
 		BuffLoader.ResizeArrays();
-		PlayerLoader.RebuildHooks();
+		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 

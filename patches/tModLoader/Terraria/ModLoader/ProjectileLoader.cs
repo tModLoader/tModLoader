@@ -31,18 +31,14 @@ public static class ProjectileLoader
 	private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func) where F : Delegate
 	{
 		var hook = HookList.Create(func);
-
 		hooks.Add(hook);
-
 		return hook;
 	}
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
 		hook.Update(globalProjectiles);
-
 		modHooks.Add(hook);
-
 		return hook;
 	}
 
@@ -129,7 +125,7 @@ public static class ProjectileLoader
 			projectile.ModProjectile?.SetDefaults();
 		});
 
-		foreach (GlobalProjectile g in HookSetDefaults.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookSetDefaults.Enumerate(projectile)) {
 			g.SetDefaults(projectile);
 		}
 	}
@@ -140,7 +136,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.OnSpawn(source);
 
-		foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile)) {
 			g.OnSpawn(projectile, source);
 		}
 	}
@@ -169,7 +165,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (GlobalProjectile g in HookPreAI.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookPreAI.Enumerate(projectile)) {
 			result &= g.PreAI(projectile);
 		}
 
@@ -186,7 +182,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.AI();
 
-		foreach (GlobalProjectile g in HookAI.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookAI.Enumerate(projectile)) {
 			g.AI(projectile);
 		}
 	}
@@ -197,7 +193,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.PostAI();
 
-		foreach (GlobalProjectile g in HookPostAI.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookPostAI.Enumerate(projectile)) {
 			g.PostAI(projectile);
 		}
 	}
@@ -225,7 +221,7 @@ public static class ProjectileLoader
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile)) {
 			g.SendExtraAI(projectile, bitWriter, globalWriter);
 		}
 
@@ -257,7 +253,7 @@ public static class ProjectileLoader
 		BitReader bitReader = new BitReader(modReader);
 
 		try {
-			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile)) {
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 
@@ -275,7 +271,7 @@ public static class ProjectileLoader
 			string message = $"Above IOException error in Projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} occured";
 
 			var culprits = new List<GlobalProjectile>();
-			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile)) {
 				culprits.Add(g);
 			}
 
@@ -298,7 +294,7 @@ public static class ProjectileLoader
 			return false;
 		}
 
-		foreach (GlobalProjectile g in HookShouldUpdatePosition.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookShouldUpdatePosition.Enumerate(projectile)) {
 			if (!g.ShouldUpdatePosition(projectile)) {
 				return false;
 			}
@@ -316,7 +312,7 @@ public static class ProjectileLoader
 			return false;
 		}
 
-		foreach (GlobalProjectile g in HookTileCollideStyle.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookTileCollideStyle.Enumerate(projectile)) {
 			if (!g.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac)) {
 				return false;
 			}
@@ -331,7 +327,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (GlobalProjectile g in HookOnTileCollide.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookOnTileCollide.Enumerate(projectile)) {
 			result &= g.OnTileCollide(projectile, oldVelocity);
 		}
 
@@ -346,7 +342,7 @@ public static class ProjectileLoader
 
 	public static bool? CanCutTiles(Projectile projectile)
 	{
-		foreach (GlobalProjectile g in HookCanCutTiles.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCanCutTiles.Enumerate(projectile)) {
 			bool? canCutTiles = g.CanCutTiles(projectile);
 
 			if (canCutTiles.HasValue) {
@@ -362,7 +358,7 @@ public static class ProjectileLoader
 	public static void CutTiles(Projectile projectile)
 	{
 
-		foreach (GlobalProjectile g in HookCutTiles.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCutTiles.Enumerate(projectile)) {
 			g.CutTiles(projectile);
 		}
 
@@ -375,7 +371,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (GlobalProjectile g in HookPreKill.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookPreKill.Enumerate(projectile)) {
 			result &= g.PreKill(projectile, timeLeft);
 		}
 
@@ -392,7 +388,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.Kill(timeLeft);
 
-		foreach (GlobalProjectile g in HookKill.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookKill.Enumerate(projectile)) {
 			g.Kill(projectile, timeLeft);
 		}
 	}
@@ -403,7 +399,7 @@ public static class ProjectileLoader
 	{
 		bool? result = null;
 
-		foreach (GlobalProjectile g in HookCanDamage.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCanDamage.Enumerate(projectile)) {
 			bool? canDamage = g.CanDamage(projectile);
 
 			if (canDamage.HasValue) {
@@ -426,7 +422,7 @@ public static class ProjectileLoader
 			return true;
 		}
 
-		foreach (GlobalProjectile g in HookMinionContactDamage.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookMinionContactDamage.Enumerate(projectile)) {
 			if (g.MinionContactDamage(projectile)) {
 				return true;
 			}
@@ -442,7 +438,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.ModifyDamageHitbox(ref hitbox);
 
-		foreach (GlobalProjectile g in HookModifyDamageHitbox.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookModifyDamageHitbox.Enumerate(projectile)) {
 			g.ModifyDamageHitbox(projectile, ref hitbox);
 		}
 	}
@@ -453,7 +449,7 @@ public static class ProjectileLoader
 	{
 		bool? flag = null;
 
-		foreach (GlobalProjectile g in HookCanHitNPC.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCanHitNPC.Enumerate(projectile)) {
 			bool? canHit = g.CanHitNPC(projectile, target);
 
 			if (canHit.HasValue && !canHit.Value) {
@@ -485,7 +481,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.ModifyHitNPC(target, ref modifiers);
 
-		foreach (GlobalProjectile g in HookModifyHitNPC.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookModifyHitNPC.Enumerate(projectile)) {
 			g.ModifyHitNPC(projectile, target, ref modifiers);
 		}
 	}
@@ -496,7 +492,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.OnHitNPC(target, hit, damageDone);
 
-		foreach (GlobalProjectile g in HookOnHitNPC.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookOnHitNPC.Enumerate(projectile)) {
 			g.OnHitNPC(projectile, target, hit, damageDone);
 		}
 	}
@@ -505,7 +501,7 @@ public static class ProjectileLoader
 
 	public static bool CanHitPvp(Projectile projectile, Player target)
 	{
-		foreach (GlobalProjectile g in HookCanHitPvp.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCanHitPvp.Enumerate(projectile)) {
 			if (!g.CanHitPvp(projectile, target)) {
 				return false;
 			}
@@ -522,7 +518,7 @@ public static class ProjectileLoader
 
 	public static bool CanHitPlayer(Projectile projectile, Player target)
 	{
-		foreach (GlobalProjectile g in HookCanHitPlayer.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCanHitPlayer.Enumerate(projectile)) {
 			if (!g.CanHitPlayer(projectile, target)) {
 				return false;
 			}
@@ -542,7 +538,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.ModifyHitPlayer(target, ref modifiers);
 
-		foreach (GlobalProjectile g in HookModifyHitPlayer.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookModifyHitPlayer.Enumerate(projectile)) {
 			g.ModifyHitPlayer(projectile, target, ref modifiers);
 		}
 	}
@@ -553,7 +549,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.OnHitPlayer(target, hurtInfo);
 
-		foreach (GlobalProjectile g in HookOnHitPlayer.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookOnHitPlayer.Enumerate(projectile)) {
 			g.OnHitPlayer(projectile, target, hurtInfo);
 		}
 	}
@@ -562,7 +558,7 @@ public static class ProjectileLoader
 
 	public static bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
 	{
-		foreach (GlobalProjectile g in HookColliding.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookColliding.Enumerate(projectile)) {
 			bool? colliding = g.Colliding(projectile, projHitbox, targetHitbox);
 
 			if (colliding.HasValue) {
@@ -600,7 +596,7 @@ public static class ProjectileLoader
 
 	public static Color? GetAlpha(Projectile projectile, Color lightColor)
 	{
-		foreach (GlobalProjectile g in HookGetAlpha.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookGetAlpha.Enumerate(projectile)) {
 			Color? color = g.GetAlpha(projectile, lightColor);
 
 			if (color.HasValue) {
@@ -626,7 +622,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (GlobalProjectile g in HookPreDrawExtras.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookPreDrawExtras.Enumerate(projectile)) {
 			result &= g.PreDrawExtras(projectile);
 		}
 
@@ -644,7 +640,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (GlobalProjectile g in HookPreDraw.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookPreDraw.Enumerate(projectile)) {
 			result &= g.PreDraw(projectile, ref lightColor);
 		}
 
@@ -661,7 +657,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.PostDraw(lightColor);
 
-		foreach (GlobalProjectile g in HookPostDraw.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookPostDraw.Enumerate(projectile)) {
 			g.PostDraw(projectile, lightColor);
 		}
 	}
@@ -672,7 +668,7 @@ public static class ProjectileLoader
 	{
 		bool? flag = GetProjectile(type)?.CanUseGrapple(player);
 
-		foreach (GlobalProjectile g in HookCanUseGrapple.Enumerate(globalProjectiles)) {
+		foreach (GlobalProjectile g in HookCanUseGrapple.Enumerate()) {
 			bool? canGrapple = g.CanUseGrapple(type, player);
 
 			if (canGrapple.HasValue) {
@@ -690,7 +686,7 @@ public static class ProjectileLoader
 	{
 		GetProjectile(type)?.UseGrapple(player, ref type);
 
-		foreach (GlobalProjectile g in HookUseGrapple.Enumerate(globalProjectiles)) {
+		foreach (GlobalProjectile g in HookUseGrapple.Enumerate()) {
 			g.UseGrapple(player, ref type);
 		}
 	}
@@ -707,7 +703,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.NumGrappleHooks(player, ref numHooks);
 
-		foreach (GlobalProjectile g in HookNumGrappleHooks.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookNumGrappleHooks.Enumerate(projectile)) {
 			g.NumGrappleHooks(projectile, player, ref numHooks);
 		}
 	}
@@ -719,7 +715,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.GrappleRetreatSpeed(player, ref speed);
 
-		foreach (GlobalProjectile g in HookGrappleRetreatSpeed.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookGrappleRetreatSpeed.Enumerate(projectile)) {
 			g.GrappleRetreatSpeed(projectile, player, ref speed);
 		}
 	}
@@ -731,7 +727,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.GrapplePullSpeed(player, ref speed);
 
-		foreach (GlobalProjectile g in HookGrapplePullSpeed.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookGrapplePullSpeed.Enumerate(projectile)) {
 			g.GrapplePullSpeed(projectile, player, ref speed);
 		}
 	}
@@ -743,7 +739,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.GrappleTargetPoint(player, ref grappleX, ref grappleY);
 
-		foreach (GlobalProjectile g in HookGrappleTargetPoint.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookGrappleTargetPoint.Enumerate(projectile)) {
 			g.GrappleTargetPoint(projectile, player, ref grappleX, ref grappleY);
 		}
 	}
@@ -754,7 +750,7 @@ public static class ProjectileLoader
 	{
 		bool? flag = projectile.ModProjectile?.GrappleCanLatchOnTo(player, x, y);
 
-		foreach (GlobalProjectile g in HookGrappleCanLatchOnTo.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookGrappleCanLatchOnTo.Enumerate(projectile)) {
 			bool? globalFlag = g.GrappleCanLatchOnTo(projectile, player, x, y);
 
 			if (globalFlag.HasValue) {
@@ -774,7 +770,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 
-		foreach (GlobalProjectile g in HookDrawBehind.Enumerate(projectile.globalProjectiles)) {
+		foreach (GlobalProjectile g in HookDrawBehind.Enumerate(projectile)) {
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 		}
 	}
