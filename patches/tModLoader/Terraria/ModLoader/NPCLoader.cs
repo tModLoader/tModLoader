@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -1364,20 +1363,6 @@ public static class NPCLoader
 
 		damageMultiplier *= damageMult.Value;
 		return result;
-	}
-
-	internal static void VerifyGlobalNPC(GlobalNPC npc)
-	{
-		var type = npc.GetType();
-
-		bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-			.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalNPC)));
-
-		if (hasInstanceFields) {
-			if (!npc.InstancePerEntity) {
-				throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-			}
-		}
 	}
 
 	private delegate bool DelegateNeedSaving(NPC npc);

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -769,20 +768,6 @@ public static class ProjectileLoader
 
 		foreach (GlobalProjectile g in HookDrawBehind.Enumerate(projectile)) {
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-		}
-	}
-
-	internal static void VerifyGlobalProjectile(GlobalProjectile projectile)
-	{
-		var type = projectile.GetType();
-
-		bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-			.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalProjectile)));
-
-		if (hasInstanceFields) {
-			if (!projectile.InstancePerEntity) {
-				throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-			}
 		}
 	}
 }
