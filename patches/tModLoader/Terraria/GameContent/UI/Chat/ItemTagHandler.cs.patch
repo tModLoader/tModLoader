@@ -88,7 +88,7 @@
  
  						break;
  					}
-@@ -102,14 +_,26 @@
+@@ -102,14 +_,27 @@
  		};
  	}
  
@@ -99,7 +99,8 @@
  		string text = "[i";
 +		// Assuming we have modded data, simply write the item as base64.
 +		// Do not write the other option, base64 holds all the info.
-+		if (I.ModItem != null || I.globalItems.Any()) {
++		// Yes, doubling up on SaveGlobals isn't the best for performance, but oh well
++		if (ItemLoader.NeedsModSaving(I) || ItemIO.SaveGlobals(I) != null) {
 +			text = text + "/d" + ItemIO.ToBase64(I);
 +
 +			goto End;
