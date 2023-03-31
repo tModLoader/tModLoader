@@ -21,10 +21,11 @@ namespace Terraria.ModLoader;
 /// </summary>
 public static class ProjectileLoader
 {
-	internal static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
+	public static int ProjectileCount { get; private set; } = ProjectileID.Count;
+	private static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
+
 	internal static readonly List<GlobalProjectile> globalProjectiles = new();
 
-	private static int nextProjectile = ProjectileID.Count;
 	private static readonly List<HookList> hooks = new();
 	private static readonly List<HookList> modHooks = new();
 
@@ -42,15 +43,11 @@ public static class ProjectileLoader
 		return hook;
 	}
 
-	internal static int ReserveProjectileID()
+	internal static int Register(ModProjectile projectile)
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding projectiles breaks vanilla client compatibility");
-
-		return nextProjectile++;
+		projectiles.Add(projectile);
+		return ProjectileCount++;
 	}
-
-	public static int ProjectileCount => nextProjectile;
 
 	/// <summary>
 	/// Gets the ModProjectile template instance corresponding to the specified type (not the clone/new instance which gets added to Projectiles as the game is played).
@@ -65,26 +62,26 @@ public static class ProjectileLoader
 	internal static void ResizeArrays()
 	{
 		//Textures
-		Array.Resize(ref TextureAssets.Projectile, nextProjectile);
+		Array.Resize(ref TextureAssets.Projectile, ProjectileCount);
 
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(ProjectileID), true);
 
 		//Etc
-		Array.Resize(ref Main.projHostile, nextProjectile);
-		Array.Resize(ref Main.projHook, nextProjectile);
-		Array.Resize(ref Main.projFrames, nextProjectile);
-		Array.Resize(ref Main.projPet, nextProjectile);
-		Array.Resize(ref Lang._projectileNameCache, nextProjectile);
+		Array.Resize(ref Main.projHostile, ProjectileCount);
+		Array.Resize(ref Main.projHook, ProjectileCount);
+		Array.Resize(ref Main.projFrames, ProjectileCount);
+		Array.Resize(ref Main.projPet, ProjectileCount);
+		Array.Resize(ref Lang._projectileNameCache, ProjectileCount);
 
-		for (int k = ProjectileID.Count; k < nextProjectile; k++) {
+		for (int k = ProjectileID.Count; k < ProjectileCount; k++) {
 			Main.projFrames[k] = 1;
 			Lang._projectileNameCache[k] = LocalizedText.Empty;
 		}
 
-		Array.Resize(ref Projectile.perIDStaticNPCImmunity, nextProjectile);
+		Array.Resize(ref Projectile.perIDStaticNPCImmunity, ProjectileCount);
 
-		for (int i = 0; i < nextProjectile; i++) {
+		for (int i = 0; i < ProjectileCount; i++) {
 			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
 		}
 
@@ -102,8 +99,8 @@ public static class ProjectileLoader
 
 	internal static void Unload()
 	{
+		ProjectileCount = ProjectileID.Count;
 		projectiles.Clear();
-		nextProjectile = ProjectileID.Count;
 		globalProjectiles.Clear();
 		modHooks.Clear();
 	}

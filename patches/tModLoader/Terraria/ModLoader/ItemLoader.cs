@@ -9,7 +9,6 @@ using System.Linq.Expressions;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.Localization;
@@ -25,13 +24,13 @@ namespace Terraria.ModLoader;
 /// </summary>
 public static class ItemLoader
 {
-	internal static readonly IList<ModItem> items = new List<ModItem>();
+	public static int ItemCount { get; private set; } = ItemID.Count;
+	private static readonly IList<ModItem> items = new List<ModItem>();
+
 	internal static readonly List<GlobalItem> globalItems = new();
 	internal static GlobalItem[] NetGlobals;
 	internal static readonly int vanillaQuestFishCount = 41;
 	internal static readonly int[] vanillaWings = new int[ArmorIDs.Wing.Count];
-
-	private static int nextItem = ItemID.Count;
 
 	private static readonly List<HookList> hooks = new List<HookList>();
 	private static readonly List<HookList> modHooks = new List<HookList>();
@@ -64,13 +63,10 @@ public static class ItemLoader
 		}
 	}
 
-	internal static int ReserveItemID()
+	internal static int Register(ModItem item)
 	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding items breaks vanilla client compatibility");
-
-		int reserveID = nextItem;
-		nextItem++;
-		return reserveID;
+		items.Add(item);
+		return ItemCount++;
 	}
 
 	/// <summary>
@@ -81,13 +77,11 @@ public static class ItemLoader
 		return type >= ItemID.Count && type < ItemCount ? items[type - ItemID.Count] : null;
 	}
 
-	public static int ItemCount => nextItem;
-
 	internal static void ResizeArrays(bool unloading)
 	{
 		//Textures
-		Array.Resize(ref TextureAssets.Item, nextItem);
-		Array.Resize(ref TextureAssets.ItemFlame, nextItem);
+		Array.Resize(ref TextureAssets.Item, ItemCount);
+		Array.Resize(ref TextureAssets.ItemFlame, ItemCount);
 
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
@@ -95,15 +89,15 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets), true);
 
 		//Etc
-		Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
-		Array.Resize(ref Item.staff, nextItem);
-		Array.Resize(ref Item.claw, nextItem);
-		Array.Resize(ref Lang._itemNameCache, nextItem);
-		Array.Resize(ref Lang._itemTooltipCache, nextItem);
+		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);
+		Array.Resize(ref Item.staff, ItemCount);
+		Array.Resize(ref Item.claw, ItemCount);
+		Array.Resize(ref Lang._itemNameCache, ItemCount);
+		Array.Resize(ref Lang._itemTooltipCache, ItemCount);
 
-		Array.Resize(ref RecipeLoader.FirstRecipeForItem, nextItem);
+		Array.Resize(ref RecipeLoader.FirstRecipeForItem, ItemCount);
 
-		for (int k = ItemID.Count; k < nextItem; k++) {
+		for (int k = ItemID.Count; k < ItemCount; k++) {
 			Lang._itemNameCache[k] = LocalizedText.Empty;
 			Lang._itemTooltipCache[k] = ItemTooltip.None;
 			Item.cachedItemSpawnsByType[k] = -1;
@@ -112,7 +106,7 @@ public static class ItemLoader
 		//Animation collections can be accessed during an ongoing (un)loading process.
 		//Which is why the following 2 lines have to run without any interruptions.
 		lock (Main.itemAnimationsRegistered) {
-			Array.Resize(ref Main.itemAnimations, nextItem);
+			Array.Resize(ref Main.itemAnimations, ItemCount);
 			Main.InitializeItemAnimations();
 		}
 
@@ -167,7 +161,7 @@ public static class ItemLoader
 	internal static void Unload()
 	{
 		items.Clear();
-		nextItem = ItemID.Count;
+		ItemCount = ItemID.Count;
 		globalItems.Clear();
 		modHooks.Clear();
 	}

@@ -26,12 +26,11 @@ namespace Terraria.ModLoader;
 /// </summary>
 public static class NPCLoader
 {
-	internal static bool loaded = false;
-	private static int nextNPC = NPCID.Count;
+	public static int NPCCount { get; private set; } = NPCID.Count;
 	internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
+
 	internal static readonly List<GlobalNPC> globalNPCs = new();
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-	internal static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 	/// <summary>
 	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 	/// </summary>
@@ -54,16 +53,11 @@ public static class NPCLoader
 		return hook;
 	}
 
-	internal static int ReserveNPCID()
+	internal static int Register(ModNPC npc)
 	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");
-
-		int reserveID = nextNPC;
-		nextNPC++;
-		return reserveID;
+		npcs.Add(npc);
+		return NPCCount++;
 	}
-
-	public static int NPCCount => nextNPC;
 
 	/// <summary>
 	/// Gets the ModNPC template instance corresponding to the specified type (not the clone/new instance which gets added to NPCs as the game is played).
@@ -78,7 +72,7 @@ public static class NPCLoader
 	internal static void ResizeArrays(bool unloading)
 	{
 		// Textures
-		Array.Resize(ref TextureAssets.Npc, nextNPC);
+		Array.Resize(ref TextureAssets.Npc, NPCCount);
 
 		// Sets
 		LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
@@ -86,33 +80,29 @@ public static class NPCLoader
 		NPCHappiness.RegisterVanillaNpcRelationships();
 
 		// Etc
-		Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
-		Array.Resize(ref Main.slimeRainNPC, nextNPC);
-		Array.Resize(ref Main.npcCatchable, nextNPC);
-		Array.Resize(ref Main.npcFrameCount, nextNPC);
-		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, nextNPC);
-		Array.Resize(ref NPC.killCount, nextNPC);
-		Array.Resize(ref NPC.ShimmeredTownNPCs, nextNPC);
-		Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
-		Array.Resize(ref Lang._npcNameCache, nextNPC);
-		Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
-		Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
+		Array.Resize(ref Main.townNPCCanSpawn, NPCCount);
+		Array.Resize(ref Main.slimeRainNPC, NPCCount);
+		Array.Resize(ref Main.npcCatchable, NPCCount);
+		Array.Resize(ref Main.npcFrameCount, NPCCount);
+		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, NPCCount);
+		Array.Resize(ref NPC.killCount, NPCCount);
+		Array.Resize(ref NPC.ShimmeredTownNPCs, NPCCount);
+		Array.Resize(ref NPC.npcsFoundForCheckActive, NPCCount);
+		Array.Resize(ref Lang._npcNameCache, NPCCount);
+		Array.Resize(ref EmoteBubble.CountNPCs, NPCCount);
+		Array.Resize(ref WorldGen.TownManager._hasRoom, NPCCount);
 
 		foreach (var player in Main.player) {
-			Array.Resize(ref player.npcTypeNoAggro, nextNPC);
+			Array.Resize(ref player.npcTypeNoAggro, NPCCount);
 		}
 
-		for (int k = NPCID.Count; k < nextNPC; k++) {
+		for (int k = NPCID.Count; k < NPCCount; k++) {
 			Main.npcFrameCount[k] = 1;
 			Lang._npcNameCache[k] = LocalizedText.Empty;
 		}
 
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update(globalNPCs);
-		}
-
-		if (!unloading) {
-			loaded = true;
 		}
 	}
 
@@ -125,9 +115,8 @@ public static class NPCLoader
 
 	internal static void Unload()
 	{
-		loaded = false;
 		npcs.Clear();
-		nextNPC = NPCID.Count;
+		NPCCount = NPCID.Count;
 		globalNPCs.Clear();
 		bannerToItem.Clear();
 		modHooks.Clear();
@@ -146,8 +135,8 @@ public static class NPCLoader
 			if (createModNPC) {
 				npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
 			}
-			else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
-			{
+			else {
+				//the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				Array.Resize(ref npc.buffImmune, BuffLoader.BuffCount);
 			}
 		}
