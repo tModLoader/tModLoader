@@ -500,7 +500,7 @@ public static class ItemLoader
 	{
 		bool? ret = bait.ModItem?.CanConsumeBait(player);
 
-		foreach (GlobalItem g in HookCanConsumeBait.Enumerate(bait)) {
+		foreach (var g in HookCanConsumeBait.Enumerate(bait)) {
 			if (g.CanConsumeBait(player, bait) is bool b)
 				ret = (ret ?? true) && b;
 		}
@@ -820,7 +820,7 @@ public static class ItemLoader
 	public static bool? CanCatchNPC(Item item, NPC target, Player player)
 	{
 		bool? canCatchOverall = null;
-		foreach (GlobalItem g in HookCanCatchNPC.Enumerate(item)) {
+		foreach (var g in HookCanCatchNPC.Enumerate(item)) {
 			bool? canCatchFromGlobalItem = g.CanCatchNPC(item, target, player);
 			if (canCatchFromGlobalItem.HasValue) {
 				if (!canCatchFromGlobalItem.Value)
@@ -847,7 +847,7 @@ public static class ItemLoader
 	{
 		item.ModItem?.OnCatchNPC(npc, player, failed);
 
-		foreach (GlobalItem g in HookOnCatchNPC.Enumerate(item)) {
+		foreach (var g in HookOnCatchNPC.Enumerate(item)) {
 			g.OnCatchNPC(item, npc, player, failed);
 		}
 	}
@@ -880,7 +880,7 @@ public static class ItemLoader
 	{
 		bool? flag = null;
 
-		foreach (GlobalItem g in HookCanHitNPC.Enumerate(item)) {
+		foreach (var g in HookCanHitNPC.Enumerate(item)) {
 			bool? canHit = g.CanHitNPC(item, player, target);
 
 			if (canHit.HasValue) {
@@ -1247,10 +1247,10 @@ public static class ItemLoader
 		if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
 			legs.ModItem.UpdateArmorSet(player);
 
-		foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate()) {
-			string set = globalItem.IsArmorSet(head, body, legs);
+		foreach (var g in HookUpdateArmorSet.Enumerate()) {
+			string set = g.IsArmorSet(head, body, legs);
 			if (!string.IsNullOrEmpty(set))
-				globalItem.UpdateArmorSet(player, set);
+				g.UpdateArmorSet(player, set);
 		}
 	}
 
@@ -1274,10 +1274,10 @@ public static class ItemLoader
 		if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			legTexture.PreUpdateVanitySet(player);
 
-		foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate()) {
-			string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
+		foreach (var g in HookPreUpdateVanitySet.Enumerate()) {
+			string set = g.IsVanitySet(player.head, player.body, player.legs);
 			if (!string.IsNullOrEmpty(set))
-				globalItem.PreUpdateVanitySet(player, set);
+				g.PreUpdateVanitySet(player, set);
 		}
 	}
 
@@ -1301,10 +1301,10 @@ public static class ItemLoader
 		if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			legTexture.UpdateVanitySet(player);
 
-		foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate()) {
-			string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
+		foreach (var g in HookUpdateVanitySet.Enumerate()) {
+			string set = g.IsVanitySet(player.head, player.body, player.legs);
 			if (!string.IsNullOrEmpty(set))
-				globalItem.UpdateVanitySet(player, set);
+				g.UpdateVanitySet(player, set);
 		}
 	}
 
@@ -1328,10 +1328,10 @@ public static class ItemLoader
 		if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 			legTexture.ArmorSetShadows(player);
 
-		foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate()) {
-			string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
+		foreach (var g in HookArmorSetShadows.Enumerate()) {
+			string set = g.IsVanitySet(player.head, player.body, player.legs);
 			if (!string.IsNullOrEmpty(set))
-				globalItem.ArmorSetShadows(player, set);
+				g.ArmorSetShadows(player, set);
 		}
 	}
 
@@ -2091,14 +2091,13 @@ public static class ItemLoader
 
 	public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
 	{
-		bool modItemPreDraw = item.ModItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
-		List<bool> globalItemPreDraw = new List<bool>();
+		bool ret = item.ModItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
 
 		foreach (var g in HookPreDrawTooltip.Enumerate(item)) {
-			globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
+			ret &= g.PreDrawTooltip(item, lines, ref x, ref y);
 		}
 
-		return modItemPreDraw && globalItemPreDraw.All(z => z);
+		return ret;
 	}
 
 	private delegate void DelegatePostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines);
@@ -2118,14 +2117,13 @@ public static class ItemLoader
 
 	public static bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
 	{
-		bool modItemPreDrawLine = item.ModItem?.PreDrawTooltipLine(line, ref yOffset) ?? true;
-		List<bool> globalItemPreDrawLine = new List<bool>();
+		bool ret = item.ModItem?.PreDrawTooltipLine(line, ref yOffset) ?? true;
 
 		foreach (var g in HookPreDrawTooltipLine.Enumerate(item)) {
-			globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
+			ret &= g.PreDrawTooltipLine(item, line, ref yOffset);
 		}
 
-		return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
+		return ret;
 	}
 
 	private delegate void DelegatePostDrawTooltipLine(Item item, DrawableTooltipLine line);
