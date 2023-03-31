@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 
@@ -214,9 +215,8 @@ public static class ItemIO
 
 		writer.SafeWrite(w => item.ModItem?.NetSend(w));
 
-		foreach (var netGlobal in ItemLoader.NetGlobals) {
-			if (item.TryGetGlobalItem(netGlobal, out var globalItem))
-				writer.SafeWrite(w => globalItem.NetSend(item, w));
+		foreach (var g in ItemLoader.HookNetSend.Enumerate(item)) {
+			writer.SafeWrite(w => g.NetSend(item, w));
 		}
 	}
 
@@ -233,16 +233,13 @@ public static class ItemIO
 			Logging.tML.Error($"Above IOException error caused by {item.ModItem.Name} from the {item.ModItem.Mod.Name} mod.");
 		}
 
-		foreach (var netGlobal in ItemLoader.NetGlobals) {
-			if (!item.TryGetGlobalItem(netGlobal, out var globalItem))
-				continue;
-
+		foreach (var globalItem in ItemLoader.HookNetReceive.Enumerate(item)) {
 			try {
 				reader.SafeRead(r => globalItem.NetReceive(item, r));
 			}
 			catch (IOException e) {
 				Logging.tML.Error(e.ToString());
-				Logging.tML.Error($"Above IOException error caused by {netGlobal.Name} from the {netGlobal.Mod.Name} mod while reading {item.Name}.");
+				Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.Mod.Name} mod while reading {item.Name}.");
 			}
 		}
 	}

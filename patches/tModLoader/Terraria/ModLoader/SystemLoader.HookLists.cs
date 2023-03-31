@@ -20,7 +20,7 @@ namespace Terraria.ModLoader;
 
 partial class SystemLoader
 {
-	private class HookList
+	internal class HookList
 	{
 		public readonly MethodInfo method;
 
@@ -169,4 +169,7 @@ partial class SystemLoader
 	private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);
 
 	private static HookList HookHijackSendData = AddHook<Func<int, int, int, int, NetworkText, int, float, float, float, int, int, int, bool>>(s => s.HijackSendData);
+
+	internal static HookList HookNetSend = AddHook<Action<BinaryWriter>>(s => s.NetSend);
+	internal static HookList HookNetReceive = AddHook<Action<BinaryReader>>(s => s.NetReceive);
 }

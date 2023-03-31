@@ -3,12 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
-using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -21,8 +19,6 @@ public static partial class SystemLoader
 {
 	internal static readonly List<ModSystem> Systems = new();
 	internal static readonly Dictionary<Mod, List<ModSystem>> SystemsByMod = new();
-
-	internal static ModSystem[] NetSystems { get; private set; }
 
 	internal static void Add(ModSystem modSystem)
 	{
@@ -42,30 +38,7 @@ public static partial class SystemLoader
 
 	internal static void ResizeArrays()
 	{
-		NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
-
 		RebuildHooks();
-	}
-
-	internal static void WriteNetSystemOrder(BinaryWriter w)
-	{
-		w.Write((short)NetSystems.Length);
-
-		foreach (var netWorld in NetSystems) {
-			w.Write(netWorld.Mod.netID);
-			w.Write(netWorld.Name);
-		}
-	}
-
-	internal static void ReadNetSystemOrder(BinaryReader r)
-	{
-		short n = r.ReadInt16();
-
-		NetSystems = new ModSystem[n];
-
-		for (short i = 0; i < n; i++) {
-			NetSystems[i] = ModContent.Find<ModSystem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
-		}
 	}
 
 	internal static void OnModLoad(Mod mod)

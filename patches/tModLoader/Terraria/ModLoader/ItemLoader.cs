@@ -13,6 +13,7 @@ using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalItem>;
@@ -28,7 +29,6 @@ public static class ItemLoader
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	internal static readonly List<GlobalItem> globalItems = new();
-	internal static GlobalItem[] NetGlobals;
 	internal static readonly int vanillaQuestFishCount = 41;
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -101,8 +101,6 @@ public static class ItemLoader
 			Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
 				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
 				.ToArray();
-
-		NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
 
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update(globalItems);
@@ -2190,6 +2188,10 @@ public static class ItemLoader
 		return tooltips;
 	}
 
+	internal static HookList HookSaveData = AddHook<Action<Item, TagCompound>>(g => g.SaveData);
+	internal static HookList HookNetSend = AddHook<Action<Item, BinaryWriter>>(g => g.NetSend);
+	internal static HookList HookNetReceive = AddHook<Action<Item, BinaryReader>>(g => g.NetReceive);
+
 	internal static bool NeedsModSaving(Item item)
 	{
 		if (item.type <= ItemID.None)
@@ -2199,22 +2201,5 @@ public static class ItemLoader
 			return true;
 
 		return false;
-	}
-
-	internal static void WriteNetGlobalOrder(BinaryWriter w)
-	{
-		w.Write((short)NetGlobals.Length);
-		foreach (var globalItem in NetGlobals) {
-			w.Write(globalItem.Mod.netID);
-			w.Write(globalItem.Name);
-		}
-	}
-
-	internal static void ReadNetGlobalOrder(BinaryReader r)
-	{
-		short n = r.ReadInt16();
-		NetGlobals = new GlobalItem[n];
-		for (short i = 0; i < n; i++)
-			NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
 	}
 }

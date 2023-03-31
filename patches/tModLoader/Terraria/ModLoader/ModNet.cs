@@ -453,8 +453,6 @@ public static class ModNet
 		foreach (Mod mod in netMods)
 			p.Write(mod.Name);
 
-		ItemLoader.WriteNetGlobalOrder(p);
-		SystemLoader.WriteNetSystemOrder(p);
 		p.Write(Player.MaxBuffs);
 
 		p.Send(toClient);
@@ -479,11 +477,7 @@ public static class ModNet
 		netMods = list.ToArray();
 		SetModNetDiagnosticsUI(netMods.Where(mod => mod != null)); // When client receives netMods, exclude NoSync mods that aren't on the client, and assign a new UI
 
-		ItemLoader.ReadNetGlobalOrder(reader);
-		SystemLoader.ReadNetSystemOrder(reader);
-
 		int serverMaxBuffs = reader.ReadInt32();
-
 		if (serverMaxBuffs != Player.MaxBuffs) {
 			Netplay.Disconnect = true;
 			Main.statusText = $"The server expects Player.MaxBuffs of {serverMaxBuffs}\nbut this client reports {Player.MaxBuffs}.\nSome mod is behaving poorly.";
