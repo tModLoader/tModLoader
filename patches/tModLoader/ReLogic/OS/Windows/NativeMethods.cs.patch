@@ -18,13 +18,15 @@
  
  	public enum StdHandleType
  	{
-@@ -114,6 +_,19 @@
- 		public IntPtr hNameMappings;
+@@ -115,22 +_,36 @@
  		public string lpszProgressTitle;
  	}
-+
+ 
 +	[DllImport("kernel32.dll")]
 +	public static extern int GetCurrentProcessId();
++
++	[DllImport("kernel32.dll")]
++	public static extern int GetCurrentThreadId();
 +
 +	[DllImport("user32.dll")]
 +	[return: MarshalAs(UnmanagedType.Bool)]
@@ -35,6 +37,35 @@
 +
 +	[DllImport("user32.dll")]
 +	public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
- 
++
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+-	public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
++	public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+ 
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 
+-#if NETCORE
+ 	[DllImport("user32.dll")]
+ 	public static extern IntPtr GetDC(IntPtr hWnd);
+-#else
++
+ 	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+ 	public static extern bool TranslateMessage(ref Message message);
+-#endif
+ 
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr GetForegroundWindow();
+@@ -143,6 +_,9 @@
+ 
+ 	[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr GetStdHandle(StdHandleType nStdHandle);
++
++	[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
++	public static extern IntPtr GetModuleHandle(string lpModuleName);
+ 
+ 	[DllImport("user32.dll")]
+ 	[return: MarshalAs(UnmanagedType.Bool)]

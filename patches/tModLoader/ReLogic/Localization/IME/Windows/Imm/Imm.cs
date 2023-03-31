@@ -19,6 +19,10 @@ internal static class Imm
 	public const uint GCS_RESULTREADCLAUSE = 1024u;
 	public const uint GCS_RESULTSTR = 2048u;
 	public const uint GCS_RESULTCLAUSE = 4096u;
+	public const uint SCS_SETSTR = 1u;
+	public const uint SCS_CHANGEATTRIBUTES = 4u;
+	public const uint NI_CLOSECANDIDATE = 0x10u;
+	public const uint NI_COMPOSITIONSTR = 0x15u;
 	public const int IMN_CLOSESTATUSWINDOW = 1;
 	public const int IMN_OPENSTATUSWINDOW = 2;
 	public const int IMN_CHANGECANDIDATE = 3;

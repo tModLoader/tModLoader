@@ -27,6 +27,10 @@ internal static class NativeMethods
 	public static extern int ImmGetCompositionString(IntPtr hImc, uint dwIndex, IntPtr lpBuf, int dwBufLen);
 
 	[DllImport("imm32.dll", CharSet = CharSet.Unicode)]
+	public static extern bool ImmSetCompositionString(IntPtr hImc, uint dwIndex, string lpComp, int dwCompLen,
+		string lpRead, int dwReadLen);
+
+	[DllImport("imm32.dll", CharSet = CharSet.Unicode)]
 	public static extern int ImmGetCandidateList(IntPtr hImc, uint dwIndex, IntPtr lpCandList, int dwBufLen);
 
 	[DllImport("imm32.dll", CharSet = CharSet.Unicode)]

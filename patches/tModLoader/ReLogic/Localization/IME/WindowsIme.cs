@@ -1,11 +1,15 @@
 using System;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Localization.IME.Windows;
+using ReLogic.OS.Windows;
 
 namespace ReLogic.Localization.IME;
 
-internal class WindowsIme : PlatformIme
+internal class WindowsIme : PlatformIme, IMessageFilter
 {
+	private IntPtr _windowHandle;
+	private bool _isFocused;
+	private WindowsMessageHook _wndProcHook;
 	private readonly ReLogic.Localization.IME.Windows.ImeWrapper _imeWrapper;
 	private bool _disposedValue;
 
@@ -17,34 +21,73 @@ internal class WindowsIme : PlatformIme
 
 	public override uint SelectedCandidate => _imeWrapper.ImeUi_GetCandidateSelection();
 
-	public WindowsIme(IntPtr windowHandle)
+	public WindowsIme(WindowsMessageHook wndProcHook, IntPtr windowHandle)
 	{
-
+		_wndProcHook = wndProcHook;
+		_windowHandle = windowHandle;
+		_isFocused = ReLogic.OS.Windows.NativeMethods.GetForegroundWindow() == _windowHandle;
 		_imeWrapper = new ImeWrapper();
+		_wndProcHook.AddMessageFilter(this);
 		_imeWrapper.ImeUi_Initialize(windowHandle, true);
-		TextInputEXT.TextInput += OnCharCallback;
-	}
-
-	private void OnCharCallback(char key)
-	{
-		if (base.IsEnabled) {
-			OnKeyPress(key);
-
-		}
 	}
 
 	protected override void OnEnable()
 	{
-		_imeWrapper.ImeUi_EnableIme(bEnable: true);
+		_imeWrapper.ImeUi_Enable(bEnable: true);
 	}
 
 	protected override void OnDisable()
 	{
 		_imeWrapper.ImeUi_FinalizeString();
-		_imeWrapper.ImeUi_EnableIme(bEnable: false);
+		_imeWrapper.ImeUi_Enable(bEnable: false);
 	}
 
 	public override string GetCandidate(uint index) => _imeWrapper.ImeUi_GetCandidate(index);
+
+	public bool PreFilterMessage(ref Message message)
+	{
+		if (message.msg == 8) {
+			_imeWrapper.ImeUi_Enable(bEnable: false);
+			_isFocused = false;
+			return true;
+		}
+
+		if (message.msg == 7) {
+			if (base.IsEnabled)
+				_imeWrapper.ImeUi_Enable(bEnable: true);
+
+			_isFocused = true;
+			return true;
+		}
+
+		if (message.msg == 641) {
+			message.lParam = IntPtr.Zero;
+			return false;
+		}
+
+		if (!base.IsEnabled)
+			return false;
+
+		switch (message.msg) {
+			case 81:
+				return true;
+			case 641:
+				message.lParam = IntPtr.Zero;
+				break;
+			case 269:
+				return true;
+			case 642:
+				return true;
+			case 258:
+				OnKeyPress((char)message.wParam.ToInt32());
+				break;
+			case 256:
+				ReLogic.OS.Windows.NativeMethods.TranslateMessage(ref message);
+				break;
+		}
+
+		return false;
+	}
 
 	protected override void Dispose(bool disposing)
 	{

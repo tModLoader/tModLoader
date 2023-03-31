@@ -13,7 +13,7 @@ internal class ImeWrapper
 	{
 		_hWnd = hWnd;
 		if (bDisabled) {
-			ImeUi_EnableIme(false);
+			ImeUi_Enable(false);
 		}
 	}
 
@@ -23,7 +23,7 @@ internal class ImeWrapper
 		NativeMethods.ImmDestroyContext(hImc);
 	}
 
-	public void ImeUi_EnableIme(bool bEnable)
+	public void ImeUi_Enable(bool bEnable)
 	{
 		if (bEnable) {
 			IntPtr hImc = NativeMethods.ImmCreateContext();
@@ -37,10 +37,11 @@ internal class ImeWrapper
 		}
 	}
 
-	public void ImeUi_FinalizeString()
+	public void ImeUi_FinalizeString(bool bSend = false)
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
-		NativeMethods.ImmNotifyIME(hImc, Imm.IMN_CLOSECANDIDATE, 0, 0);
+		NativeMethods.ImmSetCompositionString(hImc, Imm.SCS_SETSTR, "", 0, null, 0);
+		NativeMethods.ImmNotifyIME(hImc, Imm.NI_COMPOSITIONSTR, 0, 0);
 		NativeMethods.ImmReleaseContext(_hWnd, hImc);
 	}
 
