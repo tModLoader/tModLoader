@@ -197,6 +197,13 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		UpdateNeeded = false;
 		if (!Loading) _backgroundElement.RemoveChild(_loaderElement);
 		ModList.Clear();
+
+		// @WARN: Clear up mod icon request status, this should be in the UI element, not in the ModDownloadItem
+		// (but this will be nuked by the paginated browser so it's ok as a fix)
+		foreach (var item in _items) {
+			item.ModDownload.ModIconStatus = ModIconStatus.UNKNOWN;
+		}
+
 		ModList.AddRange(_items.Where(item => item.PassFilters()));
 		bool hasNoModsFoundNotif = ModList.HasChild(NoModsFoundText);
 		if (ModList.Count <= 0 && !hasNoModsFoundNotif)
@@ -229,10 +236,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SetHeading(Language.GetText("tModLoader.MenuModBrowser"));
 
 		// Remove old data
-		ModList.Clear();
 		_items.Clear();
-		ModList.Deactivate();
-
+		
 		// Asynchronous load the Mod Browser
 		Task.Run(() => {
 			InnerPopulateModBrowser(uiOnly: uiOnly);
