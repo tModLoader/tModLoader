@@ -91,7 +91,6 @@ namespace Terraria.Social.Steam
 			List<string> tagsList = new List<string>();
 			tagsList.AddRange(settings.GetUsedTagsInternalNames());
 			tagsList.Add(buildData["modside"]);
-			tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 			CalculateWorkshopDeps(ref buildData);
 			
@@ -106,6 +105,9 @@ namespace Terraria.Social.Steam
 
 				// Cleanup Old Folders
 				ModOrganizer.CleanupOldPublish(workshopFolderPath);
+
+				// Should be called after workshopFolderPath is created & cleanup occurred
+				tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 				var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
