@@ -143,9 +143,19 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 		=> GlobalType.TryGetGlobal(globalProjectiles, baseInstance, out result);
 
+	/// <summary>
+	/// This is used to check if the projectile is considered to be a member of a specific <see cref="DamageClass"/>.
+	/// </summary>
+	/// <seealso cref="CountsAsClass(DamageClass)"/>
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
 
+	/// <summary>
+	/// This is used to check if the projectile is considered to be a member of a specific <see cref="DamageClass"/>.
+	/// </summary>
+	/// <param name="damageClass">The DamageClass to compare with the one assigned to this projectile.</param>
+	/// <returns><see langword="true"/> if this projectiles's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
