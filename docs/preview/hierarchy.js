@@ -1283,7 +1283,6 @@ var hierarchy =
         [ "ModType< Item, ModItem >", "class_mod_type.html", [
           [ "ModItem", "class_mod_item.html", [
             [ "ModLoaderModItem", "class_mod_loader_mod_item.html", [
-              [ "AprilFools", "class_april_fools.html", null ],
               [ "StartBag", "class_start_bag.html", null ],
               [ "UnloadedItem", "class_unloaded_item.html", null ]
             ] ]

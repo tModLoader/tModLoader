@@ -95,9 +95,6 @@ $(document).ready(function(){initNavTree('class_unloaded_player.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7beac9d6257cf485971120a8e75b639c"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_item.html">Item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_player.html#a7beac9d6257cf485971120a8e75b639c">AddStartingItems</a> (bool mediumCoreDeath)</td></tr>
-<tr class="memdesc:a7beac9d6257cf485971120a8e75b639c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the player is created in the menu. You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.  <a href="class_unloaded_player.html#a7beac9d6257cf485971120a8e75b639c">More...</a><br /></td></tr>
-<tr class="separator:a7beac9d6257cf485971120a8e75b639c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c8656d7f772a35fbda3f625ddd36c40"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_player.html#a2c8656d7f772a35fbda3f625ddd36c40">Initialize</a> ()</td></tr>
 <tr class="memdesc:a2c8656d7f772a35fbda3f625ddd36c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.  <a href="class_unloaded_player.html#a2c8656d7f772a35fbda3f625ddd36c40">More...</a><br /></td></tr>
 <tr class="separator:a2c8656d7f772a35fbda3f625ddd36c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -682,43 +679,6 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
 <tr class="separator:a56133a518b04391ef97ea4d87f2400f8 inherit properties_interface_i_indexed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7beac9d6257cf485971120a8e75b639c" name="a7beac9d6257cf485971120a8e75b639c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7beac9d6257cf485971120a8e75b639c">&#9670;&nbsp;</a></span>AddStartingItems()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">override <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_item.html">Item</a> &gt; UnloadedPlayer.AddStartingItems </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>mediumCoreDeath</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Called when the player is created in the menu. You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mediumCoreDeath</td><td>Whether you are setting up a mediumcore player's inventory after their death.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;<a class="el" href="class_item.html">Item</a>&gt;().</dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_mod_player.html#ab123bb4ad3907a192513002bc8f21a7a">ModPlayer</a>.</p>
-
-</div>
-</div>
 <a id="a2c8656d7f772a35fbda3f625ddd36c40" name="a2c8656d7f772a35fbda3f625ddd36c40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c8656d7f772a35fbda3f625ddd36c40">&#9670;&nbsp;</a></span>Initialize()</h2>
 

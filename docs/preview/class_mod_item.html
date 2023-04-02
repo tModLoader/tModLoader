@@ -103,8 +103,9 @@ $(document).ready(function(){initNavTree('class_mod_item.html',''); initResizabl
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a20b95897782c4b2767122dce8d62ffd2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a20b95897782c4b2767122dce8d62ffd2">AddRecipes</a> ()</td></tr>
-<tr class="memdesc:a20b95897782c4b2767122dce8d62ffd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is essentially the same as <a class="el" href="class_mod.html#acf6255eaa107fb7f74477702761df098" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a>. Do note that this will be called for every instance of the overriding <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> class that is added to the game. This allows you to avoid clutter in your overriding <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> class by adding recipes for which this item is the result.  <a href="class_mod_item.html#a20b95897782c4b2767122dce8d62ffd2">More...</a><br /></td></tr>
+<tr class="memitem:a20b95897782c4b2767122dce8d62ffd2"><td class="memItemLeft" align="right" valign="top"><a id="a20b95897782c4b2767122dce8d62ffd2" name="a20b95897782c4b2767122dce8d62ffd2"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRecipes</b> ()</td></tr>
+<tr class="memdesc:a20b95897782c4b2767122dce8d62ffd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is essentially the same as <a class="el" href="class_mod.html#acf6255eaa107fb7f74477702761df098" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a>. Do note that this will be called for every instance of the overriding <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> class that is added to the game. This allows you to avoid clutter in your overriding <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> class by adding recipes for which this item is the result. <br /></td></tr>
 <tr class="separator:a20b95897782c4b2767122dce8d62ffd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1739c1ec490b893b6c531d0b801a4169"><td class="memItemLeft" align="right" valign="top"><a id="a1739c1ec490b893b6c531d0b801a4169" name="a1739c1ec490b893b6c531d0b801a4169"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AllowPrefix</b> (int pre)</td></tr>
@@ -686,35 +687,6 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
  The Basic <a class="el" href="class_item.html">Item</a> Guide</p>
 <p >teaches the basics of making a modded item. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a20b95897782c4b2767122dce8d62ffd2" name="a20b95897782c4b2767122dce8d62ffd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20b95897782c4b2767122dce8d62ffd2">&#9670;&nbsp;</a></span>AddRecipes()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModItem.AddRecipes </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>This is essentially the same as <a class="el" href="class_mod.html#acf6255eaa107fb7f74477702761df098" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">Mod.AddRecipes</a>. Do note that this will be called for every instance of the overriding <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> class that is added to the game. This allows you to avoid clutter in your overriding <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> class by adding recipes for which this item is the result. </p>
-
-<p>Reimplemented in <a class="el" href="class_april_fools.html#abf4b028f5cc79b93424ea66e3aa3d0c2">AprilFools</a>.</p>
-
-</div>
-</div>
 <a id="a0d3d79e855102eb25e0075daffcb13ab" name="a0d3d79e855102eb25e0075daffcb13ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d3d79e855102eb25e0075daffcb13ab">&#9670;&nbsp;</a></span>AltFunctionUse()</h2>
 
@@ -4503,7 +4475,7 @@ Can be called on both server and client. </p>
 
 <p>This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. For those that are familiar with tAPI, this has the same function as .json files. </p>
 
-<p>Reimplemented in <a class="el" href="class_april_fools.html#a77bea79454b66ca3615735f1a559f011">AprilFools</a>, <a class="el" href="class_start_bag.html#a095abb98e4e7f7a061f7e6f286676bc6">StartBag</a>, and <a class="el" href="class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab">UnloadedItem</a>.</p>
+<p>Reimplemented in <a class="el" href="class_start_bag.html#a095abb98e4e7f7a061f7e6f286676bc6">StartBag</a>, and <a class="el" href="class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab">UnloadedItem</a>.</p>
 
 </div>
 </div>
@@ -5112,8 +5084,6 @@ Can be called on both server and client. </p>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Reimplemented in <a class="el" href="class_april_fools.html#a7c2a5d3a569dfffc2037cec44dd109ad">AprilFools</a>.</p>
 
 </div>
 </div>
