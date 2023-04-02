@@ -4,7 +4,7 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4_mergedtesting, gh_actions_test, 1.4-preview, stable, 1.4]
+    branches: [1.4.3-preview]
   pull_request_target:
     types: [labeled]
     branches: [1.4-preview, stable, 1.4, 1.4.4]
@@ -375,7 +375,7 @@ jobs:
   documentation:
     # Documentation generated on successful builds of pushes to stable and 1.4-preview
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/1.4-preview')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/preview')
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -442,7 +442,7 @@ jobs:
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/stable')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/preview' || github.ref == 'refs/heads/stable')
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
@@ -532,8 +532,11 @@ jobs:
           if [ ${{github.ref}} = 'refs/heads/stable' ] ; then
             manifesto=$manifesto/stable.vdf
           fi
-          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/preview' ] ; then
             manifesto=$manifesto/preview.vdf
+          fi
+          if [ ${{github.ref}} = 'refs/heads/1.4.3-preview' ] ; then
+            manifesto=$manifesto/143preview.vdf
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
