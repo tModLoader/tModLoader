@@ -8,55 +8,63 @@
  using ReLogic.Localization.IME.Windows;
  using ReLogic.OS.Windows;
  
-@@ -11,81 +_,75 @@
+@@ -11,8 +_,18 @@
  	private IntPtr _windowHandle;
  	private bool _isFocused;
  	private WindowsMessageHook _wndProcHook;
 +	private readonly ReLogic.Localization.IME.Windows.ImeWrapper _imeWrapper;
  	private bool _disposedValue;
  
--	public override string CompositionString => Marshal.PtrToStringUni(ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCompositionString()).ToString();
--
--	public override bool IsCandidateListVisible => ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_IsCandidateListVisible();
--
--	public override uint SelectedCandidate => ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCandidateSelection();
--
--	public override uint CandidateCount => ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCandidatePageSize();
-+	public override uint CandidateCount => _imeWrapper.ImeUi_GetCandidatePageSize();
-+
++#if NETCORE
 +	public override string CompositionString => _imeWrapper.ImeUi_GetCompositionString();
 +
 +	public override bool IsCandidateListVisible => _imeWrapper.ImeUi_IsCandidateListVisible();
 +
 +	public override uint SelectedCandidate => _imeWrapper.ImeUi_GetCandidateSelection();
++
++	public override uint CandidateCount => _imeWrapper.ImeUi_GetCandidatePageSize();
++#else
+ 	public override string CompositionString => Marshal.PtrToStringUni(ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCompositionString()).ToString();
+ 
+ 	public override bool IsCandidateListVisible => ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_IsCandidateListVisible();
+@@ -20,6 +_,7 @@
+ 	public override uint SelectedCandidate => ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCandidateSelection();
+ 
+ 	public override uint CandidateCount => ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCandidatePageSize();
++#endif
  
  	public WindowsIme(WindowsMessageHook wndProcHook, IntPtr windowHandle)
  	{
- 		_wndProcHook = wndProcHook;
+@@ -27,65 +_,87 @@
  		_windowHandle = windowHandle;
  		_isFocused = ReLogic.OS.Windows.NativeMethods.GetForegroundWindow() == _windowHandle;
-+		_imeWrapper = new ImeWrapper();
  		_wndProcHook.AddMessageFilter(this);
 -		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Initialize(_windowHandle);
++		// ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Initialize(_windowHandle);
++		_imeWrapper = new ImeWrapper();
 +		_imeWrapper.ImeUi_Initialize(windowHandle, true);
  	}
  
  	protected override void OnEnable()
  	{
--		if (_isFocused)
+ 		if (_isFocused)
 -			ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: true);
-+		_imeWrapper.ImeUi_Enable(bEnable: true);
++			// ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: true);
++			_imeWrapper.ImeUi_Enable(bEnable: true);
  	}
  
  	protected override void OnDisable()
  	{
--		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_FinalizeString();
--		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: false);
++		/*
+ 		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_FinalizeString();
+ 		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: false);
++		*/
 +		_imeWrapper.ImeUi_FinalizeString();
 +		_imeWrapper.ImeUi_Enable(bEnable: false);
  	}
  
 -	public override string GetCandidate(uint index) => Marshal.PtrToStringUni(ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCandidate(index));
++	// public override string GetCandidate(uint index) => Marshal.PtrToStringUni(ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_GetCandidate(index));
 +	public override string GetCandidate(uint index) => _imeWrapper.ImeUi_GetCandidate(index);
  
  	public bool PreFilterMessage(ref Message message)
@@ -64,6 +72,7 @@
 -		if (message.Msg == 8) {
 +		if (message.msg == 8) {
 -			ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: false);
++			// ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: false);
 +			_imeWrapper.ImeUi_Enable(bEnable: false);
  			_isFocused = false;
  			return true;
@@ -73,12 +82,14 @@
 +		if (message.msg == 7) {
  			if (base.IsEnabled)
 -				ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: true);
++				// ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Enable(bEnable: true);
 +				_imeWrapper.ImeUi_Enable(bEnable: true);
  
  			_isFocused = true;
  			return true;
  		}
  
++		// Hides the system IME. Should always be called on application startup.
 +		if (message.msg == 641) {
 +			message.lParam = IntPtr.Zero;
 +			return false;
@@ -87,20 +98,24 @@
  		if (!base.IsEnabled)
  			return false;
  
--		bool trapped = false;
--		IntPtr lParam = message.LParam;
--		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_ProcessMessage(message.HWnd, message.Msg, message.WParam, ref lParam, ref trapped);
--		message.LParam = lParam;
--		if (trapped)
--			return true;
--
++		// There is actually no ProcessMessage method in Relogic.Native.dll so this is not needed
++		/*
+ 		bool trapped = false;
+ 		IntPtr lParam = message.LParam;
+ 		ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_ProcessMessage(message.HWnd, message.Msg, message.WParam, ref lParam, ref trapped);
+ 		message.LParam = lParam;
+ 		if (trapped)
+ 			return true;
++		*/
+ 
 -		switch (message.Msg) {
 +		switch (message.msg) {
  			case 81:
  				return true;
--			case 641:
+ 			case 641:
 -				message.LParam = IntPtr.Zero;
--				break;
++				message.lParam = IntPtr.Zero;
+ 				break;
  			case 269:
  				return true;
  			case 642:
@@ -110,16 +125,20 @@
 +				OnKeyPress((char)message.wParam.ToInt32());
  				break;
  			case 256:
--				if (!ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_ShouldIgnoreHotKey(ref message))
--					ReLogic.OS.Windows.NativeMethods.TranslateMessage(ref message);
++				// System key events should always be ignored whenever the IME is active
++				/*
+ 				if (!ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_ShouldIgnoreHotKey(ref message))
+ 					ReLogic.OS.Windows.NativeMethods.TranslateMessage(ref message);
++				*/
  				break;
  		}
  
-@@ -99,7 +_,7 @@
+@@ -99,7 +_,8 @@
  				Disable();
  
  			_wndProcHook.RemoveMessageFilter(this);
 -			ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Uninitialize();
++			// ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Uninitialize();
 +			_imeWrapper.ImeUi_Uninitialize();
  			_disposedValue = true;
  		}

@@ -10,7 +10,7 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
-+		// windowHandle is invalid, need to find it on our own
++		// FNAPlatform.CreateWindow() does not set Game.Window.Handle, need to find it on our own
 +		int currentProcessId = NativeMethods.GetCurrentProcessId();
 +
 +		NativeMethods.EnumWindows(delegate(IntPtr wnd, IntPtr param) {
