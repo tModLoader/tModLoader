@@ -460,6 +460,12 @@ public partial class Recipe
 		return this;
 	}
 
+	/// <summary>
+	/// Create the recipe but does not yet register it into the game. Call this at the very beginning when creating a new craft.
+	/// </summary>
+	/// <param name="result">What item will be given when the craft has been completed</param>
+	/// <param name="stack">The stack -> how many result items given when the craft is completed. (eg. 1 wood -> 4 wood platform)</param>
+	/// <exception cref="RecipeException">A Recipe can only be created inside recipe related methods</exception>
 	public static Recipe Create(int result, int amount = 1)
 	{
 		if (!RecipeLoader.setupRecipes)
