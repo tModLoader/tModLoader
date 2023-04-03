@@ -115,9 +115,11 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		AddLink(Language.GetText("tModLoader.VersionUpgrade"), 0.5f, 0f, "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 		AddLink(Language.GetText("tModLoader.WikiLink"), 0f, 0.5f, "https://github.com/tModLoader/tModLoader/wiki/");
-		AddLink(Language.GetText("tModLoader.ExampleModLink"), 1f, 0.5f, "https://github.com/tModLoader/tModLoader/tree/1.4.4/ExampleMod");
-		AddLink(Language.GetText("tModLoader.DocumentationLink"), 0f, 1f, "https://docs.tmodloader.net/docs/preview/annotated.html");
-		AddLink(Language.GetText("tModLoader.DiscordLink"), 1f, 1f, "https://discord.com/channels/103110554649894912/534215632795729922");
+		string exampleModBranch = BuildInfo.IsStable ? "stable" : "1.4.4";
+		AddLink(Language.GetText("tModLoader.ExampleModLink"), 1f, 0.5f, $"https://github.com/tModLoader/tModLoader/tree/{exampleModBranch}/ExampleMod");
+		string docsURL = BuildInfo.IsStable ? "1.4-stable" : "preview";
+		AddLink(Language.GetText("tModLoader.DocumentationLink"), 0f, 1f, $"https://docs.tmodloader.net/docs/{docsURL}/annotated.html");
+		AddLink(Language.GetText("tModLoader.DiscordLink"), 1f, 1f, "https://tmodloader.net/discord");
 
 		var buttonBA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll")) {
 			Width = { Pixels = -10, Percent = 1f / 3f },
