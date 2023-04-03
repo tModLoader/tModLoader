@@ -70,7 +70,7 @@ internal static class Interface
 	internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 	{
 		/*
-		 * string legacyInfoButton = Language.GetTextValue("tModLoader.13InfoButton");
+		 * string legacyInfoButton = Language.GetTextValue("tModLoader.HowToAccessLegacytModLoaderButton");
 		buttonNames[buttonIndex] = legacyInfoButton;
 		if (selectedMenu == buttonIndex) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
