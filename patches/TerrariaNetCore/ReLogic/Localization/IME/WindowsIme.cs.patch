@@ -115,11 +115,10 @@
  				break;
  		}
  
-@@ -98,8 +_,7 @@
- 			if (base.IsEnabled)
+@@ -99,7 +_,7 @@
  				Disable();
  
--			_wndProcHook.RemoveMessageFilter(this);
+ 			_wndProcHook.RemoveMessageFilter(this);
 -			ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_Uninitialize();
 +			_imeWrapper.ImeUi_Uninitialize();
  			_disposedValue = true;
