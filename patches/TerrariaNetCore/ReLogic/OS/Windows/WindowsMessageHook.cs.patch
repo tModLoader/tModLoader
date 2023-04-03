@@ -1,0 +1,71 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowsMessageHook.cs
++++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsMessageHook.cs
+@@ -1,11 +_,12 @@
+ using System;
+ using System.Collections.Generic;
++using System.ComponentModel;
++using System.Diagnostics;
+ using System.Runtime.InteropServices;
+-using System.Windows.Forms;
+ 
+ namespace ReLogic.OS.Windows;
+ 
+-internal class WindowsMessageHook : IDisposable, IMessageFilter
++internal class WindowsMessageHook : IDisposable
+ {
+ 	private delegate IntPtr WndProcCallback(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 
+@@ -19,9 +_,9 @@
+ 	public WindowsMessageHook(IntPtr windowHandle)
+ 	{
+ 		_windowHandle = windowHandle;
+-		Application.AddMessageFilter(this);
+ 		_wndProc = WndProc;
+-		_previousWndProc = (IntPtr)NativeMethods.SetWindowLong(_windowHandle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
++		_previousWndProc = NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC,
++			Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
+ 	}
+ 
+ 	public void AddMessageFilter(IMessageFilter filter)
+@@ -36,19 +_,19 @@
+ 
+ 	private IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam)
+ 	{
+-		Message message = Message.Create(hWnd, msg, wParam, lParam);
++		Message message = new Message {
++			hWnd = hWnd,
++			msg = msg,
++			wParam = wParam,
++			lParam = lParam,
++			result = IntPtr.Zero
++		};
+ 		if (InternalWndProc(ref message))
+-			return message.Result;
+-
+-		return NativeMethods.CallWindowProc(_previousWndProc, message.HWnd, message.Msg, message.WParam, message.LParam);
+-	}
+-
+-	public bool PreFilterMessage(ref Message message)
+-	{
+-		if (message.Msg == 258)
+-			return false;
+-
+-		return InternalWndProc(ref message);
++			return message.result;
++
++		IntPtr result = NativeMethods.CallWindowProc(_previousWndProc, message.hWnd, message.msg, message.wParam,
++			message.lParam);
++		return result;
+ 	}
+ 
+ 	private bool InternalWndProc(ref Message message)
+@@ -64,8 +_,7 @@
+ 	protected virtual void Dispose(bool disposing)
+ 	{
+ 		if (!disposedValue) {
+-			Application.RemoveMessageFilter(this);
+-			NativeMethods.SetWindowLong(_windowHandle, -4, (int)_previousWndProc);
++			NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC, _previousWndProc);
+ 			disposedValue = true;
+ 		}
+ 	}

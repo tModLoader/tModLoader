@@ -1,30 +1,36 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
-@@ -5,8 +_,10 @@
+@@ -1,4 +_,5 @@
+ using System;
++using System.Text;
+ using ReLogic.Localization.IME;
  
- internal class WindowsPlatform : Platform
- {
-+#if !NETCORE
- 	private WindowsMessageHook _wndProcHook;
- 	private bool _disposedValue;
-+#endif
- 
- 	public WindowsPlatform()
- 		: base(PlatformType.Windows)
-@@ -19,6 +_,10 @@
+ namespace ReLogic.OS.Windows;
+@@ -19,9 +_,26 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
-+#if NETCORE
-+		RegisterService((IImeService)new FnaIme());
-+	}
-+#else
++		// windowHandle is invalid, need to find it on our own
++		int currentProcessId = NativeMethods.GetCurrentProcessId();
++
++		NativeMethods.EnumWindows(delegate(IntPtr wnd, IntPtr param) {
++			NativeMethods.GetWindowThreadProcessId(wnd, out int processId);
++			if (processId == currentProcessId) {
++				var buffer = new StringBuilder(1024);
++				NativeMethods.GetWindowText(wnd, buffer, 1024);
++
++				if (buffer.ToString().Contains("Terraria")) {
++					windowHandle = wnd;
++					return false;
++				}
++			}
++
++			return true;
++		}, IntPtr.Zero);
++
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);
- 
-@@ -37,4 +_,5 @@
- 			base.Dispose(disposing);
- 		}
+-
+ 		RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
  	}
-+#endif
- }
+ 
