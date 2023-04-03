@@ -55,8 +55,8 @@ public abstract partial class ModSystem : ModType
 	public virtual void OnLocalizationsLoaded() { }
 
 	/// <summary>
-	/// Override this method to add recipes to the game.
-	/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
 	/// </summary>
 	public virtual void AddRecipes() { }
 
