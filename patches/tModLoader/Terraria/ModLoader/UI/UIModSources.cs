@@ -19,7 +19,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using static Terraria.GameContent.Animations.Actions.NPCs;
 
 namespace Terraria.ModLoader.UI;
 
@@ -50,7 +49,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		_uIPanel = new UIPanel {
 			Width = { Percent = 1f },
-			Height = { Pixels = -65, Percent = 1f },// Pixels used to be -110
+			Height = { Pixels = -65, Percent = 1f },
 			BackgroundColor = UICommon.MainPanelBackground,
 			PaddingTop = 0f
 		};
@@ -65,17 +64,18 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		};
 		var filterTextBoxBackground = new UIPanel {
 			Top = { Percent = 0f },
-			Width = { Pixels = 0f, Percent = 1f },
-			Height = { Pixels = 30 }
+			Left = { Pixels = -135, Percent = 1f },
+			Width = { Pixels = 135 },
+			Height = { Pixels = 32 }
 		};
 		filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
 		upperMenuContainer.Append(filterTextBoxBackground);
 
 		filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
-			Top = { Pixels = 5f },
-			Left = { Pixels = 10f },
-			Width = { Pixels = -20f, Percent = 1f },
-			Height = { Pixels = 20f }
+			Top = { Pixels = 5 },
+			Left = { Pixels = -125, Percent = 1f },
+			Width = { Pixels = 120 },
+			Height = { Pixels = 20 }
 		};
 		filterTextBox.OnRightClick += (a, b) => filterTextBox.Text = "";
 		filterTextBox.OnTextChange += (a, b) => _updateNeeded = true;
@@ -84,15 +84,15 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		_modList = new UIList {
 			Width = { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -118, Percent = 1f },
-			Top = { Pixels = 118 },
+			Height = { Pixels = -134, Percent = 1f },
+			Top = { Pixels = 134 },
 			ListPadding = 5f
 		};
 		_uIPanel.Append(_modList);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = { Pixels = -118, Percent = 1f },
-			Top = { Pixels = 118 },
+			Height = { Pixels = -134, Percent = 1f },
+			Top = { Pixels = 134 },
 			HAlign = 1f
 		}.WithView(100f, 1000f);
 		_uIPanel.Append(uIScrollbar);
@@ -105,11 +105,12 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}.WithPadding(15f);
 		_uIElement.Append(uIHeaderTextPanel);
 
-		_links = new UIElement {
+		_links = new UIPanel {
 			Width = { Percent = 1f },
-			Height = { Pixels = 60 },
-			Top = { Pixels = 46 }
+			Height = { Pixels = 78 },
+			Top = { Pixels = 46 },
 		};
+		_links.SetPadding(8);
 		_uIPanel.Append(_links);
 
 		AddLink(Language.GetText("tModLoader.VersionUpgrade"), 0.5f, 0f, "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
