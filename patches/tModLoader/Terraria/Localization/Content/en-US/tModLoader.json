@@ -33,7 +33,7 @@
 		"MenuModsEnabled": "{0} {^0:Mod;Mods} Enabled",
 		"MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "No audio hardware found. Disabling all audio.",
-		"13InfoButton": "How to Access legacy tModLoader versions",
+		"HowToAccessLegacytModLoaderButton": "How to Access legacy tModLoader versions",
 		"SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 
 		// Mods Menu
