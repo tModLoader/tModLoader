@@ -22,6 +22,7 @@ var class_recipe =
     [ "AddTile< T >", "class_recipe.html#a751327b6eabc4ce750fd7059387b120a", null ],
     [ "ApplyConditionsAsDecraftConditions", "class_recipe.html#a15eaf435d1348b0e68a4865e08ee157c", null ],
     [ "Clone", "class_recipe.html#a19108cd242ac564fae40dfb601d1b968", null ],
+    [ "Create", "class_recipe.html#a474a5953b0fbbdec4c68881277228d79", null ],
     [ "DisableDecraft", "class_recipe.html#a42c2a6104d56731eae1d3c50137485ae", null ],
     [ "Register", "class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f", null ],
     [ "SortAfter", "class_recipe.html#aa4dc1aeebc0fe4c0478d75ef5543e79b", null ],

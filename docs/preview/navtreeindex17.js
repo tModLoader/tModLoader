@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1151,0],
+"class_t_e_teleportation_pylon.html":[3,0,1155],
 "class_t_e_training_dummy.html":[3,0,1156],
 "class_t_e_weapons_rack.html":[3,0,1157],
 "class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae":[3,0,1157,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_slider_base.html":[3,0,1303],
 "class_u_i_sortable_element.html":[3,0,1304],
 "class_u_i_state.html":[3,0,1305],
-"class_u_i_text.html":[3,0,1306],
-"class_u_i_text_box.html":[3,0,1307],
-"class_u_i_text_panel.html":[3,0,1308]
+"class_u_i_text.html":[3,0,1306]
 };

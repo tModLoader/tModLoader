@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"struct_item_1_1_disable_clone_method.html":[3,0,580,0],
+"struct_item_drop_attempt_result.html":[3,0,585],
 "struct_item_i_d_1_1_banner_effect.html":[3,0,594,0],
 "struct_item_i_d_1_1_banner_effect.html#a30bb345ffe13aaec5504742fbf4fb6c3":[3,0,594,0,5],
 "struct_item_i_d_1_1_banner_effect.html#a35fc7bf757781d601b604dedad736cf9":[3,0,594,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "struct_wing_stats.html#a075820d361f6d37b1532c6dd33957514":[3,0,1398,3],
 "struct_wing_stats.html#a1b8bff142cb33bb76b8e718881bc91d6":[3,0,1398,4],
 "struct_wing_stats.html#a3b110ff1cc590cd4872ff84561ec9a75":[3,0,1398,1],
-"struct_wing_stats.html#a6ee3e93f253426d74d7945285f6caba2":[3,0,1398,6],
-"struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436":[3,0,1398,5],
-"struct_wing_stats.html#aa7c6c74b8ca48dd1da63b0540827ea91":[3,0,1398,0]
+"struct_wing_stats.html#a6ee3e93f253426d74d7945285f6caba2":[3,0,1398,6]
 };

@@ -31,6 +31,7 @@ var class_mod_item =
     [ "CaughtFishStack", "class_mod_item.html#a02cedcae4e75600ef7e1db681492ff91", null ],
     [ "ChoosePrefix", "class_mod_item.html#a3ddfb6794d9708ff8967e4ee5e57d198", null ],
     [ "ConsumeItem", "class_mod_item.html#a899ed968444cbf89a032cd401f6f3f90", null ],
+    [ "CreateRecipe", "class_mod_item.html#a3a3d8f6c6fca12c0b4666edca0297d6c", null ],
     [ "DrawArmorColor", "class_mod_item.html#a0d18ae390c56e83f9dd2fcd283af7cb3", null ],
     [ "EquipFrameEffects", "class_mod_item.html#ae520eb3da28d323ff468c07ae7a73738", null ],
     [ "ExtractinatorUse", "class_mod_item.html#aa982f3c4e5ec5ffc4a8162d1524fba8f", null ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"functions_s.html":[3,3,0,18],
+"functions_t.html":[3,3,0,19],
 "functions_u.html":[3,3,0,20],
 "functions_v.html":[3,3,0,21],
 "functions_vars.html":[3,3,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_helper_info.html":[3,0,456],
 "struct_hook_list_1_1_instance_enumerator.html":[3,0,462,0],
 "struct_instanced.html":[3,0,541],
-"struct_int_range.html":[3,0,542],
-"struct_item_1_1_disable_clone_method.html":[3,0,580,0],
-"struct_item_drop_attempt_result.html":[3,0,585]
+"struct_int_range.html":[3,0,542]
 };

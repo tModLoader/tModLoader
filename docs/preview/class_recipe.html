@@ -95,6 +95,13 @@ $(document).ready(function(){initNavTree('class_recipe.html',''); initResizable(
   <div class="headertitle"><div class="title">Recipe Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> is a collection of ingredients, tiles, and a resulting <a class="el" href="class_item.html">Item</a>. This is how players can craft items in the game.<br  />
+ The Basic Recipes Guideteaches how to add new recipes to the game and how to manipulate existing recipes.<br  />
+ Use <a class="el" href="class_recipe.html#a474a5953b0fbbdec4c68881277228d79" title="Creates a recipe resulting in the given item and amount but does not yet register it into the game....">Recipe.Create(int, int)</a> to create a <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> instance resulting in the specified item. Use <a class="el" href="class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7" title="Adds an ingredient to this recipe with the given item type and stack size. Ex: recipe....">AddIngredient(int, int)</a> to add ingredients and <a class="el" href="class_recipe.html#a7e44a7659baf373b83f44c0fab3f5ac0" title="Adds a required crafting station with the given tile type to this recipe. Ex: recipe....">AddTile(int)</a> to add crafting stations. Finally, use <a class="el" href="class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f" title="Adds this recipe to the game. Call this after you have finished setting the result,...">Register</a> to complete the recipe and register it to the game.<br  />
+ Recipes can only be added in <a class="el" href="class_global_item.html#a9ea8b1a34d268ff6a068ac2311f1c5cc" title="Override this method to add Recipes to the game.  The Basic Recipes Guideteaches how to add new recip...">ModSystem.AddRecipes</a>, <a class="el" href="class_mod_item.html#a20b95897782c4b2767122dce8d62ffd2" title="Override this method to add Recipes to the game.  Do note that this will be called for every instance...">ModItem.AddRecipes</a>, and <a class="el" href="class_mod.html#acf6255eaa107fb7f74477702761df098" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">GlobalItem.AddRecipes</a>.<br  />
+ Recipes should be edited only in <a class="el" href="class_mod.html#a5c03a07bed3c1aed2c39eb2453098eb4" title="This provides a hook into the mod-loading process immediately after recipes have been added....">ModSystem.PostAddRecipes</a>.  
+ <a href="class_recipe.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -158,7 +165,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptsGroup</b> (int
 <tr class="separator:a4fb1462aac3ce2547c222f858b55b6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2b5191e77403201f15b3cf9bd7a9623"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#af2b5191e77403201f15b3cf9bd7a9623">AddRecipeGroup</a> (int recipeGroupId, int stack=1)</td></tr>
 <tr class="memdesc:af2b5191e77403201f15b3cf9bd7a9623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a recipe group ingredient to this recipe with the given <a class="el" href="class_recipe_group_i_d.html" title="Contains recipe group ids suitable for use in Recipe.AddRecipeGroup(int, int).   Note that FishForDin...">RecipeGroupID</a> and stack size. <br  />
- <a class="el" href="class_recipe.html">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the RecipeGroupID.IronBar group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html">Recipe</a> Groups wiki guidehas more information. <br  />
+ <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the RecipeGroupID.IronBar group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> Groups wiki guidehas more information. <br  />
  Vanilla recipe group IDs can be found in <a class="el" href="class_recipe_group_i_d.html" title="Contains recipe group ids suitable for use in Recipe.AddRecipeGroup(int, int).   Note that FishForDin...">RecipeGroupID</a> and modded recipe group IDs will be returned from RecipeGroup.RegisterGroup(string, RecipeGroup). <a class="el" href="class_recipe.html#acb360c39e9af45ebccfb2ded5795eaa0" title="Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size....">AddRecipeGroup(string, int)</a> can be used instead if the ID number is not known but the name is known.  <a href="class_recipe.html#af2b5191e77403201f15b3cf9bd7a9623">More...</a><br /></td></tr>
 <tr class="separator:af2b5191e77403201f15b3cf9bd7a9623"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f51a3c15aa2ee0e112e660643047b5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a1f51a3c15aa2ee0e112e660643047b5e">AddRecipeGroup</a> (<a class="el" href="class_recipe_group.html">RecipeGroup</a> recipeGroup, int stack=1)</td></tr>
@@ -166,7 +173,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptsGroup</b> (int
 <tr class="separator:a1f51a3c15aa2ee0e112e660643047b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb360c39e9af45ebccfb2ded5795eaa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#acb360c39e9af45ebccfb2ded5795eaa0">AddRecipeGroup</a> (string name, int stack=1)</td></tr>
 <tr class="memdesc:acb360c39e9af45ebccfb2ded5795eaa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a recipe group ingredient to this recipe with the given <a class="el" href="class_recipe_group.html">RecipeGroup</a> name and stack size. <br  />
- <a class="el" href="class_recipe.html">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html">Recipe</a> Groups wiki guidehas more information. <br  />
+ <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> Groups wiki guidehas more information. <br  />
  To use a vanilla recipe group, use <a class="el" href="class_recipe.html#af2b5191e77403201f15b3cf9bd7a9623" title="Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size....">AddRecipeGroup(int, int)</a> using a <a class="el" href="class_recipe_group_i_d.html" title="Contains recipe group ids suitable for use in Recipe.AddRecipeGroup(int, int).   Note that FishForDin...">RecipeGroupID</a> entry instead.  <a href="class_recipe.html#acb360c39e9af45ebccfb2ded5795eaa0">More...</a><br /></td></tr>
 <tr class="separator:acb360c39e9af45ebccfb2ded5795eaa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e44a7659baf373b83f44c0fab3f5ac0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a7e44a7659baf373b83f44c0fab3f5ac0">AddTile</a> (int tileID)</td></tr>
@@ -187,7 +194,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptsGroup</b> (int
 <tr class="separator:a15eaf435d1348b0e68a4865e08ee157c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19108cd242ac564fae40dfb601d1b968"><td class="memItemLeft" align="right" valign="top"><a id="a19108cd242ac564fae40dfb601d1b968" name="a19108cd242ac564fae40dfb601d1b968"></a>
 <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
-<tr class="memdesc:a19108cd242ac564fae40dfb601d1b968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this recipe except the source mod of the <a class="el" href="class_recipe.html">Recipe</a> will the currently loading mod. <br  />
+<tr class="memdesc:a19108cd242ac564fae40dfb601d1b968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this recipe except the source mod of the <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> will the currently loading mod. <br  />
  The clone will have to be registered after being tweaked. <br /></td></tr>
 <tr class="separator:a19108cd242ac564fae40dfb601d1b968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa27d18ba870d8dba814e3d4cf9ffd6be"><td class="memItemLeft" align="right" valign="top"><a id="aa27d18ba870d8dba814e3d4cf9ffd6be" name="aa27d18ba870d8dba814e3d4cf9ffd6be"></a>
@@ -344,8 +351,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CollectedEnoug
 <tr class="memitem:a86ec8d6324fe4cd5125b58ab9aca6f89"><td class="memItemLeft" align="right" valign="top"><a id="a86ec8d6324fe4cd5125b58ab9aca6f89" name="a86ec8d6324fe4cd5125b58ab9aca6f89"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CollectedEnoughItemsToCraftRecipeOld</b> (<a class="el" href="class_recipe.html">Recipe</a> tempRec)</td></tr>
 <tr class="separator:a86ec8d6324fe4cd5125b58ab9aca6f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a474a5953b0fbbdec4c68881277228d79"><td class="memItemLeft" align="right" valign="top"><a id="a474a5953b0fbbdec4c68881277228d79" name="a474a5953b0fbbdec4c68881277228d79"></a>
-static <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (int result, int amount=1)</td></tr>
+<tr class="memitem:a474a5953b0fbbdec4c68881277228d79"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a474a5953b0fbbdec4c68881277228d79">Create</a> (int result, int amount=1)</td></tr>
+<tr class="memdesc:a474a5953b0fbbdec4c68881277228d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a recipe resulting in the given item and amount but does not yet register it into the game. Call this at the very beginning when creating a new craft.  <a href="class_recipe.html#a474a5953b0fbbdec4c68881277228d79">More...</a><br /></td></tr>
 <tr class="separator:a474a5953b0fbbdec4c68881277228d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674fca77c9d19aa0ba6d095352f73448"><td class="memItemLeft" align="right" valign="top"><a id="a674fca77c9d19aa0ba6d095352f73448" name="a674fca77c9d19aa0ba6d095352f73448"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FindRecipes</b> (bool canDelayCheck=false)</td></tr>
@@ -425,7 +432,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 <tr class="memdesc:ab6306a38f7fdb58f08a141f27143c773"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of the recipe in the Main.recipe array. <br /></td></tr>
 <tr class="separator:ab6306a38f7fdb58f08a141f27143c773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> is a collection of ingredients, tiles, and a resulting <a class="el" href="class_item.html">Item</a>. This is how players can craft items in the game.<br  />
+ The Basic Recipes Guide</p>
+<p >teaches how to add new recipes to the game and how to manipulate existing recipes.<br  />
+ Use <a class="el" href="class_recipe.html#a474a5953b0fbbdec4c68881277228d79" title="Creates a recipe resulting in the given item and amount but does not yet register it into the game....">Recipe.Create(int, int)</a> to create a <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> instance resulting in the specified item. Use <a class="el" href="class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7" title="Adds an ingredient to this recipe with the given item type and stack size. Ex: recipe....">AddIngredient(int, int)</a> to add ingredients and <a class="el" href="class_recipe.html#a7e44a7659baf373b83f44c0fab3f5ac0" title="Adds a required crafting station with the given tile type to this recipe. Ex: recipe....">AddTile(int)</a> to add crafting stations. Finally, use <a class="el" href="class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f" title="Adds this recipe to the game. Call this after you have finished setting the result,...">Register</a> to complete the recipe and register it to the game.<br  />
+ Recipes can only be added in <a class="el" href="class_global_item.html#a9ea8b1a34d268ff6a068ac2311f1c5cc" title="Override this method to add Recipes to the game.  The Basic Recipes Guideteaches how to add new recip...">ModSystem.AddRecipes</a>, <a class="el" href="class_mod_item.html#a20b95897782c4b2767122dce8d62ffd2" title="Override this method to add Recipes to the game.  Do note that this will be called for every instance...">ModItem.AddRecipes</a>, and <a class="el" href="class_mod.html#acf6255eaa107fb7f74477702761df098" title="Override this method to add recipes to the game. It is recommended that you do so through instances o...">GlobalItem.AddRecipes</a>.<br  />
+ Recipes should be edited only in <a class="el" href="class_mod.html#a5c03a07bed3c1aed2c39eb2453098eb4" title="This provides a hook into the mod-loading process immediately after recipes have been added....">ModSystem.PostAddRecipes</a>. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae836542e8c39a03f778756c0cf830639" name="ae836542e8c39a03f778756c0cf830639"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae836542e8c39a03f778756c0cf830639">&#9670;&nbsp;</a></span>AddCondition() <span class="overload">[1/3]</span></h2>
 
@@ -792,7 +806,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 </div><div class="memdoc">
 
 <p>Adds a recipe group ingredient to this recipe with the given <a class="el" href="class_recipe_group_i_d.html" title="Contains recipe group ids suitable for use in Recipe.AddRecipeGroup(int, int).   Note that FishForDin...">RecipeGroupID</a> and stack size. <br  />
- <a class="el" href="class_recipe.html">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the RecipeGroupID.IronBar group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html">Recipe</a> Groups wiki guidehas more information. <br  />
+ <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the RecipeGroupID.IronBar group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> Groups wiki guidehas more information. <br  />
  Vanilla recipe group IDs can be found in <a class="el" href="class_recipe_group_i_d.html" title="Contains recipe group ids suitable for use in Recipe.AddRecipeGroup(int, int).   Note that FishForDin...">RecipeGroupID</a> and modded recipe group IDs will be returned from RecipeGroup.RegisterGroup(string, RecipeGroup). <a class="el" href="class_recipe.html#acb360c39e9af45ebccfb2ded5795eaa0" title="Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size....">AddRecipeGroup(string, int)</a> can be used instead if the ID number is not known but the name is known. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -874,7 +888,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 </div><div class="memdoc">
 
 <p>Adds a recipe group ingredient to this recipe with the given <a class="el" href="class_recipe_group.html">RecipeGroup</a> name and stack size. <br  />
- <a class="el" href="class_recipe.html">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html">Recipe</a> Groups wiki guidehas more information. <br  />
+ <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either ItemID.IronBar or ItemID.LeadBar. The <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> Groups wiki guidehas more information. <br  />
  To use a vanilla recipe group, use <a class="el" href="class_recipe.html#af2b5191e77403201f15b3cf9bd7a9623" title="Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size....">AddRecipeGroup(int, int)</a> using a <a class="el" href="class_recipe_group_i_d.html" title="Contains recipe group ids suitable for use in Recipe.AddRecipeGroup(int, int).   Note that FishForDin...">RecipeGroupID</a> entry instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1022,6 +1036,57 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 
 </div>
 </div>
+<a id="a474a5953b0fbbdec4c68881277228d79" name="a474a5953b0fbbdec4c68881277228d79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a474a5953b0fbbdec4c68881277228d79">&#9670;&nbsp;</a></span>Create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_recipe.html">Recipe</a> Recipe.Create </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>amount</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a recipe resulting in the given item and amount but does not yet register it into the game. Call this at the very beginning when creating a new craft. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>What item will be given when the craft has been completed</td></tr>
+    <tr><td class="paramname">amount</td><td>The stack -&gt; how many result items given when the recipe is crafted. (eg. 1 wood -&gt; 4 wood platform)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_recipe_exception.html">RecipeException</a></td><td>A <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> can only be created inside recipe related methods</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a42c2a6104d56731eae1d3c50137485ae" name="a42c2a6104d56731eae1d3c50137485ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42c2a6104d56731eae1d3c50137485ae">&#9670;&nbsp;</a></span>DisableDecraft()</h2>
 
@@ -1040,7 +1105,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>RecipeIndex</b><code> 
 <p>Sets a check that is used during load to prevent this being shimmered/decrafted. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_recipe_exception.html">RecipeException</a></td><td>A <a class="el" href="class_recipe.html">Recipe</a> can only be disabled inside <a class="el" href="class_recipe.html">Recipe</a> related methods.</td></tr>
+    <tr><td class="paramname"><a class="el" href="class_recipe_exception.html">RecipeException</a></td><td>A <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> can only be disabled inside <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> related methods.</td></tr>
   </table>
   </dd>
 </dl>

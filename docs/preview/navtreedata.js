@@ -56,19 +56,19 @@ var NAVTREEINDEX =
 "class_item.html#a76ebe9683883e270f7fc9cdc57d93500",
 "class_item_loader.html#a92da3f793f6a00f1f1541e156c9eaef2",
 "class_mining_explosives_biome.html",
-"class_mod_item.html#a475ff58d1095e2600049507a83d1e3c8",
-"class_mod_player.html#a27a99d21ce153d5d65124db1b6d0f00e",
-"class_mod_system.html#a1b2d0fe626e467d40fd4b058d7fba93b",
-"class_music_loader.html#a43ab8c776e399a83e5fe87ab233c8e80",
-"class_n_p_c_i_d_1_1_sets.html#a346685ba200fa2c32c234a4da8376e16",
-"class_player.html#ac479b8ca92fc8377275c5b4fcf4c025b",
-"class_proj_a_i_style_i_d.html#a389a769204030d145edf952aab370dd8",
-"class_range_element.html",
-"class_t_e_training_dummy.html",
-"class_u_i_toggle_image.html",
-"functions_u.html",
-"struct_item_i_d_1_1_banner_effect.html",
-"struct_wing_stats.html#abf355405085b9afc488a708364c3f8d2"
+"class_mod_item.html#a453b418e0a6eada1997713d3c2123ac6",
+"class_mod_player.html#a242fe585a2f6e45862dd1f74b6089d22",
+"class_mod_system.html#a144ef598fa0b3bcc2a0ac6bd1c5467aa",
+"class_music_loader.html#a101a6b62f1a72d401603ef9156e20dab",
+"class_n_p_c_i_d_1_1_sets.html#a228d1f51e618c015dd5dd71d536f985a",
+"class_player.html#ac31b2c55747dc1b540e5b60282f58623",
+"class_proj_a_i_style_i_d.html#a35d9c87b6e626d3c855dbf441121adce",
+"class_range_attribute.html",
+"class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835",
+"class_u_i_text_box.html",
+"functions_s.html",
+"struct_item_1_1_disable_clone_method.html",
+"struct_wing_stats.html#a709de783f972b7b80a357dca2ed0a436"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
