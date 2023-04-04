@@ -1,32 +1,23 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
-@@ -1,4 +_,5 @@
+@@ -1,5 +_,7 @@
  using System;
 +using System.Text;
  using ReLogic.Localization.IME;
++using SDL2;
  
  namespace ReLogic.OS.Windows;
-@@ -19,9 +_,26 @@
+ 
+@@ -19,9 +_,15 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
-+		// FNAPlatform.CreateWindow() does not set Game.Window.Handle, need to find it on our own
-+		int currentProcessId = NativeMethods.GetCurrentProcessId();
-+
-+		NativeMethods.EnumWindows(delegate(IntPtr wnd, IntPtr param) {
-+			NativeMethods.GetWindowThreadProcessId(wnd, out int processId);
-+			if (processId == currentProcessId) {
-+				var buffer = new StringBuilder(1024);
-+				NativeMethods.GetWindowText(wnd, buffer, 1024);
-+
-+				if (buffer.ToString().Contains("Terraria")) {
-+					windowHandle = wnd;
-+					return false;
-+				}
-+			}
-+
-+			return true;
-+		}, IntPtr.Zero);
++		// Window.handle from FNAPlatform.CreateWindow() points to an SDL window instead of Win32 window
++		// Need to convert it to Win32 window
++		SDL.SDL_SysWMinfo info = new SDL.SDL_SysWMinfo();
++		SDL.SDL_VERSION(out info.version);
++		SDL.SDL_GetWindowWMInfo(windowHandle, ref info);
++		windowHandle = info.info.win.window;
 +
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);
