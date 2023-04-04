@@ -149,8 +149,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyNetStateTo</b> (<
 <tr class="memdesc:a3cc4bce9d2b8ac615ad7460925df5ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this instead of Clone for much faster state snapshotting and change sync detection.<br  />
  Note!! SetDefaults(int) will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion <br /></td></tr>
 <tr class="separator:a3cc4bce9d2b8ac615ad7460925df5ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa18d73137643eeff54c636e6728f6a9"><td class="memItemLeft" align="right" valign="top"><a id="afa18d73137643eeff54c636e6728f6a9" name="afa18d73137643eeff54c636e6728f6a9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsClass</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memitem:afa18d73137643eeff54c636e6728f6a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#afa18d73137643eeff54c636e6728f6a9">CountsAsClass</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:afa18d73137643eeff54c636e6728f6a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to check if this item benefits from the specified <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>.  <a href="class_item.html#afa18d73137643eeff54c636e6728f6a9">More...</a><br /></td></tr>
 <tr class="separator:afa18d73137643eeff54c636e6728f6a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae13cf054f98781555a4f50ff417cc88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#aae13cf054f98781555a4f50ff417cc88">CountsAsClass&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:aae13cf054f98781555a4f50ff417cc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1697,6 +1697,33 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="afa18d73137643eeff54c636e6728f6a9" name="afa18d73137643eeff54c636e6728f6a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa18d73137643eeff54c636e6728f6a9">&#9670;&nbsp;</a></span>CountsAsClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Item.CountsAsClass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageClass</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is used to check if this item benefits from the specified <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> to check for in this item.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if this item's <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> matches <em>damageClass</em> , <code>false</code> otherwise</dd></dl>
+
+</div>
+</div>
 <a id="aae13cf054f98781555a4f50ff417cc88" name="aae13cf054f98781555a4f50ff417cc88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae13cf054f98781555a4f50ff417cc88">&#9670;&nbsp;</a></span>CountsAsClass&lt; T &gt;()</h2>
 
@@ -1704,13 +1731,15 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Item.CountsAsClass&lt; T &gt; </td>
+          <td class="memname">bool <a class="el" href="class_item.html#afa18d73137643eeff54c636e6728f6a9">Item.CountsAsClass</a>&lt; T &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p></p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

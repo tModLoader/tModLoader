@@ -1,5 +1,6 @@
 var struct_stat_modifier =
 [
+    [ "ApplyTo", "struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40", null ],
     [ "operator*", "struct_stat_modifier.html#a2c77880e64ec8b1147e27abeb524a5ad", null ],
     [ "operator+", "struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b", null ],
     [ "operator-", "struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f", null ],

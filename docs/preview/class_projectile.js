@@ -1,6 +1,8 @@
 var class_projectile =
 [
     [ "HallowBossPelletStormInfo", "struct_projectile_1_1_hallow_boss_pellet_storm_info.html", null ],
+    [ "CountsAsClass", "class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f", null ],
+    [ "CountsAsClass< T >", "class_projectile.html#aa563376ec59229db5f0f0be3c8ac3f9b", null ],
     [ "DropGeodeLoot", "class_projectile.html#aa3ca38cd7b4932cc0dab33c55a6dc820", null ],
     [ "ExplodeTiles", "class_projectile.html#a6fa09ccd0992ece8ebbf73faa03e50ee", null ],
     [ "FindTargetWithLineOfSight", "class_projectile.html#a780516db1f9ddea8551003ad41b9adbc", null ],

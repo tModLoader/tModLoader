@@ -1,5 +1,7 @@
 var class_damage_class =
 [
+    [ "CountsAsClass", "class_damage_class.html#a3cd4770a051bbaf124cbed5ebce0a9c1", null ],
+    [ "CountsAsClass< T >", "class_damage_class.html#ad873ee1178673c074e86106a3aaa575f", null ],
     [ "GetEffectInheritance", "class_damage_class.html#a77b2b674f7dce78e0087e4470ee82800", null ],
     [ "GetModifierInheritance", "class_damage_class.html#aab80440ac274eea48cfc06d12d292aab", null ],
     [ "Register", "class_damage_class.html#a926254b76373ddb6d23ff7468fd2c7d4", null ],

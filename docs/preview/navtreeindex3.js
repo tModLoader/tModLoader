@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"class_entity_source___tile_update.html":[3,0,321],
+"class_entity_source___wiring.html":[3,0,322],
 "class_entity_source___world_event.html":[3,0,323],
 "class_entity_source___world_gen.html":[3,0,324],
 "class_entry_filterer.html":[3,0,325],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "class_generic_damage_class.html":[3,0,408],
 "class_generic_damage_class.html#a75f57f5741f579e866922b97dc554ad4":[3,0,408,0],
 "class_generic_damage_class.html#a80cc5db3b859ee58bdc0a731c87ce8fa":[3,0,408,1],
-"class_get_loadable_types_exception.html":[3,0,417],
-"class_global_background_style.html":[3,0,418],
-"class_global_background_style.html#a4aab20162a51b29a26aeba11e630a1f6":[3,0,418,0]
+"class_get_loadable_types_exception.html":[3,0,417]
 };

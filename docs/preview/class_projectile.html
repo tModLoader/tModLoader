@@ -150,8 +150,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CloneDefaults</b> (in
 <tr class="memitem:ad562287083aebadb2cc81eaa548cc351"><td class="memItemLeft" align="right" valign="top"><a id="ad562287083aebadb2cc81eaa548cc351" name="ad562287083aebadb2cc81eaa548cc351"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Colliding</b> (Rectangle myRect, Rectangle targetRect)</td></tr>
 <tr class="separator:ad562287083aebadb2cc81eaa548cc351"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac40596ec0c75dea27a09b9ded8a21f4f"><td class="memItemLeft" align="right" valign="top"><a id="ac40596ec0c75dea27a09b9ded8a21f4f" name="ac40596ec0c75dea27a09b9ded8a21f4f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsClass</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memitem:ac40596ec0c75dea27a09b9ded8a21f4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f">CountsAsClass</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:ac40596ec0c75dea27a09b9ded8a21f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to check if the projectile is considered to be a member of a specified <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>.  <a href="class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f">More...</a><br /></td></tr>
 <tr class="separator:ac40596ec0c75dea27a09b9ded8a21f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa563376ec59229db5f0f0be3c8ac3f9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#aa563376ec59229db5f0f0be3c8ac3f9b">CountsAsClass&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:aa563376ec59229db5f0f0be3c8ac3f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -859,7 +859,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CritChance</b><code> [
 <tr class="separator:a56758a1e35c234345b4507b36c0e8088"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad257e1f87a6c5b7a5813a185df060b4"><td class="memItemLeft" align="right" valign="top"><a id="aad257e1f87a6c5b7a5813a185df060b4" name="aad257e1f87a6c5b7a5813a185df060b4"></a>
 <a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DamageType</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:aad257e1f87a6c5b7a5813a185df060b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The damage type assigned to this projectile, represented as a <a class="el" href="class_damage_class.html">DamageClass</a>. Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile. Use <a class="el" href="class_damage_class.html#a6503fd93169adfe37c2a0a7f08d12e48" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a>/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types. Refer to ExampleMod for more information on how to create and use your own damage types. <br /></td></tr>
+<tr class="memdesc:aad257e1f87a6c5b7a5813a185df060b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The damage type assigned to this projectile, represented as a <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>. Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile. Use <a class="el" href="class_damage_class.html#a6503fd93169adfe37c2a0a7f08d12e48" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a>/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types. Refer to ExampleMod for more information on how to create and use your own damage types. <br /></td></tr>
 <tr class="separator:aad257e1f87a6c5b7a5813a185df060b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45143c174b3bb6fe1030127edddbd271"><td class="memItemLeft" align="right" valign="top"><a id="a45143c174b3bb6fe1030127edddbd271" name="a45143c174b3bb6fe1030127edddbd271"></a>
 <a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="struct_instanced.html">Instanced</a>&lt; <a class="el" href="class_global_projectile.html">GlobalProjectile</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
@@ -931,6 +931,34 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <tr class="separator:a290f8dd9eb6b4266d50e275298c6b0b6 inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac40596ec0c75dea27a09b9ded8a21f4f" name="ac40596ec0c75dea27a09b9ded8a21f4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac40596ec0c75dea27a09b9ded8a21f4f">&#9670;&nbsp;</a></span>CountsAsClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Projectile.CountsAsClass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageClass</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is used to check if the projectile is considered to be a member of a specified <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> to compare with the one assigned to this projectile.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if this projectiles's <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> matches <em>damageClass</em> , <code>false</code> otherwise</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_projectile.html#aa563376ec59229db5f0f0be3c8ac3f9b">CountsAsClass&lt;T&gt;</a></dd></dl>
+
+</div>
+</div>
 <a id="aa563376ec59229db5f0f0be3c8ac3f9b" name="aa563376ec59229db5f0f0be3c8ac3f9b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa563376ec59229db5f0f0be3c8ac3f9b">&#9670;&nbsp;</a></span>CountsAsClass&lt; T &gt;()</h2>
 
@@ -938,13 +966,15 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Projectile.CountsAsClass&lt; T &gt; </td>
+          <td class="memname">bool <a class="el" href="class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f">Projectile.CountsAsClass</a>&lt; T &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p></p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

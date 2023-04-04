@@ -10,6 +10,8 @@ var class_item =
     [ "CanRollPrefix", "class_item.html#ab996e4fb774cb5494446147a6eb22d73", null ],
     [ "ClearNameOverride", "class_item.html#a98eb0daeff26b7342d2fcf37232d2984", null ],
     [ "CopyNetStateTo", "class_item.html#a3cc4bce9d2b8ac615ad7460925df5ae4", null ],
+    [ "CountsAsClass", "class_item.html#afa18d73137643eeff54c636e6728f6a9", null ],
+    [ "CountsAsClass< T >", "class_item.html#aae13cf054f98781555a4f50ff417cc88", null ],
     [ "DefaultToBow", "class_item.html#a44d0a13e5be52f0b91fdede47cf38c7c", null ],
     [ "DefaultToFood", "class_item.html#aee75bcf06e3325fe8c165a3b24a0ae73", null ],
     [ "DefaultToGolfBall", "class_item.html#a0b8a6ab0ee5fc8c511629256dc772bbd", null ],

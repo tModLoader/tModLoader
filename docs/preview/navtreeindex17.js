@@ -1,5 +1,13 @@
 var NAVTREEINDEX17 =
 {
+"class_t_e_item_frame.html":[3,0,1144],
+"class_t_e_item_frame.html#a4fb230b8f046e2e36d3ba0fd6410b149":[3,0,1144,0],
+"class_t_e_item_frame.html#a7efaab7670626ba141faaeb5a448c294":[3,0,1144,3],
+"class_t_e_item_frame.html#a8c302b9477e1295a59782c7c57aa2727":[3,0,1144,2],
+"class_t_e_item_frame.html#abf8f2f669298cb42025c267d95b1a83f":[3,0,1144,1],
+"class_t_e_logic_sensor.html":[3,0,1150],
+"class_t_e_modded_pylon.html":[3,0,1151],
+"class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d":[3,0,1151,1],
 "class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1151,0],
 "class_t_e_teleportation_pylon.html":[3,0,1155],
 "class_t_e_training_dummy.html":[3,0,1156],
@@ -241,13 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_resource_pack_info_button.html":[3,0,1295],
 "class_u_i_resource_pack_info_menu.html":[3,0,1296],
 "class_u_i_resource_pack_selection_menu.html":[3,0,1297],
-"class_u_i_scroll_wheel_event.html":[3,0,1299],
-"class_u_i_scrollbar.html":[3,0,1298],
-"class_u_i_search_bar.html":[3,0,1300],
-"class_u_i_selectable_text_panel.html":[3,0,1301],
-"class_u_i_sliced_image.html":[3,0,1302],
-"class_u_i_slider_base.html":[3,0,1303],
-"class_u_i_sortable_element.html":[3,0,1304],
-"class_u_i_state.html":[3,0,1305],
-"class_u_i_text.html":[3,0,1306]
+"class_u_i_scroll_wheel_event.html":[3,0,1299]
 };

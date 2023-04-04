@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"class_minecart_digger_helper.html":[3,0,720],
+"class_minimap_frame.html":[3,0,721],
+"class_minimap_frame_manager.html":[3,0,722],
+"class_minimap_frame_template.html":[3,0,723],
 "class_mining_explosives_biome.html":[3,0,724],
 "class_misc_shader_data.html":[3,0,725],
 "class_missing_effect_exception.html":[3,0,726],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_item.html#a3b29a745953cba81629bd0ba8f032e4d":[3,0,748,58],
 "class_mod_item.html#a3b89ae7a6ea39d4ecc0c421df6b2af14":[3,0,748,94],
 "class_mod_item.html#a3d30fa657a2319543bdd619d2ad32f81":[3,0,748,67],
-"class_mod_item.html#a3d45a378defd22de0298ee214bdc0ed5":[3,0,748,9],
-"class_mod_item.html#a3ddfb6794d9708ff8967e4ee5e57d198":[3,0,748,29],
-"class_mod_item.html#a44335a4cb0096527824a56e993cfe0b4":[3,0,748,74],
-"class_mod_item.html#a4451e8e94662601603427838e9a67ffd":[3,0,748,128],
-"class_mod_item.html#a447ad0bbe4c2ec773600a06351725684":[3,0,748,106]
+"class_mod_item.html#a3d45a378defd22de0298ee214bdc0ed5":[3,0,748,9]
 };

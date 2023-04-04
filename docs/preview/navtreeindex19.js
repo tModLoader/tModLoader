@@ -1,5 +1,13 @@
 var NAVTREEINDEX19 =
 {
+"functions_prop_s.html":[3,3,3,16],
+"functions_prop_t.html":[3,3,3,17],
+"functions_prop_u.html":[3,3,3,18],
+"functions_prop_v.html":[3,3,3,19],
+"functions_prop_w.html":[3,3,3,20],
+"functions_prop_z.html":[3,3,3,21],
+"functions_q.html":[3,3,0,16],
+"functions_r.html":[3,3,0,17],
 "functions_s.html":[3,3,0,18],
 "functions_t.html":[3,3,0,19],
 "functions_u.html":[3,3,0,20],
@@ -241,13 +249,5 @@ var NAVTREEINDEX19 =
 "struct_frame_event_data.html":[3,0,378],
 "struct_game_animation_segment.html":[3,0,386],
 "struct_game_mode_data.html":[3,0,392],
-"struct_gen_shape_action_pair.html":[3,0,413],
-"struct_get_item_settings.html":[3,0,416],
-"struct_global_loot.html":[3,0,424],
-"struct_golf_helper_1_1_club_properties.html":[3,0,439,0],
-"struct_golf_helper_1_1_shot_strength.html":[3,0,439,2],
-"struct_helper_info.html":[3,0,456],
-"struct_hook_list_1_1_instance_enumerator.html":[3,0,462,0],
-"struct_instanced.html":[3,0,541],
-"struct_int_range.html":[3,0,542]
+"struct_gen_shape_action_pair.html":[3,0,413]
 };

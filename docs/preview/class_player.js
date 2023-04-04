@@ -42,6 +42,8 @@ var class_player =
     [ "GetManaCost", "class_player.html#aa509186d7b2da460b0a755f08c8ea2d9", null ],
     [ "GetModPlayer< T >", "class_player.html#a55a3e1f7654bcdb1eb261b332f9319c1", null ],
     [ "GetModPlayer< T >", "class_player.html#a8fa613dc1c49ba21d6589c0f81eea9cd", null ],
+    [ "GetTotalDamage", "class_player.html#acb149277cb3bf7ddc94804065ee0239e", null ],
+    [ "GetTotalDamage< T >", "class_player.html#a8cec04cc5be51d4f2a194081cc2962fd", null ],
     [ "HasAmmo", "class_player.html#ab85e25a272ce362ee7d9761c55a98369", null ],
     [ "HasBuff", "class_player.html#a76372478cf660458c1b639299cf8a293", null ],
     [ "HasBuff< T >", "class_player.html#a091a5da6140410a25c68973feb010d89", null ],

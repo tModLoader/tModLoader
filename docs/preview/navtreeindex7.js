@@ -1,5 +1,9 @@
 var NAVTREEINDEX7 =
 {
+"class_item_loader.html#a89e80c1a38407d62ae36654f4a49c623":[3,0,596,57],
+"class_item_loader.html#a8da5e3afb33529eb9de4ecb400e50ace":[3,0,596,75],
+"class_item_loader.html#a8da67083aeb88eabde0ee0a8d01be3f3":[3,0,596,72],
+"class_item_loader.html#a8f2b898d35a7bfd4aecdaa5de7ca3c4d":[3,0,596,67],
 "class_item_loader.html#a92da3f793f6a00f1f1541e156c9eaef2":[3,0,596,42],
 "class_item_loader.html#a934752bdc8c051fc7f3ca55ff447b79e":[3,0,596,25],
 "class_item_loader.html#a949b07546df7b3f8aaf1e7bd85c78a83":[3,0,596,71],
@@ -245,9 +249,5 @@ var NAVTREEINDEX7 =
 "class_meteorite_shader.html":[3,0,716],
 "class_method_sequence_list_item.html":[3,0,717],
 "class_micro_biome.html":[3,0,718],
-"class_minecart.html":[3,0,719],
-"class_minecart_digger_helper.html":[3,0,720],
-"class_minimap_frame.html":[3,0,721],
-"class_minimap_frame_manager.html":[3,0,722],
-"class_minimap_frame_template.html":[3,0,723]
+"class_minecart.html":[3,0,719]
 };

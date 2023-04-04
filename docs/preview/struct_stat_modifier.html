@@ -100,8 +100,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a57ebd75a660b44b1bb91abf45fbd1082"><td class="memItemLeft" align="right" valign="top"><a id="a57ebd75a660b44b1bb91abf45fbd1082" name="a57ebd75a660b44b1bb91abf45fbd1082"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>StatModifier</b> (float additive, float multiplicative, float flat=0f, float @base=0f)</td></tr>
 <tr class="separator:a57ebd75a660b44b1bb91abf45fbd1082"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9176f23c60202e7bfc569a487a2d1f40"><td class="memItemLeft" align="right" valign="top"><a id="a9176f23c60202e7bfc569a487a2d1f40" name="a9176f23c60202e7bfc569a487a2d1f40"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyTo</b> (float baseValue)</td></tr>
+<tr class="memitem:a9176f23c60202e7bfc569a487a2d1f40"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40">ApplyTo</a> (float baseValue)</td></tr>
+<tr class="memdesc:a9176f23c60202e7bfc569a487a2d1f40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to apply the modifers of this <a class="el" href="struct_stat_modifier.html">StatModifier</a> to the <em>baseValue</em> . You should assign the value passed in to the return result. For example:  <a href="struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40">More...</a><br /></td></tr>
 <tr class="separator:a9176f23c60202e7bfc569a487a2d1f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2073924c9fc57eb98feb36246ed8a55"><td class="memItemLeft" align="right" valign="top"><a id="ae2073924c9fc57eb98feb36246ed8a55" name="ae2073924c9fc57eb98feb36246ed8a55"></a>
 <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CombineWith</b> (<a class="el" href="struct_stat_modifier.html">StatModifier</a> m)</td></tr>
@@ -147,7 +147,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab3d983cd1869c9321e7687820bc6d3c5"><td class="memItemLeft" align="right" valign="top"><a id="ab3d983cd1869c9321e7687820bc6d3c5" name="ab3d983cd1869c9321e7687820bc6d3c5"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Base</b> = 0f</td></tr>
-<tr class="memdesc:ab3d983cd1869c9321e7687820bc6d3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase to the base value of the stat. Directly added to the stat before multipliers are applied. <br /></td></tr>
+<tr class="memdesc:ab3d983cd1869c9321e7687820bc6d3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">An offset to the base value of the stat. Directly applied to the base stat before multipliers are applied. <br /></td></tr>
 <tr class="separator:ab3d983cd1869c9321e7687820bc6d3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14552167c70f616d8656bd50b67354b"><td class="memItemLeft" align="right" valign="top"><a id="ad14552167c70f616d8656bd50b67354b" name="ad14552167c70f616d8656bd50b67354b"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Flat</b> = 0f</td></tr>
@@ -172,6 +172,57 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Multiplicative</b> =
 <tr class="separator:acc7b82c5191a1aeb5578bc0550f95602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9176f23c60202e7bfc569a487a2d1f40" name="a9176f23c60202e7bfc569a487a2d1f40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9176f23c60202e7bfc569a487a2d1f40">&#9670;&nbsp;</a></span>ApplyTo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float StatModifier.ApplyTo </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>baseValue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use this to apply the modifers of this <a class="el" href="struct_stat_modifier.html">StatModifier</a> to the <em>baseValue</em> . You should assign the value passed in to the return result. For example: </p>
+<p ><br  />
+<code>damage = CritDamage.ApplyTo(damage)</code></p>
+<p ><br  />
+could be used to apply a crit damage modifier to a base damage value </p>
+<p >For help understanding the meanings of the applied values please make note of documentation for: </p><ul>
+<li>
+<a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">Base</a> </li>
+<li>
+<a class="el" href="struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091" title="The combination of all additive multipliers. Starts at 1">Additive</a> </li>
+<li>
+<a class="el" href="struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602" title="The combination of all multiplicative multipliers. Starts at 1. Applies &#39;after&#39; all additive bonuses ...">Multiplicative</a> </li>
+<li>
+<a class="el" href="struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b" title="Increase to the final value of the stat. Directly added to the stat after multipliers are applied.">Flat</a> </li>
+</ul>
+<p>The order of operations of the modifiers are as follows: </p><ol>
+<li>
+The <em>baseValue</em>  is added to <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">Base</a> </li>
+<li>
+That result is multiplied by <a class="el" href="struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091" title="The combination of all additive multipliers. Starts at 1">Additive</a> </li>
+<li>
+The previous result is then multiplied by <a class="el" href="struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602" title="The combination of all multiplicative multipliers. Starts at 1. Applies &#39;after&#39; all additive bonuses ...">Multiplicative</a> </li>
+<li>
+Finally, <a class="el" href="struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b" title="Increase to the final value of the stat. Directly added to the stat after multipliers are applied.">Flat</a> as added to the result of all previous calculations </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baseValue</td><td>The starting value to apply modifers to</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The result of <em>baseValue</em>  after all modifiers are applied</dd></dl>
+
+</div>
+</div>
 <a id="a2c77880e64ec8b1147e27abeb524a5ad" name="a2c77880e64ec8b1147e27abeb524a5ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c77880e64ec8b1147e27abeb524a5ad">&#9670;&nbsp;</a></span>operator*()</h2>
 

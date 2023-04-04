@@ -190,7 +190,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuf
 <tr class="memitem:a579382395e10ab8a10ba1c52254892d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a579382395e10ab8a10ba1c52254892d5">ApplyDamageToNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int direction, bool crit=false, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null, bool damageVariation=false)</td></tr>
 <tr class="memdesc:a579382395e10ab8a10ba1c52254892d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deals damage to an <a class="el" href="class_n_p_c.html">NPC</a> (and syncs the hit in multiplayer). <br  />
  The damage will be affected by modifiers, armor pen, enemy resistances etc. <br  />
- Will not apply damage class modifiers/knockback. Use GetTotalDamage&lt;T&gt; to adjust the damage before calling if necessary. <br  />
+ Will not apply damage class modifiers/knockback. Use <a class="el" href="class_player.html#a8cec04cc5be51d4f2a194081cc2962fd">GetTotalDamage&lt;T&gt;</a> to adjust the damage before calling if necessary. <br  />
  Will apply daamage class based armor penetration. <br  />
  Will exit early with no effect if PlayerLoader.CanHitNPC returns false.  <a href="class_player.html#a579382395e10ab8a10ba1c52254892d5">More...</a><br /></td></tr>
 <tr class="separator:a579382395e10ab8a10ba1c52254892d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -679,8 +679,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>GetTotalCritChance</
 <tr class="separator:a474fbb8abc4cccb80378ac8ef36dc51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4fda37739700557574adf480f71e79d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ae4fda37739700557574adf480f71e79d">GetTotalCritChance&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:ae4fda37739700557574adf480f71e79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb149277cb3bf7ddc94804065ee0239e"><td class="memItemLeft" align="right" valign="top"><a id="acb149277cb3bf7ddc94804065ee0239e" name="acb149277cb3bf7ddc94804065ee0239e"></a>
-<a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetTotalDamage</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memitem:acb149277cb3bf7ddc94804065ee0239e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#acb149277cb3bf7ddc94804065ee0239e">GetTotalDamage</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:acb149277cb3bf7ddc94804065ee0239e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a total damage modifier for the player for the provided <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>.<br  />
+ Use in conjunction with <a class="el" href="struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40" title="Use this to apply the modifers of this StatModifier to the baseValue . You should assign the value pa...">StatModifier.ApplyTo(float)</a> to calculate a final damage value for a given <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> and base damage: <code>int finalDamage = (int)player.GetTotalDamage(item.DamageType).ApplyTo(30);</code>  <a href="class_player.html#acb149277cb3bf7ddc94804065ee0239e">More...</a><br /></td></tr>
 <tr class="separator:acb149277cb3bf7ddc94804065ee0239e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cec04cc5be51d4f2a194081cc2962fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a8cec04cc5be51d4f2a194081cc2962fd">GetTotalDamage&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:a8cec04cc5be51d4f2a194081cc2962fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5255,7 +5256,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 <p>Deals damage to an <a class="el" href="class_n_p_c.html">NPC</a> (and syncs the hit in multiplayer). <br  />
  The damage will be affected by modifiers, armor pen, enemy resistances etc. <br  />
- Will not apply damage class modifiers/knockback. Use GetTotalDamage&lt;T&gt; to adjust the damage before calling if necessary. <br  />
+ Will not apply damage class modifiers/knockback. Use <a class="el" href="class_player.html#a8cec04cc5be51d4f2a194081cc2962fd">GetTotalDamage&lt;T&gt;</a> to adjust the damage before calling if necessary. <br  />
  Will apply daamage class based armor penetration. <br  />
  Will exit early with no effect if PlayerLoader.CanHitNPC returns false. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -5907,6 +5908,35 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="acb149277cb3bf7ddc94804065ee0239e" name="acb149277cb3bf7ddc94804065ee0239e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb149277cb3bf7ddc94804065ee0239e">&#9670;&nbsp;</a></span>GetTotalDamage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_stat_modifier.html">StatModifier</a> Player.GetTotalDamage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageClass</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates a total damage modifier for the player for the provided <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>.<br  />
+ Use in conjunction with <a class="el" href="struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40" title="Use this to apply the modifers of this StatModifier to the baseValue . You should assign the value pa...">StatModifier.ApplyTo(float)</a> to calculate a final damage value for a given <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> and base damage: <code>int finalDamage = (int)player.GetTotalDamage(item.DamageType).ApplyTo(30);</code> </p>
+<p >The modifiers calculated here are important due to the possibility of damage classes inheriting modifiers from other damage classes. For instance, an attack can be classified as multiple damage types and each could have different modifiers to apply to the damage </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> to use for total damage calculation</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>All modifiers combined</dd></dl>
+
+</div>
+</div>
 <a id="a8cec04cc5be51d4f2a194081cc2962fd" name="a8cec04cc5be51d4f2a194081cc2962fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8cec04cc5be51d4f2a194081cc2962fd">&#9670;&nbsp;</a></span>GetTotalDamage&lt; T &gt;()</h2>
 
@@ -5914,13 +5944,15 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_stat_modifier.html">StatModifier</a> Player.GetTotalDamage&lt; T &gt; </td>
+          <td class="memname"><a class="el" href="struct_stat_modifier.html">StatModifier</a> <a class="el" href="class_player.html#acb149277cb3bf7ddc94804065ee0239e">Player.GetTotalDamage</a>&lt; T &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p></p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

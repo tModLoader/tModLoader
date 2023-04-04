@@ -151,7 +151,7 @@ Public Attributes</h2></td></tr>
  Add to give hits extra crit damage (eg +0.1f for 10% extra crit damage (total +110% or 2.1 times base). <br  />
  Add to <a class="el" href="struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b" title="Increase to the final value of the stat. Directly added to the stat after multipliers are applied.">StatModifier.Flat</a> to give crits extra flat damage. Use with caution as this extra damage will not be reduced by armor. <br  />
  Multiplication not recommended for buffs. Could be used to decrease the effectiveness of crits on an enemy without disabling completely. <br  />
- Use of <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="Increase to the base value of the stat. Directly added to the stat before multipliers are applied.">StatModifier.Base</a> also not recommended. <br  />
+ Use of <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">StatModifier.Base</a> also not recommended. <br  />
  <br /></td></tr>
 <tr class="separator:a4b6d8eafcc59dc863ad84197dfe410f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60d31d35ff6f6a49b071d355bfd6f64e"><td class="memItemLeft" align="right" valign="top"><a id="a60d31d35ff6f6a49b071d355bfd6f64e" name="a60d31d35ff6f6a49b071d355bfd6f64e"></a>
@@ -165,7 +165,7 @@ Public Attributes</h2></td></tr>
 <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Defense</b> = new()</td></tr>
 <tr class="memdesc:afabf2128c79084710e94f9e72a16405f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The defense of the receiver, including any temporary modifiers (buffs/debuffs). <br  />
  <br  />
- Increase <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="Increase to the base value of the stat. Directly added to the stat before multipliers are applied.">StatModifier.Base</a> to add extra defense. <br  />
+ Increase <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">StatModifier.Base</a> to add extra defense. <br  />
  Add for scaling buffs (eg +0.1f for +10% defense). <br  />
  Multiply for debuffs (eg *0.9f for -10% defense). <br  />
  Decrease <a class="el" href="struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b" title="Increase to the final value of the stat. Directly added to the stat after multipliers are applied.">StatModifier.Flat</a> to provide flat debuffs like ichor or betsys curse <br  />
@@ -186,8 +186,8 @@ Public Attributes</h2></td></tr>
  <br  />
  Multiply to make your enemy more susceptible or resistant to damage. <br  />
  Add to give 'bonus' post-mitigation damage. <br  />
- Add to <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="Increase to the base value of the stat. Directly added to the stat before multipliers are applied.">StatModifier.Base</a> to deal damage which ignores armor, but still respects scaling damage reductions or increases. <br  />
- Adding to <a class="el" href="struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b" title="Increase to the final value of the stat. Directly added to the stat after multipliers are applied.">StatModifier.Flat</a> will ignore all reductions or increases to deal unconditional damage. Not recommended due to potential compatibility issues with enemy or player damage reduction effects, use <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="Increase to the base value of the stat. Directly added to the stat before multipliers are applied.">StatModifier.Base</a> instead. <br /></td></tr>
+ Add to <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">StatModifier.Base</a> to deal damage which ignores armor, but still respects scaling damage reductions or increases. <br  />
+ Adding to <a class="el" href="struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b" title="Increase to the final value of the stat. Directly added to the stat after multipliers are applied.">StatModifier.Flat</a> will ignore all reductions or increases to deal unconditional damage. Not recommended due to potential compatibility issues with enemy or player damage reduction effects, use <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">StatModifier.Base</a> instead. <br /></td></tr>
 <tr class="separator:a1002e87a8ffb6ac37e486edb9b9e9f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bdd0084aeb8144cca1b18a374db2780"><td class="memItemLeft" align="right" valign="top"><a id="a9bdd0084aeb8144cca1b18a374db2780" name="a9bdd0084aeb8144cca1b18a374db2780"></a>
 <a class="el" href="struct_addable_float.html">AddableFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FlatBonusDamage</b> = new()</td></tr>
@@ -225,7 +225,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ae4b8ed585bcf70d7bacc6cc0e56ae34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <a class="el" href="struct_n_p_c_1_1_hit_info.html#a64a141aaff6e37f74cfd7fc42ce8537b" title="The amount of damage &#39;dealt&#39; to the NPC, before incoming damage multipliers, armor,...">HitInfo.SourceDamage</a> and be transferred to on-hit effects. <br  />
  <br  />
  For effects which apply to all damage dealt by the player, or a specific damage type, consider using <a class="el" href="class_player.html#afb5ba132b05a7e2abf19f970eefd4634" title="Gets the damage modifier for this damage type on this player. This returns a reference,...">Player.GetDamage</a> instead. <br  />
- For effects which apply to all dealt by an item, consider using GlobalItem.ModifyWeaponDamage instead. <br  />
+ For effects which apply to all damage dealt by an item, consider using GlobalItem.ModifyWeaponDamage instead. <br  />
  <br  />
  Used by vanilla for weapons with unique scaling such as jousting lance, ham bat, breaker blade. And for accessories which enhance a projectile (strong bees) <br /></td></tr>
 <tr class="separator:ae4b8ed585bcf70d7bacc6cc0e56ae34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
