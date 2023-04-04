@@ -87,6 +87,11 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	public bool StopAnimationOnHurt { get; set; }
 
+	/// <summary>
+	/// When true, shooting any projectile from this item will make the player face the projectile. Defaults to true.
+	/// </summary>
+	public bool ChangePlayerDirectionOnShoot { get; set; }
+
 	private DamageClass _damageClass = DamageClass.Default;
 	/// <summary>
 	/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.

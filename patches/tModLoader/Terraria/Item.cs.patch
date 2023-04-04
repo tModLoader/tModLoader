@@ -1240,6 +1240,14 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -11396,6 +_,7 @@
+ 				knockBack = 6.5f;
+ 				melee = true;
+ 				value = sellPrice(0, 3);
++				ChangePlayerDirectionOnShoot = false;
+ 				break;
+ 			case 724:
+ 				autoReuse = true;
 @@ -12077,6 +_,8 @@
  				scale = 1f;
  				break;
@@ -1276,6 +1284,14 @@
  	public void DefaultToQuestFish()
  	{
  		questItem = true;
+@@ -35265,6 +_,7 @@
+ 				rare = 2;
+ 				UseSound = SoundID.Item64;
+ 				mech = true;
++				ChangePlayerDirectionOnShoot = false;
+ 				return;
+ 			case 3612:
+ 				useStyle = 1;
 @@ -36886,6 +_,8 @@
  				shootSpeed = 17f;
  				return;
@@ -1810,7 +1826,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,30 @@
+@@ -47318,14 +_,31 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1827,6 +1843,7 @@
 +		InterruptChannelOnHurt = false;
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
++		ChangePlayerDirectionOnShoot = true;
 +
  		sentry = false;
  		hasVanityEffects = false;
