@@ -32,7 +32,7 @@ public partial class NPC
 		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
 		/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
-		/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
+		/// For effects which apply to all damage dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
 		/// <br/>
 		/// Used by vanilla for weapons with unique scaling such as jousting lance, ham bat, breaker blade. And for accessories which enhance a projectile (strong bees)
 		/// </summary>
