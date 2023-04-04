@@ -128,19 +128,15 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	public TagCompound SerializeData() => ItemIO.Save(this);
 
-	/// <summary>
-	/// This is used to check if the item has a specific <see cref="DamageClass"/>.
-	/// </summary>
-	/// <seealso cref="CountsAsClass(DamageClass)"/>
+	/// <inheritdoc cref="CountsAsClass"/>
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
 
 	/// <summary>
-	/// This is used to check if the item has a specific <see cref="DamageClass"/>.
+	/// This is used to check if this item benefits from the specified <see cref="DamageClass"/>.
 	/// </summary>
 	/// <param name="damageClass">The DamageClass to check for in this item.</param>
 	/// <returns><see langword="true"/> if this item's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
-	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 

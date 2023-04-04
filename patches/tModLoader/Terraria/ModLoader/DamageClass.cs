@@ -9,7 +9,7 @@ namespace Terraria.ModLoader;
 /// </summary>
 /// <remarks>
 /// New classes can be created and can be set to inherit these applications from other classes. 
-/// <para>For a more in-depth explanation and demonstration refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.</para>
+/// <para>For a more in-depth explanation and demonstration refer to <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>.</para>
 /// </remarks>
 public abstract class DamageClass : ModType, ILocalizedModType
 {
@@ -74,11 +74,9 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	public virtual StatInheritanceData GetModifierInheritance(DamageClass damageClass) => damageClass == Generic ? StatInheritanceData.Full : StatInheritanceData.None;
 
 	/// <summary> 
-	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
+	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br/>
+	/// For a more in-depth explanation and demonstration, see <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>
 	/// </summary>
-	/// <example>
-	/// <c>if(damageClass == DamageClass.Melee) return true;</c>
-	/// </example>
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit effects from.</param>
 	/// <returns><see langword="false"/> by default - which does not let any other classes' effects trigger on this <see cref="DamageClass"/>.</returns>
@@ -120,21 +118,15 @@ public abstract class DamageClass : ModType, ILocalizedModType
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
-	/// <summary>
-	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit effects from the templated <see cref="DamageClass"/>.
-	/// </summary>
-	/// <returns><see langword="true"/> if this damage class is inheriting effects, <see langword="false"/> otherwise</returns>
-	/// <seealso cref="CountsAsClass(DamageClass)"/>
+	/// <inheritdoc cref="CountsAsClass"/>
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
 
 	/// <summary>
-	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit effects from <paramref name="damageClass"/>.
+	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit effects from the provided <see cref="DamageClass"/>, as dictated by <see cref="GetEffectInheritance"/>
 	/// </summary>
 	/// <param name="damageClass">The DamageClass you want to check if effects are inherited by this DamageClass.</param>
 	/// <returns><see langword="true"/> if this damage class is inheriting effects from <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
-	/// <seealso cref="GetEffectInheritance"/>
-	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[Type, damageClass.Type];
 }
