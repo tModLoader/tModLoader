@@ -136,6 +136,7 @@ $(document).ready(function(){initNavTree('md__github_workspace_src_t_mod_loader_
 </ul>
 <p >The server will be available on port 7777.</p>
 <p >To run without any interactivity, use <code>docker-compose up -d</code>, and include serverconfig.txt in the <code><a class="el" href="namespace_terraria.html">Terraria</a></code> directory.</p>
+<p >To attach to the server console, run <code>docker ps</code> to get the container ID and <code>docker attach CTID</code> to attach to it. To detach from the console press <code>Ctrl-P Ctrl-Q</code> to avoid shutting down or <code>Ctrl-C</code> to detach and shutdown the server.</p>
 <h1>Autostarting On Boot</h1>
 <p >When using <code>manage-tModLoaderServer.sh</code>, refer to your distro's documentation. You can likely use a startup script with your init system.</p>
 <p >When using the Docker container, add <code>restart: always</code> within <code>services.tml</code> inside of <code>docker-compose.yml</code>, then rebuild with <code>docker-compose build</code>. </p>
