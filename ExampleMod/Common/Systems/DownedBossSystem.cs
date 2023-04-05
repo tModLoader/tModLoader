@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -17,12 +15,7 @@ namespace ExampleMod.Common.Systems
 		public static bool downedMinionBoss = false;
 		// public static bool downedOtherBoss = false;
 
-		public override void OnWorldLoad() {
-			downedMinionBoss = false;
-			// downedOtherBoss = false;
-		}
-
-		public override void OnWorldUnload() {
+		public override void ClearWorld() {
 			downedMinionBoss = false;
 			// downedOtherBoss = false;
 		}

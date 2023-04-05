@@ -128,9 +128,15 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	public TagCompound SerializeData() => ItemIO.Save(this);
 
+	/// <inheritdoc cref="CountsAsClass"/>
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
 
+	/// <summary>
+	/// This is used to check if this item benefits from the specified <see cref="DamageClass"/>.
+	/// </summary>
+	/// <param name="damageClass">The DamageClass to check for in this item.</param>
+	/// <returns><see langword="true"/> if this item's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 

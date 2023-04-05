@@ -1058,7 +1058,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// This is essentially the same as Mod.AddRecipes or ModItem.AddRecipes. Use whichever method makes organizational sense for your mod.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
 	/// </summary>
 	public virtual void AddRecipes()
 	{

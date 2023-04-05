@@ -45,8 +45,8 @@ Mods: {
 
 		Tiles: {
 			// ExampleClock.MapEntry: Example Clock
-			// ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
-			// ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
+			// ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItem.DisplayName}"
+			// ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItemAdvanced.DisplayName}"
 			// ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			// ExampleFishingCrate.MapEntry: Crate
 			// ExampleHerb.MapEntry: Example Herb
@@ -105,11 +105,6 @@ Mods: {
 			ExamplePylonItemAdvanced: {
 				// DisplayName: Unstable Pylon
 				// Tooltip: Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!
-			}
-
-			ExamplePet: {
-				// DisplayName: Mods.ExampleMod.ItemName.ExamplePet
-				// Tooltip: Mods.ExampleMod.ItemTooltip.ExamplePet
 			}
 
 			ExampleBeard: {
@@ -818,11 +813,6 @@ Mods: {
 			ExamplePetBuff: {
 				// DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}"
 				// Description: '''"Let this pet be an example to you!"'''
-			}
-
-			ExamplePet: {
-				// DisplayName: Mods.ExampleMod.BuffName.ExamplePet
-				// Description: Mods.ExampleMod.BuffDescription.ExamplePet
 			}
 
 			AnimatedBuff: {

@@ -70,7 +70,7 @@ internal static class Interface
 	internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
 	{
 		/*
-		 * string legacyInfoButton = Language.GetTextValue("tModLoader.13InfoButton");
+		 * string legacyInfoButton = Language.GetTextValue("tModLoader.HowToAccessLegacytModLoaderButton");
 		buttonNames[buttonIndex] = legacyInfoButton;
 		if (selectedMenu == buttonIndex) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -119,13 +119,12 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
-			/*
-			else if (!ModLoader.AlphaWelcomed) {
-				ModLoader.AlphaWelcomed = true;
-				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+			else if (!ModLoader.BetaUpgradeWelcomed144) {
+				ModLoader.BetaUpgradeWelcomed144 = true;
+				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageUpgradeBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
-			*/
+
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
 				if (File.Exists("RecentGitHubCommits.txt")) {
@@ -153,6 +152,8 @@ internal static class Interface
 							});
 				}
 			}
+			//SOLXAN:TODO: Re-enable for stabilization later
+			/*
 			else if (ModLoader.PreviewFreezeNotification) {
 				ModLoader.PreviewFreezeNotification = false;
 				ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
@@ -163,6 +164,7 @@ internal static class Interface
 					});
 				Main.SaveSettings();
 			}
+			*/
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
@@ -171,19 +173,19 @@ internal static class Interface
 				bool promptDepDownloads = deps.Count != 0;
 
 				string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
-                    string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
-                    string message = $"{newDownloads}\n{dependencies}".Trim('\n');
-                    string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-                    string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
-                    Action downloadAction = () => {
-                    if (promptDepDownloads) {
+				string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
+				string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+				Action downloadAction = () => {
+					if (promptDepDownloads) {
 						//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
-						WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
+						WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed: null)).ToList(), previousMenuId: 0);
 					}
-                    };
+				};
 
-                    if (!string.IsNullOrWhiteSpace(message))
-                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				if (!string.IsNullOrWhiteSpace(message))
+					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 			}
 		}
 		if (Main.menuMode == modsMenuID) {
