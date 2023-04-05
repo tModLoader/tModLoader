@@ -58,6 +58,8 @@ The server will be available on port 7777.
 
 To run without any interactivity, use `docker-compose up -d`, and include [serverconfig.txt](#automatically-selecting-a-world) in the `Terraria` directory.
 
+To attach to the server console, run `docker ps` to get the container ID and `docker attach CTID` to attach to it. To detach from the console press `Ctrl-P Ctrl-Q` to avoid shutting down or `Ctrl-C` to detach and shutdown the server.
+
 ## Autostarting On Boot
 When using `manage-tModLoaderServer.sh`, refer to your distro's documentation. You can likely use a startup script with your init system.
 
