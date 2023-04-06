@@ -54,9 +54,6 @@ public class LabelAttribute : Attribute
 	internal readonly string key;
 	internal readonly bool malformed;
 
-	// TODO: Remove
-	public string Label => Localization.Language.GetTextValue(key);
-
 	public LabelAttribute(string key)
 	{
 		if (!key.StartsWith("$")) {

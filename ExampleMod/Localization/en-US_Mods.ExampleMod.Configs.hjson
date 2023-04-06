@@ -57,7 +57,7 @@ ModConfigShowcaseDataTypes: {
 	SomeString.Label: Some String
 	SomeEnum.Label: Some Enum
 	SomeByte.Label: Some Byte
-	SomeUInt.Label: Some U Int
+	SomeUInt.Label: Some UInt
 	SomeColor.Label: Some Color
 	SomeVector2.Label: Some Vector2
 	SomePoint.Label: Some Point

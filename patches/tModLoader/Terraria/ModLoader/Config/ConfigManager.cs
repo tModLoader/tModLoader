@@ -99,7 +99,7 @@ public static class ConfigManager
 						string labelKey = GetLabelKey(variable, config, fallbackToClass: false, throwErrors: true);
 						Language.GetOrRegister(labelKey, () => Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-						string tooltipKey = GetTooltipKey(variable, config, /*fallbackToClass: false,*/ throwErrors: true);
+						string tooltipKey = GetTooltipKey(variable, config, throwErrors: true);
 						if(tooltipKey != null)
 							Language.GetOrRegister(tooltipKey, () => "");
 
@@ -406,10 +406,6 @@ public static class ConfigManager
 
 	internal static string GetLabelKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
 	{
-		// called in FinishSEtup anf GetLocalizedLabel.
-		// should return just the member if called from FinishSetup, since it is used to fill in.
-
-
 		var label = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
 		if (label != null) {
 			if (label.malformed && throwErrors)
@@ -450,12 +446,6 @@ public static class ConfigManager
 	{
 		// Falls back to Type attribute automatically 
 		var tooltip = GetCustomAttribute<TooltipAttribute>(memberInfo, null, null);
-
-		/*var tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
-		if(tooltip == null && fallbackToClass) // won't throw errors on mod load...
-			tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
-		*/
-
 		if (tooltip != null) {
 			if (tooltip.malformed && throwErrors)
 				throw new ValueNotTranslationKeyException($"{nameof(TooltipAttribute)} only accepts localization keys for the 'key' parameter.");
@@ -472,7 +462,7 @@ public static class ConfigManager
 	{
 		// Priority: Auto/Provided Key on member -> Key on class -> null
 		var config = Interface.modConfig.pendingConfig;
-		string tooltipKey = GetTooltipKey(memberInfo, config, /*fallbackToClass: true,*/ throwErrors: false);
+		string tooltipKey = GetTooltipKey(memberInfo, config, throwErrors: false);
 		if (tooltipKey != null && Language.Exists(tooltipKey))
 			return Language.GetTextValue(tooltipKey);
 		return null;
