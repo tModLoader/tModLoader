@@ -41,67 +41,89 @@ public class ReloadRequiredAttribute : Attribute
 }
 
 /// <summary>
-/// This attribute sets a label for the property, field, or class for use in the ModConfig UI.
-/// Starting the label with $ means the label should be interpreted as a Localization key.
+/// A label is the text shown to the user in the ModConfig UI. <br/>
+/// This attribute sets a custom localization key for the label of the annotated property, field, or class. <br/>
+/// The provided localization key must start with "$". <br/>
+/// Without this attribute, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Label" will be assumed for members of ModConfig classes. <br/>
+/// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, otherwise they will appear as the member name directly. <br/>
+/// If the translation value of a property of field that is an object is an empty string, the label of the class will be used instead.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 public class LabelAttribute : Attribute
 {
-	private readonly string label;
+	internal readonly string key;
+	internal readonly bool malformed;
 
-	public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
+	// TODO: Remove
+	public string Label => Localization.Language.GetTextValue(key);
 
-	public LabelAttribute(string label)
+	public LabelAttribute(string key)
 	{
-		this.label = label;
+		if (!key.StartsWith("$")) {
+			malformed = true;
+			this.key = key;
+		}
+		else {
+			this.key = key.Substring(1);
+		}
 	}
 }
 
 /// <summary>
-/// This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig UI. This can be longer and more descriptive than Label.
-/// Starting the tooltip with $ means the tooltip should be interpreted as a Localization key.
+/// A tooltip is the text shown to the user in the ModConfig UI next to the cursor when they hover over the annotated member (property, field, or class). This can be longer and more descriptive than the Label. <br/>
+/// Tooltips are optional, this attribute dictates that this member uses a tooltip. 
+/// By using <c>[Tooltip]</c> with no provided key, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Tooltip" will be assumed for members of ModConfig classes. <br/>
+/// By using <c>[Tooltip("$Key.Here")]</c>, a custom localization key for the tooltip will be used. <br/>
+/// The provided localization key must start with "$". <br/>
+/// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, no localization key is assumed.
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 public class TooltipAttribute : Attribute
 {
-	private readonly string tooltip;
+	internal readonly string key;
+	internal readonly bool malformed;
 
-	public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
-
-	public TooltipAttribute(string tooltip)
+	public TooltipAttribute(string key = null)
 	{
-		this.tooltip = tooltip;
+		if (key == null)
+			return;
+		if (!key.StartsWith("$")) {
+			malformed = true;
+			this.key = key;
+		}
+		else {
+			this.key = key.Substring(1);
+		}
 	}
 }
 
 /// <summary>
-/// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config.
-/// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order.
-/// Passing in null or using the parameterless contructor will result in the text being retrieved from a suitable key in localization files. 
+/// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config. <br/>
+/// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order. <br/>
+/// By using <c>[Header]</c> with no provided key, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Header" will be assumed for members of ModConfig classes. <br/>
+/// By using <c>[Header("$Key.Here")]</c>, a custom localization key for the tooltip will be used. <br/>
+/// The provided localization key must start with "$". <br/>
+/// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, no localization key is assumed. <br/>
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class HeaderAttribute : Attribute
 {
-	private readonly string header;
-	internal string autoKey;
+	internal string key;
+	internal readonly bool malformed;
 
-	public string Header {
-		get {
-			if (autoKey != null)
-				return Localization.Language.GetTextValue(autoKey);
-			if (header == null)
-				return null;
-			return header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
+	public string Header => Localization.Language.GetTextValue(key);
+
+	public HeaderAttribute(string key = null)
+	{
+		if (key == null) // will be filled by calling code.
+			return;
+		if (!key.StartsWith("$")) {
+			malformed = true;
+			this.key = key;
 		}
-	}
-
-	public HeaderAttribute(string header)
-	{
-		this.header = header;
-	}
-
-	public HeaderAttribute()
-	{
+		else {
+			this.key = key.Substring(1);
+		}
 	}
 }
 

@@ -16,7 +16,7 @@ internal class ColorElement : ConfigElement
 
 		internal Color current;
 
-		[Label("$LegacyMenu.95")]
+		[Label("$Config.Color.Red.Label")]
 		public byte R {
 			get => current.R;
 			set {
@@ -25,7 +25,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("$LegacyMenu.96")]
+		[Label("$Config.Color.Green.Label")]
 		public byte G {
 			get => current.G;
 			set {
@@ -34,7 +34,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("$LegacyMenu.97")]
+		[Label("$Config.Color.Blue.Label")]
 		public byte B {
 			get => current.B;
 			set {
@@ -43,7 +43,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("Hue")]
+		[Label("$Config.Color.Hue.Label")]
 		public float Hue {
 			get => Main.rgbToHsl(current).X;
 			set {
@@ -54,7 +54,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("Saturation")]
+		[Label("$Config.Color.Saturation.Label")]
 		public float Saturation {
 			get => Main.rgbToHsl(current).Y;
 			set {
@@ -65,7 +65,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("Lightness")]
+		[Label("$Config.Color.Lightness.Label")]
 		public float Lightness {
 			get => Main.rgbToHsl(current).Z;
 			set {
@@ -76,7 +76,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[Label("Alpha")]
+		[Label("$Config.Color.Alpha.Label")]
 		public byte A {
 			get => current.A;
 			set {

@@ -791,7 +791,8 @@ internal class UIModConfig : UIState
 
 	public static void HandleHeader(UIList separateList, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
-		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable);
+		var config = Interface.modConfig.pendingConfig;
+		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable, config, throwErrors: false);
 
 		if (header != null) {
 			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));

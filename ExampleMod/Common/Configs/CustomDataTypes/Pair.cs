@@ -4,7 +4,8 @@
 namespace ExampleMod.Common.Configs.CustomDataTypes
 {
 	[BackgroundColor(0, 255, 255)]
-	[Label("Pair label")]
+	// This Label attribute annotates a member in a non-ModConfig class, so it's Label translation keys need to be manually specified and added to the localization files. 
+	[Label("$Mods.ExampleMod.Configs.Common.Pair.Label")]
 	public class Pair
 	{
 		public bool enabled;

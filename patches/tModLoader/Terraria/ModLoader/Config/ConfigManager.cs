@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -76,10 +77,11 @@ public static class ConfigManager
 	internal static void FinishSetup()
 	{
 		// Register localization for all fields and properties that should show
-		//this.GetLocalization(nameof(Tooltip), () => "");
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var config in activeConfigs.Value) {
-				Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName"), () => "");
+				string modConfigLabelKey = GetModConfigLabelKey(config, throwErrors: true);
+				Language.GetOrRegister(modConfigLabelKey, () => Regex.Replace(config.Name, "([A-Z])", " $1").Trim());
+
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
 					if (variable.IsProperty && variable.Name == "Mode")
 						continue;
@@ -87,18 +89,28 @@ public static class ConfigManager
 					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 						continue;
 
-					Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Label"), () => "");
-					// TODO: Only register tooltip if [Tooltip]? Is it too messy?
-					Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Tooltip"), () => "");
+					try {
+						// TODO: throw error after updating hjson somehow, so auto keys are populated?
+						// TODO: Recursive? Find Label on members of Classes used?
+						// TODO: Should key be {config.Name}.Headers.{variable.Name}?
+						// TODO: Should all headers have a name, [Header("HeaderName")], then {config.Name}.Headers.{HeaderName}
 
-					var header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
-					if(header != null && header.Header == null) {
-						// TODO: Should [Header("Example")] show up in localization files?
-						// TODO: Good auto default?
-						// TODO: What about if {variable.Name}.Header already in config file but not [Header], should that work?
-						// Should key be {config.Name}.Headers.{variable.Name}?
-						// Should all headers have a name, [Header("HeaderName")], then {config.Name}.Headers.{HeaderName}
-						Language.GetOrRegister(config.Mod.GetLocalizationKey($"Configs.{config.Name}.{variable.Name}.Header"), () => $"{variable.Name} Header");
+						// Label will always exist. Tooltip and Header are optional, need to be used to exist.
+						string labelKey = GetLabelKey(variable, config, fallbackToClass: false, throwErrors: true);
+						Language.GetOrRegister(labelKey, () => Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
+
+						string tooltipKey = GetTooltipKey(variable, config, /*fallbackToClass: false,*/ throwErrors: true);
+						if(tooltipKey != null)
+							Language.GetOrRegister(tooltipKey, () => "");
+
+						var header = GetLocalizedHeader(variable, config, throwErrors: true);
+						if (header != null)
+							Language.GetOrRegister(header.key, () => $"{Regex.Replace(variable.Name, "([A-Z])", " $1").Trim()} Header");
+					}
+					catch (ValueNotTranslationKeyException e) {
+						// TODO: Not necessarily the member, could be an attribute on the Type, but checking is messy
+						e.additional = $"The member '{variable.Name}' found in the ModConfig '{config.Name}' caused this exception.";
+						throw;
 					}
 				}
 			}
@@ -392,75 +404,115 @@ public static class ConfigManager
 		return !hasNextA && !hasNextB;
 	}
 
+	internal static string GetLabelKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
+	{
+		// called in FinishSEtup anf GetLocalizedLabel.
+		// should return just the member if called from FinishSetup, since it is used to fill in.
+
+
+		var label = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
+		if (label != null) {
+			if (label.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(LabelAttribute)} only accepts localization keys for the 'key' parameter.");
+			return label.key;
+		}
+		label = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelAttribute));
+		if (label != null) {
+			if (label.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(LabelAttribute)} only accepts localization keys for the 'key' parameter.");
+			if (fallbackToClass) // FinishSetup will catch errors on Label annotations on classes
+				return label.key;
+		}
+		return config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Label");
+	}
+
 	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
-		// Priority: Localization -> Attribute -> member name
+		// Priority: Auto/Provided Key on member -> Key on class if member translation is empty string -> member name
 		var config = Interface.modConfig.pendingConfig;
-		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Label");
+		string labelKey = GetLabelKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
 		if (Language.Exists(labelKey)) {
 			string labelLocalization = Language.GetTextValue(labelKey);
 			if (!string.IsNullOrEmpty(labelLocalization))
 				return labelLocalization;
 		}
 
-		if (labelAttribute != null) {
-			return labelAttribute.Label;
+		var typeLabel = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelAttribute));
+		if (typeLabel != null && Language.Exists(typeLabel.key)) {
+			string labelLocalization = Language.GetTextValue(typeLabel.key);
+			if (!string.IsNullOrEmpty(labelLocalization))
+				return labelLocalization;
 		}
-		
+
 		return memberInfo.Name;
+	}
+
+	internal static string GetTooltipKey(PropertyFieldWrapper memberInfo, ModConfig config, /*bool fallbackToClass,*/ bool throwErrors)
+	{
+		// Falls back to Type attribute automatically 
+		var tooltip = GetCustomAttribute<TooltipAttribute>(memberInfo, null, null);
+
+		/*var tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
+		if(tooltip == null && fallbackToClass) // won't throw errors on mod load...
+			tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
+		*/
+
+		if (tooltip != null) {
+			if (tooltip.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(TooltipAttribute)} only accepts localization keys for the 'key' parameter.");
+
+			string tooltipKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
+			if (tooltip.key != null)
+				tooltipKey = tooltip.key;
+			return tooltipKey;
+		}
+		return null;
 	}
 
 	internal static string GetLocalizedTooltip(TooltipAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
 	{
-		// Priority: Localization -> Attribute -> null
+		// Priority: Auto/Provided Key on member -> Key on class -> null
 		var config = Interface.modConfig.pendingConfig;
-		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
-		if (Language.Exists(labelKey)) {
-			string labelLocalization = Language.GetTextValue(labelKey);
-			if (!string.IsNullOrEmpty(labelLocalization))
-				return labelLocalization;
-		}
-
-		if (tooltipAttribute != null) {
-			return tooltipAttribute.Tooltip;
-		}
-
+		string tooltipKey = GetTooltipKey(memberInfo, config, /*fallbackToClass: true,*/ throwErrors: false);
+		if (tooltipKey != null && Language.Exists(tooltipKey))
+			return Language.GetTextValue(tooltipKey);
 		return null;
 	}
 
-	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo)
+	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo, ModConfig config, bool throwErrors)
 	{
-		HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
-		if (header == null)
-			return null;
+		// Priority: Auto/Provided Key on member -> Key on class -> null
+		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
+		if (header != null) {
+			if (header.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys for the 'key' parameter.");
 
-		var config = Interface.modConfig.pendingConfig;
-		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Header");
-		if (Language.Exists(labelKey)) {
-			string labelLocalization = Language.GetTextValue(labelKey);
-			if (!string.IsNullOrEmpty(labelLocalization))
-				header.autoKey = labelKey;
+			if (header.key == null)
+				 header.key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Header");
+			return header;
 		}
+		return null;
+	}
 
-		if (header.Header == null)
-			return null; // [Header] but no auto generated key, such as a non-ModConfig field.
-		return header;
+	internal static string GetModConfigLabelKey(ModConfig config, bool throwErrors)
+	{
+		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
+		var label = (LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute));
+		if (label != null) {
+			if (label.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(LabelAttribute)} only accepts localization keys for the 'key' parameter.");
+
+			labelKey = label.key;
+		}
+		return labelKey;
 	}
 
 	internal static string GetModConfigDisplayName(ModConfig config)
 	{
-		// Priority: Localization -> Attribute -> InternalName (Type.Name)
-		string key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
-		if (Language.Exists(key)) {
-			string displayName = Language.GetTextValue(key);
-			if (!string.IsNullOrEmpty(displayName))
-				return displayName;
-		}
-
-		var label = (LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute));
-		if (label != null) {
-			return label.Label;
-		}
-
+		// Priority: Provided Localization Key -> Auto Localization Key -> InternalName (Type.Name)
+		string labelKey = GetModConfigLabelKey(config, throwErrors: false);
+		if (Language.Exists(labelKey))
+			return Language.GetTextValue(labelKey);
+		
 		return config.Name;
 	}
 }

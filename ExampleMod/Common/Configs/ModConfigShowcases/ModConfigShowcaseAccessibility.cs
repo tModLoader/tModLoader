@@ -50,12 +50,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		// Using Label overrides JsonIgnore for the UI. Use this to display info to the user if needed. The value won't be saved since it is derived from other fields.
 		// Useful for things like displaying sums or calculated relationships.
 		[JsonIgnore]
-		[Label("Ignore With Label")]
+		// TODO: Fix this to work without a Label attribute
 		public float IgnoreWithLabelGetter => AutoProperty + Public;
 
 		// Reference type getters kind of work with the UI. You can experiment with this if you want.
 		[JsonIgnore]
-		[Label("Pair Getter")]
 		public Pair pair2 => pair;
 		public Pair pair;
 
