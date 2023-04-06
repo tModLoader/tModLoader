@@ -303,15 +303,24 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Trim();
 
-			if (!File.Exists(dotnetPath)) {
-				Logging.tML.Debug("Can't find SystemDotnetPath");
-				return null;
+			if (File.Exists(dotnetPath))
+				return dotnetPath;
+
+			Logging.tML.Debug("Can't find dotnet on PATH");
+
+			// Steam might be launched with insufficient PATH (currently known on OSX)
+			var pathsFile = "/etc/paths.d/dotnet";
+			if (File.Exists(pathsFile)) {
+				var contents = File.ReadAllText(pathsFile).Trim();
+				Logging.tML.Debug($"Reading {pathsFile}: {contents}");
+				dotnetPath = contents + "/dotnet";
 			}
 
-			return dotnetPath;
+			if (File.Exists(dotnetPath))
+				return dotnetPath;
 		}
 		catch (Exception e) {
-			Logging.tML.Debug("Finding SystemDotnetPath failed: ", e);
+			Logging.tML.Debug("Finding dotnet on PATH failed: ", e);
 		}
 
 		return null;
