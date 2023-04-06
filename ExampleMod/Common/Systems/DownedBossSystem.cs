@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -108,6 +109,12 @@ namespace ExampleMod.Common.Systems
 			downedMinionBoss = bitArray[0];
 			downedOtherBoss = bitArray[1];
 			*/
+		}
+
+		public override void PopulateDialogueSubstitutions(out Dictionary<string, object> substitutions) {
+			substitutions = new() {
+				{ "MinionBossDefeated", downedMinionBoss }
+			};
 		}
 	}
 }

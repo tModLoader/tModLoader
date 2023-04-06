@@ -156,6 +156,12 @@ namespace ExampleMod.Content.NPCs
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue1"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue2"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue3"));
+
+			var subs = Lang.CreateDialogSubstitutionObject(NPC);
+			LocalizedText bossMessage = Language.GetText("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.MinionBossDialogue");
+			if (bossMessage.CanFormatWith(subs)) {
+				chat.Add(bossMessage.FormatWith(subs));
+			}
 			return chat; // chat is implicitly cast to a string.
 		}
 

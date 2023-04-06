@@ -64,6 +64,8 @@ partial class SystemLoader
 
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
+	private delegate void DelegatePopulateDialogueSubstitutions(out Dictionary<string, object> substitutions);
+
 	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight);
 
 	private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
@@ -155,6 +157,8 @@ partial class SystemLoader
 	private static HookList HookPostDrawTiles = AddHook<Action>(s => s.PostDrawTiles);
 
 	private static HookList HookModifyTimeRate = AddHook<DelegateModifyTimeRate>(s => s.ModifyTimeRate);
+
+	private static HookList HookPopulateDialogueSubstitutions = AddHook<DelegatePopulateDialogueSubstitutions>(s => s.PopulateDialogueSubstitutions);
 
 	private static HookList HookPreWorldGen = AddHook<Action>(s => s.PreWorldGen);
 

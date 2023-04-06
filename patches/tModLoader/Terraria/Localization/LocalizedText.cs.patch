@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,26 @@
+@@ -1,15 +_,27 @@
 +using System;
++using System.Collections.Generic;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
  
@@ -29,6 +30,46 @@
  
  	internal LocalizedText(string key, string text)
  	{
+@@ -22,8 +_,17 @@
+ 		Value = text;
+ 	}
+ 
++	/// <summary>
++	/// Formats this <see cref="LocalizedText"/> using an anonymous type or dictionary. For each property <c>P</c> with value <c>V</c>, any substring in the localized text of form <c>{P}</c> will be replaced with <c>(V ?? "").ToString()</c>.
++	/// <br/> <b>All property names must start with a a letter a-z</b>, followed by any combination of letters, numbers, underscores, and periods.
++	/// <br/> If <paramref name="obj"/> is a <see cref="Dictionary{TKey, TValue}">Dictionary&lt;string, object&gt;</see>, then this function detours to <see cref="FormatWith(Dictionary{string, object})"/>.
++	/// </summary>
++	/// <param name="obj">The set of substitutions.</param>
++	/// <returns>The formatted string.</returns>
+ 	public string FormatWith(object obj)
+ 	{
++		if (obj is Dictionary<string, object> substitutions) { return FormatWith(substitutions); } // #ModdedDialogSubstitutions
++
+ 		string value = Value;
+ 		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+ 		return _substitutionRegex.Replace(value, delegate (Match match) {
+@@ -36,8 +_,21 @@
+ 		});
+ 	}
+ 
++	/// <summary>
++	/// Determines if this <see cref="LocalizedText"/> can be formatted using an anonymous type or a dictionary. A <see cref="LocalizedText"/> can be formatted if:
++	/// <list type="bullet">
++	/// <item>Every substring of the text in form <c>{?Name}</c> has a property <c>Name</c> in <paramref name="obj"/> which is a <see cref="bool"/> with the value <see langword="true"/>.</item>
++	/// <item>Every substring of the text in form <c>{?!Name}</c> has a property <c>Name</c> in <paramref name="obj"/> which is a <see cref="bool"/> with the value <see langword="false"/>.</item>
++	/// <item>Every substring of the text in form <c>{Name}</c> has a property <c>Name</c> in <paramref name="obj"/> which is not <see langword="null"/>.</item>
++	/// </list>
++	/// <br/> If <paramref name="obj"/> is a <see cref="Dictionary{TKey, TValue}">Dictionary&lt;string, object&gt;</see>, then this function detours to <see cref="FormatWith(Dictionary{string, object})"/>.
++	/// </summary>
++	/// <param name="obj">The set of substitutions.</param>
++	/// <returns><see langword="true"/> if all conditions pass, <see langword="false"/> otherwise.</returns>
+ 	public bool CanFormatWith(object obj)
+ 	{
++		if (obj is Dictionary<string, object> substitutions) { return CanFormatWith(substitutions); } // #ModdedDialogSubstitutions
++
+ 		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+ 		foreach (Match item in _substitutionRegex.Matches(Value)) {
+ 			string name = item.Groups[2].ToString();
 @@ -64,9 +_,12 @@
  		return text.Value;
  	}

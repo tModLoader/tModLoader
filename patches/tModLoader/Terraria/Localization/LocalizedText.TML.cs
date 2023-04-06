@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Terraria.Localization;
@@ -95,4 +96,50 @@ public partial class LocalizedText
 	/// <param name="args">The substitution args</param>
 	/// <returns></returns>
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
+
+	/// <summary>
+	/// Formats this <see cref="LocalizedText"/> using a dictionary. For each key-value pair <c>(K, V)</c>, any substring in the localized text of form <c>{K}</c> will be replaced with <c>(V ?? "").ToString()</c>.
+	/// <br/> <b>All property names must start with a a letter a-z</b>, followed by any combination of letters, numbers, underscores, and periods.
+	/// </summary>
+	/// <param name="substitutions">The set of substitutions.</param>
+	/// <returns>The formatted string.</returns>
+	public string FormatWith(Dictionary<string, object> substitutions)
+	{
+		string value = Value;
+		return _substitutionRegex.Replace(value, delegate (Match match) {
+			if (match.Groups[1].Length != 0)
+				return "";
+
+			string name = match.Groups[2].ToString();
+			return substitutions.TryGetValue(name, out object value) ? "" : (value ?? "").ToString();
+		});
+	}
+
+	/// <summary>
+	/// Determines if this <see cref="LocalizedText"/> can be formatted using a dictionary. A <see cref="LocalizedText"/> can be formatted if:
+	/// <list type="bullet">
+	/// <item>Every substring of the text in form <c>{?Name}</c> has a key <c>Name</c> in <paramref name="substitutions"/> which is a <see cref="bool"/> with the value <see langword="true"/>.</item>
+	/// <item>Every substring of the text in form <c>{?!Name}</c> has a key <c>Name</c> in <paramref name="substitutions"/> which is a <see cref="bool"/> with the value <see langword="false"/>.</item>
+	/// <item>Every substring of the text in form <c>{Name}</c> has a key <c>Name</c> in <paramref name="substitutions"/> which is not <see langword="null"/>.</item>
+	/// </list>
+	/// </summary>
+	/// <param name="substitutions">The set of substitutions.</param>
+	/// <returns><see langword="true"/> if all conditions pass, <see langword="false"/> otherwise.</returns>
+	public bool CanFormatWith(Dictionary<string, object> substitutions)
+	{
+		foreach (Match item in _substitutionRegex.Matches(Value)) {
+			string name = item.Groups[2].ToString();
+			if (!substitutions.TryGetValue(name, out object value)) {
+				return false;
+			}
+
+			if (value == null)
+				return false;
+
+			if (item.Groups[1].Length != 0 && (((value as bool?) ?? false) ^ (item.Groups[1].Length == 1)))
+				return false;
+		}
+
+		return true;
+	}
 }

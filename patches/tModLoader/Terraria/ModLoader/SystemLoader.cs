@@ -3,12 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text.RegularExpressions;
+using Terraria.GameInput;
 using Terraria.Graphics;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
-using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -430,6 +431,41 @@ public static partial class SystemLoader
 	{
 		foreach (var system in HookModifyTimeRate.arr) {
 			system.ModifyTimeRate(ref timeRate, ref tileUpdateRate, ref eventUpdateRate);
+		}
+	}
+
+	// Based on LocalizedText._substitutionRegex
+	private static readonly Regex _validKeysForDialogueSubstitutions = new("[a-zA-Z][\\w\\.]*", RegexOptions.Compiled);
+
+	// TODO: Is there a way to warn a modder once that a substitution key is invalid? Should this throw an exception?
+	public static void PopulateDialogueSubstitutions(Dictionary<string, object> substitutions)
+	{
+		// Autoloaded substitutions for keybinds and town NPCs.
+		foreach (ModKeybind keybind in KeybindLoader.modKeybinds.Values) {
+			substitutions.Add($"{keybind.Mod.Name}.InputTrigger_{keybind.Name}", PlayerInput.GenerateInputTag_ForCurrentGamemode(tagForGameplay: true, keybind.FullName));
+		}
+
+		for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) {
+			NPC townNPC = ContentSamples.NpcsByNetId[i];
+			if (townNPC.isLikeATownNPC) {
+				substitutions.Add($"{townNPC.ModNPC.Mod.Name}.{townNPC.ModNPC.Name}", NPC.GetFirstNPCNameOrNull(i));
+			}
+		}
+
+		// Mod substitutions
+		foreach (var system in HookPopulateDialogueSubstitutions.arr) {
+			system.PopulateDialogueSubstitutions(out var newSubstitutions);
+			if (newSubstitutions is null) {
+				continue; // TODO: Warn
+			}
+
+			foreach (var pair in newSubstitutions) {
+				if (!_validKeysForDialogueSubstitutions.IsMatch(pair.Key)) {
+					continue; // TODO: Warn
+				}
+
+				substitutions.Add($"{system.Mod.Name}.{pair.Key}", pair.Value);
+			}
 		}
 	}
 
