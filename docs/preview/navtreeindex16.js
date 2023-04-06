@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"class_pylon_shop_n_p_c.html#a01c77e7e8dc93c418f84b5f123d6c67a":[3,0,979,0],
+"class_pylon_shop_n_p_c.html#a4d2347ce7a7f7d4db62b0a6bd290cc27":[3,0,979,1],
 "class_pylon_shop_n_p_c.html#ab3e43a390e6d9ccdb8d929e44a76964f":[3,0,979,2],
 "class_queen_bee_shader.html":[3,0,980],
 "class_queen_slime_shader.html":[3,0,981],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "class_t_e_food_platter.html#acd418790b6b07d4219772b5f147b39d4":[3,0,1142,2],
 "class_t_e_hat_rack.html":[3,0,1143],
 "class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36":[3,0,1143,3],
-"class_t_e_hat_rack.html#ab8a71d53dc4dbeff086730ece85ab958":[3,0,1143,2],
-"class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac":[3,0,1143,1],
-"class_t_e_hat_rack.html#ad59fe25bc951d91941964f13fdf8c2ca":[3,0,1143,0]
+"class_t_e_hat_rack.html#ab8a71d53dc4dbeff086730ece85ab958":[3,0,1143,2]
 };

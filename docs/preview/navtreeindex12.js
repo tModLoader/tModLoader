@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"class_multiple_exception.html":[3,0,798],
+"class_mushroom_biome.html":[3,0,800],
 "class_mushroom_house_builder.html":[3,0,801],
 "class_music_cue_holder.html":[3,0,802],
 "class_music_i_d.html":[3,0,803],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "class_n_p_c_i_d.html":[3,0,852],
 "class_n_p_c_i_d_1_1_sets.html":[3,0,852,0],
 "class_n_p_c_i_d_1_1_sets.html#a00330581d37514acedb24a24afda2a4f":[3,0,852,0,7],
-"class_n_p_c_i_d_1_1_sets.html#a04ebfeaf9e6bee36b7175079dd1246bf":[3,0,852,0,31],
-"class_n_p_c_i_d_1_1_sets.html#a071cff4b65a52e4f2ab3b52bbbf42dfa":[3,0,852,0,68],
-"class_n_p_c_i_d_1_1_sets.html#a11f7f9f183efc8f962591ee8e977177b":[3,0,852,0,26]
+"class_n_p_c_i_d_1_1_sets.html#a04ebfeaf9e6bee36b7175079dd1246bf":[3,0,852,0,31]
 };

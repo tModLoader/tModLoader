@@ -59,16 +59,16 @@ var NAVTREEINDEX =
 "class_mod_item.html#a3ddfb6794d9708ff8967e4ee5e57d198",
 "class_mod_player.html#a14d39bdf1c86b2c68945dacbf5952290",
 "class_mod_system.html#a0f5ede11b626598484690cc761fe0d49",
-"class_mushroom_house_builder.html",
-"class_n_p_c_i_d_1_1_sets.html#a12faaca6b8de4c8e82470afdcf40c918",
-"class_player.html#abfd68467028ebdd62b53431f1ec3f40b",
-"class_proj_a_i_style_i_d.html#a288970fca2c9c70695bfc0ad07537034",
-"class_pylon_shop_n_p_c.html#ab3e43a390e6d9ccdb8d929e44a76964f",
-"class_t_e_item_frame.html",
-"class_u_i_scrollbar.html",
-"functions_prop_s.html",
-"struct_get_item_settings.html",
-"struct_wall_type_data.html"
+"class_multiple_exception.html",
+"class_n_p_c_i_d_1_1_sets.html#a071cff4b65a52e4f2ab3b52bbbf42dfa",
+"class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9",
+"class_proj_a_i_style_i_d.html#a27a232177235ce48dcb049f1bf91b75e",
+"class_pylon_shop_n_p_c.html#a01c77e7e8dc93c418f84b5f123d6c67a",
+"class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac",
+"class_u_i_resource_pack_selection_menu.html",
+"functions_prop_p.html",
+"struct_game_mode_data.html",
+"struct_virtual_camera.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

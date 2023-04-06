@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"struct_virtual_camera.html":[3,0,1368],
+"struct_void_lens_helper.html":[3,0,1370],
 "struct_wall_type_data.html":[3,0,1377],
 "struct_waterfall_manager_1_1_waterfall_data.html":[3,0,1380,0],
 "struct_well_fed_helper.html":[3,0,1394],

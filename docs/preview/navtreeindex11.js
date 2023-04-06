@@ -222,9 +222,11 @@ var NAVTREEINDEX11 =
 "class_modifiers_1_1_skip_walls.html":[3,0,747,21],
 "class_mods_menu_sort_modes_extensions.html":[3,0,770],
 "class_mono_mod_hooks.html":[3,0,785],
-"class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726":[3,0,785,0],
-"class_mono_mod_hooks.html#a9feb07b175d8d9b2dd42d7b7b62bcc43":[3,0,785,1],
-"class_mono_mod_hooks.html#ab47f0a82fae2c68a518596d75c3899d2":[3,0,785,2],
+"class_mono_mod_hooks.html#a6fbb8b0895665723ec2acf12f5b6594a":[3,0,785,0],
+"class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726":[3,0,785,1],
+"class_mono_mod_hooks.html#a9feb07b175d8d9b2dd42d7b7b62bcc43":[3,0,785,2],
+"class_mono_mod_hooks.html#ab47f0a82fae2c68a518596d75c3899d2":[3,0,785,3],
+"class_mono_mod_hooks.html#ab896e537c21b54ce3f957453e9ef71b6":[3,0,785,4],
 "class_moon_lord_portrait_background_provider_bestiary_info_element.html":[3,0,787],
 "class_moon_lord_progress_bar.html":[3,0,788],
 "class_moon_lord_screen_shader_data.html":[3,0,789],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "class_mount_loader.html#a79e9c501b6a43e3af36f532b614bb8ec":[3,0,794,0],
 "class_mount_loader.html#ae72a118282580739074afb6fc03a1088":[3,0,794,1],
 "class_mount_loader.html#ae9cb6f8f51d3530bd64c286387e0aec6":[3,0,794,4],
-"class_multi_dim_array_serializer.html":[3,0,797],
-"class_multiple_exception.html":[3,0,798],
-"class_mushroom_biome.html":[3,0,800]
+"class_multi_dim_array_serializer.html":[3,0,797]
 };

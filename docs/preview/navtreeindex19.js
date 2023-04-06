@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"functions_prop_p.html":[3,3,3,14],
+"functions_prop_r.html":[3,3,3,15],
 "functions_prop_s.html":[3,3,3,16],
 "functions_prop_t.html":[3,3,3,17],
 "functions_prop_u.html":[3,3,3,18],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_flame_lash_drawer.html":[3,0,367],
 "struct_float_range.html":[3,0,372],
 "struct_frame_event_data.html":[3,0,378],
-"struct_game_animation_segment.html":[3,0,386],
-"struct_game_mode_data.html":[3,0,392],
-"struct_gen_shape_action_pair.html":[3,0,413]
+"struct_game_animation_segment.html":[3,0,386]
 };

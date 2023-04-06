@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"struct_game_mode_data.html":[3,0,392],
+"struct_gen_shape_action_pair.html":[3,0,413],
 "struct_get_item_settings.html":[3,0,416],
 "struct_global_loot.html":[3,0,424],
 "struct_golf_helper_1_1_club_properties.html":[3,0,439,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "struct_u_i_gamepad_helper.html":[3,0,1263],
 "struct_utils_1_1_chase_results.html":[3,0,1358,0],
 "struct_vertex_colors.html":[3,0,1364],
-"struct_vertical64_bit_strips.html":[3,0,1366],
-"struct_virtual_camera.html":[3,0,1368],
-"struct_void_lens_helper.html":[3,0,1370]
+"struct_vertical64_bit_strips.html":[3,0,1366]
 };
