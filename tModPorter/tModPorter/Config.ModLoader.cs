@@ -521,5 +521,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
+
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Add", to: "Add", newType: "Terraria.ModLoader.MonoModHooks");
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Modify", to: "Modify", newType: "Terraria.ModLoader.MonoModHooks");
 	}
 }

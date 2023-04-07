@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -19,6 +20,14 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract partial class ModSystem : ModType
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, s => s.SaveWorldData, s => s.LoadWorldData);
+		LoaderUtils.MustOverrideTogether(this, s => s.NetSend, s => s.NetReceive);
+	}
+
 	protected override void Register()
 	{
 		SystemLoader.Add(this);

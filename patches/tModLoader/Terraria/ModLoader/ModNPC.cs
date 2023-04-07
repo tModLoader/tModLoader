@@ -81,8 +81,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModNPC>.Register(this);
-		NPC.type = NPCLoader.ReserveNPCID();
-		NPCLoader.npcs.Add(this);
+		NPC.type = NPCLoader.Register(this);
 
 		Type type = GetType();
 		var autoloadHead = type.GetAttribute<AutoloadHead>();
@@ -97,10 +96,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
-		NPCLoader.SetDefaults(NPC, false);
+		NPCLoader.SetDefaults(NPC, createModNPC: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		NPCID.Search.Add(FullName, Type);
 	}
 

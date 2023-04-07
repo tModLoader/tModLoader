@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader.Core;
 
-public class HookList<T> where T : class
+public class HookList<T> where T : class, IIndexed
 {
 	// Don't change a single line without performance testing and checking the disassembly. As of NET 6.0.0, this implementation is on par with hand-coding C#
 	// Disassembly checked using Relyze Desktop 3.3.0
@@ -74,6 +74,7 @@ public class HookList<T> where T : class
 	public readonly MethodInfo method;
 
 	private int[] indices = Array.Empty<int>();
+	private T[] defaultInstances = Array.Empty<T>();
 
 	public HookList(MethodInfo method)
 	{
@@ -88,9 +89,9 @@ public class HookList<T> where T : class
 
 	public FilteredSpanEnumerator<T> Enumerate(ReadOnlySpan<T> instances)
 		=> new(instances, indices);
-
-	public FilteredSpanEnumerator<T> Enumerate(List<T> instances)
-		=> Enumerate(CollectionsMarshal.AsSpan(instances));
+	
+	public FilteredSpanEnumerator<T> Enumerate(IEntityWithInstances<T> entity)
+		=> Enumerate(entity.Instances);
 
 	public IEnumerable<T> EnumerateSlow(IReadOnlyList<T> instances)
 	{
@@ -98,9 +99,13 @@ public class HookList<T> where T : class
 			yield return instances[i];
 	}
 
-	public void Update<U>(IList<U> instances) where U : IIndexed
+	// Sadly, returning ReadOnlySpan<T>.Enumerator from a GetEnumerator() method doesn't bring the same performance
+	public ReadOnlySpan<T> Enumerate() => defaultInstances;
+
+	public void Update(IReadOnlyList<T> allDefaultInstances)
 	{
-		indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
+		defaultInstances = allDefaultInstances.WhereMethodIsOverridden(method).ToArray();
+		indices = defaultInstances.Select(g => (int)g.Index).ToArray();
 	}
 
 	public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
@@ -111,7 +116,4 @@ public static class HookList
 {
 	public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType
 		=> hookList.Enumerate(entity.Globals.array);
-	
-	public static FilteredSpanEnumerator<T> Enumerate<T>(this HookList<T> hookList, IEntityWithInstances<T> entity) where T : class, IIndexed
-		=> hookList.Enumerate(entity.Instances);
 }

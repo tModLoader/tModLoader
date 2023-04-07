@@ -79,7 +79,7 @@ public static class EquipLoader
 		Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(ArmorIDs), true);
+		LoaderUtils.ResetStaticMembers(typeof(ArmorIDs));
 		WingStatsInitializer.Load();
 
 		foreach (EquipType type in EquipTypes) {
