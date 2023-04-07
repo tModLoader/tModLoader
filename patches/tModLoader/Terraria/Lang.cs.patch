@@ -1,11 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
-@@ -1,4 +_,8 @@
+@@ -1,4 +_,5 @@
  using System;
-+using System.Collections;
 +using System.Collections.Generic;
-+using System.ComponentModel;
-+using System.Drawing;
  using System.Linq;
  using System.Reflection;
  using Terraria.DataStructures;
@@ -53,7 +50,7 @@
 +	public static Dictionary<string, object> CreateDialogSubstitutionObject(NPC npc = null) // #ModdedDialogSubstitutions: Changed return type from object to Dictionary<string, object>
  	{
 -		return new {
-+		object oldSubstitutions =  new {
++		object oldSubstitutions = new {
  			Nurse = NPC.GetFirstNPCNameOrNull(18),
  			Merchant = NPC.GetFirstNPCNameOrNull(17),
  			ArmsDealer = NPC.GetFirstNPCNameOrNull(19),
