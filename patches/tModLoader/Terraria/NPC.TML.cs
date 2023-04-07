@@ -32,7 +32,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		=> GlobalType.GetGlobal(globalNPCs, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
-	public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC
+	public bool TryGetGlobalNPC<T>(out T result) where T : GlobalNPC
 		=> GlobalType.TryGetGlobal(globalNPCs, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
