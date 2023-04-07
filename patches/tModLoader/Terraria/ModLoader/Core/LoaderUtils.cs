@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Core;
 public static class LoaderUtils
 {
 	/// <summary> Calls static constructors on the provided type and, optionally, its nested types. </summary>
-	public static void ResetStaticMembers(Type type, bool recursive)
+	public static void ResetStaticMembers(Type type, bool recursive = true)
 	{
 #if NETCORE
 		var typeInitializer = type.TypeInitializer;

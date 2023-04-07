@@ -81,7 +81,7 @@ public static class WallLoader
 		Array.Resize(ref TextureAssets.Wall, nextWall);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(WallID), true);
+		LoaderUtils.ResetStaticMembers(typeof(WallID));
 
 		//Etc
 		Array.Resize(ref Main.wallHouse, nextWall);

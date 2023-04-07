@@ -54,7 +54,7 @@ public static class PrefixLoader
 	internal static void ResizeArrays()
 	{
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(PrefixID), true);
+		LoaderUtils.ResetStaticMembers(typeof(PrefixID));
 
 		//Etc
 		Array.Resize(ref Lang.prefix, PrefixCount);

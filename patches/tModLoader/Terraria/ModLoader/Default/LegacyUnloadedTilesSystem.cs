@@ -20,6 +20,11 @@ internal partial class LegacyUnloadedTilesSystem : ModSystem
 		converted.Clear();
 	}
 
+	public override void SaveWorldData(TagCompound tag)
+	{
+		// Nothing to do, system is legacy
+	}
+
 	public override void LoadWorldData(TagCompound tag)
 	{
 		foreach (var infoTag in tag.GetList<TagCompound>("list")) {

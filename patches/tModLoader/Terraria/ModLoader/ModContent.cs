@@ -1,12 +1,9 @@
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.States;
@@ -22,7 +19,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Initializers;
 using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
@@ -530,7 +526,7 @@ public static class ModContent
 		NPCHeadLoader.ResizeAndFillArrays();
 		MountLoader.ResizeArrays();
 		BuffLoader.ResizeArrays();
-		PlayerLoader.RebuildHooks();
+		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 

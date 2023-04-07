@@ -58,16 +58,14 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModProjectile>.Register(this);
-		Projectile.type = ProjectileLoader.ReserveProjectileID();
-		ProjectileLoader.projectiles.Add(this);
+		Projectile.type = ProjectileLoader.Register(this);
 	}
 
 	public sealed override void SetupContent()
 	{
-		ProjectileLoader.SetDefaults(Projectile, false);
+		ProjectileLoader.SetDefaults(Projectile, createModProjectile: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		ProjectileID.Search.Add(FullName, Type);
 	}
 

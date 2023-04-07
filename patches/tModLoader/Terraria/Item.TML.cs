@@ -16,9 +16,32 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	public ModItem ModItem { get; internal set; }
 
+#region Globals
 	internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
 	public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
+
+	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="IndexOutOfRangeException"/>
+	public T GetGlobalItem<T>() where T : GlobalItem
+		=> GlobalType.GetGlobal<GlobalItem, T>(globalItems);
+
+	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="NullReferenceException"/>
+	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
+		=> GlobalType.GetGlobal(globalItems, baseInstance);
+
+	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
+	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
+		=> GlobalType.TryGetGlobal(globalItems, out result);
+
+	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
+	/// <returns> Whether or not the requested instance has been found. </returns>
+	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
+		=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
+#endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
@@ -104,27 +127,6 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		get => _armorPenetration;
 		set => _armorPenetration = Math.Max(0, value);
 	}
-
-	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalItem<T>() where T : GlobalItem
-		=> GlobalType.GetGlobal<GlobalItem, T>(globalItems);
-
-	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="NullReferenceException"/>
-	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-		=> GlobalType.GetGlobal(globalItems, baseInstance);
-
-	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
-	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, out result);
-
-	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
-	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
 
 	public TagCompound SerializeData() => ItemIO.Save(this);
 

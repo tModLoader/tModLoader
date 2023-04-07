@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -12,10 +13,15 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, g => g.SendExtraAI, g => g.ReceiveExtraAI);
+	}
+
 	protected sealed override void Register()
 	{
-		ProjectileLoader.VerifyGlobalProjectile(this);
-
 		ModTypeLookup<GlobalProjectile>.Register(this);
 
 		Index = (ushort)ProjectileLoader.globalProjectiles.Count;

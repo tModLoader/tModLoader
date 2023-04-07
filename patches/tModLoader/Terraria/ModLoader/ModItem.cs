@@ -66,10 +66,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 		ModTypeLookup<ModItem>.Register(this);
 
-		Item.ResetStats(ItemLoader.ReserveItemID());
+		Item.ResetStats(ItemLoader.Register(this));
 		Item.ModItem = this;
-
-		ItemLoader.items.Add(this);
 
 		var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 		if (autoloadEquip != null) {
@@ -83,7 +81,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
-		ItemLoader.SetDefaults(Item, false);
+		ItemLoader.SetDefaults(Item, createModItem: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
 		ItemID.Search.Add(FullName, Type);
