@@ -635,14 +635,14 @@
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModNPC = ModNPC;
-+		var originalGlobals = globalNPCs;
++		var originalGlobals = _globals;
 +
 +		SetDefaultsKeepPlayerInteraction(Type);
 +
 +		type = originalType;
 +		netID = originalNetID;
 +		ModNPC = originalModNPC;
-+		globalNPCs = originalGlobals;
++		_globals = originalGlobals;
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
@@ -654,7 +654,7 @@
 +		ShowNameOnHover = true;
 +		HideStrikeDamage = false;
 +		BossBar = null;
-+		globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
++		_globals = null;
 +
  		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  		honeyMovementSpeed = 0.25f;

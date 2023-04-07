@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
+using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -27,8 +27,6 @@ public static class NPCLoader
 {
 	public static int NPCCount { get; private set; } = NPCID.Count;
 	internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
-
-	internal static readonly List<GlobalNPC> globalNPCs = new();
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 	/// <summary>
 	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
@@ -47,7 +45,6 @@ public static class NPCLoader
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
-		hook.Update(globalNPCs);
 		modHooks.Add(hook);
 		return hook;
 	}
@@ -70,6 +67,13 @@ public static class NPCLoader
 
 	internal static void ResizeArrays(bool unloading)
 	{
+		if (!unloading)
+			GlobalList<GlobalNPC>.FinishLoading();
+
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
+		}
+
 		// Textures
 		Array.Resize(ref TextureAssets.Npc, NPCCount);
 
@@ -99,10 +103,6 @@ public static class NPCLoader
 			Main.npcFrameCount[k] = 1;
 			Lang._npcNameCache[k] = LocalizedText.Empty;
 		}
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update(globalNPCs);
-		}
 	}
 
 	internal static void FinishSetup()
@@ -116,9 +116,12 @@ public static class NPCLoader
 	{
 		NPCCount = NPCID.Count;
 		npcs.Clear();
-		globalNPCs.Clear();
+		GlobalList<GlobalNPC>.Reset();
 		bannerToItem.Clear();
 		modHooks.Clear();
+
+		if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
+			TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
 	}
 
 	internal static bool IsModNPC(NPC npc)
@@ -140,9 +143,7 @@ public static class NPCLoader
 			}
 		}
 
-		LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, () => {
-			npc.ModNPC?.SetDefaults();
-		});
+		LoaderUtils.InstantiateGlobals(npc, ref npc._globals, static n => n.ModNPC?.SetDefaults());
 
 		foreach (var g in HookSetDefaults.Enumerate(npc)) {
 			g.SetDefaults(npc);

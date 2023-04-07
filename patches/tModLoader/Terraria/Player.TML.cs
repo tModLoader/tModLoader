@@ -64,9 +64,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
-	public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
+	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
-	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);
+	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;
 
 	public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 

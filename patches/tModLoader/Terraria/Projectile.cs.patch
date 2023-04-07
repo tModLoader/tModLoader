@@ -334,13 +334,13 @@
 +	{
 +		int originalType = type;
 +		var originalModProjectile = ModProjectile;
-+		var originalGlobals = globalProjectiles;
++		var originalGlobals = _globals;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		ModProjectile = originalModProjectile;
-+		globalProjectiles = originalGlobals;
++		_globals = originalGlobals;
 +
 +		int num = ProjectileID.Sets.TrailCacheLength[type];
 +		if (num != oldPos.Length) {
@@ -361,7 +361,7 @@
  	{
 +		// TML fields:
 +		ModProjectile = null;
-+		globalProjectiles = new Instanced<GlobalProjectile>[0];
++		_globals = null;
 +		DamageType = DamageClass.Default;
 +		ArmorPenetration = 0;
 +		CritChance = 0;

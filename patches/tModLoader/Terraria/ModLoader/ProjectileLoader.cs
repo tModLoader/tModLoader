@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalProjectile>;
+using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalProjectile>;
 
 namespace Terraria.ModLoader;
 
@@ -22,8 +22,6 @@ public static class ProjectileLoader
 {
 	public static int ProjectileCount { get; private set; } = ProjectileID.Count;
 	private static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
-
-	internal static readonly List<GlobalProjectile> globalProjectiles = new();
 
 	private static readonly List<HookList> hooks = new();
 	private static readonly List<HookList> modHooks = new();
@@ -37,7 +35,6 @@ public static class ProjectileLoader
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
-		hook.Update(globalProjectiles);
 		modHooks.Add(hook);
 		return hook;
 	}
@@ -58,8 +55,15 @@ public static class ProjectileLoader
 		return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;
 	}
 
-	internal static void ResizeArrays()
+	internal static void ResizeArrays(bool unloading)
 	{
+		if (!unloading)
+			GlobalList<GlobalProjectile>.FinishLoading();
+
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
+		}
+
 		//Textures
 		Array.Resize(ref TextureAssets.Projectile, ProjectileCount);
 
@@ -83,10 +87,6 @@ public static class ProjectileLoader
 		for (int i = 0; i < ProjectileCount; i++) {
 			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
 		}
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update(globalProjectiles);
-		}
 	}
 
 	internal static void FinishSetup()
@@ -100,7 +100,7 @@ public static class ProjectileLoader
 	{
 		ProjectileCount = ProjectileID.Count;
 		projectiles.Clear();
-		globalProjectiles.Clear();
+		GlobalList<GlobalProjectile>.Reset();
 		modHooks.Clear();
 	}
 
@@ -117,9 +117,7 @@ public static class ProjectileLoader
 			projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 		}
 
-		LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, () => {
-			projectile.ModProjectile?.SetDefaults();
-		});
+		LoaderUtils.InstantiateGlobals(projectile, ref projectile._globals, static e => e.ModProjectile?.SetDefaults());
 
 		foreach (var g in HookSetDefaults.Enumerate(projectile)) {
 			g.SetDefaults(projectile);

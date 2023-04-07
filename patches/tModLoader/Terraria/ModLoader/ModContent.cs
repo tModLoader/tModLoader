@@ -453,8 +453,6 @@ public static class ModContent
 
 		NPCLoader.Unload();
 		NPCHeadLoader.Unload();
-		if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
-			TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
 
 		BossBarLoader.Unload();
 		PlayerLoader.Unload();
@@ -521,7 +519,7 @@ public static class ModContent
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
-		ProjectileLoader.ResizeArrays();
+		ProjectileLoader.ResizeArrays(unloading);
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();
 		MountLoader.ResizeArrays();

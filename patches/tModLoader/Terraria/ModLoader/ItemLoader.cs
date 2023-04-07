@@ -16,7 +16,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalItem>;
+using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalItem>;
 
 namespace Terraria.ModLoader;
 
@@ -28,11 +28,10 @@ public static class ItemLoader
 	public static int ItemCount { get; private set; } = ItemID.Count;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
-	internal static readonly List<GlobalItem> globalItems = new();
-	internal static readonly int vanillaQuestFishCount = 41;
-
 	private static readonly List<HookList> hooks = new List<HookList>();
 	private static readonly List<HookList> modHooks = new List<HookList>();
+
+	internal static readonly int vanillaQuestFishCount = 41;
 
 	private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) where F : Delegate
 	{
@@ -43,7 +42,6 @@ public static class ItemLoader
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
-		hook.Update(globalItems);
 		modHooks.Add(hook);
 		return hook;
 	}
@@ -64,6 +62,13 @@ public static class ItemLoader
 
 	internal static void ResizeArrays(bool unloading)
 	{
+		if (!unloading)
+			GlobalList<GlobalItem>.FinishLoading();
+
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
+		}
+
 		//Textures
 		Array.Resize(ref TextureAssets.Item, ItemCount);
 		Array.Resize(ref TextureAssets.ItemFlame, ItemCount);
@@ -101,10 +106,6 @@ public static class ItemLoader
 			Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
 				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
 				.ToArray();
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update(globalItems);
-		}
 	}
 
 	internal static void FinishSetup()
@@ -143,7 +144,7 @@ public static class ItemLoader
 	{
 		ItemCount = ItemID.Count;
 		items.Clear();
-		globalItems.Clear();
+		GlobalList<GlobalItem>.Reset();
 		modHooks.Clear();
 	}
 
@@ -169,9 +170,9 @@ public static class ItemLoader
 		if (IsModItem(item.type) && createModItem)
 			item.ModItem = GetItem(item.type).NewInstance(item);
 
-		LoaderUtils.InstantiateGlobals(item, globalItems, ref item.globalItems, () => {
-			item.ModItem?.AutoDefaults();
-			item.ModItem?.SetDefaults();
+		LoaderUtils.InstantiateGlobals(item, ref item._globals, static i => {
+			i.ModItem?.AutoDefaults();
+			i.ModItem?.SetDefaults();
 		});
 
 		foreach (var g in HookSetDefaults.Enumerate(item)) {

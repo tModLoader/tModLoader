@@ -1740,14 +1740,14 @@
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModItem = ModItem;
-+		var originalGlobals = globalItems;
++		var originalGlobals = _globals;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		netID = originalNetID;
 +		ModItem = originalModItem;
-+		globalItems = originalGlobals;
++		_globals = originalGlobals;
 +	}
 +
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
@@ -1821,7 +1821,7 @@
 +
 +		// TML field initialization:
 +		ModItem = null;
-+		globalItems = new Instanced<GlobalItem>[0];
++		_globals = null;
 +		StatsModifiedBy = new();
 +		AllowReforgeForStackableItem = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
@@ -2098,7 +2098,7 @@
  
  					if (num2 > num3) {
  						num2 = num3;
-@@ -49266,10 +_,32 @@
+@@ -49266,10 +_,30 @@
  		}
  	}
  
@@ -2114,9 +2114,7 @@
 +		Item newItem = (Item)MemberwiseClone();
 +
 +		newItem.ModItem = ModItem?.Clone(newItem);
-+		newItem.globalItems = globalItems
-+			.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(this, newItem)))
-+			.ToArray();
++		newItem._globals = _globals?.Select(g => g?.Clone(this, newItem)).ToArray();
 +
 +		return newItem;
 +	}
@@ -2168,7 +2166,7 @@
  		mountType = -1;
 +
 +		ModItem = null;
-+		globalItems = new Instanced<GlobalItem>[0];
++		_globals = null;
  	}
  
  	public void OnPurchase(Item item)

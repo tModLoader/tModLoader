@@ -29,7 +29,6 @@ public static class PlayerLoader
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
-		hook.Update(players);
 		modHooks.Add(hook);
 		return hook;
 	}

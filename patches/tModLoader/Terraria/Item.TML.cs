@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria;
@@ -17,30 +18,30 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public ModItem ModItem { get; internal set; }
 
 #region Globals
-	internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
-
-	public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
+	internal GlobalItem[] _globals;
+	public RefReadOnlyArray<GlobalItem> EntityGlobals => _globals;
+	public EntityGlobalsEnumerator<GlobalItem> Globals => new(this);
 
 	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
 	public T GetGlobalItem<T>() where T : GlobalItem
-		=> GlobalType.GetGlobal<GlobalItem, T>(globalItems);
+		=> GlobalItem.GetGlobal<T>(EntityGlobals);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-		=> GlobalType.GetGlobal(globalItems, baseInstance);
+		=> GlobalItem.GetGlobal<T>(EntityGlobals, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, out result);
+		=> GlobalItem.TryGetGlobal(EntityGlobals, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
+		=> GlobalItem.TryGetGlobal(EntityGlobals, baseInstance, out result);
 #endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
