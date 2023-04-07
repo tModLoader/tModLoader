@@ -1244,7 +1244,7 @@
  				knockBack = 6.5f;
  				melee = true;
  				value = sellPrice(0, 3);
-+				ChangePlayerDirectionOnShoot = false;
++				ChangePlayerDirectionOnShoot = false;// Added by tML
  				break;
  			case 724:
  				autoReuse = true;
@@ -1288,7 +1288,7 @@
  				rare = 2;
  				UseSound = SoundID.Item64;
  				mech = true;
-+				ChangePlayerDirectionOnShoot = false;
++				ChangePlayerDirectionOnShoot = false;// Added by tML
  				return;
  			case 3612:
  				useStyle = 1;
