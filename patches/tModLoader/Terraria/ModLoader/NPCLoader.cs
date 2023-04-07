@@ -68,11 +68,7 @@ public static class NPCLoader
 	internal static void ResizeArrays(bool unloading)
 	{
 		if (!unloading)
-			GlobalList<GlobalNPC>.FinishLoading();
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update();
-		}
+			GlobalList<GlobalNPC>.FinishLoading(NPCCount);
 
 		// Textures
 		Array.Resize(ref TextureAssets.Npc, NPCCount);
@@ -107,8 +103,20 @@ public static class NPCLoader
 
 	internal static void FinishSetup()
 	{
+		var temp = new NPC();
+		GlobalLoaderUtils<GlobalNPC, NPC>.BuildTypeLookups(type => temp.SetDefaults(type));
+		UpdateHookLists();
+		GlobalTypeLookups<GlobalNPC>.LogStats();
+
 		foreach (ModNPC npc in npcs) {
 			Lang._npcNameCache[npc.Type] = npc.DisplayName;
+		}
+	}
+
+	private static void UpdateHookLists()
+	{
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
 		}
 	}
 
@@ -119,6 +127,7 @@ public static class NPCLoader
 		GlobalList<GlobalNPC>.Reset();
 		bannerToItem.Clear();
 		modHooks.Clear();
+		UpdateHookLists();
 
 		if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
 			TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
@@ -128,8 +137,6 @@ public static class NPCLoader
 	{
 		return npc.type >= NPCID.Count;
 	}
-
-	private static HookList HookSetDefaults = AddHook<Action<NPC>>(g => g.SetDefaults);
 
 	internal static void SetDefaults(NPC npc, bool createModNPC = true)
 	{
@@ -143,11 +150,7 @@ public static class NPCLoader
 			}
 		}
 
-		LoaderUtils.InstantiateGlobals(npc, ref npc._globals, static n => n.ModNPC?.SetDefaults());
-
-		foreach (var g in HookSetDefaults.Enumerate(npc)) {
-			g.SetDefaults(npc);
-		}
+		GlobalLoaderUtils<GlobalNPC, NPC>.SetDefaults(npc, ref npc._globals, static n => n.ModNPC?.SetDefaults());
 	}
 
 	private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
@@ -1145,7 +1148,7 @@ public static class NPCLoader
 
 	public static void ModifyShop(NPCShop shop)
 	{
-		foreach (var g in HookModifyShop.Enumerate()) {
+		foreach (var g in HookModifyShop.Enumerate(shop.NpcType)) {
 			g.ModifyShop(shop);
 		}
 	}
@@ -1156,7 +1159,7 @@ public static class NPCLoader
 	public static void ModifyActiveShop(NPC npc, string shopName, Item[] shopContents)
 	{
 		GetNPC(npc.type)?.ModifyActiveShop(shopName, shopContents);
-		foreach (var g in HookModifyActiveShop.Enumerate()) {
+		foreach (var g in HookModifyActiveShop.Enumerate(npc)) {
 			g.ModifyActiveShop(npc, shopName, shopContents);
 		}
 	}

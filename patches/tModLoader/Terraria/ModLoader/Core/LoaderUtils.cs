@@ -64,29 +64,6 @@ public static class LoaderUtils
 			throw new MultipleException(exceptions);
 	}
 
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ref TGlobal[] entityGlobals, Action<TEntity> midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> where TEntity : IEntityWithGlobals<TGlobal>
-	{
-		var globalsWithPerEntitySlots = GlobalList<TGlobal>.SlotPerEntityGlobals;
-		entityGlobals = new TGlobal[globalsWithPerEntitySlots.Length];
-
-		InstantiateGlobals<TGlobal, TEntity>(entity, globalsWithPerEntitySlots, entityGlobals, late: false);
-		midInstantiationAction(entity);
-		InstantiateGlobals<TGlobal, TEntity>(entity, globalsWithPerEntitySlots, entityGlobals, late: true);
-	}
-
-	private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globalsWithPerEntitySlots, Span<TGlobal> entityGlobals, bool late) where TGlobal : GlobalType<TEntity, TGlobal> where TEntity : IEntityWithGlobals<TGlobal>
-	{
-		for (int i = 0; i < entityGlobals.Length; i++) {
-			ref TGlobal slot = ref entityGlobals[i];
-			if (slot != null)
-				continue;
-
-			var g = globalsWithPerEntitySlots[i];
-			if (g.AppliesToEntity(entity, late))
-				slot = g.InstancePerEntity ? g.NewInstance(entity) : g;
-		}
-	}
-
 	public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args)
 	{
 		var methodInfo = type.GetMethod(method, args);

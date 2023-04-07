@@ -63,11 +63,7 @@ public static class ItemLoader
 	internal static void ResizeArrays(bool unloading)
 	{
 		if (!unloading)
-			GlobalList<GlobalItem>.FinishLoading();
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update();
-		}
+			GlobalList<GlobalItem>.FinishLoading(ItemCount);
 
 		//Textures
 		Array.Resize(ref TextureAssets.Item, ItemCount);
@@ -110,6 +106,10 @@ public static class ItemLoader
 
 	internal static void FinishSetup()
 	{
+		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups(new Item().SetDefaults);
+		UpdateHookLists();
+		GlobalTypeLookups<GlobalItem>.LogStats();
+
 		foreach (ModItem item in items) {
 			Lang._itemNameCache[item.Type] = item.DisplayName;
 			Lang._itemTooltipCache[item.Type] = ItemTooltip.FromLocalization(item.Tooltip);
@@ -117,6 +117,13 @@ public static class ItemLoader
 		}
 
 		ValidateDropsSet();
+	}
+
+	private static void UpdateHookLists()
+	{
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
+		}
 	}
 
 	internal static void ValidateDropsSet()
@@ -146,6 +153,7 @@ public static class ItemLoader
 		items.Clear();
 		GlobalList<GlobalItem>.Reset();
 		modHooks.Clear();
+		UpdateHookLists();
 	}
 
 	internal static bool IsModItem(int index)
@@ -163,21 +171,15 @@ public static class ItemLoader
 	internal static bool MagicPrefix(Item item)
 		=> item.ModItem != null && item.ModItem.MagicPrefix();
 
-	private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
-
 	internal static void SetDefaults(Item item, bool createModItem = true)
 	{
 		if (IsModItem(item.type) && createModItem)
 			item.ModItem = GetItem(item.type).NewInstance(item);
 
-		LoaderUtils.InstantiateGlobals(item, ref item._globals, static i => {
+		GlobalLoaderUtils<GlobalItem, Item>.SetDefaults(item, ref item._globals, static i => {
 			i.ModItem?.AutoDefaults();
 			i.ModItem?.SetDefaults();
 		});
-
-		foreach (var g in HookSetDefaults.Enumerate(item)) {
-			g.SetDefaults(item);
-		}
 	}
 
 	private static HookList HookOnSpawn = AddHook<Action<Item, IEntitySource>>(g => g.OnSpawn);
@@ -1958,7 +1960,7 @@ public static class ItemLoader
 			}
 		}
 
-		foreach (var g in HookHoldoutOffset.Enumerate()) {
+		foreach (var g in HookHoldoutOffset.Enumerate(type)) {
 			Vector2? modOffset = g.HoldoutOffset(type);
 
 			if (modOffset.HasValue) {
@@ -2063,7 +2065,7 @@ public static class ItemLoader
 		if (modItem != null)
 			notAvailable |= !modItem.IsAnglerQuestAvailable();
 
-		foreach (var g in HookIsAnglerQuestAvailable.Enumerate()) {
+		foreach (var g in HookIsAnglerQuestAvailable.Enumerate(itemID)) {
 			notAvailable |= !g.IsAnglerQuestAvailable(itemID);
 		}
 	}
@@ -2077,7 +2079,7 @@ public static class ItemLoader
 		string catchLocation = "";
 		GetItem(type)?.AnglerQuestChat(ref chat, ref catchLocation);
 
-		foreach (var g in HookAnglerChat.Enumerate()) {
+		foreach (var g in HookAnglerChat.Enumerate(type)) {
 			g.AnglerChat(type, ref chat, ref catchLocation);
 		}
 

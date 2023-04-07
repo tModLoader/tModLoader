@@ -18,6 +18,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	public ModProjectile ModProjectile { get; internal set; }
 
 #region Globals
+	int IEntityWithGlobals<GlobalProjectile>.Type => type;
 	internal GlobalProjectile[] _globals;
 	public RefReadOnlyArray<GlobalProjectile> EntityGlobals => _globals;
 	public EntityGlobalsEnumerator<GlobalProjectile> Globals => new(this);
@@ -26,22 +27,22 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
 	public T GetGlobalProjectile<T>() where T : GlobalProjectile
-		=> GlobalProjectile.GetGlobal<T>(EntityGlobals);
+		=> GlobalProjectile.GetGlobal<T>(type, EntityGlobals);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
-		=> GlobalProjectile.GetGlobal(EntityGlobals, baseInstance);
+		=> GlobalProjectile.GetGlobal(type, EntityGlobals, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
 	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
-		=> GlobalProjectile.TryGetGlobal(EntityGlobals, out result);
+		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
-		=> GlobalProjectile.TryGetGlobal(EntityGlobals, baseInstance, out result);
+		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
 #endregion
 
 	/// <summary>

@@ -9,7 +9,15 @@ namespace Terraria.ModLoader;
 
 public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<TGlobal>
 {
+	/// <summary>
+	/// Index of this global in the list of all globals of the same type, in registration order
+	/// </summary>
 	public short StaticIndex { get; internal set; }
+
+	/// <summary>
+	/// Index of this global in a <see cref="IEntityWithGlobals{TGlobal}.EntityGlobals"/> array <br/>
+	/// -1 if this global does not have a <see cref="SlotPerEntity"/>
+	/// </summary>
 	public short PerEntityIndex { get; internal set; }
 
 	/// <summary>
@@ -25,6 +33,11 @@ public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<T
 	/// Return true if you need to store information (have non-static fields).
 	/// </summary>
 	public virtual bool InstancePerEntity => false;
+
+	/// <summary>
+	/// Whether this global applies to some entities but not others
+	/// </summary>
+	public abstract bool ConditionallyAppliesToEntities { get; }
 
 	protected override void ValidateType()
 	{
@@ -44,34 +57,36 @@ public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<T
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static TResult GetGlobal<TResult>(ReadOnlySpan<TGlobal> entityGlobals, TResult baseInstance) where TResult : TGlobal
-		=> TryGetGlobal(entityGlobals, baseInstance, out TResult result) ? result : throw new KeyNotFoundException(baseInstance.FullName);
+	public static TResult GetGlobal<TResult>(int entityType, ReadOnlySpan<TGlobal> entityGlobals, TResult baseInstance) where TResult : TGlobal
+		=> TryGetGlobal(entityType, entityGlobals, baseInstance, out TResult result) ? result : throw new KeyNotFoundException(baseInstance.FullName);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static TResult GetGlobal<TResult>(ReadOnlySpan<TGlobal> entityGlobals) where TResult : TGlobal
-		=> TryGetGlobal(entityGlobals, out TResult result) ? result : throw new KeyNotFoundException(typeof(TResult).FullName);
+	public static TResult GetGlobal<TResult>(int entityType, ReadOnlySpan<TGlobal> entityGlobals) where TResult : TGlobal
+		=> TryGetGlobal(entityType, entityGlobals, out TResult result) ? result : throw new KeyNotFoundException(typeof(TResult).FullName);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool TryGetGlobal<TResult>(ReadOnlySpan<TGlobal> entityGlobals, TResult baseInstance, out TResult result) where TResult : TGlobal
+	public static bool TryGetGlobal<TResult>(int entityType, ReadOnlySpan<TGlobal> entityGlobals, TResult baseInstance, out TResult result) where TResult : TGlobal
 	{
 		var slot = baseInstance.PerEntityIndex;
 		if (slot >= 0) {
 			result = (TResult)entityGlobals[slot];
 			return result != null;
 		}
-		result = baseInstance;
-		return true;
+		else if (GlobalTypeLookups<TGlobal>.AppliesToType(baseInstance, entityType)) {
+			result = baseInstance;
+			return true;
+		}
+		result = null;
+		return false;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool TryGetGlobal<TResult>(ReadOnlySpan<TGlobal> entityGlobals, out TResult result) where TResult : TGlobal
-		=> TryGetGlobal(entityGlobals, ModContent.GetInstance<TResult>(), out result);
+	public static bool TryGetGlobal<TResult>(int entityType, ReadOnlySpan<TGlobal> entityGlobals, out TResult result) where TResult : TGlobal
+		=> TryGetGlobal(entityType, entityGlobals, ModContent.GetInstance<TResult>(), out result);
 }
 
 public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where TGlobal : GlobalType<TEntity, TGlobal> where TEntity : IEntityWithGlobals<TGlobal>
 {
-	public override bool SlotPerEntity => base.SlotPerEntity || LoaderUtils.HasOverride(this, m => (Func<TEntity, bool, bool>)m.AppliesToEntity);
-
 	private bool? _isCloneable;
 	/// <summary>
 	/// Whether or not this type is cloneable. Cloning is supported if<br/>
@@ -85,8 +100,18 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	/// </summary>
 	protected virtual bool CloneNewInstances => false;
 
+	private bool? _conditionallyAppliesToEntities;
 	/// <summary>
-	/// Use this to control whether or not this global should be associated with the provided entity instance.
+	/// Whether this global applies to some entities but not others. <br/>
+	/// True if the type overrides <see cref="AppliesToEntity(TEntity, bool)"/>
+	/// </summary>
+	public sealed override bool ConditionallyAppliesToEntities {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => _conditionallyAppliesToEntities ??= LoaderUtils.HasOverride(this, m => (Func<TEntity, bool, bool>)m.AppliesToEntity);
+	}
+
+	/// <summary>
+	/// Use this to control whether or not this global should be run on the provided entity instance. <br/>
 	/// </summary>
 	/// <param name="entity"> The entity for which the global instantion is being checked. </param>
 	/// <param name="lateInstantiation">
@@ -95,6 +120,13 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	/// <code> lateInstantiation &amp;&amp; ... </code>
 	/// </param>
 	public virtual bool AppliesToEntity(TEntity entity, bool lateInstantiation) => true;
+
+	/// <summary>
+	/// Allows you to set the properties of any and every instance that gets created.
+	/// </summary>
+	public virtual void SetDefaults(TEntity entity)
+	{
+	}
 
 	/// <summary>
 	/// Create a copy of this instanced global. Called when an entity is cloned.
@@ -125,12 +157,13 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 		inst.StaticIndex = StaticIndex;
 		inst.PerEntityIndex = PerEntityIndex;
 		inst._isCloneable = _isCloneable;
+		inst._conditionallyAppliesToEntities = _conditionallyAppliesToEntities;
 		return inst;
 	}
 
 	public TGlobal Instance(TEntity entity)
 	{
-		TryGetGlobal(entity.EntityGlobals, (TGlobal)this, out TGlobal result);
+		TryGetGlobal(entity.Type, entity.EntityGlobals, (TGlobal)this, out TGlobal result);
 		return result;
 	}
 }

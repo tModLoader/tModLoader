@@ -34,13 +34,6 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
-	/// <summary>
-	/// Allows you to set the properties of any and every item that gets created.
-	/// </summary>
-	public virtual void SetDefaults(Item item)
-	{
-	}
-
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
 	}

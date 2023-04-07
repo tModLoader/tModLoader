@@ -18,7 +18,11 @@ public ref struct EntityGlobalsEnumerator<TGlobal> where TGlobal : GlobalType<TG
 		current = null;
 	}
 
-	public EntityGlobalsEnumerator(IEntityWithGlobals<TGlobal> entity) : this(GlobalList<TGlobal>.Globals, entity.EntityGlobals.array) { }
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public EntityGlobalsEnumerator(IEntityWithGlobals<TGlobal> entity) : this(GlobalTypeLookups<TGlobal>.GetGlobalsForType(entity.Type), entity) { }
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public EntityGlobalsEnumerator(TGlobal[] baseGlobals, IEntityWithGlobals<TGlobal> entity) : this(baseGlobals, entity.EntityGlobals.array) { }
 
 	public TGlobal Current => current;
 

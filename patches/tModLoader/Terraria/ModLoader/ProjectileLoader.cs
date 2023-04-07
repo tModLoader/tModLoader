@@ -58,11 +58,7 @@ public static class ProjectileLoader
 	internal static void ResizeArrays(bool unloading)
 	{
 		if (!unloading)
-			GlobalList<GlobalProjectile>.FinishLoading();
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update();
-		}
+			GlobalList<GlobalProjectile>.FinishLoading(ProjectileCount);
 
 		//Textures
 		Array.Resize(ref TextureAssets.Projectile, ProjectileCount);
@@ -91,8 +87,19 @@ public static class ProjectileLoader
 
 	internal static void FinishSetup()
 	{
+		GlobalLoaderUtils<GlobalProjectile, Projectile>.BuildTypeLookups(new Projectile().SetDefaults);
+		UpdateHookLists();
+		GlobalTypeLookups<GlobalProjectile>.LogStats();
+
 		foreach (ModProjectile proj in projectiles) {
 			Lang._projectileNameCache[proj.Type] = proj.DisplayName;
+		}
+	}
+
+	private static void UpdateHookLists()
+	{
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
 		}
 	}
 
@@ -102,6 +109,7 @@ public static class ProjectileLoader
 		projectiles.Clear();
 		GlobalList<GlobalProjectile>.Reset();
 		modHooks.Clear();
+		UpdateHookLists();
 	}
 
 	internal static bool IsModProjectile(Projectile projectile)
@@ -109,19 +117,13 @@ public static class ProjectileLoader
 		return projectile.type >= ProjectileID.Count;
 	}
 
-	private static HookList HookSetDefaults = AddHook<Action<Projectile>>(g => g.SetDefaults);
-
 	internal static void SetDefaults(Projectile projectile, bool createModProjectile = true)
 	{
 		if (IsModProjectile(projectile) && createModProjectile) {
 			projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 		}
 
-		LoaderUtils.InstantiateGlobals(projectile, ref projectile._globals, static e => e.ModProjectile?.SetDefaults());
-
-		foreach (var g in HookSetDefaults.Enumerate(projectile)) {
-			g.SetDefaults(projectile);
-		}
+		GlobalLoaderUtils<GlobalProjectile, Projectile>.SetDefaults(projectile, ref projectile._globals, static e => e.ModProjectile?.SetDefaults());
 	}
 
 	private static HookList HookOnSpawn = AddHook<Action<Projectile, IEntitySource>>(g => g.OnSpawn);
@@ -648,7 +650,7 @@ public static class ProjectileLoader
 	{
 		bool? flag = GetProjectile(type)?.CanUseGrapple(player);
 
-		foreach (var g in HookCanUseGrapple.Enumerate()) {
+		foreach (var g in HookCanUseGrapple.Enumerate(type)) {
 			bool? canGrapple = g.CanUseGrapple(type, player);
 
 			if (canGrapple.HasValue) {

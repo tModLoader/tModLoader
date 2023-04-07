@@ -18,6 +18,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public ModItem ModItem { get; internal set; }
 
 #region Globals
+	int IEntityWithGlobals<GlobalItem>.Type => type;
 	internal GlobalItem[] _globals;
 	public RefReadOnlyArray<GlobalItem> EntityGlobals => _globals;
 	public EntityGlobalsEnumerator<GlobalItem> Globals => new(this);
@@ -26,22 +27,22 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
 	public T GetGlobalItem<T>() where T : GlobalItem
-		=> GlobalItem.GetGlobal<T>(EntityGlobals);
+		=> GlobalItem.GetGlobal<T>(type, EntityGlobals);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-		=> GlobalItem.GetGlobal<T>(EntityGlobals, baseInstance);
+		=> GlobalItem.GetGlobal<T>(type, EntityGlobals, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
-		=> GlobalItem.TryGetGlobal(EntityGlobals, out result);
+		=> GlobalItem.TryGetGlobal(type, EntityGlobals, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-		=> GlobalItem.TryGetGlobal(EntityGlobals, baseInstance, out result);
+		=> GlobalItem.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
 #endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
