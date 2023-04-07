@@ -408,6 +408,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a70af7c348c20c25bcfc4fc15b9d648d1"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a70af7c348c20c25bcfc4fc15b9d648d1">Register</a> ()</td></tr>
 <tr class="memdesc:a70af7c348c20c25bcfc4fc15b9d648d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_mod_system.html#a70af7c348c20c25bcfc4fc15b9d648d1">More...</a><br /></td></tr>
 <tr class="separator:a70af7c348c20c25bcfc4fc15b9d648d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e04a6103bc38e027690f50e7f09f3dc"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a1e04a6103bc38e027690f50e7f09f3dc">ValidateType</a> ()</td></tr>
+<tr class="memdesc:a1e04a6103bc38e027690f50e7f09f3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for the correct overrides of different hook methods and fields and properties  <a href="class_mod_system.html#a1e04a6103bc38e027690f50e7f09f3dc">More...</a><br /></td></tr>
+<tr class="separator:a1e04a6103bc38e027690f50e7f09f3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
 <tr class="memitem:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">abstract TEntity&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#ad88e5eb64bf9e58f2051b1d95dc2f554">CreateTemplateEntity</a> ()</td></tr>
 <tr class="separator:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1128,6 +1131,35 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 <p>Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults. This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent </p>
 
 <p>Reimplemented from <a class="el" href="class_mod_type.html#a9b37711592d855e0fbf38caff1dce343">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a1e04a6103bc38e027690f50e7f09f3dc" name="a1e04a6103bc38e027690f50e7f09f3dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e04a6103bc38e027690f50e7f09f3dc">&#9670;&nbsp;</a></span>ValidateType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void ModSystem.ValidateType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check for the correct overrides of different hook methods and fields and properties </p>
+
+<p>Reimplemented from <a class="el" href="class_mod_type.html#a68ae9d7e81b3ef0a93b540db9fa62ae7">ModType&lt; TEntity &gt;</a>.</p>
 
 </div>
 </div>

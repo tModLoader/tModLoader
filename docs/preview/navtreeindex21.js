@@ -1,5 +1,10 @@
 var NAVTREEINDEX21 =
 {
+"struct_tracked_projectile_reference.html":[3,0,1212],
+"struct_u_i_gamepad_helper.html":[3,0,1263],
+"struct_utils_1_1_chase_results.html":[3,0,1358,0],
+"struct_vertex_colors.html":[3,0,1364],
+"struct_vertical64_bit_strips.html":[3,0,1366],
 "struct_virtual_camera.html":[3,0,1368],
 "struct_void_lens_helper.html":[3,0,1370],
 "struct_wall_type_data.html":[3,0,1377],

@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"class_t_e_hat_rack.html":[3,0,1143],
+"class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36":[3,0,1143,3],
+"class_t_e_hat_rack.html#ab8a71d53dc4dbeff086730ece85ab958":[3,0,1143,2],
 "class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac":[3,0,1143,1],
 "class_t_e_hat_rack.html#ad59fe25bc951d91941964f13fdf8c2ca":[3,0,1143,0],
 "class_t_e_item_frame.html":[3,0,1144],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_panel.html":[3,0,1290],
 "class_u_i_particle_layer.html":[3,0,1291],
 "class_u_i_progress_bar.html":[3,0,1292],
-"class_u_i_reports_page.html":[3,0,1293],
-"class_u_i_resource_pack.html":[3,0,1294],
-"class_u_i_resource_pack_info_button.html":[3,0,1295],
-"class_u_i_resource_pack_info_menu.html":[3,0,1296]
+"class_u_i_reports_page.html":[3,0,1293]
 };

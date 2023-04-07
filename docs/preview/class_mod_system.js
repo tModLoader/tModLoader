@@ -59,5 +59,6 @@ var class_mod_system =
     [ "SaveWorldData", "class_mod_system.html#a926129e278ac9c460685bd2a326cd998", null ],
     [ "SetupContent", "class_mod_system.html#ab5dafb524e0b67f6ff1f760fec82523c", null ],
     [ "TileCountsAvailable", "class_mod_system.html#ad11c0c49cd1848449fb3e876c7c22960", null ],
-    [ "UpdateUI", "class_mod_system.html#a24d1823ab9c6c0ebfe87825cf3e47fa7", null ]
+    [ "UpdateUI", "class_mod_system.html#a24d1823ab9c6c0ebfe87825cf3e47fa7", null ],
+    [ "ValidateType", "class_mod_system.html#a1e04a6103bc38e027690f50e7f09f3dc", null ]
 ];

@@ -96,11 +96,21 @@ $(document).ready(function(){initNavTree('class_unloaded_global_n_p_c.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a05843235eacb651ed397380a2aa47e94"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_global_n_p_c.html#a05843235eacb651ed397380a2aa47e94">LoadData</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a05843235eacb651ed397380a2aa47e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for the given npc.  <a href="class_unloaded_global_n_p_c.html#a05843235eacb651ed397380a2aa47e94">More...</a><br /></td></tr>
+<tr class="separator:a05843235eacb651ed397380a2aa47e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fcbb5c6f276252463ebc4a7546fd0fb"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_global_n_p_c.html#a8fcbb5c6f276252463ebc4a7546fd0fb">NeedSaving</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a8fcbb5c6f276252463ebc4a7546fd0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false. <br  />
 <b>NOTE:</b> A town <a class="el" href="class_n_p_c.html">NPC</a> will always be saved (except the Travelling Merchant that never will). <br  />
 <b>NOTE:</b> A <a class="el" href="class_n_p_c.html">NPC</a> that needs saving will not despawn naturally.  <a href="class_unloaded_global_n_p_c.html#a8fcbb5c6f276252463ebc4a7546fd0fb">More...</a><br /></td></tr>
 <tr class="separator:a8fcbb5c6f276252463ebc4a7546fd0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0492e4711916e5570c2e7656b9e49d60"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_global_n_p_c.html#a0492e4711916e5570c2e7656b9e49d60">SaveData</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a0492e4711916e5570c2e7656b9e49d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for the given npc. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. <br  />
+<b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving.  <a href="class_unloaded_global_n_p_c.html#a0492e4711916e5570c2e7656b9e49d60">More...</a><br /></td></tr>
+<tr class="separator:a0492e4711916e5570c2e7656b9e49d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_global_n_p_c"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_global_n_p_c')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_global_n_p_c.html">GlobalNPC</a></td></tr>
 <tr class="memitem:a5f17cdba8428c9d491606d38e7386f26 inherit pub_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a5f17cdba8428c9d491606d38e7386f26">AI</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a5f17cdba8428c9d491606d38e7386f26 inherit pub_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will only be called if PreAI returns true.  <a href="class_global_n_p_c.html#a5f17cdba8428c9d491606d38e7386f26">More...</a><br /></td></tr>
@@ -552,6 +562,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 <tr class="memitem:afcf858699f3cf5f546dd5928a3119b21 inherit pro_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#afcf858699f3cf5f546dd5928a3119b21">Register</a> ()</td></tr>
 <tr class="memdesc:afcf858699f3cf5f546dd5928a3119b21 inherit pro_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_global_n_p_c.html#afcf858699f3cf5f546dd5928a3119b21">More...</a><br /></td></tr>
 <tr class="separator:afcf858699f3cf5f546dd5928a3119b21 inherit pro_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a06809c8ebda73c5c08a7e7971ebc65 inherit pro_methods_class_global_n_p_c"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a8a06809c8ebda73c5c08a7e7971ebc65">ValidateType</a> ()</td></tr>
+<tr class="memdesc:a8a06809c8ebda73c5c08a7e7971ebc65 inherit pro_methods_class_global_n_p_c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for the correct overrides of different hook methods and fields and properties  <a href="class_global_n_p_c.html#a8a06809c8ebda73c5c08a7e7971ebc65">More...</a><br /></td></tr>
+<tr class="separator:a8a06809c8ebda73c5c08a7e7971ebc65 inherit pro_methods_class_global_n_p_c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_global_type"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_global_type')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_global_type.html">GlobalType&lt; NPC, GlobalNPC &gt;</a></td></tr>
 <tr class="memitem:ad559e16891e41411948ee05ead117f10 inherit pro_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#ad559e16891e41411948ee05ead117f10">ValidateType</a> ()</td></tr>
 <tr class="memdesc:ad559e16891e41411948ee05ead117f10 inherit pro_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for the correct overrides of different hook methods and fields and properties  <a href="class_global_type.html#ad559e16891e41411948ee05ead117f10">More...</a><br /></td></tr>
@@ -590,6 +603,53 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 <tr class="separator:a68ae9d7e81b3ef0a93b540db9fa62ae7 inherit pro_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a05843235eacb651ed397380a2aa47e94" name="a05843235eacb651ed397380a2aa47e94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05843235eacb651ed397380a2aa47e94">&#9670;&nbsp;</a></span>LoadData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void UnloadedGlobalNPC.LoadData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to load custom data that you have saved for the given npc. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+    <tr><td class="paramname">tag</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_global_n_p_c.html#a6a6afd0e33d59496e457502dd36899d5">GlobalNPC</a>.</p>
+
+</div>
+</div>
 <a id="a8fcbb5c6f276252463ebc4a7546fd0fb" name="a8fcbb5c6f276252463ebc4a7546fd0fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8fcbb5c6f276252463ebc4a7546fd0fb">&#9670;&nbsp;</a></span>NeedSaving()</h2>
 
@@ -626,6 +686,57 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_global_n_p_c.html#a720e25c0e5e0fa8bcf47b89dfe6b5d9b">GlobalNPC</a>.</p>
+
+</div>
+</div>
+<a id="a0492e4711916e5570c2e7656b9e49d60" name="a0492e4711916e5570c2e7656b9e49d60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0492e4711916e5570c2e7656b9e49d60">&#9670;&nbsp;</a></span>SaveData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void UnloadedGlobalNPC.SaveData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to save custom data for the given npc. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. <br  />
+<b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_global_n_p_c.html#afa2ab82d9e0aad5f3aa29b868a355429">GlobalNPC</a>.</p>
 
 </div>
 </div>

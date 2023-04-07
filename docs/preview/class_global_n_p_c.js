@@ -78,5 +78,6 @@ var class_global_n_p_c =
     [ "TownNPCAttackShoot", "class_global_n_p_c.html#ae4a7859133c26a164e1c714c6a588c8c", null ],
     [ "TownNPCAttackStrength", "class_global_n_p_c.html#ad2217f039506ed923ef9e5c22dd4a78f", null ],
     [ "TownNPCAttackSwing", "class_global_n_p_c.html#a53c0f5186a348a488cde2b91761be770", null ],
-    [ "UpdateLifeRegen", "class_global_n_p_c.html#aec71307bc0e7ff4468a376297ba8a018", null ]
+    [ "UpdateLifeRegen", "class_global_n_p_c.html#aec71307bc0e7ff4468a376297ba8a018", null ],
+    [ "ValidateType", "class_global_n_p_c.html#a8a06809c8ebda73c5c08a7e7971ebc65", null ]
 ];

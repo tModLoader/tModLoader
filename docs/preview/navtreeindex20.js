@@ -1,5 +1,10 @@
 var NAVTREEINDEX20 =
 {
+"struct_fishing_attempt.html#afd71021b28ef076b070f2935b9b33fcd":[3,0,364,6],
+"struct_flame_lash_drawer.html":[3,0,367],
+"struct_float_range.html":[3,0,372],
+"struct_frame_event_data.html":[3,0,378],
+"struct_game_animation_segment.html":[3,0,386],
 "struct_game_mode_data.html":[3,0,392],
 "struct_gen_shape_action_pair.html":[3,0,413],
 "struct_get_item_settings.html":[3,0,416],
@@ -244,10 +249,5 @@ var NAVTREEINDEX20 =
 "struct_tile_type_data.html":[3,0,1198],
 "struct_tile_wall_wire_state_data.html":[3,0,1199],
 "struct_tile_wall_wire_state_data.html#ae0fdd5e3b49fce6c8fd2847921190288":[3,0,1199,0],
-"struct_tilemap.html":[3,0,1181],
-"struct_tracked_projectile_reference.html":[3,0,1212],
-"struct_u_i_gamepad_helper.html":[3,0,1263],
-"struct_utils_1_1_chase_results.html":[3,0,1358,0],
-"struct_vertex_colors.html":[3,0,1364],
-"struct_vertical64_bit_strips.html":[3,0,1366]
+"struct_tilemap.html":[3,0,1181]
 };

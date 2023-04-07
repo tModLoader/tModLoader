@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"class_micro_biome.html":[3,0,718],
+"class_minecart.html":[3,0,719],
 "class_minecart_digger_helper.html":[3,0,720],
 "class_minimap_frame.html":[3,0,721],
 "class_minimap_frame_manager.html":[3,0,722],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_item.html#a3a3d8f6c6fca12c0b4666edca0297d6c":[3,0,748,31],
 "class_mod_item.html#a3acd6ec62c798bd5c18683167119e7f7":[3,0,748,93],
 "class_mod_item.html#a3b29a745953cba81629bd0ba8f032e4d":[3,0,748,58],
-"class_mod_item.html#a3b89ae7a6ea39d4ecc0c421df6b2af14":[3,0,748,94],
-"class_mod_item.html#a3d30fa657a2319543bdd619d2ad32f81":[3,0,748,67],
-"class_mod_item.html#a3d45a378defd22de0298ee214bdc0ed5":[3,0,748,9]
+"class_mod_item.html#a3b89ae7a6ea39d4ecc0c421df6b2af14":[3,0,748,94]
 };

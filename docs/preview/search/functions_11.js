@@ -21,7 +21,7 @@ var searchData=
   ['resetinfoaccessories_18',['ResetInfoAccessories',['../class_mod_player.html#a451293b92456f5d1f5b68bf46c9f1e81',1,'ModPlayer']]],
   ['resetmaxstatstovanilla_19',['ResetMaxStatsToVanilla',['../class_player_loader.html#aece323c2271210358ff0f2731f556724',1,'PlayerLoader']]],
   ['resetnearbytileeffects_20',['ResetNearbyTileEffects',['../class_mod_system.html#a652c4e0c15bd065e016bb0c741334a49',1,'ModSystem']]],
-  ['resetstaticmembers_21',['ResetStaticMembers',['../class_loader_utils.html#abccf9481f860222fd5a35111fb8f1f15',1,'LoaderUtils']]],
+  ['resetstaticmembers_21',['ResetStaticMembers',['../class_loader_utils.html#a3bc828ae6e8b5b2b0a20a0d64000a45f',1,'LoaderUtils']]],
   ['resettext_22',['ResetText',['../class_popup_text.html#ad351317c371e8417e29a871d2633f222',1,'PopupText']]],
   ['resize_23',['Resize',['../class_projectile.html#a8072b57da2e5bf37a03de842c2d60058',1,'Projectile']]],
   ['resourceoverlaydrawcontext_24',['ResourceOverlayDrawContext',['../struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34',1,'ResourceOverlayDrawContext']]],

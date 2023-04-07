@@ -1,5 +1,10 @@
 var NAVTREEINDEX19 =
 {
+"functions_prop_j.html":[3,3,3,9],
+"functions_prop_l.html":[3,3,3,10],
+"functions_prop_m.html":[3,3,3,11],
+"functions_prop_n.html":[3,3,3,12],
+"functions_prop_o.html":[3,3,3,13],
 "functions_prop_p.html":[3,3,3,14],
 "functions_prop_r.html":[3,3,3,15],
 "functions_prop_s.html":[3,3,3,16],
@@ -244,10 +249,5 @@ var NAVTREEINDEX19 =
 "struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a":[3,0,364,21],
 "struct_fishing_attempt.html#aed7f28b54ca72c9a95a001b21a5cbb83":[3,0,364,17],
 "struct_fishing_attempt.html#af1057cc2e35a526b1d588cd3c9a08f28":[3,0,364,5],
-"struct_fishing_attempt.html#af584ab58562bb81fffbb2689f8bd0b14":[3,0,364,2],
-"struct_fishing_attempt.html#afd71021b28ef076b070f2935b9b33fcd":[3,0,364,6],
-"struct_flame_lash_drawer.html":[3,0,367],
-"struct_float_range.html":[3,0,372],
-"struct_frame_event_data.html":[3,0,378],
-"struct_game_animation_segment.html":[3,0,386]
+"struct_fishing_attempt.html#af584ab58562bb81fffbb2689f8bd0b14":[3,0,364,2]
 };
