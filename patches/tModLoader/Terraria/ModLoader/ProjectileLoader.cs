@@ -64,7 +64,7 @@ public static class ProjectileLoader
 		Array.Resize(ref TextureAssets.Projectile, ProjectileCount);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(ProjectileID), true);
+		LoaderUtils.ResetStaticMembers(typeof(ProjectileID));
 
 		//Etc
 		Array.Resize(ref Main.projHostile, ProjectileCount);

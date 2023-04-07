@@ -137,7 +137,7 @@ public static class TileLoader
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(TileID), true);
+		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
 		Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);

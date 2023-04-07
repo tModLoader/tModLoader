@@ -69,9 +69,9 @@ public static class ItemLoader
 		Array.Resize(ref TextureAssets.ItemFlame, ItemCount);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
-		LoaderUtils.ResetStaticMembers(typeof(AmmoID), true);
-		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets), true);
+		LoaderUtils.ResetStaticMembers(typeof(ItemID));
+		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
+		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
 
 		//Etc
 		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);

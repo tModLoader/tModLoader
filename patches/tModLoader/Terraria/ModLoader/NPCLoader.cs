@@ -74,7 +74,7 @@ public static class NPCLoader
 		Array.Resize(ref TextureAssets.Npc, NPCCount);
 
 		// Sets
-		LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
+		LoaderUtils.ResetStaticMembers(typeof(NPCID));
 		Main.ShopHelper.ReinitializePersonalityDatabase();
 		NPCHappiness.RegisterVanillaNpcRelationships();
 
