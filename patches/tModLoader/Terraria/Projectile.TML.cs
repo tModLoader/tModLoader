@@ -16,9 +16,32 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// </summary>
 	public ModProjectile ModProjectile { get; internal set; }
 
+#region Globals
 	internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
 
 	public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
+
+	/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="IndexOutOfRangeException"/>
+	public T GetGlobalProjectile<T>() where T : GlobalProjectile
+		=> GlobalType.GetGlobal<GlobalProjectile, T>(globalProjectiles);
+
+	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="NullReferenceException"/>
+	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
+		=> GlobalType.GetGlobal(globalProjectiles, baseInstance);
+
+	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
+	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
+		=> GlobalType.TryGetGlobal(globalProjectiles, out result);
+
+	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
+	/// <returns> Whether or not the requested instance has been found. </returns>
+	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
+		=> GlobalType.TryGetGlobal(globalProjectiles, baseInstance, out result);
+#endregion
 
 	/// <summary>
 	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
@@ -121,27 +144,6 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 				NetMessage.SendData(21, -1, -1, null, num, 1f);
 		}
 	}
-
-	/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalProjectile<T>() where T : GlobalProjectile
-		=> GlobalType.GetGlobal<GlobalProjectile, T>(globalProjectiles);
-
-	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="NullReferenceException"/>
-	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
-		=> GlobalType.GetGlobal(globalProjectiles, baseInstance);
-
-	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
-	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal(globalProjectiles, out result);
-
-	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
-	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal(globalProjectiles, baseInstance, out result);
 
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
