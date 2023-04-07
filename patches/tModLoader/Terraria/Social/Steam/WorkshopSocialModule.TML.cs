@@ -81,16 +81,15 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string description = buildData["description"];
+		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
 		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
 			return false;
 		}
 
-		string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
-		string[] modMetadata = { buildData["modside"] };
-
-		string[] tagsList = usedTagsInternalNames.Concat(modMetadata).ToArray();
+		List<string> tagsList = new List<string>();
+		tagsList.AddRange(settings.GetUsedTagsInternalNames());
+		tagsList.Add(buildData["modside"]);
 
 		CalculateWorkshopDeps(ref buildData);
 		
@@ -106,11 +105,14 @@ public partial class WorkshopSocialModule
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(workshopFolderPath);
 
+			// Should be called after folder created & cleaned up
+			tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
+
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
 			_publisherInstances.Add(modPublisherInstance);
 
-			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID, settings.ChangeNotes);
+			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes);
 
 			return true;
 		}
@@ -240,7 +242,7 @@ public partial class WorkshopSocialModule
 			workshopDesc = File.ReadAllText(workshopDescFile);
 
 		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]" +
+		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
 			$"{workshopDesc}";
 
 

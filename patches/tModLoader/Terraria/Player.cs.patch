@@ -1113,7 +1113,7 @@
  							break;
  					}
 +					*/
-+					if (!ProjectileID.Sets.SingleGrappleHook[num8])
++					if (!ProjectileID.Sets.SingleGrappleHook[Main.projectile[num8].type])
 +						continue;
 +
 +					Main.projectile[num8].Kill();

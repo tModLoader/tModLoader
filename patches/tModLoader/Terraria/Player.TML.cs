@@ -242,8 +242,19 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
+	/// <inheritdoc cref="GetTotalDamage"/>
 	public StatModifier GetTotalDamage<T>() where T : DamageClass => GetTotalDamage(ModContent.GetInstance<T>());
 
+	/// <summary>
+	/// Calculates a total damage modifier for the player for the provided <see cref="DamageClass"/>.<br/>
+	/// Use in conjunction with <see cref="StatModifier.ApplyTo(float)"/> to calculate a final damage value for a given <see cref="DamageClass"/> and base damage: <c>int finalDamage = (int)player.GetTotalDamage(item.DamageType).ApplyTo(30);</c>
+	/// </summary>
+	/// <remarks>The modifiers calculated here are important due to the possibility of
+	/// damage classes inheriting modifiers from other damage classes. For instance, an attack
+	/// can be classified as multiple damage types and each could have different modifiers to apply to the damage
+	/// </remarks>
+	/// <param name="damageClass">The <see cref="DamageClass"/> to use for total damage calculation</param>
+	/// <returns>All modifiers combined</returns>
 	public StatModifier GetTotalDamage(DamageClass damageClass)
 	{
 		StatModifier stat = damageData[damageClass.Type].damage;

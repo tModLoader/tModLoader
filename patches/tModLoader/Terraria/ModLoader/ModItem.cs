@@ -1258,7 +1258,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance of the overriding ModItem class that is added to the game. This allows you to avoid clutter in your overriding Mod class by adding recipes for which this item is the result.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// Do note that this will be called for every instance of the overriding ModItem class that is added to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
+	/// To create a recipe resulting in this item, use <see cref="CreateRecipe(int)"/>.<br/>
+	/// To create a recipe using this item as an ingredient, use <see cref="Recipe.Create(int, int)"/> and then pass in <c>this</c> or <c>Type</c> into <see cref="Recipe.AddIngredient(ModItem, int)"/> or <see cref="Recipe.AddIngredient(int, int)"/>
 	/// </summary>
 	public virtual void AddRecipes()
 	{
@@ -1320,5 +1324,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 	}
 
+	/// <summary>
+	/// Creates a recipe resulting this ModItem. The <paramref name="amount"/> dictates the resulting stack. This method only creates the recipe, it does not register it into the game. Call this at the very beginning when creating a new recipe.
+	/// </summary>
+	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
+	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 }
