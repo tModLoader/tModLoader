@@ -155,11 +155,12 @@ public partial class WorkshopSocialModule
 		string workshopDeps = "";
 
 		if (buildData["modreferences"].Length > 0) {
-			foreach (string modRef in buildData["modreferences"].Split(",")) {
-				var temp = ModLoader.UI.Interface.modBrowser.SocialBackend.FindDownloadItem(modRef);
+			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
+			WorkshopHelper.QueryHelper.TryGetPublishIdByInternalName(query, out var modIds);
 
-				if (temp != null)
-					workshopDeps += temp.PublishId + ",";
+			foreach (string modRef in modIds) {
+				if (modRef != "0")
+					workshopDeps += modRef + ",";
 			}
 		}
 

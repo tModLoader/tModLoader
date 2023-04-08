@@ -202,7 +202,7 @@ public partial class WorkshopHelper
 				return false;
 
 			for (int i = 0; i < query.searchModSlugs.Length; i++) {
-				modIds.Add(items[i] == null ? "0" : items[i].PublishId);
+				modIds.Add(items[i] == null ? "0" : items[i].PublishId.m_ModPubId);
 			}
 
 			return true;
@@ -210,7 +210,7 @@ public partial class WorkshopHelper
 
 		internal static ulong GetSteamOwner(string modId)
 		{
-			var mods = new AQueryInstance(new QueryParameters() { searchModIds = new string[] { modId } }).FastQueryItems();
+			var mods = new AQueryInstance(new QueryParameters() { searchModIds = new ModPubId_t[] { new ModPubId_t() { m_ModPubId = modId } } } ).FastQueryItems();
 			return ulong.Parse(mods[0].OwnerId);
 		}
 
@@ -296,7 +296,7 @@ public partial class WorkshopHelper
 				for (int i = 0; i < numPages; i++) {
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) - 1));
 
-					TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(pageIds.ToArray()));
+					TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(pageIds.Select(x => x.m_ModPubId).ToArray()));
 
 					for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
 						items[j] = GenerateModDownloadItemFromQuery((uint)j);

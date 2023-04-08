@@ -20,6 +20,8 @@ namespace Terraria.ModLoader.Core;
 /// </summary>
 internal static class ModOrganizer
 {
+
+	// Used in Mod Browser for tracking changes
 	internal delegate void OnLocalModsChangedDelegate(HashSet<string> modSlugs);
 	internal static event OnLocalModsChangedDelegate OnLocalModsChanged;
 	internal static void LocalModsChanged(HashSet<string> modSlugs)

@@ -17,11 +17,25 @@ public struct ModPubId_t
 
 public struct ModDownloadItemInstallInfo
 {
-	//internal LocalMod Installed; // Shoudn't be internal
-	public bool IsInstalled;
-	// IsEnabled :( should pass LocalMod but visibility is a mess from there
+	internal LocalMod Installed; // Shoudn't be internal
+
 	public bool NeedUpdate;
 	public bool AppNeedRestartToReinstall;
+
+	public bool IsInstalled => Installed != null;
+	public bool IsEnabled => IsInstalled && Installed.Enabled;
+
+	public ModDownloadItemInstallInfo (ModDownloadItem item)
+	{
+		// Check against installed mods for updates.
+		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
+		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(item.ModName);
+
+		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(item.PublishId, Installed, new System.Version(item.Version));
+		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
+		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(item.PublishId);
+	}
+
 }
 
 public interface SocialBrowserModule
@@ -32,33 +46,59 @@ public interface SocialBrowserModule
 	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
 #pragma warning restore CS8424
 
+	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams);
+
 	/////// Display of Browser Items ///////////////////////////////////////////
 
 	public string GetModWebPage(ModPubId_t item);
 
 	/////// Management of Local Install ///////////////////////////////////////////
-
-	public ModDownloadItemInstallInfo GetInstallInfo(ModDownloadItem item);
 	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModPubId_t item);
+
+	public ModDownloadItem[] GetInstalledModDownloadItems()
+	{
+		var mods = GetInstalledMods();
+		var listIds = new List<ModPubId_t>();
+
+		foreach (var mod in mods) {
+			GetModIdFromLocalFiles(mod.modFile, out var id);
+			listIds.Add(id);
+		}
+
+		return DirectQueryItems(new QueryParameters { searchModIds = listIds.ToArray() });
+	}
+
+	/////// Specialty Internal LocalMod related Methods ///////////////////////////////////////////
+	public bool DoesAppNeedRestartToReinstallItem(ModPubId_t modId);
+
+	internal bool DoesItemNeedUpdate(ModPubId_t modId, LocalMod installed, Version webVersion);
+
+	internal IReadOnlyList<LocalMod> GetInstalledMods();
+
+	internal LocalMod IsItemInstalled(string slug)
+	{
+		return GetInstalledMods().Where(t => t.Name == slug).FirstOrDefault();
+	}
 
 	/////// Management of Downloads ///////////////////////////////////////////
 
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal Task SetupDownload(List<ModDownloadItem> items, UIWorkshopDownload uiProgress = null)
+	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
 	{
+		//Set UIWorkshopDownload
+		UIWorkshopDownload uiProgress = null;
+
 		// Can't update enabled items due to in-use file access constraints
-		var needFreeInUseMods = items.Any(item => item.Installed != null && item.Installed.Enabled);
+		var needFreeInUseMods = items.Any(item => new ModDownloadItemInstallInfo(item).IsEnabled);
 		if (needFreeInUseMods)
 			ModLoader.Unload();
 
-		/*
 		if (!Main.dedServ) {
 			uiProgress = new UIWorkshopDownload(previousMenuId);
 			Main.MenuUI.SetState(uiProgress);
 		}
-		*/
 
 		return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
 	}
@@ -76,13 +116,9 @@ public interface SocialBrowserModule
 
 			// Add installed info to the downloaded item
 			changedModsSlugs.Add(item.ModName);
-			//var localMod = GetInstalledItems().FirstOrDefault(m => m.Name == item.ModName);
-			//FindDownloadItem(item.ModName).Installed = localMod;
 		}
 
 		ModOrganizer.LocalModsChanged(changedModsSlugs);
-		//Interface.modBrowser.PopulateModBrowser(uiOnly: true);
-		//Interface.modBrowser.UpdateNeeded = true;
 
 		uiProgress?.Leave(refreshBrowser: true); // @TODO refreshBrowser is redundant!!!
 
@@ -99,14 +135,15 @@ public interface SocialBrowserModule
 	public void GetDependenciesRecursive(HashSet<ModPubId_t> modIds, ref HashSet<ModDownloadItem> set)
 	{
 		//TODO: What if the same mod is a dependency twice, but different versions?
-
 		var toQuery = modIds;
 
 		while (true) {
 			var deps = GetDependencies(toQuery);
+
 			deps.ExceptWith(set);
 			if (deps.Count <= 0)
 				break;
+
 			set.UnionWith(deps);
 			toQuery = deps.Select(d => d.PublishId).ToHashSet();
 		}
@@ -127,7 +164,7 @@ public interface SocialBrowserModule
 public struct QueryParameters
 {
 	public string[] searchTags;
-	public string[] searchModIds;
+	public ModPubId_t[] searchModIds;
 	public string[] searchModSlugs;
 	public string searchGeneric;
 	public string searchAuthor;

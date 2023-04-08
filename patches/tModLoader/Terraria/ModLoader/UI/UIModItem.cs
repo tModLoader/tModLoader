@@ -515,8 +515,6 @@ internal class UIModItem : UIPanel
 	{
 		ModOrganizer.DeleteMod(_mod);
 
-		Interface.modBrowser.CleanupDeletedItem(ModName);
-
 		CloseDialog(evt, listeningElement);
 		Interface.modsMenu.Activate();
 	}

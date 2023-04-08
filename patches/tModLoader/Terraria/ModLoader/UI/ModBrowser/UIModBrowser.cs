@@ -73,7 +73,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private string _updateUrl;
 	private string _autoUpdateUrl;
 	private string _specialModPackFilterTitle;
-	private List<string> _specialModPackFilter;
+	private List<ModPubId_t> _specialModPackFilter;
 	private readonly List<string> _missingMods = new List<string>();
 
 	AP_UIModDowloadItem _provider = null;
@@ -87,8 +87,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/* Filters */
 	public QueryParameters FilterParameters => new() {
 		searchTags = null, //new string[] { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) },
-		searchModIds = null,
-		searchModSlugs = SpecialModPackFilter?.ToArray(),
+		searchModIds = SpecialModPackFilter?.ToArray(),
+		searchModSlugs = null,
 		searchGeneric = SearchFilterMode == SearchFilter.Name ? Filter : null,
 		searchAuthor = SearchFilterMode == SearchFilter.Author ? Filter : null,
 		sortingParamater = SortMode,
@@ -128,7 +128,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	public List<string> SpecialModPackFilter {
+	public List<ModPubId_t> SpecialModPackFilter {
 		get => _specialModPackFilter;
 		set {
 			if (_specialModPackFilter != null && value == null) {
@@ -148,8 +148,10 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	private void UpdateAllMods(UIMouseEvent @event, UIElement element)
 	{
-		if (Loading) return;
-		var relevantMods = _items.Where(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade).Select(x => x.ModDownload.ModName).ToList();
+		if (Loading)
+			return;
+
+		var relevantMods = _items.Where(x => new ModDownloadItemInstallInfo(x.ModDownload).NeedUpdate).Select(x => x.ModDownload.PublishId).ToList();
 		DownloadMods(relevantMods);
 	}
 
@@ -263,7 +265,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 			_items.Clear();
 			_items.AddRange(_provider.GetData(false));
-			if (SpecialModPackFilter == null && _items.Count(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade) > 0)
+			if (SpecialModPackFilter == null && _items.Count(x => new ModDownloadItemInstallInfo(x.ModDownload).NeedUpdate) > 0)
 				_rootElement.Append(_updateAllButton);
 		}
 	}
@@ -303,27 +305,23 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// <summary>
 	///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 	/// </summary>
-	internal void DownloadMods(IEnumerable<string> modNames)
+	internal void DownloadMods(List<ModPubId_t> modIds)
 	{
-		var downloads = new List<ModDownloadItem>();
+		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() });
 
-		foreach (string desiredMod in modNames) {
-			// This is an instance of searching mod by name
-			var mod = SocialBackend.Items.FirstOrDefault(x => x.ModName == desiredMod);
-
-			if (mod == null) { // Not found on the browser
-				_missingMods.Add(desiredMod);
-			}
-			else if (mod.Installed == null || mod.HasUpdate) { // Found, add to downloads
-				downloads.Add(mod);
-			}
+		for (int i = 0; i < modIds.Count(); i++) {
+			if (downloadsQueried[i] == null)
+				//TODO: Would be nice if this was name/slug, not ID
+				_missingMods.Add(modIds[i].m_ModPubId);
 		}
 
+		var downloadShortList = ModDownloadItem.FilterOutInstalled(downloadsQueried);
+
 		// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
-		if (downloads.Count <= 0)
+		if (downloadShortList.Count() <= 0)
 			return;
 
-		SocialBackend.SetupDownload(downloads, Interface.modBrowserID);
+		SocialBackend.SetupDownload(downloadShortList.ToList(), Interface.modBrowserID);
 
 		if (_missingMods.Count > 0) {
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
@@ -340,15 +338,5 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	internal static void LogModBrowserException(Exception e)
 	{
 		Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
-	}
-
-	internal void CleanupDeletedItem(string modName)
-	{
-		if (SocialBackend.Items.Count > 0) {
-			SocialBackend.FindDownloadItem(modName).Installed = null;
-			SocialBackend.FindDownloadItem(modName).NeedsGameRestart = true;
-			PopulateModBrowser(uiOnly: true);
-			UpdateNeeded = true;
-		}
 	}
 }

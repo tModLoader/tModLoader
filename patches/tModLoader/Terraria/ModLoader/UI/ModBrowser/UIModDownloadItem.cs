@@ -39,18 +39,21 @@ internal class UIModDownloadItem : UIPanel
 	private static int ModIconDownloadFailCount = 0;
 	private bool HasModIcon => ModDownload.ModIconUrl != null;
 	private float ModIconAdjust => 85f;
-	private bool IsInstalled => ModDownload.Installed != null;
+	private bool IsInstalled => new ModDownloadItemInstallInfo(ModDownload).IsInstalled;
+	private bool HasUpdate => new ModDownloadItemInstallInfo(ModDownload).NeedUpdate;
+	private bool NeedsGameRestart => new ModDownloadItemInstallInfo(ModDownload).AppNeedRestartToReinstall;
+	private bool UpdateIsDowngrade = false;
 
 	private string ViewModInfoText => Language.GetTextValue("tModLoader.ModsMoreInfo");
 
-	private string UpdateText => ModDownload.HasUpdate
-		? ModDownload.UpdateIsDowngrade
+	private string UpdateText => HasUpdate
+		? UpdateIsDowngrade
 			? Language.GetTextValue("tModLoader.MBDowngrade")
 			: Language.GetTextValue("tModLoader.MBUpdate")
 		: Language.GetTextValue("tModLoader.MBDownload");
 
-	private string UpdateWithDepsText => ModDownload.HasUpdate
-		? ModDownload.UpdateIsDowngrade
+	private string UpdateWithDepsText => HasUpdate
+		? UpdateIsDowngrade
 			? Language.GetTextValue("tModLoader.MBDowngradeWithDependencies")
 			: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 		: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
@@ -100,14 +103,14 @@ internal class UIModDownloadItem : UIPanel
 			};
 			Append(tMLUpdateRequired);
 		}
-		else if (ModDownload.NeedsGameRestart) {
+		else if (NeedsGameRestart) {
 			_updateButton = new UIImage(UICommon.ButtonExclamationTexture);
 			_updateButton.CopyStyle(_moreInfoButton);
 			_updateButton.Left.Pixels += 36 + PADDING;
 			_updateButton.OnLeftClick += ShowGameNeedsRestart;
 			Append(_updateButton);
 		}
-		else if (ModDownload.HasUpdate || ModDownload.Installed == null) {
+		else if (HasUpdate || !IsInstalled) {
 			_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
 			_updateWithDepsButton.CopyStyle(_moreInfoButton);
 			_updateWithDepsButton.Left.Pixels += 36 + PADDING;
@@ -130,7 +133,7 @@ internal class UIModDownloadItem : UIPanel
 	private void ShowModDependencies(UIMouseEvent evt, UIElement element)
 	{
 		var modListItem = (UIModDownloadItem)element.Parent;
-		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim()).ToList();
+		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferenceByModId.ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 		Interface.modBrowser.FilterTextBox.Text = "";
 		Interface.modBrowser.UpdateNeeded = true;
@@ -164,7 +167,7 @@ internal class UIModDownloadItem : UIPanel
 
 	public bool PassFilters()
 	{
-		if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(ModDownload.ModName))
+		if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(ModDownload.PublishId))
 			return false;
 
 		if (!string.IsNullOrEmpty(Interface.modBrowser.Filter)) {
@@ -186,11 +189,11 @@ internal class UIModDownloadItem : UIPanel
 			case UpdateFilter.All:
 				return true;
 			case UpdateFilter.Available:
-				return ModDownload.HasUpdate || ModDownload.Installed == null;
+				return HasUpdate || !IsInstalled;
 			case UpdateFilter.UpdateOnly:
-				return ModDownload.HasUpdate;
+				return HasUpdate;
 			case UpdateFilter.InstalledOnly:
-				return ModDownload.Installed != null;
+				return IsInstalled;
 		}
 	}
 
@@ -370,6 +373,6 @@ internal class UIModDownloadItem : UIPanel
 	private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modInfo.Show(ModDownload.ModName, ModDownload.DisplayName, Interface.modBrowserID, ModDownload.Installed, url: ModDownload.Homepage, loadFromWeb: true, publishedFileId: ModDownload.PublishId);
+		Interface.modInfo.Show(ModDownload.ModName, ModDownload.DisplayName, Interface.modBrowserID, new ModDownloadItemInstallInfo(ModDownload).Installed, url: ModDownload.Homepage, loadFromWeb: true, publishedFileId: ModDownload.PublishId);
 	}
 }

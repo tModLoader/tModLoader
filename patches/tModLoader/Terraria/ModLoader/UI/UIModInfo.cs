@@ -9,6 +9,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -35,7 +36,7 @@ internal class UIModInfo : UIState
 	private string _info = string.Empty;
 	private string _modName = string.Empty;
 	private string _modDisplayName = string.Empty;
-	private string _publishedFileId;
+	private ModPubId_t _publishedFileId;
 	private bool _loadFromWeb;
 	private bool _loading;
 	private bool _ready;
@@ -96,7 +97,7 @@ internal class UIModInfo : UIState
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
-		_modSteamButton.OnLeftClick += VisitModSteamPage;
+		_modSteamButton.OnLeftClick += VisitModHostPage;
 
 		extractLocalizationButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtractLocalization")) {
 			Width = { Pixels = -10, Percent = 0.333f },
@@ -164,7 +165,7 @@ internal class UIModInfo : UIState
 			extractLocalizationButton.SetText(Language.GetTextValue("tModLoader.ModInfoExtracted"));
 	}
 
-	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, string publishedFileId = "")
+	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, ModPubId_t publishedFileId = default)
 	{
 		_modName = modName;
 		_modDisplayName = displayName;
@@ -176,8 +177,8 @@ internal class UIModInfo : UIState
 		}
 		_url = url;
 		_loadFromWeb = loadFromWeb;
-		if (localMod != null && string.IsNullOrEmpty(publishedFileId) && WorkshopHelper.GetPublishIdLocal(localMod.modFile, out ulong publishId))
-			_publishedFileId = publishId.ToString();
+		if (localMod != null && string.IsNullOrEmpty(publishedFileId.m_ModPubId) && WorkshopHelper.GetPublishIdLocal(localMod.modFile, out ulong publishId))
+			_publishedFileId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
 		else
 			_publishedFileId = publishedFileId;
 
@@ -221,8 +222,6 @@ internal class UIModInfo : UIState
 		SoundEngine.PlaySound(SoundID.MenuClose);
 
 		ModOrganizer.DeleteMod(_localMod);
-		Interface.modBrowser.CleanupDeletedItem(_modName);
-
 		Main.menuMode = _gotoMenu;
 	}
 
@@ -232,20 +231,17 @@ internal class UIModInfo : UIState
 		Utils.OpenToURL(_url);
 	}
 
-	private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement)
+	private void VisitModHostPage(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(10);
-		VisitModSteamPageInner();
+		VisitModHostPageInner();
 	}
 
-	private void VisitModSteamPageInner()
+	private void VisitModHostPageInner()
 	{
 		string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
 
-		if (SteamedWraps.SteamClient && Steamworks.SteamUtils.IsOverlayEnabled())
-			Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
-		else
-			Utils.OpenToURL(url);
+		Utils.OpenToURL(url);
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -301,7 +297,7 @@ internal class UIModInfo : UIState
 				_uIElement.Append(_modHomepageButton);
 			}
 
-			if (!string.IsNullOrEmpty(_publishedFileId)) {
+			if (!string.IsNullOrEmpty(_publishedFileId.m_ModPubId)) {
 				_uIElement.Append(_modSteamButton);
 			}
 

@@ -17,33 +17,44 @@ namespace Terraria.Social.Steam;
 
 internal class WorkshopBrowserModule : SocialBrowserModule
 {
-	public static WorkshopBrowserModule Instance = new WorkshopBrowserModule(); 
+	public static WorkshopBrowserModule Instance = new WorkshopBrowserModule();
 
-	private PublishedFileId_t GetId(string modId) => new PublishedFileId_t(ulong.Parse(modId));
+	private PublishedFileId_t GetId(ModPubId_t modId) => new PublishedFileId_t(ulong.Parse(modId.m_ModPubId));
 
 	public List<ModDownloadItem> Items { get; set; } = new List<ModDownloadItem>();
+
+	// For caching installed mods /////////////////////////
+	public WorkshopBrowserModule()
+	{
+		ModOrganizer.OnLocalModsChanged += OnLocalModsChanged;
+	}
+
+	private void OnLocalModsChanged(HashSet<string> modSlugs)
+	{
+		InstalledItems = ModOrganizer.FindWorkshopMods();
+	}
+
+	public IReadOnlyList<LocalMod> GetInstalledMods()
+	{
+		if (InstalledItems == null)
+			InstalledItems = ModOrganizer.FindWorkshopMods();
+
+		return InstalledItems;
+	}
+
 	public IReadOnlyList<LocalMod> InstalledItems { get; set; }
 
-	public bool GetModIdFromLocalFiles(TmodFile modFile, out string modId) {
+	// Managing Installs /////////////////////////
+
+	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModPubId_t modId)
+	{
 		bool success = WorkshopHelper.GetPublishIdLocal(modFile, out ulong publishId);
 
-		modId = publishId.ToString();
+		modId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
 		return success;
 	}
 
-	public void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress)
-	{
-		var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
-		bool forceUpdate = item.HasUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
-
-		uiProgress?.PrepUIForDownload(item.DisplayName);
-		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
-		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
-	}
-
-	public IReadOnlyList<LocalMod> GetInstalledItems() => ModOrganizer.FindWorkshopMods();
-
-	public bool DoesItemNeedUpdate(string modId, LocalMod installed, System.Version webVersion)
+	public bool DoesItemNeedUpdate(ModPubId_t modId, LocalMod installed, System.Version webVersion)
 	{
 		if (installed.properties.version < webVersion)
 			return true;
@@ -54,19 +65,35 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		return false;
 	}
 
-	public ModDownloadItem[] GetDependencies(HashSet<string> modIds)
+	public bool DoesAppNeedRestartToReinstallItem(ModPubId_t modId) => SteamedWraps.IsWorkshopItemInstalled(GetId(modId));
+
+	// Downloading Items /////////////////////////
+
+	public void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress)
 	{
-		return new WorkshopHelper.QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = modIds.ToArray() }).FastQueryItems();
+		var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId.m_ModPubId));
+		bool forceUpdate = new ModDownloadItemInstallInfo(item).NeedUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
+
+		uiProgress?.PrepUIForDownload(item.DisplayName);
+		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
+		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
 	}
 
-	public bool DoesAppNeedRestartToReinstallItem(string modId) => SteamedWraps.IsWorkshopItemInstalled(GetId(modId));
+	// More Info for Items /////////////////////////
 
-	public string GetModWebPage(string modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId}";
+	public HashSet<ModDownloadItem> GetDependencies(HashSet<ModPubId_t> modIds)
+	{
+		return new WorkshopHelper.QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = modIds.ToArray() }).FastQueryItems().ToHashSet();
+	}
+
+	public string GetModWebPage(ModPubId_t modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId}";
+
+	// Query Items /////////////////////////
 
 	//TODO: Work In Progress
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
-		InstalledItems = GetInstalledItems();
+		InstalledItems = GetInstalledMods();
 
 		await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
 			yield return item;
@@ -78,6 +105,13 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		InstalledItems = null;
 	}
 
+	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
+	{
+		if (queryParams.searchModIds == null)
+			return null; // Should only be called if the above is filled in.
+
+		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).FastQueryItems();
+	}
 }
 
 
