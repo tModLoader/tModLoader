@@ -78,13 +78,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		InstalledItems = null;
 	}
 
-	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
-	{
-		if (queryParams.searchModIds == null)
-			return null; // Should only be called if the above is filled in.
-
-		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).FastQueryItems();
-	}
 }
 
 

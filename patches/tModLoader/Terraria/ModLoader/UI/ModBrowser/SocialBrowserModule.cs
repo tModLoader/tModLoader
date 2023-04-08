@@ -9,47 +9,39 @@ using System.Runtime.CompilerServices;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
+public struct ModId_t
+{
+	public string m_ModId;
+}
+
+public struct ModDownloadItemInstallInfo
+{
+	public bool IsInstalled;
+	public bool NeedUpdate;
+	public bool AppNeedRestartToReinstall;
+}
+
 public interface SocialBrowserModule
 {
 	/////// Management of Browser Items ///////////////////////////////////////////
-
-	public List<ModDownloadItem> Items { get; set; }
 
 	// Used for caching in Mod Browser Queries
 	//TODO: handling installed ModDowmloadItem for query
 	internal IReadOnlyList<LocalMod> InstalledItems { get; set; }
 
-	public ModDownloadItem FindDownloadItem(string modName)
-		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
-
 #pragma warning disable CS8424 // I know [EnumeratorCancellation] has no effect, but it's placed here to remember to add it to async implementations
 	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
 #pragma warning restore CS8424
 
-	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams);
-
 	/////// Display of Browser Items ///////////////////////////////////////////
 
-	public string GetModWebPage(string modId);
+	public string GetModWebPage(ModId_t item);
 
 	/////// Management of Local Install ///////////////////////////////////////////
 
-	//TODO: This would need to be public for a mod to add a backend
-	internal IReadOnlyList<LocalMod> GetInstalledItems();
+	public ModDownloadItemInstallInfo GetInstallInfo(ModDownloadItem item);
 
-	internal LocalMod IsItemInstalled(string modSlug)
-	{
-		if (InstalledItems != null)
-			return InstalledItems.FirstOrDefault(m => m.Name == modSlug);
-
-		return GetInstalledItems().FirstOrDefault(m => m.Name == modSlug);
-	}
-
-	internal bool DoesItemNeedUpdate(string modId, LocalMod installed, Version webVersion);
-
-	public bool DoesAppNeedRestartToReinstallItem(string modId);
-
-	public bool GetModIdFromLocalFiles(TmodFile modFile, out string modId);
+	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModId_t item);
 
 	/////// Management of Downloads ///////////////////////////////////////////
 
@@ -123,7 +115,7 @@ public interface SocialBrowserModule
 			return "1.4";
 
 		return "1.4.4";
-	} 
+	}
 }
 
 

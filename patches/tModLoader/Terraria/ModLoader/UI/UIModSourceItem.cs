@@ -272,6 +272,7 @@ internal class UIModSourceItem : UIPanel
 				Main.menuMode = Interface.reloadModsID;
 				ModLoader.OnSuccessfulLoad += () => {
 					Main.QueueMainThreadAction(() => {
+						// @TODO: ???
 						PublishMod(null, null);
 					});
 				};

@@ -16,34 +16,32 @@ public class ModDownloadItem
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 	public readonly string PublishId;
 	public readonly string OwnerId;
-	public readonly bool HasUpdate;
-	public readonly bool UpdateIsDowngrade;
-
-	internal bool NeedsGameRestart;
-	internal LocalMod Installed { get; set; }
 	public readonly string Version;
 
-	internal readonly string Author;
-	internal readonly string ModIconUrl;
-	internal readonly DateTime TimeStamp;
-	internal readonly string ModReferencesBySlug;
-	internal readonly string[] ModReferenceByModId;
-	internal readonly ModSide ModSide;
-	internal readonly int Downloads;
-	internal readonly int Hot;
-	internal readonly string Homepage;
-	internal readonly string ModloaderVersion;
+	public readonly string Author;
+	public readonly string ModIconUrl;
+	public readonly DateTime TimeStamp;
 
-	private bool IsInstalled => Installed != null;
+	// @TODO: Redundant
+	public readonly string ModReferencesBySlug;
+	public readonly string[] ModReferenceByModId;
+
+	public readonly ModSide ModSide;
+	public readonly int Downloads;
+	public readonly int Hot;
+	public readonly string Homepage;
+	public readonly string ModloaderVersion;
 
 	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
 		// Check against installed mods for updates
+		/*
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(name);
 		bool update = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(publishId, Installed, new System.Version(version));
 
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
 		bool needsRestart = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(publishId);
+		*/
 
 		ModName = name;
 		DisplayName = displayName;
@@ -60,26 +58,15 @@ public class ModDownloadItem
 		Hot = hot;
 		Homepage = homepage;
 		TimeStamp = timeStamp;
-		HasUpdate = update;
-		UpdateIsDowngrade = false;
-		NeedsGameRestart = needsRestart;
 		Version = version;
 		ModloaderVersion = modloaderversion;
-	}
-
-	// Shorthand ModDownloadItem
-	internal ModDownloadItem(string displayName, string publishId, LocalMod installed)
-	{
-		DisplayName = displayName;
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
-		PublishId = publishId;
-		Installed = installed;
 	}
 
 	// @TODO: Below needs to be re looked at if browser doesm't have all items
 
 	internal Task InnerDownloadWithDeps()
 	{
+		// @TODO: ???
 		var downloads = new HashSet<ModDownloadItem>() { this };
 		downloads.Add(this);
 
