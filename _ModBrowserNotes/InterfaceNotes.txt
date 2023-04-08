@@ -18,4 +18,4 @@ Publish: LocalMod, NameValueCollection extraBuildData, WorkshopItemPublishSettin
 
 Actions LocalMod handler (ModOrganizer?):
 Uninstall: LocalMod -> void (should call the Uninstall of the social browser if it's from there)
-OnLocalModsChanged: event
+OnLocalModsChanged: event (passing the list of slugs of updated mods, or called for each mod)

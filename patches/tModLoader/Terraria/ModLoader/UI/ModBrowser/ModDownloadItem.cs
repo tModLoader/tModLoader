@@ -14,7 +14,7 @@ public class ModDownloadItem
 	public readonly string ModName;
 	public readonly string DisplayName;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
-	public readonly string PublishId;
+	public readonly ModPubId_t PublishId;
 	public readonly string OwnerId;
 	public readonly string Version;
 
@@ -46,7 +46,7 @@ public class ModDownloadItem
 		ModName = name;
 		DisplayName = displayName;
 		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
-		PublishId = publishId;
+		PublishId = new ModPubId_t { m_ModPubId = publishId };
 		OwnerId = ownerId;
 
 		Author = author;
@@ -66,17 +66,16 @@ public class ModDownloadItem
 
 	internal Task InnerDownloadWithDeps()
 	{
-		// @TODO: ???
 		var downloads = new HashSet<ModDownloadItem>() { this };
-		downloads.Add(this);
 
-		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(new HashSet<string>() { this.PublishId }, ref downloads);
+		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(new HashSet<ModPubId_t>() { this.PublishId }, ref downloads);
 
 		return Interface.modBrowser.SocialBackend.SetupDownload(FilterOutInstalled(downloads).ToList(), Interface.modBrowserID);
 	}
 
 	private IEnumerable<ModDownloadItem> FilterOutInstalled(IEnumerable<ModDownloadItem> downloads)
 	{
+		// Should cache installed???
 		return downloads.Where(item => !item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade));
 	}
 }

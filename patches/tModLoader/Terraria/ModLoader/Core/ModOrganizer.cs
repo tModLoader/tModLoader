@@ -20,6 +20,13 @@ namespace Terraria.ModLoader.Core;
 /// </summary>
 internal static class ModOrganizer
 {
+	internal delegate void OnLocalModsChangedDelegate(HashSet<string> modSlugs);
+	internal static event OnLocalModsChangedDelegate OnLocalModsChanged;
+	internal static void LocalModsChanged(HashSet<string> modSlugs)
+	{
+		ModOrganizer.OnLocalModsChanged?.Invoke(modSlugs);
+	}
+
 	internal static string modPath = Path.Combine(Main.SavePath, "Mods");
 	internal static string commandLineModPack;
 
@@ -644,6 +651,8 @@ internal static class ModOrganizer
 			// Is a Mod in Mods Folder
 			File.Delete(tmodPath);
 		}
+
+		LocalModsChanged(new HashSet<string> { tmod.Name });
 	}
 
 	internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info)

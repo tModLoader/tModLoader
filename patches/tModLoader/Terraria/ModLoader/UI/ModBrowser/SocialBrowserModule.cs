@@ -6,17 +6,20 @@ using Terraria.ModLoader.UI.DownloadManager;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
-public struct ModId_t
+public struct ModPubId_t
 {
-	public string m_ModId;
+	public string m_ModPubId;
 }
 
 public struct ModDownloadItemInstallInfo
 {
+	//internal LocalMod Installed; // Shoudn't be internal
 	public bool IsInstalled;
+	// IsEnabled :( should pass LocalMod but visibility is a mess from there
 	public bool NeedUpdate;
 	public bool AppNeedRestartToReinstall;
 }
@@ -25,49 +28,45 @@ public interface SocialBrowserModule
 {
 	/////// Management of Browser Items ///////////////////////////////////////////
 
-	// Used for caching in Mod Browser Queries
-	//TODO: handling installed ModDowmloadItem for query
-	internal IReadOnlyList<LocalMod> InstalledItems { get; set; }
-
 #pragma warning disable CS8424 // I know [EnumeratorCancellation] has no effect, but it's placed here to remember to add it to async implementations
 	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
 #pragma warning restore CS8424
 
 	/////// Display of Browser Items ///////////////////////////////////////////
 
-	public string GetModWebPage(ModId_t item);
+	public string GetModWebPage(ModPubId_t item);
 
 	/////// Management of Local Install ///////////////////////////////////////////
 
 	public ModDownloadItemInstallInfo GetInstallInfo(ModDownloadItem item);
-
-	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModId_t item);
+	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModPubId_t item);
 
 	/////// Management of Downloads ///////////////////////////////////////////
 
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
+	internal Task SetupDownload(List<ModDownloadItem> items, UIWorkshopDownload uiProgress = null)
 	{
-		//Set UIWorkshopDownload
-		UIWorkshopDownload uiProgress = null;
-
 		// Can't update enabled items due to in-use file access constraints
 		var needFreeInUseMods = items.Any(item => item.Installed != null && item.Installed.Enabled);
 		if (needFreeInUseMods)
 			ModLoader.Unload();
 
+		/*
 		if (!Main.dedServ) {
 			uiProgress = new UIWorkshopDownload(previousMenuId);
 			Main.MenuUI.SetState(uiProgress);
 		}
+		*/
 
 		return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
 	}
 
 	private void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
 	{
+		var changedModsSlugs = new HashSet<string>();
+
 		foreach (var item in items) {
 			DownloadItem(item, uiProgress);
 
@@ -76,14 +75,16 @@ public interface SocialBrowserModule
 			Thread.Sleep(1000);
 
 			// Add installed info to the downloaded item
-			var localMod = GetInstalledItems().FirstOrDefault(m => m.Name == item.ModName);
-			FindDownloadItem(item.ModName).Installed = localMod;
+			changedModsSlugs.Add(item.ModName);
+			//var localMod = GetInstalledItems().FirstOrDefault(m => m.Name == item.ModName);
+			//FindDownloadItem(item.ModName).Installed = localMod;
 		}
 
-		Interface.modBrowser.PopulateModBrowser(uiOnly: true);
-		Interface.modBrowser.UpdateNeeded = true;
+		ModOrganizer.LocalModsChanged(changedModsSlugs);
+		//Interface.modBrowser.PopulateModBrowser(uiOnly: true);
+		//Interface.modBrowser.UpdateNeeded = true;
 
-		uiProgress?.Leave(refreshBrowser: true);
+		uiProgress?.Leave(refreshBrowser: true); // @TODO refreshBrowser is redundant!!!
 
 		if (reloadWhenDone)
 			ModLoader.Reload();
@@ -93,17 +94,22 @@ public interface SocialBrowserModule
 
 	/////// Management of Dependencies ///////////////////////////////////////////
 
-	public ModDownloadItem[] GetDependencies(HashSet<string> modIds);
+	public HashSet<ModDownloadItem> GetDependencies(HashSet<ModPubId_t> modIds);
 
-	public void GetDependenciesRecursive(HashSet<string> modIds, ref HashSet<ModDownloadItem> set)
+	public void GetDependenciesRecursive(HashSet<ModPubId_t> modIds, ref HashSet<ModDownloadItem> set)
 	{
-		var deps = GetDependencies(modIds);
-		set.UnionWith(deps);
-
-		HashSet<string> depIds = deps.Select(d => d.PublishId).Except(set.Select(d => d.PublishId)).ToHashSet();
-
 		//TODO: What if the same mod is a dependency twice, but different versions?
-		GetDependenciesRecursive(depIds, ref set);
+
+		var toQuery = modIds;
+
+		while (true) {
+			var deps = GetDependencies(toQuery);
+			deps.ExceptWith(set);
+			if (deps.Count <= 0)
+				break;
+			set.UnionWith(deps);
+			toQuery = deps.Select(d => d.PublishId).ToHashSet();
+		}
 	}
 
 	public static string GetBrowserVersionNumber(Version tmlVersion)
@@ -116,14 +122,6 @@ public interface SocialBrowserModule
 
 		return "1.4.4";
 	}
-}
-
-
-public struct QueryConfirmation
-{
-	public bool success;
-	public int pageSize;
-	public int totalItems;
 }
 
 public struct QueryParameters
