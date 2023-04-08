@@ -290,7 +290,7 @@ public partial class WorkshopHelper
 			/// </summary>
 			internal ModDownloadItem[] FastQueryItems()
 			{
-				var numPages = Math.Ceiling((float)(queryParameters.searchModIds.Length / Constants.kNumUGCResultsPerPage));
+				var numPages = Math.Ceiling(queryParameters.searchModIds.Length / (float)Constants.kNumUGCResultsPerPage);
 				var items = new ModDownloadItem[queryParameters.searchModIds.Length];
 
 				for (int i = 0; i < numPages; i++) {
