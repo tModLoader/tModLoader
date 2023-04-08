@@ -75,9 +75,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	AP_UIModDowloadItem _provider = null;
 
-	// _items is only updated when everything is downloaded or aborted
-	private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
-
 	internal bool UpdateNeeded;
 	public UIState PreviousUIState { get; set; }
 

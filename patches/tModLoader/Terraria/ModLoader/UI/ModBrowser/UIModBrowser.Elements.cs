@@ -38,7 +38,6 @@ internal partial class UIModBrowser
 	{
 		ModList?.AbortLoading();
 		ModList?.Clear();
-		_items?.Clear();
 		_missingMods?.Clear();
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
