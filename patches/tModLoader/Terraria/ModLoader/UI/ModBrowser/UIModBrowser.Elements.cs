@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
@@ -35,6 +36,7 @@ internal partial class UIModBrowser
 
 	internal void Reset()
 	{
+		ModList?.AbortLoading();
 		ModList?.Clear();
 		_items?.Clear();
 		_missingMods?.Clear();
@@ -42,6 +44,10 @@ internal partial class UIModBrowser
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
+	}
+
+	private void UpdateHandler(object sender, EventArgs e)
+	{
 		UpdateNeeded = true;
 	}
 
@@ -55,13 +61,9 @@ internal partial class UIModBrowser
 		ModList.OnStateChanged += ModListStateChanged;
 		_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
-		FilterTextBox.OnTextChange += (sender, e) => {
-			UpdateNeeded = true;
-		};
+		FilterTextBox.OnTextChange += UpdateHandler;
 		foreach (var btn in CategoryButtons) {
-			btn.OnStateChanged += (sender, e) => {
-				UpdateNeeded = true;
-			};
+			btn.OnStateChanged += UpdateHandler;
 		}
 	}
 

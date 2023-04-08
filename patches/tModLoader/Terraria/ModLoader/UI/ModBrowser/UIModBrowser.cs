@@ -9,6 +9,7 @@ using System.Transactions;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -30,14 +31,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			QParams = qparams;
 		}
 
-		public void RewrapUI()
-		{
-			lock (_Data) {
-				_Data = _Data.Select(uimdi => new UIModDownloadItem(uimdi.ModDownload)).ToList();
-				HasNewData = true;
-			}
-		}
-
 		protected override async Task<bool> Run(CancellationToken token)
 		{
 			bool error = false;
@@ -46,7 +39,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 					error = true; // Save the error, but let the enumerator finish
 				} else {
 					lock (_Data) { // @TODO: lock in batches?
-						_Data.Add(new UIModDownloadItem(item));
+						var uiItem = new UIModDownloadItem(item);
+						uiItem.UpdateInstallInfo(new ModDownloadItemInstallInfo(uiItem.ModDownload));
+						_Data.Add(uiItem);
 						HasNewData = true;
 					}
 				}
@@ -75,6 +70,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private string _specialModPackFilterTitle;
 	private List<ModPubId_t> _specialModPackFilter;
 	private readonly List<string> _missingMods = new List<string>();
+
+	private HashSet<string> modSlugsToUpdateInstallInfo = new();
 
 	AP_UIModDowloadItem _provider = null;
 
@@ -146,20 +143,34 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
+	private void CheckIfAnyModUpdateIsAvailable()
+	{
+		_rootElement.RemoveChild(_updateAllButton);
+		if (
+			SpecialModPackFilter == null &&
+			SocialBackend.GetInstalledModDownloadItems().Where(item => new ModDownloadItemInstallInfo(item).NeedUpdate).Count() > 0
+		)
+			_rootElement.Append(_updateAllButton);
+	}
+
 	private void UpdateAllMods(UIMouseEvent @event, UIElement element)
 	{
-		if (Loading)
-			return;
-
-		var relevantMods = _items.Where(x => new ModDownloadItemInstallInfo(x.ModDownload).NeedUpdate).Select(x => x.ModDownload.PublishId).ToList();
+		var relevantMods = SocialBackend.GetInstalledModDownloadItems()
+			.Where(item => new ModDownloadItemInstallInfo(item).NeedUpdate)
+			.Select(item => item.PublishId)
+			.ToList();
 		DownloadMods(relevantMods);
+
+		CheckIfAnyModUpdateIsAvailable();
 	}
 
 	private void ClearFilters(UIMouseEvent @event, UIElement element)
 	{
+		// Already done in PopulateModBrowser???
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
-		UpdateNeeded = true;
+		// @TODO: Should clear the other filters???
+		PopulateModBrowser();
 		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
 
@@ -199,17 +210,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				// @TEMP: Was return here, it did "block" _updateAvailable processing
 				break;
 			}
-
-		// @TODO: This feels a lot like an Update method...
-		if (_updateAvailable) {
-			_updateAvailable = false;
-			Interface.updateMessage.SetMessage(_updateText);
-			Interface.updateMessage.SetGotoMenu(Interface.modBrowserID);
-			Interface.updateMessage.SetURL(_updateUrl);
-			Interface.updateMessage.SetAutoUpdateURL(_autoUpdateUrl);
-			Main.menuMode = Interface.updateMessageID;
-		}
-
 	}
 
 	public void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -252,33 +252,79 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			ModList.AbortLoading();
 		} else {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			PopulateModBrowser(uiOnly: false);
+			PopulateModBrowser();
 		}
 	}
 
 	private void ModListStateChanged(AsyncProvider.State newState, AsyncProvider.State oldState)
 	{
 		_browserStatus.SetCurrentState(newState);
-		_rootElement.RemoveChild(_updateAllButton);
 		if (newState.IsFinished()) {
 			_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));
-
-			_items.Clear();
-			_items.AddRange(_provider.GetData(false));
-			if (SpecialModPackFilter == null && _items.Count(x => new ModDownloadItemInstallInfo(x.ModDownload).NeedUpdate) > 0)
-				_rootElement.Append(_updateAllButton);
 		}
 	}
 
 	public override void OnActivate()
 	{
+		base.OnActivate();
 		Main.clrInput();
+		ModOrganizer.OnLocalModsChanged += CbLocalModsChanged;
 		if (_provider is null) { // @TODO: Will search and stuff remain in the state???
-			PopulateModBrowser(uiOnly: false);
+			PopulateModBrowser();
+		}
+
+		// Check for mods to update
+		// @TODO: Is it ok to do it once on load?
+		CheckIfAnyModUpdateIsAvailable();
+	}
+
+	private void CbLocalModsChanged(HashSet<string> modSlugs)
+	{
+		// Can be called outside main thread
+		lock (modSlugsToUpdateInstallInfo) {
+			modSlugsToUpdateInstallInfo.UnionWith(modSlugs);
 		}
 	}
 
-	internal void PopulateModBrowser(bool uiOnly)
+	public override void OnDeactivate()
+	{
+		ModOrganizer.OnLocalModsChanged -= CbLocalModsChanged;
+		base.OnDeactivate();
+	}
+
+	public override void Update(GameTime gameTime)
+	{
+		base.Update(gameTime);
+
+		if (_updateAvailable) {
+			_updateAvailable = false;
+			Interface.updateMessage.SetMessage(_updateText);
+			Interface.updateMessage.SetGotoMenu(Interface.modBrowserID);
+			Interface.updateMessage.SetURL(_updateUrl);
+			Interface.updateMessage.SetAutoUpdateURL(_autoUpdateUrl);
+			Main.menuMode = Interface.updateMessageID;
+		}
+
+		if (_provider is not null) {
+			lock (modSlugsToUpdateInstallInfo) {
+				if (modSlugsToUpdateInstallInfo.Count > 0) {
+					// Should take very little time this so it's ok inside the lock, otherwise move it with a copy outside
+					foreach (var item in _provider?.GetData(false).Where(d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName))) {
+						item.UpdateInstallInfo(new ModDownloadItemInstallInfo(item.ModDownload));
+					}
+
+					modSlugsToUpdateInstallInfo.Clear();
+				}
+			}
+		}
+
+		if (UpdateNeeded) {
+			UpdateNeeded = false;
+			PopulateModBrowser();
+		}
+	}
+
+	internal void PopulateModBrowser()
 	{
 		// Initialize
 		SpecialModPackFilter = null;
@@ -286,20 +332,13 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		SetHeading(Language.GetText("tModLoader.MenuModBrowser")); // @TODO: WHAT IS DOING THIS HERE???
 
-		// Remove old data
-		ModList.Clear();
+		// Old data will be removed and old provider aborted when setting the new provider `ModList.SetProvider`
 
 		// Asynchronous load the Mod Browser
-		if (uiOnly) {
-			_provider?.RewrapUI();
-			//ModList.ForceUpdateData(); // Not needed
-		} else {
-			_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
-			QueryParameters qparams = FilterParameters;
-			// @TODO: Populate qparams
-			_provider = new AP_UIModDowloadItem(SocialBackend, qparams);
-			ModList.SetProvider(_provider); // .Select(mdi => new UIModDownloadItem(mdi))
-		}
+		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
+		QueryParameters qparams = FilterParameters;
+		_provider = new AP_UIModDowloadItem(SocialBackend, qparams);
+		ModList.SetProvider(_provider); // .Select(mdi => new UIModDownloadItem(mdi))
 	}
 
 	/// <summary>

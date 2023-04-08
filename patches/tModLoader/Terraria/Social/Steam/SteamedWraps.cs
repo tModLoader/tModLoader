@@ -86,7 +86,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		return new WorkshopHelper.QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = modIds.ToArray() }).FastQueryItems().ToHashSet();
 	}
 
-	public string GetModWebPage(ModPubId_t modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId}";
+	public string GetModWebPage(ModPubId_t modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId.m_ModPubId}";
 
 	// Query Items /////////////////////////
 

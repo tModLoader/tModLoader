@@ -239,9 +239,7 @@ internal class UIModInfo : UIState
 
 	private void VisitModHostPageInner()
 	{
-		string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
-
-		Utils.OpenToURL(url);
+		Utils.OpenToURL(Interface.modBrowser.SocialBackend.GetModWebPage(_publishedFileId));
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -271,9 +269,6 @@ internal class UIModInfo : UIState
 			_modInfo.Append(_loaderElement);
 			_loading = true;
 			_ready = false;
-
-			//TODO - move this to the open infi  button. Not on open UI.
-			Utils.OpenToURL(Interface.modBrowser.SocialBackend.GetModWebPage(_publishedFileId));
 
 			if (string.IsNullOrWhiteSpace(_info)) {
 				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");

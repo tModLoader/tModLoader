@@ -58,6 +58,8 @@ internal class UIModDownloadItem : UIPanel
 			: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
 		: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
+	private readonly bool tMLNeedUpdate;
+
 	public UIModDownloadItem(ModDownloadItem modDownloadItem)
 	{
 		ModDownload = modDownloadItem;
@@ -86,8 +88,9 @@ internal class UIModDownloadItem : UIPanel
 		_moreInfoButton.OnLeftClick += ViewModInfo;
 		Append(_moreInfoButton);
 
-		var modBuildVersion = new Version(ModDownload.ModloaderVersion.Replace("tModLoader v",""));
-		if (!BuildInfo.IsDev && BuildInfo.tMLVersion < modBuildVersion) {
+		var modBuildVersion = new Version(ModDownload.ModloaderVersion.Replace("tModLoader v", ""));
+		tMLNeedUpdate = !BuildInfo.IsDev && BuildInfo.tMLVersion < modBuildVersion;
+		if (tMLNeedUpdate) {
 			string updateVersion = $"v{modBuildVersion}";
 			bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
 			if (BuildInfo.IsStable && new Version(modBuildVersion.Major, modBuildVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
@@ -103,21 +106,17 @@ internal class UIModDownloadItem : UIPanel
 			};
 			Append(tMLUpdateRequired);
 		}
-		else if (NeedsGameRestart) {
-			_updateButton = new UIImage(UICommon.ButtonExclamationTexture);
-			_updateButton.CopyStyle(_moreInfoButton);
-			_updateButton.Left.Pixels += 36 + PADDING;
-			_updateButton.OnLeftClick += ShowGameNeedsRestart;
-			Append(_updateButton);
-		}
-		else if (HasUpdate || !IsInstalled) {
-			_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
-			_updateWithDepsButton.CopyStyle(_moreInfoButton);
-			_updateWithDepsButton.Left.Pixels += 36 + PADDING;
-			_updateWithDepsButton.OnLeftClick += DownloadWithDeps;
-			Append(_updateWithDepsButton);
-		}
 
+		_updateButton = new UIImage(UICommon.ButtonExclamationTexture);
+		_updateButton.CopyStyle(_moreInfoButton);
+		_updateButton.Left.Pixels += 36 + PADDING;
+		_updateButton.OnLeftClick += ShowGameNeedsRestart;
+
+		_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
+		_updateWithDepsButton.CopyStyle(_moreInfoButton);
+		_updateWithDepsButton.Left.Pixels += 36 + PADDING;
+		_updateWithDepsButton.OnLeftClick += DownloadWithDeps;
+		
 		if (ModDownload.ModReferencesBySlug?.Length > 0) {
 			var icon = UICommon.ButtonExclamationTexture;
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {
@@ -130,13 +129,29 @@ internal class UIModDownloadItem : UIPanel
 		OnLeftDoubleClick += ViewModInfo;
 	}
 
+	public void UpdateInstallInfo(ModDownloadItemInstallInfo installInfo)
+	{
+		if (tMLNeedUpdate)
+			return;
+
+		_updateWithDepsButton.Remove();
+		_updateButton.Remove();
+
+		if (NeedsGameRestart) {
+			Append(_updateButton);
+		}
+		else if (HasUpdate || !IsInstalled) {
+			Append(_updateWithDepsButton);
+		}
+	}
+
 	private void ShowModDependencies(UIMouseEvent evt, UIElement element)
 	{
 		var modListItem = (UIModDownloadItem)element.Parent;
 		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferenceByModId.ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 		Interface.modBrowser.FilterTextBox.Text = "";
-		Interface.modBrowser.UpdateNeeded = true;
+		Interface.modBrowser.UpdateNeeded = true; // @TODO: Should be called by the changes above afaik
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}
 

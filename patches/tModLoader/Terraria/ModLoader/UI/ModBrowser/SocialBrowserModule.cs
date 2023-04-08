@@ -61,8 +61,8 @@ public interface SocialBrowserModule
 		var listIds = new List<ModPubId_t>();
 
 		foreach (var mod in mods) {
-			GetModIdFromLocalFiles(mod.modFile, out var id);
-			listIds.Add(id);
+			if (GetModIdFromLocalFiles(mod.modFile, out var id))
+				listIds.Add(id);
 		}
 
 		return DirectQueryItems(new QueryParameters { searchModIds = listIds.ToArray() });
