@@ -42,7 +42,7 @@
 -				}
 +				if (KeyStatus.ContainsKey(item.Key))
 +					KeyStatus[item.Key] = new List<string>(item.Value);
-+				else if (item.Key.Contains(":")) // This preserves unloaded mod keybind values
++				else if (item.Key.Contains(":") || item.Key.Contains("/")) // This preserves unloaded mod keybind values
 +					UnloadedModKeyStatus[item.Key] = new List<string>(item.Value);
  			}
  		}
