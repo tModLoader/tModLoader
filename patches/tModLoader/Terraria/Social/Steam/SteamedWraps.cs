@@ -80,12 +80,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	}
 
 	// More Info for Items /////////////////////////
-
-	public HashSet<ModDownloadItem> GetDependencies(HashSet<ModPubId_t> modIds)
-	{
-		return new WorkshopHelper.QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = modIds.ToArray() }).FastQueryItems().ToHashSet();
-	}
-
 	public string GetModWebPage(ModPubId_t modId) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={modId.m_ModPubId}";
 
 	// Query Items /////////////////////////

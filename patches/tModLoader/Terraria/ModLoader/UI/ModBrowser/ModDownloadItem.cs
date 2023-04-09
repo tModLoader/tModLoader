@@ -55,7 +55,8 @@ public class ModDownloadItem
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
 
-		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(new HashSet<ModPubId_t>() { this.PublishId }, ref downloads);
+		if (ModReferenceByModId.Length > 0)
+			Interface.modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
 
 		return Interface.modBrowser.SocialBackend.SetupDownload(FilterOutInstalled(downloads).ToList(), Interface.modBrowserID);
 	}
@@ -67,7 +68,7 @@ public class ModDownloadItem
 				return false;
 
 			var installInfo = new ModDownloadItemInstallInfo(item);
-			return installInfo.IsInstalled || installInfo.NeedUpdate;
+			return !installInfo.IsInstalled || installInfo.NeedUpdate;
 		});
 	}
 }

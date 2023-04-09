@@ -87,20 +87,31 @@ public interface SocialBrowserModule
 	/// </summary>
 	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
 	{
+		// Can't update enabled items due to in-use file access constraints
+		//TODO: Mod unloading needs to occur off the main thread. This code needs testing as such
+		var needFreeInUseMods = items.Any(item => new ModDownloadItemInstallInfo(item).IsEnabled);
+		if (needFreeInUseMods) {
+			Interface.loadMods.suppressAutoLoad = true;
+			Main.menuMode = Interface.loadModsID;
+			var unload = Task.Run(() => ModLoader.Unload());
+			return unload.ContinueWith(delegate { DownloadRunner(items, previousMenuId, needFreeInUseMods); });
+		}
+		else {
+			return DownloadRunner(items, previousMenuId, needFreeInUseMods);
+		}
+	}
+
+	private Task DownloadRunner(List<ModDownloadItem> items, int previousMenuId, bool needReload)
+	{
 		//Set UIWorkshopDownload
 		UIWorkshopDownload uiProgress = null;
-
-		// Can't update enabled items due to in-use file access constraints
-		var needFreeInUseMods = items.Any(item => new ModDownloadItemInstallInfo(item).IsEnabled);
-		if (needFreeInUseMods)
-			ModLoader.Unload();
 
 		if (!Main.dedServ) {
 			uiProgress = new UIWorkshopDownload(previousMenuId);
 			Main.MenuUI.SetState(uiProgress);
 		}
 
-		return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
+		return Task.Run(() => InnerDownload(uiProgress, items, needReload));
 	}
 
 	private void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
@@ -130,22 +141,33 @@ public interface SocialBrowserModule
 
 	/////// Management of Dependencies ///////////////////////////////////////////
 
-	public HashSet<ModDownloadItem> GetDependencies(HashSet<ModPubId_t> modIds);
-
-	public void GetDependenciesRecursive(HashSet<ModPubId_t> modIds, ref HashSet<ModDownloadItem> set)
+	public void GetDependenciesRecursive(ref HashSet<ModDownloadItem> set)
 	{
 		//TODO: What if the same mod is a dependency twice, but different versions?
-		var toQuery = modIds;
+		var fullList = set.Select(x => x.PublishId).ToHashSet();
+		var iterationList = new HashSet<ModPubId_t>();
+
+		var iterationSet = set;
 
 		while (true) {
-			var deps = GetDependencies(toQuery);
+			// Get the list of all Publish IDs labelled as dependencies 
+			foreach (var item in iterationSet) {
+				iterationList.UnionWith(item.ModReferenceByModId);
+			}
 
-			deps.ExceptWith(set);
-			if (deps.Count <= 0)
-				break;
+			// Remove Publish IDs already captured
+			iterationList.ExceptWith(fullList);
 
-			set.UnionWith(deps);
-			toQuery = deps.Select(d => d.PublishId).ToHashSet();
+			// If No New Publish IDs, then we have all the download Items already. Let's end this loop
+			if (iterationList.Count <= 0)
+				return;
+
+			// Get the ModDownloadItems for the new IDs
+			iterationSet = DirectQueryItems(new QueryParameters() { searchModIds = iterationList.ToArray() }).ToHashSet();
+
+			// Add the net-new publish IDs & ModDownLoadItems to the full list
+			fullList.UnionWith(iterationList);
+			set.UnionWith(iterationSet);
 		}
 	}
 
