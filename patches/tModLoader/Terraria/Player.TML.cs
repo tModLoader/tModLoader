@@ -506,8 +506,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		long num2 = Utils.CoinsCount(out _, bank.item, Array.Empty<int>());
 		long num3 = Utils.CoinsCount(out _, bank2.item, Array.Empty<int>());
 		long num4 = Utils.CoinsCount(out _, bank3.item, Array.Empty<int>());
+		long voidBag = Utils.CoinsCount(out _, bank4.item, Array.Empty<int>());
 
-		long num5 = Utils.CoinsCombineStacks(out _, new[] { num, num2, num3, num4 });
+		long num5 = Utils.CoinsCombineStacks(out _, new[] { num, num2, num3, num4, voidBag});
 
 		return num5 >= price;
 	}
