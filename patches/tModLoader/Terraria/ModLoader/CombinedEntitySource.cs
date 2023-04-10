@@ -8,13 +8,13 @@ public class CombinedEntitySource : IEntitySource
     public string Context => "tModLoader_CombinedEntitySource";
     List<IEntitySource> entitySources = new();
 
-    public EntitySourceTest AddEntitySource(IEntitySource second)
+    public CombinedEntitySource AddEntitySource(IEntitySource second)
     {
         entitySources.Add(second);
         return this;
     }
 
-    public EntitySourceTest(IEntitySource first, IEntitySource second)
+    public CombinedEntitySource(IEntitySource first, IEntitySource second)
     {
         entitySources.Add(first);
         entitySources.Add(second);
@@ -26,17 +26,17 @@ public class CombinedEntitySource : IEntitySource
     }
 }
 
-public static class EntitySourceTestExtension
+public static class CombinedEntitySourceExtension
 {
-    public static EntitySourceTest AddEntitySource(this IEntitySource first, IEntitySource second)
+    public static CombinedEntitySource AddEntitySource(this IEntitySource first, IEntitySource second)
     {
-        return new EntitySourceTest(first, second);
+        return new CombinedEntitySource(first, second);
     }
 
     public static T AttemptGet<T>(this IEntitySource collection) where T : class, IEntitySource
     {
-        if(collection is EntitySourceTest)
-            return ((EntitySourceTest)collection).AttemptGet<T>();
+        if(collection is CombinedEntitySource)
+            return ((CombinedEntitySource)collection).AttemptGet<T>();
         return null;
     }
 }
