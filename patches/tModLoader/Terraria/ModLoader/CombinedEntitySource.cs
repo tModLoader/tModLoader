@@ -35,7 +35,9 @@ public static class CombinedEntitySourceExtension
 
     public static T AttemptGet<T>(this IEntitySource collection) where T : class, IEntitySource
     {
-        if(collection is CombinedEntitySource)
+        if (collection is T)
+            return (T)collection;
+        if (collection is CombinedEntitySource)
             return ((CombinedEntitySource)collection).AttemptGet<T>();
         return null;
     }
