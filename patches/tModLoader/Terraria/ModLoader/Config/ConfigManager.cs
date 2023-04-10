@@ -95,13 +95,12 @@ public static class ConfigManager
 						// TODO: Should key be {config.Name}.Headers.{variable.Name}?
 						// TODO: Should all headers have a name, [Header("HeaderName")], then {config.Name}.Headers.{HeaderName}
 
-						// Label will always exist. Tooltip and Header are optional, need to be used to exist.
+						// Label and Tooltip will always exist. Header is optional, need to be used to exist.
 						string labelKey = GetLabelKey(variable, config, fallbackToClass: false, throwErrors: true);
 						Language.GetOrRegister(labelKey, () => Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-						string tooltipKey = GetTooltipKey(variable, config, throwErrors: true);
-						if(tooltipKey != null)
-							Language.GetOrRegister(tooltipKey, () => "");
+						string tooltipKey = GetTooltipKey(variable, config, fallbackToClass: false, throwErrors: true);
+						Language.GetOrRegister(tooltipKey, () => "");
 
 						var header = GetLocalizedHeader(variable, config, throwErrors: true);
 						if (header != null)
@@ -423,7 +422,7 @@ public static class ConfigManager
 	}
 
 	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
-		// Priority: Auto/Provided Key on member -> Key on class if member translation is empty string -> member name
+		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
 		var config = Interface.modConfig.pendingConfig;
 		string labelKey = GetLabelKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
 		if (Language.Exists(labelKey)) {
@@ -442,29 +441,42 @@ public static class ConfigManager
 		return memberInfo.Name;
 	}
 
-	internal static string GetTooltipKey(PropertyFieldWrapper memberInfo, ModConfig config, /*bool fallbackToClass,*/ bool throwErrors)
+	internal static string GetTooltipKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
 	{
-		// Falls back to Type attribute automatically 
-		var tooltip = GetCustomAttribute<TooltipAttribute>(memberInfo, null, null);
+		var tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipAttribute));
 		if (tooltip != null) {
 			if (tooltip.malformed && throwErrors)
 				throw new ValueNotTranslationKeyException($"{nameof(TooltipAttribute)} only accepts localization keys for the 'key' parameter.");
-
-			string tooltipKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
-			if (tooltip.key != null)
-				tooltipKey = tooltip.key;
-			return tooltipKey;
+			return tooltip.key;
 		}
-		return null;
+		tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
+		if (tooltip != null) {
+			if (tooltip.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(TooltipAttribute)} only accepts localization keys for the 'key' parameter.");
+			if (fallbackToClass) // FinishSetup will catch errors on Tooltip annotations on classes
+				return tooltip.key;
+		}
+		return config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
 	}
 
 	internal static string GetLocalizedTooltip(TooltipAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
 	{
-		// Priority: Auto/Provided Key on member -> Key on class -> null
+		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> null
 		var config = Interface.modConfig.pendingConfig;
-		string tooltipKey = GetTooltipKey(memberInfo, config, throwErrors: false);
-		if (tooltipKey != null && Language.Exists(tooltipKey))
-			return Language.GetTextValue(tooltipKey);
+		string tooltipKey = GetTooltipKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
+		if (Language.Exists(tooltipKey)) {
+			string tooltipLocalization = Language.GetTextValue(tooltipKey);
+			if (!string.IsNullOrEmpty(tooltipLocalization))
+				return tooltipLocalization;
+		}
+
+		var typeTooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
+		if (typeTooltip != null && Language.Exists(typeTooltip.key)) {
+			string tooltipLocalization = Language.GetTextValue(typeTooltip.key);
+			if (!string.IsNullOrEmpty(tooltipLocalization))
+				return tooltipLocalization;
+		}
+
 		return null;
 	}
 

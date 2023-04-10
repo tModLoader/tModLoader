@@ -5,6 +5,7 @@ using Terraria.ModLoader.Config;
 // This file defines custom data type that represents Gradient data type that can be used in ModConfig classes.
 namespace ExampleMod.Common.Configs.CustomDataTypes
 {
+	[Tooltip("$Mods.ExampleMod.Configs.Common.Gradient.Tooltip")]
 	public class Gradient
 	{
 		[Tooltip("$Mods.ExampleMod.Configs.Common.Gradient.start.Tooltip")]

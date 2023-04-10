@@ -23,7 +23,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[CustomModConfigItem(typeof(GradientElement))]
-		[Tooltip]
 		public Gradient gradient = new Gradient();
 
 		/*

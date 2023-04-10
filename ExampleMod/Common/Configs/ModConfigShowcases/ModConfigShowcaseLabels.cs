@@ -14,13 +14,14 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		// Without a Label attribute, config items will display as field identifiers. Using Label will make your Config appealing.
+		// By default, all ModConfig fields and properties will have an automatically assigned Label and Tooltip translation key. You'll find these translation keys in your translation files. All of the English translations for the configs in ExampleMod are found in ExampleMod/Localization/en-US_Mods.ExampleMod.Configs.hjson
+
 		// Use Tooltip to convey additional information about the config item.
+		// This example shows additional text when hovered.
 		[SliderColor(255, 0, 127)]
-		[Tooltip]
 		public float SomeFloat;
 
-		// Using localization keys will help make your config readable in multiple languages. See ExampleMod/Localization/en-US.lang
+		// Modders can pass in custom localization keys. This can be useful for reusing translations.
 		[Label("$Mods.ExampleMod.Configs.Common.LocalizedLabel")]
 		[Tooltip("$Mods.ExampleMod.Configs.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
@@ -31,6 +32,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		// The color of the config entry can be customized. R, G, B
 		[BackgroundColor(255, 0, 255)]
+		// The corresponding tooltip translation for this entry is empty, so the tooltip shown will be from the Pair class.  
 		public Pair pairExample = new Pair();
 
 		// List elements also inherit BackgroundColor
