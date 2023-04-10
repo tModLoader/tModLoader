@@ -421,10 +421,7 @@ Mods: {
 				// Tooltip: ""
 			}
 
-			ExampleLamp: {
-				// DisplayName: Example Lamp
-				// Tooltip: ""
-			}
+			// ExampleLamp.DisplayName: Example Lamp
 
 			ExampleMusicBox: {
 				// DisplayName: Music Box (Marble Gallery)
