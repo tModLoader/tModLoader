@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
@@ -15,30 +16,31 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	public ModNPC ModNPC { get; internal set; }
 
 #region Globals
-	internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
-
-	public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
+	int IEntityWithGlobals<GlobalNPC>.Type => type;
+	internal GlobalNPC[] _globals;
+	public RefReadOnlyArray<GlobalNPC> EntityGlobals => _globals;
+	public EntityGlobalsEnumerator<GlobalNPC> Globals => new(this);
 
 	/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="IndexOutOfRangeException"/>
 	public T GetGlobalNPC<T>() where T : GlobalNPC
-		=> GlobalType.GetGlobal<GlobalNPC, T>(globalNPCs);
+		=> GlobalNPC.GetGlobal<T>(type, EntityGlobals);
 
 	/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	/// <exception cref="NullReferenceException"/>
 	public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
-		=> GlobalType.GetGlobal(globalNPCs, baseInstance);
+		=> GlobalNPC.GetGlobal(type, EntityGlobals, baseInstance);
 
 	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
 	public bool TryGetGlobalNPC<T>(out T result) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal(globalNPCs, out result);
+		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, out result);
 
 	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal(globalNPCs, baseInstance, out result);
+		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
 #endregion
 
 	/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>

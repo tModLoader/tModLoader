@@ -27,16 +27,10 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<GlobalNPC>.Register(this);
-
-		Index = (ushort)NPCLoader.globalNPCs.Count;
-
-		NPCLoader.globalNPCs.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, Index);
 
 	/// <summary>
 	/// Allows you to set the properties of any and every NPC that gets created.

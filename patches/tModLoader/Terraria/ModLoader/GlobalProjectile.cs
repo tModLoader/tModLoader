@@ -22,16 +22,10 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<GlobalProjectile>.Register(this);
-
-		Index = (ushort)ProjectileLoader.globalProjectiles.Count;
-
-		ProjectileLoader.globalProjectiles.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, Index);
 
 	/// <summary>
 	/// Allows you to set the properties of any and every projectile that gets created.
