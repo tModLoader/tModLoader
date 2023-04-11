@@ -38,7 +38,10 @@ public class UIAsyncList : UIList
 	{
 		_token.Cancel();
 
-		Clear();
+		// Clear the list in the Update in case SetProvider is called from a Task
+		//Clear();
+		ForceUpdateData();
+
 		_token = new();
 		_provider = provider;
 		_provider.Start(_token.Token);
@@ -72,20 +75,25 @@ public class UIAsyncList : UIList
 	{
 		base.Update(gameTime);
 
-		if (_provider.HasNewData || _forceUpdateData) {
-			_forceUpdateData = false;
-			Clear();
-			AddRange(_provider.GetData(true));
-			Add(_endItem);
-			Recalculate(); // @TODO: Needed?
+		var _tmpState = AsyncProvider.State.Aborted;
+
+		if (!_token.IsCancellationRequested) {
+			_tmpState = _provider.State;
+
+			if (_provider.HasNewData || _forceUpdateData) {
+				_forceUpdateData = false;
+				Clear();
+				AddRange(_provider.GetData(true));
+				Add(_endItem);
+				//Recalculate(); // Not Needed, it's in UIList.DrawSelf
+			}
 		}
 
-		var _tmpState = _provider.State;
 		if (_lastState != _tmpState) {
 			OnStateChanged?.Invoke(_tmpState, _lastState);
 			_endItem.SetText(GetEndItemTextForState(_tmpState, _provider.Count <= 0));
 			_lastState = _tmpState;
-			Recalculate(); // @TODO: Needed?
+			//Recalculate(); // Not Needed, it's in UIList.DrawSelf
 		}
 	}
 }

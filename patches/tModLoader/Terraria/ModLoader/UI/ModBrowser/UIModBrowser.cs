@@ -323,7 +323,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	internal void PopulateModBrowser()
 	{
-		// Initialize
+		// Initialize @TODO: is this correct?
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
 
