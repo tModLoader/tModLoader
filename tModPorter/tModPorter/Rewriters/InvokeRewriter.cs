@@ -257,7 +257,7 @@ public partial class InvokeRewriter : BaseRewriter
 		if (t.LastOrDefault().Kind() is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.MultiLineCommentTrivia)
 			return node; // prevents infinite recursion
 
-		bool multiline = node.WithoutTrivia().DescendantTrivia().Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia));
+		bool multiline = node.ToString().Contains('\n');
 		if (multiline) {
 			return node
 				.WithLeadingTrivia(t.Add(Comment("/* ")))
