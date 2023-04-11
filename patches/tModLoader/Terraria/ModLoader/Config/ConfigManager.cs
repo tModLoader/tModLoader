@@ -418,14 +418,17 @@ public static class ConfigManager
 			if (fallbackToClass) // FinishSetup will catch errors on Label annotations on classes
 				return label.key;
 		}
-		return config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Label");
+		// For non-ModConfig, we don't want to assume the key.
+		if (memberInfo.MemberInfo.DeclaringType == config.GetType())
+			return config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Label");
+		return null;
 	}
 
 	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
 		var config = Interface.modConfig.pendingConfig;
 		string labelKey = GetLabelKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
-		if (Language.Exists(labelKey)) {
+		if (labelKey != null && Language.Exists(labelKey)) {
 			string labelLocalization = Language.GetTextValue(labelKey);
 			if (!string.IsNullOrEmpty(labelLocalization))
 				return labelLocalization;
@@ -456,7 +459,10 @@ public static class ConfigManager
 			if (fallbackToClass) // FinishSetup will catch errors on Tooltip annotations on classes
 				return tooltip.key;
 		}
-		return config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
+		// For non-ModConfig, we don't want to assume the key.
+		if(memberInfo.MemberInfo.DeclaringType == config.GetType())
+			return config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Tooltip");
+		return null;
 	}
 
 	internal static string GetLocalizedTooltip(TooltipAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
@@ -464,7 +470,7 @@ public static class ConfigManager
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> null
 		var config = Interface.modConfig.pendingConfig;
 		string tooltipKey = GetTooltipKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
-		if (Language.Exists(tooltipKey)) {
+		if (tooltipKey != null && Language.Exists(tooltipKey)) {
 			string tooltipLocalization = Language.GetTextValue(tooltipKey);
 			if (!string.IsNullOrEmpty(tooltipLocalization))
 				return tooltipLocalization;
@@ -491,8 +497,13 @@ public static class ConfigManager
 			if (header.malformed)
 				header.identifier = memberInfo.Name;
 
-			if (header.IsIdentifier)
-				header.key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.Headers.{header.identifier}");
+			if (header.IsIdentifier) {
+				// For non-ModConfig, we don't want to assume the key.
+				if (memberInfo.MemberInfo.DeclaringType != config.GetType()) 
+					header.key = "Invalid Header Key";
+				else
+					header.key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.Headers.{header.identifier}");
+			}
 
 			return header;
 		}
