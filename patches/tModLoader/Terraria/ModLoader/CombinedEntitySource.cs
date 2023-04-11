@@ -6,23 +6,28 @@ namespace Terraria.ModLoader;
 public class CombinedEntitySource : IEntitySource
 {
     public string Context => "tModLoader_CombinedEntitySource";
-    List<IEntitySource> entitySources = new();
+    LinkedList<IEntitySource> entitySources = new();
 
     public CombinedEntitySource AddEntitySource(IEntitySource second)
     {
-        entitySources.Add(second);
+        entitySources.AddFirst(second);
         return this;
     }
 
     public CombinedEntitySource(IEntitySource first, IEntitySource second)
     {
-        entitySources.Add(first);
-        entitySources.Add(second);
+        entitySources.AddFirst(first);
+        entitySources.AddFirst(second);
     }
     public T AttemptGet<T>() where T : class, IEntitySource
     {
-        IEntitySource rv = entitySources.Find(i => i is T);
-        return rv as T;
+        IEntitySource rv;
+        for (LinkedListNode<IEntitySource> node = entitySources.First; node != null; node = node.Next)
+        {
+            if(node is T)
+            return node as T;
+        }
+        return null;
     }
 }
 
