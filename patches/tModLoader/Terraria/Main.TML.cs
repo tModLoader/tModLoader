@@ -33,7 +33,12 @@ public partial class Main
 	public static bool showServerConsole;
 	public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
-	public static double timePass; // used to account for more precise time rates when deciding when to update weather
+	/// <summary>
+	/// Representation that dictates the actual amount of "world event updates" that happen in a given GAME tick. This number increases/decreases in direct tandem with
+	/// <seealso cref="desiredWorldEventsUpdateRate"/>.
+	/// </summary>
+	public static int worldEventUpdates;
+	private double _partialWorldEventUpdates = 0f;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 

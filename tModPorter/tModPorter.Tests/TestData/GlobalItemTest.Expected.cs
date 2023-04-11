@@ -58,4 +58,9 @@ public class GlobalItemTest : GlobalItem
 #endif
 
 	public override void ExtractinatorUse(int extractType, int extractinatorBlockType, ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo) { }
 }

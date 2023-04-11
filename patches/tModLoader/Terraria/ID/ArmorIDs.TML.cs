@@ -17,7 +17,7 @@ partial class ArmorIDs
 			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will show the player's full hair when equipped.
 			/// <br/> Defaults to <see langword="false"/>.
 			/// </summary>
-			public static bool[] DrawFullHair = Factory.CreateBoolSet(10, 12, 28, 42, 62, 97, 106, 113, 116, 119, 133, 138, 139, 163, 178, 181, 191, 198, 217, 218, 220, 222, 224, 225, 228, 229, 230, 232, 235, 238, 242, 243, 244, 245, 272);
+			public static bool[] DrawFullHair = Factory.CreateBoolSet(10, 12, 28, 42, 62, 97, 106, 113, 116, 119, 133, 138, 139, 163, 178, 181, 191, 198, 217, 218, 220, 222, 224, 225, 228, 229, 230, 232, 235, 238, 242, 243, 244, 245, 272, 273, 274, 277);
 
 			// Created based on 'hatHair' definition in 'Player.GetHairSettings'.
 			/// <summary>
@@ -27,17 +27,7 @@ partial class ArmorIDs
 			/// <remarks>
 			/// Hat hair textures can be accessed through <see cref="GameContent.TextureAssets.PlayerHairAlt"/>.
 			/// </remarks>
-			public static bool[] DrawHatHair = Factory.CreateBoolSet(13, 14, 15, 16, 18, 21, 24, 25, 26, 29, 40, 44, 51, 56, 59, 60, 63, 64, 65, 67, 68, 69, 81, 92, 94, 95, 100, 114, 121, 126, 130, 136, 140, 143, 145, 158, 159, 161, 182, 184, 190, 195, 215, 216, 219, 223, 226, 227, 231, 233, 234, 262, 263, 264, 265, 267);
-
-			// Created based on 'backHairDraw' definition in 'Player.GetHairSettings'.
-			/// <summary>
-			/// If <see langword="true"/> for a given <strong><see cref="Player.hair"/></strong> value, then that hair will additionally draw behind the player's back using <see cref="DataStructures.PlayerDrawSet.hairBackFrame"/>.
-			/// <br/> Defaults to <see langword="false"/>.
-			/// </summary>
-			/// <remarks>
-			/// Back hair is drawn using <see cref="DataStructures.PlayerDrawLayers.HairBack"/>.
-			/// </remarks>
-			public static bool[] DrawBackHair = Factory.CreateBoolSet(51, 52, 53, 54, 55, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 105, 106, 107, 108, 109, 110, 111, 113, 114, 115);
+			public static bool[] DrawHatHair = Factory.CreateBoolSet(13, 14, 15, 16, 18, 21, 24, 25, 26, 29, 40, 44, 51, 56, 59, 60, 63, 64, 65, 67, 68, 69, 81, 92, 94, 95, 100, 114, 121, 126, 130, 136, 140, 143, 145, 158, 159, 161, 182, 184, 190, 195, 215, 216, 219, 223, 226, 227, 231, 233, 234, 262, 263, 264, 265, 267, 275, 279, 280, 281);
 
 			// Created based on 'drawsBackHairWithoutHeadgear' definition in 'Player.GetHairSettings'.
 			/// <summary>

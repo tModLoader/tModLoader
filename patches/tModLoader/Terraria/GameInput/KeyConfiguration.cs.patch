@@ -39,16 +39,28 @@
  			if (!KeyStatus.ContainsKey(item.Key))
  				continue;
  
-@@ -55,15 +_,32 @@
+@@ -55,15 +_,44 @@
  			foreach (string item2 in item.Value) {
  				KeyStatus[item.Key].Add(item2);
  			}
 +			*/
-+		
++
 +			if (KeyStatus.ContainsKey(item.Key))
 +				KeyStatus[item.Key] = new List<string>(item.Value);
-+			else if (item.Key.Contains(":")) // This preserves unloaded mod keybind values
-+				UnloadedModKeyStatus[item.Key] = new List<string>(item.Value);
++			// This preserves unloaded mod keybind values
++			else if (item.Key.Contains('/')) {
++				if (!UnloadedModKeyStatus.TryGetValue(item.Key, out var existing) || existing.Count < item.Value.Count) {
++					UnloadedModKeyStatus[item.Key] = new List<string>(item.Value);
++				}
++			}
++			// Handle legacy entries
++			else if (item.Key.Contains(": ")) {
++				string newKey = item.Key.Replace(": ", "/");
++
++				if (!KeyStatus.ContainsKey(newKey) && !UnloadedModKeyStatus.ContainsKey(newKey)) {
++					UnloadedModKeyStatus[newKey] = new List<string>(item.Value);
++				}
++			}
  		}
  	}
  

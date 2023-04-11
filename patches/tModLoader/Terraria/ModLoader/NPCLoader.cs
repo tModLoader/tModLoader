@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -26,12 +25,11 @@ namespace Terraria.ModLoader;
 /// </summary>
 public static class NPCLoader
 {
-	internal static bool loaded = false;
-	private static int nextNPC = NPCID.Count;
+	public static int NPCCount { get; private set; } = NPCID.Count;
 	internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
+
 	internal static readonly List<GlobalNPC> globalNPCs = new();
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
-	private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 	/// <summary>
 	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 	/// </summary>
@@ -43,57 +41,22 @@ public static class NPCLoader
 	private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) where F : Delegate
 	{
 		var hook = HookList.Create(func);
-
 		hooks.Add(hook);
-
 		return hook;
 	}
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
+		hook.Update(globalNPCs);
 		modHooks.Add(hook);
-
 		return hook;
 	}
 
-	static NPCLoader()
+	internal static int Register(ModNPC npc)
 	{
-		shopToNPC[1] = NPCID.Merchant;
-		shopToNPC[2] = NPCID.ArmsDealer;
-		shopToNPC[3] = NPCID.Dryad;
-		shopToNPC[4] = NPCID.Demolitionist;
-		shopToNPC[5] = NPCID.Clothier;
-		shopToNPC[6] = NPCID.GoblinTinkerer;
-		shopToNPC[7] = NPCID.Wizard;
-		shopToNPC[8] = NPCID.Mechanic;
-		shopToNPC[9] = NPCID.SantaClaus;
-		shopToNPC[10] = NPCID.Truffle;
-		shopToNPC[11] = NPCID.Steampunker;
-		shopToNPC[12] = NPCID.DyeTrader;
-		shopToNPC[13] = NPCID.PartyGirl;
-		shopToNPC[14] = NPCID.Cyborg;
-		shopToNPC[15] = NPCID.Painter;
-		shopToNPC[16] = NPCID.WitchDoctor;
-		shopToNPC[17] = NPCID.Pirate;
-		shopToNPC[18] = NPCID.Stylist;
-		shopToNPC[19] = NPCID.TravellingMerchant;
-		shopToNPC[20] = NPCID.SkeletonMerchant;
-		shopToNPC[21] = NPCID.DD2Bartender;
-		shopToNPC[22] = NPCID.Golfer;
-		shopToNPC[23] = NPCID.BestiaryGirl;
-		shopToNPC[24] = NPCID.Princess;
+		npcs.Add(npc);
+		return NPCCount++;
 	}
-
-	internal static int ReserveNPCID()
-	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding npcs breaks vanilla client compatibility");
-
-		int reserveID = nextNPC;
-		nextNPC++;
-		return reserveID;
-	}
-
-	public static int NPCCount => nextNPC;
 
 	/// <summary>
 	/// Gets the ModNPC template instance corresponding to the specified type (not the clone/new instance which gets added to NPCs as the game is played).
@@ -108,41 +71,37 @@ public static class NPCLoader
 	internal static void ResizeArrays(bool unloading)
 	{
 		// Textures
-		Array.Resize(ref TextureAssets.Npc, nextNPC);
+		Array.Resize(ref TextureAssets.Npc, NPCCount);
 
 		// Sets
-		LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
+		LoaderUtils.ResetStaticMembers(typeof(NPCID));
 		Main.ShopHelper.ReinitializePersonalityDatabase();
 		NPCHappiness.RegisterVanillaNpcRelationships();
 
 		// Etc
-		Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
-		Array.Resize(ref Main.slimeRainNPC, nextNPC);
-		Array.Resize(ref Main.npcCatchable, nextNPC);
-		Array.Resize(ref Main.npcFrameCount, nextNPC);
-		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, nextNPC);
-		Array.Resize(ref NPC.killCount, nextNPC);
-		Array.Resize(ref NPC.ShimmeredTownNPCs, nextNPC);
-		Array.Resize(ref NPC.npcsFoundForCheckActive, nextNPC);
-		Array.Resize(ref Lang._npcNameCache, nextNPC);
-		Array.Resize(ref EmoteBubble.CountNPCs, nextNPC);
-		Array.Resize(ref WorldGen.TownManager._hasRoom, nextNPC);
+		Array.Resize(ref Main.townNPCCanSpawn, NPCCount);
+		Array.Resize(ref Main.slimeRainNPC, NPCCount);
+		Array.Resize(ref Main.npcCatchable, NPCCount);
+		Array.Resize(ref Main.npcFrameCount, NPCCount);
+		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, NPCCount);
+		Array.Resize(ref NPC.killCount, NPCCount);
+		Array.Resize(ref NPC.ShimmeredTownNPCs, NPCCount);
+		Array.Resize(ref NPC.npcsFoundForCheckActive, NPCCount);
+		Array.Resize(ref Lang._npcNameCache, NPCCount);
+		Array.Resize(ref EmoteBubble.CountNPCs, NPCCount);
+		Array.Resize(ref WorldGen.TownManager._hasRoom, NPCCount);
 
 		foreach (var player in Main.player) {
-			Array.Resize(ref player.npcTypeNoAggro, nextNPC);
+			Array.Resize(ref player.npcTypeNoAggro, NPCCount);
 		}
 
-		for (int k = NPCID.Count; k < nextNPC; k++) {
+		for (int k = NPCID.Count; k < NPCCount; k++) {
 			Main.npcFrameCount[k] = 1;
 			Lang._npcNameCache[k] = LocalizedText.Empty;
 		}
 
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update(globalNPCs);
-		}
-
-		if (!unloading) {
-			loaded = true;
 		}
 	}
 
@@ -155,9 +114,8 @@ public static class NPCLoader
 
 	internal static void Unload()
 	{
-		loaded = false;
+		NPCCount = NPCID.Count;
 		npcs.Clear();
-		nextNPC = NPCID.Count;
 		globalNPCs.Clear();
 		bannerToItem.Clear();
 		modHooks.Clear();
@@ -176,8 +134,8 @@ public static class NPCLoader
 			if (createModNPC) {
 				npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
 			}
-			else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
-			{
+			else {
+				//the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				Array.Resize(ref npc.buffImmune, BuffLoader.BuffCount);
 			}
 		}
@@ -186,7 +144,7 @@ public static class NPCLoader
 			npc.ModNPC?.SetDefaults();
 		});
 
-		foreach (GlobalNPC g in HookSetDefaults.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookSetDefaults.Enumerate(npc)) {
 			g.SetDefaults(npc);
 		}
 	}
@@ -197,7 +155,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.OnSpawn(source);
 
-		foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookOnSpawn.Enumerate(npc)) {
 			g.OnSpawn(npc, source);
 		}
 	}
@@ -208,7 +166,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.ApplyDifficultyAndPlayerScaling(numPlayers, balance, bossAdjustment);
 
-		foreach (GlobalNPC g in HookApplyDifficultyAndPlayerScaling.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookApplyDifficultyAndPlayerScaling.Enumerate(npc)) {
 			g.ApplyDifficultyAndPlayerScaling(npc, numPlayers, balance, bossAdjustment);
 		}
 	}
@@ -226,7 +184,7 @@ public static class NPCLoader
 
 		npc.ModNPC?.SetBestiary(database, bestiaryEntry);
 
-		foreach (GlobalNPC g in HookSetBestiary.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookSetBestiary.Enumerate(npc)) {
 			g.SetBestiary(npc, database, bestiaryEntry);
 		}
 	}
@@ -237,7 +195,7 @@ public static class NPCLoader
 	{
 		profile = npc.ModNPC?.TownNPCProfile() ?? profile;
 
-		foreach (GlobalNPC g in HookModifyTownNPCProfile.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookModifyTownNPCProfile.Enumerate(npc)) {
 			profile = g.ModifyTownNPCProfile(npc) ?? profile;
 		}
 	}
@@ -248,7 +206,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.ResetEffects();
 
-		foreach (GlobalNPC g in HookResetEffects.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookResetEffects.Enumerate(npc)) {
 			g.ResetEffects(npc);
 		}
 	}
@@ -275,7 +233,7 @@ public static class NPCLoader
 	public static bool PreAI(NPC npc)
 	{
 		bool result = true;
-		foreach (GlobalNPC g in HookPreAI.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookPreAI.Enumerate(npc)) {
 			result &= g.PreAI(npc);
 		}
 		if (result && npc.ModNPC != null) {
@@ -290,7 +248,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.AI();
 
-		foreach (GlobalNPC g in HookAI.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookAI.Enumerate(npc)) {
 			g.AI(npc);
 		}
 	}
@@ -301,7 +259,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.PostAI();
 
-		foreach (GlobalNPC g in HookPostAI.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookPostAI.Enumerate(npc)) {
 			g.PostAI(npc);
 		}
 	}
@@ -315,7 +273,7 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookWriteExtraAI = AddHook<Action<NPC, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
+	private static HookList HookSendExtraAI = AddHook<Action<NPC, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
 	public static byte[] WriteExtraAI(NPC npc)
 	{
@@ -329,17 +287,12 @@ public static class NPCLoader
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (GlobalNPC g in HookWriteExtraAI.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
 			g.SendExtraAI(npc, bitWriter, globalWriter);
 		}
 
 		bitWriter.Flush(modWriter);
-
 		modWriter.Write(bufferedStream.ToArray());
-
-		globalWriter.Flush();
-
-		modWriter.Flush();
 
 		return stream.ToArray();
 	}
@@ -360,8 +313,10 @@ public static class NPCLoader
 
 		BitReader bitReader = new BitReader(modReader);
 
+		bool anyGlobals = false;
 		try {
-			foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc.globalNPCs)) {
+			foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
+				anyGlobals = true;
 				g.ReceiveExtraAI(npc, bitReader, modReader);
 			}
 
@@ -373,24 +328,16 @@ public static class NPCLoader
 				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (IOException e) {
-			Logging.tML.Error(e.ToString());
-
-			string message = $"Above IOException error in NPC {(npc.ModNPC == null ? npc.TypeName : npc.ModNPC.FullName)} occured";
-
-			var culprits = new List<GlobalNPC>();
-			foreach (GlobalNPC g in HookReceiveExtraAI.Enumerate(npc.globalNPCs)) {
-				culprits.Add(g);
-			}
-
-			if (culprits.Count > 0) {
-				message += ", may be caused by one of these:";
-				foreach (GlobalNPC g in culprits) {
+		catch (Exception e) {
+			string message = $"Error in ReceiveExtraAI for NPC {npc.ModNPC?.FullName ?? npc.TypeName}";
+			if (anyGlobals) {
+				message += ", may be caused by one of these GlobalNPCs:";
+				foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
 					message += $"\n\t{g.FullName}";
 				}
 			}
 
-			Logging.tML.Error(message);
+			Logging.tML.Error(message, e);
 		}
 	}
 
@@ -401,20 +348,19 @@ public static class NPCLoader
 		npc.VanillaFindFrame(frameHeight, npc.isLikeATownNPC, npc.ModNPC?.AnimationType is > 0 ? npc.ModNPC.AnimationType : npc.type);
 		npc.ModNPC?.FindFrame(frameHeight);
 
-		foreach (GlobalNPC g in HookFindFrame.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookFindFrame.Enumerate(npc)) {
 			g.FindFrame(npc, frameHeight);
 		}
 	}
 
-	private static HookList HookHitEffect = AddHook<Action<NPC, int, double>>(g => g.HitEffect);
+	private static HookList HookHitEffect = AddHook<Action<NPC, NPC.HitInfo>>(g => g.HitEffect);
 
-	public static void HitEffect(NPC npc, int hitDirection, double damage)
+	public static void HitEffect(NPC npc, in NPC.HitInfo hit)
 	{
-		npc.VanillaHitEffect(hitDirection, damage);
-		npc.ModNPC?.HitEffect(hitDirection, damage);
+		npc.ModNPC?.HitEffect(hit);
 
-		foreach (GlobalNPC g in HookHitEffect.Enumerate(npc.globalNPCs)) {
-			g.HitEffect(npc, hitDirection, damage);
+		foreach (var g in HookHitEffect.Enumerate(npc)) {
+			g.HitEffect(npc, hit);
 		}
 	}
 
@@ -425,7 +371,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.UpdateLifeRegen(ref damage);
 
-		foreach (GlobalNPC g in HookUpdateLifeRegen.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookUpdateLifeRegen.Enumerate(npc)) {
 			g.UpdateLifeRegen(npc, ref damage);
 		}
 	}
@@ -437,7 +383,7 @@ public static class NPCLoader
 		if (npc.ModNPC != null && !npc.ModNPC.CheckActive()) {
 			return false;
 		}
-		foreach (GlobalNPC g in HookCheckActive.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCheckActive.Enumerate(npc)) {
 			if (!g.CheckActive(npc)) {
 				return false;
 			}
@@ -455,7 +401,7 @@ public static class NPCLoader
 			result = npc.ModNPC.CheckDead();
 		}
 
-		foreach (GlobalNPC g in HookCheckDead.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCheckDead.Enumerate(npc)) {
 			result &= g.CheckDead(npc);
 		}
 
@@ -466,7 +412,7 @@ public static class NPCLoader
 
 	public static bool SpecialOnKill(NPC npc)
 	{
-		foreach (GlobalNPC g in HookSpecialOnKill.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookSpecialOnKill.Enumerate(npc)) {
 			if (g.SpecialOnKill(npc)) {
 				return true;
 			}
@@ -482,7 +428,7 @@ public static class NPCLoader
 	public static bool PreKill(NPC npc)
 	{
 		bool result = true;
-		foreach (GlobalNPC g in HookPreKill.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookPreKill.Enumerate(npc)) {
 			result &= g.PreKill(npc);
 		}
 
@@ -504,7 +450,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.OnKill();
 
-		foreach (GlobalNPC g in HookOnKill.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookOnKill.Enumerate(npc)) {
 			g.OnKill(npc);
 		}
 
@@ -516,7 +462,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.ModifyNPCLoot(npcLoot);
 
-		foreach (GlobalNPC g in HookModifyNPCLoot.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookModifyNPCLoot.Enumerate(npc)) {
 			g.ModifyNPCLoot(npc, npcLoot);
 		}
 	}
@@ -524,7 +470,7 @@ public static class NPCLoader
 	private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalLoot>>(g => g.ModifyGlobalLoot);
 	public static void ModifyGlobalLoot(GlobalLoot globalLoot)
 	{
-		foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCs)) {
+		foreach (var g in HookModifyGlobalLoot.Enumerate()) {
 			g.ModifyGlobalLoot(globalLoot);
 		}
 	}
@@ -546,7 +492,7 @@ public static class NPCLoader
 			ret = true;
 		}
 
-		foreach (GlobalNPC g in HookCanFallThroughPlatforms.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanFallThroughPlatforms.Enumerate(npc)) {
 			bool? globalRet = g.CanFallThroughPlatforms(npc);
 			if (globalRet.HasValue) {
 				if (!globalRet.Value) {
@@ -564,7 +510,7 @@ public static class NPCLoader
 	public static bool? CanBeCaughtBy(NPC npc, Item item, Player player)
 	{
 		bool? canBeCaughtOverall = null;
-		foreach (GlobalNPC g in HookCanBeCaughtBy.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanBeCaughtBy.Enumerate(npc)) {
 			bool? canBeCaughtFromGlobalNPC = g.CanBeCaughtBy(npc, item, player);
 			if (canBeCaughtFromGlobalNPC.HasValue) {
 				if (!canBeCaughtFromGlobalNPC.Value)
@@ -591,7 +537,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.OnCaughtBy(player, item, failed);
 
-		foreach (GlobalNPC g in HookOnCaughtBy.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookOnCaughtBy.Enumerate(npc)) {
 			g.OnCaughtBy(npc, player, item, failed);
 		}
 	}
@@ -601,7 +547,7 @@ public static class NPCLoader
 
 	public static bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
 	{
-		foreach (GlobalNPC g in HookCanHitPlayer.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanHitPlayer.Enumerate(npc)) {
 			if (!g.CanHitPlayer(npc, target, ref cooldownSlot)) {
 				return false;
 			}
@@ -612,26 +558,26 @@ public static class NPCLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit);
+	private delegate void DelegateModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers);
 	private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
 
-	public static void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+	public static void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
 	{
-		npc.ModNPC?.ModifyHitPlayer(target, ref damage, ref crit);
+		npc.ModNPC?.ModifyHitPlayer(target, ref modifiers);
 
-		foreach (GlobalNPC g in HookModifyHitPlayer.Enumerate(npc.globalNPCs)) {
-			g.ModifyHitPlayer(npc, target, ref damage, ref crit);
+		foreach (var g in HookModifyHitPlayer.Enumerate(npc)) {
+			g.ModifyHitPlayer(npc, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitPlayer = AddHook<Action<NPC, Player, int, bool>>(g => g.OnHitPlayer);
+	private static HookList HookOnHitPlayer = AddHook<Action<NPC, Player, Player.HurtInfo>>(g => g.OnHitPlayer);
 
-	public static void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+	public static void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
 	{
-		npc.ModNPC?.OnHitPlayer(target, damage, crit);
+		npc.ModNPC?.OnHitPlayer(target, hurtInfo);
 
-		foreach (GlobalNPC g in HookOnHitPlayer.Enumerate(npc.globalNPCs)) {
-			g.OnHitPlayer(npc, target, damage, crit);
+		foreach (var g in HookOnHitPlayer.Enumerate(npc)) {
+			g.OnHitPlayer(npc, target, hurtInfo);
 		}
 	}
 
@@ -639,7 +585,7 @@ public static class NPCLoader
 
 	public static bool CanHitNPC(NPC npc, NPC target)
 	{
-		foreach (GlobalNPC g in HookCanHitNPC.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanHitNPC.Enumerate(npc)) {
 			if (!g.CanHitNPC(npc, target))
 				return false;
 		}
@@ -647,26 +593,26 @@ public static class NPCLoader
 		return npc.ModNPC?.CanHitNPC(target) ?? true;
 	}
 
-	private delegate void DelegateModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit);
+	private delegate void DelegateModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
-	public static void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+	public static void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 	{
-		npc.ModNPC?.ModifyHitNPC(target, ref damage, ref knockback, ref crit);
+		npc.ModNPC?.ModifyHitNPC(target, ref modifiers);
 
-		foreach (GlobalNPC g in HookModifyHitNPC.Enumerate(npc.globalNPCs)) {
-			g.ModifyHitNPC(npc, target, ref damage, ref knockback, ref crit);
+		foreach (var g in HookModifyHitNPC.Enumerate(npc)) {
+			g.ModifyHitNPC(npc, target, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC, int, float, bool>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<NPC, NPC, NPC.HitInfo>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+	public static void OnHitNPC(NPC npc, NPC target, in NPC.HitInfo hit)
 	{
-		npc.ModNPC?.OnHitNPC(target, damage, knockback, crit);
+		npc.ModNPC?.OnHitNPC(target, hit);
 
-		foreach (GlobalNPC g in HookOnHitNPC.Enumerate(npc.globalNPCs)) {
-			g.OnHitNPC(npc, target, damage, knockback, crit);
+		foreach (var g in HookOnHitNPC.Enumerate(npc)) {
+			g.OnHitNPC(npc, target, hit);
 		}
 	}
 
@@ -676,7 +622,7 @@ public static class NPCLoader
 	{
 		bool? flag = null;
 
-		foreach (GlobalNPC g in HookCanBeHitByItem.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanBeHitByItem.Enumerate(npc)) {
 			bool? canHit = g.CanBeHitByItem(npc, player, item);
 
 			if (canHit.HasValue) {
@@ -703,26 +649,56 @@ public static class NPCLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit);
+	private static HookList HookCanCollideWithPlayerMeleeAttack = AddHook<Func<NPC, Player, Item, Rectangle, bool?>>(g => g.CanCollideWithPlayerMeleeAttack);
+	public static bool? CanCollideWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+	{
+		bool? flag = null;
+		foreach (var g in HookCanCollideWithPlayerMeleeAttack.Enumerate(npc)) {
+			bool? canCollide = g.CanCollideWithPlayerMeleeAttack(npc, player, item, meleeAttackHitbox);
+			if (canCollide.HasValue) {
+				if (!canCollide.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		if (npc.ModNPC != null) {
+			bool? canHit = npc.ModNPC.CanCollideWithPlayerMeleeAttack(player, item, meleeAttackHitbox);
+
+			if (canHit.HasValue) {
+				if (!canHit.Value) {
+					return false;
+				}
+
+				flag = true;
+			}
+		}
+
+		return flag;
+	}
+
+	private delegate void DelegateModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitByItem = AddHook<DelegateModifyHitByItem>(g => g.ModifyHitByItem);
 
-	public static void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	public static void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
 	{
-		npc.ModNPC?.ModifyHitByItem(player, item, ref damage, ref knockback, ref crit);
+		npc.ModNPC?.ModifyHitByItem(player, item, ref modifiers);
 
-		foreach (GlobalNPC g in HookModifyHitByItem.Enumerate(npc.globalNPCs)) {
-			g.ModifyHitByItem(npc, player, item, ref damage, ref knockback, ref crit);
+		foreach (var g in HookModifyHitByItem.Enumerate(npc)) {
+			g.ModifyHitByItem(npc, player, item, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitByItem = AddHook<Action<NPC, Player, Item, int, float, bool>>(g => g.OnHitByItem);
+	private static HookList HookOnHitByItem = AddHook<Action<NPC, Player, Item, NPC.HitInfo, int>>(g => g.OnHitByItem);
 
-	public static void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+	public static void OnHitByItem(NPC npc, Player player, Item item, in NPC.HitInfo hit, int damageDone)
 	{
-		npc.ModNPC?.OnHitByItem(player, item, damage, knockback, crit);
+		npc.ModNPC?.OnHitByItem(player, item, hit, damageDone);
 
-		foreach (GlobalNPC g in HookOnHitByItem.Enumerate(npc.globalNPCs)) {
-			g.OnHitByItem(npc, player, item, damage, knockback, crit);
+		foreach (var g in HookOnHitByItem.Enumerate(npc)) {
+			g.OnHitByItem(npc, player, item, hit, damageDone);
 		}
 	}
 
@@ -731,7 +707,7 @@ public static class NPCLoader
 	public static bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
 	{
 		bool? flag = null;
-		foreach (GlobalNPC g in HookCanBeHitByProjectile.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanBeHitByProjectile.Enumerate(npc)) {
 			bool? canHit = g.CanBeHitByProjectile(npc, projectile);
 			if (canHit.HasValue && !canHit.Value) {
 				return false;
@@ -752,44 +728,38 @@ public static class NPCLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
+	private delegate void DelegateModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers);
 	private static HookList HookModifyHitByProjectile = AddHook<DelegateModifyHitByProjectile>(g => g.ModifyHitByProjectile);
 
-	public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	public static void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
-		npc.ModNPC?.ModifyHitByProjectile(projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+		npc.ModNPC?.ModifyHitByProjectile(projectile, ref modifiers);
 
-		foreach (GlobalNPC g in HookModifyHitByProjectile.Enumerate(npc.globalNPCs)) {
-			g.ModifyHitByProjectile(npc, projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+		foreach (var g in HookModifyHitByProjectile.Enumerate(npc)) {
+			g.ModifyHitByProjectile(npc, projectile, ref modifiers);
 		}
 	}
 
-	private static HookList HookOnHitByProjectile = AddHook<Action<NPC, Projectile, int, float, bool>>(g => g.OnHitByProjectile);
+	private static HookList HookOnHitByProjectile = AddHook<Action<NPC, Projectile, NPC.HitInfo, int>>(g => g.OnHitByProjectile);
 
-	public static void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+	public static void OnHitByProjectile(NPC npc, Projectile projectile, in NPC.HitInfo hit, int damageDone)
 	{
-		npc.ModNPC?.OnHitByProjectile(projectile, damage, knockback, crit);
+		npc.ModNPC?.OnHitByProjectile(projectile, hit, damageDone);
 
-		foreach (GlobalNPC g in HookOnHitByProjectile.Enumerate(npc.globalNPCs)) {
-			g.OnHitByProjectile(npc, projectile, damage, knockback, crit);
+		foreach (var g in HookOnHitByProjectile.Enumerate(npc)) {
+			g.OnHitByProjectile(npc, projectile, hit, damageDone);
 		}
 	}
 
-	private delegate bool DelegateStrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit);
-	private static HookList HookStrikeNPC = AddHook<DelegateStrikeNPC>(g => g.StrikeNPC);
+	private delegate void DelegateAddModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers);
+	private static HookList HookAddModifyIncomingHit = AddHook<DelegateAddModifyIncomingHit>(g => g.ModifyIncomingHit);
 
-	public static bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	public static void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
 	{
-		bool flag = true;
-		if (npc.ModNPC != null) {
-			flag = npc.ModNPC.StrikeNPC(ref damage, defense, ref knockback, hitDirection, ref crit);
+		npc.ModNPC?.ModifyIncomingHit(ref modifiers);
+		foreach (var g in HookAddModifyIncomingHit.Enumerate(npc)) {
+			g.ModifyIncomingHit(npc, ref modifiers);
 		}
-		foreach (GlobalNPC g in HookStrikeNPC.Enumerate(npc.globalNPCs)) {
-			if (!g.StrikeNPC(npc, ref damage, defense, ref knockback, hitDirection, ref crit)) {
-				flag = false;
-			}
-		}
-		return flag;
 	}
 
 	private delegate void DelegateBossHeadSlot(NPC npc, ref int index);
@@ -799,7 +769,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.BossHeadSlot(ref index);
 
-		foreach (GlobalNPC g in HookBossHeadSlot.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookBossHeadSlot.Enumerate(npc)) {
 			g.BossHeadSlot(npc, ref index);
 		}
 	}
@@ -811,7 +781,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.BossHeadRotation(ref rotation);
 
-		foreach (GlobalNPC g in HookBossHeadRotation.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookBossHeadRotation.Enumerate(npc)) {
 			g.BossHeadRotation(npc, ref rotation);
 		}
 	}
@@ -823,7 +793,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.BossHeadSpriteEffects(ref spriteEffects);
 
-		foreach (GlobalNPC g in HookBossHeadSpriteEffects.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookBossHeadSpriteEffects.Enumerate(npc)) {
 			g.BossHeadSpriteEffects(npc, ref spriteEffects);
 		}
 	}
@@ -832,7 +802,7 @@ public static class NPCLoader
 
 	public static Color? GetAlpha(NPC npc, Color lightColor)
 	{
-		foreach (GlobalNPC g in HookGetAlpha.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookGetAlpha.Enumerate(npc)) {
 			Color? color = g.GetAlpha(npc, lightColor);
 			if (color.HasValue) {
 				return color.Value;
@@ -848,7 +818,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.DrawEffects(ref drawColor);
 
-		foreach (GlobalNPC g in HookDrawEffects.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookDrawEffects.Enumerate(npc)) {
 			g.DrawEffects(npc, ref drawColor);
 		}
 	}
@@ -859,7 +829,7 @@ public static class NPCLoader
 	public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 	{
 		bool result = true;
-		foreach (GlobalNPC g in HookPreDraw.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookPreDraw.Enumerate(npc)) {
 			result &= g.PreDraw(npc, spriteBatch, screenPos, drawColor);
 		}
 		if (result && npc.ModNPC != null) {
@@ -875,7 +845,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.PostDraw(spriteBatch, screenPos, drawColor);
 
-		foreach (GlobalNPC g in HookPostDraw.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookPostDraw.Enumerate(npc)) {
 			g.PostDraw(npc, spriteBatch, screenPos, drawColor);
 		}
 	}
@@ -886,7 +856,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.DrawBehind(index);
 
-		foreach (GlobalNPC g in HookDrawBehind.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookDrawBehind.Enumerate(npc)) {
 			g.DrawBehind(npc, index);
 		}
 	}
@@ -903,7 +873,7 @@ public static class NPCLoader
 		else if (Main.HealthBarDrawSettings == 2) {
 			position.Y -= 24f + Main.NPCAddHeight(npc) / 2f;
 		}
-		foreach (GlobalNPC g in HookDrawHealthBar.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookDrawHealthBar.Enumerate(npc)) {
 			bool? result = g.DrawHealthBar(npc, Main.HealthBarDrawSettings, ref scale, ref position);
 			if (result.HasValue) {
 				if (result.Value) {
@@ -935,7 +905,7 @@ public static class NPCLoader
 
 	public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
 	{
-		foreach (GlobalNPC g in HookEditSpawnRate.Enumerate(globalNPCs)) {
+		foreach (var g in HookEditSpawnRate.Enumerate()) {
 			g.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
 		}
 	}
@@ -947,7 +917,7 @@ public static class NPCLoader
 	public static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
 		ref int safeRangeX, ref int safeRangeY)
 	{
-		foreach (GlobalNPC g in HookEditSpawnRange.Enumerate(globalNPCs)) {
+		foreach (var g in HookEditSpawnRange.Enumerate()) {
 			g.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
 		}
 	}
@@ -967,7 +937,7 @@ public static class NPCLoader
 				pool[npc.NPC.type] = weight;
 			}
 		}
-		foreach (GlobalNPC g in HookEditSpawnPool.Enumerate(globalNPCs)) {
+		foreach (var g in HookEditSpawnPool.Enumerate()) {
 			g.EditSpawnPool(pool, spawnInfo);
 		}
 		float totalWeight = 0f;
@@ -996,7 +966,7 @@ public static class NPCLoader
 			? GetNPC(type).SpawnNPC(tileX, tileY)
 			: NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), tileX * 16 + 8, tileY * 16, type);
 
-		foreach (GlobalNPC g in HookSpawnNPC.Enumerate(Main.npc[npc].globalNPCs)) {
+		foreach (var g in HookSpawnNPC.Enumerate(Main.npc[npc])) {
 			g.SpawnNPC(npc, tileX, tileY);
 		}
 
@@ -1025,7 +995,7 @@ public static class NPCLoader
 	public static void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 		npc.ModNPC?.ModifyNPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 
-		foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCs)) {
+		foreach (var g in HookModifyNPCHappiness.Enumerate()) {
 			g.Instance(npc).ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 		}
 	}
@@ -1043,7 +1013,7 @@ public static class NPCLoader
 		if (npc.ModNPC != null)
 			npc.ModNPC.ModifyTypeName(ref typeName);
 
-		foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookModifyTypeName.Enumerate(npc)) {
 			g.ModifyTypeName(npc, ref typeName);
 		}
 
@@ -1057,7 +1027,7 @@ public static class NPCLoader
 		if (npc.ModNPC != null)
 			npc.ModNPC.ModifyHoverBoundingBox(ref boundingBox);
 
-		foreach (GlobalNPC g in HookModifyHoverBoundingBox.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookModifyHoverBoundingBox.Enumerate(npc)) {
 			g.ModifyHoverBoundingBox(npc, ref boundingBox);
 		}
 	}
@@ -1068,7 +1038,7 @@ public static class NPCLoader
 		if (npc.ModNPC != null)
 			nameList = npc.ModNPC.SetNPCNameList();
 
-		foreach (GlobalNPC g in HookModifyNPCNameList.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookModifyNPCNameList.Enumerate(npc)) {
 			g.ModifyNPCNameList(npc, nameList);
 		}
 
@@ -1086,7 +1056,7 @@ public static class NPCLoader
 	{
 		bool? ret = npc.ModNPC?.CanChat();
 
-		foreach (GlobalNPC g in HookCanChat.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanChat.Enumerate(npc)) {
 			if (g.CanChat(npc) is bool canChat) {
 				if (!canChat)
 					return false;
@@ -1109,27 +1079,24 @@ public static class NPCLoader
 		else if (chat.Equals("")) {
 			chat = Language.GetTextValue("tModLoader.DefaultTownNPCChat");
 		}
-		foreach (GlobalNPC g in HookGetChat.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookGetChat.Enumerate(npc)) {
 			g.GetChat(npc, ref chat);
 		}
 	}
 
 	public static void SetChatButtons(ref string button, ref string button2)
 	{
-		if (Main.player[Main.myPlayer].talkNPC >= 0) {
-			NPC npc = Main.npc[Main.player[Main.myPlayer].talkNPC];
-			npc.ModNPC?.SetChatButtons(ref button, ref button2);
-		}
+		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
 	}
 
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
 
 	public static bool PreChatButtonClicked(bool firstButton)
 	{
-		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
+		NPC npc = Main.LocalPlayer.TalkNPC;
 
 		bool result = true;
-		foreach (GlobalNPC g in HookPreChatButtonClicked.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookPreChatButtonClicked.Enumerate(npc)) {
 			result &= g.PreChatButtonClicked(npc, firstButton);
 		}
 
@@ -1146,39 +1113,50 @@ public static class NPCLoader
 
 	public static void OnChatButtonClicked(bool firstButton)
 	{
-		NPC npc = Main.npc[Main.LocalPlayer.talkNPC];
-		bool shop = false;
+		NPC npc = Main.LocalPlayer.TalkNPC;
+		string shopName = null;
 
 		if (npc.ModNPC != null) {
-			npc.ModNPC.OnChatButtonClicked(firstButton, ref shop);
+			npc.ModNPC.OnChatButtonClicked(firstButton, ref shopName);
 			SoundEngine.PlaySound(SoundID.MenuTick);
 
-			if (shop) {
+			if (shopName != null) {
+				// Copied from Main.OpenShop
 				Main.playerInventory = true;
+				Main.stackSplit = 9999;
 				Main.npcChatText = "";
-				Main.npcShop = Main.MaxShopIDs - 1;
-				Main.instance.shop[Main.npcShop].SetupShop(npc.type);
+				Main.SetNPCShopIndex(1);
+				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
 			}
 		}
 
-		foreach (GlobalNPC g in HookOnChatButtonClicked.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookOnChatButtonClicked.Enumerate(npc)) {
 			g.OnChatButtonClicked(npc, firstButton);
 		}
 	}
 
-	private delegate void DelegateSetupShop(int type, Chest shop, ref int nextSlot);
-	private static HookList HookSetupShop = AddHook<DelegateSetupShop>(g => g.SetupShop);
+	public static void AddShops(int type) {
+		GetNPC(type)?.AddShops();
+	}
 
-	public static void SetupShop(int type, Chest shop, ref int nextSlot)
+	private delegate void DelegateModifyShop(NPCShop shop);
+	private static HookList HookModifyShop = AddHook<DelegateModifyShop>(g => g.ModifyShop);
+
+	public static void ModifyShop(NPCShop shop)
 	{
-		if (type < shopToNPC.Length) {
-			type = shopToNPC[type];
+		foreach (var g in HookModifyShop.Enumerate()) {
+			g.ModifyShop(shop);
 		}
-		else {
-			GetNPC(type)?.SetupShop(shop, ref nextSlot);
-		}
-		foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
-			g.SetupShop(type, shop, ref nextSlot);
+	}
+
+	private delegate void DelegateModifyActiveShop(NPC npc, string shopName, Item[] items);
+	private static HookList HookModifyActiveShop = AddHook<DelegateModifyActiveShop>(g => g.ModifyActiveShop);
+
+	public static void ModifyActiveShop(NPC npc, string shopName, Item[] shopContents)
+	{
+		GetNPC(npc.type)?.ModifyActiveShop(shopName, shopContents);
+		foreach (var g in HookModifyActiveShop.Enumerate()) {
+			g.ModifyActiveShop(npc, shopName, shopContents);
 		}
 	}
 
@@ -1187,7 +1165,7 @@ public static class NPCLoader
 
 	public static void SetupTravelShop(int[] shop, ref int nextSlot)
 	{
-		foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCs)) {
+		foreach (var g in HookSetupTravelShop.Enumerate()) {
 			g.SetupTravelShop(shop, ref nextSlot);
 		}
 	}
@@ -1198,7 +1176,7 @@ public static class NPCLoader
 	{
 		bool? ret = npc.ModNPC?.CanGoToStatue(toKingStatue);
 
-		foreach (GlobalNPC g in HookCanGoToStatue.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookCanGoToStatue.Enumerate(npc)) {
 			if (g.CanGoToStatue(npc, toKingStatue) is bool canGo) {
 				if (!canGo)
 					return false;
@@ -1216,7 +1194,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.OnGoToStatue(toKingStatue);
 
-		foreach (GlobalNPC g in HookOnGoToStatue.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookOnGoToStatue.Enumerate(npc)) {
 			g.OnGoToStatue(npc, toKingStatue);
 		}
 	}
@@ -1226,7 +1204,7 @@ public static class NPCLoader
 
 	public static void BuffTownNPC(ref float damageMult, ref int defense)
 	{
-		foreach (GlobalNPC g in HookBuffTownNPC.Enumerate(globalNPCs)) {
+		foreach (var g in HookBuffTownNPC.Enumerate()) {
 			g.BuffTownNPC(ref damageMult, ref defense);
 		}
 	}
@@ -1253,7 +1231,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackStrength(ref damage, ref knockback);
 
-		foreach (GlobalNPC g in HookTownNPCAttackStrength.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackStrength.Enumerate(npc)) {
 			g.TownNPCAttackStrength(npc, ref damage, ref knockback);
 		}
 	}
@@ -1265,7 +1243,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackCooldown(ref cooldown, ref randExtraCooldown);
 
-		foreach (GlobalNPC g in HookTownNPCAttackCooldown.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackCooldown.Enumerate(npc)) {
 			g.TownNPCAttackCooldown(npc, ref cooldown, ref randExtraCooldown);
 		}
 	}
@@ -1277,7 +1255,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackProj(ref projType, ref attackDelay);
 
-		foreach (GlobalNPC g in HookTownNPCAttackProj.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackProj.Enumerate(npc)) {
 			g.TownNPCAttackProj(npc, ref projType, ref attackDelay);
 		}
 	}
@@ -1291,7 +1269,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackProjSpeed(ref multiplier, ref gravityCorrection, ref randomOffset);
 
-		foreach (GlobalNPC g in HookTownNPCAttackProjSpeed.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackProjSpeed.Enumerate(npc)) {
 			g.TownNPCAttackProjSpeed(npc, ref multiplier, ref gravityCorrection, ref randomOffset);
 		}
 	}
@@ -1303,7 +1281,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackShoot(ref inBetweenShots);
 
-		foreach (GlobalNPC g in HookTownNPCAttackShoot.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackShoot.Enumerate(npc)) {
 			g.TownNPCAttackShoot(npc, ref inBetweenShots);
 		}
 	}
@@ -1315,7 +1293,7 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackMagic(ref auraLightMultiplier);
 
-		foreach (GlobalNPC g in HookTownNPCAttackMagic.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackMagic.Enumerate(npc)) {
 			g.TownNPCAttackMagic(npc, ref auraLightMultiplier);
 		}
 	}
@@ -1327,64 +1305,53 @@ public static class NPCLoader
 	{
 		npc.ModNPC?.TownNPCAttackSwing(ref itemWidth, ref itemHeight);
 
-		foreach (GlobalNPC g in HookTownNPCAttackSwing.Enumerate(npc.globalNPCs)) {
+		foreach (var g in HookTownNPCAttackSwing.Enumerate(npc)) {
 			g.TownNPCAttackSwing(npc, ref itemWidth, ref itemHeight);
 		}
 	}
 
-	private delegate void DelegateDrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness);
+	private delegate void DelegateDrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset);
 	private static HookList HookDrawTownAttackGun = AddHook<DelegateDrawTownAttackGun>(g => g.DrawTownAttackGun);
 
-	public static void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	public static void DrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 	{
-		npc.ModNPC?.DrawTownAttackGun(ref scale, ref item, ref closeness);
+		npc.ModNPC?.DrawTownAttackGun(ref item, ref itemFrame, ref scale, ref horizontalHoldoutOffset);
 
-		foreach (GlobalNPC g in HookDrawTownAttackGun.Enumerate(npc.globalNPCs)) {
-			g.DrawTownAttackGun(npc, ref scale, ref item, ref closeness);
+		foreach (var g in HookDrawTownAttackGun.Enumerate(npc)) {
+			g.DrawTownAttackGun(npc, ref item, ref itemFrame, ref scale, ref horizontalHoldoutOffset);
 		}
 	}
 
-	private delegate void DelegateDrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset);
+	private delegate void DelegateDrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset);
 	private static HookList HookDrawTownAttackSwing = AddHook<DelegateDrawTownAttackSwing>(g => g.DrawTownAttackSwing);
 
-	public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	public static void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
-		npc.ModNPC?.DrawTownAttackSwing(ref item, ref itemSize, ref scale, ref offset);
+		npc.ModNPC?.DrawTownAttackSwing(ref item, ref itemFrame, ref itemSize, ref scale, ref offset);
 
-		foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
-			g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
+		foreach (var g in HookDrawTownAttackSwing.Enumerate(npc)) {
+			g.DrawTownAttackSwing(npc, ref item, ref itemFrame, ref itemSize, ref scale, ref offset);
 		}
 	}
 
-	private delegate bool DelegateModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox);
+	private delegate bool DelegateModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox);
 	private static HookList HookModifyCollisionData = AddHook<DelegateModifyCollisionData>(g => g.ModifyCollisionData);
 
 	public static bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
 	{
+		MultipliableFloat damageMult = MultipliableFloat.One;
+
 		bool result = true;
-		foreach (GlobalNPC g in HookModifyCollisionData.Enumerate(npc.globalNPCs)) {
-			result &= g.ModifyCollisionData(npc, victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+		foreach (var g in HookModifyCollisionData.Enumerate(npc)) {
+			result &= g.ModifyCollisionData(npc, victimHitbox, ref immunityCooldownSlot, ref damageMult, ref npcHitbox);
 		}
 
 		if (result && npc.ModNPC != null) {
-			result = npc.ModNPC.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
+			result = npc.ModNPC.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMult, ref npcHitbox);
 		}
 
+		damageMultiplier *= damageMult.Value;
 		return result;
-	}
-
-	internal static void VerifyGlobalNPC(GlobalNPC npc)
-	{
-		var type = npc.GetType();
-
-		bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-			.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalNPC)));
-
-		if (hasInstanceFields) {
-			if (!npc.InstancePerEntity) {
-				throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-			}
-		}
 	}
 
 	private delegate bool DelegateNeedSaving(NPC npc);
@@ -1398,11 +1365,13 @@ public static class NPCLoader
 		if (NPCID.Sets.SavesAndLoads[npc.type] || (npc.ModNPC?.NeedSaving() == true))
 			return true;
 
-		foreach (GlobalNPC globalNPC in HookNeedSaving.Enumerate(npc.globalNPCs)) {
-			if (globalNPC.NeedSaving(npc))
+		foreach (var g in HookNeedSaving.Enumerate(npc)) {
+			if (g.NeedSaving(npc))
 				return true;
 		}
 
 		return false;
 	}
+
+	internal static HookList HookSaveData = AddHook<Action<NPC, TagCompound>>(g => g.SaveData);
 }

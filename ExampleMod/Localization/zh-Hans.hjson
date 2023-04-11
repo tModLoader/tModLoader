@@ -60,8 +60,8 @@ Mods: {
 
 		Tiles: {
 			// ExampleClock.MapEntry: Example Clock
-			// ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
-			// ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
+			// ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItem.DisplayName}"
+			// ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItemAdvanced.DisplayName}"
 			// ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			// ExampleFishingCrate.MapEntry: Crate
 			// ExampleHerb.MapEntry: Example Herb
@@ -71,7 +71,6 @@ Mods: {
 			// ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
-				// ContainerName: Example Chest
 				// MapEntry0: Example Chest
 				// MapEntry1: Locked Example Chest
 			}
@@ -81,6 +80,7 @@ Mods: {
 			// ExampleTable.MapEntry: Table
 			// ExampleWorkbench.MapEntry: Work Bench
 			// ExampleSapling.MapEntry: Example Sapling
+			// ExampleDresser.MapEntry: Example Dresser
 		}
 
 		Items: {
@@ -122,11 +122,6 @@ Mods: {
 				// Tooltip: Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!
 			}
 
-			ExamplePet: {
-				// DisplayName: Mods.ExampleMod.ItemName.ExamplePet
-				// Tooltip: Mods.ExampleMod.ItemTooltip.ExamplePet
-			}
-
 			ExampleBeard: {
 				// DisplayName: Example Beard
 				// Tooltip: This is a modded beard which matches your hair color.
@@ -166,9 +161,10 @@ Mods: {
 					Increases base damage for all weapons by {2}
 					Increases total damage for all weapons by {3}
 					{$CommonItemTooltip.PercentIncreasedMeleeCritChance@4}
-					{5}% increased example knockback
+					Increases ranged firing speed by {5}%
 					{6} magic armor penetration
-					Increases ranged firing speed by {7}%
+					{7}% increased example knockback
+					{8}% increased crit damage
 					''' */
 			}
 
@@ -369,6 +365,12 @@ Mods: {
 				// Tooltip: This summons a modded mount.
 			}
 
+			ExampleOnBuyItem: {
+				// DisplayName: Volatile Explosive Device
+				// Tooltip: Has a 50% chance to kill the player whenever bought from a shop
+				// DeathMessage: "{0} tried and failed to handle a very volatile explosive device."
+			}
+
 			ExamplePaperAirplane: {
 				// DisplayName: Example Paper Airplane
 				// Tooltip: This is a modded paper airplane.
@@ -419,10 +421,7 @@ Mods: {
 				// Tooltip: ""
 			}
 
-			ExampleLamp: {
-				// DisplayName: Example Lamp
-				// Tooltip: ""
-			}
+			// ExampleLamp.DisplayName: Example Lamp
 
 			ExampleMusicBox: {
 				// DisplayName: Music Box (Marble Gallery)
@@ -660,12 +659,22 @@ Mods: {
 
 			ExampleWhip: {
 				// DisplayName: Example Whip
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					''' */
 			}
 
 			ExampleWhipAdvanced: {
 				// DisplayName: Example Whip Advanced
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					{0}% summon tag damage to the next minion or sentry hit
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					''' */
 			}
 
 			ExampleYoyo: {
@@ -746,6 +755,46 @@ Mods: {
 					Use more than once to cycle through attacks
 					''' */
 			}
+			
+			ExampleDresser: {
+				// DisplayName: Example Dresser
+				// Tooltip: This is a modded dresser.
+			}
+
+			ExampleTrapIchorBullet: {
+				// DisplayName: Example Trap - {$ItemName.IchorBullet}
+				// Tooltip: ""
+			}
+
+			ExampleTrapChlorophyteBullet: {
+				// DisplayName: Example Trap - {$ItemName.ChlorophyteBullet}
+				// Tooltip: ""
+			}
+
+			HitModifiersShowcase: {
+				// DisplayName: Hit Modifiers Showcase
+				// Tooltip: ""
+			}
+
+			AbsorbTeamDamageAccessory: {
+				// DisplayName: Absorb Team Damage Accessory
+				// Tooltip: Absorbs {0}% of damage done to players on your team when above {1}% life
+			}
+
+			ExampleDrill: {
+				// DisplayName: Example Drill
+				// Tooltip: ""
+			}
+
+			ExampleExplosive: {
+				// DisplayName: Example Explosive
+				// Tooltip: ""
+			}
+
+			ExampleJavelin: {
+				// DisplayName: Example Javelin
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -777,17 +826,15 @@ Mods: {
 			// ExampleSimpleMinion.DisplayName: Example Minion
 			// SparklingBall.DisplayName: Sparkling Ball
 			// ExampleCustomSwingProjectile.DisplayName: Example Custom Swing Projectile
+			// ExampleDrillProjectile.DisplayName: Example Drill Projectile
+			// ExampleExplosive.DisplayName: Example Explosive
+			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 		}
 
 		Buffs: {
 			ExamplePetBuff: {
 				// DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}"
 				// Description: '''"Let this pet be an example to you!"'''
-			}
-
-			ExamplePet: {
-				// DisplayName: Mods.ExampleMod.BuffName.ExamplePet
-				// Description: Mods.ExampleMod.BuffDescription.ExamplePet
 			}
 
 			AnimatedBuff: {
@@ -810,6 +857,11 @@ Mods: {
 				// Description: "{$CommonItemTooltip.IncreasesDefenseBy}"
 			}
 
+			ExampleDefenseDebuff: {
+				// DisplayName: Defensive Debuff
+				// Description: "{$BuffDescription.Ichor}"
+			}
+
 			ExampleLifeRegenDebuff: {
 				// DisplayName: Fire debuff
 				// Description: Losing life
@@ -821,8 +873,8 @@ Mods: {
 			}
 
 			ExampleWhipDebuff: {
-				// DisplayName: Mods.ExampleMod.BuffName.ExampleWhipDebuff
-				// Description: Mods.ExampleMod.BuffDescription.ExampleWhipDebuff
+				// DisplayName: Example Whip Debuff
+				// Description: ""
 			}
 
 			ExampleLightPetBuff: {
@@ -838,6 +890,26 @@ Mods: {
 			ExampleSimpleMinionBuff: {
 				// DisplayName: Example Minion
 				// Description: The example minion will fight for you
+			}
+
+			ExampleDodgeBuff: {
+				// DisplayName: Example Dodge Buff
+				// Description: You will dodge the next attack
+			}
+
+			AbsorbTeamDamageBuff: {
+				// DisplayName: Absorb Team Damage Buff
+				// Description: "{0}% of damage taken will be redirected to another player"
+			}
+
+			ExampleWhipAdvancedDebuff: {
+				// DisplayName: Example Whip Advanced Debuff
+				// Description: ""
+			}
+
+			ExampleJavelinDebuff: {
+				// DisplayName: Example Javelin Debuff
+				// Description: Losing life
 			}
 		}
 
@@ -919,6 +991,20 @@ Mods: {
 		}
 
 		// InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
+		// ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
+
+		Conditions: {
+			// LowHealth: When the player is below half HP
+			// PlayerHasLifeforceBuff: When the player has the Lifeforce buff
+			// InExampleBiome: In the Example biome
+			// NotSellingExampleItem: When not selling Example Item
+		}
+
+		DropConditions: {
+			// ExampleSoul: Drops in the Example Underground biome in hardmode
+			// JourneyMode: Drops in Journey Mode
+			// Example: Drops during daytime
+		}
 	}
 }
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.

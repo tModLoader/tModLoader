@@ -30,13 +30,15 @@ public static class ModLoader
 	// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
 	public static string LastLaunchedTModLoaderAlphaSha;
 	public static bool ShowWhatsNew;
-	public static bool AlphaWelcomed;
 	public static bool PreviewFreezeNotification;
 	public static bool DownloadedDependenciesOnStartup;
 	public static bool ShowFirstLaunchWelcomeMessage;
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
 	public static Version LastPreviewFreezeNotificationSeen;
+
+	// Update this name if doing an upgrade 
+	public static bool BetaUpgradeWelcomed144;
 
 	public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
@@ -225,6 +227,7 @@ public static class ModLoader
 	{
 		Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
+		WorldGen.clearWorld();
 		ModContent.UnloadModContent();
 
 		Mods = new Mod[0];
@@ -337,7 +340,7 @@ public static class ModLoader
 		Main.Configuration.Put("SeenFirstLaunchModderWelcomeMessage", SeenFirstLaunchModderWelcomeMessage);
 
 		Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
-		Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
+		Main.Configuration.Put(nameof(BetaUpgradeWelcomed144), BetaUpgradeWelcomed144);
 		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
@@ -367,7 +370,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(ModOrganizer.ModPackActive), ref ModOrganizer.ModPackActive);
 
 		LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
-		Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
+		Main.Configuration.Get(nameof(BetaUpgradeWelcomed144), ref BetaUpgradeWelcomed144);
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 	}

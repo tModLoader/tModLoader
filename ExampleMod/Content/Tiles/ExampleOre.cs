@@ -25,7 +25,6 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(152, 171, 198), name);
 
 			DustType = 84;
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			HitSound = SoundID.Tink;
 			// MineResist = 4f;
 			// MinPick = 200;

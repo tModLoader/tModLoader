@@ -49,12 +49,32 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
 		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		Comment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
-		RenameStaticField("Terraria.ID.DustID",		from: "Fire",			to: "Torch");
-		RenameStaticField("Terraria.ID.MessageID",	from: "SendNPCBuffs",	to: "NPCBuffs");
-		RenameStaticField("Terraria.ID.MessageID",	from: "Unlock",			to: "LockAndUnlock");
-		RenameStaticField("Terraria.ID.MessageID",	from: "StartPlaying",	to: "InitialSpawn");
-		RenameStaticField("Terraria.ID.MessageID",	from: "SpawnBoss",		to: "SpawnBossUseLicenseStartEvent");
-		RenameStaticField("Terraria.ID.MessageID",	from: "Teleport",		to: "TeleportEntity");
+		RenameStaticField("Terraria.ID.DustID",    from: "Fire",			to: "Torch");
+		RenameStaticField("Terraria.ID.MessageID", from: "SendNPCBuffs",	to: "NPCBuffs");
+		RenameStaticField("Terraria.ID.MessageID", from: "Unlock",			to: "LockAndUnlock");
+		RenameStaticField("Terraria.ID.MessageID", from: "StartPlaying",	to: "InitialSpawn");
+		RenameStaticField("Terraria.ID.MessageID", from: "SpawnBoss",		to: "SpawnBossUseLicenseStartEvent");
+		RenameStaticField("Terraria.ID.MessageID", from: "Teleport",		to: "TeleportEntity");
+		RenameStaticField("Terraria.ID.MessageID", from:"ClientHello",      to: "Hello");
+		RenameStaticField("Terraria.ID.MessageID", from: "LoadPlayer",       to: "PlayerInfo");
+		RenameStaticField("Terraria.ID.MessageID", from: "RequestWorldInfo", to: "RequestWorldData");
+		RenameStaticField("Terraria.ID.MessageID", from: "RequestTileData",  to: "SpawnTileData");
+		RenameStaticField("Terraria.ID.MessageID", from: "StatusText",       to: "StatusTextSize");
+		RenameStaticField("Terraria.ID.MessageID", from: "FrameSection",     to: "TileFrameSection");
+		RenameStaticField("Terraria.ID.MessageID", from: "SpawnPlayer",      to: "PlayerSpawn");
+		RenameStaticField("Terraria.ID.MessageID", from: "PlayerHealth",     to: "PlayerLifeMana");
+		RenameStaticField("Terraria.ID.MessageID", from: "TileChange",       to: "TileManipulation");
+		RenameStaticField("Terraria.ID.MessageID", from: "MenuSunMoon",      to: "SetTime");
+		RenameStaticField("Terraria.ID.MessageID", from: "ChangeDoor",       to: "ToggleDoorState");
+		RenameStaticField("Terraria.ID.MessageID", from: "UnusedStrikeNPC",  to: "UnusedMeleeStrike");
+		RenameStaticField("Terraria.ID.MessageID", from: "StrikeNPC",        to: "DamageNPC");
+		RenameStaticField("Terraria.ID.MessageID", from: "PlayerPVP",        to: "TogglePVP");
+		RenameStaticField("Terraria.ID.MessageID", from: "HealEffect",       to: "PlayerHeal");
+		RenameStaticField("Terraria.ID.MessageID", from: "PlayerZone",       to: "SyncPlayerZone");
+		RenameStaticField("Terraria.ID.MessageID", from: "ResetItemOwner",   to: "ReleaseItemOwnership");
+		RenameStaticField("Terraria.ID.MessageID", from: "PlayerTalkingNPC", to: "SyncTalkNPC");
+		RenameStaticField("Terraria.ID.MessageID", from: "ItemAnimation",    to: "ShotAnimationAndSound");
+		RenameStaticField("Terraria.ID.MessageID", from: "MurderSomeoneElsesProjectile", to: "MurderSomeoneElsesPortal");
 
 		RenameStaticField("Terraria.Tile", from: "Liquid_Water",		to: "Water",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Honey",		to: "Honey",			newType: "Terraria.ID.LiquidID");

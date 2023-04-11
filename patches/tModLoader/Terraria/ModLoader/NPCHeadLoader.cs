@@ -80,7 +80,7 @@ public static class NPCHeadLoader
 		}
 
 		//Sets. The arrays modified here are resized in NPCLoader.
-		LoaderUtils.ResetStaticMembers(typeof(NPCHeadID), true);
+		LoaderUtils.ResetStaticMembers(typeof(NPCHeadID));
 
 		foreach (int npc in npcToBossHead.Keys) {
 			NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];

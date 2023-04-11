@@ -1,12 +1,9 @@
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.States;
@@ -22,7 +19,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Initializers;
 using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
@@ -329,6 +325,8 @@ public static class ModContent
 		PrefixLoader.FinishSetup();
 		ProjectileLoader.FinishSetup();
 		PylonLoader.FinishSetup();
+		TileLoader.FinishSetup();
+		WallLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
@@ -338,7 +336,9 @@ public static class ModContent
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
+		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
+		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
@@ -521,13 +521,12 @@ public static class ModContent
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
-		TileIO.ResizeArrays();
 		ProjectileLoader.ResizeArrays();
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();
 		MountLoader.ResizeArrays();
 		BuffLoader.ResizeArrays();
-		PlayerLoader.RebuildHooks();
+		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
@@ -549,8 +548,6 @@ public static class ModContent
 	/// </summary>
 	internal static void CleanupModReferences()
 	{
-		WorldGen.clearWorld();
-
 		// Clear references to ModPlayer instances
 		for (int i = 0; i < Main.player.Length; i++) {
 			Main.player[i] = new Player();

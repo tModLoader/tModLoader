@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -12,10 +13,15 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, g => g.SendExtraAI, g => g.ReceiveExtraAI);
+	}
+
 	protected sealed override void Register()
 	{
-		ProjectileLoader.VerifyGlobalProjectile(this);
-
 		ModTypeLookup<GlobalProjectile>.Register(this);
 
 		Index = (ushort)ProjectileLoader.globalProjectiles.Count;
@@ -199,15 +205,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="damageScale">The damage scaling</param>
-	public virtual void ModifyDamageScaling(Projectile projectile, ref float damageScale)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether a projectile can hit the given NPC. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="projectile"></param>
@@ -223,11 +220,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -236,10 +230,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -252,28 +245,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual bool CanHitPvp(Projectile projectile, Player target)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, etc., that a projectile does to an opponent player.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when a projectile hits an opponent player.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
-	{
 	}
 
 	/// <summary>
@@ -292,20 +263,19 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits a player.
+	/// Allows you to create special effects when a hostile projectile hits a player. <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+	/// <param name="info"></param>
+	public virtual void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo info)
 	{
 	}
 

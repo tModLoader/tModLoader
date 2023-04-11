@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Core;
 public static class LoaderUtils
 {
 	/// <summary> Calls static constructors on the provided type and, optionally, its nested types. </summary>
-	public static void ResetStaticMembers(Type type, bool recursive)
+	public static void ResetStaticMembers(Type type, bool recursive = true)
 	{
 #if NETCORE
 		var typeInitializer = type.TypeInitializer;
@@ -197,7 +197,6 @@ internal class GlobalInstantiationArrayPool<T>
 
 	static GlobalInstantiationArrayPool()
 	{
-		// honestly, this should go in 'OnResizeArrays'
-		TypeCaching.OnClear += () => LoaderUtils.ResetStaticMembers(typeof(GlobalInstantiationArrayPool<T>), false);
+		TypeCaching.OnClear += () => Pool = ArrayPool<T>.Create();
 	}
 }

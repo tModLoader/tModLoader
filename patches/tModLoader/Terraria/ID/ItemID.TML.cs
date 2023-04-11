@@ -76,6 +76,12 @@ partial class ItemID
 		};
 
 		/// <summary>
+		/// Set to true to ignore this Item when determining Tile or Wall drops automatically from <see cref="Item.createTile"/> and <see cref="Item.createWall"/>. Use this for any item that places the same Tile/Wall as another item, but shouldn't be retrieved when mined. For example, an "infinite" version of a placement item would set this, allowing the non-infinite version to be used reliably as the drop.
+		/// <br/> Also use this for any item which places a tile that doesn't return that same item when mined. Herb Seeds, for example, don't necessarily drop from Herb plants.
+		/// </summary>
+		public static bool[] DisableAutomaticPlaceableDrop = Factory.CreateBoolSet(false);
+
+		/// <summary>
 		/// Dictionary for defining what ores can spawn as bonus drop inside slime body. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (inclusive).
 		/// <br/>Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.
 		/// </summary>

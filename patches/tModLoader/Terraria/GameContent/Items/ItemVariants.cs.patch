@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/ItemVariants.cs
 +++ src/tModLoader/Terraria/GameContent/Items/ItemVariants.cs
-@@ -5,6 +_,9 @@
+@@ -2,9 +_,13 @@
+ using System.Linq;
+ using Terraria.ID;
+ using Terraria.Localization;
++using ItemVariantCondition = Terraria.Condition;
  
  namespace Terraria.GameContent.Items;
  
@@ -10,7 +14,7 @@
  public static class ItemVariants
  {
  	public class VariantEntry
-@@ -28,15 +_,52 @@
+@@ -28,15 +_,42 @@
  	}
  
  	private static List<VariantEntry>[] _variants;
@@ -40,20 +44,13 @@
 +	/// </summary>
  	public static ItemVariant DisabledBossSummonVariant;
 +
-+	/// <summary>
-+	/// The condition that the active world is using ther "Don't Dig Up" secret seed (<see cref="Main.remixWorld"/>).
-+	/// </summary>
- 	public static ItemVariantCondition RemixWorld;
-+
-+	/// <summary>
-+	/// The condition that the active world is using ther "For the Worthy" secret seed (<see cref="Main.getGoodWorld"/>).
-+	/// </summary>
- 	public static ItemVariantCondition GetGoodWorld;
-+
-+	/// <summary>
-+	/// The condition that the active world is using ther "Get Fixed Boi" secret seed (<c><see cref="Main.remixWorld"/> &amp;&amp; <see cref="Main.getGoodWorld"/></c>).
-+	/// </summary>
- 	public static ItemVariantCondition EverythingWorld;
++	// Made private and changed to reference standard tML conditions
+-	public static ItemVariantCondition RemixWorld;
++	private static ItemVariantCondition RemixWorld;
+-	public static ItemVariantCondition GetGoodWorld;
++	private static ItemVariantCondition GetGoodWorld;
+-	public static ItemVariantCondition EverythingWorld;
++	private static ItemVariantCondition EverythingWorld;
  
 +	/// <summary>
 +	/// Gets all of the <see cref="ItemVariant"/>s associated with <paramref name="itemId"/>.
@@ -97,3 +94,33 @@
  	public static ItemVariant SelectVariant(int itemId)
  	{
  		if (!_variants.IndexInRange(itemId))
+@@ -84,14 +_,21 @@
+ 	static ItemVariants()
+ 	{
+ 		_variants = new List<VariantEntry>[ItemID.Count];
+-		StrongerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Stronger"));
++		StrongerVariant = new ItemVariant(Language.GetText("ItemVariant.Stronger"));
+-		WeakerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Weaker"));
++		WeakerVariant = new ItemVariant(Language.GetText("ItemVariant.Weaker"));
+-		RebalancedVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Rebalanced"));
++		RebalancedVariant = new ItemVariant(Language.GetText("ItemVariant.Rebalanced"));
+-		EnabledVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Enabled"));
++		EnabledVariant = new ItemVariant(Language.GetText("ItemVariant.Enabled"));
+-		DisabledBossSummonVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.DisabledBossSummon"));
++		DisabledBossSummonVariant = new ItemVariant(Language.GetText("ItemVariant.DisabledBossSummon"));
++
++		/*
+-		RemixWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
++		RemixWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
+-		GetGoodWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
++		GetGoodWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
+-		EverythingWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
++		EverythingWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
++		*/
++		RemixWorld = Condition.RemixWorld;
++		GetGoodWorld = Condition.ForTheWorthyWorld;
++		EverythingWorld = Condition.ZenithWorld;
++
+ 		AddVariant(112, StrongerVariant, RemixWorld);
+ 		AddVariant(157, StrongerVariant, RemixWorld);
+ 		AddVariant(1319, StrongerVariant, RemixWorld);

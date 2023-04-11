@@ -113,7 +113,8 @@ internal class TMLContentManager : ContentManager
 			"Images/NPC_517.xnb",
 			"Images/Gore_240.xnb",
 			"Images/Projectile_179.xnb",
-			"Images/Projectile_618.xnb"
+			"Images/Projectile_618.xnb",
+			"Images/Tiles_650.xnb"
 		};
 
 		foreach (string problematicAsset in problematicAssets) {

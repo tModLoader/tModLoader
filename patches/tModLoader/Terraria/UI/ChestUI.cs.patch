@@ -14,7 +14,7 @@
  				else if (tile.type == 88)
  					text = Lang.dresserType[tile.frameX / 54].Value;
 +				else if (TileID.Sets.BasicChest[Main.tile[player.chestX, player.chestY].type] || TileID.Sets.BasicDresser[Main.tile[player.chestX, player.chestY].type])
-+					text = TileLoader.ContainerName(tile.type, tile.TileFrameX, tile.TileFrameY);
++					text = TileLoader.DefaultContainerName(tile.type, tile.TileFrameX, tile.TileFrameY);
  			}
  		}
  		else if (player.chest == -2) {

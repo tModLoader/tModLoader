@@ -39,10 +39,6 @@ namespace ExampleMod.Content.Tiles
 			AnimationFrameHeight = 56;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>());
-		}
-
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
 			// We can change frames manually, but since we are just simulating a different tile, we can just use the same value
 			frame = Main.tileFrame[TileID.LunarMonolith];
