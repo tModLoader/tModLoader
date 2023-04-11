@@ -21,11 +21,10 @@ public class CombinedEntitySource : IEntitySource
     }
     public T AttemptGet<T>() where T : class, IEntitySource
     {
-        IEntitySource rv;
         for (LinkedListNode<IEntitySource> node = entitySources.First; node != null; node = node.Next)
         {
-            if(node.Value is T)
-            return node.Value as T;
+            if (node.Value is T)
+                return node.Value as T;
         }
         return null;
     }
