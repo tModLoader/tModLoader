@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ExampleMod.Content.Projectiles
 {
+	// Example CustomSwingSword is an example of a sword with a custom swing using a held projectile
+	// This is great if you want to make melee weapons with complex swing behaviour
+	// Note that this projectile only covers 2 relatively simple swings, everything else is up to you
 	public class ExampleCustomSwingProjectile : ModProjectile
 	{
 		// We define some constants that determine the swing range of the sword
@@ -55,17 +58,16 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Variables to keep track of during runtime
-		private ref float TargetAngle => ref Projectile.ai[1]; // Angle aimed in (with constraints)
+		private ref float InitialAngle => ref Projectile.ai[1]; // Angle aimed in (with constraints)
 		private ref float Timer => ref Projectile.ai[2]; // Timer to keep track of progression of each stage
 		private ref float Progress => ref Projectile.localAI[1]; // Position of sword relative to initial angle
 		private ref float Size => ref Projectile.localAI[2]; // Size of sword
 
 		// We define timing functions for each stage, taking into account melee attack speed
-		// Since execTime and hideTime happen to be the same as prepTime, we make them return the same value
 		// Note that you can change this to suit the need of your projectile
 		private float prepTime => 12f / Owner.GetTotalAttackSpeed<MeleeDamageClass>();
-		private float execTime => prepTime;
-		private float hideTime => prepTime;
+		private float execTime => 12f / Owner.GetTotalAttackSpeed<MeleeDamageClass>();
+		private float hideTime => 12f / Owner.GetTotalAttackSpeed<MeleeDamageClass>();
 
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleCustomSwingSword"; // Use texture of item as projectile texture
 		private Player Owner => Main.player[Projectile.owner];
@@ -85,20 +87,25 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void OnSpawn(IEntitySource source) {
 			Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
-			TargetAngle = (Main.MouseWorld - Owner.MountedCenter).ToRotation();
+			float targetAngle = (Main.MouseWorld - Owner.MountedCenter).ToRotation();
 
-			if (CurrentAttack == AttackType.Swing) {
+			if (CurrentAttack == AttackType.Spin) {
+				InitialAngle = (float)(-Math.PI / 2 - Math.PI * 1 / 3 * Projectile.spriteDirection); // For the spin, starting angle is designated based on direction of hit
+			}
+			else {
 				if (Projectile.spriteDirection == 1) {
 					// However, we limit the rangle of possible directions so it does not look too ridiculous
-					TargetAngle = MathHelper.Clamp(TargetAngle, (float)-Math.PI * 1 / 3, (float)Math.PI * 1 / 6);
+					targetAngle = MathHelper.Clamp(targetAngle, (float)-Math.PI * 1 / 3, (float)Math.PI * 1 / 6);
 				}
 				else {
-					if (TargetAngle < 0) {
-						TargetAngle += 2 * (float)Math.PI; // This makes the range continuous for easier operations
+					if (targetAngle < 0) {
+						targetAngle += 2 * (float)Math.PI; // This makes the range continuous for easier operations
 					}
 
-					TargetAngle = MathHelper.Clamp(TargetAngle, (float)Math.PI * 5 / 6, (float)Math.PI * 4 / 3);
+					targetAngle = MathHelper.Clamp(targetAngle, (float)Math.PI * 5 / 6, (float)Math.PI * 4 / 3);
 				}
+
+				InitialAngle = targetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection; // Otherwise, we calculate the angle
 			}
 		}
 
@@ -114,6 +121,8 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			// AI depends on stage and attack
+			// Note that these stages are to facilitate the scaling effect at the beginning and end
+			// If this is not desireable for you, feel free to simplify
 			switch (CurrentStage) {
 				case AttackStage.Prepare:
 					PrepareStrike();
@@ -125,11 +134,13 @@ namespace ExampleMod.Content.Projectiles
 					UnwindStrike();
 					break;
 			}
+
 			SetSwordPosition();
 			Timer++;
 		}
 
 		public override bool PreDraw(ref Color lightColor) {
+			// Calculate origin of sword (hilt) based on orientation and offset sword rotation (as sword is angled in its sprite)
 			Vector2 origin;
 			float rotationOffset;
 			SpriteEffects effects;
@@ -149,14 +160,14 @@ namespace ExampleMod.Content.Projectiles
 
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, default, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 
+			// Since we are doing a custom draw, prevent it from normally drawing
 			return false;
 		}
 
 		// Find the start and end of the sword and use a line collider to check for collision with enemies
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 			Vector2 start = Owner.MountedCenter;
-			float angle = GetRotation();
-			Vector2 end = start + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * ((Projectile.Size.Length()) * Projectile.scale);
+			Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
 			float collisionPoint = 0f;
 			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 15f * Projectile.scale, ref collisionPoint);
 		}
@@ -164,8 +175,7 @@ namespace ExampleMod.Content.Projectiles
 		// Do a similar collision check for tiles
 		public override void CutTiles() {
 			Vector2 start = Owner.MountedCenter;
-			float angle = GetRotation();
-			Vector2 end = start + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * ((Projectile.Size.Length()) * Projectile.scale);
+			Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
 			Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
 		}
 
@@ -185,39 +195,18 @@ namespace ExampleMod.Content.Projectiles
 				modifiers.Knockback += 1;
 		}
 
-		// Calculate rotation based on progress of swing
-		public float GetRotation() {
-			float initialAngle = 0; // Initial rotation of projectile
-			if (CurrentAttack == AttackType.Spin) {
-				initialAngle = (float)(-Math.PI / 2 - Math.PI * 1 / 3 * Projectile.spriteDirection); // For the spin, starting angle is designated based on direction of hit
-			}
-			else {
-				initialAngle = TargetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection; // Otherwise, we calculate the angle
-			}
-			return initialAngle + Projectile.spriteDirection * Progress;
-		}
-
 		// Function to easily set projectile and arm position
 		public void SetSwordPosition() {
-			float rotation = GetRotation();
+			Projectile.rotation = InitialAngle + Projectile.spriteDirection * Progress; // Set projectile rotation
 
-			// Set composite arm allows you to set the state of the front and back arms independently
-			// This also allows for setting the rotation of the arm and the stretch amount independently
-			Owner.SetCompositeArmFront(true, CompositeArmStretchAmount.Full, rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-			Vector2 armPosition = Owner.GetFrontHandPosition(CompositeArmStretchAmount.Full, rotation - (float)Math.PI / 2); // get position of hand
+			// Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
+			Owner.SetCompositeArmFront(true, CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+			Vector2 armPosition = Owner.GetFrontHandPosition(CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
 			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. This should be removed once the vanilla bug is fixed.
 			armPosition.Y -= Owner.gfxOffY;
-			Projectile.position = armPosition; // Set projectile to arm position
-			Projectile.position.Y -= (float)(Projectile.height / 2);
+			Projectile.Center = armPosition; // Set projectile to arm position
 			Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers
-			Projectile.rotation = rotation + (float)Math.PI / 4; // Set projectile rotation (45 degrees offset since sword is already rotated -45 deg)
-
-			// Projectile is offset in rotation and position when flipped, this is the fix
-			if (Projectile.spriteDirection == -1) {
-				Projectile.position.X -= Projectile.width;
-				Projectile.rotation += (float)Math.PI / 2;
-			}
 
 			Owner.heldProj = Projectile.whoAmI; // set held projectile to this projectile
 		}

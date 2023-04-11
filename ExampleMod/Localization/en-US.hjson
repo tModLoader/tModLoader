@@ -755,7 +755,7 @@ Mods: {
 					Use more than once to cycle through attacks
 					'''
 			}
-			
+
 			ExampleDresser: {
 				DisplayName: Example Dresser
 				Tooltip: This is a modded dresser.
