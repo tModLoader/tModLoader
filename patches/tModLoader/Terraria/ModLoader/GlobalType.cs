@@ -68,7 +68,7 @@ public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<T
 	public static bool TryGetGlobal<TResult>(int entityType, ReadOnlySpan<TGlobal> entityGlobals, TResult baseInstance, out TResult result) where TResult : TGlobal
 	{
 		var slot = baseInstance.PerEntityIndex;
-		if (slot >= 0) {
+		if (entityType > 0 && slot >= 0) {
 			result = (TResult)entityGlobals[slot];
 			return result != null;
 		}
