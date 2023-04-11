@@ -24,8 +24,8 @@ public class CombinedEntitySource : IEntitySource
         IEntitySource rv;
         for (LinkedListNode<IEntitySource> node = entitySources.First; node != null; node = node.Next)
         {
-            if(node is T)
-            return node as T;
+            if(node.Value is T)
+            return node.Value as T;
         }
         return null;
     }
