@@ -68,7 +68,7 @@ var NAVTREEINDEX =
 "class_u_i_particle_layer.html",
 "functions_prop_g.html",
 "struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a",
-"struct_tile_wall_wire_state_data.html"
+"struct_tile_wall_brightness_invisibility_data.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

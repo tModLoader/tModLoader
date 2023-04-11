@@ -1203,6 +1203,7 @@ var annotated_dup =
     [ "TileRestingInfo", "struct_tile_resting_info.html", "struct_tile_resting_info" ],
     [ "TileSmartInteractCandidateProvider", "class_tile_smart_interact_candidate_provider.html", null ],
     [ "TileTypeData", "struct_tile_type_data.html", null ],
+    [ "TileWallBrightnessInvisibilityData", "struct_tile_wall_brightness_invisibility_data.html", null ],
     [ "TileWallWireStateData", "struct_tile_wall_wire_state_data.html", "struct_tile_wall_wire_state_data" ],
     [ "TimeLogger", "class_time_logger.html", null ],
     [ "TitleLinkButton", "class_title_link_button.html", null ],

@@ -1891,6 +1891,7 @@ var hierarchy =
     [ "ITileData", "interface_i_tile_data.html", [
       [ "LiquidData", "struct_liquid_data.html", null ],
       [ "TileTypeData", "struct_tile_type_data.html", null ],
+      [ "TileWallBrightnessInvisibilityData", "struct_tile_wall_brightness_invisibility_data.html", null ],
       [ "TileWallWireStateData", "struct_tile_wall_wire_state_data.html", null ],
       [ "WallTypeData", "struct_wall_type_data.html", null ]
     ] ],
