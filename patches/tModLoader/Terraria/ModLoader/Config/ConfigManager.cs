@@ -92,19 +92,19 @@ public static class ConfigManager
 					try {
 						// TODO: throw error after updating hjson somehow, so auto keys are populated?
 						// TODO: Recursive? Find Label on members of Classes used?
-						// TODO: Should key be {config.Name}.Headers.{variable.Name}?
-						// TODO: Should all headers have a name, [Header("HeaderName")], then {config.Name}.Headers.{HeaderName}
 
 						// Label and Tooltip will always exist. Header is optional, need to be used to exist.
+						var header = GetLocalizedHeader(variable, config, throwErrors: true);
+						if (header != null) {
+							string identifier = header.IsIdentifier ? header.identifier : variable.Name;
+							Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
+						}
+
 						string labelKey = GetLabelKey(variable, config, fallbackToClass: false, throwErrors: true);
 						Language.GetOrRegister(labelKey, () => Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
 						string tooltipKey = GetTooltipKey(variable, config, fallbackToClass: false, throwErrors: true);
 						Language.GetOrRegister(tooltipKey, () => "");
-
-						var header = GetLocalizedHeader(variable, config, throwErrors: true);
-						if (header != null)
-							Language.GetOrRegister(header.key, () => $"{Regex.Replace(variable.Name, "([A-Z])", " $1").Trim()} Header");
 					}
 					catch (ValueNotTranslationKeyException e) {
 						// TODO: Not necessarily the member, could be an attribute on the Type, but checking is messy
@@ -486,10 +486,14 @@ public static class ConfigManager
 		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
 		if (header != null) {
 			if (header.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.");
 
-			if (header.key == null)
-				 header.key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.{memberInfo.Name}.Header");
+			if (header.malformed)
+				header.identifier = memberInfo.Name;
+
+			if (header.IsIdentifier)
+				header.key = config.Mod.GetLocalizationKey($"Configs.{config.Name}.Headers.{header.identifier}");
+
 			return header;
 		}
 		return null;

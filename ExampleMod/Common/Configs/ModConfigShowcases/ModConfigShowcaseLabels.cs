@@ -40,17 +40,17 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public List<Pair> ListOfPair = new List<Pair>();
 
 		// We can also add section headers, separating fields for organization
-		// Using [Header], Mods.ExampleMod.Configs.ModConfigShowcaseLabels.TypicalHeader.Header will automatically appear in localization files. We have populated the English entry with the value "Headers Section".
-		[Header]
+		// Using [Header("HeaderIdentifier")], Mods.ExampleMod.Configs.ModConfigShowcaseLabels.Headers.HeaderIdentifier will automatically appear in localization files. We have populated the English entry with the value "Headers Section".
+		[Header("HeaderIdentifier")]
 		public int TypicalHeader;
 
 		// We can also specify a specific translation key, if desired.
-		// The "$" character before a name means it should interpret the name as a translation key and use the loaded translation with the same key.
+		// The "$" character before a name means it should interpret the value as a translation key and use the loaded translation with the same key.
 		[Header("$Mods.ExampleMod.Configs.Common.LocalizedHeader")]
 		public int LocalizedHeader;
 
 		// Chat tags such as colored text or item icons can help users find config sections quickly
-		[Header]
+		[Header("ChatTagExample")]
 		public int CoolHeader;
 
 		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.

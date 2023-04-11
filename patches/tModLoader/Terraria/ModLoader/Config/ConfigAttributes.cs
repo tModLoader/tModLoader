@@ -96,29 +96,35 @@ public class TooltipAttribute : Attribute
 /// <summary>
 /// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config. <br/>
 /// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order. <br/>
-/// By using <c>[Header]</c> with no provided key, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Header" will be assumed for members of ModConfig classes. <br/>
-/// By using <c>[Header("$Key.Here")]</c>, a custom localization key for the tooltip will be used. <br/>
-/// The provided localization key must start with "$". <br/>
-/// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, no localization key is assumed. <br/>
+/// <br/>
+/// Header accept either a translation key or an identifier. <br/>
+/// To use a translation key, the value passed in must start with "$". <br/>
+/// A value passed in that does not start with "$" is interpreted as an identifier. The identifier is used to construct the localization key "Mods.{ModName}.Configs.{ConfigName}.Headers.{Identifier}" <br/>
+/// No spaces are allowed in translation keys, so avoid spaces <br/>
+/// Annotations on members of non-ModConfig classes need to supply a localization key using this attribute to be localized, no localization key can be correctly assumed using just an identifier. <br/>
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class HeaderAttribute : Attribute
 {
 	internal string key;
+	internal string identifier;
 	internal readonly bool malformed;
+
+	public bool IsIdentifier => identifier != null;
 
 	public string Header => Localization.Language.GetTextValue(key);
 
-	public HeaderAttribute(string key = null)
+	public HeaderAttribute(string identifierOrKey)
 	{
-		if (key == null) // will be filled by calling code.
-			return;
-		if (!key.StartsWith("$")) {
+		if (string.IsNullOrWhiteSpace(identifierOrKey) || identifierOrKey.Contains(' ')) {
 			malformed = true;
-			this.key = key;
+			return;
+		}
+		if (!identifierOrKey.StartsWith("$")) {
+			identifier = identifierOrKey;
 		}
 		else {
-			this.key = key.Substring(1);
+			key = identifierOrKey.Substring(1);
 		}
 	}
 }

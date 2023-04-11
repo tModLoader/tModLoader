@@ -37,7 +37,6 @@ ExampleModConfig: {
 
 	ExampleWingsToggle: {
 		Label: Example Wings Toggle
-		Header: Items
 		Tooltip: Enables or disables the ExampleWings item
 	}
 
@@ -45,6 +44,8 @@ ExampleModConfig: {
 		Label: Weapon With Growing Damage Toggle
 		Tooltip: ""
 	}
+
+	Headers.Items: Items
 }
 
 ModConfigShowcaseAccessibility: {
@@ -281,7 +282,6 @@ ModConfigShowcaseLabels: {
 
 	TypicalHeader: {
 		Label: Typical Header
-		Header: Headers Section
 		Tooltip: ""
 	}
 
@@ -292,7 +292,6 @@ ModConfigShowcaseLabels: {
 
 	CoolHeader: {
 		Label: Cool Header
-		Header: "[i:19][c/00FF00:Green Text][i:ExampleMod/ExampleItem]"
 		Tooltip: ""
 	}
 
@@ -302,6 +301,11 @@ ModConfigShowcaseLabels: {
 	}
 
 	LocalizedLabelDynamic.Tooltip: ""
+
+	Headers: {
+		HeaderIdentifier: Headers Section
+		ChatTagExample: "[i:19][c/00FF00:Green Text][i:ExampleMod/ExampleItem]"
+	}
 }
 
 ModConfigShowcaseMisc: {
@@ -432,7 +436,6 @@ ModConfigShowcaseSubpages: {
 
 	gradient: {
 		Label: gradient
-		Header: SeparatePage Examples
 		Tooltip: ""
 	}
 
@@ -455,4 +458,6 @@ ModConfigShowcaseSubpages: {
 		Label: Special Pair
 		Tooltip: ""
 	}
+
+	Headers.SeparatePageExamples: SeparatePage Examples
 }

@@ -15,7 +15,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[Header]
+		[Header("SeparatePageExamples")]
 		// Using SeparatePage, an object will be presented to the user as a button. That button will lead to a separate page where the usual UI will be presented. Useful for organization.
 		[SeparatePage]
 		public Gradient gradient = new Gradient();
