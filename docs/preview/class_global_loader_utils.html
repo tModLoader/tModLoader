@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tModLoader: HookList&lt; T &gt;.InstanceEnumerator&lt; T &gt; Struct Template Reference</title>
+<title>tModLoader: GlobalLoaderUtils&lt; TGlobal, TEntity &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('struct_hook_list_1_1_instance_enumerator.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('class_global_loader_utils.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,37 +85,27 @@ $(document).ready(function(){initNavTree('struct_hook_list_1_1_instance_enumerat
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#properties">Properties</a> &#124;
-<a href="struct_hook_list_1_1_instance_enumerator-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">HookList&lt; T &gt;.InstanceEnumerator&lt; T &gt; Struct Template Reference</div></div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="class_global_loader_utils-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">GlobalLoaderUtils&lt; TGlobal, TEntity &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a7dabd0da80000782a3c0d02dff52ce17"><td class="memItemLeft" align="right" valign="top"><a id="a7dabd0da80000782a3c0d02dff52ce17" name="a7dabd0da80000782a3c0d02dff52ce17"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>InstanceEnumerator</b> (<a class="el" href="struct_instanced.html">Instanced</a>&lt; T &gt;[] instances, int[] hookIndices)</td></tr>
-<tr class="separator:a7dabd0da80000782a3c0d02dff52ce17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34bf591681632e827900638ac47fd11e"><td class="memItemLeft" align="right" valign="top"><a id="a34bf591681632e827900638ac47fd11e" name="a34bf591681632e827900638ac47fd11e"></a>
-<a class="el" href="struct_hook_list_1_1_instance_enumerator.html">InstanceEnumerator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetEnumerator</b> ()</td></tr>
-<tr class="separator:a34bf591681632e827900638ac47fd11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d6480c11754ba0d4ee5bfedfc2cae2e"><td class="memItemLeft" align="right" valign="top"><a id="a5d6480c11754ba0d4ee5bfedfc2cae2e" name="a5d6480c11754ba0d4ee5bfedfc2cae2e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>MoveNext</b> ()</td></tr>
-<tr class="separator:a5d6480c11754ba0d4ee5bfedfc2cae2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a0a0a4c1c6287cf97fc9b1d43276a666e"><td class="memItemLeft" align="right" valign="top"><a id="a0a0a4c1c6287cf97fc9b1d43276a666e" name="a0a0a4c1c6287cf97fc9b1d43276a666e"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>Current</b><code> [get]</code></td></tr>
-<tr class="separator:a0a0a4c1c6287cf97fc9b1d43276a666e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af0c61a33bba3f51aa43fdde89f453fdd"><td class="memItemLeft" align="right" valign="top"><a id="af0c61a33bba3f51aa43fdde89f453fdd" name="af0c61a33bba3f51aa43fdde89f453fdd"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildTypeLookups</b> (Action&lt; int &gt; setDefaults)</td></tr>
+<tr class="separator:af0c61a33bba3f51aa43fdde89f453fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd8061eaa794445cb3919b73eed805c"><td class="memItemLeft" align="right" valign="top"><a id="aafd8061eaa794445cb3919b73eed805c" name="aafd8061eaa794445cb3919b73eed805c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</b> (TEntity entity, ref TGlobal[] entityGlobals, Action&lt; TEntity &gt; setModEntityDefaults)</td></tr>
+<tr class="separator:aafd8061eaa794445cb3919b73eed805c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_hook_list.html">HookList</a></li><li class="navelem"><a class="el" href="struct_hook_list_1_1_instance_enumerator.html">InstanceEnumerator</a></li>
+    <li class="navelem"><a class="el" href="class_global_loader_utils.html">GlobalLoaderUtils</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>

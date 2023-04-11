@@ -61,13 +61,11 @@ var class_global_n_p_c =
     [ "PreDraw", "class_global_n_p_c.html#ac1579ae999fbe4d64ae94395a298219e", null ],
     [ "PreKill", "class_global_n_p_c.html#a3cb1b1ae07bbdc0004631534aee68f84", null ],
     [ "ReceiveExtraAI", "class_global_n_p_c.html#accb0f5c3b4545cda85cafb18342c3473", null ],
-    [ "Register", "class_global_n_p_c.html#afcf858699f3cf5f546dd5928a3119b21", null ],
     [ "ResetEffects", "class_global_n_p_c.html#a3a2432b86947bc1b03b349f3052ece17", null ],
     [ "SaveData", "class_global_n_p_c.html#afa2ab82d9e0aad5f3aa29b868a355429", null ],
     [ "SendExtraAI", "class_global_n_p_c.html#a69f3f922db2eee1a553abbb9f9b7b7af", null ],
     [ "SetBestiary", "class_global_n_p_c.html#aa4320fe846bd9bf341ee89f0a42f5bc4", null ],
     [ "SetDefaults", "class_global_n_p_c.html#ad9761f97d52488e100c3d89bde5b90ce", null ],
-    [ "SetupContent", "class_global_n_p_c.html#a53b308ea4688457257e72f39dd5d6de5", null ],
     [ "SetupTravelShop", "class_global_n_p_c.html#ae5290c411f7d7a5fbeb39dcf7a4992f0", null ],
     [ "SpawnNPC", "class_global_n_p_c.html#a623eb9273b9f0c9f7e62cfdae8cc12b3", null ],
     [ "SpecialOnKill", "class_global_n_p_c.html#a81f052ab1db8ed3677cf6b99c0c9e825", null ],
@@ -78,6 +76,5 @@ var class_global_n_p_c =
     [ "TownNPCAttackShoot", "class_global_n_p_c.html#ae4a7859133c26a164e1c714c6a588c8c", null ],
     [ "TownNPCAttackStrength", "class_global_n_p_c.html#ad2217f039506ed923ef9e5c22dd4a78f", null ],
     [ "TownNPCAttackSwing", "class_global_n_p_c.html#a53c0f5186a348a488cde2b91761be770", null ],
-    [ "UpdateLifeRegen", "class_global_n_p_c.html#aec71307bc0e7ff4468a376297ba8a018", null ],
-    [ "ValidateType", "class_global_n_p_c.html#a8a06809c8ebda73c5c08a7e7971ebc65", null ]
+    [ "UpdateLifeRegen", "class_global_n_p_c.html#aec71307bc0e7ff4468a376297ba8a018", null ]
 ];

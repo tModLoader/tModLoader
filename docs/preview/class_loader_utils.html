@@ -105,14 +105,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasMethod</b> 
 <tr class="memitem:a10472f9df65cdd93d133e9e410503ca4"><td class="memItemLeft" align="right" valign="top"><a id="a10472f9df65cdd93d133e9e410503ca4" name="a10472f9df65cdd93d133e9e410503ca4"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOverride</b> (Type t, MethodInfo baseMethod)</td></tr>
 <tr class="separator:a10472f9df65cdd93d133e9e410503ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86d45dba55c62ec546af9f06b35d2a24"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#a86d45dba55c62ec546af9f06b35d2a24">HasOverride&lt; T, F &gt;</a> (Type t, Expression&lt; Func&lt; T, F &gt; &gt; expr)</td></tr>
-<tr class="separator:a86d45dba55c62ec546af9f06b35d2a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21f3281e245e71ad3b1a218e541959a9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#a21f3281e245e71ad3b1a218e541959a9">InstantiateGlobals&lt; TGlobal, TEntity &gt;</a> (TEntity entity, <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; TGlobal &gt; globals, ref <a class="el" href="struct_instanced.html">Instanced</a>&lt; TGlobal &gt;[]? entityGlobals, Action midInstantiationAction)</td></tr>
-<tr class="separator:a21f3281e245e71ad3b1a218e541959a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa65ceb69e36020e5f9547cf1188cd595"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#aa65ceb69e36020e5f9547cf1188cd595">InstantiateGlobals&lt; TGlobal, TEntity &gt;</a> (TEntity entity, <a class="el" href="class_list.html">List</a>&lt; TGlobal &gt; globals, ref <a class="el" href="struct_instanced.html">Instanced</a>&lt; TGlobal &gt;[]? entityGlobals, Action midInstantiationAction)</td></tr>
-<tr class="separator:aa65ceb69e36020e5f9547cf1188cd595"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d903c3c249002bc5202db260cf4212e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#a5d903c3c249002bc5202db260cf4212e">InstantiateGlobals&lt; TGlobal, TEntity &gt;</a> (TEntity entity, ReadOnlySpan&lt; TGlobal &gt; globals, ref <a class="el" href="struct_instanced.html">Instanced</a>&lt; TGlobal &gt;[]? entityGlobals, Action midInstantiationAction)</td></tr>
-<tr class="separator:a5d903c3c249002bc5202db260cf4212e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace6986c1a469ecd194597869a9fab2db"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#ace6986c1a469ecd194597869a9fab2db">HasOverride&lt; T, F &gt;</a> (T t, Expression&lt; Func&lt; T, F &gt; &gt; expr)</td></tr>
+<tr class="separator:ace6986c1a469ecd194597869a9fab2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6909d20264b61adc6f88ae5a62dfe9bc"><td class="memItemLeft" align="right" valign="top"><a id="a6909d20264b61adc6f88ae5a62dfe9bc" name="a6909d20264b61adc6f88ae5a62dfe9bc"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>MustOverrideTogether&lt; T &gt;</b> (T t, params Expression&lt; Func&lt; T, Delegate &gt; &gt;[] methods)</td></tr>
 <tr class="separator:a6909d20264b61adc6f88ae5a62dfe9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,8 +123,8 @@ static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#
 <tr class="separator:a065e3dfe7806d07ab9ef8b12079da0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a86d45dba55c62ec546af9f06b35d2a24" name="a86d45dba55c62ec546af9f06b35d2a24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86d45dba55c62ec546af9f06b35d2a24">&#9670;&nbsp;</a></span>HasOverride&lt; T, F &gt;()</h2>
+<a id="ace6986c1a469ecd194597869a9fab2db" name="ace6986c1a469ecd194597869a9fab2db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace6986c1a469ecd194597869a9fab2db">&#9670;&nbsp;</a></span>HasOverride&lt; T, F &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +135,7 @@ static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#
         <tr>
           <td class="memname">static bool LoaderUtils.HasOverride&lt; T, F &gt; </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
+          <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
@@ -168,195 +162,8 @@ static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Delegate</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>HasOverride</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>t</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>GetType()</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToMethodInfo()</em></td><td>&#160;</td></tr>
-</table>
-</dd>
-</dl>
-</div>
-
-</div>
-</div>
-<a id="a21f3281e245e71ad3b1a218e541959a9" name="a21f3281e245e71ad3b1a218e541959a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21f3281e245e71ad3b1a218e541959a9">&#9670;&nbsp;</a></span>InstantiateGlobals&lt; TGlobal, TEntity &gt;() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void LoaderUtils.InstantiateGlobals&lt; TGlobal, TEntity &gt; </td>
-          <td>(</td>
-          <td class="paramtype">TEntity&#160;</td>
-          <td class="paramname"><em>entity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; TGlobal &gt;&#160;</td>
-          <td class="paramname"><em>globals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="struct_instanced.html">Instanced</a>&lt; TGlobal &gt;?[]&#160;</td>
-          <td class="paramname"><em>entityGlobals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>midInstantiationAction</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="typeconstraint">
-<dl><dt><b>Type Constraints</b></dt><dd>
-<table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_type.html">GlobalType</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>TEntity</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>TGlobal</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>InstantiateGlobals</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>entity</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>globals.ToArray()</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>AsSpan()</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>ref</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>entityGlobals</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>midInstantiationAction</em></td><td>&#160;</td></tr>
-</table>
-</dd>
-</dl>
-</div>
-
-</div>
-</div>
-<a id="aa65ceb69e36020e5f9547cf1188cd595" name="aa65ceb69e36020e5f9547cf1188cd595"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa65ceb69e36020e5f9547cf1188cd595">&#9670;&nbsp;</a></span>InstantiateGlobals&lt; TGlobal, TEntity &gt;() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void LoaderUtils.InstantiateGlobals&lt; TGlobal, TEntity &gt; </td>
-          <td>(</td>
-          <td class="paramtype">TEntity&#160;</td>
-          <td class="paramname"><em>entity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_list.html">List</a>&lt; TGlobal &gt;&#160;</td>
-          <td class="paramname"><em>globals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="struct_instanced.html">Instanced</a>&lt; TGlobal &gt;?[]&#160;</td>
-          <td class="paramname"><em>entityGlobals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>midInstantiationAction</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="typeconstraint">
-<dl><dt><b>Type Constraints</b></dt><dd>
-<table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_type.html">GlobalType</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>TEntity</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>TGlobal</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>InstantiateGlobals</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>entity</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>CollectionsMarshal.AsSpan</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>globals</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>ref</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>entityGlobals</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>midInstantiationAction</em></td><td>&#160;</td></tr>
-</table>
-</dd>
-</dl>
-</div>
-
-</div>
-</div>
-<a id="a5d903c3c249002bc5202db260cf4212e" name="a5d903c3c249002bc5202db260cf4212e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d903c3c249002bc5202db260cf4212e">&#9670;&nbsp;</a></span>InstantiateGlobals&lt; TGlobal, TEntity &gt;() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void LoaderUtils.InstantiateGlobals&lt; TGlobal, TEntity &gt; </td>
-          <td>(</td>
-          <td class="paramtype">TEntity&#160;</td>
-          <td class="paramname"><em>entity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ReadOnlySpan&lt; TGlobal &gt;&#160;</td>
-          <td class="paramname"><em>globals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="struct_instanced.html">Instanced</a>&lt; TGlobal &gt;?[]&#160;</td>
-          <td class="paramname"><em>entityGlobals</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>midInstantiationAction</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<div class="typeconstraint">
-<dl><dt><b>Type Constraints</b></dt><dd>
-<table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_type.html">GlobalType</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>TEntity</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>TGlobal</em></td><td>&#160;:</td><td valign="top"><em>TGlobal</em></td><td>&#160;</td></tr>
 </table>
 </dd>
 </dl>

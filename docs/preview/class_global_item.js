@@ -88,12 +88,9 @@ var class_global_item =
     [ "PreReforge", "class_global_item.html#aab8537c1ff37942bc0140791a7bf8dae", null ],
     [ "PreUpdateVanitySet", "class_global_item.html#ab8f86f28a112a0f7349ed706a6dbc59d", null ],
     [ "ReforgePrice", "class_global_item.html#ac16308d540ff27d99cf838c3f4031d42", null ],
-    [ "Register", "class_global_item.html#a028875103d0481b1f6f27c078b047444", null ],
     [ "RightClick", "class_global_item.html#ab14e7d42a15f6c95181eaadaca97176a", null ],
     [ "SaveData", "class_global_item.html#a402e74c25445fdd28a55ec7a6969c258", null ],
-    [ "SetDefaults", "class_global_item.html#a4964f2224be75990af186082116e5e45", null ],
     [ "SetMatch", "class_global_item.html#aa5e755b3a7baead1bd1ecff2970f9d9f", null ],
-    [ "SetupContent", "class_global_item.html#a59f17ff45213afee0d6a243ff1886f12", null ],
     [ "Shoot", "class_global_item.html#a3e99d6e94bd0691dde908bd03b6e7c1c", null ],
     [ "SplitStack", "class_global_item.html#a5ce58d920c5f85a57437e5afb23566ca", null ],
     [ "Update", "class_global_item.html#ae811e5c3d7c0ab85cba217478cc78cb8", null ],
@@ -112,7 +109,6 @@ var class_global_item =
     [ "UseSpeedMultiplier", "class_global_item.html#a39b6b6d677416a4d6b7219f8c8dbb073", null ],
     [ "UseStyle", "class_global_item.html#aae856ec57610ee3ad7d5c69ef45a67b0", null ],
     [ "UseTimeMultiplier", "class_global_item.html#abfb16c554413693def92e02ce4da165c", null ],
-    [ "ValidateType", "class_global_item.html#aad74db13408fac6abfd0caddfcd26ea4", null ],
     [ "VerticalWingSpeeds", "class_global_item.html#a118590ca9ea6cf217136a8d223489e4b", null ],
     [ "WingUpdate", "class_global_item.html#a33e5bd665370eb317fdb03140e17b7e2", null ]
 ];

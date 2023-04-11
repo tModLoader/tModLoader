@@ -32,12 +32,9 @@ var class_global_projectile =
     [ "PreDrawExtras", "class_global_projectile.html#a7918fb6519d9c3987a4ddf85679081c0", null ],
     [ "PreKill", "class_global_projectile.html#a5087e52a8c3ca87b23c78d7088447783", null ],
     [ "ReceiveExtraAI", "class_global_projectile.html#a267a74b8f38e1055900ce61370ea71ee", null ],
-    [ "Register", "class_global_projectile.html#abaa872793884f17cc67625c89a6a84cd", null ],
     [ "SendExtraAI", "class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468", null ],
     [ "SetDefaults", "class_global_projectile.html#a06e8e2bcfa5ef9d59cc6e90245eef449", null ],
-    [ "SetupContent", "class_global_projectile.html#a868df7036d919181c61c707d7fa8ff3e", null ],
     [ "ShouldUpdatePosition", "class_global_projectile.html#a29b87a7d0521e450674cd8ac4ed3a381", null ],
     [ "TileCollideStyle", "class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242", null ],
-    [ "UseGrapple", "class_global_projectile.html#a24da8a1d31d232c090607771aa3c655b", null ],
-    [ "ValidateType", "class_global_projectile.html#aecff43663d526ea139bb294ee1ceeeb6", null ]
+    [ "UseGrapple", "class_global_projectile.html#a24da8a1d31d232c090607771aa3c655b", null ]
 ];

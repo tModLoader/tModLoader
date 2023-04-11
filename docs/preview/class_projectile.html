@@ -861,9 +861,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CritChance</b><code> [
 <a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DamageType</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:aad257e1f87a6c5b7a5813a185df060b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The damage type assigned to this projectile, represented as a <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>. Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile. Use <a class="el" href="class_damage_class.html#a6503fd93169adfe37c2a0a7f08d12e48" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a>/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types. Refer to ExampleMod for more information on how to create and use your own damage types. <br /></td></tr>
 <tr class="separator:aad257e1f87a6c5b7a5813a185df060b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45143c174b3bb6fe1030127edddbd271"><td class="memItemLeft" align="right" valign="top"><a id="a45143c174b3bb6fe1030127edddbd271" name="a45143c174b3bb6fe1030127edddbd271"></a>
-<a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="struct_instanced.html">Instanced</a>&lt; <a class="el" href="class_global_projectile.html">GlobalProjectile</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
-<tr class="separator:a45143c174b3bb6fe1030127edddbd271"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f07e7b1219c331f3c116fd9fd09c6a8"><td class="memItemLeft" align="right" valign="top"><a id="a8f07e7b1219c331f3c116fd9fd09c6a8" name="a8f07e7b1219c331f3c116fd9fd09c6a8"></a>
+<a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="class_global_projectile.html">GlobalProjectile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>EntityGlobals</b><code> [get]</code></td></tr>
+<tr class="separator:a8f07e7b1219c331f3c116fd9fd09c6a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e9558238a3f4dfa1c6998d28d8a71c"><td class="memItemLeft" align="right" valign="top"><a id="a87e9558238a3f4dfa1c6998d28d8a71c" name="a87e9558238a3f4dfa1c6998d28d8a71c"></a>
+<a class="el" href="struct_entity_globals_enumerator.html">EntityGlobalsEnumerator</a>&lt; <a class="el" href="class_global_projectile.html">GlobalProjectile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
+<tr class="separator:a87e9558238a3f4dfa1c6998d28d8a71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b34b3b9b56439acfc13ebba50455ca6"><td class="memItemLeft" align="right" valign="top"><a id="a0b34b3b9b56439acfc13ebba50455ca6" name="a0b34b3b9b56439acfc13ebba50455ca6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMinionOrSentryRelated</b><code> [get]</code></td></tr>
 <tr class="memdesc:a0b34b3b9b56439acfc13ebba50455ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br  />
@@ -926,9 +929,12 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>TopRight</b><code>
 virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosition</b><code> [get]</code></td></tr>
 <tr class="separator:aeaa848199fa4b71a405d9beeb0e82663 inherit properties_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_with_globals"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_with_globals')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_with_globals.html">IEntityWithGlobals&lt; GlobalProjectile &gt;</a></td></tr>
-<tr class="memitem:a290f8dd9eb6b4266d50e275298c6b0b6 inherit properties_interface_i_entity_with_globals"><td class="memItemLeft" align="right" valign="top"><a id="a290f8dd9eb6b4266d50e275298c6b0b6" name="a290f8dd9eb6b4266d50e275298c6b0b6"></a>
-<a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="struct_instanced.html">Instanced</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
-<tr class="separator:a290f8dd9eb6b4266d50e275298c6b0b6 inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bfc6ab908c56b3e8760389a58d922c5 inherit properties_interface_i_entity_with_globals"><td class="memItemLeft" align="right" valign="top"><a id="a7bfc6ab908c56b3e8760389a58d922c5" name="a7bfc6ab908c56b3e8760389a58d922c5"></a>
+<a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; TGlobal &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>EntityGlobals</b><code> [get]</code></td></tr>
+<tr class="separator:a7bfc6ab908c56b3e8760389a58d922c5 inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5a145aa3bbabc385b4510f2519ea3bd inherit properties_interface_i_entity_with_globals"><td class="memItemLeft" align="right" valign="top"><a id="ac5a145aa3bbabc385b4510f2519ea3bd" name="ac5a145aa3bbabc385b4510f2519ea3bd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
+<tr class="separator:ac5a145aa3bbabc385b4510f2519ea3bd inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac40596ec0c75dea27a09b9ded8a21f4f" name="ac40596ec0c75dea27a09b9ded8a21f4f"></a>
@@ -1082,10 +1088,9 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_projectile.html">GlobalProjectile</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalType.GetGlobal</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_projectile.html">GlobalProjectile</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>T</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>globalProjectiles</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalProjectile.GetGlobal&lt;T&gt;</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>type</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>EntityGlobals</em></td><td>&#160;</td></tr>
 </table>
 </dd>
 </dl>
@@ -1126,8 +1131,9 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_projectile.html">GlobalProjectile</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalType.GetGlobal</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>globalProjectiles</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalProjectile.GetGlobal</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>type</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>EntityGlobals</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>baseInstance</em></td><td>&#160;</td></tr>
 </table>
 </dd>
@@ -1367,8 +1373,9 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_projectile.html">GlobalProjectile</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalType.TryGetGlobal</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>globalProjectiles</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalProjectile.TryGetGlobal</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>type</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>EntityGlobals</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>out</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>result</em></td><td>&#160;</td></tr>
 </table>
@@ -1410,8 +1417,9 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_global_projectile.html">GlobalProjectile</a></em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalType.TryGetGlobal</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>globalProjectiles</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GlobalProjectile.TryGetGlobal</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>type</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>EntityGlobals</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>baseInstance</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>out</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>result</em></td><td>&#160;</td></tr>

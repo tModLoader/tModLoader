@@ -74,6 +74,7 @@ var hierarchy =
       [ "Segments.PlayerSegment", "class_segments_1_1_player_segment.html", null ]
     ] ],
     [ "AnthillEntrance", "class_anthill_entrance.html", null ],
+    [ "GlobalTypeLookups< TGlobal >.AppliesToTypeSet", "struct_global_type_lookups_1_1_applies_to_type_set.html", null ],
     [ "WorkshopHelper.UGCBased.APublisherInstance", "class_workshop_helper_1_1_u_g_c_based_1_1_a_publisher_instance.html", [
       [ "WorkshopHelper.ModPublisherInstance", "class_workshop_helper_1_1_mod_publisher_instance.html", null ],
       [ "WorkshopHelper.UGCBased.ResourcePackPublisherInstance", "class_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html", null ],
@@ -388,6 +389,7 @@ var hierarchy =
       [ "Player", "class_player.html", null ],
       [ "Projectile", "class_projectile.html", null ]
     ] ],
+    [ "EntityGlobalsEnumerator< TGlobal >", "struct_entity_globals_enumerator.html", null ],
     [ "EntityShadowInfo", "struct_entity_shadow_info.html", null ],
     [ "AbstractNPCShop.Entry", "interface_abstract_n_p_c_shop_1_1_entry.html", [
       [ "NPCShop.Entry", "class_n_p_c_shop_1_1_entry.html", null ]
@@ -618,7 +620,28 @@ var hierarchy =
     [ "GenShapeActionPair", "struct_gen_shape_action_pair.html", null ],
     [ "GenVars", "class_gen_vars.html", null ],
     [ "GetItemSettings", "struct_get_item_settings.html", null ],
+    [ "GlobalHookList< TGlobal >", "class_global_hook_list.html", null ],
+    [ "GlobalList< TGlobal >", "class_global_list.html", null ],
+    [ "GlobalLoaderUtils< TGlobal, TEntity >", "class_global_loader_utils.html", null ],
     [ "GlobalRecipe", "class_global_recipe.html", null ],
+    [ "GlobalType< Item, GlobalItem >", "class_global_type.html", [
+      [ "GlobalItem", "class_global_item.html", [
+        [ "UnloadedGlobalItem", "class_unloaded_global_item.html", null ]
+      ] ]
+    ] ],
+    [ "GlobalType< NPC, GlobalNPC >", "class_global_type.html", [
+      [ "GlobalNPC", "class_global_n_p_c.html", [
+        [ "PylonShopNPC", "class_pylon_shop_n_p_c.html", null ],
+        [ "UnloadedGlobalNPC", "class_unloaded_global_n_p_c.html", null ]
+      ] ]
+    ] ],
+    [ "GlobalType< Projectile, GlobalProjectile >", "class_global_type.html", [
+      [ "GlobalProjectile", "class_global_projectile.html", null ]
+    ] ],
+    [ "GlobalType< TGlobal >", "class_global_type.html", [
+      [ "GlobalType< TEntity, TGlobal >", "class_global_type.html", null ]
+    ] ],
+    [ "GlobalTypeLookups< TGlobal >", "class_global_type_lookups.html", null ],
     [ "GlowMaskID", "class_glow_mask_i_d.html", null ],
     [ "GolfBallTrackRecord", "class_golf_ball_track_record.html", null ],
     [ "GolfHelper", "class_golf_helper.html", null ],
@@ -1085,7 +1108,7 @@ var hierarchy =
       [ "EntitySource_WorldEvent", "class_entity_source___world_event.html", null ],
       [ "EntitySource_WorldGen", "class_entity_source___world_gen.html", null ]
     ] ],
-    [ "IEntityWithGlobals< T >", "interface_i_entity_with_globals.html", null ],
+    [ "IEntityWithGlobals< TGlobal >", "interface_i_entity_with_globals.html", null ],
     [ "IEntityWithGlobals< GlobalItem >", "interface_i_entity_with_globals.html", [
       [ "Item", "class_item.html", null ]
     ] ],
@@ -1201,23 +1224,6 @@ var hierarchy =
       [ "UIWorkshopWorldImport", "class_u_i_workshop_world_import.html", null ]
     ] ],
     [ "IIndexed", "interface_i_indexed.html", [
-      [ "GlobalType< Item, GlobalItem >", "class_global_type.html", [
-        [ "GlobalItem", "class_global_item.html", [
-          [ "UnloadedGlobalItem", "class_unloaded_global_item.html", null ]
-        ] ]
-      ] ],
-      [ "GlobalType< NPC, GlobalNPC >", "class_global_type.html", [
-        [ "GlobalNPC", "class_global_n_p_c.html", [
-          [ "PylonShopNPC", "class_pylon_shop_n_p_c.html", null ],
-          [ "UnloadedGlobalNPC", "class_unloaded_global_n_p_c.html", null ]
-        ] ]
-      ] ],
-      [ "GlobalType< Projectile, GlobalProjectile >", "class_global_type.html", [
-        [ "GlobalProjectile", "class_global_projectile.html", null ]
-      ] ],
-      [ "GlobalType< TEntity, TGlobal >", "class_global_type.html", [
-        [ "GlobalType< TEntity, TGlobal >", "class_global_type.html", null ]
-      ] ],
       [ "ModPlayer", "class_mod_player.html", [
         [ "ModAccessorySlotPlayer", "class_mod_accessory_slot_player.html", null ],
         [ "UnloadedPlayer", "class_unloaded_player.html", null ]
@@ -1302,9 +1308,6 @@ var hierarchy =
         ] ],
         [ "ModType< TEntity >", "class_mod_type.html", [
           [ "ModType< TEntity, TModType >", "class_mod_type.html", [
-            [ "GlobalType< Item, GlobalItem >", "class_global_type.html", null ],
-            [ "GlobalType< NPC, GlobalNPC >", "class_global_type.html", null ],
-            [ "GlobalType< Projectile, GlobalProjectile >", "class_global_type.html", null ],
             [ "TagSerializer< bool, byte >", "class_tag_serializer.html", [
               [ "BoolTagSerializer", "class_bool_tag_serializer.html", null ]
             ] ],
@@ -1534,11 +1537,6 @@ var hierarchy =
     [ "InGameNotificationsTracker", "class_in_game_notifications_tracker.html", null ],
     [ "IngameOptions", "class_ingame_options.html", null ],
     [ "InGamePopups", "class_in_game_popups.html", null ],
-    [ "Instanced< T >", "struct_instanced.html", null ],
-    [ "Instanced< GlobalItem >", "struct_instanced.html", null ],
-    [ "Instanced< GlobalNPC >", "struct_instanced.html", null ],
-    [ "Instanced< GlobalProjectile >", "struct_instanced.html", null ],
-    [ "HookList< T >.InstanceEnumerator< T >", "struct_hook_list_1_1_instance_enumerator.html", null ],
     [ "IntRange", "struct_int_range.html", null ],
     [ "InvasionID", "class_invasion_i_d.html", null ],
     [ "BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions", "class_bestiary_database_n_p_cs_populator_1_1_common_tags_1_1_spawn_conditions_1_1_invasions.html", null ],
