@@ -40,9 +40,9 @@ public abstract class ConfigElement : UIElement
 	// If non-null, the memberInfo actually referes to the collection containing this item and array and index need to be used to assign this data
 	protected IList List { get; set; }
 	// Attributes
-	protected LabelAttribute LabelAttribute;
+	protected LabelKeyAttribute LabelAttribute;
 	protected string Label;
-	protected TooltipAttribute TooltipAttribute;
+	protected TooltipKeyAttribute TooltipAttribute;
 	protected BackgroundColorAttribute BackgroundColorAttribute;
 	protected RangeAttribute RangeAttribute;
 	protected IncrementAttribute IncrementAttribute;
@@ -73,12 +73,12 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
+		LabelAttribute = ConfigManager.GetCustomAttribute<LabelKeyAttribute>(MemberInfo, Item, List);
 		Label = ConfigManager.GetLocalizedLabel(LabelAttribute, MemberInfo);
 		// TODO: Support interpolating value?
 		TextDisplayFunction = () => Label;
 
-		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(MemberInfo, Item, List);
+		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipKeyAttribute>(MemberInfo, Item, List);
 		string tooltip = ConfigManager.GetLocalizedTooltip(TooltipAttribute, MemberInfo);
 		if (tooltip != null) {
 			TooltipFunction = () => tooltip;

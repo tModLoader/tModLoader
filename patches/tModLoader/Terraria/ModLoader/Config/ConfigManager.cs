@@ -86,12 +86,20 @@ public static class ConfigManager
 					if (variable.IsProperty && variable.Name == "Mode")
 						continue;
 
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+#pragma warning disable CS0618
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute)) || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
 						continue;
+#pragma warning restore CS0618
 
 					try {
 						// TODO: throw error after updating hjson somehow, so auto keys are populated?
 						// TODO: Recursive? Find Label on members of Classes used?
+
+						// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
+#pragma warning disable CS0618 // Type or member is obsolete
+						var labelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+						var tooltipObsolete = (TooltipAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(TooltipAttribute));
+#pragma warning restore CS0618 // Type or member is obsolete
 
 						// Label and Tooltip will always exist. Header is optional, need to be used to exist.
 						var header = GetLocalizedHeader(variable, config, throwErrors: true);
@@ -101,14 +109,21 @@ public static class ConfigManager
 						}
 
 						string labelKey = GetLabelKey(variable, config, fallbackToClass: false, throwErrors: true);
-						Language.GetOrRegister(labelKey, () => Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
+						string labelValue = Regex.Replace(variable.Name, "([A-Z])", " $1").Trim();
+						if (labelObsolete != null)
+							labelValue = labelObsolete.LocalizationEntry;
+						Language.GetOrRegister(labelKey, () => labelValue);
 
 						string tooltipKey = GetTooltipKey(variable, config, fallbackToClass: false, throwErrors: true);
-						Language.GetOrRegister(tooltipKey, () => "");
+						string tooltipValue = "";
+						if (tooltipObsolete != null)
+							tooltipValue = tooltipObsolete.LocalizationEntry;
+						Language.GetOrRegister(tooltipKey, () => tooltipValue);
 					}
 					catch (ValueNotTranslationKeyException e) {
 						// TODO: Not necessarily the member, could be an attribute on the Type, but checking is messy
 						e.additional = $"The member '{variable.Name}' found in the ModConfig '{config.Name}' caused this exception.";
+						e.Data["mod"] = config.Mod.Name;
 						throw;
 					}
 				}
@@ -417,16 +432,16 @@ public static class ConfigManager
 
 	internal static string GetLabelKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
 	{
-		var label = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
+		var label = (LabelKeyAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelKeyAttribute));
 		if (label != null) {
 			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(LabelAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.");
 			return label.key;
 		}
-		label = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelAttribute));
+		label = (LabelKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelKeyAttribute));
 		if (label != null) {
 			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(LabelAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.");
 			if (fallbackToClass) // FinishSetup will catch errors on Label annotations on classes
 				return label.key;
 		}
@@ -436,7 +451,7 @@ public static class ConfigManager
 		return null;
 	}
 
-	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
+	internal static string GetLocalizedLabel(LabelKeyAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
 		var config = Interface.modConfig.pendingConfig;
 		var labelArgs = (LabelArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelArgsAttribute));
@@ -447,7 +462,7 @@ public static class ConfigManager
 				return FormatTextAttribute(labelKey, labelLocalization, labelArgs?.args);
 		}
 
-		var typeLabel = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelAttribute));
+		var typeLabel = (LabelKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelKeyAttribute));
 		if (typeLabel != null && Language.Exists(typeLabel.key)) {
 			string labelLocalization = Language.GetTextValue(typeLabel.key);
 			if (!string.IsNullOrEmpty(labelLocalization))
@@ -459,16 +474,16 @@ public static class ConfigManager
 
 	internal static string GetTooltipKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
 	{
-		var tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipAttribute));
+		var tooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipKeyAttribute));
 		if (tooltip != null) {
 			if (tooltip.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(TooltipAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(TooltipKeyAttribute)} only accepts localization keys for the 'key' parameter.");
 			return tooltip.key;
 		}
-		tooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
+		tooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipKeyAttribute));
 		if (tooltip != null) {
 			if (tooltip.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(TooltipAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(TooltipKeyAttribute)} only accepts localization keys for the 'key' parameter.");
 			if (fallbackToClass) // FinishSetup will catch errors on Tooltip annotations on classes
 				return tooltip.key;
 		}
@@ -478,7 +493,7 @@ public static class ConfigManager
 		return null;
 	}
 
-	internal static string GetLocalizedTooltip(TooltipAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
+	internal static string GetLocalizedTooltip(TooltipKeyAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
 	{
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> null
 		var config = Interface.modConfig.pendingConfig;
@@ -490,7 +505,7 @@ public static class ConfigManager
 				return FormatTextAttribute(tooltipKey, tooltipLocalization, tooltipArgs?.args);
 		}
 
-		var typeTooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
+		var typeTooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipKeyAttribute));
 		if (typeTooltip != null && Language.Exists(typeTooltip.key)) {
 			string tooltipLocalization = Language.GetTextValue(typeTooltip.key);
 			if (!string.IsNullOrEmpty(tooltipLocalization))
@@ -527,10 +542,10 @@ public static class ConfigManager
 	internal static string GetModConfigLabelKey(ModConfig config, bool throwErrors)
 	{
 		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
-		var label = (LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute));
+		var label = (LabelKeyAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelKeyAttribute));
 		if (label != null) {
 			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(LabelAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.");
 
 			labelKey = label.key;
 		}

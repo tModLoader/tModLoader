@@ -492,7 +492,7 @@ internal class UIModConfig : UIState
 			if (variable.IsProperty && variable.Name == "Mode")
 				continue;
 
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
 			HandleHeader(mainConfigList, ref top, ref order, variable);
@@ -772,7 +772,7 @@ internal class UIModConfig : UIState
 			//	_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
 
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 					continue;
 
 				HandleHeader(separateList, ref top, ref order, variable);

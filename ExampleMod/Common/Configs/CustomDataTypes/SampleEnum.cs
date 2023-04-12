@@ -8,9 +8,9 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 		Weird,
 		Odd,
 		// Enum members can be individually labeled as well
-		[Label("$Mods.ExampleMod.Configs.Common.SampleEnumLabels.Strange")]
+		[LabelKey("$Mods.ExampleMod.Configs.Common.SampleEnumLabels.Strange")]
 		Strange,
-		[Label("$Mods.ExampleMod.Configs.Common.SampleEnumLabels.Peculiar")]
+		[LabelKey("$Mods.ExampleMod.Configs.Common.SampleEnumLabels.Peculiar")]
 		Peculiar
 	}
 }

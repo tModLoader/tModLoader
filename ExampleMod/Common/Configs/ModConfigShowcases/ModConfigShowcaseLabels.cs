@@ -23,12 +23,12 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public float SomeFloat;
 
 		// Modders can pass in custom localization keys. This can be useful for reusing translations.
-		[Label("$Mods.ExampleMod.Configs.Common.LocalizedLabel")]
-		[Tooltip("$Mods.ExampleMod.Configs.Common.LocalizedTooltip")]
+		[LabelKey("$Mods.ExampleMod.Configs.Common.LocalizedLabel")]
+		[TooltipKey("$Mods.ExampleMod.Configs.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
 		// TODO: Not working. Code missing from ExampleMod.cs
-		[Label("$Mods.ExampleMod.Configs.Common.LocalizedLabelDynamic")]
+		[LabelKey("$Mods.ExampleMod.Configs.Common.LocalizedLabelDynamic")]
 		public int LocalizedLabelDynamic;
 
 		// These 2 examples showcase the power of interpolating values into the translations.
@@ -39,17 +39,17 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		const string InterpolatedLabel = "$Mods.ExampleMod.Configs.Common.InterpolatedLabel";
 		const string InterpolatedTooltip = "$Mods.ExampleMod.Configs.Common.InterpolatedTooltip";
 
-		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)] // Attributes can also be combined into a single line
+		[LabelKey(InterpolatedLabel), TooltipKey(InterpolatedTooltip)] // Attributes can also be combined into a single line
 		[LabelArgs("ExampleMod/ExampleYoyo", 1, "=>", "$Mods.ExampleMod.Items.ExampleYoyo.DisplayName")]
 		[TooltipArgs("$Mods.ExampleMod.Items.ExampleYoyo.DisplayName", "FF55AA", "22a2dd")]
 		public bool InterpolatedTextA;
 
-		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)]
+		[LabelKey(InterpolatedLabel), TooltipKey(InterpolatedTooltip)]
 		[LabelArgs("ExampleMod/ExampleSword", 2, "=>", "$Mods.ExampleMod.Items.ExampleSword.DisplayName")]
 		[TooltipArgs("$Mods.ExampleMod.Items.ExampleSword.DisplayName", "77bd8e", "88AADD")]
 		public bool InterpolatedTextB;
 
-		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)]
+		[LabelKey(InterpolatedLabel), TooltipKey(InterpolatedTooltip)]
 		[LabelArgs(ItemID.Meowmere, 3, "=>", $"$ItemName.{nameof(ItemID.Meowmere)}")]
 		[TooltipArgs($"$ItemName.{nameof(ItemID.Meowmere)}", "c441c6", "deeb55")]
 		public bool InterpolatedTextC;
