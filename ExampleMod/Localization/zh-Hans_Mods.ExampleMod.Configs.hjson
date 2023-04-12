@@ -97,6 +97,11 @@ ModConfigShowcaseAccessibility: {
 		// Label: Data2
 		// Tooltip: ""
 	}
+
+	IgnoreWithLabelGetter: {
+		// Label: Ignore With Label Getter
+		// Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDataTypes: {
