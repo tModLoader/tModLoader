@@ -24,13 +24,14 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	// For caching installed mods /////////////////////////
 	public WorkshopBrowserModule()
 	{
-		// @TODO: If both this and the browser lock on this to look for updates the order is NOT guaranteed so the browser could ask here and find stale data
 		ModOrganizer.OnLocalModsChanged += OnLocalModsChanged;
+		(this as SocialBrowserModule).GetInstalledModDownloadItems();
 	}
 
 	private void OnLocalModsChanged(HashSet<string> modSlugs)
 	{
 		InstalledItems = ModOrganizer.FindWorkshopMods();
+		CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
 	}
 
 	public IReadOnlyList<LocalMod> GetInstalledMods()
@@ -40,6 +41,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 		return InstalledItems;
 	}
+
+	public ModDownloadItem[] CachedInstalledModDownloadItems { get; set; }
 
 	public IReadOnlyList<LocalMod> InstalledItems { get; set; }
 

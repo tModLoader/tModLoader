@@ -55,8 +55,10 @@ public interface SocialBrowserModule
 	/////// Management of Local Install ///////////////////////////////////////////
 	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModPubId_t item);
 
-	public ModDownloadItem[] GetInstalledModDownloadItems()
-	{
+	// Needed for ensuring that the 'Update All' button works correctly. Without caching the mod browser locks out on the update all button
+	internal ModDownloadItem[] CachedInstalledModDownloadItems { get; set; }
+
+	public ModDownloadItem[] DirectQueryInstalledMDItems() {
 		var mods = GetInstalledMods();
 		var listIds = new List<ModPubId_t>();
 
@@ -66,6 +68,15 @@ public interface SocialBrowserModule
 		}
 
 		return DirectQueryItems(new QueryParameters { searchModIds = listIds.ToArray() });
+	}
+
+	public ModDownloadItem[] GetInstalledModDownloadItems()
+	{
+		if (CachedInstalledModDownloadItems == null) {
+			CachedInstalledModDownloadItems = DirectQueryInstalledMDItems();
+		}
+
+		return CachedInstalledModDownloadItems;
 	}
 
 	/////// Specialty Internal LocalMod related Methods ///////////////////////////////////////////
