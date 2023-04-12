@@ -181,7 +181,7 @@ public static class LocalizationLoader
 				string translationFileContents = streamReader.ReadToEnd();
 
 				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
-				if (changedFiles.Contains(modpath)) {
+				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
 					string path = Path.Combine(ModCompile.ModSourcePath, modpath);
 					if (File.Exists(path)) {
 						try {
@@ -426,8 +426,7 @@ public static class LocalizationLoader
 				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified) {
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
-
-					// TODO: Indicate on Mods/Mod Sources that localizations have updated maybe?
+					changedMods.Add(mod.Name);
 				}
 			}
 		}
@@ -683,8 +682,9 @@ public static class LocalizationLoader
 
 	private const int defaultWatcherCooldown = 60;
 	private static readonly Dictionary<Mod, FileSystemWatcher> localizationFileWatchers = new();
-	private static readonly HashSet<string> changedFiles = new();
-	private static readonly HashSet<string> pendingFiles = new();
+	private static readonly HashSet<(string Mod, string fileName)> changedFiles = new();
+	private static readonly HashSet<(string Mod, string fileName)> pendingFiles = new();
+	internal static readonly HashSet<string> changedMods = new();
 	private static int watcherCooldown;
 	private static void SetupFileWatchers()
 	{
@@ -739,8 +739,14 @@ public static class LocalizationLoader
 	{
 		watcherCooldown = defaultWatcherCooldown;
 		lock (pendingFiles) {
-			pendingFiles.Add(Path.Combine(modName, fileName));
+			pendingFiles.Add((modName, fileName));
 		}
+	}
+
+	internal static void HandleModBuilt(string modName)
+	{
+		changedMods.Remove(modName);
+		changedFiles.RemoveWhere(x => x.Mod == modName);
 	}
 
 	internal static void Update()
@@ -754,11 +760,12 @@ public static class LocalizationLoader
 			return;
 
 		lock (pendingFiles) {
-			string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", string.Join(", ", pendingFiles));
+			string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", string.Join(", ", pendingFiles.Select(x => Path.Join(x.Mod, x.fileName))));
 			Utils.LogAndChatAndConsoleInfoMessage(newText);
 		}
 
 		lock (pendingFiles) {
+			changedMods.UnionWith(pendingFiles.Select(x => x.Mod));
 			changedFiles.UnionWith(pendingFiles);
 			pendingFiles.Clear();
 		}

@@ -361,6 +361,8 @@
 		"MSBuildReloadAll": "生成并重新加载全部模组",
 		"MSUpgradeCSProj": "更新[.csproj]文件",
 		"MSUpgradeLangFiles": "升级 .lang 文件至 .hjson （您将不会丢失任何数据）",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "打开源码文件夹",
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",

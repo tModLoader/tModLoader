@@ -362,6 +362,8 @@
 		// "MSBuildReloadAll": "Build + Reload All",
 		// "MSUpgradeCSProj": "Upgrade .csproj file",
 		// "MSUpgradeLangFiles": "Upgrade .lang files to .hjson (non-destructive)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		// "MSOpenSources": "Open Sources",
 		// "MSManagePublished": "Manage Published",
 		// "MSPublish": "Publish",

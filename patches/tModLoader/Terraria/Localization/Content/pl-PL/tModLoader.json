@@ -360,6 +360,8 @@
 		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
 		"MSUpgradeCSProj": "Uaktualnij plik .csproj",
 		"MSUpgradeLangFiles": "Aktualizuj pliki .lang do .hjson (niedestrukcyjnie)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Otwórz pliki źródłowe",
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
