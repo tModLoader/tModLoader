@@ -40,17 +40,17 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		const string InterpolatedTooltip = "$Mods.ExampleMod.Configs.Common.InterpolatedTooltip";
 
 		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)] // Attributes can also be combined into a single line
-		[LabelArgs("ExampleMod/ExampleYoyo", 123, "=>", "$Mods.ExampleMod.Items.ExampleYoyo.DisplayName")]
+		[LabelArgs("ExampleMod/ExampleYoyo", 1, "=>", "$Mods.ExampleMod.Items.ExampleYoyo.DisplayName")]
 		[TooltipArgs("$Mods.ExampleMod.Items.ExampleYoyo.DisplayName", "FF55AA", "22a2dd")]
 		public bool InterpolatedTextA;
 
 		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)]
-		[LabelArgs("ExampleMod/ExampleSword", 456, "=>", "$Mods.ExampleMod.Items.ExampleSword.DisplayName")]
+		[LabelArgs("ExampleMod/ExampleSword", 2, "=>", "$Mods.ExampleMod.Items.ExampleSword.DisplayName")]
 		[TooltipArgs("$Mods.ExampleMod.Items.ExampleSword.DisplayName", "77bd8e", "88AADD")]
 		public bool InterpolatedTextB;
 
 		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)]
-		[LabelArgs(ItemID.Meowmere, 789, "=>", $"$ItemName.{nameof(ItemID.Meowmere)}")]
+		[LabelArgs(ItemID.Meowmere, 3, "=>", $"$ItemName.{nameof(ItemID.Meowmere)}")]
 		[TooltipArgs($"$ItemName.{nameof(ItemID.Meowmere)}", "c441c6", "deeb55")]
 		public bool InterpolatedTextC;
 

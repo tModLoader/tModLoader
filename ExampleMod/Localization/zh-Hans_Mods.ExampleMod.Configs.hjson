@@ -30,7 +30,7 @@ Common: {
 
 	// SubConfigExample.SubB.Label: Even More Sub
 	// LocalizedLabelDynamic: Localized Label Dynamic
-	// InterpolatedLabel: Item: [i:{0}]. Number: {1}. Text: {2}. Localized Text: {3}.
+	// InterpolatedLabel: Item: [i:{0}]. Number: {1} {^1:change;changes}. Text: {2}. Localized Text: {3}.
 	// InterpolatedTooltip: "[c/{1}:Use to disable the] [c/{2}:{0}] [c/{1}:feature]"
 }
 
