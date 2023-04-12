@@ -313,6 +313,11 @@ ModConfigShowcaseLabels: {
 		HeaderIdentifier: Headers Section
 		ChatTagExample: "[i:19][c/00FF00:Green Text][i:ExampleMod/ExampleItem]"
 	}
+
+	StringFormatting: {
+		Label: Percent: {0:p2}, Num: {1:N0}, Pad: {2,4:D4}, Percision: {3:0.000}
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseMisc: {

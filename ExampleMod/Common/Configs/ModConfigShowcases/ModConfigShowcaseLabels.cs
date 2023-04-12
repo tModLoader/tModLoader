@@ -31,8 +31,8 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[LabelKey("$Mods.ExampleMod.Configs.Common.LocalizedLabelDynamic")]
 		public int LocalizedLabelDynamic;
 
-		// These 2 examples showcase the power of interpolating values into the translations.
-		// Note how both are using the same label key, but are interpolating different values into the label translation, resulting in different text. The same is done for tooltips.
+		// These 3 examples showcase the power of interpolating values into the translations.
+		// Note how all 3 are using the same label key, but are interpolating different values into the label translation, resulting in different text. The same is done for tooltips.
 		// Use this approach to reduce unnecessary duplication of text.
 		// Note: using nameof can help avoid typos and errors. That would look like: $"$Mods.ExampleMod.Items.{nameof(ExampleYoyo)}.DisplayName"
 		// Note: These examples use color and item chat tags. See here for help on using Tags: https://terraria.wiki.gg/wiki/Chat#Tags
@@ -53,6 +53,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[LabelArgs(ItemID.Meowmere, 3, "=>", $"$ItemName.{nameof(ItemID.Meowmere)}")]
 		[TooltipArgs($"$ItemName.{nameof(ItemID.Meowmere)}", "c441c6", "deeb55")]
 		public bool InterpolatedTextC;
+
+		// This example shows advanced capabilities of string formatting. Values can be formatted to appear as percentages, with launguage appropriate thousandths separators, and with specific padding or precision.
+		// The c# documentaion has more information: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
+		[LabelArgs(.15753f, 1234567890, 12, 1.77777f)]
+		public bool StringFormatting;
 
 		// The color of the config entry can be customized. R, G, B
 		[BackgroundColor(255, 0, 255)]
