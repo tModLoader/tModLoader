@@ -23,8 +23,15 @@ public class UIAsyncList : UIList
 	public UIAsyncList() : base()
 	{
 		ManualSortMethod = (l) => { };
+
+		/*
+		_endItem = new UIText(GetEndItemTextForState(_lastState, _provider.Count <= 0)) {
+			HAlign = 0.5f
+		}.WithPadding(15f);
+		*/
 	}
 
+	// @NOTE: Doesn't get called? when CheckIfAnyModUpdateIsAvailable is called ???
 	public override void OnInitialize()
 	{
 		base.OnInitialize();
@@ -32,6 +39,7 @@ public class UIAsyncList : UIList
 		_endItem = new UIText(GetEndItemTextForState(_lastState, _provider.Count <= 0)) {
 			HAlign = 0.5f
 		}.WithPadding(15f);
+		Add(_endItem);
 	}
 
 	public void SetProvider(IAsyncProvider<UIElement> provider)
@@ -73,6 +81,8 @@ public class UIAsyncList : UIList
 
 	public override void Update(GameTime gameTime)
 	{
+		// @WARN: Gets called before Initialize?
+
 		base.Update(gameTime);
 
 		var _tmpState = AsyncProvider.State.Aborted;

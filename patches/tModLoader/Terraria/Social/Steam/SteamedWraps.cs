@@ -26,6 +26,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	// For caching installed mods /////////////////////////
 	public WorkshopBrowserModule()
 	{
+		// @TODO: If both this and the browser lock on this to look for updates the order is NOT guaranteed so the browser could ask here and find stale data
 		ModOrganizer.OnLocalModsChanged += OnLocalModsChanged;
 	}
 

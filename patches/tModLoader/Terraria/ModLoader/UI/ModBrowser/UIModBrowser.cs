@@ -23,6 +23,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	private class AP_UIModDowloadItem : AsyncProvider<UIModDownloadItem>
 	{
+		private static object GlobalThreadLock = new();
+
 		private SocialBrowserModule SocialBackend;
 		private QueryParameters QParams;
 		public AP_UIModDowloadItem(SocialBrowserModule socialBackend, QueryParameters qparams) : base()
@@ -37,10 +39,13 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			await foreach (var item in SocialBackend.QueryBrowser(QParams).WithCancellation(token)) {
 				if (item is null) {
 					error = true; // Save the error, but let the enumerator finish
-				} else {
+				}
+				else {
+					var uiItem = new UIModDownloadItem(item);
+					// @TODO: NO CONSTRUCTOR SHOULD BE LOCKING!!! make this a method returning a Task so it can be awaited or
+					// run async so that it's clear it can stop execution and break lock instructions
+					uiItem.UpdateInstallInfo(new ModDownloadItemInstallInfo(uiItem.ModDownload));
 					lock (_Data) { // @TODO: lock in batches?
-						var uiItem = new UIModDownloadItem(item);
-						uiItem.UpdateInstallInfo(new ModDownloadItemInstallInfo(uiItem.ModDownload));
 						_Data.Add(uiItem);
 						HasNewData = true;
 					}
