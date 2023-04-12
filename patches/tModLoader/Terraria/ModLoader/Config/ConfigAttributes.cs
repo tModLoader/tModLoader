@@ -46,7 +46,8 @@ public class ReloadRequiredAttribute : Attribute
 /// The provided localization key must start with "$". <br/>
 /// Without this attribute, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Label" will be assumed for members of ModConfig classes. <br/>
 /// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, otherwise they will appear as the member name directly. <br/>
-/// If the translation value of a property or field that is an object is an empty string, the label of the class will be used instead.
+/// If the translation value of a property or field that is an object is an empty string, the label of the class will be used instead. <br/>
+/// Values can be interpolated into the resulting label text using <see cref="LabelArgsAttribute"/>. <br/>
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 public class LabelAttribute : Attribute
@@ -67,13 +68,32 @@ public class LabelAttribute : Attribute
 }
 
 /// <summary>
+/// Use to provide values to be interpolated into the label of the annotated property or field.<br/>
+/// string arguments starting with "$" are interpreted as localization keys.<br/>
+/// Interpolating values can be useful for reusing common labels to keep localization files clean and organized.<br/>
+/// For example, if a mod provides toggles for several features, a common label could be used for each with only the provided value being different.<br/>
+/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">string formatting section of the Localization wiki page</see> explains this concept further.<br/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class LabelArgsAttribute : Attribute
+{
+	internal readonly object[] args;
+
+	public LabelArgsAttribute(params object[] args)
+	{
+		this.args = args;
+	}
+}
+
+/// <summary>
 /// A tooltip is the text shown to the user in the ModConfig UI next to the cursor when they hover over the annotated member (property, field, or class). This can be longer and more descriptive than the Label. <br/>
 /// This attribute sets a custom localization key for the tooltip of the annotated property, field, or class. <br/>
 /// The provided localization key must start with "$". <br/>
 /// Without this attribute, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Tooltip" will be assumed for members of ModConfig classes. <br/>
 /// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, no localization key is assumed.
 /// If the translation value of a property or field that is an object is an empty string, the tooltip of the class will be used instead.
-/// Passing in just "$" will result in no tooltip entry being added to the localization files.
+/// Passing in just "$" will result in no tooltip entry being added to the localization files.<br/>
+/// Values can be interpolated into the resulting label text using <see cref="TooltipArgsAttribute"/>. <br/>
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 public class TooltipAttribute : Attribute
@@ -90,6 +110,24 @@ public class TooltipAttribute : Attribute
 		else {
 			this.key = key.Substring(1);
 		}
+	}
+}
+
+/// <summary>
+/// Use to provide values to be interpolated into the tooltip of the annotated property or field.<br/>
+/// string arguments starting with "$" are interpreted as localization keys.<br/>
+/// Interpolating values can be useful for reusing common tooltips to keep localization files clean and organized.<br/>
+/// For example, if a mod provides toggles for several features, a common tooltip could be used for each with only the provided value being different.<br/>
+/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">string formatting section of the Localization wiki page</see> explains this concept further.<br/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class TooltipArgsAttribute : Attribute
+{
+	internal readonly object[] args;
+
+	public TooltipArgsAttribute(params object[] args)
+	{
+		this.args = args;
 	}
 }
 

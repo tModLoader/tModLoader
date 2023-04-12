@@ -403,6 +403,18 @@ public static class ConfigManager
 		return !hasNextA && !hasNextB;
 	}
 
+	internal static string FormatTextAttribute(string key, string localization, object[] args)
+	{
+		// TODO: support FindKeyInScope-type key shortening? 
+		if (args == null)
+			return localization;
+		for (int i = 0; i < args.Length; i++) {
+			if (args[i] is string s && s.StartsWith("$"))
+				args[i] = Language.GetTextValue(s.Substring(1));
+		}
+		return Language.GetText(key).Format(args);
+	}
+
 	internal static string GetLabelKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
 	{
 		var label = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelAttribute));
@@ -427,18 +439,19 @@ public static class ConfigManager
 	internal static string GetLocalizedLabel(LabelAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
 		var config = Interface.modConfig.pendingConfig;
+		var labelArgs = (LabelArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelArgsAttribute));
 		string labelKey = GetLabelKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
 		if (labelKey != null && Language.Exists(labelKey)) {
 			string labelLocalization = Language.GetTextValue(labelKey);
 			if (!string.IsNullOrEmpty(labelLocalization))
-				return labelLocalization;
+				return FormatTextAttribute(labelKey, labelLocalization, labelArgs?.args);
 		}
 
 		var typeLabel = (LabelAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelAttribute));
 		if (typeLabel != null && Language.Exists(typeLabel.key)) {
 			string labelLocalization = Language.GetTextValue(typeLabel.key);
 			if (!string.IsNullOrEmpty(labelLocalization))
-				return labelLocalization;
+				return FormatTextAttribute(typeLabel.key, labelLocalization, labelArgs?.args);
 		}
 
 		return memberInfo.Name;
@@ -469,18 +482,19 @@ public static class ConfigManager
 	{
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> null
 		var config = Interface.modConfig.pendingConfig;
+		var tooltipArgs = (TooltipArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipArgsAttribute));
 		string tooltipKey = GetTooltipKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
 		if (tooltipKey != null && Language.Exists(tooltipKey)) {
 			string tooltipLocalization = Language.GetTextValue(tooltipKey);
 			if (!string.IsNullOrEmpty(tooltipLocalization))
-				return tooltipLocalization;
+				return FormatTextAttribute(tooltipKey, tooltipLocalization, tooltipArgs?.args);
 		}
 
 		var typeTooltip = (TooltipAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipAttribute));
 		if (typeTooltip != null && Language.Exists(typeTooltip.key)) {
 			string tooltipLocalization = Language.GetTextValue(typeTooltip.key);
 			if (!string.IsNullOrEmpty(tooltipLocalization))
-				return tooltipLocalization;
+				return FormatTextAttribute(typeTooltip.key, tooltipLocalization, tooltipArgs?.args);
 		}
 
 		return null;

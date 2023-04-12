@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Terraria.ModLoader.Config;
 using ExampleMod.Common.Configs.CustomDataTypes;
+using Terraria.ID;
 
 // This file contains fake ModConfig class that showcase making config fields more readable
 // with use of labels, headers and tooltips.
@@ -30,9 +31,33 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[Label("$Mods.ExampleMod.Configs.Common.LocalizedLabelDynamic")]
 		public int LocalizedLabelDynamic;
 
+		// These 2 examples showcase the power of interpolating values into the translations.
+		// Note how both are using the same label key, but are interpolating different values into the label translation, resulting in different text. The same is done for tooltips.
+		// Use this approach to reduce unnecessary duplication of text.
+		// Note: using nameof can help avoid typos and errors. That would look like: $"$Mods.ExampleMod.Items.{nameof(ExampleYoyo)}.DisplayName"
+		// Note: These examples use color and item chat tags. See here for help on using Tags: https://terraria.wiki.gg/wiki/Chat#Tags
+		const string InterpolatedLabel = "$Mods.ExampleMod.Configs.Common.InterpolatedLabel";
+		const string InterpolatedTooltip = "$Mods.ExampleMod.Configs.Common.InterpolatedTooltip";
+
+		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)] // Attributes can also be combined into a single line
+		[LabelArgs("ExampleMod/ExampleYoyo", 123, "=>", "$Mods.ExampleMod.Items.ExampleYoyo.DisplayName")]
+		[TooltipArgs("$Mods.ExampleMod.Items.ExampleYoyo.DisplayName", "FF55AA", "22a2dd")]
+		public bool InterpolatedTextA;
+
+		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)]
+		[LabelArgs("ExampleMod/ExampleSword", 456, "=>", "$Mods.ExampleMod.Items.ExampleSword.DisplayName")]
+		[TooltipArgs("$Mods.ExampleMod.Items.ExampleSword.DisplayName", "77bd8e", "88AADD")]
+		public bool InterpolatedTextB;
+
+		[Label(InterpolatedLabel), Tooltip(InterpolatedTooltip)]
+		[LabelArgs(ItemID.Meowmere, 789, "=>", $"$ItemName.{nameof(ItemID.Meowmere)}")]
+		[TooltipArgs($"$ItemName.{nameof(ItemID.Meowmere)}", "c441c6", "deeb55")]
+		public bool InterpolatedTextC;
+
 		// The color of the config entry can be customized. R, G, B
 		[BackgroundColor(255, 0, 255)]
-		// The corresponding tooltip translation for this entry is empty, so the tooltip shown will be from the Pair class.  
+		// The corresponding tooltip translation for this entry is empty, so the tooltip shown will be from the Pair class.
+		// If the Pair class tooltip had entries for arguments, we could use [TooltipArgs] here to customize it.
 		public Pair pairExample = new Pair();
 
 		// List elements also inherit BackgroundColor

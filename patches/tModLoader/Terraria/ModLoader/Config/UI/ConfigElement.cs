@@ -75,6 +75,7 @@ public abstract class ConfigElement : UIElement
 	{
 		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
 		Label = ConfigManager.GetLocalizedLabel(LabelAttribute, MemberInfo);
+		// TODO: Support interpolating value?
 		TextDisplayFunction = () => Label;
 
 		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(MemberInfo, Item, List);
@@ -139,6 +140,7 @@ public abstract class ConfigElement : UIElement
 		if (DrawLabel) {
 			position.X += 8f;
 			position.Y += 8f;
+			// TODO: Support chat tag hover?
 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 		}
 
