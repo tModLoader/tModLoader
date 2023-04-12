@@ -183,13 +183,6 @@ public partial class WorkshopHelper
 		/////// Workshop Special Statics ////////////////////
 
 		internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
-		internal static int IncompleteModCount;
-		internal static int HiddenModCount;
-		internal static uint TotalItemsQueried;
-
-		/////// Used for making code hear easier on common calls ////////////////////
-		internal static List<ModDownloadItem> Items => WorkshopBrowserModule.Instance.Items;
-		internal static IReadOnlyList<LocalMod> InstalledMods => WorkshopBrowserModule.Instance.InstalledItems;
 
 
 		/////// Used for Publishing ////////////////////
@@ -219,10 +212,6 @@ public partial class WorkshopHelper
 		// Yield returns null if an error happens and the result is cut short
 		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token)
 		{
-			HiddenModCount = IncompleteModCount = 0;
-			TotalItemsQueried = 0;
-			Items.Clear();
-
 			if (!SteamedWraps.SteamAvailable) {
 				if (!SteamedWraps.TryInitViaGameServer()) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
@@ -239,7 +228,7 @@ public partial class WorkshopHelper
 
 			await foreach (var item in queryHandle.QueryAllWorkshopItems(token)) {
 				if (item is not null)
-					Items.Add(item);
+					queryHandle.Items.Add(item);
 				yield return item;
 			}
 		}
@@ -255,6 +244,14 @@ public partial class WorkshopHelper
 			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
 			internal QueryParameters queryParameters;
+
+			internal int IncompleteModCount;
+			internal int HiddenModCount;
+			internal uint TotalItemsQueried;
+
+			/////// Used for making code hear easier on common calls ////////////////////
+			internal List<ModDownloadItem> Items = new List<ModDownloadItem>();
+			internal IReadOnlyList<LocalMod> InstalledMods => WorkshopBrowserModule.Instance.InstalledItems;
 
 			/////// Query basic implemenatation ////////////////////
 

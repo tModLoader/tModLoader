@@ -270,7 +270,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		base.OnActivate();
 		Main.clrInput();
-		ModOrganizer.OnLocalModsChanged += CbLocalModsChanged;
+		ModOrganizer.PostLocalModsChanged += CbLocalModsChanged;
 		if (_provider is null) { // @TODO: Will search and stuff remain in the state???
 			PopulateModBrowser();
 		}
@@ -290,7 +290,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public override void OnDeactivate()
 	{
-		ModOrganizer.OnLocalModsChanged -= CbLocalModsChanged;
+		ModOrganizer.PostLocalModsChanged -= CbLocalModsChanged;
 		base.OnDeactivate();
 	}
 

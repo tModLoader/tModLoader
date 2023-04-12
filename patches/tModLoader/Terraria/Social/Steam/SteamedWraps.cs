@@ -21,8 +21,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	private PublishedFileId_t GetId(ModPubId_t modId) => new PublishedFileId_t(ulong.Parse(modId.m_ModPubId));
 
-	public List<ModDownloadItem> Items { get; set; } = new List<ModDownloadItem>();
-
 	// For caching installed mods /////////////////////////
 	public WorkshopBrowserModule()
 	{
@@ -93,11 +91,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
 			yield return item;
 		}
-
-		// @TODO: SHOULD ALWAYS AVOID SIDE EFFECTS OF ENUMERABLES! (this is left only until `Items` refs completely disappear
-		Items = WorkshopHelper.QueryHelper.Items.ToList(); // @TODO: Copy?
-
-		InstalledItems = null;
 	}
 
 	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)

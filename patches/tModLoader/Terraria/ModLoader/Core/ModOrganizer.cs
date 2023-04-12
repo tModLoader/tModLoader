@@ -22,11 +22,13 @@ internal static class ModOrganizer
 {
 
 	// Used in Mod Browser for tracking changes
-	internal delegate void OnLocalModsChangedDelegate(HashSet<string> modSlugs);
-	internal static event OnLocalModsChangedDelegate OnLocalModsChanged;
+	internal delegate void LocalModsChangedDelegate(HashSet<string> modSlugs);
+	internal static event LocalModsChangedDelegate OnLocalModsChanged;
+	internal static event LocalModsChangedDelegate PostLocalModsChanged;
 	internal static void LocalModsChanged(HashSet<string> modSlugs)
 	{
-		ModOrganizer.OnLocalModsChanged?.Invoke(modSlugs);
+		OnLocalModsChanged?.Invoke(modSlugs);
+		PostLocalModsChanged?.Invoke(modSlugs);
 	}
 
 	internal static string modPath = Path.Combine(Main.SavePath, "Mods");
