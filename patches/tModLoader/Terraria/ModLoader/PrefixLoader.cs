@@ -90,7 +90,7 @@ public static class PrefixLoader
 			if (modPrefix.Category is PrefixCategory.Custom)
 				return true;
 
-			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || itemCategory == PrefixCategory.AnyWeapon && IsWeaponSubCategory(modPrefix.Category));
+			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || itemCategory == PrefixCategory.AnyWeapon && IsWeaponSubCategory(modPrefix.Category) || modPrefix.Category == PrefixCategory.AnyWeapon && IsWeaponSubCategory(itemCategory));
 		}
 
 		if (item.GetPrefixCategory() is PrefixCategory category) {
