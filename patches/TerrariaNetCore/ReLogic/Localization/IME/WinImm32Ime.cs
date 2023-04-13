@@ -166,13 +166,13 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public bool PreFilterMessage(ref Message message)
 	{
-		if (message.msg == 8) {
+		if (message.msg == Msg.WM_KILLFOCUS) {
 			SetEnabled(bEnable: false);
 			_isFocused = false;
 			return true;
 		}
 
-		if (message.msg == 7) {
+		if (message.msg == Msg.WM_SETFOCUS) {
 			if (base.IsEnabled)
 				SetEnabled(bEnable: true);
 
@@ -181,7 +181,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		}
 
 		// Hides the system IME. Should always be called on application startup.
-		if (message.msg == 641) {
+		if (message.msg == Msg.WM_IME_SETCONTEXT) {
 			message.lParam = IntPtr.Zero;
 			return false;
 		}
@@ -190,19 +190,16 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			return false;
 
 		switch (message.msg) {
-			case 81:
+			case Msg.WM_INPUTLANGCHANGE:
 				return true;
-			case 641:
-				message.lParam = IntPtr.Zero;
-				break;
-			case 269:
+			case Msg.WM_IME_STARTCOMPOSITION:
 				return true;
-			case 642:
+			case Msg.WM_IME_NOTIFY:
 				return true;
-			case 258:
+			case Msg.WM_CHAR:
 				OnKeyPress((char)message.wParam.ToInt32());
 				break;
-			case 256:
+			case Msg.WM_KEYDOWN:
 				// System key events should always be ignored whenever the IME is active
 				/*
 				if (!ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_ShouldIgnoreHotKey(ref message))
