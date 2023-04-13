@@ -8,7 +8,7 @@
  
  namespace ReLogic.OS.Windows;
  
-@@ -19,9 +_,15 @@
+@@ -19,10 +_,16 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
@@ -22,6 +22,8 @@
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);
 -
- 		RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
+-		RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++		RegisterService((IImeService)new WinImm32Ime(_wndProcHook, windowHandle));
  	}
  
+ 	protected override void Dispose(bool disposing)

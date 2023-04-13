@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ReLogic.Localization.IME.Windows;
+namespace ReLogic.Localization.IME.WinImm32;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct CandidateList
