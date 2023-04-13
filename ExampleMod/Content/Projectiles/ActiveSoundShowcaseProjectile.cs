@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Projectiles
 	/// <summary>
 	/// Showcases ActiveSounds. The various styles when studied in order serve to teach important concepts, please experiment with them in-game.
 	/// Do note that the earlier examples aren't useful to copy, if you are just looking for an example to copy, consult SoundUpdateCallbackApproach and LoopedSound, as they are the most suitable examples.
+	/// This example serves as a companion to the Active Sounds section of the Sounds wiki page, please study them both together: https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds#active-sounds
 	/// </summary>
 	public class ActiveSoundShowcaseProjectile : ModProjectile
 	{
