@@ -579,7 +579,7 @@ Mods: {
 
 			ExampleCloneWeapon: {
 				DisplayName: Meowmere V2
-				Tooltip: ""
+				Tooltip: Similar to {$ItemName.Meowmere} [i:Meowmere]
 			}
 
 			ExampleCustomAmmoGun: {
