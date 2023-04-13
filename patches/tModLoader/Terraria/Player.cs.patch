@@ -620,6 +620,19 @@
  	public Item honeyCombItem;
  	public int wireOperationsCooldown;
  	public int lastChest;
+@@ -1458,6 +_,12 @@
+ 	public int cMinion;
+ 	public int cLeinShampoo;
+ 	public int cFlameWaker;
++	/// <summary>
++	/// Provides efficient access to the number of projectiles of the specified type owned by this player currently active in the game world.<br/>
++	/// Can be used to prevent spawning additional projectiles when a limit is reached.<br/>
++	/// Updated each game update right before Player.UpdateBuffs.<br/>
++	/// For example, <c>return player.ownedProjectileCounts[Item.shoot] &lt; 1;</c> in <see cref="ModItem.CanUseItem"/> could prevent a player using the item if the projectile the item spawns is already in the game world for the player.
++	/// </summary>
+ 	public int[] ownedProjectileCounts = new int[ProjectileID.Count];
+ 	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
+ 	public int lastPortalColorIndex;
 @@ -1507,7 +_,7 @@
  	private int[] unlitTorchY = new int[maxTorchAttacks];
  	private static int[] _torchAttackPosX = new int[400];
@@ -1790,6 +1803,21 @@
  		}
  
  		UpdateHungerBuffs();
+@@ -8925,6 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// A helper method that handles code common to pet buffs. Can be used during the buff update code.<br/>
++	/// Sets the buff time to the value and spawns the corresponding pet projectile for the player if not yet spawned.<br/>
++	/// </summary>
++	/// <param name="buffIndex"></param>
++	/// <param name="petBool"></param>
++	/// <param name="petProjID"></param>
++	/// <param name="buffTimeToGive"></param>
+ 	public void BuffHandle_SpawnPetIfNeededAndSetTime(int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive = 18000)
+ 	{
+ 		buffTime[buffIndex] = buffTimeToGive;
 @@ -9226,23 +_,26 @@
  		accStopwatch = false;
  		accOreFinder = false;
