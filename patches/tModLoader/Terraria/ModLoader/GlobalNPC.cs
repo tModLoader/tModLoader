@@ -33,13 +33,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
-	/// Allows you to set the properties of any and every NPC that gets created.
-	/// </summary>
-	public virtual void SetDefaults(NPC npc)
-	{
-	}
-
-	/// <summary>
 	/// Gets called when any NPC spawns in world
 	/// </summary>
 	public virtual void OnSpawn(NPC npc, IEntitySource source)
