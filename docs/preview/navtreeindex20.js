@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a":[3,0,365,21],
+"struct_fishing_attempt.html#aed7f28b54ca72c9a95a001b21a5cbb83":[3,0,365,17],
 "struct_fishing_attempt.html#af1057cc2e35a526b1d588cd3c9a08f28":[3,0,365,5],
 "struct_fishing_attempt.html#af584ab58562bb81fffbb2689f8bd0b14":[3,0,365,2],
 "struct_fishing_attempt.html#afd71021b28ef076b070f2935b9b33fcd":[3,0,365,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "struct_tile_resting_info.html#a9908d68eac37dd52ff808ba5838f9be2":[3,0,1200,0],
 "struct_tile_resting_info.html#ad173a06f5544ace90a5a1d3791321287":[3,0,1200,2],
 "struct_tile_resting_info.html#ada30d8bdeb7ed59797958a2368df7e76":[3,0,1200,5],
-"struct_tile_type_data.html":[3,0,1202],
-"struct_tile_wall_brightness_invisibility_data.html":[3,0,1203],
-"struct_tile_wall_wire_state_data.html":[3,0,1204]
+"struct_tile_type_data.html":[3,0,1202]
 };

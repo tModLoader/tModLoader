@@ -1019,6 +1019,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>shootSpeed</b></td><
 int?&#160;</td><td class="memItemRight" valign="bottom"><b>shopCustomPrice</b></td></tr>
 <tr class="memdesc:ac60bb6a29b6e60906e67472d6da06a4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If not <code>null</code>, the custom value of the given item when being bought from a shop.<br  />
  Used for assigning a non-default price to an item in shops.<br  />
+ Can be used with <a class="el" href="class_item.html#a20d6efe0a3c858d2f9e7a5c9e8316a77" title="The numerical ID of the special currency this item is bought using.  To make an item bought using Def...">shopSpecialCurrency</a> to assign a price in terms of a custom currency instead of coins.<br  />
  To get the raw price of an item, use GetStoreValue.<br  />
  To get the price of an item after discounts, use Player.GetItemExpectedPrice.<br  />
  Defaults to <code>null</code>.<br  />
@@ -1029,6 +1030,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>shopSpecialCurrency</b
 <tr class="memdesc:a20d6efe0a3c858d2f9e7a5c9e8316a77"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical ID of the special currency this item is bought using.<br  />
  To make an item bought using Defender Medals, set this to CustomCurrencyID.DefenderMedals.<br  />
  See ExampleCustomCurrencyIdfor an example of creating and using a custom currency.<br  />
+ Must be used with <a class="el" href="class_item.html#ac60bb6a29b6e60906e67472d6da06a4a" title="If not null, the custom value of the given item when being bought from a shop.  Used for assigning a ...">shopCustomPrice</a> assigning the price in terms of this custom currency.<br  />
  Defaults to -1, which means an item is bought using coins.<br  />
  <br /></td></tr>
 <tr class="separator:a20d6efe0a3c858d2f9e7a5c9e8316a77"><td class="memSeparator" colspan="2">&#160;</td></tr>

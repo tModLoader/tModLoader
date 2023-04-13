@@ -20,6 +20,7 @@ var searchData=
   ['overridecolor_17',['OverrideColor',['../class_tooltip_line.html#adc6a212a9b0baa54b2e0c4be7fdf6f1a',1,'TooltipLine']]],
   ['overridehelmet_18',['OverrideHelmet',['../class_armor_i_ds_1_1_face_1_1_sets.html#a9351883d09292f0e0bd384990ae6acbb',1,'ArmorIDs::Face::Sets']]],
   ['overrideslegs_19',['OverridesLegs',['../class_armor_i_ds_1_1_legs_1_1_sets.html#a14ffb01de00e6b93beaec2a16964d443',1,'ArmorIDs.Legs.Sets.OverridesLegs()'],['../class_armor_i_ds_1_1_shoe_1_1_sets.html#a711b67685a8cf77864753da8a2dbef30',1,'ArmorIDs.Shoe.Sets.OverridesLegs()']]],
-  ['owner_20',['owner',['../class_projectile.html#aab5b090f7428f4d974921a807149e991',1,'Projectile']]],
-  ['ownerhitcheck_21',['ownerHitCheck',['../class_projectile.html#a5ffe8b63be7cd588f1fc8782a46e99de',1,'Projectile']]]
+  ['ownedprojectilecounts_20',['ownedProjectileCounts',['../class_player.html#a0c756f83a2e3b6e39904eda03030b15f',1,'Player']]],
+  ['owner_21',['owner',['../class_projectile.html#aab5b090f7428f4d974921a807149e991',1,'Projectile']]],
+  ['ownerhitcheck_22',['ownerHitCheck',['../class_projectile.html#a5ffe8b63be7cd588f1fc8782a46e99de',1,'Projectile']]]
 ];

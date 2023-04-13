@@ -61,14 +61,14 @@ var NAVTREEINDEX =
 "class_mod_surface_background_style.html#a598c707661cc1f355731b04aa8d27bfd",
 "class_mount_loader.html#a6cd4f40ce5f6e9546a9c9d43712037c9",
 "class_n_p_c_head_renderer.html",
-"class_player.html#aa5747bc3c4c71944001372293befb3fd",
-"class_proj_a_i_style_i_d.html#a2637eb4667357d5ae98ceedfdfe484b3",
-"class_property_field_wrapper.html",
-"class_t_e_food_platter.html#acd418790b6b07d4219772b5f147b39d4",
-"class_u_i_reports_page.html",
-"functions_prop_i.html",
-"struct_fishing_attempt.html#af1057cc2e35a526b1d588cd3c9a08f28",
-"struct_tile_wall_wire_state_data.html#ae0fdd5e3b49fce6c8fd2847921190288"
+"class_player.html#aa509186d7b2da460b0a755f08c8ea2d9",
+"class_proj_a_i_style_i_d.html#a236e78d2894201fbd144591c5068060e",
+"class_projectile_loader.html#ad6d96262b1eb9b2239eed15529e085b2",
+"class_t_e_food_platter.html#a78537f71602513a8949b03c9239c06be",
+"class_u_i_particle_layer.html",
+"functions_prop_g.html",
+"struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a",
+"struct_tile_wall_brightness_invisibility_data.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

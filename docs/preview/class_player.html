@@ -251,8 +251,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>BrainOfConfusionDodge
 <tr class="memitem:af1116e31d76b0519fa277e43687f5fad"><td class="memItemLeft" align="right" valign="top"><a id="af1116e31d76b0519fa277e43687f5fad" name="af1116e31d76b0519fa277e43687f5fad"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>BuffHandle_SpawnPetIfNeeded</b> (ref bool petBool, int petProjID, int buffIndex)</td></tr>
 <tr class="separator:af1116e31d76b0519fa277e43687f5fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82d74f402f08d852ee0a22e813ff74b"><td class="memItemLeft" align="right" valign="top"><a id="ab82d74f402f08d852ee0a22e813ff74b" name="ab82d74f402f08d852ee0a22e813ff74b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BuffHandle_SpawnPetIfNeededAndSetTime</b> (int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive=18000)</td></tr>
+<tr class="memitem:ab82d74f402f08d852ee0a22e813ff74b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ab82d74f402f08d852ee0a22e813ff74b">BuffHandle_SpawnPetIfNeededAndSetTime</a> (int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive=18000)</td></tr>
+<tr class="memdesc:ab82d74f402f08d852ee0a22e813ff74b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that handles code common to pet buffs. Can be used during the buff update code.<br  />
+ Sets the buff time to the value and spawns the corresponding pet projectile for the player if not yet spawned.<br  />
+  <a href="class_player.html#ab82d74f402f08d852ee0a22e813ff74b">More...</a><br /></td></tr>
 <tr class="separator:ab82d74f402f08d852ee0a22e813ff74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a799f662fe42d4adb193a66bed79f3b47"><td class="memItemLeft" align="right" valign="top"><a id="a799f662fe42d4adb193a66bed79f3b47" name="a799f662fe42d4adb193a66bed79f3b47"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>BuyItem</b> (long price, int customCurrency=-1)</td></tr>
@@ -3478,6 +3480,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>overrideFishingBobber<
 <tr class="separator:a684e53c2dcc2b9917b05c56d298271d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c756f83a2e3b6e39904eda03030b15f"><td class="memItemLeft" align="right" valign="top"><a id="a0c756f83a2e3b6e39904eda03030b15f" name="a0c756f83a2e3b6e39904eda03030b15f"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>ownedProjectileCounts</b> = new int[ProjectileID.Count]</td></tr>
+<tr class="memdesc:a0c756f83a2e3b6e39904eda03030b15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides efficient access to the number of projectiles of the specified type owned by this player currently active in the game world.<br  />
+ Can be used to prevent spawning additional projectiles when a limit is reached.<br  />
+ Updated each game update right before Player.UpdateBuffs.<br  />
+ For example, <code>return player.ownedProjectileCounts[<a class="el" href="class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e" title="The ID of the projectile that is fired by this item on use. Either a ProjectileID entry or ModContent...">Item.shoot</a>] &lt; 1;</code> in <a class="el" href="class_mod_item.html#ad49d48612c92aa85d7aed09c3751116b" title="Returns whether or not this item can be used. By default returns true.">ModItem.CanUseItem</a> could prevent a player using the item if the projectile the item spawns is already in the game world for the player. <br /></td></tr>
 <tr class="separator:a0c756f83a2e3b6e39904eda03030b15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa916c0d7f85ac2d8dc31a0004abfb866"><td class="memItemLeft" align="right" valign="top"><a id="aa916c0d7f85ac2d8dc31a0004abfb866" name="aa916c0d7f85ac2d8dc31a0004abfb866"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>palladiumRegen</b></td></tr>
@@ -5268,6 +5274,59 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
     <tr><td class="paramname">crit</td><td>Whether or not the strike is a crit</td></tr>
     <tr><td class="paramname">damageType</td><td>Defaults to DamageClass.Default</td></tr>
     <tr><td class="paramname">damageVariation</td><td>Whether to apply damage variation. Defaults to false.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab82d74f402f08d852ee0a22e813ff74b" name="ab82d74f402f08d852ee0a22e813ff74b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab82d74f402f08d852ee0a22e813ff74b">&#9670;&nbsp;</a></span>BuffHandle_SpawnPetIfNeededAndSetTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Player.BuffHandle_SpawnPetIfNeededAndSetTime </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>petBool</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>petProjID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffTimeToGive</em> = <code>18000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A helper method that handles code common to pet buffs. Can be used during the buff update code.<br  />
+ Sets the buff time to the value and spawns the corresponding pet projectile for the player if not yet spawned.<br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffIndex</td><td></td></tr>
+    <tr><td class="paramname">petBool</td><td></td></tr>
+    <tr><td class="paramname">petProjID</td><td></td></tr>
+    <tr><td class="paramname">buffTimeToGive</td><td></td></tr>
   </table>
   </dd>
 </dl>
