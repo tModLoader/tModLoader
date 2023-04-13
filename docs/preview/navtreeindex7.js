@@ -1,7 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"class_item_loader.html#a707a1a9f2047897d335563936b8d0f49":[3,0,600,12],
-"class_item_loader.html#a76135a35e07002d77e9a66a4e553235b":[3,0,600,10],
 "class_item_loader.html#a77890141db188252b92a7bf7cfe81caa":[3,0,600,14],
 "class_item_loader.html#a796b345116d7ff6df5537b5f0703c20f":[3,0,600,7],
 "class_item_loader.html#a7ea68e4596a838658829313abdfccfce":[3,0,600,21],
@@ -249,5 +247,7 @@ var NAVTREEINDEX7 =
 "class_message_dispatcher_base.html":[3,0,715],
 "class_message_dispatcher_client.html":[3,0,716],
 "class_message_dispatcher_server.html":[3,0,717],
-"class_message_i_d.html":[3,0,718]
+"class_message_i_d.html":[3,0,718],
+"class_metal_detector_info_display.html":[3,0,719],
+"class_metal_detector_info_display.html#ab710e3c000d437ac2fc1af905b8a2439":[3,0,719,0]
 };

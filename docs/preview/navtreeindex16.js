@@ -1,7 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"class_projectile_loader.html#ad6d96262b1eb9b2239eed15529e085b2":[3,0,977,0],
-"class_projectile_smart_interact_candidate_provider.html":[3,0,978],
 "class_property_field_wrapper.html":[3,0,979],
 "class_punch_camera_modifier.html":[3,0,980],
 "class_pylon_loader.html":[3,0,982],
@@ -249,5 +247,7 @@ var NAVTREEINDEX16 =
 "class_t_e_display_doll.html#acceeb63e2c15c1383fe6908a67c6179f":[3,0,1145,1],
 "class_t_e_display_doll.html#af12063e2c1f9a6128624376a3a673dc7":[3,0,1145,0],
 "class_t_e_food_platter.html":[3,0,1146],
-"class_t_e_food_platter.html#a29278af6ef66c1dee5612d9928dd2513":[3,0,1146,1]
+"class_t_e_food_platter.html#a29278af6ef66c1dee5612d9928dd2513":[3,0,1146,1],
+"class_t_e_food_platter.html#a78537f71602513a8949b03c9239c06be":[3,0,1146,0],
+"class_t_e_food_platter.html#ac0abf33a9212bc6d97fdc69e7c898b3a":[3,0,1146,3]
 };

@@ -213,9 +213,6 @@ Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b886
 Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set manually to true in ModProjectile.AI once to make it sync its current ai[] array to the server an...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
 Can be called on both server and client, depending on who owns the projectile.  <a href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">More...</a><br /></td></tr>
 <tr class="separator:ad94e9a25154e9eaf98dfc61e4053c468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e8e2bcfa5ef9d59cc6e90245eef449"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a06e8e2bcfa5ef9d59cc6e90245eef449">SetDefaults</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a06e8e2bcfa5ef9d59cc6e90245eef449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the properties of any and every projectile that gets created.  <a href="class_global_projectile.html#a06e8e2bcfa5ef9d59cc6e90245eef449">More...</a><br /></td></tr>
-<tr class="separator:a06e8e2bcfa5ef9d59cc6e90245eef449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a868df7036d919181c61c707d7fa8ff3e"><td class="memItemLeft" align="right" valign="top"><a id="a868df7036d919181c61c707d7fa8ff3e" name="a868df7036d919181c61c707d7fa8ff3e"></a>
 sealed override void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupContent</b> ()</td></tr>
 <tr class="separator:a868df7036d919181c61c707d7fa8ff3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1507,40 +1504,6 @@ Can be called on both server and client, depending on who owns the projectile. <
     <tr><td class="paramname">projectile</td><td>The projectile.</td></tr>
     <tr><td class="paramname">bitWriter</td><td>The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</td></tr>
     <tr><td class="paramname">binaryWriter</td><td>The writer.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a06e8e2bcfa5ef9d59cc6e90245eef449" name="a06e8e2bcfa5ef9d59cc6e90245eef449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06e8e2bcfa5ef9d59cc6e90245eef449">&#9670;&nbsp;</a></span>SetDefaults()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalProjectile.SetDefaults </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_projectile.html">Projectile</a>&#160;</td>
-          <td class="paramname"><em>projectile</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to set the properties of any and every projectile that gets created. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">projectile</td><td></td></tr>
   </table>
   </dd>
 </dl>

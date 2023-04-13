@@ -1,7 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"functions_prop_g.html":[3,3,3,6],
-"functions_prop_h.html":[3,3,3,7],
 "functions_prop_i.html":[3,3,3,8],
 "functions_prop_j.html":[3,3,3,9],
 "functions_prop_l.html":[3,3,3,10],
@@ -249,5 +247,7 @@ var NAVTREEINDEX19 =
 "struct_fishing_attempt.html#aaad0f3e4826aca58a725b5f6e2657c3f":[3,0,365,12],
 "struct_fishing_attempt.html#ab3f35e1b44fc5b5bea54743d48cde014":[3,0,365,7],
 "struct_fishing_attempt.html#ab7a3c6407ef96aa356a8a20388a93992":[3,0,365,13],
-"struct_fishing_attempt.html#abe27f0c0e5f46b25433d9f9f801c1524":[3,0,365,8]
+"struct_fishing_attempt.html#abe27f0c0e5f46b25433d9f9f801c1524":[3,0,365,8],
+"struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a":[3,0,365,21],
+"struct_fishing_attempt.html#aed7f28b54ca72c9a95a001b21a5cbb83":[3,0,365,17]
 };

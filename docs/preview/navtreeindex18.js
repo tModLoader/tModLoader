@@ -1,7 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"class_u_i_particle_layer.html":[3,0,1296],
-"class_u_i_progress_bar.html":[3,0,1297],
 "class_u_i_reports_page.html":[3,0,1298],
 "class_u_i_resource_pack.html":[3,0,1299],
 "class_u_i_resource_pack_info_button.html":[3,0,1300],
@@ -249,5 +247,7 @@ var NAVTREEINDEX18 =
 "functions_prop_c.html":[3,3,3,2],
 "functions_prop_d.html":[3,3,3,3],
 "functions_prop_e.html":[3,3,3,4],
-"functions_prop_f.html":[3,3,3,5]
+"functions_prop_f.html":[3,3,3,5],
+"functions_prop_g.html":[3,3,3,6],
+"functions_prop_h.html":[3,3,3,7]
 };

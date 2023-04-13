@@ -1,7 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"struct_tile_wall_brightness_invisibility_data.html":[3,0,1203],
-"struct_tile_wall_wire_state_data.html":[3,0,1204],
 "struct_tile_wall_wire_state_data.html#ae0fdd5e3b49fce6c8fd2847921190288":[3,0,1204,0],
 "struct_tilemap.html":[3,0,1185],
 "struct_tracked_projectile_reference.html":[3,0,1217],
