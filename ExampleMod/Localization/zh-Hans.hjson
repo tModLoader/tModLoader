@@ -786,6 +786,11 @@ Mods: {
 				// DisplayName: Example Javelin
 				// Tooltip: ""
 			}
+
+			ActiveSoundShowcase: {
+				// DisplayName: Active Sound Showcase
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -819,6 +824,7 @@ Mods: {
 			// ExampleDrillProjectile.DisplayName: Example Drill Projectile
 			// ExampleExplosive.DisplayName: Example Explosive
 			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
+			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 		}
 
 		Buffs: {
