@@ -28,14 +28,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
-	/// Allows you to set the properties of any and every projectile that gets created.
-	/// </summary>
-	/// <param name="projectile"></param>
-	public virtual void SetDefaults(Projectile projectile)
-	{
-	}
-
-	/// <summary>
 	/// Gets called when any projectiles spawns in world
 	/// </summary>
 	public virtual void OnSpawn(Projectile projectile, IEntitySource source)
