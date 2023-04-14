@@ -61,7 +61,7 @@ public static class GlobalLoaderUtils<TGlobal, TEntity> where TGlobal : GlobalTy
 		var instTimes = ArrayPool<InstantiationTime>.Shared.Rent(Globals.Length);
 		try {
 			SetDefaultsBeforeLookupsAreBuilt(entity, entityGlobals, setModEntityDefaults, ref instTimes);
-			UpdateGlobalTypeData?.Invoke(entity.Type, instTimes);
+			UpdateGlobalTypeData?.Invoke(entity.Type, instTimes.AsSpan()[..Globals.Length]);
 		}
 		finally {
 			ArrayPool<InstantiationTime>.Shared.Return(instTimes, clearArray: true);
@@ -107,8 +107,9 @@ public static class GlobalLoaderUtils<TGlobal, TEntity> where TGlobal : GlobalTy
 		}
 	}
 
+	private delegate void TUpdateGlobalTypeData(int type, ReadOnlySpan<InstantiationTime> data);
 	[ThreadStatic]
-	private static Action<int, InstantiationTime[]> UpdateGlobalTypeData;
+	private static TUpdateGlobalTypeData UpdateGlobalTypeData;
 	public static void BuildTypeLookups(Action<int> setDefaults)
 	{
 		try {
@@ -123,26 +124,30 @@ public static class GlobalLoaderUtils<TGlobal, TEntity> where TGlobal : GlobalTy
 
 			var appliesToTypeCache = new GlobalTypeLookups<TGlobal>.AppliesToTypeSet[Globals.Length];
 
-			globalsForType[0] = Array.Empty<TGlobal>();
-			for (int setDefaultsType = 1; setDefaultsType < typeCount; setDefaultsType++) {
-				// Because of CloneDefaults, we only want to look at the resulting type of the item, and the first set of globals/modtypes added to it
-				bool first = true;
+			InstantiationTime[] instTimes = new InstantiationTime[Globals.Length];
+			for (int setDefaultsType = 0; setDefaultsType < typeCount; setDefaultsType++) {
+				// UpdateGlobalTypeData may be called multiple times as a vanilla item calls SetDefaults to change type
+				int finalType = 0;
+				UpdateGlobalTypeData = (type, data) => {
+					if (type == 0)
+						return; // if an item gets turned to air after being instantiated, we may as well keep earlier default lookups if we can
 
-				UpdateGlobalTypeData = (int type, InstantiationTime[] instTimes) => {
-					if (!first)
-						return;
-
-					first = false;
-					globalsForType[type] = GlobalTypeLookups<TGlobal>.CachedFilter(Globals, g => instTimes[g.StaticIndex] > InstantiationTime.NotApplied);
-					HookSetDefaultsEarly[type] = GlobalTypeLookups<TGlobal>.CachedFilter(hookSetDefaults, g => instTimes[g.StaticIndex] == InstantiationTime.Pass1);
-					HookSetDefaultsLate[type] = GlobalTypeLookups<TGlobal>.CachedFilter(hookSetDefaults, g => instTimes[g.StaticIndex] == InstantiationTime.Pass2);
-
-					foreach (var g in Globals)
-						if (g.ConditionallyAppliesToEntities && instTimes[g.StaticIndex] > InstantiationTime.NotApplied)
-							appliesToTypeCache[g.StaticIndex].Add(type);
+					finalType = type;
+					data.CopyTo(instTimes);
 				};
 
 				setDefaults(setDefaultsType);
+
+				if (finalType == 0)
+					continue;
+
+				globalsForType[finalType] = GlobalTypeLookups<TGlobal>.CachedFilter(Globals, g => instTimes[g.StaticIndex] > InstantiationTime.NotApplied);
+				HookSetDefaultsEarly[finalType] = GlobalTypeLookups<TGlobal>.CachedFilter(hookSetDefaults, g => instTimes[g.StaticIndex] == InstantiationTime.Pass1);
+				HookSetDefaultsLate[finalType] = GlobalTypeLookups<TGlobal>.CachedFilter(hookSetDefaults, g => instTimes[g.StaticIndex] == InstantiationTime.Pass2);
+
+				foreach (var g in Globals)
+					if (g.ConditionallyAppliesToEntities && instTimes[g.StaticIndex] > InstantiationTime.NotApplied)
+						appliesToTypeCache[g.StaticIndex].Add(finalType);
 			}
 
 			GlobalTypeLookups<TGlobal>.Init(globalsForType, appliesToTypeCache);
