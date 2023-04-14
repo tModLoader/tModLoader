@@ -104,6 +104,12 @@ public partial class NPC
 		public StatModifier CritDamage = new(2f, 1f);
 
 		/// <summary>
+		/// Applied to damage after defense and before <see cref="FinalDamage"/> when the hit is _not_ a crit. <br/>
+		/// Effectively a compliment for <see cref="CritDamage"/>
+		/// </summary>
+		public StatModifier NonCritDamage = new();
+
+		/// <summary>
 		/// Applied to the final damage result. <br/>
 		/// Used by <see cref="NPC.takenDamageMultiplier"/> to make enemies extra susceptible/resistant to damage. <br/>
 		/// <br/>
@@ -188,9 +194,10 @@ public partial class NPC
 
 		public readonly int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 		{
+			crit = _critOverride ?? crit;
 			if (SuperArmor) {
 				float dmg = 1;
-				if (_critOverride ?? crit)
+				if (crit)
 					dmg *= CritDamage.Additive * CritDamage.Multiplicative;
 
 				return Math.Clamp((int)dmg, 1, Math.Min(_damageLimit, 4));
@@ -211,8 +218,7 @@ public partial class NPC
 			float damageReduction = defense * DefenseEffectiveness.Value;
 			damage = Math.Max(damage - damageReduction, 1);
 
-			if (_critOverride ?? crit)
-				damage = CritDamage.ApplyTo(damage);
+			damage = (crit ? CritDamage : NonCritDamage).ApplyTo(damage);
 
 			return Math.Clamp((int)FinalDamage.ApplyTo(damage), 1, _damageLimit);
 		}
