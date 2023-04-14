@@ -13,6 +13,7 @@ var struct_n_p_c_1_1_hit_modifiers =
     [ "FinalDamage", "struct_n_p_c_1_1_hit_modifiers.html#a1002e87a8ffb6ac37e486edb9b9e9f9a", null ],
     [ "FlatBonusDamage", "struct_n_p_c_1_1_hit_modifiers.html#a9bdd0084aeb8144cca1b18a374db2780", null ],
     [ "Knockback", "struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8", null ],
+    [ "NonCritDamage", "struct_n_p_c_1_1_hit_modifiers.html#a3fc834bc782b2655794b91d30067800d", null ],
     [ "ScalingArmorPenetration", "struct_n_p_c_1_1_hit_modifiers.html#ab92ee61bb3c9bc7ee1ebbde65cbc15ff", null ],
     [ "ScalingBonusDamage", "struct_n_p_c_1_1_hit_modifiers.html#afcdafff52439ec0ee8e40df10db8f16b", null ],
     [ "SourceDamage", "struct_n_p_c_1_1_hit_modifiers.html#ae4b8ed585bcf70d7bacc6cc0e56ae34f", null ],
