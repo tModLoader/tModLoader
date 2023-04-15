@@ -66,9 +66,9 @@ var NAVTREEINDEX =
 "class_projectile_loader.html#ad6d96262b1eb9b2239eed15529e085b2",
 "class_t_e_food_platter.html#a78537f71602513a8949b03c9239c06be",
 "class_u_i_particle_layer.html",
-"functions_prop_g.html",
-"struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a",
-"struct_tile_type_data.html"
+"functions_prop_f.html",
+"struct_fishing_attempt.html#abe27f0c0e5f46b25433d9f9f801c1524",
+"struct_tile_resting_info.html#ada30d8bdeb7ed59797958a2368df7e76"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

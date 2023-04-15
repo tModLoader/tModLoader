@@ -96,6 +96,12 @@ $(document).ready(function(){initNavTree('class_unloaded_item.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a4c529a6605bdcf48c8fed90b9a2a1db4"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_item.html#a4c529a6605bdcf48c8fed90b9a2a1db4">CanStack</a> (<a class="el" href="class_item.html">Item</a> source)</td></tr>
+<tr class="memdesc:a4c529a6605bdcf48c8fed90b9a2a1db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to decide if this item is allowed to stack with another of its type. <br  />
+This is only called when attempting to stack with an item of the same type. <br  />
+This is not called for coins in inventory/UI. <br  />
+This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_mod_item.html#a453b418e0a6eada1997713d3c2123ac6" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">CanStackInWorld</a>.  <a href="class_unloaded_item.html#a4c529a6605bdcf48c8fed90b9a2a1db4">More...</a><br /></td></tr>
+<tr class="separator:a4c529a6605bdcf48c8fed90b9a2a1db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f67545a6e45160419b6606ef71e06b"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_item.html#a32f67545a6e45160419b6606ef71e06b">LoadData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:a32f67545a6e45160419b6606ef71e06b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this item. <br  />
 <b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_unloaded_item.html#a32f67545a6e45160419b6606ef71e06b">More...</a><br /></td></tr>
@@ -719,6 +725,46 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 <tr class="separator:a68ae9d7e81b3ef0a93b540db9fa62ae7 inherit pro_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4c529a6605bdcf48c8fed90b9a2a1db4" name="a4c529a6605bdcf48c8fed90b9a2a1db4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c529a6605bdcf48c8fed90b9a2a1db4">&#9670;&nbsp;</a></span>CanStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool UnloadedItem.CanStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to decide if this item is allowed to stack with another of its type. <br  />
+This is only called when attempting to stack with an item of the same type. <br  />
+This is not called for coins in inventory/UI. <br  />
+This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_mod_item.html#a453b418e0a6eada1997713d3c2123ac6" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">CanStackInWorld</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The item instance being stacked onto this item</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the item is allowed to stack</dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_mod_item.html#abe74a706630de7e7c6f60dd5f6855f99">ModItem</a>.</p>
+
+</div>
+</div>
 <a id="a32f67545a6e45160419b6606ef71e06b" name="a32f67545a6e45160419b6606ef71e06b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32f67545a6e45160419b6606ef71e06b">&#9670;&nbsp;</a></span>LoadData()</h2>
 

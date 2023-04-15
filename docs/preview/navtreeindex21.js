@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_tile_resting_info.html#ada30d8bdeb7ed59797958a2368df7e76":[3,0,1200,5],
 "struct_tile_type_data.html":[3,0,1202],
 "struct_tile_wall_brightness_invisibility_data.html":[3,0,1203],
 "struct_tile_wall_wire_state_data.html":[3,0,1204],
