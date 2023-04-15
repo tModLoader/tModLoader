@@ -129,7 +129,7 @@ public partial class Mod
 
 	/// <summary> Call this to manually add a content instance of the specified type (with a parameterless constructor) to the game. </summary>
 	/// <returns> true if the instance was successfully added </returns>
-	public void AddContent<T>() where T:ILoadable, new() => AddContent(new T());
+	public bool AddContent<T>() where T:ILoadable, new() => AddContent(new T());
 
 	/// <summary> Call this to manually add the given content instance to the game. </summary>
 	/// <param name="instance"> The content instance to add </param>
