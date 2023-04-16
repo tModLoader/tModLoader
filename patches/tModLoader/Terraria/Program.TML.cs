@@ -120,6 +120,11 @@ public static partial class Program
 			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
 	}
 
+	private static void CheckDependencies()
+	{
+		NativeLibraries.CheckNativeFAudioDependencies();
+	}
+
 	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
 
 	// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.
