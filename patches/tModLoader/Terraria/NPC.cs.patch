@@ -39,6 +39,56 @@
  	public int rarity;
  	public static bool taxCollector = false;
  	public bool[] playerInteraction = new bool[256];
+@@ -77,7 +_,48 @@
+ 	private static int spawnSpaceY = 3;
+ 	public float gfxOffY;
+ 	public float stepSpeed;
++
++	/// <summary>
++	/// The default gravity before any other changes, defaults to 0.3f.
++	/// </summary>
++	public float BaseGravity = 0.3f; //TML: #AccessibleNPCGravity, added
++
++	/// <summary>
++	/// The current actual change in velocity due to gravity applied every frame. Includes other gravity effects and is updated every frame.
++	/// </summary>
++	//private static float gravity = 0.3f; //TML: #AccessibleNPCGravity, changed from private static to public to allow for instanced changes.
+-	private static float gravity = 0.3f;
++	public float gravity = 0.3f;
++
++	/// <summary>
++	/// The default fall speed cap before any other changes, defaults to 10f.
++	///	</summary>
++	public float BaseMaxFallSpeed = 10f; //TML: #AccessibleNPCGravity, added
++
++	/// <summary>
++	/// The current actual fall speed cap applied every frame. Includes other gravity effects and is updated every frame.
++	///	</summary>
++	public float maxFallSpeed; //TML: #AccessibleNPCGravity, added
++
++	/// <summary>
++	/// The multiplicative effect of the 4 types of wet on the NPCs gravity:
++	/// wet, lavaWet, honetWet, and shimmerWet. These default to 2f/3f, 1f, 1f/3f, and 1.5f/3f respectively, these are mutually exclusive with priority in reverse order.
++	///	</summary>
++	public float[] GravityWetMultiplier = new float[4] { 2f / 3f, 1f, 1f / 3f, 1.5f / 3f }; //TML: #AccessibleNPCGravity, added
++	/// <summary>
++	/// The multiplicative effect of the 4 types of wet on the NPCs gravity:
++	/// wet, lavaWet, honetWet, and shimmerWet. These default to 0.7f, 1f, 0.4f, and 0.55f respectively, these are mutually exclusive with priority in reverse order.
++	///	</summary>
++	public float[] MaxFallSpeedWetMultiplier = new float[4] { 0.7f, 1f, 0.4f, 0.55f }; //TML: #AccessibleNPCGravity, added
++
++	/// <summary>
++	/// Set true for the NPC's gravity to be unaffected by the changes made for types 258, 425, 576, 577, 427, 426, 541, and the aiStyle 7, will have weird effects if used ignorantly
++	/// </summary>
++	public bool GravityIgnoresType = false; //TML: #AccessibleNPCGravity, added
++	/// <summary>
++	/// Set true for the NPC's gravity to be unaffected by space's lowering gravity.
++	/// </summary>
++	public bool GravityIgnoresSpace = false; //TML: #AccessibleNPCGravity, added
++
+ 	public bool teleporting;
+ 	private static int maxAttack = 20;
+ 	private static int[] attackNPC = new int[maxAttack];
 @@ -99,6 +_,13 @@
  	public static int deerclopsBoss = -1;
  	public int netSkip;
@@ -2208,7 +2258,7 @@
  			try {
  				if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
  					if (Main.tile[num4, num5] == null)
-@@ -72516,12 +_,15 @@
+@@ -72516,19 +_,23 @@
  			catch {
  				flag = true;
  			}
@@ -2224,6 +2274,15 @@
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
+ 		UpdateNPC_BuffApplyDOTs();
+ 		UpdateNPC_BuffApplyVFX();
+ 		UpdateNPC_BloodMoonTransformations();
+-		UpdateNPC_UpdateGravity(out var maxFallSpeed);
++		//UpdateNPC_UpdateGravity(out var maxFallSpeed) // TML: #AccessibleNPCGravity, removed out parameter
++		UpdateNPC_UpdateGravity();
+ 		if (soundDelay > 0)
+ 			soundDelay--;
+ 
 @@ -72653,19 +_,21 @@
  		justHit = false;
  	}
@@ -2283,6 +2342,68 @@
  
  	private void UpdateNPC_UpdateTrails()
  	{
+@@ -72862,10 +_,23 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Updates <see cref="maxFallSpeed"/> and <see cref="gravity"/> using <see cref="BaseMaxFallSpeed"/> and <see cref="BaseGravity"/> as their bases. Behavior can be modified with <see cref="GravityIgnoresType"/>, <see cref="GravityIgnoresSpace"/>, <see cref="MaxFallSpeedWetMultiplier"/>, and <see cref="GravityWetMultiplier"/>.
++	/// Certain NPC type ids may cap velocity, see <see cref="GravityIgnoresType"/>
++	/// </summary>
+-	private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
++	//private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
++	private void UpdateNPC_UpdateGravity()
+ 	{
++		/*
+ 		maxFallSpeed = 10f;
+ 		gravity = 0.3f;
++		*/
++		maxFallSpeed = BaseMaxFallSpeed;
++		gravity = BaseGravity;
++
++		if (!GravityIgnoresType) //TML: #AccessibleNPCGravity, skips block on flag
++			goto skipGravityTypeChecks;
++
+ 		if (type == 258) {
+ 			gravity = 0.1f;
+ 			if (velocity.Y > 3f)
+@@ -72896,7 +_,13 @@
+ 			gravity = 0f;
+ 		}
+ 
++		skipGravityTypeChecks:
++
++		if (GravityIgnoresSpace) //TML: #AccessibleNPCGravity, skips block on flag
++			goto skipGravitySpaceEffect;
++
+ 		float num = (float)Main.maxTilesX / 4200f;
++
+ 		num *= num;
+ 		float num2 = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
+ 		if ((double)num2 < 0.25)
+@@ -72906,6 +_,14 @@
+ 			num2 = 1f;
+ 
+ 		gravity *= num2;
++
++		skipGravitySpaceEffect:
++		if (wet) {
++			int currentLiquid = shimmerWet ? 3 : (honeyWet ? 2 : (lavaWet ? 1 : 0));
++			gravity *= GravityWetMultiplier[currentLiquid];
++			maxFallSpeed *= MaxFallSpeedWetMultiplier[currentLiquid];
++		}
++		/*  //TML: #AccessibleNPCGravity, allows for custom liquid gravity changes.
+ 		if (wet) {
+ 			if (shimmerWet) {
+ 				gravity = 0.15f;
+@@ -72920,6 +_,7 @@
+ 				maxFallSpeed = 7f;
+ 			}
+ 		}
++		*/
+ 	}
+ 
+ 	private void UpdateNPC_SoulDrainDebuff()
 @@ -73627,9 +_,12 @@
  				num = 5;
  		}
