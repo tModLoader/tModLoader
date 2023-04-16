@@ -367,6 +367,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>HallowBiomeS
 <tr class="separator:a0443f601f5a618ef0820bf82c0fd2d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a612fadd9d5e3f24c17c1052fdf9b6ebe"><td class="memItemLeft" align="right" valign="top"><a id="a612fadd9d5e3f24c17c1052fdf9b6ebe" name="a612fadd9d5e3f24c17c1052fdf9b6ebe"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>HasOutlines</b> = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663)</td></tr>
+<tr class="memdesc:a612fadd9d5e3f24c17c1052fdf9b6ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this tile has an outline texture to be drawn to indicate that it is interactable. If set to true for a modded tile, <a class="el" href="class_mod_tile.html#ae12810d265c604e5a4941b299859fa85" title="The highlight texture used when this tile is selected by smart interact. Defaults to adding &quot;_Highlig...">ModTile.HighlightTexture</a> will be used to autoload the highlight texture and must exist for the mod to load. <br /></td></tr>
 <tr class="separator:a612fadd9d5e3f24c17c1052fdf9b6ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a501bfba9b6579526321d8cd4b44b11ab"><td class="memItemLeft" align="right" valign="top"><a id="a501bfba9b6579526321d8cd4b44b11ab" name="a501bfba9b6579526321d8cd4b44b11ab"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>HasSlopeFrames</b> = Factory.CreateBoolSet(421, 422)</td></tr>
@@ -494,6 +495,7 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>OpenDoorID</b
 <tr class="separator:a8fb0968be6950da945654afe3afdc8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d2ee6dafe5c1139e11b8243bc4245fa"><td class="memItemLeft" align="right" valign="top"><a id="a8d2ee6dafe5c1139e11b8243bc4245fa" name="a8d2ee6dafe5c1139e11b8243bc4245fa"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Ore</b> = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211)</td></tr>
+<tr class="memdesc:a8d2ee6dafe5c1139e11b8243bc4245fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that the tile is an ore. Used in worldgen code for various purposes and by Fairies. <br /></td></tr>
 <tr class="separator:a8d2ee6dafe5c1139e11b8243bc4245fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a332205e0b44fca94a70e06e822d9c11d"><td class="memItemLeft" align="right" valign="top"><a id="a332205e0b44fca94a70e06e822d9c11d" name="a332205e0b44fca94a70e06e822d9c11d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>OreMergesWithMud</b> = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223)</td></tr>
@@ -568,6 +570,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Stone</b> = 
 <tr class="separator:a8743475607e3bbe1b04d1b1ee936dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0347fa6ea917b42871e43464d607b5cd"><td class="memItemLeft" align="right" valign="top"><a id="a0347fa6ea917b42871e43464d607b5cd" name="a0347fa6ea917b42871e43464d607b5cd"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Suffocate</b> = Factory.CreateBoolSet(53, 112, 116, 123, 224, 234)</td></tr>
+<tr class="memdesc:a0347fa6ea917b42871e43464d607b5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the tile will apply the BuffID.Suffocation buff if the player is overlapping the tiles. Used by sand tiles. <br /></td></tr>
 <tr class="separator:a0347fa6ea917b42871e43464d607b5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a672992e3566d96e0818e520da4063e05"><td class="memItemLeft" align="right" valign="top"><a id="a672992e3566d96e0818e520da4063e05" name="a672992e3566d96e0818e520da4063e05"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>SwaysInWindBasic</b> = Factory.CreateBoolSet(3, 20, 24, 61, 71, 73, 74, 83, 84, 110, 113, 201, 227, 529, 590, 595, 615, 624, 656, 637)</td></tr>
@@ -587,15 +590,18 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Torch</b> = 
 <tr class="separator:af83141b5db3aec5e8f108fc234de071b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0888b613264a345fd387a7f5457b802"><td class="memItemLeft" align="right" valign="top"><a id="af0888b613264a345fd387a7f5457b802" name="af0888b613264a345fd387a7f5457b802"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageBleeding</b> = Factory.CreateBoolSet(48, 232)</td></tr>
+<tr class="memdesc:af0888b613264a345fd387a7f5457b802"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the BuffID.Bleeding buff to any player touching the tile. The duration is random from 4 to 10 seconds. Used by TileID.Spikes and TileID.WoodenSpikes. Used in conjunction with <a class="el" href="class_tile_i_d_1_1_sets.html#ae7f7367d1a857087d390d3c4f2d6d561" title="Deals the provided amount of damage to any player in contact with the tile. Used by cactus,...">TouchDamageImmediate</a> to deal damage on contact. <br /></td></tr>
 <tr class="separator:af0888b613264a345fd387a7f5457b802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a431d9d385af80c1a91537c64edf70fb5"><td class="memItemLeft" align="right" valign="top"><a id="a431d9d385af80c1a91537c64edf70fb5" name="a431d9d385af80c1a91537c64edf70fb5"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageDestroyTile</b> = Factory.CreateBoolSet(32, 69, 352, 655)</td></tr>
 <tr class="separator:a431d9d385af80c1a91537c64edf70fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b940df5c7dbff2bcf89e2213d421638"><td class="memItemLeft" align="right" valign="top"><a id="a1b940df5c7dbff2bcf89e2213d421638" name="a1b940df5c7dbff2bcf89e2213d421638"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageHot</b> = Factory.CreateBoolSet(37, 58, 76, 684, 230)</td></tr>
+<tr class="memdesc:a1b940df5c7dbff2bcf89e2213d421638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the BuffID.Burning buff to any player touching the tile without Player.fireWalk. Used by TileID.Meteorite, TileID.Hellstone, TileID.HellstoneBrick, TileID.CrispyHoneyBlock, and TileID.AncientHellstoneBrick <br /></td></tr>
 <tr class="separator:a1b940df5c7dbff2bcf89e2213d421638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7f7367d1a857087d390d3c4f2d6d561"><td class="memItemLeft" align="right" valign="top"><a id="ae7f7367d1a857087d390d3c4f2d6d561" name="ae7f7367d1a857087d390d3c4f2d6d561"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageImmediate</b> = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25)</td></tr>
+<tr class="memdesc:ae7f7367d1a857087d390d3c4f2d6d561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deals the provided amount of damage to any player in contact with the tile. Used by cactus, thorn, and spike tiles. <br /></td></tr>
 <tr class="separator:ae7f7367d1a857087d390d3c4f2d6d561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6464e0fabefdd9369974628b6d3ad6b6"><td class="memItemLeft" align="right" valign="top"><a id="a6464e0fabefdd9369974628b6d3ad6b6" name="a6464e0fabefdd9369974628b6d3ad6b6"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSapling</b> = Factory.CreateBoolSet(Saplings)</td></tr>

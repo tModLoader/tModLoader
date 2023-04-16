@@ -1,5 +1,16 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile_i_d_1_1_sets.html#aafd3ad11f973341222a7e8e4cdba8988":[3,0,976,0,29],
+"class_projectile_i_d_1_1_sets.html#ab1318e63cf6daff849f28039375d50e9":[3,0,976,0,25],
+"class_projectile_i_d_1_1_sets.html#ab79b63290907b5d0360261e0e5217ebb":[3,0,976,0,2],
+"class_projectile_i_d_1_1_sets.html#ac708ccb7a64ab5c4960ebf2b94d8f380":[3,0,976,0,18],
+"class_projectile_i_d_1_1_sets.html#ac7ed1f1aa4f77dc27bc8861761606216":[3,0,976,0,19],
+"class_projectile_i_d_1_1_sets.html#af38fa705ece65d7f941a93a0df36fcbe":[3,0,976,0,9],
+"class_projectile_i_d_1_1_sets.html#af59e06fddaa7b5693ccc09343aa54e44":[3,0,976,0,13],
+"class_projectile_i_d_1_1_sets.html#afbaef65e8e6c93acda4f938196f87d5b":[3,0,976,0,22],
+"class_projectile_i_d_1_1_sets.html#afbd8f19ded746d87b15f3171b8349c4d":[3,0,976,0,37],
+"class_projectile_i_d_1_1_sets.html#afddd263669ab275b5af0d7b745a88b3b":[3,0,976,0,17],
+"class_projectile_loader.html":[3,0,977],
 "class_projectile_loader.html#ad6d96262b1eb9b2239eed15529e085b2":[3,0,977,0],
 "class_projectile_smart_interact_candidate_provider.html":[3,0,978],
 "class_property_field_wrapper.html":[3,0,979],
@@ -238,16 +249,5 @@ var NAVTREEINDEX16 =
 "class_summon_melee_speed_damage_class.html#ad88cef6295d0f1368fc253da802d3e60":[3,0,1128,0],
 "class_supported_workshop_tags.html":[3,0,1129],
 "class_surface_background_i_d.html":[3,0,1130],
-"class_surface_background_styles_loader.html":[3,0,1131],
-"class_surface_biome_shader.html":[3,0,1132],
-"class_surface_map.html":[3,0,1133],
-"class_synchronization_context.html":[3,0,1134],
-"class_system_loader.html":[3,0,1135],
-"class_t_e_display_doll.html":[3,0,1145],
-"class_t_e_display_doll.html#a65dc0d2bd9395517669cdd099dd3ea53":[3,0,1145,2],
-"class_t_e_display_doll.html#a955bbd94a11345ee3b6dbba5cff983c6":[3,0,1145,3],
-"class_t_e_display_doll.html#acceeb63e2c15c1383fe6908a67c6179f":[3,0,1145,1],
-"class_t_e_display_doll.html#af12063e2c1f9a6128624376a3a673dc7":[3,0,1145,0],
-"class_t_e_food_platter.html":[3,0,1146],
-"class_t_e_food_platter.html#a29278af6ef66c1dee5612d9928dd2513":[3,0,1146,1]
+"class_surface_background_styles_loader.html":[3,0,1131]
 };

@@ -2740,6 +2740,10 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>myPlayer</b></t
 <tr class="separator:a42ee3929161f68a93443261b95643df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b7c21c478b58b72ea5c4e6921e940bd"><td class="memItemLeft" align="right" valign="top"><a id="a5b7c21c478b58b72ea5c4e6921e940bd" name="a5b7c21c478b58b72ea5c4e6921e940bd"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>netMode</b></td></tr>
+<tr class="memdesc:a5b7c21c478b58b72ea5c4e6921e940bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Denotes the current network mode: <b>0</b> for single player client, <b>1</b> for multiplayer client, and <b>2</b> for server.<br  />
+ Using ID.NetmodeID entries instead of 0, 1, and 2 will greatly enhance code readability.<br  />
+ Modders must properly use netMode to selectively run code. Following examples in ExampleMod and <a class="el" href="namespace_terraria.html">Terraria</a> code as well as reading the Basic Netcode guideare the best way to learn how to use netMode correctly.<br  />
+ <br /></td></tr>
 <tr class="separator:a5b7c21c478b58b72ea5c4e6921e940bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53faffb0cc6e7fa54752a5dbdd411ca6"><td class="memItemLeft" align="right" valign="top"><a id="a53faffb0cc6e7fa54752a5dbdd411ca6" name="a53faffb0cc6e7fa54752a5dbdd411ca6"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>netPlayCounter</b></td></tr>
@@ -3514,6 +3518,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileAlch</b>
 <tr class="separator:a1ed3850cbd019d12544d4917dd337848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa844b5324096225533879d1901aa9afe"><td class="memItemLeft" align="right" valign="top"><a id="aa844b5324096225533879d1901aa9afe" name="aa844b5324096225533879d1901aa9afe"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileAxe</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:aa844b5324096225533879d1901aa9afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe. <br /></td></tr>
 <tr class="separator:aa844b5324096225533879d1901aa9afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b19bfc511ba28f0a5d86d9c2ef53d99"><td class="memItemLeft" align="right" valign="top"><a id="a6b19bfc511ba28f0a5d86d9c2ef53d99" name="a6b19bfc511ba28f0a5d86d9c2ef53d99"></a>
 static <a class="el" href="class_tile_batch.html">TileBatch</a>&#160;</td><td class="memItemRight" valign="bottom"><b>tileBatch</b></td></tr>
@@ -3541,6 +3546,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCracked<
 <tr class="separator:ad1e23b904ae1a46d736a897834c69647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e567c0a497197b2f49f009f2ba01f05"><td class="memItemLeft" align="right" valign="top"><a id="a7e567c0a497197b2f49f009f2ba01f05" name="a7e567c0a497197b2f49f009f2ba01f05"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCut</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:a7e567c0a497197b2f49f009f2ba01f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Tiles of the indexed <a class="el" href="struct_tile.html">Tile</a> Type will be destroyed by weapons and projectiles. <br /></td></tr>
 <tr class="separator:a7e567c0a497197b2f49f009f2ba01f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28f5cc4735664e5e5eb8ce37684e31db"><td class="memItemLeft" align="right" valign="top"><a id="a28f5cc4735664e5e5eb8ce37684e31db" name="a28f5cc4735664e5e5eb8ce37684e31db"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileDungeon</b> = new bool[TileID.Count]</td></tr>
@@ -3585,6 +3591,7 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLargeFra
 <tr class="separator:a31efd2fbedd7a4071162d6678c0da706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memItemLeft" align="right" valign="top"><a id="ae4e747a8a660d98c8fd21b613e1fc2d4" name="ae4e747a8a660d98c8fd21b613e1fc2d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLavaDeath</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destoryed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
 <tr class="separator:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735063a3cb2816b52d2e861269294589"><td class="memItemLeft" align="right" valign="top"><a id="a735063a3cb2816b52d2e861269294589" name="a735063a3cb2816b52d2e861269294589"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLighted</b> = new bool[TileID.Count]</td></tr>
@@ -3617,6 +3624,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileObsidian
 <tr class="separator:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f9ffde4d29e185014fb024d3e6ed24"><td class="memItemLeft" align="right" valign="top"><a id="a34f9ffde4d29e185014fb024d3e6ed24" name="a34f9ffde4d29e185014fb024d3e6ed24"></a>
 static short[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileOreFinderPriority</b> = new short[TileID.Count]</td></tr>
+<tr class="memdesc:a34f9ffde4d29e185014fb024d3e6ed24"><td class="mdescLeft">&#160;</td><td class="mdescRight">The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The Metal Detector wiki pagelists existing values to use as reference. <br /></td></tr>
 <tr class="separator:a34f9ffde4d29e185014fb024d3e6ed24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e4500daf67856fcb8f5beffc4e55aa1"><td class="memItemLeft" align="right" valign="top"><a id="a0e4500daf67856fcb8f5beffc4e55aa1" name="a0e4500daf67856fcb8f5beffc4e55aa1"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tilePile</b> = new bool[TileID.Count]</td></tr>
@@ -3632,9 +3640,11 @@ static <a class="el" href="class_ref.html">Ref</a>&lt; Effect &gt;&#160;</td><td
 <tr class="separator:a19471436f5b6a8c6c4eccf94a1c0c400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="memItemLeft" align="right" valign="top"><a id="a0c44dedfb9235fff05a7cdb2cf3360ab" name="a0c44dedfb9235fff05a7cdb2cf3360ab"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileShine</b> = new int[TileID.Count]</td></tr>
+<tr class="memdesc:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">How rarly tiny ambient dust appear from this tile. Larger values mean less frequently <br /></td></tr>
 <tr class="separator:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa040125595dd0a090c6588743b7dc34b"><td class="memItemLeft" align="right" valign="top"><a id="aa040125595dd0a090c6588743b7dc34b" name="aa040125595dd0a090c6588743b7dc34b"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileShine2</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:aa040125595dd0a090c6588743b7dc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the tile will be drawn to be slightly more bright. <br /></td></tr>
 <tr class="separator:aa040125595dd0a090c6588743b7dc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c4bc12068c82e52b5dde10648cc9793"><td class="memItemLeft" align="right" valign="top"><a id="a7c4bc12068c82e52b5dde10648cc9793" name="a7c4bc12068c82e52b5dde10648cc9793"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSign</b> = new bool[TileID.Count]</td></tr>
@@ -3650,6 +3660,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSolidTop
 <tr class="separator:abb9f20241fec0d772d4f6fcb72fea998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150df780377d15cb6bbb579fa529a722"><td class="memItemLeft" align="right" valign="top"><a id="a150df780377d15cb6bbb579fa529a722" name="a150df780377d15cb6bbb579fa529a722"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSpelunker</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:a150df780377d15cb6bbb579fa529a722"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles will be drawn much brigter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. <br /></td></tr>
 <tr class="separator:a150df780377d15cb6bbb579fa529a722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a8b201f7ad2abc9e6080216909b858f"><td class="memItemLeft" align="right" valign="top"><a id="a9a8b201f7ad2abc9e6080216909b858f" name="a9a8b201f7ad2abc9e6080216909b858f"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileStone</b> = new bool[TileID.Count]</td></tr>
@@ -3659,6 +3670,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileTable</b
 <tr class="separator:a5a86804046801c50b3fa3efa42d5e260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a224593043e88020b9290cc6065a8c1ba"><td class="memItemLeft" align="right" valign="top"><a id="a224593043e88020b9290cc6065a8c1ba" name="a224593043e88020b9290cc6065a8c1ba"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileWaterDeath</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:a224593043e88020b9290cc6065a8c1ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destoryed if in contact with water. TileObjectData.WaterDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
 <tr class="separator:a224593043e88020b9290cc6065a8c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a286e04821e5e48abf3d683972a668976"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main.html#a286e04821e5e48abf3d683972a668976">time</a> = 13500.0</td></tr>
 <tr class="memdesc:a286e04821e5e48abf3d683972a668976"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time that has passed since it last became day/night. <br  />

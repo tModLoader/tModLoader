@@ -2330,6 +2330,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>defendedByPaladin</b>
 <tr class="separator:a84cf2db75e8544f88f76ef69a1b05e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c361255efc711c3b823a59c6d5b8327"><td class="memItemLeft" align="right" valign="top"><a id="a3c361255efc711c3b823a59c6d5b8327" name="a3c361255efc711c3b823a59c6d5b8327"></a>
 <a class="el" href="struct_multipliable_float.html">MultipliableFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DefenseEffectiveness</b></td></tr>
+<tr class="memdesc:a3c361255efc711c3b823a59c6d5b8327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how effective the player's <a class="el" href="class_player.html#a77d899015e43c0583996a1774c760ec8" title="The defense value of this player.  The Defense wiki pageteaches how player defense affects incoming d...">statDefense</a> is at reducing incoming damage.<br  />
+ The Defense wiki pageexplains the effect, shown in the wiki as "factor".<br  />
+ <br /></td></tr>
 <tr class="separator:a3c361255efc711c3b823a59c6d5b8327"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2223941cda50ce05a8715e9b3cee216"><td class="memItemLeft" align="right" valign="top"><a id="aa2223941cda50ce05a8715e9b3cee216" name="aa2223941cda50ce05a8715e9b3cee216"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>delayUseItem</b></td></tr>
@@ -4180,6 +4183,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>starving</b></td></tr
 <tr class="separator:a2670cd1e9798b7cb6c11e3075ed1c088"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77d899015e43c0583996a1774c760ec8"><td class="memItemLeft" align="right" valign="top"><a id="a77d899015e43c0583996a1774c760ec8" name="a77d899015e43c0583996a1774c760ec8"></a>
 <a class="el" href="struct_player_1_1_defense_stat.html">DefenseStat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>statDefense</b></td></tr>
+<tr class="memdesc:a77d899015e43c0583996a1774c760ec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The defense value of this player.<br  />
+ The Defense wiki pageteaches how player defense affects incoming damage alongside <a class="el" href="class_player.html#a3c361255efc711c3b823a59c6d5b8327" title="Determines how effective the player&#39;s statDefense is at reducing incoming damage.  The Defense wiki p...">DefenseEffectiveness</a>.<br  />
+ The value resets to 0 during Player.ResetEffects and is manipulated throughout Player.Update(int).<br  />
+ If the final value is needed, <a class="el" href="class_mod_player.html#aee95754c98f8419601548e446cbebf0e" title="This is called at the very end of the Player.Update method. Final general update tasks can be placed ...">ModPlayer.PostUpdate</a> or anytime later is the best place. As such it is not recommended to manipulate the value during PostUpdate or at any time later for compatibility. Failure to follow this guideline will result in inconsistent behavior.<br  />
+ Due to this field being a <a class="el" href="struct_player_1_1_defense_stat.html">DefenseStat</a>, modders can freely add, subtract, multiply, and divide the value. The final result will properly account for all modifications applied.<br  />
+ <br /></td></tr>
 <tr class="separator:a77d899015e43c0583996a1774c760ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a9b28a808c81cd0f90ae16efbe196f0d1">statLife</a> = 100</td></tr>
 <tr class="memdesc:a9b28a808c81cd0f90ae16efbe196f0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current health of this player. Capped at <a class="el" href="class_player.html#a6d60c82c9303000b6b36720705290b5a" title="The maximum health this player can have, adjusted by buffs and equipment.">statLifeMax2</a>. <br  />

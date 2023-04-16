@@ -28,6 +28,7 @@ var class_tile_i_d_1_1_sets =
     [ "DoesntGetReplacedWithTileReplacement", "class_tile_i_d_1_1_sets.html#a40fcb33e079653d8b942406323a72370", null ],
     [ "DoesntPlaceWithTileReplacement", "class_tile_i_d_1_1_sets.html#a74c822a6ceca1ff049b828022f023805", null ],
     [ "DontDrawTileSliced", "class_tile_i_d_1_1_sets.html#a9db9240389b2331304b54272a4fa19cb", null ],
+    [ "HasOutlines", "class_tile_i_d_1_1_sets.html#a612fadd9d5e3f24c17c1052fdf9b6ebe", null ],
     [ "IceSkateSlippery", "class_tile_i_d_1_1_sets.html#a38c57298977bbdfc47182befc869a9e2", null ],
     [ "IgnoredByGrowingSaplings", "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add", null ],
     [ "IgnoredByNpcStepUp", "class_tile_i_d_1_1_sets.html#a627678a41ae21731ed608c9569e34b3b", null ],
@@ -37,10 +38,15 @@ var class_tile_i_d_1_1_sets =
     [ "IsShakeable", "class_tile_i_d_1_1_sets.html#aaac5a9a525fa956faaac081834865189", null ],
     [ "IsValidSpawnPoint", "class_tile_i_d_1_1_sets.html#ad6912ddfda80b5c2bcf9e2c0d92a50f7", null ],
     [ "OpenDoorID", "class_tile_i_d_1_1_sets.html#a8fb0968be6950da945654afe3afdc8ec", null ],
+    [ "Ore", "class_tile_i_d_1_1_sets.html#a8d2ee6dafe5c1139e11b8243bc4245fa", null ],
     [ "PreventsSandfall", "class_tile_i_d_1_1_sets.html#ad8a3338d13c14792154c3793dc960375", null ],
     [ "PreventsTileRemovalIfOnTopOfIt", "class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4", null ],
     [ "PreventsTileReplaceIfOnTopOfIt", "class_tile_i_d_1_1_sets.html#a0ffb8223f3a721bbeaeee866d909e781", null ],
+    [ "Suffocate", "class_tile_i_d_1_1_sets.html#a0347fa6ea917b42871e43464d607b5cd", null ],
     [ "Torch", "class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b", null ],
+    [ "TouchDamageBleeding", "class_tile_i_d_1_1_sets.html#af0888b613264a345fd387a7f5457b802", null ],
+    [ "TouchDamageHot", "class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638", null ],
+    [ "TouchDamageImmediate", "class_tile_i_d_1_1_sets.html#ae7f7367d1a857087d390d3c4f2d6d561", null ],
     [ "TreeSapling", "class_tile_i_d_1_1_sets.html#a6464e0fabefdd9369974628b6d3ad6b6", null ],
     [ "WallsMergeWith", "class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77", null ]
 ];
