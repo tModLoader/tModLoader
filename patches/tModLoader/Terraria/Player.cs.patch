@@ -331,7 +331,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,16 +_,78 @@
+@@ -961,16 +_,89 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -342,7 +342,18 @@
 +	*/
 +	internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
 +
++	/// <summary>
++	/// The defense value of this player.<br/>
++	/// The <see href="https://terraria.wiki.gg/wiki/Defense#Players">Defense wiki page</see> teaches how player defense affects incoming damage alongside <see cref="DefenseEffectiveness"/>.<br/>
++	/// The value resets to 0 during <see cref="Player.ResetEffects"/> and is manipulated throughout <see cref="Player.Update(int)"/>.<br/>
++	/// If the final value is needed, <see cref="ModPlayer.PostUpdate"/> or anytime later is the best place. As such it is not recommended to manipulate the value during PostUpdate or at any time later for compatibility. Failure to follow this guideline will result in inconsistent behavior.<br/>
++	/// Due to this field being a <see cref="DefenseStat"/>, modders can freely add, subtract, multiply, and divide the value. The final result will properly account for all modifications applied.<br/>
++	/// </summary>
 +	public DefenseStat statDefense; // changed from int
++	/// <summary>
++	/// Determines how effective the player's <see cref="statDefense"/> is at reducing incoming damage.<br/>
++	/// The <see href="https://terraria.wiki.gg/wiki/Defense#Players">Defense wiki page</see> explains the effect, shown in the wiki as "factor".<br/>
++	/// </summary>
 +	public MultipliableFloat DefenseEffectiveness; // added by TML
 +
 +	/// <summary>

@@ -344,7 +344,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,7 +_,18 @@
+@@ -829,29 +_,64 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -361,8 +361,54 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
++	/// <summary>
++	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles.
++	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
++	/// <summary>
++	/// How rarly tiny ambient dust appear from this tile. Larger values mean less frequently
++	/// </summary>
+ 	public static int[] tileShine = new int[TileID.Count];
++	/// <summary>
++	/// If true, the tile will be drawn to be slightly more bright. 
++	/// </summary>
+ 	public static bool[] tileShine2 = new bool[TileID.Count];
+ 	public static bool[] wallHouse = new bool[WallID.Count];
+ 	public static bool[] wallDungeon = new bool[WallID.Count];
+ 	public static bool[] wallLight = new bool[WallID.Count];
+ 	public static int[] wallBlend = new int[WallID.Count];
+ 	public static bool[] tileStone = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe.
++	/// </summary>
+ 	public static bool[] tileAxe = new bool[TileID.Count];
+ 	public static bool[] tileHammer = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destoryed if in contact with water. <see cref="TileObjectData.WaterDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// </summary>
+ 	public static bool[] tileWaterDeath = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destoryed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// </summary>
+ 	public static bool[] tileLavaDeath = new bool[TileID.Count];
+ 	public static bool[] tileTable = new bool[TileID.Count];
+ 	public static bool[] tileBlockLight = new bool[TileID.Count];
+ 	public static bool[] tileNoSunLight = new bool[TileID.Count];
+ 	public static bool[] tileDungeon = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles will be drawn much brigter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
++	/// </summary>
+ 	public static bool[] tileSpelunker = new bool[TileID.Count];
+ 	public static bool[] tileSolidTop = new bool[TileID.Count];
+ 	public static bool[] tileSolid = new bool[TileID.Count];
+ 	public static bool[] tileBouncy = new bool[TileID.Count];
++	/// <summary>
++	/// The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The <see href="https://terraria.wiki.gg/wiki/Metal_Detector">Metal Detector wiki page</see> lists existing values to use as reference.
++	/// </summary>
+ 	public static short[] tileOreFinderPriority = new short[TileID.Count];
+ 	public static byte[] tileLargeFrames = new byte[TileID.Count];
+ 	public static byte[] wallLargeFrames = new byte[WallID.Count];
 @@ -862,6 +_,8 @@
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
@@ -430,6 +476,18 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
+@@ -1865,6 +_,11 @@
+ 	public static string getPort = Convert.ToString(Netplay.ListenPort);
+ 	public static bool menuMultiplayer;
+ 	public static bool menuServer;
++	/// <summary>
++	/// Denotes the current network mode: <b>0</b> for single player client, <b>1</b> for multiplayer client, and <b>2</b> for server.<br/>
++	/// Using <see cref="ID.NetmodeID"/> entries instead of 0, 1, and 2 will greatly enhance code readability.<br/>
++	/// Modders must properly use netMode to selectively run code. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// </summary>
+ 	public static int netMode;
+ 	private static int _targetNetMode;
+ 	private static bool _hasPendingNetmodeChange;
 @@ -1970,7 +_,7 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;
