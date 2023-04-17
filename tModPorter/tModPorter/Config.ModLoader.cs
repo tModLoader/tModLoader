@@ -357,7 +357,8 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.ModItem", from: "SacrificeTotal", to: "Item.ResearchUnlockCount");
 
-		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		to: "ItemDropOverride");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "ItemDrop",	to: "ItemDropOverride");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",	to: "DustType");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "soundType",	to: "HitSound");
 
@@ -498,8 +499,8 @@ public static partial class Config
 
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile", "Drop", comment: "Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation.");
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDropOverride");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDropOverride");
 		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
 		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
 		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));

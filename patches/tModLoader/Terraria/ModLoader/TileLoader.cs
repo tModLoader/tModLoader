@@ -589,7 +589,7 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, style 0 will be checked as a fallback.
+	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, a fallback item will be returned if registered through passing -1 into <see cref="ModTile.RegisterItemDrop(int, int)"/>.
 	/// <br/> A return of 0 indicates that no item would drop from the tile.
 	/// </summary>
 	/// <param name="type"></param>
@@ -599,12 +599,12 @@ public static class TileLoader
 	{
 		// Override
 		ModTile modTile = GetTile(type);
-		if (modTile?.ItemDrop > 0) 
-			return modTile.ItemDrop;
-		if (modTile?.ItemDrop == -1)
+		if (modTile?.ItemDropOverride > 0) 
+			return modTile.ItemDropOverride;
+		if (modTile?.ItemDropOverride == -1)
 			return 0;
 
-		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out value))
+		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, -1), out value))
 			return value;
 
 		return 0;
@@ -1190,8 +1190,10 @@ public static class TileLoader
 		for (int k = 0; k < ItemLoader.ItemCount; k++) {
 			Item item = ContentSamples.ItemsByType[k];
 			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
-				if (item.createTile > -1)
-					tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
+				if (item.createTile > -1) {
+					// TryAdd won't override existing value if present. Existing ModTile.RegisterItemDrop entries take precedence
+					tileTypeAndTileStyleToItemType.TryAdd((item.createTile, item.placeStyle), item.type);
+				}
 			}
 		}
 	}

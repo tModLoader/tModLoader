@@ -8,6 +8,7 @@ public class ModTileTest : ModTile
 {
 	void Method() {
 		drop = 1;
+		ItemDrop = 12;
 		dustType = 0;
 		soundType = 1;
 		soundStyle = 0;
