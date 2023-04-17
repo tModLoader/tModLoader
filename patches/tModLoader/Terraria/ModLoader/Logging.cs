@@ -78,9 +78,6 @@ public static partial class Logging
 		if (!string.IsNullOrEmpty(stackLimit))
 			tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", stackLimit);
 
-		if (ModCompile.DeveloperMode)
-			tML.Info("Developer mode enabled");
-
 		foreach (string line in initWarnings)
 			tML.Warn(line);
 
@@ -89,9 +86,6 @@ public static partial class Logging
 		AssemblyResolving.Init();
 		LoggingHooks.Init();
 		LogArchiver.ArchiveLogs();
-		
-		if (!dedServ)
-			FNALogging.RedirectLogs();
 	}
 
 	private static void ConfigureAppenders(LogFile logFile)
