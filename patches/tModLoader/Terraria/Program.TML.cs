@@ -127,7 +127,7 @@ public static partial class Program
 			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 
 			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
-				throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
+				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Failed to init logging", e);
@@ -142,25 +142,15 @@ public static partial class Program
 			ErrorReporting.FatalExit("Failed to establish a save location", e);
 		}
 				
-		if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath
+		if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
 			Logging.tML.Info("Developer mode enabled");
 
 		AttemptSupportHighDPI(isServer); // Can run anytime
 
-		try {
-			CheckDependencies(); // Should run after LogStartup
-		}
-		catch (Exception e) {
-			ErrorReporting.FatalExit("Unexpected failure in verifying dependencies. Please reach out in the tModLoader Discord for support", e);
-		}
-
-		if (!isServer)
+		if (!isServer) {
+			NativeLibraries.CheckNativeFAudioDependencies();
 			FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
-	}
-
-	private static void CheckDependencies()
-	{
-		NativeLibraries.CheckNativeFAudioDependencies();
+		}
 	}
 
 	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
