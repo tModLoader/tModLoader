@@ -6,6 +6,9 @@ namespace Terraria.ModLoader.Engine;
 
 internal class NativeLibraries
 {
+	const string WindowsVersionNDesc = "Windows Versions N and KN are missing some media features.\n\nFollow the instructions in the Microsoft website\n\nSearch \"Media Feature Pack list for Windows N editions\" if the page doesn't open automatically.";
+	const string WindowsVersionNUrl = "https://support.microsoft.com/en-us/topic/media-feature-pack-list-for-windows-n-editions-c1c6fffa-d052-8338-7a79-a4bb980a700a";
+
 	internal static void CheckNativeFAudioDependencies()
 	{
 		if (!OperatingSystem.IsWindows())
@@ -24,12 +27,12 @@ internal class NativeLibraries
 			throw new BadImageFormatException();
 		}
 		catch (DllNotFoundException e) {
-			e.HelpLink = "https://support.microsoft.com/en-us/topic/media-feature-pack-list-for-windows-n-editions-c1c6fffa-d052-8338-7a79-a4bb980a700a";
-			ErrorReporting.FatalExit("Windows Versions N and KN are missing some media features.\n\nFollow the instructions in the Microsoft website\n\nSearch \"Media Feature Pack list for Windows N editions\" if the page doesn't open automatically.", e);
+			e.HelpLink = WindowsVersionNUrl;
+			ErrorReporting.FatalExit(WindowsVersionNDesc, e);
 		}
 		catch (BadImageFormatException e) {
-			e.HelpLink = "https://answers.microsoft.com/en-us/windows/forum/all/mfplatdll-is-either-not-designed-to-run-on-windows/4c59e05b-ee5e-404f-8356-32f88cee6c0c";
-			ErrorReporting.FatalExit("MFPlat.DLL is either not designed to run on Windows or it contains an error.\n\nFollow the instructions in the Microsoft website\n\nSearch \"MFPlat.DLL is either not designed to run on Windows\" if the page doesn't open automatically.");
+			e.HelpLink = WindowsVersionNUrl;
+			ErrorReporting.FatalExit(WindowsVersionNUrl + "\n\nIf this doesn't work try Search \"MFPlat.DLL is either not designed to run on Windows\" and follow those instructions");
 		}
 	}
 
