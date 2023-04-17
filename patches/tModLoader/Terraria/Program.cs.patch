@@ -92,7 +92,7 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,74 @@
+@@ -147,23 +_,81 @@
  		}
  	}
  
@@ -149,13 +149,20 @@
 +
 +		try {
 +			SetSavePath(); // Needs to run before Logging.LogStartup due to DeveloperMode check in ModCompile
-+			Logging.LogStartup(isServer);
 +		}
 +		catch (Exception e) {
-+			ErrorReporting.FatalExit("Failed to handle save data", e);
++			ErrorReporting.FatalExit("Failed to establish a save location", e);
 +		}
 +
++		try {
++			CheckDependencies();
++		}
++		catch (Exception e) {
++			ErrorReporting.FatalExit("Unexpected failure in verifying dependencies. Please reach out in the tModLoader Discord for support", e);
++		}
++		
 +		AttemptSupportHighDPI(isServer);
++		Logging.LogStartup(isServer);
 +		LaunchGame_(isServer);
 +	}
 +
