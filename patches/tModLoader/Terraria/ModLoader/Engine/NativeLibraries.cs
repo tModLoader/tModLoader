@@ -24,7 +24,6 @@ internal class NativeLibraries
 
 		try {
 			NativeLibrary.Load("mfplat.dll", Assembly.GetExecutingAssembly(), DllImportSearchPath.System32);
-			throw new BadImageFormatException();
 		}
 		catch (DllNotFoundException e) {
 			e.HelpLink = WindowsVersionNUrl;
