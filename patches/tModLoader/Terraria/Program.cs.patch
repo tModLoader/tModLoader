@@ -92,7 +92,7 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,81 @@
+@@ -147,23 +_,82 @@
  		}
  	}
  
@@ -154,6 +154,8 @@
 +			ErrorReporting.FatalExit("Failed to establish a save location", e);
 +		}
 +
++		Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
++
 +		try {
 +			CheckDependencies();
 +		}
@@ -162,7 +164,6 @@
 +		}
 +		
 +		AttemptSupportHighDPI(isServer);
-+		Logging.LogStartup(isServer);
 +		LaunchGame_(isServer);
 +	}
 +

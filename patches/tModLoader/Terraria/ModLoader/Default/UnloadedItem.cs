@@ -22,7 +22,7 @@ public sealed class UnloadedItem : ModLoaderModItem
 
 		// Needs to be  > 1 for vanilla maxStack changes in 1.4.4,
 		// but also conflicts with inability to know if two unloaded items are the same - Solxan
-		Item.maxStack = 9999;
+		Item.maxStack = int.MaxValue;
 	}
 
 	internal void Setup(TagCompound tag)
