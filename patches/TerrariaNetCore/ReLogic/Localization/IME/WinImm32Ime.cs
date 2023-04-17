@@ -14,14 +14,17 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	private bool _isFocused;
 	private WindowsMessageHook _wndProcHook;
 	private bool _disposedValue;
+	private string _compString;
+	private string[] _candList;
+	private uint _candSelection;
 
-	public override string CompositionString => GetCompositionString();
+	public override string CompositionString => _compString;
 
-	public override bool IsCandidateListVisible => GetCandidate(0) != "";
+	public override bool IsCandidateListVisible => CandidateCount > 0;
 
-	public override uint SelectedCandidate => GetCandidateSelection();
+	public override uint SelectedCandidate => _candSelection;
 
-	public override uint CandidateCount => GetCandidatePageSize();
+	public override uint CandidateCount => (uint)_candList.Length;
 
 	public WinImm32Ime(WindowsMessageHook wndProcHook, IntPtr hWnd)
 	{
@@ -33,18 +36,19 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		_wndProcHook.AddMessageFilter(this);
 		SetEnabled(false);
 	}
-	
+
 	private void SetEnabled(bool bEnable)
 	{
 		NativeMethods.ImmAssociateContext(_hWnd, bEnable ? _hImc : IntPtr.Zero);
 	}
-	
+
 	private void FinalizeString(bool bSend = false)
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		try {
+			NativeMethods.ImmNotifyIME(hImc, Imm.NI_COMPOSITIONSTR, Imm.CPS_CANCEL, 0);
 			NativeMethods.ImmSetCompositionString(hImc, Imm.SCS_SETSTR, "", 0, null, 0);
-			NativeMethods.ImmNotifyIME(hImc, Imm.NI_COMPOSITIONSTR, 0, 0);
+			NativeMethods.ImmNotifyIME(hImc, Imm.NI_CLOSECANDIDATE, 0, 0);
 		}
 		finally {
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
@@ -72,14 +76,14 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
 		}
 	}
-	
-	public override string GetCandidate(uint index)
+
+	private string[] GetCandidateList()
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		try {
 			int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
 			if (size == 0) {
-				return "";
+				return Array.Empty<string>();
 			}
 
 			IntPtr candListBuffer = Marshal.AllocHGlobal(size);
@@ -90,28 +94,38 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			Marshal.Copy(candListBuffer, buf, 0, size);
 			Marshal.FreeHGlobal(candListBuffer);
 
-			if (index >= candList.dwCount) {
-				return "";
+			string[] candStrList = new string[candList.dwCount];
+
+			for (int i = 0; i < candList.dwCount; i++) {
+				uint offsetI = BitConverter.ToUInt32(buf, (i + 6) * sizeof(uint));
+				uint offsetJ = 0;
+				if (i == candList.dwCount - 1) {
+					offsetJ = candList.dwSize;
+				}
+				else {
+					offsetJ = BitConverter.ToUInt32(buf, (i + 7) * sizeof(uint));
+				}
+
+				int strLen = (int)(offsetJ - offsetI - 2);
+				candStrList[i] = Encoding.Unicode.GetString(buf, (int)offsetI, strLen);
 			}
 
-			uint offsetI = BitConverter.ToUInt32(buf, ((int)index + 6) * sizeof(uint));
-			uint offsetJ = 0;
-			if (index == candList.dwCount - 1) {
-				offsetJ = candList.dwSize;
-			}
-			else {
-				offsetJ = BitConverter.ToUInt32(buf, ((int)index + 7) * sizeof(uint));
-			}
-
-			int strLen = (int)(offsetJ - offsetI - 2);
-			string candidate = Encoding.Unicode.GetString(buf, (int)offsetI, strLen);
-			return candidate;
+			return candStrList;
 		}
 		finally {
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
 		}
 	}
-	
+
+	public override string GetCandidate(uint index)
+	{
+		if (index < CandidateCount) {
+			return _candList[index];
+		}
+
+		return "";
+	}
+
 	private uint GetCandidateSelection()
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
@@ -131,27 +145,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
 		}
 	}
-	
-	private uint GetCandidatePageSize()
-	{
-		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
-		try {
-			int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
-			if (size == 0) {
-				return 0;
-			}
 
-			IntPtr candListBuffer = Marshal.AllocHGlobal(size);
-			NativeMethods.ImmGetCandidateList(hImc, 0, candListBuffer, size);
-
-			CandidateList candList = Marshal.PtrToStructure<CandidateList>(candListBuffer);
-			return candList.dwPageSize;
-		}
-		finally {
-			NativeMethods.ImmReleaseContext(_hWnd, hImc);
-		}
-	}
-	
 	protected override void OnEnable()
 	{
 		if (_isFocused)
@@ -192,19 +186,37 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		switch (message.msg) {
 			case Msg.WM_INPUTLANGCHANGE:
 				return true;
+
 			case Msg.WM_IME_STARTCOMPOSITION:
+				_compString = "";
 				return true;
+
+			case Msg.WM_IME_COMPOSITION:
+				_compString = GetCompositionString();
+				return true;
+
+			case Msg.WM_IME_ENDCOMPOSITION:
+				_compString = "";
+				break;
+
 			case Msg.WM_IME_NOTIFY:
+				switch (message.wParam.ToInt32()) {
+					case Imm.IMN_OPENCANDIDATE:
+					case Imm.IMN_CHANGECANDIDATE:
+						_candList = GetCandidateList();
+						_candSelection = GetCandidateSelection();
+						break;
+					
+					case Imm.IMN_CLOSECANDIDATE:
+						_candList = Array.Empty<string>();
+						_candSelection = 0;
+						break;
+				}
+
 				return true;
+
 			case Msg.WM_CHAR:
 				OnKeyPress((char)message.wParam.ToInt32());
-				break;
-			case Msg.WM_KEYDOWN:
-				// System key events should always be ignored whenever the IME is active
-				/*
-				if (!ReLogic.Localization.IME.Windows.NativeMethods.ImeUi_ShouldIgnoreHotKey(ref message))
-					ReLogic.OS.Windows.NativeMethods.TranslateMessage(ref message);
-				*/
 				break;
 		}
 
