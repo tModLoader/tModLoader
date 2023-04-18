@@ -595,7 +595,7 @@ public static class NPCLoader
 				return false;
 		}
 
-		foreach (var g in HookCanBeHitByNPC.Enumerate(npc)) {
+		foreach (var g in HookCanBeHitByNPC.Enumerate(target)) {
 			if (!g.CanBeHitByNPC(target, npc))
 				return false;
 		}
