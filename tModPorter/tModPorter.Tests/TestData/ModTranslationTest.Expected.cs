@@ -33,4 +33,12 @@ Line 2
 		/* t.SetDefault(@"Line 1
 Line 2"); */
 	}
+
+	LocalizedText t2;
+	void ExpressionBodyTest() => return; // t2.SetDefault("Test");
+
+	void NonExpressionBodyTest()
+	{
+		// t2.SetDefault("Test");
+	}
 }
