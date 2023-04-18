@@ -52,7 +52,12 @@ public static partial class Logging
 
 		// This is the first file we attempt to use.
 		Utils.TryCreatingDirectory(LogDir);
-		ConfigureAppenders(logFile);
+		try {
+			ConfigureAppenders(logFile);
+		}
+		catch (Exception e) {
+			ErrorReporting.FatalExit("Failed to init logging", e);
+		}
 	}
 
 	internal static void LogStartup(bool dedServ)
@@ -78,9 +83,6 @@ public static partial class Logging
 		if (!string.IsNullOrEmpty(stackLimit))
 			tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", stackLimit);
 
-		if (ModCompile.DeveloperMode)
-			tML.Info("Developer mode enabled");
-
 		foreach (string line in initWarnings)
 			tML.Warn(line);
 
@@ -89,9 +91,6 @@ public static partial class Logging
 		AssemblyResolving.Init();
 		LoggingHooks.Init();
 		LogArchiver.ArchiveLogs();
-		
-		if (!dedServ)
-			FNALogging.RedirectLogs();
 	}
 
 	private static void ConfigureAppenders(LogFile logFile)
