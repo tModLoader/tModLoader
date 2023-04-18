@@ -335,6 +335,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the aggressor from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="aggressor"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC npc, NPC aggressor)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC does to a friendly NPC.
 	/// </summary>
 	/// <param name="npc"></param>

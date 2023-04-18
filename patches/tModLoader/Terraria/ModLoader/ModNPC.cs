@@ -407,6 +407,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the aggressor from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="aggressor"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC aggressor)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
 	/// Runs in single player or on the server. <br/>
 	/// </summary>
