@@ -86,14 +86,19 @@ internal static class HjsonExtensions
 							NewLine(tw, 0);
 						}
 
-						if (!string.IsNullOrWhiteSpace(kwl))
-							kwl = (isRootObject ? "" : "\n") + new string('\t', level + (showBraces ? 1 : 0)) + kwl.TrimStart();
+						if (!string.IsNullOrWhiteSpace(kwl)) {
+							// Keep empty lines, properly indent all comment lines
+							string indentation = isRootObject ? "" : new string('\t', level + (showBraces ? 1 : 0));
+							var lines = kwl.TrimStart().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.TrimEntries).Select(s => s.Trim()).ToArray();
+							kwl = (isRootObject ? "" : "\n") + indentation + string.Join("\n" + indentation, lines);
+						}
 
 						lastJsonType = val.JsonType;
 						
 						tw.Write(kwl);
 
-						NewLine(tw, level + (showBraces ? 1 : 0));
+						if (!isRootObject || !string.IsNullOrWhiteSpace(kwl))
+							NewLine(tw, level + (showBraces ? 1 : 0));
 
 						kwl = GetComments(commentedObject.Comments, key);
 
