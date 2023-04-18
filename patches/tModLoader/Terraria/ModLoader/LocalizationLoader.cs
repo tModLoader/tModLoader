@@ -361,7 +361,7 @@ public static class LocalizationLoader
 					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
 				}
 				
-				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
+				// Language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
 				if (!fileList.Any(x => x.path == fixedFileName))
 					fileList.Add(new(fixedFileName, prefix, entries));
@@ -412,7 +412,13 @@ public static class LocalizationLoader
 			Dictionary<string, string> localizationsForCulture = new();
 			foreach (var localizationEntry in localizationEntriesForCulture)
 			{
-				localizationsForCulture[localizationEntry.key] = localizationEntry.value;
+				if (localizationEntry.value != null) {
+					string key = localizationEntry.key;
+					if (key.EndsWith(".$parentVal")) {
+						key = key.Replace(".$parentVal", "");
+					}
+					localizationsForCulture[key] = localizationEntry.value;
+				}
 			}
 
 			foreach (var baseFile in baseLocalizationFiles) {
@@ -449,7 +455,6 @@ public static class LocalizationLoader
 	private static string LocalizationFileToHjsonText(LocalizationFile baseFile, Dictionary<string, string> localizationsForCulture)
 	{
 		const int minimumNumberOfEntriesInObject = 1;
-		// TODO: Detect string entries that share a key with an object here, convert to "$parentVal" entry. We don't know if a translation key collides until all keys are collected, so here is a suitable place.
 
 		// Count prefixes to determine candidates for non-object output.
 		Dictionary<string, int> prefixCounts = new();
@@ -473,6 +478,14 @@ public static class LocalizationLoader
 				if (prefixCounts.TryGetValue(key, out var count) && count <= minimumNumberOfEntriesInObject) {
 					// Remove objects with too few children. Should this be ignored if comments exist?
 					baseFile.Entries.RemoveAt(i);
+				}
+			}
+			if (entry.type == JsonType.String) {
+				// We don't know if a translation key collides until all keys are collected, convert to "$parentVal" entry if any other entry shares the prefix
+				string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
+				if (prefixCounts.TryGetValue(key, out var count) && count > 1) {
+					baseFile.Entries[i] = entry with { key = entry.key + ".$parentVal" };
+					// Note: Editing baseFile changes english as well. Undone when localizationsForCulture calculated populated
 				}
 			}
 		}
@@ -503,7 +516,6 @@ public static class LocalizationLoader
 				}
 			}
 
-			// TODO: "$parentVal" support?
 			// Populate parent object with this translation, manipulating comments to appear above the entry.
 
 			if (entry.value == null && entry.type == JsonType.Object) {
@@ -514,7 +526,8 @@ public static class LocalizationLoader
 			}
 			else {
 				// Add values
-				if (!localizationsForCulture.TryGetValue(entry.key, out var value)) {
+				string realKey = entry.key.Replace(".$parentVal", "");
+				if (!localizationsForCulture.TryGetValue(realKey, out var value)) {
 					parent.CommentedOut.Add(finalKey);
 					value = entry.value;
 				}
@@ -550,11 +563,6 @@ public static class LocalizationLoader
 
 	private static List<LocalizationEntry> ParseLocalizationEntries(WscJsonObject jsonObjectEng, string prefix)
 	{
-		// TODO: How should "$parentVal" be handled?
-		// TODO: Which entry should this comment attach to in the result, if it ends up being expanded?
-		//       # Some Comment on ExampleMod.Common
-		//       ExampleMod.Common: {...}
-
 		var existingKeys = new List<LocalizationEntry>();
 		RecurseThrough(jsonObjectEng, prefix);
 		return existingKeys;
@@ -574,7 +582,9 @@ public static class LocalizationLoader
 				else if (item.Value.JsonType == JsonType.String) {
 					var localizationValue = item.Value.Qs();
 					string key = string.IsNullOrWhiteSpace(prefix) ? item.Key : prefix + "." + item.Key;
-
+					if (key.EndsWith(".$parentVal")) {
+						key = key.Replace(".$parentVal", "");
+					}
 					string comment = GetCommentFromIndex(index, original);
 					existingKeys.Add(new(key, localizationValue, comment));
 				}
