@@ -105,14 +105,19 @@ public static partial class Program
 		}
 		else {
 			// File migration is only attempted for the default save folder
-			PortOldSaveDirectories();
-			PortCommonFiles();
+			try {
+				PortOldSaveDirectories();
+				PortCommonFiles();
+			}
+			catch (Exception e) {
+				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
+			}
 
 			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
 			SavePath = Path.Combine(SavePath, SaveFolderName);
 		}
 		
-		Logging.tML.Info($"Save Are Located At: {Path.GetFullPath(SavePath)}");
+		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 
 		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
 			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
@@ -128,28 +133,23 @@ public static partial class Program
 
 			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
-		}
-		catch (Exception e) {
-			ErrorReporting.FatalExit("Failed to init logging", e);
-		}
 
-		Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
+			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
 
-		try {
-			SetSavePath(); 
+			SetSavePath();
+		
+			if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
+				Logging.tML.Info("Developer mode enabled");
+
+			AttemptSupportHighDPI(isServer); // Can run anytime
+
+		    if (!isServer) {
+		    	NativeLibraries.CheckNativeFAudioDependencies();
+		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
+		    }
 		}
-		catch (Exception e) {
-			ErrorReporting.FatalExit("Failed to establish a save location", e);
-		}
-				
-		if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
-			Logging.tML.Info("Developer mode enabled");
-
-		AttemptSupportHighDPI(isServer); // Can run anytime
-
-		if (!isServer) {
-			NativeLibraries.CheckNativeFAudioDependencies();
-			FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
+		catch (Exception ex) {
+			ErrorReporting.FatalExit("An unexpected error occured during tML startup", ex);
 		}
 	}
 

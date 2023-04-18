@@ -52,7 +52,12 @@ public static partial class Logging
 
 		// This is the first file we attempt to use.
 		Utils.TryCreatingDirectory(LogDir);
-		ConfigureAppenders(logFile);
+		try {
+			ConfigureAppenders(logFile);
+		}
+		catch (Exception e) {
+			ErrorReporting.FatalExit("Failed to init logging", e);
+		}
 	}
 
 	internal static void LogStartup(bool dedServ)
