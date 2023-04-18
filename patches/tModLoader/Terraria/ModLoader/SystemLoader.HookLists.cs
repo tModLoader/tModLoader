@@ -69,7 +69,7 @@ partial class SystemLoader
 
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
-	private delegate void DelegatePopulateDialogueSubstitutions(out Dictionary<string, object> substitutions);
+	private delegate IDictionary<string, object> DelegatePopulateDialogueSubstitutions(in NPC npc);
 
 	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight);
 

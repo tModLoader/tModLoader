@@ -412,9 +412,150 @@ public static partial class SystemLoader
 	// Based on LocalizedText._substitutionRegex
 	private static readonly Regex _validKeysForDialogueSubstitutions = new("[a-zA-Z][\\w\\.]*", RegexOptions.Compiled);
 
-	// TODO: Is there a way to warn a modder once that a substitution key is invalid? Should this throw an exception?
-	public static void PopulateDialogueSubstitutions(Dictionary<string, object> substitutions)
+	public static void PopulateDialogueSubstitutions(IDictionary<string, object> substitutions, NPC npc)
 	{
+		AddDefaultDialogueSubstitutions(substitutions, npc);
+
+		// Mod substitutions
+		foreach (var system in HookPopulateDialogueSubstitutions.Enumerate()) {
+			var newSubstitutions = system.PopulateDialogueSubstitutions(npc);
+			if (newSubstitutions is null) {
+				continue; // Null is ignored, mentioned in PopulateDialogueSubstitutions' docs.
+			}
+
+			foreach (var pair in newSubstitutions) {
+				if (!_validKeysForDialogueSubstitutions.IsMatch(pair.Key)) {
+					continue; // Invalid keys are ignored, mentioned in PopulateDialogueSubstitutions' docs.
+				}
+
+				substitutions.Add($"{system.Mod.Name}.{pair.Key}", pair.Value);
+			}
+		}
+	}
+
+	private static void AddDefaultDialogueSubstitutions(IDictionary<string, object> substitutions, NPC npc)
+	{
+		var newSubstitutions = new Dictionary<string, object>() {
+			// Missing town NPCs. All keys are NPCID entries / persistent IDs.
+			{ "SantaClaus", NPC.GetFirstNPCNameOrNull(142) },
+			{ "SkeletonMerchant", NPC.GetFirstNPCNameOrNull(453) },
+			{ "BestiaryGirl", NPC.GetFirstNPCNameOrNull(633) },
+			{ "TownCat", NPC.GetFirstNPCNameOrNull(637) },
+			{ "TownDog", NPC.GetFirstNPCNameOrNull(638) },
+			{ "TownBunny", NPC.GetFirstNPCNameOrNull(656) },
+			{ "Princess", NPC.GetFirstNPCNameOrNull(663) },
+			{ "TownSlimeBlue", NPC.GetFirstNPCNameOrNull(670) },
+			{ "TownSlimeGreen", NPC.GetFirstNPCNameOrNull(678) },
+			{ "TownSlimeOld", NPC.GetFirstNPCNameOrNull(679) },
+			{ "TownSlimePurple", NPC.GetFirstNPCNameOrNull(680) },
+			{ "TownSlimeRainbow", NPC.GetFirstNPCNameOrNull(681) },
+			{ "TownSlimeRed", NPC.GetFirstNPCNameOrNull(682) },
+			{ "TownSlimeYellow", NPC.GetFirstNPCNameOrNull(683) },
+			{ "TownSlimeCopper", NPC.GetFirstNPCNameOrNull(684) },
+			// Player info
+			{ "PlayerMale", Main.LocalPlayer.Male },
+			// Most flags below here are from Condition.
+			// Downed flags
+			{ "KingSlimeDefeated", Condition.DownedKingSlime.IsMet() },
+			{ "EyeOfCthulhuDefeated", Condition.DownedEyeOfCthulhu.IsMet() },
+			{ "Boss2Defeated", Condition.DownedEowOrBoc.IsMet() },
+			{ "SkeletronDefeated", Condition.DownedSkeletron.IsMet() },
+			{ "DownedQueenBee", Condition.DownedQueenBee.IsMet() },
+			{ "DownedSkeletron", Condition.DownedSkeletron.IsMet() },
+			{ "DownedDeerclops", Condition.DownedDeerclops.IsMet() },
+			{ "DownedQueenSlime", Condition.DownedQueenSlime.IsMet() },
+			{ "DownedEarlygameBoss", Condition.DownedEarlygameBoss.IsMet() },
+			{ "DownedMechBossAny", Condition.DownedMechBossAny.IsMet() },
+			{ "DownedTwins", Condition.DownedTwins.IsMet() },
+			{ "DownedDestroyer", Condition.DownedDestroyer.IsMet() },
+			{ "DownedSkeletronPrime", Condition.DownedSkeletronPrime.IsMet() },
+			{ "DownedMechBossAll", Condition.DownedMechBossAll.IsMet() },
+			{ "DownedPlantera", Condition.DownedPlantera.IsMet() },
+			{ "DownedEmpressOfLight", Condition.DownedEmpressOfLight.IsMet() },
+			{ "DownedMourningWood", Condition.DownedMourningWood.IsMet() },
+			{ "DownedEverscream", Condition.DownedEverscream.IsMet() },
+			{ "DownedSantaNK1", Condition.DownedSantaNK1.IsMet() },
+			{ "DownedCultist", Condition.DownedCultist.IsMet() },
+			{ "DownedGoblinArmy", Condition.DownedGoblinArmy.IsMet() },
+			{ "DownedPirates", Condition.DownedPirates.IsMet() },
+			{ "DownedMartians", Condition.DownedMartians.IsMet() },
+			{ "DownedSolarPillar", Condition.DownedSolarPillar.IsMet() },
+			{ "DownedVortexPillar", Condition.DownedVortexPillar.IsMet() },
+			{ "DownedNebulaPillar", Condition.DownedNebulaPillar.IsMet() },
+			{ "DownedStardustPillar", Condition.DownedStardustPillar.IsMet() },
+			{ "DownedOldOnesArmyAny", Condition.DownedOldOnesArmyAny.IsMet() },
+			{ "DownedOldOnesArmyT1", Condition.DownedOldOnesArmyT1.IsMet() },
+			{ "DownedOldOnesArmyT2", Condition.DownedOldOnesArmyT2.IsMet() },
+			{ "DownedOldOnesArmyT3", Condition.DownedOldOnesArmyT3.IsMet() },
+			// Biome/event flags
+			{ "Dungeon", Condition.InDungeon.IsMet() },
+			{ "Corrupt", Condition.InCorrupt.IsMet() },
+			{ "Hallow", Condition.InHallow.IsMet() },
+			{ "Meteor", Condition.InMeteor.IsMet() },
+			{ "Jungle", Condition.InJungle.IsMet() },
+			{ "Snow", Condition.InSnow.IsMet() },
+			{ "Crimson", Condition.InCrimson.IsMet() },
+			{ "WaterCandle", Condition.InWaterCandle.IsMet() },
+			{ "PeaceCandle", Condition.InPeaceCandle.IsMet() },
+			{ "TowerSolar", Condition.InTowerSolar.IsMet() },
+			{ "TowerVortex", Condition.InTowerVortex.IsMet() },
+			{ "TowerNebula", Condition.InTowerNebula.IsMet() },
+			{ "TowerStardust", Condition.InTowerStardust.IsMet() },
+			{ "Desert", Condition.InDesert.IsMet() },
+			{ "Glowshroom", Condition.InGlowshroom.IsMet() },
+			{ "UndergroundDesert", Condition.InUndergroundDesert.IsMet() },
+			{ "SkyHeight", Condition.InSkyHeight.IsMet() },
+			{ "Space", Condition.InSpace.IsMet() },
+			{ "OverworldHeight", Condition.InOverworldHeight.IsMet() },
+			{ "DirtLayerHeight", Condition.InDirtLayerHeight.IsMet() },
+			{ "RockLayerHeight", Condition.InRockLayerHeight.IsMet() },
+			{ "UnderworldHeight", Condition.InUnderworldHeight.IsMet() },
+			{ "Underworld", Condition.InUnderworld.IsMet() },
+			{ "Beach", Condition.InBeach.IsMet() },
+			{ "Rain", Condition.InRain.IsMet() },
+			{ "Sandstorm", Condition.InSandstorm.IsMet() },
+			{ "OldOneArmy", Condition.InOldOneArmy.IsMet() },
+			{ "Granite", Condition.InGranite.IsMet() },
+			{ "Marble", Condition.InMarble.IsMet() },
+			{ "Hive", Condition.InHive.IsMet() },
+			{ "GemCave", Condition.InGemCave.IsMet() },
+			{ "LihzhardTemple", Condition.InLihzhardTemple.IsMet() },
+			{ "Aether", Condition.InAether.IsMet() },
+			{ "Thunderstorm", Condition.Thunderstorm.IsMet() },
+			{ "BirthdayParty", Condition.BirthdayParty.IsMet() },
+			{ "LanternNight", Condition.LanternNight.IsMet() },
+			{ "HappyWindyDay", Condition.HappyWindyDay.IsMet() },
+			// World info
+			{ "ClassicMode", Condition.InClassicMode.IsMet() },
+			{ "ExpertMode", Condition.InExpertMode.IsMet() },
+			{ "MasterMode", Condition.InMasterMode.IsMet() },
+			{ "JourneyMode", Condition.InJourneyMode.IsMet() },
+			{ "CrimsonWorld", Condition.CrimsonWorld.IsMet() },
+			{ "DrunkWorld", Condition.DrunkWorld.IsMet() },
+			{ "RemixWorld", Condition.RemixWorld.IsMet() },
+			{ "NotTheBeesWorld", Condition.NotTheBeesWorld.IsMet() },
+			{ "ForTheWorthyWorld", Condition.ForTheWorthyWorld.IsMet() },
+			{ "TenthAnniversaryWorld", Condition.TenthAnniversaryWorld.IsMet() },
+			{ "DontStarveWorld", Condition.DontStarveWorld.IsMet() },
+			{ "NoTrapsWorld", Condition.NoTrapsWorld.IsMet() },
+			{ "ZenithWorld", Condition.ZenithWorld.IsMet() },
+			{ "Christmas", Condition.Christmas.IsMet() },
+			{ "Halloween", Condition.Halloween.IsMet() },
+			// Misc.
+			{ "Multiplayer", Condition.Multiplayer.IsMet() },
+			{ "HappyEnough", Condition.HappyEnough.IsMet() },
+			{ "HappyEnoughToSellPylons", Condition.HappyEnoughToSellPylons.IsMet() },
+			{ "AnotherTownNPCNearby", Condition.AnotherTownNPCNearby.IsMet() },
+			{ "IsNpcShimmered", npc?.IsShimmerVariant ?? false }
+		};
+		
+		foreach (var pair in newSubstitutions) {
+			// Future-proof if Terraria adds these keys.
+			if (!substitutions.ContainsKey(pair.Key)) {
+				substitutions[pair.Key] = pair.Value;
+			}
+		}
+		
 		// Autoloaded substitutions for keybinds and town NPCs.
 		foreach (ModKeybind keybind in KeybindLoader.modKeybinds.Values) {
 			substitutions.Add($"{keybind.Mod.Name}.InputTrigger_{keybind.Name}", PlayerInput.GenerateInputTag_ForCurrentGamemode(tagForGameplay: true, keybind.FullName));
@@ -422,24 +563,8 @@ public static partial class SystemLoader
 
 		for (int i = NPCID.Count; i < NPCLoader.NPCCount; i++) {
 			NPC townNPC = ContentSamples.NpcsByNetId[i];
-			if (townNPC.isLikeATownNPC) {
+			if (townNPC.isLikeATownNPC || NPCID.Sets.SpawnsWithCustomName[i]) {
 				substitutions.Add($"{townNPC.ModNPC.Mod.Name}.{townNPC.ModNPC.Name}", NPC.GetFirstNPCNameOrNull(i));
-			}
-		}
-
-		// Mod substitutions
-		foreach (var system in HookPopulateDialogueSubstitutions.Enumerate()) {
-			system.PopulateDialogueSubstitutions(out var newSubstitutions);
-			if (newSubstitutions is null) {
-				continue; // TODO: Warn
-			}
-
-			foreach (var pair in newSubstitutions) {
-				if (!_validKeysForDialogueSubstitutions.IsMatch(pair.Key)) {
-					continue; // TODO: Warn
-				}
-
-				substitutions.Add($"{system.Mod.Name}.{pair.Key}", pair.Value);
 			}
 		}
 	}

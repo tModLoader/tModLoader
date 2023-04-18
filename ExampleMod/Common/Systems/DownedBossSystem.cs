@@ -111,8 +111,8 @@ namespace ExampleMod.Common.Systems
 			*/
 		}
 
-		public override void PopulateDialogueSubstitutions(out Dictionary<string, object> substitutions) {
-			substitutions = new() {
+		public override IDictionary<string, object> PopulateDialogueSubstitutions(in NPC npc) {
+			return new Dictionary<string, object>() {
 				{ "MinionBossDefeated", downedMinionBoss }
 			};
 		}

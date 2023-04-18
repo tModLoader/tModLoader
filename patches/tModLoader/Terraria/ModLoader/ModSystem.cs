@@ -287,13 +287,14 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Called every time an NPC or a GameTip needs dialogue substitutions.
-	/// <br/> Keys to this dictionary <b>must</b> start with a letter. It may then be followed by any combination of letters, numbers, underscores, and periods.
+	/// <br/> Keys to this dictionary <b>must</b> start with a letter. It may then be followed by any combination of letters, numbers, underscores, and periods. <b>Invalid keys will be ignored.</b>
 	/// <br/> Any substitution added using this hook will be available in localization files as "ModName.Substitution". For example, "ExampleMod.ExampleSubstitution".
-	/// <br/> Town NPC (<see cref="NPC.isLikeATownNPC"/>) names and <see cref="ModKeybind"/>s are automatically added. Town NPCs are added as "ModName.NPCName", while keybinds are added as "ModName.InputTrigger_KeybindName".
+	/// <br/> Town NPC (<see cref="NPC.isLikeATownNPC"/>, <see cref="NPCID.Sets.SpawnsWithCustomName"/>) names and <see cref="ModKeybind"/>s are automatically added. Town NPCs are added as "ModName.NPCName", while keybinds are added as "ModName.InputTrigger_KeybindName".
 	/// </summary>
-	/// <returns></returns>
-	public virtual void PopulateDialogueSubstitutions(out Dictionary<string, object> substitutions) {
-		substitutions = null;
+	/// <param name="npc">The NPC being spoken to, or <see langword="null"/> if this hook is called for a GameTip.</param>
+	/// <returns>The substitutions to add. If <see langword="null"/>, does nothing.</returns>
+	public virtual IDictionary<string, object> PopulateDialogueSubstitutions(in NPC npc) {
+		return null;
 	}
 
 	/// <summary>

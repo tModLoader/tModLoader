@@ -61,7 +61,7 @@
 +
 +		PropertyInfo[] properties = oldSubstitutions.GetType().GetProperties();
 +		Dictionary<string, object> substitutionsDict = properties.ToDictionary(p => p.Name, p => p.GetValue(oldSubstitutions));
-+		SystemLoader.PopulateDialogueSubstitutions(substitutionsDict);
++		SystemLoader.PopulateDialogueSubstitutions(substitutionsDict, npc);
 +
 +		return substitutionsDict;
  	}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace Terraria.Localization;
@@ -98,48 +99,21 @@ public partial class LocalizedText
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
 
 	/// <summary>
-	/// Formats this <see cref="LocalizedText"/> using a dictionary. For each key-value pair <c>(K, V)</c>, any substring in the localized text of form <c>{K}</c> will be replaced with <c>(V ?? "").ToString()</c>.
-	/// <br/> <b>All property names must start with a a letter a-z</b>, followed by any combination of letters, numbers, underscores, and periods.
+	/// Gets a value from either <paramref name="substitutionObject"/> or <paramref name="properties"/>.
+	/// <br/> If <paramref name="substitutionObject"/> is an <see cref="IDictionary{TKey, TValue}">IDictionary&lt;string, object&gt;</see>, it will be used. Otherwise, the value will be found in <paramref name="properties"/>.
 	/// </summary>
-	/// <param name="substitutions">The set of substitutions.</param>
-	/// <returns>The formatted string.</returns>
-	public string FormatWith(Dictionary<string, object> substitutions)
+	/// <param name="properties">The properties of <paramref name="substitutionObject"/>.</param>
+	/// <param name="substitutionObject">The dialogue substitution object, either as an anonymous type or as an <see cref="IDictionary{TKey, TValue}"/>.</param>
+	/// <param name="key">The key of the value to get.</param>
+	/// <param name="value">The retrieved value, or <see langword="null"/> if it doesn't exist. The retrieved value may also be <see langword="null"/>.</param>
+	/// <returns><see langword="true"/> if a value was retrieved, <see langword="false"/> otherwise.</returns>
+	private static bool GetValueFromSubstitution(PropertyDescriptorCollection properties, object substitutionObject, string key, out object value)
 	{
-		string value = Value;
-		return _substitutionRegex.Replace(value, delegate (Match match) {
-			if (match.Groups[1].Length != 0)
-				return "";
+		if (substitutionObject is IDictionary<string, object> dict)
+			return dict.TryGetValue(key, out value);
 
-			string name = match.Groups[2].ToString();
-			return substitutions.TryGetValue(name, out object value) ? "" : (value ?? "").ToString();
-		});
-	}
-
-	/// <summary>
-	/// Determines if this <see cref="LocalizedText"/> can be formatted using a dictionary. A <see cref="LocalizedText"/> can be formatted if:
-	/// <list type="bullet">
-	/// <item>Every substring of the text in form <c>{?Name}</c> has a key <c>Name</c> in <paramref name="substitutions"/> which is a <see cref="bool"/> with the value <see langword="true"/>.</item>
-	/// <item>Every substring of the text in form <c>{?!Name}</c> has a key <c>Name</c> in <paramref name="substitutions"/> which is a <see cref="bool"/> with the value <see langword="false"/>.</item>
-	/// <item>Every substring of the text in form <c>{Name}</c> has a key <c>Name</c> in <paramref name="substitutions"/> which is not <see langword="null"/>.</item>
-	/// </list>
-	/// </summary>
-	/// <param name="substitutions">The set of substitutions.</param>
-	/// <returns><see langword="true"/> if all conditions pass, <see langword="false"/> otherwise.</returns>
-	public bool CanFormatWith(Dictionary<string, object> substitutions)
-	{
-		foreach (Match item in _substitutionRegex.Matches(Value)) {
-			string name = item.Groups[2].ToString();
-			if (!substitutions.TryGetValue(name, out object value)) {
-				return false;
-			}
-
-			if (value == null)
-				return false;
-
-			if (item.Groups[1].Length != 0 && (((value as bool?) ?? false) ^ (item.Groups[1].Length == 1)))
-				return false;
-		}
-
-		return true;
+		PropertyDescriptor property = properties[key]; // Calls Find(key, false)
+		value = property?.GetValue(substitutionObject) ?? null;
+		return property != null;
 	}
 }
