@@ -2,7 +2,7 @@ var class_mod =
 [
     [ "AddBossHeadTexture", "class_mod.html#a00545110ca72da144feab6caae91ee6b", null ],
     [ "AddContent", "class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc", null ],
-    [ "AddContent< T >", "class_mod.html#a9a2df7cc1353f3db1768e8ecad5514e1", null ],
+    [ "AddContent< T >", "class_mod.html#a695e33a18abd83f67de575d9b139e30a", null ],
     [ "AddNPCHeadTexture", "class_mod.html#ac90d93f5b6876c595e4ed4f307c838d4", null ],
     [ "AddRecipeGroups", "class_mod.html#a7cb809eedb01a15eafc6451cf1a4bcde", null ],
     [ "AddRecipes", "class_mod.html#acf6255eaa107fb7f74477702761df098", null ],
