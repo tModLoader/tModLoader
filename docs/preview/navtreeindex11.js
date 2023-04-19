@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"class_mod_scene_effect.html#ae41db4c5059325def708737f3cc07384":[3,0,770,6],
+"class_mod_scene_effect.html#aef10f88f98c97b891e9b7237b4458f74":[3,0,770,8],
+"class_mod_shapes.html":[3,0,771],
 "class_mod_shapes_1_1_all.html":[3,0,771,0],
 "class_mod_shapes_1_1_inner_outline.html":[3,0,771,1],
 "class_mod_shapes_1_1_outer_outline.html":[3,0,771,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "class_mono_mod_hooks.html#ab896e537c21b54ce3f957453e9ef71b6":[3,0,789,4],
 "class_moon_lord_portrait_background_provider_bestiary_info_element.html":[3,0,791],
 "class_moon_lord_progress_bar.html":[3,0,792],
-"class_moon_lord_screen_shader_data.html":[3,0,793],
-"class_moon_lord_sky.html":[3,0,794],
-"class_moon_shader.html":[3,0,795],
-"class_moonlord_death_drama.html":[3,0,790]
+"class_moon_lord_screen_shader_data.html":[3,0,793]
 };

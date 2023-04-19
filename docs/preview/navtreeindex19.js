@@ -1,5 +1,9 @@
 var NAVTREEINDEX19 =
 {
+"functions_func_p.html":[3,3,1,15],
+"functions_func_q.html":[3,3,1,16],
+"functions_func_r.html":[3,3,1,17],
+"functions_func_s.html":[3,3,1,18],
 "functions_func_t.html":[3,3,1,19],
 "functions_func_u.html":[3,3,1,20],
 "functions_func_v.html":[3,3,1,21],
@@ -245,9 +249,5 @@ var NAVTREEINDEX19 =
 "struct_entity_globals_enumerator.html":[3,0,295],
 "struct_entity_shadow_info.html":[3,0,296],
 "struct_entry_icon_draw_settings.html":[3,0,327],
-"struct_extension_filter.html":[3,0,336],
-"struct_extra_bestiary_info_page_information.html":[3,0,337],
-"struct_extra_seat_info.html":[3,0,338],
-"struct_fast_random.html":[3,0,347],
-"struct_filtered_array_enumerator.html":[3,0,358]
+"struct_extension_filter.html":[3,0,336]
 };

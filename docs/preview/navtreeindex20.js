@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"struct_extra_bestiary_info_page_information.html":[3,0,337],
+"struct_extra_seat_info.html":[3,0,338],
+"struct_fast_random.html":[3,0,347],
+"struct_filtered_array_enumerator.html":[3,0,358],
 "struct_filtered_span_enumerator.html":[3,0,359],
 "struct_final_fractal_helper.html":[3,0,363],
 "struct_final_fractal_helper_1_1_final_fractal_profile.html":[3,0,363,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "struct_stat_modifier.html":[3,0,1117],
 "struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b":[3,0,1117,2],
 "struct_stat_modifier.html#a2c77880e64ec8b1147e27abeb524a5ad":[3,0,1117,1],
-"struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40":[3,0,1117,0],
-"struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091":[3,0,1117,6],
-"struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5":[3,0,1117,4],
-"struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602":[3,0,1117,7],
-"struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b":[3,0,1117,5]
+"struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40":[3,0,1117,0]
 };

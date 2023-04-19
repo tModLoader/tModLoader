@@ -1,5 +1,9 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile_i_d_1_1_sets.html#a920c94eec033dd963675c0a5079a7a96":[3,0,976,0,21],
+"class_projectile_i_d_1_1_sets.html#a935f885823fca92a7aa292ba6f107691":[3,0,976,0,12],
+"class_projectile_i_d_1_1_sets.html#a9b198deaa42177d92c97866b91141149":[3,0,976,0,35],
+"class_projectile_i_d_1_1_sets.html#a9bf7d9d0c2d7d0c1b166ff1bc025c740":[3,0,976,0,8],
 "class_projectile_i_d_1_1_sets.html#aab31733abf774f4ff20b82e655bc4590":[3,0,976,0,23],
 "class_projectile_i_d_1_1_sets.html#aaba86d4c655f38cb9623fd11df144204":[3,0,976,0,32],
 "class_projectile_i_d_1_1_sets.html#aad62152f56e8850ca231e3ec5ec84e3f":[3,0,976,0,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX16 =
 "class_stray_methods.html":[3,0,1124],
 "class_structure_map.html":[3,0,1125],
 "class_summon_damage_class.html":[3,0,1127],
-"class_summon_damage_class.html#a49b9eba36c210061998ba002929ffda6":[3,0,1127,0],
-"class_summon_melee_speed_damage_class.html":[3,0,1128],
-"class_summon_melee_speed_damage_class.html#a073dd39f1a77c41ef208496647e24fd5":[3,0,1128,2],
-"class_summon_melee_speed_damage_class.html#a82b3fefb7a33286a6d5ba5a9627913ac":[3,0,1128,1],
-"class_summon_melee_speed_damage_class.html#ad88cef6295d0f1368fc253da802d3e60":[3,0,1128,0]
+"class_summon_damage_class.html#a49b9eba36c210061998ba002929ffda6":[3,0,1127,0]
 };

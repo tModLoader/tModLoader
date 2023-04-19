@@ -1,5 +1,8 @@
 var NAVTREEINDEX12 =
 {
+"class_moon_lord_sky.html":[3,0,794],
+"class_moon_shader.html":[3,0,795],
+"class_moonlord_death_drama.html":[3,0,790],
 "class_moonlord_death_drama_1_1_moonlord_explosion.html":[3,0,790,0],
 "class_moonlord_death_drama_1_1_moonlord_piece.html":[3,0,790,1],
 "class_mount.html":[3,0,796],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "class_n_p_c_a_i_style_i_d.html#afaf5f07937dedf82dade38b819d53a87":[3,0,847,114],
 "class_n_p_c_a_i_style_i_d.html#afd2aafa78fcbcc210da31aa7a2156263":[3,0,847,84],
 "class_n_p_c_a_i_style_i_d.html#afef3ba136cbfd2c0f82a20d9039841ac":[3,0,847,32],
-"class_n_p_c_debuff_immunity_data.html":[3,0,848],
-"class_n_p_c_debuff_immunity_data.html#a09c62858d2383537df08de4da51bed9b":[3,0,848,1],
-"class_n_p_c_debuff_immunity_data.html#a164ab7150ef00bc2a2786c38a8da1afa":[3,0,848,2],
-"class_n_p_c_debuff_immunity_data.html#a52610200cee3fe8d9f11f17b4e02b407":[3,0,848,0]
+"class_n_p_c_debuff_immunity_data.html":[3,0,848]
 };

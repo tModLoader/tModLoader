@@ -1,5 +1,9 @@
 var NAVTREEINDEX17 =
 {
+"class_summon_melee_speed_damage_class.html":[3,0,1128],
+"class_summon_melee_speed_damage_class.html#a073dd39f1a77c41ef208496647e24fd5":[3,0,1128,2],
+"class_summon_melee_speed_damage_class.html#a82b3fefb7a33286a6d5ba5a9627913ac":[3,0,1128,1],
+"class_summon_melee_speed_damage_class.html#ad88cef6295d0f1368fc253da802d3e60":[3,0,1128,0],
 "class_supported_workshop_tags.html":[3,0,1129],
 "class_surface_background_i_d.html":[3,0,1130],
 "class_surface_background_styles_loader.html":[3,0,1131],
@@ -245,9 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_gen_progress_bar.html":[3,0,1269],
 "class_u_i_grid.html":[3,0,1270],
 "class_u_i_hair_style_button.html":[3,0,1271],
-"class_u_i_header.html":[3,0,1272],
-"class_u_i_horizontal_separator.html":[3,0,1273],
-"class_u_i_icon_text_button.html":[3,0,1274],
-"class_u_i_image.html":[3,0,1275],
-"class_u_i_image_button.html":[3,0,1276]
+"class_u_i_header.html":[3,0,1272]
 };

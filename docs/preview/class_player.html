@@ -256,18 +256,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>BuffHandle_SpawnPetIf
  Sets the buff time to the value and spawns the corresponding pet projectile for the player if not yet spawned.<br  />
   <a href="class_player.html#ab82d74f402f08d852ee0a22e813ff74b">More...</a><br /></td></tr>
 <tr class="separator:ab82d74f402f08d852ee0a22e813ff74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a799f662fe42d4adb193a66bed79f3b47"><td class="memItemLeft" align="right" valign="top"><a id="a799f662fe42d4adb193a66bed79f3b47" name="a799f662fe42d4adb193a66bed79f3b47"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>BuyItem</b> (long price, int customCurrency=-1)</td></tr>
+<tr class="memitem:a799f662fe42d4adb193a66bed79f3b47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a799f662fe42d4adb193a66bed79f3b47">BuyItem</a> (long price, int customCurrency=-1)</td></tr>
+<tr class="memdesc:a799f662fe42d4adb193a66bed79f3b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to "purchase" something that costs the given <em>price</em> .<br  />
+ Items will be taken from all of the player inventories and banks combined.<br  />
+ If <em>customCurrency</em>  is provided, the price will be in terms of the custom currency instead of coins.<br  />
+ If the player has enough currency, the currency will be taken from the inventories.<br  />
+  <a href="class_player.html#a799f662fe42d4adb193a66bed79f3b47">More...</a><br /></td></tr>
 <tr class="separator:a799f662fe42d4adb193a66bed79f3b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11b988c2747711732ee1dad45d69a0b9"><td class="memItemLeft" align="right" valign="top"><a id="a11b988c2747711732ee1dad45d69a0b9" name="a11b988c2747711732ee1dad45d69a0b9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAcceptItemIntoInventory</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="separator:a11b988c2747711732ee1dad45d69a0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53c084607e89da29f3b7da6964d49e83"><td class="memItemLeft" align="right" valign="top"><a id="a53c084607e89da29f3b7da6964d49e83" name="a53c084607e89da29f3b7da6964d49e83"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAfford</b> (long price, int customCurrency=-1)</td></tr>
+<tr class="separator:a53c084607e89da29f3b7da6964d49e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ac578501aae761ea441a8c79f710c7e"><td class="memItemLeft" align="right" valign="top"><a id="a9ac578501aae761ea441a8c79f710c7e" name="a9ac578501aae761ea441a8c79f710c7e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAutoReuseItem</b> (<a class="el" href="class_item.html">Item</a> sItem)</td></tr>
 <tr class="separator:a9ac578501aae761ea441a8c79f710c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20989c6298fed084c3d2b57da356b46b"><td class="memItemLeft" align="right" valign="top"><a id="a20989c6298fed084c3d2b57da356b46b" name="a20989c6298fed084c3d2b57da356b46b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBuyItem</b> (int price, int customCurrency=-1)</td></tr>
-<tr class="separator:a20989c6298fed084c3d2b57da356b46b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cec688c58bf6f163b80887138934dbc"><td class="memItemLeft" align="right" valign="top"><a id="a7cec688c58bf6f163b80887138934dbc" name="a7cec688c58bf6f163b80887138934dbc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDemonHeartAccessoryBeShown</b> ()</td></tr>
 <tr class="separator:a7cec688c58bf6f163b80887138934dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -967,6 +971,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenPresent</b> (int 
 <tr class="memitem:a22f294d28b50826b894330f2009b4e1b"><td class="memItemLeft" align="right" valign="top"><a id="a22f294d28b50826b894330f2009b4e1b" name="a22f294d28b50826b894330f2009b4e1b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenShadowLockbox</b> (int boxType)</td></tr>
 <tr class="separator:a22f294d28b50826b894330f2009b4e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408df3b999b8415a08076fe0ddadb40d"><td class="memItemLeft" align="right" valign="top"><a id="a408df3b999b8415a08076fe0ddadb40d" name="a408df3b999b8415a08076fe0ddadb40d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>PayCurrency</b> (long price, int customCurrency=-1)</td></tr>
+<tr class="separator:a408df3b999b8415a08076fe0ddadb40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e693991d406a52551646148b31f0c38"><td class="memItemLeft" align="right" valign="top"><a id="a7e693991d406a52551646148b31f0c38" name="a7e693991d406a52551646148b31f0c38"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PetAnimal</b> (int animalNpcIndex)</td></tr>
 <tr class="separator:a7e693991d406a52551646148b31f0c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5339,6 +5346,48 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a799f662fe42d4adb193a66bed79f3b47" name="a799f662fe42d4adb193a66bed79f3b47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a799f662fe42d4adb193a66bed79f3b47">&#9670;&nbsp;</a></span>BuyItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Player.BuyItem </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>price</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>customCurrency</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attempts to "purchase" something that costs the given <em>price</em> .<br  />
+ Items will be taken from all of the player inventories and banks combined.<br  />
+ If <em>customCurrency</em>  is provided, the price will be in terms of the custom currency instead of coins.<br  />
+ If the player has enough currency, the currency will be taken from the inventories.<br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">price</td><td></td></tr>
+    <tr><td class="paramname">customCurrency</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the player had enough currency to pay the price.</dd></dl>
 
 </div>
 </div>

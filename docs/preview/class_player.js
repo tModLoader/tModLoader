@@ -21,6 +21,7 @@ var class_player =
     [ "AddImmuneTime", "class_player.html#a62a65413a898e003e73d8e9e38f6d0d8", null ],
     [ "ApplyDamageToNPC", "class_player.html#a579382395e10ab8a10ba1c52254892d5", null ],
     [ "BuffHandle_SpawnPetIfNeededAndSetTime", "class_player.html#ab82d74f402f08d852ee0a22e813ff74b", null ],
+    [ "BuyItem", "class_player.html#a799f662fe42d4adb193a66bed79f3b47", null ],
     [ "CheckMana", "class_player.html#a782b58d9c3dfc2ce794de1d9c280f046", null ],
     [ "ChooseAmmo", "class_player.html#a578a632a00be063b32a07d30e0f420fc", null ],
     [ "ClearBuff", "class_player.html#a4246123cbafbcbf002f8acfa06c03ea2", null ],
