@@ -11,5 +11,4 @@ public struct CandidateList
 	public uint dwSelection;
 	public uint dwPageStart;
 	public uint dwPageSize;
-	public uint dwOffset;
 }

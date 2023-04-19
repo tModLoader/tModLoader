@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using ReLogic.Localization.IME.WinImm32;
@@ -92,21 +93,16 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 			CandidateList candList = MemoryMarshal.Cast<byte, CandidateList>(buf)[0];
 
+			int offsetLen = (int)(sizeof(uint) * candList.dwCount);
+			Span<uint> offsetSpan = MemoryMarshal.Cast<byte, uint>(buf.Slice(Marshal.SizeOf<CandidateList>(), offsetLen));
+			uint[] offsets = offsetSpan.ToArray().Append(candList.dwSize).ToArray();
+
 			byte[] byteBuf = buf.ToArray();
 			string[] candStrList = new string[candList.dwCount];
-
+			
 			for (int i = 0; i < candList.dwCount; i++) {
-				uint offsetI = BitConverter.ToUInt32(byteBuf, (i + 6) * sizeof(uint));
-				uint offsetJ = 0;
-				if (i == candList.dwCount - 1) {
-					offsetJ = candList.dwSize;
-				}
-				else {
-					offsetJ = BitConverter.ToUInt32(byteBuf, (i + 7) * sizeof(uint));
-				}
-
-				int strLen = (int)(offsetJ - offsetI - 2);
-				candStrList[i] = Encoding.Unicode.GetString(byteBuf, (int)offsetI, strLen);
+				int strLen = (int)(offsets[i + 1] - offsets[i] - 2);
+				candStrList[i] = Encoding.Unicode.GetString(byteBuf, (int)offsets[i], strLen);
 			}
 
 			_candList = candStrList;
