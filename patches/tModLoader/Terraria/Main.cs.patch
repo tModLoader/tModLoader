@@ -4111,7 +4111,7 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && player[myPlayer].BuyItem(num58)) {
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanBuyItem(num58) && ItemLoader.PreReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num58) && ItemLoader.PreReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num58);
 +
  							reforgeItem.ResetPrefix();

@@ -497,22 +497,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public bool CanBuyItem(int price, int customCurrency = -1)
-	{
-		if (customCurrency != -1)
-			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-
-		long num = Utils.CoinsCount(out _, inventory, new[] { 58, 57, 56, 55, 54 });
-		long num2 = Utils.CoinsCount(out _, bank.item, Array.Empty<int>());
-		long num3 = Utils.CoinsCount(out _, bank2.item, Array.Empty<int>());
-		long num4 = Utils.CoinsCount(out _, bank3.item, Array.Empty<int>());
-		long voidBag = Utils.CoinsCount(out _, bank4.item, Array.Empty<int>());
-
-		long num5 = Utils.CoinsCombineStacks(out _, new[] { num, num2, num3, num4, voidBag});
-
-		return num5 >= price;
-	}
-
 	/// <summary>
 	/// Calculates the mana needed to use the given item.
 	/// </summary>
