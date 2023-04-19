@@ -407,11 +407,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the aggressor from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
 	/// </summary>
-	/// <param name="aggressor"></param>
+	/// <param name="attacker"></param>
 	/// <returns></returns>
-	public virtual bool CanBeHitByNPC(NPC aggressor)
+	public virtual bool CanBeHitByNPC(NPC attacker)
 	{
 		return true;
 	}

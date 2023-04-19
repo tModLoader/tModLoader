@@ -600,7 +600,7 @@ public static class NPCLoader
 				return false;
 		}
 
-		if (npc.ModNPC?.CanHitNPC(target) == false)
+		if (npc.ModNPC?.CanHitNPC(target) is false)
 			return false;
 
 		return target.ModNPC?.CanBeHitByNPC(npc) ?? true;
