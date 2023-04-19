@@ -60,18 +60,15 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		try {
-			int size = NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, IntPtr.Zero, 0);
+			int size = NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, ref MemoryMarshal.GetReference(Span<byte>.Empty), 0);
 			if (size == 0) {
 				return "";
 			}
 
-			IntPtr buffer = Marshal.AllocHGlobal(size);
-			NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, buffer, size);
+			Span<byte> buf = stackalloc byte[size];
+			NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, ref MemoryMarshal.GetReference(buf), size);
 
-			byte[] buf = new byte[size];
-			Marshal.Copy(buffer, buf, 0, size);
-			Marshal.FreeHGlobal(buffer);
-			return Encoding.Unicode.GetString(buf, 0, size);
+			return Encoding.Unicode.GetString(buf.ToArray());
 		}
 		finally {
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
@@ -82,7 +79,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		try {
-			int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
+			int size = NativeMethods.ImmGetCandidateList(hImc, 0, ref MemoryMarshal.GetReference(Span<byte>.Empty), 0);
 			if (size == 0) {
 				_candList = Array.Empty<string>();
 				_candCount = 0;
@@ -90,28 +87,26 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				return;
 			}
 
-			IntPtr candListBuffer = Marshal.AllocHGlobal(size);
-			NativeMethods.ImmGetCandidateList(hImc, 0, candListBuffer, size);
+			Span<byte> buf = stackalloc byte[size];
+			NativeMethods.ImmGetCandidateList(hImc, 0, ref MemoryMarshal.GetReference(buf), size);
 
-			CandidateList candList = Marshal.PtrToStructure<CandidateList>(candListBuffer);
-			byte[] buf = new byte[size];
-			Marshal.Copy(candListBuffer, buf, 0, size);
-			Marshal.FreeHGlobal(candListBuffer);
+			CandidateList candList = MemoryMarshal.Cast<byte, CandidateList>(buf)[0];
 
+			byte[] byteBuf = buf.ToArray();
 			string[] candStrList = new string[candList.dwCount];
 
 			for (int i = 0; i < candList.dwCount; i++) {
-				uint offsetI = BitConverter.ToUInt32(buf, (i + 6) * sizeof(uint));
+				uint offsetI = BitConverter.ToUInt32(byteBuf, (i + 6) * sizeof(uint));
 				uint offsetJ = 0;
 				if (i == candList.dwCount - 1) {
 					offsetJ = candList.dwSize;
 				}
 				else {
-					offsetJ = BitConverter.ToUInt32(buf, (i + 7) * sizeof(uint));
+					offsetJ = BitConverter.ToUInt32(byteBuf, (i + 7) * sizeof(uint));
 				}
 
 				int strLen = (int)(offsetJ - offsetI - 2);
-				candStrList[i] = Encoding.Unicode.GetString(buf, (int)offsetI, strLen);
+				candStrList[i] = Encoding.Unicode.GetString(byteBuf, (int)offsetI, strLen);
 			}
 
 			_candList = candStrList;

@@ -24,14 +24,14 @@ internal static class NativeMethods
 	public static extern IntPtr ImmAssociateContext(IntPtr hWnd, IntPtr hImc);
 
 	[DllImport("imm32.dll", CharSet = CharSet.Unicode)]
-	public static extern int ImmGetCompositionString(IntPtr hImc, uint dwIndex, IntPtr lpBuf, int dwBufLen);
+	public static extern int ImmGetCompositionString(IntPtr hImc, uint dwIndex, ref byte lpBuf, int dwBufLen);
 
 	[DllImport("imm32.dll", CharSet = CharSet.Unicode)]
 	public static extern bool ImmSetCompositionString(IntPtr hImc, uint dwIndex, string lpComp, int dwCompLen,
 		string lpRead, int dwReadLen);
 
 	[DllImport("imm32.dll", CharSet = CharSet.Unicode)]
-	public static extern int ImmGetCandidateList(IntPtr hImc, uint dwIndex, IntPtr lpCandList, int dwBufLen);
+	public static extern int ImmGetCandidateList(IntPtr hImc, uint dwIndex, ref byte lpCandList, int dwBufLen);
 
 	[DllImport("imm32.dll")]
 	public static extern IntPtr ImmGetDefaultIMEWnd(IntPtr hWnd);
