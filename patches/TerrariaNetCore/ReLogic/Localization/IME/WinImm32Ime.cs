@@ -17,6 +17,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	private string _compString;
 	private string[] _candList;
 	private uint _candSelection;
+	private uint _candCount;
 
 	public override string CompositionString => _compString;
 
@@ -24,7 +25,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public override uint SelectedCandidate => _candSelection;
 
-	public override uint CandidateCount => (uint)_candList.Length;
+	public override uint CandidateCount => _candCount;
 
 	public WinImm32Ime(WindowsMessageHook wndProcHook, IntPtr hWnd)
 	{
@@ -77,13 +78,16 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		}
 	}
 
-	private string[] GetCandidateList()
+	private void UpdateCandidateList()
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		try {
 			int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
 			if (size == 0) {
-				return Array.Empty<string>();
+				_candList = Array.Empty<string>();
+				_candCount = 0;
+				_candSelection = 0;
+				return;
 			}
 
 			IntPtr candListBuffer = Marshal.AllocHGlobal(size);
@@ -110,7 +114,9 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				candStrList[i] = Encoding.Unicode.GetString(buf, (int)offsetI, strLen);
 			}
 
-			return candStrList;
+			_candList = candStrList;
+			_candCount = candList.dwPageSize;
+			_candSelection = candList.dwSelection;
 		}
 		finally {
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
@@ -124,26 +130,6 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		}
 
 		return "";
-	}
-
-	private uint GetCandidateSelection()
-	{
-		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
-		try {
-			int size = NativeMethods.ImmGetCandidateList(hImc, 0, IntPtr.Zero, 0);
-			if (size == 0) {
-				return 0;
-			}
-
-			IntPtr candListBuffer = Marshal.AllocHGlobal(size);
-			NativeMethods.ImmGetCandidateList(hImc, 0, candListBuffer, size);
-
-			CandidateList candList = Marshal.PtrToStructure<CandidateList>(candListBuffer);
-			return candList.dwSelection;
-		}
-		finally {
-			NativeMethods.ImmReleaseContext(_hWnd, hImc);
-		}
 	}
 
 	protected override void OnEnable()
@@ -193,23 +179,19 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 			case Msg.WM_IME_COMPOSITION:
 				_compString = GetCompositionString();
-				return true;
+				break;
 
 			case Msg.WM_IME_ENDCOMPOSITION:
 				_compString = "";
+				UpdateCandidateList();
 				break;
 
 			case Msg.WM_IME_NOTIFY:
 				switch (message.wparam.ToInt32()) {
 					case Imm.IMN_OPENCANDIDATE:
 					case Imm.IMN_CHANGECANDIDATE:
-						_candList = GetCandidateList();
-						_candSelection = GetCandidateSelection();
-						break;
-					
 					case Imm.IMN_CLOSECANDIDATE:
-						_candList = Array.Empty<string>();
-						_candSelection = 0;
+						UpdateCandidateList();
 						break;
 				}
 
