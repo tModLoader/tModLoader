@@ -667,7 +667,6 @@ public static class PlayerLoader
 
 	private static HookList HookProcessTriggers = AddHook<Action<TriggersSet>>(p => p.ProcessTriggers);
 
-
 	public static void ProcessTriggers(Player player, TriggersSet triggersSet)
 	{
 		foreach (var modPlayer in HookProcessTriggers.Enumerate(player))
