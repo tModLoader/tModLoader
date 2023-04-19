@@ -3588,14 +3588,19 @@
  				if (flag)
  					rain.Update();
  			}
-@@ -30999,6 +_,13 @@
+@@ -30999,6 +_,18 @@
  				if (dust.type == 213)
  					scale = 1f;
  
 +				ModDust modDust = DustLoader.GetDust(dust.type);
 +
 +				if (modDust != null) {
-+					modDust.Draw(dust, newColor, scale);
++					if(modDust.PreDraw(dust))
++						modDust.Draw(dust, newColor, scale);
++
++					if (newColor == Color.Black)
++						dust.active = false;
++
 +					continue;
 +				}
 +
