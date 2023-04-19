@@ -672,12 +672,7 @@ public static class PlayerLoader
 	{
 		foreach (var modPlayer in HookProcessTriggers.Enumerate(player))
 		{
-			try
-			{
-				modPlayer.ProcessTriggers(triggersSet);
-			}
-			catch (Exception e)
-			{ }
+			try { modPlayer.ProcessTriggers(triggersSet); }	catch (Exception e)	{ }
 		}
 	}
 
